@@ -17,7 +17,11 @@ type (
 )
 
 func (ns *Namespace) ToString(escape bool) string {
-	return "#object[Namespace \"" + ns.Name.ToString(escape) + "\"]"
+	if (escape) {
+		return "#object[Namespace \"" + ns.Name.ToString(escape) + "\"]"
+	} else {
+		return ns.Name.ToString(false)
+	}
 }
 
 func (ns *Namespace) Equals(other interface{}) bool {
