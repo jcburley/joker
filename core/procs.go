@@ -1103,23 +1103,20 @@ var procReadString Proc = func(args []Object) Object {
 	return readFromReader(strings.NewReader(EnsureString(args, 0).S))
 }
 
-func readLine(r *BufferedReader) (s string, err error) {
-	for {
-		line, isPrefix, err := r.ReadLine();
-		if err != nil {
-			return "", err
-		}
-		s += string(line)
-		if !isPrefix {
-			break
-		}
+func readLine(r io.Reader) (s string, err error) {
+	scanner := bufio.NewScanner(r)
+	if scanner.Scan() {
+		return scanner.Text(), nil
 	}
-	return
+	if scanner.Err() == nil {
+		return "", io.EOF
+	}
+	return "", scanner.Err()
 }
 
 var procReadLine Proc = func(args []Object) Object {
 	CheckArity(args, 0, 0)
-	f := AssertIOReader(GLOBAL_ENV.stdin.Value, "").(*BufferedReader)
+	f := AssertIOReader(GLOBAL_ENV.stdin.Value, "")
 	line, err := readLine(f)
 	if err != nil {
 		return NIL
