@@ -763,17 +763,17 @@ func genGoPostList(indent string, pkg string, fl FieldList) (jok, gol, goc, out 
 			if multipleCaptures {
 				captureName = n
 			}
-			captureVar, jok, gol, goc, out, usefulItem := genGoPostItem(indent, pkg, captureName, f, "")
+			captureVar, jokNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(indent, pkg, captureName, f, "")
 			useful = useful || usefulItem
 			if multipleCaptures {
-				goc += indent + result + " = " + result + ".Conjoin(" + out + ")\n"
+				gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
 			} else {
-				result = out
+				result = outNew
 			}
 			captureVars = append(captureVars, captureVar)
-			jokType = append(jokType, jok)
-			golType = append(golType, gol)
-			goCode = append(goCode, goc)
+			jokType = append(jokType, jokNew)
+			golType = append(golType, golNew)
+			goCode = append(goCode, gocNew)
 		}
 	}
 
