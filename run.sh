@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-go generate ./... && go tool vet -all -shadow=true ./ && go build && ./joker "$@"
+set -e  # Exit on error.
+
+if [ -e GO.link ]; then
+    go run tools/gostd/main.go --replace --joker .
+fi
+
+go generate ./... && go tool vet ./ && go build && ./joker "$@"
