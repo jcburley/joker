@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 	"unsafe"
@@ -162,6 +161,7 @@ type (
 		line               Keyword
 		column             Keyword
 		file               Keyword
+		ns                 Keyword
 		macro              Keyword
 		message            Keyword
 		form               Keyword
@@ -241,7 +241,7 @@ type (
 )
 
 var (
-	GLOBAL_ENV                = NewEnv(MakeSymbol("user"), os.Stdout, os.Stdin, os.Stderr)
+	GLOBAL_ENV                = NewEnv(MakeSymbol("user"), Stdin, Stdout, Stderr)
 	LOCAL_BINDINGS  *Bindings = nil
 	SPECIAL_SYMBOLS           = make(map[*string]bool)
 	KNOWN_MACROS    *Var
@@ -258,6 +258,7 @@ var (
 		line:               MakeKeyword("line"),
 		column:             MakeKeyword("column"),
 		file:               MakeKeyword("file"),
+		ns:                 MakeKeyword("ns"),
 		macro:              MakeKeyword("macro"),
 		message:            MakeKeyword("message"),
 		form:               MakeKeyword("form"),
@@ -467,7 +468,7 @@ func (pos Position) Pos() Position {
 
 func printError(pos Position, msg string) {
 	PROBLEM_COUNT++
-	fmt.Fprintf(os.Stderr, "%s:%d:%d: %s\n", pos.Filename(), pos.startLine, pos.startColumn, msg)
+	fmt.Fprintf(Stderr, "%s:%d:%d: %s\n", pos.Filename(), pos.startLine, pos.startColumn, msg)
 }
 
 func printParseWarning(pos Position, msg string) {
@@ -666,10 +667,10 @@ func updateVar(vr *Var, info *ObjectInfo, valueExpr Expr, sym Symbol) {
 	meta := sym.GetMeta()
 	if meta != nil {
 		if ok, p := meta.Get(KEYWORDS.private); ok {
-			vr.isPrivate = toBool(p)
+			vr.isPrivate = ToBool(p)
 		}
 		if ok, p := meta.Get(KEYWORDS.dynamic); ok {
-			vr.isDynamic = toBool(p)
+			vr.isDynamic = ToBool(p)
 		}
 		vr.taggedType = getTaggedType(sym)
 	}
@@ -991,7 +992,7 @@ func parseLoop(obj Object, ctx *ParseContext) *LoopExpr {
 func isSkipUnused(obj Meta) bool {
 	if m := obj.GetMeta(); m != nil {
 		if ok, v := m.Get(KEYWORDS.skipUnused); ok {
-			return toBool(v)
+			return ToBool(v)
 		}
 	}
 	return false
@@ -1430,7 +1431,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 				vr, ok := ctx.GlobalEnv.Resolve(sym)
 				if !ok {
 					if !LINTER_MODE {
-						panic(&ParseError{obj: obj, msg: "Enable to resolve var " + sym.ToString(false) + " in this context"})
+						panic(&ParseError{obj: obj, msg: "Unable to resolve var " + sym.ToString(false) + " in this context"})
 					}
 					symNs := ctx.GlobalEnv.NamespaceFor(ctx.GlobalEnv.CurrentNamespace(), sym)
 					if !ctx.isUnknownCallableScope {

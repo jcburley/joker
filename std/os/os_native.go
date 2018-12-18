@@ -28,7 +28,7 @@ func commandArgs() Object {
 	return res
 }
 
-const defaultFailedCode = 127  // seen from 'sh no-such-file' on OS X and Ubuntu
+const defaultFailedCode = 127 // seen from 'sh no-such-file' on OS X and Ubuntu
 
 func sh(dir string, name string, args []string) Object {
 	cmd := exec.Command(name, args...)
@@ -103,6 +103,12 @@ func getwd() string {
 	res, err := os.Getwd()
 	PanicOnErr(err)
 	return res
+}
+
+func chdir(dirname string) Object {
+	err := os.Chdir(dirname)
+	PanicOnErr(err)
+	return NIL
 }
 
 func stat(filename string) Object {

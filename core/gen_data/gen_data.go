@@ -23,6 +23,10 @@ type FileInfo struct {
 	filename string
 }
 
+/* The entries must be ordered such that a given namespace depends
+/* only upon namespaces loaded above it. E.g. joker.template depends
+/* on joker.walk, so is listed afterwards, not in alphabetical
+/* order. */
 var files []FileInfo = []FileInfo{
 	{
 		name:     "<joker.core>",
@@ -35,6 +39,18 @@ var files []FileInfo = []FileInfo{
 	{
 		name:     "<joker.math>",
 		filename: "math.joke",
+	},
+	{
+		name:     "<joker.repl>",
+		filename: "repl.joke",
+	},
+	{
+		name:     "<joker.walk>",
+		filename: "walk.joke",
+	},
+	{
+		name:     "<joker.template>",
+		filename: "template.joke",
 	},
 	{
 		name:     "<joker.core>",

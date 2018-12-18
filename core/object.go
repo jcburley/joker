@@ -16,6 +16,7 @@ import (
 	"math/big"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 	"unsafe"
@@ -235,6 +236,7 @@ type (
 		Gettable       *Type
 		Indexed        *Type
 		IOReader       *Type
+		IOWriter       *Type
 		KVReduce       *Type
 		Map            *Type
 		Meta           *Type
@@ -326,6 +328,7 @@ func init() {
 		Gettable:       regInterface("Gettable", (*Gettable)(nil)),
 		Indexed:        regInterface("Indexed", (*Indexed)(nil)),
 		IOReader:       regInterface("IOReader", (*io.Reader)(nil)),
+		IOWriter:       regInterface("IOWriter", (*io.Writer)(nil)),
 		KVReduce:       regInterface("KVReduce", (*KVReduce)(nil)),
 		Map:            regInterface("Map", (*Map)(nil)),
 		Meta:           regInterface("Meta", (*Meta)(nil)),
@@ -454,10 +457,31 @@ func PanicArity(n int) {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s", n, name)))
 }
 
+func rangeString(min, max int) string {
+	if min == max {
+		return strconv.Itoa(min)
+	}
+	if min + 1 == max {
+		return strconv.Itoa(min) + " or " + strconv.Itoa(max)
+	}
+	if min + 2 == max {
+		return strconv.Itoa(min) + ", " + strconv.Itoa(min + 1) + ", or " + strconv.Itoa(max)
+	}
+	if max >= 999 {
+		return "at least " + strconv.Itoa(min)
+	}
+	return "between " + strconv.Itoa(min) + " and " + strconv.Itoa(max) + ", inclusive"
+}
+
+func PanicArityMinMax(n, min, max int) {
+	name := RT.currentExpr.(Traceable).Name()
+	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, rangeString(min, max))))
+}
+
 func CheckArity(args []Object, min int, max int) {
 	n := len(args)
 	if n < min || n > max {
-		PanicArity(n)
+		PanicArityMinMax(n, min, max)
 	}
 }
 
@@ -1417,6 +1441,14 @@ func (s String) Compare(other Object) int {
 	return strings.Compare(s.S, s2.S)
 }
 
+// TODO: Return proper Go object (e.g. maybe go.type.error?)
+func MakeError(e error) String {
+	if e == nil {
+		return MakeString("")
+	}
+	return MakeString(e.Error())
+}
+
 func IsSymbol(obj Object) bool {
 	switch obj.(type) {
 	case Symbol:
@@ -1476,7 +1508,7 @@ func IsSpecialSymbol(obj Object) bool {
 	}
 }
 
-func MakeMeta(arglists Seq, docstring string, added string) Map {
+func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	res := EmptyArrayMap()
 	if arglists != nil {
 		res.Add(KEYWORDS.arglist, arglists)

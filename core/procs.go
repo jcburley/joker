@@ -23,6 +23,9 @@ var (
 	coreData        []byte
 	timeData        []byte
 	mathData        []byte
+	replData        []byte
+	walkData        []byte
+	templateData    []byte
 	linter_allData  []byte
 	linter_cljxData []byte
 	linter_cljData  []byte
@@ -30,8 +33,11 @@ var (
 )
 
 type (
-	Phase   int
-	Dialect int
+	Phase        int
+	Dialect      int
+	StringReader interface {
+		ReadString(delim byte) (s string, e error)
+	}
 )
 
 const (
@@ -41,7 +47,9 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.10.1"
+const VERSION = "v0.10.2"
+
+var internalLibs map[string][]byte
 
 const (
 	CLJ Dialect = iota
@@ -50,6 +58,14 @@ const (
 	EDN
 	UNKNOWN
 )
+
+func InitInternalLibs() {
+	internalLibs = map[string][]byte{
+		"joker.walk":     walkData,
+		"joker.template": templateData,
+		"joker.repl":     replData,
+	}
+}
 
 func ensureArrayMap(args []Object, index int) *ArrayMap {
 	switch obj := args[index].(type) {
@@ -82,6 +98,18 @@ func ExtractStrings(args []Object, index int) []string {
 
 func ExtractInt(args []Object, index int) int {
 	return EnsureInt(args, index).I
+}
+
+func ExtractByte(args []Object, index int) byte {
+	b := ExtractInt(args, index)
+	if (b < 0 || b > 255) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "byte"))
+	}
+	return byte(b)
+}
+
+func ExtractBool(args []Object, index int) bool {
+	return ToBool(args[index])
 }
 
 func ExtractTime(args []Object, index int) time.Time {
@@ -760,7 +788,7 @@ var procChar Proc = func(args []Object) Object {
 }
 
 var procBoolean Proc = func(args []Object) Object {
-	return Bool{B: toBool(args[0])}
+	return Bool{B: ToBool(args[0])}
 }
 
 var procNumerator Proc = func(args []Object) Object {
@@ -1007,8 +1035,8 @@ var procPprint Proc = func(args []Object) Object {
 	return NIL
 }
 
-func printObject(obj Object, w io.Writer) {
-	printReadably := toBool(GLOBAL_ENV.printReadably.Value)
+func PrintObject(obj Object, w io.Writer) {
+	printReadably := ToBool(GLOBAL_ENV.printReadably.Value)
 	switch obj := obj.(type) {
 	case Printer:
 		obj.Print(w, printReadably)
@@ -1022,10 +1050,10 @@ var procPr Proc = func(args []Object) Object {
 	if n > 0 {
 		f := AssertIOWriter(GLOBAL_ENV.stdout.Value, "")
 		for _, arg := range args[:n-1] {
-			printObject(arg, f)
+			PrintObject(arg, f)
 			fmt.Fprint(f, " ")
 		}
-		printObject(args[n-1], f)
+		PrintObject(args[n-1], f)
 	}
 	return NIL
 }
@@ -1060,13 +1088,13 @@ func EnsureRuneReader(args []Object, index int) io.RuneReader {
 	}
 }
 
-func AssertIOReader(obj Object, msg string) io.Reader {
+func AssertStringReader(obj Object, msg string) StringReader {
 	switch c := obj.(type) {
-	case io.Reader:
+	case StringReader:
 		return c
 	default:
 		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "IOReader", obj.GetType().ToString(false))
+			msg = fmt.Sprintf("Expected %s, got %s", "StringReader", obj.GetType().ToString(false))
 		}
 		panic(RT.NewError(msg))
 	}
@@ -1103,11 +1131,30 @@ var procReadString Proc = func(args []Object) Object {
 	return readFromReader(strings.NewReader(EnsureString(args, 0).S))
 }
 
+func readLine(r StringReader) (s string, e error) {
+	s, e = r.ReadString('\n')
+	if e == nil {
+		l := len(s)
+		if s[l-1] == '\n' {
+			l -= 1
+			if l > 0 && s[l-1] == '\r' {
+				l -= 1
+			}
+		}
+		s = s[0:l]
+	} else if s != "" && e == io.EOF {
+		e = nil
+	}
+	return
+}
+
 var procReadLine Proc = func(args []Object) Object {
 	CheckArity(args, 0, 0)
-	var line string
-	f := AssertIOReader(GLOBAL_ENV.stdin.Value, "")
-	fmt.Fscanln(f, &line)
+	f := AssertStringReader(GLOBAL_ENV.stdin.Value, "")
+	line, err := readLine(f)
+	if err != nil {
+		return NIL
+	}
 	return String{S: line}
 }
 
@@ -1339,13 +1386,28 @@ var procHash Proc = func(args []Object) Object {
 	return Int{I: int(args[0].Hash())}
 }
 
+func loadFile(filename string) Object {
+	var reader *Reader
+	f, err := os.Open(filename)
+	PanicOnErr(err)
+	reader = NewReader(bufio.NewReader(f), filename)
+	ProcessReader(reader, filename, EVAL)
+	return NIL
+}
+
 var procLoadFile Proc = func(args []Object) Object {
 	filename := EnsureString(args, 0)
-	var reader *Reader
-	f, err := os.Open(filename.S)
-	PanicOnErr(err)
-	reader = NewReader(bufio.NewReader(f), filename.S)
-	ProcessReader(reader, filename.S, EVAL)
+	return loadFile(filename.S)
+}
+
+var procLoadLibFromFile Proc = func(args []Object) Object {
+	libname := EnsureSymbol(args, 0)
+	filename := EnsureString(args, 1)
+	if d := internalLibs[libname.Name()]; d != nil {
+		processData(d)
+	} else {
+		loadFile(filename.S)
+	}
 	return NIL
 }
 
@@ -1390,7 +1452,7 @@ var procLibPath Proc = func(args []Object) Object {
 var procInternFakeVar Proc = func(args []Object) Object {
 	nsSym := EnsureSymbol(args, 0)
 	sym := EnsureSymbol(args, 1)
-	isMacro := toBool(args[2])
+	isMacro := ToBool(args[2])
 	res := InternFakeSymbol(GLOBAL_ENV.FindNamespace(nsSym), sym)
 	res.isMacro = isMacro
 	return res
@@ -1430,18 +1492,18 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 			return append(hp, p...), nil
 		}
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return nil, err
 		}
 		expr, err := TryParse(obj, parseContext)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return nil, err
 		}
 		p = expr.Pack(p, packEnv)
 		_, err = TryEval(expr)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return nil, err
 		}
 	}
@@ -1469,7 +1531,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 			return nil
 		}
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return err
 		}
 		if phase == READ {
@@ -1477,7 +1539,7 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 		}
 		expr, err := TryParse(obj, parseContext)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return err
 		}
 		if phase == PARSE {
@@ -1485,14 +1547,14 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 		}
 		obj, err = TryEval(expr)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(Stderr, err)
 			return err
 		}
 		if phase == EVAL {
 			continue
 		}
 		if _, ok := obj.(Nil); !ok {
-			fmt.Println(obj.ToString(true))
+			fmt.Fprintln(Stdout, obj.ToString(true))
 		}
 	}
 }
@@ -1520,8 +1582,13 @@ func processData(data []byte) {
 
 func ProcessCoreData() {
 	processData(coreData)
+	/* Might be faster startup if the rest of these were deferred until actually :require'd? */
 	processData(timeData)
 	processData(mathData)
+}
+
+func ProcessReplData() {
+	processData(replData)
 }
 
 func findConfigFile(filename string, workingDir string, findDir bool) string {
@@ -1531,14 +1598,14 @@ func findConfigFile(filename string, workingDir string, findDir bool) string {
 	}
 	filename, err := filepath.Abs(filename)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error reading config file "+filename+": ", err)
+		fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", err)
 		return ""
 	}
 
 	if workingDir != "" {
 		workingDir, err = filepath.Abs(workingDir)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error resolving working directory"+workingDir+": ", err)
+			fmt.Fprintln(Stderr, "Error resolving working directory"+workingDir+": ", err)
 			return ""
 		}
 		filename = filepath.Join(workingDir, configName)
@@ -1572,7 +1639,7 @@ func findConfigFile(filename string, workingDir string, findDir bool) string {
 }
 
 func printConfigError(filename, msg string) {
-	fmt.Fprintln(os.Stderr, "Error reading config file "+filename+": ", msg)
+	fmt.Fprintln(Stderr, "Error reading config file "+filename+": ", msg)
 }
 
 func knownMacrosToMap(km Object) (Map, error) {
@@ -1665,13 +1732,13 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 		if ok, v := m.Get(KEYWORDS.ifWithoutElse); ok {
-			WARNINGS.ifWithoutElse = toBool(v)
+			WARNINGS.ifWithoutElse = ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.unusedFnParameters); ok {
-			WARNINGS.unusedFnParameters = toBool(v)
+			WARNINGS.unusedFnParameters = ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.fnWithEmptyBody); ok {
-			WARNINGS.fnWithEmptyBody = toBool(v)
+			WARNINGS.fnWithEmptyBody = ToBool(v)
 		}
 	}
 	LINTER_CONFIG.Value = configMap
@@ -1685,13 +1752,23 @@ func removeJokerNamespaces() {
 	}
 }
 
+func markJokerNamespacesAsUsed() {
+	for k, ns := range GLOBAL_ENV.Namespaces {
+		if ns != GLOBAL_ENV.CoreNamespace && strings.HasPrefix(*k, "joker.") {
+			ns.isUsed = true
+		}
+	}
+}
+
 func ProcessLinterData(dialect Dialect) {
 	if dialect == EDN {
+		markJokerNamespacesAsUsed()
 		return
 	}
 	processData(linter_allData)
 	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
 	if dialect == JOKER {
+		markJokerNamespacesAsUsed()
 		return
 	}
 	processData(linter_cljxData)
@@ -1707,7 +1784,7 @@ func ProcessLinterData(dialect Dialect) {
 func NewReaderFromFile(filename string) (*Reader, error) {
 	f, err := os.Open(filename)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error: ", err)
+		fmt.Fprintln(Stderr, "Error: ", err)
 		return nil, err
 	}
 	return NewReader(bufio.NewReader(f), filename), nil
@@ -1885,6 +1962,7 @@ func init() {
 	intern("bound?__", procIsBound)
 	intern("format__", procFormat)
 	intern("load-file__", procLoadFile)
+	intern("load-lib-from-file__", procLoadLibFromFile)
 	intern("reduce-kv__", procReduceKv)
 	intern("slurp__", procSlurp)
 	intern("spit__", procSpit)

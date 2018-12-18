@@ -2,9 +2,16 @@ package core
 
 import (
 	"bufio"
+	"io"
 	"os"
 	"strconv"
 	"strings"
+)
+
+var (
+	Stdin  io.Reader = os.Stdin
+	Stdout io.Writer = os.Stdout
+	Stderr io.Writer = os.Stderr
 )
 
 type (
@@ -47,7 +54,7 @@ func (env *Env) SetEnvArgs(newArgs []string) {
 	}
 }
 
-func NewEnv(currentNs Symbol, stdout *os.File, stdin *os.File, stderr *os.File) *Env {
+func NewEnv(currentNs Symbol, stdin io.Reader, stdout io.Writer, stderr io.Writer) *Env {
 	features := EmptySet()
 	features.Add(MakeKeyword("default"))
 	features.Add(MakeKeyword("joker"))
@@ -59,12 +66,12 @@ func NewEnv(currentNs Symbol, stdout *os.File, stdin *os.File, stderr *os.File) 
 	res.CoreNamespace.meta = MakeMeta(nil, "Core library of Joker.", "1.0")
 	res.ns = res.CoreNamespace.Intern(MakeSymbol("*ns*"))
 	res.ns.Value = res.EnsureNamespace(currentNs)
-	res.stdout = res.CoreNamespace.Intern(MakeSymbol("*out*"))
-	res.stdout.Value = &File{stdout}
 	res.stdin = res.CoreNamespace.Intern(MakeSymbol("*in*"))
 	res.stdin.Value = &BufferedReader{bufio.NewReader(stdin)}
+	res.stdout = res.CoreNamespace.Intern(MakeSymbol("*out*"))
+	res.stdout.Value = &IOWriter{stdout}
 	res.stderr = res.CoreNamespace.Intern(MakeSymbol("*err*"))
-	res.stderr.Value = &File{stderr}
+	res.stderr.Value = &IOWriter{stderr}
 	res.file = res.CoreNamespace.Intern(MakeSymbol("*file*"))
 	res.version = res.CoreNamespace.InternVar("*joker-version*", versionMap(),
 		MakeMeta(nil, `The version info for Clojure core, as a map containing :major :minor
@@ -77,6 +84,12 @@ func NewEnv(currentNs Symbol, stdout *os.File, stdin *os.File, stderr *os.File) 
 	res.CoreNamespace.Intern(MakeSymbol("*linter-mode*")).Value = Bool{B: LINTER_MODE}
 	res.CoreNamespace.Intern(MakeSymbol("*linter-config*")).Value = EmptyArrayMap()
 	return res
+}
+
+func (env *Env) SetStdIO(stdin io.Reader, stdout io.Writer, stderr io.Writer) {
+	env.stdin.Value = &BufferedReader{bufio.NewReader(stdin)}
+	env.stdout.Value = &IOWriter{stdout}
+	env.stderr.Value = &IOWriter{stderr}
 }
 
 func (env *Env) CurrentNamespace() *Namespace {

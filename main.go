@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"net"
 	"os"
 	"runtime"
 	"runtime/pprof"
@@ -64,11 +65,8 @@ func (ctx *ReplContext) PushException(exc Object) {
 
 func processFile(filename string, phase Phase) error {
 	var reader *Reader
-	if filename == "-" || filename == "--" {
-		if filename == "--" {
-			fmt.Fprintln(os.Stderr, "Warning: '--' indicating standard input (stdin) to Joker is deprecated; please use '-' instead")
-		}
-		reader = NewReader(bufio.NewReader(os.Stdin), "<stdin>")
+	if filename == "-" {
+		reader = NewReader(bufio.NewReader(Stdin), "<stdin>")
 		filename = ""
 	} else {
 		var err error
@@ -96,15 +94,15 @@ func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext,
 			switch r := r.(type) {
 			case *ParseError:
 				replContext.PushException(r)
-				fmt.Fprintln(os.Stderr, r)
+				fmt.Fprintln(Stderr, r)
 			case *EvalError:
 				replContext.PushException(r)
-				fmt.Fprintln(os.Stderr, r)
+				fmt.Fprintln(Stderr, r)
 			case Error:
 				replContext.PushException(r)
-				fmt.Fprintln(os.Stderr, r)
+				fmt.Fprintln(Stderr, r)
 			// case *runtime.TypeAssertionError:
-			// 	fmt.Fprintln(os.Stderr, r)
+			// 	fmt.Fprintln(Stderr, r)
 			default:
 				panic(r)
 			}
@@ -116,7 +114,7 @@ func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext,
 		return true
 	}
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(Stderr, err)
 		skipRestOfLine(reader)
 		return
 	}
@@ -134,11 +132,70 @@ func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext,
 
 	res := Eval(expr, nil)
 	replContext.PushValue(res)
-	fmt.Println(res.ToString(true))
+	PrintObject(res, Stdout)
+	fmt.Fprintln(Stdout, "")
 	return false
 }
 
+func srepl(port string, phase Phase) {
+	ProcessReplData()
+	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
+	l, err := net.Listen("tcp", replSocket)
+	if err != nil {
+		fmt.Fprintf(Stderr, "Cannot start srepl listening on %s: %s\n",
+			replSocket, err.Error())
+		ExitJoker(12)
+	}
+	defer l.Close()
+
+	fmt.Printf("Joker repl listening at %s...\n", l.Addr())
+	conn, err := l.Accept() // Wait for a single connection
+	if err != nil {
+		fmt.Fprintf(Stderr, "Cannot start repl accepting on %s: %s\n",
+			l.Addr(), err.Error())
+		ExitJoker(13)
+	}
+
+	oldStdIn := Stdin
+	oldStdOut := Stdout
+	oldStdErr := Stderr
+	Stdin = conn
+	Stdout = conn
+	Stderr = conn
+	GLOBAL_ENV.SetStdIO(Stdin, Stdout, Stderr)
+	defer func() {
+		conn.Close()
+		Stdin = oldStdIn
+		Stdout = oldStdOut
+		Stderr = oldStdErr
+		GLOBAL_ENV.SetStdIO(Stdin, Stdout, Stderr)
+	}()
+
+	fmt.Printf("Joker repl accepting client at %s...\n", conn.RemoteAddr())
+
+	runeReader := bufio.NewReader(conn)
+
+	/* The rest of this code comes from repl(), below: */
+
+	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
+	replContext := NewReplContext(parseContext.GlobalEnv)
+
+	reader := NewReader(runeReader, "<srepl>")
+
+	fmt.Fprintf(Stdout, "Welcome to joker %s, client at %s. Use '(joker.os/exit 0)', or close the connection, to exit.\n",
+		VERSION, conn.RemoteAddr())
+
+	for {
+		fmt.Fprint(Stdout, GLOBAL_ENV.CurrentNamespace().Name.ToString(false)+"=> ")
+		if processReplCommand(reader, phase, parseContext, replContext) {
+			return
+		}
+	}
+}
+
 func repl(phase Phase) {
+	ProcessReplData()
+	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.FindNamespace(MakeSymbol("joker.repl")))
 	fmt.Printf("Welcome to joker %s. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.\n", VERSION)
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	replContext := NewReplContext(parseContext.GlobalEnv)
@@ -147,7 +204,7 @@ func repl(phase Phase) {
 	var rl *readline.Instance
 	var err error
 	if noReadline {
-		runeReader = bufio.NewReader(os.Stdin)
+		runeReader = bufio.NewReader(Stdin)
 	} else {
 		rl, err = readline.New("")
 		if err != nil {
@@ -234,10 +291,11 @@ func dialectFromArg(arg string) Dialect {
 	return UNKNOWN
 }
 
-func usage(out *os.File) {
+func usage(out io.Writer) {
 	fmt.Fprintf(out, "Joker - %s\n\n", VERSION)
-	fmt.Fprintln(out, "Usage: joker [args]                                 starts a repl")
-	fmt.Fprintln(out, "   or: joker [args] --repl [-- <repl-args>]         starts a repl with args")
+	fmt.Fprintln(out, "Usage: joker [args] [-- <repl-args>]                starts a repl")
+	fmt.Fprintln(out, "   or: joker [args] --repl [<socket>] [-- <repl-args>]")
+	fmt.Fprintln(out, "                                                    starts a repl (on optional network socket)")
 	fmt.Fprintln(out, "   or: joker [args] --eval <expr> [-- <expr-args>]  evaluate <expr>, print if non-nil")
 	fmt.Fprintln(out, "   or: joker [args] <filename> [<script-args>]      input from file")
 	fmt.Fprintln(out, "   or: joker [args] --lint <filename>               lint the code in file")
@@ -281,7 +339,7 @@ func usage(out *os.File) {
 }
 
 var (
-	debugOut           *os.File
+	debugOut           io.Writer
 	helpFlag           bool
 	versionFlag        bool
 	phase              Phase = EVAL // --read, --parse, --evaluate
@@ -290,6 +348,7 @@ var (
 	dialect            Dialect = UNKNOWN
 	eval               string
 	replFlag           bool
+	replSocket         string
 	filename           string
 	remainingArgs      []string
 	profilerType       string = "runtime/pprof"
@@ -315,14 +374,18 @@ func parseArgs(args []string) {
 			fmt.Fprintf(debugOut, "arg[%d]=%s\n", i, args[i])
 		}
 		switch args[i] {
-		case "--", "-":
-			stop = true // "-" is stdin. "--" is stdin for now; later will formally end options processing
+		case "-": // denotes stdin
+			stop = true
+		case "--": // formally ends options processing
+			stop = true
+			noFileFlag = true
+			i += 1 // do not include "--" in *command-line-args*
 		case "--debug":
-			debugOut = os.Stderr
+			debugOut = Stderr
 		case "--debug=stderr":
-			debugOut = os.Stderr
+			debugOut = Stderr
 		case "--debug=stdout":
-			debugOut = os.Stdout
+			debugOut = Stdout
 		case "--help", "-h":
 			helpFlag = true
 			return // don't bother parsing anything else
@@ -367,7 +430,7 @@ func parseArgs(args []string) {
 				i += 1 // shift
 				thresh, err := strconv.Atoi(args[i])
 				if err != nil {
-					fmt.Fprintln(os.Stderr, "Error: ", err)
+					fmt.Fprintln(Stderr, "Error: ", err)
 					return
 				}
 				if thresh < 0 {
@@ -383,20 +446,14 @@ func parseArgs(args []string) {
 				i += 1 // shift
 				eval = args[i]
 				phase = PRINT_IF_NOT_NIL
-				if i < length-1 && args[i+1] == "--" {
-					i += 2 // shift 2
-					noFileFlag = true
-					stop = true
-				}
 			} else {
 				missing = true
 			}
 		case "--repl":
 			replFlag = true
-			if i < length-1 && args[i+1] == "--" {
-				i += 2 // shift 2
-				noFileFlag = true
-				stop = true
+			if i < length-1 && notOption(args[i+1]) {
+				i += 1 // shift
+				replSocket = args[i]
 			}
 		case "--no-readline":
 			noReadline = true
@@ -419,7 +476,7 @@ func parseArgs(args []string) {
 				i += 1 // shift
 				rate, err := strconv.Atoi(args[i])
 				if err != nil {
-					fmt.Fprintln(os.Stderr, "Error: ", err)
+					fmt.Fprintln(Stderr, "Error: ", err)
 					return
 				}
 				if rate > 0 {
@@ -441,7 +498,7 @@ func parseArgs(args []string) {
 				i += 1 // shift
 				rate, err := strconv.Atoi(args[i])
 				if err != nil {
-					fmt.Fprintln(os.Stderr, "Error: ", err)
+					fmt.Fprintln(Stderr, "Error: ", err)
 					return
 				}
 				if rate > 0 {
@@ -452,7 +509,7 @@ func parseArgs(args []string) {
 			}
 		default:
 			if strings.HasPrefix(args[i], "-") {
-				fmt.Fprintf(os.Stderr, "Error: Unrecognized option '%s'\n", args[i])
+				fmt.Fprintf(Stderr, "Error: Unrecognized option '%s'\n", args[i])
 				ExitJoker(2)
 			}
 			stop = true
@@ -462,7 +519,7 @@ func parseArgs(args []string) {
 		}
 	}
 	if missing {
-		fmt.Fprintf(os.Stderr, "Error: Missing argument for '%s' option\n", args[i])
+		fmt.Fprintf(Stderr, "Error: Missing argument for '%s' option\n", args[i])
 		ExitJoker(3)
 	}
 	if i < length && !noFileFlag {
@@ -485,6 +542,7 @@ var runningProfile interface {
 }
 
 func main() {
+	InitInternalLibs()
 	ProcessCoreData()
 
 	SetExitJoker(func(code int) {
@@ -497,9 +555,9 @@ func main() {
 		// peek to see if the first arg is "--debug*"
 		switch os.Args[1] {
 		case "--debug", "--debug=stderr":
-			debugOut = os.Stderr
+			debugOut = Stderr
 		case "--debug=stdout":
-			debugOut = os.Stdout
+			debugOut = Stdout
 		}
 	}
 
@@ -517,13 +575,14 @@ func main() {
 		fmt.Fprintf(debugOut, "HASHMAP_THRESHOLD=%v\n", HASHMAP_THRESHOLD)
 		fmt.Fprintf(debugOut, "eval=%v\n", eval)
 		fmt.Fprintf(debugOut, "replFlag=%v\n", replFlag)
+		fmt.Fprintf(debugOut, "replSocket=%v\n", replSocket)
 		fmt.Fprintf(debugOut, "noReadline=%v\n", noReadline)
 		fmt.Fprintf(debugOut, "filename=%v\n", filename)
 		fmt.Fprintf(debugOut, "remainingArgs=%v\n", remainingArgs)
 	}
 
 	if helpFlag {
-		usage(os.Stdout)
+		usage(Stdout)
 		return
 	}
 
@@ -534,11 +593,11 @@ func main() {
 
 	if len(remainingArgs) > 0 {
 		if lintFlag {
-			fmt.Fprintf(os.Stderr, "Error: Cannot provide arguments to code while linting it.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot provide arguments to code while linting it.\n")
 			ExitJoker(4)
 		}
 		if phase != EVAL && phase != PRINT_IF_NOT_NIL {
-			fmt.Fprintf(os.Stderr, "Error: Cannot provide arguments to code without evaluating it.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot provide arguments to code without evaluating it.\n")
 			ExitJoker(5)
 		}
 	}
@@ -553,7 +612,7 @@ func main() {
 		case "runtime/pprof":
 			f, err := os.Create(cpuProfileName)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error: Could not create CPU profile `%s': %v\n",
+				fmt.Fprintf(Stderr, "Error: Could not create CPU profile `%s': %v\n",
 					cpuProfileName, err)
 				cpuProfileName = ""
 				ExitJoker(96)
@@ -562,11 +621,11 @@ func main() {
 				runtime.SetCPUProfileRate(cpuProfileRate)
 			}
 			pprof.StartCPUProfile(f)
-			fmt.Fprintf(os.Stderr, "Profiling started at rate=%d. See file `%s'.\n",
+			fmt.Fprintf(Stderr, "Profiling started at rate=%d. See file `%s'.\n",
 				cpuProfileRate, cpuProfileName)
 			defer finish()
 		default:
-			fmt.Fprintf(os.Stderr,
+			fmt.Fprintf(Stderr,
 				"Unrecognized profiler: %s\n  Use 'pkg/profile' or 'runtime/pprof'.\n",
 				profilerType)
 			ExitJoker(96)
@@ -577,19 +636,19 @@ func main() {
 
 	if eval != "" {
 		if lintFlag {
-			fmt.Fprintf(os.Stderr, "Error: Cannot combine --eval/-e and --lint.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --lint.\n")
 			ExitJoker(6)
 		}
 		if replFlag {
-			fmt.Fprintf(os.Stderr, "Error: Cannot combine --eval/-e and --repl.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --[n]repl.\n")
 			ExitJoker(7)
 		}
 		if workingDir != "" {
-			fmt.Fprintf(os.Stderr, "Error: Cannot combine --eval/-e and --working-dir.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and --working-dir.\n")
 			ExitJoker(8)
 		}
 		if filename != "" {
-			fmt.Fprintf(os.Stderr, "Error: Cannot combine --eval/-e and a <filename> argument.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot combine --eval/-e and a <filename> argument.\n")
 			ExitJoker(9)
 		}
 		reader := NewReader(strings.NewReader(eval), "<expr>")
@@ -599,7 +658,7 @@ func main() {
 
 	if lintFlag {
 		if replFlag {
-			fmt.Fprintf(os.Stderr, "Error: Cannot combine --lint and --repl.\n")
+			fmt.Fprintf(Stderr, "Error: Cannot combine --lint and --[n]repl.\n")
 			ExitJoker(10)
 		}
 		if dialect == UNKNOWN {
@@ -613,12 +672,17 @@ func main() {
 	}
 
 	if workingDir != "" {
-		fmt.Fprintf(os.Stderr, "Error: Cannot specify --working-dir option when not linting.\n")
+		fmt.Fprintf(Stderr, "Error: Cannot specify --working-dir option when not linting.\n")
 		ExitJoker(11)
 	}
 
 	if filename != "" {
 		processFile(filename, phase)
+		return
+	}
+
+	if replSocket != "" {
+		srepl(replSocket, phase)
 		return
 	}
 
@@ -632,23 +696,23 @@ func finish() {
 		runningProfile = nil
 	} else if cpuProfileName != "" {
 		pprof.StopCPUProfile()
-		fmt.Fprintf(os.Stderr, "Profiling stopped. See file `%s'.\n", cpuProfileName)
+		fmt.Fprintf(Stderr, "Profiling stopped. See file `%s'.\n", cpuProfileName)
 		cpuProfileName = ""
 	}
 
 	if memProfileName != "" {
 		f, err := os.Create(memProfileName)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: Could not create memory profile `%s': %v\n",
+			fmt.Fprintf(Stderr, "Error: Could not create memory profile `%s': %v\n",
 				memProfileName, err)
 		}
 		runtime.GC() // get up-to-date statistics
 		if err := pprof.WriteHeapProfile(f); err != nil {
-			fmt.Fprintf(os.Stderr, "Error: Could not write memory profile `%s': %v\n",
+			fmt.Fprintf(Stderr, "Error: Could not write memory profile `%s': %v\n",
 				memProfileName, err)
 		}
 		f.Close()
-		fmt.Fprintf(os.Stderr, "Memory profile rate=%d written to `%s'.\n",
+		fmt.Fprintf(Stderr, "Memory profile rate=%d written to `%s'.\n",
 			runtime.MemProfileRate, memProfileName)
 		memProfileName = ""
 	}
