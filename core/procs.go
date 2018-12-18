@@ -100,6 +100,18 @@ func ExtractInt(args []Object, index int) int {
 	return EnsureInt(args, index).I
 }
 
+func ExtractByte(args []Object, index int) byte {
+	b := ExtractInt(args, index)
+	if (b < 0 || b > 255) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "byte"))
+	}
+	return byte(b)
+}
+
+func ExtractBool(args []Object, index int) bool {
+	return ToBool(args[index])
+}
+
 func ExtractTime(args []Object, index int) time.Time {
 	return EnsureTime(args, index).T
 }
@@ -776,7 +788,7 @@ var procChar Proc = func(args []Object) Object {
 }
 
 var procBoolean Proc = func(args []Object) Object {
-	return Bool{B: toBool(args[0])}
+	return Bool{B: ToBool(args[0])}
 }
 
 var procNumerator Proc = func(args []Object) Object {
@@ -1024,7 +1036,7 @@ var procPprint Proc = func(args []Object) Object {
 }
 
 func PrintObject(obj Object, w io.Writer) {
-	printReadably := toBool(GLOBAL_ENV.printReadably.Value)
+	printReadably := ToBool(GLOBAL_ENV.printReadably.Value)
 	switch obj := obj.(type) {
 	case Printer:
 		obj.Print(w, printReadably)
@@ -1440,7 +1452,7 @@ var procLibPath Proc = func(args []Object) Object {
 var procInternFakeVar Proc = func(args []Object) Object {
 	nsSym := EnsureSymbol(args, 0)
 	sym := EnsureSymbol(args, 1)
-	isMacro := toBool(args[2])
+	isMacro := ToBool(args[2])
 	res := InternFakeSymbol(GLOBAL_ENV.FindNamespace(nsSym), sym)
 	res.isMacro = isMacro
 	return res
@@ -1720,13 +1732,13 @@ func ReadConfig(filename string, workingDir string) {
 			return
 		}
 		if ok, v := m.Get(KEYWORDS.ifWithoutElse); ok {
-			WARNINGS.ifWithoutElse = toBool(v)
+			WARNINGS.ifWithoutElse = ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.unusedFnParameters); ok {
-			WARNINGS.unusedFnParameters = toBool(v)
+			WARNINGS.unusedFnParameters = ToBool(v)
 		}
 		if ok, v := m.Get(KEYWORDS.fnWithEmptyBody); ok {
-			WARNINGS.fnWithEmptyBody = toBool(v)
+			WARNINGS.fnWithEmptyBody = ToBool(v)
 		}
 	}
 	LINTER_CONFIG.Value = configMap
