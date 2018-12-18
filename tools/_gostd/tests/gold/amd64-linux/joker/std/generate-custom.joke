@@ -1,1 +1,14 @@
-;;;; Placeholder for custom libraries. Overwritten by gostd.
+;;;; Auto-modified by gostd at (omitted for testing)
+
+(def custom-namespaces ['go.std.net 'go.std.net.http 'go.std.net.mail
+  'go.std.net.rpc 'go.std.net.textproto 'go.std.net.url])
+
+(apply require :reload custom-namespaces)
+
+(doseq [ns-sym custom-namespaces]
+  (let [ns-name (str ns-sym)
+        dir (rpl ns-name "." "/")
+        ns-name-final (rpl ns-name #".*[.]" "")]
+    (debug "Processing custom namespace" ns-name "in" dir "final name" ns-name-final)
+    (spit (ns-file-name dir ns-name-final)
+          (remove-blanky-lines (generate-ns ns-sym ns-name ns-name-final)))))
