@@ -1076,6 +1076,7 @@ Options:
   --joker <joker-source-dir-name>  # Modify pertinent source files to reflect packages being created
   --verbose, -v                  # Print info on what's going on
   --summary                      # Print summary of #s of types, functions, etc.
+  --output-code                  # Print generated code to stdout (used by test.sh)
   --empty                        # Generate empty packages (those with no Joker code)
   --dump                         # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp                 # Don't put the time (and version) info in generated/modified files
@@ -1237,6 +1238,7 @@ func main() {
 	overwrite := false
 	summary := false
 	generateEmpty := false
+	outputCode := false
 
 	var mode parser.Mode = parser.ParseComments
 
@@ -1265,6 +1267,8 @@ func main() {
 				verbose = true
 			case "--summary":
 				summary = true
+			case "--output-code":
+				outputCode = true
 			case "--empty":
 				generateEmpty = true
 			case "--go":
@@ -1420,7 +1424,7 @@ func main() {
 			}
 			sortedCodeMap(v,
 				func(f string, w string) {
-					if verbose || jokerLibDir == "" {
+					if outputCode {
 						fmt.Printf("JOKER FUNC %s.%s has:%v\n",
 							pkgBaseName, f, w)
 					}
@@ -1472,7 +1476,7 @@ import (%s%s
 			}
 			sortedCodeMap(v,
 				func(f string, w string) {
-					if verbose || jokerLibDir == "" {
+					if outputCode {
 						fmt.Printf("GO FUNC %s.%s has:%v\n",
 							pkgBaseName, f, w)
 					}
