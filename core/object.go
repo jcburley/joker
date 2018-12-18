@@ -1441,6 +1441,14 @@ func (s String) Compare(other Object) int {
 	return strings.Compare(s.S, s2.S)
 }
 
+// TODO: Return proper Go object (e.g. maybe go.type.error?)
+func MakeError(e error) String {
+	if e == nil {
+		return MakeString("")
+	}
+	return MakeString(e.Error())
+}
+
 func IsSymbol(obj Object) bool {
 	switch obj.(type) {
 	case Symbol:

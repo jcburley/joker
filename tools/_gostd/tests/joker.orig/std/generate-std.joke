@@ -1,0 +1,136 @@
+(def namespaces ['string 'json 'base64 'os 'time 'yaml 'http 'math 'html 'url])
+
+(apply require namespaces)
+
+(def rpl joker.string/replace)
+
+(def fn-template
+  (slurp "fn.tmpl"))
+
+(def arity-template
+  (slurp "arity.tmpl"))
+
+(def package-template
+  (slurp "package.tmpl"))
+
+(def intern-template
+  (slurp "intern.tmpl"))
+
+(defn q
+  [s]
+  (str "\"" s "\""))
+
+(defn raw-quoted-string
+  "Returns a Go-style backtick-quoted string with backticks handled by appending double-quoted backticks"
+  [s]
+  (str "`" (rpl s "`" "` + \"`\" + `") "`")
+  )
+
+(defn go-name
+  [fn-name]
+  (let [n (-> fn-name
+              (rpl "-" "_")
+              (rpl "?" "")
+              (str "_"))]
+    (if (joker.string/ends-with? fn-name "?")
+      (str "is" n)
+      n)))
+
+(defn extract-args
+  [args]
+  (joker.string/join
+   "\n    "
+   (map-indexed
+    (fn [i arg]
+      (let [m (meta arg)
+            t (cond-> (:tag m)
+                (:varargs m) (str "s"))]
+        (str arg " := Extract" t "(args, " (str i) ")")))
+    args)))
+
+(defn handle-varargs
+  [args]
+  (let [c (count args)]
+    (if (and (> c 1)
+             (= '& (nth args (- c 2))))
+      (let [vargs (vary-meta (last args) assoc :varargs true)]
+        (conj (subvec args 0 (- c 2)) vargs))
+      args)))
+
+(defn generate-arity
+  [args go tag]
+  (let [handle-args (handle-varargs args)
+        cnt (count handle-args)
+        varargs? (< cnt (count args))
+        go-expr (cond
+                  (string? go) go
+                  varargs? (:varargs go)
+                  :else (get go cnt))
+        go-res (if (joker.string/starts-with? go-expr "!")
+                 (subs go-expr 1)
+                 (str "res := " go-expr))]
+    (-> arity-template
+        (rpl "{arity}" (if varargs? "true" (str "c == " (count args))))
+        (rpl "{arityCheck}" (if varargs?
+                              (str "CheckArity(args, " (dec cnt) "," 999 ")")
+                              ""))
+        (rpl "{args}" (extract-args handle-args))
+        (rpl "{goExpr}" go-res)
+        (rpl "{return}"
+             (if tag
+               (str "return Make" tag "(res)")
+               "return res")))))
+
+(defn generate-arglist
+  [args]
+  (str "NewVectorFrom("
+       (joker.string/join ", " (for [arg args]
+                                 (str "MakeSymbol(" (q (str arg)) ")")))
+       ")"))
+
+(defn generate-fn
+  [ns-name ns-name-final k v]
+  (let [m (meta v)
+        arglists (:arglists m)
+        go-fn-name (go-name (str k))
+        arities (joker.string/join "\n  " (map #(generate-arity % (:go m) (:tag m)) arglists))
+        fn-str (-> fn-template
+                   (rpl "{fnName}" go-fn-name)
+                   (rpl "{arities}" arities))
+        intern-str (-> intern-template
+                       (rpl "{nsFullName}" ns-name)
+                       (rpl "{nsName}" ns-name-final)
+                       (rpl "{fnName}" (str k))
+                       (rpl "{goName}" go-fn-name)
+                       (rpl "{fnDocstring}" (raw-quoted-string (:doc m)))
+                       (rpl "{added}" (:added m))
+                       (rpl "{args}"
+                            (joker.string/join ", " (for [args arglists]
+                                                      (generate-arglist args)))))]
+    [fn-str intern-str]))
+
+(defn generate-ns
+  [ns-sym ns-name ns-name-final]
+  (let [ns (find-ns ns-sym)
+        m (meta ns)
+        fns (for [[k v] (sort-by first (ns-publics ns))]
+              (generate-fn ns-name ns-name-final k v))
+        res (-> package-template
+                (rpl "{nsFullName}" ns-name)
+                (rpl "{nsName}" ns-name-final)
+                (rpl "{imports}" (joker.string/join "\n  " (map q (:go-imports m))))
+                (rpl "{fns}" (joker.string/join "\n" (map first fns)))
+                (rpl "{nsDocstring}" (:doc m))
+                (rpl "{interns}" (joker.string/join "\n" (map second fns))))]
+    res))
+
+(defn ns-file-name
+  [dir ns-name-final]
+  (str dir "/a_" ns-name-final ".go"))
+
+(doseq [ns-sym namespaces]
+  (let [ns-name (str ns-sym)
+        dir (rpl ns-name "." "/")
+        ns-name-final (rpl ns-name #".*[.]" "")]
+    (spit (ns-file-name dir ns-name-final)
+          (generate-ns ns-sym ns-name ns-name-final))))
