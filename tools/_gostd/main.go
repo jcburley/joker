@@ -1327,7 +1327,7 @@ func main() {
 
 	jokerLibDir := ""
 	if jokerSourceDir != "" && jokerSourceDir != "-" {
-		jokerLibDir = filepath.Join(jokerSourceDir, "std", "go")
+		jokerLibDir = filepath.Join(jokerSourceDir, "std", "go", "std")
 		if replace {
 			if e := os.RemoveAll(jokerLibDir); e != nil {
 				panic(fmt.Sprintf("Unable to effectively 'rm -fr %s'", jokerLibDir))

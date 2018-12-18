@@ -16,13 +16,13 @@ build() {
 
 set -e  # Exit on error.
 
-if [ -e GO.link ] && which gostd2joker > /dev/null 2>&1; then
-    go run tools/_gostd/main.go --replace --joker .
-fi
-
 build
 
 ./joker -e '(print "\nLibraries available in this build:\n  ") *loaded-libs* (println)'
+
+if [ -e GO.link ] && which gostd2joker > /dev/null 2>&1; then
+    go run tools/_gostd/main.go --replace --joker .
+fi
 
 SUM256="$(go run tools/sum256dir/main.go std)"
 
