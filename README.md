@@ -224,7 +224,7 @@ cd $GOPATH/src/github.com/candid82/joker
 
 # gostd
 
-On this experimental branch, Joker can be optionally built against a Go source tree in order to pull in and "wrap" functions (and, someday, types?) provides by Go `std` packages
+On this experimental branch, Joker can be optionally built against a Go source tree in order to pull in and "wrap" functions (and, someday, types?) provides by Go `std` packages.
 
 ## Quick Start
 
