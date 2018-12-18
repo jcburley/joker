@@ -10,14 +10,17 @@ fi
 
 RC=0
 
+rm -fr $GOENV/joker
+mkdir -p $GOENV/joker/{core/data,std}
+cp -pv ../../custom.go $GOENV/joker/
+cp -pv ../../core/data/core.joke $GOENV/joker/core/data/
+cp -pv ../../std/generate-custom.joke $GOENV/joker/std/
+
+[ ! -x _gostd ] && echo >&2 "No executable to test." && exit 99
+
 ./_gostd --no-timestamp --output-code --verbose --go tests/small 2>&1 | grep -v '^Default context:' > $GOENV/small.gold
 git diff --quiet -u $GOENV/small.gold || { echo >&2 "FAILED: small test"; RC=1; $EXIT; }
 
-rm -fr $GOENV/joker
-mkdir -p $GOENV/joker/{core/data,std}
-cp -pv ../../main.go $GOENV/joker/
-cp -pv ../../core/data/core.joke $GOENV/joker/core/data/
-cp -pv ../../std/generate-{std,custom}.joke $GOENV/joker/std/
 ./_gostd --no-timestamp --output-code --verbose --go tests/big --replace --joker $GOENV/joker 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
 git diff --quiet -u $GOENV/big.gold || { echo >&2 "FAILED: big test"; RC=1; $EXIT; }
 
