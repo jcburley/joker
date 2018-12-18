@@ -1103,7 +1103,7 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-// E.g.: \t_ "github.com/candid82/joker/std/go/net"
+// E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateJokerMain(pkgs []string, f string) {
 	if verbose {
 		fmt.Printf("Adding custom imports to %s\n", filepath.ToSlash(f))
@@ -1116,7 +1116,7 @@ package main
 
 import (
 `
-	importPrefix := "\t_ \"github.com/candid82/joker/std/go/"
+	importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
 	for _, p := range pkgs {
 		newImports += importPrefix + p + "\"\n"
 	}
@@ -1148,7 +1148,7 @@ func updateCoreDotJoke(pkgs []string, f string) {
 
 	reImport := regexp.MustCompile("(?msU)" + flag + ".*" + endflag + "\n *?")
 	newImports := "\n  "
-	importPrefix := " 'go."
+	importPrefix := " 'go.std."
 	curLine := ""
 	for _, p := range pkgs {
 		more := importPrefix + strings.Replace(p, "/", ".", -1)
@@ -1174,7 +1174,7 @@ func updateGenerateCustom(pkgs []string, f string) {
 	m := ";;;; Auto-modified by gostd at " + curTimeAndVersion() + "\n\n"
 
 	newImports := ""
-	importPrefix := "'go."
+	importPrefix := "'go.std."
 	curLine := "(def custom-namespaces ["
 	for _, p := range pkgs {
 		more := importPrefix + strings.Replace(p, "/", ".", -1)
@@ -1184,7 +1184,7 @@ func updateGenerateCustom(pkgs []string, f string) {
 		} else {
 			curLine += more
 		}
-		importPrefix = " 'go."
+		importPrefix = " 'go.std."
 	}
 	newImports += curLine + `])
 
@@ -1400,7 +1400,7 @@ func main() {
   ^{:go-imports [%s]
     :doc "Provides a low-level interface to the %s package."
     :empty %s}
-  go.%s)
+  go.std.%s)
 `,
 					strings.TrimPrefix(packageQuotedImportList(pi.importsAutoGen, " ", false), " "),
 					pkgDirUnix,
