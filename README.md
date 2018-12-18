@@ -231,8 +231,8 @@ On this experimental branch, Joker can be optionally built against a Go source t
 To make this "magic" happen:
 
 * Ensure you're running Go version 1.11.2 (see `go version`) or later, as the copy of the subset of some supported Go packages, that comes with `gostd`, comes from that version (which will matter only if you want to run tests, as described below)
-* Get a copy of the Go source tree, e.g. [https://github.com/golang/go](from Github), and check out the tag/branch corresponding to the version of Go you're running (see `go version`)
-* Check out the `gostd` branch of [https://github.com/jcburley/joker.git](my fork of Joker) and `cd` to it
+* Get a copy of the Go source tree, e.g. [from Github](https://github.com/golang/go), and check out the tag/branch corresponding to the version of Go you're running (see `go version`)
+* Check out the `gostd` branch of [my fork of Joker](https://github.com/jcburley/joker.git) and `cd` to it
 * Create a symlink targeting that copy of the Go source tree you checked out (above) from `./GO.link` (in the top-level Joker source directory)
 * `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
