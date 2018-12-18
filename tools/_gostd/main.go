@@ -1129,7 +1129,6 @@ import (
 	check(err)
 }
 
-// E.g.: *loaded-libs* #{'joker.core 'joker.os 'joker.base64 'joker.json 'joker.string 'joker.yaml 'joker.go.net})
 func updateCoreDotJoke(pkgs []string, f string) {
 	if verbose {
 		fmt.Printf("Adding custom loaded libraries to %s\n", filepath.ToSlash(f))
@@ -1149,7 +1148,7 @@ func updateCoreDotJoke(pkgs []string, f string) {
 
 	reImport := regexp.MustCompile("(?msU)" + flag + ".*" + endflag + "\n *?")
 	newImports := "\n  "
-	importPrefix := " 'joker.go."
+	importPrefix := " 'go."
 	curLine := ""
 	for _, p := range pkgs {
 		more := importPrefix + strings.Replace(p, "/", ".", -1)
@@ -1189,7 +1188,7 @@ func updateGenerateCustom(pkgs []string, f string) {
 	}
 	newImports += curLine + `])
 
-(apply require custom-namespaces)
+(apply require :reload custom-namespaces)
 
 (doseq [ns-sym custom-namespaces]
   (let [ns-name (str ns-sym)

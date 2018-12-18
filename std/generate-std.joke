@@ -2,7 +2,7 @@
 
 (require '[joker.string :as s])
 
-(apply require namespaces)
+(apply require :reload namespaces) ; :reload in case namespaces become 'joker.base64 etc.
 
 (def rpl s/replace)
 
@@ -24,7 +24,8 @@
 
 (defn debug
   [& args]
-  )
+  (when ((joker.os/env) "JOKER_DEBUG_STD")
+    (apply println args)))
 
 (defn raw-quoted-string
   "Returns a Go-style backtick-quoted string with backticks handled by appending double-quoted backticks"
@@ -165,8 +166,8 @@
        (rpl #"[[:space:]]*{blank}" "")))
 
 (doseq [ns-sym namespaces]
-  (let [ns-name (str ns-sym)
-        dir (rpl ns-name "." "/")
+  (let [ns-name (str "joker." ns-sym)
+        dir (rpl (str ns-sym) "." "/")
         ns-name-final (rpl ns-name #".*[.]" "")]
     (debug "Processing namespace" ns-name "in" dir "final name" ns-name-final)
     (spit (ns-file-name dir ns-name-final)
