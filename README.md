@@ -249,10 +249,10 @@ At the moment, this is just a proof of concept, focusing initially on `net.Looku
 ```
 $ cd joker # Joker source directory on this branch and fork
 $ ln -s <go-source-directory> GO.link
-$ go run tools/_gostd/main.go 2>&1 | less
+$ go run tools/_gostd/main.go --output-code 2>&1 | less
 ```
 
-Then page through the output. Code snippets intended for e.g. `joker/std/go/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Or, specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/main.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
+Then page through the output. Code snippets intended for e.g. `joker/std/go/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/main.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
 
 Anything not supported results in either a `panic` or, more often, the string `ABEND` along with some kind of explanation. The latter is used to auto-detect a non-convertible function, in which case the snippet(s) are still output, but commented-out, so it's easy to see what's missing and (perhaps) why.
 
@@ -302,7 +302,7 @@ The script currently runs tests in this order:
 
 1. `tests/small`
 2. `tests/big`
-3. `./GOSRC` (or, if `$GOSRC` is non-null and points to a directory, `$GOSRC`)
+3. `./GOSRC` (if it exists; or, if `$GOSRC` is non-null and points to a directory, `$GOSRC`)
 
 After each test it runs, it uses `git diff` to compare the resulting `.gold` file with the checked-out version and, if there are any differences, it runs the command specified via `--on-error` (again, the default is `exit 99`, so the script will exit as soon as it sees a failing test).
 
@@ -317,12 +317,13 @@ remote: Counting objects: 100% (8/8), done.
 remote: Compressing objects: 100% (4/4), done.
 remote: Total 6 (delta 4), reused 4 (delta 2), pack-reused 0
 Unpacking objects: 100% (6/6), done.
-From github.com:jcburley/gostd2joker
-   5cfed10..3c00773  master     -> origin/master
-Updating 5cfed10..3c00773
+From github.com:jcburley/joker
+   2f356e5..b643457  gostd      -> origin/gostd
+Updating 2f356e5..b643457
 Fast-forward
- README.md | 63 +++++++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ tools/_gostd/main.go | 8 ++++++--
+ tools/_gostd/test.sh | 6 +++---
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 No changes to amd64-darwin test results.
 $
 ```
@@ -333,7 +334,7 @@ If there are changes to the test results, they'll be displayed (via `git diff`),
 
 ```
 Accept and update amd64-darwin test results? y
-[master 5cfed10] Update amd64-darwin tests
+[gostd 5cfed10] Update amd64-darwin tests
  3 files changed, 200 insertions(+), 200 deletions(-)
 Counting objects: 8, done.
 Delta compression using up to 8 threads.
@@ -341,7 +342,7 @@ Compressing objects: 100% (8/8), done.
 Writing objects: 100% (8/8), 3.90 KiB | 266.00 KiB/s, done.
 Total 8 (delta 4), reused 0 (delta 0)
 remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
-To github.com:candid82/gostd
+To github.com:jcburley/joker
    339fbba..5cfed10  master -> master
 $
 ```
