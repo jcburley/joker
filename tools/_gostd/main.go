@@ -483,6 +483,12 @@ func argsAsGo(p *FieldList) string {
    snippets of code, relating to one particular aspect of the input,
    relate to each other, because the code will be in the same place.
 
+   Further, it should be easier to make and track decisions (such as
+   what will be the names of temporary variables) by doing it in one
+   place, rather than having to make a "decision pass" first, memoize
+   the results, and pass them around to the various transformation
+   routines.
+
    However, I'm concerned that the resulting code will be too
    complicated for that to be sufficiently helpful. If I was
    proficient in a constraint/unification-based transformation
