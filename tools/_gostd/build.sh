@@ -5,4 +5,4 @@
 # variables. (That's why joker's run.sh file does not vet everything
 # in its entire directory tree.)
 
-go vet -all -shadow=true && go build && ./test.sh
+go vet -all -shadow=true && go build && ./test.sh --on-error :
