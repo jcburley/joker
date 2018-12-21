@@ -56,22 +56,34 @@ func unix(p string) string {
 	return filepath.ToSlash(p)
 }
 
-func commentGroupInQuotes(doc *CommentGroup, jok, gol string) string {
+func commentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {
 	var d string
 	if doc != nil {
 		d = doc.Text()
 	}
-	if gol != "" {
+	if goIn != "" {
 		if d != "" {
 			d = strings.Trim(d, " \t\n") + "\n\n"
 		}
-		d += "Go return type: " + gol
+		d += "Go input arguments: " + goIn
 	}
-	if jok != "" {
+	if goOut != "" {
 		if d != "" {
 			d = strings.Trim(d, " \t\n") + "\n\n"
 		}
-		d += "Joker return type: " + jok
+		d += "Go return type: " + goOut
+	}
+	if jokIn != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker input arguments: " + jokIn
+	}
+	if jokOut != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker return type: " + jokOut
 	}
 	return `  ` + strings.Trim(strconv.Quote(d), " \t\n") + "\n"
 }
@@ -752,16 +764,40 @@ func sortedCodeMap(m codeInfo, f func(k string, v string)) {
 
 var nonEmptyLineRegexp *regexp.Regexp
 
+/*
+   (defn <jokerReturnType> <godecl.Name>
+     <docstring>
+     {:added "1.0"
+      :go "<jok2golcall>"}                ; jok2golcall := <conversion?>(<jok2gol>+<jokerGoParams>)
+     [jokerParamList])                    ; jokerParamList
+
+   func <goFname>(<goParamList>) <goReturnType> {  // goParamList
+           <goCode>                                // goCode := <goPreCode>+"\t"+<goResultAssign>+"_"+pkg+"."+<godecl.Name>+"("+<goParams>+")\n"+<goPostCode>
+   }
+
+ */
+
 type funcCode struct {
-	jokerParamList        string // fieldListAsClojure(d.Type.Params)
-	goParamList           string // paramListAsGo(d.Type.Params)
-	jokerGoParams         string // "(" + fieldListToGo(d.Type.Params) + ")"
+	jokerParamList        string
+	jokerParamListDoc     string
+	goParamList           string
+	goParamListDoc        string
+	jokerGoParams         string
 	goCode                string
-	jokerReturnTypeForDoc string // genReturnType(pkg, d.Type.Results)
-	goReturnTypeForDoc    string // genReturnType(pkg, d.Type.Results)
+	jokerReturnTypeForDoc string
+	goReturnTypeForDoc    string
 }
 
-func genTypePre(e Expr) (clType, goType string) {
+func genGoPreArray(indent string, el Expr) (clType, clTypeDoc, goType, goTypeDoc string) {
+	clType, clTypeDoc, goType, goTypeDoc = genTypePre(indent, el)
+	clType = ""
+	clTypeDoc = "(vector-of " + clTypeDoc + ")"
+	goType = "[]" + goType
+	goTypeDoc = goType
+	return
+}
+
+func genTypePre(indent string, e Expr) (clType, clTypeDoc, goType, goTypeDoc string) {
 	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	switch v := e.(type) {
@@ -781,28 +817,28 @@ func genTypePre(e Expr) (clType, goType string) {
 		default:
 			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
 		}
+		clTypeDoc = clType
+		goTypeDoc = goType
+	case *ArrayType:
+//		clType, clTypeDoc, goType, goTypeDoc = genGoPreArray(indent, v.Elt)
+	case *StarExpr:
+	case *SelectorExpr:
+	case *Ellipsis:
+	case *FuncType:
+	case *InterfaceType:
+	case *MapType:
+	case *ChanType:
 	}
 	return
 }
 
-/*
-   (defn <jokerReturnType> <godecl.Name>
-     <docstring>
-     {:added "1.0"
-      :go "<jok2golcall>"}                ; jok2golcall := <conversion?>(<jok2gol>+<jokerGoParams>)
-     [jokerParamList])                    ; jokerParamList
-
-   func <goFname>(<goParamList>) <goReturnType> {  // goParamList
-           <goCode>                                // goCode := <goPreCode>+"\t"+<goResultAssign>+"_"+pkg+"."+<godecl.Name>+"("+<goParams>+")\n"+<goPostCode>
-   }
-
- */
-func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jokerGoParams, goParamList, goPreCode, goParams string) {
+func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jokerParamListDoc,
+	jokerGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
 	if fl == nil {
 		return
 	}
 	for _, f := range fl.List {
-		clType, goType := genTypePre(f.Type)
+		clType, clTypeDoc, goType, goTypeDoc := genTypePre(indent, f.Type)
 		for _, p := range f.Names {
 			if jokerParamList != "" {
 				jokerParamList += ", "
@@ -811,6 +847,14 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 				jokerParamList += "^" + clType + " "
 			}
 			jokerParamList += "_" + paramNameAsClojure(p.Name)
+
+			if jokerParamListDoc != "" {
+				jokerParamListDoc += ", "
+			}
+			if clTypeDoc != "" {
+				jokerParamListDoc += "^" + clTypeDoc + " "
+			}
+			jokerParamListDoc += paramNameAsClojure(p.Name)
 
 			if jokerGoParams != "" {
 				jokerGoParams += ", "
@@ -823,6 +867,14 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 			goParamList += paramNameAsGo(p.Name)
 			if goType != "" {
 				goParamList += " " + goType
+			}
+
+			if goParamListDoc != "" {
+				goParamListDoc += ", "
+			}
+			goParamListDoc += paramNameAsGo(p.Name)
+			if goTypeDoc != "" {
+				goParamListDoc += " " + goTypeDoc
 			}
 
 			if goParams != "" {
@@ -851,7 +903,7 @@ func genGoPost(indent string, pkg string, d *FuncDecl) (goResultAssign, jokerRet
 func genFuncCode(pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
-	fc.jokerParamList, fc.jokerGoParams, fc.goParamList, goPreCode, goParams =
+	fc.jokerParamList, fc.jokerParamListDoc, fc.jokerGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
 		genGoPre("\t", d.Type.Params, goFname)
 	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
 	goResultAssign, fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode =
@@ -977,7 +1029,8 @@ func genFunction(f string, fn *funcInfo) {
 	jok2golCall := maybeConvertGoResult(pkgDirUnix, jok2gol+fc.jokerGoParams, fn.fd.Type.Results)
 
 	jokerFn := fmt.Sprintf(jfmt, jokerReturnType, d.Name.Name,
-		commentGroupInQuotes(d.Doc, fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc),
+		commentGroupInQuotes(d.Doc, fc.jokerParamListDoc, fc.jokerReturnTypeForDoc,
+			fc.goParamListDoc, fc.goReturnTypeForDoc),
 		jok2golCall, fc.jokerParamList)
 
 	gfmt := `
