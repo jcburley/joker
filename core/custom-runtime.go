@@ -9,13 +9,13 @@ func ConvertToArrayOfByte(o Object) []byte {
 	case String:
 		return []byte(obj.S)
 	case *Vector:
-		by := make([]byte, obj.Count())
+		vec := make([]byte, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
 			if val, ok := el.(Int); ok {
 				b := val.I
 				if b >= 0 && b <= 255 {
-					by[i] = byte(b)
+					vec[i] = byte(b)
 				} else {
 					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Byte: %s", i, b, obj.ToString(false))))
 				}
@@ -23,29 +23,50 @@ func ConvertToArrayOfByte(o Object) []byte {
 				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Byte: %s", i, el.ToString(true))))
 			}
 		}
-		return by
+		return vec
 	default:
 		panic(RT.NewError(fmt.Sprintf("Not convertible to array of Byte: %s", obj.ToString(true))))
 	}
 }
 
 func ConvertToArrayOfInt(o Object) []int {
-	switch o.(type) {
+	switch obj := o.(type) {
 	case *Vector:
-		return []int{123, 456}
+		vec := make([]int, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(Int); ok {
+				v := val.I
+				if v >= MIN_INT && v <= MAX_INT {
+					vec[i] = v
+				} else {
+					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Int: %s", i, v, obj.ToString(false))))
+				}
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Int: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
 	default:
-		return []int{789, 101112}
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of Int: %s", obj.ToString(true))))
 	}
 }
 
 func ConvertToArrayOfString(o Object) []string {
-	switch o.(type) {
+	switch obj := o.(type) {
 	case *Vector:
+		vec := make([]string, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(String); ok {
+				v := val.S
+				vec[i] = v
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to String: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
 	default:
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of String: %s", obj.ToString(true))))
 	}
-	return []string{"NOT", "YET"}
-}
-
-func ConvertToArrayOfObject(o Object) []Object {
-	return []Object{}
 }
