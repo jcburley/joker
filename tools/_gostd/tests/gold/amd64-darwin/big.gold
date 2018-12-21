@@ -556,84 +556,84 @@ TYPE net/url.Values:
   tests/big/src/net/url/url.go
 JOKER FUNC net.CIDRMask has:
 (defn CIDRMask
-  "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo return type: IPMask\n\nJoker return type: (vector-of Int)"
+  "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: ones int, bits int\n\nGo return type: IPMask\n\nJoker input arguments: ^Int ones, ^Int bits\n\nJoker return type: (vector-of Int)"
   {:added "1.0"
    :go "cIDRMask(_ones, _bits)"}
   [^Int _ones, ^Int _bits])
 
 JOKER FUNC net.Dial has:
 ;; (defn Dial
-;;   "Dial connects to the address on the named network.\n\nKnown networks are \"tcp\", \"tcp4\" (IPv4-only), \"tcp6\" (IPv6-only),\n\"udp\", \"udp4\" (IPv4-only), \"udp6\" (IPv6-only), \"ip\", \"ip4\"\n(IPv4-only), \"ip6\" (IPv6-only), \"unix\", \"unixgram\" and\n\"unixpacket\".\n\nFor TCP and UDP networks, the address has the form \"host:port\".\nThe host must be a literal IP address, or a host name that can be\nresolved to IP addresses.\nThe port must be a literal port number or a service name.\nIf the host is a literal IPv6 address it must be enclosed in square\nbrackets, as in \"[2001:db8::1]:80\" or \"[fe80::1%zone]:80\".\nThe zone specifies the scope of the literal IPv6 address as defined\nin RFC 4007.\nThe functions JoinHostPort and SplitHostPort manipulate a pair of\nhost and port in this form.\nWhen using TCP, and the host resolves to multiple IP addresses,\nDial will try each IP address in order until one succeeds.\n\nExamples:\n\tDial(\"tcp\", \"golang.org:http\")\n\tDial(\"tcp\", \"192.0.2.1:http\")\n\tDial(\"tcp\", \"198.51.100.1:80\")\n\tDial(\"udp\", \"[2001:db8::1]:domain\")\n\tDial(\"udp\", \"[fe80::1%lo0]:53\")\n\tDial(\"tcp\", \":80\")\n\nFor IP networks, the network must be \"ip\", \"ip4\" or \"ip6\" followed\nby a colon and a literal protocol number or a protocol name, and\nthe address has the form \"host\". The host must be a literal IP\naddress or a literal IPv6 address with zone.\nIt depends on each operating system how the operating system\nbehaves with a non-well known protocol number such as \"0\" or \"255\".\n\nExamples:\n\tDial(\"ip4:1\", \"192.0.2.1\")\n\tDial(\"ip6:ipv6-icmp\", \"2001:db8::1\")\n\tDial(\"ip6:58\", \"fe80::1%lo0\")\n\nFor TCP, UDP and IP networks, if the host is empty or a literal\nunspecified IP address, as in \":80\", \"0.0.0.0:80\" or \"[::]:80\" for\nTCP and UDP, \"\", \"0.0.0.0\" or \"::\" for IP, the local system is\nassumed.\n\nFor Unix networks, the address must be a file system path.\n\nGo return type: (Conn, error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
+;;   "Dial connects to the address on the named network.\n\nKnown networks are \"tcp\", \"tcp4\" (IPv4-only), \"tcp6\" (IPv6-only),\n\"udp\", \"udp4\" (IPv4-only), \"udp6\" (IPv6-only), \"ip\", \"ip4\"\n(IPv4-only), \"ip6\" (IPv6-only), \"unix\", \"unixgram\" and\n\"unixpacket\".\n\nFor TCP and UDP networks, the address has the form \"host:port\".\nThe host must be a literal IP address, or a host name that can be\nresolved to IP addresses.\nThe port must be a literal port number or a service name.\nIf the host is a literal IPv6 address it must be enclosed in square\nbrackets, as in \"[2001:db8::1]:80\" or \"[fe80::1%zone]:80\".\nThe zone specifies the scope of the literal IPv6 address as defined\nin RFC 4007.\nThe functions JoinHostPort and SplitHostPort manipulate a pair of\nhost and port in this form.\nWhen using TCP, and the host resolves to multiple IP addresses,\nDial will try each IP address in order until one succeeds.\n\nExamples:\n\tDial(\"tcp\", \"golang.org:http\")\n\tDial(\"tcp\", \"192.0.2.1:http\")\n\tDial(\"tcp\", \"198.51.100.1:80\")\n\tDial(\"udp\", \"[2001:db8::1]:domain\")\n\tDial(\"udp\", \"[fe80::1%lo0]:53\")\n\tDial(\"tcp\", \":80\")\n\nFor IP networks, the network must be \"ip\", \"ip4\" or \"ip6\" followed\nby a colon and a literal protocol number or a protocol name, and\nthe address has the form \"host\". The host must be a literal IP\naddress or a literal IPv6 address with zone.\nIt depends on each operating system how the operating system\nbehaves with a non-well known protocol number such as \"0\" or \"255\".\n\nExamples:\n\tDial(\"ip4:1\", \"192.0.2.1\")\n\tDial(\"ip6:ipv6-icmp\", \"2001:db8::1\")\n\tDial(\"ip6:58\", \"fe80::1%lo0\")\n\nFor TCP, UDP and IP networks, if the host is empty or a literal\nunspecified IP address, as in \":80\", \"0.0.0.0:80\" or \"[::]:80\" for\nTCP and UDP, \"\", \"0.0.0.0\" or \"::\" for IP, the local system is\nassumed.\n\nFor Unix networks, the address must be a file system path.\n\nGo input arguments: network string, address string\n\nGo return type: (Conn, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
 ;;   {:added "1.0"
 ;;    :go "dial(_network, _address)"}
 ;;   [^String _network, ^String _address])
 
 JOKER FUNC net.DialIP has:
 ;; (defn DialIP
-;;   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo return type: (*IPConn, error)\n\nJoker return type: [{} Error]"
+;;   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: network string, laddr, raddr\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: ^String network, laddr, raddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "dialIP(_network, _laddr, _raddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/iprawsock.go:211:42) _laddr, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/iprawsock.go:211:42) _raddr])
 
 JOKER FUNC net.DialTCP has:
 ;; (defn DialTCP
-;;   "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo return type: (*TCPConn, error)\n\nJoker return type: [{} Error]"
+;;   "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: network string, laddr, raddr\n\nGo return type: (*TCPConn, error)\n\nJoker input arguments: ^String network, laddr, raddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "dialTCP(_network, _laddr, _raddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/tcpsock.go:206:43) _laddr, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/tcpsock.go:206:43) _raddr])
 
 JOKER FUNC net.DialTimeout has:
 ;; (defn DialTimeout
-;;   "DialTimeout acts like Dial but takes a timeout.\n\nThe timeout includes name resolution, if required.\nWhen using TCP, and the host in the address parameter resolves to\nmultiple IP addresses, the timeout is spread over each consecutive\ndial, such that each is given an appropriate fraction of the time\nto connect.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (Conn, error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
+;;   "DialTimeout acts like Dial but takes a timeout.\n\nThe timeout includes name resolution, if required.\nWhen using TCP, and the host in the address parameter resolves to\nmultiple IP addresses, the timeout is spread over each consecutive\ndial, such that each is given an appropriate fraction of the time\nto connect.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string, timeout\n\nGo return type: (Conn, error)\n\nJoker input arguments: ^String network, ^String address, timeout\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
 ;;   {:added "1.0"
 ;;    :go "dialTimeout(_network, _address, _timeout)"}
 ;;   [^String _network, ^String _address, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/dial.go:313:51) _timeout])
 
 JOKER FUNC net.DialUDP has:
 ;; (defn DialUDP
-;;   "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo return type: (*UDPConn, error)\n\nJoker return type: [{} Error]"
+;;   "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: network string, laddr, raddr\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: ^String network, laddr, raddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "dialUDP(_network, _laddr, _raddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/udpsock.go:205:43) _laddr, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/udpsock.go:205:43) _raddr])
 
 JOKER FUNC net.DialUnix has:
 ;; (defn DialUnix
-;;   "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo return type: (*UnixConn, error)\n\nJoker return type: [{} Error]"
+;;   "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: network string, laddr, raddr\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: ^String network, laddr, raddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "dialUnix(_network, _laddr, _raddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/unixsock.go:200:44) _laddr, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/unixsock.go:200:44) _raddr])
 
 JOKER FUNC net.FileConn has:
 ;; (defn FileConn
-;;   "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo return type: (c Conn, err error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
+;;   "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: f\n\nGo return type: (c Conn, err error)\n\nJoker input arguments: f\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:113:11) Error]"
 ;;   {:added "1.0"
 ;;    :go "fileConn(_f)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/file.go:21:17) _f])
 
 JOKER FUNC net.FileListener has:
 ;; (defn FileListener
-;;   "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo return type: (ln Listener, err error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:365:15) Error]"
+;;   "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: f\n\nGo return type: (ln Listener, err error)\n\nJoker input arguments: f\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:365:15) Error]"
 ;;   {:added "1.0"
 ;;    :go "fileListener(_f)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/file.go:33:21) _f])
 
 JOKER FUNC net.FilePacketConn has:
 ;; (defn FilePacketConn
-;;   "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo return type: (c PacketConn, err error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:303:17) Error]"
+;;   "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: f\n\nGo return type: (c PacketConn, err error)\n\nJoker input arguments: f\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:303:17) Error]"
 ;;   {:added "1.0"
 ;;    :go "filePacketConn(_f)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/file.go:45:23) _f])
 
 JOKER FUNC net.IPv4 has:
 (defn IPv4
-  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo return type: IP\n\nJoker return type: (vector-of Int)"
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: a byte, b byte, c byte, d byte\n\nGo return type: IP\n\nJoker input arguments: ^Byte a, ^Byte b, ^Byte c, ^Byte d\n\nJoker return type: (vector-of Int)"
   {:added "1.0"
    :go "iPv4(_a, _b, _c, _d)"}
   [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
 
 JOKER FUNC net.IPv4Mask has:
 (defn IPv4Mask
-  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo return type: IPMask\n\nJoker return type: (vector-of Int)"
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: a byte, b byte, c byte, d byte\n\nGo return type: IPMask\n\nJoker input arguments: ^Byte a, ^Byte b, ^Byte c, ^Byte d\n\nJoker return type: (vector-of Int)"
   {:added "1.0"
    :go "iPv4Mask(_a, _b, _c, _d)"}
   [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
@@ -647,14 +647,14 @@ JOKER FUNC net.InterfaceAddrs has:
 
 JOKER FUNC net.InterfaceByIndex has:
 (defn InterfaceByIndex
-  "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo return type: (*Interface, error)\n\nJoker return type: [{:Index ^Int, :MTU ^Int, :Name ^String, :HardwareAddr ^(vector-of Int), :Flags ^Int} Error]"
+  "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo input arguments: index int\n\nGo return type: (*Interface, error)\n\nJoker input arguments: ^Int index\n\nJoker return type: [{:Index ^Int, :MTU ^Int, :Name ^String, :HardwareAddr ^(vector-of Int), :Flags ^Int} Error]"
   {:added "1.0"
    :go "interfaceByIndex(_index)"}
   [^Int _index])
 
 JOKER FUNC net.InterfaceByName has:
 (defn InterfaceByName
-  "InterfaceByName returns the interface specified by name.\n\nGo return type: (*Interface, error)\n\nJoker return type: [{:Index ^Int, :MTU ^Int, :Name ^String, :HardwareAddr ^(vector-of Int), :Flags ^Int} Error]"
+  "InterfaceByName returns the interface specified by name.\n\nGo input arguments: name string\n\nGo return type: (*Interface, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [{:Index ^Int, :MTU ^Int, :Name ^String, :HardwareAddr ^(vector-of Int), :Flags ^Int} Error]"
   {:added "1.0"
    :go "interfaceByName(_name)"}
   [^String _name])
@@ -668,147 +668,147 @@ JOKER FUNC net.Interfaces has:
 
 JOKER FUNC net.JoinHostPort has:
 (defn ^"String" JoinHostPort
-  "JoinHostPort combines host and port into a network address of the\nform \"host:port\". If host contains a colon, as found in literal\nIPv6 addresses, then JoinHostPort returns \"[host]:port\".\n\nSee func Dial for a description of the host and port parameters.\n\nGo return type: string\n\nJoker return type: String"
+  "JoinHostPort combines host and port into a network address of the\nform \"host:port\". If host contains a colon, as found in literal\nIPv6 addresses, then JoinHostPort returns \"[host]:port\".\n\nSee func Dial for a description of the host and port parameters.\n\nGo input arguments: host string, port string\n\nGo return type: string\n\nJoker input arguments: ^String host, ^String port\n\nJoker return type: String"
   {:added "1.0"
    :go "net.JoinHostPort(_host, _port)"}
   [^String _host, ^String _port])
 
 JOKER FUNC net.Listen has:
 ;; (defn Listen
-;;   "Listen announces on the local network address.\n\nThe network must be \"tcp\", \"tcp4\", \"tcp6\", \"unix\" or \"unixpacket\".\n\nFor TCP networks, if the host in the address parameter is empty or\na literal unspecified IP address, Listen listens on all available\nunicast and anycast IP addresses of the local system.\nTo only use IPv4, use network \"tcp4\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe Addr method of Listener can be used to discover the chosen\nport.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (Listener, error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:365:15) Error]"
+;;   "Listen announces on the local network address.\n\nThe network must be \"tcp\", \"tcp4\", \"tcp6\", \"unix\" or \"unixpacket\".\n\nFor TCP networks, if the host in the address parameter is empty or\na literal unspecified IP address, Listen listens on all available\nunicast and anycast IP addresses of the local system.\nTo only use IPv4, use network \"tcp4\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe Addr method of Listener can be used to discover the chosen\nport.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (Listener, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:365:15) Error]"
 ;;   {:added "1.0"
 ;;    :go "listen(_network, _address)"}
 ;;   [^String _network, ^String _address])
 
 JOKER FUNC net.ListenIP has:
 ;; (defn ListenIP
-;;   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo return type: (*IPConn, error)\n\nJoker return type: [{} Error]"
+;;   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: network string, laddr\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: ^String network, laddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenIP(_network, _laddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/iprawsock.go:230:37) _laddr])
 
 JOKER FUNC net.ListenMulticastUDP has:
 ;; (defn ListenMulticastUDP
-;;   "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo return type: (*UDPConn, error)\n\nJoker return type: [{} Error]"
+;;   "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: network string, ifi, gaddr\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: ^String network, ifi, gaddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenMulticastUDP(_network, _ifi, _gaddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/udpsock.go:265:45) _ifi, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/udpsock.go:265:63) _gaddr])
 
 JOKER FUNC net.ListenPacket has:
 ;; (defn ListenPacket
-;;   "ListenPacket announces on the local network address.\n\nThe network must be \"udp\", \"udp4\", \"udp6\", \"unixgram\", or an IP\ntransport. The IP transports are \"ip\", \"ip4\", or \"ip6\" followed by\na colon and a literal protocol number or a protocol name, as in\n\"ip:1\" or \"ip:icmp\".\n\nFor UDP and IP networks, if the host in the address parameter is\nempty or a literal unspecified IP address, ListenPacket listens on\nall available IP addresses of the local system except multicast IP\naddresses.\nTo only use IPv4, use network \"udp4\" or \"ip4:proto\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe LocalAddr method of PacketConn can be used to discover the\nchosen port.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (PacketConn, error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:303:17) Error]"
+;;   "ListenPacket announces on the local network address.\n\nThe network must be \"udp\", \"udp4\", \"udp6\", \"unixgram\", or an IP\ntransport. The IP transports are \"ip\", \"ip4\", or \"ip6\" followed by\na colon and a literal protocol number or a protocol name, as in\n\"ip:1\" or \"ip:icmp\".\n\nFor UDP and IP networks, if the host in the address parameter is\nempty or a literal unspecified IP address, ListenPacket listens on\nall available IP addresses of the local system except multicast IP\naddresses.\nTo only use IPv4, use network \"udp4\" or \"ip4:proto\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe LocalAddr method of PacketConn can be used to discover the\nchosen port.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (PacketConn, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/net.go:303:17) Error]"
 ;;   {:added "1.0"
 ;;    :go "listenPacket(_network, _address)"}
 ;;   [^String _network, ^String _address])
 
 JOKER FUNC net.ListenTCP has:
 ;; (defn ListenTCP
-;;   "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo return type: (*TCPListener, error)\n\nJoker return type: [{} Error]"
+;;   "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: network string, laddr\n\nGo return type: (*TCPListener, error)\n\nJoker input arguments: ^String network, laddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenTCP(_network, _laddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/tcpsock.go:323:38) _laddr])
 
 JOKER FUNC net.ListenUDP has:
 ;; (defn ListenUDP
-;;   "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo return type: (*UDPConn, error)\n\nJoker return type: [{} Error]"
+;;   "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: network string, laddr\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: ^String network, laddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenUDP(_network, _laddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/udpsock.go:231:38) _laddr])
 
 JOKER FUNC net.ListenUnix has:
 ;; (defn ListenUnix
-;;   "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo return type: (*UnixListener, error)\n\nJoker return type: [{} Error]"
+;;   "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: network string, laddr\n\nGo return type: (*UnixListener, error)\n\nJoker input arguments: ^String network, laddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenUnix(_network, _laddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/unixsock.go:314:39) _laddr])
 
 JOKER FUNC net.ListenUnixgram has:
 ;; (defn ListenUnixgram
-;;   "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo return type: (*UnixConn, error)\n\nJoker return type: [{} Error]"
+;;   "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: network string, laddr\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: ^String network, laddr\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "listenUnixgram(_network, _laddr)"}
 ;;   [^String _network, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/unixsock.go:334:43) _laddr])
 
 JOKER FUNC net.LookupAddr has:
 (defn LookupAddr
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo return type: (names []string, err error)\n\nJoker return type: [(vector-of String) Error]"
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: addr string\n\nGo return type: (names []string, err error)\n\nJoker input arguments: ^String addr\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupAddr(_addr)"}
   [^String _addr])
 
 JOKER FUNC net.LookupCNAME has:
 (defn LookupCNAME
-  "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo return type: (cname string, err error)\n\nJoker return type: [String Error]"
+  "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: host string\n\nGo return type: (cname string, err error)\n\nJoker input arguments: ^String host\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "lookupCNAME(_host)"}
   [^String _host])
 
 JOKER FUNC net.LookupHost has:
 (defn LookupHost
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo return type: (addrs []string, err error)\n\nJoker return type: [(vector-of String) Error]"
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: host string\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: ^String host\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupHost(_host)"}
   [^String _host])
 
 JOKER FUNC net.LookupIP has:
 (defn LookupIP
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo return type: ([]IP, error)\n\nJoker return type: [(vector-of (vector-of Int)) Error]"
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: host string\n\nGo return type: ([]IP, error)\n\nJoker input arguments: ^String host\n\nJoker return type: [(vector-of (vector-of Int)) Error]"
   {:added "1.0"
    :go "lookupIP(_host)"}
   [^String _host])
 
 JOKER FUNC net.LookupMX has:
 (defn LookupMX
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo return type: ([]*MX, error)\n\nJoker return type: [(vector-of {:Host ^String, :Pref ^Int}) Error]"
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: name string\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of {:Host ^String, :Pref ^Int}) Error]"
   {:added "1.0"
    :go "lookupMX(_name)"}
   [^String _name])
 
 JOKER FUNC net.LookupNS has:
 (defn LookupNS
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo return type: ([]*NS, error)\n\nJoker return type: [(vector-of {:Host ^String}) Error]"
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: name string\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of {:Host ^String}) Error]"
   {:added "1.0"
    :go "lookupNS(_name)"}
   [^String _name])
 
 JOKER FUNC net.LookupPort has:
 (defn LookupPort
-  "LookupPort looks up the port for the given network and service.\n\nGo return type: (port int, err error)\n\nJoker return type: [Int Error]"
+  "LookupPort looks up the port for the given network and service.\n\nGo input arguments: network string, service string\n\nGo return type: (port int, err error)\n\nJoker input arguments: ^String network, ^String service\n\nJoker return type: [Int Error]"
   {:added "1.0"
    :go "lookupPort(_network, _service)"}
   [^String _network, ^String _service])
 
 JOKER FUNC net.LookupSRV has:
 (defn LookupSRV
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker return type: [String (vector-of {:Target ^String, :Port ^Int, :Priority ^Int, :Weight ^Int}) Error]"
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: service string, proto string, name string\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: ^String service, ^String proto, ^String name\n\nJoker return type: [String (vector-of {:Target ^String, :Port ^Int, :Priority ^Int, :Weight ^Int}) Error]"
   {:added "1.0"
    :go "lookupSRV(_service, _proto, _name)"}
   [^String _service, ^String _proto, ^String _name])
 
 JOKER FUNC net.LookupTXT has:
 (defn LookupTXT
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo return type: ([]string, error)\n\nJoker return type: [(vector-of String) Error]"
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: name string\n\nGo return type: ([]string, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupTXT(_name)"}
   [^String _name])
 
 JOKER FUNC net.ParseCIDR has:
 (defn ParseCIDR
-  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo return type: (IP, *IPNet, error)\n\nJoker return type: [(vector-of Int) {:IP ^(vector-of Int), :Mask ^(vector-of Int)} Error]"
+  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: s string\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: ^String s\n\nJoker return type: [(vector-of Int) {:IP ^(vector-of Int), :Mask ^(vector-of Int)} Error]"
   {:added "1.0"
    :go "parseCIDR(_s)"}
   [^String _s])
 
 JOKER FUNC net.ParseIP has:
 (defn ParseIP
-  "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo return type: IP\n\nJoker return type: (vector-of Int)"
+  "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: s string\n\nGo return type: IP\n\nJoker input arguments: ^String s\n\nJoker return type: (vector-of Int)"
   {:added "1.0"
    :go "parseIP(_s)"}
   [^String _s])
 
 JOKER FUNC net.ParseMAC has:
 (defn ParseMAC
-  "ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet\nIP over InfiniBand link-layer address using one of the following formats:\n  01:23:45:67:89:ab\n  01:23:45:67:89:ab:cd:ef\n  01:23:45:67:89:ab:cd:ef:00:00:01:23:45:67:89:ab:cd:ef:00:00\n  01-23-45-67-89-ab\n  01-23-45-67-89-ab-cd-ef\n  01-23-45-67-89-ab-cd-ef-00-00-01-23-45-67-89-ab-cd-ef-00-00\n  0123.4567.89ab\n  0123.4567.89ab.cdef\n  0123.4567.89ab.cdef.0000.0123.4567.89ab.cdef.0000\n\nGo return type: (hw HardwareAddr, err error)\n\nJoker return type: [(vector-of Int) Error]"
+  "ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet\nIP over InfiniBand link-layer address using one of the following formats:\n  01:23:45:67:89:ab\n  01:23:45:67:89:ab:cd:ef\n  01:23:45:67:89:ab:cd:ef:00:00:01:23:45:67:89:ab:cd:ef:00:00\n  01-23-45-67-89-ab\n  01-23-45-67-89-ab-cd-ef\n  01-23-45-67-89-ab-cd-ef-00-00-01-23-45-67-89-ab-cd-ef-00-00\n  0123.4567.89ab\n  0123.4567.89ab.cdef\n  0123.4567.89ab.cdef.0000.0123.4567.89ab.cdef.0000\n\nGo input arguments: s string\n\nGo return type: (hw HardwareAddr, err error)\n\nJoker input arguments: ^String s\n\nJoker return type: [(vector-of Int) Error]"
   {:added "1.0"
    :go "parseMAC(_s)"}
   [^String _s])
@@ -822,126 +822,126 @@ JOKER FUNC net.Pipe has:
 
 JOKER FUNC net.ResolveIPAddr has:
 (defn ResolveIPAddr
-  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (*IPAddr, error)\n\nJoker return type: [{:IP ^(vector-of Int), :Zone ^String} Error]"
+  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{:IP ^(vector-of Int), :Zone ^String} Error]"
   {:added "1.0"
    :go "resolveIPAddr(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveTCPAddr has:
 (defn ResolveTCPAddr
-  "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (*TCPAddr, error)\n\nJoker return type: [{:IP ^(vector-of Int), :Port ^Int, :Zone ^String} Error]"
+  "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (*TCPAddr, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{:IP ^(vector-of Int), :Port ^Int, :Zone ^String} Error]"
   {:added "1.0"
    :go "resolveTCPAddr(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveUDPAddr has:
 (defn ResolveUDPAddr
-  "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (*UDPAddr, error)\n\nJoker return type: [{:IP ^(vector-of Int), :Port ^Int, :Zone ^String} Error]"
+  "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (*UDPAddr, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{:IP ^(vector-of Int), :Port ^Int, :Zone ^String} Error]"
   {:added "1.0"
    :go "resolveUDPAddr(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveUnixAddr has:
 (defn ResolveUnixAddr
-  "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo return type: (*UnixAddr, error)\n\nJoker return type: [{:Name ^String, :Net ^String} Error]"
+  "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: network string, address string\n\nGo return type: (*UnixAddr, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{:Name ^String, :Net ^String} Error]"
   {:added "1.0"
    :go "resolveUnixAddr(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC net.SplitHostPort has:
 (defn SplitHostPort
-  "SplitHostPort splits a network address of the form \"host:port\",\n\"host%zone:port\", \"[host]:port\" or \"[host%zone]:port\" into host or\nhost%zone and port.\n\nA literal IPv6 address in hostport must be enclosed in square\nbrackets, as in \"[::1]:80\", \"[::1%lo0]:80\".\n\nSee func Dial for a description of the hostport parameter, and host\nand port results.\n\nGo return type: (host string, port string, err error)\n\nJoker return type: [String String Error]"
+  "SplitHostPort splits a network address of the form \"host:port\",\n\"host%zone:port\", \"[host]:port\" or \"[host%zone]:port\" into host or\nhost%zone and port.\n\nA literal IPv6 address in hostport must be enclosed in square\nbrackets, as in \"[::1]:80\", \"[::1%lo0]:80\".\n\nSee func Dial for a description of the hostport parameter, and host\nand port results.\n\nGo input arguments: hostport string\n\nGo return type: (host string, port string, err error)\n\nJoker input arguments: ^String hostport\n\nJoker return type: [String String Error]"
   {:added "1.0"
    :go "splitHostPort(_hostport)"}
   [^String _hostport])
 
 JOKER FUNC http.CanonicalHeaderKey has:
 (defn ^"String" CanonicalHeaderKey
-  "CanonicalHeaderKey returns the canonical format of the\nheader key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo return type: string\n\nJoker return type: String"
+  "CanonicalHeaderKey returns the canonical format of the\nheader key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: s string\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
   {:added "1.0"
    :go "http.CanonicalHeaderKey(_s)"}
   [^String _s])
 
 JOKER FUNC http.DetectContentType has:
 ;; (defn ^"String" DetectContentType
-;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo return type: string\n\nJoker return type: String"
+;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: data\n\nGo return type: string\n\nJoker input arguments: data\n\nJoker return type: String"
 ;;   {:added "1.0"
 ;;    :go "http.DetectContentType(_data)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/http/sniff.go:21:29) _data])
 
 JOKER FUNC http.Error has:
 ;; (defn Error
-;;   "Error replies to the request with the specified error message and HTTP code.\nIt does not otherwise end the request; the caller should ensure no further\nwrites are done to w.\nThe error message should be plain text.\n"
+;;   "Error replies to the request with the specified error message and HTTP code.\nIt does not otherwise end the request; the caller should ensure no further\nwrites are done to w.\nThe error message should be plain text.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1973:14), error string, code int\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1973:14) w, ^String error, ^Int code"
 ;;   {:added "1.0"
 ;;    :go "error(_w, _error, _code)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1973:14) _w, ^String _error, ^Int _code])
 
 JOKER FUNC http.FileServer has:
 ;; (defn FileServer
-;;   "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo return type: Handler\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
+;;   "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo input arguments: root ABEND884(unrecognized type FileSystem at: tests/big/src/net/http/fs.go:713:22)\n\nGo return type: Handler\n\nJoker input arguments: ^ABEND885(unrecognized type FileSystem at: tests/big/src/net/http/fs.go:713:22) root\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
 ;;    :go "fileServer(_root)"}
 ;;   [^ABEND885(unrecognized type FileSystem at: tests/big/src/net/http/fs.go:713:22) _root])
 
 JOKER FUNC http.Get has:
 ;; (defn Get
-;;   "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo return type: (resp *Response, err error)\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
+;;   "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: url string\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: ^String url\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
 ;;   {:added "1.0"
 ;;    :go "get(_url)"}
 ;;   [^String _url])
 
 JOKER FUNC http.Handle has:
 ;; (defn Handle
-;;   "Handle registers the handler for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n"
+;;   "Handle registers the handler for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: pattern string, handler ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:2401:37)\n\nJoker input arguments: ^String pattern, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2401:37) handler"
 ;;   {:added "1.0"
 ;;    :go "handle(_pattern, _handler)"}
 ;;   [^String _pattern, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2401:37) _handler])
 
 JOKER FUNC http.HandleFunc has:
 ;; (defn HandleFunc
-;;   "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n"
+;;   "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: pattern string, handler\n\nJoker input arguments: ^String pattern, handler"
 ;;   {:added "1.0"
 ;;    :go "handleFunc(_pattern, _handler)"}
 ;;   [^String _pattern, ^ABEND881(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/server.go:2406:41) _handler])
 
 JOKER FUNC http.Head has:
 ;; (defn Head
-;;   "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo return type: (resp *Response, err error)\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
+;;   "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: url string\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: ^String url\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
 ;;   {:added "1.0"
 ;;    :go "head(_url)"}
 ;;   [^String _url])
 
 JOKER FUNC http.ListenAndServe has:
 ;; (defn ^"Error" ListenAndServe
-;;   "ListenAndServe listens on the TCP network address addr and then calls\nServe with handler to handle requests on incoming connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nListenAndServe always returns a non-nil error.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "ListenAndServe listens on the TCP network address addr and then calls\nServe with handler to handle requests on incoming connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nListenAndServe always returns a non-nil error.\n\nGo input arguments: addr string, handler ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:3002:42)\n\nGo return type: error\n\nJoker input arguments: ^String addr, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3002:42) handler\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.ListenAndServe(_addr, _handler)"}
 ;;   [^String _addr, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3002:42) _handler])
 
 JOKER FUNC http.ListenAndServeTLS has:
 ;; (defn ^"Error" ListenAndServeTLS
-;;   "ListenAndServeTLS acts identically to ListenAndServe, except that it\nexpects HTTPS connections. Additionally, files containing a certificate and\nmatching private key for the server must be provided. If the certificate\nis signed by a certificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "ListenAndServeTLS acts identically to ListenAndServe, except that it\nexpects HTTPS connections. Additionally, files containing a certificate and\nmatching private key for the server must be provided. If the certificate\nis signed by a certificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nGo input arguments: addr string, certFile string, keyFile string, handler ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:3012:64)\n\nGo return type: error\n\nJoker input arguments: ^String addr, ^String certFile, ^String keyFile, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3012:64) handler\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.ListenAndServeTLS(_addr, _certFile, _keyFile, _handler)"}
 ;;   [^String _addr, ^String _certFile, ^String _keyFile, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3012:64) _handler])
 
 JOKER FUNC http.MaxBytesReader has:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:1056:65)"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/request.go:1056:23), r, n int64\n\nGo return type: ...\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/request.go:1056:23) w, r, ^ABEND885(unrecognized type int64 at: tests/big/src/net/http/request.go:1056:58) n\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:1056:65)"
 ;;   {:added "1.0"
 ;;    :go "maxBytesReader(_w, _r, _n)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/request.go:1056:23) _w, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:1056:41) _r, ^ABEND885(unrecognized type int64 at: tests/big/src/net/http/request.go:1056:58) _n])
 
 JOKER FUNC http.NewFileTransport has:
 ;; (defn NewFileTransport
-;;   "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo return type: RoundTripper\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/client.go:115:19)"
+;;   "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo input arguments: fs ABEND884(unrecognized type FileSystem at: tests/big/src/net/http/filetransport.go:30:26)\n\nGo return type: RoundTripper\n\nJoker input arguments: ^ABEND885(unrecognized type FileSystem at: tests/big/src/net/http/filetransport.go:30:26) fs\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/client.go:115:19)"
 ;;   {:added "1.0"
 ;;    :go "newFileTransport(_fs)"}
 ;;   [^ABEND885(unrecognized type FileSystem at: tests/big/src/net/http/filetransport.go:30:26) _fs])
 
 JOKER FUNC http.NewRequest has:
 ;; (defn NewRequest
-;;   "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo return type: (*Request, error)\n\nJoker return type: [{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)}} Error]"
+;;   "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo input arguments: method string, url string, body\n\nGo return type: (*Request, error)\n\nJoker input arguments: ^String method, ^String url, body\n\nJoker return type: [{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)}} Error]"
 ;;   {:added "1.0"
 ;;    :go "newRequest(_method, _url, _body)"}
 ;;   [^String _method, ^String _url, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:792:42) _body])
@@ -955,7 +955,7 @@ JOKER FUNC http.NewServeMux has:
 
 JOKER FUNC http.NotFound has:
 ;; (defn NotFound
-;;   "NotFound replies to the request with an HTTP 404 not found error.\n"
+;;   "NotFound replies to the request with an HTTP 404 not found error.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1981:17), r\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1981:17) w, r"
 ;;   {:added "1.0"
 ;;    :go "notFound(_w, _r)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:1981:17) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/server.go:1981:35) _r])
@@ -969,126 +969,126 @@ JOKER FUNC http.NotFoundHandler has:
 
 JOKER FUNC http.ParseHTTPVersion has:
 (defn ParseHTTPVersion
-  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo return type: (major int, minor int, ok bool)\n\nJoker return type: [Int Int Bool]"
+  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo input arguments: vers string\n\nGo return type: (major int, minor int, ok bool)\n\nJoker input arguments: ^String vers\n\nJoker return type: [Int Int Bool]"
   {:added "1.0"
    :go "parseHTTPVersion(_vers)"}
   [^String _vers])
 
 JOKER FUNC http.ParseTime has:
 ;; (defn ParseTime
-;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo return type: (t ..., err error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/header.go:86:32) Error]"
+;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo input arguments: text string\n\nGo return type: (t ..., err error)\n\nJoker input arguments: ^String text\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/header.go:86:32) Error]"
 ;;   {:added "1.0"
 ;;    :go "parseTime(_text)"}
 ;;   [^String _text])
 
 JOKER FUNC http.Post has:
 ;; (defn Post
-;;   "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo return type: (resp *Response, err error)\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
+;;   "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: url string, contentType string, body\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: ^String url, ^String contentType, body\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
 ;;   {:added "1.0"
 ;;    :go "post(_url, _contentType, _body)"}
 ;;   [^String _url, ^String _contentType, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/client.go:748:41) _body])
 
 JOKER FUNC http.PostForm has:
 ;; (defn PostForm
-;;   "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo return type: (resp *Response, err error)\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
+;;   "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: url string, data\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: ^String url, data\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
 ;;   {:added "1.0"
 ;;    :go "postForm(_url, _data)"}
 ;;   [^String _url, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/client.go:785:32) _data])
 
 JOKER FUNC http.ProxyFromEnvironment has:
 ;; (defn ProxyFromEnvironment
-;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo return type: (*..., error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/transport.go:345:43) Error]"
+;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: req\n\nGo return type: (*..., error)\n\nJoker input arguments: req\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/transport.go:345:43) Error]"
 ;;   {:added "1.0"
 ;;    :go "proxyFromEnvironment(_req)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/transport.go:345:31) _req])
 
 JOKER FUNC http.ProxyURL has:
 ;; (defn ProxyURL
-;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/transport.go:351:34)"
+;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: fixedURL\n\nGo return type: ...\n\nJoker input arguments: fixedURL\n\nJoker return type: ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/transport.go:351:34)"
 ;;   {:added "1.0"
 ;;    :go "proxyURL(_fixedURL)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/transport.go:351:24) _fixedURL])
 
 JOKER FUNC http.ReadRequest has:
 ;; (defn ReadRequest
-;;   "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo return type: (*Request, error)\n\nJoker return type: [{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)}} Error]"
+;;   "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: b\n\nGo return type: (*Request, error)\n\nJoker input arguments: b\n\nJoker return type: [{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)}} Error]"
 ;;   {:added "1.0"
 ;;    :go "readRequest(_b)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/request.go:942:20) _b])
 
 JOKER FUNC http.ReadResponse has:
 ;; (defn ReadResponse
-;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo return type: (*Response, error)\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
+;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: r, req\n\nGo return type: (*Response, error)\n\nJoker input arguments: r, req\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:66:7), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:127:7), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:181:7), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:241:7), :PostForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:248:11), :MultipartForm ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:253:17), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/request.go:297:7), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/response.go:115:7)} Error]"
 ;;   {:added "1.0"
 ;;    :go "readResponse(_r, _req)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/response.go:148:21) _r, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/response.go:148:40) _req])
 
 JOKER FUNC http.Redirect has:
 ;; (defn Redirect
-;;   "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n"
+;;   "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:2020:17), r, url string, code int\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:2020:17) w, r, ^String url, ^Int code"
 ;;   {:added "1.0"
 ;;    :go "redirect(_w, _r, _url, _code)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/server.go:2020:17) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/server.go:2020:35) _r, ^String _url, ^Int _code])
 
 JOKER FUNC http.RedirectHandler has:
 ;; (defn RedirectHandler
-;;   "RedirectHandler returns a request handler that redirects\neach request it receives to the given url using the given\nstatus code.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nGo return type: Handler\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
+;;   "RedirectHandler returns a request handler that redirects\neach request it receives to the given url using the given\nstatus code.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nGo input arguments: url string, code int\n\nGo return type: Handler\n\nJoker input arguments: ^String url, ^Int code\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
 ;;    :go "redirectHandler(_url, _code)"}
 ;;   [^String _url, ^Int _code])
 
 JOKER FUNC http.Serve has:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: l, handler ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:2421:36)\n\nGo return type: error\n\nJoker input arguments: l, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2421:36) handler\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.Serve(_l, _handler)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/server.go:2421:14) _l, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2421:36) _handler])
 
 JOKER FUNC http.ServeContent has:
 ;; (defn ServeContent
-;;   "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n"
+;;   "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:151:21), req, name string, modtime, content\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:151:21) w, req, ^String name, modtime, content"
 ;;   {:added "1.0"
 ;;    :go "serveContent(_w, _req, _name, _modtime, _content)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:151:21) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/fs.go:151:41) _req, ^String _name, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/fs.go:151:72) _modtime, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/fs.go:151:91) _content])
 
 JOKER FUNC http.ServeFile has:
 ;; (defn ServeFile
-;;   "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n"
+;;   "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:670:18), r, name string\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:670:18) w, r, ^String name"
 ;;   {:added "1.0"
 ;;    :go "serveFile(_w, _r, _name)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/fs.go:670:18) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/fs.go:670:36) _r, ^String _name])
 
 JOKER FUNC http.ServeTLS has:
 ;; (defn ^"Error" ServeTLS
-;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: l, handler ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:2438:39), certFile string, keyFile string\n\nGo return type: error\n\nJoker input arguments: l, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2438:39) handler, ^String certFile, ^String keyFile\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.ServeTLS(_l, _handler, _certFile, _keyFile)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/server.go:2438:17) _l, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:2438:39) _handler, ^String _certFile, ^String _keyFile])
 
 JOKER FUNC http.SetCookie has:
 ;; (defn SetCookie
-;;   "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n"
+;;   "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n\nGo input arguments: w ABEND884(unrecognized type ResponseWriter at: tests/big/src/net/http/cookie.go:157:18), cookie\n\nJoker input arguments: ^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/cookie.go:157:18) w, cookie"
 ;;   {:added "1.0"
 ;;    :go "setCookie(_w, _cookie)"}
 ;;   [^ABEND885(unrecognized type ResponseWriter at: tests/big/src/net/http/cookie.go:157:18) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/cookie.go:157:41) _cookie])
 
 JOKER FUNC http.StatusText has:
 (defn ^"String" StatusText
-  "StatusText returns a text for the HTTP status code. It returns the empty\nstring if the code is unknown.\n\nGo return type: string\n\nJoker return type: String"
+  "StatusText returns a text for the HTTP status code. It returns the empty\nstring if the code is unknown.\n\nGo input arguments: code int\n\nGo return type: string\n\nJoker input arguments: ^Int code\n\nJoker return type: String"
   {:added "1.0"
    :go "http.StatusText(_code)"}
   [^Int _code])
 
 JOKER FUNC http.StripPrefix has:
 ;; (defn StripPrefix
-;;   "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo return type: Handler\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
+;;   "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo input arguments: prefix string, h ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:1992:35)\n\nGo return type: Handler\n\nJoker input arguments: ^String prefix, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:1992:35) h\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
 ;;    :go "stripPrefix(_prefix, _h)"}
 ;;   [^String _prefix, ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:1992:35) _h])
 
 JOKER FUNC http.TimeoutHandler has:
 ;; (defn TimeoutHandler
-;;   "TimeoutHandler returns a Handler that runs h with the given time limit.\n\nThe new Handler calls h.ServeHTTP to handle each request, but if a\ncall runs for longer than its time limit, the handler responds with\na 503 Service Unavailable error and the given message in its body.\n(If msg is empty, a suitable default message will be sent.)\nAfter such a timeout, writes by h to its ResponseWriter will return\nErrHandlerTimeout.\n\nTimeoutHandler buffers all Handler writes to memory and does not\nsupport the Hijacker or Flusher interfaces.\n\nGo return type: Handler\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
+;;   "TimeoutHandler returns a Handler that runs h with the given time limit.\n\nThe new Handler calls h.ServeHTTP to handle each request, but if a\ncall runs for longer than its time limit, the handler responds with\na 503 Service Unavailable error and the given message in its body.\n(If msg is empty, a suitable default message will be sent.)\nAfter such a timeout, writes by h to its ResponseWriter will return\nErrHandlerTimeout.\n\nTimeoutHandler buffers all Handler writes to memory and does not\nsupport the Hijacker or Flusher interfaces.\n\nGo input arguments: h ABEND884(unrecognized type Handler at: tests/big/src/net/http/server.go:3106:23), dt, msg string\n\nGo return type: Handler\n\nJoker input arguments: ^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3106:23) h, dt, ^String msg\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
 ;;    :go "timeoutHandler(_h, _dt, _msg)"}
 ;;   [^ABEND885(unrecognized type Handler at: tests/big/src/net/http/server.go:3106:23) _h, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/server.go:3106:35) _dt, ^String _msg])
@@ -1102,35 +1102,35 @@ JOKER FUNC cgi.Request has:
 
 JOKER FUNC cgi.RequestFromMap has:
 ;; (defn RequestFromMap
-;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo return type: (*..., error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/cgi/child.go:52:49) Error]"
+;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: params\n\nGo return type: (*..., error)\n\nJoker input arguments: params\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/cgi/child.go:52:49) Error]"
 ;;   {:added "1.0"
 ;;    :go "requestFromMap(_params)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/cgi/child.go:52:28) _params])
 
 JOKER FUNC cgi.Serve has:
 ;; (defn ^"Error" Serve
-;;   "Serve executes the provided Handler on the currently active CGI\nrequest, if any. If there's no current CGI environment\nan error is returned. The provided handler may be nil to use\nhttp.DefaultServeMux.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "Serve executes the provided Handler on the currently active CGI\nrequest, if any. If there's no current CGI environment\nan error is returned. The provided handler may be nil to use\nhttp.DefaultServeMux.\n\nGo input arguments: handler\n\nGo return type: error\n\nJoker input arguments: handler\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "cgi.Serve(_handler)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/cgi/child.go:146:20) _handler])
 
 JOKER FUNC cookiejar.New has:
 ;; (defn New
-;;   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo return type: (*Jar, error)\n\nJoker return type: [{} Error]"
+;;   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: o\n\nGo return type: (*Jar, error)\n\nJoker input arguments: o\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
 ;;    :go "new(_o)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/cookiejar/jar.go:77:12) _o])
 
 JOKER FUNC fcgi.ProcessEnv has:
 ;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/fcgi/child.go:358:34)"
+;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: r\n\nGo return type: ...\n\nJoker input arguments: r\n\nJoker return type: ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/http/fcgi/child.go:358:34)"
 ;;   {:added "1.0"
 ;;    :go "processEnv(_r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/fcgi/child.go:358:19) _r])
 
 JOKER FUNC fcgi.Serve has:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo input arguments: l, handler\n\nGo return type: error\n\nJoker input arguments: l, handler\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "fcgi.Serve(_l, _handler)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/fcgi/child.go:331:14) _l, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/fcgi/child.go:331:36) _handler])
@@ -1144,203 +1144,203 @@ JOKER FUNC httptest.NewRecorder has:
 
 JOKER FUNC httptest.NewRequest has:
 ;; (defn NewRequest
-;;   "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo return type: *...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/httptest.go:41:57)"
+;;   "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: method string, target string, body\n\nGo return type: *...\n\nJoker input arguments: ^String method, ^String target, body\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/httptest.go:41:57)"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newRequest(_method, _target, _body))"}
 ;;   [^String _method, ^String _target, ^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/httptest.go:41:45) _body])
 
 JOKER FUNC httptest.NewServer has:
 ;; (defn NewServer
-;;   "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo return type: *Server\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
+;;   "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: handler\n\nGo return type: *Server\n\nJoker input arguments: handler\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newServer(_handler))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:80:24) _handler])
 
 JOKER FUNC httptest.NewTLSServer has:
 ;; (defn NewTLSServer
-;;   "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo return type: *Server\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
+;;   "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: handler\n\nGo return type: *Server\n\nJoker input arguments: handler\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newTLSServer(_handler))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:160:27) _handler])
 
 JOKER FUNC httptest.NewUnstartedServer has:
 ;; (defn NewUnstartedServer
-;;   "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo return type: *Server\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
+;;   "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: handler\n\nGo return type: *Server\n\nJoker input arguments: handler\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:28:11), :TLS ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:33:7), :Config ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:37:10)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newUnstartedServer(_handler))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptest/server.go:92:33) _handler])
 
 JOKER FUNC httptrace.ContextClientTrace has:
 ;; (defn ContextClientTrace
-;;   "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo return type: *ClientTrace\n\nJoker return type: {:GetConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:85:10), :GotConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:91:10), :PutIdleConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:101:14), :GotFirstResponseByte ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:105:23), :Got100Continue ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:109:17), :Got1xxResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:115:17), :DNSStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:118:11), :DNSDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:121:10), :ConnectStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:126:15), :ConnectDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:133:14), :TLSHandshakeStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:138:20), :TLSHandshakeDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:143:19), :WroteHeaderField ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:148:19), :WroteHeaders ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:152:15), :Wait100Continue ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:158:18), :WroteRequest ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:163:15)}"
+;;   "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo input arguments: ctx\n\nGo return type: *ClientTrace\n\nJoker input arguments: ctx\n\nJoker return type: {:GetConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:85:10), :GotConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:91:10), :PutIdleConn ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:101:14), :GotFirstResponseByte ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:105:23), :Got100Continue ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:109:17), :Got1xxResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:115:17), :DNSStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:118:11), :DNSDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:121:10), :ConnectStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:126:15), :ConnectDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:133:14), :TLSHandshakeStart ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:138:20), :TLSHandshakeDone ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:143:19), :WroteHeaderField ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:148:19), :WroteHeaders ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:152:15), :Wait100Continue ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:158:18), :WroteRequest ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httptrace/trace.go:163:15)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: contextClientTrace(_ctx))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptrace/trace.go:24:29) _ctx])
 
 JOKER FUNC httptrace.WithClientTrace has:
 ;; (defn WithClientTrace
-;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptrace/trace.go:34:63)"
+;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: ctx, trace\n\nGo return type: ...\n\nJoker input arguments: ctx, trace\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptrace/trace.go:34:63)"
 ;;   {:added "1.0"
 ;;    :go "withClientTrace(_ctx, _trace)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httptrace/trace.go:34:26) _ctx, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httptrace/trace.go:34:49) _trace])
 
 JOKER FUNC httputil.DumpRequest has:
 ;; (defn DumpRequest
-;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo return type: ([]int, error)\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: req, body bool\n\nGo return type: ([]int, error)\n\nJoker input arguments: req, ^Bool body\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "dumpRequest(_req, _body)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/dump.go:191:22) _req, ^Bool _body])
 
 JOKER FUNC httputil.DumpRequestOut has:
 ;; (defn DumpRequestOut
-;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo return type: ([]int, error)\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: req, body bool\n\nGo return type: ([]int, error)\n\nJoker input arguments: req, ^Bool body\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "dumpRequestOut(_req, _body)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/dump.go:66:25) _req, ^Bool _body])
 
 JOKER FUNC httputil.DumpResponse has:
 ;; (defn DumpResponse
-;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo return type: ([]int, error)\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: resp, body bool\n\nGo return type: ([]int, error)\n\nJoker input arguments: resp, ^Bool body\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "dumpResponse(_resp, _body)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/dump.go:281:24) _resp, ^Bool _body])
 
 JOKER FUNC httputil.NewChunkedReader has:
 ;; (defn NewChunkedReader
-;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:20:36)"
+;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo input arguments: r\n\nGo return type: ...\n\nJoker input arguments: r\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:20:36)"
 ;;   {:added "1.0"
 ;;    :go "newChunkedReader(_r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:20:25) _r])
 
 JOKER FUNC httputil.NewChunkedWriter has:
 ;; (defn NewChunkedWriter
-;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:35:36)"
+;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo input arguments: w\n\nGo return type: ...\n\nJoker input arguments: w\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:35:36)"
 ;;   {:added "1.0"
 ;;    :go "newChunkedWriter(_w)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/httputil.go:35:25) _w])
 
 JOKER FUNC httputil.NewClientConn has:
 ;; (defn NewClientConn
-;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo return type: *ClientConn\n\nJoker return type: {}"
+;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: c, r\n\nGo return type: *ClientConn\n\nJoker input arguments: c, r\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientConn(_c, _r))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/persist.go:248:22) _c, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/persist.go:248:34) _r])
 
 JOKER FUNC httputil.NewProxyClientConn has:
 ;; (defn NewProxyClientConn
-;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo return type: *ClientConn\n\nJoker return type: {}"
+;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: c, r\n\nGo return type: *ClientConn\n\nJoker input arguments: c, r\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newProxyClientConn(_c, _r))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/persist.go:265:27) _c, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/persist.go:265:39) _r])
 
 JOKER FUNC httputil.NewServerConn has:
 ;; (defn NewServerConn
-;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo return type: *ServerConn\n\nJoker return type: {}"
+;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: c, r\n\nGo return type: *ServerConn\n\nJoker input arguments: c, r\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newServerConn(_c, _r))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/persist.go:54:22) _c, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/persist.go:54:34) _r])
 
 JOKER FUNC httputil.NewSingleHostReverseProxy has:
 ;; (defn NewSingleHostReverseProxy
-;;   "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo return type: *ReverseProxy\n\nJoker return type: {:Director ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:35:11), :Transport ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:39:12), :FlushInterval ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:45:16), :ErrorLog ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:51:12), :BufferPool ^ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/httputil/reverseproxy.go:79:17), :ModifyResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:67:17), :ErrorHandler ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:74:15)}"
+;;   "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: target\n\nGo return type: *ReverseProxy\n\nJoker input arguments: target\n\nJoker return type: {:Director ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:35:11), :Transport ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:39:12), :FlushInterval ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:45:16), :ErrorLog ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/httputil/reverseproxy.go:51:12), :BufferPool ^ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/http/httputil/reverseproxy.go:79:17), :ModifyResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:67:17), :ErrorHandler ^ABEND883(unrecognized Expr type *ast.FuncType at: tests/big/src/net/http/httputil/reverseproxy.go:74:15)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newSingleHostReverseProxy(_target))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/httputil/reverseproxy.go:103:39) _target])
 
 JOKER FUNC pprof.Cmdline has:
 ;; (defn Cmdline
-;;   "Cmdline responds with the running program's\ncommand line, with arguments separated by NUL bytes.\nThe package initialization registers it as /debug/pprof/cmdline.\n"
+;;   "Cmdline responds with the running program's\ncommand line, with arguments separated by NUL bytes.\nThe package initialization registers it as /debug/pprof/cmdline.\n\nGo input arguments: w, r\n\nJoker input arguments: w, r"
 ;;   {:added "1.0"
 ;;    :go "cmdline(_w, _r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:83:16) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/pprof/pprof.go:83:39) _r])
 
 JOKER FUNC pprof.Handler has:
 ;; (defn Handler
-;;   "Handler returns an HTTP handler that serves the named profile.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:221:27)"
+;;   "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: name string\n\nGo return type: ...\n\nJoker input arguments: ^String name\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:221:27)"
 ;;   {:added "1.0"
 ;;    :go "handler(_name)"}
 ;;   [^String _name])
 
 JOKER FUNC pprof.Index has:
 ;; (defn Index
-;;   "Index responds with the pprof-formatted profile named by the request.\nFor example, \"/debug/pprof/heap\" serves the \"heap\" profile.\nIndex responds to a request for \"/debug/pprof/\" with an HTML page\nlisting the available profiles.\n"
+;;   "Index responds with the pprof-formatted profile named by the request.\nFor example, \"/debug/pprof/heap\" serves the \"heap\" profile.\nIndex responds to a request for \"/debug/pprof/\" with an HTML page\nlisting the available profiles.\n\nGo input arguments: w, r\n\nJoker input arguments: w, r"
 ;;   {:added "1.0"
 ;;    :go "index(_w, _r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:264:14) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/pprof/pprof.go:264:37) _r])
 
 JOKER FUNC pprof.Profile has:
 ;; (defn Profile
-;;   "Profile responds with the pprof-formatted cpu profile.\nProfiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.\nThe package initialization registers it as /debug/pprof/profile.\n"
+;;   "Profile responds with the pprof-formatted cpu profile.\nProfiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.\nThe package initialization registers it as /debug/pprof/profile.\n\nGo input arguments: w, r\n\nJoker input arguments: w, r"
 ;;   {:added "1.0"
 ;;    :go "profile(_w, _r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:116:16) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/pprof/pprof.go:116:39) _r])
 
 JOKER FUNC pprof.Symbol has:
 ;; (defn Symbol
-;;   "Symbol looks up the program counters listed in the request,\nresponding with a table mapping program counters to function names.\nThe package initialization registers it as /debug/pprof/symbol.\n"
+;;   "Symbol looks up the program counters listed in the request,\nresponding with a table mapping program counters to function names.\nThe package initialization registers it as /debug/pprof/symbol.\n\nGo input arguments: w, r\n\nJoker input arguments: w, r"
 ;;   {:added "1.0"
 ;;    :go "symbol(_w, _r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:174:15) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/pprof/pprof.go:174:38) _r])
 
 JOKER FUNC pprof.Trace has:
 ;; (defn Trace
-;;   "Trace responds with the execution trace in binary form.\nTracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.\nThe package initialization registers it as /debug/pprof/trace.\n"
+;;   "Trace responds with the execution trace in binary form.\nTracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.\nThe package initialization registers it as /debug/pprof/trace.\n\nGo input arguments: w, r\n\nJoker input arguments: w, r"
 ;;   {:added "1.0"
 ;;    :go "trace(_w, _r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/http/pprof/pprof.go:145:14) _w, ^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/http/pprof/pprof.go:145:37) _r])
 
 JOKER FUNC mail.ParseAddress has:
 (defn ParseAddress
-  "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo return type: (*Address, error)\n\nJoker return type: [{:Name ^String, :Address ^String} Error]"
+  "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: address string\n\nGo return type: (*Address, error)\n\nJoker input arguments: ^String address\n\nJoker return type: [{:Name ^String, :Address ^String} Error]"
   {:added "1.0"
    :go "parseAddress(_address)"}
   [^String _address])
 
 JOKER FUNC mail.ParseAddressList has:
 (defn ParseAddressList
-  "ParseAddressList parses the given string as a list of addresses.\n\nGo return type: ([]*Address, error)\n\nJoker return type: [(vector-of {:Name ^String, :Address ^String}) Error]"
+  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: list string\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: ^String list\n\nJoker return type: [(vector-of {:Name ^String, :Address ^String}) Error]"
   {:added "1.0"
    :go "parseAddressList(_list)"}
   [^String _list])
 
 JOKER FUNC mail.ParseDate has:
 ;; (defn ParseDate
-;;   "ParseDate parses an RFC 5322 date string.\n\nGo return type: (..., error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/mail/message.go:95:30) Error]"
+;;   "ParseDate parses an RFC 5322 date string.\n\nGo input arguments: date string\n\nGo return type: (..., error)\n\nJoker input arguments: ^String date\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/mail/message.go:95:30) Error]"
 ;;   {:added "1.0"
 ;;    :go "parseDate(_date)"}
 ;;   [^String _date])
 
 JOKER FUNC mail.ReadMessage has:
 ;; (defn ReadMessage
-;;   "ReadMessage reads a message from r.\nThe headers are parsed, and the body of the message will be available\nfor reading from msg.Body.\n\nGo return type: (msg *Message, err error)\n\nJoker return type: [{:Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/mail/message.go:106:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/mail/message.go:46:9)} Error]"
+;;   "ReadMessage reads a message from r.\nThe headers are parsed, and the body of the message will be available\nfor reading from msg.Body.\n\nGo input arguments: r\n\nGo return type: (msg *Message, err error)\n\nJoker input arguments: r\n\nJoker return type: [{:Header ^ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/mail/message.go:106:13), :Body ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/mail/message.go:46:9)} Error]"
 ;;   {:added "1.0"
 ;;    :go "readMessage(_r)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/mail/message.go:52:20) _r])
 
 JOKER FUNC rpc.Accept has:
 ;; (defn Accept
-;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n"
+;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: lis\n\nJoker input arguments: lis"
 ;;   {:added "1.0"
 ;;    :go "accept(_lis)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/server.go:692:17) _lis])
 
 JOKER FUNC rpc.Dial has:
 (defn Dial
-  "Dial connects to an RPC server at the specified network address.\n\nGo return type: (*Client, error)\n\nJoker return type: [{} Error]"
+  "Dial connects to an RPC server at the specified network address.\n\nGo input arguments: network string, address string\n\nGo return type: (*Client, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{} Error]"
   {:added "1.0"
    :go "dial(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC rpc.DialHTTP has:
 (defn DialHTTP
-  "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo return type: (*Client, error)\n\nJoker return type: [{} Error]"
+  "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo input arguments: network string, address string\n\nGo return type: (*Client, error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [{} Error]"
   {:added "1.0"
    :go "dialHTTP(_network, _address)"}
   [^String _network, ^String _address])
 
 JOKER FUNC rpc.DialHTTPPath has:
 (defn DialHTTPPath
-  "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo return type: (*Client, error)\n\nJoker return type: [{} Error]"
+  "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo input arguments: network string, address string, path string\n\nGo return type: (*Client, error)\n\nJoker input arguments: ^String network, ^String address, ^String path\n\nJoker return type: [{} Error]"
   {:added "1.0"
    :go "dialHTTPPath(_network, _address, _path)"}
   [^String _network, ^String _address, ^String _path])
@@ -1354,14 +1354,14 @@ JOKER FUNC rpc.HandleHTTP has:
 
 JOKER FUNC rpc.NewClient has:
 ;; (defn NewClient
-;;   "NewClient returns a new Client to handle requests to the\nset of services at the other end of the connection.\nIt adds a buffer to the write side of the connection so\nthe header and payload are sent as a unit.\n\nThe read and write halves of the connection are serialized independently,\nso no interlocking is required. However each half may be accessed\nconcurrently so the implementation of conn should protect against\nconcurrent reads or concurrent writes.\n\nGo return type: *Client\n\nJoker return type: {}"
+;;   "NewClient returns a new Client to handle requests to the\nset of services at the other end of the connection.\nIt adds a buffer to the write side of the connection so\nthe header and payload are sent as a unit.\n\nThe read and write halves of the connection are serialized independently,\nso no interlocking is required. However each half may be accessed\nconcurrently so the implementation of conn should protect against\nconcurrent reads or concurrent writes.\n\nGo input arguments: conn\n\nGo return type: *Client\n\nJoker input arguments: conn\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClient(_conn))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/client.go:193:21) _conn])
 
 JOKER FUNC rpc.NewClientWithCodec has:
 ;; (defn NewClientWithCodec
-;;   "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo return type: *Client\n\nJoker return type: {}"
+;;   "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo input arguments: codec ABEND884(unrecognized type ClientCodec at: tests/big/src/net/rpc/client.go:201:31)\n\nGo return type: *Client\n\nJoker input arguments: ^ABEND885(unrecognized type ClientCodec at: tests/big/src/net/rpc/client.go:201:31) codec\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientWithCodec(_codec))"}
 ;;   [^ABEND885(unrecognized type ClientCodec at: tests/big/src/net/rpc/client.go:201:31) _codec])
@@ -1375,217 +1375,217 @@ JOKER FUNC rpc.NewServer has:
 
 JOKER FUNC rpc.Register has:
 ;; (defn ^"Error" Register
-;;   "Register publishes the receiver's methods in the DefaultServer.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "Register publishes the receiver's methods in the DefaultServer.\n\nGo input arguments: rcvr\n\nGo return type: error\n\nJoker input arguments: rcvr\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "rpc.Register(_rcvr)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/rpc/server.go:642:20) _rcvr])
 
 JOKER FUNC rpc.RegisterName has:
 ;; (defn ^"Error" RegisterName
-;;   "RegisterName is like Register but uses the provided name for the type\ninstead of the receiver's concrete type.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "RegisterName is like Register but uses the provided name for the type\ninstead of the receiver's concrete type.\n\nGo input arguments: name string, rcvr\n\nGo return type: error\n\nJoker input arguments: ^String name, rcvr\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "rpc.RegisterName(_name, _rcvr)"}
 ;;   [^String _name, ^ABEND881(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/rpc/server.go:646:37) _rcvr])
 
 JOKER FUNC rpc.ServeCodec has:
 ;; (defn ServeCodec
-;;   "ServeCodec is like ServeConn but uses the specified codec to\ndecode requests and encode responses.\n"
+;;   "ServeCodec is like ServeConn but uses the specified codec to\ndecode requests and encode responses.\n\nGo input arguments: codec ABEND884(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:679:23)\n\nJoker input arguments: ^ABEND885(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:679:23) codec"
 ;;   {:added "1.0"
 ;;    :go "serveCodec(_codec)"}
 ;;   [^ABEND885(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:679:23) _codec])
 
 JOKER FUNC rpc.ServeConn has:
 ;; (defn ServeConn
-;;   "ServeConn runs the DefaultServer on a single connection.\nServeConn blocks, serving the connection until the client hangs up.\nThe caller typically invokes ServeConn in a go statement.\nServeConn uses the gob wire format (see package gob) on the\nconnection. To use an alternate codec, use ServeCodec.\nSee NewClient's comment for information about concurrent access.\n"
+;;   "ServeConn runs the DefaultServer on a single connection.\nServeConn blocks, serving the connection until the client hangs up.\nThe caller typically invokes ServeConn in a go statement.\nServeConn uses the gob wire format (see package gob) on the\nconnection. To use an alternate codec, use ServeCodec.\nSee NewClient's comment for information about concurrent access.\n\nGo input arguments: conn\n\nJoker input arguments: conn"
 ;;   {:added "1.0"
 ;;    :go "serveConn(_conn)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/server.go:673:21) _conn])
 
 JOKER FUNC rpc.ServeRequest has:
 ;; (defn ^"Error" ServeRequest
-;;   "ServeRequest is like ServeCodec but synchronously serves a single request.\nIt does not close the codec upon completion.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "ServeRequest is like ServeCodec but synchronously serves a single request.\nIt does not close the codec upon completion.\n\nGo input arguments: codec ABEND884(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:685:25)\n\nGo return type: error\n\nJoker input arguments: ^ABEND885(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:685:25) codec\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "rpc.ServeRequest(_codec)"}
 ;;   [^ABEND885(unrecognized type ServerCodec at: tests/big/src/net/rpc/server.go:685:25) _codec])
 
 JOKER FUNC jsonrpc.Dial has:
 ;; (defn Dial
-;;   "Dial connects to a JSON-RPC server at the specified network address.\n\nGo return type: (*..., error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:118:38) Error]"
+;;   "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: network string, address string\n\nGo return type: (*..., error)\n\nJoker input arguments: ^String network, ^String address\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:118:38) Error]"
 ;;   {:added "1.0"
 ;;    :go "dial(_network, _address)"}
 ;;   [^String _network, ^String _address])
 
 JOKER FUNC jsonrpc.NewClient has:
 ;; (defn NewClient
-;;   "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo return type: *...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:113:42)"
+;;   "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: conn\n\nGo return type: *...\n\nJoker input arguments: conn\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:113:42)"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClient(_conn))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:113:21) _conn])
 
 JOKER FUNC jsonrpc.NewClientCodec has:
 ;; (defn NewClientCodec
-;;   "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:37:46)"
+;;   "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo input arguments: conn\n\nGo return type: ...\n\nJoker input arguments: conn\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:37:46)"
 ;;   {:added "1.0"
 ;;    :go "newClientCodec(_conn)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/client.go:37:26) _conn])
 
 JOKER FUNC jsonrpc.NewServerCodec has:
 ;; (defn NewServerCodec
-;;   "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo return type: ...\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/server.go:37:46)"
+;;   "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo input arguments: conn\n\nGo return type: ...\n\nJoker input arguments: conn\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/server.go:37:46)"
 ;;   {:added "1.0"
 ;;    :go "newServerCodec(_conn)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/server.go:37:26) _conn])
 
 JOKER FUNC jsonrpc.ServeConn has:
 ;; (defn ServeConn
-;;   "ServeConn runs the JSON-RPC server on a single connection.\nServeConn blocks, serving the connection until the client hangs up.\nThe caller typically invokes ServeConn in a go statement.\n"
+;;   "ServeConn runs the JSON-RPC server on a single connection.\nServeConn blocks, serving the connection until the client hangs up.\nThe caller typically invokes ServeConn in a go statement.\n\nGo input arguments: conn\n\nJoker input arguments: conn"
 ;;   {:added "1.0"
 ;;    :go "serveConn(_conn)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/rpc/jsonrpc/server.go:132:21) _conn])
 
 JOKER FUNC smtp.CRAMMD5Auth has:
 ;; (defn CRAMMD5Auth
-;;   "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo return type: Auth\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/smtp/auth.go:15:11)"
+;;   "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo input arguments: username string, secret string\n\nGo return type: Auth\n\nJoker input arguments: ^String username, ^String secret\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/smtp/auth.go:15:11)"
 ;;   {:added "1.0"
 ;;    :go "cRAMMD5Auth(_username, _secret)"}
 ;;   [^String _username, ^String _secret])
 
 JOKER FUNC smtp.Dial has:
 ;; (defn Dial
-;;   "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo return type: (*Client, error)\n\nJoker return type: [{:Text ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/smtp/smtp.go:33:8)} Error]"
+;;   "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: addr string\n\nGo return type: (*Client, error)\n\nJoker input arguments: ^String addr\n\nJoker return type: [{:Text ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/smtp/smtp.go:33:8)} Error]"
 ;;   {:added "1.0"
 ;;    :go "dial(_addr)"}
 ;;   [^String _addr])
 
 JOKER FUNC smtp.NewClient has:
 ;; (defn NewClient
-;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo return type: (*Client, error)\n\nJoker return type: [{:Text ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/smtp/smtp.go:33:8)} Error]"
+;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: conn, host string\n\nGo return type: (*Client, error)\n\nJoker input arguments: conn, ^String host\n\nJoker return type: [{:Text ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/smtp/smtp.go:33:8)} Error]"
 ;;   {:added "1.0"
 ;;    :go "newClient(_conn, _host)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/smtp/smtp.go:62:21) _conn, ^String _host])
 
 JOKER FUNC smtp.PlainAuth has:
 ;; (defn PlainAuth
-;;   "PlainAuth returns an Auth that implements the PLAIN authentication\nmechanism as defined in RFC 4616. The returned Auth uses the given\nusername and password to authenticate to host and act as identity.\nUsually identity should be the empty string, to act as username.\n\nPlainAuth will only send the credentials if the connection is using TLS\nor is connected to localhost. Otherwise authentication will fail with an\nerror, without sending the credentials.\n\nGo return type: Auth\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/smtp/auth.go:15:11)"
+;;   "PlainAuth returns an Auth that implements the PLAIN authentication\nmechanism as defined in RFC 4616. The returned Auth uses the given\nusername and password to authenticate to host and act as identity.\nUsually identity should be the empty string, to act as username.\n\nPlainAuth will only send the credentials if the connection is using TLS\nor is connected to localhost. Otherwise authentication will fail with an\nerror, without sending the credentials.\n\nGo input arguments: identity string, username string, password string, host string\n\nGo return type: Auth\n\nJoker input arguments: ^String identity, ^String username, ^String password, ^String host\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: tests/big/src/net/smtp/auth.go:15:11)"
 ;;   {:added "1.0"
 ;;    :go "plainAuth(_identity, _username, _password, _host)"}
 ;;   [^String _identity, ^String _username, ^String _password, ^String _host])
 
 JOKER FUNC smtp.SendMail has:
 ;; (defn ^"Error" SendMail
-;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo return type: error\n\nJoker return type: Error"
+;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: addr string, a ABEND884(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30), from string, to, msg\n\nGo return type: error\n\nJoker input arguments: ^String addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) a, ^String from, to, msg\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "smtp.SendMail(_addr, _a, _from, _to, _msg)"}
 ;;   [^String _addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) _a, ^String _from, ^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/smtp/smtp.go:319:52) _to, ^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/smtp/smtp.go:319:66) _msg])
 
 JOKER FUNC textproto.CanonicalMIMEHeaderKey has:
 (defn ^"String" CanonicalMIMEHeaderKey
-  "CanonicalMIMEHeaderKey returns the canonical format of the\nMIME header key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nMIME header keys are assumed to be ASCII only.\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo return type: string\n\nJoker return type: String"
+  "CanonicalMIMEHeaderKey returns the canonical format of the\nMIME header key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nMIME header keys are assumed to be ASCII only.\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: s string\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
   {:added "1.0"
    :go "textproto.CanonicalMIMEHeaderKey(_s)"}
   [^String _s])
 
 JOKER FUNC textproto.Dial has:
 (defn Dial
-  "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo return type: (*Conn, error)\n\nJoker return type: [{} Error]"
+  "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo input arguments: network string, addr string\n\nGo return type: (*Conn, error)\n\nJoker input arguments: ^String network, ^String addr\n\nJoker return type: [{} Error]"
   {:added "1.0"
    :go "dial(_network, _addr)"}
   [^String _network, ^String _addr])
 
 JOKER FUNC textproto.NewConn has:
 ;; (defn NewConn
-;;   "NewConn returns a new Conn using conn for I/O.\n\nGo return type: *Conn\n\nJoker return type: {}"
+;;   "NewConn returns a new Conn using conn for I/O.\n\nGo input arguments: conn\n\nGo return type: *Conn\n\nJoker input arguments: conn\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newConn(_conn))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/textproto/textproto.go:66:19) _conn])
 
 JOKER FUNC textproto.NewReader has:
 ;; (defn NewReader
-;;   "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo return type: *Reader\n\nJoker return type: {:R ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/textproto/reader.go:19:7)}"
+;;   "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: r\n\nGo return type: *Reader\n\nJoker input arguments: r\n\nJoker return type: {:R ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/textproto/reader.go:19:7)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newReader(_r))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/textproto/reader.go:29:18) _r])
 
 JOKER FUNC textproto.NewWriter has:
 ;; (defn NewWriter
-;;   "NewWriter returns a new Writer writing to w.\n\nGo return type: *Writer\n\nJoker return type: {:W ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/textproto/writer.go:16:7)}"
+;;   "NewWriter returns a new Writer writing to w.\n\nGo input arguments: w\n\nGo return type: *Writer\n\nJoker input arguments: w\n\nJoker return type: {:W ^ABEND883(unrecognized Expr type *ast.SelectorExpr at: tests/big/src/net/textproto/writer.go:16:7)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newWriter(_w))"}
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/textproto/writer.go:21:18) _w])
 
 JOKER FUNC textproto.TrimBytes has:
 ;; (defn TrimBytes
-;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo return type: []int\n\nJoker return type: (vector-of Int)"
+;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: b\n\nGo return type: []int\n\nJoker input arguments: b\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
 ;;    :go "trimBytes(_b)"}
 ;;   [^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/textproto/textproto.go:137:18) _b])
 
 JOKER FUNC textproto.TrimString has:
 (defn ^"String" TrimString
-  "TrimString returns s without leading and trailing ASCII space.\n\nGo return type: string\n\nJoker return type: String"
+  "TrimString returns s without leading and trailing ASCII space.\n\nGo input arguments: s string\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
   {:added "1.0"
    :go "textproto.TrimString(_s)"}
   [^String _s])
 
 JOKER FUNC url.Parse has:
 (defn Parse
-  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo return type: (*URL, error)\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
+  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: rawurl string\n\nGo return type: (*URL, error)\n\nJoker input arguments: ^String rawurl\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
   {:added "1.0"
    :go "parse(_rawurl)"}
   [^String _rawurl])
 
 JOKER FUNC url.ParseQuery has:
 ;; (defn ParseQuery
-;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo return type: (Values, error)\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/url/url.go:804:13) Error]"
+;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: query string\n\nGo return type: (Values, error)\n\nJoker input arguments: ^String query\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: tests/big/src/net/url/url.go:804:13) Error]"
 ;;   {:added "1.0"
 ;;    :go "parseQuery(_query)"}
 ;;   [^String _query])
 
 JOKER FUNC url.ParseRequestURI has:
 (defn ParseRequestURI
-  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo return type: (*URL, error)\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
+  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: rawurl string\n\nGo return type: (*URL, error)\n\nJoker input arguments: ^String rawurl\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
   {:added "1.0"
    :go "parseRequestURI(_rawurl)"}
   [^String _rawurl])
 
 JOKER FUNC url.PathEscape has:
 (defn ^"String" PathEscape
-  "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo return type: string\n\nJoker return type: String"
+  "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: s string\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
   {:added "1.0"
    :go "url.PathEscape(_s)"}
   [^String _s])
 
 JOKER FUNC url.PathUnescape has:
 (defn PathUnescape
-  "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo return type: (string, error)\n\nJoker return type: [String Error]"
+  "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: s string\n\nGo return type: (string, error)\n\nJoker input arguments: ^String s\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "pathUnescape(_s)"}
   [^String _s])
 
 JOKER FUNC url.QueryEscape has:
 (defn ^"String" QueryEscape
-  "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo return type: string\n\nJoker return type: String"
+  "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: s string\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
   {:added "1.0"
    :go "url.QueryEscape(_s)"}
   [^String _s])
 
 JOKER FUNC url.QueryUnescape has:
 (defn QueryUnescape
-  "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo return type: (string, error)\n\nJoker return type: [String Error]"
+  "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: s string\n\nGo return type: (string, error)\n\nJoker input arguments: ^String s\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "queryUnescape(_s)"}
   [^String _s])
 
 JOKER FUNC url.User has:
 ;; (defn User
-;;   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo return type: *Userinfo\n\nJoker return type: {}"
+;;   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: username string\n\nGo return type: *Userinfo\n\nJoker input arguments: ^String username\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: user(_username))"}
 ;;   [^String _username])
 
 JOKER FUNC url.UserPassword has:
 ;; (defn UserPassword
-;;   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo return type: *Userinfo\n\nJoker return type: {}"
+;;   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: username string, password string\n\nGo return type: *Userinfo\n\nJoker input arguments: ^String username, ^String password\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: userPassword(_username, _password))"}
 ;;   [^String _username, ^String _password])
@@ -3360,5 +3360,5 @@ GO FUNC url.UserPassword has:
 Adding custom imports to tests/gold/amd64-darwin/joker/custom.go
 Adding custom loaded libraries to tests/gold/amd64-darwin/joker/core/data/core.joke
 Adding custom loaded libraries to tests/gold/amd64-darwin/joker/std/generate-custom.joke
-ABENDs: 883(174) 881(92) 882(82) 885(21) 401(20) 675(18) 884(14) 124(10) 947(7)
+ABENDs: 883(174) 881(92) 882(82) 885(42) 884(34) 401(20) 675(18) 124(10) 947(7)
 Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=41 (27.70%)
