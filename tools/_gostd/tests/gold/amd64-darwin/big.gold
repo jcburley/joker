@@ -867,7 +867,7 @@ JOKER FUNC http.DetectContentType has:
   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: String"
   {:added "1.0"
    :go "http.DetectContentType(ConvertToArrayOfByte(_data))"}
-  [_data])
+  [^Object _data])
 
 JOKER FUNC http.Error has:
 ;; (defn Error
@@ -1476,7 +1476,7 @@ JOKER FUNC smtp.SendMail has:
 ;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a ABEND884(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30), from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) a, ^String from, ^(vector-of String) to, ^(vector-of Byte) msg]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "smtp.SendMail(_addr, _a, _from, ConvertToArrayOfString(_to), ConvertToArrayOfByte(_msg))"}
-;;   [^String _addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) _a, ^String _from, _to, _msg])
+;;   [^String _addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) _a, ^String _from, ^Object _to, ^Object _msg])
 
 JOKER FUNC textproto.CanonicalMIMEHeaderKey has:
 (defn ^"String" CanonicalMIMEHeaderKey
@@ -1518,7 +1518,7 @@ JOKER FUNC textproto.TrimBytes has:
   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []int\n\nJoker input arguments: [^(vector-of Byte) b]\n\nJoker return type: (vector-of Int)"
   {:added "1.0"
    :go "trimBytes(ConvertToArrayOfByte(_b))"}
-  [_b])
+  [^Object _b])
 
 JOKER FUNC textproto.TrimString has:
 (defn ^"String" TrimString
