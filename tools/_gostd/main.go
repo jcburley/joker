@@ -785,6 +785,18 @@ func genTypePre(e Expr) (clType, goType string) {
 	return
 }
 
+/*
+   (defn <jokerReturnType> <godecl.Name>
+     <docstring>
+     {:added "1.0"
+      :go "<jok2golcall>"}                ; jok2golcall := <conversion?>(<jok2gol>+<jokerGoParams>)
+     [jokerParamList])                    ; jokerParamList
+
+   func <goFname>(<goParamList>) <goReturnType> {  // goParamList
+           <goCode>                                // goCode := <goPreCode>+"\t"+<goResultAssign>+"_"+pkg+"."+<godecl.Name>+"("+<goParams>+")\n"+<goPostCode>
+   }
+
+ */
 func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jokerGoParams, goParamList, goPreCode, goParams string) {
 	if fl == nil {
 		return
@@ -821,12 +833,6 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 	}
 	jokerGoParams = "(" + jokerGoParams + ")"
 	return
-
-/*	jokerParamList = fieldListAsClojure(fl)
-	jokerGoParams = "(" + fieldListToGo(fl) + ")"
-	goPreCode = "" // TODO: enhance to support composites
-	goParamList = paramListAsGo(fl)
-	goParams = argsAsGo(fl) */
 }
 
 func genGoCall(pkg, goFname string, goParams string) string {
