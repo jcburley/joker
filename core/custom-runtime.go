@@ -4,6 +4,19 @@ import (
 	"fmt"
 )
 
+/* IMPORTANT: The public functions defined herein should be listed in
+   this set in gostd's main.go:
+
+     var customRuntimeImplemented = map[string]struct{} {
+     }
+
+   That's how gostd knows to not actually generate calls to
+   as-yet-unimplemented (or stubbed-out) functions, saving the
+   developer the hassle of getting most of the way through a build
+   before hitting undefined-func errors.
+
+*/
+
 func ConvertToArrayOfByte(o Object) []byte {
 	switch obj := o.(type) {
 	case String:
