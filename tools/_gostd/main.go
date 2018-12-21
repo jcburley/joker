@@ -338,83 +338,8 @@ func walkDirs(d string, mode parser.Mode) error {
 	return err
 }
 
-func exprAsClojure(e Expr) string {
-	switch v := e.(type) {
-	case *Ident:
-		switch v.Name {
-		case "string":
-			return "String"
-		case "int":
-			return "Int"
-		case "byte":
-			return "Byte"
-		case "bool":
-			return "Bool"
-		default:
-			return fmt.Sprintf("ABEND885(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
-		}
-	default:
-		return fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
-	}
-}
-
-func exprAsGo(e Expr) string {
-	switch v := e.(type) {
-	case *Ident:
-		switch v.Name {
-		case "string", "int", "int16", "uint", "uint16", "int32", "uint32", "int64", "byte", "bool", "error":
-			return v.Name
-		default:
-			return fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
-		}
-	default:
-		return fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
-	}
-}
-
 func paramNameAsClojure(n string) string {
 	return n
-}
-
-func fieldListAsClojure(fl *FieldList) string {
-	if fl == nil {
-		return ""
-	}
-	var s string
-	for _, f := range fl.List {
-		cltype := exprAsClojure(f.Type)
-		for _, p := range f.Names {
-			if s != "" {
-				s += ", "
-			}
-			if cltype != "" {
-				s += "^" + cltype + " "
-			}
-			if p == nil {
-				s += "_"
-			} else {
-				s += "_" + paramNameAsClojure(p.Name)
-			}
-		}
-	}
-	return s
-}
-
-func fieldListToGo(fl *FieldList) string {
-	s := ""
-	for _, f := range fl.List {
-		for _, p := range f.Names {
-			if s != "" {
-				s += ", "
-			}
-			if p == nil {
-				s += "ABEND922"
-			} else {
-				s += "_" + p.Name
-			}
-		}
-	}
-	return s
 }
 
 func funcNameAsGoPrivate(f string) string {
@@ -423,44 +348,6 @@ func funcNameAsGoPrivate(f string) string {
 
 func paramNameAsGo(p string) string {
 	return p
-}
-
-func paramListAsGo(fl *FieldList) string {
-	s := ""
-	for _, f := range fl.List {
-		gotype := exprAsGo(f.Type)
-		for _, p := range f.Names {
-			if s != "" {
-				s += ", "
-			}
-			if p == nil {
-				s += "ABEND712"
-			} else {
-				s += paramNameAsGo(p.Name)
-			}
-			if gotype != "" {
-				s += " " + gotype
-			}
-		}
-	}
-	return s
-}
-
-func argsAsGo(p *FieldList) string {
-	s := ""
-	for _, f := range p.List {
-		for _, p := range f.Names {
-			if s != "" {
-				s += ", "
-			}
-			if p == nil {
-				s += "ABEND713"
-			} else {
-				s += paramNameAsGo(p.Name)
-			}
-		}
-	}
-	return s
 }
 
 /* The transformation code, below, takes an approach that is new for me.
