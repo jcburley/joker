@@ -863,11 +863,11 @@ JOKER FUNC http.CanonicalHeaderKey has:
   [^String _s])
 
 JOKER FUNC http.DetectContentType has:
-;; (defn ^"String" DetectContentType
-;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: data\n\nGo return type: string\n\nJoker input arguments: [data]\n\nJoker return type: String"
-;;   {:added "1.0"
-;;    :go "http.DetectContentType(_data)"}
-;;   [^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/http/sniff.go:21:29) _data])
+(defn ^"String" DetectContentType
+  "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: String"
+  {:added "1.0"
+   :go "http.DetectContentType(ConvertToArrayOfByte(_data))"}
+  [_data])
 
 JOKER FUNC http.Error has:
 ;; (defn Error
@@ -1473,10 +1473,10 @@ JOKER FUNC smtp.PlainAuth has:
 
 JOKER FUNC smtp.SendMail has:
 ;; (defn ^"Error" SendMail
-;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a ABEND884(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30), from string, to, msg)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) a, ^String from, to, msg]\n\nJoker return type: Error"
+;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a ABEND884(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30), from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) a, ^String from, ^(vector-of String) to, ^(vector-of Byte) msg]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "smtp.SendMail(_addr, _a, _from, _to, _msg)"}
-;;   [^String _addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) _a, ^String _from, ^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/smtp/smtp.go:319:52) _to, ^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/smtp/smtp.go:319:66) _msg])
+;;    :go "smtp.SendMail(_addr, _a, _from, ConvertToArrayOfString(_to), ConvertToArrayOfByte(_msg))"}
+;;   [^String _addr, ^ABEND885(unrecognized type Auth at: tests/big/src/net/smtp/smtp.go:319:30) _a, ^String _from, _to, _msg])
 
 JOKER FUNC textproto.CanonicalMIMEHeaderKey has:
 (defn ^"String" CanonicalMIMEHeaderKey
@@ -1514,11 +1514,11 @@ JOKER FUNC textproto.NewWriter has:
 ;;   [^ABEND881(unrecognized Expr type *ast.StarExpr at: tests/big/src/net/textproto/writer.go:21:18) _w])
 
 JOKER FUNC textproto.TrimBytes has:
-;; (defn TrimBytes
-;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: b\n\nGo return type: []int\n\nJoker input arguments: [b]\n\nJoker return type: (vector-of Int)"
-;;   {:added "1.0"
-;;    :go "trimBytes(_b)"}
-;;   [^ABEND881(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/textproto/textproto.go:137:18) _b])
+(defn TrimBytes
+  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []int\n\nJoker input arguments: [^(vector-of Byte) b]\n\nJoker return type: (vector-of Int)"
+  {:added "1.0"
+   :go "trimBytes(ConvertToArrayOfByte(_b))"}
+  [_b])
 
 JOKER FUNC textproto.TrimString has:
 (defn ^"String" TrimString
@@ -3259,14 +3259,14 @@ GO FUNC textproto.NewWriter has:
 // }
 
 GO FUNC textproto.TrimBytes has:
-// func trimBytes(b ABEND882(unrecognized Expr type *ast.ArrayType at: tests/big/src/net/textproto/textproto.go:137:18)) Object {
-// 	_res := _textproto.TrimBytes(b)
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-// 	}
-// 	return _vec1
-// }
+func trimBytes(b []byte) Object {
+	_res := _textproto.TrimBytes(b)
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res {
+		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+	}
+	return _vec1
+}
 
 GO FUNC url.Parse has:
 func parse(rawurl string) Object {
@@ -3360,5 +3360,5 @@ GO FUNC url.UserPassword has:
 Adding custom imports to tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to tests/gold/amd64-linux/joker/core/data/core.joke
 Adding custom loaded libraries to tests/gold/amd64-linux/joker/std/generate-custom.joke
-ABENDs: 883(174) 881(92) 882(82) 885(42) 884(34) 401(20) 675(18) 124(10) 947(7)
-Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=41 (27.70%)
+ABENDs: 883(174) 881(88) 882(81) 885(42) 884(34) 401(20) 675(18) 124(10) 947(7)
+Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=43 (29.05%)

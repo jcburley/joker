@@ -788,8 +788,9 @@ type funcCode struct {
 	goReturnTypeForDoc    string
 }
 
-func genGoPreArray(indent string, el Expr) (clType, clTypeDoc, goType, goTypeDoc string) {
-	clType, clTypeDoc, goType, goTypeDoc = genTypePre(indent, el)
+func genGoPreArray(indent string, el Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	jok2golParam = "ConvertToArrayOf" + clType + "(" + paramName + ")"
 	clType = ""
 	clTypeDoc = "(vector-of " + clTypeDoc + ")"
 	goType = "[]" + goType
@@ -797,9 +798,10 @@ func genGoPreArray(indent string, el Expr) (clType, clTypeDoc, goType, goTypeDoc
 	return
 }
 
-func genTypePre(indent string, e Expr) (clType, clTypeDoc, goType, goTypeDoc string) {
+func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
+	jok2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
 		goType = v.Name
@@ -820,7 +822,7 @@ func genTypePre(indent string, e Expr) (clType, clTypeDoc, goType, goTypeDoc str
 		clTypeDoc = clType
 		goTypeDoc = goType
 	case *ArrayType:
-//		clType, clTypeDoc, goType, goTypeDoc = genGoPreArray(indent, v.Elt)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(indent, v.Elt, paramName)
 	case *StarExpr:
 	case *SelectorExpr:
 	case *Ellipsis:
@@ -838,8 +840,9 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 		return
 	}
 	for _, f := range fl.List {
-		clType, clTypeDoc, goType, goTypeDoc := genTypePre(indent, f.Type)
 		for _, p := range f.Names {
+			clType, clTypeDoc, goType, goTypeDoc, jok2golParam := genTypePre(indent, f.Type, "_" + p.Name)
+
 			if jokerParamList != "" {
 				jokerParamList += ", "
 			}
@@ -859,7 +862,7 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 			if jokerGoParams != "" {
 				jokerGoParams += ", "
 			}
-			jokerGoParams += "_" + p.Name
+			jokerGoParams += jok2golParam
 
 			if goParamList != "" {
 				goParamList += ", "
