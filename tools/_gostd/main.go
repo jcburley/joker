@@ -884,6 +884,10 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 		}
 	}
 	jokerGoParams = "(" + jokerGoParams + ")"
+//	clTypeDoc = "[" + clTypeDoc + "]"
+	if strings.Contains(goParamListDoc, " ") || strings.Contains(goParamListDoc, ",") {
+		goParamListDoc = "(" + goParamListDoc + ")"
+	}
 	return
 }
 
