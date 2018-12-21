@@ -33,126 +33,126 @@ TYPE net/url.Values:
   tests/small/src/net/url/url.go
 JOKER FUNC net.LookupAddr has:
 (defn LookupAddr
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: ^String addr\n\nJoker return type: [(vector-of String) Error]"
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupAddr(_addr)"}
   [^String _addr])
 
 JOKER FUNC net.LookupCNAME has:
 (defn LookupCNAME
-  "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: (host string)\n\nGo return type: (cname string, err error)\n\nJoker input arguments: ^String host\n\nJoker return type: [String Error]"
+  "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: (host string)\n\nGo return type: (cname string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "lookupCNAME(_host)"}
   [^String _host])
 
 JOKER FUNC net.LookupHost has:
 (defn LookupHost
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: ^String host\n\nJoker return type: [(vector-of String) Error]"
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupHost(_host)"}
   [^String _host])
 
 JOKER FUNC net.LookupIP has:
 ;; (defn LookupIP
-;;   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: ^String host\n\nJoker return type: [(vector-of ABEND042(cannot find typename net.IP)) Error]"
+;;   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of ABEND042(cannot find typename net.IP)) Error]"
 ;;   {:added "1.0"
 ;;    :go "lookupIP(_host)"}
 ;;   [^String _host])
 
 JOKER FUNC net.LookupMX has:
 (defn LookupMX
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of {:Host ^String, :Pref ^Int}) Error]"
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of {:Host ^String, :Pref ^Int}) Error]"
   {:added "1.0"
    :go "lookupMX(_name)"}
   [^String _name])
 
 JOKER FUNC net.LookupNS has:
 (defn LookupNS
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of {:Host ^String}) Error]"
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of {:Host ^String}) Error]"
   {:added "1.0"
    :go "lookupNS(_name)"}
   [^String _name])
 
 JOKER FUNC net.LookupPort has:
 (defn LookupPort
-  "LookupPort looks up the port for the given network and service.\n\nGo input arguments: (network string, service string)\n\nGo return type: (port int, err error)\n\nJoker input arguments: ^String network, ^String service\n\nJoker return type: [Int Error]"
+  "LookupPort looks up the port for the given network and service.\n\nGo input arguments: (network string, service string)\n\nGo return type: (port int, err error)\n\nJoker input arguments: [^String network, ^String service]\n\nJoker return type: [Int Error]"
   {:added "1.0"
    :go "lookupPort(_network, _service)"}
   [^String _network, ^String _service])
 
 JOKER FUNC net.LookupSRV has:
 (defn LookupSRV
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: ^String service, ^String proto, ^String name\n\nJoker return type: [String (vector-of {:Target ^String, :Port ^Int, :Priority ^Int, :Weight ^Int}) Error]"
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of {:Target ^String, :Port ^Int, :Priority ^Int, :Weight ^Int}) Error]"
   {:added "1.0"
    :go "lookupSRV(_service, _proto, _name)"}
   [^String _service, ^String _proto, ^String _name])
 
 JOKER FUNC net.LookupTXT has:
 (defn LookupTXT
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: ^String name\n\nJoker return type: [(vector-of String) Error]"
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
    :go "lookupTXT(_name)"}
   [^String _name])
 
 JOKER FUNC url.Parse has:
 (defn Parse
-  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: ^String rawurl\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
+  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
   {:added "1.0"
    :go "parse(_rawurl)"}
   [^String _rawurl])
 
 JOKER FUNC url.ParseQuery has:
 ;; (defn ParseQuery
-;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: ^String query\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: tests/small/src/net/url/url.go:804:13) Error]"
+;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: tests/small/src/net/url/url.go:804:13) Error]"
 ;;   {:added "1.0"
 ;;    :go "parseQuery(_query)"}
 ;;   [^String _query])
 
 JOKER FUNC url.ParseRequestURI has:
 (defn ParseRequestURI
-  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: ^String rawurl\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
+  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^{}, :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
   {:added "1.0"
    :go "parseRequestURI(_rawurl)"}
   [^String _rawurl])
 
 JOKER FUNC url.PathEscape has:
 (defn ^"String" PathEscape
-  "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
+  "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
    :go "url.PathEscape(_s)"}
   [^String _s])
 
 JOKER FUNC url.PathUnescape has:
 (defn PathUnescape
-  "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: ^String s\n\nJoker return type: [String Error]"
+  "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "pathUnescape(_s)"}
   [^String _s])
 
 JOKER FUNC url.QueryEscape has:
 (defn ^"String" QueryEscape
-  "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: ^String s\n\nJoker return type: String"
+  "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
    :go "url.QueryEscape(_s)"}
   [^String _s])
 
 JOKER FUNC url.QueryUnescape has:
 (defn QueryUnescape
-  "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: ^String s\n\nJoker return type: [String Error]"
+  "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
    :go "queryUnescape(_s)"}
   [^String _s])
 
 JOKER FUNC url.User has:
 ;; (defn User
-;;   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: ^String username\n\nJoker return type: {}"
+;;   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: user(_username))"}
 ;;   [^String _username])
 
 JOKER FUNC url.UserPassword has:
 ;; (defn UserPassword
-;;   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: ^String username, ^String password\n\nJoker return type: {}"
+;;   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: userPassword(_username, _password))"}
 ;;   [^String _username, ^String _password])
