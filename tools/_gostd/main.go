@@ -874,13 +874,72 @@ type funcCode struct {
 	goReturnTypeForDoc    string // genReturnType(pkg, d.Type.Results)
 }
 
-func genGoPre(indent string, fl *FieldList, goFname string) (jok, jok2golParams, gol, code, params string) {
-	jok = fieldListAsClojure(fl)
-	jok2golParams = "(" + fieldListToGo(fl) + ")"
-	code = "" // TODO: enhance to support composites
-	gol = paramListAsGo(fl)
-	params = argsAsGo(fl)
+func genTypePre(e Expr) (clType, goType string) {
+	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
+	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
+	switch v := e.(type) {
+	case *Ident:
+		goType = v.Name
+		clType = fmt.Sprintf("ABEND885(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+		switch v.Name {
+		case "string":
+			clType = "String"
+		case "int":
+			clType = "Int"
+		case "byte":
+			clType = "Byte"
+		case "bool":
+			clType = "Bool"
+		case "int16", "uint", "uint16", "int32", "uint32", "int64", "error":
+		default:
+			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+		}
+	}
 	return
+}
+
+func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jokerGoParams, goParamList, goPreCode, goParams string) {
+	if fl == nil {
+		return
+	}
+	for _, f := range fl.List {
+		clType, goType := genTypePre(f.Type)
+		for _, p := range f.Names {
+			if jokerParamList != "" {
+				jokerParamList += ", "
+			}
+			if clType != "" {
+				jokerParamList += "^" + clType + " "
+			}
+			jokerParamList += "_" + paramNameAsClojure(p.Name)
+
+			if jokerGoParams != "" {
+				jokerGoParams += ", "
+			}
+			jokerGoParams += "_" + p.Name
+
+			if goParamList != "" {
+				goParamList += ", "
+			}
+			goParamList += paramNameAsGo(p.Name)
+			if goType != "" {
+				goParamList += " " + goType
+			}
+
+			if goParams != "" {
+				goParams += ", "
+			}
+			goParams += paramNameAsGo(p.Name)
+		}
+	}
+	jokerGoParams = "(" + jokerGoParams + ")"
+	return
+
+/*	jokerParamList = fieldListAsClojure(fl)
+	jokerGoParams = "(" + fieldListToGo(fl) + ")"
+	goPreCode = "" // TODO: enhance to support composites
+	goParamList = paramListAsGo(fl)
+	goParams = argsAsGo(fl) */
 }
 
 func genGoCall(pkg, goFname string, goParams string) string {
