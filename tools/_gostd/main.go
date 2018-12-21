@@ -788,10 +788,28 @@ type funcCode struct {
 	goReturnTypeForDoc    string
 }
 
-func genGoPreArray(indent string, el Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+var customRuntimeImplemented = map[string]struct{} {
+	"ConvertToArrayOfByte": {},
+	"ConvertToArrayOfInt": {},
+	"ConvertToArrayOfString": {},
+}
+
+func genGoPreArray(indent string, e *ArrayType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	el := e.Elt
+	len := e.Len
 	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
-	jok2golParam = "ConvertToArrayOf" + clType + "(" + paramName + ")"
-	clType = ""
+	runtime := "ConvertToArrayOf" + clType
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if len != nil {
+		jok2golParam = "ABEND901(specific-length arrays not supported: " + jok2golParam + ")"
+	} else if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND902(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	} else if _, ok := el.(*Ident); !ok {
+		jok2golParam = "ABEND903(arrays of things other than identifiers not supported: " + jok2golParam + ")"
+	}
+	clType = "Object"
 	clTypeDoc = "(vector-of " + clTypeDoc + ")"
 	goType = "[]" + goType
 	goTypeDoc = goType
@@ -822,7 +840,7 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 		clTypeDoc = clType
 		goTypeDoc = goType
 	case *ArrayType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(indent, v.Elt, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(indent, v, paramName)
 	case *StarExpr:
 	case *SelectorExpr:
 	case *Ellipsis:
