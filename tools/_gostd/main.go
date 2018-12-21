@@ -788,6 +788,16 @@ type funcCode struct {
 	goReturnTypeForDoc    string
 }
 
+/* IMPORTANT: The public functions listed herein should be only those
+   defined in in joker/core/custom-runtime.go.
+
+   That's how gostd knows to not actually generate calls to
+   as-yet-unimplemented (or stubbed-out) functions, saving the
+   developer the hassle of getting most of the way through a build
+   before hitting undefined-func errors.
+
+*/
+
 var customRuntimeImplemented = map[string]struct{} {
 	"ConvertToArrayOfByte": {},
 	"ConvertToArrayOfInt": {},
@@ -816,6 +826,115 @@ func genGoPreArray(indent string, e *ArrayType, paramName string) (clType, clTyp
 	return
 }
 
+func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	el := e.X
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	runtime := "ConvertToIndirectOf" + clType
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND903(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clType = "Object"
+	clTypeDoc = "(atom " + clTypeDoc + ")"
+	goType = "*" + goType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreSelector(indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	X := e.X  // a package identifier
+	Sel := e.Sel
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, Sel, paramName)
+	runtime := X.(*Ident).Name + "." + Sel.Name  // wrong, but documents what is needed here
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND904(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	goType = "*" + goType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreEllipsis(indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	el := e.Elt
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	runtime := "ConvertToEllipsisHaHa" + clType
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND905(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clTypeDoc = "(ellipsis-somehow " + clType + ")"
+	goType = "..." + goType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreFunc(indent string, e *FuncType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType = "fn"
+	goType = "func"
+	runtime := "ConvertToFuncTypeHaHa"
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND906(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clTypeDoc = clType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreInterface(indent string, e *InterfaceType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType = "<protocol-or-something>"
+	goType = "interface {}"
+	runtime := "ConvertToInterfaceTypeHaHa"
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND907(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clTypeDoc = clType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreMap(indent string, e *MapType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType = "{}"
+	goType = "map[]"
+	runtime := "ConvertToMapTypeHaHa"
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND908(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clTypeDoc = clType
+	goTypeDoc = goType
+	return
+}
+
+func genGoPreChan(indent string, e *ChanType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType = "<no-idea-about-chan-yet>"
+	goType = "<-chan"
+	runtime := "ConvertToChanTypeHaHa"
+	jok2golParam = runtime + "(" + jok2golParam + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
+		if !strings.Contains(jok2golParam, "ABEND") {
+			jok2golParam = "ABEND909(custom-runtime routine not implemented: " + jok2golParam + ")"
+		}
+	}
+	clTypeDoc = clType
+	goTypeDoc = goType
+	return
+}
+
 func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
@@ -835,19 +954,26 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 			clType = "Bool"
 		case "int16", "uint", "uint16", "int32", "uint32", "int64", "error":
 		default:
-			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+//			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
 		}
 		clTypeDoc = clType
 		goTypeDoc = goType
 	case *ArrayType:
 		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(indent, v, paramName)
 	case *StarExpr:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreStar(indent, v, paramName)
 	case *SelectorExpr:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreSelector(indent, v, paramName)
 	case *Ellipsis:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreEllipsis(indent, v, paramName)
 	case *FuncType:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreFunc(indent, v, paramName)
 	case *InterfaceType:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreInterface(indent, v, paramName)
 	case *MapType:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreMap(indent, v, paramName)
 	case *ChanType:
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreChan(indent, v, paramName)
 	}
 	return
 }
