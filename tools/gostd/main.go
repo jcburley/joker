@@ -38,7 +38,7 @@ func check(e error) {
      - lookupMX
      - queryEscape
    E.g.:
-     ./_gostd --dir $PWD/tests/small --output-code 2>&1 | grep -C20 lookupMX
+     ./gostd --dir $PWD/tests/small --output-code 2>&1 | grep -C20 lookupMX
 
 */
 

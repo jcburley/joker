@@ -249,7 +249,7 @@ At the moment, this is just a proof of concept, focusing initially on `net.Looku
 ```
 $ cd joker # Joker source directory on this branch and fork
 $ ln -s <go-source-directory> GO.link
-$ go run tools/_gostd/main.go --output-code 2>&1 | less
+$ go run tools/gostd/main.go --output-code 2>&1 | less
 ```
 
 Then page through the output. Code snippets intended for e.g. `joker/std/go/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/main.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
@@ -282,7 +282,7 @@ $
 
 ## Run gostd Tests
 
-The `test.sh` script in `joker/tools/_gostd/` runs tests against a small, then larger, then
+The `test.sh` script in `joker/tools/gostd/` runs tests against a small, then larger, then
 (optionally) full, copy of Go 1.11's `golang/go/src/` tree.
 
 ```
@@ -300,15 +300,15 @@ $
 
 The script currently runs tests in this order:
 
-1. `tests/small`
-2. `tests/big`
+1. `_tests/small`
+2. `_tests/big`
 3. `./GOSRC` (if it exists; or, if `$GOSRC` is non-null and points to a directory, `$GOSRC`)
 
 After each test it runs, it uses `git diff` to compare the resulting `.gold` file with the checked-out version and, if there are any differences, it runs the command specified via `--on-error` (again, the default is `exit 99`, so the script will exit as soon as it sees a failing test).
 
 ## Update Tests on Other Machines
 
-The Go standard library is customized per system architecture and OS, and `gostd2joker` picks up these differences via its use of Go's build-related packages. That's why `tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd2joker` repo is somewhat automated via `update.sh` -- e.g.:
+The Go standard library is customized per system architecture and OS, and `gostd2joker` picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd2joker` repo is somewhat automated via `update.sh` -- e.g.:
 
 ```
 $ ./update.sh 
@@ -321,8 +321,8 @@ From github.com:jcburley/joker
    2f356e5..b643457  gostd      -> origin/gostd
 Updating 2f356e5..b643457
 Fast-forward
- tools/_gostd/main.go | 8 ++++++--
- tools/_gostd/test.sh | 6 +++---
+ tools/gostd/main.go | 8 ++++++--
+ tools/gostd/test.sh | 6 +++---
  2 files changed, 9 insertions(+), 5 deletions(-)
 No changes to amd64-darwin test results.
 $

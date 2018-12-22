@@ -17,7 +17,7 @@ build() {
 set -e  # Exit on error.
 
 if [ -e GO.link ] && which gostd2joker > /dev/null 2>&1; then
-    go run tools/_gostd/main.go --replace --joker .
+    go run tools/gostd/main.go --replace --joker .
 fi
 
 build
