@@ -817,7 +817,7 @@ func genGoPreArray(indent string, e *ArrayType, paramName string) (clType, clTyp
 			jok2golParam = "ABEND902(custom-runtime routine not implemented: " + jok2golParam + ")"
 		}
 	} else if _, ok := el.(*Ident); !ok {
-		jok2golParam = "ABEND903(arrays of things other than identifiers not supported: " + jok2golParam + ")"
+		jok2golParam = "ABEND910(arrays of things other than identifiers not supported: " + jok2golParam + ")"
 	}
 	clType = "Object"
 	clTypeDoc = "(vector-of " + clTypeDoc + ")"
@@ -837,7 +837,7 @@ func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeD
 		}
 	}
 	clType = "Object"
-	clTypeDoc = "(atom " + clTypeDoc + ")"
+	clTypeDoc = "(atom-of " + clTypeDoc + ")"
 	goType = "*" + goType
 	goTypeDoc = goType
 	return
@@ -954,7 +954,8 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 			clType = "Bool"
 		case "int16", "uint", "uint16", "int32", "uint32", "int64", "error":
 		default:
-//			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+			clType = v.Name  // The important thing here is that we don't have a Go conversion
+			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
 		}
 		clTypeDoc = clType
 		goTypeDoc = goType
