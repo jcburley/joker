@@ -230,11 +230,13 @@ On this experimental branch, Joker can be optionally built against a Go source t
 
 To make this "magic" happen:
 
-* Ensure you're running Go version 1.11.2 (see `go version`) or later, as the copy of the subset of some supported Go packages, that comes with `gostd`, comes from that version (which will matter only if you want to run tests, as described below)
-* Get a copy of the Go source tree, e.g. [from Github](https://github.com/golang/go), and check out the tag/branch corresponding to the version of Go you're running (see `go version`)
-* Check out the `gostd` branch of [my fork of Joker](https://github.com/jcburley/joker.git) and `cd` to it
-* Create a symlink targeting that copy of the Go source tree you checked out (above) from `./GO.link` (in the top-level Joker source directory)
-* `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
+1. Ensure you're running Go version 1.11.2 (see `go version`) or later, as the copy of the subset of some supported Go packages, that comes with `gostd`, comes from that version (which will matter only if you want to run tests, as described below)
+2. Get a copy of the Go source tree, e.g. [from Github](https://github.com/golang/go), and check out the tag/branch corresponding to the version of Go you're running (see `go version`)
+3. Check out [Joker](https://github.com/candid82/joker.git) as usual and `cd` to it
+4. In the Joker repo you just checked out, add [my fork of Joker](https://github.com/jcburley/joker.git) as a remote (named e.g. `gostd`)
+5. Check out the `gostd` (currently the default) branch of my fork of Joker
+6. Create a symlink targeting that copy of the Go source tree you checked out (above) from `./GO.link` (in the top-level Joker source directory)
+7. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
 ```
 -e "(require '[joker.go.net :as n]) (print \"\\nNetwork interfaces:\\n  \") (n/Interfaces) (println)"
@@ -242,9 +244,9 @@ To make this "magic" happen:
 
 ## Overview of Tool's Relationship to Joker and Go
 
-Before building Joker, one can optionally run this tool against a Go source tree, which _must_ correspond to the version of Go used to build Joker itself, to populate `joker/std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
+Before building Joker, one can optionally run this tool against a Go source tree (as `run.sh` automatically does). The Go source tree _must_ correspond to the version of Go used to build Joker itself, to populate `joker/std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
-At the moment, this is just a proof of concept, focusing initially on `net.LookupMX()`. You can run it standalone like this:
+This is still just a proof of concept; for example, `net.LookupMX()` returns a vector including a vector of maps, which is not quite correct (since the Go function returns an array of pointers to the `MX` type), although it's quite useful and convenient. You can run it standalone like this:
 
 ```
 $ cd joker # Joker source directory on this branch and fork
@@ -347,7 +349,7 @@ To github.com:jcburley/joker
 $
 ```
 
-(Don't forget to `git pull origin master` on your other development machines after updating test results, to avoid having to do the `git merge` dance when you make changes on them and try to `git push`.)
+(Don't forget to `git pull gostd gostd` on your other development machines after updating test results, to avoid having to do the `git merge` dance when you make changes on them and try to `git push`.)
 
 # Formalities
 
