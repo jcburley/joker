@@ -927,10 +927,10 @@ JOKER FUNC http.ListenAndServeTLS has:
 
 JOKER FUNC http.MaxBytesReader has:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/request.go:1056:23), r *ABEND884(unrecognized type ReadCloser at: _tests/big/src/net/http/request.go:1056:44), n int64)\n\nGo return type: ...\n\nJoker input arguments: [^ResponseWriter w, ^ReadCloser r, ^ABEND885(unrecognized type int64 at: _tests/big/src/net/http/request.go:1056:58) n]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: _tests/big/src/net/http/request.go:1056:65)"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/request.go:1056:23), r *ABEND884(unrecognized type ReadCloser at: _tests/big/src/net/http/request.go:1056:44), n int64)\n\nGo return type: ...\n\nJoker input arguments: [^ResponseWriter w, ^ReadCloser r, ^Int64 n]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.SelectorExpr at: _tests/big/src/net/http/request.go:1056:65)"
 ;;   {:added "1.0"
 ;;    :go "maxBytesReader(_w, ABEND904(custom-runtime routine not implemented: io.ReadCloser(_r)), _n)"}
-;;   [^ResponseWriter _w, ^ReadCloser _r, ^ABEND885(unrecognized type int64 at: _tests/big/src/net/http/request.go:1056:58) _n])
+;;   [^ResponseWriter _w, ^ReadCloser _r, ^Int64 _n])
 
 JOKER FUNC http.NewFileTransport has:
 ;; (defn NewFileTransport
@@ -3360,5 +3360,5 @@ GO FUNC url.UserPassword has:
 Adding custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/core.joke
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/std/generate-custom.joke
-ABENDs: 884(197) 883(174) 904(60) 903(24) 401(20) 675(18) 124(10) 947(7) 885(2) 907(2) 906(1) 908(1)
+ABENDs: 884(197) 883(174) 904(60) 903(24) 401(20) 675(18) 124(10) 947(7) 907(2) 906(1) 908(1)
 Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=43 (29.05%)

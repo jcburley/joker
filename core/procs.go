@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math"
 	"math/big"
 	"math/rand"
 	"os"
@@ -101,11 +102,59 @@ func ExtractInt(args []Object, index int) int {
 }
 
 func ExtractByte(args []Object, index int) byte {
-	b := ExtractInt(args, index)
-	if (b < 0 || b > 255) {
+	v := ExtractInt(args, index)
+	if (v < 0 || v > 255) {
 		panic(RT.NewArgTypeError(index, args[index].(Int), "byte"))
 	}
-	return byte(b)
+	return byte(v)
+}
+
+func ExtractInt16(args []Object, index int) int16 {
+	v := ExtractInt(args, index)
+	if (v < math.MinInt16 || v > math.MaxInt16) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "int16"))
+	}
+	return int16(v)
+}
+
+func ExtractInt32(args []Object, index int) int32 {
+	v := ExtractInt(args, index)
+	if (v < math.MinInt32 || v > math.MaxInt32) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "int32"))
+	}
+	return int32(v)
+}
+
+func ExtractInt64(args []Object, index int) int64 {
+	return ExtractNumber(args, index).BigInt().Int64()
+}
+
+func ExtractUInt(args []Object, index int) uint {
+	v := EnsureNumber(args, index).BigInt().Uint64()
+	if (v > uint64(MAX_UINT)) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "uint"))
+	}
+	return uint(v)
+}
+
+func ExtractUInt16(args []Object, index int) uint16 {
+	v := ExtractUInt(args, index)
+	if (v > math.MaxUint16) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "uint16"))
+	}
+	return uint16(v)
+}
+
+func ExtractUInt32(args []Object, index int) uint32 {
+	v := ExtractNumber(args, index).BigInt().Uint64()
+	if (v > math.MaxUint32) {
+		panic(RT.NewArgTypeError(index, args[index].(Int), "uint32"))
+	}
+	return uint32(v)
+}
+
+func ExtractUInt64(args []Object, index int) uint64 {
+	return ExtractNumber(args, index).BigInt().Uint64()
 }
 
 func ExtractBool(args []Object, index int) bool {

@@ -952,10 +952,22 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 			clType = "Byte"
 		case "bool":
 			clType = "Bool"
-		case "int16", "uint", "uint16", "int32", "uint32", "int64", "error":
+		case "int16":
+			clType = "Int16"
+		case "uint":
+			clType = "UInt"
+		case "uint16":
+			clType = "UInt16"
+		case "int32":
+			clType = "Int32"
+		case "uint32":
+			clType = "UInt32"
+		case "int64":
+			clType = "Int64"
+		case "error":
 		default:
 			clType = v.Name  // The important thing here is that we don't have a Go conversion
-			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))  // only user-defined types left now
 		}
 		clTypeDoc = clType
 		goTypeDoc = goType
