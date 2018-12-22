@@ -775,7 +775,7 @@ var nonEmptyLineRegexp *regexp.Regexp
            <goCode>                                // goCode := <goPreCode>+"\t"+<goResultAssign>+"_"+pkg+"."+<godecl.Name>+"("+<goParams>+")\n"+<goPostCode>
    }
 
- */
+*/
 
 type funcCode struct {
 	jokerParamList        string
@@ -798,9 +798,9 @@ type funcCode struct {
 
 */
 
-var customRuntimeImplemented = map[string]struct{} {
-	"ConvertToArrayOfByte": {},
-	"ConvertToArrayOfInt": {},
+var customRuntimeImplemented = map[string]struct{}{
+	"ConvertToArrayOfByte":   {},
+	"ConvertToArrayOfInt":    {},
 	"ConvertToArrayOfString": {},
 }
 
@@ -844,10 +844,10 @@ func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeD
 }
 
 func genGoPreSelector(indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
-	X := e.X  // a package identifier
+	X := e.X // a package identifier
 	Sel := e.Sel
 	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, Sel, paramName)
-	runtime := X.(*Ident).Name + "." + Sel.Name  // wrong, but documents what is needed here
+	runtime := X.(*Ident).Name + "." + Sel.Name // wrong, but documents what is needed here
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
@@ -966,8 +966,8 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 			clType = "Int64"
 		case "error":
 		default:
-			clType = v.Name  // The important thing here is that we don't have a Go conversion
-			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))  // only user-defined types left now
+			clType = v.Name                                                                         // The important thing here is that we don't have a Go conversion
+			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos())) // only user-defined types left now
 		}
 		clTypeDoc = clType
 		goTypeDoc = goType
@@ -998,7 +998,7 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 	}
 	for _, f := range fl.List {
 		for _, p := range f.Names {
-			clType, clTypeDoc, goType, goTypeDoc, jok2golParam := genTypePre(indent, f.Type, "_" + p.Name)
+			clType, clTypeDoc, goType, goTypeDoc, jok2golParam := genTypePre(indent, f.Type, "_"+p.Name)
 
 			if jokerParamList != "" {
 				jokerParamList += ", "
