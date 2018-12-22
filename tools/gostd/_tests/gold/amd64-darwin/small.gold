@@ -1,36 +1,36 @@
-Walking from tests/small/src to tests/small/src/go
+Walking from _tests/small/src to _tests/small/src/go
 Processing go:
-Walking from tests/small/src to tests/small/src/net
+Walking from _tests/small/src to _tests/small/src/net
 Processing net:
-Matchfile(tests/small/src/net/lookup.go) => true <nil>
-Matchfile(tests/small/src/net/dnsclient.go) => true <nil>
+Matchfile(_tests/small/src/net/lookup.go) => true <nil>
+Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Package net:
 Processing package=net in net:
-Walking from tests/small/src to tests/small/src/net/url
+Walking from _tests/small/src to _tests/small/src/net/url
 Processing net/url:
-Matchfile(tests/small/src/net/url/url.go) => true <nil>
+Matchfile(_tests/small/src/net/url/url.go) => true <nil>
 Package url:
 Processing package=url in net/url:
 TYPE net.MX:
-  tests/small/src/net/dnsclient.go
+  _tests/small/src/net/dnsclient.go
 TYPE net.NS:
-  tests/small/src/net/dnsclient.go
+  _tests/small/src/net/dnsclient.go
 TYPE net.Resolver:
-  tests/small/src/net/lookup.go
+  _tests/small/src/net/lookup.go
 TYPE net.SRV:
-  tests/small/src/net/dnsclient.go
+  _tests/small/src/net/dnsclient.go
 TYPE net/url.Error:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 TYPE net/url.EscapeError:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 TYPE net/url.InvalidHostError:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 TYPE net/url.URL:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 TYPE net/url.Userinfo:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 TYPE net/url.Values:
-  tests/small/src/net/url/url.go
+  _tests/small/src/net/url/url.go
 JOKER FUNC net.LookupAddr has:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
@@ -103,7 +103,7 @@ JOKER FUNC url.Parse has:
 
 JOKER FUNC url.ParseQuery has:
 ;; (defn ParseQuery
-;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: tests/small/src/net/url/url.go:804:13) Error]"
+;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: _tests/small/src/net/url/url.go:804:13) Error]"
 ;;   {:added "1.0"
 ;;    :go "parseQuery(_query)"}
 ;;   [^String _query])
