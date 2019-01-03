@@ -448,8 +448,7 @@ func exprIsUseful(rtn string) bool {
 	return rtn != "NIL"
 }
 
-func genGoPostNamed(indent, pkg, in, t, onlyIf string) (jok, gol, goc, out string) {
-	qt := pkg + "." + t
+func genGoPostSelected(indent, pkg, in, qt, onlyIf string) (jok, gol, goc, out string) {
 	if v, ok := types[qt]; ok {
 		if v.building { // Mutually-referring types currently not supported
 			jok = fmt.Sprintf("ABEND947(recursive type reference involving %s)",
@@ -463,8 +462,14 @@ func genGoPostNamed(indent, pkg, in, t, onlyIf string) (jok, gol, goc, out strin
 		}
 	} else {
 		jok = fmt.Sprintf("ABEND042(cannot find typename %s)", qt)
+		gol = "..."
+		out = in
 	}
 	return
+}
+
+func genGoPostNamed(indent, pkg, in, t, onlyIf string) (jok, gol, goc, out string) {
+	return genGoPostSelected(indent, pkg, in, pkg+"."+t, onlyIf)
 }
 
 func isPrivate(p string) bool {
@@ -562,6 +567,13 @@ func genGoPostStar(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc
 	return
 }
 
+func genGoPostSelector(indent, pkg, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
+	pkgName := e.X.(*Ident).Name
+	selName := e.Sel.Name
+	jok, gol, goc, out = genGoPostSelected(indent, pkg, in, pkgName+"."+selName, onlyIf)
+	return
+}
+
 func maybeNil(expr, in string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + in + " } }()"
 }
@@ -598,6 +610,8 @@ func genGoPostExpr(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc
 		jok, gol, goc, out = genGoPostArray(indent, pkg, in, v.Elt, onlyIf)
 	case *StarExpr:
 		jok, gol, goc, out = genGoPostStar(indent, pkg, in, v.X, onlyIf)
+	case *SelectorExpr:
+		jok, gol, goc, out = genGoPostSelector(indent, pkg, in, v, onlyIf)
 	case *StructType:
 		jok, gol, goc, out = genGoPostStruct(indent, pkg, in, v.Fields, onlyIf)
 	default:
