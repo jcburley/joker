@@ -574,7 +574,11 @@ func genGoPostExpr(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc
 			jok = "String"
 			gol = "string"
 			out = "MakeString(" + in + ")"
-		case "int", "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
+		case "int":
+			jok = "Int"
+			gol = "int"
+			out = "MakeInt(" + in + ")"
+		case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
 			jok = "Int"
 			gol = "int"
 			out = "MakeInt(int(" + in + "))"
@@ -813,9 +817,7 @@ type funcCode struct {
    as-yet-unimplemented (or stubbed-out) functions, saving the
    developer the hassle of getting most of the way through a build
    before hitting undefined-func errors.
-
 */
-
 var customRuntimeImplemented = map[string]struct{}{
 	"ConvertToArrayOfByte":   {},
 	"ConvertToArrayOfInt":    {},
@@ -862,10 +864,10 @@ func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeD
 }
 
 func genGoPreSelector(indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
-	X := e.X // a package identifier
-	Sel := e.Sel
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, Sel, paramName)
-	runtime := X.(*Ident).Name + "." + Sel.Name // wrong, but documents what is needed here
+	pkg := e.X
+	sel := e.Sel
+	runtime := pkg.(*Ident).Name + "." + sel.Name // wrong, but documents what is needed here
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, sel, paramName)
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
