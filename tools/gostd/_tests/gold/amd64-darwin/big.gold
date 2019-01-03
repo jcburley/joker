@@ -1721,8 +1721,8 @@ func interfaceByIndex(index int) Object {
 	var _obj_map1 Object
 	if _res1 != nil {
 		_map1 := EmptyArrayMap()
-		_map1.Add(MakeKeyword("Index"), MakeInt(int((*_res1).Index)))
-		_map1.Add(MakeKeyword("MTU"), MakeInt(int((*_res1).MTU)))
+		_map1.Add(MakeKeyword("Index"), MakeInt((*_res1).Index))
+		_map1.Add(MakeKeyword("MTU"), MakeInt((*_res1).MTU))
 		_map1.Add(MakeKeyword("Name"), MakeString((*_res1).Name))
 		_vec2 := EmptyVector
 		for _, _elem2 := range (*_res1).HardwareAddr {
@@ -1746,8 +1746,8 @@ func interfaceByName(name string) Object {
 	var _obj_map1 Object
 	if _res1 != nil {
 		_map1 := EmptyArrayMap()
-		_map1.Add(MakeKeyword("Index"), MakeInt(int((*_res1).Index)))
-		_map1.Add(MakeKeyword("MTU"), MakeInt(int((*_res1).MTU)))
+		_map1.Add(MakeKeyword("Index"), MakeInt((*_res1).Index))
+		_map1.Add(MakeKeyword("MTU"), MakeInt((*_res1).MTU))
 		_map1.Add(MakeKeyword("Name"), MakeString((*_res1).Name))
 		_vec2 := EmptyVector
 		for _, _elem2 := range (*_res1).HardwareAddr {
@@ -1771,8 +1771,8 @@ func interfaces() Object {
 	_vec1 := EmptyVector
 	for _, _elem1 := range _res1 {
 		_map2 := EmptyArrayMap()
-		_map2.Add(MakeKeyword("Index"), MakeInt(int(_elem1.Index)))
-		_map2.Add(MakeKeyword("MTU"), MakeInt(int(_elem1.MTU)))
+		_map2.Add(MakeKeyword("Index"), MakeInt(_elem1.Index))
+		_map2.Add(MakeKeyword("MTU"), MakeInt(_elem1.MTU))
 		_map2.Add(MakeKeyword("Name"), MakeString(_elem1.Name))
 		_vec3 := EmptyVector
 		for _, _elem3 := range _elem1.HardwareAddr {
@@ -1958,7 +1958,7 @@ GO FUNC net.LookupPort in net has:
 func lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeInt(int(port)))
+	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -2098,7 +2098,7 @@ func resolveTCPAddr(network string, address string) Object {
 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 		}
 		_map1.Add(MakeKeyword("IP"), _vec2)
-		_map1.Add(MakeKeyword("Port"), MakeInt(int((*_res1).Port)))
+		_map1.Add(MakeKeyword("Port"), MakeInt((*_res1).Port))
 		_map1.Add(MakeKeyword("Zone"), MakeString((*_res1).Zone))
 		_obj_map1 = Object(_map1)
 	} else {
@@ -2121,7 +2121,7 @@ func resolveUDPAddr(network string, address string) Object {
 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 		}
 		_map1.Add(MakeKeyword("IP"), _vec2)
-		_map1.Add(MakeKeyword("Port"), MakeInt(int((*_res1).Port)))
+		_map1.Add(MakeKeyword("Port"), MakeInt((*_res1).Port))
 		_map1.Add(MakeKeyword("Zone"), MakeString((*_res1).Zone))
 		_obj_map1 = Object(_map1)
 	} else {
@@ -2179,10 +2179,10 @@ GO FUNC http.Get in net/http has:
 // 	if resp != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Status"), MakeString((*resp).Status))
-// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt(int((*resp).StatusCode)))
+// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt((*resp).StatusCode))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*resp).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*resp).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*resp).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*resp).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*resp).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*resp).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*resp).Body)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*resp).ContentLength)))
@@ -2200,8 +2200,8 @@ GO FUNC http.Get in net/http has:
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
 // 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*resp).Request).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*resp).Request).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*resp).Request).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
@@ -2257,10 +2257,10 @@ GO FUNC http.Head in net/http has:
 // 	if resp != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Status"), MakeString((*resp).Status))
-// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt(int((*resp).StatusCode)))
+// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt((*resp).StatusCode))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*resp).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*resp).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*resp).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*resp).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*resp).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*resp).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*resp).Body)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*resp).ContentLength)))
@@ -2278,8 +2278,8 @@ GO FUNC http.Head in net/http has:
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
 // 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*resp).Request).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*resp).Request).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*resp).Request).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
@@ -2335,8 +2335,8 @@ GO FUNC http.NewRequest in net/http has:
 // 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
 // 		_map1.Add(MakeKeyword("URL"), (*(*_res1).URL))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*_res1).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*_res1).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*_res1).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
 // 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
@@ -2360,10 +2360,10 @@ GO FUNC http.NewRequest in net/http has:
 // 		if (*_res1).Response != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
-// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt(int((*(*_res1).Response).StatusCode)))
+// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*_res1).Response).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*_res1).Response).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
@@ -2412,8 +2412,8 @@ GO FUNC http.ParseHTTPVersion in net/http has:
 func parseHTTPVersion(vers string) Object {
 	major, minor, ok := _http.ParseHTTPVersion(vers)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeInt(int(major)))
-	_res = _res.Conjoin(MakeInt(int(minor)))
+	_res = _res.Conjoin(MakeInt(major))
+	_res = _res.Conjoin(MakeInt(minor))
 	_res = _res.Conjoin(MakeBool(ok))
 	return _res
 }
@@ -2435,10 +2435,10 @@ GO FUNC http.Post in net/http has:
 // 	if resp != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Status"), MakeString((*resp).Status))
-// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt(int((*resp).StatusCode)))
+// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt((*resp).StatusCode))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*resp).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*resp).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*resp).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*resp).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*resp).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*resp).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*resp).Body)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*resp).ContentLength)))
@@ -2456,8 +2456,8 @@ GO FUNC http.Post in net/http has:
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
 // 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*resp).Request).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*resp).Request).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*resp).Request).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
@@ -2501,10 +2501,10 @@ GO FUNC http.PostForm in net/http has:
 // 	if resp != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Status"), MakeString((*resp).Status))
-// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt(int((*resp).StatusCode)))
+// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt((*resp).StatusCode))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*resp).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*resp).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*resp).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*resp).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*resp).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*resp).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*resp).Body)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*resp).ContentLength)))
@@ -2522,8 +2522,8 @@ GO FUNC http.PostForm in net/http has:
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
 // 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*resp).Request).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*resp).Request).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*resp).Request).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
@@ -2583,8 +2583,8 @@ GO FUNC http.ReadRequest in net/http has:
 // 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
 // 		_map1.Add(MakeKeyword("URL"), (*(*_res1).URL))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*_res1).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*_res1).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*_res1).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
 // 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
@@ -2608,10 +2608,10 @@ GO FUNC http.ReadRequest in net/http has:
 // 		if (*_res1).Response != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
-// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt(int((*(*_res1).Response).StatusCode)))
+// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*_res1).Response).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*_res1).Response).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
@@ -2647,10 +2647,10 @@ GO FUNC http.ReadResponse in net/http has:
 // 	if _res1 != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Status"), MakeString((*_res1).Status))
-// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt(int((*_res1).StatusCode)))
+// 		_map1.Add(MakeKeyword("StatusCode"), MakeInt((*_res1).StatusCode))
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
-// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*_res1).ProtoMajor)))
-// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*_res1).ProtoMinor)))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
 // 		_map1.Add(MakeKeyword("Header"), (*_res1).Header)
 // 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res1).ContentLength)))
@@ -2668,8 +2668,8 @@ GO FUNC http.ReadResponse in net/http has:
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*_res1).Request).Method))
 // 			_map3.Add(MakeKeyword("URL"), (*(*(*_res1).Request).URL))
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Request).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt(int((*(*_res1).Request).ProtoMajor)))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt(int((*(*_res1).Request).ProtoMinor)))
+// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Request).ProtoMajor))
+// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Request).ProtoMinor))
 // 			_map3.Add(MakeKeyword("Header"), (*(*_res1).Request).Header)
 // 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*_res1).Request).GetBody)
@@ -2782,7 +2782,7 @@ GO FUNC httptest.NewRecorder in net/http/httptest has:
 // 	var _obj_map1 Object
 // 	if _res != nil {
 // 		_map1 := EmptyArrayMap()
-// 		_map1.Add(MakeKeyword("Code"), MakeInt(int((*_res).Code)))
+// 		_map1.Add(MakeKeyword("Code"), MakeInt((*_res).Code))
 // 		_map1.Add(MakeKeyword("HeaderMap"), (*_res).HeaderMap)
 // 		_map1.Add(MakeKeyword("Body"), (*(*_res).Body))
 // 		_map1.Add(MakeKeyword("Flushed"), MakeBool((*_res).Flushed))
