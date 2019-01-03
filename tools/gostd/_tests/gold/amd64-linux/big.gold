@@ -1590,7 +1590,7 @@ JOKER FUNC url.UserPassword in net/url has:
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: userPassword(_username, _password))"}
 ;;   [^String _username, ^String _password])
 
-GO FUNC net.CIDRMask has:
+GO FUNC net.CIDRMask in net has:
 func cIDRMask(ones int, bits int) Object {
 	_res := _net.CIDRMask(ones, bits)
 	_vec1 := EmptyVector
@@ -1600,7 +1600,7 @@ func cIDRMask(ones int, bits int) Object {
 	return _vec1
 }
 
-GO FUNC net.Dial has:
+GO FUNC net.Dial in net has:
 // func dial(network string, address string) Object {
 // 	_res1, _res2 := _net.Dial(network, address)
 // 	_res := EmptyVector
@@ -1609,7 +1609,7 @@ GO FUNC net.Dial has:
 // 	return _res
 // }
 
-GO FUNC net.DialIP has:
+GO FUNC net.DialIP in net has:
 // func dialIP(network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43), raddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43)) Object {
 // 	_, _res2 := _net.DialIP(network, laddr, raddr)
 // 	_res := EmptyVector
@@ -1618,7 +1618,7 @@ GO FUNC net.DialIP has:
 // 	return _res
 // }
 
-GO FUNC net.DialTCP has:
+GO FUNC net.DialTCP in net has:
 // func dialTCP(network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44), raddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44)) Object {
 // 	_, _res2 := _net.DialTCP(network, laddr, raddr)
 // 	_res := EmptyVector
@@ -1627,7 +1627,7 @@ GO FUNC net.DialTCP has:
 // 	return _res
 // }
 
-GO FUNC net.DialTimeout has:
+GO FUNC net.DialTimeout in net has:
 // func dialTimeout(network string, address string, timeout *ABEND884(unrecognized type Duration at: _tests/big/src/net/dial.go:313:56)) Object {
 // 	_res1, _res2 := _net.DialTimeout(network, address, timeout)
 // 	_res := EmptyVector
@@ -1636,7 +1636,7 @@ GO FUNC net.DialTimeout has:
 // 	return _res
 // }
 
-GO FUNC net.DialUDP has:
+GO FUNC net.DialUDP in net has:
 // func dialUDP(network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44), raddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44)) Object {
 // 	_, _res2 := _net.DialUDP(network, laddr, raddr)
 // 	_res := EmptyVector
@@ -1645,7 +1645,7 @@ GO FUNC net.DialUDP has:
 // 	return _res
 // }
 
-GO FUNC net.DialUnix has:
+GO FUNC net.DialUnix in net has:
 // func dialUnix(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45), raddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45)) Object {
 // 	_, _res2 := _net.DialUnix(network, laddr, raddr)
 // 	_res := EmptyVector
@@ -1654,7 +1654,7 @@ GO FUNC net.DialUnix has:
 // 	return _res
 // }
 
-GO FUNC net.FileConn has:
+GO FUNC net.FileConn in net has:
 // func fileConn(f **ABEND884(unrecognized type File at: _tests/big/src/net/file.go:21:21)) Object {
 // 	c, err := _net.FileConn(f)
 // 	_res := EmptyVector
@@ -1663,7 +1663,7 @@ GO FUNC net.FileConn has:
 // 	return _res
 // }
 
-GO FUNC net.FileListener has:
+GO FUNC net.FileListener in net has:
 // func fileListener(f **ABEND884(unrecognized type File at: _tests/big/src/net/file.go:33:25)) Object {
 // 	ln, err := _net.FileListener(f)
 // 	_res := EmptyVector
@@ -1672,7 +1672,7 @@ GO FUNC net.FileListener has:
 // 	return _res
 // }
 
-GO FUNC net.FilePacketConn has:
+GO FUNC net.FilePacketConn in net has:
 // func filePacketConn(f **ABEND884(unrecognized type File at: _tests/big/src/net/file.go:45:27)) Object {
 // 	c, err := _net.FilePacketConn(f)
 // 	_res := EmptyVector
@@ -1681,7 +1681,7 @@ GO FUNC net.FilePacketConn has:
 // 	return _res
 // }
 
-GO FUNC net.IPv4 has:
+GO FUNC net.IPv4 in net has:
 func iPv4(a byte, b byte, c byte, d byte) Object {
 	_res := _net.IPv4(a, b, c, d)
 	_vec1 := EmptyVector
@@ -1691,7 +1691,7 @@ func iPv4(a byte, b byte, c byte, d byte) Object {
 	return _vec1
 }
 
-GO FUNC net.IPv4Mask has:
+GO FUNC net.IPv4Mask in net has:
 func iPv4Mask(a byte, b byte, c byte, d byte) Object {
 	_res := _net.IPv4Mask(a, b, c, d)
 	_vec1 := EmptyVector
@@ -1701,7 +1701,7 @@ func iPv4Mask(a byte, b byte, c byte, d byte) Object {
 	return _vec1
 }
 
-GO FUNC net.InterfaceAddrs has:
+GO FUNC net.InterfaceAddrs in net has:
 // func interfaceAddrs() Object {
 // 	_res1, _res2 := _net.InterfaceAddrs()
 // 	_res := EmptyVector
@@ -1714,7 +1714,7 @@ GO FUNC net.InterfaceAddrs has:
 // 	return _res
 // }
 
-GO FUNC net.InterfaceByIndex has:
+GO FUNC net.InterfaceByIndex in net has:
 func interfaceByIndex(index int) Object {
 	_res1, _res2 := _net.InterfaceByIndex(index)
 	_res := EmptyVector
@@ -1739,7 +1739,7 @@ func interfaceByIndex(index int) Object {
 	return _res
 }
 
-GO FUNC net.InterfaceByName has:
+GO FUNC net.InterfaceByName in net has:
 func interfaceByName(name string) Object {
 	_res1, _res2 := _net.InterfaceByName(name)
 	_res := EmptyVector
@@ -1764,7 +1764,7 @@ func interfaceByName(name string) Object {
 	return _res
 }
 
-GO FUNC net.Interfaces has:
+GO FUNC net.Interfaces in net has:
 func interfaces() Object {
 	_res1, _res2 := _net.Interfaces()
 	_res := EmptyVector
@@ -1787,7 +1787,7 @@ func interfaces() Object {
 	return _res
 }
 
-GO FUNC net.Listen has:
+GO FUNC net.Listen in net has:
 // func listen(network string, address string) Object {
 // 	_res1, _res2 := _net.Listen(network, address)
 // 	_res := EmptyVector
@@ -1796,7 +1796,7 @@ GO FUNC net.Listen has:
 // 	return _res
 // }
 
-GO FUNC net.ListenIP has:
+GO FUNC net.ListenIP in net has:
 // func listenIP(network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:230:38)) Object {
 // 	_, _res2 := _net.ListenIP(network, laddr)
 // 	_res := EmptyVector
@@ -1805,7 +1805,7 @@ GO FUNC net.ListenIP has:
 // 	return _res
 // }
 
-GO FUNC net.ListenMulticastUDP has:
+GO FUNC net.ListenMulticastUDP in net has:
 // func listenMulticastUDP(network string, ifi *ABEND884(unrecognized type Interface at: _tests/big/src/net/udpsock.go:265:46), gaddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:265:64)) Object {
 // 	_, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
 // 	_res := EmptyVector
@@ -1814,7 +1814,7 @@ GO FUNC net.ListenMulticastUDP has:
 // 	return _res
 // }
 
-GO FUNC net.ListenPacket has:
+GO FUNC net.ListenPacket in net has:
 // func listenPacket(network string, address string) Object {
 // 	_res1, _res2 := _net.ListenPacket(network, address)
 // 	_res := EmptyVector
@@ -1823,7 +1823,7 @@ GO FUNC net.ListenPacket has:
 // 	return _res
 // }
 
-GO FUNC net.ListenTCP has:
+GO FUNC net.ListenTCP in net has:
 // func listenTCP(network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:323:39)) Object {
 // 	_, _res2 := _net.ListenTCP(network, laddr)
 // 	_res := EmptyVector
@@ -1832,7 +1832,7 @@ GO FUNC net.ListenTCP has:
 // 	return _res
 // }
 
-GO FUNC net.ListenUDP has:
+GO FUNC net.ListenUDP in net has:
 // func listenUDP(network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:231:39)) Object {
 // 	_, _res2 := _net.ListenUDP(network, laddr)
 // 	_res := EmptyVector
@@ -1841,7 +1841,7 @@ GO FUNC net.ListenUDP has:
 // 	return _res
 // }
 
-GO FUNC net.ListenUnix has:
+GO FUNC net.ListenUnix in net has:
 // func listenUnix(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:314:40)) Object {
 // 	_, _res2 := _net.ListenUnix(network, laddr)
 // 	_res := EmptyVector
@@ -1850,7 +1850,7 @@ GO FUNC net.ListenUnix has:
 // 	return _res
 // }
 
-GO FUNC net.ListenUnixgram has:
+GO FUNC net.ListenUnixgram in net has:
 // func listenUnixgram(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:334:44)) Object {
 // 	_, _res2 := _net.ListenUnixgram(network, laddr)
 // 	_res := EmptyVector
@@ -1859,7 +1859,7 @@ GO FUNC net.ListenUnixgram has:
 // 	return _res
 // }
 
-GO FUNC net.LookupAddr has:
+GO FUNC net.LookupAddr in net has:
 func lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
 	_res := EmptyVector
@@ -1872,7 +1872,7 @@ func lookupAddr(addr string) Object {
 	return _res
 }
 
-GO FUNC net.LookupCNAME has:
+GO FUNC net.LookupCNAME in net has:
 func lookupCNAME(host string) Object {
 	cname, err := _net.LookupCNAME(host)
 	_res := EmptyVector
@@ -1881,7 +1881,7 @@ func lookupCNAME(host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupHost has:
+GO FUNC net.LookupHost in net has:
 func lookupHost(host string) Object {
 	addrs, err := _net.LookupHost(host)
 	_res := EmptyVector
@@ -1894,7 +1894,7 @@ func lookupHost(host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupIP has:
+GO FUNC net.LookupIP in net has:
 func lookupIP(host string) Object {
 	_res1, _res2 := _net.LookupIP(host)
 	_res := EmptyVector
@@ -1911,7 +1911,7 @@ func lookupIP(host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupMX has:
+GO FUNC net.LookupMX in net has:
 func lookupMX(name string) Object {
 	_res1, _res2 := _net.LookupMX(name)
 	_res := EmptyVector
@@ -1933,7 +1933,7 @@ func lookupMX(name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupNS has:
+GO FUNC net.LookupNS in net has:
 func lookupNS(name string) Object {
 	_res1, _res2 := _net.LookupNS(name)
 	_res := EmptyVector
@@ -1954,7 +1954,7 @@ func lookupNS(name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupPort has:
+GO FUNC net.LookupPort in net has:
 func lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
 	_res := EmptyVector
@@ -1963,7 +1963,7 @@ func lookupPort(network string, service string) Object {
 	return _res
 }
 
-GO FUNC net.LookupSRV has:
+GO FUNC net.LookupSRV in net has:
 func lookupSRV(service string, proto string, name string) Object {
 	cname, addrs, err := _net.LookupSRV(service, proto, name)
 	_res := EmptyVector
@@ -1988,7 +1988,7 @@ func lookupSRV(service string, proto string, name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupTXT has:
+GO FUNC net.LookupTXT in net has:
 func lookupTXT(name string) Object {
 	_res1, _res2 := _net.LookupTXT(name)
 	_res := EmptyVector
@@ -2001,7 +2001,7 @@ func lookupTXT(name string) Object {
 	return _res
 }
 
-GO FUNC net.ParseCIDR has:
+GO FUNC net.ParseCIDR in net has:
 func parseCIDR(s string) Object {
 	_res1, _res2, _res3 := _net.ParseCIDR(s)
 	_res := EmptyVector
@@ -2032,7 +2032,7 @@ func parseCIDR(s string) Object {
 	return _res
 }
 
-GO FUNC net.ParseIP has:
+GO FUNC net.ParseIP in net has:
 func parseIP(s string) Object {
 	_res := _net.ParseIP(s)
 	_vec1 := EmptyVector
@@ -2042,7 +2042,7 @@ func parseIP(s string) Object {
 	return _vec1
 }
 
-GO FUNC net.ParseMAC has:
+GO FUNC net.ParseMAC in net has:
 func parseMAC(s string) Object {
 	hw, err := _net.ParseMAC(s)
 	_res := EmptyVector
@@ -2055,7 +2055,7 @@ func parseMAC(s string) Object {
 	return _res
 }
 
-GO FUNC net.Pipe has:
+GO FUNC net.Pipe in net has:
 // func pipe() Object {
 // 	_res1, _res2 := _net.Pipe()
 // 	_res := EmptyVector
@@ -2064,7 +2064,7 @@ GO FUNC net.Pipe has:
 // 	return _res
 // }
 
-GO FUNC net.ResolveIPAddr has:
+GO FUNC net.ResolveIPAddr in net has:
 func resolveIPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveIPAddr(network, address)
 	_res := EmptyVector
@@ -2086,7 +2086,7 @@ func resolveIPAddr(network string, address string) Object {
 	return _res
 }
 
-GO FUNC net.ResolveTCPAddr has:
+GO FUNC net.ResolveTCPAddr in net has:
 func resolveTCPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveTCPAddr(network, address)
 	_res := EmptyVector
@@ -2109,7 +2109,7 @@ func resolveTCPAddr(network string, address string) Object {
 	return _res
 }
 
-GO FUNC net.ResolveUDPAddr has:
+GO FUNC net.ResolveUDPAddr in net has:
 func resolveUDPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUDPAddr(network, address)
 	_res := EmptyVector
@@ -2132,7 +2132,7 @@ func resolveUDPAddr(network string, address string) Object {
 	return _res
 }
 
-GO FUNC net.ResolveUnixAddr has:
+GO FUNC net.ResolveUnixAddr in net has:
 func resolveUnixAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUnixAddr(network, address)
 	_res := EmptyVector
@@ -2150,7 +2150,7 @@ func resolveUnixAddr(network string, address string) Object {
 	return _res
 }
 
-GO FUNC net.SplitHostPort has:
+GO FUNC net.SplitHostPort in net has:
 func splitHostPort(hostport string) Object {
 	host, port, err := _net.SplitHostPort(hostport)
 	_res := EmptyVector
@@ -2160,18 +2160,18 @@ func splitHostPort(hostport string) Object {
 	return _res
 }
 
-GO FUNC http.Error has:
+GO FUNC http.Error in net/http has:
 // func error(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:1973:14), error string, code int) Object {
 // 	_http.Error(w, error, code)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.FileServer has:
+GO FUNC http.FileServer in net/http has:
 // func fileServer(root ABEND884(unrecognized type FileSystem at: _tests/big/src/net/http/fs.go:713:22)) Object {
 // 	return _http.FileServer(root)
 // }
 
-GO FUNC http.Get has:
+GO FUNC http.Get in net/http has:
 // func get(url string) Object {
 // 	resp, err := _http.Get(url)
 // 	_res := EmptyVector
@@ -2237,19 +2237,19 @@ GO FUNC http.Get has:
 // 	return _res
 // }
 
-GO FUNC http.Handle has:
+GO FUNC http.Handle in net/http has:
 // func handle(pattern string, handler ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:2401:37)) Object {
 // 	_http.Handle(pattern, handler)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.HandleFunc has:
+GO FUNC http.HandleFunc in net/http has:
 // func handleFunc(pattern string, handler func) Object {
 // 	_http.HandleFunc(pattern, handler)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.Head has:
+GO FUNC http.Head in net/http has:
 // func head(url string) Object {
 // 	resp, err := _http.Head(url)
 // 	_res := EmptyVector
@@ -2315,17 +2315,17 @@ GO FUNC http.Head has:
 // 	return _res
 // }
 
-GO FUNC http.MaxBytesReader has:
+GO FUNC http.MaxBytesReader in net/http has:
 // func maxBytesReader(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/request.go:1056:23), r *ABEND884(unrecognized type ReadCloser at: _tests/big/src/net/http/request.go:1056:44), n int64) Object {
 // 	return _http.MaxBytesReader(w, r, n)
 // }
 
-GO FUNC http.NewFileTransport has:
+GO FUNC http.NewFileTransport in net/http has:
 // func newFileTransport(fs ABEND884(unrecognized type FileSystem at: _tests/big/src/net/http/filetransport.go:30:26)) Object {
 // 	return _http.NewFileTransport(fs)
 // }
 
-GO FUNC http.NewRequest has:
+GO FUNC http.NewRequest in net/http has:
 // func newRequest(method string, url string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:792:45)) Object {
 // 	_res1, _res2 := _http.NewRequest(method, url, body)
 // 	_res := EmptyVector
@@ -2391,24 +2391,24 @@ GO FUNC http.NewRequest has:
 // 	return _res
 // }
 
-GO FUNC http.NewServeMux has:
+GO FUNC http.NewServeMux in net/http has:
 // func newServeMux() Object {
 // 	return _http.NewServeMux()
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC http.NotFound has:
+GO FUNC http.NotFound in net/http has:
 // func notFound(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:1981:17), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:1981:36)) Object {
 // 	_http.NotFound(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.NotFoundHandler has:
+GO FUNC http.NotFoundHandler in net/http has:
 // func notFoundHandler() Object {
 // 	return _http.NotFoundHandler()
 // }
 
-GO FUNC http.ParseHTTPVersion has:
+GO FUNC http.ParseHTTPVersion in net/http has:
 func parseHTTPVersion(vers string) Object {
 	major, minor, ok := _http.ParseHTTPVersion(vers)
 	_res := EmptyVector
@@ -2418,7 +2418,7 @@ func parseHTTPVersion(vers string) Object {
 	return _res
 }
 
-GO FUNC http.ParseTime has:
+GO FUNC http.ParseTime in net/http has:
 // func parseTime(text string) Object {
 // 	t, err := _http.ParseTime(text)
 // 	_res := EmptyVector
@@ -2427,7 +2427,7 @@ GO FUNC http.ParseTime has:
 // 	return _res
 // }
 
-GO FUNC http.Post has:
+GO FUNC http.Post in net/http has:
 // func post(url string, contentType string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/client.go:748:44)) Object {
 // 	resp, err := _http.Post(url, contentType, body)
 // 	_res := EmptyVector
@@ -2493,7 +2493,7 @@ GO FUNC http.Post has:
 // 	return _res
 // }
 
-GO FUNC http.PostForm has:
+GO FUNC http.PostForm in net/http has:
 // func postForm(url string, data *ABEND884(unrecognized type Values at: _tests/big/src/net/http/client.go:785:36)) Object {
 // 	resp, err := _http.PostForm(url, data)
 // 	_res := EmptyVector
@@ -2559,7 +2559,7 @@ GO FUNC http.PostForm has:
 // 	return _res
 // }
 
-GO FUNC http.ProxyFromEnvironment has:
+GO FUNC http.ProxyFromEnvironment in net/http has:
 // func proxyFromEnvironment(req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32)) Object {
 // 	_res1, _res2 := _http.ProxyFromEnvironment(req)
 // 	_res := EmptyVector
@@ -2568,12 +2568,12 @@ GO FUNC http.ProxyFromEnvironment has:
 // 	return _res
 // }
 
-GO FUNC http.ProxyURL has:
+GO FUNC http.ProxyURL in net/http has:
 // func proxyURL(fixedURL **ABEND884(unrecognized type URL at: _tests/big/src/net/http/transport.go:351:29)) Object {
 // 	return _http.ProxyURL(fixedURL)
 // }
 
-GO FUNC http.ReadRequest has:
+GO FUNC http.ReadRequest in net/http has:
 // func readRequest(b **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:942:27)) Object {
 // 	_res1, _res2 := _http.ReadRequest(b)
 // 	_res := EmptyVector
@@ -2639,7 +2639,7 @@ GO FUNC http.ReadRequest has:
 // 	return _res
 // }
 
-GO FUNC http.ReadResponse has:
+GO FUNC http.ReadResponse in net/http has:
 // func readResponse(r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/response.go:148:28), req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/response.go:148:41)) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
 // 	_res := EmptyVector
@@ -2705,46 +2705,46 @@ GO FUNC http.ReadResponse has:
 // 	return _res
 // }
 
-GO FUNC http.Redirect has:
+GO FUNC http.Redirect in net/http has:
 // func redirect(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:2020:17), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:2020:36), url string, code int) Object {
 // 	_http.Redirect(w, r, url, code)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.RedirectHandler has:
+GO FUNC http.RedirectHandler in net/http has:
 // func redirectHandler(url string, code int) Object {
 // 	return _http.RedirectHandler(url, code)
 // }
 
-GO FUNC http.ServeContent has:
+GO FUNC http.ServeContent in net/http has:
 // func serveContent(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/fs.go:151:21), req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:151:42), name string, modtime *ABEND884(unrecognized type Time at: _tests/big/src/net/http/fs.go:151:77), content *ABEND884(unrecognized type ReadSeeker at: _tests/big/src/net/http/fs.go:151:94)) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.ServeFile has:
+GO FUNC http.ServeFile in net/http has:
 // func serveFile(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/fs.go:670:18), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:670:37), name string) Object {
 // 	_http.ServeFile(w, r, name)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.SetCookie has:
+GO FUNC http.SetCookie in net/http has:
 // func setCookie(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/cookie.go:157:18), cookie *ABEND884(unrecognized type Cookie at: _tests/big/src/net/http/cookie.go:157:42)) Object {
 // 	_http.SetCookie(w, cookie)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC http.StripPrefix has:
+GO FUNC http.StripPrefix in net/http has:
 // func stripPrefix(prefix string, h ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:1992:35)) Object {
 // 	return _http.StripPrefix(prefix, h)
 // }
 
-GO FUNC http.TimeoutHandler has:
+GO FUNC http.TimeoutHandler in net/http has:
 // func timeoutHandler(h ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:3106:23), dt *ABEND884(unrecognized type Duration at: _tests/big/src/net/http/server.go:3106:40), msg string) Object {
 // 	return _http.TimeoutHandler(h, dt, msg)
 // }
 
-GO FUNC cgi.Request has:
+GO FUNC cgi.Request in net/http/cgi has:
 // func request() Object {
 // 	_res1, _res2 := _cgi.Request()
 // 	_res := EmptyVector
@@ -2753,7 +2753,7 @@ GO FUNC cgi.Request has:
 // 	return _res
 // }
 
-GO FUNC cgi.RequestFromMap has:
+GO FUNC cgi.RequestFromMap in net/http/cgi has:
 // func requestFromMap(params map[]) Object {
 // 	_res1, _res2 := _cgi.RequestFromMap(params)
 // 	_res := EmptyVector
@@ -2762,7 +2762,7 @@ GO FUNC cgi.RequestFromMap has:
 // 	return _res
 // }
 
-GO FUNC cookiejar.New has:
+GO FUNC cookiejar.New in net/http/cookiejar has:
 // func new(o *ABEND884(unrecognized type Options at: _tests/big/src/net/http/cookiejar/jar.go:77:13)) Object {
 // 	_, _res2 := _cookiejar.New(o)
 // 	_res := EmptyVector
@@ -2771,12 +2771,12 @@ GO FUNC cookiejar.New has:
 // 	return _res
 // }
 
-GO FUNC fcgi.ProcessEnv has:
+GO FUNC fcgi.ProcessEnv in net/http/fcgi has:
 // func processEnv(r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/fcgi/child.go:358:25)) Object {
 // 	return _fcgi.ProcessEnv(r)
 // }
 
-GO FUNC httptest.NewRecorder has:
+GO FUNC httptest.NewRecorder in net/http/httptest has:
 // func newRecorder() Object {
 // 	_res := _httptest.NewRecorder()
 // 	var _obj_map1 Object
@@ -2793,12 +2793,12 @@ GO FUNC httptest.NewRecorder has:
 // 	return _obj_map1
 // }
 
-GO FUNC httptest.NewRequest has:
+GO FUNC httptest.NewRequest in net/http/httptest has:
 // func newRequest(method string, target string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httptest/httptest.go:41:48)) Object {
 // 	return _httptest.NewRequest(method, target, body)
 // }
 
-GO FUNC httptest.NewServer has:
+GO FUNC httptest.NewServer in net/http/httptest has:
 // func newServer(handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:80:29)) Object {
 // 	_res := _httptest.NewServer(handler)
 // 	var _obj_map1 Object
@@ -2815,7 +2815,7 @@ GO FUNC httptest.NewServer has:
 // 	return _obj_map1
 // }
 
-GO FUNC httptest.NewTLSServer has:
+GO FUNC httptest.NewTLSServer in net/http/httptest has:
 // func newTLSServer(handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:160:32)) Object {
 // 	_res := _httptest.NewTLSServer(handler)
 // 	var _obj_map1 Object
@@ -2832,7 +2832,7 @@ GO FUNC httptest.NewTLSServer has:
 // 	return _obj_map1
 // }
 
-GO FUNC httptest.NewUnstartedServer has:
+GO FUNC httptest.NewUnstartedServer in net/http/httptest has:
 // func newUnstartedServer(handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:92:38)) Object {
 // 	_res := _httptest.NewUnstartedServer(handler)
 // 	var _obj_map1 Object
@@ -2849,7 +2849,7 @@ GO FUNC httptest.NewUnstartedServer has:
 // 	return _obj_map1
 // }
 
-GO FUNC httptrace.ContextClientTrace has:
+GO FUNC httptrace.ContextClientTrace in net/http/httptrace has:
 // func contextClientTrace(ctx *ABEND884(unrecognized type Context at: _tests/big/src/net/http/httptrace/trace.go:24:37)) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
 // 	var _obj_map1 Object
@@ -2878,12 +2878,12 @@ GO FUNC httptrace.ContextClientTrace has:
 // 	return _obj_map1
 // }
 
-GO FUNC httptrace.WithClientTrace has:
+GO FUNC httptrace.WithClientTrace in net/http/httptrace has:
 // func withClientTrace(ctx *ABEND884(unrecognized type Context at: _tests/big/src/net/http/httptrace/trace.go:34:34), trace *ABEND884(unrecognized type ClientTrace at: _tests/big/src/net/http/httptrace/trace.go:34:50)) Object {
 // 	return _httptrace.WithClientTrace(ctx, trace)
 // }
 
-GO FUNC httputil.DumpRequest has:
+GO FUNC httputil.DumpRequest in net/http/httputil has:
 // func dumpRequest(req **ABEND884(unrecognized type Request at: _tests/big/src/net/http/httputil/dump.go:191:28), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequest(req, body)
 // 	_res := EmptyVector
@@ -2896,7 +2896,7 @@ GO FUNC httputil.DumpRequest has:
 // 	return _res
 // }
 
-GO FUNC httputil.DumpRequestOut has:
+GO FUNC httputil.DumpRequestOut in net/http/httputil has:
 // func dumpRequestOut(req **ABEND884(unrecognized type Request at: _tests/big/src/net/http/httputil/dump.go:66:31), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequestOut(req, body)
 // 	_res := EmptyVector
@@ -2909,7 +2909,7 @@ GO FUNC httputil.DumpRequestOut has:
 // 	return _res
 // }
 
-GO FUNC httputil.DumpResponse has:
+GO FUNC httputil.DumpResponse in net/http/httputil has:
 // func dumpResponse(resp **ABEND884(unrecognized type Response at: _tests/big/src/net/http/httputil/dump.go:281:30), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpResponse(resp, body)
 // 	_res := EmptyVector
@@ -2922,35 +2922,35 @@ GO FUNC httputil.DumpResponse has:
 // 	return _res
 // }
 
-GO FUNC httputil.NewChunkedReader has:
+GO FUNC httputil.NewChunkedReader in net/http/httputil has:
 // func newChunkedReader(r *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httputil/httputil.go:20:28)) Object {
 // 	return _httputil.NewChunkedReader(r)
 // }
 
-GO FUNC httputil.NewChunkedWriter has:
+GO FUNC httputil.NewChunkedWriter in net/http/httputil has:
 // func newChunkedWriter(w *ABEND884(unrecognized type Writer at: _tests/big/src/net/http/httputil/httputil.go:35:28)) Object {
 // 	return _httputil.NewChunkedWriter(w)
 // }
 
-GO FUNC httputil.NewClientConn has:
+GO FUNC httputil.NewClientConn in net/http/httputil has:
 // func newClientConn(c *ABEND884(unrecognized type Conn at: _tests/big/src/net/http/httputil/persist.go:248:26), r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httputil/persist.go:248:41)) Object {
 // 	return _httputil.NewClientConn(c, r)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC httputil.NewProxyClientConn has:
+GO FUNC httputil.NewProxyClientConn in net/http/httputil has:
 // func newProxyClientConn(c *ABEND884(unrecognized type Conn at: _tests/big/src/net/http/httputil/persist.go:265:31), r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httputil/persist.go:265:46)) Object {
 // 	return _httputil.NewProxyClientConn(c, r)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC httputil.NewServerConn has:
+GO FUNC httputil.NewServerConn in net/http/httputil has:
 // func newServerConn(c *ABEND884(unrecognized type Conn at: _tests/big/src/net/http/httputil/persist.go:54:26), r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httputil/persist.go:54:41)) Object {
 // 	return _httputil.NewServerConn(c, r)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC httputil.NewSingleHostReverseProxy has:
+GO FUNC httputil.NewSingleHostReverseProxy in net/http/httputil has:
 // func newSingleHostReverseProxy(target **ABEND884(unrecognized type URL at: _tests/big/src/net/http/httputil/reverseproxy.go:103:44)) Object {
 // 	_res := _httputil.NewSingleHostReverseProxy(target)
 // 	var _obj_map1 Object
@@ -2970,42 +2970,42 @@ GO FUNC httputil.NewSingleHostReverseProxy has:
 // 	return _obj_map1
 // }
 
-GO FUNC pprof.Cmdline has:
+GO FUNC pprof.Cmdline in net/http/pprof has:
 // func cmdline(w *ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/pprof/pprof.go:83:21), r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/pprof/pprof.go:83:45)) Object {
 // 	_pprof.Cmdline(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC pprof.Handler has:
+GO FUNC pprof.Handler in net/http/pprof has:
 // func handler(name string) Object {
 // 	return _pprof.Handler(name)
 // }
 
-GO FUNC pprof.Index has:
+GO FUNC pprof.Index in net/http/pprof has:
 // func index(w *ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/pprof/pprof.go:264:19), r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/pprof/pprof.go:264:43)) Object {
 // 	_pprof.Index(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC pprof.Profile has:
+GO FUNC pprof.Profile in net/http/pprof has:
 // func profile(w *ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/pprof/pprof.go:116:21), r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/pprof/pprof.go:116:45)) Object {
 // 	_pprof.Profile(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC pprof.Symbol has:
+GO FUNC pprof.Symbol in net/http/pprof has:
 // func symbol(w *ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/pprof/pprof.go:174:20), r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/pprof/pprof.go:174:44)) Object {
 // 	_pprof.Symbol(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC pprof.Trace has:
+GO FUNC pprof.Trace in net/http/pprof has:
 // func trace(w *ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/pprof/pprof.go:145:19), r **ABEND884(unrecognized type Request at: _tests/big/src/net/http/pprof/pprof.go:145:43)) Object {
 // 	_pprof.Trace(w, r)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC mail.ParseAddress has:
+GO FUNC mail.ParseAddress in net/mail has:
 func parseAddress(address string) Object {
 	_res1, _res2 := _mail.ParseAddress(address)
 	_res := EmptyVector
@@ -3023,7 +3023,7 @@ func parseAddress(address string) Object {
 	return _res
 }
 
-GO FUNC mail.ParseAddressList has:
+GO FUNC mail.ParseAddressList in net/mail has:
 func parseAddressList(list string) Object {
 	_res1, _res2 := _mail.ParseAddressList(list)
 	_res := EmptyVector
@@ -3045,7 +3045,7 @@ func parseAddressList(list string) Object {
 	return _res
 }
 
-GO FUNC mail.ParseDate has:
+GO FUNC mail.ParseDate in net/mail has:
 // func parseDate(date string) Object {
 // 	_res1, _res2 := _mail.ParseDate(date)
 // 	_res := EmptyVector
@@ -3054,7 +3054,7 @@ GO FUNC mail.ParseDate has:
 // 	return _res
 // }
 
-GO FUNC mail.ReadMessage has:
+GO FUNC mail.ReadMessage in net/mail has:
 // func readMessage(r *ABEND884(unrecognized type Reader at: _tests/big/src/net/mail/message.go:52:23)) Object {
 // 	msg, err := _mail.ReadMessage(r)
 // 	_res := EmptyVector
@@ -3072,13 +3072,13 @@ GO FUNC mail.ReadMessage has:
 // 	return _res
 // }
 
-GO FUNC rpc.Accept has:
+GO FUNC rpc.Accept in net/rpc has:
 // func accept(lis *ABEND884(unrecognized type Listener at: _tests/big/src/net/rpc/server.go:692:21)) Object {
 // 	_rpc.Accept(lis)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC rpc.Dial has:
+GO FUNC rpc.Dial in net/rpc has:
 func dial(network string, address string) Object {
 	_, _res2 := _rpc.Dial(network, address)
 	_res := EmptyVector
@@ -3087,7 +3087,7 @@ func dial(network string, address string) Object {
 	return _res
 }
 
-GO FUNC rpc.DialHTTP has:
+GO FUNC rpc.DialHTTP in net/rpc has:
 func dialHTTP(network string, address string) Object {
 	_, _res2 := _rpc.DialHTTP(network, address)
 	_res := EmptyVector
@@ -3096,7 +3096,7 @@ func dialHTTP(network string, address string) Object {
 	return _res
 }
 
-GO FUNC rpc.DialHTTPPath has:
+GO FUNC rpc.DialHTTPPath in net/rpc has:
 func dialHTTPPath(network string, address string, path string) Object {
 	_, _res2 := _rpc.DialHTTPPath(network, address, path)
 	_res := EmptyVector
@@ -3105,43 +3105,43 @@ func dialHTTPPath(network string, address string, path string) Object {
 	return _res
 }
 
-GO FUNC rpc.HandleHTTP has:
+GO FUNC rpc.HandleHTTP in net/rpc has:
 // func handleHTTP() Object {
 // 	_rpc.HandleHTTP()
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC rpc.NewClient has:
+GO FUNC rpc.NewClient in net/rpc has:
 // func newClient(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/client.go:193:24)) Object {
 // 	return _rpc.NewClient(conn)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC rpc.NewClientWithCodec has:
+GO FUNC rpc.NewClientWithCodec in net/rpc has:
 // func newClientWithCodec(codec ABEND884(unrecognized type ClientCodec at: _tests/big/src/net/rpc/client.go:201:31)) Object {
 // 	return _rpc.NewClientWithCodec(codec)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC rpc.NewServer has:
+GO FUNC rpc.NewServer in net/rpc has:
 // func newServer() Object {
 // 	return _rpc.NewServer()
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC rpc.ServeCodec has:
+GO FUNC rpc.ServeCodec in net/rpc has:
 // func serveCodec(codec ABEND884(unrecognized type ServerCodec at: _tests/big/src/net/rpc/server.go:679:23)) Object {
 // 	_rpc.ServeCodec(codec)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC rpc.ServeConn has:
+GO FUNC rpc.ServeConn in net/rpc has:
 // func serveConn(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/server.go:673:24)) Object {
 // 	_rpc.ServeConn(conn)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC jsonrpc.Dial has:
+GO FUNC jsonrpc.Dial in net/rpc/jsonrpc has:
 // func dial(network string, address string) Object {
 // 	_res1, _res2 := _jsonrpc.Dial(network, address)
 // 	_res := EmptyVector
@@ -3150,33 +3150,33 @@ GO FUNC jsonrpc.Dial has:
 // 	return _res
 // }
 
-GO FUNC jsonrpc.NewClient has:
+GO FUNC jsonrpc.NewClient in net/rpc/jsonrpc has:
 // func newClient(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:113:24)) Object {
 // 	return _jsonrpc.NewClient(conn)
 // }
 
-GO FUNC jsonrpc.NewClientCodec has:
+GO FUNC jsonrpc.NewClientCodec in net/rpc/jsonrpc has:
 // func newClientCodec(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:37:29)) Object {
 // 	return _jsonrpc.NewClientCodec(conn)
 // }
 
-GO FUNC jsonrpc.NewServerCodec has:
+GO FUNC jsonrpc.NewServerCodec in net/rpc/jsonrpc has:
 // func newServerCodec(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/server.go:37:29)) Object {
 // 	return _jsonrpc.NewServerCodec(conn)
 // }
 
-GO FUNC jsonrpc.ServeConn has:
+GO FUNC jsonrpc.ServeConn in net/rpc/jsonrpc has:
 // func serveConn(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/server.go:132:24)) Object {
 // 	_jsonrpc.ServeConn(conn)
 // 	...ABEND675: TODO...
 // }
 
-GO FUNC smtp.CRAMMD5Auth has:
+GO FUNC smtp.CRAMMD5Auth in net/smtp has:
 // func cRAMMD5Auth(username string, secret string) Object {
 // 	return _smtp.CRAMMD5Auth(username, secret)
 // }
 
-GO FUNC smtp.Dial has:
+GO FUNC smtp.Dial in net/smtp has:
 // func dial(addr string) Object {
 // 	_res1, _res2 := _smtp.Dial(addr)
 // 	_res := EmptyVector
@@ -3193,7 +3193,7 @@ GO FUNC smtp.Dial has:
 // 	return _res
 // }
 
-GO FUNC smtp.NewClient has:
+GO FUNC smtp.NewClient in net/smtp has:
 // func newClient(conn *ABEND884(unrecognized type Conn at: _tests/big/src/net/smtp/smtp.go:62:25), host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector
@@ -3210,12 +3210,12 @@ GO FUNC smtp.NewClient has:
 // 	return _res
 // }
 
-GO FUNC smtp.PlainAuth has:
+GO FUNC smtp.PlainAuth in net/smtp has:
 // func plainAuth(identity string, username string, password string, host string) Object {
 // 	return _smtp.PlainAuth(identity, username, password, host)
 // }
 
-GO FUNC textproto.Dial has:
+GO FUNC textproto.Dial in net/textproto has:
 func dial(network string, addr string) Object {
 	_, _res2 := _textproto.Dial(network, addr)
 	_res := EmptyVector
@@ -3224,13 +3224,13 @@ func dial(network string, addr string) Object {
 	return _res
 }
 
-GO FUNC textproto.NewConn has:
+GO FUNC textproto.NewConn in net/textproto has:
 // func newConn(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/textproto/textproto.go:66:22)) Object {
 // 	return _textproto.NewConn(conn)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC textproto.NewReader has:
+GO FUNC textproto.NewReader in net/textproto has:
 // func newReader(r **ABEND884(unrecognized type Reader at: _tests/big/src/net/textproto/reader.go:29:25)) Object {
 // 	_res := _textproto.NewReader(r)
 // 	var _obj_map1 Object
@@ -3244,7 +3244,7 @@ GO FUNC textproto.NewReader has:
 // 	return _obj_map1
 // }
 
-GO FUNC textproto.NewWriter has:
+GO FUNC textproto.NewWriter in net/textproto has:
 // func newWriter(w **ABEND884(unrecognized type Writer at: _tests/big/src/net/textproto/writer.go:21:25)) Object {
 // 	_res := _textproto.NewWriter(w)
 // 	var _obj_map1 Object
@@ -3258,7 +3258,7 @@ GO FUNC textproto.NewWriter has:
 // 	return _obj_map1
 // }
 
-GO FUNC textproto.TrimBytes has:
+GO FUNC textproto.TrimBytes in net/textproto has:
 func trimBytes(b []byte) Object {
 	_res := _textproto.TrimBytes(b)
 	_vec1 := EmptyVector
@@ -3268,7 +3268,7 @@ func trimBytes(b []byte) Object {
 	return _vec1
 }
 
-GO FUNC url.Parse has:
+GO FUNC url.Parse in net/url has:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
 	_res := EmptyVector
@@ -3293,7 +3293,7 @@ func parse(rawurl string) Object {
 	return _res
 }
 
-GO FUNC url.ParseQuery has:
+GO FUNC url.ParseQuery in net/url has:
 // func parseQuery(query string) Object {
 // 	_res1, _res2 := _url.ParseQuery(query)
 // 	_res := EmptyVector
@@ -3302,7 +3302,7 @@ GO FUNC url.ParseQuery has:
 // 	return _res
 // }
 
-GO FUNC url.ParseRequestURI has:
+GO FUNC url.ParseRequestURI in net/url has:
 func parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
 	_res := EmptyVector
@@ -3327,7 +3327,7 @@ func parseRequestURI(rawurl string) Object {
 	return _res
 }
 
-GO FUNC url.PathUnescape has:
+GO FUNC url.PathUnescape in net/url has:
 func pathUnescape(s string) Object {
 	_res1, _res2 := _url.PathUnescape(s)
 	_res := EmptyVector
@@ -3336,7 +3336,7 @@ func pathUnescape(s string) Object {
 	return _res
 }
 
-GO FUNC url.QueryUnescape has:
+GO FUNC url.QueryUnescape in net/url has:
 func queryUnescape(s string) Object {
 	_res1, _res2 := _url.QueryUnescape(s)
 	_res := EmptyVector
@@ -3345,13 +3345,13 @@ func queryUnescape(s string) Object {
 	return _res
 }
 
-GO FUNC url.User has:
+GO FUNC url.User in net/url has:
 // func user(username string) Object {
 // 	return _url.User(username)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC url.UserPassword has:
+GO FUNC url.UserPassword in net/url has:
 // func userPassword(username string, password string) Object {
 // 	return _url.UserPassword(username, password)
 // 	ABEND124(no public information returned)

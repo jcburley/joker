@@ -157,7 +157,7 @@ JOKER FUNC url.UserPassword in net/url has:
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: userPassword(_username, _password))"}
 ;;   [^String _username, ^String _password])
 
-GO FUNC net.LookupAddr has:
+GO FUNC net.LookupAddr in net has:
 func lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
 	_res := EmptyVector
@@ -170,7 +170,7 @@ func lookupAddr(addr string) Object {
 	return _res
 }
 
-GO FUNC net.LookupCNAME has:
+GO FUNC net.LookupCNAME in net has:
 func lookupCNAME(host string) Object {
 	cname, err := _net.LookupCNAME(host)
 	_res := EmptyVector
@@ -179,7 +179,7 @@ func lookupCNAME(host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupHost has:
+GO FUNC net.LookupHost in net has:
 func lookupHost(host string) Object {
 	addrs, err := _net.LookupHost(host)
 	_res := EmptyVector
@@ -192,7 +192,7 @@ func lookupHost(host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupIP has:
+GO FUNC net.LookupIP in net has:
 // func lookupIP(host string) Object {
 // 	_res1, _res2 := _net.LookupIP(host)
 // 	_res := EmptyVector
@@ -205,7 +205,7 @@ GO FUNC net.LookupIP has:
 // 	return _res
 // }
 
-GO FUNC net.LookupMX has:
+GO FUNC net.LookupMX in net has:
 func lookupMX(name string) Object {
 	_res1, _res2 := _net.LookupMX(name)
 	_res := EmptyVector
@@ -227,7 +227,7 @@ func lookupMX(name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupNS has:
+GO FUNC net.LookupNS in net has:
 func lookupNS(name string) Object {
 	_res1, _res2 := _net.LookupNS(name)
 	_res := EmptyVector
@@ -248,7 +248,7 @@ func lookupNS(name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupPort has:
+GO FUNC net.LookupPort in net has:
 func lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
 	_res := EmptyVector
@@ -257,7 +257,7 @@ func lookupPort(network string, service string) Object {
 	return _res
 }
 
-GO FUNC net.LookupSRV has:
+GO FUNC net.LookupSRV in net has:
 func lookupSRV(service string, proto string, name string) Object {
 	cname, addrs, err := _net.LookupSRV(service, proto, name)
 	_res := EmptyVector
@@ -282,7 +282,7 @@ func lookupSRV(service string, proto string, name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupTXT has:
+GO FUNC net.LookupTXT in net has:
 func lookupTXT(name string) Object {
 	_res1, _res2 := _net.LookupTXT(name)
 	_res := EmptyVector
@@ -295,7 +295,7 @@ func lookupTXT(name string) Object {
 	return _res
 }
 
-GO FUNC url.Parse has:
+GO FUNC url.Parse in net/url has:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
 	_res := EmptyVector
@@ -320,7 +320,7 @@ func parse(rawurl string) Object {
 	return _res
 }
 
-GO FUNC url.ParseQuery has:
+GO FUNC url.ParseQuery in net/url has:
 // func parseQuery(query string) Object {
 // 	_res1, _res2 := _url.ParseQuery(query)
 // 	_res := EmptyVector
@@ -329,7 +329,7 @@ GO FUNC url.ParseQuery has:
 // 	return _res
 // }
 
-GO FUNC url.ParseRequestURI has:
+GO FUNC url.ParseRequestURI in net/url has:
 func parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
 	_res := EmptyVector
@@ -354,7 +354,7 @@ func parseRequestURI(rawurl string) Object {
 	return _res
 }
 
-GO FUNC url.PathUnescape has:
+GO FUNC url.PathUnescape in net/url has:
 func pathUnescape(s string) Object {
 	_res1, _res2 := _url.PathUnescape(s)
 	_res := EmptyVector
@@ -363,7 +363,7 @@ func pathUnescape(s string) Object {
 	return _res
 }
 
-GO FUNC url.QueryUnescape has:
+GO FUNC url.QueryUnescape in net/url has:
 func queryUnescape(s string) Object {
 	_res1, _res2 := _url.QueryUnescape(s)
 	_res := EmptyVector
@@ -372,13 +372,13 @@ func queryUnescape(s string) Object {
 	return _res
 }
 
-GO FUNC url.User has:
+GO FUNC url.User in net/url has:
 // func user(username string) Object {
 // 	return _url.User(username)
 // 	ABEND124(no public information returned)
 // }
 
-GO FUNC url.UserPassword has:
+GO FUNC url.UserPassword in net/url has:
 // func userPassword(username string, password string) Object {
 // 	return _url.UserPassword(username, password)
 // 	ABEND124(no public information returned)
