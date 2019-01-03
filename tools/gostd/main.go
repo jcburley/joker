@@ -220,6 +220,7 @@ type packageInfo struct {
 	hasGoFiles     bool // Whether any .go files (would) have been generated
 }
 
+/* Map (Unix-style) relative path to package info */
 var packagesInfo = map[string]*packageInfo{}
 
 /* Sort the packages -- currently appears to not actually be
@@ -306,15 +307,15 @@ func processDir(d string, path string, mode parser.Mode) error {
 
 	basename := filepath.Base(path)
 	for k, v := range pkgs {
-		if k != basename && k != basename+"_test" {
+		if k != basename {
 			if verbose {
-				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored\n", k, path)
+				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n", k, path)
 			}
 		} else {
 			if verbose {
 				fmt.Printf("Package %s:\n", k)
 			}
-			processPackage(pkgDir, pkgDirUnix, k, v) // processPackage(strings.Replace(path, d + "/", "", 1) + "/" + k, v)
+			processPackage(pkgDir, pkgDirUnix, k, v)
 		}
 	}
 
