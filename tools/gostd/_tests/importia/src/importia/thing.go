@@ -2,7 +2,7 @@ package importia
 
 import (
 	"./a"
-	also_a "./also_a"
+	also_a "./also_a/a"
 	"./b"
 	c "./c/a"
 	"fmt"

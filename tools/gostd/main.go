@@ -136,7 +136,7 @@ func processFuncDecl(pkg, pkgDirUnix, filename string, f *File, fn *FuncDecl) bo
 
 type typeInfo struct {
 	td       *TypeSpec
-	file     string // Relative (Unix-style) path to defining file
+	pathUnix string // Relative path to defining file
 	building bool
 }
 
@@ -151,35 +151,38 @@ func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
 	}
 }
 
+// Maps qualified typename ("pkg.TypeName") to type info.
 var types = map[string]*typeInfo{}
 
-func processTypeSpec(pkg string, filename string, f *File, ts *TypeSpec) {
+func processTypeSpec(pkg string, pathUnix string, f *File, ts *TypeSpec) {
 	if dump {
-		fmt.Printf("Type in pkg=%s filename=%s:\n",
-			pkg, filename)
+		fmt.Printf("Type in pkg=%s pathUnix=%s:\n",
+			pkg, pathUnix)
 		Print(fset, ts)
 	}
 	typename := pkg + "." + ts.Name.Name
 	if c, ok := types[typename]; ok {
-		if c.file == filename {
-			panic(fmt.Sprintf("type %s defined twice in file %s", typename, filename))
+		if c.pathUnix == pathUnix {
+			panic(fmt.Sprintf("type %s defined twice in file %s", typename, pathUnix))
+		} else {
+			fmt.Fprintf(os.Stderr, "WARNING: type %s found in %s and now again in %s\n", typename, c.pathUnix, pathUnix)
 		}
 	}
-	types[typename] = &typeInfo{ts, filename, false}
+	types[typename] = &typeInfo{ts, pathUnix, false}
 }
 
-func processTypeSpecs(pkg string, filename string, f *File, tss []Spec) {
+func processTypeSpecs(pkg string, pathUnix string, f *File, tss []Spec) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
 		if isPrivate(ts.Name.Name) {
 			continue // Skipping non-exported functions
 		}
-		processTypeSpec(pkg, filename, f, ts)
+		processTypeSpec(pkg, pathUnix, f, ts)
 	}
 }
 
 // Returns whether any public functions were actually processed.
-func processDecls(pkg, pkgDirUnix, filename string, f *File) (found bool) {
+func processDecls(pkg, pkgDirUnix, pathUnix string, f *File) (found bool) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -191,14 +194,14 @@ func processDecls(pkg, pkgDirUnix, filename string, f *File) (found bool) {
 			if isPrivate(v.Name.Name) {
 				continue // Skipping non-exported functions
 			}
-			if processFuncDecl(pkg, pkgDirUnix, filename, f, v) {
+			if processFuncDecl(pkg, pkgDirUnix, pathUnix, f, v) {
 				found = true
 			}
 		case *GenDecl:
 			if v.Tok != token.TYPE {
 				continue
 			}
-			processTypeSpecs(pkgDirUnix, filename, f, v.Specs)
+			processTypeSpecs(pkgDirUnix, pathUnix, f, v.Specs)
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
 		}
@@ -248,8 +251,8 @@ func processPackage(pkgDir, pkgDirUnix, pkg string, p *Package) {
 		fmt.Printf("Processing package=%s in %s:\n", pkg, pkgDirUnix)
 	}
 	found := false
-	for filename, f := range p.Files {
-		if processDecls(pkg, pkgDirUnix, filepath.ToSlash(filename), f) {
+	for path, f := range p.Files {
+		if processDecls(pkg, pkgDirUnix, filepath.ToSlash(path), f) {
 			found = true
 		}
 	}
@@ -1556,7 +1559,7 @@ func main() {
 		sortedTypeInfoMap(types,
 			func(t string, ti *typeInfo) {
 				fmt.Printf("TYPE %s:\n", t)
-				fmt.Printf("  %s\n", ti.file)
+				fmt.Printf("  %s\n", ti.pathUnix)
 			})
 	}
 
