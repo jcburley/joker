@@ -120,6 +120,8 @@ var alreadySeen = []string{}
 // Returns whether any public functions were actually processed.
 func processFuncDecl(pkg, pkgDirUnix, filename string, f *File, fn *FuncDecl) bool {
 	if dump {
+		fmt.Printf("Func in pkg=%s pkgDirUnix=%s filename=%s:\n",
+			pkg, pkgDirUnix, filename)
 		Print(fset, fn)
 	}
 	fname := pkgDirUnix + "." + fn.Name.Name
@@ -153,6 +155,8 @@ var types = map[string]*typeInfo{}
 
 func processTypeSpec(pkg string, filename string, f *File, ts *TypeSpec) {
 	if dump {
+		fmt.Printf("Type in pkg=%s filename=%s:\n",
+			pkg, filename)
 		Print(fset, ts)
 	}
 	typename := pkg + "." + ts.Name.Name
@@ -284,6 +288,17 @@ func processDir(d string, path string, mode parser.Mode) error {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return err
+	}
+
+	if dump {
+		for _, p := range pkgs {
+			for k, f := range p.Files {
+				for _, i := range f.Imports {
+					fmt.Printf("Import for file %s:\n", k)
+					Print(fset, i)
+				}
+			}
+		}
 	}
 
 	basename := filepath.Base(path)
@@ -1591,8 +1606,8 @@ func main() {
 			sortedCodeMap(v,
 				func(f string, w string) {
 					if outputCode {
-						fmt.Printf("JOKER FUNC %s.%s has:%v\n",
-							pkgBaseName, f, w)
+						fmt.Printf("JOKER FUNC %s.%s in %s has:%v\n",
+							pkgBaseName, f, pkgDirUnix, w)
 					}
 					if out != nil {
 						out.WriteString(w)
@@ -1643,8 +1658,8 @@ import (%s%s
 			sortedCodeMap(v,
 				func(f string, w string) {
 					if outputCode {
-						fmt.Printf("GO FUNC %s.%s has:%v\n",
-							pkgBaseName, f, w)
+						fmt.Printf("GO FUNC %s.%s in %s has:%v\n",
+							pkgBaseName, f, pkgDirUnix, w)
 					}
 					if out != nil {
 						out.WriteString(w)
