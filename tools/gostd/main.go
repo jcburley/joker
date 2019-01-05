@@ -121,18 +121,18 @@ var qualifiedFunctions = map[string]*funcInfo{}
 var alreadySeen = []string{}
 
 // Returns whether any public functions were actually processed.
-func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fn *FuncDecl) bool {
+func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
 	if dump {
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
-		Print(fset, fn)
+		Print(fset, fd)
 	}
-	fname := pkgDirUnix + "." + fn.Name.Name
+	fname := pkgDirUnix + "." + fd.Name.Name
 	if v, ok := qualifiedFunctions[fname]; ok {
 		alreadySeen = append(alreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 				fname, v.sourceFile.name, filename))
 	}
-	qualifiedFunctions[fname] = &funcInfo{fn, gf}
+	qualifiedFunctions[fname] = &funcInfo{fd, gf}
 	return true
 }
 
@@ -209,18 +209,19 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 
 type goFile struct {
 	name       string
+	rootUnix   string
 	pkgDirUnix string
-	spaces     *map[string]string // maps "foo" (in a reference such as "foo.bar") to the file/package(???) in which it is defined
+	spaces     *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
 }
 
 var goFiles = map[string]*goFile{}
 
-func processPackageMeta(pkgDirUnix, goFilePathUnix string, f *File) (gf *goFile) {
+func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (gf *goFile) {
 	if egf, found := goFiles[goFilePathUnix]; found {
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf = &goFile{goFilePathUnix, pkgDirUnix, &importsMap}
+	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, &importsMap}
 	goFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
@@ -295,7 +296,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	found := false
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := processPackageMeta(pkgDirUnix, goFilePathUnix, f)
+		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, f)
 		if processDecls(gf, pkgDirUnix, goFilePathUnix, f) {
 			found = true
 		}
@@ -598,10 +599,19 @@ func genGoPostStar(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok,
 
 func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
 	pkgName := e.X.(*Ident).Name
-	// ~~~lookup pkgName in goFiles[goFilePathUnix].spaces, use resulting value for pkgName
-	selName := e.Sel.Name
-	jok, gol, goc, out = genGoPostSelected(fn, indent, in, pkgName+"."+selName, onlyIf)
-	return
+	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
+	rf, ok := goFiles[referringFile]
+	if !ok {
+		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for expression at %s",
+			referringFile, whereAt(e.Pos())))
+	}
+	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
+		selName := e.Sel.Name
+		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+selName, onlyIf)
+		return
+	}
+	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
+		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
 }
 
 func maybeNil(expr, in string) string {
@@ -1249,6 +1259,7 @@ func genFunction(fn *funcInfo) {
 	d := fn.fd
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := filepath.Base(pkgDirUnix)
+
 	jfmt := `
 (defn %s%s
 %s  {:added "1.0"

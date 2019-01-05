@@ -870,7 +870,7 @@ JOKER FUNC net/http.FileServer:
 
 JOKER FUNC net/http.Get:
 ;; (defn Get
-;;   "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename tls.ConnectionState)} Error]"
+;;   "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
 ;;    :go "get(_url)"}
 ;;   [^String _url])
@@ -891,7 +891,7 @@ JOKER FUNC net/http.HandleFunc:
 
 JOKER FUNC net/http.Head:
 ;; (defn Head
-;;   "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename tls.ConnectionState)} Error]"
+;;   "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
 ;;    :go "head(_url)"}
 ;;   [^String _url])
@@ -926,7 +926,7 @@ JOKER FUNC net/http.NewFileTransport:
 
 JOKER FUNC net/http.NewRequest:
 ;; (defn NewRequest
-;;   "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo input arguments: (method string, url string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:792:45))\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^String method, ^String url, ^Reader body]\n\nJoker return type: [{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND042(cannot find typename tls.ConnectionState)}} Error]"
+;;   "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo input arguments: (method string, url string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:792:45))\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^String method, ^String url, ^Reader body]\n\nJoker return type: [{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)}} Error]"
 ;;   {:added "1.0"
 ;;    :go "newRequest(_method, _url, ABEND904(custom-runtime routine not implemented: io.Reader(_body)))"}
 ;;   [^String _method, ^String _url, ^Reader _body])
@@ -968,21 +968,21 @@ JOKER FUNC net/http.ParseTime:
 
 JOKER FUNC net/http.Post:
 ;; (defn Post
-;;   "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, contentType string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/client.go:748:44))\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^String contentType, ^Reader body]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename tls.ConnectionState)} Error]"
+;;   "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, contentType string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/client.go:748:44))\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^String contentType, ^Reader body]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
 ;;    :go "post(_url, _contentType, ABEND904(custom-runtime routine not implemented: io.Reader(_body)))"}
 ;;   [^String _url, ^String _contentType, ^Reader _body])
 
 JOKER FUNC net/http.PostForm:
 ;; (defn PostForm
-;;   "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, data *ABEND884(unrecognized type Values at: _tests/big/src/net/http/client.go:785:36))\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^Values data]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename tls.ConnectionState)} Error]"
+;;   "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, data *ABEND884(unrecognized type Values at: _tests/big/src/net/http/client.go:785:36))\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^Values data]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
 ;;    :go "postForm(_url, ABEND904(custom-runtime routine not implemented: url.Values(_data)))"}
 ;;   [^String _url, ^Values _data])
 
 JOKER FUNC net/http.ProxyFromEnvironment:
 ;; (defn ProxyFromEnvironment
-;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32))\n\nGo return type: (*..., error)\n\nJoker input arguments: [^(atom-of Request) req]\n\nJoker return type: [ABEND042(cannot find typename url.URL) Error]"
+;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32))\n\nGo return type: (*struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}, error)\n\nJoker input arguments: [^(atom-of Request) req]\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
 ;;   {:added "1.0"
 ;;    :go "proxyFromEnvironment(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_req)))"}
 ;;   [^Object _req])
@@ -996,14 +996,14 @@ JOKER FUNC net/http.ProxyURL:
 
 JOKER FUNC net/http.ReadRequest:
 ;; (defn ReadRequest
-;;   "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:942:27))\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^(atom-of Reader) b]\n\nJoker return type: [{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND042(cannot find typename tls.ConnectionState)}} Error]"
+;;   "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/request.go:942:27))\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^(atom-of Reader) b]\n\nJoker return type: [{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^ABEND947(recursive type reference involving net/http.Request), :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)}} Error]"
 ;;   {:added "1.0"
 ;;    :go "readRequest(ConvertToIndirectOfReader(ABEND904(custom-runtime routine not implemented: bufio.Reader(_b))))"}
 ;;   [^Object _b])
 
 JOKER FUNC net/http.ReadResponse:
 ;; (defn ReadResponse
-;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/response.go:148:28), req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/response.go:148:41))\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(atom-of Reader) r, ^(atom-of Request) req]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^ABEND042(cannot find typename url.URL), :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND042(cannot find typename url.Values), :PostForm ^ABEND042(cannot find typename url.Values), :MultipartForm ^ABEND042(cannot find typename multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename tls.ConnectionState)} Error]"
+;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r **ABEND884(unrecognized type Reader at: _tests/big/src/net/http/response.go:148:28), req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/response.go:148:41))\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(atom-of Reader) r, ^(atom-of Request) req]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
 ;;    :go "readResponse(ConvertToIndirectOfReader(ABEND904(custom-runtime routine not implemented: bufio.Reader(_r))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_req)))"}
 ;;   [^Object _r, ^Object _req])
@@ -1080,14 +1080,14 @@ JOKER FUNC net/http.TimeoutHandler:
 
 JOKER FUNC net/http/cgi.Request:
 ;; (defn Request
-;;   "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*..., error)\n\nJoker input arguments: []\n\nJoker return type: [ABEND042(cannot find typename http.Request) Error]"
+;;   "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*struct {Method string; URL *struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}; Proto string; ProtoMajor int; ProtoMinor int; Header Header; Body ...; GetBody ...; ContentLength int; TransferEncoding []string; Close bool; Host string; Form ...; PostForm ...; MultipartForm *...; Trailer Header; RemoteAddr string; RequestURI string; TLS *...; Cancel ...; Response *Response}, error)\n\nJoker input arguments: []\n\nJoker return type: [{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http/cgi.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND042(cannot find typename net/http/cgi.Header), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND042(cannot find typename net/http/cgi.Header), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND042(cannot find typename net/http/cgi.Response)} Error]"
 ;;   {:added "1.0"
 ;;    :go "request()"}
 ;;   [])
 
 JOKER FUNC net/http/cgi.RequestFromMap:
 ;; (defn RequestFromMap
-;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*..., error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [ABEND042(cannot find typename http.Request) Error]"
+;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*struct {Method string; URL *struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}; Proto string; ProtoMajor int; ProtoMinor int; Header Header; Body ...; GetBody ...; ContentLength int; TransferEncoding []string; Close bool; Host string; Form ...; PostForm ...; MultipartForm *...; Trailer Header; RemoteAddr string; RequestURI string; TLS *...; Cancel ...; Response *Response}, error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http/cgi.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND042(cannot find typename net/http/cgi.Header), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND042(cannot find typename net/http/cgi.Header), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND042(cannot find typename net/http/cgi.Response)} Error]"
 ;;   {:added "1.0"
 ;;    :go "requestFromMap(ABEND908(custom-runtime routine not implemented: ConvertToMapTypeHaHa()))"}
 ;;   [^{} _params])
@@ -1122,35 +1122,35 @@ JOKER FUNC net/http/fcgi.Serve:
 
 JOKER FUNC net/http/httptest.NewRecorder:
 ;; (defn NewRecorder
-;;   "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: {:Code ^Int, :HeaderMap ^ABEND042(cannot find typename http.Header), :Body ^ABEND042(cannot find typename bytes.Buffer), :Flushed ^Bool}"
+;;   "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: {:Code ^Int, :HeaderMap ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename bytes.Buffer), :Flushed ^Bool}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newRecorder())"}
 ;;   [])
 
 JOKER FUNC net/http/httptest.NewRequest:
 ;; (defn NewRequest
-;;   "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httptest/httptest.go:41:48))\n\nGo return type: *...\n\nJoker input arguments: [^String method, ^String target, ^Reader body]\n\nJoker return type: ABEND042(cannot find typename http.Request)"
+;;   "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httptest/httptest.go:41:48))\n\nGo return type: *struct {Method string; URL *struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}; Proto string; ProtoMajor int; ProtoMinor int; Header Header; Body ...; GetBody ...; ContentLength int; TransferEncoding []string; Close bool; Host string; Form ...; PostForm ...; MultipartForm *...; Trailer Header; RemoteAddr string; RequestURI string; TLS *...; Cancel ...; Response *Response}\n\nJoker input arguments: [^String method, ^String target, ^Reader body]\n\nJoker return type: {:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http/httptest.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND042(cannot find typename net/http/httptest.Header), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND042(cannot find typename net/http/httptest.Header), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND042(cannot find typename net/http/httptest.Response)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newRequest(_method, _target, ABEND904(custom-runtime routine not implemented: io.Reader(_body))))"}
 ;;   [^String _method, ^String _target, ^Reader _body])
 
 JOKER FUNC net/http/httptest.NewServer:
 ;; (defn NewServer
-;;   "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:80:29))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename tls.Config), :Config ^ABEND042(cannot find typename http.Server)}"
+;;   "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:80:29))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename crypto/tls.Config), :Config ^{:Addr ^String, :Handler ^ABEND042(cannot find typename net/http/httptest.Handler), :TLSConfig ^ABEND042(cannot find typename crypto/tls.Config), :ReadTimeout ^ABEND042(cannot find typename time.Duration), :ReadHeaderTimeout ^ABEND042(cannot find typename time.Duration), :WriteTimeout ^ABEND042(cannot find typename time.Duration), :IdleTimeout ^ABEND042(cannot find typename time.Duration), :MaxHeaderBytes ^Int, :TLSNextProto ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/server.go:2501:15), :ConnState ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/server.go:2506:12), :ErrorLog ^ABEND042(cannot find typename log.Logger)}}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newServer(ABEND904(custom-runtime routine not implemented: http.Handler(_handler))))"}
 ;;   [^Handler _handler])
 
 JOKER FUNC net/http/httptest.NewTLSServer:
 ;; (defn NewTLSServer
-;;   "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:160:32))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename tls.Config), :Config ^ABEND042(cannot find typename http.Server)}"
+;;   "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:160:32))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename crypto/tls.Config), :Config ^{:Addr ^String, :Handler ^ABEND042(cannot find typename net/http/httptest.Handler), :TLSConfig ^ABEND042(cannot find typename crypto/tls.Config), :ReadTimeout ^ABEND042(cannot find typename time.Duration), :ReadHeaderTimeout ^ABEND042(cannot find typename time.Duration), :WriteTimeout ^ABEND042(cannot find typename time.Duration), :IdleTimeout ^ABEND042(cannot find typename time.Duration), :MaxHeaderBytes ^Int, :TLSNextProto ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/server.go:2501:15), :ConnState ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/server.go:2506:12), :ErrorLog ^ABEND042(cannot find typename log.Logger)}}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newTLSServer(ABEND904(custom-runtime routine not implemented: http.Handler(_handler))))"}
 ;;   [^Handler _handler])
 
 JOKER FUNC net/http/httptest.NewUnstartedServer:
 ;; (defn NewUnstartedServer
-;;   "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:92:38))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename tls.Config), :Config ^ABEND042(cannot find typename http.Server)}"
+;;   "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler *ABEND884(unrecognized type Handler at: _tests/big/src/net/http/httptest/server.go:92:38))\n\nGo return type: *Server\n\nJoker input arguments: [^Handler handler]\n\nJoker return type: {:URL ^String, :Listener ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/net.go:365:15), :TLS ^ABEND042(cannot find typename crypto/tls.Config), :Config ^{:Addr ^String, :Handler ^ABEND042(cannot find typename net/http/httptest.Handler), :TLSConfig ^ABEND042(cannot find typename crypto/tls.Config), :ReadTimeout ^ABEND042(cannot find typename time.Duration), :ReadHeaderTimeout ^ABEND042(cannot find typename time.Duration), :WriteTimeout ^ABEND042(cannot find typename time.Duration), :IdleTimeout ^ABEND042(cannot find typename time.Duration), :MaxHeaderBytes ^Int, :TLSNextProto ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/server.go:2501:15), :ConnState ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/server.go:2506:12), :ErrorLog ^ABEND042(cannot find typename log.Logger)}}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newUnstartedServer(ABEND904(custom-runtime routine not implemented: http.Handler(_handler))))"}
 ;;   [^Handler _handler])
@@ -1227,7 +1227,7 @@ JOKER FUNC net/http/httputil.NewServerConn:
 
 JOKER FUNC net/http/httputil.NewSingleHostReverseProxy:
 ;; (defn NewSingleHostReverseProxy
-;;   "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: (target **ABEND884(unrecognized type URL at: _tests/big/src/net/http/httputil/reverseproxy.go:103:44))\n\nGo return type: *ReverseProxy\n\nJoker input arguments: [^(atom-of URL) target]\n\nJoker return type: {:Director ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:35:11), :Transport ^ABEND042(cannot find typename http.RoundTripper), :FlushInterval ^ABEND042(cannot find typename time.Duration), :ErrorLog ^ABEND042(cannot find typename log.Logger), :BufferPool ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/httputil/reverseproxy.go:79:17), :ModifyResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:67:17), :ErrorHandler ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:74:15)}"
+;;   "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: (target **ABEND884(unrecognized type URL at: _tests/big/src/net/http/httputil/reverseproxy.go:103:44))\n\nGo return type: *ReverseProxy\n\nJoker input arguments: [^(atom-of URL) target]\n\nJoker return type: {:Director ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:35:11), :Transport ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/client.go:115:19), :FlushInterval ^ABEND042(cannot find typename time.Duration), :ErrorLog ^ABEND042(cannot find typename log.Logger), :BufferPool ^ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/httputil/reverseproxy.go:79:17), :ModifyResponse ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:67:17), :ErrorHandler ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:74:15)}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newSingleHostReverseProxy(ConvertToIndirectOfURL(ABEND904(custom-runtime routine not implemented: url.URL(_target)))))"}
 ;;   [^Object _target])
@@ -1241,7 +1241,7 @@ JOKER FUNC net/http/pprof.Cmdline:
 
 JOKER FUNC net/http/pprof.Handler:
 ;; (defn Handler
-;;   "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: ...\n\nJoker input arguments: [^String name]\n\nJoker return type: ABEND042(cannot find typename http.Handler)"
+;;   "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: ...\n\nJoker input arguments: [^String name]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
 ;;    :go "handler(_name)"}
 ;;   [^String _name])
@@ -1394,29 +1394,29 @@ JOKER FUNC net/rpc.ServeRequest:
   [^ServerCodec _codec])
 
 JOKER FUNC net/rpc/jsonrpc.Dial:
-;; (defn Dial
-;;   "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*..., error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [ABEND042(cannot find typename rpc.Client) Error]"
-;;   {:added "1.0"
-;;    :go "dial(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn Dial
+  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*struct {}, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [{} Error]"
+  {:added "1.0"
+   :go "dial(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net/rpc/jsonrpc.NewClient:
 ;; (defn NewClient
-;;   "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:113:24))\n\nGo return type: *...\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: ABEND042(cannot find typename rpc.Client)"
+;;   "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:113:24))\n\nGo return type: *struct {}\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: {}"
 ;;   {:added "1.0"
 ;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClient(ABEND904(custom-runtime routine not implemented: io.ReadWriteCloser(_conn))))"}
 ;;   [^ReadWriteCloser _conn])
 
 JOKER FUNC net/rpc/jsonrpc.NewClientCodec:
 ;; (defn NewClientCodec
-;;   "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:37:29))\n\nGo return type: ...\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: ABEND042(cannot find typename rpc.ClientCodec)"
+;;   "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:37:29))\n\nGo return type: ...\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/rpc/client.go:63:18)"
 ;;   {:added "1.0"
 ;;    :go "newClientCodec(ABEND904(custom-runtime routine not implemented: io.ReadWriteCloser(_conn)))"}
 ;;   [^ReadWriteCloser _conn])
 
 JOKER FUNC net/rpc/jsonrpc.NewServerCodec:
 ;; (defn NewServerCodec
-;;   "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/server.go:37:29))\n\nGo return type: ...\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: ABEND042(cannot find typename rpc.ServerCodec)"
+;;   "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo input arguments: (conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/server.go:37:29))\n\nGo return type: ...\n\nJoker input arguments: [^ReadWriteCloser conn]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/rpc/server.go:658:18)"
 ;;   {:added "1.0"
 ;;    :go "newServerCodec(ABEND904(custom-runtime routine not implemented: io.ReadWriteCloser(_conn)))"}
 ;;   [^ReadWriteCloser _conn])
@@ -1436,15 +1436,15 @@ JOKER FUNC net/smtp.CRAMMD5Auth:
 ;;   [^String _username, ^String _secret])
 
 JOKER FUNC net/smtp.Dial:
-;; (defn Dial
-;;   "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [{:Text ^ABEND042(cannot find typename textproto.Conn)} Error]"
-;;   {:added "1.0"
-;;    :go "dial(_addr)"}
-;;   [^String _addr])
+(defn Dial
+  "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [{:Text ^{}} Error]"
+  {:added "1.0"
+   :go "dial(_addr)"}
+  [^String _addr])
 
 JOKER FUNC net/smtp.NewClient:
 ;; (defn NewClient
-;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn *ABEND884(unrecognized type Conn at: _tests/big/src/net/smtp/smtp.go:62:25), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^Conn conn, ^String host]\n\nJoker return type: [{:Text ^ABEND042(cannot find typename textproto.Conn)} Error]"
+;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn *ABEND884(unrecognized type Conn at: _tests/big/src/net/smtp/smtp.go:62:25), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^Conn conn, ^String host]\n\nJoker return type: [{:Text ^{}} Error]"
 ;;   {:added "1.0"
 ;;    :go "newClient(ABEND904(custom-runtime routine not implemented: net.Conn(_conn)), _host)"}
 ;;   [^Conn _conn, ^String _host])
@@ -2183,7 +2183,23 @@ GO FUNC net/http.Get:
 // 		if (*resp).Request != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
-// 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
+// 			var _obj_map4 Object
+// 			if (*(*resp).Request).URL != nil {
+// 				_map4 := EmptyArrayMap()
+// 				_map4.Add(MakeKeyword("Scheme"), MakeString((*(*(*resp).Request).URL).Scheme))
+// 				_map4.Add(MakeKeyword("Opaque"), MakeString((*(*(*resp).Request).URL).Opaque))
+// 				_map4.Add(MakeKeyword("User"), (*(*(*(*resp).Request).URL).User))
+// 				_map4.Add(MakeKeyword("Host"), MakeString((*(*(*resp).Request).URL).Host))
+// 				_map4.Add(MakeKeyword("Path"), MakeString((*(*(*resp).Request).URL).Path))
+// 				_map4.Add(MakeKeyword("RawPath"), MakeString((*(*(*resp).Request).URL).RawPath))
+// 				_map4.Add(MakeKeyword("ForceQuery"), MakeBool((*(*(*resp).Request).URL).ForceQuery))
+// 				_map4.Add(MakeKeyword("RawQuery"), MakeString((*(*(*resp).Request).URL).RawQuery))
+// 				_map4.Add(MakeKeyword("Fragment"), MakeString((*(*(*resp).Request).URL).Fragment))
+// 				_obj_map4 = Object(_map4)
+// 			} else {
+// 				_obj_map4 = NIL
+// 			}
+// 			_map3.Add(MakeKeyword("URL"), _obj_map4)
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
 // 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
 // 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
@@ -2191,11 +2207,11 @@ GO FUNC net/http.Get:
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*resp).Request).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*resp).Request).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*resp).Request).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
+// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec5)
 // 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*resp).Request).Close))
 // 			_map3.Add(MakeKeyword("Host"), MakeString((*(*resp).Request).Host))
 // 			_map3.Add(MakeKeyword("Form"), (*(*resp).Request).Form)
@@ -2261,7 +2277,23 @@ GO FUNC net/http.Head:
 // 		if (*resp).Request != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
-// 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
+// 			var _obj_map4 Object
+// 			if (*(*resp).Request).URL != nil {
+// 				_map4 := EmptyArrayMap()
+// 				_map4.Add(MakeKeyword("Scheme"), MakeString((*(*(*resp).Request).URL).Scheme))
+// 				_map4.Add(MakeKeyword("Opaque"), MakeString((*(*(*resp).Request).URL).Opaque))
+// 				_map4.Add(MakeKeyword("User"), (*(*(*(*resp).Request).URL).User))
+// 				_map4.Add(MakeKeyword("Host"), MakeString((*(*(*resp).Request).URL).Host))
+// 				_map4.Add(MakeKeyword("Path"), MakeString((*(*(*resp).Request).URL).Path))
+// 				_map4.Add(MakeKeyword("RawPath"), MakeString((*(*(*resp).Request).URL).RawPath))
+// 				_map4.Add(MakeKeyword("ForceQuery"), MakeBool((*(*(*resp).Request).URL).ForceQuery))
+// 				_map4.Add(MakeKeyword("RawQuery"), MakeString((*(*(*resp).Request).URL).RawQuery))
+// 				_map4.Add(MakeKeyword("Fragment"), MakeString((*(*(*resp).Request).URL).Fragment))
+// 				_obj_map4 = Object(_map4)
+// 			} else {
+// 				_obj_map4 = NIL
+// 			}
+// 			_map3.Add(MakeKeyword("URL"), _obj_map4)
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
 // 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
 // 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
@@ -2269,11 +2301,11 @@ GO FUNC net/http.Head:
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*resp).Request).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*resp).Request).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*resp).Request).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
+// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec5)
 // 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*resp).Request).Close))
 // 			_map3.Add(MakeKeyword("Host"), MakeString((*(*resp).Request).Host))
 // 			_map3.Add(MakeKeyword("Form"), (*(*resp).Request).Form)
@@ -2318,7 +2350,23 @@ GO FUNC net/http.NewRequest:
 // 	if _res1 != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
-// 		_map1.Add(MakeKeyword("URL"), (*(*_res1).URL))
+// 		var _obj_map2 Object
+// 		if (*_res1).URL != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Scheme"), MakeString((*(*_res1).URL).Scheme))
+// 			_map2.Add(MakeKeyword("Opaque"), MakeString((*(*_res1).URL).Opaque))
+// 			_map2.Add(MakeKeyword("User"), (*(*(*_res1).URL).User))
+// 			_map2.Add(MakeKeyword("Host"), MakeString((*(*_res1).URL).Host))
+// 			_map2.Add(MakeKeyword("Path"), MakeString((*(*_res1).URL).Path))
+// 			_map2.Add(MakeKeyword("RawPath"), MakeString((*(*_res1).URL).RawPath))
+// 			_map2.Add(MakeKeyword("ForceQuery"), MakeBool((*(*_res1).URL).ForceQuery))
+// 			_map2.Add(MakeKeyword("RawQuery"), MakeString((*(*_res1).URL).RawQuery))
+// 			_map2.Add(MakeKeyword("Fragment"), MakeString((*(*_res1).URL).Fragment))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("URL"), _obj_map2)
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
 // 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
 // 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
@@ -2326,11 +2374,11 @@ GO FUNC net/http.NewRequest:
 // 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
 // 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res1).ContentLength)))
-// 		_vec2 := EmptyVector
-// 		for _, _elem2 := range (*_res1).TransferEncoding {
-// 			_vec2 = _vec2.Conjoin(MakeString(_elem2))
+// 		_vec3 := EmptyVector
+// 		for _, _elem3 := range (*_res1).TransferEncoding {
+// 			_vec3 = _vec3.Conjoin(MakeString(_elem3))
 // 		}
-// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec2)
+// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec3)
 // 		_map1.Add(MakeKeyword("Close"), MakeBool((*_res1).Close))
 // 		_map1.Add(MakeKeyword("Host"), MakeString((*_res1).Host))
 // 		_map1.Add(MakeKeyword("Form"), (*_res1).Form)
@@ -2341,32 +2389,32 @@ GO FUNC net/http.NewRequest:
 // 		_map1.Add(MakeKeyword("RequestURI"), MakeString((*_res1).RequestURI))
 // 		_map1.Add(MakeKeyword("TLS"), (*(*_res1).TLS))
 // 		_map1.Add(MakeKeyword("Cancel"), (*_res1).Cancel)
-// 		var _obj_map3 Object
+// 		var _obj_map4 Object
 // 		if (*_res1).Response != nil {
-// 			_map3 := EmptyArrayMap()
-// 			_map3.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
-// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
-// 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
-// 			_map3.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
-// 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
-// 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*_res1).Response).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_map4 := EmptyArrayMap()
+// 			_map4.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
+// 			_map4.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
+// 			_map4.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
+// 			_map4.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
+// 			_map4.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
+// 			_map4.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
+// 			_map4.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
+// 			_map4.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*_res1).Response).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
-// 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*_res1).Response).Close))
-// 			_map3.Add(MakeKeyword("Uncompressed"), MakeBool((*(*_res1).Response).Uncompressed))
-// 			_map3.Add(MakeKeyword("Trailer"), (*(*_res1).Response).Trailer)
-// 			_map3.Add(MakeKeyword("Request"), )
-// 			_map3.Add(MakeKeyword("TLS"), (*(*(*_res1).Response).TLS))
-// 			_obj_map3 = Object(_map3)
+// 			_map4.Add(MakeKeyword("TransferEncoding"), _vec5)
+// 			_map4.Add(MakeKeyword("Close"), MakeBool((*(*_res1).Response).Close))
+// 			_map4.Add(MakeKeyword("Uncompressed"), MakeBool((*(*_res1).Response).Uncompressed))
+// 			_map4.Add(MakeKeyword("Trailer"), (*(*_res1).Response).Trailer)
+// 			_map4.Add(MakeKeyword("Request"), )
+// 			_map4.Add(MakeKeyword("TLS"), (*(*(*_res1).Response).TLS))
+// 			_obj_map4 = Object(_map4)
 // 		} else {
-// 			_obj_map3 = NIL
+// 			_obj_map4 = NIL
 // 		}
-// 		_map1.Add(MakeKeyword("Response"), _obj_map3)
+// 		_map1.Add(MakeKeyword("Response"), _obj_map4)
 // 		_obj_map1 = Object(_map1)
 // 	} else {
 // 		_obj_map1 = NIL
@@ -2439,7 +2487,23 @@ GO FUNC net/http.Post:
 // 		if (*resp).Request != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
-// 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
+// 			var _obj_map4 Object
+// 			if (*(*resp).Request).URL != nil {
+// 				_map4 := EmptyArrayMap()
+// 				_map4.Add(MakeKeyword("Scheme"), MakeString((*(*(*resp).Request).URL).Scheme))
+// 				_map4.Add(MakeKeyword("Opaque"), MakeString((*(*(*resp).Request).URL).Opaque))
+// 				_map4.Add(MakeKeyword("User"), (*(*(*(*resp).Request).URL).User))
+// 				_map4.Add(MakeKeyword("Host"), MakeString((*(*(*resp).Request).URL).Host))
+// 				_map4.Add(MakeKeyword("Path"), MakeString((*(*(*resp).Request).URL).Path))
+// 				_map4.Add(MakeKeyword("RawPath"), MakeString((*(*(*resp).Request).URL).RawPath))
+// 				_map4.Add(MakeKeyword("ForceQuery"), MakeBool((*(*(*resp).Request).URL).ForceQuery))
+// 				_map4.Add(MakeKeyword("RawQuery"), MakeString((*(*(*resp).Request).URL).RawQuery))
+// 				_map4.Add(MakeKeyword("Fragment"), MakeString((*(*(*resp).Request).URL).Fragment))
+// 				_obj_map4 = Object(_map4)
+// 			} else {
+// 				_obj_map4 = NIL
+// 			}
+// 			_map3.Add(MakeKeyword("URL"), _obj_map4)
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
 // 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
 // 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
@@ -2447,11 +2511,11 @@ GO FUNC net/http.Post:
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*resp).Request).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*resp).Request).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*resp).Request).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
+// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec5)
 // 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*resp).Request).Close))
 // 			_map3.Add(MakeKeyword("Host"), MakeString((*(*resp).Request).Host))
 // 			_map3.Add(MakeKeyword("Form"), (*(*resp).Request).Form)
@@ -2505,7 +2569,23 @@ GO FUNC net/http.PostForm:
 // 		if (*resp).Request != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*resp).Request).Method))
-// 			_map3.Add(MakeKeyword("URL"), (*(*(*resp).Request).URL))
+// 			var _obj_map4 Object
+// 			if (*(*resp).Request).URL != nil {
+// 				_map4 := EmptyArrayMap()
+// 				_map4.Add(MakeKeyword("Scheme"), MakeString((*(*(*resp).Request).URL).Scheme))
+// 				_map4.Add(MakeKeyword("Opaque"), MakeString((*(*(*resp).Request).URL).Opaque))
+// 				_map4.Add(MakeKeyword("User"), (*(*(*(*resp).Request).URL).User))
+// 				_map4.Add(MakeKeyword("Host"), MakeString((*(*(*resp).Request).URL).Host))
+// 				_map4.Add(MakeKeyword("Path"), MakeString((*(*(*resp).Request).URL).Path))
+// 				_map4.Add(MakeKeyword("RawPath"), MakeString((*(*(*resp).Request).URL).RawPath))
+// 				_map4.Add(MakeKeyword("ForceQuery"), MakeBool((*(*(*resp).Request).URL).ForceQuery))
+// 				_map4.Add(MakeKeyword("RawQuery"), MakeString((*(*(*resp).Request).URL).RawQuery))
+// 				_map4.Add(MakeKeyword("Fragment"), MakeString((*(*(*resp).Request).URL).Fragment))
+// 				_obj_map4 = Object(_map4)
+// 			} else {
+// 				_obj_map4 = NIL
+// 			}
+// 			_map3.Add(MakeKeyword("URL"), _obj_map4)
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*resp).Request).Proto))
 // 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*resp).Request).ProtoMajor))
 // 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*resp).Request).ProtoMinor))
@@ -2513,11 +2593,11 @@ GO FUNC net/http.PostForm:
 // 			_map3.Add(MakeKeyword("Body"), (*(*resp).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*resp).Request).GetBody)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*resp).Request).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*resp).Request).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*resp).Request).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
+// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec5)
 // 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*resp).Request).Close))
 // 			_map3.Add(MakeKeyword("Host"), MakeString((*(*resp).Request).Host))
 // 			_map3.Add(MakeKeyword("Form"), (*(*resp).Request).Form)
@@ -2548,7 +2628,23 @@ GO FUNC net/http.ProxyFromEnvironment:
 // func proxyFromEnvironment(req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32)) Object {
 // 	_res1, _res2 := _http.ProxyFromEnvironment(req)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin((*_res1))
+// 	var _obj_map1 Object
+// 	if _res1 != nil {
+// 		_map1 := EmptyArrayMap()
+// 		_map1.Add(MakeKeyword("Scheme"), MakeString((*_res1).Scheme))
+// 		_map1.Add(MakeKeyword("Opaque"), MakeString((*_res1).Opaque))
+// 		_map1.Add(MakeKeyword("User"), (*(*_res1).User))
+// 		_map1.Add(MakeKeyword("Host"), MakeString((*_res1).Host))
+// 		_map1.Add(MakeKeyword("Path"), MakeString((*_res1).Path))
+// 		_map1.Add(MakeKeyword("RawPath"), MakeString((*_res1).RawPath))
+// 		_map1.Add(MakeKeyword("ForceQuery"), MakeBool((*_res1).ForceQuery))
+// 		_map1.Add(MakeKeyword("RawQuery"), MakeString((*_res1).RawQuery))
+// 		_map1.Add(MakeKeyword("Fragment"), MakeString((*_res1).Fragment))
+// 		_obj_map1 = Object(_map1)
+// 	} else {
+// 		_obj_map1 = NIL
+// 	}
+// 	_res = _res.Conjoin(_obj_map1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2566,7 +2662,23 @@ GO FUNC net/http.ReadRequest:
 // 	if _res1 != nil {
 // 		_map1 := EmptyArrayMap()
 // 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
-// 		_map1.Add(MakeKeyword("URL"), (*(*_res1).URL))
+// 		var _obj_map2 Object
+// 		if (*_res1).URL != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Scheme"), MakeString((*(*_res1).URL).Scheme))
+// 			_map2.Add(MakeKeyword("Opaque"), MakeString((*(*_res1).URL).Opaque))
+// 			_map2.Add(MakeKeyword("User"), (*(*(*_res1).URL).User))
+// 			_map2.Add(MakeKeyword("Host"), MakeString((*(*_res1).URL).Host))
+// 			_map2.Add(MakeKeyword("Path"), MakeString((*(*_res1).URL).Path))
+// 			_map2.Add(MakeKeyword("RawPath"), MakeString((*(*_res1).URL).RawPath))
+// 			_map2.Add(MakeKeyword("ForceQuery"), MakeBool((*(*_res1).URL).ForceQuery))
+// 			_map2.Add(MakeKeyword("RawQuery"), MakeString((*(*_res1).URL).RawQuery))
+// 			_map2.Add(MakeKeyword("Fragment"), MakeString((*(*_res1).URL).Fragment))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("URL"), _obj_map2)
 // 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
 // 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
 // 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
@@ -2574,11 +2686,11 @@ GO FUNC net/http.ReadRequest:
 // 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
 // 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
 // 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res1).ContentLength)))
-// 		_vec2 := EmptyVector
-// 		for _, _elem2 := range (*_res1).TransferEncoding {
-// 			_vec2 = _vec2.Conjoin(MakeString(_elem2))
+// 		_vec3 := EmptyVector
+// 		for _, _elem3 := range (*_res1).TransferEncoding {
+// 			_vec3 = _vec3.Conjoin(MakeString(_elem3))
 // 		}
-// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec2)
+// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec3)
 // 		_map1.Add(MakeKeyword("Close"), MakeBool((*_res1).Close))
 // 		_map1.Add(MakeKeyword("Host"), MakeString((*_res1).Host))
 // 		_map1.Add(MakeKeyword("Form"), (*_res1).Form)
@@ -2589,32 +2701,32 @@ GO FUNC net/http.ReadRequest:
 // 		_map1.Add(MakeKeyword("RequestURI"), MakeString((*_res1).RequestURI))
 // 		_map1.Add(MakeKeyword("TLS"), (*(*_res1).TLS))
 // 		_map1.Add(MakeKeyword("Cancel"), (*_res1).Cancel)
-// 		var _obj_map3 Object
+// 		var _obj_map4 Object
 // 		if (*_res1).Response != nil {
-// 			_map3 := EmptyArrayMap()
-// 			_map3.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
-// 			_map3.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
-// 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
-// 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
-// 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
-// 			_map3.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
-// 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
-// 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*_res1).Response).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_map4 := EmptyArrayMap()
+// 			_map4.Add(MakeKeyword("Status"), MakeString((*(*_res1).Response).Status))
+// 			_map4.Add(MakeKeyword("StatusCode"), MakeInt((*(*_res1).Response).StatusCode))
+// 			_map4.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Response).Proto))
+// 			_map4.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Response).ProtoMajor))
+// 			_map4.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Response).ProtoMinor))
+// 			_map4.Add(MakeKeyword("Header"), (*(*_res1).Response).Header)
+// 			_map4.Add(MakeKeyword("Body"), (*(*_res1).Response).Body)
+// 			_map4.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Response).ContentLength)))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*_res1).Response).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
-// 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*_res1).Response).Close))
-// 			_map3.Add(MakeKeyword("Uncompressed"), MakeBool((*(*_res1).Response).Uncompressed))
-// 			_map3.Add(MakeKeyword("Trailer"), (*(*_res1).Response).Trailer)
-// 			_map3.Add(MakeKeyword("Request"), )
-// 			_map3.Add(MakeKeyword("TLS"), (*(*(*_res1).Response).TLS))
-// 			_obj_map3 = Object(_map3)
+// 			_map4.Add(MakeKeyword("TransferEncoding"), _vec5)
+// 			_map4.Add(MakeKeyword("Close"), MakeBool((*(*_res1).Response).Close))
+// 			_map4.Add(MakeKeyword("Uncompressed"), MakeBool((*(*_res1).Response).Uncompressed))
+// 			_map4.Add(MakeKeyword("Trailer"), (*(*_res1).Response).Trailer)
+// 			_map4.Add(MakeKeyword("Request"), )
+// 			_map4.Add(MakeKeyword("TLS"), (*(*(*_res1).Response).TLS))
+// 			_obj_map4 = Object(_map4)
 // 		} else {
-// 			_obj_map3 = NIL
+// 			_obj_map4 = NIL
 // 		}
-// 		_map1.Add(MakeKeyword("Response"), _obj_map3)
+// 		_map1.Add(MakeKeyword("Response"), _obj_map4)
 // 		_obj_map1 = Object(_map1)
 // 	} else {
 // 		_obj_map1 = NIL
@@ -2651,7 +2763,23 @@ GO FUNC net/http.ReadResponse:
 // 		if (*_res1).Request != nil {
 // 			_map3 := EmptyArrayMap()
 // 			_map3.Add(MakeKeyword("Method"), MakeString((*(*_res1).Request).Method))
-// 			_map3.Add(MakeKeyword("URL"), (*(*(*_res1).Request).URL))
+// 			var _obj_map4 Object
+// 			if (*(*_res1).Request).URL != nil {
+// 				_map4 := EmptyArrayMap()
+// 				_map4.Add(MakeKeyword("Scheme"), MakeString((*(*(*_res1).Request).URL).Scheme))
+// 				_map4.Add(MakeKeyword("Opaque"), MakeString((*(*(*_res1).Request).URL).Opaque))
+// 				_map4.Add(MakeKeyword("User"), (*(*(*(*_res1).Request).URL).User))
+// 				_map4.Add(MakeKeyword("Host"), MakeString((*(*(*_res1).Request).URL).Host))
+// 				_map4.Add(MakeKeyword("Path"), MakeString((*(*(*_res1).Request).URL).Path))
+// 				_map4.Add(MakeKeyword("RawPath"), MakeString((*(*(*_res1).Request).URL).RawPath))
+// 				_map4.Add(MakeKeyword("ForceQuery"), MakeBool((*(*(*_res1).Request).URL).ForceQuery))
+// 				_map4.Add(MakeKeyword("RawQuery"), MakeString((*(*(*_res1).Request).URL).RawQuery))
+// 				_map4.Add(MakeKeyword("Fragment"), MakeString((*(*(*_res1).Request).URL).Fragment))
+// 				_obj_map4 = Object(_map4)
+// 			} else {
+// 				_obj_map4 = NIL
+// 			}
+// 			_map3.Add(MakeKeyword("URL"), _obj_map4)
 // 			_map3.Add(MakeKeyword("Proto"), MakeString((*(*_res1).Request).Proto))
 // 			_map3.Add(MakeKeyword("ProtoMajor"), MakeInt((*(*_res1).Request).ProtoMajor))
 // 			_map3.Add(MakeKeyword("ProtoMinor"), MakeInt((*(*_res1).Request).ProtoMinor))
@@ -2659,11 +2787,11 @@ GO FUNC net/http.ReadResponse:
 // 			_map3.Add(MakeKeyword("Body"), (*(*_res1).Request).Body)
 // 			_map3.Add(MakeKeyword("GetBody"), (*(*_res1).Request).GetBody)
 // 			_map3.Add(MakeKeyword("ContentLength"), MakeInt(int((*(*_res1).Request).ContentLength)))
-// 			_vec4 := EmptyVector
-// 			for _, _elem4 := range (*(*_res1).Request).TransferEncoding {
-// 				_vec4 = _vec4.Conjoin(MakeString(_elem4))
+// 			_vec5 := EmptyVector
+// 			for _, _elem5 := range (*(*_res1).Request).TransferEncoding {
+// 				_vec5 = _vec5.Conjoin(MakeString(_elem5))
 // 			}
-// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec4)
+// 			_map3.Add(MakeKeyword("TransferEncoding"), _vec5)
 // 			_map3.Add(MakeKeyword("Close"), MakeBool((*(*_res1).Request).Close))
 // 			_map3.Add(MakeKeyword("Host"), MakeString((*(*_res1).Request).Host))
 // 			_map3.Add(MakeKeyword("Form"), (*(*_res1).Request).Form)
@@ -2733,7 +2861,55 @@ GO FUNC net/http/cgi.Request:
 // func request() Object {
 // 	_res1, _res2 := _cgi.Request()
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin((*_res1))
+// 	var _obj_map1 Object
+// 	if _res1 != nil {
+// 		_map1 := EmptyArrayMap()
+// 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
+// 		var _obj_map2 Object
+// 		if (*_res1).URL != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Scheme"), MakeString((*(*_res1).URL).Scheme))
+// 			_map2.Add(MakeKeyword("Opaque"), MakeString((*(*_res1).URL).Opaque))
+// 			_map2.Add(MakeKeyword("User"), (*(*(*_res1).URL).User))
+// 			_map2.Add(MakeKeyword("Host"), MakeString((*(*_res1).URL).Host))
+// 			_map2.Add(MakeKeyword("Path"), MakeString((*(*_res1).URL).Path))
+// 			_map2.Add(MakeKeyword("RawPath"), MakeString((*(*_res1).URL).RawPath))
+// 			_map2.Add(MakeKeyword("ForceQuery"), MakeBool((*(*_res1).URL).ForceQuery))
+// 			_map2.Add(MakeKeyword("RawQuery"), MakeString((*(*_res1).URL).RawQuery))
+// 			_map2.Add(MakeKeyword("Fragment"), MakeString((*(*_res1).URL).Fragment))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("URL"), _obj_map2)
+// 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
+// 		_map1.Add(MakeKeyword("Header"), (*_res1).Header)
+// 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
+// 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
+// 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res1).ContentLength)))
+// 		_vec3 := EmptyVector
+// 		for _, _elem3 := range (*_res1).TransferEncoding {
+// 			_vec3 = _vec3.Conjoin(MakeString(_elem3))
+// 		}
+// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec3)
+// 		_map1.Add(MakeKeyword("Close"), MakeBool((*_res1).Close))
+// 		_map1.Add(MakeKeyword("Host"), MakeString((*_res1).Host))
+// 		_map1.Add(MakeKeyword("Form"), (*_res1).Form)
+// 		_map1.Add(MakeKeyword("PostForm"), (*_res1).PostForm)
+// 		_map1.Add(MakeKeyword("MultipartForm"), (*(*_res1).MultipartForm))
+// 		_map1.Add(MakeKeyword("Trailer"), (*_res1).Trailer)
+// 		_map1.Add(MakeKeyword("RemoteAddr"), MakeString((*_res1).RemoteAddr))
+// 		_map1.Add(MakeKeyword("RequestURI"), MakeString((*_res1).RequestURI))
+// 		_map1.Add(MakeKeyword("TLS"), (*(*_res1).TLS))
+// 		_map1.Add(MakeKeyword("Cancel"), (*_res1).Cancel)
+// 		_map1.Add(MakeKeyword("Response"), (*(*_res1).Response))
+// 		_obj_map1 = Object(_map1)
+// 	} else {
+// 		_obj_map1 = NIL
+// 	}
+// 	_res = _res.Conjoin(_obj_map1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2742,7 +2918,55 @@ GO FUNC net/http/cgi.RequestFromMap:
 // func requestFromMap(params map[]) Object {
 // 	_res1, _res2 := _cgi.RequestFromMap(params)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin((*_res1))
+// 	var _obj_map1 Object
+// 	if _res1 != nil {
+// 		_map1 := EmptyArrayMap()
+// 		_map1.Add(MakeKeyword("Method"), MakeString((*_res1).Method))
+// 		var _obj_map2 Object
+// 		if (*_res1).URL != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Scheme"), MakeString((*(*_res1).URL).Scheme))
+// 			_map2.Add(MakeKeyword("Opaque"), MakeString((*(*_res1).URL).Opaque))
+// 			_map2.Add(MakeKeyword("User"), (*(*(*_res1).URL).User))
+// 			_map2.Add(MakeKeyword("Host"), MakeString((*(*_res1).URL).Host))
+// 			_map2.Add(MakeKeyword("Path"), MakeString((*(*_res1).URL).Path))
+// 			_map2.Add(MakeKeyword("RawPath"), MakeString((*(*_res1).URL).RawPath))
+// 			_map2.Add(MakeKeyword("ForceQuery"), MakeBool((*(*_res1).URL).ForceQuery))
+// 			_map2.Add(MakeKeyword("RawQuery"), MakeString((*(*_res1).URL).RawQuery))
+// 			_map2.Add(MakeKeyword("Fragment"), MakeString((*(*_res1).URL).Fragment))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("URL"), _obj_map2)
+// 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res1).Proto))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res1).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res1).ProtoMinor))
+// 		_map1.Add(MakeKeyword("Header"), (*_res1).Header)
+// 		_map1.Add(MakeKeyword("Body"), (*_res1).Body)
+// 		_map1.Add(MakeKeyword("GetBody"), (*_res1).GetBody)
+// 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res1).ContentLength)))
+// 		_vec3 := EmptyVector
+// 		for _, _elem3 := range (*_res1).TransferEncoding {
+// 			_vec3 = _vec3.Conjoin(MakeString(_elem3))
+// 		}
+// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec3)
+// 		_map1.Add(MakeKeyword("Close"), MakeBool((*_res1).Close))
+// 		_map1.Add(MakeKeyword("Host"), MakeString((*_res1).Host))
+// 		_map1.Add(MakeKeyword("Form"), (*_res1).Form)
+// 		_map1.Add(MakeKeyword("PostForm"), (*_res1).PostForm)
+// 		_map1.Add(MakeKeyword("MultipartForm"), (*(*_res1).MultipartForm))
+// 		_map1.Add(MakeKeyword("Trailer"), (*_res1).Trailer)
+// 		_map1.Add(MakeKeyword("RemoteAddr"), MakeString((*_res1).RemoteAddr))
+// 		_map1.Add(MakeKeyword("RequestURI"), MakeString((*_res1).RequestURI))
+// 		_map1.Add(MakeKeyword("TLS"), (*(*_res1).TLS))
+// 		_map1.Add(MakeKeyword("Cancel"), (*_res1).Cancel)
+// 		_map1.Add(MakeKeyword("Response"), (*(*_res1).Response))
+// 		_obj_map1 = Object(_map1)
+// 	} else {
+// 		_obj_map1 = NIL
+// 	}
+// 	_res = _res.Conjoin(_obj_map1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2780,7 +3004,56 @@ GO FUNC net/http/httptest.NewRecorder:
 
 GO FUNC net/http/httptest.NewRequest:
 // func newRequest(method string, target string, body *ABEND884(unrecognized type Reader at: _tests/big/src/net/http/httptest/httptest.go:41:48)) Object {
-// 	return _httptest.NewRequest(method, target, body)
+// 	_res := _httptest.NewRequest(method, target, body)
+// 	var _obj_map1 Object
+// 	if _res != nil {
+// 		_map1 := EmptyArrayMap()
+// 		_map1.Add(MakeKeyword("Method"), MakeString((*_res).Method))
+// 		var _obj_map2 Object
+// 		if (*_res).URL != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Scheme"), MakeString((*(*_res).URL).Scheme))
+// 			_map2.Add(MakeKeyword("Opaque"), MakeString((*(*_res).URL).Opaque))
+// 			_map2.Add(MakeKeyword("User"), (*(*(*_res).URL).User))
+// 			_map2.Add(MakeKeyword("Host"), MakeString((*(*_res).URL).Host))
+// 			_map2.Add(MakeKeyword("Path"), MakeString((*(*_res).URL).Path))
+// 			_map2.Add(MakeKeyword("RawPath"), MakeString((*(*_res).URL).RawPath))
+// 			_map2.Add(MakeKeyword("ForceQuery"), MakeBool((*(*_res).URL).ForceQuery))
+// 			_map2.Add(MakeKeyword("RawQuery"), MakeString((*(*_res).URL).RawQuery))
+// 			_map2.Add(MakeKeyword("Fragment"), MakeString((*(*_res).URL).Fragment))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("URL"), _obj_map2)
+// 		_map1.Add(MakeKeyword("Proto"), MakeString((*_res).Proto))
+// 		_map1.Add(MakeKeyword("ProtoMajor"), MakeInt((*_res).ProtoMajor))
+// 		_map1.Add(MakeKeyword("ProtoMinor"), MakeInt((*_res).ProtoMinor))
+// 		_map1.Add(MakeKeyword("Header"), (*_res).Header)
+// 		_map1.Add(MakeKeyword("Body"), (*_res).Body)
+// 		_map1.Add(MakeKeyword("GetBody"), (*_res).GetBody)
+// 		_map1.Add(MakeKeyword("ContentLength"), MakeInt(int((*_res).ContentLength)))
+// 		_vec3 := EmptyVector
+// 		for _, _elem3 := range (*_res).TransferEncoding {
+// 			_vec3 = _vec3.Conjoin(MakeString(_elem3))
+// 		}
+// 		_map1.Add(MakeKeyword("TransferEncoding"), _vec3)
+// 		_map1.Add(MakeKeyword("Close"), MakeBool((*_res).Close))
+// 		_map1.Add(MakeKeyword("Host"), MakeString((*_res).Host))
+// 		_map1.Add(MakeKeyword("Form"), (*_res).Form)
+// 		_map1.Add(MakeKeyword("PostForm"), (*_res).PostForm)
+// 		_map1.Add(MakeKeyword("MultipartForm"), (*(*_res).MultipartForm))
+// 		_map1.Add(MakeKeyword("Trailer"), (*_res).Trailer)
+// 		_map1.Add(MakeKeyword("RemoteAddr"), MakeString((*_res).RemoteAddr))
+// 		_map1.Add(MakeKeyword("RequestURI"), MakeString((*_res).RequestURI))
+// 		_map1.Add(MakeKeyword("TLS"), (*(*_res).TLS))
+// 		_map1.Add(MakeKeyword("Cancel"), (*_res).Cancel)
+// 		_map1.Add(MakeKeyword("Response"), (*(*_res).Response))
+// 		_obj_map1 = Object(_map1)
+// 	} else {
+// 		_obj_map1 = NIL
+// 	}
+// 	return _obj_map1
 // }
 
 GO FUNC net/http/httptest.NewServer:
@@ -2792,7 +3065,25 @@ GO FUNC net/http/httptest.NewServer:
 // 		_map1.Add(MakeKeyword("URL"), MakeString((*_res).URL))
 // 		_map1.Add(MakeKeyword("Listener"), (*_res).Listener)
 // 		_map1.Add(MakeKeyword("TLS"), (*(*_res).TLS))
-// 		_map1.Add(MakeKeyword("Config"), (*(*_res).Config))
+// 		var _obj_map2 Object
+// 		if (*_res).Config != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Addr"), MakeString((*(*_res).Config).Addr))
+// 			_map2.Add(MakeKeyword("Handler"), (*(*_res).Config).Handler)
+// 			_map2.Add(MakeKeyword("TLSConfig"), (*(*(*_res).Config).TLSConfig))
+// 			_map2.Add(MakeKeyword("ReadTimeout"), (*(*_res).Config).ReadTimeout)
+// 			_map2.Add(MakeKeyword("ReadHeaderTimeout"), (*(*_res).Config).ReadHeaderTimeout)
+// 			_map2.Add(MakeKeyword("WriteTimeout"), (*(*_res).Config).WriteTimeout)
+// 			_map2.Add(MakeKeyword("IdleTimeout"), (*(*_res).Config).IdleTimeout)
+// 			_map2.Add(MakeKeyword("MaxHeaderBytes"), MakeInt((*(*_res).Config).MaxHeaderBytes))
+// 			_map2.Add(MakeKeyword("TLSNextProto"), (*(*_res).Config).TLSNextProto)
+// 			_map2.Add(MakeKeyword("ConnState"), (*(*_res).Config).ConnState)
+// 			_map2.Add(MakeKeyword("ErrorLog"), (*(*(*_res).Config).ErrorLog))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("Config"), _obj_map2)
 // 		_obj_map1 = Object(_map1)
 // 	} else {
 // 		_obj_map1 = NIL
@@ -2809,7 +3100,25 @@ GO FUNC net/http/httptest.NewTLSServer:
 // 		_map1.Add(MakeKeyword("URL"), MakeString((*_res).URL))
 // 		_map1.Add(MakeKeyword("Listener"), (*_res).Listener)
 // 		_map1.Add(MakeKeyword("TLS"), (*(*_res).TLS))
-// 		_map1.Add(MakeKeyword("Config"), (*(*_res).Config))
+// 		var _obj_map2 Object
+// 		if (*_res).Config != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Addr"), MakeString((*(*_res).Config).Addr))
+// 			_map2.Add(MakeKeyword("Handler"), (*(*_res).Config).Handler)
+// 			_map2.Add(MakeKeyword("TLSConfig"), (*(*(*_res).Config).TLSConfig))
+// 			_map2.Add(MakeKeyword("ReadTimeout"), (*(*_res).Config).ReadTimeout)
+// 			_map2.Add(MakeKeyword("ReadHeaderTimeout"), (*(*_res).Config).ReadHeaderTimeout)
+// 			_map2.Add(MakeKeyword("WriteTimeout"), (*(*_res).Config).WriteTimeout)
+// 			_map2.Add(MakeKeyword("IdleTimeout"), (*(*_res).Config).IdleTimeout)
+// 			_map2.Add(MakeKeyword("MaxHeaderBytes"), MakeInt((*(*_res).Config).MaxHeaderBytes))
+// 			_map2.Add(MakeKeyword("TLSNextProto"), (*(*_res).Config).TLSNextProto)
+// 			_map2.Add(MakeKeyword("ConnState"), (*(*_res).Config).ConnState)
+// 			_map2.Add(MakeKeyword("ErrorLog"), (*(*(*_res).Config).ErrorLog))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("Config"), _obj_map2)
 // 		_obj_map1 = Object(_map1)
 // 	} else {
 // 		_obj_map1 = NIL
@@ -2826,7 +3135,25 @@ GO FUNC net/http/httptest.NewUnstartedServer:
 // 		_map1.Add(MakeKeyword("URL"), MakeString((*_res).URL))
 // 		_map1.Add(MakeKeyword("Listener"), (*_res).Listener)
 // 		_map1.Add(MakeKeyword("TLS"), (*(*_res).TLS))
-// 		_map1.Add(MakeKeyword("Config"), (*(*_res).Config))
+// 		var _obj_map2 Object
+// 		if (*_res).Config != nil {
+// 			_map2 := EmptyArrayMap()
+// 			_map2.Add(MakeKeyword("Addr"), MakeString((*(*_res).Config).Addr))
+// 			_map2.Add(MakeKeyword("Handler"), (*(*_res).Config).Handler)
+// 			_map2.Add(MakeKeyword("TLSConfig"), (*(*(*_res).Config).TLSConfig))
+// 			_map2.Add(MakeKeyword("ReadTimeout"), (*(*_res).Config).ReadTimeout)
+// 			_map2.Add(MakeKeyword("ReadHeaderTimeout"), (*(*_res).Config).ReadHeaderTimeout)
+// 			_map2.Add(MakeKeyword("WriteTimeout"), (*(*_res).Config).WriteTimeout)
+// 			_map2.Add(MakeKeyword("IdleTimeout"), (*(*_res).Config).IdleTimeout)
+// 			_map2.Add(MakeKeyword("MaxHeaderBytes"), MakeInt((*(*_res).Config).MaxHeaderBytes))
+// 			_map2.Add(MakeKeyword("TLSNextProto"), (*(*_res).Config).TLSNextProto)
+// 			_map2.Add(MakeKeyword("ConnState"), (*(*_res).Config).ConnState)
+// 			_map2.Add(MakeKeyword("ErrorLog"), (*(*(*_res).Config).ErrorLog))
+// 			_obj_map2 = Object(_map2)
+// 		} else {
+// 			_obj_map2 = NIL
+// 		}
+// 		_map1.Add(MakeKeyword("Config"), _obj_map2)
 // 		_obj_map1 = Object(_map1)
 // 	} else {
 // 		_obj_map1 = NIL
@@ -3127,17 +3454,18 @@ GO FUNC net/rpc.ServeConn:
 // }
 
 GO FUNC net/rpc/jsonrpc.Dial:
-// func dial(network string, address string) Object {
-// 	_res1, _res2 := _jsonrpc.Dial(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin((*_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(network string, address string) Object {
+	_, _res2 := _jsonrpc.Dial(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(NIL)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/rpc/jsonrpc.NewClient:
 // func newClient(conn *ABEND884(unrecognized type ReadWriteCloser at: _tests/big/src/net/rpc/jsonrpc/client.go:113:24)) Object {
 // 	return _jsonrpc.NewClient(conn)
+// 	ABEND124(no public information returned)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec:
@@ -3162,35 +3490,19 @@ GO FUNC net/smtp.CRAMMD5Auth:
 // }
 
 GO FUNC net/smtp.Dial:
-// func dial(addr string) Object {
-// 	_res1, _res2 := _smtp.Dial(addr)
-// 	_res := EmptyVector
-// 	var _obj_map1 Object
-// 	if _res1 != nil {
-// 		_map1 := EmptyArrayMap()
-// 		_map1.Add(MakeKeyword("Text"), (*(*_res1).Text))
-// 		_obj_map1 = Object(_map1)
-// 	} else {
-// 		_obj_map1 = NIL
-// 	}
-// 	_res = _res.Conjoin(_obj_map1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(addr string) Object {
+	_, _res2 := _smtp.Dial(addr)
+	_res := EmptyVector
+	_res = _res.Conjoin(NIL)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/smtp.NewClient:
 // func newClient(conn *ABEND884(unrecognized type Conn at: _tests/big/src/net/smtp/smtp.go:62:25), host string) Object {
-// 	_res1, _res2 := _smtp.NewClient(conn, host)
+// 	_, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector
-// 	var _obj_map1 Object
-// 	if _res1 != nil {
-// 		_map1 := EmptyArrayMap()
-// 		_map1.Add(MakeKeyword("Text"), (*(*_res1).Text))
-// 		_obj_map1 = Object(_map1)
-// 	} else {
-// 		_obj_map1 = NIL
-// 	}
-// 	_res = _res.Conjoin(_obj_map1)
+// 	_res = _res.Conjoin(NIL)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -3345,5 +3657,5 @@ GO FUNC net/url.UserPassword:
 Adding custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/core.joke
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/std/generate-custom.joke
-ABENDs: 884(177) 042(87) 883(87) 904(60) 903(24) 401(20) 675(18) 124(10) 947(7) 907(2) 906(1) 908(1)
-Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=47 (31.76%)
+ABENDs: 884(177) 883(124) 042(100) 904(60) 903(24) 401(20) 675(18) 124(11) 947(7) 907(2) 906(1) 908(1)
+Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=49 (33.11%)
