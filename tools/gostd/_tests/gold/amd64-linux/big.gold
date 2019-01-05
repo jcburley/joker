@@ -555,16 +555,16 @@ JOKER FUNC net.Dial:
 
 JOKER FUNC net.DialIP:
 ;; (defn DialIP
-;;   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43), raddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43))\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of IPAddr) laddr, ^(atom-of IPAddr) raddr]\n\nJoker return type: [{} Error]"
+;;   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *net.IPAddr, raddr *net.IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.IPAddr) laddr, ^(atom-of net.IPAddr) raddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "dialIP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfIPAddr(_laddr)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfIPAddr(_raddr)))"}
+;;    :go "dialIP(_network, ConvertToIndirectOfnet.IPAddr(ABEND904(custom-runtime routine not implemented: net.IPAddr(_laddr))), ConvertToIndirectOfnet.IPAddr(ABEND904(custom-runtime routine not implemented: net.IPAddr(_raddr))))"}
 ;;   [^String _network, ^Object _laddr, ^Object _raddr])
 
 JOKER FUNC net.DialTCP:
 ;; (defn DialTCP
-;;   "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44), raddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44))\n\nGo return type: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of TCPAddr) laddr, ^(atom-of TCPAddr) raddr]\n\nJoker return type: [{} Error]"
+;;   "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *net.TCPAddr, raddr *net.TCPAddr)\n\nGo return type: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.TCPAddr) laddr, ^(atom-of net.TCPAddr) raddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "dialTCP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfTCPAddr(_laddr)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfTCPAddr(_raddr)))"}
+;;    :go "dialTCP(_network, ConvertToIndirectOfnet.TCPAddr(ABEND904(custom-runtime routine not implemented: net.TCPAddr(_laddr))), ConvertToIndirectOfnet.TCPAddr(ABEND904(custom-runtime routine not implemented: net.TCPAddr(_raddr))))"}
 ;;   [^String _network, ^Object _laddr, ^Object _raddr])
 
 JOKER FUNC net.DialTimeout:
@@ -576,16 +576,16 @@ JOKER FUNC net.DialTimeout:
 
 JOKER FUNC net.DialUDP:
 ;; (defn DialUDP
-;;   "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44), raddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44))\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of UDPAddr) laddr, ^(atom-of UDPAddr) raddr]\n\nJoker return type: [{} Error]"
+;;   "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *net.UDPAddr, raddr *net.UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.UDPAddr) laddr, ^(atom-of net.UDPAddr) raddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "dialUDP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUDPAddr(_laddr)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUDPAddr(_raddr)))"}
+;;    :go "dialUDP(_network, ConvertToIndirectOfnet.UDPAddr(ABEND904(custom-runtime routine not implemented: net.UDPAddr(_laddr))), ConvertToIndirectOfnet.UDPAddr(ABEND904(custom-runtime routine not implemented: net.UDPAddr(_raddr))))"}
 ;;   [^String _network, ^Object _laddr, ^Object _raddr])
 
 JOKER FUNC net.DialUnix:
 ;; (defn DialUnix
-;;   "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45), raddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45))\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(atom-of UnixAddr) laddr, ^(atom-of UnixAddr) raddr]\n\nJoker return type: [{} Error]"
+;;   "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *net.UnixAddr, raddr *net.UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.UnixAddr) laddr, ^(atom-of net.UnixAddr) raddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "dialUnix(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUnixAddr(_laddr)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUnixAddr(_raddr)))"}
+;;    :go "dialUnix(_network, ConvertToIndirectOfnet.UnixAddr(ABEND904(custom-runtime routine not implemented: net.UnixAddr(_laddr))), ConvertToIndirectOfnet.UnixAddr(ABEND904(custom-runtime routine not implemented: net.UnixAddr(_raddr))))"}
 ;;   [^String _network, ^Object _laddr, ^Object _raddr])
 
 JOKER FUNC net.FileConn:
@@ -667,16 +667,16 @@ JOKER FUNC net.Listen:
 
 JOKER FUNC net.ListenIP:
 ;; (defn ListenIP
-;;   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:230:38))\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of IPAddr) laddr]\n\nJoker return type: [{} Error]"
+;;   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *net.IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.IPAddr) laddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenIP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfIPAddr(_laddr)))"}
+;;    :go "listenIP(_network, ConvertToIndirectOfnet.IPAddr(ABEND904(custom-runtime routine not implemented: net.IPAddr(_laddr))))"}
 ;;   [^String _network, ^Object _laddr])
 
 JOKER FUNC net.ListenMulticastUDP:
 ;; (defn ListenMulticastUDP
-;;   "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *ABEND884(unrecognized type Interface at: _tests/big/src/net/udpsock.go:265:46), gaddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:265:64))\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of Interface) ifi, ^(atom-of UDPAddr) gaddr]\n\nJoker return type: [{} Error]"
+;;   "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *net.Interface, gaddr *net.UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.Interface) ifi, ^(atom-of net.UDPAddr) gaddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenMulticastUDP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfInterface(_ifi)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUDPAddr(_gaddr)))"}
+;;    :go "listenMulticastUDP(_network, ConvertToIndirectOfnet.Interface(ABEND904(custom-runtime routine not implemented: net.Interface(_ifi))), ConvertToIndirectOfnet.UDPAddr(ABEND904(custom-runtime routine not implemented: net.UDPAddr(_gaddr))))"}
 ;;   [^String _network, ^Object _ifi, ^Object _gaddr])
 
 JOKER FUNC net.ListenPacket:
@@ -688,30 +688,30 @@ JOKER FUNC net.ListenPacket:
 
 JOKER FUNC net.ListenTCP:
 ;; (defn ListenTCP
-;;   "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:323:39))\n\nGo return type: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^(atom-of TCPAddr) laddr]\n\nJoker return type: [{} Error]"
+;;   "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *net.TCPAddr)\n\nGo return type: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^(atom-of net.TCPAddr) laddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenTCP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfTCPAddr(_laddr)))"}
+;;    :go "listenTCP(_network, ConvertToIndirectOfnet.TCPAddr(ABEND904(custom-runtime routine not implemented: net.TCPAddr(_laddr))))"}
 ;;   [^String _network, ^Object _laddr])
 
 JOKER FUNC net.ListenUDP:
 ;; (defn ListenUDP
-;;   "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:231:39))\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of UDPAddr) laddr]\n\nJoker return type: [{} Error]"
+;;   "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *net.UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.UDPAddr) laddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenUDP(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUDPAddr(_laddr)))"}
+;;    :go "listenUDP(_network, ConvertToIndirectOfnet.UDPAddr(ABEND904(custom-runtime routine not implemented: net.UDPAddr(_laddr))))"}
 ;;   [^String _network, ^Object _laddr])
 
 JOKER FUNC net.ListenUnix:
 ;; (defn ListenUnix
-;;   "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:314:40))\n\nGo return type: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^(atom-of UnixAddr) laddr]\n\nJoker return type: [{} Error]"
+;;   "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *net.UnixAddr)\n\nGo return type: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^(atom-of net.UnixAddr) laddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenUnix(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUnixAddr(_laddr)))"}
+;;    :go "listenUnix(_network, ConvertToIndirectOfnet.UnixAddr(ABEND904(custom-runtime routine not implemented: net.UnixAddr(_laddr))))"}
 ;;   [^String _network, ^Object _laddr])
 
 JOKER FUNC net.ListenUnixgram:
 ;; (defn ListenUnixgram
-;;   "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:334:44))\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(atom-of UnixAddr) laddr]\n\nJoker return type: [{} Error]"
+;;   "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *net.UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(atom-of net.UnixAddr) laddr]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "listenUnixgram(_network, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfUnixAddr(_laddr)))"}
+;;    :go "listenUnixgram(_network, ConvertToIndirectOfnet.UnixAddr(ABEND904(custom-runtime routine not implemented: net.UnixAddr(_laddr))))"}
 ;;   [^String _network, ^Object _laddr])
 
 JOKER FUNC net.LookupAddr:
@@ -856,17 +856,17 @@ JOKER FUNC net/http.DetectContentType:
 
 JOKER FUNC net/http.Error:
 ;; (defn Error
-;;   "Error replies to the request with the specified error message and HTTP code.\nIt does not otherwise end the request; the caller should ensure no further\nwrites are done to w.\nThe error message should be plain text.\n\nGo input arguments: (w ResponseWriter, error string, code int)\n\nJoker input arguments: [^ResponseWriter w, ^String error, ^Int code]"
+;;   "Error replies to the request with the specified error message and HTTP code.\nIt does not otherwise end the request; the caller should ensure no further\nwrites are done to w.\nThe error message should be plain text.\n\nGo input arguments: (w net/http.ResponseWriter, error string, code int)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^String error, ^Int code]"
 ;;   {:added "1.0"
-;;    :go "error(_w, _error, _code)"}
-;;   [^ResponseWriter _w, ^String _error, ^Int _code])
+;;    :go "error(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), _error, _code)"}
+;;   [^net/http.ResponseWriter _w, ^String _error, ^Int _code])
 
 JOKER FUNC net/http.FileServer:
 ;; (defn FileServer
-;;   "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo input arguments: (root FileSystem)\n\nGo return type: Handler\n\nJoker input arguments: [^FileSystem root]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
+;;   "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo input arguments: (root net/http.FileSystem)\n\nGo return type: Handler\n\nJoker input arguments: [^net/http.FileSystem root]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
-;;    :go "fileServer(_root)"}
-;;   [^FileSystem _root])
+;;    :go "fileServer(ABEND904(custom-runtime routine not implemented: net/http.FileSystem(_root)))"}
+;;   [^net/http.FileSystem _root])
 
 JOKER FUNC net/http.Get:
 ;; (defn Get
@@ -877,10 +877,10 @@ JOKER FUNC net/http.Get:
 
 JOKER FUNC net/http.Handle:
 ;; (defn Handle
-;;   "Handle registers the handler for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler Handler)\n\nJoker input arguments: [^String pattern, ^Handler handler]"
+;;   "Handle registers the handler for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler net/http.Handler)\n\nJoker input arguments: [^String pattern, ^net/http.Handler handler]"
 ;;   {:added "1.0"
-;;    :go "handle(_pattern, _handler)"}
-;;   [^String _pattern, ^Handler _handler])
+;;    :go "handle(_pattern, ABEND904(custom-runtime routine not implemented: net/http.Handler(_handler)))"}
+;;   [^String _pattern, ^net/http.Handler _handler])
 
 JOKER FUNC net/http.HandleFunc:
 ;; (defn HandleFunc
@@ -897,32 +897,32 @@ JOKER FUNC net/http.Head:
 ;;   [^String _url])
 
 JOKER FUNC net/http.ListenAndServe:
-(defn ^"Error" ListenAndServe
-  "ListenAndServe listens on the TCP network address addr and then calls\nServe with handler to handle requests on incoming connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nListenAndServe always returns a non-nil error.\n\nGo input arguments: (addr string, handler Handler)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^Handler handler]\n\nJoker return type: Error"
-  {:added "1.0"
-   :go "http.ListenAndServe(_addr, _handler)"}
-  [^String _addr, ^Handler _handler])
+;; (defn ^"Error" ListenAndServe
+;;   "ListenAndServe listens on the TCP network address addr and then calls\nServe with handler to handle requests on incoming connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nListenAndServe always returns a non-nil error.\n\nGo input arguments: (addr string, handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^net/http.Handler handler]\n\nJoker return type: Error"
+;;   {:added "1.0"
+;;    :go "http.ListenAndServe(_addr, ABEND904(custom-runtime routine not implemented: net/http.Handler(_handler)))"}
+;;   [^String _addr, ^net/http.Handler _handler])
 
 JOKER FUNC net/http.ListenAndServeTLS:
-(defn ^"Error" ListenAndServeTLS
-  "ListenAndServeTLS acts identically to ListenAndServe, except that it\nexpects HTTPS connections. Additionally, files containing a certificate and\nmatching private key for the server must be provided. If the certificate\nis signed by a certificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nGo input arguments: (addr string, certFile string, keyFile string, handler Handler)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^String certFile, ^String keyFile, ^Handler handler]\n\nJoker return type: Error"
-  {:added "1.0"
-   :go "http.ListenAndServeTLS(_addr, _certFile, _keyFile, _handler)"}
-  [^String _addr, ^String _certFile, ^String _keyFile, ^Handler _handler])
+;; (defn ^"Error" ListenAndServeTLS
+;;   "ListenAndServeTLS acts identically to ListenAndServe, except that it\nexpects HTTPS connections. Additionally, files containing a certificate and\nmatching private key for the server must be provided. If the certificate\nis signed by a certificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nGo input arguments: (addr string, certFile string, keyFile string, handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^String certFile, ^String keyFile, ^net/http.Handler handler]\n\nJoker return type: Error"
+;;   {:added "1.0"
+;;    :go "http.ListenAndServeTLS(_addr, _certFile, _keyFile, ABEND904(custom-runtime routine not implemented: net/http.Handler(_handler)))"}
+;;   [^String _addr, ^String _certFile, ^String _keyFile, ^net/http.Handler _handler])
 
 JOKER FUNC net/http.MaxBytesReader:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo return type: ...\n\nJoker input arguments: [^ResponseWriter w, ^io.ReadCloser r, ^Int64 n]\n\nJoker return type: ABEND042(cannot find typename io.ReadCloser)"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w net/http.ResponseWriter, r io.ReadCloser, n int64)\n\nGo return type: ...\n\nJoker input arguments: [^net/http.ResponseWriter w, ^io.ReadCloser r, ^Int64 n]\n\nJoker return type: ABEND042(cannot find typename io.ReadCloser)"
 ;;   {:added "1.0"
-;;    :go "maxBytesReader(_w, ABEND904(custom-runtime routine not implemented: io.ReadCloser(_r)), _n)"}
-;;   [^ResponseWriter _w, ^io.ReadCloser _r, ^Int64 _n])
+;;    :go "maxBytesReader(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ABEND904(custom-runtime routine not implemented: io.ReadCloser(_r)), _n)"}
+;;   [^net/http.ResponseWriter _w, ^io.ReadCloser _r, ^Int64 _n])
 
 JOKER FUNC net/http.NewFileTransport:
 ;; (defn NewFileTransport
-;;   "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo input arguments: (fs FileSystem)\n\nGo return type: RoundTripper\n\nJoker input arguments: [^FileSystem fs]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/client.go:115:19)"
+;;   "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo input arguments: (fs net/http.FileSystem)\n\nGo return type: RoundTripper\n\nJoker input arguments: [^net/http.FileSystem fs]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/client.go:115:19)"
 ;;   {:added "1.0"
-;;    :go "newFileTransport(_fs)"}
-;;   [^FileSystem _fs])
+;;    :go "newFileTransport(ABEND904(custom-runtime routine not implemented: net/http.FileSystem(_fs)))"}
+;;   [^net/http.FileSystem _fs])
 
 JOKER FUNC net/http.NewRequest:
 ;; (defn NewRequest
@@ -940,10 +940,10 @@ JOKER FUNC net/http.NewServeMux:
 
 JOKER FUNC net/http.NotFound:
 ;; (defn NotFound
-;;   "NotFound replies to the request with an HTTP 404 not found error.\n\nGo input arguments: (w ResponseWriter, r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:1981:36))\n\nJoker input arguments: [^ResponseWriter w, ^(atom-of Request) r]"
+;;   "NotFound replies to the request with an HTTP 404 not found error.\n\nGo input arguments: (w net/http.ResponseWriter, r *net/http.Request)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^(atom-of net/http.Request) r]"
 ;;   {:added "1.0"
-;;    :go "notFound(_w, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_r)))"}
-;;   [^ResponseWriter _w, ^Object _r])
+;;    :go "notFound(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_r))))"}
+;;   [^net/http.ResponseWriter _w, ^Object _r])
 
 JOKER FUNC net/http.NotFoundHandler:
 ;; (defn NotFoundHandler
@@ -982,9 +982,9 @@ JOKER FUNC net/http.PostForm:
 
 JOKER FUNC net/http.ProxyFromEnvironment:
 ;; (defn ProxyFromEnvironment
-;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32))\n\nGo return type: (*struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}, error)\n\nJoker input arguments: [^(atom-of Request) req]\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
+;;   "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *net/http.Request)\n\nGo return type: (*struct {Scheme string; Opaque string; User *Userinfo; Host string; Path string; RawPath string; ForceQuery bool; RawQuery string; Fragment string}, error)\n\nJoker input arguments: [^(atom-of net/http.Request) req]\n\nJoker return type: [{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String} Error]"
 ;;   {:added "1.0"
-;;    :go "proxyFromEnvironment(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_req)))"}
+;;    :go "proxyFromEnvironment(ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_req))))"}
 ;;   [^Object _req])
 
 JOKER FUNC net/http.ProxyURL:
@@ -1003,17 +1003,17 @@ JOKER FUNC net/http.ReadRequest:
 
 JOKER FUNC net/http.ReadResponse:
 ;; (defn ReadResponse
-;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/response.go:148:41))\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(atom-of bufio.Reader) r, ^(atom-of Request) req]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
+;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *net/http.Request)\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(atom-of bufio.Reader) r, ^(atom-of net/http.Request) req]\n\nJoker return type: [{:Status ^String, :StatusCode ^Int, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Uncompressed ^Bool, :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Request ^{:Method ^String, :URL ^{:Scheme ^String, :Opaque ^String, :User ^ABEND042(cannot find typename net/http.Userinfo), :Host ^String, :Path ^String, :RawPath ^String, :ForceQuery ^Bool, :RawQuery ^String, :Fragment ^String}, :Proto ^String, :ProtoMajor ^Int, :ProtoMinor ^Int, :Header ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :Body ^ABEND042(cannot find typename io.ReadCloser), :GetBody ^ABEND883(unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10), :ContentLength ^Int, :TransferEncoding ^(vector-of String), :Close ^Bool, :Host ^String, :Form ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :PostForm ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/url/url.go:804:13), :MultipartForm ^ABEND042(cannot find typename mime/multipart.Form), :Trailer ^ABEND883(unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/header.go:20:13), :RemoteAddr ^String, :RequestURI ^String, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState), :Cancel ^ABEND883(unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9), :Response ^ABEND947(recursive type reference involving net/http.Response)}, :TLS ^ABEND042(cannot find typename crypto/tls.ConnectionState)} Error]"
 ;;   {:added "1.0"
-;;    :go "readResponse(ConvertToIndirectOfbufio.Reader(ABEND904(custom-runtime routine not implemented: bufio.Reader(_r))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_req)))"}
+;;    :go "readResponse(ConvertToIndirectOfbufio.Reader(ABEND904(custom-runtime routine not implemented: bufio.Reader(_r))), ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_req))))"}
 ;;   [^Object _r, ^Object _req])
 
 JOKER FUNC net/http.Redirect:
 ;; (defn Redirect
-;;   "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n\nGo input arguments: (w ResponseWriter, r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:2020:36), url string, code int)\n\nJoker input arguments: [^ResponseWriter w, ^(atom-of Request) r, ^String url, ^Int code]"
+;;   "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n\nGo input arguments: (w net/http.ResponseWriter, r *net/http.Request, url string, code int)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^(atom-of net/http.Request) r, ^String url, ^Int code]"
 ;;   {:added "1.0"
-;;    :go "redirect(_w, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_r)), _url, _code)"}
-;;   [^ResponseWriter _w, ^Object _r, ^String _url, ^Int _code])
+;;    :go "redirect(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_r))), _url, _code)"}
+;;   [^net/http.ResponseWriter _w, ^Object _r, ^String _url, ^Int _code])
 
 JOKER FUNC net/http.RedirectHandler:
 ;; (defn RedirectHandler
@@ -1024,38 +1024,38 @@ JOKER FUNC net/http.RedirectHandler:
 
 JOKER FUNC net/http.Serve:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l net.Listener, handler Handler)\n\nGo return type: error\n\nJoker input arguments: [^net.Listener l, ^Handler handler]\n\nJoker return type: Error"
+;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l net.Listener, handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^net.Listener l, ^net/http.Handler handler]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "http.Serve(ABEND904(custom-runtime routine not implemented: net.Listener(_l)), _handler)"}
-;;   [^net.Listener _l, ^Handler _handler])
+;;    :go "http.Serve(ABEND904(custom-runtime routine not implemented: net.Listener(_l)), ABEND904(custom-runtime routine not implemented: net/http.Handler(_handler)))"}
+;;   [^net.Listener _l, ^net/http.Handler _handler])
 
 JOKER FUNC net/http.ServeContent:
 ;; (defn ServeContent
-;;   "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n\nGo input arguments: (w ResponseWriter, req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:151:42), name string, modtime time.Time, content io.ReadSeeker)\n\nJoker input arguments: [^ResponseWriter w, ^(atom-of Request) req, ^String name, ^time.Time modtime, ^io.ReadSeeker content]"
+;;   "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n\nGo input arguments: (w net/http.ResponseWriter, req *net/http.Request, name string, modtime time.Time, content io.ReadSeeker)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^(atom-of net/http.Request) req, ^String name, ^time.Time modtime, ^io.ReadSeeker content]"
 ;;   {:added "1.0"
-;;    :go "serveContent(_w, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_req)), _name, ABEND904(custom-runtime routine not implemented: time.Time(_modtime)), ABEND904(custom-runtime routine not implemented: io.ReadSeeker(_content)))"}
-;;   [^ResponseWriter _w, ^Object _req, ^String _name, ^time.Time _modtime, ^io.ReadSeeker _content])
+;;    :go "serveContent(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_req))), _name, ABEND904(custom-runtime routine not implemented: time.Time(_modtime)), ABEND904(custom-runtime routine not implemented: io.ReadSeeker(_content)))"}
+;;   [^net/http.ResponseWriter _w, ^Object _req, ^String _name, ^time.Time _modtime, ^io.ReadSeeker _content])
 
 JOKER FUNC net/http.ServeFile:
 ;; (defn ServeFile
-;;   "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n\nGo input arguments: (w ResponseWriter, r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:670:37), name string)\n\nJoker input arguments: [^ResponseWriter w, ^(atom-of Request) r, ^String name]"
+;;   "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n\nGo input arguments: (w net/http.ResponseWriter, r *net/http.Request, name string)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^(atom-of net/http.Request) r, ^String name]"
 ;;   {:added "1.0"
-;;    :go "serveFile(_w, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfRequest(_r)), _name)"}
-;;   [^ResponseWriter _w, ^Object _r, ^String _name])
+;;    :go "serveFile(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ConvertToIndirectOfnet/http.Request(ABEND904(custom-runtime routine not implemented: net/http.Request(_r))), _name)"}
+;;   [^net/http.ResponseWriter _w, ^Object _r, ^String _name])
 
 JOKER FUNC net/http.ServeTLS:
 ;; (defn ^"Error" ServeTLS
-;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l net.Listener, handler Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^net.Listener l, ^Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
+;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l net.Listener, handler net/http.Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^net.Listener l, ^net/http.Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "http.ServeTLS(ABEND904(custom-runtime routine not implemented: net.Listener(_l)), _handler, _certFile, _keyFile)"}
-;;   [^net.Listener _l, ^Handler _handler, ^String _certFile, ^String _keyFile])
+;;    :go "http.ServeTLS(ABEND904(custom-runtime routine not implemented: net.Listener(_l)), ABEND904(custom-runtime routine not implemented: net/http.Handler(_handler)), _certFile, _keyFile)"}
+;;   [^net.Listener _l, ^net/http.Handler _handler, ^String _certFile, ^String _keyFile])
 
 JOKER FUNC net/http.SetCookie:
 ;; (defn SetCookie
-;;   "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n\nGo input arguments: (w ResponseWriter, cookie *ABEND884(unrecognized type Cookie at: _tests/big/src/net/http/cookie.go:157:42))\n\nJoker input arguments: [^ResponseWriter w, ^(atom-of Cookie) cookie]"
+;;   "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n\nGo input arguments: (w net/http.ResponseWriter, cookie *net/http.Cookie)\n\nJoker input arguments: [^net/http.ResponseWriter w, ^(atom-of net/http.Cookie) cookie]"
 ;;   {:added "1.0"
-;;    :go "setCookie(_w, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfCookie(_cookie)))"}
-;;   [^ResponseWriter _w, ^Object _cookie])
+;;    :go "setCookie(ABEND904(custom-runtime routine not implemented: net/http.ResponseWriter(_w)), ConvertToIndirectOfnet/http.Cookie(ABEND904(custom-runtime routine not implemented: net/http.Cookie(_cookie))))"}
+;;   [^net/http.ResponseWriter _w, ^Object _cookie])
 
 JOKER FUNC net/http.StatusText:
 (defn ^"String" StatusText
@@ -1066,17 +1066,17 @@ JOKER FUNC net/http.StatusText:
 
 JOKER FUNC net/http.StripPrefix:
 ;; (defn StripPrefix
-;;   "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo input arguments: (prefix string, h Handler)\n\nGo return type: Handler\n\nJoker input arguments: [^String prefix, ^Handler h]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
+;;   "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo input arguments: (prefix string, h net/http.Handler)\n\nGo return type: Handler\n\nJoker input arguments: [^String prefix, ^net/http.Handler h]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
-;;    :go "stripPrefix(_prefix, _h)"}
-;;   [^String _prefix, ^Handler _h])
+;;    :go "stripPrefix(_prefix, ABEND904(custom-runtime routine not implemented: net/http.Handler(_h)))"}
+;;   [^String _prefix, ^net/http.Handler _h])
 
 JOKER FUNC net/http.TimeoutHandler:
 ;; (defn TimeoutHandler
-;;   "TimeoutHandler returns a Handler that runs h with the given time limit.\n\nThe new Handler calls h.ServeHTTP to handle each request, but if a\ncall runs for longer than its time limit, the handler responds with\na 503 Service Unavailable error and the given message in its body.\n(If msg is empty, a suitable default message will be sent.)\nAfter such a timeout, writes by h to its ResponseWriter will return\nErrHandlerTimeout.\n\nTimeoutHandler buffers all Handler writes to memory and does not\nsupport the Hijacker or Flusher interfaces.\n\nGo input arguments: (h Handler, dt time.Duration, msg string)\n\nGo return type: Handler\n\nJoker input arguments: [^Handler h, ^time.Duration dt, ^String msg]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
+;;   "TimeoutHandler returns a Handler that runs h with the given time limit.\n\nThe new Handler calls h.ServeHTTP to handle each request, but if a\ncall runs for longer than its time limit, the handler responds with\na 503 Service Unavailable error and the given message in its body.\n(If msg is empty, a suitable default message will be sent.)\nAfter such a timeout, writes by h to its ResponseWriter will return\nErrHandlerTimeout.\n\nTimeoutHandler buffers all Handler writes to memory and does not\nsupport the Hijacker or Flusher interfaces.\n\nGo input arguments: (h net/http.Handler, dt time.Duration, msg string)\n\nGo return type: Handler\n\nJoker input arguments: [^net/http.Handler h, ^time.Duration dt, ^String msg]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14)"
 ;;   {:added "1.0"
-;;    :go "timeoutHandler(_h, ABEND904(custom-runtime routine not implemented: time.Duration(_dt)), _msg)"}
-;;   [^Handler _h, ^time.Duration _dt, ^String _msg])
+;;    :go "timeoutHandler(ABEND904(custom-runtime routine not implemented: net/http.Handler(_h)), ABEND904(custom-runtime routine not implemented: time.Duration(_dt)), _msg)"}
+;;   [^net/http.Handler _h, ^time.Duration _dt, ^String _msg])
 
 JOKER FUNC net/http/cgi.Request:
 ;; (defn Request
@@ -1101,9 +1101,9 @@ JOKER FUNC net/http/cgi.Serve:
 
 JOKER FUNC net/http/cookiejar.New:
 ;; (defn New
-;;   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *ABEND884(unrecognized type Options at: _tests/big/src/net/http/cookiejar/jar.go:77:13))\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(atom-of Options) o]\n\nJoker return type: [{} Error]"
+;;   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *net/http/cookiejar.Options)\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(atom-of net/http/cookiejar.Options) o]\n\nJoker return type: [{} Error]"
 ;;   {:added "1.0"
-;;    :go "new(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfOptions(_o)))"}
+;;    :go "new(ConvertToIndirectOfnet/http/cookiejar.Options(ABEND904(custom-runtime routine not implemented: net/http/cookiejar.Options(_o))))"}
 ;;   [^Object _o])
 
 JOKER FUNC net/http/fcgi.ProcessEnv:
@@ -1164,9 +1164,9 @@ JOKER FUNC net/http/httptrace.ContextClientTrace:
 
 JOKER FUNC net/http/httptrace.WithClientTrace:
 ;; (defn WithClientTrace
-;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ABEND884(unrecognized type ClientTrace at: _tests/big/src/net/http/httptrace/trace.go:34:50))\n\nGo return type: ...\n\nJoker input arguments: [^context.Context ctx, ^(atom-of ClientTrace) trace]\n\nJoker return type: ABEND042(cannot find typename context.Context)"
+;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *net/http/httptrace.ClientTrace)\n\nGo return type: ...\n\nJoker input arguments: [^context.Context ctx, ^(atom-of net/http/httptrace.ClientTrace) trace]\n\nJoker return type: ABEND042(cannot find typename context.Context)"
 ;;   {:added "1.0"
-;;    :go "withClientTrace(ABEND904(custom-runtime routine not implemented: context.Context(_ctx)), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOfClientTrace(_trace)))"}
+;;    :go "withClientTrace(ABEND904(custom-runtime routine not implemented: context.Context(_ctx)), ConvertToIndirectOfnet/http/httptrace.ClientTrace(ABEND904(custom-runtime routine not implemented: net/http/httptrace.ClientTrace(_trace))))"}
 ;;   [^context.Context _ctx, ^Object _trace])
 
 JOKER FUNC net/http/httputil.DumpRequest:
@@ -1346,10 +1346,10 @@ JOKER FUNC net/rpc.NewClient:
 
 JOKER FUNC net/rpc.NewClientWithCodec:
 ;; (defn NewClientWithCodec
-;;   "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo input arguments: (codec ClientCodec)\n\nGo return type: *Client\n\nJoker input arguments: [^ClientCodec codec]\n\nJoker return type: {}"
+;;   "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo input arguments: (codec net/rpc.ClientCodec)\n\nGo return type: *Client\n\nJoker input arguments: [^net/rpc.ClientCodec codec]\n\nJoker return type: {}"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientWithCodec(_codec))"}
-;;   [^ClientCodec _codec])
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientWithCodec(ABEND904(custom-runtime routine not implemented: net/rpc.ClientCodec(_codec))))"}
+;;   [^net/rpc.ClientCodec _codec])
 
 JOKER FUNC net/rpc.NewServer:
 ;; (defn NewServer
@@ -1374,10 +1374,10 @@ JOKER FUNC net/rpc.RegisterName:
 
 JOKER FUNC net/rpc.ServeCodec:
 ;; (defn ServeCodec
-;;   "ServeCodec is like ServeConn but uses the specified codec to\ndecode requests and encode responses.\n\nGo input arguments: (codec ServerCodec)\n\nJoker input arguments: [^ServerCodec codec]"
+;;   "ServeCodec is like ServeConn but uses the specified codec to\ndecode requests and encode responses.\n\nGo input arguments: (codec net/rpc.ServerCodec)\n\nJoker input arguments: [^net/rpc.ServerCodec codec]"
 ;;   {:added "1.0"
-;;    :go "serveCodec(_codec)"}
-;;   [^ServerCodec _codec])
+;;    :go "serveCodec(ABEND904(custom-runtime routine not implemented: net/rpc.ServerCodec(_codec)))"}
+;;   [^net/rpc.ServerCodec _codec])
 
 JOKER FUNC net/rpc.ServeConn:
 ;; (defn ServeConn
@@ -1387,11 +1387,11 @@ JOKER FUNC net/rpc.ServeConn:
 ;;   [^io.ReadWriteCloser _conn])
 
 JOKER FUNC net/rpc.ServeRequest:
-(defn ^"Error" ServeRequest
-  "ServeRequest is like ServeCodec but synchronously serves a single request.\nIt does not close the codec upon completion.\n\nGo input arguments: (codec ServerCodec)\n\nGo return type: error\n\nJoker input arguments: [^ServerCodec codec]\n\nJoker return type: Error"
-  {:added "1.0"
-   :go "rpc.ServeRequest(_codec)"}
-  [^ServerCodec _codec])
+;; (defn ^"Error" ServeRequest
+;;   "ServeRequest is like ServeCodec but synchronously serves a single request.\nIt does not close the codec upon completion.\n\nGo input arguments: (codec net/rpc.ServerCodec)\n\nGo return type: error\n\nJoker input arguments: [^net/rpc.ServerCodec codec]\n\nJoker return type: Error"
+;;   {:added "1.0"
+;;    :go "rpc.ServeRequest(ABEND904(custom-runtime routine not implemented: net/rpc.ServerCodec(_codec)))"}
+;;   [^net/rpc.ServerCodec _codec])
 
 JOKER FUNC net/rpc/jsonrpc.Dial:
 (defn Dial
@@ -1457,11 +1457,11 @@ JOKER FUNC net/smtp.PlainAuth:
 ;;   [^String _identity, ^String _username, ^String _password, ^String _host])
 
 JOKER FUNC net/smtp.SendMail:
-(defn ^"Error" SendMail
-  "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^Auth a, ^String from, ^(vector-of String) to, ^(vector-of Byte) msg]\n\nJoker return type: Error"
-  {:added "1.0"
-   :go "smtp.SendMail(_addr, _a, _from, ConvertToArrayOfString(_to), ConvertToArrayOfByte(_msg))"}
-  [^String _addr, ^Auth _a, ^String _from, ^Object _to, ^Object _msg])
+;; (defn ^"Error" SendMail
+;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a net/smtp.Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^net/smtp.Auth a, ^String from, ^(vector-of String) to, ^(vector-of Byte) msg]\n\nJoker return type: Error"
+;;   {:added "1.0"
+;;    :go "smtp.SendMail(_addr, ABEND904(custom-runtime routine not implemented: net/smtp.Auth(_a)), _from, ConvertToArrayOfString(_to), ConvertToArrayOfByte(_msg))"}
+;;   [^String _addr, ^net/smtp.Auth _a, ^String _from, ^Object _to, ^Object _msg])
 
 JOKER FUNC net/textproto.CanonicalMIMEHeaderKey:
 (defn ^"String" CanonicalMIMEHeaderKey
@@ -1595,7 +1595,7 @@ GO FUNC net.Dial:
 // }
 
 GO FUNC net.DialIP:
-// func dialIP(network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43), raddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:211:43)) Object {
+// func dialIP(network string, laddr *net.IPAddr, raddr *net.IPAddr) Object {
 // 	_, _res2 := _net.DialIP(network, laddr, raddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1604,7 +1604,7 @@ GO FUNC net.DialIP:
 // }
 
 GO FUNC net.DialTCP:
-// func dialTCP(network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44), raddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:206:44)) Object {
+// func dialTCP(network string, laddr *net.TCPAddr, raddr *net.TCPAddr) Object {
 // 	_, _res2 := _net.DialTCP(network, laddr, raddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1622,7 +1622,7 @@ GO FUNC net.DialTimeout:
 // }
 
 GO FUNC net.DialUDP:
-// func dialUDP(network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44), raddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:205:44)) Object {
+// func dialUDP(network string, laddr *net.UDPAddr, raddr *net.UDPAddr) Object {
 // 	_, _res2 := _net.DialUDP(network, laddr, raddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1631,7 +1631,7 @@ GO FUNC net.DialUDP:
 // }
 
 GO FUNC net.DialUnix:
-// func dialUnix(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45), raddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:200:45)) Object {
+// func dialUnix(network string, laddr *net.UnixAddr, raddr *net.UnixAddr) Object {
 // 	_, _res2 := _net.DialUnix(network, laddr, raddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1782,7 +1782,7 @@ GO FUNC net.Listen:
 // }
 
 GO FUNC net.ListenIP:
-// func listenIP(network string, laddr *ABEND884(unrecognized type IPAddr at: _tests/big/src/net/iprawsock.go:230:38)) Object {
+// func listenIP(network string, laddr *net.IPAddr) Object {
 // 	_, _res2 := _net.ListenIP(network, laddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1791,7 +1791,7 @@ GO FUNC net.ListenIP:
 // }
 
 GO FUNC net.ListenMulticastUDP:
-// func listenMulticastUDP(network string, ifi *ABEND884(unrecognized type Interface at: _tests/big/src/net/udpsock.go:265:46), gaddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:265:64)) Object {
+// func listenMulticastUDP(network string, ifi *net.Interface, gaddr *net.UDPAddr) Object {
 // 	_, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1809,7 +1809,7 @@ GO FUNC net.ListenPacket:
 // }
 
 GO FUNC net.ListenTCP:
-// func listenTCP(network string, laddr *ABEND884(unrecognized type TCPAddr at: _tests/big/src/net/tcpsock.go:323:39)) Object {
+// func listenTCP(network string, laddr *net.TCPAddr) Object {
 // 	_, _res2 := _net.ListenTCP(network, laddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1818,7 +1818,7 @@ GO FUNC net.ListenTCP:
 // }
 
 GO FUNC net.ListenUDP:
-// func listenUDP(network string, laddr *ABEND884(unrecognized type UDPAddr at: _tests/big/src/net/udpsock.go:231:39)) Object {
+// func listenUDP(network string, laddr *net.UDPAddr) Object {
 // 	_, _res2 := _net.ListenUDP(network, laddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1827,7 +1827,7 @@ GO FUNC net.ListenUDP:
 // }
 
 GO FUNC net.ListenUnix:
-// func listenUnix(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:314:40)) Object {
+// func listenUnix(network string, laddr *net.UnixAddr) Object {
 // 	_, _res2 := _net.ListenUnix(network, laddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -1836,7 +1836,7 @@ GO FUNC net.ListenUnix:
 // }
 
 GO FUNC net.ListenUnixgram:
-// func listenUnixgram(network string, laddr *ABEND884(unrecognized type UnixAddr at: _tests/big/src/net/unixsock.go:334:44)) Object {
+// func listenUnixgram(network string, laddr *net.UnixAddr) Object {
 // 	_, _res2 := _net.ListenUnixgram(network, laddr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -2146,13 +2146,13 @@ func splitHostPort(hostport string) Object {
 }
 
 GO FUNC net/http.Error:
-// func error(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:1973:14), error string, code int) Object {
+// func error(w net/http.ResponseWriter, error string, code int) Object {
 // 	_http.Error(w, error, code)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.FileServer:
-// func fileServer(root ABEND884(unrecognized type FileSystem at: _tests/big/src/net/http/fs.go:713:22)) Object {
+// func fileServer(root net/http.FileSystem) Object {
 // 	return _http.FileServer(root)
 // }
 
@@ -2239,7 +2239,7 @@ GO FUNC net/http.Get:
 // }
 
 GO FUNC net/http.Handle:
-// func handle(pattern string, handler ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:2401:37)) Object {
+// func handle(pattern string, handler net/http.Handler) Object {
 // 	_http.Handle(pattern, handler)
 // 	...ABEND675: TODO...
 // }
@@ -2333,12 +2333,12 @@ GO FUNC net/http.Head:
 // }
 
 GO FUNC net/http.MaxBytesReader:
-// func maxBytesReader(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/request.go:1056:23), r io.ReadCloser, n int64) Object {
+// func maxBytesReader(w net/http.ResponseWriter, r io.ReadCloser, n int64) Object {
 // 	return _http.MaxBytesReader(w, r, n)
 // }
 
 GO FUNC net/http.NewFileTransport:
-// func newFileTransport(fs ABEND884(unrecognized type FileSystem at: _tests/big/src/net/http/filetransport.go:30:26)) Object {
+// func newFileTransport(fs net/http.FileSystem) Object {
 // 	return _http.NewFileTransport(fs)
 // }
 
@@ -2431,7 +2431,7 @@ GO FUNC net/http.NewServeMux:
 // }
 
 GO FUNC net/http.NotFound:
-// func notFound(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:1981:17), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:1981:36)) Object {
+// func notFound(w net/http.ResponseWriter, r *net/http.Request) Object {
 // 	_http.NotFound(w, r)
 // 	...ABEND675: TODO...
 // }
@@ -2625,7 +2625,7 @@ GO FUNC net/http.PostForm:
 // }
 
 GO FUNC net/http.ProxyFromEnvironment:
-// func proxyFromEnvironment(req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/transport.go:345:32)) Object {
+// func proxyFromEnvironment(req *net/http.Request) Object {
 // 	_res1, _res2 := _http.ProxyFromEnvironment(req)
 // 	_res := EmptyVector
 // 	var _obj_map1 Object
@@ -2737,7 +2737,7 @@ GO FUNC net/http.ReadRequest:
 // }
 
 GO FUNC net/http.ReadResponse:
-// func readResponse(r *bufio.Reader, req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/response.go:148:41)) Object {
+// func readResponse(r *bufio.Reader, req *net/http.Request) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
 // 	_res := EmptyVector
 // 	var _obj_map1 Object
@@ -2819,7 +2819,7 @@ GO FUNC net/http.ReadResponse:
 // }
 
 GO FUNC net/http.Redirect:
-// func redirect(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/server.go:2020:17), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/server.go:2020:36), url string, code int) Object {
+// func redirect(w net/http.ResponseWriter, r *net/http.Request, url string, code int) Object {
 // 	_http.Redirect(w, r, url, code)
 // 	...ABEND675: TODO...
 // }
@@ -2830,30 +2830,30 @@ GO FUNC net/http.RedirectHandler:
 // }
 
 GO FUNC net/http.ServeContent:
-// func serveContent(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/fs.go:151:21), req *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:151:42), name string, modtime time.Time, content io.ReadSeeker) Object {
+// func serveContent(w net/http.ResponseWriter, req *net/http.Request, name string, modtime time.Time, content io.ReadSeeker) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.ServeFile:
-// func serveFile(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/fs.go:670:18), r *ABEND884(unrecognized type Request at: _tests/big/src/net/http/fs.go:670:37), name string) Object {
+// func serveFile(w net/http.ResponseWriter, r *net/http.Request, name string) Object {
 // 	_http.ServeFile(w, r, name)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.SetCookie:
-// func setCookie(w ABEND884(unrecognized type ResponseWriter at: _tests/big/src/net/http/cookie.go:157:18), cookie *ABEND884(unrecognized type Cookie at: _tests/big/src/net/http/cookie.go:157:42)) Object {
+// func setCookie(w net/http.ResponseWriter, cookie *net/http.Cookie) Object {
 // 	_http.SetCookie(w, cookie)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.StripPrefix:
-// func stripPrefix(prefix string, h ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:1992:35)) Object {
+// func stripPrefix(prefix string, h net/http.Handler) Object {
 // 	return _http.StripPrefix(prefix, h)
 // }
 
 GO FUNC net/http.TimeoutHandler:
-// func timeoutHandler(h ABEND884(unrecognized type Handler at: _tests/big/src/net/http/server.go:3106:23), dt time.Duration, msg string) Object {
+// func timeoutHandler(h net/http.Handler, dt time.Duration, msg string) Object {
 // 	return _http.TimeoutHandler(h, dt, msg)
 // }
 
@@ -2972,7 +2972,7 @@ GO FUNC net/http/cgi.RequestFromMap:
 // }
 
 GO FUNC net/http/cookiejar.New:
-// func new(o *ABEND884(unrecognized type Options at: _tests/big/src/net/http/cookiejar/jar.go:77:13)) Object {
+// func new(o *net/http/cookiejar.Options) Object {
 // 	_, _res2 := _cookiejar.New(o)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(NIL)
@@ -3191,7 +3191,7 @@ GO FUNC net/http/httptrace.ContextClientTrace:
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace:
-// func withClientTrace(ctx context.Context, trace *ABEND884(unrecognized type ClientTrace at: _tests/big/src/net/http/httptrace/trace.go:34:50)) Object {
+// func withClientTrace(ctx context.Context, trace *net/http/httptrace.ClientTrace) Object {
 // 	return _httptrace.WithClientTrace(ctx, trace)
 // }
 
@@ -3430,7 +3430,7 @@ GO FUNC net/rpc.NewClient:
 // }
 
 GO FUNC net/rpc.NewClientWithCodec:
-// func newClientWithCodec(codec ABEND884(unrecognized type ClientCodec at: _tests/big/src/net/rpc/client.go:201:31)) Object {
+// func newClientWithCodec(codec net/rpc.ClientCodec) Object {
 // 	return _rpc.NewClientWithCodec(codec)
 // 	ABEND124(no public information returned)
 // }
@@ -3442,7 +3442,7 @@ GO FUNC net/rpc.NewServer:
 // }
 
 GO FUNC net/rpc.ServeCodec:
-// func serveCodec(codec ABEND884(unrecognized type ServerCodec at: _tests/big/src/net/rpc/server.go:679:23)) Object {
+// func serveCodec(codec net/rpc.ServerCodec) Object {
 // 	_rpc.ServeCodec(codec)
 // 	...ABEND675: TODO...
 // }
@@ -3657,5 +3657,5 @@ GO FUNC net/url.UserPassword:
 Adding custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/core.joke
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/std/generate-custom.joke
-ABENDs: 883(124) 042(100) 884(62) 904(60) 903(24) 401(20) 675(18) 124(11) 947(7) 907(2) 906(1) 908(1)
-Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=49 (33.11%)
+ABENDs: 883(124) 904(104) 042(100) 401(20) 675(18) 124(11) 947(7) 907(2) 906(1) 908(1)
+Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=45 (30.41%)

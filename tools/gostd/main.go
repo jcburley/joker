@@ -478,6 +478,10 @@ func exprIsUseful(rtn string) bool {
 	return rtn != "NIL"
 }
 
+func isPrivate(p string) bool {
+	return !unicode.IsUpper(rune(p[0]))
+}
+
 func genGoPostSelected(fn *funcInfo, indent, in, qt, onlyIf string) (jok, gol, goc, out string) {
 	if v, ok := types[qt]; ok {
 		if v.building { // Mutually-referring types currently not supported
@@ -498,12 +502,24 @@ func genGoPostSelected(fn *funcInfo, indent, in, qt, onlyIf string) (jok, gol, g
 	return
 }
 
-func genGoPostNamed(fn *funcInfo, indent, in, t, onlyIf string) (jok, gol, goc, out string) {
-	return genGoPostSelected(fn, indent, in, fn.sourceFile.pkgDirUnix+"."+t, onlyIf)
+func genGoPostNamed(fn *funcInfo, indent, in, typeName, onlyIf string) (jok, gol, goc, out string) {
+	return genGoPostSelected(fn, indent, in, fn.sourceFile.pkgDirUnix+"."+typeName, onlyIf)
 }
 
-func isPrivate(p string) bool {
-	return !unicode.IsUpper(rune(p[0]))
+func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
+	pkgName := e.X.(*Ident).Name
+	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
+	rf, ok := goFiles[referringFile]
+	if !ok {
+		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for expression at %s",
+			referringFile, whereAt(e.Pos())))
+	}
+	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
+		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+e.Sel.Name, onlyIf)
+		return
+	}
+	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
+		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
 }
 
 // func tryThis(s string) struct { a int; b string } {
@@ -595,22 +611,6 @@ func genGoPostStar(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok,
 	jok, gol, goc, out = genGoPostExpr(fn, indent, "(*"+in+")", e, onlyIf)
 	gol = "*" + gol
 	return
-}
-
-func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
-	pkgName := e.X.(*Ident).Name
-	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
-	rf, ok := goFiles[referringFile]
-	if !ok {
-		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for expression at %s",
-			referringFile, whereAt(e.Pos())))
-	}
-	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
-		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+e.Sel.Name, onlyIf)
-		return
-	}
-	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
-		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
 }
 
 func maybeNil(expr, in string) string {
@@ -922,7 +922,11 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 	return
 }
 
-func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (jok2golParam string) {
+func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	clType = fullTypeName
+	clTypeDoc = clType
+	goType = fullTypeName
+	goTypeDoc = goType
 	jok2golParam = fullTypeName + "(" + paramName + ")"
 	if _, ok := customRuntimeImplemented[fullTypeName]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
@@ -930,6 +934,10 @@ func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (jok
 		}
 	}
 	return
+}
+
+func genGoPreNamed(fn *funcInfo, indent, typeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	return genGoPreSelected(fn, indent, fn.sourceFile.pkgDirUnix+"."+typeName, paramName)
 }
 
 func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
@@ -942,12 +950,7 @@ func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName st
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
 		fullTypeName := fullPkgName + "." + e.Sel.Name
-		clType = fullTypeName
-		clTypeDoc = clType
-		goType = fullTypeName
-		goTypeDoc = goType
-		jok2golParam = genGoPreSelected(fn, indent, fullTypeName, paramName)
-		return
+		return genGoPreSelected(fn, indent, fullTypeName, paramName)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
@@ -1064,10 +1067,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 				clType = fmt.Sprintf("ABEND044(unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
 			} else {
-				clType = v.Name // The important thing here is that we don't have a Go conversion
-				goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)",
-					v.Name, unix(whereAt(e.Pos()))) // only user-defined types left now
-				goTypeDoc = v.Name
+				clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreNamed(fn, indent, v.Name, paramName)
 			}
 		}
 		if clTypeDoc == "" {
