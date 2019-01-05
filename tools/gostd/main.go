@@ -606,8 +606,7 @@ func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf 
 			referringFile, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
-		selName := e.Sel.Name
-		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+selName, onlyIf)
+		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+e.Sel.Name, onlyIf)
 		return
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
@@ -923,20 +922,35 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 	return
 }
 
-func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
-	pkg := e.X
-	sel := e.Sel
-	runtime := pkg.(*Ident).Name + "." + sel.Name // wrong, but documents what is needed here
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, sel, paramName)
-	jok2golParam = runtime + "(" + jok2golParam + ")"
-	if _, ok := customRuntimeImplemented[runtime]; !ok {
+func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (jok2golParam string) {
+	jok2golParam = fullTypeName + "(" + paramName + ")"
+	if _, ok := customRuntimeImplemented[fullTypeName]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
 			jok2golParam = "ABEND904(custom-runtime routine not implemented: " + jok2golParam + ")"
 		}
 	}
-	goType = "*" + goType
-	goTypeDoc = goType
 	return
+}
+
+func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+	pkgName := e.X.(*Ident).Name
+	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
+	rf, ok := goFiles[referringFile]
+	if !ok {
+		panic(fmt.Sprintf("genGoPreSelector: could not find referring file %s for expression at %s",
+			referringFile, whereAt(e.Pos())))
+	}
+	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
+		fullTypeName := fullPkgName + "." + e.Sel.Name
+		clType = fullTypeName
+		clTypeDoc = clType
+		goType = fullTypeName
+		goTypeDoc = goType
+		jok2golParam = genGoPreSelected(fn, indent, fullTypeName, paramName)
+		return
+	}
+	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
+		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
 }
 
 func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
@@ -1016,13 +1030,13 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string) (c
 }
 
 func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
-	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
-	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
+	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
+	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 	jok2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
 		goType = v.Name
-		clType = fmt.Sprintf("ABEND885(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos()))
+		clType = fmt.Sprintf("ABEND885(unrecognized type %s at: %s)", v.Name, unix(whereAt(e.Pos())))
 		switch v.Name {
 		case "string":
 			clType = "String"
@@ -1050,8 +1064,9 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 				clType = fmt.Sprintf("ABEND044(unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
 			} else {
-				clType = v.Name                                                                         // The important thing here is that we don't have a Go conversion
-				goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos())) // only user-defined types left now
+				clType = v.Name // The important thing here is that we don't have a Go conversion
+				goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)",
+					v.Name, unix(whereAt(e.Pos()))) // only user-defined types left now
 				goTypeDoc = v.Name
 			}
 		}
