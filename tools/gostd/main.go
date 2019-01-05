@@ -52,6 +52,11 @@ func whereAt(p token.Pos) string {
 	return fmt.Sprintf("%s", fset.Position(p).String())
 }
 
+func fileAt(p token.Pos) string {
+	return token.Position{Filename: fset.Position(p).Filename,
+		Offset: 0, Line: 0, Column: 0}.String()
+}
+
 func unix(p string) string {
 	return filepath.ToSlash(p)
 }
@@ -90,9 +95,7 @@ func commentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) 
 
 type funcInfo struct {
 	fd         *FuncDecl
-	pkg        string // base package name
-	pkgDirUnix string // relative (Unix-style) path to package
-	filename   string // relative (Unix-style) filename within package
+	sourceFile *goFile
 }
 
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
@@ -118,25 +121,24 @@ var qualifiedFunctions = map[string]*funcInfo{}
 var alreadySeen = []string{}
 
 // Returns whether any public functions were actually processed.
-func processFuncDecl(pkg, pkgDirUnix, filename string, f *File, fn *FuncDecl) bool {
+func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fn *FuncDecl) bool {
 	if dump {
-		fmt.Printf("Func in pkg=%s pkgDirUnix=%s filename=%s:\n",
-			pkg, pkgDirUnix, filename)
+		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
 		Print(fset, fn)
 	}
 	fname := pkgDirUnix + "." + fn.Name.Name
 	if v, ok := qualifiedFunctions[fname]; ok {
 		alreadySeen = append(alreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
-				fname, v.filename, filename))
+				fname, v.sourceFile.name, filename))
 	}
-	qualifiedFunctions[fname] = &funcInfo{fn, pkg, pkgDirUnix, filename}
+	qualifiedFunctions[fname] = &funcInfo{fn, gf}
 	return true
 }
 
 type typeInfo struct {
 	td       *TypeSpec
-	pathUnix string // Relative path to defining file
+	where    token.Pos
 	building bool
 }
 
@@ -151,24 +153,20 @@ func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
 	}
 }
 
-// Maps qualified typename ("pkg.TypeName") to type info.
+// Maps qualified typename ("path/to/pkg.TypeName") to type info.
 var types = map[string]*typeInfo{}
 
 func processTypeSpec(pkg string, pathUnix string, f *File, ts *TypeSpec) {
+	typename := pkg + "." + ts.Name.Name
 	if dump {
-		fmt.Printf("Type in pkg=%s pathUnix=%s:\n",
-			pkg, pathUnix)
+		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(fset, ts)
 	}
-	typename := pkg + "." + ts.Name.Name
 	if c, ok := types[typename]; ok {
-		if c.pathUnix == pathUnix {
-			panic(fmt.Sprintf("type %s defined twice in file %s", typename, pathUnix))
-		} else {
-			fmt.Fprintf(os.Stderr, "WARNING: type %s found in %s and now again in %s\n", typename, c.pathUnix, pathUnix)
-		}
+		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
+			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
-	types[typename] = &typeInfo{ts, pathUnix, false}
+	types[typename] = &typeInfo{ts, ts.Pos(), false}
 }
 
 func processTypeSpecs(pkg string, pathUnix string, f *File, tss []Spec) {
@@ -182,7 +180,7 @@ func processTypeSpecs(pkg string, pathUnix string, f *File, tss []Spec) {
 }
 
 // Returns whether any public functions were actually processed.
-func processDecls(pkg, pkgDirUnix, pathUnix string, f *File) (found bool) {
+func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -194,7 +192,7 @@ func processDecls(pkg, pkgDirUnix, pathUnix string, f *File) (found bool) {
 			if isPrivate(v.Name.Name) {
 				continue // Skipping non-exported functions
 			}
-			if processFuncDecl(pkg, pkgDirUnix, pathUnix, f, v) {
+			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
 				found = true
 			}
 		case *GenDecl:
@@ -206,6 +204,49 @@ func processDecls(pkg, pkgDirUnix, pathUnix string, f *File) (found bool) {
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
 		}
 	}
+	return
+}
+
+type goFile struct {
+	name       string
+	pkgDirUnix string
+	spaces     *map[string]string // maps "foo" (in a reference such as "foo.bar") to the file/package(???) in which it is defined
+}
+
+var goFiles = map[string]*goFile{}
+
+func processPackageMeta(pkgDirUnix, goFilePathUnix string, f *File) (gf *goFile) {
+	if egf, found := goFiles[goFilePathUnix]; found {
+		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
+	}
+	importsMap := map[string]string{}
+	gf = &goFile{goFilePathUnix, pkgDirUnix, &importsMap}
+	goFiles[goFilePathUnix] = gf
+
+	for _, imp := range f.Imports {
+		if dump {
+			fmt.Printf("Import for file %s:\n", goFilePathUnix)
+			Print(fset, imp)
+		}
+		importPath, err := strconv.Unquote(imp.Path.Value)
+		check(err)
+		var as string
+		if n := imp.Name; n != nil {
+			switch n.Name {
+			case "_":
+				continue // Ignore these
+			case ".":
+				fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", whereAt(n.NamePos))
+				continue
+			default:
+				as = n.Name
+			}
+		} else {
+			as = filepath.Base(importPath)
+		}
+		importsMap[as] = importPath
+	}
+
 	return
 }
 
@@ -247,13 +288,15 @@ func sortedPackageImports(pi packageImports, f func(k string)) {
 	}
 }
 
-func processPackage(pkgDir, pkgDirUnix, pkg string, p *Package) {
+func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if verbose {
-		fmt.Printf("Processing package=%s in %s:\n", pkg, pkgDirUnix)
+		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
 	}
 	found := false
 	for path, f := range p.Files {
-		if processDecls(pkg, pkgDirUnix, filepath.ToSlash(path), f) {
+		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		gf := processPackageMeta(pkgDirUnix, goFilePathUnix, f)
+		if processDecls(gf, pkgDirUnix, goFilePathUnix, f) {
 			found = true
 		}
 	}
@@ -264,8 +307,8 @@ func processPackage(pkgDir, pkgDirUnix, pkg string, p *Package) {
 	}
 }
 
-func processDir(d string, path string, mode parser.Mode) error {
-	pkgDir := strings.TrimPrefix(path, d+string(filepath.Separator))
+func processDir(root, rootUnix, path string, mode parser.Mode) error {
+	pkgDir := strings.TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
 	if verbose {
 		fmt.Printf("Processing %s:\n", pkgDirUnix)
@@ -294,28 +337,14 @@ func processDir(d string, path string, mode parser.Mode) error {
 		return err
 	}
 
-	if dump {
-		for _, p := range pkgs {
-			for k, f := range p.Files {
-				for _, i := range f.Imports {
-					fmt.Printf("Import for file %s:\n", k)
-					Print(fset, i)
-				}
-			}
-		}
-	}
-
-	basename := filepath.Base(path)
-	for k, v := range pkgs {
-		if k != basename {
+	for pkgBaseName, v := range pkgs {
+		if pkgBaseName != filepath.Base(path) {
 			if verbose {
-				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n", k, path)
+				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
+					pkgBaseName, path)
 			}
 		} else {
-			if verbose {
-				fmt.Printf("Package %s:\n", k)
-			}
-			processPackage(pkgDir, pkgDirUnix, k, v)
+			processPackage(rootUnix, pkgDirUnix, v)
 		}
 	}
 
@@ -330,39 +359,38 @@ var excludeDirs = map[string]bool{
 	"vendor":   true,
 }
 
-func walkDirs(d string, mode parser.Mode) error {
-	target, err := filepath.EvalSymlinks(d)
+func walkDirs(root string, mode parser.Mode) error {
+	rootUnix := filepath.ToSlash(root)
+	target, err := filepath.EvalSymlinks(root)
 	check(err)
 	err = filepath.Walk(target,
 		func(path string, info os.FileInfo, err error) error {
-			rel := strings.Replace(path, target, d, 1)
+			rel := strings.Replace(path, target, root, 1)
+			relUnix := filepath.ToSlash(rel)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n",
-					filepath.ToSlash(rel), err)
+				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
 				return err
 			}
-			if rel == d {
+			if rel == root {
 				return nil // skip (implicit) "."
 			}
 			if excludeDirs[filepath.Base(rel)] {
 				if verbose {
-					fmt.Printf("Excluding %s\n",
-						filepath.ToSlash(rel))
+					fmt.Printf("Excluding %s\n", relUnix)
 				}
 				return filepath.SkipDir
 			}
 			if info.IsDir() {
 				if verbose {
-					fmt.Printf("Walking from %s to %s\n",
-						filepath.ToSlash(d), filepath.ToSlash(rel))
+					fmt.Printf("Walking from %s to %s\n", rootUnix, relUnix)
 				}
-				return processDir(d, rel, mode)
+				return processDir(root, rootUnix, rel, mode)
 			}
 			return nil // not a directory
 		})
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", d, err)
+		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", root, err)
 		return err
 	}
 
@@ -449,7 +477,7 @@ func exprIsUseful(rtn string) bool {
 	return rtn != "NIL"
 }
 
-func genGoPostSelected(indent, pkg, in, qt, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostSelected(fn *funcInfo, indent, in, qt, onlyIf string) (jok, gol, goc, out string) {
 	if v, ok := types[qt]; ok {
 		if v.building { // Mutually-referring types currently not supported
 			jok = fmt.Sprintf("ABEND947(recursive type reference involving %s)",
@@ -458,7 +486,7 @@ func genGoPostSelected(indent, pkg, in, qt, onlyIf string) (jok, gol, goc, out s
 			goc = ""
 		} else {
 			v.building = true
-			jok, gol, goc, out = genGoPostExpr(indent, pkg, in, v.td.Type, onlyIf)
+			jok, gol, goc, out = genGoPostExpr(fn, indent, in, v.td.Type, onlyIf)
 			v.building = false
 		}
 	} else {
@@ -469,8 +497,8 @@ func genGoPostSelected(indent, pkg, in, qt, onlyIf string) (jok, gol, goc, out s
 	return
 }
 
-func genGoPostNamed(indent, pkg, in, t, onlyIf string) (jok, gol, goc, out string) {
-	return genGoPostSelected(indent, pkg, in, pkg+"."+t, onlyIf)
+func genGoPostNamed(fn *funcInfo, indent, in, t, onlyIf string) (jok, gol, goc, out string) {
+	return genGoPostSelected(fn, indent, in, fn.sourceFile.pkgDirUnix+"."+t, onlyIf)
 }
 
 func isPrivate(p string) bool {
@@ -483,7 +511,7 @@ func isPrivate(p string) bool {
 
 // Joker: { :a ^Int, :b ^String }
 // Go: struct { a int; b string }
-func genGoPostStruct(indent, pkg, in string, fl *FieldList, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostStruct(fn *funcInfo, indent, in string, fl *FieldList, onlyIf string) (jok, gol, goc, out string) {
 	tmpmap := "_map" + genSym("")
 	useful := false
 	for _, f := range fl.List {
@@ -493,7 +521,7 @@ func genGoPostStruct(indent, pkg, in string, fl *FieldList, onlyIf string) (jok,
 			}
 			var joktype, goltype, more_goc string
 			joktype, goltype, more_goc, out =
-				genGoPostExpr(indent, pkg, in+"."+p.Name, f.Type, "")
+				genGoPostExpr(fn, indent, in+"."+p.Name, f.Type, "")
 			if useful || exprIsUseful(out) {
 				useful = true
 			}
@@ -531,13 +559,13 @@ func genGoPostStruct(indent, pkg, in string, fl *FieldList, onlyIf string) (jok,
 	return
 }
 
-func genGoPostArray(indent, pkg, in string, el Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostArray(fn *funcInfo, indent, in string, el Expr, onlyIf string) (jok, gol, goc, out string) {
 	tmp := genSym("")
 	tmpvec := "_vec" + tmp
 	tmpelem := "_elem" + tmp
 
 	var goc_pre string
-	jok, gol, goc_pre, out = genGoPostExpr(indent+"\t", pkg, tmpelem, el, "")
+	jok, gol, goc_pre, out = genGoPostExpr(fn, indent+"\t", tmpelem, el, "")
 	useful := exprIsUseful(out)
 	jok = "(vector-of " + jok + ")"
 	gol = "[]" + gol
@@ -557,21 +585,22 @@ func genGoPostArray(indent, pkg, in string, el Expr, onlyIf string) (jok, gol, g
 // TODO: Maybe return a ref or something Joker (someday) supports? flag.String() is useful only as it returns a ref;
 // whereas net.LookupMX() returns []*MX, and these are not only populated, it's unclear there's any utility in
 // modifying them (it could just as well return []MX AFAICT).
-func genGoPostStar(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostStar(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
 	if onlyIf == "" {
 		onlyIf = in + " != nil"
 	} else {
 		onlyIf = in + " != nil && " + onlyIf
 	}
-	jok, gol, goc, out = genGoPostExpr(indent, pkg, "(*"+in+")", e, onlyIf)
+	jok, gol, goc, out = genGoPostExpr(fn, indent, "(*"+in+")", e, onlyIf)
 	gol = "*" + gol
 	return
 }
 
-func genGoPostSelector(indent, pkg, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
 	pkgName := e.X.(*Ident).Name
+	// ~~~lookup pkgName in goFiles[goFilePathUnix].spaces, use resulting value for pkgName
 	selName := e.Sel.Name
-	jok, gol, goc, out = genGoPostSelected(indent, pkg, in, pkgName+"."+selName, onlyIf)
+	jok, gol, goc, out = genGoPostSelected(fn, indent, in, pkgName+"."+selName, onlyIf)
 	return
 }
 
@@ -579,7 +608,7 @@ func maybeNil(expr, in string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + in + " } }()"
 }
 
-func genGoPostExpr(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostExpr(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
 	switch v := e.(type) {
 	case *Ident:
 		switch v.Name {
@@ -604,17 +633,23 @@ func genGoPostExpr(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc
 			gol = "error"
 			out = maybeNil(in, "MakeError("+in+")") // TODO: Test this against the MakeError() added to joker/core/object.go
 		default:
-			jok, _, goc, out = genGoPostNamed(indent, pkg, in, v.Name, onlyIf)
-			gol = v.Name // This is as far as Go needs to go for a type signature
+			if isPrivate(v.Name) {
+				jok = fmt.Sprintf("ABEND043(unsupported built-in type %s)", v.Name)
+				gol = "..."
+				out = in
+			} else {
+				jok, _, goc, out = genGoPostNamed(fn, indent, in, v.Name, onlyIf)
+				gol = v.Name // This is as far as Go needs to go for a type signature
+			}
 		}
 	case *ArrayType:
-		jok, gol, goc, out = genGoPostArray(indent, pkg, in, v.Elt, onlyIf)
+		jok, gol, goc, out = genGoPostArray(fn, indent, in, v.Elt, onlyIf)
 	case *StarExpr:
-		jok, gol, goc, out = genGoPostStar(indent, pkg, in, v.X, onlyIf)
+		jok, gol, goc, out = genGoPostStar(fn, indent, in, v.X, onlyIf)
 	case *SelectorExpr:
-		jok, gol, goc, out = genGoPostSelector(indent, pkg, in, v, onlyIf)
+		jok, gol, goc, out = genGoPostSelector(fn, indent, in, v, onlyIf)
 	case *StructType:
-		jok, gol, goc, out = genGoPostStruct(indent, pkg, in, v.Fields, onlyIf)
+		jok, gol, goc, out = genGoPostStruct(fn, indent, in, v.Fields, onlyIf)
 	default:
 		jok = fmt.Sprintf("ABEND883(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 		gol = "..."
@@ -625,12 +660,12 @@ func genGoPostExpr(indent, pkg, in string, e Expr, onlyIf string) (jok, gol, goc
 
 const resultName = "_res"
 
-func genGoPostItem(indent, pkg, in string, f *Field, onlyIf string) (captureVar, jok, gol, goc, out string, useful bool) {
+func genGoPostItem(fn *funcInfo, indent, in string, f *Field, onlyIf string) (captureVar, jok, gol, goc, out string, useful bool) {
 	captureVar = in
 	if in == "" {
 		captureVar = genSym(resultName)
 	}
-	jok, gol, goc, out = genGoPostExpr(indent, pkg, captureVar, f.Type, onlyIf)
+	jok, gol, goc, out = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
 	if in != "" && in != resultName {
 		gol = paramNameAsGo(in) + " " + gol
 	}
@@ -682,7 +717,7 @@ func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *strin
 }
 
 // Caller generates "outGOCALL;goc" while saving jok and gol for type info (they go into .joke as metadata and docstrings)
-func genGoPostList(indent string, pkg string, fl FieldList) (jok, gol, goc, out string) {
+func genGoPostList(fn *funcInfo, indent string, fl FieldList) (jok, gol, goc, out string) {
 	useful := false
 	captureVars := []string{}
 	jokType := []string{}
@@ -705,7 +740,7 @@ func genGoPostList(indent string, pkg string, fl FieldList) (jok, gol, goc, out 
 			if multipleCaptures {
 				captureName = n
 			}
-			captureVar, jokNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(indent, pkg, captureName, f, "")
+			captureVar, jokNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, f, "")
 			useful = useful || usefulItem
 			if multipleCaptures {
 				gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
@@ -839,10 +874,10 @@ var customRuntimeImplemented = map[string]struct{}{
 	"ConvertToArrayOfString": {},
 }
 
-func genGoPreArray(indent string, e *ArrayType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	el := e.Elt
 	len := e.Len
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
 	runtime := "ConvertToArrayOf" + clType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if len != nil {
@@ -861,9 +896,9 @@ func genGoPreArray(indent string, e *ArrayType, paramName string) (clType, clTyp
 	return
 }
 
-func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	el := e.X
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
 	runtime := "ConvertToIndirectOf" + clType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
@@ -878,11 +913,11 @@ func genGoPreStar(indent string, e *StarExpr, paramName string) (clType, clTypeD
 	return
 }
 
-func genGoPreSelector(indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	pkg := e.X
 	sel := e.Sel
 	runtime := pkg.(*Ident).Name + "." + sel.Name // wrong, but documents what is needed here
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, sel, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, sel, paramName)
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
@@ -894,9 +929,9 @@ func genGoPreSelector(indent string, e *SelectorExpr, paramName string) (clType,
 	return
 }
 
-func genGoPreEllipsis(indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	el := e.Elt
-	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
 	runtime := "ConvertToEllipsisHaHa" + clType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
@@ -910,7 +945,7 @@ func genGoPreEllipsis(indent string, e *Ellipsis, paramName string) (clType, clT
 	return
 }
 
-func genGoPreFunc(indent string, e *FuncType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreFunc(fn *funcInfo, indent string, e *FuncType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = "fn"
 	goType = "func"
 	runtime := "ConvertToFuncTypeHaHa"
@@ -925,7 +960,7 @@ func genGoPreFunc(indent string, e *FuncType, paramName string) (clType, clTypeD
 	return
 }
 
-func genGoPreInterface(indent string, e *InterfaceType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreInterface(fn *funcInfo, indent string, e *InterfaceType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = "<protocol-or-something>"
 	goType = "interface {}"
 	runtime := "ConvertToInterfaceTypeHaHa"
@@ -940,7 +975,7 @@ func genGoPreInterface(indent string, e *InterfaceType, paramName string) (clTyp
 	return
 }
 
-func genGoPreMap(indent string, e *MapType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreMap(fn *funcInfo, indent string, e *MapType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = "{}"
 	goType = "map[]"
 	runtime := "ConvertToMapTypeHaHa"
@@ -955,7 +990,7 @@ func genGoPreMap(indent string, e *MapType, paramName string) (clType, clTypeDoc
 	return
 }
 
-func genGoPreChan(indent string, e *ChanType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = "<no-idea-about-chan-yet>"
 	goType = "<-chan"
 	runtime := "ConvertToChanTypeHaHa"
@@ -970,7 +1005,7 @@ func genGoPreChan(indent string, e *ChanType, paramName string) (clType, clTypeD
 	return
 }
 
-func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
+func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, whereAt(e.Pos()))
 	jok2golParam = paramName
@@ -1001,39 +1036,49 @@ func genTypePre(indent string, e Expr, paramName string) (clType, clTypeDoc, goT
 			clType = "Int64"
 		case "error":
 		default:
-			clType = v.Name                                                                         // The important thing here is that we don't have a Go conversion
-			goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos())) // only user-defined types left now
+			if isPrivate(v.Name) {
+				clType = fmt.Sprintf("ABEND044(unsupported built-in type %s)", v.Name)
+				clTypeDoc = v.Name
+			} else {
+				clType = v.Name                                                                         // The important thing here is that we don't have a Go conversion
+				goType = fmt.Sprintf("ABEND884(unrecognized type %s at: %s)", v.Name, whereAt(e.Pos())) // only user-defined types left now
+				goTypeDoc = v.Name
+			}
 		}
-		clTypeDoc = clType
-		goTypeDoc = goType
+		if clTypeDoc == "" {
+			clTypeDoc = clType
+		}
+		if goTypeDoc == "" {
+			goTypeDoc = goType
+		}
 	case *ArrayType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreArray(fn, indent, v, paramName)
 	case *StarExpr:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreStar(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreStar(fn, indent, v, paramName)
 	case *SelectorExpr:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreSelector(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreSelector(fn, indent, v, paramName)
 	case *Ellipsis:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreEllipsis(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreEllipsis(fn, indent, v, paramName)
 	case *FuncType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreFunc(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreFunc(fn, indent, v, paramName)
 	case *InterfaceType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreInterface(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreInterface(fn, indent, v, paramName)
 	case *MapType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreMap(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreMap(fn, indent, v, paramName)
 	case *ChanType:
-		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreChan(indent, v, paramName)
+		clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genGoPreChan(fn, indent, v, paramName)
 	}
 	return
 }
 
-func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jokerParamListDoc,
+func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (jokerParamList, jokerParamListDoc,
 	jokerGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
 	if fl == nil {
 		return
 	}
 	for _, f := range fl.List {
 		for _, p := range f.Names {
-			clType, clTypeDoc, goType, goTypeDoc, jok2golParam := genTypePre(indent, f.Type, "_"+p.Name)
+			clType, clTypeDoc, goType, goTypeDoc, jok2golParam := genTypePre(fn, indent, f.Type, "_"+p.Name)
 
 			if jokerParamList != "" {
 				jokerParamList += ", "
@@ -1086,27 +1131,26 @@ func genGoPre(indent string, fl *FieldList, goFname string) (jokerParamList, jok
 	return
 }
 
-func genGoCall(pkg, goFname string, goParams string) string {
-	return "_" + pkg + "." + goFname + "(" + goParams + ")\n"
+func genGoCall(pkgBaseName, goFname, goParams string) string {
+	return "_" + pkgBaseName + "." + goFname + "(" + goParams + ")\n"
 }
 
-func genGoPost(indent string, pkg string, d *FuncDecl) (goResultAssign, jokerReturnTypeForDoc, goReturnTypeForDoc string, goReturnCode string) {
+func genGoPost(fn *funcInfo, indent string, d *FuncDecl) (goResultAssign, jokerReturnTypeForDoc, goReturnTypeForDoc string, goReturnCode string) {
 	fl := d.Type.Results
 	if fl == nil || fl.List == nil {
 		return
 	}
-	jokerReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(indent, pkg, *fl)
+	jokerReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(fn, indent, *fl)
 	return
 }
 
-func genFuncCode(pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
+func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
 	fc.jokerParamList, fc.jokerParamListDoc, fc.jokerGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
-		genGoPre("\t", d.Type.Params, goFname)
+		genGoPre(fn, "\t", d.Type.Params, goFname)
 	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
-	goResultAssign, fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode =
-		genGoPost("\t", pkgDirUnix, d)
+	goResultAssign, fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\t...ABEND675: TODO...\n"
@@ -1120,7 +1164,7 @@ func genFuncCode(pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (f
 
 // If the Go API returns a single result, and it's an Int, wrap the call in "int()". If a StarExpr is found, ABEND for now
 // TODO: Return ref's for StarExpr?
-func maybeConvertGoResult(pkg, call string, fl *FieldList) string {
+func maybeConvertGoResult(pkgDirUnix, call string, fl *FieldList) string {
 	if fl == nil || len(fl.List) != 1 || (fl.List[0].Names != nil && len(fl.List[0].Names) > 1) {
 		return call
 	}
@@ -1130,7 +1174,7 @@ func maybeConvertGoResult(pkg, call string, fl *FieldList) string {
 		stop := false
 		switch v := t.(type) {
 		case *Ident:
-			qt := pkg + "." + v.Name
+			qt := pkgDirUnix + "." + v.Name
 			if v, ok := types[qt]; ok {
 				named = true
 				t = v.td.Type
@@ -1200,10 +1244,10 @@ func printAbends(m map[string]int) {
 	}
 }
 
-func genFunction(f string, fn *funcInfo) {
+func genFunction(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
-	pkgDirUnix := fn.pkgDirUnix
+	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := filepath.Base(pkgDirUnix)
 	jfmt := `
 (defn %s%s
@@ -1212,7 +1256,7 @@ func genFunction(f string, fn *funcInfo) {
   [%s])
 `
 	goFname := funcNameAsGoPrivate(d.Name.Name)
-	fc := genFuncCode(pkgBaseName, pkgDirUnix, d, goFname)
+	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
 	jokerReturnType, goReturnType := jokerReturnTypeForGenerateCustom(fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc)
 
 	var jok2gol string
@@ -1576,14 +1620,14 @@ func main() {
 		sortedTypeInfoMap(types,
 			func(t string, ti *typeInfo) {
 				fmt.Printf("TYPE %s:\n", t)
-				fmt.Printf("  %s\n", ti.pathUnix)
+				fmt.Printf("  %s\n", fileAt(ti.where))
 			})
 	}
 
 	/* Generate function code snippets in alphabetical order, to stabilize test output in re unsupported types. */
 	sortedFuncInfoMap(qualifiedFunctions,
 		func(f string, v *funcInfo) {
-			genFunction(f, v)
+			genFunction(v)
 		})
 
 	var out *bufio.Writer
@@ -1591,7 +1635,6 @@ func main() {
 
 	sortedPackageMap(jokerCode,
 		func(pkgDirUnix string, v codeInfo) {
-			pkgBaseName := path.Base(pkgDirUnix)
 			if jokerLibDir != "" && jokerLibDir != "-" &&
 				(generateEmpty || packagesInfo[pkgDirUnix].nonEmpty) {
 				jf := filepath.Join(jokerLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
@@ -1626,8 +1669,8 @@ func main() {
 			sortedCodeMap(v,
 				func(f string, w string) {
 					if outputCode {
-						fmt.Printf("JOKER FUNC %s.%s in %s has:%v\n",
-							pkgBaseName, f, pkgDirUnix, w)
+						fmt.Printf("JOKER FUNC %s.%s:%v\n",
+							pkgDirUnix, f, w)
 					}
 					if out != nil {
 						out.WriteString(w)
@@ -1678,8 +1721,8 @@ import (%s%s
 			sortedCodeMap(v,
 				func(f string, w string) {
 					if outputCode {
-						fmt.Printf("GO FUNC %s.%s in %s has:%v\n",
-							pkgBaseName, f, pkgDirUnix, w)
+						fmt.Printf("GO FUNC %s.%s:%v\n",
+							pkgDirUnix, f, w)
 					}
 					if out != nil {
 						out.WriteString(w)

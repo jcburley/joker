@@ -7,7 +7,6 @@ import (
 	c "./c/a"
 	"fmt"
 	_ "io"
-	. "io/ioutil"
 )
 
 type ImportIa int
@@ -25,5 +24,5 @@ type ImportIaC c.ImportIa
 type ImportIaAlsoA also_a.ImportIa
 
 func test() {
-	fmt.Printf("Testing; Discard=%v.\n", Discard)
+	fmt.Printf("Testing; Discard=%v.\n", nil) // was: Discard
 }
