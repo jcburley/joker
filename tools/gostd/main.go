@@ -482,11 +482,11 @@ func isPrivate(p string) bool {
 	return !unicode.IsUpper(rune(p[0]))
 }
 
-func genGoPostSelected(fn *funcInfo, indent, captureName, qt, onlyIf string) (jok, gol, goc, out string) {
-	if v, ok := types[qt]; ok {
+func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (jok, gol, goc, out string) {
+	if v, ok := types[fullTypeName]; ok {
 		if v.building { // Mutually-referring types currently not supported
 			jok = fmt.Sprintf("ABEND947(recursive type reference involving %s)",
-				qt) // TODO: handle these, e.g. http Request/Response
+				fullTypeName) // TODO: handle these, e.g. http Request/Response
 			gol = jok
 			goc = ""
 		} else {
@@ -495,7 +495,7 @@ func genGoPostSelected(fn *funcInfo, indent, captureName, qt, onlyIf string) (jo
 			v.building = false
 		}
 	} else {
-		jok = fmt.Sprintf("ABEND042(cannot find typename %s)", qt)
+		jok = fmt.Sprintf("ABEND042(cannot find typename %s)", fullTypeName)
 		gol = "..."
 		out = captureName
 	}
