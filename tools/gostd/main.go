@@ -815,9 +815,13 @@ func jokerReturnTypeForGenerateCustom(in_jok, in_gol string) (jok, gol string) {
 	return
 }
 
-type codeInfo map[string]string
+type fnCodeInfo struct {
+	sourceFile *goFile
+	fnCode     string
+}
+type codeInfo map[string]fnCodeInfo
 
-/* Map relative (Unix-style) package names to maps of filenames to code strings. */
+/* Map relative (Unix-style) package names to maps of function names to code info and strings. */
 var jokerCode = map[string]codeInfo{}
 var goCode = map[string]codeInfo{}
 
@@ -832,7 +836,7 @@ func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
 	}
 }
 
-func sortedCodeMap(m codeInfo, f func(k string, v string)) {
+func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -1330,13 +1334,13 @@ func %s(%s) %s {
 	if _, ok := jokerCode[pkgDirUnix]; !ok {
 		jokerCode[pkgDirUnix] = codeInfo{}
 	}
-	jokerCode[pkgDirUnix][d.Name.Name] = jokerFn
+	jokerCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, jokerFn}
 
 	if _, ok := goCode[pkgDirUnix]; !ok {
 		goCode[pkgDirUnix] = codeInfo{} // There'll at least be a .joke file
 	}
 	if goFn != "" {
-		goCode[pkgDirUnix][d.Name.Name] = goFn
+		goCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
 	}
 }
 
@@ -1693,13 +1697,13 @@ func main() {
 					strings.Replace(pkgDirUnix, "/", ".", -1))
 			}
 			sortedCodeMap(v,
-				func(f string, w string) {
+				func(f string, w fnCodeInfo) {
 					if outputCode {
-						fmt.Printf("JOKER FUNC %s.%s:%v\n",
-							pkgDirUnix, f, w)
+						fmt.Printf("JOKER FUNC %s.%s from %s:%v\n",
+							pkgDirUnix, f, w.sourceFile.name, w.fnCode)
 					}
 					if out != nil {
-						out.WriteString(w)
+						out.WriteString(w.fnCode)
 					}
 				})
 			if out != nil {
@@ -1745,13 +1749,13 @@ import (%s%s
 					importCore)
 			}
 			sortedCodeMap(v,
-				func(f string, w string) {
+				func(f string, w fnCodeInfo) {
 					if outputCode {
-						fmt.Printf("GO FUNC %s.%s:%v\n",
-							pkgDirUnix, f, w)
+						fmt.Printf("GO FUNC %s.%s from %s:%v\n",
+							pkgDirUnix, f, w.sourceFile.name, w.fnCode)
 					}
 					if out != nil {
-						out.WriteString(w)
+						out.WriteString(w.fnCode)
 					}
 				})
 			if out != nil {
