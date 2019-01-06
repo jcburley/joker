@@ -482,7 +482,7 @@ func isPrivate(p string) bool {
 	return !unicode.IsUpper(rune(p[0]))
 }
 
-func genGoPostSelected(fn *funcInfo, indent, in, qt, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostSelected(fn *funcInfo, indent, captureName, qt, onlyIf string) (jok, gol, goc, out string) {
 	if v, ok := types[qt]; ok {
 		if v.building { // Mutually-referring types currently not supported
 			jok = fmt.Sprintf("ABEND947(recursive type reference involving %s)",
@@ -491,22 +491,22 @@ func genGoPostSelected(fn *funcInfo, indent, in, qt, onlyIf string) (jok, gol, g
 			goc = ""
 		} else {
 			v.building = true
-			jok, gol, goc, out = genGoPostExpr(fn, indent, in, v.td.Type, onlyIf)
+			jok, gol, goc, out = genGoPostExpr(fn, indent, captureName, v.td.Type, onlyIf)
 			v.building = false
 		}
 	} else {
 		jok = fmt.Sprintf("ABEND042(cannot find typename %s)", qt)
 		gol = "..."
-		out = in
+		out = captureName
 	}
 	return
 }
 
-func genGoPostNamed(fn *funcInfo, indent, in, typeName, onlyIf string) (jok, gol, goc, out string) {
-	return genGoPostSelected(fn, indent, in, fn.sourceFile.pkgDirUnix+"."+typeName, onlyIf)
+func genGoPostNamed(fn *funcInfo, indent, captureName, typeName, onlyIf string) (jok, gol, goc, out string) {
+	return genGoPostSelected(fn, indent, captureName, fn.sourceFile.pkgDirUnix+"."+typeName, onlyIf)
 }
 
-func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr, onlyIf string) (jok, gol, goc, out string) {
 	pkgName := e.X.(*Ident).Name
 	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
 	rf, ok := goFiles[referringFile]
@@ -515,7 +515,7 @@ func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf 
 			referringFile, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
-		jok, gol, goc, out = genGoPostSelected(fn, indent, in, fullPkgName+"."+e.Sel.Name, onlyIf)
+		jok, gol, goc, out = genGoPostSelected(fn, indent, captureName, fullPkgName+"."+e.Sel.Name, onlyIf)
 		return
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
@@ -528,7 +528,7 @@ func genGoPostSelector(fn *funcInfo, indent, in string, e *SelectorExpr, onlyIf 
 
 // Joker: { :a ^Int, :b ^String }
 // Go: struct { a int; b string }
-func genGoPostStruct(fn *funcInfo, indent, in string, fl *FieldList, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, onlyIf string) (jok, gol, goc, out string) {
 	tmpmap := "_map" + genSym("")
 	useful := false
 	for _, f := range fl.List {
@@ -538,7 +538,7 @@ func genGoPostStruct(fn *funcInfo, indent, in string, fl *FieldList, onlyIf stri
 			}
 			var joktype, goltype, more_goc string
 			joktype, goltype, more_goc, out =
-				genGoPostExpr(fn, indent, in+"."+p.Name, f.Type, "")
+				genGoPostExpr(fn, indent, captureName+"."+p.Name, f.Type, "")
 			if useful || exprIsUseful(out) {
 				useful = true
 			}
@@ -576,7 +576,7 @@ func genGoPostStruct(fn *funcInfo, indent, in string, fl *FieldList, onlyIf stri
 	return
 }
 
-func genGoPostArray(fn *funcInfo, indent, in string, el Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf string) (jok, gol, goc, out string) {
 	tmp := genSym("")
 	tmpvec := "_vec" + tmp
 	tmpelem := "_elem" + tmp
@@ -588,7 +588,7 @@ func genGoPostArray(fn *funcInfo, indent, in string, el Expr, onlyIf string) (jo
 	gol = "[]" + gol
 
 	if useful {
-		goc = indent + "for _, " + tmpelem + " := range " + in + " {\n"
+		goc = indent + "for _, " + tmpelem + " := range " + captureName + " {\n"
 		goc += goc_pre
 		goc += indent + "\t" + tmpvec + " = " + tmpvec + ".Conjoin(" + out + ")\n"
 		goc += indent + "}\n"
@@ -602,81 +602,81 @@ func genGoPostArray(fn *funcInfo, indent, in string, el Expr, onlyIf string) (jo
 // TODO: Maybe return a ref or something Joker (someday) supports? flag.String() is useful only as it returns a ref;
 // whereas net.LookupMX() returns []*MX, and these are not only populated, it's unclear there's any utility in
 // modifying them (it could just as well return []MX AFAICT).
-func genGoPostStar(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (jok, gol, goc, out string) {
 	if onlyIf == "" {
-		onlyIf = in + " != nil"
+		onlyIf = captureName + " != nil"
 	} else {
-		onlyIf = in + " != nil && " + onlyIf
+		onlyIf = captureName + " != nil && " + onlyIf
 	}
-	jok, gol, goc, out = genGoPostExpr(fn, indent, "(*"+in+")", e, onlyIf)
+	jok, gol, goc, out = genGoPostExpr(fn, indent, "(*"+captureName+")", e, onlyIf)
 	gol = "*" + gol
 	return
 }
 
-func maybeNil(expr, in string) string {
-	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + in + " } }()"
+func maybeNil(expr, captureName string) string {
+	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
 }
 
-func genGoPostExpr(fn *funcInfo, indent, in string, e Expr, onlyIf string) (jok, gol, goc, out string) {
+func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (jok, gol, goc, out string) {
 	switch v := e.(type) {
 	case *Ident:
 		switch v.Name {
 		case "string":
 			jok = "String"
 			gol = "string"
-			out = "MakeString(" + in + ")"
+			out = "MakeString(" + captureName + ")"
 		case "int":
 			jok = "Int"
 			gol = "int"
-			out = "MakeInt(" + in + ")"
+			out = "MakeInt(" + captureName + ")"
 		case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
 			jok = "Int"
 			gol = "int"
-			out = "MakeInt(int(" + in + "))"
+			out = "MakeInt(int(" + captureName + "))"
 		case "bool":
 			jok = "Bool"
 			gol = "bool"
-			out = "MakeBool(" + in + ")"
+			out = "MakeBool(" + captureName + ")"
 		case "error":
 			jok = "Error"
 			gol = "error"
-			out = maybeNil(in, "MakeError("+in+")") // TODO: Test this against the MakeError() added to joker/core/object.go
+			out = maybeNil(captureName, "MakeError("+captureName+")") // TODO: Test this against the MakeError() added to joker/core/object.go
 		default:
 			if isPrivate(v.Name) {
 				jok = fmt.Sprintf("ABEND043(unsupported built-in type %s)", v.Name)
 				gol = "..."
-				out = in
+				out = captureName
 			} else {
-				jok, _, goc, out = genGoPostNamed(fn, indent, in, v.Name, onlyIf)
+				jok, _, goc, out = genGoPostNamed(fn, indent, captureName, v.Name, onlyIf)
 				gol = v.Name // This is as far as Go needs to go for a type signature
 			}
 		}
 	case *ArrayType:
-		jok, gol, goc, out = genGoPostArray(fn, indent, in, v.Elt, onlyIf)
+		jok, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
 	case *StarExpr:
-		jok, gol, goc, out = genGoPostStar(fn, indent, in, v.X, onlyIf)
+		jok, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
 	case *SelectorExpr:
-		jok, gol, goc, out = genGoPostSelector(fn, indent, in, v, onlyIf)
+		jok, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
 	case *StructType:
-		jok, gol, goc, out = genGoPostStruct(fn, indent, in, v.Fields, onlyIf)
+		jok, gol, goc, out = genGoPostStruct(fn, indent, captureName, v.Fields, onlyIf)
 	default:
 		jok = fmt.Sprintf("ABEND883(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 		gol = "..."
-		out = in
+		out = captureName
 	}
 	return
 }
 
 const resultName = "_res"
 
-func genGoPostItem(fn *funcInfo, indent, in string, f *Field, onlyIf string) (captureVar, jok, gol, goc, out string, useful bool) {
-	captureVar = in
-	if in == "" {
+func genGoPostItem(fn *funcInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, jok, gol, goc, out string, useful bool) {
+	captureVar = captureName
+	if captureName == "" {
 		captureVar = genSym(resultName)
 	}
 	jok, gol, goc, out = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
-	if in != "" && in != resultName {
-		gol = paramNameAsGo(in) + " " + gol
+	if captureName != "" && captureName != resultName {
+		gol = paramNameAsGo(captureName) + " " + gol
 	}
 	useful = exprIsUseful(out)
 	if !useful {
@@ -874,7 +874,7 @@ type funcCode struct {
 }
 
 /* IMPORTANT: The public functions listed herein should be only those
-   defined in in joker/core/custom-runtime.go.
+   defined in joker/core/custom-runtime.go.
 
    That's how gostd knows to not actually generate calls to
    as-yet-unimplemented (or stubbed-out) functions, saving the
