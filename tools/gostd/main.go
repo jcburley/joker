@@ -931,11 +931,14 @@ func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (clT
 	clTypeDoc = clType
 	goType = fullTypeName
 	goTypeDoc = goType
-	jok2golParam = fullTypeName + "(" + paramName + ")"
-	if _, ok := customRuntimeImplemented[fullTypeName]; !ok {
+	runtime := "ConvertTo" + fullTypeName
+	jok2golParam = runtime + "(" + paramName + ")"
+	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
 			jok2golParam = "ABEND904(custom-runtime routine not implemented: " + jok2golParam + ")"
 		}
+	} else if _, ok := types[fullTypeName]; !ok {
+		jok2golParam = fmt.Sprintf("ABEND045(cannot find typename %s)", fullTypeName)
 	}
 	return
 }
