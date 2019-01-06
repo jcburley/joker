@@ -1,7 +1,7 @@
 #!/bin/bash
 GOENV="$(go env GOARCH)-$(go env GOOS)"
 
-git pull && go clean && go vet && go build && ./test.sh --on-error : && echo "No changes to $GOENV test results." && exit 0
+git pull && go clean && ./build.sh && echo "No changes to $GOENV test results." && exit 0
 
 git diff
 
