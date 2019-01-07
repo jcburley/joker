@@ -483,16 +483,15 @@ func isPrivate(p string) bool {
 }
 
 func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (jok, gol, goc, out string) {
-	if v, ok := types[fullTypeName]; ok {
-		if v.building { // Mutually-referring types currently not supported
-			jok = fmt.Sprintf("ABEND947(recursive type reference involving %s)",
-				fullTypeName) // TODO: handle these, e.g. http Request/Response
-			gol = jok
-			goc = ""
-		} else {
-			v.building = true
-			jok, gol, goc, out = genGoPostExpr(fn, indent, captureName, v.td.Type, onlyIf)
-			v.building = false
+	if _, ok := types[fullTypeName]; ok {
+		jok = fullTypeName
+		gol = fullTypeName
+		runtime := "ConvertFrom" + fullTypeName
+		out = runtime + "(" + captureName + ")"
+		if _, ok := customRuntimeImplemented[runtime]; !ok {
+			if !strings.Contains(out, "ABEND") {
+				out = "ABEND911(custom-runtime routine not implemented: " + out + ")"
+			}
 		}
 	} else {
 		jok = fmt.Sprintf("ABEND042(cannot find typename %s)", fullTypeName)
@@ -515,8 +514,7 @@ func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr
 			referringFile, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
-		jok, gol, goc, out = genGoPostSelected(fn, indent, captureName, fullPkgName+"."+e.Sel.Name, onlyIf)
-		return
+		return genGoPostSelected(fn, indent, captureName, fullPkgName+"."+e.Sel.Name, onlyIf)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
@@ -787,7 +785,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (jok, gol, goc, ou
 			goc = indent + "ABEND123(no public information returned)\n"
 		}
 	} else {
-		if goc == "" {
+		if goc == "" && result == resultName {
 			out = "return " // No code generated, so no need to use intermediary
 		} else {
 			goc += indent + "return " + result + "\n"
