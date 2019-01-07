@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	. "go/ast"
+	"go/token"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"unicode"
