@@ -17,7 +17,7 @@ build() {
 set -e  # Exit on error.
 
 if [ -e GO.link ]; then
-    go run tools/gostd/main.go --replace --joker .
+    (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
 fi
 
 build
