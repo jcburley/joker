@@ -63,6 +63,14 @@ func paramNameAsGo(p string) string {
 	return p
 }
 
+func replaceAll(string, from, to string) string {
+	return strings.Replace(string, from, to, -1)
+}
+
+func fullTypeNameAsClojure(t string) string {
+	return "go.std." + replaceAll(replaceAll(replaceAll(t, ".", ":"), "/", "."), ":", "/")
+}
+
 func funcNameAsGoPrivate(f string) string {
 	return strings.ToLower(f[0:1]) + f[1:]
 }

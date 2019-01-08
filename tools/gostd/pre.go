@@ -10,7 +10,7 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 	el := e.Elt
 	len := e.Len
 	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
-	runtime := "ConvertToArrayOf" + clType
+	runtime := "ConvertToArrayOf" + goType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if len != nil {
 		jok2golParam = "ABEND901(specific-length arrays not supported: " + jok2golParam + ")"
@@ -31,7 +31,7 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	el := e.X
 	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
-	runtime := "ConvertToIndirectOf" + clType
+	runtime := "ConvertToIndirectOf" + goType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
@@ -46,7 +46,7 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 }
 
 func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
-	clType = fullTypeName
+	clType = fullTypeNameAsClojure(fullTypeName)
 	clTypeDoc = clType
 	goType = fullTypeName
 	goTypeDoc = goType
@@ -85,7 +85,7 @@ func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName st
 func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	el := e.Elt
 	clType, clTypeDoc, goType, goTypeDoc, jok2golParam = genTypePre(fn, indent, el, paramName)
-	runtime := "ConvertToEllipsisHaHa" + clType
+	runtime := "ConvertToEllipsisHaHa" + goType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {
@@ -101,7 +101,7 @@ func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string
 func genGoPreFunc(fn *funcInfo, indent string, e *FuncType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, jok2golParam string) {
 	clType = "fn"
 	goType = "func"
-	runtime := "ConvertToFuncTypeHaHa"
+	runtime := "ConvertToFuncTypeHaHa" + goType
 	jok2golParam = runtime + "(" + jok2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(jok2golParam, "ABEND") {

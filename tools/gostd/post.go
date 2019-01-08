@@ -8,7 +8,7 @@ import (
 
 func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (jok, gol, goc, out string) {
 	if _, ok := types[fullTypeName]; ok {
-		jok = fullTypeName
+		jok = fullTypeNameAsClojure(fullTypeName)
 		gol = fullTypeName
 		runtime := "ConvertFrom" + fullTypeName
 		out = runtime + "(" + captureName + ")"
