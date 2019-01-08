@@ -325,7 +325,7 @@ type fnCodeInfo struct {
 type codeInfo map[string]fnCodeInfo
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
-var jokerCode = map[string]codeInfo{}
+var clojureCode = map[string]codeInfo{}
 var goCode = map[string]codeInfo{}
 
 func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {

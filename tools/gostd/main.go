@@ -247,7 +247,7 @@ func main() {
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	sortedPackageMap(jokerCode,
+	sortedPackageMap(clojureCode,
 		func(pkgDirUnix string, v codeInfo) {
 			if jokerLibDir != "" && jokerLibDir != "-" &&
 				(generateEmpty || packagesInfo[pkgDirUnix].nonEmpty) {

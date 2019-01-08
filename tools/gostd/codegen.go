@@ -59,11 +59,11 @@ import (
 var nonEmptyLineRegexp *regexp.Regexp
 
 /*
-   (defn <jokerReturnType> <godecl.Name>
+   (defn <clojureReturnType> <godecl.Name>
      <docstring>
      {:added "1.0"
-      :go "<jok2golcall>"}                ; jok2golcall := <conversion?>(<jok2gol>+<jokerGoParams>)
-     [jokerParamList])                    ; jokerParamList
+      :go "<cl2golcall>"}  ; cl2golcall := <conversion?>(<cl2gol>+<clojureGoParams>)
+     [clojureParamList])   ; clojureParamList
 
    func <goFname>(<goParamList>) <goReturnType> {  // goParamList
            <goCode>                                // goCode := <goPreCode>+"\t"+<goResultAssign>+"_"+pkg+"."+<godecl.Name>+"("+<goParams>+")\n"+<goPostCode>
@@ -72,14 +72,14 @@ var nonEmptyLineRegexp *regexp.Regexp
 */
 
 type funcCode struct {
-	jokerParamList        string
-	jokerParamListDoc     string
-	goParamList           string
-	goParamListDoc        string
-	jokerGoParams         string
-	goCode                string
-	jokerReturnTypeForDoc string
-	goReturnTypeForDoc    string
+	clojureParamList        string
+	clojureParamListDoc     string
+	goParamList             string
+	goParamListDoc          string
+	clojureGoParams         string
+	goCode                  string
+	clojureReturnTypeForDoc string
+	goReturnTypeForDoc      string
 }
 
 /* IMPORTANT: The public functions listed herein should be only those
@@ -103,10 +103,10 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
-	fc.jokerParamList, fc.jokerParamListDoc, fc.jokerGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
 		genGoPre(fn, "\t", d.Type.Params, goFname)
 	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
-	goResultAssign, fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
+	goResultAssign, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\t...ABEND675: TODO...\n"
@@ -214,24 +214,24 @@ func genFunction(fn *funcInfo) {
 `
 	goFname := funcNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
-	jokerReturnType, goReturnType := jokerReturnTypeForGenerateCustom(fc.jokerReturnTypeForDoc, fc.goReturnTypeForDoc)
+	clojureReturnType, goReturnType := clojureReturnTypeForGenerateCustom(fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc)
 
-	var jok2gol string
-	if jokerReturnType == "" {
-		jok2gol = goFname
+	var cl2gol string
+	if clojureReturnType == "" {
+		cl2gol = goFname
 	} else {
-		jokerReturnType += " "
-		jok2gol = pkgBaseName + "." + d.Name.Name
+		clojureReturnType += " "
+		cl2gol = pkgBaseName + "." + d.Name.Name
 		if _, found := packagesInfo[pkgDirUnix]; !found {
 			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
 		}
 	}
-	jok2golCall := maybeConvertGoResult(pkgDirUnix, jok2gol+fc.jokerGoParams, fn.fd.Type.Results)
+	cl2golCall := maybeConvertGoResult(pkgDirUnix, cl2gol+fc.clojureGoParams, fn.fd.Type.Results)
 
-	jokerFn := fmt.Sprintf(jfmt, jokerReturnType, d.Name.Name,
-		commentGroupInQuotes(d.Doc, fc.jokerParamListDoc, fc.jokerReturnTypeForDoc,
+	clojureFn := fmt.Sprintf(jfmt, clojureReturnType, d.Name.Name,
+		commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc),
-		jok2golCall, fc.jokerParamList)
+		cl2golCall, fc.clojureParamList)
 
 	gfmt := `
 func %s(%s) %s {
@@ -239,29 +239,29 @@ func %s(%s) %s {
 `
 
 	goFn := ""
-	if jokerReturnType == "" { // TODO: Generate this anyway if it contains ABEND, so we can see what's needed.
+	if clojureReturnType == "" { // TODO: Generate this anyway if it contains ABEND, so we can see what's needed.
 		goFn = fmt.Sprintf(gfmt, goFname, fc.goParamList, goReturnType, fc.goCode)
 	}
 
-	if strings.Contains(jokerFn, "ABEND") || strings.Contains(goFn, "ABEND") {
-		jokerFn = nonEmptyLineRegexp.ReplaceAllString(jokerFn, `;; $1`)
+	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
+		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
-		trackAbends(jokerFn)
+		trackAbends(clojureFn)
 		trackAbends(goFn)
 	} else {
 		generatedFunctions++
 		packagesInfo[pkgDirUnix].nonEmpty = true
-		if jokerReturnType == "" {
+		if clojureReturnType == "" {
 			packagesInfo[pkgDirUnix].importsNative[pkgDirUnix] = exists
 		} else {
 			packagesInfo[pkgDirUnix].importsAutoGen[pkgDirUnix] = exists
 		}
 	}
 
-	if _, ok := jokerCode[pkgDirUnix]; !ok {
-		jokerCode[pkgDirUnix] = codeInfo{}
+	if _, ok := clojureCode[pkgDirUnix]; !ok {
+		clojureCode[pkgDirUnix] = codeInfo{}
 	}
-	jokerCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, jokerFn}
+	clojureCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
 
 	if _, ok := goCode[pkgDirUnix]; !ok {
 		goCode[pkgDirUnix] = codeInfo{} // There'll at least be a .joke file
