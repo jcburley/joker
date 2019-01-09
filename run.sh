@@ -3,6 +3,8 @@
 build() {
     go clean -x
 
+    rm -f core/a_*_data.go  # Eases development across multiple branches introducing new core/data/*.joke files
+
     go generate ./...
 
     go tool vet -all -shadow=true ./
