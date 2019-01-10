@@ -24,7 +24,7 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 	clType = "Object"
 	clTypeDoc = "(vector-of " + clTypeDoc + ")"
 	goType = "[]" + goType
-	goTypeDoc = goType
+	goTypeDoc = "[]" + goTypeDoc
 	return
 }
 
@@ -41,21 +41,21 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 	clType = "Object"
 	clTypeDoc = "(atom-of " + clTypeDoc + ")"
 	goType = "*" + goType
-	goTypeDoc = goType
+	goTypeDoc = "*" + goTypeDoc
 	return
 }
 
-func genGoPreSelected(fn *funcInfo, indent, fullTypeName, baseTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreSelected(fn *funcInfo, indent, fullPkgName, baseTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+	fullTypeName := fullPkgName + "." + baseTypeName
 	clType = "Native"
 	clTypeDoc = fullTypeNameAsClojure(fullTypeName)
-	goType = "_" + fn.sourceFile.pkgName + "." + baseTypeName
-	goTypeDoc = fullTypeName
+	goType, goTypeDoc = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
 	cl2golParam = paramName
 	return
 }
 
 func genGoPreNamed(fn *funcInfo, indent, typeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	return genGoPreSelected(fn, indent, fn.sourceFile.pkgDirUnix+"."+typeName, typeName, paramName)
+	return genGoPreSelected(fn, indent, fn.sourceFile.pkgDirUnix, typeName, paramName)
 }
 
 func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
@@ -67,8 +67,7 @@ func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName st
 			referringFile, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
-		fullTypeName := fullPkgName + "." + e.Sel.Name
-		return genGoPreSelected(fn, indent, fullTypeName, e.Sel.Name, paramName)
+		return genGoPreSelected(fn, indent, fullPkgName, e.Sel.Name, paramName)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))
@@ -86,7 +85,7 @@ func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string
 	}
 	clTypeDoc = "(ellipsis-somehow " + clType + ")"
 	goType = "..." + goType
-	goTypeDoc = goType
+	goTypeDoc = "..." + goTypeDoc
 	return
 }
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/token"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -68,7 +69,29 @@ func replaceAll(string, from, to string) string {
 }
 
 func fullTypeNameAsClojure(t string) string {
+	if t[0] == '_' {
+		t = t[1:]
+	}
 	return "go.std." + replaceAll(replaceAll(replaceAll(t, ".", ":"), "/", "."), ":", "/")
+}
+
+// Given an input package name such as "foo/bar" and typename
+// "bletch", decides whether to return just "bletch" if the package
+// being compiled will be implementing Go's package of the same name
+// (in this case, the generated file will be foo/bar_native.go and
+// start with "package bar"); or, to return simply "bar.bletch" and
+// ensure "foo/bar" is imported (implicitly as "bar", assuming no
+// conflicts). As a side effect, updates imports needed in the file.
+func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, doc string) {
+	curPkgName := fn.sourceFile.pkgDirUnix
+	if curPkgName == fullPkgName {
+		code = "_" + path.Base(fullPkgName) + "." + baseTypeName
+		doc = baseTypeName
+		return
+	}
+	doc = path.Base(fullPkgName) + "." + baseTypeName
+	code = "ABEND987(imports not yet supported: " + doc + ")"
+	return
 }
 
 func funcNameAsGoPrivate(f string) string {
