@@ -3,6 +3,8 @@
 build() {
     go clean -x
 
+    rm -f core/a_*_data.go  # Eases development across multiple branches introducing new core/data/*.joke files
+
     go generate ./...
 
     # Don't vet things in tools/, they have their own vetting, plus "problematic" code for test purposes.
