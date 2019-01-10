@@ -45,25 +45,17 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 	return
 }
 
-func genGoPreSelected(fn *funcInfo, indent, fullTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	clType = fullTypeNameAsClojure(fullTypeName)
-	clTypeDoc = clType
-	goType = fullTypeName
-	goTypeDoc = goType
-	runtime := "ConvertTo" + fullTypeName
-	cl2golParam = runtime + "(" + paramName + ")"
-	if _, ok := customRuntimeImplemented[runtime]; !ok {
-		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND904(custom-runtime routine not implemented: " + cl2golParam + ")"
-		}
-	} else if _, ok := types[fullTypeName]; !ok {
-		cl2golParam = fmt.Sprintf("ABEND045(cannot find typename %s)", fullTypeName)
-	}
+func genGoPreSelected(fn *funcInfo, indent, fullTypeName, baseTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+	clType = "Native"
+	clTypeDoc = fullTypeNameAsClojure(fullTypeName)
+	goType = "_" + fn.sourceFile.pkgName + "." + baseTypeName
+	goTypeDoc = fullTypeName
+	cl2golParam = paramName
 	return
 }
 
 func genGoPreNamed(fn *funcInfo, indent, typeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	return genGoPreSelected(fn, indent, fn.sourceFile.pkgDirUnix+"."+typeName, paramName)
+	return genGoPreSelected(fn, indent, fn.sourceFile.pkgDirUnix+"."+typeName, typeName, paramName)
 }
 
 func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
@@ -76,7 +68,7 @@ func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName st
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
 		fullTypeName := fullPkgName + "." + e.Sel.Name
-		return genGoPreSelected(fn, indent, fullTypeName, paramName)
+		return genGoPreSelected(fn, indent, fullTypeName, e.Sel.Name, paramName)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		whereAt(e.Pos()), whereAt(fn.fd.Pos()), pkgName, fn.sourceFile.name))

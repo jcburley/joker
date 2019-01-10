@@ -131,6 +131,7 @@ type goFile struct {
 	name       string
 	rootUnix   string
 	pkgDirUnix string
+	pkgName    string
 	spaces     *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
 }
 
@@ -141,7 +142,7 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (g
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, &importsMap}
+	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap}
 	goFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
