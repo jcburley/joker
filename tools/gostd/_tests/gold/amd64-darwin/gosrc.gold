@@ -14938,6 +14938,48 @@ GO FUNC bufio.ScanWords from bufio/scan.go:
 // 	return _res
 // }
 
+GO FUNC bytes.Compare from bytes/bytes_decl.go:
+// func compare(a []byte, b []byte)  {
+// 	_res := _bytes.Compare(a, b)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.Contains from bytes/bytes.go:
+// func contains(b []byte, subslice []byte)  {
+// 	_res := _bytes.Contains(b, subslice)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.ContainsAny from bytes/bytes.go:
+// func containsAny(b []byte, chars string)  {
+// 	_res := _bytes.ContainsAny(b, chars)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.ContainsRune from bytes/bytes.go:
+// func containsRune(b []byte, r rune)  {
+// 	_res := _bytes.ContainsRune(b, r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.Count from bytes/bytes.go:
+// func count(s []byte, sep []byte)  {
+// 	_res := _bytes.Count(s, sep)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.Equal from bytes/bytes_decl.go:
+// func equal(a []byte, b []byte)  {
+// 	_res := _bytes.Equal(a, b)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.EqualFold from bytes/bytes.go:
+// func equalFold(s []byte, t []byte)  {
+// 	_res := _bytes.EqualFold(s, t)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC bytes.Fields from bytes/bytes.go:
 // func fields(s []byte) Object {
 // 	_res := _bytes.Fields(s)
@@ -14966,6 +15008,48 @@ GO FUNC bytes.FieldsFunc from bytes/bytes.go:
 // 	return _vec1
 // }
 
+GO FUNC bytes.HasPrefix from bytes/bytes.go:
+// func hasPrefix(s []byte, prefix []byte)  {
+// 	_res := _bytes.HasPrefix(s, prefix)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.HasSuffix from bytes/bytes.go:
+// func hasSuffix(s []byte, suffix []byte)  {
+// 	_res := _bytes.HasSuffix(s, suffix)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC bytes.Index from bytes/bytes.go:
+// func index(s []byte, sep []byte)  {
+// 	_res := _bytes.Index(s, sep)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.IndexAny from bytes/bytes.go:
+// func indexAny(s []byte, chars string)  {
+// 	_res := _bytes.IndexAny(s, chars)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.IndexByte from bytes/bytes_decl.go:
+// func indexByte(b []byte, c byte)  {
+// 	_res := _bytes.IndexByte(b, c)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.IndexFunc from bytes/bytes.go:
+// func indexFunc(s []byte, f func)  {
+// 	_res := _bytes.IndexFunc(s, f)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.IndexRune from bytes/bytes.go:
+// func indexRune(s []byte, r rune)  {
+// 	_res := _bytes.IndexRune(s, r)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC bytes.Join from bytes/bytes.go:
 // func join(s [][]byte, sep []byte) Object {
 // 	_res := _bytes.Join(s, sep)
@@ -14974,6 +15058,30 @@ GO FUNC bytes.Join from bytes/bytes.go:
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
 // 	return _vec1
+// }
+
+GO FUNC bytes.LastIndex from bytes/bytes.go:
+// func lastIndex(s []byte, sep []byte)  {
+// 	_res := _bytes.LastIndex(s, sep)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.LastIndexAny from bytes/bytes.go:
+// func lastIndexAny(s []byte, chars string)  {
+// 	_res := _bytes.LastIndexAny(s, chars)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.LastIndexByte from bytes/bytes.go:
+// func lastIndexByte(s []byte, c byte)  {
+// 	_res := _bytes.LastIndexByte(s, c)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC bytes.LastIndexFunc from bytes/bytes.go:
+// func lastIndexFunc(s []byte, f func)  {
+// 	_res := _bytes.LastIndexFunc(s, f)
+// 	return MakeInt(_res)
 // }
 
 GO FUNC bytes.Map from bytes/bytes.go:
@@ -15545,6 +15653,18 @@ GO FUNC crypto/des.NewTripleDESCipher from crypto/des/cipher.go:
 // 	return _res
 // }
 
+GO FUNC crypto/dsa.GenerateKey from crypto/dsa/dsa.go:
+// func generateKey(priv *_dsa.PrivateKey, rand io.Reader)  {
+// 	_res := _dsa.GenerateKey(priv, rand)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC crypto/dsa.GenerateParameters from crypto/dsa/dsa.go:
+// func generateParameters(params *_dsa.Parameters, rand io.Reader, sizes _dsa.ParameterSizes)  {
+// 	_res := _dsa.GenerateParameters(params, rand, sizes)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 // func sign(rand io.Reader, priv *_dsa.PrivateKey, hash []byte) Object {
 // 	r, s, err := _dsa.Sign(rand, priv, hash)
@@ -15553,6 +15673,12 @@ GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*s))))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC crypto/dsa.Verify from crypto/dsa/dsa.go:
+// func verify(pub *_dsa.PublicKey, hash []byte, r *big.Int, s *big.Int)  {
+// 	_res := _dsa.Verify(pub, hash, r, s)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
@@ -15572,6 +15698,12 @@ GO FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*s))))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC crypto/ecdsa.Verify from crypto/ecdsa/ecdsa.go:
+// func verify(pub *_ecdsa.PublicKey, hash []byte, r *big.Int, s *big.Int)  {
+// 	_res := _ecdsa.Verify(pub, hash, r, s)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
@@ -15630,6 +15762,12 @@ GO FUNC crypto/elliptic.Unmarshal from crypto/elliptic/elliptic.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*x))))
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*y))))
 // 	return _res
+// }
+
+GO FUNC crypto/hmac.Equal from crypto/hmac/hmac.go:
+// func equal(mac1 []byte, mac2 []byte)  {
+// 	_res := _hmac.Equal(mac1, mac2)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC crypto/hmac.New from crypto/hmac/hmac.go:
@@ -15716,6 +15854,12 @@ GO FUNC crypto/rsa.DecryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // 	return _res
 // }
 
+GO FUNC crypto/rsa.DecryptPKCS1v15SessionKey from crypto/rsa/pkcs1v15.go:
+// func decryptPKCS1v15SessionKey(rand io.Reader, priv *_rsa.PrivateKey, ciphertext []byte, key []byte)  {
+// 	_res := _rsa.DecryptPKCS1v15SessionKey(rand, priv, ciphertext, key)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC crypto/rsa.EncryptOAEP from crypto/rsa/rsa.go:
 // func encryptOAEP(hash hash.Hash, random io.Reader, pub *_rsa.PublicKey, msg []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.EncryptOAEP(hash, random, pub, msg, label)
@@ -15784,6 +15928,18 @@ GO FUNC crypto/rsa.SignPSS from crypto/rsa/pss.go:
 // 	_res = _res.Conjoin(_vec1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
+// }
+
+GO FUNC crypto/rsa.VerifyPKCS1v15 from crypto/rsa/pkcs1v15.go:
+// func verifyPKCS1v15(pub *_rsa.PublicKey, hash crypto.Hash, hashed []byte, sig []byte)  {
+// 	_res := _rsa.VerifyPKCS1v15(pub, hash, hashed, sig)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC crypto/rsa.VerifyPSS from crypto/rsa/pss.go:
+// func verifyPSS(pub *_rsa.PublicKey, hash crypto.Hash, hashed []byte, sig []byte, opts *_rsa.PSSOptions)  {
+// 	_res := _rsa.VerifyPSS(pub, hash, hashed, sig, opts)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC crypto/sha1.New from crypto/sha1/sha1.go:
@@ -15896,6 +16052,18 @@ GO FUNC crypto/sha512.Sum512_256 from crypto/sha512/sha512.go:
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
 // 	return _vec1
+// }
+
+GO FUNC crypto/subtle.ConstantTimeByteEq from crypto/subtle/constant_time.go:
+// func constantTimeByteEq(x uint8, y uint8)  {
+// 	_res := _subtle.ConstantTimeByteEq(x, y)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC crypto/subtle.ConstantTimeCompare from crypto/subtle/constant_time.go:
+// func constantTimeCompare(x []byte, y []byte)  {
+// 	_res := _subtle.ConstantTimeCompare(x, y)
+// 	return MakeInt(_res)
 // }
 
 GO FUNC crypto/subtle.ConstantTimeCopy from crypto/subtle/constant_time.go:
@@ -16019,6 +16187,12 @@ GO FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromencoding/pem.Block((*_res1))))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
+// }
+
+GO FUNC crypto/x509.IsEncryptedPEMBlock from crypto/x509/pem_decrypt.go:
+// func isEncryptedPEMBlock(b *pem.Block)  {
+// 	_res := _x509.IsEncryptedPEMBlock(b)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
@@ -16226,6 +16400,18 @@ GO FUNC database/sql.Register from database/sql/sql.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC database/sql/driver.IsScanValue from database/sql/driver/types.go:
+// func isScanValue(v interface {})  {
+// 	_res := _driver.IsScanValue(v)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC database/sql/driver.IsValue from database/sql/driver/types.go:
+// func isValue(v interface {})  {
+// 	_res := _driver.IsValue(v)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC debug/dwarf.New from debug/dwarf/open.go:
 // func new(abbrev []byte, aranges []byte, frame []byte, info []byte, line []byte, pubnames []byte, ranges []byte, str []byte) Object {
 // 	_res1, _res2 := _dwarf.New(abbrev, aranges, frame, info, line, pubnames, ranges, str)
@@ -16256,6 +16442,18 @@ GO FUNC debug/elf.Open from debug/elf/file.go:
 GO FUNC debug/elf.R_INFO from debug/elf/elf.go:
 // func r_INFO(sym uint32, typ uint32) Object {
 // 	return _elf.R_INFO(sym, typ)
+// }
+
+GO FUNC debug/elf.R_SYM64 from debug/elf/elf.go:
+// func r_SYM64(info uint64)  {
+// 	_res := _elf.R_SYM64(info)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC debug/elf.R_TYPE64 from debug/elf/elf.go:
+// func r_TYPE64(info uint64)  {
+// 	_res := _elf.R_TYPE64(info)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC debug/elf.ST_BIND from debug/elf/elf.go:
@@ -16378,6 +16576,12 @@ GO FUNC encoding/ascii85.Decode from encoding/ascii85/ascii85.go:
 // 	return _res
 // }
 
+GO FUNC encoding/ascii85.Encode from encoding/ascii85/ascii85.go:
+// func encode(dst []byte, src []byte)  {
+// 	_res := _ascii85.Encode(dst, src)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC encoding/ascii85.NewDecoder from encoding/ascii85/ascii85.go:
 // func newDecoder(r io.Reader) Object {
 // 	_res := _ascii85.NewDecoder(r)
@@ -16478,6 +16682,24 @@ GO FUNC encoding/base64.NewEncoding from encoding/base64/base64.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/base64.Encoding((*_res)))
 // }
 
+GO FUNC encoding/binary.PutUvarint from encoding/binary/varint.go:
+// func putUvarint(buf []byte, x uint64)  {
+// 	_res := _binary.PutUvarint(buf, x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC encoding/binary.PutVarint from encoding/binary/varint.go:
+// func putVarint(buf []byte, x int64)  {
+// 	_res := _binary.PutVarint(buf, x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC encoding/binary.Read from encoding/binary/binary.go:
+// func read(r io.Reader, order _binary.ByteOrder, data interface {})  {
+// 	_res := _binary.Read(r, order, data)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC encoding/binary.ReadUvarint from encoding/binary/varint.go:
 // func readUvarint(r io.ByteReader) Object {
 // 	_res1, _res2 := _binary.ReadUvarint(r)
@@ -16496,6 +16718,12 @@ GO FUNC encoding/binary.ReadVarint from encoding/binary/varint.go:
 // 	return _res
 // }
 
+GO FUNC encoding/binary.Size from encoding/binary/binary.go:
+// func size(v interface {})  {
+// 	_res := _binary.Size(v)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC encoding/binary.Uvarint from encoding/binary/varint.go:
 // func uvarint(buf []byte) Object {
 // 	_res1, _res2 := _binary.Uvarint(buf)
@@ -16512,6 +16740,12 @@ GO FUNC encoding/binary.Varint from encoding/binary/varint.go:
 // 	_res = _res.Conjoin(MakeInt(int(_res1)))
 // 	_res = _res.Conjoin(MakeInt(_res2))
 // 	return _res
+// }
+
+GO FUNC encoding/binary.Write from encoding/binary/binary.go:
+// func write(w io.Writer, order _binary.ByteOrder, data interface {})  {
+// 	_res := _binary.Write(w, order, data)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC encoding/csv.NewReader from encoding/csv/reader.go:
@@ -16572,10 +16806,28 @@ func decodeString(s string) Object {
 	return _res
 }
 
+GO FUNC encoding/hex.Dump from encoding/hex/hex.go:
+// func dump(data []byte)  {
+// 	_res := _hex.Dump(data)
+// 	return MakeString(_res)
+// }
+
 GO FUNC encoding/hex.Dumper from encoding/hex/hex.go:
 // func dumper(w io.Writer) Object {
 // 	_res := _hex.Dumper(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
+// }
+
+GO FUNC encoding/hex.Encode from encoding/hex/hex.go:
+// func encode(dst []byte, src []byte)  {
+// 	_res := _hex.Encode(dst, src)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC encoding/hex.EncodeToString from encoding/hex/hex.go:
+// func encodeToString(src []byte)  {
+// 	_res := _hex.EncodeToString(src)
+// 	return MakeString(_res)
 // }
 
 GO FUNC encoding/hex.NewDecoder from encoding/hex/hex.go:
@@ -16590,10 +16842,22 @@ GO FUNC encoding/hex.NewEncoder from encoding/hex/hex.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Writer(_res))
 // }
 
+GO FUNC encoding/json.Compact from encoding/json/indent.go:
+// func compact(dst *bytes.Buffer, src []byte)  {
+// 	_res := _json.Compact(dst, src)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC encoding/json.HTMLEscape from encoding/json/encode.go:
 // func hTMLEscape(dst *bytes.Buffer, src []byte) Object {
 // 	_json.HTMLEscape(dst, src)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC encoding/json.Indent from encoding/json/indent.go:
+// func indent(dst *bytes.Buffer, src []byte, prefix string, indent string)  {
+// 	_res := _json.Indent(dst, src, prefix, indent)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC encoding/json.Marshal from encoding/json/encode.go:
@@ -16634,6 +16898,18 @@ GO FUNC encoding/json.NewEncoder from encoding/json/stream.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/json.Encoder((*_res)))
 // }
 
+GO FUNC encoding/json.Unmarshal from encoding/json/decode.go:
+// func unmarshal(data []byte, v interface {})  {
+// 	_res := _json.Unmarshal(data, v)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC encoding/json.Valid from encoding/json/scanner.go:
+// func valid(data []byte)  {
+// 	_res := _json.Valid(data)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC encoding/pem.Decode from encoding/pem/pem.go:
 // func decode(data []byte) Object {
 // 	p, rest := _pem.Decode(data)
@@ -16645,6 +16921,12 @@ GO FUNC encoding/pem.Decode from encoding/pem/pem.go:
 // 	}
 // 	_res = _res.Conjoin(_vec1)
 // 	return _res
+// }
+
+GO FUNC encoding/pem.Encode from encoding/pem/pem.go:
+// func encode(out io.Writer, b *_pem.Block)  {
+// 	_res := _pem.Encode(out, b)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC encoding/pem.EncodeToMemory from encoding/pem/pem.go:
@@ -16667,6 +16949,12 @@ GO FUNC encoding/xml.Escape from encoding/xml/xml.go:
 // func escape(w io.Writer, s []byte) Object {
 // 	_xml.Escape(w, s)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC encoding/xml.EscapeText from encoding/xml/xml.go:
+// func escapeText(w io.Writer, s []byte)  {
+// 	_res := _xml.EscapeText(w, s)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC encoding/xml.Marshal from encoding/xml/marshal.go:
@@ -16711,6 +16999,12 @@ GO FUNC encoding/xml.NewTokenDecoder from encoding/xml/xml.go:
 // func newTokenDecoder(t _xml.TokenReader) Object {
 // 	_res := _xml.NewTokenDecoder(t)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/xml.Decoder((*_res)))
+// }
+
+GO FUNC encoding/xml.Unmarshal from encoding/xml/read.go:
+// func unmarshal(data []byte, v interface {})  {
+// 	_res := _xml.Unmarshal(data, v)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC expvar.Do from expvar/expvar.go:
@@ -16771,6 +17065,12 @@ func args() Object {
 	return _vec1
 }
 
+GO FUNC flag.Bool from flag/flag.go:
+// func bool(name string, value bool, usage string)  {
+// 	_res := _flag.Bool(name, value, usage)
+// 	return MakeBool((*_res))
+// }
+
 GO FUNC flag.BoolVar from flag/flag.go:
 // func boolVar(p *bool, name string, value bool, usage string) Object {
 // 	_flag.BoolVar(p, name, value, usage)
@@ -16799,6 +17099,18 @@ GO FUNC flag.Float64Var from flag/flag.go:
 // func float64Var(p *float64, name string, value float64, usage string) Object {
 // 	_flag.Float64Var(p, name, value, usage)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC flag.Int from flag/flag.go:
+// func int(name string, value int, usage string)  {
+// 	_res := _flag.Int(name, value, usage)
+// 	return MakeInt((*_res))
+// }
+
+GO FUNC flag.Int64 from flag/flag.go:
+// func int64(name string, value int64, usage string)  {
+// 	_res := _flag.Int64(name, value, usage)
+// 	return MakeInt(int((*_res)))
 // }
 
 GO FUNC flag.Int64Var from flag/flag.go:
@@ -16837,10 +17149,22 @@ GO FUNC flag.PrintDefaults from flag/flag.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC flag.String from flag/flag.go:
+// func string(name string, value string, usage string)  {
+// 	_res := _flag.String(name, value, usage)
+// 	return MakeString((*_res))
+// }
+
 GO FUNC flag.StringVar from flag/flag.go:
 // func stringVar(p *string, name string, value string, usage string) Object {
 // 	_flag.StringVar(p, name, value, usage)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC flag.Uint from flag/flag.go:
+// func uint(name string, value uint, usage string)  {
+// 	_res := _flag.Uint(name, value, usage)
+// 	return MakeInt(int((*_res)))
 // }
 
 GO FUNC flag.Uint64 from flag/flag.go:
@@ -16886,6 +17210,12 @@ GO FUNC flag.VisitAll from flag/flag.go:
 // func visitAll(fn func) Object {
 // 	_flag.VisitAll(fn)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC fmt.Errorf from fmt/print.go:
+// func errorf(format string, a ...interface {})  {
+// 	_res := _fmt.Errorf(format, a)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC fmt.Fprint from fmt/print.go:
@@ -16996,6 +17326,24 @@ GO FUNC fmt.Scanln from fmt/scan.go:
 // 	return _res
 // }
 
+GO FUNC fmt.Sprint from fmt/print.go:
+// func sprint(a ...interface {})  {
+// 	_res := _fmt.Sprint(a)
+// 	return MakeString(_res)
+// }
+
+GO FUNC fmt.Sprintf from fmt/print.go:
+// func sprintf(format string, a ...interface {})  {
+// 	_res := _fmt.Sprintf(format, a)
+// 	return MakeString(_res)
+// }
+
+GO FUNC fmt.Sprintln from fmt/print.go:
+// func sprintln(a ...interface {})  {
+// 	_res := _fmt.Sprintln(a)
+// 	return MakeString(_res)
+// }
+
 GO FUNC fmt.Sscan from fmt/scan.go:
 // func sscan(str string, a ...interface {}) Object {
 // 	n, err := _fmt.Sscan(str, a)
@@ -17021,6 +17369,30 @@ GO FUNC fmt.Sscanln from fmt/scan.go:
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC go/ast.FileExports from go/ast/filter.go:
+// func fileExports(src *_ast.File)  {
+// 	_res := _ast.FileExports(src)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC go/ast.FilterFile from go/ast/filter.go:
+// func filterFile(src *_ast.File, f _ast.Filter)  {
+// 	_res := _ast.FilterFile(src, f)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC go/ast.FilterPackage from go/ast/filter.go:
+// func filterPackage(pkg *_ast.Package, f _ast.Filter)  {
+// 	_res := _ast.FilterPackage(pkg, f)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC go/ast.Fprint from go/ast/print.go:
+// func fprint(w io.Writer, fset *token.FileSet, x interface {}, f _ast.FieldFilter)  {
+// 	_res := _ast.Fprint(w, fset, x, f)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC go/ast.Inspect from go/ast/walk.go:
@@ -17066,6 +17438,24 @@ GO FUNC go/ast.NewScope from go/ast/scope.go:
 // func newScope(outer *_ast.Scope) Object {
 // 	_res := _ast.NewScope(outer)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/ast.Scope((*_res)))
+// }
+
+GO FUNC go/ast.NotNilFilter from go/ast/print.go:
+// func notNilFilter(_ string, v reflect.Value)  {
+// 	_res := _ast.NotNilFilter(_, v)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC go/ast.PackageExports from go/ast/filter.go:
+// func packageExports(pkg *_ast.Package)  {
+// 	_res := _ast.PackageExports(pkg)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC go/ast.Print from go/ast/print.go:
+// func print(fset *token.FileSet, x interface {})  {
+// 	_res := _ast.Print(fset, x)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC go/ast.SortImports from go/ast/import.go:
@@ -17122,6 +17512,12 @@ func bytes(x _constant.Value) Object {
 	}
 	return _vec1
 }
+
+GO FUNC go/constant.Compare from go/constant/value.go:
+// func compare(x_ _constant.Value, op token.Token, y_ _constant.Value)  {
+// 	_res := _constant.Compare(x_, op, y_)
+// 	return MakeBool(_res)
+// }
 
 GO FUNC go/constant.Denom from go/constant/value.go:
 // func denom(x _constant.Value) Object {
@@ -17295,6 +17691,12 @@ GO FUNC go/doc.ToText from go/doc/comment.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC go/format.Node from go/format/format.go:
+// func node(dst io.Writer, fset *token.FileSet, node interface {})  {
+// 	_res := _format.Node(dst, fset, node)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC go/format.Source from go/format/format.go:
 // func source(src []byte) Object {
 // 	_res1, _res2 := _format.Source(src)
@@ -17356,6 +17758,12 @@ GO FUNC go/parser.ParseFile from go/parser/interface.go:
 // 	return _res
 // }
 
+GO FUNC go/printer.Fprint from go/printer/printer.go:
+// func fprint(output io.Writer, fset *token.FileSet, node interface {})  {
+// 	_res := _printer.Fprint(output, fset, node)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC go/scanner.PrintError from go/scanner/errors.go:
 // func printError(w io.Writer, err error) Object {
 // 	_scanner.PrintError(w, err)
@@ -17372,6 +17780,12 @@ GO FUNC go/token.NewFileSet from go/token/position.go:
 // func newFileSet() Object {
 // 	_res := _token.NewFileSet()
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/token.FileSet((*_res)))
+// }
+
+GO FUNC go/types.AssertableTo from go/types/api.go:
+// func assertableTo(V *_types.Interface, T _types.Type)  {
+// 	_res := _types.AssertableTo(V, T)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC go/types.DefPredeclaredTestFuncs from go/types/universe.go:
@@ -17393,6 +17807,24 @@ GO FUNC go/types.Eval from go/types/eval.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.TypeAndValue(_)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC go/types.ExprString from go/types/exprstring.go:
+// func exprString(x ast.Expr)  {
+// 	_res := _types.ExprString(x)
+// 	return MakeString(_res)
+// }
+
+GO FUNC go/types.Id from go/types/object.go:
+// func id(pkg *_types.Package, name string)  {
+// 	_res := _types.Id(pkg, name)
+// 	return MakeString(_res)
+// }
+
+GO FUNC go/types.Implements from go/types/api.go:
+// func implements(V _types.Type, T *_types.Interface)  {
+// 	_res := _types.Implements(V, T)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC go/types.LookupFieldOrMethod from go/types/lookup.go:
@@ -17562,6 +17994,12 @@ GO FUNC go/types.RelativeTo from go/types/typestring.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Qualifier(_res))
 // }
 
+GO FUNC go/types.SelectionString from go/types/selection.go:
+// func selectionString(s *_types.Selection, qf _types.Qualifier)  {
+// 	_res := _types.SelectionString(s, qf)
+// 	return MakeString(_res)
+// }
+
 GO FUNC go/types.SizesFor from go/types/sizes.go:
 // func sizesFor(compiler string, arch string) Object {
 // 	_res := _types.SizesFor(compiler, arch)
@@ -17586,10 +18024,28 @@ GO FUNC go/types.WriteType from go/types/typestring.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC hash/adler32.Checksum from hash/adler32/adler32.go:
+// func checksum(data []byte)  {
+// 	_res := _adler32.Checksum(data)
+// 	return MakeInt(int(_res))
+// }
+
 GO FUNC hash/adler32.New from hash/adler32/adler32.go:
 // func new() Object {
 // 	_res := _adler32.New()
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromhash.Hash32(_res))
+// }
+
+GO FUNC hash/crc32.Checksum from hash/crc32/crc32.go:
+// func checksum(data []byte, tab *_crc32.Table)  {
+// 	_res := _crc32.Checksum(data, tab)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC hash/crc32.ChecksumIEEE from hash/crc32/crc32.go:
+// func checksumIEEE(data []byte)  {
+// 	_res := _crc32.ChecksumIEEE(data)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC hash/crc32.MakeTable from hash/crc32/crc32.go:
@@ -17608,6 +18064,12 @@ GO FUNC hash/crc32.NewIEEE from hash/crc32/crc32.go:
 // func newIEEE() Object {
 // 	_res := _crc32.NewIEEE()
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromhash.Hash32(_res))
+// }
+
+GO FUNC hash/crc32.Update from hash/crc32/crc32.go:
+// func update(crc uint32, tab *_crc32.Table, p []byte)  {
+// 	_res := _crc32.Update(crc, tab, p)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC hash/crc64.Checksum from hash/crc64/crc64.go:
@@ -17674,6 +18136,12 @@ GO FUNC html/template.HTMLEscape from html/template/escape.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC html/template.HTMLEscaper from html/template/escape.go:
+// func hTMLEscaper(args ...interface {})  {
+// 	_res := _template.HTMLEscaper(args)
+// 	return MakeString(_res)
+// }
+
 GO FUNC html/template.IsTrue from html/template/template.go:
 // func isTrue(val interface {}) Object {
 // 	truth, ok := _template.IsTrue(val)
@@ -17687,6 +18155,12 @@ GO FUNC html/template.JSEscape from html/template/escape.go:
 // func jSEscape(w io.Writer, b []byte) Object {
 // 	_template.JSEscape(w, b)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC html/template.JSEscaper from html/template/escape.go:
+// func jSEscaper(args ...interface {})  {
+// 	_res := _template.JSEscaper(args)
+// 	return MakeString(_res)
 // }
 
 GO FUNC html/template.Must from html/template/template.go:
@@ -17717,6 +18191,12 @@ GO FUNC html/template.ParseGlob from html/template/template.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromhtml/template.Template((*_res1))))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
+// }
+
+GO FUNC html/template.URLQueryEscaper from html/template/escape.go:
+// func uRLQueryEscaper(args ...interface {})  {
+// 	_res := _template.URLQueryEscaper(args)
+// 	return MakeString(_res)
 // }
 
 GO FUNC image.Decode from image/format.go:
@@ -17921,6 +18401,18 @@ GO FUNC image/gif.DecodeConfig from image/gif/reader.go:
 // 	return _res
 // }
 
+GO FUNC image/gif.Encode from image/gif/writer.go:
+// func encode(w io.Writer, m image.Image, o *_gif.Options)  {
+// 	_res := _gif.Encode(w, m, o)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC image/gif.EncodeAll from image/gif/writer.go:
+// func encodeAll(w io.Writer, g *_gif.GIF)  {
+// 	_res := _gif.EncodeAll(w, g)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC image/jpeg.Decode from image/jpeg/reader.go:
 // func decode(r io.Reader) Object {
 // 	_res1, _res2 := _jpeg.Decode(r)
@@ -17939,6 +18431,12 @@ GO FUNC image/jpeg.DecodeConfig from image/jpeg/reader.go:
 // 	return _res
 // }
 
+GO FUNC image/jpeg.Encode from image/jpeg/writer.go:
+// func encode(w io.Writer, m image.Image, o *_jpeg.Options)  {
+// 	_res := _jpeg.Encode(w, m, o)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC image/png.Decode from image/png/reader.go:
 // func decode(r io.Reader) Object {
 // 	_res1, _res2 := _png.Decode(r)
@@ -17955,6 +18453,12 @@ GO FUNC image/png.DecodeConfig from image/png/reader.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Config(_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
+// }
+
+GO FUNC image/png.Encode from image/png/writer.go:
+// func encode(w io.Writer, m image.Image)  {
+// 	_res := _png.Encode(w, m)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC index/suffixarray.New from index/suffixarray/suffixarray.go:
@@ -18117,6 +18621,12 @@ GO FUNC io/ioutil.TempFile from io/ioutil/tempfile.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromos.File((*f))))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC io/ioutil.WriteFile from io/ioutil/ioutil.go:
+// func writeFile(filename string, data []byte, perm os.FileMode)  {
+// 	_res := _ioutil.WriteFile(filename, data, perm)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC log.Fatal from log/log.go:
@@ -18329,6 +18839,12 @@ GO FUNC math.Expm1 from math/expm1.go:
 // 	return _math.Expm1(x)
 // }
 
+GO FUNC math.Float32bits from math/unsafe.go:
+// func float32bits(f float32)  {
+// 	_res := _math.Float32bits(f)
+// 	return MakeInt(int(_res))
+// }
+
 GO FUNC math.Float32frombits from math/unsafe.go:
 // func float32frombits(b uint32) Object {
 // 	return _math.Float32frombits(b)
@@ -18368,9 +18884,27 @@ GO FUNC math.Hypot from math/hypot.go:
 // 	return _math.Hypot(p, q)
 // }
 
+GO FUNC math.Ilogb from math/logb.go:
+// func ilogb(x float64)  {
+// 	_res := _math.Ilogb(x)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC math.Inf from math/bits.go:
 // func inf(sign int) Object {
 // 	return _math.Inf(sign)
+// }
+
+GO FUNC math.IsInf from math/bits.go:
+// func isInf(f float64, sign int)  {
+// 	_res := _math.IsInf(f, sign)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC math.IsNaN from math/bits.go:
+// func isNaN(f float64)  {
+// 	_res := _math.IsNaN(f)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC math.J0 from math/j0.go:
@@ -18491,6 +19025,12 @@ GO FUNC math.RoundToEven from math/floor.go:
 // 	return _math.RoundToEven(x)
 // }
 
+GO FUNC math.Signbit from math/signbit.go:
+// func signbit(x float64)  {
+// 	_res := _math.Signbit(x)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC math.Sin from math/sin.go:
 // func sin(x float64) Object {
 // 	return _math.Sin(x)
@@ -18545,6 +19085,12 @@ GO FUNC math.Yn from math/jn.go:
 // 	return _math.Yn(n, x)
 // }
 
+GO FUNC math/big.Jacobi from math/big/int.go:
+// func jacobi(x *_big.Int, y *_big.Int)  {
+// 	_res := _big.Jacobi(x, y)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC math/big.NewFloat from math/big/float.go:
 // func newFloat(x float64) Object {
 // 	_res := _big.NewFloat(x)
@@ -18573,6 +19119,42 @@ GO FUNC math/big.ParseFloat from math/big/floatconv.go:
 // 	return _res
 // }
 
+GO FUNC math/bits.LeadingZeros64 from math/bits/bits.go:
+// func leadingZeros64(x uint64)  {
+// 	_res := _bits.LeadingZeros64(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.LeadingZeros8 from math/bits/bits.go:
+// func leadingZeros8(x uint8)  {
+// 	_res := _bits.LeadingZeros8(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.Len64 from math/bits/bits.go:
+// func len64(x uint64)  {
+// 	_res := _bits.Len64(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.Len8 from math/bits/bits.go:
+// func len8(x uint8)  {
+// 	_res := _bits.Len8(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.OnesCount64 from math/bits/bits.go:
+// func onesCount64(x uint64)  {
+// 	_res := _bits.OnesCount64(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.OnesCount8 from math/bits/bits.go:
+// func onesCount8(x uint8)  {
+// 	_res := _bits.OnesCount8(x)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC math/bits.Reverse64 from math/bits/bits.go:
 // func reverse64(x uint64) Object {
 // 	return _bits.Reverse64(x)
@@ -18596,6 +19178,18 @@ GO FUNC math/bits.RotateLeft64 from math/bits/bits.go:
 GO FUNC math/bits.RotateLeft8 from math/bits/bits.go:
 // func rotateLeft8(x uint8, k int) Object {
 // 	return _bits.RotateLeft8(x, k)
+// }
+
+GO FUNC math/bits.TrailingZeros64 from math/bits/bits.go:
+// func trailingZeros64(x uint64)  {
+// 	_res := _bits.TrailingZeros64(x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC math/bits.TrailingZeros8 from math/bits/bits.go:
+// func trailingZeros8(x uint8)  {
+// 	_res := _bits.TrailingZeros8(x)
+// 	return MakeInt(_res)
 // }
 
 GO FUNC math/cmplx.Abs from math/cmplx/abs.go:
@@ -18661,6 +19255,18 @@ GO FUNC math/cmplx.Exp from math/cmplx/exp.go:
 GO FUNC math/cmplx.Inf from math/cmplx/isinf.go:
 // func inf() Object {
 // 	return _cmplx.Inf()
+// }
+
+GO FUNC math/cmplx.IsInf from math/cmplx/isinf.go:
+// func isInf(x complex128)  {
+// 	_res := _cmplx.IsInf(x)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC math/cmplx.IsNaN from math/cmplx/isnan.go:
+// func isNaN(x complex128)  {
+// 	_res := _cmplx.IsNaN(x)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC math/cmplx.Log from math/cmplx/log.go:
@@ -18813,6 +19419,12 @@ func extensionsByType(typ string) Object {
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
+
+GO FUNC mime.FormatMediaType from mime/mediatype.go:
+// func formatMediaType(t string, param map[])  {
+// 	_res := _mime.FormatMediaType(t, param)
+// 	return MakeString(_res)
+// }
 
 GO FUNC mime.ParseMediaType from mime/mediatype.go:
 // func parseMediaType(v string) Object {
@@ -19253,6 +19865,12 @@ func splitHostPort(hostport string) Object {
 	return _res
 }
 
+GO FUNC net/http.DetectContentType from net/http/sniff.go:
+// func detectContentType(data []byte)  {
+// 	_res := _http.DetectContentType(data)
+// 	return MakeString(_res)
+// }
+
 GO FUNC net/http.Error from net/http/server.go:
 // func error(w _http.ResponseWriter, error string, code int) Object {
 // 	_http.Error(w, error, code)
@@ -19415,6 +20033,12 @@ GO FUNC net/http.RedirectHandler from net/http/server.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
 // }
 
+GO FUNC net/http.Serve from net/http/server.go:
+// func serve(l net.Listener, handler _http.Handler)  {
+// 	_res := _http.Serve(l, handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/http.ServeContent from net/http/fs.go:
 // func serveContent(w _http.ResponseWriter, req *_http.Request, name string, modtime time.Time, content io.ReadSeeker) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
@@ -19425,6 +20049,12 @@ GO FUNC net/http.ServeFile from net/http/fs.go:
 // func serveFile(w _http.ResponseWriter, r *_http.Request, name string) Object {
 // 	_http.ServeFile(w, r, name)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC net/http.ServeTLS from net/http/server.go:
+// func serveTLS(l net.Listener, handler _http.Handler, certFile string, keyFile string)  {
+// 	_res := _http.ServeTLS(l, handler, certFile, keyFile)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.SetCookie from net/http/cookie.go:
@@ -19463,6 +20093,12 @@ GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // 	return _res
 // }
 
+GO FUNC net/http/cgi.Serve from net/http/cgi/child.go:
+// func serve(handler http.Handler)  {
+// 	_res := _cgi.Serve(handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // func new(o *_cookiejar.Options) Object {
 // 	_res1, _res2 := _cookiejar.New(o)
@@ -19475,6 +20111,12 @@ GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func processEnv(r *http.Request) Object {
 // 	return _fcgi.ProcessEnv(r)
+// }
+
+GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
+// func serve(l net.Listener, handler http.Handler)  {
+// 	_res := _fcgi.Serve(l, handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
@@ -19727,6 +20369,18 @@ GO FUNC net/rpc.NewServer from net/rpc/server.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Server((*_res)))
 // }
 
+GO FUNC net/rpc.Register from net/rpc/server.go:
+// func register(rcvr interface {})  {
+// 	_res := _rpc.Register(rcvr)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/rpc.RegisterName from net/rpc/server.go:
+// func registerName(name string, rcvr interface {})  {
+// 	_res := _rpc.RegisterName(name, rcvr)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
 // func serveCodec(codec _rpc.ServerCodec) Object {
 // 	_rpc.ServeCodec(codec)
@@ -19800,6 +20454,12 @@ GO FUNC net/smtp.PlainAuth from net/smtp/auth.go:
 // func plainAuth(identity string, username string, password string, host string) Object {
 // 	_res := _smtp.PlainAuth(identity, username, password, host)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Auth(_res))
+// }
+
+GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
+// func sendMail(addr string, a _smtp.Auth, from string, to []string, msg []byte)  {
+// 	_res := _smtp.SendMail(addr, a, from, to, msg)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
@@ -19896,6 +20556,12 @@ GO FUNC net/url.UserPassword from net/url/url.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.Userinfo((*_res)))
 // }
 
+GO FUNC os.Chtimes from os/file_posix.go:
+// func chtimes(name string, atime time.Time, mtime time.Time)  {
+// 	_res := _os.Chtimes(name, atime, mtime)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC os.Clearenv from os/env.go:
 // func clearenv() Object {
 // 	_os.Clearenv()
@@ -19934,6 +20600,12 @@ GO FUNC os.Exit from os/proc.go:
 // func exit(code int) Object {
 // 	_os.Exit(code)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC os.Expand from os/env.go:
+// func expand(s string, mapping func)  {
+// 	_res := _os.Expand(s, mapping)
+// 	return MakeString(_res)
 // }
 
 GO FUNC os.FindProcess from os/exec.go:
@@ -19976,6 +20648,36 @@ func hostname() Object {
 	return _res
 }
 
+GO FUNC os.IsExist from os/error.go:
+// func isExist(err error)  {
+// 	_res := _os.IsExist(err)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC os.IsNotExist from os/error.go:
+// func isNotExist(err error)  {
+// 	_res := _os.IsNotExist(err)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC os.IsPathSeparator from os/path_unix.go:
+// func isPathSeparator(c uint8)  {
+// 	_res := _os.IsPathSeparator(c)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC os.IsPermission from os/error.go:
+// func isPermission(err error)  {
+// 	_res := _os.IsPermission(err)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC os.IsTimeout from os/error.go:
+// func isTimeout(err error)  {
+// 	_res := _os.IsTimeout(err)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC os.LookupEnv from os/env.go:
 func lookupEnv(key string) Object {
 	_res1, _res2 := _os.LookupEnv(key)
@@ -19998,6 +20700,12 @@ GO FUNC os.NewFile from os/file_unix.go:
 // func newFile(fd uintptr, name string) Object {
 // 	_res := _os.NewFile(fd, name)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromos.File((*_res)))
+// }
+
+GO FUNC os.NewSyscallError from os/error.go:
+// func newSyscallError(syscall string, err error)  {
+// 	_res := _os.NewSyscallError(syscall, err)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC os.Open from os/file.go:
@@ -20091,6 +20799,12 @@ GO FUNC os/signal.Ignore from os/signal/signal.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC os/signal.Ignored from os/signal/signal.go:
+// func ignored(sig os.Signal)  {
+// 	_res := _signal.Ignored(sig)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC os/signal.Notify from os/signal/signal.go:
 // func notify(c <-chan, sig ...os.Signal) Object {
 // 	_signal.Notify(c, sig)
@@ -20154,6 +20868,12 @@ GO FUNC os/user.LookupId from os/user/lookup.go:
 // 	return _res
 // }
 
+GO FUNC path.Join from path/path.go:
+// func join(elem ...string)  {
+// 	_res := _path.Join(elem)
+// 	return MakeString(_res)
+// }
+
 GO FUNC path.Match from path/match.go:
 func match(pattern string, name string) Object {
 	matched, err := _path.Match(pattern, name)
@@ -20202,6 +20922,12 @@ func glob(pattern string) Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC path/filepath.Join from path/filepath/path.go:
+// func join(elem ...string)  {
+// 	_res := _filepath.Join(elem)
+// 	return MakeString(_res)
+// }
 
 GO FUNC path/filepath.Match from path/filepath/match.go:
 func match(pattern string, name string) Object {
@@ -20271,6 +20997,12 @@ GO FUNC reflect.ChanOf from reflect/type.go:
 // func chanOf(dir _reflect.ChanDir, t _reflect.Type) Object {
 // 	_res := _reflect.ChanOf(dir, t)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromreflect.Type(_res))
+// }
+
+GO FUNC reflect.DeepEqual from reflect/deepequal.go:
+// func deepEqual(x interface {}, y interface {})  {
+// 	_res := _reflect.DeepEqual(x, y)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC reflect.FuncOf from reflect/type.go:
@@ -20456,6 +21188,12 @@ GO FUNC regexp/syntax.EmptyOpContext from regexp/syntax/prog.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromregexp/syntax.EmptyOp(_res))
 // }
 
+GO FUNC regexp/syntax.IsWordChar from regexp/syntax/prog.go:
+// func isWordChar(r rune)  {
+// 	_res := _syntax.IsWordChar(r)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC regexp/syntax.Parse from regexp/syntax/parse.go:
 // func parse(s string, flags _syntax.Flags) Object {
 // 	_res1, _res2 := _syntax.Parse(s, flags)
@@ -20499,6 +21237,12 @@ GO FUNC runtime.Caller from runtime/extern.go:
 // 	_res = _res.Conjoin(MakeInt(line))
 // 	_res = _res.Conjoin(MakeBool(ok))
 // 	return _res
+// }
+
+GO FUNC runtime.Callers from runtime/extern.go:
+// func callers(skip int, pc []uintptr)  {
+// 	_res := _runtime.Callers(skip, pc)
+// 	return MakeInt(_res)
 // }
 
 GO FUNC runtime.CallersFrames from runtime/symtab.go:
@@ -20608,6 +21352,12 @@ GO FUNC runtime.SetFinalizer from runtime/mfinal.go:
 // func setFinalizer(obj interface {}, finalizer interface {}) Object {
 // 	_runtime.SetFinalizer(obj, finalizer)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC runtime.Stack from runtime/mprof.go:
+// func stack(buf []byte, all bool)  {
+// 	_res := _runtime.Stack(buf, all)
+// 	return MakeInt(_res)
 // }
 
 GO FUNC runtime.StopTrace from runtime/trace.go:
@@ -20726,6 +21476,12 @@ GO FUNC runtime/pprof.SetGoroutineLabels from runtime/pprof/runtime.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC runtime/pprof.StartCPUProfile from runtime/pprof/pprof.go:
+// func startCPUProfile(w io.Writer)  {
+// 	_res := _pprof.StartCPUProfile(w)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC runtime/pprof.StopCPUProfile from runtime/pprof/pprof.go:
 // func stopCPUProfile() Object {
 // 	_pprof.StopCPUProfile()
@@ -20736,6 +21492,12 @@ GO FUNC runtime/pprof.WithLabels from runtime/pprof/label.go:
 // func withLabels(ctx context.Context, labels _pprof.LabelSet) Object {
 // 	_res := _pprof.WithLabels(ctx, labels)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(_res))
+// }
+
+GO FUNC runtime/pprof.WriteHeapProfile from runtime/pprof/pprof.go:
+// func writeHeapProfile(w io.Writer)  {
+// 	_res := _pprof.WriteHeapProfile(w)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC runtime/trace.Log from runtime/trace/annotation.go:
@@ -20757,6 +21519,12 @@ GO FUNC runtime/trace.NewTask from runtime/trace/annotation.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(ctx)))
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromruntime/trace.Task((*task))))
 // 	return _res
+// }
+
+GO FUNC runtime/trace.Start from runtime/trace/trace.go:
+// func start(w io.Writer)  {
+// 	_res := _trace.Start(w)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC runtime/trace.StartRegion from runtime/trace/annotation.go:
@@ -20783,10 +21551,22 @@ GO FUNC sort.Float64s from sort/sort.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC sort.Float64sAreSorted from sort/sort.go:
+// func float64sAreSorted(a []float64)  {
+// 	_res := _sort.Float64sAreSorted(a)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC sort.Ints from sort/sort.go:
 // func ints(a []int) Object {
 // 	_sort.Ints(a)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC sort.IntsAreSorted from sort/sort.go:
+// func intsAreSorted(a []int)  {
+// 	_res := _sort.IntsAreSorted(a)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC sort.Reverse from sort/sort.go:
@@ -20795,10 +21575,40 @@ GO FUNC sort.Reverse from sort/sort.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromsort.Interface(_res))
 // }
 
+GO FUNC sort.Search from sort/search.go:
+// func search(n int, f func)  {
+// 	_res := _sort.Search(n, f)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC sort.SearchFloat64s from sort/search.go:
+// func searchFloat64s(a []float64, x float64)  {
+// 	_res := _sort.SearchFloat64s(a, x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC sort.SearchInts from sort/search.go:
+// func searchInts(a []int, x int)  {
+// 	_res := _sort.SearchInts(a, x)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC sort.SearchStrings from sort/search.go:
+// func searchStrings(a []string, x string)  {
+// 	_res := _sort.SearchStrings(a, x)
+// 	return MakeInt(_res)
+// }
+
 GO FUNC sort.Slice from sort/slice.go:
 // func slice(slice interface {}, less func) Object {
 // 	_sort.Slice(slice, less)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC sort.SliceIsSorted from sort/slice.go:
+// func sliceIsSorted(slice interface {}, less func)  {
+// 	_res := _sort.SliceIsSorted(slice, less)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC sort.SliceStable from sort/slice.go:
@@ -20823,6 +21633,12 @@ GO FUNC sort.Strings from sort/sort.go:
 // func strings(a []string) Object {
 // 	_sort.Strings(a)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC sort.StringsAreSorted from sort/sort.go:
+// func stringsAreSorted(a []string)  {
+// 	_res := _sort.StringsAreSorted(a)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC strconv.AppendBool from strconv/atob.go:
@@ -20934,6 +21750,30 @@ func atoi(s string) Object {
 	return _res
 }
 
+GO FUNC strconv.FormatFloat from strconv/ftoa.go:
+// func formatFloat(f float64, fmt byte, prec int, bitSize int)  {
+// 	_res := _strconv.FormatFloat(f, fmt, prec, bitSize)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strconv.FormatUint from strconv/itoa.go:
+// func formatUint(i uint64, base int)  {
+// 	_res := _strconv.FormatUint(i, base)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strconv.IsGraphic from strconv/quote.go:
+// func isGraphic(r rune)  {
+// 	_res := _strconv.IsGraphic(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC strconv.IsPrint from strconv/quote.go:
+// func isPrint(r rune)  {
+// 	_res := _strconv.IsPrint(r)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC strconv.ParseBool from strconv/atob.go:
 func parseBool(str string) Object {
 	_res1, _res2 := _strconv.ParseBool(str)
@@ -20970,6 +21810,24 @@ GO FUNC strconv.ParseUint from strconv/atoi.go:
 // 	return _res
 // }
 
+GO FUNC strconv.QuoteRune from strconv/quote.go:
+// func quoteRune(r rune)  {
+// 	_res := _strconv.QuoteRune(r)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strconv.QuoteRuneToASCII from strconv/quote.go:
+// func quoteRuneToASCII(r rune)  {
+// 	_res := _strconv.QuoteRuneToASCII(r)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strconv.QuoteRuneToGraphic from strconv/quote.go:
+// func quoteRuneToGraphic(r rune)  {
+// 	_res := _strconv.QuoteRuneToGraphic(r)
+// 	return MakeString(_res)
+// }
+
 GO FUNC strconv.Unquote from strconv/quote.go:
 func unquote(s string) Object {
 	_res1, _res2 := _strconv.Unquote(s)
@@ -20990,6 +21848,12 @@ GO FUNC strconv.UnquoteChar from strconv/quote.go:
 // 	return _res
 // }
 
+GO FUNC strings.ContainsRune from strings/strings.go:
+// func containsRune(s string, r rune)  {
+// 	_res := _strings.ContainsRune(s, r)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC strings.Fields from strings/strings.go:
 func fields(s string) Object {
 	_res := _strings.Fields(s)
@@ -21008,6 +21872,36 @@ GO FUNC strings.FieldsFunc from strings/strings.go:
 // 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 // 	}
 // 	return _vec1
+// }
+
+GO FUNC strings.IndexFunc from strings/strings.go:
+// func indexFunc(s string, f func)  {
+// 	_res := _strings.IndexFunc(s, f)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC strings.IndexRune from strings/strings.go:
+// func indexRune(s string, r rune)  {
+// 	_res := _strings.IndexRune(s, r)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC strings.Join from strings/strings.go:
+// func join(a []string, sep string)  {
+// 	_res := _strings.Join(a, sep)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.LastIndexFunc from strings/strings.go:
+// func lastIndexFunc(s string, f func)  {
+// 	_res := _strings.LastIndexFunc(s, f)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC strings.Map from strings/strings.go:
+// func map(mapping func, s string)  {
+// 	_res := _strings.Map(mapping, s)
+// 	return MakeString(_res)
 // }
 
 GO FUNC strings.NewReader from strings/reader.go:
@@ -21062,10 +21956,64 @@ func splitN(s string, sep string, n int) Object {
 	return _vec1
 }
 
+GO FUNC strings.ToLowerSpecial from strings/strings.go:
+// func toLowerSpecial(c unicode.SpecialCase, s string)  {
+// 	_res := _strings.ToLowerSpecial(c, s)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.ToTitleSpecial from strings/strings.go:
+// func toTitleSpecial(c unicode.SpecialCase, s string)  {
+// 	_res := _strings.ToTitleSpecial(c, s)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.ToUpperSpecial from strings/strings.go:
+// func toUpperSpecial(c unicode.SpecialCase, s string)  {
+// 	_res := _strings.ToUpperSpecial(c, s)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.TrimFunc from strings/strings.go:
+// func trimFunc(s string, f func)  {
+// 	_res := _strings.TrimFunc(s, f)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.TrimLeftFunc from strings/strings.go:
+// func trimLeftFunc(s string, f func)  {
+// 	_res := _strings.TrimLeftFunc(s, f)
+// 	return MakeString(_res)
+// }
+
+GO FUNC strings.TrimRightFunc from strings/strings.go:
+// func trimRightFunc(s string, f func)  {
+// 	_res := _strings.TrimRightFunc(s, f)
+// 	return MakeString(_res)
+// }
+
 GO FUNC sync.NewCond from sync/cond.go:
 // func newCond(l _sync.Locker) Object {
 // 	_res := _sync.NewCond(l)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromsync.Cond((*_res)))
+// }
+
+GO FUNC sync/atomic.AddInt32 from sync/atomic/doc.go:
+// func addInt32(addr *int32, delta int32)  {
+// 	_res := _atomic.AddInt32(addr, delta)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC sync/atomic.AddInt64 from sync/atomic/doc.go:
+// func addInt64(addr *int64, delta int64)  {
+// 	_res := _atomic.AddInt64(addr, delta)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC sync/atomic.AddUint32 from sync/atomic/doc.go:
+// func addUint32(addr *uint32, delta uint32)  {
+// 	_res := _atomic.AddUint32(addr, delta)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC sync/atomic.AddUint64 from sync/atomic/doc.go:
@@ -21078,10 +22026,64 @@ GO FUNC sync/atomic.AddUintptr from sync/atomic/doc.go:
 // 	return _atomic.AddUintptr(addr, delta)
 // }
 
+GO FUNC sync/atomic.CompareAndSwapInt32 from sync/atomic/doc.go:
+// func compareAndSwapInt32(addr *int32, old int32, new int32)  {
+// 	_res := _atomic.CompareAndSwapInt32(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.CompareAndSwapInt64 from sync/atomic/doc.go:
+// func compareAndSwapInt64(addr *int64, old int64, new int64)  {
+// 	_res := _atomic.CompareAndSwapInt64(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.CompareAndSwapPointer from sync/atomic/doc.go:
+// func compareAndSwapPointer(addr *unsafe.Pointer, old unsafe.Pointer, new unsafe.Pointer)  {
+// 	_res := _atomic.CompareAndSwapPointer(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.CompareAndSwapUint32 from sync/atomic/doc.go:
+// func compareAndSwapUint32(addr *uint32, old uint32, new uint32)  {
+// 	_res := _atomic.CompareAndSwapUint32(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.CompareAndSwapUint64 from sync/atomic/doc.go:
+// func compareAndSwapUint64(addr *uint64, old uint64, new uint64)  {
+// 	_res := _atomic.CompareAndSwapUint64(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.CompareAndSwapUintptr from sync/atomic/doc.go:
+// func compareAndSwapUintptr(addr *uintptr, old uintptr, new uintptr)  {
+// 	_res := _atomic.CompareAndSwapUintptr(addr, old, new)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC sync/atomic.LoadInt32 from sync/atomic/doc.go:
+// func loadInt32(addr *int32)  {
+// 	_res := _atomic.LoadInt32(addr)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC sync/atomic.LoadInt64 from sync/atomic/doc.go:
+// func loadInt64(addr *int64)  {
+// 	_res := _atomic.LoadInt64(addr)
+// 	return MakeInt(int(_res))
+// }
+
 GO FUNC sync/atomic.LoadPointer from sync/atomic/doc.go:
 // func loadPointer(addr *unsafe.Pointer) Object {
 // 	_res := _atomic.LoadPointer(addr)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromunsafe.Pointer(_res))
+// }
+
+GO FUNC sync/atomic.LoadUint32 from sync/atomic/doc.go:
+// func loadUint32(addr *uint32)  {
+// 	_res := _atomic.LoadUint32(addr)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC sync/atomic.LoadUint64 from sync/atomic/doc.go:
@@ -21130,10 +22132,28 @@ GO FUNC sync/atomic.StoreUintptr from sync/atomic/doc.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC sync/atomic.SwapInt32 from sync/atomic/doc.go:
+// func swapInt32(addr *int32, new int32)  {
+// 	_res := _atomic.SwapInt32(addr, new)
+// 	return MakeInt(int(_res))
+// }
+
+GO FUNC sync/atomic.SwapInt64 from sync/atomic/doc.go:
+// func swapInt64(addr *int64, new int64)  {
+// 	_res := _atomic.SwapInt64(addr, new)
+// 	return MakeInt(int(_res))
+// }
+
 GO FUNC sync/atomic.SwapPointer from sync/atomic/doc.go:
 // func swapPointer(addr *unsafe.Pointer, new unsafe.Pointer) Object {
 // 	_res := _atomic.SwapPointer(addr, new)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromunsafe.Pointer(_res))
+// }
+
+GO FUNC sync/atomic.SwapUint32 from sync/atomic/doc.go:
+// func swapUint32(addr *uint32, new uint32)  {
+// 	_res := _atomic.SwapUint32(addr, new)
+// 	return MakeInt(int(_res))
 // }
 
 GO FUNC sync/atomic.SwapUint64 from sync/atomic/doc.go:
@@ -21154,6 +22174,12 @@ GO FUNC syscall.Accept from syscall/syscall_bsd.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromsyscall.Sockaddr(sa)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC syscall.Adjtime from syscall/zsyscall_darwin_amd64.go:
+// func adjtime(delta *_syscall.Timeval, olddelta *_syscall.Timeval)  {
+// 	_res := _syscall.Adjtime(delta, olddelta)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC syscall.BpfBuflen from syscall/bpf_bsd.go:
@@ -21275,10 +22301,22 @@ func environ() Object {
 	return _vec1
 }
 
+GO FUNC syscall.Exec from syscall/exec_unix.go:
+// func exec(argv0 string, argv []string, envv []string)  {
+// 	_res := _syscall.Exec(argv0, argv, envv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.Exit from syscall/syscall.go:
 // func exit(code int) Object {
 // 	_syscall.Exit(code)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC syscall.FcntlFlock from syscall/flock.go:
+// func fcntlFlock(fd uintptr, cmd int, lk *_syscall.Flock_t)  {
+// 	_res := _syscall.FcntlFlock(fd, cmd, lk)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC syscall.ForkExec from syscall/exec_unix.go:
@@ -21298,6 +22336,24 @@ func fpathconf(fd int, name int) Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC syscall.Fstat from syscall/zsyscall_darwin_amd64.go:
+// func fstat(fd int, stat *_syscall.Stat_t)  {
+// 	_res := _syscall.Fstat(fd, stat)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Fstatfs from syscall/zsyscall_darwin_amd64.go:
+// func fstatfs(fd int, stat *_syscall.Statfs_t)  {
+// 	_res := _syscall.Fstatfs(fd, stat)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Futimes from syscall/syscall_bsd.go:
+// func futimes(fd int, tv []_syscall.Timeval)  {
+// 	_res := _syscall.Futimes(fd, tv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC syscall.Getdirentries from syscall/zsyscall_darwin_amd64.go:
 // func getdirentries(fd int, buf []byte, basep *uintptr) Object {
@@ -21365,6 +22421,18 @@ func getpriority(which int, who int) Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC syscall.Getrlimit from syscall/zsyscall_darwin_amd64.go:
+// func getrlimit(which int, lim *_syscall.Rlimit)  {
+// 	_res := _syscall.Getrlimit(which, lim)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Getrusage from syscall/zsyscall_darwin_amd64.go:
+// func getrusage(who int, rusage *_syscall.Rusage)  {
+// 	_res := _syscall.Getrusage(who, rusage)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC syscall.Getsid from syscall/zsyscall_darwin_amd64.go:
 func getsid(pid int) Object {
@@ -21451,6 +22519,12 @@ func getsockoptInt(fd int, level int, opt int) Object {
 	return _res
 }
 
+GO FUNC syscall.Gettimeofday from syscall/syscall_darwin_amd64.go:
+// func gettimeofday(tv *_syscall.Timeval)  {
+// 	_res := _syscall.Gettimeofday(tv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.Getwd from syscall/syscall_darwin.go:
 func getwd() Object {
 	_res1, _res2 := _syscall.Getwd()
@@ -21478,6 +22552,18 @@ func kqueue() Object {
 	return _res
 }
 
+GO FUNC syscall.Lstat from syscall/zsyscall_darwin_amd64.go:
+// func lstat(path string, stat *_syscall.Stat_t)  {
+// 	_res := _syscall.Lstat(path, stat)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Mlock from syscall/zsyscall_darwin_amd64.go:
+// func mlock(b []byte)  {
+// 	_res := _syscall.Mlock(b)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.Mmap from syscall/syscall_bsd.go:
 func mmap(fd int, offset int64, length int, prot int, flags int) Object {
 	data, err := _syscall.Mmap(fd, offset, length, prot, flags)
@@ -21490,6 +22576,24 @@ func mmap(fd int, offset int64, length int, prot int, flags int) Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC syscall.Mprotect from syscall/zsyscall_darwin_amd64.go:
+// func mprotect(b []byte, prot int)  {
+// 	_res := _syscall.Mprotect(b, prot)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Munlock from syscall/zsyscall_darwin_amd64.go:
+// func munlock(b []byte)  {
+// 	_res := _syscall.Munlock(b)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Munmap from syscall/syscall_bsd.go:
+// func munmap(b []byte)  {
+// 	_res := _syscall.Munmap(b)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC syscall.NsecToTimespec from syscall/timestruct.go:
 // func nsecToTimespec(nsec int64) Object {
@@ -21586,6 +22690,12 @@ func pathconf(path string, name int) Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC syscall.Pipe from syscall/syscall_darwin.go:
+// func pipe(p []int)  {
+// 	_res := _syscall.Pipe(p)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC syscall.Pread from syscall/zsyscall_darwin_amd64.go:
 // func pread(fd int, p []byte, offset int64) Object {
@@ -21696,6 +22806,12 @@ func seek(fd int, offset int64, whence int) Object {
 	return _res
 }
 
+GO FUNC syscall.Select from syscall/zsyscall_darwin_amd64.go:
+// func select(n int, r *_syscall.FdSet, w *_syscall.FdSet, e *_syscall.FdSet, timeout *_syscall.Timeval)  {
+// 	_res := _syscall.Select(n, r, w, e, timeout)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.Sendfile from syscall/syscall_unix.go:
 // func sendfile(outfd int, infd int, offset *int64, count int) Object {
 // 	written, err := _syscall.Sendfile(outfd, infd, offset, count)
@@ -21705,6 +22821,12 @@ GO FUNC syscall.Sendfile from syscall/syscall_unix.go:
 // 	return _res
 // }
 
+GO FUNC syscall.Sendmsg from syscall/syscall_bsd.go:
+// func sendmsg(fd int, p []byte, oob []byte, to _syscall.Sockaddr, flags int)  {
+// 	_res := _syscall.Sendmsg(fd, p, oob, to, flags)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.SendmsgN from syscall/syscall_bsd.go:
 // func sendmsgN(fd int, p []byte, oob []byte, to _syscall.Sockaddr, flags int) Object {
 // 	n, err := _syscall.SendmsgN(fd, p, oob, to, flags)
@@ -21712,6 +22834,18 @@ GO FUNC syscall.SendmsgN from syscall/syscall_bsd.go:
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC syscall.Sendto from syscall/syscall_unix.go:
+// func sendto(fd int, p []byte, flags int, to _syscall.Sockaddr)  {
+// 	_res := _syscall.Sendto(fd, p, flags, to)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetBpf from syscall/bpf_bsd.go:
+// func setBpf(fd int, i []_syscall.BpfInsn)  {
+// 	_res := _syscall.SetBpf(fd, i)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC syscall.SetBpfBuflen from syscall/bpf_bsd.go:
@@ -21732,10 +22866,28 @@ func setBpfDatalink(fd int, t int) Object {
 	return _res
 }
 
+GO FUNC syscall.SetBpfTimeout from syscall/bpf_bsd.go:
+// func setBpfTimeout(fd int, tv *_syscall.Timeval)  {
+// 	_res := _syscall.SetBpfTimeout(fd, tv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.SetKevent from syscall/syscall_darwin_amd64.go:
 // func setKevent(k *_syscall.Kevent_t, fd int, mode int, flags int) Object {
 // 	_syscall.SetKevent(k, fd, mode, flags)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC syscall.Setgroups from syscall/syscall_bsd.go:
+// func setgroups(gids []int)  {
+// 	_res := _syscall.Setgroups(gids)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Setrlimit from syscall/zsyscall_darwin_amd64.go:
+// func setrlimit(which int, lim *_syscall.Rlimit)  {
+// 	_res := _syscall.Setrlimit(which, lim)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC syscall.Setsid from syscall/zsyscall_darwin_amd64.go:
@@ -21746,6 +22898,48 @@ func setsid() Object {
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
+
+GO FUNC syscall.SetsockoptICMPv6Filter from syscall/syscall_unix.go:
+// func setsockoptICMPv6Filter(fd int, level int, opt int, filter *_syscall.ICMPv6Filter)  {
+// 	_res := _syscall.SetsockoptICMPv6Filter(fd, level, opt, filter)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetsockoptIPMreq from syscall/syscall_unix.go:
+// func setsockoptIPMreq(fd int, level int, opt int, mreq *_syscall.IPMreq)  {
+// 	_res := _syscall.SetsockoptIPMreq(fd, level, opt, mreq)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetsockoptIPv6Mreq from syscall/syscall_unix.go:
+// func setsockoptIPv6Mreq(fd int, level int, opt int, mreq *_syscall.IPv6Mreq)  {
+// 	_res := _syscall.SetsockoptIPv6Mreq(fd, level, opt, mreq)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetsockoptInet4Addr from syscall/syscall_unix.go:
+// func setsockoptInet4Addr(fd int, level int, opt int, value []byte)  {
+// 	_res := _syscall.SetsockoptInet4Addr(fd, level, opt, value)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetsockoptLinger from syscall/syscall_unix.go:
+// func setsockoptLinger(fd int, level int, opt int, l *_syscall.Linger)  {
+// 	_res := _syscall.SetsockoptLinger(fd, level, opt, l)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.SetsockoptTimeval from syscall/syscall_unix.go:
+// func setsockoptTimeval(fd int, level int, opt int, tv *_syscall.Timeval)  {
+// 	_res := _syscall.SetsockoptTimeval(fd, level, opt, tv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Settimeofday from syscall/zsyscall_darwin_amd64.go:
+// func settimeofday(tp *_syscall.Timeval)  {
+// 	_res := _syscall.Settimeofday(tp)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC syscall.SlicePtrFromStrings from syscall/exec_unix.go:
 // func slicePtrFromStrings(ss []string) Object {
@@ -21790,6 +22984,24 @@ GO FUNC syscall.StartProcess from syscall/exec_unix.go:
 // 	_res = _res.Conjoin(handle)
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
+// }
+
+GO FUNC syscall.Stat from syscall/zsyscall_darwin_amd64.go:
+// func stat(path string, stat *_syscall.Stat_t)  {
+// 	_res := _syscall.Stat(path, stat)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.Statfs from syscall/zsyscall_darwin_amd64.go:
+// func statfs(path string, stat *_syscall.Statfs_t)  {
+// 	_res := _syscall.Statfs(path, stat)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.StringBytePtr from syscall/syscall.go:
+// func stringBytePtr(s string)  {
+// 	_res := _syscall.StringBytePtr(s)
+// 	return MakeInt(int((*_res)))
 // }
 
 GO FUNC syscall.StringByteSlice from syscall/syscall.go:
@@ -21870,6 +23082,18 @@ GO FUNC syscall.UnixRights from syscall/sockcmsg_unix.go:
 // 	return _vec1
 // }
 
+GO FUNC syscall.Utimes from syscall/syscall_bsd.go:
+// func utimes(path string, tv []_syscall.Timeval)  {
+// 	_res := _syscall.Utimes(path, tv)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC syscall.UtimesNano from syscall/syscall_bsd.go:
+// func utimesNano(path string, ts []_syscall.Timespec)  {
+// 	_res := _syscall.UtimesNano(path, ts)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC syscall.Wait4 from syscall/syscall_bsd.go:
 // func wait4(pid int, wstatus *_syscall.WaitStatus, options int, rusage *_syscall.Rusage) Object {
 // 	wpid, err := _syscall.Wait4(pid, wstatus, options, rusage)
@@ -21928,6 +23152,18 @@ GO FUNC testing.RunBenchmarks from testing/benchmark.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC testing.RunExamples from testing/example.go:
+// func runExamples(matchString func, examples []_testing.InternalExample)  {
+// 	_res := _testing.RunExamples(matchString, examples)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC testing.RunTests from testing/testing.go:
+// func runTests(matchString func, tests []_testing.InternalTest)  {
+// 	_res := _testing.RunTests(matchString, tests)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC testing/iotest.DataErrReader from testing/iotest/reader.go:
 // func dataErrReader(r io.Reader) Object {
 // 	_res := _iotest.DataErrReader(r)
@@ -21970,6 +23206,18 @@ GO FUNC testing/iotest.TruncateWriter from testing/iotest/writer.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Writer(_res))
 // }
 
+GO FUNC testing/quick.Check from testing/quick/quick.go:
+// func check(f interface {}, config *_quick.Config)  {
+// 	_res := _quick.Check(f, config)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC testing/quick.CheckEqual from testing/quick/quick.go:
+// func checkEqual(f interface {}, g interface {}, config *_quick.Config)  {
+// 	_res := _quick.CheckEqual(f, g, config)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC testing/quick.Value from testing/quick/quick.go:
 // func value(t reflect.Type, rand *rand.Rand) Object {
 // 	value, ok := _quick.Value(t, rand)
@@ -21977,6 +23225,12 @@ GO FUNC testing/quick.Value from testing/quick/quick.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromreflect.Value(value)))
 // 	_res = _res.Conjoin(MakeBool(ok))
 // 	return _res
+// }
+
+GO FUNC text/scanner.TokenString from text/scanner/scanner.go:
+// func tokenString(tok rune)  {
+// 	_res := _scanner.TokenString(tok)
+// 	return MakeString(_res)
 // }
 
 GO FUNC text/tabwriter.NewWriter from text/tabwriter/tabwriter.go:
@@ -21989,6 +23243,12 @@ GO FUNC text/template.HTMLEscape from text/template/funcs.go:
 // func hTMLEscape(w io.Writer, b []byte) Object {
 // 	_template.HTMLEscape(w, b)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC text/template.HTMLEscaper from text/template/funcs.go:
+// func hTMLEscaper(args ...interface {})  {
+// 	_res := _template.HTMLEscaper(args)
+// 	return MakeString(_res)
 // }
 
 GO FUNC text/template.IsTrue from text/template/exec.go:
@@ -22004,6 +23264,12 @@ GO FUNC text/template.JSEscape from text/template/funcs.go:
 // func jSEscape(w io.Writer, b []byte) Object {
 // 	_template.JSEscape(w, b)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC text/template.JSEscaper from text/template/funcs.go:
+// func jSEscaper(args ...interface {})  {
+// 	_res := _template.JSEscaper(args)
+// 	return MakeString(_res)
 // }
 
 GO FUNC text/template.Must from text/template/helper.go:
@@ -22034,6 +23300,12 @@ GO FUNC text/template.ParseGlob from text/template/helper.go:
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromtext/template.Template((*_res1))))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
+// }
+
+GO FUNC text/template.URLQueryEscaper from text/template/funcs.go:
+// func uRLQueryEscaper(args ...interface {})  {
+// 	_res := _template.URLQueryEscaper(args)
+// 	return MakeString(_res)
 // }
 
 GO FUNC text/template/parse.New from text/template/parse/parse.go:
@@ -22172,6 +23444,102 @@ GO FUNC time.Until from time/time.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromtime.Duration(_res))
 // }
 
+GO FUNC unicode.In from unicode/graphic.go:
+// func in(r rune, ranges ...*_unicode.RangeTable)  {
+// 	_res := _unicode.In(r, ranges)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.Is from unicode/letter.go:
+// func is(rangeTab *_unicode.RangeTable, r rune)  {
+// 	_res := _unicode.Is(rangeTab, r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsControl from unicode/graphic.go:
+// func isControl(r rune)  {
+// 	_res := _unicode.IsControl(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsDigit from unicode/digit.go:
+// func isDigit(r rune)  {
+// 	_res := _unicode.IsDigit(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsGraphic from unicode/graphic.go:
+// func isGraphic(r rune)  {
+// 	_res := _unicode.IsGraphic(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsLetter from unicode/graphic.go:
+// func isLetter(r rune)  {
+// 	_res := _unicode.IsLetter(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsLower from unicode/letter.go:
+// func isLower(r rune)  {
+// 	_res := _unicode.IsLower(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsMark from unicode/graphic.go:
+// func isMark(r rune)  {
+// 	_res := _unicode.IsMark(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsNumber from unicode/graphic.go:
+// func isNumber(r rune)  {
+// 	_res := _unicode.IsNumber(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsOneOf from unicode/graphic.go:
+// func isOneOf(ranges []*_unicode.RangeTable, r rune)  {
+// 	_res := _unicode.IsOneOf(ranges, r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsPrint from unicode/graphic.go:
+// func isPrint(r rune)  {
+// 	_res := _unicode.IsPrint(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsPunct from unicode/graphic.go:
+// func isPunct(r rune)  {
+// 	_res := _unicode.IsPunct(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsSpace from unicode/graphic.go:
+// func isSpace(r rune)  {
+// 	_res := _unicode.IsSpace(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsSymbol from unicode/graphic.go:
+// func isSymbol(r rune)  {
+// 	_res := _unicode.IsSymbol(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsTitle from unicode/letter.go:
+// func isTitle(r rune)  {
+// 	_res := _unicode.IsTitle(r)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode.IsUpper from unicode/letter.go:
+// func isUpper(r rune)  {
+// 	_res := _unicode.IsUpper(r)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC unicode.SimpleFold from unicode/letter.go:
 // func simpleFold(r rune) Object {
 // 	return _unicode.SimpleFold(r)
@@ -22231,6 +23599,12 @@ GO FUNC unicode/utf16.EncodeRune from unicode/utf16/utf16.go:
 // 	return _res
 // }
 
+GO FUNC unicode/utf16.IsSurrogate from unicode/utf16/utf16.go:
+// func isSurrogate(r rune)  {
+// 	_res := _utf16.IsSurrogate(r)
+// 	return MakeBool(_res)
+// }
+
 GO FUNC unicode/utf8.DecodeLastRune from unicode/utf8/utf8.go:
 // func decodeLastRune(p []byte) Object {
 // 	r, size := _utf8.DecodeLastRune(p)
@@ -22265,6 +23639,42 @@ GO FUNC unicode/utf8.DecodeRuneInString from unicode/utf8/utf8.go:
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(MakeInt(size))
 // 	return _res
+// }
+
+GO FUNC unicode/utf8.EncodeRune from unicode/utf8/utf8.go:
+// func encodeRune(p []byte, r rune)  {
+// 	_res := _utf8.EncodeRune(p, r)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC unicode/utf8.FullRune from unicode/utf8/utf8.go:
+// func fullRune(p []byte)  {
+// 	_res := _utf8.FullRune(p)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode/utf8.RuneCount from unicode/utf8/utf8.go:
+// func runeCount(p []byte)  {
+// 	_res := _utf8.RuneCount(p)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC unicode/utf8.RuneLen from unicode/utf8/utf8.go:
+// func runeLen(r rune)  {
+// 	_res := _utf8.RuneLen(r)
+// 	return MakeInt(_res)
+// }
+
+GO FUNC unicode/utf8.Valid from unicode/utf8/utf8.go:
+// func valid(p []byte)  {
+// 	_res := _utf8.Valid(p)
+// 	return MakeBool(_res)
+// }
+
+GO FUNC unicode/utf8.ValidRune from unicode/utf8/utf8.go:
+// func validRune(r rune)  {
+// 	_res := _utf8.ValidRune(r)
+// 	return MakeBool(_res)
 // }
 
 GO FUNC unsafe.Alignof from unsafe/unsafe.go:
