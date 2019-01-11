@@ -5250,7 +5250,7 @@ JOKER FUNC crypto/dsa.Verify from crypto/dsa/dsa.go:
 ;; (defn ^"Bool" Verify
 ;;   "Verify verifies the signature in r, s of hash using the public key, pub. It\nreports whether the signature is valid.\n\nNote that FIPS 186-3 section 4.6 specifies that the hash should be truncated\nto the byte-length of the subgroup. This function does not perform that\ntruncation itself.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.dsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Bool"
 ;;   {:added "1.0"
-;;    :go "dsa.Verify(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_dsa.PublicKey(_pub.(dsa.PublicKey))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_r.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_s.(ABEND987(imports not yet supported: big.Int))))"}
+;;    :go "dsa.Verify(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_dsa.PublicKey(_pub.(dsa.PublicKey))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), ConvertToIndirectOfbig.Int(_r.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfbig.Int(_s.(ABEND987(imports not yet supported: big.Int))))"}
 ;;   [^Object _pub, ^Object _hash, ^Object _r, ^Object _s])
 
 JOKER FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
@@ -5271,7 +5271,7 @@ JOKER FUNC crypto/ecdsa.Verify from crypto/ecdsa/ecdsa.go:
 ;; (defn ^"Bool" Verify
 ;;   "Verify verifies the signature in r, s of hash using the public key, pub. Its\nreturn value records whether the signature is valid.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.ecdsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Bool"
 ;;   {:added "1.0"
-;;    :go "ecdsa.Verify(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ecdsa.PublicKey(_pub.(ecdsa.PublicKey))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_r.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_s.(ABEND987(imports not yet supported: big.Int))))"}
+;;    :go "ecdsa.Verify(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ecdsa.PublicKey(_pub.(ecdsa.PublicKey))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), ConvertToIndirectOfbig.Int(_r.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfbig.Int(_s.(ABEND987(imports not yet supported: big.Int))))"}
 ;;   [^Object _pub, ^Object _hash, ^Object _r, ^Object _s])
 
 JOKER FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
@@ -5285,7 +5285,7 @@ JOKER FUNC crypto/elliptic.Marshal from crypto/elliptic/elliptic.go:
 ;; (defn Marshal
 ;;   "Marshal converts a point into the uncompressed form specified in section 4.3.6 of ANSI X9.62.\n\nGo input arguments: (curve Curve, x *big.Int, y *big.Int)\n\nGo return type: []int\n\nJoker input arguments: [^go.std.crypto.elliptic/Curve curve, ^(atom-of go.std.math.big/Int) x, ^(atom-of go.std.math.big/Int) y]\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
-;;    :go "marshal(_curve.(elliptic.Curve), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_x.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_y.(ABEND987(imports not yet supported: big.Int))))"}
+;;    :go "marshal(_curve.(elliptic.Curve), ConvertToIndirectOfbig.Int(_x.(ABEND987(imports not yet supported: big.Int))), ConvertToIndirectOfbig.Int(_y.(ABEND987(imports not yet supported: big.Int))))"}
 ;;   [^GoObject _curve, ^Object _x, ^Object _y])
 
 JOKER FUNC crypto/elliptic.P224 from crypto/elliptic/p224.go:
@@ -5355,7 +5355,7 @@ JOKER FUNC crypto/rand.Int from crypto/rand/util.go:
 ;; (defn Int
 ;;   "Int returns a uniform random value in [0, max). It panics if max <= 0.\n\nGo input arguments: (rand io.Reader, max *big.Int)\n\nGo return type: (n *math/big.Int, err error)\n\nJoker input arguments: [^go.std.io/Reader rand, ^(atom-of go.std.math.big/Int) max]\n\nJoker return type: [go.std.math.big/Int Error]"
 ;;   {:added "1.0"
-;;    :go "int(_rand.(ABEND987(imports not yet supported: io.Reader)), ConvertToIndirectOfABEND987(imports not yet supported: big.Int)(_max.(ABEND987(imports not yet supported: big.Int))))"}
+;;    :go "int(_rand.(ABEND987(imports not yet supported: io.Reader)), ConvertToIndirectOfbig.Int(_max.(ABEND987(imports not yet supported: big.Int))))"}
 ;;   [^GoObject _rand, ^Object _max])
 
 JOKER FUNC crypto/rand.Prime from crypto/rand/util.go:
@@ -5614,7 +5614,7 @@ JOKER FUNC crypto/tls.DialWithDialer from crypto/tls/tls.go:
 ;; (defn DialWithDialer
 ;;   "DialWithDialer connects to the given network address using dialer.Dial and\nthen initiates a TLS handshake, returning the resulting TLS connection. Any\ntimeout or deadline given in the dialer apply to connection and TLS\nhandshake as a whole.\n\nDialWithDialer interprets a nil configuration as equivalent to the zero\nconfiguration; see the documentation of Config for the defaults.\n\nGo input arguments: (dialer *net.Dialer, network string, addr string, config *Config)\n\nGo return type: (*Conn, error)\n\nJoker input arguments: [^(atom-of go.std.net/Dialer) dialer, ^String network, ^String addr, ^(atom-of go.std.crypto.tls/Config) config]\n\nJoker return type: [go.std.crypto.tls/Conn Error]"
 ;;   {:added "1.0"
-;;    :go "dialWithDialer(ConvertToIndirectOfABEND987(imports not yet supported: net.Dialer)(_dialer.(ABEND987(imports not yet supported: net.Dialer))), _network, _addr, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_tls.Config(_config.(tls.Config))))"}
+;;    :go "dialWithDialer(ConvertToIndirectOfnet.Dialer(_dialer.(ABEND987(imports not yet supported: net.Dialer))), _network, _addr, ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_tls.Config(_config.(tls.Config))))"}
 ;;   [^Object _dialer, ^String _network, ^String _addr, ^Object _config])
 
 JOKER FUNC crypto/tls.Listen from crypto/tls/tls.go:
@@ -5677,7 +5677,7 @@ JOKER FUNC crypto/x509.DecryptPEMBlock from crypto/x509/pem_decrypt.go:
 ;; (defn DecryptPEMBlock
 ;;   "DecryptPEMBlock takes a password encrypted PEM block and the password used to\nencrypt it and returns a slice of decrypted DER encoded bytes. It inspects\nthe DEK-Info header to determine the algorithm used for decryption. If no\nDEK-Info header is present, an error is returned. If an incorrect password\nis detected an IncorrectPasswordError is returned. Because of deficiencies\nin the encrypted-PEM format, it's not always possible to detect an incorrect\npassword. In these cases no error will be returned but the decrypted DER\nbytes will be random noise.\n\nGo input arguments: (b *pem.Block, password []byte)\n\nGo return type: ([]int, error)\n\nJoker input arguments: [^(atom-of go.std.encoding.pem/Block) b, ^(vector-of Byte) password]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
-;;    :go "decryptPEMBlock(ConvertToIndirectOfABEND987(imports not yet supported: pem.Block)(_b.(ABEND987(imports not yet supported: pem.Block))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_password)))"}
+;;    :go "decryptPEMBlock(ConvertToIndirectOfpem.Block(_b.(ABEND987(imports not yet supported: pem.Block))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_password)))"}
 ;;   [^Object _b, ^Object _password])
 
 JOKER FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
@@ -5691,28 +5691,28 @@ JOKER FUNC crypto/x509.IsEncryptedPEMBlock from crypto/x509/pem_decrypt.go:
 ;; (defn ^"Bool" IsEncryptedPEMBlock
 ;;   "IsEncryptedPEMBlock returns if the PEM block is password encrypted.\n\nGo input arguments: (b *pem.Block)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.encoding.pem/Block) b]\n\nJoker return type: Bool"
 ;;   {:added "1.0"
-;;    :go "x509.IsEncryptedPEMBlock(ConvertToIndirectOfABEND987(imports not yet supported: pem.Block)(_b.(ABEND987(imports not yet supported: pem.Block))))"}
+;;    :go "x509.IsEncryptedPEMBlock(ConvertToIndirectOfpem.Block(_b.(ABEND987(imports not yet supported: pem.Block))))"}
 ;;   [^Object _b])
 
 JOKER FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
 ;; (defn MarshalECPrivateKey
 ;;   "MarshalECPrivateKey marshals an EC private key into ASN.1, DER format.\n\nGo input arguments: (key *ecdsa.PrivateKey)\n\nGo return type: ([]int, error)\n\nJoker input arguments: [^(atom-of go.std.crypto.ecdsa/PrivateKey) key]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
-;;    :go "marshalECPrivateKey(ConvertToIndirectOfABEND987(imports not yet supported: ecdsa.PrivateKey)(_key.(ABEND987(imports not yet supported: ecdsa.PrivateKey))))"}
+;;    :go "marshalECPrivateKey(ConvertToIndirectOfecdsa.PrivateKey(_key.(ABEND987(imports not yet supported: ecdsa.PrivateKey))))"}
 ;;   [^Object _key])
 
 JOKER FUNC crypto/x509.MarshalPKCS1PrivateKey from crypto/x509/pkcs1.go:
 ;; (defn MarshalPKCS1PrivateKey
 ;;   "MarshalPKCS1PrivateKey converts a private key to ASN.1 DER encoded form.\n\nGo input arguments: (key *rsa.PrivateKey)\n\nGo return type: []int\n\nJoker input arguments: [^(atom-of go.std.crypto.rsa/PrivateKey) key]\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
-;;    :go "marshalPKCS1PrivateKey(ConvertToIndirectOfABEND987(imports not yet supported: rsa.PrivateKey)(_key.(ABEND987(imports not yet supported: rsa.PrivateKey))))"}
+;;    :go "marshalPKCS1PrivateKey(ConvertToIndirectOfrsa.PrivateKey(_key.(ABEND987(imports not yet supported: rsa.PrivateKey))))"}
 ;;   [^Object _key])
 
 JOKER FUNC crypto/x509.MarshalPKCS1PublicKey from crypto/x509/pkcs1.go:
 ;; (defn MarshalPKCS1PublicKey
 ;;   "MarshalPKCS1PublicKey converts an RSA public key to PKCS#1, ASN.1 DER form.\n\nGo input arguments: (key *rsa.PublicKey)\n\nGo return type: []int\n\nJoker input arguments: [^(atom-of go.std.crypto.rsa/PublicKey) key]\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
-;;    :go "marshalPKCS1PublicKey(ConvertToIndirectOfABEND987(imports not yet supported: rsa.PublicKey)(_key.(ABEND987(imports not yet supported: rsa.PublicKey))))"}
+;;    :go "marshalPKCS1PublicKey(ConvertToIndirectOfrsa.PublicKey(_key.(ABEND987(imports not yet supported: rsa.PublicKey))))"}
 ;;   [^Object _key])
 
 JOKER FUNC crypto/x509.MarshalPKCS8PrivateKey from crypto/x509/pkcs8.go:
@@ -6307,21 +6307,21 @@ JOKER FUNC encoding/json.Compact from encoding/json/indent.go:
 ;; (defn ^"Error" Compact
 ;;   "Compact appends to dst the JSON-encoded src with\ninsignificant space characters elided.\n\nGo input arguments: (dst *bytes.Buffer, src []byte)\n\nGo return type: error\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) dst, ^(vector-of Byte) src]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "json.Compact(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)))"}
+;;    :go "json.Compact(ConvertToIndirectOfbytes.Buffer(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)))"}
 ;;   [^Object _dst, ^Object _src])
 
 JOKER FUNC encoding/json.HTMLEscape from encoding/json/encode.go:
 ;; (defn HTMLEscape
 ;;   "HTMLEscape appends to dst the JSON-encoded src with <, >, &, U+2028 and U+2029\ncharacters inside string literals changed to \\u003c, \\u003e, \\u0026, \\u2028, \\u2029\nso that the JSON will be safe to embed inside HTML <script> tags.\nFor historical reasons, web browsers don't honor standard HTML\nescaping within <script> tags, so an alternative JSON encoding must\nbe used.\n\nGo input arguments: (dst *bytes.Buffer, src []byte)\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) dst, ^(vector-of Byte) src]"
 ;;   {:added "1.0"
-;;    :go "hTMLEscape(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)))"}
+;;    :go "hTMLEscape(ConvertToIndirectOfbytes.Buffer(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)))"}
 ;;   [^Object _dst, ^Object _src])
 
 JOKER FUNC encoding/json.Indent from encoding/json/indent.go:
 ;; (defn ^"Error" Indent
 ;;   "Indent appends to dst an indented form of the JSON-encoded src.\nEach element in a JSON object or array begins on a new,\nindented line beginning with prefix followed by one or more\ncopies of indent according to the indentation nesting.\nThe data appended to dst does not begin with the prefix nor\nany indentation, to make it easier to embed inside other formatted JSON data.\nAlthough leading space characters (space, tab, carriage return, newline)\nat the beginning of src are dropped, trailing space characters\nat the end of src are preserved and copied to dst.\nFor example, if src has no trailing spaces, neither will dst;\nif src ends in a trailing newline, so will dst.\n\nGo input arguments: (dst *bytes.Buffer, src []byte, prefix string, indent string)\n\nGo return type: error\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) dst, ^(vector-of Byte) src, ^String prefix, ^String indent]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "json.Indent(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)), _prefix, _indent)"}
+;;    :go "json.Indent(ConvertToIndirectOfbytes.Buffer(_dst.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND902(custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)), _prefix, _indent)"}
 ;;   [^Object _dst, ^Object _src, ^String _prefix, ^String _indent])
 
 JOKER FUNC encoding/json.Marshal from encoding/json/encode.go:
@@ -6552,7 +6552,7 @@ JOKER FUNC flag.DurationVar from flag/flag.go:
 ;; (defn DurationVar
 ;;   "DurationVar defines a time.Duration flag with specified name, default value, and usage string.\nThe argument p points to a time.Duration variable in which to store the value of the flag.\nThe flag accepts a value acceptable to time.ParseDuration.\n\nGo input arguments: (p *time.Duration, name string, value time.Duration, usage string)\n\nJoker input arguments: [^(atom-of go.std.time/Duration) p, ^String name, ^go.std.time/Duration value, ^String usage]"
 ;;   {:added "1.0"
-;;    :go "durationVar(ConvertToIndirectOfABEND987(imports not yet supported: time.Duration)(_p.(ABEND987(imports not yet supported: time.Duration))), _name, _value.(ABEND987(imports not yet supported: time.Duration)), _usage)"}
+;;    :go "durationVar(ConvertToIndirectOftime.Duration(_p.(ABEND987(imports not yet supported: time.Duration))), _name, _value.(ABEND987(imports not yet supported: time.Duration)), _usage)"}
 ;;   [^Object _p, ^String _name, ^GoObject _value, ^String _usage])
 
 JOKER FUNC flag.Float64 from flag/flag.go:
@@ -6888,7 +6888,7 @@ JOKER FUNC go/ast.Fprint from go/ast/print.go:
 ;; (defn ^"Error" Fprint
 ;;   "Fprint prints the (sub-)tree starting at AST node x to w.\nIf fset != nil, position information is interpreted relative\nto that file set. Otherwise positions are printed as integer\nvalues (file set specific offsets).\n\nA non-nil FieldFilter f may be provided to control the output:\nstruct fields for which f(fieldname, fieldvalue) is true are\nprinted; all others are filtered from the output. Unexported\nstruct fields are never printed.\n\nGo input arguments: (w io.Writer, fset *token.FileSet, x interface {}, f FieldFilter)\n\nGo return type: error\n\nJoker input arguments: [^go.std.io/Writer w, ^(atom-of go.std.go.token/FileSet) fset, ^<protocol-or-something> x, ^go.std.go.ast/FieldFilter f]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "ast.Fprint(_w.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _f.(ast.FieldFilter))"}
+;;    :go "ast.Fprint(_w.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _f.(ast.FieldFilter))"}
 ;;   [^GoObject _w, ^Object _fset, ^<protocol-or-something> _x, ^GoObject _f])
 
 JOKER FUNC go/ast.Inspect from go/ast/walk.go:
@@ -6916,7 +6916,7 @@ JOKER FUNC go/ast.NewCommentMap from go/ast/commentmap.go:
 ;; (defn NewCommentMap
 ;;   "NewCommentMap creates a new comment map by associating comment groups\nof the comments list with the nodes of the AST specified by node.\n\nA comment group g is associated with a node n if:\n\n  - g starts on the same line as n ends\n  - g starts on the line immediately following n, and there is\n    at least one empty line after g and before the next node\n  - g starts before n and is not associated to the node before n\n    via the previous rules\n\nNewCommentMap tries to associate a comment group to the \"largest\"\nnode possible: For instance, if the comment is a line comment\ntrailing an assignment, the comment is associated with the entire\nassignment rather than just the last operand in the assignment.\n\nGo input arguments: (fset *token.FileSet, node Node, comments []*CommentGroup)\n\nGo return type: CommentMap\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^go.std.go.ast/Node node, ^(vector-of (atom-of go.std.go.ast/CommentGroup)) comments]\n\nJoker return type: go.std.go.ast/CommentMap"
 ;;   {:added "1.0"
-;;    :go "newCommentMap(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), _node.(ast.Node), ConvertToArrayOf*_ast.CommentGroup(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.CommentGroup(_comments.(ast.CommentGroup)))))"}
+;;    :go "newCommentMap(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), _node.(ast.Node), ConvertToArrayOf*_ast.CommentGroup(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.CommentGroup(_comments.(ast.CommentGroup)))))"}
 ;;   [^Object _fset, ^GoObject _node, ^Object _comments])
 
 JOKER FUNC go/ast.NewIdent from go/ast/ast.go:
@@ -6937,7 +6937,7 @@ JOKER FUNC go/ast.NewPackage from go/ast/resolve.go:
 ;; (defn NewPackage
 ;;   "NewPackage creates a new Package node from a set of File nodes. It resolves\nunresolved identifiers across files and updates each file's Unresolved list\naccordingly. If a non-nil importer and universe scope are provided, they are\nused to resolve identifiers not declared in any of the package files. Any\nremaining unresolved identifiers are reported as undeclared. If the files\nbelong to different packages, one package name is selected and files with\ndifferent package names are reported and then ignored.\nThe result is a package node and a scanner.ErrorList if there were errors.\n\nGo input arguments: (fset *token.FileSet, files map[], importer Importer, universe *Scope)\n\nGo return type: (*Package, error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^{} files, ^go.std.go.ast/Importer importer, ^(atom-of go.std.go.ast/Scope) universe]\n\nJoker return type: [go.std.go.ast/Package Error]"
 ;;   {:added "1.0"
-;;    :go "newPackage(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND908(custom-runtime routine not implemented: ConvertToMapTypeHaHa()), _importer.(ast.Importer), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.Scope(_universe.(ast.Scope))))"}
+;;    :go "newPackage(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND908(custom-runtime routine not implemented: ConvertToMapTypeHaHa()), _importer.(ast.Importer), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.Scope(_universe.(ast.Scope))))"}
 ;;   [^Object _fset, ^{} _files, ^GoObject _importer, ^Object _universe])
 
 JOKER FUNC go/ast.NewScope from go/ast/scope.go:
@@ -6965,14 +6965,14 @@ JOKER FUNC go/ast.Print from go/ast/print.go:
 ;; (defn ^"Error" Print
 ;;   "Print prints x to standard output, skipping nil fields.\nPrint(fset, x) is the same as Fprint(os.Stdout, fset, x, NotNilFilter).\n\nGo input arguments: (fset *token.FileSet, x interface {})\n\nGo return type: error\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^<protocol-or-something> x]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "ast.Print(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
+;;    :go "ast.Print(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^Object _fset, ^<protocol-or-something> _x])
 
 JOKER FUNC go/ast.SortImports from go/ast/import.go:
 ;; (defn SortImports
 ;;   "SortImports sorts runs of consecutive import lines in import blocks in f.\nIt also removes duplicate imports when it is possible to do so without data loss.\n\nGo input arguments: (fset *token.FileSet, f *File)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^(atom-of go.std.go.ast/File) f]"
 ;;   {:added "1.0"
-;;    :go "sortImports(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.File(_f.(ast.File))))"}
+;;    :go "sortImports(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_ast.File(_f.(ast.File))))"}
 ;;   [^Object _fset, ^Object _f])
 
 JOKER FUNC go/ast.Walk from go/ast/walk.go:
@@ -7217,7 +7217,7 @@ JOKER FUNC go/doc.Examples from go/doc/example.go:
 ;; (defn Examples
 ;;   "Examples returns the examples found in the files, sorted by Name field.\nThe Order fields record the order in which the examples were encountered.\n\nPlayable Examples must be in a package whose name ends in \"_test\".\nAn Example is \"playable\" (the Play field is non-nil) in either of these\ncircumstances:\n  - The example function is self-contained: the function references only\n    identifiers from other packages (or predeclared identifiers, such as\n    \"int\") and the test file does not include a dot import.\n  - The entire test file is the example: the file contains exactly one\n    example function, zero test or benchmark functions, and at least one\n    top-level function, type, variable, or constant declaration other\n    than the example function.\n\nGo input arguments: (files ...*ast.File)\n\nGo return type: []*Example\n\nJoker input arguments: [^(ellipsis-somehow Object) files]\n\nJoker return type: (vector-of go.std.go.doc/Example)"
 ;;   {:added "1.0"
-;;    :go "examples(ConvertToEllipsisHaHa*ABEND987(imports not yet supported: ast.File)(ConvertToIndirectOfABEND987(imports not yet supported: ast.File)(_files.(ABEND987(imports not yet supported: ast.File)))))"}
+;;    :go "examples(ConvertToEllipsisHaHa*ast.File(ConvertToIndirectOfast.File(_files.(ABEND987(imports not yet supported: ast.File)))))"}
 ;;   [^Object _files])
 
 JOKER FUNC go/doc.IsPredeclared from go/doc/reader.go:
@@ -7231,7 +7231,7 @@ JOKER FUNC go/doc.New from go/doc/doc.go:
 ;; (defn New
 ;;   "New computes the package documentation for the given package AST.\nNew takes ownership of the AST pkg and may edit or overwrite it.\n\nGo input arguments: (pkg *ast.Package, importPath string, mode Mode)\n\nGo return type: *Package\n\nJoker input arguments: [^(atom-of go.std.go.ast/Package) pkg, ^String importPath, ^go.std.go.doc/Mode mode]\n\nJoker return type: go.std.go.doc/Package"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: new(ConvertToIndirectOfABEND987(imports not yet supported: ast.Package)(_pkg.(ABEND987(imports not yet supported: ast.Package))), _importPath, _mode.(doc.Mode)))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: new(ConvertToIndirectOfast.Package(_pkg.(ABEND987(imports not yet supported: ast.Package))), _importPath, _mode.(doc.Mode)))"}
 ;;   [^Object _pkg, ^String _importPath, ^GoObject _mode])
 
 JOKER FUNC go/doc.Synopsis from go/doc/synopsis.go:
@@ -7259,7 +7259,7 @@ JOKER FUNC go/format.Node from go/format/format.go:
 ;; (defn ^"Error" Node
 ;;   "Node formats node in canonical gofmt style and writes the result to dst.\n\nThe node type must be *ast.File, *printer.CommentedNode, []ast.Decl,\n[]ast.Stmt, or assignment-compatible to ast.Expr, ast.Decl, ast.Spec,\nor ast.Stmt. Node does not modify node. Imports are not sorted for\nnodes representing partial source files (for instance, if the node is\nnot an *ast.File or a *printer.CommentedNode not wrapping an *ast.File).\n\nThe function may return early (before the entire result is written)\nand return a formatting error, for instance due to an incorrect AST.\n\nGo input arguments: (dst io.Writer, fset *token.FileSet, node interface {})\n\nGo return type: error\n\nJoker input arguments: [^go.std.io/Writer dst, ^(atom-of go.std.go.token/FileSet) fset, ^<protocol-or-something> node]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "format.Node(_dst.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
+;;    :go "format.Node(_dst.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^GoObject _dst, ^Object _fset, ^<protocol-or-something> _node])
 
 JOKER FUNC go/format.Source from go/format/format.go:
@@ -7287,7 +7287,7 @@ JOKER FUNC go/parser.ParseDir from go/parser/interface.go:
 ;; (defn ParseDir
 ;;   "ParseDir calls ParseFile for all files with names ending in \".go\" in the\ndirectory specified by path and returns a map of package name -> package\nAST with all the packages found.\n\nIf filter != nil, only the files with os.FileInfo entries passing through\nthe filter (and ending in \".go\") are considered. The mode bits are passed\nto ParseFile unchanged. Position information is recorded in fset, which\nmust not be nil.\n\nIf the directory couldn't be read, a nil map and the respective error are\nreturned. If a parse error occurred, a non-nil but incomplete map and the\nfirst error encountered are returned.\n\nGo input arguments: (fset *token.FileSet, path string, filter func, mode Mode)\n\nGo return type: (pkgs ..., first error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^String path, ^fn filter, ^go.std.go.parser/Mode mode]\n\nJoker return type: [ABEND883(unrecognized Expr type *ast.MapType at: GO.link/src/go/parser/interface.go:135:97) Error]"
 ;;   {:added "1.0"
-;;    :go "parseDir(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), _path, ABEND906(custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()), _mode.(parser.Mode))"}
+;;    :go "parseDir(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), _path, ABEND906(custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()), _mode.(parser.Mode))"}
 ;;   [^Object _fset, ^String _path, ^fn _filter, ^GoObject _mode])
 
 JOKER FUNC go/parser.ParseExpr from go/parser/interface.go:
@@ -7301,21 +7301,21 @@ JOKER FUNC go/parser.ParseExprFrom from go/parser/interface.go:
 ;; (defn ParseExprFrom
 ;;   "ParseExprFrom is a convenience function for parsing an expression.\nThe arguments have the same meaning as for ParseFile, but the source must\nbe a valid Go (type or value) expression. Specifically, fset must not\nbe nil.\n\nGo input arguments: (fset *token.FileSet, filename string, src interface {}, mode Mode)\n\nGo return type: (go/ast.Expr, error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^String filename, ^<protocol-or-something> src, ^go.std.go.parser/Mode mode]\n\nJoker return type: [go.std.go.ast/Expr Error]"
 ;;   {:added "1.0"
-;;    :go "parseExprFrom(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), _filename, ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _mode.(parser.Mode))"}
+;;    :go "parseExprFrom(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), _filename, ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _mode.(parser.Mode))"}
 ;;   [^Object _fset, ^String _filename, ^<protocol-or-something> _src, ^GoObject _mode])
 
 JOKER FUNC go/parser.ParseFile from go/parser/interface.go:
 ;; (defn ParseFile
 ;;   "ParseFile parses the source code of a single Go source file and returns\nthe corresponding ast.File node. The source code may be provided via\nthe filename of the source file, or via the src parameter.\n\nIf src != nil, ParseFile parses the source from src and the filename is\nonly used when recording position information. The type of the argument\nfor the src parameter must be string, []byte, or io.Reader.\nIf src == nil, ParseFile parses the file specified by filename.\n\nThe mode parameter controls the amount of source text parsed and other\noptional parser functionality. Position information is recorded in the\nfile set fset, which must not be nil.\n\nIf the source couldn't be read, the returned AST is nil and the error\nindicates the specific failure. If the source was read but syntax\nerrors were found, the result is a partial AST (with ast.Bad* nodes\nrepresenting the fragments of erroneous source code). Multiple errors\nare returned via a scanner.ErrorList which is sorted by file position.\n\nGo input arguments: (fset *token.FileSet, filename string, src interface {}, mode Mode)\n\nGo return type: (f *go/ast.File, err error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^String filename, ^<protocol-or-something> src, ^go.std.go.parser/Mode mode]\n\nJoker return type: [go.std.go.ast/File Error]"
 ;;   {:added "1.0"
-;;    :go "parseFile(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), _filename, ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _mode.(parser.Mode))"}
+;;    :go "parseFile(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), _filename, ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _mode.(parser.Mode))"}
 ;;   [^Object _fset, ^String _filename, ^<protocol-or-something> _src, ^GoObject _mode])
 
 JOKER FUNC go/printer.Fprint from go/printer/printer.go:
 ;; (defn ^"Error" Fprint
 ;;   "Fprint \"pretty-prints\" an AST node to output.\nIt calls Config.Fprint with default settings.\nNote that gofmt uses tabs for indentation but spaces for alignment;\nuse format.Node (package go/format) for output that matches gofmt.\n\nGo input arguments: (output io.Writer, fset *token.FileSet, node interface {})\n\nGo return type: error\n\nJoker input arguments: [^go.std.io/Writer output, ^(atom-of go.std.go.token/FileSet) fset, ^<protocol-or-something> node]\n\nJoker return type: Error"
 ;;   {:added "1.0"
-;;    :go "printer.Fprint(_output.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
+;;    :go "printer.Fprint(_output.(ABEND987(imports not yet supported: io.Writer)), ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND907(custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^GoObject _output, ^Object _fset, ^<protocol-or-something> _node])
 
 JOKER FUNC go/scanner.PrintError from go/scanner/errors.go:
@@ -7385,7 +7385,7 @@ JOKER FUNC go/types.Eval from go/types/eval.go:
 ;; (defn Eval
 ;;   "Eval returns the type and, if constant, the value for the\nexpression expr, evaluated at position pos of package pkg,\nwhich must have been derived from type-checking an AST with\ncomplete position information relative to the provided file\nset.\n\nIf pkg == nil, the Universe scope is used and the provided\nposition pos is ignored. If pkg != nil, and pos is invalid,\nthe package scope is used. Otherwise, pos must belong to the\npackage.\n\nAn error is returned if pos is not within the package or\nif the node cannot be evaluated.\n\nNote: Eval should not be used instead of running Check to compute\ntypes and values, but in addition to Check. Eval will re-evaluate\nits argument each time, and it also does not know about the context\nin which an expression is used (e.g., an assignment). Thus, top-\nlevel untyped constants will return an untyped type rather then the\nrespective context-specific type.\n\nGo input arguments: (fset *token.FileSet, pkg *Package, pos token.Pos, expr string)\n\nGo return type: (_ TypeAndValue, err error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^(atom-of go.std.go.types/Package) pkg, ^go.std.go.token/Pos pos, ^String expr]\n\nJoker return type: [go.std.go.types/TypeAndValue Error]"
 ;;   {:added "1.0"
-;;    :go "eval(ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Package(_pkg.(types.Package))), _pos.(ABEND987(imports not yet supported: token.Pos)), _expr)"}
+;;    :go "eval(ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Package(_pkg.(types.Package))), _pos.(ABEND987(imports not yet supported: token.Pos)), _expr)"}
 ;;   [^Object _fset, ^Object _pkg, ^GoObject _pos, ^String _expr])
 
 JOKER FUNC go/types.ExprString from go/types/exprstring.go:
@@ -7462,7 +7462,7 @@ JOKER FUNC go/types.NewChecker from go/types/check.go:
 ;; (defn NewChecker
 ;;   "NewChecker returns a new Checker instance for a given package.\nPackage files may be added incrementally via checker.Files.\n\nGo input arguments: (conf *Config, fset *token.FileSet, pkg *Package, info *Info)\n\nGo return type: *Checker\n\nJoker input arguments: [^(atom-of go.std.go.types/Config) conf, ^(atom-of go.std.go.token/FileSet) fset, ^(atom-of go.std.go.types/Package) pkg, ^(atom-of go.std.go.types/Info) info]\n\nJoker return type: go.std.go.types/Checker"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newChecker(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Config(_conf.(types.Config))), ConvertToIndirectOfABEND987(imports not yet supported: token.FileSet)(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Package(_pkg.(types.Package))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Info(_info.(types.Info)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newChecker(ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Config(_conf.(types.Config))), ConvertToIndirectOftoken.FileSet(_fset.(ABEND987(imports not yet supported: token.FileSet))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Package(_pkg.(types.Package))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Info(_info.(types.Info)))))"}
 ;;   [^Object _conf, ^Object _fset, ^Object _pkg, ^Object _info])
 
 JOKER FUNC go/types.NewConst from go/types/object.go:
@@ -7644,21 +7644,21 @@ JOKER FUNC go/types.WriteExpr from go/types/exprstring.go:
 ;; (defn WriteExpr
 ;;   "WriteExpr writes the (possibly shortened) string representation for x to buf.\nShortened representations are suitable for user interfaces but may not\nnecessarily follow Go syntax.\n\nGo input arguments: (buf *bytes.Buffer, x ast.Expr)\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) buf, ^go.std.go.ast/Expr x]"
 ;;   {:added "1.0"
-;;    :go "writeExpr(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), _x.(ABEND987(imports not yet supported: ast.Expr)))"}
+;;    :go "writeExpr(ConvertToIndirectOfbytes.Buffer(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), _x.(ABEND987(imports not yet supported: ast.Expr)))"}
 ;;   [^Object _buf, ^GoObject _x])
 
 JOKER FUNC go/types.WriteSignature from go/types/typestring.go:
 ;; (defn WriteSignature
 ;;   "WriteSignature writes the representation of the signature sig to buf,\nwithout a leading \"func\" keyword.\nThe Qualifier controls the printing of\npackage-level objects, and may be nil.\n\nGo input arguments: (buf *bytes.Buffer, sig *Signature, qf Qualifier)\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) buf, ^(atom-of go.std.go.types/Signature) sig, ^go.std.go.types/Qualifier qf]"
 ;;   {:added "1.0"
-;;    :go "writeSignature(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Signature(_sig.(types.Signature))), _qf.(types.Qualifier))"}
+;;    :go "writeSignature(ConvertToIndirectOfbytes.Buffer(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_types.Signature(_sig.(types.Signature))), _qf.(types.Qualifier))"}
 ;;   [^Object _buf, ^Object _sig, ^GoObject _qf])
 
 JOKER FUNC go/types.WriteType from go/types/typestring.go:
 ;; (defn WriteType
 ;;   "WriteType writes the string representation of typ to buf.\nThe Qualifier controls the printing of\npackage-level objects, and may be nil.\n\nGo input arguments: (buf *bytes.Buffer, typ Type, qf Qualifier)\n\nJoker input arguments: [^(atom-of go.std.bytes/Buffer) buf, ^go.std.go.types/Type typ, ^go.std.go.types/Qualifier qf]"
 ;;   {:added "1.0"
-;;    :go "writeType(ConvertToIndirectOfABEND987(imports not yet supported: bytes.Buffer)(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), _typ.(types.Type), _qf.(types.Qualifier))"}
+;;    :go "writeType(ConvertToIndirectOfbytes.Buffer(_buf.(ABEND987(imports not yet supported: bytes.Buffer))), _typ.(types.Type), _qf.(types.Qualifier))"}
 ;;   [^Object _buf, ^GoObject _typ, ^GoObject _qf])
 
 JOKER FUNC hash/adler32.Checksum from hash/adler32/adler32.go:
@@ -9583,21 +9583,21 @@ JOKER FUNC net.FileConn from net/file.go:
 ;; (defn FileConn
 ;;   "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo return type: (c Conn, err error)\n\nJoker input arguments: [^(atom-of go.std.os/File) f]\n\nJoker return type: [go.std.net/Conn Error]"
 ;;   {:added "1.0"
-;;    :go "fileConn(ConvertToIndirectOfABEND987(imports not yet supported: os.File)(_f.(ABEND987(imports not yet supported: os.File))))"}
+;;    :go "fileConn(ConvertToIndirectOfos.File(_f.(ABEND987(imports not yet supported: os.File))))"}
 ;;   [^Object _f])
 
 JOKER FUNC net.FileListener from net/file.go:
 ;; (defn FileListener
 ;;   "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: (f *os.File)\n\nGo return type: (ln Listener, err error)\n\nJoker input arguments: [^(atom-of go.std.os/File) f]\n\nJoker return type: [go.std.net/Listener Error]"
 ;;   {:added "1.0"
-;;    :go "fileListener(ConvertToIndirectOfABEND987(imports not yet supported: os.File)(_f.(ABEND987(imports not yet supported: os.File))))"}
+;;    :go "fileListener(ConvertToIndirectOfos.File(_f.(ABEND987(imports not yet supported: os.File))))"}
 ;;   [^Object _f])
 
 JOKER FUNC net.FilePacketConn from net/file.go:
 ;; (defn FilePacketConn
 ;;   "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo return type: (c PacketConn, err error)\n\nJoker input arguments: [^(atom-of go.std.os/File) f]\n\nJoker return type: [go.std.net/PacketConn Error]"
 ;;   {:added "1.0"
-;;    :go "filePacketConn(ConvertToIndirectOfABEND987(imports not yet supported: os.File)(_f.(ABEND987(imports not yet supported: os.File))))"}
+;;    :go "filePacketConn(ConvertToIndirectOfos.File(_f.(ABEND987(imports not yet supported: os.File))))"}
 ;;   [^Object _f])
 
 JOKER FUNC net.IPv4 from net/ip.go:
@@ -9982,21 +9982,21 @@ JOKER FUNC net/http.ProxyURL from net/http/transport.go:
 ;; (defn ProxyURL
 ;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *url.URL)\n\nGo return type: ...\n\nJoker input arguments: [^(atom-of go.std.net.url/URL) fixedURL]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.FuncType at: GO.link/src/net/http/transport.go:351:34)"
 ;;   {:added "1.0"
-;;    :go "proxyURL(ConvertToIndirectOfABEND987(imports not yet supported: url.URL)(_fixedURL.(ABEND987(imports not yet supported: url.URL))))"}
+;;    :go "proxyURL(ConvertToIndirectOfurl.URL(_fixedURL.(ABEND987(imports not yet supported: url.URL))))"}
 ;;   [^Object _fixedURL])
 
 JOKER FUNC net/http.ReadRequest from net/http/request.go:
 ;; (defn ReadRequest
 ;;   "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^(atom-of go.std.bufio/Reader) b]\n\nJoker return type: [go.std.net.http/Request Error]"
 ;;   {:added "1.0"
-;;    :go "readRequest(ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_b.(ABEND987(imports not yet supported: bufio.Reader))))"}
+;;    :go "readRequest(ConvertToIndirectOfbufio.Reader(_b.(ABEND987(imports not yet supported: bufio.Reader))))"}
 ;;   [^Object _b])
 
 JOKER FUNC net/http.ReadResponse from net/http/response.go:
 ;; (defn ReadResponse
 ;;   "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(atom-of go.std.bufio/Reader) r, ^(atom-of go.std.net.http/Request) req]\n\nJoker return type: [go.std.net.http/Response Error]"
 ;;   {:added "1.0"
-;;    :go "readResponse(ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_r.(ABEND987(imports not yet supported: bufio.Reader))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_http.Request(_req.(http.Request))))"}
+;;    :go "readResponse(ConvertToIndirectOfbufio.Reader(_r.(ABEND987(imports not yet supported: bufio.Reader))), ABEND903(custom-runtime routine not implemented: ConvertToIndirectOf_http.Request(_req.(http.Request))))"}
 ;;   [^Object _r, ^Object _req])
 
 JOKER FUNC net/http.Redirect from net/http/server.go:
@@ -10101,7 +10101,7 @@ JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 ;; (defn ProcessEnv
 ;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: ...\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) r]\n\nJoker return type: ABEND883(unrecognized Expr type *ast.MapType at: GO.link/src/net/http/fcgi/child.go:358:34)"
 ;;   {:added "1.0"
-;;    :go "processEnv(ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "processEnv(ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^Object _r])
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
@@ -10164,21 +10164,21 @@ JOKER FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 ;; (defn DumpRequest
 ;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]int, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
-;;    :go "dumpRequest(ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_req.(ABEND987(imports not yet supported: http.Request))), _body)"}
+;;    :go "dumpRequest(ConvertToIndirectOfhttp.Request(_req.(ABEND987(imports not yet supported: http.Request))), _body)"}
 ;;   [^Object _req, ^Bool _body])
 
 JOKER FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 ;; (defn DumpRequestOut
 ;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]int, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
-;;    :go "dumpRequestOut(ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_req.(ABEND987(imports not yet supported: http.Request))), _body)"}
+;;    :go "dumpRequestOut(ConvertToIndirectOfhttp.Request(_req.(ABEND987(imports not yet supported: http.Request))), _body)"}
 ;;   [^Object _req, ^Bool _body])
 
 JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 ;; (defn DumpResponse
 ;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]int, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Response) resp, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
-;;    :go "dumpResponse(ConvertToIndirectOfABEND987(imports not yet supported: http.Response)(_resp.(ABEND987(imports not yet supported: http.Response))), _body)"}
+;;    :go "dumpResponse(ConvertToIndirectOfhttp.Response(_resp.(ABEND987(imports not yet supported: http.Response))), _body)"}
 ;;   [^Object _resp, ^Bool _body])
 
 JOKER FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
@@ -10199,35 +10199,35 @@ JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 ;; (defn NewClientConn
 ;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(atom-of go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/ClientConn"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newClientConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfbufio.Reader(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
 ;;   [^GoObject _c, ^Object _r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 ;; (defn NewProxyClientConn
 ;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(atom-of go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/ClientConn"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newProxyClientConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newProxyClientConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfbufio.Reader(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
 ;;   [^GoObject _c, ^Object _r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 ;; (defn NewServerConn
 ;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(atom-of go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/ServerConn"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newServerConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newServerConn(_c.(ABEND987(imports not yet supported: net.Conn)), ConvertToIndirectOfbufio.Reader(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
 ;;   [^GoObject _c, ^Object _r])
 
 JOKER FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
 ;; (defn NewSingleHostReverseProxy
 ;;   "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: (target *url.URL)\n\nGo return type: *ReverseProxy\n\nJoker input arguments: [^(atom-of go.std.net.url/URL) target]\n\nJoker return type: go.std.net.http.httputil/ReverseProxy"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newSingleHostReverseProxy(ConvertToIndirectOfABEND987(imports not yet supported: url.URL)(_target.(ABEND987(imports not yet supported: url.URL)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newSingleHostReverseProxy(ConvertToIndirectOfurl.URL(_target.(ABEND987(imports not yet supported: url.URL)))))"}
 ;;   [^Object _target])
 
 JOKER FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 ;; (defn Cmdline
 ;;   "Cmdline responds with the running program's\ncommand line, with arguments separated by NUL bytes.\nThe package initialization registers it as /debug/pprof/cmdline.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
 ;;   {:added "1.0"
-;;    :go "cmdline(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "cmdline(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
@@ -10241,28 +10241,28 @@ JOKER FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
 ;; (defn Index
 ;;   "Index responds with the pprof-formatted profile named by the request.\nFor example, \"/debug/pprof/heap\" serves the \"heap\" profile.\nIndex responds to a request for \"/debug/pprof/\" with an HTML page\nlisting the available profiles.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
 ;;   {:added "1.0"
-;;    :go "index(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "index(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http/pprof.Profile from net/http/pprof/pprof.go:
 ;; (defn Profile
 ;;   "Profile responds with the pprof-formatted cpu profile.\nProfiling lasts for duration specified in seconds GET parameter, or for 30 seconds if not specified.\nThe package initialization registers it as /debug/pprof/profile.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
 ;;   {:added "1.0"
-;;    :go "profile(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "profile(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http/pprof.Symbol from net/http/pprof/pprof.go:
 ;; (defn Symbol
 ;;   "Symbol looks up the program counters listed in the request,\nresponding with a table mapping program counters to function names.\nThe package initialization registers it as /debug/pprof/symbol.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
 ;;   {:added "1.0"
-;;    :go "symbol(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "symbol(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
 ;; (defn Trace
 ;;   "Trace responds with the execution trace in binary form.\nTracing lasts for duration specified in seconds GET parameter, or for 1 second if not specified.\nThe package initialization registers it as /debug/pprof/trace.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
 ;;   {:added "1.0"
-;;    :go "trace(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfABEND987(imports not yet supported: http.Request)(_r.(ABEND987(imports not yet supported: http.Request))))"}
+;;    :go "trace(_w.(ABEND987(imports not yet supported: http.ResponseWriter)), ConvertToIndirectOfhttp.Request(_r.(ABEND987(imports not yet supported: http.Request))))"}
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
@@ -10479,14 +10479,14 @@ JOKER FUNC net/textproto.NewReader from net/textproto/reader.go:
 ;; (defn NewReader
 ;;   "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo return type: *Reader\n\nJoker input arguments: [^(atom-of go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.textproto/Reader"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newReader(ConvertToIndirectOfABEND987(imports not yet supported: bufio.Reader)(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newReader(ConvertToIndirectOfbufio.Reader(_r.(ABEND987(imports not yet supported: bufio.Reader)))))"}
 ;;   [^Object _r])
 
 JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 ;; (defn NewWriter
 ;;   "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo return type: *Writer\n\nJoker input arguments: [^(atom-of go.std.bufio/Writer) w]\n\nJoker return type: go.std.net.textproto/Writer"
 ;;   {:added "1.0"
-;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newWriter(ConvertToIndirectOfABEND987(imports not yet supported: bufio.Writer)(_w.(ABEND987(imports not yet supported: bufio.Writer)))))"}
+;;    :go "ABEND401(StarExpr not supported -- no refs returned just yet: newWriter(ConvertToIndirectOfbufio.Writer(_w.(ABEND987(imports not yet supported: bufio.Writer)))))"}
 ;;   [^Object _w])
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
@@ -10955,7 +10955,7 @@ JOKER FUNC os/signal.Ignore from os/signal/signal.go:
 ;; (defn Ignore
 ;;   "Ignore causes the provided signals to be ignored. If they are received by\nthe program, nothing will happen. Ignore undoes the effect of any prior\ncalls to Notify for the provided signals.\nIf no signals are provided, all incoming signals will be ignored.\n\nGo input arguments: (sig ...os.Signal)\n\nJoker input arguments: [^(ellipsis-somehow GoObject) sig]"
 ;;   {:added "1.0"
-;;    :go "ignore(ConvertToEllipsisHaHaABEND987(imports not yet supported: os.Signal)(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
+;;    :go "ignore(ConvertToEllipsisHaHaos.Signal(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
 ;;   [^GoObject _sig])
 
 JOKER FUNC os/signal.Ignored from os/signal/signal.go:
@@ -10969,14 +10969,14 @@ JOKER FUNC os/signal.Notify from os/signal/signal.go:
 ;; (defn Notify
 ;;   "Notify causes package signal to relay incoming signals to c.\nIf no signals are provided, all incoming signals will be relayed to c.\nOtherwise, just the provided signals will.\n\nPackage signal will not block sending to c: the caller must ensure\nthat c has sufficient buffer space to keep up with the expected\nsignal rate. For a channel used for notification of just one signal value,\na buffer of size 1 is sufficient.\n\nIt is allowed to call Notify multiple times with the same channel:\neach call expands the set of signals sent to that channel.\nThe only way to remove signals from the set is to call Stop.\n\nIt is allowed to call Notify multiple times with different channels\nand the same signals: each channel receives copies of incoming\nsignals independently.\n\nGo input arguments: (c <-chan, sig ...os.Signal)\n\nJoker input arguments: [^<no-idea-about-chan-yet> c, ^(ellipsis-somehow GoObject) sig]"
 ;;   {:added "1.0"
-;;    :go "notify(ABEND909(custom-runtime routine not implemented: ConvertToChanTypeHaHa()), ConvertToEllipsisHaHaABEND987(imports not yet supported: os.Signal)(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
+;;    :go "notify(ABEND909(custom-runtime routine not implemented: ConvertToChanTypeHaHa()), ConvertToEllipsisHaHaos.Signal(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
 ;;   [^<no-idea-about-chan-yet> _c, ^GoObject _sig])
 
 JOKER FUNC os/signal.Reset from os/signal/signal.go:
 ;; (defn Reset
 ;;   "Reset undoes the effect of any prior calls to Notify for the provided\nsignals.\nIf no signals are provided, all signal handlers will be reset.\n\nGo input arguments: (sig ...os.Signal)\n\nJoker input arguments: [^(ellipsis-somehow GoObject) sig]"
 ;;   {:added "1.0"
-;;    :go "reset(ConvertToEllipsisHaHaABEND987(imports not yet supported: os.Signal)(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
+;;    :go "reset(ConvertToEllipsisHaHaos.Signal(_sig.(ABEND987(imports not yet supported: os.Signal))))"}
 ;;   [^GoObject _sig])
 
 JOKER FUNC os/signal.Stop from os/signal/signal.go:
@@ -12614,7 +12614,7 @@ JOKER FUNC sync/atomic.CompareAndSwapPointer from sync/atomic/doc.go:
 ;; (defn ^"Bool" CompareAndSwapPointer
 ;;   "CompareAndSwapPointer executes the compare-and-swap operation for a unsafe.Pointer value.\n\nGo input arguments: (addr *unsafe.Pointer, old unsafe.Pointer, new unsafe.Pointer)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr, ^go.std.unsafe/Pointer old, ^go.std.unsafe/Pointer new]\n\nJoker return type: Bool"
 ;;   {:added "1.0"
-;;    :go "atomic.CompareAndSwapPointer(ConvertToIndirectOfABEND987(imports not yet supported: unsafe.Pointer)(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _old.(ABEND987(imports not yet supported: unsafe.Pointer)), _new.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
+;;    :go "atomic.CompareAndSwapPointer(ConvertToIndirectOfunsafe.Pointer(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _old.(ABEND987(imports not yet supported: unsafe.Pointer)), _new.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
 ;;   [^Object _addr, ^GoObject _old, ^GoObject _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapUint32 from sync/atomic/doc.go:
@@ -12656,7 +12656,7 @@ JOKER FUNC sync/atomic.LoadPointer from sync/atomic/doc.go:
 ;; (defn LoadPointer
 ;;   "LoadPointer atomically loads *addr.\n\nGo input arguments: (addr *unsafe.Pointer)\n\nGo return type: unsafe.Pointer\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr]\n\nJoker return type: go.std.unsafe/Pointer"
 ;;   {:added "1.0"
-;;    :go "loadPointer(ConvertToIndirectOfABEND987(imports not yet supported: unsafe.Pointer)(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))))"}
+;;    :go "loadPointer(ConvertToIndirectOfunsafe.Pointer(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))))"}
 ;;   [^Object _addr])
 
 JOKER FUNC sync/atomic.LoadUint32 from sync/atomic/doc.go:
@@ -12698,7 +12698,7 @@ JOKER FUNC sync/atomic.StorePointer from sync/atomic/doc.go:
 ;; (defn StorePointer
 ;;   "StorePointer atomically stores val into *addr.\n\nGo input arguments: (addr *unsafe.Pointer, val unsafe.Pointer)\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr, ^go.std.unsafe/Pointer val]"
 ;;   {:added "1.0"
-;;    :go "storePointer(ConvertToIndirectOfABEND987(imports not yet supported: unsafe.Pointer)(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _val.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
+;;    :go "storePointer(ConvertToIndirectOfunsafe.Pointer(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _val.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
 ;;   [^Object _addr, ^GoObject _val])
 
 JOKER FUNC sync/atomic.StoreUint32 from sync/atomic/doc.go:
@@ -12740,7 +12740,7 @@ JOKER FUNC sync/atomic.SwapPointer from sync/atomic/doc.go:
 ;; (defn SwapPointer
 ;;   "SwapPointer atomically stores new into *addr and returns the previous *addr value.\n\nGo input arguments: (addr *unsafe.Pointer, new unsafe.Pointer)\n\nGo return type: unsafe.Pointer\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr, ^go.std.unsafe/Pointer new]\n\nJoker return type: go.std.unsafe/Pointer"
 ;;   {:added "1.0"
-;;    :go "swapPointer(ConvertToIndirectOfABEND987(imports not yet supported: unsafe.Pointer)(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _new.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
+;;    :go "swapPointer(ConvertToIndirectOfunsafe.Pointer(_addr.(ABEND987(imports not yet supported: unsafe.Pointer))), _new.(ABEND987(imports not yet supported: unsafe.Pointer)))"}
 ;;   [^Object _addr, ^GoObject _new])
 
 JOKER FUNC sync/atomic.SwapUint32 from sync/atomic/doc.go:
@@ -14231,7 +14231,7 @@ JOKER FUNC testing/quick.Value from testing/quick/quick.go:
 ;; (defn Value
 ;;   "Value returns an arbitrary value of the given type.\nIf the type implements the Generator interface, that will be used.\nNote: To create arbitrary values for structs, all the fields must be exported.\n\nGo input arguments: (t reflect.Type, rand *rand.Rand)\n\nGo return type: (value reflect.Value, ok bool)\n\nJoker input arguments: [^go.std.reflect/Type t, ^(atom-of go.std.math.rand/Rand) rand]\n\nJoker return type: [go.std.reflect/Value Bool]"
 ;;   {:added "1.0"
-;;    :go "value(_t.(ABEND987(imports not yet supported: reflect.Type)), ConvertToIndirectOfABEND987(imports not yet supported: rand.Rand)(_rand.(ABEND987(imports not yet supported: rand.Rand))))"}
+;;    :go "value(_t.(ABEND987(imports not yet supported: reflect.Type)), ConvertToIndirectOfrand.Rand(_rand.(ABEND987(imports not yet supported: rand.Rand))))"}
 ;;   [^GoObject _t, ^Object _rand])
 
 JOKER FUNC text/scanner.TokenString from text/scanner/scanner.go:
@@ -14781,7 +14781,7 @@ JOKER FUNC unsafe.Sizeof from unsafe/unsafe.go:
 ;;   [^GoObject _x])
 
 GO FUNC archive/tar.FileInfoHeader from archive/tar/common.go:
-// func fileInfoHeader(fi ABEND987(imports not yet supported: os.FileInfo), link string) Object {
+// func fileInfoHeader(fi os.FileInfo, link string) Object {
 // 	_res1, _res2 := _tar.FileInfoHeader(fi, link)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromarchive/tar.Header((*_res1))))
@@ -14790,19 +14790,19 @@ GO FUNC archive/tar.FileInfoHeader from archive/tar/common.go:
 // }
 
 GO FUNC archive/tar.NewReader from archive/tar/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res := _tar.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromarchive/tar.Reader((*_res)))
 // }
 
 GO FUNC archive/tar.NewWriter from archive/tar/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _tar.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromarchive/tar.Writer((*_res)))
 // }
 
 GO FUNC archive/zip.FileInfoHeader from archive/zip/struct.go:
-// func fileInfoHeader(fi ABEND987(imports not yet supported: os.FileInfo)) Object {
+// func fileInfoHeader(fi os.FileInfo) Object {
 // 	_res1, _res2 := _zip.FileInfoHeader(fi)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromarchive/zip.FileHeader((*_res1))))
@@ -14811,7 +14811,7 @@ GO FUNC archive/zip.FileInfoHeader from archive/zip/struct.go:
 // }
 
 GO FUNC archive/zip.NewReader from archive/zip/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.ReaderAt), size int64) Object {
+// func newReader(r io.ReaderAt, size int64) Object {
 // 	_res1, _res2 := _zip.NewReader(r, size)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromarchive/zip.Reader((*_res1))))
@@ -14820,7 +14820,7 @@ GO FUNC archive/zip.NewReader from archive/zip/reader.go:
 // }
 
 GO FUNC archive/zip.NewWriter from archive/zip/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _zip.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromarchive/zip.Writer((*_res)))
 // }
@@ -14853,31 +14853,31 @@ GO FUNC bufio.NewReadWriter from bufio/bufio.go:
 // }
 
 GO FUNC bufio.NewReader from bufio/bufio.go:
-// func newReader(rd ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(rd io.Reader) Object {
 // 	_res := _bufio.NewReader(rd)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrombufio.Reader((*_res)))
 // }
 
 GO FUNC bufio.NewReaderSize from bufio/bufio.go:
-// func newReaderSize(rd ABEND987(imports not yet supported: io.Reader), size int) Object {
+// func newReaderSize(rd io.Reader, size int) Object {
 // 	_res := _bufio.NewReaderSize(rd, size)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrombufio.Reader((*_res)))
 // }
 
 GO FUNC bufio.NewScanner from bufio/scan.go:
-// func newScanner(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newScanner(r io.Reader) Object {
 // 	_res := _bufio.NewScanner(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrombufio.Scanner((*_res)))
 // }
 
 GO FUNC bufio.NewWriter from bufio/bufio.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _bufio.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrombufio.Writer((*_res)))
 // }
 
 GO FUNC bufio.NewWriterSize from bufio/bufio.go:
-// func newWriterSize(w ABEND987(imports not yet supported: io.Writer), size int) Object {
+// func newWriterSize(w io.Writer, size int) Object {
 // 	_res := _bufio.NewWriterSize(w, size)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrombufio.Writer((*_res)))
 // }
@@ -15111,7 +15111,7 @@ GO FUNC bytes.ToLower from bytes/bytes.go:
 // }
 
 GO FUNC bytes.ToLowerSpecial from bytes/bytes.go:
-// func toLowerSpecial(c ABEND987(imports not yet supported: unicode.SpecialCase), s []byte) Object {
+// func toLowerSpecial(c unicode.SpecialCase, s []byte) Object {
 // 	_res := _bytes.ToLowerSpecial(c, s)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -15131,7 +15131,7 @@ GO FUNC bytes.ToTitle from bytes/bytes.go:
 // }
 
 GO FUNC bytes.ToTitleSpecial from bytes/bytes.go:
-// func toTitleSpecial(c ABEND987(imports not yet supported: unicode.SpecialCase), s []byte) Object {
+// func toTitleSpecial(c unicode.SpecialCase, s []byte) Object {
 // 	_res := _bytes.ToTitleSpecial(c, s)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -15151,7 +15151,7 @@ GO FUNC bytes.ToUpper from bytes/bytes.go:
 // }
 
 GO FUNC bytes.ToUpperSpecial from bytes/bytes.go:
-// func toUpperSpecial(c ABEND987(imports not yet supported: unicode.SpecialCase), s []byte) Object {
+// func toUpperSpecial(c unicode.SpecialCase, s []byte) Object {
 // 	_res := _bytes.ToUpperSpecial(c, s)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -15251,25 +15251,25 @@ GO FUNC bytes.TrimSuffix from bytes/bytes.go:
 // }
 
 GO FUNC compress/bzip2.NewReader from compress/bzip2/bzip2.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res := _bzip2.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC compress/flate.NewReader from compress/flate/inflate.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res := _flate.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res))
 // }
 
 GO FUNC compress/flate.NewReaderDict from compress/flate/inflate.go:
-// func newReaderDict(r ABEND987(imports not yet supported: io.Reader), dict []byte) Object {
+// func newReaderDict(r io.Reader, dict []byte) Object {
 // 	_res := _flate.NewReaderDict(r, dict)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res))
 // }
 
 GO FUNC compress/flate.NewWriter from compress/flate/deflate.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer), level int) Object {
+// func newWriter(w io.Writer, level int) Object {
 // 	_res1, _res2 := _flate.NewWriter(w, level)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/flate.Writer((*_res1))))
@@ -15278,7 +15278,7 @@ GO FUNC compress/flate.NewWriter from compress/flate/deflate.go:
 // }
 
 GO FUNC compress/flate.NewWriterDict from compress/flate/deflate.go:
-// func newWriterDict(w ABEND987(imports not yet supported: io.Writer), level int, dict []byte) Object {
+// func newWriterDict(w io.Writer, level int, dict []byte) Object {
 // 	_res1, _res2 := _flate.NewWriterDict(w, level, dict)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/flate.Writer((*_res1))))
@@ -15287,7 +15287,7 @@ GO FUNC compress/flate.NewWriterDict from compress/flate/deflate.go:
 // }
 
 GO FUNC compress/gzip.NewReader from compress/gzip/gunzip.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res1, _res2 := _gzip.NewReader(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/gzip.Reader((*_res1))))
@@ -15296,13 +15296,13 @@ GO FUNC compress/gzip.NewReader from compress/gzip/gunzip.go:
 // }
 
 GO FUNC compress/gzip.NewWriter from compress/gzip/gzip.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _gzip.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcompress/gzip.Writer((*_res)))
 // }
 
 GO FUNC compress/gzip.NewWriterLevel from compress/gzip/gzip.go:
-// func newWriterLevel(w ABEND987(imports not yet supported: io.Writer), level int) Object {
+// func newWriterLevel(w io.Writer, level int) Object {
 // 	_res1, _res2 := _gzip.NewWriterLevel(w, level)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/gzip.Writer((*_res1))))
@@ -15311,19 +15311,19 @@ GO FUNC compress/gzip.NewWriterLevel from compress/gzip/gzip.go:
 // }
 
 GO FUNC compress/lzw.NewReader from compress/lzw/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader), order _lzw.Order, litWidth int) Object {
+// func newReader(r io.Reader, order _lzw.Order, litWidth int) Object {
 // 	_res := _lzw.NewReader(r, order, litWidth)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res))
 // }
 
 GO FUNC compress/lzw.NewWriter from compress/lzw/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer), order _lzw.Order, litWidth int) Object {
+// func newWriter(w io.Writer, order _lzw.Order, litWidth int) Object {
 // 	_res := _lzw.NewWriter(w, order, litWidth)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
 
 GO FUNC compress/zlib.NewReader from compress/zlib/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res1, _res2 := _zlib.NewReader(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res1)))
@@ -15332,7 +15332,7 @@ GO FUNC compress/zlib.NewReader from compress/zlib/reader.go:
 // }
 
 GO FUNC compress/zlib.NewReaderDict from compress/zlib/reader.go:
-// func newReaderDict(r ABEND987(imports not yet supported: io.Reader), dict []byte) Object {
+// func newReaderDict(r io.Reader, dict []byte) Object {
 // 	_res1, _res2 := _zlib.NewReaderDict(r, dict)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res1)))
@@ -15341,13 +15341,13 @@ GO FUNC compress/zlib.NewReaderDict from compress/zlib/reader.go:
 // }
 
 GO FUNC compress/zlib.NewWriter from compress/zlib/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _zlib.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcompress/zlib.Writer((*_res)))
 // }
 
 GO FUNC compress/zlib.NewWriterLevel from compress/zlib/writer.go:
-// func newWriterLevel(w ABEND987(imports not yet supported: io.Writer), level int) Object {
+// func newWriterLevel(w io.Writer, level int) Object {
 // 	_res1, _res2 := _zlib.NewWriterLevel(w, level)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/zlib.Writer((*_res1))))
@@ -15356,7 +15356,7 @@ GO FUNC compress/zlib.NewWriterLevel from compress/zlib/writer.go:
 // }
 
 GO FUNC compress/zlib.NewWriterLevelDict from compress/zlib/writer.go:
-// func newWriterLevelDict(w ABEND987(imports not yet supported: io.Writer), level int, dict []byte) Object {
+// func newWriterLevelDict(w io.Writer, level int, dict []byte) Object {
 // 	_res1, _res2 := _zlib.NewWriterLevelDict(w, level, dict)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcompress/zlib.Writer((*_res1))))
@@ -15426,7 +15426,7 @@ GO FUNC context.WithCancel from context/context.go:
 // }
 
 GO FUNC context.WithDeadline from context/context.go:
-// func withDeadline(parent _context.Context, d ABEND987(imports not yet supported: time.Time)) Object {
+// func withDeadline(parent _context.Context, d time.Time) Object {
 // 	_res1, _res2 := _context.WithDeadline(parent, d)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(_res1)))
@@ -15435,7 +15435,7 @@ GO FUNC context.WithDeadline from context/context.go:
 // }
 
 GO FUNC context.WithTimeout from context/context.go:
-// func withTimeout(parent _context.Context, timeout ABEND987(imports not yet supported: time.Duration)) Object {
+// func withTimeout(parent _context.Context, timeout time.Duration) Object {
 // 	_res1, _res2 := _context.WithTimeout(parent, timeout)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(_res1)))
@@ -15546,7 +15546,7 @@ GO FUNC crypto/des.NewTripleDESCipher from crypto/des/cipher.go:
 // }
 
 GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
-// func sign(rand ABEND987(imports not yet supported: io.Reader), priv *_dsa.PrivateKey, hash []byte) Object {
+// func sign(rand io.Reader, priv *_dsa.PrivateKey, hash []byte) Object {
 // 	r, s, err := _dsa.Sign(rand, priv, hash)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*r))))
@@ -15556,7 +15556,7 @@ GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 // }
 
 GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
-// func generateKey(c ABEND987(imports not yet supported: elliptic.Curve), rand ABEND987(imports not yet supported: io.Reader)) Object {
+// func generateKey(c elliptic.Curve, rand io.Reader) Object {
 // 	_res1, _res2 := _ecdsa.GenerateKey(c, rand)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/ecdsa.PrivateKey((*_res1))))
@@ -15565,7 +15565,7 @@ GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
 // }
 
 GO FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
-// func sign(rand ABEND987(imports not yet supported: io.Reader), priv *_ecdsa.PrivateKey, hash []byte) Object {
+// func sign(rand io.Reader, priv *_ecdsa.PrivateKey, hash []byte) Object {
 // 	r, s, err := _ecdsa.Sign(rand, priv, hash)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*r))))
@@ -15575,7 +15575,7 @@ GO FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
 // }
 
 GO FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
-// func generateKey(curve _elliptic.Curve, rand ABEND987(imports not yet supported: io.Reader)) Object {
+// func generateKey(curve _elliptic.Curve, rand io.Reader) Object {
 // 	priv, x, y, err := _elliptic.GenerateKey(curve, rand)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15590,7 +15590,7 @@ GO FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
 // }
 
 GO FUNC crypto/elliptic.Marshal from crypto/elliptic/elliptic.go:
-// func marshal(curve _elliptic.Curve, x *ABEND987(imports not yet supported: big.Int), y *ABEND987(imports not yet supported: big.Int)) Object {
+// func marshal(curve _elliptic.Curve, x *big.Int, y *big.Int) Object {
 // 	_res := _elliptic.Marshal(curve, x, y)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -15655,7 +15655,7 @@ GO FUNC crypto/md5.Sum from crypto/md5/md5.go:
 // }
 
 GO FUNC crypto/rand.Int from crypto/rand/util.go:
-// func int(rand ABEND987(imports not yet supported: io.Reader), max *ABEND987(imports not yet supported: big.Int)) Object {
+// func int(rand io.Reader, max *big.Int) Object {
 // 	n, err := _rand.Int(rand, max)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*n))))
@@ -15664,7 +15664,7 @@ GO FUNC crypto/rand.Int from crypto/rand/util.go:
 // }
 
 GO FUNC crypto/rand.Prime from crypto/rand/util.go:
-// func prime(rand ABEND987(imports not yet supported: io.Reader), bits int) Object {
+// func prime(rand io.Reader, bits int) Object {
 // 	p, err := _rand.Prime(rand, bits)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFrommath/big.Int((*p))))
@@ -15691,7 +15691,7 @@ GO FUNC crypto/rc4.NewCipher from crypto/rc4/rc4.go:
 // }
 
 GO FUNC crypto/rsa.DecryptOAEP from crypto/rsa/rsa.go:
-// func decryptOAEP(hash ABEND987(imports not yet supported: hash.Hash), random ABEND987(imports not yet supported: io.Reader), priv *_rsa.PrivateKey, ciphertext []byte, label []byte) Object {
+// func decryptOAEP(hash hash.Hash, random io.Reader, priv *_rsa.PrivateKey, ciphertext []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.DecryptOAEP(hash, random, priv, ciphertext, label)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15704,7 +15704,7 @@ GO FUNC crypto/rsa.DecryptOAEP from crypto/rsa/rsa.go:
 // }
 
 GO FUNC crypto/rsa.DecryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
-// func decryptPKCS1v15(rand ABEND987(imports not yet supported: io.Reader), priv *_rsa.PrivateKey, ciphertext []byte) Object {
+// func decryptPKCS1v15(rand io.Reader, priv *_rsa.PrivateKey, ciphertext []byte) Object {
 // 	_res1, _res2 := _rsa.DecryptPKCS1v15(rand, priv, ciphertext)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15717,7 +15717,7 @@ GO FUNC crypto/rsa.DecryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // }
 
 GO FUNC crypto/rsa.EncryptOAEP from crypto/rsa/rsa.go:
-// func encryptOAEP(hash ABEND987(imports not yet supported: hash.Hash), random ABEND987(imports not yet supported: io.Reader), pub *_rsa.PublicKey, msg []byte, label []byte) Object {
+// func encryptOAEP(hash hash.Hash, random io.Reader, pub *_rsa.PublicKey, msg []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.EncryptOAEP(hash, random, pub, msg, label)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15730,7 +15730,7 @@ GO FUNC crypto/rsa.EncryptOAEP from crypto/rsa/rsa.go:
 // }
 
 GO FUNC crypto/rsa.EncryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
-// func encryptPKCS1v15(rand ABEND987(imports not yet supported: io.Reader), pub *_rsa.PublicKey, msg []byte) Object {
+// func encryptPKCS1v15(rand io.Reader, pub *_rsa.PublicKey, msg []byte) Object {
 // 	_res1, _res2 := _rsa.EncryptPKCS1v15(rand, pub, msg)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15743,7 +15743,7 @@ GO FUNC crypto/rsa.EncryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // }
 
 GO FUNC crypto/rsa.GenerateKey from crypto/rsa/rsa.go:
-// func generateKey(random ABEND987(imports not yet supported: io.Reader), bits int) Object {
+// func generateKey(random io.Reader, bits int) Object {
 // 	_res1, _res2 := _rsa.GenerateKey(random, bits)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/rsa.PrivateKey((*_res1))))
@@ -15752,7 +15752,7 @@ GO FUNC crypto/rsa.GenerateKey from crypto/rsa/rsa.go:
 // }
 
 GO FUNC crypto/rsa.GenerateMultiPrimeKey from crypto/rsa/rsa.go:
-// func generateMultiPrimeKey(random ABEND987(imports not yet supported: io.Reader), nprimes int, bits int) Object {
+// func generateMultiPrimeKey(random io.Reader, nprimes int, bits int) Object {
 // 	_res1, _res2 := _rsa.GenerateMultiPrimeKey(random, nprimes, bits)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/rsa.PrivateKey((*_res1))))
@@ -15761,7 +15761,7 @@ GO FUNC crypto/rsa.GenerateMultiPrimeKey from crypto/rsa/rsa.go:
 // }
 
 GO FUNC crypto/rsa.SignPKCS1v15 from crypto/rsa/pkcs1v15.go:
-// func signPKCS1v15(rand ABEND987(imports not yet supported: io.Reader), priv *_rsa.PrivateKey, hash ABEND987(imports not yet supported: crypto.Hash), hashed []byte) Object {
+// func signPKCS1v15(rand io.Reader, priv *_rsa.PrivateKey, hash crypto.Hash, hashed []byte) Object {
 // 	_res1, _res2 := _rsa.SignPKCS1v15(rand, priv, hash, hashed)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15774,7 +15774,7 @@ GO FUNC crypto/rsa.SignPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // }
 
 GO FUNC crypto/rsa.SignPSS from crypto/rsa/pss.go:
-// func signPSS(rand ABEND987(imports not yet supported: io.Reader), priv *_rsa.PrivateKey, hash ABEND987(imports not yet supported: crypto.Hash), hashed []byte, opts *_rsa.PSSOptions) Object {
+// func signPSS(rand io.Reader, priv *_rsa.PrivateKey, hash crypto.Hash, hashed []byte, opts *_rsa.PSSOptions) Object {
 // 	_res1, _res2 := _rsa.SignPSS(rand, priv, hash, hashed, opts)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15905,7 +15905,7 @@ GO FUNC crypto/subtle.ConstantTimeCopy from crypto/subtle/constant_time.go:
 // }
 
 GO FUNC crypto/tls.Client from crypto/tls/tls.go:
-// func client(conn ABEND987(imports not yet supported: net.Conn), config *_tls.Config) Object {
+// func client(conn net.Conn, config *_tls.Config) Object {
 // 	_res := _tls.Client(conn, config)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/tls.Conn((*_res)))
 // }
@@ -15920,7 +15920,7 @@ GO FUNC crypto/tls.Dial from crypto/tls/tls.go:
 // }
 
 GO FUNC crypto/tls.DialWithDialer from crypto/tls/tls.go:
-// func dialWithDialer(dialer *ABEND987(imports not yet supported: net.Dialer), network string, addr string, config *_tls.Config) Object {
+// func dialWithDialer(dialer *net.Dialer, network string, addr string, config *_tls.Config) Object {
 // 	_res1, _res2 := _tls.DialWithDialer(dialer, network, addr, config)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/tls.Conn((*_res1))))
@@ -15953,13 +15953,13 @@ GO FUNC crypto/tls.NewLRUClientSessionCache from crypto/tls/common.go:
 // }
 
 GO FUNC crypto/tls.NewListener from crypto/tls/tls.go:
-// func newListener(inner ABEND987(imports not yet supported: net.Listener), config *_tls.Config) Object {
+// func newListener(inner net.Listener, config *_tls.Config) Object {
 // 	_res := _tls.NewListener(inner, config)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet.Listener(_res))
 // }
 
 GO FUNC crypto/tls.Server from crypto/tls/tls.go:
-// func server(conn ABEND987(imports not yet supported: net.Conn), config *_tls.Config) Object {
+// func server(conn net.Conn, config *_tls.Config) Object {
 // 	_res := _tls.Server(conn, config)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcrypto/tls.Conn((*_res)))
 // }
@@ -15974,7 +15974,7 @@ GO FUNC crypto/tls.X509KeyPair from crypto/tls/tls.go:
 // }
 
 GO FUNC crypto/x509.CreateCertificate from crypto/x509/x509.go:
-// func createCertificate(rand ABEND987(imports not yet supported: io.Reader), template *_x509.Certificate, parent *_x509.Certificate, pub interface {}, priv interface {}) Object {
+// func createCertificate(rand io.Reader, template *_x509.Certificate, parent *_x509.Certificate, pub interface {}, priv interface {}) Object {
 // 	cert, err := _x509.CreateCertificate(rand, template, parent, pub, priv)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -15987,7 +15987,7 @@ GO FUNC crypto/x509.CreateCertificate from crypto/x509/x509.go:
 // }
 
 GO FUNC crypto/x509.CreateCertificateRequest from crypto/x509/x509.go:
-// func createCertificateRequest(rand ABEND987(imports not yet supported: io.Reader), template *_x509.CertificateRequest, priv interface {}) Object {
+// func createCertificateRequest(rand io.Reader, template *_x509.CertificateRequest, priv interface {}) Object {
 // 	csr, err := _x509.CreateCertificateRequest(rand, template, priv)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -16000,7 +16000,7 @@ GO FUNC crypto/x509.CreateCertificateRequest from crypto/x509/x509.go:
 // }
 
 GO FUNC crypto/x509.DecryptPEMBlock from crypto/x509/pem_decrypt.go:
-// func decryptPEMBlock(b *ABEND987(imports not yet supported: pem.Block), password []byte) Object {
+// func decryptPEMBlock(b *pem.Block, password []byte) Object {
 // 	_res1, _res2 := _x509.DecryptPEMBlock(b, password)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -16013,7 +16013,7 @@ GO FUNC crypto/x509.DecryptPEMBlock from crypto/x509/pem_decrypt.go:
 // }
 
 GO FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
-// func encryptPEMBlock(rand ABEND987(imports not yet supported: io.Reader), blockType string, data []byte, password []byte, alg _x509.PEMCipher) Object {
+// func encryptPEMBlock(rand io.Reader, blockType string, data []byte, password []byte, alg _x509.PEMCipher) Object {
 // 	_res1, _res2 := _x509.EncryptPEMBlock(rand, blockType, data, password, alg)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromencoding/pem.Block((*_res1))))
@@ -16022,7 +16022,7 @@ GO FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
 // }
 
 GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
-// func marshalECPrivateKey(key *ABEND987(imports not yet supported: ecdsa.PrivateKey)) Object {
+// func marshalECPrivateKey(key *ecdsa.PrivateKey) Object {
 // 	_res1, _res2 := _x509.MarshalECPrivateKey(key)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -16035,7 +16035,7 @@ GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
 // }
 
 GO FUNC crypto/x509.MarshalPKCS1PrivateKey from crypto/x509/pkcs1.go:
-// func marshalPKCS1PrivateKey(key *ABEND987(imports not yet supported: rsa.PrivateKey)) Object {
+// func marshalPKCS1PrivateKey(key *rsa.PrivateKey) Object {
 // 	_res := _x509.MarshalPKCS1PrivateKey(key)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -16045,7 +16045,7 @@ GO FUNC crypto/x509.MarshalPKCS1PrivateKey from crypto/x509/pkcs1.go:
 // }
 
 GO FUNC crypto/x509.MarshalPKCS1PublicKey from crypto/x509/pkcs1.go:
-// func marshalPKCS1PublicKey(key *ABEND987(imports not yet supported: rsa.PublicKey)) Object {
+// func marshalPKCS1PublicKey(key *rsa.PublicKey) Object {
 // 	_res := _x509.MarshalPKCS1PublicKey(key)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -16215,13 +16215,13 @@ GO FUNC database/sql.Open from database/sql/sql.go:
 // }
 
 GO FUNC database/sql.OpenDB from database/sql/sql.go:
-// func openDB(c ABEND987(imports not yet supported: driver.Connector)) Object {
+// func openDB(c driver.Connector) Object {
 // 	_res := _sql.OpenDB(c)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromdatabase/sql.DB((*_res)))
 // }
 
 GO FUNC database/sql.Register from database/sql/sql.go:
-// func register(name string, driver ABEND987(imports not yet supported: driver.Driver)) Object {
+// func register(name string, driver driver.Driver) Object {
 // 	_sql.Register(name, driver)
 // 	...ABEND675: TODO...
 // }
@@ -16236,7 +16236,7 @@ GO FUNC debug/dwarf.New from debug/dwarf/open.go:
 // }
 
 GO FUNC debug/elf.NewFile from debug/elf/file.go:
-// func newFile(r ABEND987(imports not yet supported: io.ReaderAt)) Object {
+// func newFile(r io.ReaderAt) Object {
 // 	_res1, _res2 := _elf.NewFile(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromdebug/elf.File((*_res1))))
@@ -16297,7 +16297,7 @@ GO FUNC debug/gosym.NewTable from debug/gosym/symtab.go:
 // }
 
 GO FUNC debug/macho.NewFatFile from debug/macho/fat.go:
-// func newFatFile(r ABEND987(imports not yet supported: io.ReaderAt)) Object {
+// func newFatFile(r io.ReaderAt) Object {
 // 	_res1, _res2 := _macho.NewFatFile(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromdebug/macho.FatFile((*_res1))))
@@ -16306,7 +16306,7 @@ GO FUNC debug/macho.NewFatFile from debug/macho/fat.go:
 // }
 
 GO FUNC debug/macho.NewFile from debug/macho/file.go:
-// func newFile(r ABEND987(imports not yet supported: io.ReaderAt)) Object {
+// func newFile(r io.ReaderAt) Object {
 // 	_res1, _res2 := _macho.NewFile(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromdebug/macho.File((*_res1))))
@@ -16333,7 +16333,7 @@ GO FUNC debug/macho.OpenFat from debug/macho/fat.go:
 // }
 
 GO FUNC debug/pe.NewFile from debug/pe/file.go:
-// func newFile(r ABEND987(imports not yet supported: io.ReaderAt)) Object {
+// func newFile(r io.ReaderAt) Object {
 // 	_res1, _res2 := _pe.NewFile(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromdebug/pe.File((*_res1))))
@@ -16351,7 +16351,7 @@ GO FUNC debug/pe.Open from debug/pe/file.go:
 // }
 
 GO FUNC debug/plan9obj.NewFile from debug/plan9obj/file.go:
-// func newFile(r ABEND987(imports not yet supported: io.ReaderAt)) Object {
+// func newFile(r io.ReaderAt) Object {
 // 	_res1, _res2 := _plan9obj.NewFile(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromdebug/plan9obj.File((*_res1))))
@@ -16379,13 +16379,13 @@ GO FUNC encoding/ascii85.Decode from encoding/ascii85/ascii85.go:
 // }
 
 GO FUNC encoding/ascii85.NewDecoder from encoding/ascii85/ascii85.go:
-// func newDecoder(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(r io.Reader) Object {
 // 	_res := _ascii85.NewDecoder(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC encoding/ascii85.NewEncoder from encoding/ascii85/ascii85.go:
-// func newEncoder(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(w io.Writer) Object {
 // 	_res := _ascii85.NewEncoder(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
@@ -16443,13 +16443,13 @@ GO FUNC encoding/asn1.UnmarshalWithParams from encoding/asn1/asn1.go:
 // }
 
 GO FUNC encoding/base32.NewDecoder from encoding/base32/base32.go:
-// func newDecoder(enc *_base32.Encoding, r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(enc *_base32.Encoding, r io.Reader) Object {
 // 	_res := _base32.NewDecoder(enc, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC encoding/base32.NewEncoder from encoding/base32/base32.go:
-// func newEncoder(enc *_base32.Encoding, w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(enc *_base32.Encoding, w io.Writer) Object {
 // 	_res := _base32.NewEncoder(enc, w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
@@ -16461,13 +16461,13 @@ GO FUNC encoding/base32.NewEncoding from encoding/base32/base32.go:
 // }
 
 GO FUNC encoding/base64.NewDecoder from encoding/base64/base64.go:
-// func newDecoder(enc *_base64.Encoding, r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(enc *_base64.Encoding, r io.Reader) Object {
 // 	_res := _base64.NewDecoder(enc, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC encoding/base64.NewEncoder from encoding/base64/base64.go:
-// func newEncoder(enc *_base64.Encoding, w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(enc *_base64.Encoding, w io.Writer) Object {
 // 	_res := _base64.NewEncoder(enc, w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
@@ -16479,7 +16479,7 @@ GO FUNC encoding/base64.NewEncoding from encoding/base64/base64.go:
 // }
 
 GO FUNC encoding/binary.ReadUvarint from encoding/binary/varint.go:
-// func readUvarint(r ABEND987(imports not yet supported: io.ByteReader)) Object {
+// func readUvarint(r io.ByteReader) Object {
 // 	_res1, _res2 := _binary.ReadUvarint(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(_res1)
@@ -16488,7 +16488,7 @@ GO FUNC encoding/binary.ReadUvarint from encoding/binary/varint.go:
 // }
 
 GO FUNC encoding/binary.ReadVarint from encoding/binary/varint.go:
-// func readVarint(r ABEND987(imports not yet supported: io.ByteReader)) Object {
+// func readVarint(r io.ByteReader) Object {
 // 	_res1, _res2 := _binary.ReadVarint(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(int(_res1)))
@@ -16515,25 +16515,25 @@ GO FUNC encoding/binary.Varint from encoding/binary/varint.go:
 // }
 
 GO FUNC encoding/csv.NewReader from encoding/csv/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res := _csv.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/csv.Reader((*_res)))
 // }
 
 GO FUNC encoding/csv.NewWriter from encoding/csv/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _csv.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/csv.Writer((*_res)))
 // }
 
 GO FUNC encoding/gob.NewDecoder from encoding/gob/decoder.go:
-// func newDecoder(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(r io.Reader) Object {
 // 	_res := _gob.NewDecoder(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/gob.Decoder((*_res)))
 // }
 
 GO FUNC encoding/gob.NewEncoder from encoding/gob/encoder.go:
-// func newEncoder(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(w io.Writer) Object {
 // 	_res := _gob.NewEncoder(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/gob.Encoder((*_res)))
 // }
@@ -16573,25 +16573,25 @@ func decodeString(s string) Object {
 }
 
 GO FUNC encoding/hex.Dumper from encoding/hex/hex.go:
-// func dumper(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func dumper(w io.Writer) Object {
 // 	_res := _hex.Dumper(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
 
 GO FUNC encoding/hex.NewDecoder from encoding/hex/hex.go:
-// func newDecoder(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(r io.Reader) Object {
 // 	_res := _hex.NewDecoder(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC encoding/hex.NewEncoder from encoding/hex/hex.go:
-// func newEncoder(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(w io.Writer) Object {
 // 	_res := _hex.NewEncoder(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Writer(_res))
 // }
 
 GO FUNC encoding/json.HTMLEscape from encoding/json/encode.go:
-// func hTMLEscape(dst *ABEND987(imports not yet supported: bytes.Buffer), src []byte) Object {
+// func hTMLEscape(dst *bytes.Buffer, src []byte) Object {
 // 	_json.HTMLEscape(dst, src)
 // 	...ABEND675: TODO...
 // }
@@ -16623,13 +16623,13 @@ GO FUNC encoding/json.MarshalIndent from encoding/json/encode.go:
 // }
 
 GO FUNC encoding/json.NewDecoder from encoding/json/stream.go:
-// func newDecoder(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(r io.Reader) Object {
 // 	_res := _json.NewDecoder(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/json.Decoder((*_res)))
 // }
 
 GO FUNC encoding/json.NewEncoder from encoding/json/stream.go:
-// func newEncoder(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(w io.Writer) Object {
 // 	_res := _json.NewEncoder(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/json.Encoder((*_res)))
 // }
@@ -16664,7 +16664,7 @@ GO FUNC encoding/xml.CopyToken from encoding/xml/xml.go:
 // }
 
 GO FUNC encoding/xml.Escape from encoding/xml/xml.go:
-// func escape(w ABEND987(imports not yet supported: io.Writer), s []byte) Object {
+// func escape(w io.Writer, s []byte) Object {
 // 	_xml.Escape(w, s)
 // 	...ABEND675: TODO...
 // }
@@ -16696,13 +16696,13 @@ GO FUNC encoding/xml.MarshalIndent from encoding/xml/marshal.go:
 // }
 
 GO FUNC encoding/xml.NewDecoder from encoding/xml/xml.go:
-// func newDecoder(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newDecoder(r io.Reader) Object {
 // 	_res := _xml.NewDecoder(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/xml.Decoder((*_res)))
 // }
 
 GO FUNC encoding/xml.NewEncoder from encoding/xml/marshal.go:
-// func newEncoder(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newEncoder(w io.Writer) Object {
 // 	_res := _xml.NewEncoder(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromencoding/xml.Encoder((*_res)))
 // }
@@ -16778,13 +16778,13 @@ GO FUNC flag.BoolVar from flag/flag.go:
 // }
 
 GO FUNC flag.Duration from flag/flag.go:
-// func duration(name string, value ABEND987(imports not yet supported: time.Duration), usage string) Object {
+// func duration(name string, value time.Duration, usage string) Object {
 // 	_res := _flag.Duration(name, value, usage)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromtime.Duration((*_res)))
 // }
 
 GO FUNC flag.DurationVar from flag/flag.go:
-// func durationVar(p *ABEND987(imports not yet supported: time.Duration), name string, value ABEND987(imports not yet supported: time.Duration), usage string) Object {
+// func durationVar(p *time.Duration, name string, value time.Duration, usage string) Object {
 // 	_flag.DurationVar(p, name, value, usage)
 // 	...ABEND675: TODO...
 // }
@@ -16889,7 +16889,7 @@ GO FUNC flag.VisitAll from flag/flag.go:
 // }
 
 GO FUNC fmt.Fprint from fmt/print.go:
-// func fprint(w ABEND987(imports not yet supported: io.Writer), a ...interface {}) Object {
+// func fprint(w io.Writer, a ...interface {}) Object {
 // 	n, err := _fmt.Fprint(w, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -16898,7 +16898,7 @@ GO FUNC fmt.Fprint from fmt/print.go:
 // }
 
 GO FUNC fmt.Fprintf from fmt/print.go:
-// func fprintf(w ABEND987(imports not yet supported: io.Writer), format string, a ...interface {}) Object {
+// func fprintf(w io.Writer, format string, a ...interface {}) Object {
 // 	n, err := _fmt.Fprintf(w, format, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -16907,7 +16907,7 @@ GO FUNC fmt.Fprintf from fmt/print.go:
 // }
 
 GO FUNC fmt.Fprintln from fmt/print.go:
-// func fprintln(w ABEND987(imports not yet supported: io.Writer), a ...interface {}) Object {
+// func fprintln(w io.Writer, a ...interface {}) Object {
 // 	n, err := _fmt.Fprintln(w, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -16916,7 +16916,7 @@ GO FUNC fmt.Fprintln from fmt/print.go:
 // }
 
 GO FUNC fmt.Fscan from fmt/scan.go:
-// func fscan(r ABEND987(imports not yet supported: io.Reader), a ...interface {}) Object {
+// func fscan(r io.Reader, a ...interface {}) Object {
 // 	n, err := _fmt.Fscan(r, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -16925,7 +16925,7 @@ GO FUNC fmt.Fscan from fmt/scan.go:
 // }
 
 GO FUNC fmt.Fscanf from fmt/scan.go:
-// func fscanf(r ABEND987(imports not yet supported: io.Reader), format string, a ...interface {}) Object {
+// func fscanf(r io.Reader, format string, a ...interface {}) Object {
 // 	n, err := _fmt.Fscanf(r, format, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -16934,7 +16934,7 @@ GO FUNC fmt.Fscanf from fmt/scan.go:
 // }
 
 GO FUNC fmt.Fscanln from fmt/scan.go:
-// func fscanln(r ABEND987(imports not yet supported: io.Reader), a ...interface {}) Object {
+// func fscanln(r io.Reader, a ...interface {}) Object {
 // 	n, err := _fmt.Fscanln(r, a)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
@@ -17036,7 +17036,7 @@ GO FUNC go/ast.MergePackageFiles from go/ast/filter.go:
 // }
 
 GO FUNC go/ast.NewCommentMap from go/ast/commentmap.go:
-// func newCommentMap(fset *ABEND987(imports not yet supported: token.FileSet), node _ast.Node, comments []*_ast.CommentGroup) Object {
+// func newCommentMap(fset *token.FileSet, node _ast.Node, comments []*_ast.CommentGroup) Object {
 // 	_res := _ast.NewCommentMap(fset, node, comments)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/ast.CommentMap(_res))
 // }
@@ -17054,7 +17054,7 @@ GO FUNC go/ast.NewObj from go/ast/scope.go:
 // }
 
 GO FUNC go/ast.NewPackage from go/ast/resolve.go:
-// func newPackage(fset *ABEND987(imports not yet supported: token.FileSet), files map[], importer _ast.Importer, universe *_ast.Scope) Object {
+// func newPackage(fset *token.FileSet, files map[], importer _ast.Importer, universe *_ast.Scope) Object {
 // 	_res1, _res2 := _ast.NewPackage(fset, files, importer, universe)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromgo/ast.Package((*_res1))))
@@ -17069,7 +17069,7 @@ GO FUNC go/ast.NewScope from go/ast/scope.go:
 // }
 
 GO FUNC go/ast.SortImports from go/ast/import.go:
-// func sortImports(fset *ABEND987(imports not yet supported: token.FileSet), f *_ast.File) Object {
+// func sortImports(fset *token.FileSet, f *_ast.File) Object {
 // 	_ast.SortImports(fset, f)
 // 	...ABEND675: TODO...
 // }
@@ -17108,7 +17108,7 @@ GO FUNC go/build.ImportDir from go/build/build.go:
 // }
 
 GO FUNC go/constant.BinaryOp from go/constant/value.go:
-// func binaryOp(x_ _constant.Value, op ABEND987(imports not yet supported: token.Token), y_ _constant.Value) Object {
+// func binaryOp(x_ _constant.Value, op token.Token, y_ _constant.Value) Object {
 // 	_res := _constant.BinaryOp(x_, op, y_)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/constant.Value(_res))
 // }
@@ -17181,7 +17181,7 @@ GO FUNC go/constant.MakeFromBytes from go/constant/value.go:
 // }
 
 GO FUNC go/constant.MakeFromLiteral from go/constant/value.go:
-// func makeFromLiteral(lit string, tok ABEND987(imports not yet supported: token.Token), zero uint) Object {
+// func makeFromLiteral(lit string, tok token.Token, zero uint) Object {
 // 	_res := _constant.MakeFromLiteral(lit, tok, zero)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/constant.Value(_res))
 // }
@@ -17229,7 +17229,7 @@ GO FUNC go/constant.Real from go/constant/value.go:
 // }
 
 GO FUNC go/constant.Shift from go/constant/value.go:
-// func shift(x _constant.Value, op ABEND987(imports not yet supported: token.Token), s uint) Object {
+// func shift(x _constant.Value, op token.Token, s uint) Object {
 // 	_res := _constant.Shift(x, op, s)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/constant.Value(_res))
 // }
@@ -17262,13 +17262,13 @@ GO FUNC go/constant.Uint64Val from go/constant/value.go:
 // }
 
 GO FUNC go/constant.UnaryOp from go/constant/value.go:
-// func unaryOp(op ABEND987(imports not yet supported: token.Token), y _constant.Value, prec uint) Object {
+// func unaryOp(op token.Token, y _constant.Value, prec uint) Object {
 // 	_res := _constant.UnaryOp(op, y, prec)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/constant.Value(_res))
 // }
 
 GO FUNC go/doc.Examples from go/doc/example.go:
-// func examples(files ...*ABEND987(imports not yet supported: ast.File)) Object {
+// func examples(files ...*ast.File) Object {
 // 	_res := _doc.Examples(files)
 // 	_vec1 := EmptyVector
 // 	for _, _elem1 := range _res {
@@ -17278,19 +17278,19 @@ GO FUNC go/doc.Examples from go/doc/example.go:
 // }
 
 GO FUNC go/doc.New from go/doc/doc.go:
-// func new(pkg *ABEND987(imports not yet supported: ast.Package), importPath string, mode _doc.Mode) Object {
+// func new(pkg *ast.Package, importPath string, mode _doc.Mode) Object {
 // 	_res := _doc.New(pkg, importPath, mode)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/doc.Package((*_res)))
 // }
 
 GO FUNC go/doc.ToHTML from go/doc/comment.go:
-// func toHTML(w ABEND987(imports not yet supported: io.Writer), text string, words map[]) Object {
+// func toHTML(w io.Writer, text string, words map[]) Object {
 // 	_doc.ToHTML(w, text, words)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC go/doc.ToText from go/doc/comment.go:
-// func toText(w ABEND987(imports not yet supported: io.Writer), text string, indent string, preIndent string, width int) Object {
+// func toText(w io.Writer, text string, indent string, preIndent string, width int) Object {
 // 	_doc.ToText(w, text, indent, preIndent, width)
 // 	...ABEND675: TODO...
 // }
@@ -17321,7 +17321,7 @@ GO FUNC go/importer.For from go/importer/importer.go:
 // }
 
 GO FUNC go/parser.ParseDir from go/parser/interface.go:
-// func parseDir(fset *ABEND987(imports not yet supported: token.FileSet), path string, filter func, mode _parser.Mode) Object {
+// func parseDir(fset *token.FileSet, path string, filter func, mode _parser.Mode) Object {
 // 	pkgs, first := _parser.ParseDir(fset, path, filter, mode)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(pkgs)
@@ -17339,7 +17339,7 @@ GO FUNC go/parser.ParseExpr from go/parser/interface.go:
 // }
 
 GO FUNC go/parser.ParseExprFrom from go/parser/interface.go:
-// func parseExprFrom(fset *ABEND987(imports not yet supported: token.FileSet), filename string, src interface {}, mode _parser.Mode) Object {
+// func parseExprFrom(fset *token.FileSet, filename string, src interface {}, mode _parser.Mode) Object {
 // 	_res1, _res2 := _parser.ParseExprFrom(fset, filename, src, mode)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromgo/ast.Expr(_res1)))
@@ -17348,7 +17348,7 @@ GO FUNC go/parser.ParseExprFrom from go/parser/interface.go:
 // }
 
 GO FUNC go/parser.ParseFile from go/parser/interface.go:
-// func parseFile(fset *ABEND987(imports not yet supported: token.FileSet), filename string, src interface {}, mode _parser.Mode) Object {
+// func parseFile(fset *token.FileSet, filename string, src interface {}, mode _parser.Mode) Object {
 // 	f, err := _parser.ParseFile(fset, filename, src, mode)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromgo/ast.File((*f))))
@@ -17357,7 +17357,7 @@ GO FUNC go/parser.ParseFile from go/parser/interface.go:
 // }
 
 GO FUNC go/scanner.PrintError from go/scanner/errors.go:
-// func printError(w ABEND987(imports not yet supported: io.Writer), err error) Object {
+// func printError(w io.Writer, err error) Object {
 // 	_scanner.PrintError(w, err)
 // 	...ABEND675: TODO...
 // }
@@ -17387,7 +17387,7 @@ GO FUNC go/types.Default from go/types/predicates.go:
 // }
 
 GO FUNC go/types.Eval from go/types/eval.go:
-// func eval(fset *ABEND987(imports not yet supported: token.FileSet), pkg *_types.Package, pos ABEND987(imports not yet supported: token.Pos), expr string) Object {
+// func eval(fset *token.FileSet, pkg *_types.Package, pos token.Pos, expr string) Object {
 // 	_, err := _types.Eval(fset, pkg, pos, expr)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.TypeAndValue(_)))
@@ -17431,25 +17431,25 @@ GO FUNC go/types.NewChan from go/types/type.go:
 // }
 
 GO FUNC go/types.NewChecker from go/types/check.go:
-// func newChecker(conf *_types.Config, fset *ABEND987(imports not yet supported: token.FileSet), pkg *_types.Package, info *_types.Info) Object {
+// func newChecker(conf *_types.Config, fset *token.FileSet, pkg *_types.Package, info *_types.Info) Object {
 // 	_res := _types.NewChecker(conf, fset, pkg, info)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Checker((*_res)))
 // }
 
 GO FUNC go/types.NewConst from go/types/object.go:
-// func newConst(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, typ _types.Type, val ABEND987(imports not yet supported: constant.Value)) Object {
+// func newConst(pos token.Pos, pkg *_types.Package, name string, typ _types.Type, val constant.Value) Object {
 // 	_res := _types.NewConst(pos, pkg, name, typ, val)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Const((*_res)))
 // }
 
 GO FUNC go/types.NewField from go/types/object.go:
-// func newField(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, typ _types.Type, embedded bool) Object {
+// func newField(pos token.Pos, pkg *_types.Package, name string, typ _types.Type, embedded bool) Object {
 // 	_res := _types.NewField(pos, pkg, name, typ, embedded)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Var((*_res)))
 // }
 
 GO FUNC go/types.NewFunc from go/types/object.go:
-// func newFunc(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, sig *_types.Signature) Object {
+// func newFunc(pos token.Pos, pkg *_types.Package, name string, sig *_types.Signature) Object {
 // 	_res := _types.NewFunc(pos, pkg, name, sig)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Func((*_res)))
 // }
@@ -17467,7 +17467,7 @@ GO FUNC go/types.NewInterfaceType from go/types/type.go:
 // }
 
 GO FUNC go/types.NewLabel from go/types/object.go:
-// func newLabel(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string) Object {
+// func newLabel(pos token.Pos, pkg *_types.Package, name string) Object {
 // 	_res := _types.NewLabel(pos, pkg, name)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Label((*_res)))
 // }
@@ -17497,13 +17497,13 @@ GO FUNC go/types.NewPackage from go/types/package.go:
 // }
 
 GO FUNC go/types.NewParam from go/types/object.go:
-// func newParam(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, typ _types.Type) Object {
+// func newParam(pos token.Pos, pkg *_types.Package, name string, typ _types.Type) Object {
 // 	_res := _types.NewParam(pos, pkg, name, typ)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Var((*_res)))
 // }
 
 GO FUNC go/types.NewPkgName from go/types/object.go:
-// func newPkgName(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, imported *_types.Package) Object {
+// func newPkgName(pos token.Pos, pkg *_types.Package, name string, imported *_types.Package) Object {
 // 	_res := _types.NewPkgName(pos, pkg, name, imported)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.PkgName((*_res)))
 // }
@@ -17515,7 +17515,7 @@ GO FUNC go/types.NewPointer from go/types/type.go:
 // }
 
 GO FUNC go/types.NewScope from go/types/scope.go:
-// func newScope(parent *_types.Scope, pos ABEND987(imports not yet supported: token.Pos), end ABEND987(imports not yet supported: token.Pos), comment string) Object {
+// func newScope(parent *_types.Scope, pos token.Pos, end token.Pos, comment string) Object {
 // 	_res := _types.NewScope(parent, pos, end, comment)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Scope((*_res)))
 // }
@@ -17545,13 +17545,13 @@ GO FUNC go/types.NewTuple from go/types/type.go:
 // }
 
 GO FUNC go/types.NewTypeName from go/types/object.go:
-// func newTypeName(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, typ _types.Type) Object {
+// func newTypeName(pos token.Pos, pkg *_types.Package, name string, typ _types.Type) Object {
 // 	_res := _types.NewTypeName(pos, pkg, name, typ)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.TypeName((*_res)))
 // }
 
 GO FUNC go/types.NewVar from go/types/object.go:
-// func newVar(pos ABEND987(imports not yet supported: token.Pos), pkg *_types.Package, name string, typ _types.Type) Object {
+// func newVar(pos token.Pos, pkg *_types.Package, name string, typ _types.Type) Object {
 // 	_res := _types.NewVar(pos, pkg, name, typ)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromgo/types.Var((*_res)))
 // }
@@ -17569,19 +17569,19 @@ GO FUNC go/types.SizesFor from go/types/sizes.go:
 // }
 
 GO FUNC go/types.WriteExpr from go/types/exprstring.go:
-// func writeExpr(buf *ABEND987(imports not yet supported: bytes.Buffer), x ABEND987(imports not yet supported: ast.Expr)) Object {
+// func writeExpr(buf *bytes.Buffer, x ast.Expr) Object {
 // 	_types.WriteExpr(buf, x)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC go/types.WriteSignature from go/types/typestring.go:
-// func writeSignature(buf *ABEND987(imports not yet supported: bytes.Buffer), sig *_types.Signature, qf _types.Qualifier) Object {
+// func writeSignature(buf *bytes.Buffer, sig *_types.Signature, qf _types.Qualifier) Object {
 // 	_types.WriteSignature(buf, sig, qf)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC go/types.WriteType from go/types/typestring.go:
-// func writeType(buf *ABEND987(imports not yet supported: bytes.Buffer), typ _types.Type, qf _types.Qualifier) Object {
+// func writeType(buf *bytes.Buffer, typ _types.Type, qf _types.Qualifier) Object {
 // 	_types.WriteType(buf, typ, qf)
 // 	...ABEND675: TODO...
 // }
@@ -17669,7 +17669,7 @@ GO FUNC hash/fnv.New64a from hash/fnv/fnv.go:
 // }
 
 GO FUNC html/template.HTMLEscape from html/template/escape.go:
-// func hTMLEscape(w ABEND987(imports not yet supported: io.Writer), b []byte) Object {
+// func hTMLEscape(w io.Writer, b []byte) Object {
 // 	_template.HTMLEscape(w, b)
 // 	...ABEND675: TODO...
 // }
@@ -17684,7 +17684,7 @@ GO FUNC html/template.IsTrue from html/template/template.go:
 // }
 
 GO FUNC html/template.JSEscape from html/template/escape.go:
-// func jSEscape(w ABEND987(imports not yet supported: io.Writer), b []byte) Object {
+// func jSEscape(w io.Writer, b []byte) Object {
 // 	_template.JSEscape(w, b)
 // 	...ABEND675: TODO...
 // }
@@ -17720,7 +17720,7 @@ GO FUNC html/template.ParseGlob from html/template/template.go:
 // }
 
 GO FUNC image.Decode from image/format.go:
-// func decode(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decode(r io.Reader) Object {
 // 	_res1, _res2, _res3 := _image.Decode(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Image(_res1)))
@@ -17730,7 +17730,7 @@ GO FUNC image.Decode from image/format.go:
 // }
 
 GO FUNC image.DecodeConfig from image/format.go:
-// func decodeConfig(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decodeConfig(r io.Reader) Object {
 // 	_res1, _res2, _res3 := _image.DecodeConfig(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Config(_res1)))
@@ -17788,7 +17788,7 @@ GO FUNC image.NewNYCbCrA from image/ycbcr.go:
 // }
 
 GO FUNC image.NewPaletted from image/image.go:
-// func newPaletted(r _image.Rectangle, p ABEND987(imports not yet supported: color.Palette)) Object {
+// func newPaletted(r _image.Rectangle, p color.Palette) Object {
 // 	_res := _image.NewPaletted(r, p)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromimage.Paletted((*_res)))
 // }
@@ -17806,7 +17806,7 @@ GO FUNC image.NewRGBA64 from image/image.go:
 // }
 
 GO FUNC image.NewUniform from image/names.go:
-// func newUniform(c ABEND987(imports not yet supported: color.Color)) Object {
+// func newUniform(c color.Color) Object {
 // 	_res := _image.NewUniform(c)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromimage.Uniform((*_res)))
 // }
@@ -17883,19 +17883,19 @@ GO FUNC image/color.YCbCrToRGB from image/color/ycbcr.go:
 // }
 
 GO FUNC image/draw.Draw from image/draw/draw.go:
-// func draw(dst _draw.Image, r ABEND987(imports not yet supported: image.Rectangle), src ABEND987(imports not yet supported: image.Image), sp ABEND987(imports not yet supported: image.Point), op _draw.Op) Object {
+// func draw(dst _draw.Image, r image.Rectangle, src image.Image, sp image.Point, op _draw.Op) Object {
 // 	_draw.Draw(dst, r, src, sp, op)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC image/draw.DrawMask from image/draw/draw.go:
-// func drawMask(dst _draw.Image, r ABEND987(imports not yet supported: image.Rectangle), src ABEND987(imports not yet supported: image.Image), sp ABEND987(imports not yet supported: image.Point), mask ABEND987(imports not yet supported: image.Image), mp ABEND987(imports not yet supported: image.Point), op _draw.Op) Object {
+// func drawMask(dst _draw.Image, r image.Rectangle, src image.Image, sp image.Point, mask image.Image, mp image.Point, op _draw.Op) Object {
 // 	_draw.DrawMask(dst, r, src, sp, mask, mp, op)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC image/gif.Decode from image/gif/reader.go:
-// func decode(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decode(r io.Reader) Object {
 // 	_res1, _res2 := _gif.Decode(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Image(_res1)))
@@ -17904,7 +17904,7 @@ GO FUNC image/gif.Decode from image/gif/reader.go:
 // }
 
 GO FUNC image/gif.DecodeAll from image/gif/reader.go:
-// func decodeAll(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decodeAll(r io.Reader) Object {
 // 	_res1, _res2 := _gif.DecodeAll(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage/gif.GIF((*_res1))))
@@ -17913,7 +17913,7 @@ GO FUNC image/gif.DecodeAll from image/gif/reader.go:
 // }
 
 GO FUNC image/gif.DecodeConfig from image/gif/reader.go:
-// func decodeConfig(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decodeConfig(r io.Reader) Object {
 // 	_res1, _res2 := _gif.DecodeConfig(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Config(_res1)))
@@ -17922,7 +17922,7 @@ GO FUNC image/gif.DecodeConfig from image/gif/reader.go:
 // }
 
 GO FUNC image/jpeg.Decode from image/jpeg/reader.go:
-// func decode(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decode(r io.Reader) Object {
 // 	_res1, _res2 := _jpeg.Decode(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Image(_res1)))
@@ -17931,7 +17931,7 @@ GO FUNC image/jpeg.Decode from image/jpeg/reader.go:
 // }
 
 GO FUNC image/jpeg.DecodeConfig from image/jpeg/reader.go:
-// func decodeConfig(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decodeConfig(r io.Reader) Object {
 // 	_res1, _res2 := _jpeg.DecodeConfig(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Config(_res1)))
@@ -17940,7 +17940,7 @@ GO FUNC image/jpeg.DecodeConfig from image/jpeg/reader.go:
 // }
 
 GO FUNC image/png.Decode from image/png/reader.go:
-// func decode(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decode(r io.Reader) Object {
 // 	_res1, _res2 := _png.Decode(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Image(_res1)))
@@ -17949,7 +17949,7 @@ GO FUNC image/png.Decode from image/png/reader.go:
 // }
 
 GO FUNC image/png.DecodeConfig from image/png/reader.go:
-// func decodeConfig(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func decodeConfig(r io.Reader) Object {
 // 	_res1, _res2 := _png.DecodeConfig(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromimage.Config(_res1)))
@@ -18057,13 +18057,13 @@ func writeString(w _io.Writer, s string) Object {
 }
 
 GO FUNC io/ioutil.NopCloser from io/ioutil/ioutil.go:
-// func nopCloser(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func nopCloser(r io.Reader) Object {
 // 	_res := _ioutil.NopCloser(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res))
 // }
 
 GO FUNC io/ioutil.ReadAll from io/ioutil/ioutil.go:
-// func readAll(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func readAll(r io.Reader) Object {
 // 	_res1, _res2 := _ioutil.ReadAll(r)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -18138,7 +18138,7 @@ GO FUNC log.Fatalln from log/log.go:
 // }
 
 GO FUNC log.New from log/log.go:
-// func new(out ABEND987(imports not yet supported: io.Writer), prefix string, flag int) Object {
+// func new(out io.Writer, prefix string, flag int) Object {
 // 	_res := _log.New(out, prefix, flag)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromlog.Logger((*_res)))
 // }
@@ -18186,7 +18186,7 @@ GO FUNC log.SetFlags from log/log.go:
 // }
 
 GO FUNC log.SetOutput from log/log.go:
-// func setOutput(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func setOutput(w io.Writer) Object {
 // 	_log.SetOutput(w)
 // 	...ABEND675: TODO...
 // }
@@ -18825,25 +18825,25 @@ GO FUNC mime.ParseMediaType from mime/mediatype.go:
 // }
 
 GO FUNC mime/multipart.NewReader from mime/multipart/multipart.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader), boundary string) Object {
+// func newReader(r io.Reader, boundary string) Object {
 // 	_res := _multipart.NewReader(r, boundary)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrommime/multipart.Reader((*_res)))
 // }
 
 GO FUNC mime/multipart.NewWriter from mime/multipart/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _multipart.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrommime/multipart.Writer((*_res)))
 // }
 
 GO FUNC mime/quotedprintable.NewReader from mime/quotedprintable/reader.go:
-// func newReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReader(r io.Reader) Object {
 // 	_res := _quotedprintable.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrommime/quotedprintable.Reader((*_res)))
 // }
 
 GO FUNC mime/quotedprintable.NewWriter from mime/quotedprintable/writer.go:
-// func newWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriter(w io.Writer) Object {
 // 	_res := _quotedprintable.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFrommime/quotedprintable.Writer((*_res)))
 // }
@@ -18882,7 +18882,7 @@ GO FUNC net.DialTCP from net/tcpsock.go:
 // }
 
 GO FUNC net.DialTimeout from net/dial.go:
-// func dialTimeout(network string, address string, timeout ABEND987(imports not yet supported: time.Duration)) Object {
+// func dialTimeout(network string, address string, timeout time.Duration) Object {
 // 	_res1, _res2 := _net.DialTimeout(network, address, timeout)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(_res1)))
@@ -18909,7 +18909,7 @@ GO FUNC net.DialUnix from net/unixsock.go:
 // }
 
 GO FUNC net.FileConn from net/file.go:
-// func fileConn(f *ABEND987(imports not yet supported: os.File)) Object {
+// func fileConn(f *os.File) Object {
 // 	c, err := _net.FileConn(f)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(c)))
@@ -18918,7 +18918,7 @@ GO FUNC net.FileConn from net/file.go:
 // }
 
 GO FUNC net.FileListener from net/file.go:
-// func fileListener(f *ABEND987(imports not yet supported: os.File)) Object {
+// func fileListener(f *os.File) Object {
 // 	ln, err := _net.FileListener(f)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Listener(ln)))
@@ -18927,7 +18927,7 @@ GO FUNC net.FileListener from net/file.go:
 // }
 
 GO FUNC net.FilePacketConn from net/file.go:
-// func filePacketConn(f *ABEND987(imports not yet supported: os.File)) Object {
+// func filePacketConn(f *os.File) Object {
 // 	c, err := _net.FilePacketConn(f)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.PacketConn(c)))
@@ -19296,7 +19296,7 @@ GO FUNC net/http.Head from net/http/client.go:
 // }
 
 GO FUNC net/http.MaxBytesReader from net/http/request.go:
-// func maxBytesReader(w _http.ResponseWriter, r ABEND987(imports not yet supported: io.ReadCloser), n int64) Object {
+// func maxBytesReader(w _http.ResponseWriter, r io.ReadCloser, n int64) Object {
 // 	_res := _http.MaxBytesReader(w, r, n)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.ReadCloser(_res))
 // }
@@ -19308,7 +19308,7 @@ GO FUNC net/http.NewFileTransport from net/http/filetransport.go:
 // }
 
 GO FUNC net/http.NewRequest from net/http/request.go:
-// func newRequest(method string, url string, body ABEND987(imports not yet supported: io.Reader)) Object {
+// func newRequest(method string, url string, body io.Reader) Object {
 // 	_res1, _res2 := _http.NewRequest(method, url, body)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
@@ -19354,7 +19354,7 @@ GO FUNC net/http.ParseTime from net/http/header.go:
 // }
 
 GO FUNC net/http.Post from net/http/client.go:
-// func post(url string, contentType string, body ABEND987(imports not yet supported: io.Reader)) Object {
+// func post(url string, contentType string, body io.Reader) Object {
 // 	resp, err := _http.Post(url, contentType, body)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
@@ -19363,7 +19363,7 @@ GO FUNC net/http.Post from net/http/client.go:
 // }
 
 GO FUNC net/http.PostForm from net/http/client.go:
-// func postForm(url string, data ABEND987(imports not yet supported: url.Values)) Object {
+// func postForm(url string, data url.Values) Object {
 // 	resp, err := _http.PostForm(url, data)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
@@ -19381,12 +19381,12 @@ GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 // }
 
 GO FUNC net/http.ProxyURL from net/http/transport.go:
-// func proxyURL(fixedURL *ABEND987(imports not yet supported: url.URL)) Object {
+// func proxyURL(fixedURL *url.URL) Object {
 // 	return _http.ProxyURL(fixedURL)
 // }
 
 GO FUNC net/http.ReadRequest from net/http/request.go:
-// func readRequest(b *ABEND987(imports not yet supported: bufio.Reader)) Object {
+// func readRequest(b *bufio.Reader) Object {
 // 	_res1, _res2 := _http.ReadRequest(b)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
@@ -19395,7 +19395,7 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 // }
 
 GO FUNC net/http.ReadResponse from net/http/response.go:
-// func readResponse(r *ABEND987(imports not yet supported: bufio.Reader), req *_http.Request) Object {
+// func readResponse(r *bufio.Reader, req *_http.Request) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*_res1))))
@@ -19416,7 +19416,7 @@ GO FUNC net/http.RedirectHandler from net/http/server.go:
 // }
 
 GO FUNC net/http.ServeContent from net/http/fs.go:
-// func serveContent(w _http.ResponseWriter, req *_http.Request, name string, modtime ABEND987(imports not yet supported: time.Time), content ABEND987(imports not yet supported: io.ReadSeeker)) Object {
+// func serveContent(w _http.ResponseWriter, req *_http.Request, name string, modtime time.Time, content io.ReadSeeker) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
 // 	...ABEND675: TODO...
 // }
@@ -19440,7 +19440,7 @@ GO FUNC net/http.StripPrefix from net/http/server.go:
 // }
 
 GO FUNC net/http.TimeoutHandler from net/http/server.go:
-// func timeoutHandler(h _http.Handler, dt ABEND987(imports not yet supported: time.Duration), msg string) Object {
+// func timeoutHandler(h _http.Handler, dt time.Duration, msg string) Object {
 // 	_res := _http.TimeoutHandler(h, dt, msg)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
 // }
@@ -19473,7 +19473,7 @@ GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // }
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-// func processEnv(r *ABEND987(imports not yet supported: http.Request)) Object {
+// func processEnv(r *http.Request) Object {
 // 	return _fcgi.ProcessEnv(r)
 // }
 
@@ -19484,43 +19484,43 @@ GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 // }
 
 GO FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
-// func newRequest(method string, target string, body ABEND987(imports not yet supported: io.Reader)) Object {
+// func newRequest(method string, target string, body io.Reader) Object {
 // 	_res := _httptest.NewRequest(method, target, body)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res)))
 // }
 
 GO FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
-// func newServer(handler ABEND987(imports not yet supported: http.Handler)) Object {
+// func newServer(handler http.Handler) Object {
 // 	_res := _httptest.NewServer(handler)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
 // }
 
 GO FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
-// func newTLSServer(handler ABEND987(imports not yet supported: http.Handler)) Object {
+// func newTLSServer(handler http.Handler) Object {
 // 	_res := _httptest.NewTLSServer(handler)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
 // }
 
 GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
-// func newUnstartedServer(handler ABEND987(imports not yet supported: http.Handler)) Object {
+// func newUnstartedServer(handler http.Handler) Object {
 // 	_res := _httptest.NewUnstartedServer(handler)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
 // }
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
-// func contextClientTrace(ctx ABEND987(imports not yet supported: context.Context)) Object {
+// func contextClientTrace(ctx context.Context) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptrace.ClientTrace((*_res)))
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
-// func withClientTrace(ctx ABEND987(imports not yet supported: context.Context), trace *_httptrace.ClientTrace) Object {
+// func withClientTrace(ctx context.Context, trace *_httptrace.ClientTrace) Object {
 // 	_res := _httptrace.WithClientTrace(ctx, trace)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(_res))
 // }
 
 GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
-// func dumpRequest(req *ABEND987(imports not yet supported: http.Request), body bool) Object {
+// func dumpRequest(req *http.Request, body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequest(req, body)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -19533,7 +19533,7 @@ GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
-// func dumpRequestOut(req *ABEND987(imports not yet supported: http.Request), body bool) Object {
+// func dumpRequestOut(req *http.Request, body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequestOut(req, body)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -19546,7 +19546,7 @@ GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
-// func dumpResponse(resp *ABEND987(imports not yet supported: http.Response), body bool) Object {
+// func dumpResponse(resp *http.Response, body bool) Object {
 // 	_res1, _res2 := _httputil.DumpResponse(resp, body)
 // 	_res := EmptyVector
 // 	_vec1 := EmptyVector
@@ -19559,43 +19559,43 @@ GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
-// func newChunkedReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newChunkedReader(r io.Reader) Object {
 // 	_res := _httputil.NewChunkedReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
-// func newChunkedWriter(w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newChunkedWriter(w io.Writer) Object {
 // 	_res := _httputil.NewChunkedWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.WriteCloser(_res))
 // }
 
 GO FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
-// func newClientConn(c ABEND987(imports not yet supported: net.Conn), r *ABEND987(imports not yet supported: bufio.Reader)) Object {
+// func newClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewClientConn(c, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ClientConn((*_res)))
 // }
 
 GO FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
-// func newProxyClientConn(c ABEND987(imports not yet supported: net.Conn), r *ABEND987(imports not yet supported: bufio.Reader)) Object {
+// func newProxyClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewProxyClientConn(c, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ClientConn((*_res)))
 // }
 
 GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
-// func newServerConn(c ABEND987(imports not yet supported: net.Conn), r *ABEND987(imports not yet supported: bufio.Reader)) Object {
+// func newServerConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewServerConn(c, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ServerConn((*_res)))
 // }
 
 GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
-// func newSingleHostReverseProxy(target *ABEND987(imports not yet supported: url.URL)) Object {
+// func newSingleHostReverseProxy(target *url.URL) Object {
 // 	_res := _httputil.NewSingleHostReverseProxy(target)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ReverseProxy((*_res)))
 // }
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
-// func cmdline(w ABEND987(imports not yet supported: http.ResponseWriter), r *ABEND987(imports not yet supported: http.Request)) Object {
+// func cmdline(w http.ResponseWriter, r *http.Request) Object {
 // 	_pprof.Cmdline(w, r)
 // 	...ABEND675: TODO...
 // }
@@ -19607,25 +19607,25 @@ GO FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
 // }
 
 GO FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
-// func index(w ABEND987(imports not yet supported: http.ResponseWriter), r *ABEND987(imports not yet supported: http.Request)) Object {
+// func index(w http.ResponseWriter, r *http.Request) Object {
 // 	_pprof.Index(w, r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Profile from net/http/pprof/pprof.go:
-// func profile(w ABEND987(imports not yet supported: http.ResponseWriter), r *ABEND987(imports not yet supported: http.Request)) Object {
+// func profile(w http.ResponseWriter, r *http.Request) Object {
 // 	_pprof.Profile(w, r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Symbol from net/http/pprof/pprof.go:
-// func symbol(w ABEND987(imports not yet supported: http.ResponseWriter), r *ABEND987(imports not yet supported: http.Request)) Object {
+// func symbol(w http.ResponseWriter, r *http.Request) Object {
 // 	_pprof.Symbol(w, r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
-// func trace(w ABEND987(imports not yet supported: http.ResponseWriter), r *ABEND987(imports not yet supported: http.Request)) Object {
+// func trace(w http.ResponseWriter, r *http.Request) Object {
 // 	_pprof.Trace(w, r)
 // 	...ABEND675: TODO...
 // }
@@ -19662,7 +19662,7 @@ GO FUNC net/mail.ParseDate from net/mail/message.go:
 // }
 
 GO FUNC net/mail.ReadMessage from net/mail/message.go:
-// func readMessage(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func readMessage(r io.Reader) Object {
 // 	msg, err := _mail.ReadMessage(r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/mail.Message((*msg))))
@@ -19671,7 +19671,7 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // }
 
 GO FUNC net/rpc.Accept from net/rpc/server.go:
-// func accept(lis ABEND987(imports not yet supported: net.Listener)) Object {
+// func accept(lis net.Listener) Object {
 // 	_rpc.Accept(lis)
 // 	...ABEND675: TODO...
 // }
@@ -19710,7 +19710,7 @@ GO FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc.NewClient from net/rpc/client.go:
-// func newClient(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _rpc.NewClient(conn)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res)))
 // }
@@ -19734,7 +19734,7 @@ GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc.ServeConn from net/rpc/server.go:
-// func serveConn(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func serveConn(conn io.ReadWriteCloser) Object {
 // 	_rpc.ServeConn(conn)
 // 	...ABEND675: TODO...
 // }
@@ -19749,25 +19749,25 @@ GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
-// func newClient(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewClient(conn)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res)))
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
-// func newClientCodec(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func newClientCodec(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewClientCodec(conn)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.ClientCodec(_res))
 // }
 
 GO FUNC net/rpc/jsonrpc.NewServerCodec from net/rpc/jsonrpc/server.go:
-// func newServerCodec(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func newServerCodec(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewServerCodec(conn)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.ServerCodec(_res))
 // }
 
 GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
-// func serveConn(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func serveConn(conn io.ReadWriteCloser) Object {
 // 	_jsonrpc.ServeConn(conn)
 // 	...ABEND675: TODO...
 // }
@@ -19788,7 +19788,7 @@ GO FUNC net/smtp.Dial from net/smtp/smtp.go:
 // }
 
 GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
-// func newClient(conn ABEND987(imports not yet supported: net.Conn), host string) Object {
+// func newClient(conn net.Conn, host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Client((*_res1))))
@@ -19812,19 +19812,19 @@ GO FUNC net/textproto.Dial from net/textproto/textproto.go:
 // }
 
 GO FUNC net/textproto.NewConn from net/textproto/textproto.go:
-// func newConn(conn ABEND987(imports not yet supported: io.ReadWriteCloser)) Object {
+// func newConn(conn io.ReadWriteCloser) Object {
 // 	_res := _textproto.NewConn(conn)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Conn((*_res)))
 // }
 
 GO FUNC net/textproto.NewReader from net/textproto/reader.go:
-// func newReader(r *ABEND987(imports not yet supported: bufio.Reader)) Object {
+// func newReader(r *bufio.Reader) Object {
 // 	_res := _textproto.NewReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Reader((*_res)))
 // }
 
 GO FUNC net/textproto.NewWriter from net/textproto/writer.go:
-// func newWriter(w *ABEND987(imports not yet supported: bufio.Writer)) Object {
+// func newWriter(w *bufio.Writer) Object {
 // 	_res := _textproto.NewWriter(w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Writer((*_res)))
 // }
@@ -20071,7 +20071,7 @@ GO FUNC os/exec.Command from os/exec/exec.go:
 // }
 
 GO FUNC os/exec.CommandContext from os/exec/exec.go:
-// func commandContext(ctx ABEND987(imports not yet supported: context.Context), name string, arg ...string) Object {
+// func commandContext(ctx context.Context, name string, arg ...string) Object {
 // 	_res := _exec.CommandContext(ctx, name, arg)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromos/exec.Cmd((*_res)))
 // }
@@ -20086,19 +20086,19 @@ func lookPath(file string) Object {
 }
 
 GO FUNC os/signal.Ignore from os/signal/signal.go:
-// func ignore(sig ...ABEND987(imports not yet supported: os.Signal)) Object {
+// func ignore(sig ...os.Signal) Object {
 // 	_signal.Ignore(sig)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC os/signal.Notify from os/signal/signal.go:
-// func notify(c <-chan, sig ...ABEND987(imports not yet supported: os.Signal)) Object {
+// func notify(c <-chan, sig ...os.Signal) Object {
 // 	_signal.Notify(c, sig)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC os/signal.Reset from os/signal/signal.go:
-// func reset(sig ...ABEND987(imports not yet supported: os.Signal)) Object {
+// func reset(sig ...os.Signal) Object {
 // 	_signal.Reset(sig)
 // 	...ABEND675: TODO...
 // }
@@ -20328,7 +20328,7 @@ GO FUNC reflect.New from reflect/value.go:
 // }
 
 GO FUNC reflect.NewAt from reflect/value.go:
-// func newAt(typ _reflect.Type, p ABEND987(imports not yet supported: unsafe.Pointer)) Object {
+// func newAt(typ _reflect.Type, p unsafe.Pointer) Object {
 // 	_res := _reflect.NewAt(typ, p)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromreflect.Value(_res))
 // }
@@ -20412,7 +20412,7 @@ GO FUNC regexp.Match from regexp/regexp.go:
 // }
 
 GO FUNC regexp.MatchReader from regexp/regexp.go:
-// func matchReader(pattern string, r ABEND987(imports not yet supported: io.RuneReader)) Object {
+// func matchReader(pattern string, r io.RuneReader) Object {
 // 	matched, err := _regexp.MatchReader(pattern, r)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeBool(matched))
@@ -20599,7 +20599,7 @@ GO FUNC runtime.SetCPUProfileRate from runtime/cpuprof.go:
 // }
 
 GO FUNC runtime.SetCgoTraceback from runtime/traceback.go:
-// func setCgoTraceback(version int, traceback ABEND987(imports not yet supported: unsafe.Pointer), context ABEND987(imports not yet supported: unsafe.Pointer), symbolizer ABEND987(imports not yet supported: unsafe.Pointer)) Object {
+// func setCgoTraceback(version int, traceback unsafe.Pointer, context unsafe.Pointer, symbolizer unsafe.Pointer) Object {
 // 	_runtime.SetCgoTraceback(version, traceback, context, symbolizer)
 // 	...ABEND675: TODO...
 // }
@@ -20672,19 +20672,19 @@ GO FUNC runtime/debug.WriteHeapDump from runtime/debug/garbage.go:
 // }
 
 GO FUNC runtime/pprof.Do from runtime/pprof/runtime.go:
-// func do(ctx ABEND987(imports not yet supported: context.Context), labels _pprof.LabelSet, f func) Object {
+// func do(ctx context.Context, labels _pprof.LabelSet, f func) Object {
 // 	_pprof.Do(ctx, labels, f)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC runtime/pprof.ForLabels from runtime/pprof/label.go:
-// func forLabels(ctx ABEND987(imports not yet supported: context.Context), f func) Object {
+// func forLabels(ctx context.Context, f func) Object {
 // 	_pprof.ForLabels(ctx, f)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC runtime/pprof.Label from runtime/pprof/label.go:
-// func label(ctx ABEND987(imports not yet supported: context.Context), key string) Object {
+// func label(ctx context.Context, key string) Object {
 // 	_res1, _res2 := _pprof.Label(ctx, key)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeString(_res1))
@@ -20721,7 +20721,7 @@ GO FUNC runtime/pprof.Profiles from runtime/pprof/pprof.go:
 // }
 
 GO FUNC runtime/pprof.SetGoroutineLabels from runtime/pprof/runtime.go:
-// func setGoroutineLabels(ctx ABEND987(imports not yet supported: context.Context)) Object {
+// func setGoroutineLabels(ctx context.Context) Object {
 // 	_pprof.SetGoroutineLabels(ctx)
 // 	...ABEND675: TODO...
 // }
@@ -20733,25 +20733,25 @@ GO FUNC runtime/pprof.StopCPUProfile from runtime/pprof/pprof.go:
 // }
 
 GO FUNC runtime/pprof.WithLabels from runtime/pprof/label.go:
-// func withLabels(ctx ABEND987(imports not yet supported: context.Context), labels _pprof.LabelSet) Object {
+// func withLabels(ctx context.Context, labels _pprof.LabelSet) Object {
 // 	_res := _pprof.WithLabels(ctx, labels)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(_res))
 // }
 
 GO FUNC runtime/trace.Log from runtime/trace/annotation.go:
-// func log(ctx ABEND987(imports not yet supported: context.Context), category string, message string) Object {
+// func log(ctx context.Context, category string, message string) Object {
 // 	_trace.Log(ctx, category, message)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC runtime/trace.Logf from runtime/trace/annotation.go:
-// func logf(ctx ABEND987(imports not yet supported: context.Context), category string, format string, args ...interface {}) Object {
+// func logf(ctx context.Context, category string, format string, args ...interface {}) Object {
 // 	_trace.Logf(ctx, category, format, args)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC runtime/trace.NewTask from runtime/trace/annotation.go:
-// func newTask(pctx ABEND987(imports not yet supported: context.Context), taskType string) Object {
+// func newTask(pctx context.Context, taskType string) Object {
 // 	ctx, task := _trace.NewTask(pctx, taskType)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromcontext.Context(ctx)))
@@ -20760,7 +20760,7 @@ GO FUNC runtime/trace.NewTask from runtime/trace/annotation.go:
 // }
 
 GO FUNC runtime/trace.StartRegion from runtime/trace/annotation.go:
-// func startRegion(ctx ABEND987(imports not yet supported: context.Context), regionType string) Object {
+// func startRegion(ctx context.Context, regionType string) Object {
 // 	_res := _trace.StartRegion(ctx, regionType)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromruntime/trace.Region((*_res)))
 // }
@@ -20772,7 +20772,7 @@ GO FUNC runtime/trace.Stop from runtime/trace/trace.go:
 // }
 
 GO FUNC runtime/trace.WithRegion from runtime/trace/annotation.go:
-// func withRegion(ctx ABEND987(imports not yet supported: context.Context), regionType string, fn func) Object {
+// func withRegion(ctx context.Context, regionType string, fn func) Object {
 // 	_trace.WithRegion(ctx, regionType, fn)
 // 	...ABEND675: TODO...
 // }
@@ -21079,7 +21079,7 @@ GO FUNC sync/atomic.AddUintptr from sync/atomic/doc.go:
 // }
 
 GO FUNC sync/atomic.LoadPointer from sync/atomic/doc.go:
-// func loadPointer(addr *ABEND987(imports not yet supported: unsafe.Pointer)) Object {
+// func loadPointer(addr *unsafe.Pointer) Object {
 // 	_res := _atomic.LoadPointer(addr)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromunsafe.Pointer(_res))
 // }
@@ -21107,7 +21107,7 @@ GO FUNC sync/atomic.StoreInt64 from sync/atomic/doc.go:
 // }
 
 GO FUNC sync/atomic.StorePointer from sync/atomic/doc.go:
-// func storePointer(addr *ABEND987(imports not yet supported: unsafe.Pointer), val ABEND987(imports not yet supported: unsafe.Pointer)) Object {
+// func storePointer(addr *unsafe.Pointer, val unsafe.Pointer) Object {
 // 	_atomic.StorePointer(addr, val)
 // 	...ABEND675: TODO...
 // }
@@ -21131,7 +21131,7 @@ GO FUNC sync/atomic.StoreUintptr from sync/atomic/doc.go:
 // }
 
 GO FUNC sync/atomic.SwapPointer from sync/atomic/doc.go:
-// func swapPointer(addr *ABEND987(imports not yet supported: unsafe.Pointer), new ABEND987(imports not yet supported: unsafe.Pointer)) Object {
+// func swapPointer(addr *unsafe.Pointer, new unsafe.Pointer) Object {
 // 	_res := _atomic.SwapPointer(addr, new)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromunsafe.Pointer(_res))
 // }
@@ -21929,49 +21929,49 @@ GO FUNC testing.RunBenchmarks from testing/benchmark.go:
 // }
 
 GO FUNC testing/iotest.DataErrReader from testing/iotest/reader.go:
-// func dataErrReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func dataErrReader(r io.Reader) Object {
 // 	_res := _iotest.DataErrReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC testing/iotest.HalfReader from testing/iotest/reader.go:
-// func halfReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func halfReader(r io.Reader) Object {
 // 	_res := _iotest.HalfReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC testing/iotest.NewReadLogger from testing/iotest/logger.go:
-// func newReadLogger(prefix string, r ABEND987(imports not yet supported: io.Reader)) Object {
+// func newReadLogger(prefix string, r io.Reader) Object {
 // 	_res := _iotest.NewReadLogger(prefix, r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC testing/iotest.NewWriteLogger from testing/iotest/logger.go:
-// func newWriteLogger(prefix string, w ABEND987(imports not yet supported: io.Writer)) Object {
+// func newWriteLogger(prefix string, w io.Writer) Object {
 // 	_res := _iotest.NewWriteLogger(prefix, w)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Writer(_res))
 // }
 
 GO FUNC testing/iotest.OneByteReader from testing/iotest/reader.go:
-// func oneByteReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func oneByteReader(r io.Reader) Object {
 // 	_res := _iotest.OneByteReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC testing/iotest.TimeoutReader from testing/iotest/reader.go:
-// func timeoutReader(r ABEND987(imports not yet supported: io.Reader)) Object {
+// func timeoutReader(r io.Reader) Object {
 // 	_res := _iotest.TimeoutReader(r)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Reader(_res))
 // }
 
 GO FUNC testing/iotest.TruncateWriter from testing/iotest/writer.go:
-// func truncateWriter(w ABEND987(imports not yet supported: io.Writer), n int64) Object {
+// func truncateWriter(w io.Writer, n int64) Object {
 // 	_res := _iotest.TruncateWriter(w, n)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromio.Writer(_res))
 // }
 
 GO FUNC testing/quick.Value from testing/quick/quick.go:
-// func value(t ABEND987(imports not yet supported: reflect.Type), rand *ABEND987(imports not yet supported: rand.Rand)) Object {
+// func value(t reflect.Type, rand *rand.Rand) Object {
 // 	value, ok := _quick.Value(t, rand)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromreflect.Value(value)))
@@ -21980,13 +21980,13 @@ GO FUNC testing/quick.Value from testing/quick/quick.go:
 // }
 
 GO FUNC text/tabwriter.NewWriter from text/tabwriter/tabwriter.go:
-// func newWriter(output ABEND987(imports not yet supported: io.Writer), minwidth int, tabwidth int, padding int, padchar byte, flags uint) Object {
+// func newWriter(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) Object {
 // 	_res := _tabwriter.NewWriter(output, minwidth, tabwidth, padding, padchar, flags)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromtext/tabwriter.Writer((*_res)))
 // }
 
 GO FUNC text/template.HTMLEscape from text/template/funcs.go:
-// func hTMLEscape(w ABEND987(imports not yet supported: io.Writer), b []byte) Object {
+// func hTMLEscape(w io.Writer, b []byte) Object {
 // 	_template.HTMLEscape(w, b)
 // 	...ABEND675: TODO...
 // }
@@ -22001,7 +22001,7 @@ GO FUNC text/template.IsTrue from text/template/exec.go:
 // }
 
 GO FUNC text/template.JSEscape from text/template/funcs.go:
-// func jSEscape(w ABEND987(imports not yet supported: io.Writer), b []byte) Object {
+// func jSEscape(w io.Writer, b []byte) Object {
 // 	_template.JSEscape(w, b)
 // 	...ABEND675: TODO...
 // }
@@ -22282,5 +22282,5 @@ GO FUNC unsafe.Sizeof from unsafe/unsafe.go:
 // 	return _unsafe.Sizeof(x)
 // }
 
-ABENDs: 987(623) 911(498) 902(282) 044(244) 903(191) 043(163) 401(150) 675(129) 907(85) 906(42) 885(16) 883(12) 905(12) 908(6) 909(2) 901(1)
+ABENDs: 911(498) 987(305) 902(282) 044(244) 903(191) 043(163) 401(150) 675(129) 907(85) 906(42) 885(16) 883(12) 905(12) 908(6) 909(2) 901(1)
 Totals: types=957 functions=7096 methods=5623 (79.24%) standalone=1473 (20.76%) generated=338 (22.95%)
