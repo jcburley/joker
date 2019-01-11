@@ -239,7 +239,7 @@ func %s(%s) %s {
 `
 
 	goFn := ""
-	if clojureReturnType == "" { // TODO: Generate this anyway if it contains ABEND, so we can see what's needed.
+	if clojureReturnType == "" {
 		goFn = fmt.Sprintf(gfmt, goFname, fc.goParamList, goReturnType, fc.goCode)
 	}
 

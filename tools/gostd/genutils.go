@@ -92,8 +92,8 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, 
 		return
 	}
 	doc = path.Base(fullPkgName) + "." + baseTypeName
-	code = "ABEND987(imports not yet supported: " + doc + ")"
-	cl2gol = code
+	code = doc
+	cl2gol = "ABEND987(imports not yet supported: " + doc + ")"
 	return
 }
 
