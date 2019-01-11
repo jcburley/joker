@@ -47,7 +47,7 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 
 func genGoPreSelected(fn *funcInfo, indent, fullPkgName, baseTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	fullTypeName := fullPkgName + "." + baseTypeName
-	clType = "Native"
+	clType = "GoObject"
 	clTypeDoc = fullTypeNameAsClojure(fullTypeName)
 	goType, goTypeDoc = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
 	cl2golParam = paramName
