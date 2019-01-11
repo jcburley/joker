@@ -6,6 +6,7 @@ import (
 	_ "github.com/candid82/joker/std/go/std/net"
 	_ "github.com/candid82/joker/std/go/std/net/http"
 	_ "github.com/candid82/joker/std/go/std/net/http/cgi"
+	_ "github.com/candid82/joker/std/go/std/net/http/httptest"
 	_ "github.com/candid82/joker/std/go/std/net/http/pprof"
 	_ "github.com/candid82/joker/std/go/std/net/mail"
 	_ "github.com/candid82/joker/std/go/std/net/rpc"

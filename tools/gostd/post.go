@@ -118,6 +118,7 @@ func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf st
 func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
 	cl, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(should not show up: %s)", captureName), e, onlyIf)
 	out = "MakeGoObject(" + captureName + ")"
+	cl = "(atom-of " + cl + ")"
 	gol = "*" + gol
 	return
 }
@@ -129,26 +130,22 @@ func maybeNil(expr, captureName string) string {
 func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
 	switch v := e.(type) {
 	case *Ident:
+		gol = v.Name
 		switch v.Name {
 		case "string":
 			cl = "String"
-			gol = "string"
 			out = "MakeString(" + captureName + ")"
 		case "int":
 			cl = "Int"
-			gol = "int"
 			out = "MakeInt(" + captureName + ")"
 		case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
-			cl = "Int"
-			gol = "int"
+			cl = ""
 			out = "MakeInt(int(" + captureName + "))"
 		case "bool":
 			cl = "Bool"
-			gol = "bool"
 			out = "MakeBool(" + captureName + ")"
 		case "error":
 			cl = "Error"
-			gol = "error"
 			out = maybeNil(captureName, "MakeError("+captureName+")") // TODO: Test this against the MakeError() added to joker/core/object.go
 		default:
 			if isPrivate(v.Name) {
@@ -157,7 +154,6 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 				out = captureName
 			} else {
 				cl, _, goc, out = genGoPostNamed(fn, indent, captureName, v.Name, onlyIf)
-				gol = v.Name // This is as far as Go needs to go for a type signature
 			}
 		}
 	case *ArrayType:

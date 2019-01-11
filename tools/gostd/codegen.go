@@ -118,48 +118,6 @@ func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFn
 	return
 }
 
-// If the Go API returns a single result, and it's an Int, wrap the call in "int()". If a StarExpr is found, ABEND for now
-// TODO: Return ref's for StarExpr?
-func maybeConvertGoResult(pkgDirUnix, call string, fl *FieldList) string {
-	if fl == nil || len(fl.List) != 1 || (fl.List[0].Names != nil && len(fl.List[0].Names) > 1) {
-		return call
-	}
-	named := false
-	t := fl.List[0].Type
-	for {
-		stop := false
-		switch v := t.(type) {
-		case *Ident:
-			qt := pkgDirUnix + "." + v.Name
-			if v, ok := types[qt]; ok {
-				named = true
-				t = v.td.Type
-			} else {
-				stop = true
-			}
-		default:
-			stop = true
-		}
-		if stop {
-			break
-		}
-	}
-	switch v := t.(type) {
-	case *Ident:
-		switch v.Name {
-		case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
-			return "int(" + call + ")"
-		case "int":
-			if named {
-				return "int(" + call + ")"
-			} // Else it's already an int, so don't bother wrapping it.
-		}
-	case *StarExpr:
-		return fmt.Sprintf("ABEND401(StarExpr not supported -- no refs returned just yet: %s)", call)
-	}
-	return call
-}
-
 var abendRegexp *regexp.Regexp
 
 var abends = map[string]int{}
@@ -226,7 +184,7 @@ func genFunction(fn *funcInfo) {
 			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
 		}
 	}
-	cl2golCall := maybeConvertGoResult(pkgDirUnix, cl2gol+fc.clojureGoParams, fn.fd.Type.Results)
+	cl2golCall := cl2gol + fc.clojureGoParams
 
 	clojureFn := fmt.Sprintf(jfmt, clojureReturnType, d.Name.Name,
 		commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
