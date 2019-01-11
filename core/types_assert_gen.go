@@ -698,3 +698,24 @@ func EnsurePending(args []Object, index int) Pending {
 		panic(RT.NewArgTypeError(index, c, "Pending"))
 	}
 }
+
+func AssertGoObject(obj Object, msg string) GoObject {
+	switch c := obj.(type) {
+	case GoObject:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoObject", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoObject(args []Object, index int) GoObject {
+	switch c := args[index].(type) {
+	case GoObject:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoObject"))
+	}
+}
