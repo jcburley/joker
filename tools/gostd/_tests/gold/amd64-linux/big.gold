@@ -1980,6 +1980,12 @@ func splitHostPort(hostport string) Object {
 	return _res
 }
 
+GO FUNC net/http.DetectContentType from net/http/sniff.go:
+// func detectContentType(data []byte)  {
+// 	_res := _http.DetectContentType(data)
+// 	return MakeString(_res)
+// }
+
 GO FUNC net/http.Error from net/http/server.go:
 // func error(w _http.ResponseWriter, error string, code int) Object {
 // 	_http.Error(w, error, code)
@@ -2141,6 +2147,12 @@ GO FUNC net/http.RedirectHandler from net/http/server.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
 // }
 
+GO FUNC net/http.Serve from net/http/server.go:
+// func serve(l net.Listener, handler _http.Handler)  {
+// 	_res := _http.Serve(l, handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/http.ServeContent from net/http/fs.go:
 // func serveContent(w _http.ResponseWriter, req *_http.Request, name string, modtime time.Time, content io.ReadSeeker) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
@@ -2151,6 +2163,12 @@ GO FUNC net/http.ServeFile from net/http/fs.go:
 // func serveFile(w _http.ResponseWriter, r *_http.Request, name string) Object {
 // 	_http.ServeFile(w, r, name)
 // 	...ABEND675: TODO...
+// }
+
+GO FUNC net/http.ServeTLS from net/http/server.go:
+// func serveTLS(l net.Listener, handler _http.Handler, certFile string, keyFile string)  {
+// 	_res := _http.ServeTLS(l, handler, certFile, keyFile)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.SetCookie from net/http/cookie.go:
@@ -2189,6 +2207,12 @@ GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // 	return _res
 // }
 
+GO FUNC net/http/cgi.Serve from net/http/cgi/child.go:
+// func serve(handler http.Handler)  {
+// 	_res := _cgi.Serve(handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // func new(o *_cookiejar.Options) Object {
 // 	_res1, _res2 := _cookiejar.New(o)
@@ -2201,6 +2225,12 @@ GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func processEnv(r *http.Request) Object {
 // 	return _fcgi.ProcessEnv(r)
+// }
+
+GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
+// func serve(l net.Listener, handler http.Handler)  {
+// 	_res := _fcgi.Serve(l, handler)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
@@ -2450,6 +2480,18 @@ GO FUNC net/rpc.NewServer from net/rpc/server.go:
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Server((*_res)))
 // }
 
+GO FUNC net/rpc.Register from net/rpc/server.go:
+// func register(rcvr interface {})  {
+// 	_res := _rpc.Register(rcvr)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/rpc.RegisterName from net/rpc/server.go:
+// func registerName(name string, rcvr interface {})  {
+// 	_res := _rpc.RegisterName(name, rcvr)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
 GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
 // func serveCodec(codec _rpc.ServerCodec) Object {
 // 	_rpc.ServeCodec(codec)
@@ -2523,6 +2565,12 @@ GO FUNC net/smtp.PlainAuth from net/smtp/auth.go:
 // func plainAuth(identity string, username string, password string, host string) Object {
 // 	_res := _smtp.PlainAuth(identity, username, password, host)
 // 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Auth(_res))
+// }
+
+GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
+// func sendMail(addr string, a _smtp.Auth, from string, to []string, msg []byte)  {
+// 	_res := _smtp.SendMail(addr, a, from, to, msg)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:

@@ -238,9 +238,9 @@ func %s(%s) %s {
 %s}
 `
 
-	goFn := ""
-	if clojureReturnType == "" {
-		goFn = fmt.Sprintf(gfmt, goFname, fc.goParamList, goReturnType, fc.goCode)
+	goFn := fmt.Sprintf(gfmt, goFname, fc.goParamList, goReturnType, fc.goCode)
+	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
+		goFn = ""
 	}
 
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
