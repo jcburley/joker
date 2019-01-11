@@ -253,7 +253,8 @@ func %s(%s) %s {
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
 			packagesInfo[pkgDirUnix].importsNative[pkgDirUnix] = exists
-		} else {
+		}
+		if clojureReturnType != "" || fn.refersToSelf {
 			packagesInfo[pkgDirUnix].importsAutoGen[pkgDirUnix] = exists
 		}
 	}

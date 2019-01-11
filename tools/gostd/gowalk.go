@@ -14,8 +14,9 @@ import (
 )
 
 type funcInfo struct {
-	fd         *FuncDecl
-	sourceFile *goFile
+	fd           *FuncDecl
+	sourceFile   *goFile
+	refersToSelf bool // whether :go-imports should list itself
 }
 
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
@@ -52,7 +53,7 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 				fname, v.sourceFile.name, filename))
 	}
-	qualifiedFunctions[fname] = &funcInfo{fd, gf}
+	qualifiedFunctions[fname] = &funcInfo{fd, gf, false}
 	return true
 }
 

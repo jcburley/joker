@@ -82,13 +82,15 @@ func fullTypeNameAsClojure(t string) string {
 // generated file will be foo/bar_native.go and start with "package
 // bar"); or, to return (for both) simply "bar.bletch" and ensure
 // "foo/bar" is imported (implicitly as "bar", assuming no
-// conflicts). As a side effect, updates imports needed in the file.
+// conflicts). NOTE: As a side effect, updates imports needed by the
+// function.
 func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, doc, cl2gol string) {
 	curPkgName := fn.sourceFile.pkgDirUnix
 	if curPkgName == fullPkgName {
 		code = "_" + path.Base(fullPkgName) + "." + baseTypeName
 		doc = baseTypeName
 		cl2gol = path.Base(fullPkgName) + "." + baseTypeName
+		fn.refersToSelf = true
 		return
 	}
 	doc = path.Base(fullPkgName) + "." + baseTypeName
