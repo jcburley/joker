@@ -99,9 +99,18 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, 
 	return
 }
 
+func isPredeclaredIdentifier(s string) bool {
+	switch s {
+	case "append", "bool", "byte", "cap", "close", "complex", "complex128", "complex64", "copy", "delete", "error", "false", "float32", "float64", "imag", "int", "int16", "int32", "int64", "int8", "iota", "len", "make", "new", "nil", "panic", "print", "println", "real", "recover", "rune", "string", "true", "uint", "uint16", "uint32", "uint64", "uint8", "uintptr":
+		return true
+	default:
+		return false
+	}
+}
+
 func funcNameAsGoPrivate(f string) string {
 	s := strings.ToLower(f[0:1]) + f[1:]
-	if token.Lookup(s).IsKeyword() {
+	if token.Lookup(s).IsKeyword() || isPredeclaredIdentifier(s) {
 		s = "_" + s
 	}
 	return s
