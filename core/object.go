@@ -220,7 +220,6 @@ type (
 		Native() interface{}
 	}
 	GoObject struct {
-		Object
 		O interface{}
 	}
 	KVReduce interface {
@@ -274,6 +273,7 @@ type (
 		ExInfo         *Type
 		Fn             *Type
 		File           *Type
+		GoObject       *Type
 		BufferedReader *Type
 		HashMap        *Type
 		Int            *Type
@@ -366,6 +366,7 @@ func init() {
 		ExInfo:         regRefType("ExInfo", (*ExInfo)(nil)),
 		Fn:             regRefType("Fn", (*Fn)(nil)),
 		File:           regRefType("File", (*File)(nil)),
+		GoObject:       regRefType("GoObject", (*GoObject)(nil)),
 		BufferedReader: regRefType("BufferedReader", (*BufferedReader)(nil)),
 		HashMap:        regRefType("HashMap", (*HashMap)(nil)),
 		Int:            regType("Int", (*Int)(nil)),
@@ -1095,6 +1096,52 @@ func MakeBool(b bool) Bool {
 
 func MakeTime(t time.Time) Time {
 	return Time{T: t}
+}
+
+func MakeGoObject(o interface{}) GoObject {
+	return GoObject{O: o}
+}
+
+func (o GoObject) ToString(escape bool) string {
+	return fmt.Sprintf("%v", o.O)
+}
+
+func (o GoObject) Equals(other interface{}) bool {
+	switch other := other.(type) {
+	case GoObject:
+		return o.O == other.O
+	default:
+		return false
+	}
+}
+
+func (o GoObject) GetInfo() *ObjectInfo {
+	return nil
+}
+
+func (o GoObject) WithInfo(info *ObjectInfo) Object {
+	return o
+}
+
+func (o GoObject) GetType() *Type {
+	return TYPE.GoObject
+}
+
+func (o GoObject) Native() interface{} {
+	return o.O
+}
+
+func (o GoObject) Hash() uint32 {
+	h := getHash()
+	b := make([]byte, 8)
+	binary.LittleEndian.PutUint64(b, uint64(uintptr(unsafe.Pointer(&o.O))))
+	h.Write(b)
+	return h.Sum32()
+}
+
+func (o GoObject) Compare(other Object) int {
+	o2 := AssertGoObject(other, "Cannot compare GoObject and "+other.GetType().ToString(false))
+	return strings.Compare(o.ToString(false), o2.ToString(false))
 }
 
 func MakeDouble(d float64) Double {
