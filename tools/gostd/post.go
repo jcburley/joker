@@ -115,16 +115,9 @@ func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf st
 	return
 }
 
-// TODO: Maybe return a ref or something Joker (someday) supports? flag.String() is useful only as it returns a ref;
-// whereas net.LookupMX() returns []*MX, and these are not only populated, it's unclear there's any utility in
-// modifying them (it could just as well return []MX AFAICT).
 func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
-	if onlyIf == "" {
-		onlyIf = captureName + " != nil"
-	} else {
-		onlyIf = captureName + " != nil && " + onlyIf
-	}
-	cl, gol, goc, out = genGoPostExpr(fn, indent, "(*"+captureName+")", e, onlyIf)
+	cl, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(should not show up: %s)", captureName), e, onlyIf)
+	out = "MakeGoObject(" + captureName + ")"
 	gol = "*" + gol
 	return
 }
