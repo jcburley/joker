@@ -85,8 +85,8 @@ func ExtractObject(args []Object, index int) Object {
 	return args[index]
 }
 
-func ExtractGoObject(args []Object, index int) GoObject {
-	return EnsureGoObject(args, index)
+func ExtractGoObject(args []Object, index int) interface{} {
+	return EnsureGoObject(args, index).O
 }
 
 func ExtractString(args []Object, index int) string {
