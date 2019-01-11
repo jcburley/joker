@@ -49,8 +49,8 @@ func genGoPreSelected(fn *funcInfo, indent, fullPkgName, baseTypeName, paramName
 	fullTypeName := fullPkgName + "." + baseTypeName
 	clType = "GoObject"
 	clTypeDoc = fullTypeNameAsClojure(fullTypeName)
-	goType, goTypeDoc = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
-	cl2golParam = paramName
+	goType, goTypeDoc, cl2golParam = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
+	cl2golParam = paramName + ".(" + cl2golParam + ")"
 	return
 }
 

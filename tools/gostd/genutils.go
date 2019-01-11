@@ -76,21 +76,24 @@ func fullTypeNameAsClojure(t string) string {
 }
 
 // Given an input package name such as "foo/bar" and typename
-// "bletch", decides whether to return just "bletch" if the package
-// being compiled will be implementing Go's package of the same name
-// (in this case, the generated file will be foo/bar_native.go and
-// start with "package bar"); or, to return simply "bar.bletch" and
-// ensure "foo/bar" is imported (implicitly as "bar", assuming no
+// "bletch", decides whether to return (for 'code' and 'cl2gol') just
+// "_bar.bletch" and "bletch" if the package being compiled will be
+// implementing Go's package of the same name (in this case, the
+// generated file will be foo/bar_native.go and start with "package
+// bar"); or, to return (for both) simply "bar.bletch" and ensure
+// "foo/bar" is imported (implicitly as "bar", assuming no
 // conflicts). As a side effect, updates imports needed in the file.
-func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, doc string) {
+func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, doc, cl2gol string) {
 	curPkgName := fn.sourceFile.pkgDirUnix
 	if curPkgName == fullPkgName {
 		code = "_" + path.Base(fullPkgName) + "." + baseTypeName
 		doc = baseTypeName
+		cl2gol = path.Base(fullPkgName) + "." + baseTypeName
 		return
 	}
 	doc = path.Base(fullPkgName) + "." + baseTypeName
 	code = "ABEND987(imports not yet supported: " + doc + ")"
+	cl2gol = code
 	return
 }
 
