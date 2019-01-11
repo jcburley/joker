@@ -100,7 +100,11 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, 
 }
 
 func funcNameAsGoPrivate(f string) string {
-	return strings.ToLower(f[0:1]) + f[1:]
+	s := strings.ToLower(f[0:1]) + f[1:]
+	if token.Lookup(s).IsKeyword() {
+		s = "_" + s
+	}
+	return s
 }
 
 func isPrivate(p string) bool {
