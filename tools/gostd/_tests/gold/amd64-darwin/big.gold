@@ -1594,7 +1594,7 @@ GO FUNC net.DialIP from net/iprawsock.go:
 // func dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 // 	_res1, _res2 := _net.DialIP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1603,7 +1603,7 @@ GO FUNC net.DialTCP from net/tcpsock.go:
 // func dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object {
 // 	_res1, _res2 := _net.DialTCP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1621,7 +1621,7 @@ GO FUNC net.DialUDP from net/udpsock.go:
 // func dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.DialUDP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1630,7 +1630,7 @@ GO FUNC net.DialUnix from net/unixsock.go:
 // func dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.DialUnix(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1691,7 +1691,7 @@ GO FUNC net.InterfaceByIndex from net/interface.go:
 func interfaceByIndex(index int) Object {
 	_res1, _res2 := _net.InterfaceByIndex(index)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1700,7 +1700,7 @@ GO FUNC net.InterfaceByName from net/interface.go:
 func interfaceByName(name string) Object {
 	_res1, _res2 := _net.InterfaceByName(name)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1731,7 +1731,7 @@ GO FUNC net.ListenIP from net/iprawsock.go:
 // func listenIP(network string, laddr *_net.IPAddr) Object {
 // 	_res1, _res2 := _net.ListenIP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1740,7 +1740,7 @@ GO FUNC net.ListenMulticastUDP from net/udpsock.go:
 // func listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1758,7 +1758,7 @@ GO FUNC net.ListenTCP from net/tcpsock.go:
 // func listenTCP(network string, laddr *_net.TCPAddr) Object {
 // 	_res1, _res2 := _net.ListenTCP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1767,7 +1767,7 @@ GO FUNC net.ListenUDP from net/udpsock.go:
 // func listenUDP(network string, laddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.ListenUDP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1776,7 +1776,7 @@ GO FUNC net.ListenUnix from net/unixsock.go:
 // func listenUnix(network string, laddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.ListenUnix(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1785,7 +1785,7 @@ GO FUNC net.ListenUnixgram from net/unixsock.go:
 // func listenUnixgram(network string, laddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.ListenUnixgram(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1844,7 +1844,7 @@ func lookupMX(name string) Object {
 	_res := EmptyVector
 	_vec1 := EmptyVector
 	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
 	_res = _res.Conjoin(_vec1)
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -1857,7 +1857,7 @@ func lookupNS(name string) Object {
 	_res := EmptyVector
 	_vec1 := EmptyVector
 	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
 	_res = _res.Conjoin(_vec1)
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -1880,7 +1880,7 @@ func lookupSRV(service string, proto string, name string) Object {
 	_res = _res.Conjoin(MakeString(cname))
 	_vec1 := EmptyVector
 	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
 	_res = _res.Conjoin(_vec1)
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -1905,7 +1905,7 @@ func parseCIDR(s string) Object {
 	_res1, _res2, _res3 := _net.ParseCIDR(s)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(MakeGoObject((*_res2)))
+	_res = _res.Conjoin(MakeGoObject(_res2))
 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
 	return _res
 }
@@ -1938,7 +1938,7 @@ GO FUNC net.ResolveIPAddr from net/iprawsock.go:
 func resolveIPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveIPAddr(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1947,7 +1947,7 @@ GO FUNC net.ResolveTCPAddr from net/tcpsock.go:
 func resolveTCPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveTCPAddr(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1956,7 +1956,7 @@ GO FUNC net.ResolveUDPAddr from net/udpsock.go:
 func resolveUDPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUDPAddr(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1965,7 +1965,7 @@ GO FUNC net.ResolveUnixAddr from net/unixsock.go:
 func resolveUnixAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUnixAddr(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2002,7 +2002,7 @@ GO FUNC net/http.Get from net/http/client.go:
 func get(url string) Object {
 	resp, err := _http.Get(url)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*resp)))
+	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -2023,7 +2023,7 @@ GO FUNC net/http.Head from net/http/client.go:
 func head(url string) Object {
 	resp, err := _http.Head(url)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*resp)))
+	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -2043,7 +2043,7 @@ GO FUNC net/http.NewRequest from net/http/request.go:
 // func newRequest(method string, url string, body io.Reader) Object {
 // 	_res1, _res2 := _http.NewRequest(method, url, body)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2051,7 +2051,7 @@ GO FUNC net/http.NewRequest from net/http/request.go:
 GO FUNC net/http.NewServeMux from net/http/server.go:
 // func newServeMux() Object {
 // 	_res := _http.NewServeMux()
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http.NotFound from net/http/server.go:
@@ -2089,7 +2089,7 @@ GO FUNC net/http.Post from net/http/client.go:
 // func post(url string, contentType string, body io.Reader) Object {
 // 	resp, err := _http.Post(url, contentType, body)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*resp)))
+// 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2098,7 +2098,7 @@ GO FUNC net/http.PostForm from net/http/client.go:
 // func postForm(url string, data url.Values) Object {
 // 	resp, err := _http.PostForm(url, data)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*resp)))
+// 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2107,7 +2107,7 @@ GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 // func proxyFromEnvironment(req *_http.Request) Object {
 // 	_res1, _res2 := _http.ProxyFromEnvironment(req)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2121,7 +2121,7 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 // func readRequest(b *bufio.Reader) Object {
 // 	_res1, _res2 := _http.ReadRequest(b)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2130,7 +2130,7 @@ GO FUNC net/http.ReadResponse from net/http/response.go:
 // func readResponse(r *bufio.Reader, req *_http.Request) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2193,7 +2193,7 @@ GO FUNC net/http/cgi.Request from net/http/cgi/child.go:
 func request() Object {
 	_res1, _res2 := _cgi.Request()
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2202,7 +2202,7 @@ GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // func requestFromMap(params map[]) Object {
 // 	_res1, _res2 := _cgi.RequestFromMap(params)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2217,7 +2217,7 @@ GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // func new(o *_cookiejar.Options) Object {
 // 	_res1, _res2 := _cookiejar.New(o)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2236,37 +2236,37 @@ GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 // func newRecorder() Object {
 // 	_res := _httptest.NewRecorder()
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
 // func newRequest(method string, target string, body io.Reader) Object {
 // 	_res := _httptest.NewRequest(method, target, body)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
 // func newServer(handler http.Handler) Object {
 // 	_res := _httptest.NewServer(handler)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
 // func newTLSServer(handler http.Handler) Object {
 // 	_res := _httptest.NewTLSServer(handler)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
 // func newUnstartedServer(handler http.Handler) Object {
 // 	_res := _httptest.NewUnstartedServer(handler)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func contextClientTrace(ctx context.Context) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
@@ -2326,25 +2326,25 @@ GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
 GO FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 // func newClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewClientConn(c, r)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 // func newProxyClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewProxyClientConn(c, r)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 // func newServerConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewServerConn(c, r)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
 // func newSingleHostReverseProxy(target *url.URL) Object {
 // 	_res := _httputil.NewSingleHostReverseProxy(target)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
@@ -2387,7 +2387,7 @@ GO FUNC net/mail.ParseAddress from net/mail/message.go:
 func parseAddress(address string) Object {
 	_res1, _res2 := _mail.ParseAddress(address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2398,7 +2398,7 @@ func parseAddressList(list string) Object {
 	_res := EmptyVector
 	_vec1 := EmptyVector
 	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
 	_res = _res.Conjoin(_vec1)
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2418,7 +2418,7 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // func readMessage(r io.Reader) Object {
 // 	msg, err := _mail.ReadMessage(r)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*msg)))
+// 	_res = _res.Conjoin(MakeGoObject(msg))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2433,7 +2433,7 @@ GO FUNC net/rpc.Dial from net/rpc/client.go:
 func dial(network string, address string) Object {
 	_res1, _res2 := _rpc.Dial(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2442,7 +2442,7 @@ GO FUNC net/rpc.DialHTTP from net/rpc/client.go:
 func dialHTTP(network string, address string) Object {
 	_res1, _res2 := _rpc.DialHTTP(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2451,7 +2451,7 @@ GO FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
 func dialHTTPPath(network string, address string, path string) Object {
 	_res1, _res2 := _rpc.DialHTTPPath(network, address, path)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2465,19 +2465,19 @@ GO FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 GO FUNC net/rpc.NewClient from net/rpc/client.go:
 // func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _rpc.NewClient(conn)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
 // func newClientWithCodec(codec _rpc.ClientCodec) Object {
 // 	_res := _rpc.NewClientWithCodec(codec)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc.NewServer from net/rpc/server.go:
 // func newServer() Object {
 // 	_res := _rpc.NewServer()
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc.Register from net/rpc/server.go:
@@ -2508,7 +2508,7 @@ GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 func dial(network string, address string) Object {
 	_res1, _res2 := _jsonrpc.Dial(network, address)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2516,7 +2516,7 @@ func dial(network string, address string) Object {
 GO FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
 // func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewClient(conn)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
@@ -2547,7 +2547,7 @@ GO FUNC net/smtp.Dial from net/smtp/smtp.go:
 func dial(addr string) Object {
 	_res1, _res2 := _smtp.Dial(addr)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2556,7 +2556,7 @@ GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
 // func newClient(conn net.Conn, host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2577,7 +2577,7 @@ GO FUNC net/textproto.Dial from net/textproto/textproto.go:
 func dial(network string, addr string) Object {
 	_res1, _res2 := _textproto.Dial(network, addr)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2585,19 +2585,19 @@ func dial(network string, addr string) Object {
 GO FUNC net/textproto.NewConn from net/textproto/textproto.go:
 // func newConn(conn io.ReadWriteCloser) Object {
 // 	_res := _textproto.NewConn(conn)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.NewReader from net/textproto/reader.go:
 // func newReader(r *bufio.Reader) Object {
 // 	_res := _textproto.NewReader(r)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.NewWriter from net/textproto/writer.go:
 // func newWriter(w *bufio.Writer) Object {
 // 	_res := _textproto.NewWriter(w)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
@@ -2614,7 +2614,7 @@ GO FUNC net/url.Parse from net/url/url.go:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2632,7 +2632,7 @@ GO FUNC net/url.ParseRequestURI from net/url/url.go:
 func parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2658,13 +2658,13 @@ func queryUnescape(s string) Object {
 GO FUNC net/url.User from net/url/url.go:
 // func user(username string) Object {
 // 	_res := _url.User(username)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/url.UserPassword from net/url/url.go:
 // func userPassword(username string, password string) Object {
 // 	_res := _url.UserPassword(username, password)
-// 	return MakeGoObject((*_res))
+// 	return MakeGoObject(_res)
 // }
 
 Adding custom imports to _tests/gold/amd64-darwin/joker/custom.go
