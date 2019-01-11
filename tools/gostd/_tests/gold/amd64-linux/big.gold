@@ -540,18 +540,18 @@ TYPE net/url.Userinfo:
 TYPE net/url.Values:
   _tests/big/src/net/url/url.go
 JOKER FUNC net.CIDRMask from net/ip.go:
-;; (defn CIDRMask
-;;   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
-;;   {:added "1.0"
-;;    :go "cIDRMask(_ones, _bits)"}
-;;   [^Int _ones, ^Int _bits])
+(defn CIDRMask
+  "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
+  {:added "1.0"
+   :go "cIDRMask(_ones, _bits)"}
+  [^Int _ones, ^Int _bits])
 
 JOKER FUNC net.Dial from net/dial.go:
-;; (defn Dial
-;;   "Dial connects to the address on the named network.\n\nKnown networks are \"tcp\", \"tcp4\" (IPv4-only), \"tcp6\" (IPv6-only),\n\"udp\", \"udp4\" (IPv4-only), \"udp6\" (IPv6-only), \"ip\", \"ip4\"\n(IPv4-only), \"ip6\" (IPv6-only), \"unix\", \"unixgram\" and\n\"unixpacket\".\n\nFor TCP and UDP networks, the address has the form \"host:port\".\nThe host must be a literal IP address, or a host name that can be\nresolved to IP addresses.\nThe port must be a literal port number or a service name.\nIf the host is a literal IPv6 address it must be enclosed in square\nbrackets, as in \"[2001:db8::1]:80\" or \"[fe80::1%zone]:80\".\nThe zone specifies the scope of the literal IPv6 address as defined\nin RFC 4007.\nThe functions JoinHostPort and SplitHostPort manipulate a pair of\nhost and port in this form.\nWhen using TCP, and the host resolves to multiple IP addresses,\nDial will try each IP address in order until one succeeds.\n\nExamples:\n\tDial(\"tcp\", \"golang.org:http\")\n\tDial(\"tcp\", \"192.0.2.1:http\")\n\tDial(\"tcp\", \"198.51.100.1:80\")\n\tDial(\"udp\", \"[2001:db8::1]:domain\")\n\tDial(\"udp\", \"[fe80::1%lo0]:53\")\n\tDial(\"tcp\", \":80\")\n\nFor IP networks, the network must be \"ip\", \"ip4\" or \"ip6\" followed\nby a colon and a literal protocol number or a protocol name, and\nthe address has the form \"host\". The host must be a literal IP\naddress or a literal IPv6 address with zone.\nIt depends on each operating system how the operating system\nbehaves with a non-well known protocol number such as \"0\" or \"255\".\n\nExamples:\n\tDial(\"ip4:1\", \"192.0.2.1\")\n\tDial(\"ip6:ipv6-icmp\", \"2001:db8::1\")\n\tDial(\"ip6:58\", \"fe80::1%lo0\")\n\nFor TCP, UDP and IP networks, if the host is empty or a literal\nunspecified IP address, as in \":80\", \"0.0.0.0:80\" or \"[::]:80\" for\nTCP and UDP, \"\", \"0.0.0.0\" or \"::\" for IP, the local system is\nassumed.\n\nFor Unix networks, the address must be a file system path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (Conn, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/Conn Error]"
-;;   {:added "1.0"
-;;    :go "dial(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn Dial
+  "Dial connects to the address on the named network.\n\nKnown networks are \"tcp\", \"tcp4\" (IPv4-only), \"tcp6\" (IPv6-only),\n\"udp\", \"udp4\" (IPv4-only), \"udp6\" (IPv6-only), \"ip\", \"ip4\"\n(IPv4-only), \"ip6\" (IPv6-only), \"unix\", \"unixgram\" and\n\"unixpacket\".\n\nFor TCP and UDP networks, the address has the form \"host:port\".\nThe host must be a literal IP address, or a host name that can be\nresolved to IP addresses.\nThe port must be a literal port number or a service name.\nIf the host is a literal IPv6 address it must be enclosed in square\nbrackets, as in \"[2001:db8::1]:80\" or \"[fe80::1%zone]:80\".\nThe zone specifies the scope of the literal IPv6 address as defined\nin RFC 4007.\nThe functions JoinHostPort and SplitHostPort manipulate a pair of\nhost and port in this form.\nWhen using TCP, and the host resolves to multiple IP addresses,\nDial will try each IP address in order until one succeeds.\n\nExamples:\n\tDial(\"tcp\", \"golang.org:http\")\n\tDial(\"tcp\", \"192.0.2.1:http\")\n\tDial(\"tcp\", \"198.51.100.1:80\")\n\tDial(\"udp\", \"[2001:db8::1]:domain\")\n\tDial(\"udp\", \"[fe80::1%lo0]:53\")\n\tDial(\"tcp\", \":80\")\n\nFor IP networks, the network must be \"ip\", \"ip4\" or \"ip6\" followed\nby a colon and a literal protocol number or a protocol name, and\nthe address has the form \"host\". The host must be a literal IP\naddress or a literal IPv6 address with zone.\nIt depends on each operating system how the operating system\nbehaves with a non-well known protocol number such as \"0\" or \"255\".\n\nExamples:\n\tDial(\"ip4:1\", \"192.0.2.1\")\n\tDial(\"ip6:ipv6-icmp\", \"2001:db8::1\")\n\tDial(\"ip6:58\", \"fe80::1%lo0\")\n\nFor TCP, UDP and IP networks, if the host is empty or a literal\nunspecified IP address, as in \":80\", \"0.0.0.0:80\" or \"[::]:80\" for\nTCP and UDP, \"\", \"0.0.0.0\" or \"::\" for IP, the local system is\nassumed.\n\nFor Unix networks, the address must be a file system path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (Conn, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/Conn Error]"
+  {:added "1.0"
+   :go "dial(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.DialIP from net/iprawsock.go:
 ;; (defn DialIP
@@ -610,46 +610,46 @@ JOKER FUNC net.FilePacketConn from net/file.go:
 ;;   [^Object _f])
 
 JOKER FUNC net.IPv4 from net/ip.go:
-;; (defn IPv4
-;;   "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IP"
-;;   {:added "1.0"
-;;    :go "iPv4(_a, _b, _c, _d)"}
-;;   [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+(defn IPv4
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IP"
+  {:added "1.0"
+   :go "iPv4(_a, _b, _c, _d)"}
+  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
-;; (defn IPv4Mask
-;;   "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IPMask"
-;;   {:added "1.0"
-;;    :go "iPv4Mask(_a, _b, _c, _d)"}
-;;   [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+(defn IPv4Mask
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IPMask"
+  {:added "1.0"
+   :go "iPv4Mask(_a, _b, _c, _d)"}
+  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
 
 JOKER FUNC net.InterfaceAddrs from net/interface.go:
-;; (defn InterfaceAddrs
-;;   "InterfaceAddrs returns a list of the system's unicast interface\naddresses.\n\nThe returned list does not identify the associated interface; use\nInterfaces and Interface.Addrs for more detail.\n\nGo return type: ([]Addr, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Addr) Error]"
-;;   {:added "1.0"
-;;    :go "interfaceAddrs()"}
-;;   [])
+(defn InterfaceAddrs
+  "InterfaceAddrs returns a list of the system's unicast interface\naddresses.\n\nThe returned list does not identify the associated interface; use\nInterfaces and Interface.Addrs for more detail.\n\nGo return type: ([]Addr, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Addr) Error]"
+  {:added "1.0"
+   :go "interfaceAddrs()"}
+  [])
 
 JOKER FUNC net.InterfaceByIndex from net/interface.go:
-;; (defn InterfaceByIndex
-;;   "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo input arguments: (index int)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^Int index]\n\nJoker return type: [go.std.net/Interface Error]"
-;;   {:added "1.0"
-;;    :go "interfaceByIndex(_index)"}
-;;   [^Int _index])
+(defn InterfaceByIndex
+  "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo input arguments: (index int)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^Int index]\n\nJoker return type: [go.std.net/Interface Error]"
+  {:added "1.0"
+   :go "interfaceByIndex(_index)"}
+  [^Int _index])
 
 JOKER FUNC net.InterfaceByName from net/interface.go:
-;; (defn InterfaceByName
-;;   "InterfaceByName returns the interface specified by name.\n\nGo input arguments: (name string)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [go.std.net/Interface Error]"
-;;   {:added "1.0"
-;;    :go "interfaceByName(_name)"}
-;;   [^String _name])
+(defn InterfaceByName
+  "InterfaceByName returns the interface specified by name.\n\nGo input arguments: (name string)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [go.std.net/Interface Error]"
+  {:added "1.0"
+   :go "interfaceByName(_name)"}
+  [^String _name])
 
 JOKER FUNC net.Interfaces from net/interface.go:
-;; (defn Interfaces
-;;   "Interfaces returns a list of the system's network interfaces.\n\nGo return type: ([]Interface, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Interface) Error]"
-;;   {:added "1.0"
-;;    :go "interfaces()"}
-;;   [])
+(defn Interfaces
+  "Interfaces returns a list of the system's network interfaces.\n\nGo return type: ([]Interface, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Interface) Error]"
+  {:added "1.0"
+   :go "interfaces()"}
+  [])
 
 JOKER FUNC net.JoinHostPort from net/ipsock.go:
 (defn ^"String" JoinHostPort
@@ -659,11 +659,11 @@ JOKER FUNC net.JoinHostPort from net/ipsock.go:
   [^String _host, ^String _port])
 
 JOKER FUNC net.Listen from net/dial.go:
-;; (defn Listen
-;;   "Listen announces on the local network address.\n\nThe network must be \"tcp\", \"tcp4\", \"tcp6\", \"unix\" or \"unixpacket\".\n\nFor TCP networks, if the host in the address parameter is empty or\na literal unspecified IP address, Listen listens on all available\nunicast and anycast IP addresses of the local system.\nTo only use IPv4, use network \"tcp4\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe Addr method of Listener can be used to discover the chosen\nport.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (Listener, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/Listener Error]"
-;;   {:added "1.0"
-;;    :go "listen(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn Listen
+  "Listen announces on the local network address.\n\nThe network must be \"tcp\", \"tcp4\", \"tcp6\", \"unix\" or \"unixpacket\".\n\nFor TCP networks, if the host in the address parameter is empty or\na literal unspecified IP address, Listen listens on all available\nunicast and anycast IP addresses of the local system.\nTo only use IPv4, use network \"tcp4\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe Addr method of Listener can be used to discover the chosen\nport.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (Listener, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/Listener Error]"
+  {:added "1.0"
+   :go "listen(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.ListenIP from net/iprawsock.go:
 ;; (defn ListenIP
@@ -680,11 +680,11 @@ JOKER FUNC net.ListenMulticastUDP from net/udpsock.go:
 ;;   [^String _network, ^Object _ifi, ^Object _gaddr])
 
 JOKER FUNC net.ListenPacket from net/dial.go:
-;; (defn ListenPacket
-;;   "ListenPacket announces on the local network address.\n\nThe network must be \"udp\", \"udp4\", \"udp6\", \"unixgram\", or an IP\ntransport. The IP transports are \"ip\", \"ip4\", or \"ip6\" followed by\na colon and a literal protocol number or a protocol name, as in\n\"ip:1\" or \"ip:icmp\".\n\nFor UDP and IP networks, if the host in the address parameter is\nempty or a literal unspecified IP address, ListenPacket listens on\nall available IP addresses of the local system except multicast IP\naddresses.\nTo only use IPv4, use network \"udp4\" or \"ip4:proto\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe LocalAddr method of PacketConn can be used to discover the\nchosen port.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (PacketConn, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/PacketConn Error]"
-;;   {:added "1.0"
-;;    :go "listenPacket(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn ListenPacket
+  "ListenPacket announces on the local network address.\n\nThe network must be \"udp\", \"udp4\", \"udp6\", \"unixgram\", or an IP\ntransport. The IP transports are \"ip\", \"ip4\", or \"ip6\" followed by\na colon and a literal protocol number or a protocol name, as in\n\"ip:1\" or \"ip:icmp\".\n\nFor UDP and IP networks, if the host in the address parameter is\nempty or a literal unspecified IP address, ListenPacket listens on\nall available IP addresses of the local system except multicast IP\naddresses.\nTo only use IPv4, use network \"udp4\" or \"ip4:proto\".\nThe address can use a host name, but this is not recommended,\nbecause it will create a listener for at most one of the host's IP\naddresses.\nIf the port in the address parameter is empty or \"0\", as in\n\"127.0.0.1:\" or \"[::1]:0\", a port number is automatically chosen.\nThe LocalAddr method of PacketConn can be used to discover the\nchosen port.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (PacketConn, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/PacketConn Error]"
+  {:added "1.0"
+   :go "listenPacket(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.ListenTCP from net/tcpsock.go:
 ;; (defn ListenTCP
@@ -736,25 +736,25 @@ JOKER FUNC net.LookupHost from net/lookup.go:
   [^String _host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
-;; (defn LookupIP
-;;   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
-;;   {:added "1.0"
-;;    :go "lookupIP(_host)"}
-;;   [^String _host])
+(defn LookupIP
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
+  {:added "1.0"
+   :go "lookupIP(_host)"}
+  [^String _host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
-;; (defn LookupMX
-;;   "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of go.std.net/MX) Error]"
-;;   {:added "1.0"
-;;    :go "lookupMX(_name)"}
-;;   [^String _name])
+(defn LookupMX
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of go.std.net/MX) Error]"
+  {:added "1.0"
+   :go "lookupMX(_name)"}
+  [^String _name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
-;; (defn LookupNS
-;;   "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of go.std.net/NS) Error]"
-;;   {:added "1.0"
-;;    :go "lookupNS(_name)"}
-;;   [^String _name])
+(defn LookupNS
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of go.std.net/NS) Error]"
+  {:added "1.0"
+   :go "lookupNS(_name)"}
+  [^String _name])
 
 JOKER FUNC net.LookupPort from net/lookup.go:
 (defn LookupPort
@@ -764,11 +764,11 @@ JOKER FUNC net.LookupPort from net/lookup.go:
   [^String _network, ^String _service])
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
-;; (defn LookupSRV
-;;   "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of go.std.net/SRV) Error]"
-;;   {:added "1.0"
-;;    :go "lookupSRV(_service, _proto, _name)"}
-;;   [^String _service, ^String _proto, ^String _name])
+(defn LookupSRV
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of go.std.net/SRV) Error]"
+  {:added "1.0"
+   :go "lookupSRV(_service, _proto, _name)"}
+  [^String _service, ^String _proto, ^String _name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
@@ -778,60 +778,60 @@ JOKER FUNC net.LookupTXT from net/lookup.go:
   [^String _name])
 
 JOKER FUNC net.ParseCIDR from net/ip.go:
-;; (defn ParseCIDR
-;;   "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP go.std.net/IPNet Error]"
-;;   {:added "1.0"
-;;    :go "parseCIDR(_s)"}
-;;   [^String _s])
+(defn ParseCIDR
+  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP go.std.net/IPNet Error]"
+  {:added "1.0"
+   :go "parseCIDR(_s)"}
+  [^String _s])
 
 JOKER FUNC net.ParseIP from net/ip.go:
-;; (defn ParseIP
-;;   "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: (s string)\n\nGo return type: IP\n\nJoker input arguments: [^String s]\n\nJoker return type: go.std.net/IP"
-;;   {:added "1.0"
-;;    :go "parseIP(_s)"}
-;;   [^String _s])
+(defn ParseIP
+  "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: (s string)\n\nGo return type: IP\n\nJoker input arguments: [^String s]\n\nJoker return type: go.std.net/IP"
+  {:added "1.0"
+   :go "parseIP(_s)"}
+  [^String _s])
 
 JOKER FUNC net.ParseMAC from net/mac.go:
-;; (defn ParseMAC
-;;   "ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet\nIP over InfiniBand link-layer address using one of the following formats:\n  01:23:45:67:89:ab\n  01:23:45:67:89:ab:cd:ef\n  01:23:45:67:89:ab:cd:ef:00:00:01:23:45:67:89:ab:cd:ef:00:00\n  01-23-45-67-89-ab\n  01-23-45-67-89-ab-cd-ef\n  01-23-45-67-89-ab-cd-ef-00-00-01-23-45-67-89-ab-cd-ef-00-00\n  0123.4567.89ab\n  0123.4567.89ab.cdef\n  0123.4567.89ab.cdef.0000.0123.4567.89ab.cdef.0000\n\nGo input arguments: (s string)\n\nGo return type: (hw HardwareAddr, err error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/HardwareAddr Error]"
-;;   {:added "1.0"
-;;    :go "parseMAC(_s)"}
-;;   [^String _s])
+(defn ParseMAC
+  "ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet\nIP over InfiniBand link-layer address using one of the following formats:\n  01:23:45:67:89:ab\n  01:23:45:67:89:ab:cd:ef\n  01:23:45:67:89:ab:cd:ef:00:00:01:23:45:67:89:ab:cd:ef:00:00\n  01-23-45-67-89-ab\n  01-23-45-67-89-ab-cd-ef\n  01-23-45-67-89-ab-cd-ef-00-00-01-23-45-67-89-ab-cd-ef-00-00\n  0123.4567.89ab\n  0123.4567.89ab.cdef\n  0123.4567.89ab.cdef.0000.0123.4567.89ab.cdef.0000\n\nGo input arguments: (s string)\n\nGo return type: (hw HardwareAddr, err error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/HardwareAddr Error]"
+  {:added "1.0"
+   :go "parseMAC(_s)"}
+  [^String _s])
 
 JOKER FUNC net.Pipe from net/pipe.go:
-;; (defn Pipe
-;;   "Pipe creates a synchronous, in-memory, full duplex\nnetwork connection; both ends implement the Conn interface.\nReads on one end are matched with writes on the other,\ncopying data directly between the two; there is no internal\nbuffering.\n\nGo return type: (Conn, Conn)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net/Conn go.std.net/Conn]"
-;;   {:added "1.0"
-;;    :go "pipe()"}
-;;   [])
+(defn Pipe
+  "Pipe creates a synchronous, in-memory, full duplex\nnetwork connection; both ends implement the Conn interface.\nReads on one end are matched with writes on the other,\ncopying data directly between the two; there is no internal\nbuffering.\n\nGo return type: (Conn, Conn)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net/Conn go.std.net/Conn]"
+  {:added "1.0"
+   :go "pipe()"}
+  [])
 
 JOKER FUNC net.ResolveIPAddr from net/iprawsock.go:
-;; (defn ResolveIPAddr
-;;   "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/IPAddr Error]"
-;;   {:added "1.0"
-;;    :go "resolveIPAddr(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn ResolveIPAddr
+  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/IPAddr Error]"
+  {:added "1.0"
+   :go "resolveIPAddr(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveTCPAddr from net/tcpsock.go:
-;; (defn ResolveTCPAddr
-;;   "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*TCPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/TCPAddr Error]"
-;;   {:added "1.0"
-;;    :go "resolveTCPAddr(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn ResolveTCPAddr
+  "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*TCPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/TCPAddr Error]"
+  {:added "1.0"
+   :go "resolveTCPAddr(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveUDPAddr from net/udpsock.go:
-;; (defn ResolveUDPAddr
-;;   "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UDPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/UDPAddr Error]"
-;;   {:added "1.0"
-;;    :go "resolveUDPAddr(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn ResolveUDPAddr
+  "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UDPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/UDPAddr Error]"
+  {:added "1.0"
+   :go "resolveUDPAddr(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.ResolveUnixAddr from net/unixsock.go:
-;; (defn ResolveUnixAddr
-;;   "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UnixAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/UnixAddr Error]"
-;;   {:added "1.0"
-;;    :go "resolveUnixAddr(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn ResolveUnixAddr
+  "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UnixAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/UnixAddr Error]"
+  {:added "1.0"
+   :go "resolveUnixAddr(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net.SplitHostPort from net/ipsock.go:
 (defn SplitHostPort
@@ -862,18 +862,18 @@ JOKER FUNC net/http.Error from net/http/server.go:
 ;;   [^GoObject _w, ^String _error, ^Int _code])
 
 JOKER FUNC net/http.FileServer from net/http/fs.go:
-;; (defn FileServer
-;;   "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo input arguments: (root FileSystem)\n\nGo return type: Handler\n\nJoker input arguments: [^go.std.net.http/FileSystem root]\n\nJoker return type: go.std.net.http/Handler"
-;;   {:added "1.0"
-;;    :go "fileServer(_root.(http.FileSystem))"}
-;;   [^GoObject _root])
+(defn FileServer
+  "FileServer returns a handler that serves HTTP requests\nwith the contents of the file system rooted at root.\n\nTo use the operating system's file system implementation,\nuse http.Dir:\n\n    http.Handle(\"/\", http.FileServer(http.Dir(\"/tmp\")))\n\nAs a special case, the returned file server redirects any request\nending in \"/index.html\" to the same path, without the final\n\"index.html\".\n\nGo input arguments: (root FileSystem)\n\nGo return type: Handler\n\nJoker input arguments: [^go.std.net.http/FileSystem root]\n\nJoker return type: go.std.net.http/Handler"
+  {:added "1.0"
+   :go "fileServer(_root.(http.FileSystem))"}
+  [^GoObject _root])
 
 JOKER FUNC net/http.Get from net/http/client.go:
-;; (defn Get
-;;   "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/Response Error]"
-;;   {:added "1.0"
-;;    :go "get(_url)"}
-;;   [^String _url])
+(defn Get
+  "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/Response Error]"
+  {:added "1.0"
+   :go "get(_url)"}
+  [^String _url])
 
 JOKER FUNC net/http.Handle from net/http/server.go:
 ;; (defn Handle
@@ -890,11 +890,11 @@ JOKER FUNC net/http.HandleFunc from net/http/server.go:
 ;;   [^String _pattern, ^fn _handler])
 
 JOKER FUNC net/http.Head from net/http/client.go:
-;; (defn Head
-;;   "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/Response Error]"
-;;   {:added "1.0"
-;;    :go "head(_url)"}
-;;   [^String _url])
+(defn Head
+  "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/Response Error]"
+  {:added "1.0"
+   :go "head(_url)"}
+  [^String _url])
 
 JOKER FUNC net/http.ListenAndServe from net/http/server.go:
 (defn ^"Error" ListenAndServe
@@ -918,11 +918,11 @@ JOKER FUNC net/http.MaxBytesReader from net/http/request.go:
 ;;   [^GoObject _w, ^GoObject _r, ^Int64 _n])
 
 JOKER FUNC net/http.NewFileTransport from net/http/filetransport.go:
-;; (defn NewFileTransport
-;;   "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo input arguments: (fs FileSystem)\n\nGo return type: RoundTripper\n\nJoker input arguments: [^go.std.net.http/FileSystem fs]\n\nJoker return type: go.std.net.http/RoundTripper"
-;;   {:added "1.0"
-;;    :go "newFileTransport(_fs.(http.FileSystem))"}
-;;   [^GoObject _fs])
+(defn NewFileTransport
+  "NewFileTransport returns a new RoundTripper, serving the provided\nFileSystem. The returned RoundTripper ignores the URL host in its\nincoming requests, as well as most other properties of the\nrequest.\n\nThe typical use case for NewFileTransport is to register the \"file\"\nprotocol with a Transport, as in:\n\n  t := &http.Transport{}\n  t.RegisterProtocol(\"file\", http.NewFileTransport(http.Dir(\"/\")))\n  c := &http.Client{Transport: t}\n  res, err := c.Get(\"file:///etc/passwd\")\n  ...\n\nGo input arguments: (fs FileSystem)\n\nGo return type: RoundTripper\n\nJoker input arguments: [^go.std.net.http/FileSystem fs]\n\nJoker return type: go.std.net.http/RoundTripper"
+  {:added "1.0"
+   :go "newFileTransport(_fs.(http.FileSystem))"}
+  [^GoObject _fs])
 
 JOKER FUNC net/http.NewRequest from net/http/request.go:
 ;; (defn NewRequest
@@ -946,11 +946,11 @@ JOKER FUNC net/http.NotFound from net/http/server.go:
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http.NotFoundHandler from net/http/server.go:
-;; (defn NotFoundHandler
-;;   "NotFoundHandler returns a simple request handler\nthat replies to each request with a ``404 page not found'' reply.\n\nGo return type: Handler\n\nJoker input arguments: []\n\nJoker return type: go.std.net.http/Handler"
-;;   {:added "1.0"
-;;    :go "notFoundHandler()"}
-;;   [])
+(defn NotFoundHandler
+  "NotFoundHandler returns a simple request handler\nthat replies to each request with a ``404 page not found'' reply.\n\nGo return type: Handler\n\nJoker input arguments: []\n\nJoker return type: go.std.net.http/Handler"
+  {:added "1.0"
+   :go "notFoundHandler()"}
+  [])
 
 JOKER FUNC net/http.ParseHTTPVersion from net/http/request.go:
 (defn ParseHTTPVersion
@@ -1016,11 +1016,11 @@ JOKER FUNC net/http.Redirect from net/http/server.go:
 ;;   [^GoObject _w, ^Object _r, ^String _url, ^Int _code])
 
 JOKER FUNC net/http.RedirectHandler from net/http/server.go:
-;; (defn RedirectHandler
-;;   "RedirectHandler returns a request handler that redirects\neach request it receives to the given url using the given\nstatus code.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nGo input arguments: (url string, code int)\n\nGo return type: Handler\n\nJoker input arguments: [^String url, ^Int code]\n\nJoker return type: go.std.net.http/Handler"
-;;   {:added "1.0"
-;;    :go "redirectHandler(_url, _code)"}
-;;   [^String _url, ^Int _code])
+(defn RedirectHandler
+  "RedirectHandler returns a request handler that redirects\neach request it receives to the given url using the given\nstatus code.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nGo input arguments: (url string, code int)\n\nGo return type: Handler\n\nJoker input arguments: [^String url, ^Int code]\n\nJoker return type: go.std.net.http/Handler"
+  {:added "1.0"
+   :go "redirectHandler(_url, _code)"}
+  [^String _url, ^Int _code])
 
 JOKER FUNC net/http.Serve from net/http/server.go:
 ;; (defn ^"Error" Serve
@@ -1065,11 +1065,11 @@ JOKER FUNC net/http.StatusText from net/http/status.go:
   [^Int _code])
 
 JOKER FUNC net/http.StripPrefix from net/http/server.go:
-;; (defn StripPrefix
-;;   "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo input arguments: (prefix string, h Handler)\n\nGo return type: Handler\n\nJoker input arguments: [^String prefix, ^go.std.net.http/Handler h]\n\nJoker return type: go.std.net.http/Handler"
-;;   {:added "1.0"
-;;    :go "stripPrefix(_prefix, _h.(http.Handler))"}
-;;   [^String _prefix, ^GoObject _h])
+(defn StripPrefix
+  "StripPrefix returns a handler that serves HTTP requests\nby removing the given prefix from the request URL's Path\nand invoking the handler h. StripPrefix handles a\nrequest for a path that doesn't begin with prefix by\nreplying with an HTTP 404 not found error.\n\nGo input arguments: (prefix string, h Handler)\n\nGo return type: Handler\n\nJoker input arguments: [^String prefix, ^go.std.net.http/Handler h]\n\nJoker return type: go.std.net.http/Handler"
+  {:added "1.0"
+   :go "stripPrefix(_prefix, _h.(http.Handler))"}
+  [^String _prefix, ^GoObject _h])
 
 JOKER FUNC net/http.TimeoutHandler from net/http/server.go:
 ;; (defn TimeoutHandler
@@ -1079,11 +1079,11 @@ JOKER FUNC net/http.TimeoutHandler from net/http/server.go:
 ;;   [^GoObject _h, ^GoObject _dt, ^String _msg])
 
 JOKER FUNC net/http/cgi.Request from net/http/cgi/child.go:
-;; (defn Request
-;;   "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net.http/Request Error]"
-;;   {:added "1.0"
-;;    :go "request()"}
-;;   [])
+(defn Request
+  "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net.http/Request Error]"
+  {:added "1.0"
+   :go "request()"}
+  [])
 
 JOKER FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 ;; (defn RequestFromMap
@@ -1240,11 +1240,11 @@ JOKER FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
-;; (defn Handler
-;;   "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: net/http.Handler\n\nJoker input arguments: [^String name]\n\nJoker return type: go.std.net.http/Handler"
-;;   {:added "1.0"
-;;    :go "handler(_name)"}
-;;   [^String _name])
+(defn Handler
+  "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: net/http.Handler\n\nJoker input arguments: [^String name]\n\nJoker return type: go.std.net.http/Handler"
+  {:added "1.0"
+   :go "handler(_name)"}
+  [^String _name])
 
 JOKER FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
 ;; (defn Index
@@ -1275,18 +1275,18 @@ JOKER FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
 ;;   [^GoObject _w, ^Object _r])
 
 JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
-;; (defn ParseAddress
-;;   "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [go.std.net.mail/Address Error]"
-;;   {:added "1.0"
-;;    :go "parseAddress(_address)"}
-;;   [^String _address])
+(defn ParseAddress
+  "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [go.std.net.mail/Address Error]"
+  {:added "1.0"
+   :go "parseAddress(_address)"}
+  [^String _address])
 
 JOKER FUNC net/mail.ParseAddressList from net/mail/message.go:
-;; (defn ParseAddressList
-;;   "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String list]\n\nJoker return type: [(vector-of go.std.net.mail/Address) Error]"
-;;   {:added "1.0"
-;;    :go "parseAddressList(_list)"}
-;;   [^String _list])
+(defn ParseAddressList
+  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String list]\n\nJoker return type: [(vector-of go.std.net.mail/Address) Error]"
+  {:added "1.0"
+   :go "parseAddressList(_list)"}
+  [^String _list])
 
 JOKER FUNC net/mail.ParseDate from net/mail/message.go:
 ;; (defn ParseDate
@@ -1310,25 +1310,25 @@ JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 ;;   [^GoObject _lis])
 
 JOKER FUNC net/rpc.Dial from net/rpc/client.go:
-;; (defn Dial
-;;   "Dial connects to an RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
-;;   {:added "1.0"
-;;    :go "dial(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn Dial
+  "Dial connects to an RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
+  {:added "1.0"
+   :go "dial(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net/rpc.DialHTTP from net/rpc/client.go:
-;; (defn DialHTTP
-;;   "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
-;;   {:added "1.0"
-;;    :go "dialHTTP(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn DialHTTP
+  "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
+  {:added "1.0"
+   :go "dialHTTP(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
-;; (defn DialHTTPPath
-;;   "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo input arguments: (network string, address string, path string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address, ^String path]\n\nJoker return type: [go.std.net.rpc/Client Error]"
-;;   {:added "1.0"
-;;    :go "dialHTTPPath(_network, _address, _path)"}
-;;   [^String _network, ^String _address, ^String _path])
+(defn DialHTTPPath
+  "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo input arguments: (network string, address string, path string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address, ^String path]\n\nJoker return type: [go.std.net.rpc/Client Error]"
+  {:added "1.0"
+   :go "dialHTTPPath(_network, _address, _path)"}
+  [^String _network, ^String _address, ^String _path])
 
 JOKER FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 ;; (defn HandleHTTP
@@ -1394,11 +1394,11 @@ JOKER FUNC net/rpc.ServeRequest from net/rpc/server.go:
   [^GoObject _codec])
 
 JOKER FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
-;; (defn Dial
-;;   "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
-;;   {:added "1.0"
-;;    :go "dial(_network, _address)"}
-;;   [^String _network, ^String _address])
+(defn Dial
+  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/Client Error]"
+  {:added "1.0"
+   :go "dial(_network, _address)"}
+  [^String _network, ^String _address])
 
 JOKER FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
 ;; (defn NewClient
@@ -1429,18 +1429,18 @@ JOKER FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 ;;   [^GoObject _conn])
 
 JOKER FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
-;; (defn CRAMMD5Auth
-;;   "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo input arguments: (username string, secret string)\n\nGo return type: Auth\n\nJoker input arguments: [^String username, ^String secret]\n\nJoker return type: go.std.net.smtp/Auth"
-;;   {:added "1.0"
-;;    :go "cRAMMD5Auth(_username, _secret)"}
-;;   [^String _username, ^String _secret])
+(defn CRAMMD5Auth
+  "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo input arguments: (username string, secret string)\n\nGo return type: Auth\n\nJoker input arguments: [^String username, ^String secret]\n\nJoker return type: go.std.net.smtp/Auth"
+  {:added "1.0"
+   :go "cRAMMD5Auth(_username, _secret)"}
+  [^String _username, ^String _secret])
 
 JOKER FUNC net/smtp.Dial from net/smtp/smtp.go:
-;; (defn Dial
-;;   "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [go.std.net.smtp/Client Error]"
-;;   {:added "1.0"
-;;    :go "dial(_addr)"}
-;;   [^String _addr])
+(defn Dial
+  "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [go.std.net.smtp/Client Error]"
+  {:added "1.0"
+   :go "dial(_addr)"}
+  [^String _addr])
 
 JOKER FUNC net/smtp.NewClient from net/smtp/smtp.go:
 ;; (defn NewClient
@@ -1450,11 +1450,11 @@ JOKER FUNC net/smtp.NewClient from net/smtp/smtp.go:
 ;;   [^GoObject _conn, ^String _host])
 
 JOKER FUNC net/smtp.PlainAuth from net/smtp/auth.go:
-;; (defn PlainAuth
-;;   "PlainAuth returns an Auth that implements the PLAIN authentication\nmechanism as defined in RFC 4616. The returned Auth uses the given\nusername and password to authenticate to host and act as identity.\nUsually identity should be the empty string, to act as username.\n\nPlainAuth will only send the credentials if the connection is using TLS\nor is connected to localhost. Otherwise authentication will fail with an\nerror, without sending the credentials.\n\nGo input arguments: (identity string, username string, password string, host string)\n\nGo return type: Auth\n\nJoker input arguments: [^String identity, ^String username, ^String password, ^String host]\n\nJoker return type: go.std.net.smtp/Auth"
-;;   {:added "1.0"
-;;    :go "plainAuth(_identity, _username, _password, _host)"}
-;;   [^String _identity, ^String _username, ^String _password, ^String _host])
+(defn PlainAuth
+  "PlainAuth returns an Auth that implements the PLAIN authentication\nmechanism as defined in RFC 4616. The returned Auth uses the given\nusername and password to authenticate to host and act as identity.\nUsually identity should be the empty string, to act as username.\n\nPlainAuth will only send the credentials if the connection is using TLS\nor is connected to localhost. Otherwise authentication will fail with an\nerror, without sending the credentials.\n\nGo input arguments: (identity string, username string, password string, host string)\n\nGo return type: Auth\n\nJoker input arguments: [^String identity, ^String username, ^String password, ^String host]\n\nJoker return type: go.std.net.smtp/Auth"
+  {:added "1.0"
+   :go "plainAuth(_identity, _username, _password, _host)"}
+  [^String _identity, ^String _username, ^String _password, ^String _host])
 
 JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
 ;; (defn ^"Error" SendMail
@@ -1471,11 +1471,11 @@ JOKER FUNC net/textproto.CanonicalMIMEHeaderKey from net/textproto/reader.go:
   [^String _s])
 
 JOKER FUNC net/textproto.Dial from net/textproto/textproto.go:
-;; (defn Dial
-;;   "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo input arguments: (network string, addr string)\n\nGo return type: (*Conn, error)\n\nJoker input arguments: [^String network, ^String addr]\n\nJoker return type: [go.std.net.textproto/Conn Error]"
-;;   {:added "1.0"
-;;    :go "dial(_network, _addr)"}
-;;   [^String _network, ^String _addr])
+(defn Dial
+  "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo input arguments: (network string, addr string)\n\nGo return type: (*Conn, error)\n\nJoker input arguments: [^String network, ^String addr]\n\nJoker return type: [go.std.net.textproto/Conn Error]"
+  {:added "1.0"
+   :go "dial(_network, _addr)"}
+  [^String _network, ^String _addr])
 
 JOKER FUNC net/textproto.NewConn from net/textproto/textproto.go:
 ;; (defn NewConn
@@ -1513,25 +1513,25 @@ JOKER FUNC net/textproto.TrimString from net/textproto/textproto.go:
   [^String _s])
 
 JOKER FUNC net/url.Parse from net/url/url.go:
-;; (defn Parse
-;;   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/URL Error]"
-;;   {:added "1.0"
-;;    :go "parse(_rawurl)"}
-;;   [^String _rawurl])
+(defn Parse
+  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/URL Error]"
+  {:added "1.0"
+   :go "parse(_rawurl)"}
+  [^String _rawurl])
 
 JOKER FUNC net/url.ParseQuery from net/url/url.go:
-;; (defn ParseQuery
-;;   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [go.std.net.url/Values Error]"
-;;   {:added "1.0"
-;;    :go "parseQuery(_query)"}
-;;   [^String _query])
+(defn ParseQuery
+  "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [go.std.net.url/Values Error]"
+  {:added "1.0"
+   :go "parseQuery(_query)"}
+  [^String _query])
 
 JOKER FUNC net/url.ParseRequestURI from net/url/url.go:
-;; (defn ParseRequestURI
-;;   "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/URL Error]"
-;;   {:added "1.0"
-;;    :go "parseRequestURI(_rawurl)"}
-;;   [^String _rawurl])
+(defn ParseRequestURI
+  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/URL Error]"
+  {:added "1.0"
+   :go "parseRequestURI(_rawurl)"}
+  [^String _rawurl])
 
 JOKER FUNC net/url.PathEscape from net/url/url.go:
 (defn ^"String" PathEscape
@@ -1576,25 +1576,25 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
 ;;   [^String _username, ^String _password])
 
 GO FUNC net.CIDRMask from net/ip.go:
-// func cIDRMask(ones int, bits int) Object {
-// 	_res := _net.CIDRMask(ones, bits)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPMask(_res))
-// }
+func cIDRMask(ones int, bits int) Object {
+	_res := _net.CIDRMask(ones, bits)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net.Dial from net/dial.go:
-// func dial(network string, address string) Object {
-// 	_res1, _res2 := _net.Dial(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(_res1)))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(network string, address string) Object {
+	_res1, _res2 := _net.Dial(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.DialIP from net/iprawsock.go:
 // func dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 // 	_res1, _res2 := _net.DialIP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1603,7 +1603,7 @@ GO FUNC net.DialTCP from net/tcpsock.go:
 // func dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object {
 // 	_res1, _res2 := _net.DialTCP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.TCPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1612,7 +1612,7 @@ GO FUNC net.DialTimeout from net/dial.go:
 // func dialTimeout(network string, address string, timeout time.Duration) Object {
 // 	_res1, _res2 := _net.DialTimeout(network, address, timeout)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(_res1)))
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1621,7 +1621,7 @@ GO FUNC net.DialUDP from net/udpsock.go:
 // func dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.DialUDP(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UDPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1630,7 +1630,7 @@ GO FUNC net.DialUnix from net/unixsock.go:
 // func dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.DialUnix(network, laddr, raddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UnixConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1639,7 +1639,7 @@ GO FUNC net.FileConn from net/file.go:
 // func fileConn(f *os.File) Object {
 // 	c, err := _net.FileConn(f)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(c)))
+// 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -1648,7 +1648,7 @@ GO FUNC net.FileListener from net/file.go:
 // func fileListener(f *os.File) Object {
 // 	ln, err := _net.FileListener(f)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Listener(ln)))
+// 	_res = _res.Conjoin(MakeGoObject(ln))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -1657,81 +1657,81 @@ GO FUNC net.FilePacketConn from net/file.go:
 // func filePacketConn(f *os.File) Object {
 // 	c, err := _net.FilePacketConn(f)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.PacketConn(c)))
+// 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
 
 GO FUNC net.IPv4 from net/ip.go:
-// func iPv4(a byte, b byte, c byte, d byte) Object {
-// 	_res := _net.IPv4(a, b, c, d)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet.IP(_res))
-// }
+func iPv4(a byte, b byte, c byte, d byte) Object {
+	_res := _net.IPv4(a, b, c, d)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net.IPv4Mask from net/ip.go:
-// func iPv4Mask(a byte, b byte, c byte, d byte) Object {
-// 	_res := _net.IPv4Mask(a, b, c, d)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPMask(_res))
-// }
+func iPv4Mask(a byte, b byte, c byte, d byte) Object {
+	_res := _net.IPv4Mask(a, b, c, d)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net.InterfaceAddrs from net/interface.go:
-// func interfaceAddrs() Object {
-// 	_res1, _res2 := _net.InterfaceAddrs()
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Addr(_elem1)))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func interfaceAddrs() Object {
+	_res1, _res2 := _net.InterfaceAddrs()
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.InterfaceByIndex from net/interface.go:
-// func interfaceByIndex(index int) Object {
-// 	_res1, _res2 := _net.InterfaceByIndex(index)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Interface((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func interfaceByIndex(index int) Object {
+	_res1, _res2 := _net.InterfaceByIndex(index)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.InterfaceByName from net/interface.go:
-// func interfaceByName(name string) Object {
-// 	_res1, _res2 := _net.InterfaceByName(name)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Interface((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func interfaceByName(name string) Object {
+	_res1, _res2 := _net.InterfaceByName(name)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.Interfaces from net/interface.go:
-// func interfaces() Object {
-// 	_res1, _res2 := _net.Interfaces()
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Interface(_elem1)))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func interfaces() Object {
+	_res1, _res2 := _net.Interfaces()
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.Listen from net/dial.go:
-// func listen(network string, address string) Object {
-// 	_res1, _res2 := _net.Listen(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Listener(_res1)))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func listen(network string, address string) Object {
+	_res1, _res2 := _net.Listen(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.ListenIP from net/iprawsock.go:
 // func listenIP(network string, laddr *_net.IPAddr) Object {
 // 	_res1, _res2 := _net.ListenIP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1740,25 +1740,25 @@ GO FUNC net.ListenMulticastUDP from net/udpsock.go:
 // func listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UDPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
 
 GO FUNC net.ListenPacket from net/dial.go:
-// func listenPacket(network string, address string) Object {
-// 	_res1, _res2 := _net.ListenPacket(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.PacketConn(_res1)))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func listenPacket(network string, address string) Object {
+	_res1, _res2 := _net.ListenPacket(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.ListenTCP from net/tcpsock.go:
 // func listenTCP(network string, laddr *_net.TCPAddr) Object {
 // 	_res1, _res2 := _net.ListenTCP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.TCPListener((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1767,7 +1767,7 @@ GO FUNC net.ListenUDP from net/udpsock.go:
 // func listenUDP(network string, laddr *_net.UDPAddr) Object {
 // 	_res1, _res2 := _net.ListenUDP(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UDPConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1776,7 +1776,7 @@ GO FUNC net.ListenUnix from net/unixsock.go:
 // func listenUnix(network string, laddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.ListenUnix(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UnixListener((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1785,7 +1785,7 @@ GO FUNC net.ListenUnixgram from net/unixsock.go:
 // func listenUnixgram(network string, laddr *_net.UnixAddr) Object {
 // 	_res1, _res2 := _net.ListenUnixgram(network, laddr)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UnixConn((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -1826,43 +1826,43 @@ func lookupHost(host string) Object {
 }
 
 GO FUNC net.LookupIP from net/lookup.go:
-// func lookupIP(host string) Object {
-// 	_res1, _res2 := _net.LookupIP(host)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IP(_elem1)))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func lookupIP(host string) Object {
+	_res1, _res2 := _net.LookupIP(host)
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.LookupMX from net/lookup.go:
-// func lookupMX(name string) Object {
-// 	_res1, _res2 := _net.LookupMX(name)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.MX((*_elem1))))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func lookupMX(name string) Object {
+	_res1, _res2 := _net.LookupMX(name)
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.LookupNS from net/lookup.go:
-// func lookupNS(name string) Object {
-// 	_res1, _res2 := _net.LookupNS(name)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.NS((*_elem1))))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func lookupNS(name string) Object {
+	_res1, _res2 := _net.LookupNS(name)
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.LookupPort from net/lookup.go:
 func lookupPort(network string, service string) Object {
@@ -1874,18 +1874,18 @@ func lookupPort(network string, service string) Object {
 }
 
 GO FUNC net.LookupSRV from net/lookup.go:
-// func lookupSRV(service string, proto string, name string) Object {
-// 	cname, addrs, err := _net.LookupSRV(service, proto, name)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeString(cname))
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range addrs {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.SRV((*_elem1))))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func lookupSRV(service string, proto string, name string) Object {
+	cname, addrs, err := _net.LookupSRV(service, proto, name)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeString(cname))
+	_vec1 := EmptyVector
+	for _, _elem1 := range addrs {
+		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net.LookupTXT from net/lookup.go:
 func lookupTXT(name string) Object {
@@ -1901,74 +1901,74 @@ func lookupTXT(name string) Object {
 }
 
 GO FUNC net.ParseCIDR from net/ip.go:
-// func parseCIDR(s string) Object {
-// 	_res1, _res2, _res3 := _net.ParseCIDR(s)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IP(_res1)))
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPNet((*_res2))))
-// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-// 	return _res
-// }
+func parseCIDR(s string) Object {
+	_res1, _res2, _res3 := _net.ParseCIDR(s)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(MakeGoObject((*_res2)))
+	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+	return _res
+}
 
 GO FUNC net.ParseIP from net/ip.go:
-// func parseIP(s string) Object {
-// 	_res := _net.ParseIP(s)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet.IP(_res))
-// }
+func parseIP(s string) Object {
+	_res := _net.ParseIP(s)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net.ParseMAC from net/mac.go:
-// func parseMAC(s string) Object {
-// 	hw, err := _net.ParseMAC(s)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.HardwareAddr(hw)))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func parseMAC(s string) Object {
+	hw, err := _net.ParseMAC(s)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(hw))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net.Pipe from net/pipe.go:
-// func pipe() Object {
-// 	_res1, _res2 := _net.Pipe()
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(_res1)))
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.Conn(_res2)))
-// 	return _res
-// }
+func pipe() Object {
+	_res1, _res2 := _net.Pipe()
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(MakeGoObject(_res2))
+	return _res
+}
 
 GO FUNC net.ResolveIPAddr from net/iprawsock.go:
-// func resolveIPAddr(network string, address string) Object {
-// 	_res1, _res2 := _net.ResolveIPAddr(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.IPAddr((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func resolveIPAddr(network string, address string) Object {
+	_res1, _res2 := _net.ResolveIPAddr(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.ResolveTCPAddr from net/tcpsock.go:
-// func resolveTCPAddr(network string, address string) Object {
-// 	_res1, _res2 := _net.ResolveTCPAddr(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.TCPAddr((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func resolveTCPAddr(network string, address string) Object {
+	_res1, _res2 := _net.ResolveTCPAddr(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.ResolveUDPAddr from net/udpsock.go:
-// func resolveUDPAddr(network string, address string) Object {
-// 	_res1, _res2 := _net.ResolveUDPAddr(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UDPAddr((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func resolveUDPAddr(network string, address string) Object {
+	_res1, _res2 := _net.ResolveUDPAddr(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.ResolveUnixAddr from net/unixsock.go:
-// func resolveUnixAddr(network string, address string) Object {
-// 	_res1, _res2 := _net.ResolveUnixAddr(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet.UnixAddr((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func resolveUnixAddr(network string, address string) Object {
+	_res1, _res2 := _net.ResolveUnixAddr(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net.SplitHostPort from net/ipsock.go:
 func splitHostPort(hostport string) Object {
@@ -1993,19 +1993,19 @@ GO FUNC net/http.Error from net/http/server.go:
 // }
 
 GO FUNC net/http.FileServer from net/http/fs.go:
-// func fileServer(root _http.FileSystem) Object {
-// 	_res := _http.FileServer(root)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
-// }
+func fileServer(root _http.FileSystem) Object {
+	_res := _http.FileServer(root)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.Get from net/http/client.go:
-// func get(url string) Object {
-// 	resp, err := _http.Get(url)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func get(url string) Object {
+	resp, err := _http.Get(url)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*resp)))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net/http.Handle from net/http/server.go:
 // func handle(pattern string, handler _http.Handler) Object {
@@ -2020,13 +2020,13 @@ GO FUNC net/http.HandleFunc from net/http/server.go:
 // }
 
 GO FUNC net/http.Head from net/http/client.go:
-// func head(url string) Object {
-// 	resp, err := _http.Head(url)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func head(url string) Object {
+	resp, err := _http.Head(url)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*resp)))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net/http.MaxBytesReader from net/http/request.go:
 // func maxBytesReader(w _http.ResponseWriter, r io.ReadCloser, n int64) Object {
@@ -2034,16 +2034,16 @@ GO FUNC net/http.MaxBytesReader from net/http/request.go:
 // }
 
 GO FUNC net/http.NewFileTransport from net/http/filetransport.go:
-// func newFileTransport(fs _http.FileSystem) Object {
-// 	_res := _http.NewFileTransport(fs)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.RoundTripper(_res))
-// }
+func newFileTransport(fs _http.FileSystem) Object {
+	_res := _http.NewFileTransport(fs)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.NewRequest from net/http/request.go:
 // func newRequest(method string, url string, body io.Reader) Object {
 // 	_res1, _res2 := _http.NewRequest(method, url, body)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2051,7 +2051,7 @@ GO FUNC net/http.NewRequest from net/http/request.go:
 GO FUNC net/http.NewServeMux from net/http/server.go:
 // func newServeMux() Object {
 // 	_res := _http.NewServeMux()
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.ServeMux((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http.NotFound from net/http/server.go:
@@ -2061,10 +2061,10 @@ GO FUNC net/http.NotFound from net/http/server.go:
 // }
 
 GO FUNC net/http.NotFoundHandler from net/http/server.go:
-// func notFoundHandler() Object {
-// 	_res := _http.NotFoundHandler()
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
-// }
+func notFoundHandler() Object {
+	_res := _http.NotFoundHandler()
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.ParseHTTPVersion from net/http/request.go:
 func parseHTTPVersion(vers string) Object {
@@ -2089,7 +2089,7 @@ GO FUNC net/http.Post from net/http/client.go:
 // func post(url string, contentType string, body io.Reader) Object {
 // 	resp, err := _http.Post(url, contentType, body)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
+// 	_res = _res.Conjoin(MakeGoObject((*resp)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2098,7 +2098,7 @@ GO FUNC net/http.PostForm from net/http/client.go:
 // func postForm(url string, data url.Values) Object {
 // 	resp, err := _http.PostForm(url, data)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*resp))))
+// 	_res = _res.Conjoin(MakeGoObject((*resp)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2107,7 +2107,7 @@ GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 // func proxyFromEnvironment(req *_http.Request) Object {
 // 	_res1, _res2 := _http.ProxyFromEnvironment(req)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.URL((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2121,7 +2121,7 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 // func readRequest(b *bufio.Reader) Object {
 // 	_res1, _res2 := _http.ReadRequest(b)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2130,7 +2130,7 @@ GO FUNC net/http.ReadResponse from net/http/response.go:
 // func readResponse(r *bufio.Reader, req *_http.Request) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Response((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2142,10 +2142,10 @@ GO FUNC net/http.Redirect from net/http/server.go:
 // }
 
 GO FUNC net/http.RedirectHandler from net/http/server.go:
-// func redirectHandler(url string, code int) Object {
-// 	_res := _http.RedirectHandler(url, code)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
-// }
+func redirectHandler(url string, code int) Object {
+	_res := _http.RedirectHandler(url, code)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.Serve from net/http/server.go:
 // func serve(l net.Listener, handler _http.Handler)  {
@@ -2178,31 +2178,31 @@ GO FUNC net/http.SetCookie from net/http/cookie.go:
 // }
 
 GO FUNC net/http.StripPrefix from net/http/server.go:
-// func stripPrefix(prefix string, h _http.Handler) Object {
-// 	_res := _http.StripPrefix(prefix, h)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
-// }
+func stripPrefix(prefix string, h _http.Handler) Object {
+	_res := _http.StripPrefix(prefix, h)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.TimeoutHandler from net/http/server.go:
 // func timeoutHandler(h _http.Handler, dt time.Duration, msg string) Object {
 // 	_res := _http.TimeoutHandler(h, dt, msg)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/cgi.Request from net/http/cgi/child.go:
-// func request() Object {
-// 	_res1, _res2 := _cgi.Request()
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func request() Object {
+	_res1, _res2 := _cgi.Request()
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // func requestFromMap(params map[]) Object {
 // 	_res1, _res2 := _cgi.RequestFromMap(params)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2217,7 +2217,7 @@ GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // func new(o *_cookiejar.Options) Object {
 // 	_res1, _res2 := _cookiejar.New(o)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/cookiejar.Jar((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2236,37 +2236,37 @@ GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 // func newRecorder() Object {
 // 	_res := _httptest.NewRecorder()
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.ResponseRecorder((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
 // func newRequest(method string, target string, body io.Reader) Object {
 // 	_res := _httptest.NewRequest(method, target, body)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Request((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
 // func newServer(handler http.Handler) Object {
 // 	_res := _httptest.NewServer(handler)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
 // func newTLSServer(handler http.Handler) Object {
 // 	_res := _httptest.NewTLSServer(handler)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
 // func newUnstartedServer(handler http.Handler) Object {
 // 	_res := _httptest.NewUnstartedServer(handler)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptest.Server((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func contextClientTrace(ctx context.Context) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httptrace.ClientTrace((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
@@ -2326,25 +2326,25 @@ GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
 GO FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 // func newClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewClientConn(c, r)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ClientConn((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 // func newProxyClientConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewProxyClientConn(c, r)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ClientConn((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 // func newServerConn(c net.Conn, r *bufio.Reader) Object {
 // 	_res := _httputil.NewServerConn(c, r)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ServerConn((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
 // func newSingleHostReverseProxy(target *url.URL) Object {
 // 	_res := _httputil.NewSingleHostReverseProxy(target)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http/httputil.ReverseProxy((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
@@ -2354,10 +2354,10 @@ GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 // }
 
 GO FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
-// func handler(name string) Object {
-// 	_res := _pprof.Handler(name)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/http.Handler(_res))
-// }
+func handler(name string) Object {
+	_res := _pprof.Handler(name)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
 // func index(w http.ResponseWriter, r *http.Request) Object {
@@ -2384,26 +2384,26 @@ GO FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
 // }
 
 GO FUNC net/mail.ParseAddress from net/mail/message.go:
-// func parseAddress(address string) Object {
-// 	_res1, _res2 := _mail.ParseAddress(address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/mail.Address((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func parseAddress(address string) Object {
+	_res1, _res2 := _mail.ParseAddress(address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/mail.ParseAddressList from net/mail/message.go:
-// func parseAddressList(list string) Object {
-// 	_res1, _res2 := _mail.ParseAddressList(list)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/mail.Address((*_elem1))))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func parseAddressList(list string) Object {
+	_res1, _res2 := _mail.ParseAddressList(list)
+	_res := EmptyVector
+	_vec1 := EmptyVector
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject((*_elem1)))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/mail.ParseDate from net/mail/message.go:
 // func parseDate(date string) Object {
@@ -2418,7 +2418,7 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // func readMessage(r io.Reader) Object {
 // 	msg, err := _mail.ReadMessage(r)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/mail.Message((*msg))))
+// 	_res = _res.Conjoin(MakeGoObject((*msg)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2430,31 +2430,31 @@ GO FUNC net/rpc.Accept from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc.Dial from net/rpc/client.go:
-// func dial(network string, address string) Object {
-// 	_res1, _res2 := _rpc.Dial(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(network string, address string) Object {
+	_res1, _res2 := _rpc.Dial(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/rpc.DialHTTP from net/rpc/client.go:
-// func dialHTTP(network string, address string) Object {
-// 	_res1, _res2 := _rpc.DialHTTP(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dialHTTP(network string, address string) Object {
+	_res1, _res2 := _rpc.DialHTTP(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
-// func dialHTTPPath(network string, address string, path string) Object {
-// 	_res1, _res2 := _rpc.DialHTTPPath(network, address, path)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dialHTTPPath(network string, address string, path string) Object {
+	_res1, _res2 := _rpc.DialHTTPPath(network, address, path)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 // func handleHTTP() Object {
@@ -2465,19 +2465,19 @@ GO FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 GO FUNC net/rpc.NewClient from net/rpc/client.go:
 // func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _rpc.NewClient(conn)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
 // func newClientWithCodec(codec _rpc.ClientCodec) Object {
 // 	_res := _rpc.NewClientWithCodec(codec)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/rpc.NewServer from net/rpc/server.go:
 // func newServer() Object {
 // 	_res := _rpc.NewServer()
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Server((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/rpc.Register from net/rpc/server.go:
@@ -2505,30 +2505,30 @@ GO FUNC net/rpc.ServeConn from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
-// func dial(network string, address string) Object {
-// 	_res1, _res2 := _jsonrpc.Dial(network, address)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(network string, address string) Object {
+	_res1, _res2 := _jsonrpc.Dial(network, address)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
 // func newClient(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewClient(conn)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.Client((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
 // func newClientCodec(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewClientCodec(conn)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.ClientCodec(_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewServerCodec from net/rpc/jsonrpc/server.go:
 // func newServerCodec(conn io.ReadWriteCloser) Object {
 // 	_res := _jsonrpc.NewServerCodec(conn)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/rpc.ServerCodec(_res))
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
@@ -2538,34 +2538,34 @@ GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 // }
 
 GO FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
-// func cRAMMD5Auth(username string, secret string) Object {
-// 	_res := _smtp.CRAMMD5Auth(username, secret)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Auth(_res))
-// }
+func cRAMMD5Auth(username string, secret string) Object {
+	_res := _smtp.CRAMMD5Auth(username, secret)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/smtp.Dial from net/smtp/smtp.go:
-// func dial(addr string) Object {
-// 	_res1, _res2 := _smtp.Dial(addr)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Client((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(addr string) Object {
+	_res1, _res2 := _smtp.Dial(addr)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
 // func newClient(conn net.Conn, host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Client((*_res1))))
+// 	_res = _res.Conjoin(MakeGoObject((*_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
 
 GO FUNC net/smtp.PlainAuth from net/smtp/auth.go:
-// func plainAuth(identity string, username string, password string, host string) Object {
-// 	_res := _smtp.PlainAuth(identity, username, password, host)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/smtp.Auth(_res))
-// }
+func plainAuth(identity string, username string, password string, host string) Object {
+	_res := _smtp.PlainAuth(identity, username, password, host)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // func sendMail(addr string, a _smtp.Auth, from string, to []string, msg []byte)  {
@@ -2574,30 +2574,30 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // }
 
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
-// func dial(network string, addr string) Object {
-// 	_res1, _res2 := _textproto.Dial(network, addr)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Conn((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func dial(network string, addr string) Object {
+	_res1, _res2 := _textproto.Dial(network, addr)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/textproto.NewConn from net/textproto/textproto.go:
 // func newConn(conn io.ReadWriteCloser) Object {
 // 	_res := _textproto.NewConn(conn)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Conn((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/textproto.NewReader from net/textproto/reader.go:
 // func newReader(r *bufio.Reader) Object {
 // 	_res := _textproto.NewReader(r)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Reader((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/textproto.NewWriter from net/textproto/writer.go:
 // func newWriter(w *bufio.Writer) Object {
 // 	_res := _textproto.NewWriter(w)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/textproto.Writer((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
@@ -2611,31 +2611,31 @@ GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
-// func parse(rawurl string) Object {
-// 	_res1, _res2 := _url.Parse(rawurl)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.URL((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func parse(rawurl string) Object {
+	_res1, _res2 := _url.Parse(rawurl)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/url.ParseQuery from net/url/url.go:
-// func parseQuery(query string) Object {
-// 	_res1, _res2 := _url.ParseQuery(query)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.Values(_res1)))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func parseQuery(query string) Object {
+	_res1, _res2 := _url.ParseQuery(query)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
-// func parseRequestURI(rawurl string) Object {
-// 	_res1, _res2 := _url.ParseRequestURI(rawurl)
-// 	_res := EmptyVector
-// 	_res = _res.Conjoin(ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.URL((*_res1))))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func parseRequestURI(rawurl string) Object {
+	_res1, _res2 := _url.ParseRequestURI(rawurl)
+	_res := EmptyVector
+	_res = _res.Conjoin(MakeGoObject((*_res1)))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/url.PathUnescape from net/url/url.go:
 func pathUnescape(s string) Object {
@@ -2658,17 +2658,17 @@ func queryUnescape(s string) Object {
 GO FUNC net/url.User from net/url/url.go:
 // func user(username string) Object {
 // 	_res := _url.User(username)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.Userinfo((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 GO FUNC net/url.UserPassword from net/url/url.go:
 // func userPassword(username string, password string) Object {
 // 	_res := _url.UserPassword(username, password)
-// 	return ABEND911(custom-runtime routine not implemented: ConvertFromnet/url.Userinfo((*_res)))
+// 	return MakeGoObject((*_res))
 // }
 
 Adding custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/core.joke
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/std/generate-custom.joke
-ABENDs: 911(93) 987(60) 903(24) 401(20) 675(18) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
-Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=19 (12.84%)
+ABENDs: 987(60) 903(24) 401(20) 675(18) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
+Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=63 (42.57%)

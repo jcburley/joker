@@ -10,13 +10,7 @@ func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf s
 	if _, ok := types[fullTypeName]; ok {
 		cl = fullTypeNameAsClojure(fullTypeName)
 		gol = fullTypeName
-		runtime := "ConvertFrom" + fullTypeName
-		out = runtime + "(" + captureName + ")"
-		if _, ok := customRuntimeImplemented[runtime]; !ok {
-			if !strings.Contains(out, "ABEND") {
-				out = "ABEND911(custom-runtime routine not implemented: " + out + ")"
-			}
-		}
+		out = "MakeGoObject(" + captureName + ")"
 	} else {
 		cl = fmt.Sprintf("ABEND042(cannot find typename %s)", fullTypeName)
 		gol = "..."
