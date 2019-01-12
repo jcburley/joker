@@ -95,7 +95,7 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, 
 	}
 	doc = path.Base(fullPkgName) + "." + baseTypeName
 	code = doc
-	cl2gol = "ABEND987(imports not yet supported: " + doc + ")"
+	cl2gol = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
 	return
 }
 

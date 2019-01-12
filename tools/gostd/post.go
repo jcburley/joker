@@ -12,7 +12,7 @@ func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf s
 		gol = fullTypeName
 		out = "MakeGoObject(" + captureName + ")"
 	} else {
-		cl = fmt.Sprintf("ABEND042(cannot find typename %s)", fullTypeName)
+		cl = fmt.Sprintf("ABEND042(post.go: cannot find typename %s)", fullTypeName)
 		gol = "..."
 		out = captureName
 	}
@@ -116,7 +116,7 @@ func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf st
 }
 
 func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
-	cl, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(should not show up: %s)", captureName), e, onlyIf)
+	cl, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
 	out = "MakeGoObject(" + captureName + ")"
 	cl = "(atom-of " + cl + ")"
 	gol = "*" + gol
@@ -149,7 +149,7 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 			out = maybeNil(captureName, "MakeError("+captureName+")") // TODO: Test this against the MakeError() added to joker/core/object.go
 		default:
 			if isPrivate(v.Name) {
-				cl = fmt.Sprintf("ABEND043(unsupported built-in type %s)", v.Name)
+				cl = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
 				gol = "..."
 				out = captureName
 			} else {
@@ -165,7 +165,7 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 	case *StructType:
 		cl, gol, goc, out = genGoPostStruct(fn, indent, captureName, v.Fields, onlyIf)
 	default:
-		cl = fmt.Sprintf("ABEND883(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
+		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 		gol = "..."
 		out = captureName
 	}
@@ -249,7 +249,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 		if useful {
 			goc = indent + result + " := EmptyVector\n" + goc + indent + "return " + result + "\n"
 		} else {
-			goc = indent + "ABEND123(no public information returned)\n"
+			goc = indent + "ABEND123(post.go: no public information returned)\n"
 		}
 	} else {
 		if goc == "" && result == resultName {
@@ -258,7 +258,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 			goc += indent + "return " + result + "\n"
 		}
 		if !useful {
-			goc += indent + "ABEND124(no public information returned)\n"
+			goc += indent + "ABEND124(post.go: no public information returned)\n"
 		}
 	}
 

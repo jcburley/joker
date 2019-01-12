@@ -13,13 +13,13 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 	runtime := "ConvertToArrayOf" + goType
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if len != nil {
-		cl2golParam = "ABEND901(specific-length arrays not supported: " + cl2golParam + ")"
+		cl2golParam = "ABEND901(pre.go: specific-length arrays not supported: " + cl2golParam + ")"
 	} else if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND902(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND902(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	} else if _, ok := el.(*Ident); !ok {
-		cl2golParam = "ABEND910(arrays of things other than identifiers not supported: " + cl2golParam + ")"
+		cl2golParam = "ABEND910(pre.go: arrays of things other than identifiers not supported: " + cl2golParam + ")"
 	}
 	clType = "Object"
 	clTypeDoc = "(vector-of " + clTypeDoc + ")"
@@ -35,7 +35,7 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND903(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND903(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clType = "Object"
@@ -80,7 +80,7 @@ func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND905(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND905(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clTypeDoc = "(ellipsis-somehow " + clType + ")"
@@ -96,7 +96,7 @@ func genGoPreFunc(fn *funcInfo, indent string, e *FuncType, paramName string) (c
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND906(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND906(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clTypeDoc = clType
@@ -111,7 +111,7 @@ func genGoPreInterface(fn *funcInfo, indent string, e *InterfaceType, paramName 
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND907(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND907(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clTypeDoc = clType
@@ -126,7 +126,7 @@ func genGoPreMap(fn *funcInfo, indent string, e *MapType, paramName string) (clT
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND908(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND908(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clTypeDoc = clType
@@ -141,7 +141,7 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string) (c
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
 		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND909(custom-runtime routine not implemented: " + cl2golParam + ")"
+			cl2golParam = "ABEND909(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
 		}
 	}
 	clTypeDoc = clType
@@ -150,13 +150,13 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string) (c
 }
 
 func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	clType = fmt.Sprintf("ABEND881(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
-	goType = fmt.Sprintf("ABEND882(unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
+	clType = fmt.Sprintf("ABEND881(pre.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
+	goType = fmt.Sprintf("ABEND882(pre.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 	cl2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
 		goType = v.Name
-		clType = fmt.Sprintf("ABEND885(unrecognized type %s at: %s)", v.Name, unix(whereAt(e.Pos())))
+		clType = fmt.Sprintf("ABEND885(pre.go: unrecognized type %s at: %s)", v.Name, unix(whereAt(e.Pos())))
 		switch v.Name {
 		case "string":
 			clType = "String"
@@ -181,7 +181,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 		case "error":
 		default:
 			if isPrivate(v.Name) {
-				clType = fmt.Sprintf("ABEND044(unsupported built-in type %s)", v.Name)
+				clType = fmt.Sprintf("ABEND044(pre.go: unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
 			} else {
 				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName)
