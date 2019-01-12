@@ -1102,8 +1102,8 @@ func MakeTime(t time.Time) Time {
 
 func MakeGoObject(o interface{}) GoObject {
 	ty := reflect.TypeOf(o)
-	s := "GoObject[" + ty.String() + "]"
-	k := STRINGS.Intern(fmt.Sprintf("GoObject[%v]", reflect.TypeOf(o)))
+	s := fmt.Sprintf("GoObject[%v]", reflect.TypeOf(o))
+	k := STRINGS.Intern(s)
 	var t *Type
 	var found bool
 	if t, found = TYPES[k]; !found {
