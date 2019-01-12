@@ -221,6 +221,9 @@ type (
 	}
 	GoObject struct {
 		O interface{}
+		T *Type // not sure this is needed here (could do
+		// something like regRefType?) -- but unsure
+		// about this whole approach anyway
 	}
 	KVReduce interface {
 		kvreduce(c Callable, init Object) Object
@@ -366,7 +369,6 @@ func init() {
 		ExInfo:         regRefType("ExInfo", (*ExInfo)(nil)),
 		Fn:             regRefType("Fn", (*Fn)(nil)),
 		File:           regRefType("File", (*File)(nil)),
-		GoObject:       regRefType("GoObject", (*GoObject)(nil)),
 		BufferedReader: regRefType("BufferedReader", (*BufferedReader)(nil)),
 		HashMap:        regRefType("HashMap", (*HashMap)(nil)),
 		Int:            regType("Int", (*Int)(nil)),
@@ -1099,7 +1101,16 @@ func MakeTime(t time.Time) Time {
 }
 
 func MakeGoObject(o interface{}) GoObject {
-	return GoObject{O: o}
+	ty := reflect.TypeOf(o)
+	s := "GoObject[" + ty.String() + "]"
+	k := STRINGS.Intern(fmt.Sprintf("GoObject[%v]", reflect.TypeOf(o)))
+	var t *Type
+	var found bool
+	if t, found = TYPES[k]; !found {
+		t = &Type{name: s, reflectType: ty}
+		TYPES[k] = t
+	}
+	return GoObject{O: o, T: t}
 }
 
 func (o GoObject) ToString(escape bool) string {
@@ -1124,7 +1135,7 @@ func (o GoObject) WithInfo(info *ObjectInfo) Object {
 }
 
 func (o GoObject) GetType() *Type {
-	return TYPE.GoObject
+	return o.T
 }
 
 func (o GoObject) Native() interface{} {
