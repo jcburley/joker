@@ -18,7 +18,7 @@ build() {
 
 set -e  # Exit on error.
 
-if [ -e GO.link ]; then
+if [ -n "$GOROOT" ]; then
     (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
 fi
 
