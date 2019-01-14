@@ -13,9 +13,9 @@ RC=0
 
 rm -fr $GOENV/joker
 mkdir -p $GOENV/joker/{core/data,std}
-cp -pv ../../custom.go $GOENV/joker/
-cp -pv ../../core/data/core.joke $GOENV/joker/core/data/
-cp -pv ../../std/generate-custom.joke $GOENV/joker/std/
+git show gostd:../../custom.go > $GOENV/joker/custom.go
+git show gostd:../../core/data/core.joke > $GOENV/joker/core/data/core.joke
+git show gostd:../../std/generate-custom.joke > $GOENV/joker/std/generate-custom.joke
 
 if [ "$1" = "--reset" ]; then
     exit 0
