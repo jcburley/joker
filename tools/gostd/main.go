@@ -5,7 +5,6 @@ import (
 	"go/build"
 	"go/parser"
 	"go/token"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -52,18 +51,18 @@ func usage() {
 Usage: gostd options...
 
 Options:
-  --go <go-source-dir-name>      # Location of Go source tree's src/ subdirectory
-  --overwrite                    # Overwrite any existing <joker-std-subdir> files, leaving existing files intact
-  --replace                      # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
-  --fresh                        # (Default) Refuse to overwrite existing <joker-std-subdir> directory
-  --joker <joker-source-dir-name>  # Modify pertinent source files to reflect packages being created
-  --verbose, -v                  # Print info on what's going on
-  --summary                      # Print summary of #s of types, functions, etc.
-  --output-code                  # Print generated code to stdout (used by test.sh)
-  --empty                        # Generate empty packages (those with no Joker code)
-  --dump                         # Use go's AST dump API on pertinent elements (functions, types, etc.)
-  --no-timestamp                 # Don't put the time (and version) info in generated/modified files
-  --help, -h                     # Print this information
+  --go <go-source-dir>        # Location of Golang's src/ subdirectory (defaults to $GOROOT)
+  --overwrite                 # Overwrite any existing <joker-std-subdir> files, leaving existing files intact
+  --replace                   # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
+  --fresh                     # (Default) Refuse to overwrite existing <joker-std-subdir> directory
+  --joker <joker-source-dir>  # Modify pertinent source files to reflect packages being created
+  --verbose, -v               # Print info on what's going on
+  --summary                   # Print summary of #s of types, functions, etc.
+  --output-code               # Print generated code to stdout (used by test.sh)
+  --empty                     # Generate empty packages (those with no Joker code)
+  --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
+  --no-timestamp              # Don't put the time (and version) info in generated/modified files
+  --help, -h                  # Print this information
 
 If <joker-std-subdir> is not specified, no Go nor Clojure source files
 (nor any other files nor directories) are created, effecting a sort of
@@ -90,7 +89,8 @@ func main() {
 	dump = false
 
 	length := len(os.Args)
-	sourceDir := ""
+	goSourceDir := ""
+	goSourceDirVia := ""
 	jokerSourceDir := ""
 	replace := false
 	overwrite := false
@@ -130,18 +130,19 @@ func main() {
 			case "--empty":
 				generateEmpty = true
 			case "--go":
-				if sourceDir != "" {
-					panic("cannot specify --go <go-source-dir-name> more than once")
+				if goSourceDir != "" {
+					panic("cannot specify --go <go-source-dir> more than once")
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					sourceDir = os.Args[i]
+					goSourceDir = os.Args[i]
+					goSourceDirVia = "--go"
 				} else {
 					panic("missing path after --go option")
 				}
 			case "--joker":
 				if jokerSourceDir != "" {
-					panic("cannot specify --joker <joker-source-dir-name> more than once")
+					panic("cannot specify --joker <joker-source-dir> more than once")
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
@@ -161,34 +162,23 @@ func main() {
 		fmt.Printf("Default context: %v\n", build.Default)
 	}
 
-	if sourceDir == "" {
-		goLink := "GO.link"
-		si, e := os.Stat(goLink)
-		if e == nil && !si.IsDir() {
-			var by []byte
-			by, e = ioutil.ReadFile(goLink)
-			if e != nil {
-				panic("Must specify --go <go-source-dir-name> option, or put <go-source-dir-name> as the first line of a file named ./GO.link")
-			}
-			m := string(by)
-			if idx := strings.IndexAny(m, "\r\n"); idx == -1 {
-				goLink = m
-			} else {
-				goLink = m[0:idx]
-			}
-			si, e = os.Stat(goLink)
+	if goSourceDir == "" {
+		if v, ok := os.LookupEnv("GOROOT"); ok {
+			goSourceDir = v
+			goSourceDirVia = "GOROOT env var"
+		} else {
+			fmt.Fprintf(os.Stderr, "Must specify --go <go-source-dir> option or set the GOROOT env var to <go-source-dir>")
+			os.Exit(1)
 		}
-		if e != nil || !si.IsDir() {
-			panic(fmt.Sprintf("Must specify --go <go-source-dir-name> option, or make %s a symlink (or text file containing the native path) pointing to the golang/go/ source directory", goLink))
-		}
-		sourceDir = goLink
 	}
 
-	sourceDir = filepath.Join(sourceDir, "src")
+	goSourceDir = filepath.Join(goSourceDir, "src")
 
-	if fi, e := os.Stat(filepath.Join(sourceDir, "go")); e != nil || !fi.IsDir() {
-		if m, e := filepath.Glob(filepath.Join(sourceDir, "*.go")); e != nil || m == nil || len(m) == 0 {
-			panic(fmt.Sprintf("Does not exist or is not a Go source directory: %s;\n%v", sourceDir, m))
+	if fi, e := os.Stat(filepath.Join(goSourceDir, "go")); e != nil || !fi.IsDir() {
+		if m, e := filepath.Glob(filepath.Join(goSourceDir, "*.go")); e != nil || m == nil || len(m) == 0 {
+			fmt.Fprintf(os.Stderr, "Does not exist or is not a Go source directory: %s (specified via %s);\n%v",
+				goSourceDir, goSourceDirVia, m)
+			os.Exit(2)
 		}
 	}
 
@@ -218,9 +208,9 @@ func main() {
 		}
 	}
 
-	err := walkDirs(filepath.Join(sourceDir, "."), mode)
+	err := walkDirs(filepath.Join(goSourceDir, "."), mode)
 	if err != nil {
-		panic("Error walking directory " + sourceDir + ": " + fmt.Sprintf("%v", err))
+		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
 	}
 
 	sort.Strings(alreadySeen)
