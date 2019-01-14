@@ -51,7 +51,7 @@ func usage() {
 Usage: gostd options...
 
 Options:
-  --go <go-source-dir>        # Location of Golang's src/ subdirectory (defaults to $GOROOT)
+  --go <go-source-dir>        # Location of Golang's src/ subdirectory (defaults to build.Default.GOROOT)
   --overwrite                 # Overwrite any existing <joker-std-subdir> files, leaving existing files intact
   --replace                   # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
   --fresh                     # (Default) Refuse to overwrite existing <joker-std-subdir> directory
@@ -164,7 +164,7 @@ func main() {
 
 	if goSourceDir == "" {
 		goSourceDir = build.Default.GOROOT
-		goSourceDirVia = "GOROOT env var"
+		goSourceDirVia = "build.Default.GOROOT"
 	}
 
 	goSourceDir = filepath.Join(goSourceDir, "src")
