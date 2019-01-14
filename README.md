@@ -241,7 +241,7 @@ To make this "magic" happen:
 
 ## Overview of Tool's Relationship to Joker and Go
 
-Before building Joker, one can optionally run this tool against a Go source tree (as `run.sh` automatically does). The Go source tree _must_ correspond to the version of Go used to build Joker itself, to populate `joker/std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
+Before building Joker, one can optionally run this tool against a Go source tree (as `run.sh` automatically does). The Go source tree (found via `go/build.Default.GOROOT`) _must_ correspond to the version of Go used to build Joker itself, as it likely will, and contain a complete `src` subdirectory, in order to populate `joker/std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
 This is still just a proof of concept; for example, `net.LookupMX()` returns a vector including a vector of pointers to `net.MX` objects, which cannot yet be properly examined.
 
@@ -282,8 +282,7 @@ $
 
 ## Run gostd Tests
 
-The `test.sh` script in `joker/tools/gostd/` runs tests against a small, then larger, then
-(optionally) full, copy of Go 1.11's `golang/go/src/` tree. Invoke `test.sh` either with no options, or with `--on-error :` to run the `:` (`true`) command when it detects an error (the default being `exit 99`).
+The `test.sh` script in `joker/tools/gostd/` runs tests against a small, then larger, then full, copy of Go 1.11's `golang/go/src/` tree. Invoke `test.sh` either with no options, or with `--on-error :` to run the `:` (`true`) command when it detects an error (the default being `exit 99`).
 
 E.g.:
 
