@@ -163,13 +163,8 @@ func main() {
 	}
 
 	if goSourceDir == "" {
-		if v, ok := os.LookupEnv("GOROOT"); ok {
-			goSourceDir = v
-			goSourceDirVia = "GOROOT env var"
-		} else {
-			fmt.Fprintf(os.Stderr, "Must specify --go <go-source-dir> option or set the GOROOT env var to <go-source-dir>")
-			os.Exit(1)
-		}
+		goSourceDir = build.Default.GOROOT
+		goSourceDirVia = "GOROOT env var"
 	}
 
 	goSourceDir = filepath.Join(goSourceDir, "src")
