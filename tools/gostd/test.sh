@@ -24,13 +24,7 @@ git diff --quiet -u $GOENV/small.gold || { echo >&2 "FAILED: small test"; RC=1; 
 ./gostd --no-timestamp --output-code --verbose --go _tests/big --replace --joker $GOENV/joker 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
 git diff --quiet -u $GOENV/big.gold || { echo >&2 "FAILED: big test"; RC=1; $EXIT; }
 
-if [ -z "$GOSRC" -a -e ./GO.link ]; then
-    GOSRC=./GO.link
-fi
-
-if [ -n "$GOSRC" -a -d "$GOSRC" ]; then
-    ./gostd --no-timestamp --output-code --verbose --go "$GOSRC" 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
-    git diff --quiet -u $GOENV/gosrc.gold || { echo >&2 "FAILED: \$GOSRC test"; RC=1; $EXIT; }
-fi
+./gostd --no-timestamp --output-code --verbose --go "$GOSRC" 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
+git diff --quiet -u $GOENV/gosrc.gold || { echo >&2 "FAILED: \$GOSRC test"; RC=1; $EXIT; }
 
 exit $RC
