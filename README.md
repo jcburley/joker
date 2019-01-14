@@ -223,19 +223,17 @@ cd $GOPATH/src/github.com/candid82/joker
 
 # gostd
 
-On this experimental branch, Joker can be optionally built against a Go source tree in order to pull in and "wrap" functions (and, someday, types?) provides by Go `std` packages.
+On this experimental branch, Joker can be optionally built against a Golang tree in order to pull in and "wrap" functions (and, someday, types) provides by Go `std` packages.
 
 ## Quick Start
 
 To make this "magic" happen:
 
 1. Ensure you're running Go version 1.11.2 (see `go version`) or later, as the copy of the subset of some supported Go packages, that comes with `gostd`, comes from that version (which will matter only if you want to run tests, as described below)
-2. Get a copy of the Go source tree, e.g. [from Github](https://github.com/golang/go), and check out the tag/branch corresponding to the version of Go you're running (see `go version`)
-3. Check out [Joker](https://github.com/candid82/joker.git) as usual and `cd` to it
-4. In the Joker repo you just checked out, add [my fork of Joker](https://github.com/jcburley/joker.git) as a remote (named e.g. `gostd`)
-5. Check out the `gostd` (currently the default) branch of my fork of Joker
-6. Create a symlink targeting that copy of the Go source tree you checked out (above) from `./GO.link` (in the top-level Joker source directory)
-7. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
+2. Check out [Joker](https://github.com/candid82/joker.git) as usual and `cd` to it
+3. In the Joker repo you just checked out, add [my fork of Joker](https://github.com/jcburley/joker.git) as a remote (named e.g. `gostd`)
+4. Check out the `gostd` (currently the default) branch of my fork of Joker
+5. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
 ```
 -e "(require '[joker.go.net :as n]) (print \"\\nNetwork interfaces:\\n  \") (n/Interfaces) (println)"
@@ -245,22 +243,23 @@ To make this "magic" happen:
 
 Before building Joker, one can optionally run this tool against a Go source tree (as `run.sh` automatically does). The Go source tree _must_ correspond to the version of Go used to build Joker itself, to populate `joker/std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
-This is still just a proof of concept; for example, `net.LookupMX()` returns a vector including a vector of maps, which is not quite correct (since the Go function returns an array of pointers to the `MX` type), although it's quite useful and convenient. You can run it standalone like this:
+This is still just a proof of concept; for example, `net.LookupMX()` returns a vector including a vector of pointers to `net.MX` objects, which cannot yet be properly examined.
+
+You can run it standalone like this:
 
 ```
 $ cd joker # Joker source directory on this branch and fork
-$ ln -s <go-source-directory> GO.link
 $ go run tools/gostd/main.go --output-code 2>&1 | less
 ```
 
-Then page through the output. Code snippets intended for e.g. `joker/std/go/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/main.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
+Then page through the output. Code snippets intended for e.g. `joker/std/go/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/custom.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
 
 Anything not supported results in either a `panic` or, more often, the string `ABEND` along with some kind of explanation. The latter is used to auto-detect a non-convertible function, in which case the snippet(s) are still output, but commented-out, so it's easy to see what's missing and (perhaps) why.
 
 Among things to do to "productize" this:
 
-* Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
-* SOMEWHAT DONE: Have tool generate more-helpful docstrings than just copying the ones with the Go functions -- e.g. the parameter types, maybe decorated with extra information?
+* MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
+* DONE: Have tool generate more-helpful docstrings than just copying the ones with the Go functions -- e.g. the parameter types, maybe decorated with extra information?
 * Document the code better
 * Assess performance impact (especially startup time) on Joker, and mitigate as appropriate
 
@@ -284,13 +283,7 @@ $
 ## Run gostd Tests
 
 The `test.sh` script in `joker/tools/gostd/` runs tests against a small, then larger, then
-(optionally) full, copy of Go 1.11's `golang/go/src/` tree.
-
-```
-$ ln -s ~/golang/go ./GO.link
-```
-
-Then, invoke `test.sh` either with no options, or with `--on-error :` to run the `:` (`true`) command when it detects an error (the default being `exit 99`).
+(optionally) full, copy of Go 1.11's `golang/go/src/` tree. Invoke `test.sh` either with no options, or with `--on-error :` to run the `:` (`true`) command when it detects an error (the default being `exit 99`).
 
 E.g.:
 
@@ -303,13 +296,13 @@ The script currently runs tests in this order:
 
 1. `_tests/small`
 2. `_tests/big`
-3. `./GOSRC` (if it exists; or, if `$GOSRC` is non-null and points to a directory, `$GOSRC`)
+3. `build.Default.GOROOT`
 
 After each test it runs, it uses `git diff` to compare the resulting `.gold` file with the checked-out version and, if there are any differences, it runs the command specified via `--on-error` (again, the default is `exit 99`, so the script will exit as soon as it sees a failing test).
 
 ## Update Tests on Other Machines
 
-The Go standard library is customized per system architecture and OS, and `gostd2joker` picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd2joker` repo is somewhat automated via `update.sh` -- e.g.:
+The Go standard library is customized per system architecture and OS, and `gostd` picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd` repo is somewhat automated via `update.sh` -- e.g.:
 
 ```
 $ ./update.sh 
