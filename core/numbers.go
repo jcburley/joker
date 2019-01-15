@@ -315,12 +315,16 @@ func (ops RatioOps) Multiply(x, y Number) Number {
 	return &res
 }
 
+func panicOnZero(ops Ops, n Number) {
+	if ops.IsZero(n) {
+		panic(RT.NewError("Division by zero"))
+	}
+}
+
 // Divide
 
 func (ops IntOps) Divide(x, y Number) Number {
-	if y.Int().I == 0 {
-		panic(RT.NewError("Division by zero"))
-	}
+	panicOnZero(ops, y)
 	b := big.NewRat(int64(x.Int().I), int64(y.Int().I))
 	if b.IsInt() {
 		return Int{I: int(b.Num().Int64())}
@@ -334,9 +338,7 @@ func (ops DoubleOps) Divide(x, y Number) Number {
 }
 
 func (ops BigIntOps) Divide(x, y Number) Number {
-	if y.Ratio().Num().Int64() == 0 {
-		panic(RT.NewError("Division by zero"))
-	}
+	panicOnZero(ops, y)
 	b := big.Rat{}
 	b.Quo(x.Ratio(), y.Ratio())
 	if b.IsInt() {
@@ -367,10 +369,12 @@ func (ops RatioOps) Divide(x, y Number) Number {
 // Quotient
 
 func (ops IntOps) Quotient(x, y Number) Number {
+	panicOnZero(ops, y)
 	return Int{I: x.Int().I / y.Int().I}
 }
 
 func (ops DoubleOps) Quotient(x, y Number) Number {
+	panicOnZero(ops, y)
 	z := x.Double().D / y.Double().D
 	if z <= float64(MAX_INT) && z >= float64(MIN_INT) {
 		return Double{D: float64(int(z))}
@@ -379,18 +383,21 @@ func (ops DoubleOps) Quotient(x, y Number) Number {
 }
 
 func (ops BigIntOps) Quotient(x, y Number) Number {
+	panicOnZero(ops, y)
 	z := big.Int{}
 	z.Quo(x.BigInt(), y.BigInt())
 	return &BigInt{b: z}
 }
 
 func (ops BigFloatOps) Quotient(x, y Number) Number {
+	panicOnZero(ops, y)
 	z := big.Float{}
 	i, _ := z.Quo(x.BigFloat(), y.BigFloat()).Int64()
 	return &BigFloat{b: *z.SetInt64(i)}
 }
 
 func (ops RatioOps) Quotient(x, y Number) Number {
+	panicOnZero(ops, y)
 	z := big.Rat{}
 	f, _ := z.Quo(x.Ratio(), y.Ratio()).Float64()
 	return &BigInt{b: *big.NewInt(int64(f))}
@@ -399,10 +406,12 @@ func (ops RatioOps) Quotient(x, y Number) Number {
 // Remainder
 
 func (ops IntOps) Rem(x, y Number) Number {
+	panicOnZero(ops, y)
 	return Int{I: x.Int().I % y.Int().I}
 }
 
 func (ops DoubleOps) Rem(x, y Number) Number {
+	panicOnZero(ops, y)
 	n := x.Double().D
 	d := y.Double().D
 	z := n / d
@@ -413,12 +422,14 @@ func (ops DoubleOps) Rem(x, y Number) Number {
 }
 
 func (ops BigIntOps) Rem(x, y Number) Number {
+	panicOnZero(ops, y)
 	z := big.Int{}
 	z.Rem(x.BigInt(), y.BigInt())
 	return &BigInt{b: z}
 }
 
 func (ops BigFloatOps) Rem(x, y Number) Number {
+	panicOnZero(ops, y)
 	n := x.BigFloat()
 	d := y.BigFloat()
 	z := big.Float{}
@@ -429,6 +440,7 @@ func (ops BigFloatOps) Rem(x, y Number) Number {
 }
 
 func (ops RatioOps) Rem(x, y Number) Number {
+	panicOnZero(ops, y)
 	n := x.Ratio()
 	d := y.Ratio()
 	z := big.Rat{}
