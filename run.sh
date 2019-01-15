@@ -11,9 +11,9 @@ build() {
 
     go vet -all main.go
 
-    go vet -all core std
+    go vet -all ./core/... ./std/...
 
-    [ -n "$SHADOW" ] && (go vet -all "$SHADOW" main.go; go vet -all "$SHADOW" core std) && echo "Shadowed-variables check complete."
+    [ -n "$SHADOW" ] && (go vet -all "$SHADOW" main.go; go vet -all "$SHADOW" ./core/... ./std/...) && echo "Shadowed-variables check complete."
 
     go build
 }
