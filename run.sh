@@ -9,9 +9,11 @@ build() {
 
     # Don't vet things in tools/, they have their own vetting, plus "problematic" code for test purposes.
 
-    go vet -all main.go core std
+    go vet -all main.go
 
-    [ -n "$SHADOW" ] && go vet -all "$SHADOW" main.go core std && echo "Shadowed-variables check complete."
+    go vet -all core std
+
+    [ -n "$SHADOW" ] && (go vet -all "$SHADOW" main.go; go vet -all "$SHADOW" core std) && echo "Shadowed-variables check complete."
 
     go build
 }
