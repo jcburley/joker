@@ -9,12 +9,17 @@ build() {
 
     # Don't vet things in tools/, they have their own vetting, plus "problematic" code for test purposes.
 
-    go tool vet -all -shadow=true main.go
+    go vet -all main.go core std
 
-    go tool vet -all -shadow=true core std
+    [ -n "$SHADOW" ] && go vet -all "$SHADOW" main.go core std && echo "Shadowed-variables check complete."
 
     go build
 }
+
+if which shadow >/dev/null 2>/dev/null; then
+    # Install via: go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
+    SHADOW="-vettool=$(which shadow)"
+fi
 
 set -e  # Exit on error.
 
