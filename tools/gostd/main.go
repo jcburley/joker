@@ -203,7 +203,9 @@ func main() {
 		}
 	}
 
-	err := walkDirs(filepath.Join(goSourceDir, "."), mode)
+	root := filepath.Join(goSourceDir, ".")
+	rootUnix := filepath.ToSlash(root)
+	err := walkDirs(root, mode)
 	if err != nil {
 		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
 	}
@@ -218,7 +220,7 @@ func main() {
 		sortedTypeInfoMap(types,
 			func(t string, ti *typeInfo) {
 				fmt.Printf("TYPE %s:\n", t)
-				fmt.Printf("  %s\n", fileAt(ti.where))
+				fmt.Printf("  %s\n", strings.TrimPrefix(unix(fileAt(ti.where)), rootUnix+"/"))
 			})
 	}
 
