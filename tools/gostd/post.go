@@ -25,11 +25,12 @@ func genGoPostNamed(fn *funcInfo, indent, captureName, typeName, onlyIf string) 
 
 func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr, onlyIf string) (cl, gol, goc, out string) {
 	pkgName := e.X.(*Ident).Name
-	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
+	fullPathUnix := unix(fileAt(e.Pos()))
+	referringFile := strings.TrimPrefix(fullPathUnix, fn.sourceFile.rootUnix+"/")
 	rf, ok := goFiles[referringFile]
 	if !ok {
-		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for expression at %s",
-			referringFile, whereAt(e.Pos())))
+		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for file %s at %s",
+			referringFile, fullPathUnix, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
 		return genGoPostSelected(fn, indent, captureName, fullPkgName+"."+e.Sel.Name, onlyIf)

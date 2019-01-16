@@ -60,11 +60,12 @@ func genGoPreNamed(fn *funcInfo, indent, typeName, paramName string) (clType, cl
 
 func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	pkgName := e.X.(*Ident).Name
-	referringFile := strings.TrimPrefix(fileAt(e.Pos()), fn.sourceFile.rootUnix+"/")
+	fullPathUnix := unix(fileAt(e.Pos()))
+	referringFile := strings.TrimPrefix(fullPathUnix, fn.sourceFile.rootUnix+"/")
 	rf, ok := goFiles[referringFile]
 	if !ok {
-		panic(fmt.Sprintf("genGoPreSelector: could not find referring file %s for expression at %s",
-			referringFile, whereAt(e.Pos())))
+		panic(fmt.Sprintf("genGoPreSelector: could not find referring file %s for file %s at %s",
+			referringFile, fullPathUnix, whereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.spaces)[pkgName]; found {
 		return genGoPreSelected(fn, indent, fullPkgName, e.Sel.Name, paramName)
