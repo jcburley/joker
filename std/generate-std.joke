@@ -1,10 +1,17 @@
-(def namespaces ['base64 'html 'http 'json 'math 'os 'string 'time 'url 'yaml])
-
 (require '[joker.string :as s])
 
-(apply require :reload namespaces) ; :reload in case namespaces become 'joker.base64 etc.
-
 (def rpl s/replace)
+
+;; Discover namespaces dynamically by finding *.joke files.
+(def namespaces
+  (vec (->> (joker.os/ls ".")
+            (remove :dir?)
+            (map :name)
+            (filter #(s/ends-with? % ".joke"))
+            (map #(rpl % #"[.]joke$" ""))
+            (map symbol))))
+
+(apply require :reload namespaces) ; :reload in case namespaces become 'joker.base64 etc.
 
 (def fn-template
   (slurp "fn.tmpl"))
@@ -192,4 +199,12 @@
     (spit (ns-file-name dir ns-name-final)
           (remove-blanky-lines (generate-ns ns-sym ns-name ns-name-final)))))
 
-(load-file "generate-custom.joke")
+;; Load only if it exists, to ease playing in a sandbox that doesn't
+;; have it. In such a sandbox, if generate-std.joke is being invoked
+;; from another dir, load-file will look for generate-custom.joke
+;; there after ensuring it exists here, which seems weird/wrong.
+;; TODO: Replace generate-custom.joke with a directory walk to find
+;; *.joke files in subdirs.
+(try (joker.os/stat "generate-custom.joke")
+     (load-file "./generate-custom.joke")
+     (catch Error e nil))
