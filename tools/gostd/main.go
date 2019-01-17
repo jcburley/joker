@@ -248,7 +248,6 @@ func main() {
 			})
 		updateJokerMain(packagesArray, filepath.Join(jokerSourceDir, "custom.go"))
 		updateCoreDotJoke(dotJokeArray, filepath.Join(jokerSourceDir, "core", "data", "core.joke"))
-		updateGenerateCustom(packagesArray, filepath.Join(jokerSourceDir, "std", "generate-custom.joke"))
 	}
 
 	if verbose || summary {

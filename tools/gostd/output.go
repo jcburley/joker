@@ -89,45 +89,6 @@ func updateCoreDotJoke(pkgs []string, f string) {
 	check(err)
 }
 
-func updateGenerateCustom(pkgs []string, f string) {
-	if verbose {
-		fmt.Printf("Adding custom loaded libraries to %s\n", filepath.ToSlash(f))
-	}
-
-	m := ";;;; Auto-modified by gostd at " + curTimeAndVersion() + "\n\n"
-
-	newImports := ""
-	importPrefix := "'go.std."
-	curLine := "(def custom-namespaces ["
-	for _, p := range pkgs {
-		more := importPrefix + strings.Replace(p, "/", ".", -1)
-		if curLine != "" && len(curLine)+len(more) > 77 {
-			newImports += curLine + "\n "
-			curLine = more
-		} else {
-			curLine += more
-		}
-		importPrefix = " 'go.std."
-	}
-	newImports += curLine + `])
-
-(apply require :reload custom-namespaces)
-
-(doseq [ns-sym custom-namespaces]
-  (let [ns-name (str ns-sym)
-        dir (rpl ns-name "." "/")
-        ns-name-final (rpl ns-name #".*[.]" "")]
-    (debug "Processing custom namespace" ns-name "in" dir "final name" ns-name-final)
-    (spit (ns-file-name dir ns-name-final)
-          (remove-blanky-lines (generate-ns ns-sym ns-name ns-name-final)))))
-`
-
-	m += newImports
-
-	err := ioutil.WriteFile(f, []byte(m), 0777)
-	check(err)
-}
-
 func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	var out *bufio.Writer
 	var unbuf_out *os.File
