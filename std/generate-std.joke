@@ -2,15 +2,23 @@
 
 (def rpl s/replace)
 
+(defn debug
+  [& args]
+  (when ((joker.os/env) "JOKER_DEBUG_STD")
+    (apply println args)))
+
 ;; Discover namespaces dynamically by finding *.joke files.
 (def namespaces
   (vec (->> (joker.os/ls ".")
             (remove :dir?)
             (map :name)
+            (remove #(= "generate-std.joke" %))
+            (remove #(= "generate-custom.joke" %))  ; TODO: remove when generate-custom.joke goes away
             (filter #(s/ends-with? % ".joke"))
             (map #(rpl % #"[.]joke$" ""))
             (map symbol))))
 
+(debug "Namespaces:" namespaces)
 (apply require :reload namespaces) ; :reload in case namespaces become 'joker.base64 etc.
 
 (def fn-template
@@ -29,11 +37,6 @@
   [s]
   (str "\"" s "\""))
 
-(defn debug
-  [& args]
-  (when ((joker.os/env) "JOKER_DEBUG_STD")
-    (apply println args)))
-
 (defn raw-quoted-string
   "Returns a Go-style backtick-quoted string with backticks handled by appending double-quoted backticks"
   [s]
@@ -50,6 +53,12 @@
       (str "is" n)
       n)))
 
+(defn extract-arg
+  [m]
+  (let [t (cond-> (:tag m)
+     (:varargs m) (str "s"))]
+    (str "Extract" t)))
+
 (defn extract-args
   [args]
   (s/join
@@ -57,9 +66,8 @@
    (map-indexed
     (fn [i arg]
       (let [m (meta arg)
-            t (cond-> (:tag m)
-                (:varargs m) (str "s"))]
-        (str arg " := Extract" t "(_args, " (str i) ")")))
+            extract (extract-arg m)]
+        (str arg " := " extract "(_args, " (str i) ")")))
     args)))
 
 (defn handle-varargs
@@ -199,12 +207,4 @@
     (spit (ns-file-name dir ns-name-final)
           (remove-blanky-lines (generate-ns ns-sym ns-name ns-name-final)))))
 
-;; Load only if it exists, to ease playing in a sandbox that doesn't
-;; have it. In such a sandbox, if generate-std.joke is being invoked
-;; from another dir, load-file will look for generate-custom.joke
-;; there after ensuring it exists here, which seems weird/wrong.
-;; TODO: Replace generate-custom.joke with a directory walk to find
-;; *.joke files in subdirs.
-(try (joker.os/stat "generate-custom.joke")
-     (load-file "./generate-custom.joke")
-     (catch Error e nil))
+(load-file "./generate-custom.joke")
