@@ -57,7 +57,7 @@
   [pkg ns-name]
   (if (= pkg ns-name)
     ""  ; it me
-    (str (rpl pkg #".*[.]" "") ".")))
+    (str pkg ".")))  ; It's up to the *.joke generator to reduce x/y/z package paths to a suitable slashless alias
 
 (defn extract-arg
   [m ns-name]
