@@ -53,8 +53,14 @@
       (str "is" n)
       n)))
 
+(defn resolve-package
+  [pkg ns-name]
+  (if (= pkg ns-name)
+    ""  ; it me
+    (str (rpl pkg #".*[.]" "") ".")))
+
 (defn extract-arg
-  [m]
+  [m ns-name]
   (let [fulltype (str (:tag m))]
     (if (s/includes? fulltype "/")
       (let [spl (s/split fulltype #"/")
@@ -62,19 +68,19 @@
             t (spl 1)
             t (cond-> t
                 (:varargs m) (str "VarArgs"))]
-        (str pkg "/" "Extract" t))
+        (str (resolve-package pkg ns-name) "Extract" t))
       (let [t (cond-> fulltype
                 (:varargs m) (str "s"))]
         (str "Extract" t)))))
 
 (defn extract-args
-  [args]
+  [args ns-name]
   (s/join
    "\n\t\t"
    (map-indexed
     (fn [i arg]
       (let [m (meta arg)
-            extract (extract-arg m)]
+            extract (extract-arg m ns-name)]
         (str arg " := " extract "(_args, " (str i) ")")))
     args)))
 
@@ -88,7 +94,7 @@
       args)))
 
 (defn generate-arity
-  [args go tag]
+  [args go tag ns-name]
   (let [handle-args (handle-varargs args)
         cnt (count handle-args)
         varargs? (< cnt (count args))
@@ -106,7 +112,7 @@
                               "{blank}"))
         (rpl "{args}" (if (empty? args)
                         "{blank}"
-                        (extract-args handle-args)))
+                        (extract-args handle-args ns-name)))
         (rpl "{goExpr}" (rpl go-res "; " "\n\t\t"))
         (rpl "{return}"
              (if tag
@@ -126,7 +132,7 @@
   (let [m (meta v)
         arglists (:arglists m)
         go-fn-name (go-name (str k))
-        arities (s/join "\n\t" (map #(generate-arity % (:go m) (:tag m)) arglists))
+        arities (s/join "\n\t" (map #(generate-arity % (:go m) (:tag m) ns-name) arglists))
         fn-str (-> fn-template
                    (rpl "{fnName}" go-fn-name)
                    (rpl "{arities}" arities))
