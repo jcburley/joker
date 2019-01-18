@@ -158,6 +158,15 @@ func printAbends(m map[string]int) {
 	}
 }
 
+func genType(t string, ti *typeInfo) {
+	pkgDirUnix := ti.sourceFile.pkgDirUnix
+	if _, found := packagesInfo[pkgDirUnix]; !found {
+		return // no code generated for package, so don't try to generate type info either
+	}
+	clojureCode[pkgDirUnix].types[t] = ti
+	goCode[pkgDirUnix].types[t] = ti
+}
+
 func genFunction(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
@@ -217,15 +226,9 @@ func %s(%s) %s {
 		}
 	}
 
-	if _, ok := clojureCode[pkgDirUnix]; !ok {
-		clojureCode[pkgDirUnix] = codeInfo{}
-	}
-	clojureCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
+	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
 
-	if _, ok := goCode[pkgDirUnix]; !ok {
-		goCode[pkgDirUnix] = codeInfo{} // There'll at least be a .joke file
-	}
 	if goFn != "" {
-		goCode[pkgDirUnix][d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
+		goCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
 	}
 }

@@ -134,7 +134,7 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 	sortedCodeMap(v,
 		func(f string, w fnCodeInfo) {
 			if outputCode {
-				fmt.Printf("JOKER FUNC %s.%s from %s:%v\n",
+				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
@@ -195,10 +195,20 @@ import (%s%s
 			importCore)
 	}
 
+	sortedTypeInfoMap(v.types,
+		func(t string, ti *typeInfo) {
+			if outputCode {
+				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.sourceFile.name, ti.typeCode)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(ti.typeCode)
+			}
+		})
+
 	sortedCodeMap(v,
 		func(f string, w fnCodeInfo) {
 			if outputCode {
-				fmt.Printf("GO FUNC %s.%s from %s:%v\n",
+				fmt.Printf("GO FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {

@@ -58,10 +58,13 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 }
 
 type typeInfo struct {
-	td       *TypeSpec
-	where    token.Pos
-	building bool
+	sourceFile *goFile
+	td         *TypeSpec
+	where      token.Pos
+	typeCode   string
 }
+
+type typeMap map[string]*typeInfo
 
 func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
 	var keys []string
@@ -77,7 +80,7 @@ func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
 var types = map[string]*typeInfo{}
 
-func processTypeSpec(pkg string, pathUnix string, f *File, ts *TypeSpec) {
+func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeSpec) {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
@@ -87,16 +90,16 @@ func processTypeSpec(pkg string, pathUnix string, f *File, ts *TypeSpec) {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
-	types[typename] = &typeInfo{ts, ts.Pos(), false}
+	types[typename] = &typeInfo{gf, ts, ts.Pos(), ""}
 }
 
-func processTypeSpecs(pkg string, pathUnix string, f *File, tss []Spec) {
+func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
 		if isPrivate(ts.Name.Name) {
 			continue // Skipping non-exported functions
 		}
-		processTypeSpec(pkg, pathUnix, f, ts)
+		processTypeSpec(gf, pkg, pathUnix, f, ts)
 	}
 }
 
@@ -120,7 +123,7 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 			if v.Tok != token.TYPE {
 				continue
 			}
-			processTypeSpecs(pkgDirUnix, pathUnix, f, v.Specs)
+			processTypeSpecs(gf, pkgDirUnix, pathUnix, f, v.Specs)
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
 		}
@@ -215,6 +218,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if verbose {
 		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
 	}
+
 	found := false
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
@@ -226,6 +230,8 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{packageImports{}, packageImports{}, false, false}
+			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
+			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
 		}
 	}
 }
@@ -324,7 +330,13 @@ type fnCodeInfo struct {
 	sourceFile *goFile
 	fnCode     string
 }
-type codeInfo map[string]fnCodeInfo
+
+type fnCodeMap map[string]fnCodeInfo
+
+type codeInfo struct {
+	functions fnCodeMap
+	types     typeMap
+}
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
 var clojureCode = map[string]codeInfo{}
@@ -343,11 +355,11 @@ func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
 
 func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
 	var keys []string
-	for k, _ := range m {
+	for k, _ := range m.functions {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		f(k, m[k])
+		f(k, m.functions[k])
 	}
 }

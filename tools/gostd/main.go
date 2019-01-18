@@ -204,7 +204,6 @@ func main() {
 	}
 
 	root := filepath.Join(goSourceDir, ".")
-	rootUnix := filepath.ToSlash(root)
 	err := walkDirs(root, mode)
 	if err != nil {
 		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
@@ -215,16 +214,13 @@ func main() {
 		fmt.Fprintln(os.Stderr, a)
 	}
 
-	if verbose {
-		/* Output map in sorted order to stabilize for testing. */
-		sortedTypeInfoMap(types,
-			func(t string, ti *typeInfo) {
-				fmt.Printf("TYPE %s:\n", t)
-				fmt.Printf("  %s\n", strings.TrimPrefix(unix(fileAt(ti.where)), rootUnix+"/"))
-			})
-	}
+	/* Generate type-code snippets in sorted order. */
+	sortedTypeInfoMap(types,
+		func(t string, ti *typeInfo) {
+			genType(t, ti)
+		})
 
-	/* Generate function code snippets in alphabetical order, to stabilize test output in re unsupported types. */
+	/* Generate function-code snippets in alphabetical order. */
 	sortedFuncInfoMap(qualifiedFunctions,
 		func(f string, v *funcInfo) {
 			genFunction(v)

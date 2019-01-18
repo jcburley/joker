@@ -9,26 +9,6 @@ Walking from _tests/small/src to _tests/small/src/net/url
 Processing net/url:
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
 Processing package=net/url:
-TYPE net.MX:
-  net/dnsclient.go
-TYPE net.NS:
-  net/dnsclient.go
-TYPE net.Resolver:
-  net/lookup.go
-TYPE net.SRV:
-  net/dnsclient.go
-TYPE net/url.Error:
-  net/url/url.go
-TYPE net/url.EscapeError:
-  net/url/url.go
-TYPE net/url.InvalidHostError:
-  net/url/url.go
-TYPE net/url.URL:
-  net/url/url.go
-TYPE net/url.Userinfo:
-  net/url/url.go
-TYPE net/url.Values:
-  net/url/url.go
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
@@ -169,6 +149,10 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
     :doc "Provides a low-level interface to the net/url package."
     :empty false}
   go.std.net.url)
+GO TYPE net.MX from net/dnsclient.go:
+GO TYPE net.NS from net/dnsclient.go:
+GO TYPE net.Resolver from net/lookup.go:
+GO TYPE net.SRV from net/dnsclient.go:
 GO FUNC net.LookupAddr from net/lookup.go:
 func lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
@@ -287,6 +271,12 @@ import (
 	_net "net"
 	. "github.com/candid82/joker/core"
 )
+GO TYPE net/url.Error from net/url/url.go:
+GO TYPE net/url.EscapeError from net/url/url.go:
+GO TYPE net/url.InvalidHostError from net/url/url.go:
+GO TYPE net/url.URL from net/url/url.go:
+GO TYPE net/url.Userinfo from net/url/url.go:
+GO TYPE net/url.Values from net/url/url.go:
 GO FUNC net/url.Parse from net/url/url.go:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
