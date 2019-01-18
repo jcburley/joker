@@ -85,10 +85,13 @@ func fullTypeNameAsClojure(t string) string {
 // "foo/bar" is imported (implicitly as "bar", assuming no
 // conflicts). NOTE: As a side effect, updates imports needed by the
 // function.
-func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (code, doc, cl2gol string) {
+func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc, cl2gol string) {
 	curPkgName := fn.sourceFile.pkgDirUnix
+	basePkgName := path.Base(fullPkgName)
+	clType = basePkgName + "/" + baseTypeName
+	clTypeDoc = fullTypeNameAsClojure(fullPkgName + "." + baseTypeName)
 	if curPkgName == fullPkgName {
-		code = "_" + path.Base(fullPkgName) + "." + baseTypeName
+		code = "_" + basePkgName + "." + baseTypeName
 		doc = baseTypeName
 		cl2gol = path.Base(fullPkgName) + "." + baseTypeName
 		fn.refersToSelf = true
