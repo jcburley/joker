@@ -154,8 +154,11 @@ func ExtractGoObjectMX(args []Object, index int) *_net.MX {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_net.MX); ok {
+		switch r := o.O.(type) {
+		case _net.MX:
 			return &r
+		case *_net.MX:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
@@ -166,8 +169,11 @@ func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_net.NS); ok {
+		switch r := o.O.(type) {
+		case _net.NS:
 			return &r
+		case *_net.NS:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
@@ -178,8 +184,11 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_net.Resolver); ok {
+		switch r := o.O.(type) {
+		case _net.Resolver:
 			return &r
+		case *_net.Resolver:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
@@ -190,8 +199,11 @@ func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_net.SRV); ok {
+		switch r := o.O.(type) {
+		case _net.SRV:
 			return &r
+		case *_net.SRV:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
@@ -320,8 +332,11 @@ func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.Error); ok {
+		switch r := o.O.(type) {
+		case _url.Error:
 			return &r
+		case *_url.Error:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
@@ -332,8 +347,11 @@ func ExtractGoObjectEscapeError(args []Object, index int) *_url.EscapeError {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.EscapeError); ok {
+		switch r := o.O.(type) {
+		case _url.EscapeError:
 			return &r
+		case *_url.EscapeError:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
@@ -344,8 +362,11 @@ func ExtractGoObjectInvalidHostError(args []Object, index int) *_url.InvalidHost
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.InvalidHostError); ok {
+		switch r := o.O.(type) {
+		case _url.InvalidHostError:
 			return &r
+		case *_url.InvalidHostError:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
@@ -356,8 +377,11 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.URL); ok {
+		switch r := o.O.(type) {
+		case _url.URL:
 			return &r
+		case *_url.URL:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
@@ -368,8 +392,11 @@ func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.Userinfo); ok {
+		switch r := o.O.(type) {
+		case _url.Userinfo:
 			return &r
+		case *_url.Userinfo:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
@@ -380,8 +407,11 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_url.Values); ok {
+		switch r := o.O.(type) {
+		case _url.Values:
 			return &r
+		case *_url.Values:
+			return r
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Values]"))

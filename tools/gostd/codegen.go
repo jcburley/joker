@@ -243,8 +243,11 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
-		if r, ok := o.O.(_%s); ok {
+		switch r := o.O.(type) {
+		case _%s:
 			return &r
+		case *_%s:
+			return r
 		}
 	%s}
 	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
@@ -252,5 +255,5 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 	typeName := path.Base(t)
 	baseTypeName := ti.td.Name
-	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, "", t)
+	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, "", t)
 }
