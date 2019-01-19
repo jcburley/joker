@@ -89,6 +89,19 @@ func updateCoreDotJoke(pkgs []string, f string) {
 	check(err)
 }
 
+func packageQuotedImportList(pi packageImports, prefix string, rename bool) string {
+	imports := ""
+	sortedPackageImports(pi,
+		func(k string) {
+			if rename {
+				imports += prefix + "_" + path.Base(k) + ` "` + k + `"`
+			} else {
+				imports += prefix + `"` + k + `"`
+			}
+		})
+	return imports
+}
+
 func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	var out *bufio.Writer
 	var unbuf_out *os.File

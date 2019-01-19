@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "go/ast"
+	"path"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -158,15 +159,6 @@ func printAbends(m map[string]int) {
 	}
 }
 
-func genType(t string, ti *typeInfo) {
-	pkgDirUnix := ti.sourceFile.pkgDirUnix
-	if _, found := packagesInfo[pkgDirUnix]; !found {
-		return // no code generated for package, so don't try to generate type info either
-	}
-	clojureCode[pkgDirUnix].types[t] = ti
-	goCode[pkgDirUnix].types[t] = ti
-}
-
 func genFunction(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
@@ -231,4 +223,32 @@ func %s(%s) %s {
 	if goFn != "" {
 		goCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
 	}
+}
+
+func genType(t string, ti *typeInfo) {
+	pkgDirUnix := ti.sourceFile.pkgDirUnix
+	if pi, found := packagesInfo[pkgDirUnix]; !found {
+		return // no public functions available for package, so don't try to generate type info either
+	} else if !pi.nonEmpty {
+		return // no functions generated
+	}
+
+	clojureCode[pkgDirUnix].types[t] = ti
+	goCode[pkgDirUnix].types[t] = ti
+
+	exTemplate := `
+func ExtractGoObject%s(args []Object, index int) _%s {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_%s); ok {
+			return r
+		}
+	%s}
+	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
+}
+`
+	typeName := path.Base(t)
+	baseTypeName := ti.td.Name
+	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, "", t)
 }

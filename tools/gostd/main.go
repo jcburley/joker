@@ -6,7 +6,6 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -69,19 +68,6 @@ If <joker-std-subdir> is not specified, no Go nor Clojure source files
 "dry run".
 `)
 	os.Exit(0)
-}
-
-func packageQuotedImportList(pi packageImports, prefix string, rename bool) string {
-	imports := ""
-	sortedPackageImports(pi,
-		func(k string) {
-			if rename {
-				imports += prefix + "_" + path.Base(k) + ` "` + k + `"`
-			} else {
-				imports += prefix + `"` + k + `"`
-			}
-		})
-	return imports
 }
 
 func main() {
@@ -214,16 +200,19 @@ func main() {
 		fmt.Fprintln(os.Stderr, a)
 	}
 
-	/* Generate type-code snippets in sorted order. */
-	sortedTypeInfoMap(types,
-		func(t string, ti *typeInfo) {
-			genType(t, ti)
-		})
-
 	/* Generate function-code snippets in alphabetical order. */
 	sortedFuncInfoMap(qualifiedFunctions,
 		func(f string, v *funcInfo) {
 			genFunction(v)
+		})
+
+	/* Generate type-code snippets in sorted order. For each
+	/* package, types are generated only if at least one function
+	/* is generated (above) -- so genFunction() must be called for
+	/* all functions beforehand. */
+	sortedTypeInfoMap(types,
+		func(t string, ti *typeInfo) {
+			genType(t, ti)
 		})
 
 	outputPackageCode(jokerLibDir, outputCode, generateEmpty)
