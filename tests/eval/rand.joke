@@ -1,0 +1,23 @@
+(ns joker.test-joker.rand
+  (:require [joker.test :refer [deftest is are]]
+            [go.std.math.rand :refer [Uint32 Uint64]]))
+
+;; *** Functions ***
+
+(defonce DELTA 1e-12)
+
+(def r32 (repeatedly 1000 Uint32))
+
+(def r64 (repeatedly 1000 Uint64))
+
+(deftest test-uint32
+  ;; some? is used to wrap these so the output isn't too voluminous on failure.
+  (is (some? (some #(odd? %) r32)))
+  (is (some? (some #(even? %) r32)))
+  (is (some? (some #(> % 2147483647) r32))))  ; Ensure numbers beyond int32 range are returned
+
+(deftest test-uint64
+  ;; some? is used to wrap these so the output isn't too voluminous on failure.
+  (is (some? (some #(odd? %) r64)))
+  (is (some? (some #(even? %) r64)))
+  (is (some? (some #(> % 9223372036854775807N) r64))))  ; Ensure numbers beyond int64 range are returned

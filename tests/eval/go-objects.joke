@@ -4,13 +4,13 @@
 (deftest comparable-types
   (let [res1 ((Stat "run.sh") 0)
         res2 ((Stat "core") 0)
-        res3 ((NewIEEE) 0)]
+        res3 (NewIEEE)]
     (is (= (str (type res1)) "GoObject[*os.fileStat]"))
     (is (= (str (type res2)) "GoObject[*os.fileStat]"))
     (is (= (str (type res3)) "GoObject[*crc32.digest]"))
     (is (= (type res1) (type res2)))
     (is (not= (type res1) (type res3)))
     (is (not= (type res2) (type res3)))
-    (is (not= res1 res2)))
-    (is (not= res1 res3)))
+    (is (not= res1 res2))
+    (is (not= res1 res3))
     (is (not= res2 res3))))
