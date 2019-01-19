@@ -353,6 +353,9 @@ func ExtractGoObjectEscapeError(args []Object, index int) *_url.EscapeError {
 		case *_url.EscapeError:
 			return r
 		}
+	case String:
+		v := _url.EscapeError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
 }
@@ -368,6 +371,9 @@ func ExtractGoObjectInvalidHostError(args []Object, index int) *_url.InvalidHost
 		case *_url.InvalidHostError:
 			return r
 		}
+	case String:
+		v := _url.InvalidHostError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
 }

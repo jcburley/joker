@@ -1502,6 +1502,9 @@ func ExtractGoObjectFlags(args []Object, index int) *_net.Flags {
 		case *_net.Flags:
 			return r
 		}
+	case Number:
+		v := _net.Flags(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Flags]"))
 }
@@ -1622,6 +1625,9 @@ func ExtractGoObjectInvalidAddrError(args []Object, index int) *_net.InvalidAddr
 		case *_net.InvalidAddrError:
 			return r
 		}
+	case String:
+		v := _net.InvalidAddrError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.InvalidAddrError]"))
 }
@@ -1892,6 +1898,9 @@ func ExtractGoObjectUnknownNetworkError(args []Object, index int) *_net.UnknownN
 		case *_net.UnknownNetworkError:
 			return r
 		}
+	case String:
+		v := _net.UnknownNetworkError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnknownNetworkError]"))
 }
@@ -2342,6 +2351,9 @@ func ExtractGoObjectConnState(args []Object, index int) *_http.ConnState {
 		case *_http.ConnState:
 			return r
 		}
+	case Int:
+		v := _http.ConnState(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ConnState]"))
 }
@@ -2387,6 +2399,9 @@ func ExtractGoObjectDir(args []Object, index int) *_http.Dir {
 		case *_http.Dir:
 			return r
 		}
+	case String:
+		v := _http.Dir(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Dir]"))
 }
@@ -2612,6 +2627,9 @@ func ExtractGoObjectSameSite(args []Object, index int) *_http.SameSite {
 		case *_http.SameSite:
 			return r
 		}
+	case Int:
+		v := _http.SameSite(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.SameSite]"))
 }
@@ -3370,6 +3388,9 @@ func ExtractGoObjectServerError(args []Object, index int) *_rpc.ServerError {
 		case *_rpc.ServerError:
 			return r
 		}
+	case String:
+		v := _rpc.ServerError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.ServerError]"))
 }
@@ -3640,6 +3661,9 @@ func ExtractGoObjectProtocolError(args []Object, index int) *_textproto.Protocol
 		case *_textproto.ProtocolError:
 			return r
 		}
+	case String:
+		v := _textproto.ProtocolError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.ProtocolError]"))
 }
@@ -3737,6 +3761,9 @@ func ExtractGoObjectEscapeError(args []Object, index int) *_url.EscapeError {
 		case *_url.EscapeError:
 			return r
 		}
+	case String:
+		v := _url.EscapeError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
 }
@@ -3752,6 +3779,9 @@ func ExtractGoObjectInvalidHostError(args []Object, index int) *_url.InvalidHost
 		case *_url.InvalidHostError:
 			return r
 		}
+	case String:
+		v := _url.InvalidHostError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
 }
