@@ -15588,6 +15588,9 @@ func ExtractGoObjectClientAuthType(args []Object, index int) *_tls.ClientAuthTyp
 		case *_tls.ClientAuthType:
 			return r
 		}
+	case Int:
+		v := _tls.ClientAuthType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.ClientAuthType]"))
 }
@@ -15693,6 +15696,9 @@ func ExtractGoObjectCurveID(args []Object, index int) *_tls.CurveID {
 		case *_tls.CurveID:
 			return r
 		}
+	case Int:
+		v := _tls.CurveID(ExtractUInt16(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.CurveID]"))
 }
@@ -15723,6 +15729,9 @@ func ExtractGoObjectRenegotiationSupport(args []Object, index int) *_tls.Renegot
 		case *_tls.RenegotiationSupport:
 			return r
 		}
+	case Int:
+		v := _tls.RenegotiationSupport(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.RenegotiationSupport]"))
 }
@@ -15738,6 +15747,9 @@ func ExtractGoObjectSignatureScheme(args []Object, index int) *_tls.SignatureSch
 		case *_tls.SignatureScheme:
 			return r
 		}
+	case Int:
+		v := _tls.SignatureScheme(ExtractUInt16(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.SignatureScheme]"))
 }
@@ -15905,6 +15917,9 @@ func ExtractGoObjectExtKeyUsage(args []Object, index int) *_x509.ExtKeyUsage {
 		case *_x509.ExtKeyUsage:
 			return r
 		}
+	case Int:
+		v := _x509.ExtKeyUsage(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.ExtKeyUsage]"))
 }
@@ -15950,6 +15965,9 @@ func ExtractGoObjectInvalidReason(args []Object, index int) *_x509.InvalidReason
 		case *_x509.InvalidReason:
 			return r
 		}
+	case Int:
+		v := _x509.InvalidReason(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.InvalidReason]"))
 }
@@ -15965,6 +15983,9 @@ func ExtractGoObjectKeyUsage(args []Object, index int) *_x509.KeyUsage {
 		case *_x509.KeyUsage:
 			return r
 		}
+	case Int:
+		v := _x509.KeyUsage(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.KeyUsage]"))
 }
@@ -15980,6 +16001,9 @@ func ExtractGoObjectPEMCipher(args []Object, index int) *_x509.PEMCipher {
 		case *_x509.PEMCipher:
 			return r
 		}
+	case Int:
+		v := _x509.PEMCipher(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.PEMCipher]"))
 }
@@ -15995,6 +16019,9 @@ func ExtractGoObjectPublicKeyAlgorithm(args []Object, index int) *_x509.PublicKe
 		case *_x509.PublicKeyAlgorithm:
 			return r
 		}
+	case Int:
+		v := _x509.PublicKeyAlgorithm(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.PublicKeyAlgorithm]"))
 }
@@ -16010,6 +16037,9 @@ func ExtractGoObjectSignatureAlgorithm(args []Object, index int) *_x509.Signatur
 		case *_x509.SignatureAlgorithm:
 			return r
 		}
+	case Int:
+		v := _x509.SignatureAlgorithm(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.SignatureAlgorithm]"))
 }
@@ -16375,6 +16405,9 @@ func ExtractGoObjectIsolationLevel(args []Object, index int) *_sql.IsolationLeve
 		case *_sql.IsolationLevel:
 			return r
 		}
+	case Int:
+		v := _sql.IsolationLevel(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[database/sql.IsolationLevel]"))
 }
@@ -16696,6 +16729,9 @@ func ExtractGoObjectClass(args []Object, index int) *_elf.Class {
 		case *_elf.Class:
 			return r
 		}
+	case Int:
+		v := _elf.Class(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Class]"))
 }
@@ -16711,6 +16747,9 @@ func ExtractGoObjectCompressionType(args []Object, index int) *_elf.CompressionT
 		case *_elf.CompressionType:
 			return r
 		}
+	case Int:
+		v := _elf.CompressionType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.CompressionType]"))
 }
@@ -16726,6 +16765,9 @@ func ExtractGoObjectData(args []Object, index int) *_elf.Data {
 		case *_elf.Data:
 			return r
 		}
+	case Int:
+		v := _elf.Data(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Data]"))
 }
@@ -16771,6 +16813,9 @@ func ExtractGoObjectDynFlag(args []Object, index int) *_elf.DynFlag {
 		case *_elf.DynFlag:
 			return r
 		}
+	case Int:
+		v := _elf.DynFlag(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.DynFlag]"))
 }
@@ -16786,6 +16831,9 @@ func ExtractGoObjectDynTag(args []Object, index int) *_elf.DynTag {
 		case *_elf.DynTag:
 			return r
 		}
+	case Int:
+		v := _elf.DynTag(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.DynTag]"))
 }
@@ -16891,6 +16939,9 @@ func ExtractGoObjectMachine(args []Object, index int) *_elf.Machine {
 		case *_elf.Machine:
 			return r
 		}
+	case Int:
+		v := _elf.Machine(ExtractUInt16(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Machine]"))
 }
@@ -16906,6 +16957,9 @@ func ExtractGoObjectNType(args []Object, index int) *_elf.NType {
 		case *_elf.NType:
 			return r
 		}
+	case Int:
+		v := _elf.NType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.NType]"))
 }
@@ -16921,6 +16975,9 @@ func ExtractGoObjectOSABI(args []Object, index int) *_elf.OSABI {
 		case *_elf.OSABI:
 			return r
 		}
+	case Int:
+		v := _elf.OSABI(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.OSABI]"))
 }
@@ -16981,6 +17038,9 @@ func ExtractGoObjectProgFlag(args []Object, index int) *_elf.ProgFlag {
 		case *_elf.ProgFlag:
 			return r
 		}
+	case Number:
+		v := _elf.ProgFlag(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.ProgFlag]"))
 }
@@ -17011,6 +17071,9 @@ func ExtractGoObjectProgType(args []Object, index int) *_elf.ProgType {
 		case *_elf.ProgType:
 			return r
 		}
+	case Int:
+		v := _elf.ProgType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.ProgType]"))
 }
@@ -17026,6 +17089,9 @@ func ExtractGoObjectR_386(args []Object, index int) *_elf.R_386 {
 		case *_elf.R_386:
 			return r
 		}
+	case Int:
+		v := _elf.R_386(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_386]"))
 }
@@ -17041,6 +17107,9 @@ func ExtractGoObjectR_390(args []Object, index int) *_elf.R_390 {
 		case *_elf.R_390:
 			return r
 		}
+	case Int:
+		v := _elf.R_390(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_390]"))
 }
@@ -17056,6 +17125,9 @@ func ExtractGoObjectR_AARCH64(args []Object, index int) *_elf.R_AARCH64 {
 		case *_elf.R_AARCH64:
 			return r
 		}
+	case Int:
+		v := _elf.R_AARCH64(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_AARCH64]"))
 }
@@ -17071,6 +17143,9 @@ func ExtractGoObjectR_ALPHA(args []Object, index int) *_elf.R_ALPHA {
 		case *_elf.R_ALPHA:
 			return r
 		}
+	case Int:
+		v := _elf.R_ALPHA(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_ALPHA]"))
 }
@@ -17086,6 +17161,9 @@ func ExtractGoObjectR_ARM(args []Object, index int) *_elf.R_ARM {
 		case *_elf.R_ARM:
 			return r
 		}
+	case Int:
+		v := _elf.R_ARM(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_ARM]"))
 }
@@ -17101,6 +17179,9 @@ func ExtractGoObjectR_MIPS(args []Object, index int) *_elf.R_MIPS {
 		case *_elf.R_MIPS:
 			return r
 		}
+	case Int:
+		v := _elf.R_MIPS(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_MIPS]"))
 }
@@ -17116,6 +17197,9 @@ func ExtractGoObjectR_PPC(args []Object, index int) *_elf.R_PPC {
 		case *_elf.R_PPC:
 			return r
 		}
+	case Int:
+		v := _elf.R_PPC(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_PPC]"))
 }
@@ -17131,6 +17215,9 @@ func ExtractGoObjectR_PPC64(args []Object, index int) *_elf.R_PPC64 {
 		case *_elf.R_PPC64:
 			return r
 		}
+	case Int:
+		v := _elf.R_PPC64(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_PPC64]"))
 }
@@ -17146,6 +17233,9 @@ func ExtractGoObjectR_RISCV(args []Object, index int) *_elf.R_RISCV {
 		case *_elf.R_RISCV:
 			return r
 		}
+	case Int:
+		v := _elf.R_RISCV(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_RISCV]"))
 }
@@ -17161,6 +17251,9 @@ func ExtractGoObjectR_SPARC(args []Object, index int) *_elf.R_SPARC {
 		case *_elf.R_SPARC:
 			return r
 		}
+	case Int:
+		v := _elf.R_SPARC(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_SPARC]"))
 }
@@ -17176,6 +17269,9 @@ func ExtractGoObjectR_X86_64(args []Object, index int) *_elf.R_X86_64 {
 		case *_elf.R_X86_64:
 			return r
 		}
+	case Int:
+		v := _elf.R_X86_64(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.R_X86_64]"))
 }
@@ -17296,6 +17392,9 @@ func ExtractGoObjectSectionFlag(args []Object, index int) *_elf.SectionFlag {
 		case *_elf.SectionFlag:
 			return r
 		}
+	case Number:
+		v := _elf.SectionFlag(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SectionFlag]"))
 }
@@ -17326,6 +17425,9 @@ func ExtractGoObjectSectionIndex(args []Object, index int) *_elf.SectionIndex {
 		case *_elf.SectionIndex:
 			return r
 		}
+	case Int:
+		v := _elf.SectionIndex(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SectionIndex]"))
 }
@@ -17341,6 +17443,9 @@ func ExtractGoObjectSectionType(args []Object, index int) *_elf.SectionType {
 		case *_elf.SectionType:
 			return r
 		}
+	case Number:
+		v := _elf.SectionType(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SectionType]"))
 }
@@ -17386,6 +17491,9 @@ func ExtractGoObjectSymBind(args []Object, index int) *_elf.SymBind {
 		case *_elf.SymBind:
 			return r
 		}
+	case Int:
+		v := _elf.SymBind(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SymBind]"))
 }
@@ -17401,6 +17509,9 @@ func ExtractGoObjectSymType(args []Object, index int) *_elf.SymType {
 		case *_elf.SymType:
 			return r
 		}
+	case Int:
+		v := _elf.SymType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SymType]"))
 }
@@ -17416,6 +17527,9 @@ func ExtractGoObjectSymVis(args []Object, index int) *_elf.SymVis {
 		case *_elf.SymVis:
 			return r
 		}
+	case Int:
+		v := _elf.SymVis(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.SymVis]"))
 }
@@ -17446,6 +17560,9 @@ func ExtractGoObjectType(args []Object, index int) *_elf.Type {
 		case *_elf.Type:
 			return r
 		}
+	case Int:
+		v := _elf.Type(ExtractUInt16(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Type]"))
 }
@@ -17461,6 +17578,9 @@ func ExtractGoObjectVersion(args []Object, index int) *_elf.Version {
 		case *_elf.Version:
 			return r
 		}
+	case Int:
+		v := _elf.Version(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Version]"))
 }
@@ -17575,6 +17695,9 @@ func ExtractGoObjectCpu(args []Object, index int) *_macho.Cpu {
 		case *_macho.Cpu:
 			return r
 		}
+	case Number:
+		v := _macho.Cpu(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.Cpu]"))
 }
@@ -17770,6 +17893,9 @@ func ExtractGoObjectLoadCmd(args []Object, index int) *_macho.LoadCmd {
 		case *_macho.LoadCmd:
 			return r
 		}
+	case Number:
+		v := _macho.LoadCmd(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.LoadCmd]"))
 }
@@ -17860,6 +17986,9 @@ func ExtractGoObjectRelocTypeARM(args []Object, index int) *_macho.RelocTypeARM 
 		case *_macho.RelocTypeARM:
 			return r
 		}
+	case Int:
+		v := _macho.RelocTypeARM(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.RelocTypeARM]"))
 }
@@ -17875,6 +18004,9 @@ func ExtractGoObjectRelocTypeARM64(args []Object, index int) *_macho.RelocTypeAR
 		case *_macho.RelocTypeARM64:
 			return r
 		}
+	case Int:
+		v := _macho.RelocTypeARM64(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.RelocTypeARM64]"))
 }
@@ -17890,6 +18022,9 @@ func ExtractGoObjectRelocTypeGeneric(args []Object, index int) *_macho.RelocType
 		case *_macho.RelocTypeGeneric:
 			return r
 		}
+	case Int:
+		v := _macho.RelocTypeGeneric(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.RelocTypeGeneric]"))
 }
@@ -17905,6 +18040,9 @@ func ExtractGoObjectRelocTypeX86_64(args []Object, index int) *_macho.RelocTypeX
 		case *_macho.RelocTypeX86_64:
 			return r
 		}
+	case Int:
+		v := _macho.RelocTypeX86_64(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.RelocTypeX86_64]"))
 }
@@ -18130,6 +18268,9 @@ func ExtractGoObjectType(args []Object, index int) *_macho.Type {
 		case *_macho.Type:
 			return r
 		}
+	case Number:
+		v := _macho.Type(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/macho.Type]"))
 }
@@ -18526,6 +18667,9 @@ func ExtractGoObjectCorruptInputError(args []Object, index int) *_ascii85.Corrup
 		case *_ascii85.CorruptInputError:
 			return r
 		}
+	case Number:
+		v := _ascii85.CorruptInputError(ExtractInt64(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[encoding/ascii85.CorruptInputError]"))
 }
@@ -18629,6 +18773,9 @@ func ExtractGoObjectCorruptInputError(args []Object, index int) *_base32.Corrupt
 		case *_base32.CorruptInputError:
 			return r
 		}
+	case Number:
+		v := _base32.CorruptInputError(ExtractInt64(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[encoding/base32.CorruptInputError]"))
 }
@@ -18685,6 +18832,9 @@ func ExtractGoObjectCorruptInputError(args []Object, index int) *_base64.Corrupt
 		case *_base64.CorruptInputError:
 			return r
 		}
+	case Number:
+		v := _base64.CorruptInputError(ExtractInt64(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[encoding/base64.CorruptInputError]"))
 }
@@ -18843,6 +18993,9 @@ func ExtractGoObjectInvalidByteError(args []Object, index int) *_hex.InvalidByte
 		case *_hex.InvalidByteError:
 			return r
 		}
+	case Int:
+		v := _hex.InvalidByteError(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[encoding/hex.InvalidByteError]"))
 }
@@ -19284,6 +19437,9 @@ func ExtractGoObjectUnmarshalError(args []Object, index int) *_xml.UnmarshalErro
 		case *_xml.UnmarshalError:
 			return r
 		}
+	case String:
+		v := _xml.UnmarshalError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[encoding/xml.UnmarshalError]"))
 }
@@ -19587,6 +19743,9 @@ func ExtractGoObjectErrorHandling(args []Object, index int) *_flag.ErrorHandling
 		case *_flag.ErrorHandling:
 			return r
 		}
+	case Int:
+		v := _flag.ErrorHandling(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[flag.ErrorHandling]"))
 }
@@ -20151,6 +20310,9 @@ func ExtractGoObjectChanDir(args []Object, index int) *_ast.ChanDir {
 		case *_ast.ChanDir:
 			return r
 		}
+	case Int:
+		v := _ast.ChanDir(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/ast.ChanDir]"))
 }
@@ -20676,6 +20838,9 @@ func ExtractGoObjectMergeMode(args []Object, index int) *_ast.MergeMode {
 		case *_ast.MergeMode:
 			return r
 		}
+	case Number:
+		v := _ast.MergeMode(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/ast.MergeMode]"))
 }
@@ -20706,6 +20871,9 @@ func ExtractGoObjectObjKind(args []Object, index int) *_ast.ObjKind {
 		case *_ast.ObjKind:
 			return r
 		}
+	case Int:
+		v := _ast.ObjKind(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/ast.ObjKind]"))
 }
@@ -21134,6 +21302,9 @@ func ExtractGoObjectImportMode(args []Object, index int) *_build.ImportMode {
 		case *_build.ImportMode:
 			return r
 		}
+	case Number:
+		v := _build.ImportMode(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/build.ImportMode]"))
 }
@@ -21229,6 +21400,9 @@ func ExtractGoObjectKind(args []Object, index int) *_constant.Kind {
 		case *_constant.Kind:
 			return r
 		}
+	case Int:
+		v := _constant.Kind(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/constant.Kind]"))
 }
@@ -21478,6 +21652,9 @@ func ExtractGoObjectMode(args []Object, index int) *_doc.Mode {
 		case *_doc.Mode:
 			return r
 		}
+	case Int:
+		v := _doc.Mode(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/doc.Mode]"))
 }
@@ -21643,6 +21820,9 @@ func ExtractGoObjectMode(args []Object, index int) *_parser.Mode {
 		case *_parser.Mode:
 			return r
 		}
+	case Number:
+		v := _parser.Mode(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/parser.Mode]"))
 }
@@ -21744,6 +21924,9 @@ func ExtractGoObjectPos(args []Object, index int) *_token.Pos {
 		case *_token.Pos:
 			return r
 		}
+	case Int:
+		v := _token.Pos(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/token.Pos]"))
 }
@@ -21774,6 +21957,9 @@ func ExtractGoObjectToken(args []Object, index int) *_token.Token {
 		case *_token.Token:
 			return r
 		}
+	case Int:
+		v := _token.Token(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/token.Token]"))
 }
@@ -21839,6 +22025,9 @@ func ExtractGoObjectBasicInfo(args []Object, index int) *_types.BasicInfo {
 		case *_types.BasicInfo:
 			return r
 		}
+	case Int:
+		v := _types.BasicInfo(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/types.BasicInfo]"))
 }
@@ -21854,6 +22043,9 @@ func ExtractGoObjectBasicKind(args []Object, index int) *_types.BasicKind {
 		case *_types.BasicKind:
 			return r
 		}
+	case Int:
+		v := _types.BasicKind(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/types.BasicKind]"))
 }
@@ -21899,6 +22091,9 @@ func ExtractGoObjectChanDir(args []Object, index int) *_types.ChanDir {
 		case *_types.ChanDir:
 			return r
 		}
+	case Int:
+		v := _types.ChanDir(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/types.ChanDir]"))
 }
@@ -21989,6 +22184,9 @@ func ExtractGoObjectImportMode(args []Object, index int) *_types.ImportMode {
 		case *_types.ImportMode:
 			return r
 		}
+	case Int:
+		v := _types.ImportMode(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/types.ImportMode]"))
 }
@@ -22259,6 +22457,9 @@ func ExtractGoObjectSelectionKind(args []Object, index int) *_types.SelectionKin
 		case *_types.SelectionKind:
 			return r
 		}
+	case Int:
+		v := _types.SelectionKind(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[go/types.SelectionKind]"))
 }
@@ -22824,6 +23025,9 @@ func ExtractGoObjectCSS(args []Object, index int) *_template.CSS {
 		case *_template.CSS:
 			return r
 		}
+	case String:
+		v := _template.CSS(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.CSS]"))
 }
@@ -22854,6 +23058,9 @@ func ExtractGoObjectErrorCode(args []Object, index int) *_template.ErrorCode {
 		case *_template.ErrorCode:
 			return r
 		}
+	case Int:
+		v := _template.ErrorCode(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.ErrorCode]"))
 }
@@ -22884,6 +23091,9 @@ func ExtractGoObjectHTML(args []Object, index int) *_template.HTML {
 		case *_template.HTML:
 			return r
 		}
+	case String:
+		v := _template.HTML(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.HTML]"))
 }
@@ -22899,6 +23109,9 @@ func ExtractGoObjectHTMLAttr(args []Object, index int) *_template.HTMLAttr {
 		case *_template.HTMLAttr:
 			return r
 		}
+	case String:
+		v := _template.HTMLAttr(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.HTMLAttr]"))
 }
@@ -22914,6 +23127,9 @@ func ExtractGoObjectJS(args []Object, index int) *_template.JS {
 		case *_template.JS:
 			return r
 		}
+	case String:
+		v := _template.JS(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.JS]"))
 }
@@ -22929,6 +23145,9 @@ func ExtractGoObjectJSStr(args []Object, index int) *_template.JSStr {
 		case *_template.JSStr:
 			return r
 		}
+	case String:
+		v := _template.JSStr(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.JSStr]"))
 }
@@ -22944,6 +23163,9 @@ func ExtractGoObjectSrcset(args []Object, index int) *_template.Srcset {
 		case *_template.Srcset:
 			return r
 		}
+	case String:
+		v := _template.Srcset(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.Srcset]"))
 }
@@ -22974,6 +23196,9 @@ func ExtractGoObjectURL(args []Object, index int) *_template.URL {
 		case *_template.URL:
 			return r
 		}
+	case String:
+		v := _template.URL(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[html/template.URL]"))
 }
@@ -23336,6 +23561,9 @@ func ExtractGoObjectYCbCrSubsampleRatio(args []Object, index int) *_image.YCbCrS
 		case *_image.YCbCrSubsampleRatio:
 			return r
 		}
+	case Int:
+		v := _image.YCbCrSubsampleRatio(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[image.YCbCrSubsampleRatio]"))
 }
@@ -24266,6 +24494,9 @@ func ExtractGoObjectPriority(args []Object, index int) *_syslog.Priority {
 		case *_syslog.Priority:
 			return r
 		}
+	case Int:
+		v := _syslog.Priority(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[log/syslog.Priority]"))
 }
@@ -24757,6 +24988,9 @@ func ExtractGoObjectRoundingMode(args []Object, index int) *_big.RoundingMode {
 		case *_big.RoundingMode:
 			return r
 		}
+	case Int:
+		v := _big.RoundingMode(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[math/big.RoundingMode]"))
 }
@@ -24772,6 +25006,9 @@ func ExtractGoObjectWord(args []Object, index int) *_big.Word {
 		case *_big.Word:
 			return r
 		}
+	case Number:
+		v := _big.Word(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[math/big.Word]"))
 }
@@ -25286,6 +25523,9 @@ func ExtractGoObjectWordEncoder(args []Object, index int) *_mime.WordEncoder {
 		case *_mime.WordEncoder:
 			return r
 		}
+	case Int:
+		v := _mime.WordEncoder(ExtractByte(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[mime.WordEncoder]"))
 }
@@ -25482,6 +25722,9 @@ func ExtractGoObjectFlags(args []Object, index int) *_net.Flags {
 		case *_net.Flags:
 			return r
 		}
+	case Number:
+		v := _net.Flags(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Flags]"))
 }
@@ -25602,6 +25845,9 @@ func ExtractGoObjectInvalidAddrError(args []Object, index int) *_net.InvalidAddr
 		case *_net.InvalidAddrError:
 			return r
 		}
+	case String:
+		v := _net.InvalidAddrError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.InvalidAddrError]"))
 }
@@ -25872,6 +26118,9 @@ func ExtractGoObjectUnknownNetworkError(args []Object, index int) *_net.UnknownN
 		case *_net.UnknownNetworkError:
 			return r
 		}
+	case String:
+		v := _net.UnknownNetworkError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnknownNetworkError]"))
 }
@@ -26330,6 +26579,9 @@ func ExtractGoObjectConnState(args []Object, index int) *_http.ConnState {
 		case *_http.ConnState:
 			return r
 		}
+	case Int:
+		v := _http.ConnState(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ConnState]"))
 }
@@ -26375,6 +26627,9 @@ func ExtractGoObjectDir(args []Object, index int) *_http.Dir {
 		case *_http.Dir:
 			return r
 		}
+	case String:
+		v := _http.Dir(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Dir]"))
 }
@@ -26600,6 +26855,9 @@ func ExtractGoObjectSameSite(args []Object, index int) *_http.SameSite {
 		case *_http.SameSite:
 			return r
 		}
+	case Int:
+		v := _http.SameSite(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.SameSite]"))
 }
@@ -27410,6 +27668,9 @@ func ExtractGoObjectServerError(args []Object, index int) *_rpc.ServerError {
 		case *_rpc.ServerError:
 			return r
 		}
+	case String:
+		v := _rpc.ServerError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.ServerError]"))
 }
@@ -27704,6 +27965,9 @@ func ExtractGoObjectProtocolError(args []Object, index int) *_textproto.Protocol
 		case *_textproto.ProtocolError:
 			return r
 		}
+	case String:
+		v := _textproto.ProtocolError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.ProtocolError]"))
 }
@@ -27809,6 +28073,9 @@ func ExtractGoObjectEscapeError(args []Object, index int) *_url.EscapeError {
 		case *_url.EscapeError:
 			return r
 		}
+	case String:
+		v := _url.EscapeError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
 }
@@ -27824,6 +28091,9 @@ func ExtractGoObjectInvalidHostError(args []Object, index int) *_url.InvalidHost
 		case *_url.InvalidHostError:
 			return r
 		}
+	case String:
+		v := _url.InvalidHostError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
 }
@@ -27979,6 +28249,9 @@ func ExtractGoObjectFileMode(args []Object, index int) *_os.FileMode {
 		case *_os.FileMode:
 			return r
 		}
+	case Number:
+		v := _os.FileMode(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[os.FileMode]"))
 }
@@ -28442,6 +28715,9 @@ func ExtractGoObjectUnknownGroupError(args []Object, index int) *_user.UnknownGr
 		case *_user.UnknownGroupError:
 			return r
 		}
+	case String:
+		v := _user.UnknownGroupError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[os/user.UnknownGroupError]"))
 }
@@ -28457,6 +28733,9 @@ func ExtractGoObjectUnknownGroupIdError(args []Object, index int) *_user.Unknown
 		case *_user.UnknownGroupIdError:
 			return r
 		}
+	case String:
+		v := _user.UnknownGroupIdError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[os/user.UnknownGroupIdError]"))
 }
@@ -28472,6 +28751,9 @@ func ExtractGoObjectUnknownUserError(args []Object, index int) *_user.UnknownUse
 		case *_user.UnknownUserError:
 			return r
 		}
+	case String:
+		v := _user.UnknownUserError(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[os/user.UnknownUserError]"))
 }
@@ -28487,6 +28769,9 @@ func ExtractGoObjectUnknownUserIdError(args []Object, index int) *_user.UnknownU
 		case *_user.UnknownUserIdError:
 			return r
 		}
+	case Int:
+		v := _user.UnknownUserIdError(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[os/user.UnknownUserIdError]"))
 }
@@ -28746,6 +29031,9 @@ func ExtractGoObjectChanDir(args []Object, index int) *_reflect.ChanDir {
 		case *_reflect.ChanDir:
 			return r
 		}
+	case Int:
+		v := _reflect.ChanDir(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[reflect.ChanDir]"))
 }
@@ -28761,6 +29049,9 @@ func ExtractGoObjectKind(args []Object, index int) *_reflect.Kind {
 		case *_reflect.Kind:
 			return r
 		}
+	case Number:
+		v := _reflect.Kind(ExtractUInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[reflect.Kind]"))
 }
@@ -28806,6 +29097,9 @@ func ExtractGoObjectSelectDir(args []Object, index int) *_reflect.SelectDir {
 		case *_reflect.SelectDir:
 			return r
 		}
+	case Int:
+		v := _reflect.SelectDir(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[reflect.SelectDir]"))
 }
@@ -28866,6 +29160,9 @@ func ExtractGoObjectStructTag(args []Object, index int) *_reflect.StructTag {
 		case *_reflect.StructTag:
 			return r
 		}
+	case String:
+		v := _reflect.StructTag(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[reflect.StructTag]"))
 }
@@ -29185,6 +29482,9 @@ func ExtractGoObjectErrorCode(args []Object, index int) *_syntax.ErrorCode {
 		case *_syntax.ErrorCode:
 			return r
 		}
+	case String:
+		v := _syntax.ErrorCode(ExtractString(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[regexp/syntax.ErrorCode]"))
 }
@@ -29200,6 +29500,9 @@ func ExtractGoObjectFlags(args []Object, index int) *_syntax.Flags {
 		case *_syntax.Flags:
 			return r
 		}
+	case Int:
+		v := _syntax.Flags(ExtractUInt16(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[regexp/syntax.Flags]"))
 }
@@ -31471,6 +31774,9 @@ func ExtractGoObjectSignal(args []Object, index int) *_syscall.Signal {
 		case *_syscall.Signal:
 			return r
 		}
+	case Int:
+		v := _syscall.Signal(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[syscall.Signal]"))
 }
@@ -31726,6 +32032,9 @@ func ExtractGoObjectTime_t(args []Object, index int) *_syscall.Time_t {
 		case *_syscall.Time_t:
 			return r
 		}
+	case Number:
+		v := _syscall.Time_t(ExtractInt64(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[syscall.Time_t]"))
 }
@@ -31861,6 +32170,9 @@ func ExtractGoObjectWaitStatus(args []Object, index int) *_syscall.WaitStatus {
 		case *_syscall.WaitStatus:
 			return r
 		}
+	case Number:
+		v := _syscall.WaitStatus(ExtractUInt32(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[syscall.WaitStatus]"))
 }
@@ -33487,6 +33799,9 @@ func ExtractGoObjectNodeType(args []Object, index int) *_parse.NodeType {
 		case *_parse.NodeType:
 			return r
 		}
+	case Int:
+		v := _parse.NodeType(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[text/template/parse.NodeType]"))
 }
@@ -33532,6 +33847,9 @@ func ExtractGoObjectPos(args []Object, index int) *_parse.Pos {
 		case *_parse.Pos:
 			return r
 		}
+	case Int:
+		v := _parse.Pos(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[text/template/parse.Pos]"))
 }
@@ -33681,6 +33999,9 @@ func ExtractGoObjectDuration(args []Object, index int) *_time.Duration {
 		case *_time.Duration:
 			return r
 		}
+	case Number:
+		v := _time.Duration(ExtractInt64(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[time.Duration]"))
 }
@@ -33711,6 +34032,9 @@ func ExtractGoObjectMonth(args []Object, index int) *_time.Month {
 		case *_time.Month:
 			return r
 		}
+	case Int:
+		v := _time.Month(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[time.Month]"))
 }
@@ -33786,6 +34110,9 @@ func ExtractGoObjectWeekday(args []Object, index int) *_time.Weekday {
 		case *_time.Weekday:
 			return r
 		}
+	case Int:
+		v := _time.Weekday(ExtractInt(args, index))
+		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[time.Weekday]"))
 }

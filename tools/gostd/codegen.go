@@ -225,6 +225,54 @@ func %s(%s) %s {
 	}
 }
 
+func maybeImplicitConvert(typeName string, td *TypeSpec) string {
+	var declType string
+	var argType string
+	switch t := td.Type.(type) {
+	case *Ident:
+		switch t.Name {
+		case "string":
+			argType = "String"
+			declType = "String"
+		case "int":
+			argType = "Int"
+			declType = "Int"
+		case "byte":
+			argType = "Int"
+			declType = "Byte"
+		case "bool":
+			argType = "Bool"
+			declType = "Bool"
+		case "int16":
+			argType = "Int"
+			declType = "Int16"
+		case "uint":
+			argType = "Number"
+			declType = "UInt"
+		case "uint16":
+			argType = "Int"
+			declType = "UInt16"
+		case "int32":
+			argType = "Int"
+			declType = "Int32"
+		case "uint32":
+			argType = "Number"
+			declType = "UInt32"
+		case "int64":
+			argType = "Number"
+			declType = "Int64"
+		}
+	}
+	if declType == "" {
+		return ""
+	}
+	const exTemplate string = `case %s:
+		v := _%s(Extract%s(args, index))
+		return &v
+	`
+	return fmt.Sprintf(exTemplate, argType, typeName, declType)
+}
+
 func genType(t string, ti *typeInfo) {
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
@@ -255,5 +303,6 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 	typeName := path.Base(t)
 	baseTypeName := ti.td.Name
-	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, "", t)
+	others := maybeImplicitConvert(typeName, ti.td)
+	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 }
