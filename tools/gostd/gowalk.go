@@ -272,6 +272,10 @@ func processDir(root, rootUnix, path string, mode parser.Mode) error {
 				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, path)
 			}
+		} else if pkgBaseName == "unsafe" {
+			if verbose {
+				fmt.Printf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix)
+			}
 		} else {
 			processPackage(rootUnix, pkgDirUnix, v)
 		}

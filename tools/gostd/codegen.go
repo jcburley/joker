@@ -79,6 +79,7 @@ type funcCode struct {
 	goParamListDoc          string
 	clojureGoParams         string
 	goCode                  string
+	clojureReturnType       string
 	clojureReturnTypeForDoc string
 	goReturnTypeForDoc      string
 }
@@ -107,7 +108,7 @@ func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFn
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
 		genGoPre(fn, "\t", d.Type.Params, goFname)
 	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
-	goResultAssign, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\t...ABEND675: TODO...\n"
@@ -243,12 +244,18 @@ func maybeImplicitConvert(typeName string, td *TypeSpec) string {
 		case "bool":
 			argType = "Bool"
 			declType = "Bool"
+		case "int8":
+			argType = "Int"
+			declType = "Byte"
 		case "int16":
 			argType = "Int"
 			declType = "Int16"
 		case "uint":
 			argType = "Number"
 			declType = "UInt"
+		case "uint8":
+			argType = "Int"
+			declType = "UInt8"
 		case "uint16":
 			argType = "Int"
 			declType = "UInt16"
@@ -261,6 +268,21 @@ func maybeImplicitConvert(typeName string, td *TypeSpec) string {
 		case "int64":
 			argType = "Number"
 			declType = "Int64"
+		case "uintptr":
+			argType = "Number"
+			declType = "UIntPtr"
+		case "float32":
+			argType = "Double"
+			declType = "ABEND007(find these)"
+		case "float64":
+			argType = "Double"
+			declType = "ABEND007(find these)"
+		case "complex64":
+			argType = "Double"
+			declType = "ABEND007(find these)"
+		case "complex128":
+			argType = "Double"
+			declType = "ABEND007(find these)"
 		}
 	}
 	if declType == "" {

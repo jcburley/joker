@@ -180,6 +180,8 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 			clType = "UInt32"
 		case "int64":
 			clType = "Int64"
+		case "uintptr":
+			clType = "UIntPtr"
 		case "error":
 		default:
 			if isPrivate(v.Name) {

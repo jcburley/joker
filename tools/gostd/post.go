@@ -6,24 +6,25 @@ import (
 	"strings"
 )
 
-func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (cl, clDoc, gol, goc, out string) {
+	cl = fullTypeNameAsClojure(fullTypeName)
 	if _, ok := types[fullTypeName]; ok {
-		cl = fullTypeNameAsClojure(fullTypeName)
+		clDoc = cl
 		gol = fullTypeName
 		out = "MakeGoObject(" + captureName + ")"
 	} else {
-		cl = fmt.Sprintf("ABEND042(post.go: cannot find typename %s)", fullTypeName)
+		clDoc = fmt.Sprintf("ABEND042(post.go: cannot find typename %s)", fullTypeName)
 		gol = "..."
 		out = captureName
 	}
 	return
 }
 
-func genGoPostNamed(fn *funcInfo, indent, captureName, typeName, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostNamed(fn *funcInfo, indent, captureName, typeName, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	return genGoPostSelected(fn, indent, captureName, fn.sourceFile.pkgDirUnix+"."+typeName, onlyIf)
 }
 
-func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	pkgName := e.X.(*Ident).Name
 	fullPathUnix := unix(fileAt(e.Pos()))
 	referringFile := strings.TrimPrefix(fullPathUnix, fn.sourceFile.rootUnix+"/")
@@ -45,7 +46,7 @@ func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr
 
 // Joker: { :a ^Int, :b ^String }
 // Go: struct { a int; b string }
-func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	tmpmap := "_map" + genSym("")
 	useful := false
 	for _, f := range fl.List {
@@ -53,9 +54,9 @@ func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, on
 			if isPrivate(p.Name) {
 				continue // Skipping non-exported fields
 			}
-			var clType, golType, more_goc string
-			clType, golType, more_goc, out =
+			clType, clTypeDoc, golType, more_goc, outNew :=
 				genGoPostExpr(fn, indent, captureName+"."+p.Name, f.Type, "")
+			out = outNew
 			if useful || exprIsUseful(out) {
 				useful = true
 			}
@@ -77,12 +78,18 @@ func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, on
 			if clType != "" {
 				cl += "^" + clType
 			}
+			if clTypeDoc != "" {
+				clDoc += "^" + clTypeDoc
+			}
 			if golType != "" {
 				gol += golType
 			}
 		}
 	}
-	cl = "{" + cl + "}"
+	if cl != "" {
+		cl = "{" + cl + "}"
+	}
+	clDoc = "{" + clDoc + "}"
 	gol = "struct {" + gol + "}"
 	if useful {
 		goc = wrapStmtOnlyIfs(indent, tmpmap, "ArrayMap", "EmptyArrayMap()", onlyIf, goc, &out)
@@ -93,15 +100,18 @@ func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, on
 	return
 }
 
-func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	tmp := genSym("")
 	tmpvec := "_vec" + tmp
 	tmpelem := "_elem" + tmp
 
 	var goc_pre string
-	cl, gol, goc_pre, out = genGoPostExpr(fn, indent+"\t", tmpelem, el, "")
+	cl, clDoc, gol, goc_pre, out = genGoPostExpr(fn, indent+"\t", tmpelem, el, "")
 	useful := exprIsUseful(out)
-	cl = "(vector-of " + cl + ")"
+	if cl != "" {
+		cl = "(vector-of " + cl + ")"
+	}
+	clDoc = "(vector-of " + clDoc + ")"
 	gol = "[]" + gol
 
 	if useful {
@@ -116,10 +126,13 @@ func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf st
 	return
 }
 
-func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
-	cl, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
+func genGoPostStar(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
+	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
 	out = "MakeGoObject(" + captureName + ")"
-	cl = "(atom-of " + cl + ")"
+	if cl != "" {
+		cl = "(atom-of " + cl + ")"
+	}
+	clDoc = "(atom-of " + clDoc + ")"
 	gol = "*" + gol
 	return
 }
@@ -128,7 +141,7 @@ func maybeNil(expr, captureName string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
 }
 
-func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, gol, goc, out string) {
+func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	switch v := e.(type) {
 	case *Ident:
 		gol = v.Name
@@ -140,8 +153,11 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 			cl = "Int"
 			out = "MakeInt(" + captureName + ")"
 		case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
-			cl = ""
+			clDoc = "Int"
 			out = "MakeInt(int(" + captureName + "))"
+		case "uint64", "uintptr":
+			cl = "BigInt"
+			out = "MakeBigInt(uint64(" + captureName + "))"
 		case "bool":
 			cl = "Bool"
 			out = "MakeBool(" + captureName + ")"
@@ -154,33 +170,36 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 				gol = "..."
 				out = captureName
 			} else {
-				cl, _, goc, out = genGoPostNamed(fn, indent, captureName, v.Name, onlyIf)
+				cl, clDoc, _, goc, out = genGoPostNamed(fn, indent, captureName, v.Name, onlyIf)
 			}
 		}
 	case *ArrayType:
-		cl, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
+		cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
 	case *StarExpr:
-		cl, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
+		cl, clDoc, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
 	case *SelectorExpr:
-		cl, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
+		cl, clDoc, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
 	case *StructType:
-		cl, gol, goc, out = genGoPostStruct(fn, indent, captureName, v.Fields, onlyIf)
+		cl, clDoc, gol, goc, out = genGoPostStruct(fn, indent, captureName, v.Fields, onlyIf)
 	default:
 		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 		gol = "..."
 		out = captureName
+	}
+	if clDoc == "" {
+		clDoc = cl
 	}
 	return
 }
 
 const resultName = "_res"
 
-func genGoPostItem(fn *funcInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, gol, goc, out string, useful bool) {
+func genGoPostItem(fn *funcInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out string, useful bool) {
 	captureVar = captureName
 	if captureName == "" {
 		captureVar = genSym(resultName)
 	}
-	cl, gol, goc, out = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
+	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
 	if captureName != "" && captureName != resultName {
 		gol = paramNameAsGo(captureName) + " " + gol
 	}
@@ -192,10 +211,11 @@ func genGoPostItem(fn *funcInfo, indent, captureName string, f *Field, onlyIf st
 }
 
 // Caller generates "outGOCALL;goc" while saving cl and gol for type info (they go into .joke as metadata and docstrings)
-func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out string) {
+func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, clDoc, gol, goc, out string) {
 	useful := false
 	captureVars := []string{}
 	clType := []string{}
+	clTypeDoc := []string{}
 	golType := []string{}
 	goCode := []string{}
 
@@ -215,7 +235,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 			if multipleCaptures {
 				captureName = n
 			}
-			captureVar, clNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, f, "")
+			captureVar, clNew, clDocNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, f, "")
 			useful = useful || usefulItem
 			if multipleCaptures {
 				gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
@@ -224,6 +244,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 			}
 			captureVars = append(captureVars, captureVar)
 			clType = append(clType, clNew)
+			clTypeDoc = append(clTypeDoc, clDocNew)
 			golType = append(golType, golNew)
 			goCode = append(goCode, gocNew)
 		}
@@ -237,6 +258,11 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 	cl = strings.Join(clType, " ")
 	if len(clType) > 1 && cl != "" {
 		cl = "[" + cl + "]"
+	}
+
+	clDoc = strings.Join(clTypeDoc, " ")
+	if len(clTypeDoc) > 1 && clDoc != "" {
+		clDoc = "[" + clDoc + "]"
 	}
 
 	gol = strings.Join(golType, ", ")
@@ -266,11 +292,11 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, gol, goc, out
 	return
 }
 
-func genGoPost(fn *funcInfo, indent string, d *FuncDecl) (goResultAssign, clojureReturnTypeForDoc, goReturnTypeForDoc string, goReturnCode string) {
+func genGoPost(fn *funcInfo, indent string, d *FuncDecl) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc string, goReturnCode string) {
 	fl := d.Type.Results
 	if fl == nil || fl.List == nil {
 		return
 	}
-	clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(fn, indent, *fl)
+	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(fn, indent, *fl)
 	return
 }
