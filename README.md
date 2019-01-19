@@ -428,7 +428,8 @@ Arrays are returned as vectors, types are returned as `GoObject` wrappers, and n
 
 Returned `GoObject` instances can be:
 * Ignored (they'll presumably be garbage-collected at some point)
-* Converted to `String` (via e.g. `(str goobj)`)
+* Stringized (via e.g. `(str goobj)`)
+* Converted to a suitable Clojure representation
 * Passed as arguments to Go API wrappers
 * Provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
 
