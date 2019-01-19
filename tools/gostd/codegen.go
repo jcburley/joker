@@ -174,7 +174,7 @@ func genFunction(fn *funcInfo) {
 `
 	goFname := funcNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
-	clojureReturnType, goReturnType := clojureReturnTypeForGenerateCustom(fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc)
+	clojureReturnType, goReturnType := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	var cl2gol string
 	if clojureReturnType == "" {
