@@ -112,7 +112,7 @@ func ExtractInt(args []Object, index int) int {
 func ExtractByte(args []Object, index int) byte {
 	v := ExtractInt(args, index)
 	if v < 0 || v > 255 {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "byte"))
+		panic(RT.NewArgTypeError(index, args[index], "byte"))
 	}
 	return byte(v)
 }
@@ -120,7 +120,7 @@ func ExtractByte(args []Object, index int) byte {
 func ExtractInt16(args []Object, index int) int16 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt16 || v > math.MaxInt16 {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "int16"))
+		panic(RT.NewArgTypeError(index, args[index], "int16"))
 	}
 	return int16(v)
 }
@@ -128,7 +128,7 @@ func ExtractInt16(args []Object, index int) int16 {
 func ExtractInt32(args []Object, index int) int32 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt32 || v > math.MaxInt32 {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "int32"))
+		panic(RT.NewArgTypeError(index, args[index], "int32"))
 	}
 	return int32(v)
 }
@@ -140,15 +140,23 @@ func ExtractInt64(args []Object, index int) int64 {
 func ExtractUInt(args []Object, index int) uint {
 	v := EnsureNumber(args, index).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "uint"))
+		panic(RT.NewArgTypeError(index, args[index], "uint"))
 	}
 	return uint(v)
+}
+
+func ExtractUInt8(args []Object, index int) uint8 {
+	v := ExtractUInt(args, index)
+	if v > math.MaxUint8 {
+		panic(RT.NewArgTypeError(index, args[index], "uint8"))
+	}
+	return uint8(v)
 }
 
 func ExtractUInt16(args []Object, index int) uint16 {
 	v := ExtractUInt(args, index)
 	if v > math.MaxUint16 {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "uint16"))
+		panic(RT.NewArgTypeError(index, args[index], "uint16"))
 	}
 	return uint16(v)
 }
@@ -156,13 +164,17 @@ func ExtractUInt16(args []Object, index int) uint16 {
 func ExtractUInt32(args []Object, index int) uint32 {
 	v := ExtractNumber(args, index).BigInt().Uint64()
 	if v > math.MaxUint32 {
-		panic(RT.NewArgTypeError(index, args[index].(Int), "uint32"))
+		panic(RT.NewArgTypeError(index, args[index], "uint32"))
 	}
 	return uint32(v)
 }
 
 func ExtractUInt64(args []Object, index int) uint64 {
 	return ExtractNumber(args, index).BigInt().Uint64()
+}
+
+func ExtractUIntPtr(args []Object, index int) uintptr {
+	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
 }
 
 func ExtractBool(args []Object, index int) bool {

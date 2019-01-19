@@ -260,6 +260,185 @@ user=>
 $
 ```
 
+## GoObject
+
+A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`). E.g.:
+
+```
+$ ../../joker
+Welcome to joker v0.11.1. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
+user=> (use '[go.std.net :as n])
+nil
+user=> (doc n/Interfaces)
+-------------------------
+go.std.net/Interfaces
+([])
+  Interfaces returns a list of the system's network interfaces.
+
+Go return type: ([]Interface, error)
+
+Joker input arguments: []
+
+Joker return type: [(vector-of go.std.net/Interface) Error]
+nil
+user=> (def r (n/Interfaces))
+#'user/r
+user=> r
+[[{1 65536 lo  up|loopback} {2 1500 eth0 14:da:e9:1f:c8:57 up|broadcast|multicast} {3 1500 docker0 02:42:6a:a9:a8:d8 up|broadcast|multicast}] nil]
+user=> (type r)
+Vector
+user=> (type (r 0))
+Vector
+user=> (type ((r 0) 0))
+GoObject[net.Interface]
+user=> ((r 0) 0)
+{1 65536 lo  up|loopback}
+user=>
+```
+
+In the above case, multiple `GoObject` objects are returned by a single call to `go.std.net/Interface`; they are returned as a (Clojure) vector, which in turn is wrapped in a vector along with the `error` return value, per the "Go return type" shown by `doc`.
+
+### Constructing a GoObject
+
+TBD.
+
+### Calling a Go API
+
+Calling a Go wrapper function in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned result (if any) properly.
+
+#### Input Arguments
+
+Generally, the types of an input argument (to a Go wrapper function) must be a `GoObject` wrapping an object of the same type as the corresponding input argument to the Go API.
+
+However, Joker does support some implicit conversion, in some ways beyond what the Go language itself provides, as explained below.
+
+Though somewhat strongly typed, the Go language makes some common operations convenient via implicit type conversion. For example:
+
+```
+user=> (use '[go.std.os :as o])
+nil
+user=> (doc o/Chmod)
+-------------------------
+go.std.os/Chmod
+([_name _mode])
+  Chmod changes the mode of the named file to mode.
+[...]
+
+Go input arguments: (name string, mode FileMode)
+
+Go return type: error
+
+Joker input arguments: [^String name, ^go.std.os/FileMode mode]
+
+Joker return type: Error
+nil
+user=>
+```
+
+A Go program may perform an implicit conversion via e.g. `os.Chmod("sample.txt", 0644)`, in that `0644` is an untyped numeric constant. Such a constant defaults to `int`, but in this case it is implicitly converted to `uint32`, the underlying type of `go/std/os.FileMode`. Implicit conversion also works for an expression with only numeric-constant operands.
+
+However, there's no implicit conversion when one or more _variables_ (even `const` "variables") are involved in the expression. So, given `const i int = 644`, the Go compiler rejects `os.Chmod("sample.txt", i)` with:
+
+```
+./chmod.go:7:11: cannot use i (type int) as type os.FileMode in argument to os.Chmod
+```
+
+While this appears to discourage declaring a constant once in a package and then using it, instead of the constant itself, throughout the program, it does solve some thorny issues, as described in [this Go Blog post](https://blog.golang.org/constants). Further, one can work around it fairly easily by explicitly converting to the required type: `os.Chmod("sample.txt", os.FileMode(i)`.
+
+Joker offers similar implicit conversion, but (in accordance with the relatively laid-back type checking provided by Clojure) supports it regardless of whether the expression is constructed entirely out of constants. E.g.:
+
+```
+user=> (joker.os/sh "touch" "sample.txt")
+{:success true, :exit 0, :out "", :err ""}
+user=> (defn ll [] (:out (joker.os/sh "ls" "-l" "sample.txt")))
+#'user/ll
+user=> (ll)
+"-rw-rw-r-- 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (o/Chmod "sample.txt" 0333)
+""
+user=> (ll)
+"--wx-wx-wx 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (def i 0222)
+#'user/i
+user=> (type i)
+Int
+user=> (o/Chmod "sample.txt" i)
+""
+user=> (ll)
+"--w--w--w- 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (def i 0111N)
+#'user/i
+user=> (o/Chmod "sample.txt" i)
+""
+user=> (ll)
+"---x--x--x 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (def i "hey this is a string")
+#'user/i
+user=> (o/Chmod "sample.txt" i)
+<repl>:51:1: Eval error: Arg[1] of go.std.os/Chmod must have type GoObject[os.FileMode], got String
+user=> (ll)
+"---x--x--x 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (def i 999999999999999999999999999)
+#'user/i
+user=> (o/Chmod "sample.txt" i)
+<repl>:54:1: Eval error: Arg[1] of go.std.os/Chmod must have type uint32, got BigInt
+user=> (ll)
+"---x--x--x 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=> (def i 1.2)
+#'user/i
+user=> (o/Chmod "sample.txt" i)
+""
+user=> (ll)
+"---------x 1 craig craig 0 Jan 19 07:12 sample.txt\n"
+user=>
+```
+
+As shown above, implicit conversion even from `BigInt` and `Double` (as long as the value doesn't overflow the underlying type, which is `uint32` in this case) is supported.
+
+Similarly, implicit conversion of `String` expressions to Go types that have `string` as their underlying (e.g. alias) type is supported. (Conversion to the floating-point and complex types is currently not supported, but only because these types are not easily tested due to their being no applicable APIs.)
+
+#### Output Arguments
+
+Multiple output arguments are returned as a (Clojure) vector of the arguments, each treated as its own output argument.
+
+Arrays are returned as vectors, types are returned as `GoObject` wrappers, and are numbers returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
+
+For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported. E.g.:
+
+
+```
+user=> (use '[go.std.math.rand :as r])
+nil
+user=> (doc r/Uint64)
+-------------------------
+go.std.math.rand/Uint64
+([])
+  Uint64 returns a pseudo-random 64-bit value as a uint64
+from the default Source.
+
+Go return type: uint64
+
+Joker input arguments: []
+
+Joker return type: BigInt
+nil
+user=> (r/Uint64)
+13211699322299636880N
+user=> (r/Uint64)
+18275342588295813334N
+user=> (r/Uint64)
+1178250799499678761N
+user=> (r/Uint64)
+16901804822320105684N
+user=> (r/Uint64)
+15617289313243222146N
+user=>
+```
+
+### Converting a GoObject to a Clojure Datatype
+
+TBD.
+
 ## Developer Notes
 
 The version of `run.sh` on this branch invokes `tools/gostd/gostd` to create the `go.std...` namespaces, generate wrappers, and so on.
@@ -325,7 +504,7 @@ After each test it runs, it uses `git diff` to compare the resulting `.gold` fil
 The Go standard library is customized per system architecture and OS, and `gostd` picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd` repo is somewhat automated via `update.sh` -- e.g.:
 
 ```
-$ ./update.sh 
+$ ./update.sh
 remote: Enumerating objects: 8, done.
 remote: Counting objects: 100% (8/8), done.
 remote: Compressing objects: 100% (4/4), done.
