@@ -150,9 +150,53 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
     :empty false}
   go.std.net.url)
 GO TYPE net.MX from net/dnsclient.go:
+func ExtractGoObjectMX(args []Object, index int) _net.MX {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.MX); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
+}
+
 GO TYPE net.NS from net/dnsclient.go:
+func ExtractGoObjectNS(args []Object, index int) _net.NS {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.NS); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
+}
+
 GO TYPE net.Resolver from net/lookup.go:
+func ExtractGoObjectResolver(args []Object, index int) _net.Resolver {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Resolver); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
+}
+
 GO TYPE net.SRV from net/dnsclient.go:
+func ExtractGoObjectSRV(args []Object, index int) _net.SRV {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.SRV); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
+}
+
 GO FUNC net.LookupAddr from net/lookup.go:
 func lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
@@ -272,11 +316,77 @@ import (
 	. "github.com/candid82/joker/core"
 )
 GO TYPE net/url.Error from net/url/url.go:
+func ExtractGoObjectError(args []Object, index int) _url.Error {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Error); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
+}
+
 GO TYPE net/url.EscapeError from net/url/url.go:
+func ExtractGoObjectEscapeError(args []Object, index int) _url.EscapeError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.EscapeError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
+}
+
 GO TYPE net/url.InvalidHostError from net/url/url.go:
+func ExtractGoObjectInvalidHostError(args []Object, index int) _url.InvalidHostError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.InvalidHostError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
+}
+
 GO TYPE net/url.URL from net/url/url.go:
+func ExtractGoObjectURL(args []Object, index int) _url.URL {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.URL); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
+}
+
 GO TYPE net/url.Userinfo from net/url/url.go:
+func ExtractGoObjectUserinfo(args []Object, index int) _url.Userinfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Userinfo); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
+}
+
 GO TYPE net/url.Values from net/url/url.go:
+func ExtractGoObjectValues(args []Object, index int) _url.Values {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Values); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Values]"))
+}
+
 GO FUNC net/url.Parse from net/url/url.go:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
