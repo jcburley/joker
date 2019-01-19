@@ -397,9 +397,9 @@ As shown above, implicit conversion even from `BigInt` and `Double` (as long as 
 
 Similarly, implicit conversion of `String` expressions to Go types that have `string` as their underlying (e.g. alias) type is supported. (Conversion to the floating-point and complex types is currently not supported, but only because these types are not easily tested due to their being no applicable APIs.)
 
-#### Output Arguments
+#### Returned Values
 
-Multiple output arguments are returned as a (Clojure) vector of the arguments, each treated as its own output argument.
+Multiple return values are converted to a (Clojure) vector of the arguments, each treated as its own return value as far as this section of the document is concerned.
 
 Arrays are returned as vectors, types are returned as `GoObject` wrappers, and are numbers returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
