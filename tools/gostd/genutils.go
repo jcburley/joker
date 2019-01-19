@@ -4,7 +4,6 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/token"
-	gotypes "go/types"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -101,11 +100,11 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType
 }
 
 func funcNameAsGoPrivate(f string) string {
-	s := strings.ToLower(f[0:1]) + f[1:]
-	if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
-		s = "_" + s
-	}
-	return s
+	// s := strings.ToLower(f[0:1]) + f[1:]
+	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
+	// 	s = "_" + s
+	// }
+	return "__" + strings.ToLower(f[0:1]) + f[1:]
 }
 
 func isPrivate(p string) bool {
