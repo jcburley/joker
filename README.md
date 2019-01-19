@@ -260,6 +260,14 @@ user=>
 $
 ```
 
+## Design Principles
+
+The `go.std.` namespaces being automatically generated, they are not necessarily intended for direct use by business logic:
+* They aren't the same on all architectures
+* They're very low-level -- little effort is made to provide Clojure-like wrapping beyond the minimum necessary
+
+But by providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs to be written without requiring changes to the Joker codebase or executable itself.
+
 ## GoObject
 
 A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`). E.g.:
@@ -304,15 +312,15 @@ TBD.
 
 ### Calling a Go API
 
-Calling a Go wrapper function in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned result (if any) properly.
+Calling a Go wrapper function in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned results (if any) properly.
 
 #### Input Arguments
 
-Generally, the types of an input argument (to a Go wrapper function) must be a `GoObject` wrapping an object of the same type as the corresponding input argument to the Go API.
+Generally, the types of an input argument (to a Go wrapper function) must be either a built-in type (such as `int`) or a `GoObject` wrapping an object of the same (named) type as the corresponding input argument to the Go API.
 
 However, Joker does support some implicit conversion, in some ways beyond what the Go language itself provides, as explained below.
 
-Though somewhat strongly typed, the Go language makes some common operations convenient via implicit type conversion. For example:
+Though somewhat strongly typed, the Go language makes some common operations convenient via implicit type conversion. Consider `go/std/os.Chmod()`, for example:
 
 ```
 user=> (use '[go.std.os :as o])
@@ -335,15 +343,17 @@ nil
 user=>
 ```
 
+Note the second input argument, which is type `FileMode` (in the same package).
+
 A Go program may perform an implicit conversion via e.g. `os.Chmod("sample.txt", 0644)`, in that `0644` is an untyped numeric constant. Such a constant defaults to `int`, but in this case it is implicitly converted to `uint32`, the underlying type of `go/std/os.FileMode`. Implicit conversion also works for an expression with only numeric-constant operands.
 
-However, there's no implicit conversion when one or more _variables_ (even `const` "variables") are involved in the expression. So, given `const i int = 644`, the Go compiler rejects `os.Chmod("sample.txt", i)` with:
+However, there's no implicit conversion when one or more _variables_ (even `const` "variables") are involved in the expression. So, given `const i int = 0644`, the Go compiler rejects `os.Chmod("sample.txt", i)` with:
 
 ```
 ./chmod.go:7:11: cannot use i (type int) as type os.FileMode in argument to os.Chmod
 ```
 
-While this appears to discourage declaring a constant once in a package and then using it, instead of the constant itself, throughout the program, it does solve some thorny issues, as described in [this Go Blog post](https://blog.golang.org/constants). Further, one can work around it fairly easily by explicitly converting to the required type: `os.Chmod("sample.txt", os.FileMode(i)`.
+While this appears to discourage declaring a constant once in a package and then using it, instead of the constant itself, throughout the program, it does solve some thorny issues, as described in [this Go Blog post](https://blog.golang.org/constants). Further, one can work around it fairly easily by explicitly converting to the required type: `os.Chmod("sample.txt", os.FileMode(i))`. (That's awkward, but at least one needn't always specify e.g. `os.FileMode(0644)` when specifying a literal constant, as is the case in some strongly-typed languages.)
 
 Joker offers similar implicit conversion, but (in accordance with the relatively laid-back type checking provided by Clojure) supports it regardless of whether the expression is constructed entirely out of constants. E.g.:
 
@@ -395,13 +405,13 @@ user=>
 
 As shown above, implicit conversion even from `BigInt` and `Double` (as long as the value doesn't overflow the underlying type, which is `uint32` in this case) is supported.
 
-Similarly, implicit conversion of `String` expressions to Go types that have `string` as their underlying (e.g. alias) type is supported. (Conversion to the floating-point and complex types is currently not supported, but only because these types are not easily tested due to their being no applicable APIs.)
+Similarly, implicit conversion of `String` expressions to Go types that have `string` as their underlying (e.g. alias) type is supported. (Conversion to the floating-point and complex types is currently not supported, but only because these types are not easily tested due to there being no applicable APIs.)
 
 #### Returned Values
 
 Multiple return values are converted to a (Clojure) vector of the arguments, each treated as its own return value as far as this section of the document is concerned.
 
-Arrays are returned as vectors, types are returned as `GoObject` wrappers, and are numbers returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
+Arrays are returned as vectors, types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
 For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported. E.g.:
 
@@ -434,6 +444,10 @@ user=> (r/Uint64)
 15617289313243222146N
 user=>
 ```
+
+### Referencing a Member of a GoObject
+
+TBD.
 
 ### Converting a GoObject to a Clojure Datatype
 
