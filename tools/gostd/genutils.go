@@ -93,7 +93,6 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType
 	if curPkgName == fullPkgName {
 		code = "_" + basePkgName + "." + baseTypeName
 		doc = baseTypeName
-		fn.refersToSelf = true
 		return
 	}
 	doc = path.Base(fullPkgName) + "." + baseTypeName
