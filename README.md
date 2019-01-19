@@ -248,7 +248,7 @@ To make this "magic" happen:
 Assuming Joker has been built as described above:
 
 ```
-$ ./joker
+$ joker
 Welcome to joker v0.11.1. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
 user=> (require '[go.std.net :as n])
 nil
@@ -265,7 +265,7 @@ $
 A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`). E.g.:
 
 ```
-$ ../../joker
+$ joker
 Welcome to joker v0.11.1. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
 user=> (use '[go.std.net :as n])
 nil
