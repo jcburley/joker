@@ -1372,40 +1372,425 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
   [^String _username, ^String _password])
 
 GO TYPE net.Addr from net/net.go:
+func ExtractGoObjectAddr(args []Object, index int) _net.Addr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Addr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Addr]"))
+}
+
 GO TYPE net.AddrError from net/net.go:
+func ExtractGoObjectAddrError(args []Object, index int) _net.AddrError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.AddrError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.AddrError]"))
+}
+
 GO TYPE net.Buffers from net/net.go:
+func ExtractGoObjectBuffers(args []Object, index int) _net.Buffers {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Buffers); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Buffers]"))
+}
+
 GO TYPE net.Conn from net/net.go:
+func ExtractGoObjectConn(args []Object, index int) _net.Conn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Conn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Conn]"))
+}
+
 GO TYPE net.DNSConfigError from net/net.go:
+func ExtractGoObjectDNSConfigError(args []Object, index int) _net.DNSConfigError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.DNSConfigError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.DNSConfigError]"))
+}
+
 GO TYPE net.DNSError from net/net.go:
+func ExtractGoObjectDNSError(args []Object, index int) _net.DNSError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.DNSError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.DNSError]"))
+}
+
 GO TYPE net.Dialer from net/dial.go:
+func ExtractGoObjectDialer(args []Object, index int) _net.Dialer {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Dialer); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Dialer]"))
+}
+
 GO TYPE net.Error from net/net.go:
+func ExtractGoObjectError(args []Object, index int) _net.Error {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Error); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Error]"))
+}
+
 GO TYPE net.Flags from net/interface.go:
+func ExtractGoObjectFlags(args []Object, index int) _net.Flags {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Flags); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Flags]"))
+}
+
 GO TYPE net.HardwareAddr from net/mac.go:
+func ExtractGoObjectHardwareAddr(args []Object, index int) _net.HardwareAddr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.HardwareAddr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.HardwareAddr]"))
+}
+
 GO TYPE net.IP from net/ip.go:
+func ExtractGoObjectIP(args []Object, index int) _net.IP {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.IP); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.IP]"))
+}
+
 GO TYPE net.IPAddr from net/iprawsock.go:
+func ExtractGoObjectIPAddr(args []Object, index int) _net.IPAddr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.IPAddr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPAddr]"))
+}
+
 GO TYPE net.IPConn from net/iprawsock.go:
+func ExtractGoObjectIPConn(args []Object, index int) _net.IPConn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.IPConn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPConn]"))
+}
+
 GO TYPE net.IPMask from net/ip.go:
+func ExtractGoObjectIPMask(args []Object, index int) _net.IPMask {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.IPMask); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPMask]"))
+}
+
 GO TYPE net.IPNet from net/ip.go:
+func ExtractGoObjectIPNet(args []Object, index int) _net.IPNet {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.IPNet); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPNet]"))
+}
+
 GO TYPE net.Interface from net/interface.go:
+func ExtractGoObjectInterface(args []Object, index int) _net.Interface {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Interface); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Interface]"))
+}
+
 GO TYPE net.InvalidAddrError from net/net.go:
+func ExtractGoObjectInvalidAddrError(args []Object, index int) _net.InvalidAddrError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.InvalidAddrError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.InvalidAddrError]"))
+}
+
 GO TYPE net.ListenConfig from net/dial.go:
+func ExtractGoObjectListenConfig(args []Object, index int) _net.ListenConfig {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.ListenConfig); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.ListenConfig]"))
+}
+
 GO TYPE net.Listener from net/net.go:
+func ExtractGoObjectListener(args []Object, index int) _net.Listener {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Listener); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Listener]"))
+}
+
 GO TYPE net.MX from net/dnsclient.go:
+func ExtractGoObjectMX(args []Object, index int) _net.MX {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.MX); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
+}
+
 GO TYPE net.NS from net/dnsclient.go:
+func ExtractGoObjectNS(args []Object, index int) _net.NS {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.NS); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
+}
+
 GO TYPE net.OpError from net/net.go:
+func ExtractGoObjectOpError(args []Object, index int) _net.OpError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.OpError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.OpError]"))
+}
+
 GO TYPE net.PacketConn from net/net.go:
+func ExtractGoObjectPacketConn(args []Object, index int) _net.PacketConn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.PacketConn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.PacketConn]"))
+}
+
 GO TYPE net.ParseError from net/net.go:
+func ExtractGoObjectParseError(args []Object, index int) _net.ParseError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.ParseError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.ParseError]"))
+}
+
 GO TYPE net.Resolver from net/lookup.go:
+func ExtractGoObjectResolver(args []Object, index int) _net.Resolver {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.Resolver); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
+}
+
 GO TYPE net.SRV from net/dnsclient.go:
+func ExtractGoObjectSRV(args []Object, index int) _net.SRV {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.SRV); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
+}
+
 GO TYPE net.TCPAddr from net/tcpsock.go:
+func ExtractGoObjectTCPAddr(args []Object, index int) _net.TCPAddr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.TCPAddr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPAddr]"))
+}
+
 GO TYPE net.TCPConn from net/tcpsock.go:
+func ExtractGoObjectTCPConn(args []Object, index int) _net.TCPConn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.TCPConn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPConn]"))
+}
+
 GO TYPE net.TCPListener from net/tcpsock.go:
+func ExtractGoObjectTCPListener(args []Object, index int) _net.TCPListener {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.TCPListener); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPListener]"))
+}
+
 GO TYPE net.UDPAddr from net/udpsock.go:
+func ExtractGoObjectUDPAddr(args []Object, index int) _net.UDPAddr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UDPAddr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UDPAddr]"))
+}
+
 GO TYPE net.UDPConn from net/udpsock.go:
+func ExtractGoObjectUDPConn(args []Object, index int) _net.UDPConn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UDPConn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UDPConn]"))
+}
+
 GO TYPE net.UnixAddr from net/unixsock.go:
+func ExtractGoObjectUnixAddr(args []Object, index int) _net.UnixAddr {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UnixAddr); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixAddr]"))
+}
+
 GO TYPE net.UnixConn from net/unixsock.go:
+func ExtractGoObjectUnixConn(args []Object, index int) _net.UnixConn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UnixConn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixConn]"))
+}
+
 GO TYPE net.UnixListener from net/unixsock.go:
+func ExtractGoObjectUnixListener(args []Object, index int) _net.UnixListener {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UnixListener); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixListener]"))
+}
+
 GO TYPE net.UnknownNetworkError from net/net.go:
+func ExtractGoObjectUnknownNetworkError(args []Object, index int) _net.UnknownNetworkError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_net.UnknownNetworkError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnknownNetworkError]"))
+}
+
 GO FUNC net.CIDRMask from net/ip.go:
 func cIDRMask(ones int, bits int) Object {
 	_res := _net.CIDRMask(ones, bits)
@@ -1812,29 +2197,293 @@ func splitHostPort(hostport string) Object {
 }
 
 GO TYPE net/http.Client from net/http/client.go:
+func ExtractGoObjectClient(args []Object, index int) _http.Client {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Client); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Client]"))
+}
+
 GO TYPE net/http.CloseNotifier from net/http/server.go:
+func ExtractGoObjectCloseNotifier(args []Object, index int) _http.CloseNotifier {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.CloseNotifier); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.CloseNotifier]"))
+}
+
 GO TYPE net/http.ConnState from net/http/server.go:
+func ExtractGoObjectConnState(args []Object, index int) _http.ConnState {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.ConnState); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ConnState]"))
+}
+
 GO TYPE net/http.Cookie from net/http/cookie.go:
+func ExtractGoObjectCookie(args []Object, index int) _http.Cookie {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Cookie); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Cookie]"))
+}
+
 GO TYPE net/http.CookieJar from net/http/jar.go:
+func ExtractGoObjectCookieJar(args []Object, index int) _http.CookieJar {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.CookieJar); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.CookieJar]"))
+}
+
 GO TYPE net/http.Dir from net/http/fs.go:
+func ExtractGoObjectDir(args []Object, index int) _http.Dir {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Dir); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Dir]"))
+}
+
 GO TYPE net/http.File from net/http/fs.go:
+func ExtractGoObjectFile(args []Object, index int) _http.File {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.File); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.File]"))
+}
+
 GO TYPE net/http.FileSystem from net/http/fs.go:
+func ExtractGoObjectFileSystem(args []Object, index int) _http.FileSystem {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.FileSystem); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.FileSystem]"))
+}
+
 GO TYPE net/http.Flusher from net/http/server.go:
+func ExtractGoObjectFlusher(args []Object, index int) _http.Flusher {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Flusher); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Flusher]"))
+}
+
 GO TYPE net/http.Handler from net/http/server.go:
+func ExtractGoObjectHandler(args []Object, index int) _http.Handler {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Handler); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Handler]"))
+}
+
 GO TYPE net/http.HandlerFunc from net/http/server.go:
+func ExtractGoObjectHandlerFunc(args []Object, index int) _http.HandlerFunc {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.HandlerFunc); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.HandlerFunc]"))
+}
+
 GO TYPE net/http.Header from net/http/header.go:
+func ExtractGoObjectHeader(args []Object, index int) _http.Header {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Header); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Header]"))
+}
+
 GO TYPE net/http.Hijacker from net/http/server.go:
+func ExtractGoObjectHijacker(args []Object, index int) _http.Hijacker {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Hijacker); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Hijacker]"))
+}
+
 GO TYPE net/http.ProtocolError from net/http/request.go:
+func ExtractGoObjectProtocolError(args []Object, index int) _http.ProtocolError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.ProtocolError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ProtocolError]"))
+}
+
 GO TYPE net/http.PushOptions from net/http/http.go:
+func ExtractGoObjectPushOptions(args []Object, index int) _http.PushOptions {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.PushOptions); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.PushOptions]"))
+}
+
 GO TYPE net/http.Pusher from net/http/http.go:
+func ExtractGoObjectPusher(args []Object, index int) _http.Pusher {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Pusher); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Pusher]"))
+}
+
 GO TYPE net/http.Request from net/http/request.go:
+func ExtractGoObjectRequest(args []Object, index int) _http.Request {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Request); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Request]"))
+}
+
 GO TYPE net/http.Response from net/http/response.go:
+func ExtractGoObjectResponse(args []Object, index int) _http.Response {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Response); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Response]"))
+}
+
 GO TYPE net/http.ResponseWriter from net/http/server.go:
+func ExtractGoObjectResponseWriter(args []Object, index int) _http.ResponseWriter {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.ResponseWriter); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ResponseWriter]"))
+}
+
 GO TYPE net/http.RoundTripper from net/http/client.go:
+func ExtractGoObjectRoundTripper(args []Object, index int) _http.RoundTripper {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.RoundTripper); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.RoundTripper]"))
+}
+
 GO TYPE net/http.SameSite from net/http/cookie.go:
+func ExtractGoObjectSameSite(args []Object, index int) _http.SameSite {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.SameSite); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.SameSite]"))
+}
+
 GO TYPE net/http.ServeMux from net/http/server.go:
+func ExtractGoObjectServeMux(args []Object, index int) _http.ServeMux {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.ServeMux); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ServeMux]"))
+}
+
 GO TYPE net/http.Server from net/http/server.go:
+func ExtractGoObjectServer(args []Object, index int) _http.Server {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Server); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Server]"))
+}
+
 GO TYPE net/http.Transport from net/http/transport.go:
+func ExtractGoObjectTransport(args []Object, index int) _http.Transport {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_http.Transport); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Transport]"))
+}
+
 GO FUNC net/http.DetectContentType from net/http/sniff.go:
 // func detectContentType(data []byte)  {
 // 	_res := _http.DetectContentType(data)
@@ -2045,6 +2694,17 @@ GO FUNC net/http.TimeoutHandler from net/http/server.go:
 // }
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
+func ExtractGoObjectHandler(args []Object, index int) _cgi.Handler {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_cgi.Handler); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/cgi.Handler]"))
+}
+
 GO FUNC net/http/cgi.Request from net/http/cgi/child.go:
 func request() Object {
 	_res1, _res2 := _cgi.Request()
@@ -2069,9 +2729,6 @@ GO FUNC net/http/cgi.Serve from net/http/cgi/child.go:
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
-GO TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
-GO TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
-GO TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 // func _new(o *_cookiejar.Options) Object {
 // 	_res1, _res2 := _cookiejar.New(o)
@@ -2093,7 +2750,29 @@ GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 // }
 
 GO TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go:
+func ExtractGoObjectResponseRecorder(args []Object, index int) _httptest.ResponseRecorder {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_httptest.ResponseRecorder); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptest.ResponseRecorder]"))
+}
+
 GO TYPE net/http/httptest.Server from net/http/httptest/server.go:
+func ExtractGoObjectServer(args []Object, index int) _httptest.Server {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_httptest.Server); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptest.Server]"))
+}
+
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 func newRecorder() Object {
 	_res := _httptest.NewRecorder()
@@ -2124,11 +2803,6 @@ GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
 // 	return MakeGoObject(_res)
 // }
 
-GO TYPE net/http/httptrace.ClientTrace from net/http/httptrace/trace.go:
-GO TYPE net/http/httptrace.DNSDoneInfo from net/http/httptrace/trace.go:
-GO TYPE net/http/httptrace.DNSStartInfo from net/http/httptrace/trace.go:
-GO TYPE net/http/httptrace.GotConnInfo from net/http/httptrace/trace.go:
-GO TYPE net/http/httptrace.WroteRequestInfo from net/http/httptrace/trace.go:
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func contextClientTrace(ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
@@ -2140,10 +2814,6 @@ GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 // 	return _httptrace.WithClientTrace(ctx, trace)
 // }
 
-GO TYPE net/http/httputil.BufferPool from net/http/httputil/reverseproxy.go:
-GO TYPE net/http/httputil.ClientConn from net/http/httputil/persist.go:
-GO TYPE net/http/httputil.ReverseProxy from net/http/httputil/reverseproxy.go:
-GO TYPE net/http/httputil.ServerConn from net/http/httputil/persist.go:
 GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 // func dumpRequest(req *ABEND987(genutils.go: imports not yet supported: http.Request), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequest(req, body)
@@ -2254,9 +2924,53 @@ GO FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
 // }
 
 GO TYPE net/mail.Address from net/mail/message.go:
+func ExtractGoObjectAddress(args []Object, index int) _mail.Address {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_mail.Address); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.Address]"))
+}
+
 GO TYPE net/mail.AddressParser from net/mail/message.go:
+func ExtractGoObjectAddressParser(args []Object, index int) _mail.AddressParser {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_mail.AddressParser); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.AddressParser]"))
+}
+
 GO TYPE net/mail.Header from net/mail/message.go:
+func ExtractGoObjectHeader(args []Object, index int) _mail.Header {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_mail.Header); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.Header]"))
+}
+
 GO TYPE net/mail.Message from net/mail/message.go:
+func ExtractGoObjectMessage(args []Object, index int) _mail.Message {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_mail.Message); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.Message]"))
+}
+
 GO FUNC net/mail.ParseAddress from net/mail/message.go:
 func parseAddress(address string) Object {
 	_res1, _res2 := _mail.ParseAddress(address)
@@ -2298,13 +3012,101 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // }
 
 GO TYPE net/rpc.Call from net/rpc/client.go:
+func ExtractGoObjectCall(args []Object, index int) _rpc.Call {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.Call); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Call]"))
+}
+
 GO TYPE net/rpc.Client from net/rpc/client.go:
+func ExtractGoObjectClient(args []Object, index int) _rpc.Client {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.Client); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Client]"))
+}
+
 GO TYPE net/rpc.ClientCodec from net/rpc/client.go:
+func ExtractGoObjectClientCodec(args []Object, index int) _rpc.ClientCodec {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.ClientCodec); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.ClientCodec]"))
+}
+
 GO TYPE net/rpc.Request from net/rpc/server.go:
+func ExtractGoObjectRequest(args []Object, index int) _rpc.Request {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.Request); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Request]"))
+}
+
 GO TYPE net/rpc.Response from net/rpc/server.go:
+func ExtractGoObjectResponse(args []Object, index int) _rpc.Response {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.Response); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Response]"))
+}
+
 GO TYPE net/rpc.Server from net/rpc/server.go:
+func ExtractGoObjectServer(args []Object, index int) _rpc.Server {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.Server); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Server]"))
+}
+
 GO TYPE net/rpc.ServerCodec from net/rpc/server.go:
+func ExtractGoObjectServerCodec(args []Object, index int) _rpc.ServerCodec {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.ServerCodec); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.ServerCodec]"))
+}
+
 GO TYPE net/rpc.ServerError from net/rpc/client.go:
+func ExtractGoObjectServerError(args []Object, index int) _rpc.ServerError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_rpc.ServerError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.ServerError]"))
+}
+
 GO FUNC net/rpc.Accept from net/rpc/server.go:
 // func accept(lis ABEND987(genutils.go: imports not yet supported: net.Listener)) Object {
 // 	_rpc.Accept(lis)
@@ -2420,8 +3222,41 @@ GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 // }
 
 GO TYPE net/smtp.Auth from net/smtp/auth.go:
+func ExtractGoObjectAuth(args []Object, index int) _smtp.Auth {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_smtp.Auth); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.Auth]"))
+}
+
 GO TYPE net/smtp.Client from net/smtp/smtp.go:
+func ExtractGoObjectClient(args []Object, index int) _smtp.Client {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_smtp.Client); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.Client]"))
+}
+
 GO TYPE net/smtp.ServerInfo from net/smtp/auth.go:
+func ExtractGoObjectServerInfo(args []Object, index int) _smtp.ServerInfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_smtp.ServerInfo); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.ServerInfo]"))
+}
+
 GO FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 func cRAMMD5Auth(username string, secret string) Object {
 	_res := _smtp.CRAMMD5Auth(username, secret)
@@ -2459,12 +3294,89 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // }
 
 GO TYPE net/textproto.Conn from net/textproto/textproto.go:
+func ExtractGoObjectConn(args []Object, index int) _textproto.Conn {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.Conn); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Conn]"))
+}
+
 GO TYPE net/textproto.Error from net/textproto/textproto.go:
+func ExtractGoObjectError(args []Object, index int) _textproto.Error {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.Error); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Error]"))
+}
+
 GO TYPE net/textproto.MIMEHeader from net/textproto/header.go:
+func ExtractGoObjectMIMEHeader(args []Object, index int) _textproto.MIMEHeader {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.MIMEHeader); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.MIMEHeader]"))
+}
+
 GO TYPE net/textproto.Pipeline from net/textproto/pipeline.go:
+func ExtractGoObjectPipeline(args []Object, index int) _textproto.Pipeline {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.Pipeline); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Pipeline]"))
+}
+
 GO TYPE net/textproto.ProtocolError from net/textproto/textproto.go:
+func ExtractGoObjectProtocolError(args []Object, index int) _textproto.ProtocolError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.ProtocolError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.ProtocolError]"))
+}
+
 GO TYPE net/textproto.Reader from net/textproto/reader.go:
+func ExtractGoObjectReader(args []Object, index int) _textproto.Reader {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.Reader); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Reader]"))
+}
+
 GO TYPE net/textproto.Writer from net/textproto/writer.go:
+func ExtractGoObjectWriter(args []Object, index int) _textproto.Writer {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_textproto.Writer); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Writer]"))
+}
+
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
 func dial(network string, addr string) Object {
 	_res1, _res2 := _textproto.Dial(network, addr)
@@ -2503,11 +3415,77 @@ GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 // }
 
 GO TYPE net/url.Error from net/url/url.go:
+func ExtractGoObjectError(args []Object, index int) _url.Error {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Error); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
+}
+
 GO TYPE net/url.EscapeError from net/url/url.go:
+func ExtractGoObjectEscapeError(args []Object, index int) _url.EscapeError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.EscapeError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.EscapeError]"))
+}
+
 GO TYPE net/url.InvalidHostError from net/url/url.go:
+func ExtractGoObjectInvalidHostError(args []Object, index int) _url.InvalidHostError {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.InvalidHostError); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.InvalidHostError]"))
+}
+
 GO TYPE net/url.URL from net/url/url.go:
+func ExtractGoObjectURL(args []Object, index int) _url.URL {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.URL); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
+}
+
 GO TYPE net/url.Userinfo from net/url/url.go:
+func ExtractGoObjectUserinfo(args []Object, index int) _url.Userinfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Userinfo); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
+}
+
 GO TYPE net/url.Values from net/url/url.go:
+func ExtractGoObjectValues(args []Object, index int) _url.Values {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		if r, ok := o.O.(_url.Values); ok {
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Values]"))
+}
+
 GO FUNC net/url.Parse from net/url/url.go:
 func parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
