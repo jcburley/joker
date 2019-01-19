@@ -233,16 +233,18 @@ func genType(t string, ti *typeInfo) {
 		return // no functions generated
 	}
 
+	packagesInfo[pkgDirUnix].importsNative[pkgDirUnix] = exists
+
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
 
 	exTemplate := `
-func ExtractGoObject%s(args []Object, index int) _%s {
+func ExtractGoObject%s(args []Object, index int) *_%s {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
 		if r, ok := o.O.(_%s); ok {
-			return r
+			return &r
 		}
 	%s}
 	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))

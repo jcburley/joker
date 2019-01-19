@@ -47,7 +47,7 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (c
 
 func genGoPreSelected(fn *funcInfo, indent, fullPkgName, baseTypeName, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType, clTypeDoc, goType, goTypeDoc = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
-	cl2golParam = paramName
+	cl2golParam = "*" + paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
 	return
 }
 
