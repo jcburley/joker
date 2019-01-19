@@ -31,14 +31,18 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.X
 	clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genTypePre(fn, indent, el, paramName)
-	runtime := "ConvertToIndirectOf" + goType
-	cl2golParam = runtime + "(" + cl2golParam + ")"
-	if _, ok := customRuntimeImplemented[runtime]; !ok {
-		if !strings.Contains(cl2golParam, "ABEND") {
-			cl2golParam = "ABEND903(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
+	if cl2golParam[0] == '*' {
+		cl2golParam = cl2golParam[1:]
+	} else {
+		runtime := "ConvertToIndirectOf" + goType
+		cl2golParam = runtime + "(" + cl2golParam + ")"
+		if _, ok := customRuntimeImplemented[runtime]; !ok {
+			if !strings.Contains(cl2golParam, "ABEND") {
+				cl2golParam = "ABEND903(pre.go: custom-runtime routine not implemented: " + cl2golParam + ")"
+			}
 		}
+		clType = "Object"
 	}
-	clType = "Object"
 	clTypeDoc = "(atom-of " + clTypeDoc + ")"
 	goType = "*" + goType
 	goTypeDoc = "*" + goTypeDoc
