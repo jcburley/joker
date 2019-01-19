@@ -266,11 +266,11 @@ The `go.std.` namespaces being automatically generated, they are not necessarily
 * They aren't the same on all architectures
 * They're very low-level -- little effort is made to provide Clojure-like wrapping beyond the minimum necessary
 
-But by providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs to be written without requiring changes to the Joker codebase or executable itself.
+Yet, by providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs (that call these low-level API wrappers) to be written without requiring changes to the Joker codebase or executable itself.
 
 ## GoObject
 
-A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`). E.g.:
+A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`) -- currently always an object of a named type. E.g.:
 
 ```
 $ joker
@@ -306,6 +306,10 @@ user=>
 
 In the above case, multiple `GoObject` objects are returned by a single call to `go.std.net/Interface`; they are returned as a (Clojure) vector, which in turn is wrapped in a vector along with the `error` return value, per the "Go return type" shown by `doc`.
 
+Generally, Joker avoids ever _copying_ a `GoObject`, in order to permit maximum flexibility of use (such as when one contains active state), to preserve some semblance of performance, and to avoid issues when they have members of type `sync.Mutex` (which cannot always be copied).
+
+As a result, pointers to such objects are returned as `atom` references to the very same objects.
+
 ### Constructing a GoObject
 
 TBD.
@@ -318,7 +322,16 @@ Calling a Go wrapper function in Joker requires ensuring the input arguments (if
 
 Generally, the types of an input argument (to a Go wrapper function) must be either a built-in type (such as `int`) or a `GoObject` wrapping an object of the same (named) type as the corresponding input argument to the Go API.
 
-However, Joker does support some implicit conversion, in some ways beyond what the Go language itself provides, as explained below.
+Arguments with built-in types must be passed appropriate Joker objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported.
+
+Other arguments (with named types) are passed `GoObject` instances that can be:
+* Constructed
+* Extracted as members of other `GoObject` instances
+* Returned by Go API wrappers
+
+However, Joker does support some implicit conversion of Joker objects (such as `Int`) _to_ `GoObject`, in some ways beyond what the Go language itself provides, as explained below.
+
+##### Implicit Conversion from Joker Type to GoObject
 
 Though somewhat strongly typed, the Go language makes some common operations convenient via implicit type conversion. Consider `go/std/os.Chmod()`, for example:
 
@@ -413,7 +426,13 @@ Multiple return values are converted to a (Clojure) vector of the arguments, eac
 
 Arrays are returned as vectors, types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
-For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported. E.g.:
+Returned `GoObject` instances can be:
+* Ignored (they'll presumably be garbage-collected at some point)
+* Converted to `String` (via e.g. `(str goobj)`)
+* Passed as arguments to Go API wrappers
+* Provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
+
+Built-in type instances are converted directly to appropriate Joker types. For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported:
 
 
 ```
