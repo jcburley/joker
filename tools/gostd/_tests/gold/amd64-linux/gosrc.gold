@@ -2576,6 +2576,13 @@ JOKER FUNC archive/tar.NewWriter from archive/tar/writer.go:
 ;;    :go "__newWriter(*_w)"}
 ;;   [^io/Writer _w])
 
+JOKER TYPE archive/zip.Compressor from archive/zip/register.go:
+JOKER TYPE archive/zip.Decompressor from archive/zip/register.go:
+JOKER TYPE archive/zip.File from archive/zip/reader.go:
+JOKER TYPE archive/zip.FileHeader from archive/zip/struct.go:
+JOKER TYPE archive/zip.ReadCloser from archive/zip/reader.go:
+JOKER TYPE archive/zip.Reader from archive/zip/reader.go:
+JOKER TYPE archive/zip.Writer from archive/zip/writer.go:
 JOKER FUNC archive/zip.FileInfoHeader from archive/zip/struct.go:
 ;; (defn FileInfoHeader
 ;;   "FileInfoHeader creates a partially-populated FileHeader from an\nos.FileInfo.\nBecause os.FileInfo's Name method returns only the base name of\nthe file it describes, it may be necessary to modify the Name field\nof the returned header to provide the full path name of the file.\nIf compression is desired, callers should set the FileHeader.Method\nfield; it is unset by default.\n\nGo input arguments: (fi os.FileInfo)\n\nGo return type: (*FileHeader, error)\n\nJoker input arguments: [^go.std.os/FileInfo fi]\n\nJoker return type: [(atom-of go.std.archive.zip/FileHeader) Error]"
@@ -2625,6 +2632,11 @@ JOKER FUNC archive/zip.RegisterDecompressor from archive/zip/register.go:
     :doc "Provides a low-level interface to the archive/zip package."
     :empty false}
   go.std.archive.zip)
+JOKER TYPE bufio.ReadWriter from bufio/bufio.go:
+JOKER TYPE bufio.Reader from bufio/bufio.go:
+JOKER TYPE bufio.Scanner from bufio/scan.go:
+JOKER TYPE bufio.SplitFunc from bufio/scan.go:
+JOKER TYPE bufio.Writer from bufio/bufio.go:
 JOKER FUNC bufio.NewReadWriter from bufio/bufio.go:
 (defn NewReadWriter
   "NewReadWriter allocates a new ReadWriter that dispatches to r and w.\n\nGo input arguments: (r *Reader, w *Writer)\n\nGo return type: *ReadWriter\n\nJoker input arguments: [^(atom-of go.std.bufio/Reader) r, ^(atom-of go.std.bufio/Writer) w]\n\nJoker return type: (atom-of go.std.bufio/ReadWriter)"
@@ -2702,6 +2714,8 @@ JOKER FUNC bufio.ScanWords from bufio/scan.go:
     :doc "Provides a low-level interface to the bufio package."
     :empty false}
   go.std.bufio)
+JOKER TYPE bytes.Buffer from bytes/buffer.go:
+JOKER TYPE bytes.Reader from bytes/reader.go:
 JOKER FUNC bytes.Compare from bytes/bytes_decl.go:
 ;; (defn ^"Int" Compare
 ;;   "Compare returns an integer comparing two byte slices lexicographically.\nThe result will be 0 if a==b, -1 if a < b, and +1 if a > b.\nA nil argument is equivalent to an empty slice.\n\nGo input arguments: (a []byte, b []byte)\n\nGo return type: int\n\nJoker input arguments: [^(vector-of Byte) a, ^(vector-of Byte) b]\n\nJoker return type: Int"
@@ -3185,6 +3199,8 @@ JOKER FUNC container/heap.Remove from container/heap/heap.go:
 ;;    :go "__remove(*_h, _i)"}
 ;;   [^heap/Interface _h, ^Int _i])
 
+JOKER TYPE container/list.Element from container/list/list.go:
+JOKER TYPE container/list.List from container/list/list.go:
 JOKER FUNC container/list.New from container/list/list.go:
 (defn New
   "New returns an initialized list.\n\nGo return type: *List\n\nJoker input arguments: []\n\nJoker return type: (atom-of go.std.container.list/List)"
@@ -3199,6 +3215,7 @@ JOKER FUNC container/list.New from container/list/list.go:
     :doc "Provides a low-level interface to the container/list package."
     :empty false}
   go.std.container.list)
+JOKER TYPE container/ring.Ring from container/ring/ring.go:
 JOKER FUNC container/ring.New from container/ring/ring.go:
 (defn New
   "New creates a ring of n elements.\n\nGo input arguments: (n int)\n\nGo return type: *Ring\n\nJoker input arguments: [^Int n]\n\nJoker return type: (atom-of go.std.container.ring/Ring)"
@@ -3213,6 +3230,8 @@ JOKER FUNC container/ring.New from container/ring/ring.go:
     :doc "Provides a low-level interface to the container/ring package."
     :empty false}
   go.std.container.ring)
+JOKER TYPE context.CancelFunc from context/context.go:
+JOKER TYPE context.Context from context/context.go:
 JOKER FUNC context.Background from context/context.go:
 (defn Background
   "Background returns a non-nil, empty Context. It is never canceled, has no\nvalues, and has no deadline. It is typically used by the main function,\ninitialization, and tests, and as the top-level Context for incoming\nrequests.\n\nGo return type: Context\n\nJoker input arguments: []\n\nJoker return type: go.std.context/Context"
@@ -3276,6 +3295,12 @@ JOKER FUNC crypto/aes.NewCipher from crypto/aes/cipher.go:
 ;;    :go "__newCipher(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_key)))"}
 ;;   [^Object _key])
 
+JOKER TYPE crypto/cipher.AEAD from crypto/cipher/gcm.go:
+JOKER TYPE crypto/cipher.Block from crypto/cipher/cipher.go:
+JOKER TYPE crypto/cipher.BlockMode from crypto/cipher/cipher.go:
+JOKER TYPE crypto/cipher.Stream from crypto/cipher/cipher.go:
+JOKER TYPE crypto/cipher.StreamReader from crypto/cipher/io.go:
+JOKER TYPE crypto/cipher.StreamWriter from crypto/cipher/io.go:
 JOKER FUNC crypto/cipher.NewCBCDecrypter from crypto/cipher/cbc.go:
 ;; (defn NewCBCDecrypter
 ;;   "NewCBCDecrypter returns a BlockMode which decrypts in cipher block chaining\nmode, using the given Block. The length of iv must be the same as the\nBlock's block size and must match the iv used to encrypt the data.\n\nGo input arguments: (b Block, iv []byte)\n\nGo return type: BlockMode\n\nJoker input arguments: [^go.std.crypto.cipher/Block b, ^(vector-of Byte) iv]\n\nJoker return type: go.std.crypto.cipher/BlockMode"
@@ -3409,6 +3434,8 @@ JOKER FUNC crypto/ecdsa.Verify from crypto/ecdsa/ecdsa.go:
 ;;    :go "ecdsa.Verify(_pub, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), _r, _s)"}
 ;;   [^ecdsa/PublicKey _pub, ^Object _hash, ^big/Int _r, ^big/Int _s])
 
+JOKER TYPE crypto/elliptic.Curve from crypto/elliptic/elliptic.go:
+JOKER TYPE crypto/elliptic.CurveParams from crypto/elliptic/elliptic.go:
 JOKER FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
 ;; (defn GenerateKey
 ;;   "GenerateKey returns a public/private key pair. The private key is\ngenerated using the given reader, which must return random data.\n\nGo input arguments: (curve Curve, rand io.Reader)\n\nGo return type: (priv []byte, x *math/big.Int, y *math/big.Int, err error)\n\nJoker input arguments: [^go.std.crypto.elliptic/Curve curve, ^go.std.io/Reader rand]\n\nJoker return type: [(vector-of Int) (atom-of go.std.math.big/Int) (atom-of go.std.math.big/Int) Error]"
@@ -3773,6 +3800,19 @@ JOKER FUNC crypto/subtle.ConstantTimeSelect from crypto/subtle/constant_time.go:
     :doc "Provides a low-level interface to the crypto/subtle package."
     :empty false}
   go.std.crypto.subtle)
+JOKER TYPE crypto/tls.Certificate from crypto/tls/common.go:
+JOKER TYPE crypto/tls.CertificateRequestInfo from crypto/tls/common.go:
+JOKER TYPE crypto/tls.ClientAuthType from crypto/tls/common.go:
+JOKER TYPE crypto/tls.ClientHelloInfo from crypto/tls/common.go:
+JOKER TYPE crypto/tls.ClientSessionCache from crypto/tls/common.go:
+JOKER TYPE crypto/tls.ClientSessionState from crypto/tls/common.go:
+JOKER TYPE crypto/tls.Config from crypto/tls/common.go:
+JOKER TYPE crypto/tls.Conn from crypto/tls/conn.go:
+JOKER TYPE crypto/tls.ConnectionState from crypto/tls/common.go:
+JOKER TYPE crypto/tls.CurveID from crypto/tls/common.go:
+JOKER TYPE crypto/tls.RecordHeaderError from crypto/tls/conn.go:
+JOKER TYPE crypto/tls.RenegotiationSupport from crypto/tls/common.go:
+JOKER TYPE crypto/tls.SignatureScheme from crypto/tls/common.go:
 JOKER FUNC crypto/tls.Client from crypto/tls/tls.go:
 ;; (defn Client
 ;;   "Client returns a new TLS client side connection\nusing conn as the underlying transport.\nThe config cannot be nil: users must set either ServerName or\nInsecureSkipVerify in the config.\n\nGo input arguments: (conn net.Conn, config *Config)\n\nGo return type: *Conn\n\nJoker input arguments: [^go.std.net/Conn conn, ^(atom-of go.std.crypto.tls/Config) config]\n\nJoker return type: (atom-of go.std.crypto.tls/Conn)"
@@ -3843,6 +3883,23 @@ JOKER FUNC crypto/tls.X509KeyPair from crypto/tls/tls.go:
     :doc "Provides a low-level interface to the crypto/tls package."
     :empty false}
   go.std.crypto.tls)
+JOKER TYPE crypto/x509.CertPool from crypto/x509/cert_pool.go:
+JOKER TYPE crypto/x509.Certificate from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.CertificateInvalidError from crypto/x509/verify.go:
+JOKER TYPE crypto/x509.CertificateRequest from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.ConstraintViolationError from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.ExtKeyUsage from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.HostnameError from crypto/x509/verify.go:
+JOKER TYPE crypto/x509.InsecureAlgorithmError from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.InvalidReason from crypto/x509/verify.go:
+JOKER TYPE crypto/x509.KeyUsage from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.PEMCipher from crypto/x509/pem_decrypt.go:
+JOKER TYPE crypto/x509.PublicKeyAlgorithm from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.SignatureAlgorithm from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.SystemRootsError from crypto/x509/verify.go:
+JOKER TYPE crypto/x509.UnhandledCriticalExtension from crypto/x509/x509.go:
+JOKER TYPE crypto/x509.UnknownAuthorityError from crypto/x509/verify.go:
+JOKER TYPE crypto/x509.VerifyOptions from crypto/x509/verify.go:
 JOKER FUNC crypto/x509.CreateCertificate from crypto/x509/x509.go:
 ;; (defn CreateCertificate
 ;;   "CreateCertificate creates a new X.509v3 certificate based on a template.\nThe following members of template are used:\n\n - AuthorityKeyId\n - BasicConstraintsValid\n - CRLDistributionPoints\n - DNSNames\n - EmailAddresses\n - ExcludedDNSDomains\n - ExcludedEmailAddresses\n - ExcludedIPRanges\n - ExcludedURIDomains\n - ExtKeyUsage\n - ExtraExtensions\n - IsCA\n - IssuingCertificateURL\n - KeyUsage\n - MaxPathLen\n - MaxPathLenZero\n - NotAfter\n - NotBefore\n - OCSPServer\n - PermittedDNSDomains\n - PermittedDNSDomainsCritical\n - PermittedEmailAddresses\n - PermittedIPRanges\n - PermittedURIDomains\n - PolicyIdentifiers\n - SerialNumber\n - SignatureAlgorithm\n - Subject\n - SubjectKeyId\n - URIs\n - UnknownExtKeyUsage\n\nThe certificate is signed by parent. If parent is equal to template then the\ncertificate is self-signed. The parameter pub is the public key of the\nsignee and priv is the private key of the signer.\n\nThe returned slice is the certificate in DER encoding.\n\nAll keys types that are implemented via crypto.Signer are supported (This\nincludes *rsa.PublicKey and *ecdsa.PublicKey.)\n\nThe AuthorityKeyId will be taken from the SubjectKeyId of parent, if any,\nunless the resulting certificate is self-signed. Otherwise the value from\ntemplate will be used.\n\nGo input arguments: (rand io.Reader, template *Certificate, parent *Certificate, pub interface {}, priv interface {})\n\nGo return type: (cert []byte, err error)\n\nJoker input arguments: [^go.std.io/Reader rand, ^(atom-of go.std.crypto.x509/Certificate) template, ^(atom-of go.std.crypto.x509/Certificate) parent, ^<protocol-or-something> pub, ^<protocol-or-something> priv]\n\nJoker return type: [(vector-of Int) Error]"
@@ -4004,6 +4061,25 @@ JOKER FUNC crypto/x509.SystemCertPool from crypto/x509/cert_pool.go:
     :doc "Provides a low-level interface to the crypto/x509 package."
     :empty false}
   go.std.crypto.x509)
+JOKER TYPE database/sql.ColumnType from database/sql/sql.go:
+JOKER TYPE database/sql.Conn from database/sql/sql.go:
+JOKER TYPE database/sql.DB from database/sql/sql.go:
+JOKER TYPE database/sql.DBStats from database/sql/sql.go:
+JOKER TYPE database/sql.IsolationLevel from database/sql/sql.go:
+JOKER TYPE database/sql.NamedArg from database/sql/sql.go:
+JOKER TYPE database/sql.NullBool from database/sql/sql.go:
+JOKER TYPE database/sql.NullFloat64 from database/sql/sql.go:
+JOKER TYPE database/sql.NullInt64 from database/sql/sql.go:
+JOKER TYPE database/sql.NullString from database/sql/sql.go:
+JOKER TYPE database/sql.Out from database/sql/sql.go:
+JOKER TYPE database/sql.RawBytes from database/sql/sql.go:
+JOKER TYPE database/sql.Result from database/sql/sql.go:
+JOKER TYPE database/sql.Row from database/sql/sql.go:
+JOKER TYPE database/sql.Rows from database/sql/sql.go:
+JOKER TYPE database/sql.Scanner from database/sql/sql.go:
+JOKER TYPE database/sql.Stmt from database/sql/sql.go:
+JOKER TYPE database/sql.Tx from database/sql/sql.go:
+JOKER TYPE database/sql.TxOptions from database/sql/sql.go:
 JOKER FUNC database/sql.Drivers from database/sql/sql.go:
 (defn Drivers
   "Drivers returns a sorted list of the names of the registered drivers.\n\nGo return type: []string\n\nJoker input arguments: []\n\nJoker return type: (vector-of String)"
@@ -4067,6 +4143,60 @@ JOKER FUNC debug/dwarf.New from debug/dwarf/open.go:
 ;;    :go "__new(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_abbrev)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_aranges)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_frame)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_info)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_line)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_pubnames)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_ranges)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_str)))"}
 ;;   [^Object _abbrev, ^Object _aranges, ^Object _frame, ^Object _info, ^Object _line, ^Object _pubnames, ^Object _ranges, ^Object _str])
 
+JOKER TYPE debug/elf.Chdr32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Chdr64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Class from debug/elf/elf.go:
+JOKER TYPE debug/elf.CompressionType from debug/elf/elf.go:
+JOKER TYPE debug/elf.Data from debug/elf/elf.go:
+JOKER TYPE debug/elf.Dyn32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Dyn64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.DynFlag from debug/elf/elf.go:
+JOKER TYPE debug/elf.DynTag from debug/elf/elf.go:
+JOKER TYPE debug/elf.File from debug/elf/file.go:
+JOKER TYPE debug/elf.FileHeader from debug/elf/file.go:
+JOKER TYPE debug/elf.FormatError from debug/elf/file.go:
+JOKER TYPE debug/elf.Header32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Header64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.ImportedSymbol from debug/elf/file.go:
+JOKER TYPE debug/elf.Machine from debug/elf/elf.go:
+JOKER TYPE debug/elf.NType from debug/elf/elf.go:
+JOKER TYPE debug/elf.OSABI from debug/elf/elf.go:
+JOKER TYPE debug/elf.Prog from debug/elf/file.go:
+JOKER TYPE debug/elf.Prog32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Prog64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.ProgFlag from debug/elf/elf.go:
+JOKER TYPE debug/elf.ProgHeader from debug/elf/file.go:
+JOKER TYPE debug/elf.ProgType from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_386 from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_390 from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_AARCH64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_ALPHA from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_ARM from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_MIPS from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_PPC from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_PPC64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_RISCV from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_SPARC from debug/elf/elf.go:
+JOKER TYPE debug/elf.R_X86_64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Rel32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Rel64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Rela32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Rela64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Section from debug/elf/file.go:
+JOKER TYPE debug/elf.Section32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Section64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.SectionFlag from debug/elf/elf.go:
+JOKER TYPE debug/elf.SectionHeader from debug/elf/file.go:
+JOKER TYPE debug/elf.SectionIndex from debug/elf/elf.go:
+JOKER TYPE debug/elf.SectionType from debug/elf/elf.go:
+JOKER TYPE debug/elf.Sym32 from debug/elf/elf.go:
+JOKER TYPE debug/elf.Sym64 from debug/elf/elf.go:
+JOKER TYPE debug/elf.SymBind from debug/elf/elf.go:
+JOKER TYPE debug/elf.SymType from debug/elf/elf.go:
+JOKER TYPE debug/elf.SymVis from debug/elf/elf.go:
+JOKER TYPE debug/elf.Symbol from debug/elf/file.go:
+JOKER TYPE debug/elf.Type from debug/elf/elf.go:
+JOKER TYPE debug/elf.Version from debug/elf/elf.go:
 JOKER FUNC debug/elf.NewFile from debug/elf/file.go:
 ;; (defn NewFile
 ;;   "NewFile creates a new File for accessing an ELF binary in an underlying reader.\nThe ELF binary is expected to start at position 0 in the ReaderAt.\n\nGo input arguments: (r io.ReaderAt)\n\nGo return type: (*File, error)\n\nJoker input arguments: [^go.std.io/ReaderAt r]\n\nJoker return type: [(atom-of go.std.debug.elf/File) Error]"
@@ -4172,6 +4302,44 @@ JOKER FUNC debug/gosym.NewTable from debug/gosym/symtab.go:
 ;;    :go "__newTable(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_symtab)), _pcln)"}
 ;;   [^Object _symtab, ^gosym/LineTable _pcln])
 
+JOKER TYPE debug/macho.Cpu from debug/macho/macho.go:
+JOKER TYPE debug/macho.Dylib from debug/macho/file.go:
+JOKER TYPE debug/macho.DylibCmd from debug/macho/macho.go:
+JOKER TYPE debug/macho.Dysymtab from debug/macho/file.go:
+JOKER TYPE debug/macho.DysymtabCmd from debug/macho/macho.go:
+JOKER TYPE debug/macho.FatArch from debug/macho/fat.go:
+JOKER TYPE debug/macho.FatArchHeader from debug/macho/fat.go:
+JOKER TYPE debug/macho.FatFile from debug/macho/fat.go:
+JOKER TYPE debug/macho.File from debug/macho/file.go:
+JOKER TYPE debug/macho.FileHeader from debug/macho/macho.go:
+JOKER TYPE debug/macho.FormatError from debug/macho/file.go:
+JOKER TYPE debug/macho.Load from debug/macho/file.go:
+JOKER TYPE debug/macho.LoadBytes from debug/macho/file.go:
+JOKER TYPE debug/macho.LoadCmd from debug/macho/macho.go:
+JOKER TYPE debug/macho.Nlist32 from debug/macho/macho.go:
+JOKER TYPE debug/macho.Nlist64 from debug/macho/macho.go:
+JOKER TYPE debug/macho.Regs386 from debug/macho/macho.go:
+JOKER TYPE debug/macho.RegsAMD64 from debug/macho/macho.go:
+JOKER TYPE debug/macho.Reloc from debug/macho/file.go:
+JOKER TYPE debug/macho.RelocTypeARM from debug/macho/reloctype.go:
+JOKER TYPE debug/macho.RelocTypeARM64 from debug/macho/reloctype.go:
+JOKER TYPE debug/macho.RelocTypeGeneric from debug/macho/reloctype.go:
+JOKER TYPE debug/macho.RelocTypeX86_64 from debug/macho/reloctype.go:
+JOKER TYPE debug/macho.Rpath from debug/macho/file.go:
+JOKER TYPE debug/macho.RpathCmd from debug/macho/macho.go:
+JOKER TYPE debug/macho.Section from debug/macho/file.go:
+JOKER TYPE debug/macho.Section32 from debug/macho/macho.go:
+JOKER TYPE debug/macho.Section64 from debug/macho/macho.go:
+JOKER TYPE debug/macho.SectionHeader from debug/macho/file.go:
+JOKER TYPE debug/macho.Segment from debug/macho/file.go:
+JOKER TYPE debug/macho.Segment32 from debug/macho/macho.go:
+JOKER TYPE debug/macho.Segment64 from debug/macho/macho.go:
+JOKER TYPE debug/macho.SegmentHeader from debug/macho/file.go:
+JOKER TYPE debug/macho.Symbol from debug/macho/file.go:
+JOKER TYPE debug/macho.Symtab from debug/macho/file.go:
+JOKER TYPE debug/macho.SymtabCmd from debug/macho/macho.go:
+JOKER TYPE debug/macho.Thread from debug/macho/macho.go:
+JOKER TYPE debug/macho.Type from debug/macho/macho.go:
 JOKER FUNC debug/macho.NewFatFile from debug/macho/fat.go:
 ;; (defn NewFatFile
 ;;   "NewFatFile creates a new FatFile for accessing all the Mach-O images in a\nuniversal binary. The Mach-O binary is expected to start at position 0 in\nthe ReaderAt.\n\nGo input arguments: (r io.ReaderAt)\n\nGo return type: (*FatFile, error)\n\nJoker input arguments: [^go.std.io/ReaderAt r]\n\nJoker return type: [(atom-of go.std.debug.macho/FatFile) Error]"
@@ -4207,6 +4375,20 @@ JOKER FUNC debug/macho.OpenFat from debug/macho/fat.go:
     :doc "Provides a low-level interface to the debug/macho package."
     :empty false}
   go.std.debug.macho)
+JOKER TYPE debug/pe.COFFSymbol from debug/pe/symbol.go:
+JOKER TYPE debug/pe.DataDirectory from debug/pe/pe.go:
+JOKER TYPE debug/pe.File from debug/pe/file.go:
+JOKER TYPE debug/pe.FileHeader from debug/pe/pe.go:
+JOKER TYPE debug/pe.FormatError from debug/pe/file.go:
+JOKER TYPE debug/pe.ImportDirectory from debug/pe/file.go:
+JOKER TYPE debug/pe.OptionalHeader32 from debug/pe/pe.go:
+JOKER TYPE debug/pe.OptionalHeader64 from debug/pe/pe.go:
+JOKER TYPE debug/pe.Reloc from debug/pe/section.go:
+JOKER TYPE debug/pe.Section from debug/pe/section.go:
+JOKER TYPE debug/pe.SectionHeader from debug/pe/section.go:
+JOKER TYPE debug/pe.SectionHeader32 from debug/pe/section.go:
+JOKER TYPE debug/pe.StringTable from debug/pe/string.go:
+JOKER TYPE debug/pe.Symbol from debug/pe/symbol.go:
 JOKER FUNC debug/pe.NewFile from debug/pe/file.go:
 ;; (defn NewFile
 ;;   "NewFile creates a new File for accessing a PE binary in an underlying reader.\n\nGo input arguments: (r io.ReaderAt)\n\nGo return type: (*File, error)\n\nJoker input arguments: [^go.std.io/ReaderAt r]\n\nJoker return type: [(atom-of go.std.debug.pe/File) Error]"
@@ -4228,6 +4410,11 @@ JOKER FUNC debug/pe.Open from debug/pe/file.go:
     :doc "Provides a low-level interface to the debug/pe package."
     :empty false}
   go.std.debug.pe)
+JOKER TYPE debug/plan9obj.File from debug/plan9obj/file.go:
+JOKER TYPE debug/plan9obj.FileHeader from debug/plan9obj/file.go:
+JOKER TYPE debug/plan9obj.Section from debug/plan9obj/file.go:
+JOKER TYPE debug/plan9obj.SectionHeader from debug/plan9obj/file.go:
+JOKER TYPE debug/plan9obj.Sym from debug/plan9obj/file.go:
 JOKER FUNC debug/plan9obj.NewFile from debug/plan9obj/file.go:
 ;; (defn NewFile
 ;;   "NewFile creates a new File for accessing a Plan 9 binary in an underlying reader.\nThe Plan 9 binary is expected to start at position 0 in the ReaderAt.\n\nGo input arguments: (r io.ReaderAt)\n\nGo return type: (*File, error)\n\nJoker input arguments: [^go.std.io/ReaderAt r]\n\nJoker return type: [(atom-of go.std.debug.plan9obj/File) Error]"
@@ -4249,6 +4436,7 @@ JOKER FUNC debug/plan9obj.Open from debug/plan9obj/file.go:
     :doc "Provides a low-level interface to the debug/plan9obj package."
     :empty false}
   go.std.debug.plan9obj)
+JOKER TYPE encoding/ascii85.CorruptInputError from encoding/ascii85/ascii85.go:
 JOKER FUNC encoding/ascii85.Decode from encoding/ascii85/ascii85.go:
 ;; (defn Decode
 ;;   "Decode decodes src into dst, returning both the number\nof bytes written to dst and the number consumed from src.\nIf src contains invalid ascii85 data, Decode will return the\nnumber of bytes successfully written and a CorruptInputError.\nDecode ignores space and control characters in src.\nOften, ascii85-encoded data is wrapped in <~ and ~> symbols.\nDecode expects these to have been stripped by the caller.\n\nIf flush is true, Decode assumes that src represents the\nend of the input stream and processes it completely rather\nthan wait for the completion of another 32-bit block.\n\nNewDecoder wraps an io.Reader interface around Decode.\n\nGo input arguments: (dst []byte, src []byte, flush bool)\n\nGo return type: (ndst int, nsrc int, err error)\n\nJoker input arguments: [^(vector-of Byte) dst, ^(vector-of Byte) src, ^Bool flush]\n\nJoker return type: [Int Int Error]"
@@ -4319,6 +4507,8 @@ JOKER FUNC encoding/asn1.UnmarshalWithParams from encoding/asn1/asn1.go:
 ;;    :go "__unmarshalWithParams(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), _params)"}
 ;;   [^Object _b, ^<protocol-or-something> _val, ^String _params])
 
+JOKER TYPE encoding/base32.CorruptInputError from encoding/base32/base32.go:
+JOKER TYPE encoding/base32.Encoding from encoding/base32/base32.go:
 JOKER FUNC encoding/base32.NewDecoder from encoding/base32/base32.go:
 ;; (defn NewDecoder
 ;;   "NewDecoder constructs a new base32 stream decoder.\n\nGo input arguments: (enc *Encoding, r io.Reader)\n\nGo return type: io.Reader\n\nJoker input arguments: [^(atom-of go.std.encoding.base32/Encoding) enc, ^go.std.io/Reader r]\n\nJoker return type: go.std.io/Reader"
@@ -4347,6 +4537,8 @@ JOKER FUNC encoding/base32.NewEncoding from encoding/base32/base32.go:
     :doc "Provides a low-level interface to the encoding/base32 package."
     :empty false}
   go.std.encoding.base32)
+JOKER TYPE encoding/base64.CorruptInputError from encoding/base64/base64.go:
+JOKER TYPE encoding/base64.Encoding from encoding/base64/base64.go:
 JOKER FUNC encoding/base64.NewDecoder from encoding/base64/base64.go:
 ;; (defn NewDecoder
 ;;   "NewDecoder constructs a new base64 stream decoder.\n\nGo input arguments: (enc *Encoding, r io.Reader)\n\nGo return type: io.Reader\n\nJoker input arguments: [^(atom-of go.std.encoding.base64/Encoding) enc, ^go.std.io/Reader r]\n\nJoker return type: go.std.io/Reader"
@@ -4480,6 +4672,7 @@ JOKER FUNC encoding/gob.RegisterName from encoding/gob/type.go:
 ;;    :go "__registerName(_name, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^String _name, ^<protocol-or-something> _value])
 
+JOKER TYPE encoding/hex.InvalidByteError from encoding/hex/hex.go:
 JOKER FUNC encoding/hex.Decode from encoding/hex/hex.go:
 ;; (defn Decode
 ;;   "Decode decodes src into DecodedLen(len(src)) bytes,\nreturning the actual number of bytes written to dst.\n\nDecode expects that src contains only hexadecimal\ncharacters and that src has even length.\nIf the input is malformed, Decode returns the number\nof bytes decoded before the error.\n\nGo input arguments: (dst []byte, src []byte)\n\nGo return type: (int, error)\n\nJoker input arguments: [^(vector-of Byte) dst, ^(vector-of Byte) src]\n\nJoker return type: [Int Error]"
@@ -4620,6 +4813,7 @@ JOKER FUNC encoding/json.Valid from encoding/json/scanner.go:
 ;;    :go "json.Valid(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)))"}
 ;;   [^Object _data])
 
+JOKER TYPE encoding/pem.Block from encoding/pem/pem.go:
 JOKER FUNC encoding/pem.Decode from encoding/pem/pem.go:
 ;; (defn Decode
 ;;   "Decode will find the next PEM formatted block (certificate, private key\netc) in the input. It returns that block and the remainder of the input. If\nno PEM data is found, p is nil and the whole of the input is returned in\nrest.\n\nGo input arguments: (data []byte)\n\nGo return type: (p *Block, rest []byte)\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: [(atom-of go.std.encoding.pem/Block) (vector-of Int)]"
@@ -4648,6 +4842,26 @@ JOKER FUNC encoding/pem.EncodeToMemory from encoding/pem/pem.go:
     :doc "Provides a low-level interface to the encoding/pem package."
     :empty false}
   go.std.encoding.pem)
+JOKER TYPE encoding/xml.Attr from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.CharData from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.Comment from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.Decoder from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.Directive from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.Encoder from encoding/xml/marshal.go:
+JOKER TYPE encoding/xml.EndElement from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.Marshaler from encoding/xml/marshal.go:
+JOKER TYPE encoding/xml.MarshalerAttr from encoding/xml/marshal.go:
+JOKER TYPE encoding/xml.Name from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.ProcInst from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.StartElement from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.SyntaxError from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.TagPathError from encoding/xml/typeinfo.go:
+JOKER TYPE encoding/xml.Token from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.TokenReader from encoding/xml/xml.go:
+JOKER TYPE encoding/xml.UnmarshalError from encoding/xml/read.go:
+JOKER TYPE encoding/xml.Unmarshaler from encoding/xml/read.go:
+JOKER TYPE encoding/xml.UnmarshalerAttr from encoding/xml/read.go:
+JOKER TYPE encoding/xml.UnsupportedTypeError from encoding/xml/marshal.go:
 JOKER FUNC encoding/xml.CopyToken from encoding/xml/xml.go:
 (defn CopyToken
   "CopyToken returns a copy of a Token.\n\nGo input arguments: (t Token)\n\nGo return type: Token\n\nJoker input arguments: [^go.std.encoding.xml/Token t]\n\nJoker return type: go.std.encoding.xml/Token"
@@ -4732,6 +4946,13 @@ JOKER FUNC errors.New from errors/errors.go:
     :doc "Provides a low-level interface to the errors package."
     :empty false}
   go.std.errors)
+JOKER TYPE expvar.Float from expvar/expvar.go:
+JOKER TYPE expvar.Func from expvar/expvar.go:
+JOKER TYPE expvar.Int from expvar/expvar.go:
+JOKER TYPE expvar.KeyValue from expvar/expvar.go:
+JOKER TYPE expvar.Map from expvar/expvar.go:
+JOKER TYPE expvar.String from expvar/expvar.go:
+JOKER TYPE expvar.Var from expvar/expvar.go:
 JOKER FUNC expvar.Do from expvar/expvar.go:
 ;; (defn Do
 ;;   "Do calls f for each exported variable.\nThe global variable map is locked during the iteration,\nbut existing entries may be concurrently updated.\n\nGo input arguments: (f func)\n\nJoker input arguments: [^fn f]"
@@ -4795,6 +5016,11 @@ JOKER FUNC expvar.Publish from expvar/expvar.go:
     :doc "Provides a low-level interface to the expvar package."
     :empty false}
   go.std.expvar)
+JOKER TYPE flag.ErrorHandling from flag/flag.go:
+JOKER TYPE flag.Flag from flag/flag.go:
+JOKER TYPE flag.FlagSet from flag/flag.go:
+JOKER TYPE flag.Getter from flag/flag.go:
+JOKER TYPE flag.Value from flag/flag.go:
 JOKER FUNC flag.Arg from flag/flag.go:
 (defn ^"String" Arg
   "Arg returns the i'th command-line argument. Arg(0) is the first remaining argument\nafter flags have been processed. Arg returns an empty string if the\nrequested element does not exist.\n\nGo input arguments: (i int)\n\nGo return type: string\n\nJoker input arguments: [^Int i]\n\nJoker return type: String"
@@ -5145,6 +5371,76 @@ JOKER FUNC fmt.Sscanln from fmt/scan.go:
 ;;    :go "__sscanln(_str, ConvertToEllipsisHaHainterface {}(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa())))"}
 ;;   [^String _str, ^<protocol-or-something> _a])
 
+JOKER TYPE go/ast.ArrayType from go/ast/ast.go:
+JOKER TYPE go/ast.AssignStmt from go/ast/ast.go:
+JOKER TYPE go/ast.BadDecl from go/ast/ast.go:
+JOKER TYPE go/ast.BadExpr from go/ast/ast.go:
+JOKER TYPE go/ast.BadStmt from go/ast/ast.go:
+JOKER TYPE go/ast.BasicLit from go/ast/ast.go:
+JOKER TYPE go/ast.BinaryExpr from go/ast/ast.go:
+JOKER TYPE go/ast.BlockStmt from go/ast/ast.go:
+JOKER TYPE go/ast.BranchStmt from go/ast/ast.go:
+JOKER TYPE go/ast.CallExpr from go/ast/ast.go:
+JOKER TYPE go/ast.CaseClause from go/ast/ast.go:
+JOKER TYPE go/ast.ChanDir from go/ast/ast.go:
+JOKER TYPE go/ast.ChanType from go/ast/ast.go:
+JOKER TYPE go/ast.CommClause from go/ast/ast.go:
+JOKER TYPE go/ast.Comment from go/ast/ast.go:
+JOKER TYPE go/ast.CommentGroup from go/ast/ast.go:
+JOKER TYPE go/ast.CommentMap from go/ast/commentmap.go:
+JOKER TYPE go/ast.CompositeLit from go/ast/ast.go:
+JOKER TYPE go/ast.Decl from go/ast/ast.go:
+JOKER TYPE go/ast.DeclStmt from go/ast/ast.go:
+JOKER TYPE go/ast.DeferStmt from go/ast/ast.go:
+JOKER TYPE go/ast.Ellipsis from go/ast/ast.go:
+JOKER TYPE go/ast.EmptyStmt from go/ast/ast.go:
+JOKER TYPE go/ast.Expr from go/ast/ast.go:
+JOKER TYPE go/ast.ExprStmt from go/ast/ast.go:
+JOKER TYPE go/ast.Field from go/ast/ast.go:
+JOKER TYPE go/ast.FieldFilter from go/ast/print.go:
+JOKER TYPE go/ast.FieldList from go/ast/ast.go:
+JOKER TYPE go/ast.File from go/ast/ast.go:
+JOKER TYPE go/ast.Filter from go/ast/filter.go:
+JOKER TYPE go/ast.ForStmt from go/ast/ast.go:
+JOKER TYPE go/ast.FuncDecl from go/ast/ast.go:
+JOKER TYPE go/ast.FuncLit from go/ast/ast.go:
+JOKER TYPE go/ast.FuncType from go/ast/ast.go:
+JOKER TYPE go/ast.GenDecl from go/ast/ast.go:
+JOKER TYPE go/ast.GoStmt from go/ast/ast.go:
+JOKER TYPE go/ast.Ident from go/ast/ast.go:
+JOKER TYPE go/ast.IfStmt from go/ast/ast.go:
+JOKER TYPE go/ast.ImportSpec from go/ast/ast.go:
+JOKER TYPE go/ast.Importer from go/ast/resolve.go:
+JOKER TYPE go/ast.IncDecStmt from go/ast/ast.go:
+JOKER TYPE go/ast.IndexExpr from go/ast/ast.go:
+JOKER TYPE go/ast.InterfaceType from go/ast/ast.go:
+JOKER TYPE go/ast.KeyValueExpr from go/ast/ast.go:
+JOKER TYPE go/ast.LabeledStmt from go/ast/ast.go:
+JOKER TYPE go/ast.MapType from go/ast/ast.go:
+JOKER TYPE go/ast.MergeMode from go/ast/filter.go:
+JOKER TYPE go/ast.Node from go/ast/ast.go:
+JOKER TYPE go/ast.ObjKind from go/ast/scope.go:
+JOKER TYPE go/ast.Object from go/ast/scope.go:
+JOKER TYPE go/ast.Package from go/ast/ast.go:
+JOKER TYPE go/ast.ParenExpr from go/ast/ast.go:
+JOKER TYPE go/ast.RangeStmt from go/ast/ast.go:
+JOKER TYPE go/ast.ReturnStmt from go/ast/ast.go:
+JOKER TYPE go/ast.Scope from go/ast/scope.go:
+JOKER TYPE go/ast.SelectStmt from go/ast/ast.go:
+JOKER TYPE go/ast.SelectorExpr from go/ast/ast.go:
+JOKER TYPE go/ast.SendStmt from go/ast/ast.go:
+JOKER TYPE go/ast.SliceExpr from go/ast/ast.go:
+JOKER TYPE go/ast.Spec from go/ast/ast.go:
+JOKER TYPE go/ast.StarExpr from go/ast/ast.go:
+JOKER TYPE go/ast.Stmt from go/ast/ast.go:
+JOKER TYPE go/ast.StructType from go/ast/ast.go:
+JOKER TYPE go/ast.SwitchStmt from go/ast/ast.go:
+JOKER TYPE go/ast.TypeAssertExpr from go/ast/ast.go:
+JOKER TYPE go/ast.TypeSpec from go/ast/ast.go:
+JOKER TYPE go/ast.TypeSwitchStmt from go/ast/ast.go:
+JOKER TYPE go/ast.UnaryExpr from go/ast/ast.go:
+JOKER TYPE go/ast.ValueSpec from go/ast/ast.go:
+JOKER TYPE go/ast.Visitor from go/ast/walk.go:
 JOKER FUNC go/ast.FileExports from go/ast/filter.go:
 (defn ^"Bool" FileExports
   "FileExports trims the AST for a Go source file in place such that\nonly exported nodes remain: all top-level identifiers which are not exported\nand their associated information (such as type, initial value, or function\nbody) are removed. Non-exported fields and methods of exported types are\nstripped. The File.Comments list is not changed.\n\nFileExports reports whether there are exported declarations.\n\nGo input arguments: (src *File)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/File) src]\n\nJoker return type: Bool"
@@ -5278,6 +5574,11 @@ JOKER FUNC go/ast.Walk from go/ast/walk.go:
     :doc "Provides a low-level interface to the go/ast package."
     :empty false}
   go.std.go.ast)
+JOKER TYPE go/build.Context from go/build/build.go:
+JOKER TYPE go/build.ImportMode from go/build/build.go:
+JOKER TYPE go/build.MultiplePackageError from go/build/build.go:
+JOKER TYPE go/build.NoGoError from go/build/build.go:
+JOKER TYPE go/build.Package from go/build/build.go:
 JOKER FUNC go/build.ArchChar from go/build/build.go:
 (defn ArchChar
   "ArchChar returns \"?\" and an error.\nIn earlier versions of Go, the returned string was used to derive\nthe compiler and linker tool names, the default object file suffix,\nand the default linker output name. As of Go 1.5, those strings\nno longer vary by architecture; they are compile, link, .o, and a.out, respectively.\n\nGo input arguments: (goarch string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String goarch]\n\nJoker return type: [String Error]"
@@ -5313,6 +5614,8 @@ JOKER FUNC go/build.IsLocalImport from go/build/build.go:
     :doc "Provides a low-level interface to the go/build package."
     :empty false}
   go.std.go.build)
+JOKER TYPE go/constant.Kind from go/constant/value.go:
+JOKER TYPE go/constant.Value from go/constant/value.go:
 JOKER FUNC go/constant.BinaryOp from go/constant/value.go:
 ;; (defn BinaryOp
 ;;   "BinaryOp returns the result of the binary expression x op y.\nThe operation must be defined for the operands. If one of the\noperands is Unknown, the result is Unknown.\nBinaryOp doesn't handle comparisons or shifts; use Compare\nor Shift instead.\n\nTo force integer division of Int operands, use op == token.QUO_ASSIGN\ninstead of token.QUO; the result is guaranteed to be Int in this case.\nDivision by zero leads to a run-time panic.\n\nGo input arguments: (x_ Value, op token.Token, y_ Value)\n\nGo return type: Value\n\nJoker input arguments: [^go.std.go.constant/Value x_, ^go.std.go.token/Token op, ^go.std.go.constant/Value y_]\n\nJoker return type: go.std.go.constant/Value"
@@ -5523,6 +5826,14 @@ JOKER FUNC go/constant.UnaryOp from go/constant/value.go:
     :doc "Provides a low-level interface to the go/constant package."
     :empty false}
   go.std.go.constant)
+JOKER TYPE go/doc.Example from go/doc/example.go:
+JOKER TYPE go/doc.Filter from go/doc/filter.go:
+JOKER TYPE go/doc.Func from go/doc/doc.go:
+JOKER TYPE go/doc.Mode from go/doc/doc.go:
+JOKER TYPE go/doc.Note from go/doc/doc.go:
+JOKER TYPE go/doc.Package from go/doc/doc.go:
+JOKER TYPE go/doc.Type from go/doc/doc.go:
+JOKER TYPE go/doc.Value from go/doc/doc.go:
 JOKER FUNC go/doc.Examples from go/doc/example.go:
 ;; (defn Examples
 ;;   "Examples returns the examples found in the files, sorted by Name field.\nThe Order fields record the order in which the examples were encountered.\n\nPlayable Examples must be in a package whose name ends in \"_test\".\nAn Example is \"playable\" (the Play field is non-nil) in either of these\ncircumstances:\n  - The example function is self-contained: the function references only\n    identifiers from other packages (or predeclared identifiers, such as\n    \"int\") and the test file does not include a dot import.\n  - The entire test file is the example: the file contains exactly one\n    example function, zero test or benchmark functions, and at least one\n    top-level function, type, variable, or constant declaration other\n    than the example function.\n\nGo input arguments: (files ...*ast.File)\n\nGo return type: []*Example\n\nJoker input arguments: [^(ellipsis-somehow ast/File) files]\n\nJoker return type: (vector-of (atom-of go.std.go.doc/Example))"
@@ -5586,6 +5897,7 @@ JOKER FUNC go/format.Source from go/format/format.go:
 ;;    :go "__source(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)))"}
 ;;   [^Object _src])
 
+JOKER TYPE go/importer.Lookup from go/importer/importer.go:
 JOKER FUNC go/importer.Default from go/importer/importer.go:
 (defn Default
   "Default returns an Importer for the compiler that built the running binary.\nIf available, the result implements types.ImporterFrom.\n\nGo return type: go/types.Importer\n\nJoker input arguments: []\n\nJoker return type: go.std.go.types/Importer"
@@ -5607,6 +5919,7 @@ JOKER FUNC go/importer.For from go/importer/importer.go:
     :doc "Provides a low-level interface to the go/importer package."
     :empty false}
   go.std.go.importer)
+JOKER TYPE go/parser.Mode from go/parser/interface.go:
 JOKER FUNC go/parser.ParseDir from go/parser/interface.go:
 ;; (defn ParseDir
 ;;   "ParseDir calls ParseFile for all files with names ending in \".go\" in the\ndirectory specified by path and returns a map of package name -> package\nAST with all the packages found.\n\nIf filter != nil, only the files with os.FileInfo entries passing through\nthe filter (and ending in \".go\") are considered. The mode bits are passed\nto ParseFile unchanged. Position information is recorded in fset, which\nmust not be nil.\n\nIf the directory couldn't be read, a nil map and the respective error are\nreturned. If a parse error occurred, a non-nil but incomplete map and the\nfirst error encountered are returned.\n\nGo input arguments: (fset *token.FileSet, path string, filter func, mode Mode)\n\nGo return type: (pkgs ..., first error)\n\nJoker input arguments: [^(atom-of go.std.go.token/FileSet) fset, ^String path, ^fn filter, ^go.std.go.parser/Mode mode]\n\nJoker return type: [ABEND883(post.go: unrecognized Expr type *ast.MapType at: /usr/local/go-1.11.4/src/go/parser/interface.go:135:97) Error]"
@@ -5656,6 +5969,11 @@ JOKER FUNC go/scanner.PrintError from go/scanner/errors.go:
 ;;    :go "__printError(*_w, _err)"}
 ;;   [^io/Writer _w, ^ABEND885(pre.go: unrecognized type error at: /usr/local/go-1.11.4/src/go/scanner/errors.go:116:34) _err])
 
+JOKER TYPE go/token.File from go/token/position.go:
+JOKER TYPE go/token.FileSet from go/token/position.go:
+JOKER TYPE go/token.Pos from go/token/position.go:
+JOKER TYPE go/token.Position from go/token/position.go:
+JOKER TYPE go/token.Token from go/token/token.go:
 JOKER FUNC go/token.Lookup from go/token/token.go:
 (defn Lookup
   "Lookup maps an identifier to its keyword token or IDENT (if not a keyword).\n\nGo input arguments: (ident string)\n\nGo return type: Token\n\nJoker input arguments: [^String ident]\n\nJoker return type: go.std.go.token/Token"
@@ -5677,6 +5995,47 @@ JOKER FUNC go/token.NewFileSet from go/token/position.go:
     :doc "Provides a low-level interface to the go/token package."
     :empty false}
   go.std.go.token)
+JOKER TYPE go/types.Array from go/types/type.go:
+JOKER TYPE go/types.Basic from go/types/type.go:
+JOKER TYPE go/types.BasicInfo from go/types/type.go:
+JOKER TYPE go/types.BasicKind from go/types/type.go:
+JOKER TYPE go/types.Builtin from go/types/object.go:
+JOKER TYPE go/types.Chan from go/types/type.go:
+JOKER TYPE go/types.ChanDir from go/types/type.go:
+JOKER TYPE go/types.Checker from go/types/check.go:
+JOKER TYPE go/types.Config from go/types/api.go:
+JOKER TYPE go/types.Const from go/types/object.go:
+JOKER TYPE go/types.Error from go/types/api.go:
+JOKER TYPE go/types.Func from go/types/object.go:
+JOKER TYPE go/types.ImportMode from go/types/api.go:
+JOKER TYPE go/types.Importer from go/types/api.go:
+JOKER TYPE go/types.ImporterFrom from go/types/api.go:
+JOKER TYPE go/types.Info from go/types/api.go:
+JOKER TYPE go/types.Initializer from go/types/api.go:
+JOKER TYPE go/types.Interface from go/types/type.go:
+JOKER TYPE go/types.Label from go/types/object.go:
+JOKER TYPE go/types.Map from go/types/type.go:
+JOKER TYPE go/types.MethodSet from go/types/methodset.go:
+JOKER TYPE go/types.Named from go/types/type.go:
+JOKER TYPE go/types.Nil from go/types/object.go:
+JOKER TYPE go/types.Object from go/types/object.go:
+JOKER TYPE go/types.Package from go/types/package.go:
+JOKER TYPE go/types.PkgName from go/types/object.go:
+JOKER TYPE go/types.Pointer from go/types/type.go:
+JOKER TYPE go/types.Qualifier from go/types/typestring.go:
+JOKER TYPE go/types.Scope from go/types/scope.go:
+JOKER TYPE go/types.Selection from go/types/selection.go:
+JOKER TYPE go/types.SelectionKind from go/types/selection.go:
+JOKER TYPE go/types.Signature from go/types/type.go:
+JOKER TYPE go/types.Sizes from go/types/sizes.go:
+JOKER TYPE go/types.Slice from go/types/type.go:
+JOKER TYPE go/types.StdSizes from go/types/sizes.go:
+JOKER TYPE go/types.Struct from go/types/type.go:
+JOKER TYPE go/types.Tuple from go/types/type.go:
+JOKER TYPE go/types.Type from go/types/type.go:
+JOKER TYPE go/types.TypeAndValue from go/types/api.go:
+JOKER TYPE go/types.TypeName from go/types/object.go:
+JOKER TYPE go/types.Var from go/types/object.go:
 JOKER FUNC go/types.AssertableTo from go/types/api.go:
 (defn ^"Bool" AssertableTo
   "AssertableTo reports whether a value of type V can be asserted to have type T.\n\nGo input arguments: (V *Interface, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.types/Interface) V, ^go.std.go.types/Type T]\n\nJoker return type: Bool"
@@ -6027,6 +6386,7 @@ JOKER FUNC hash/adler32.New from hash/adler32/adler32.go:
     :doc "Provides a low-level interface to the hash/adler32 package."
     :empty false}
   go.std.hash.adler32)
+JOKER TYPE hash/crc32.Table from hash/crc32/crc32.go:
 JOKER FUNC hash/crc32.Checksum from hash/crc32/crc32.go:
 ;; (defn Checksum
 ;;   "Checksum returns the CRC-32 checksum of data\nusing the polynomial represented by the Table.\n\nGo input arguments: (data []byte, tab *Table)\n\nGo return type: uint32\n\nJoker input arguments: [^(vector-of Byte) data, ^(atom-of go.std.hash.crc32/Table) tab]\n\nJoker return type: Int"
@@ -6076,6 +6436,7 @@ JOKER FUNC hash/crc32.Update from hash/crc32/crc32.go:
     :doc "Provides a low-level interface to the hash/crc32 package."
     :empty false}
   go.std.hash.crc32)
+JOKER TYPE hash/crc64.Table from hash/crc64/crc64.go:
 JOKER FUNC hash/crc64.Checksum from hash/crc64/crc64.go:
 ;; (defn Checksum
 ;;   "Checksum returns the CRC-64 checksum of data\nusing the polynomial represented by the Table.\n\nGo input arguments: (data []byte, tab *Table)\n\nGo return type: uint64\n\nJoker input arguments: [^(vector-of Byte) data, ^(atom-of go.std.hash.crc64/Table) tab]\n\nJoker return type: BigInt"
@@ -6181,6 +6542,17 @@ JOKER FUNC html.UnescapeString from html/escape.go:
     :doc "Provides a low-level interface to the html package."
     :empty false}
   go.std.html)
+JOKER TYPE html/template.CSS from html/template/content.go:
+JOKER TYPE html/template.Error from html/template/error.go:
+JOKER TYPE html/template.ErrorCode from html/template/error.go:
+JOKER TYPE html/template.FuncMap from html/template/template.go:
+JOKER TYPE html/template.HTML from html/template/content.go:
+JOKER TYPE html/template.HTMLAttr from html/template/content.go:
+JOKER TYPE html/template.JS from html/template/content.go:
+JOKER TYPE html/template.JSStr from html/template/content.go:
+JOKER TYPE html/template.Srcset from html/template/content.go:
+JOKER TYPE html/template.Template from html/template/template.go:
+JOKER TYPE html/template.URL from html/template/content.go:
 JOKER FUNC html/template.HTMLEscape from html/template/escape.go:
 ;; (defn HTMLEscape
 ;;   "HTMLEscape writes to w the escaped HTML equivalent of the plain text data b.\n\nGo input arguments: (w io.Writer, b []byte)\n\nJoker input arguments: [^go.std.io/Writer w, ^(vector-of Byte) b]"
@@ -6272,6 +6644,25 @@ JOKER FUNC html/template.URLQueryEscaper from html/template/escape.go:
     :doc "Provides a low-level interface to the html/template package."
     :empty false}
   go.std.html.template)
+JOKER TYPE image.Alpha from image/image.go:
+JOKER TYPE image.Alpha16 from image/image.go:
+JOKER TYPE image.CMYK from image/image.go:
+JOKER TYPE image.Config from image/image.go:
+JOKER TYPE image.Gray from image/image.go:
+JOKER TYPE image.Gray16 from image/image.go:
+JOKER TYPE image.Image from image/image.go:
+JOKER TYPE image.NRGBA from image/image.go:
+JOKER TYPE image.NRGBA64 from image/image.go:
+JOKER TYPE image.NYCbCrA from image/ycbcr.go:
+JOKER TYPE image.Paletted from image/image.go:
+JOKER TYPE image.PalettedImage from image/image.go:
+JOKER TYPE image.Point from image/geom.go:
+JOKER TYPE image.RGBA from image/image.go:
+JOKER TYPE image.RGBA64 from image/image.go:
+JOKER TYPE image.Rectangle from image/geom.go:
+JOKER TYPE image.Uniform from image/names.go:
+JOKER TYPE image.YCbCr from image/ycbcr.go:
+JOKER TYPE image.YCbCrSubsampleRatio from image/ycbcr.go:
 JOKER FUNC image.Decode from image/format.go:
 ;; (defn Decode
 ;;   "Decode decodes an image that has been encoded in a registered format.\nThe string returned is the format name used during format registration.\nFormat registration is typically done by an init function in the codec-\nspecific package.\n\nGo input arguments: (r io.Reader)\n\nGo return type: (Image, string, error)\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker return type: [go.std.image/Image String Error]"
@@ -6538,6 +6929,30 @@ JOKER FUNC index/suffixarray.New from index/suffixarray/suffixarray.go:
 ;;    :go "__new(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)))"}
 ;;   [^Object _data])
 
+JOKER TYPE io.ByteReader from io/io.go:
+JOKER TYPE io.ByteScanner from io/io.go:
+JOKER TYPE io.ByteWriter from io/io.go:
+JOKER TYPE io.Closer from io/io.go:
+JOKER TYPE io.LimitedReader from io/io.go:
+JOKER TYPE io.PipeReader from io/pipe.go:
+JOKER TYPE io.PipeWriter from io/pipe.go:
+JOKER TYPE io.ReadCloser from io/io.go:
+JOKER TYPE io.ReadSeeker from io/io.go:
+JOKER TYPE io.ReadWriteCloser from io/io.go:
+JOKER TYPE io.ReadWriteSeeker from io/io.go:
+JOKER TYPE io.ReadWriter from io/io.go:
+JOKER TYPE io.Reader from io/io.go:
+JOKER TYPE io.ReaderAt from io/io.go:
+JOKER TYPE io.ReaderFrom from io/io.go:
+JOKER TYPE io.RuneReader from io/io.go:
+JOKER TYPE io.RuneScanner from io/io.go:
+JOKER TYPE io.SectionReader from io/io.go:
+JOKER TYPE io.Seeker from io/io.go:
+JOKER TYPE io.WriteCloser from io/io.go:
+JOKER TYPE io.WriteSeeker from io/io.go:
+JOKER TYPE io.Writer from io/io.go:
+JOKER TYPE io.WriterAt from io/io.go:
+JOKER TYPE io.WriterTo from io/io.go:
 JOKER FUNC io.Copy from io/io.go:
 (defn Copy
   "Copy copies from src to dst until either EOF is reached\non src or an error occurs. It returns the number of bytes\ncopied and the first error encountered while copying, if any.\n\nA successful Copy returns err == nil, not err == EOF.\nBecause Copy is defined to read from src until EOF, it does\nnot treat an EOF from Read as an error to be reported.\n\nIf src implements the WriterTo interface,\nthe copy is implemented by calling src.WriteTo(dst).\nOtherwise, if dst implements the ReaderFrom interface,\nthe copy is implemented by calling dst.ReadFrom(src).\n\nGo input arguments: (dst Writer, src Reader)\n\nGo return type: (written int64, err error)\n\nJoker input arguments: [^go.std.io/Writer dst, ^go.std.io/Reader src]\n\nJoker return type: [Int Error]"
@@ -6685,6 +7100,7 @@ JOKER FUNC io/ioutil.WriteFile from io/ioutil/ioutil.go:
     :doc "Provides a low-level interface to the io/ioutil package."
     :empty false}
   go.std.io.ioutil)
+JOKER TYPE log.Logger from log/log.go:
 JOKER FUNC log.Fatal from log/log.go:
 ;; (defn Fatal
 ;;   "Fatal is equivalent to Print() followed by a call to os.Exit(1).\n\nGo input arguments: (v ...interface {})\n\nJoker input arguments: [^(ellipsis-somehow <protocol-or-something>) v]"
@@ -6804,6 +7220,8 @@ JOKER FUNC log.SetPrefix from log/log.go:
     :doc "Provides a low-level interface to the log package."
     :empty false}
   go.std.log)
+JOKER TYPE log/syslog.Priority from log/syslog/syslog.go:
+JOKER TYPE log/syslog.Writer from log/syslog/syslog.go:
 JOKER FUNC log/syslog.Dial from log/syslog/syslog.go:
 (defn Dial
   "Dial establishes a connection to a log daemon by connecting to\naddress raddr on the specified network. Each write to the returned\nwriter sends a log message with the facility and severity\n(from priority) and tag. If tag is empty, the os.Args[0] is used.\nIf network is empty, Dial will connect to the local syslog server.\nOtherwise, see the documentation for net.Dial for valid values\nof network and raddr.\n\nGo input arguments: (network string, raddr string, priority Priority, tag string)\n\nGo return type: (*Writer, error)\n\nJoker input arguments: [^String network, ^String raddr, ^go.std.log.syslog/Priority priority, ^String tag]\n\nJoker return type: [(atom-of go.std.log.syslog/Writer) Error]"
@@ -7294,6 +7712,13 @@ JOKER FUNC math.Yn from math/jn.go:
 ;;    :go "__yn(_n, _x)"}
 ;;   [^Int _n, ^ABEND044(pre.go: unsupported built-in type float64) _x])
 
+JOKER TYPE math/big.Accuracy from math/big/float.go:
+JOKER TYPE math/big.ErrNaN from math/big/float.go:
+JOKER TYPE math/big.Float from math/big/float.go:
+JOKER TYPE math/big.Int from math/big/int.go:
+JOKER TYPE math/big.Rat from math/big/rat.go:
+JOKER TYPE math/big.RoundingMode from math/big/float.go:
+JOKER TYPE math/big.Word from math/big/arith.go:
 JOKER FUNC math/big.Jacobi from math/big/int.go:
 (defn ^"Int" Jacobi
   "Jacobi returns the Jacobi symbol (x/y), either +1, -1, or 0.\nThe y argument must be an odd integer.\n\nGo input arguments: (x *Int, y *Int)\n\nGo return type: int\n\nJoker input arguments: [^(atom-of go.std.math.big/Int) x, ^(atom-of go.std.math.big/Int) y]\n\nJoker return type: Int"
@@ -7770,6 +8195,10 @@ JOKER FUNC math/cmplx.Tanh from math/cmplx/tan.go:
 ;;    :go "__tanh(_x)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type complex128) _x])
 
+JOKER TYPE math/rand.Rand from math/rand/rand.go:
+JOKER TYPE math/rand.Source from math/rand/rand.go:
+JOKER TYPE math/rand.Source64 from math/rand/rand.go:
+JOKER TYPE math/rand.Zipf from math/rand/zipf.go:
 JOKER FUNC math/rand.ExpFloat64 from math/rand/rand.go:
 ;; (defn ExpFloat64
 ;;   "ExpFloat64 returns an exponentially distributed float64 in the range\n(0, +math.MaxFloat64] with an exponential distribution whose rate parameter\n(lambda) is 1 and whose mean is 1/lambda (1) from the default Source.\nTo produce a distribution with a different rate parameter,\ncallers can adjust the output using:\n\n sample = ExpFloat64() / desiredRateParameter\n\nGo return type: ...\n\nJoker input arguments: []\n\nJoker return type: ABEND043(post.go: unsupported built-in type float64)"
@@ -7910,6 +8339,8 @@ JOKER FUNC math/rand.Uint64 from math/rand/rand.go:
     :doc "Provides a low-level interface to the math/rand package."
     :empty false}
   go.std.math.rand)
+JOKER TYPE mime.WordDecoder from mime/encodedword.go:
+JOKER TYPE mime.WordEncoder from mime/encodedword.go:
 JOKER FUNC mime.AddExtensionType from mime/type.go:
 (defn ^"Error" AddExtensionType
   "AddExtensionType sets the MIME type associated with\nthe extension ext to typ. The extension should begin with\na leading dot, as in \".html\".\n\nGo input arguments: (ext string, typ string)\n\nGo return type: error\n\nJoker input arguments: [^String ext, ^String typ]\n\nJoker return type: Error"
@@ -7980,6 +8411,41 @@ JOKER FUNC mime/quotedprintable.NewWriter from mime/quotedprintable/writer.go:
 ;;    :go "__newWriter(*_w)"}
 ;;   [^io/Writer _w])
 
+JOKER TYPE net.Addr from net/net.go:
+JOKER TYPE net.AddrError from net/net.go:
+JOKER TYPE net.Buffers from net/net.go:
+JOKER TYPE net.Conn from net/net.go:
+JOKER TYPE net.DNSConfigError from net/net.go:
+JOKER TYPE net.DNSError from net/net.go:
+JOKER TYPE net.Dialer from net/dial.go:
+JOKER TYPE net.Error from net/net.go:
+JOKER TYPE net.Flags from net/interface.go:
+JOKER TYPE net.HardwareAddr from net/mac.go:
+JOKER TYPE net.IP from net/ip.go:
+JOKER TYPE net.IPAddr from net/iprawsock.go:
+JOKER TYPE net.IPConn from net/iprawsock.go:
+JOKER TYPE net.IPMask from net/ip.go:
+JOKER TYPE net.IPNet from net/ip.go:
+JOKER TYPE net.Interface from net/interface.go:
+JOKER TYPE net.InvalidAddrError from net/net.go:
+JOKER TYPE net.ListenConfig from net/dial.go:
+JOKER TYPE net.Listener from net/net.go:
+JOKER TYPE net.MX from net/dnsclient.go:
+JOKER TYPE net.NS from net/dnsclient.go:
+JOKER TYPE net.OpError from net/net.go:
+JOKER TYPE net.PacketConn from net/net.go:
+JOKER TYPE net.ParseError from net/net.go:
+JOKER TYPE net.Resolver from net/lookup.go:
+JOKER TYPE net.SRV from net/dnsclient.go:
+JOKER TYPE net.TCPAddr from net/tcpsock.go:
+JOKER TYPE net.TCPConn from net/tcpsock.go:
+JOKER TYPE net.TCPListener from net/tcpsock.go:
+JOKER TYPE net.UDPAddr from net/udpsock.go:
+JOKER TYPE net.UDPConn from net/udpsock.go:
+JOKER TYPE net.UnixAddr from net/unixsock.go:
+JOKER TYPE net.UnixConn from net/unixsock.go:
+JOKER TYPE net.UnixListener from net/unixsock.go:
+JOKER TYPE net.UnknownNetworkError from net/net.go:
 JOKER FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
@@ -8288,6 +8754,30 @@ JOKER FUNC net.SplitHostPort from net/ipsock.go:
     :doc "Provides a low-level interface to the net package."
     :empty false}
   go.std.net)
+JOKER TYPE net/http.Client from net/http/client.go:
+JOKER TYPE net/http.CloseNotifier from net/http/server.go:
+JOKER TYPE net/http.ConnState from net/http/server.go:
+JOKER TYPE net/http.Cookie from net/http/cookie.go:
+JOKER TYPE net/http.CookieJar from net/http/jar.go:
+JOKER TYPE net/http.Dir from net/http/fs.go:
+JOKER TYPE net/http.File from net/http/fs.go:
+JOKER TYPE net/http.FileSystem from net/http/fs.go:
+JOKER TYPE net/http.Flusher from net/http/server.go:
+JOKER TYPE net/http.Handler from net/http/server.go:
+JOKER TYPE net/http.HandlerFunc from net/http/server.go:
+JOKER TYPE net/http.Header from net/http/header.go:
+JOKER TYPE net/http.Hijacker from net/http/server.go:
+JOKER TYPE net/http.ProtocolError from net/http/request.go:
+JOKER TYPE net/http.PushOptions from net/http/http.go:
+JOKER TYPE net/http.Pusher from net/http/http.go:
+JOKER TYPE net/http.Request from net/http/request.go:
+JOKER TYPE net/http.Response from net/http/response.go:
+JOKER TYPE net/http.ResponseWriter from net/http/server.go:
+JOKER TYPE net/http.RoundTripper from net/http/client.go:
+JOKER TYPE net/http.SameSite from net/http/cookie.go:
+JOKER TYPE net/http.ServeMux from net/http/server.go:
+JOKER TYPE net/http.Server from net/http/server.go:
+JOKER TYPE net/http.Transport from net/http/transport.go:
 JOKER FUNC net/http.CanonicalHeaderKey from net/http/header.go:
 (defn ^"String" CanonicalHeaderKey
   "CanonicalHeaderKey returns the canonical format of the\nheader key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
@@ -8533,6 +9023,7 @@ JOKER FUNC net/http.TimeoutHandler from net/http/server.go:
     :doc "Provides a low-level interface to the net/http package."
     :empty false}
   go.std.net.http)
+JOKER TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 JOKER FUNC net/http/cgi.Request from net/http/cgi/child.go:
 (defn Request
   "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [(atom-of go.std.net.http/Request) Error]"
@@ -8561,6 +9052,9 @@ JOKER FUNC net/http/cgi.Serve from net/http/cgi/child.go:
     :doc "Provides a low-level interface to the net/http/cgi package."
     :empty false}
   go.std.net.http.cgi)
+JOKER TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
+JOKER TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
+JOKER TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 JOKER FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 (defn New
   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(atom-of go.std.net.http.cookiejar/Options) o]\n\nJoker return type: [(atom-of go.std.net.http.cookiejar/Jar) Error]"
@@ -8589,6 +9083,8 @@ JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 ;;    :go "fcgi.Serve(*_l, *_handler)"}
 ;;   [^net/Listener _l, ^http/Handler _handler])
 
+JOKER TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go:
+JOKER TYPE net/http/httptest.Server from net/http/httptest/server.go:
 JOKER FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 (defn NewRecorder
   "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: (atom-of go.std.net.http.httptest/ResponseRecorder)"
@@ -8757,6 +9253,10 @@ JOKER FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
     :doc "Provides a low-level interface to the net/http/pprof package."
     :empty false}
   go.std.net.http.pprof)
+JOKER TYPE net/mail.Address from net/mail/message.go:
+JOKER TYPE net/mail.AddressParser from net/mail/message.go:
+JOKER TYPE net/mail.Header from net/mail/message.go:
+JOKER TYPE net/mail.Message from net/mail/message.go:
 JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
 (defn ParseAddress
   "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [(atom-of go.std.net.mail/Address) Error]"
@@ -8792,6 +9292,14 @@ JOKER FUNC net/mail.ReadMessage from net/mail/message.go:
     :doc "Provides a low-level interface to the net/mail package."
     :empty false}
   go.std.net.mail)
+JOKER TYPE net/rpc.Call from net/rpc/client.go:
+JOKER TYPE net/rpc.Client from net/rpc/client.go:
+JOKER TYPE net/rpc.ClientCodec from net/rpc/client.go:
+JOKER TYPE net/rpc.Request from net/rpc/server.go:
+JOKER TYPE net/rpc.Response from net/rpc/server.go:
+JOKER TYPE net/rpc.Server from net/rpc/server.go:
+JOKER TYPE net/rpc.ServerCodec from net/rpc/server.go:
+JOKER TYPE net/rpc.ServerError from net/rpc/client.go:
 JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 ;; (defn Accept
 ;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis net.Listener)\n\nJoker input arguments: [^go.std.net/Listener lis]"
@@ -8932,6 +9440,9 @@ JOKER FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
     :doc "Provides a low-level interface to the net/rpc/jsonrpc package."
     :empty false}
   go.std.net.rpc.jsonrpc)
+JOKER TYPE net/smtp.Auth from net/smtp/auth.go:
+JOKER TYPE net/smtp.Client from net/smtp/smtp.go:
+JOKER TYPE net/smtp.ServerInfo from net/smtp/auth.go:
 JOKER FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 (defn CRAMMD5Auth
   "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo input arguments: (username string, secret string)\n\nGo return type: Auth\n\nJoker input arguments: [^String username, ^String secret]\n\nJoker return type: go.std.net.smtp/Auth"
@@ -8974,6 +9485,13 @@ JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
     :doc "Provides a low-level interface to the net/smtp package."
     :empty false}
   go.std.net.smtp)
+JOKER TYPE net/textproto.Conn from net/textproto/textproto.go:
+JOKER TYPE net/textproto.Error from net/textproto/textproto.go:
+JOKER TYPE net/textproto.MIMEHeader from net/textproto/header.go:
+JOKER TYPE net/textproto.Pipeline from net/textproto/pipeline.go:
+JOKER TYPE net/textproto.ProtocolError from net/textproto/textproto.go:
+JOKER TYPE net/textproto.Reader from net/textproto/reader.go:
+JOKER TYPE net/textproto.Writer from net/textproto/writer.go:
 JOKER FUNC net/textproto.CanonicalMIMEHeaderKey from net/textproto/reader.go:
 (defn ^"String" CanonicalMIMEHeaderKey
   "CanonicalMIMEHeaderKey returns the canonical format of the\nMIME header key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nMIME header keys are assumed to be ASCII only.\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
@@ -9030,6 +9548,12 @@ JOKER FUNC net/textproto.TrimString from net/textproto/textproto.go:
     :doc "Provides a low-level interface to the net/textproto package."
     :empty false}
   go.std.net.textproto)
+JOKER TYPE net/url.Error from net/url/url.go:
+JOKER TYPE net/url.EscapeError from net/url/url.go:
+JOKER TYPE net/url.InvalidHostError from net/url/url.go:
+JOKER TYPE net/url.URL from net/url/url.go:
+JOKER TYPE net/url.Userinfo from net/url/url.go:
+JOKER TYPE net/url.Values from net/url/url.go:
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
@@ -9100,6 +9624,16 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
     :doc "Provides a low-level interface to the net/url package."
     :empty false}
   go.std.net.url)
+JOKER TYPE os.File from os/types.go:
+JOKER TYPE os.FileInfo from os/types.go:
+JOKER TYPE os.FileMode from os/types.go:
+JOKER TYPE os.LinkError from os/file.go:
+JOKER TYPE os.PathError from os/error.go:
+JOKER TYPE os.ProcAttr from os/exec.go:
+JOKER TYPE os.Process from os/exec.go:
+JOKER TYPE os.ProcessState from os/exec_posix.go:
+JOKER TYPE os.Signal from os/exec.go:
+JOKER TYPE os.SyscallError from os/error.go:
 JOKER FUNC os.Chdir from os/file.go:
 (defn ^"Error" Chdir
   "Chdir changes the current working directory to the named directory.\nIf there is an error, it will be of type *PathError.\n\nGo input arguments: (dir string)\n\nGo return type: error\n\nJoker input arguments: [^String dir]\n\nJoker return type: Error"
@@ -9471,6 +10005,9 @@ JOKER FUNC os.UserCacheDir from os/file.go:
     :doc "Provides a low-level interface to the os package."
     :empty false}
   go.std.os)
+JOKER TYPE os/exec.Cmd from os/exec/exec.go:
+JOKER TYPE os/exec.Error from os/exec/exec.go:
+JOKER TYPE os/exec.ExitError from os/exec/exec.go:
 JOKER FUNC os/exec.Command from os/exec/exec.go:
 ;; (defn Command
 ;;   "Command returns the Cmd struct to execute the named program with\nthe given arguments.\n\nIt sets only the Path and Args in the returned structure.\n\nIf name contains no path separators, Command uses LookPath to\nresolve name to a complete path if possible. Otherwise it uses name\ndirectly as Path.\n\nThe returned Cmd's Args field is constructed from the command name\nfollowed by the elements of arg, so arg should not include the\ncommand name itself. For example, Command(\"echo\", \"hello\").\nArgs[0] is always name, not the possibly resolved Path.\n\nGo input arguments: (name string, arg ...string)\n\nGo return type: *Cmd\n\nJoker input arguments: [^String name, ^(ellipsis-somehow String) arg]\n\nJoker return type: (atom-of go.std.os.exec/Cmd)"
@@ -9534,6 +10071,12 @@ JOKER FUNC os/signal.Stop from os/signal/signal.go:
 ;;    :go "__stop(ABEND909(pre.go: custom-runtime routine not implemented: ConvertToChanTypeHaHa()))"}
 ;;   [^<no-idea-about-chan-yet> _c])
 
+JOKER TYPE os/user.Group from os/user/user.go:
+JOKER TYPE os/user.UnknownGroupError from os/user/user.go:
+JOKER TYPE os/user.UnknownGroupIdError from os/user/user.go:
+JOKER TYPE os/user.UnknownUserError from os/user/user.go:
+JOKER TYPE os/user.UnknownUserIdError from os/user/user.go:
+JOKER TYPE os/user.User from os/user/user.go:
 JOKER FUNC os/user.Current from os/user/lookup.go:
 (defn Current
   "Current returns the current user.\n\nGo return type: (*User, error)\n\nJoker input arguments: []\n\nJoker return type: [(atom-of go.std.os.user/User) Error]"
@@ -9639,6 +10182,7 @@ JOKER FUNC path.Split from path/path.go:
     :doc "Provides a low-level interface to the path package."
     :empty false}
   go.std.path)
+JOKER TYPE path/filepath.WalkFunc from path/filepath/path.go:
 JOKER FUNC path/filepath.Abs from path/filepath/path.go:
 (defn Abs
   "Abs returns an absolute representation of path.\nIf the path is not absolute it will be joined with the current\nworking directory to turn it into an absolute path. The absolute\npath name for a given file is not guaranteed to be unique.\nAbs calls Clean on the result.\n\nGo input arguments: (path string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String path]\n\nJoker return type: [String Error]"
@@ -9772,6 +10316,8 @@ JOKER FUNC path/filepath.Walk from path/filepath/path.go:
     :doc "Provides a low-level interface to the path/filepath package."
     :empty false}
   go.std.path.filepath)
+JOKER TYPE plugin.Plugin from plugin/plugin.go:
+JOKER TYPE plugin.Symbol from plugin/plugin.go:
 JOKER FUNC plugin.Open from plugin/plugin.go:
 (defn Open
   "Open opens a Go plugin.\nIf a path has already been opened, then the existing *Plugin is returned.\nIt is safe for concurrent use by multiple goroutines.\n\nGo input arguments: (path string)\n\nGo return type: (*Plugin, error)\n\nJoker input arguments: [^String path]\n\nJoker return type: [(atom-of go.std.plugin/Plugin) Error]"
@@ -9786,6 +10332,18 @@ JOKER FUNC plugin.Open from plugin/plugin.go:
     :doc "Provides a low-level interface to the plugin package."
     :empty false}
   go.std.plugin)
+JOKER TYPE reflect.ChanDir from reflect/type.go:
+JOKER TYPE reflect.Kind from reflect/type.go:
+JOKER TYPE reflect.Method from reflect/type.go:
+JOKER TYPE reflect.SelectCase from reflect/value.go:
+JOKER TYPE reflect.SelectDir from reflect/value.go:
+JOKER TYPE reflect.SliceHeader from reflect/value.go:
+JOKER TYPE reflect.StringHeader from reflect/value.go:
+JOKER TYPE reflect.StructField from reflect/type.go:
+JOKER TYPE reflect.StructTag from reflect/type.go:
+JOKER TYPE reflect.Type from reflect/type.go:
+JOKER TYPE reflect.Value from reflect/value.go:
+JOKER TYPE reflect.ValueError from reflect/value.go:
 JOKER FUNC reflect.Append from reflect/value.go:
 ;; (defn Append
 ;;   "Append appends the values x to a slice s and returns the resulting slice.\nAs in Go, each x's value must be assignable to the slice's element type.\n\nGo input arguments: (s Value, x ...Value)\n\nGo return type: Value\n\nJoker input arguments: [^go.std.reflect/Value s, ^(ellipsis-somehow reflect/Value) x]\n\nJoker return type: go.std.reflect/Value"
@@ -9961,6 +10519,7 @@ JOKER FUNC reflect.Zero from reflect/value.go:
     :doc "Provides a low-level interface to the reflect package."
     :empty false}
   go.std.reflect)
+JOKER TYPE regexp.Regexp from regexp/regexp.go:
 JOKER FUNC regexp.Compile from regexp/regexp.go:
 (defn Compile
   "Compile parses a regular expression and returns, if successful,\na Regexp object that can be used to match against text.\n\nWhen matching against text, the regexp returns a match that\nbegins as early as possible in the input (leftmost), and among those\nit chooses the one that a backtracking search would have found first.\nThis so-called leftmost-first matching is the same semantics\nthat Perl, Python, and other implementations use, although this\npackage implements it without the expense of backtracking.\nFor POSIX leftmost-longest matching, see CompilePOSIX.\n\nGo input arguments: (expr string)\n\nGo return type: (*Regexp, error)\n\nJoker input arguments: [^String expr]\n\nJoker return type: [(atom-of go.std.regexp/Regexp) Error]"
@@ -10024,6 +10583,15 @@ JOKER FUNC regexp.QuoteMeta from regexp/regexp.go:
     :doc "Provides a low-level interface to the regexp package."
     :empty false}
   go.std.regexp)
+JOKER TYPE regexp/syntax.EmptyOp from regexp/syntax/prog.go:
+JOKER TYPE regexp/syntax.Error from regexp/syntax/parse.go:
+JOKER TYPE regexp/syntax.ErrorCode from regexp/syntax/parse.go:
+JOKER TYPE regexp/syntax.Flags from regexp/syntax/parse.go:
+JOKER TYPE regexp/syntax.Inst from regexp/syntax/prog.go:
+JOKER TYPE regexp/syntax.InstOp from regexp/syntax/prog.go:
+JOKER TYPE regexp/syntax.Op from regexp/syntax/regexp.go:
+JOKER TYPE regexp/syntax.Prog from regexp/syntax/prog.go:
+JOKER TYPE regexp/syntax.Regexp from regexp/syntax/regexp.go:
 JOKER FUNC regexp/syntax.Compile from regexp/syntax/compile.go:
 (defn Compile
   "Compile compiles the regexp into a program to be executed.\nThe regexp should have been simplified already (returned from re.Simplify).\n\nGo input arguments: (re *Regexp)\n\nGo return type: (*Prog, error)\n\nJoker input arguments: [^(atom-of go.std.regexp.syntax/Regexp) re]\n\nJoker return type: [(atom-of go.std.regexp.syntax/Prog) Error]"
@@ -10059,6 +10627,15 @@ JOKER FUNC regexp/syntax.Parse from regexp/syntax/parse.go:
     :doc "Provides a low-level interface to the regexp/syntax package."
     :empty false}
   go.std.regexp.syntax)
+JOKER TYPE runtime.BlockProfileRecord from runtime/mprof.go:
+JOKER TYPE runtime.Error from runtime/error.go:
+JOKER TYPE runtime.Frame from runtime/symtab.go:
+JOKER TYPE runtime.Frames from runtime/symtab.go:
+JOKER TYPE runtime.Func from runtime/symtab.go:
+JOKER TYPE runtime.MemProfileRecord from runtime/mprof.go:
+JOKER TYPE runtime.MemStats from runtime/mstats.go:
+JOKER TYPE runtime.StackRecord from runtime/mprof.go:
+JOKER TYPE runtime.TypeAssertionError from runtime/error.go:
 JOKER FUNC runtime.BlockProfile from runtime/mprof.go:
 ;; (defn BlockProfile
 ;;   "BlockProfile returns n, the number of records in the current blocking profile.\nIf len(p) >= n, BlockProfile copies the profile into p and returns n, true.\nIf len(p) < n, BlockProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package or\nthe testing package's -test.blockprofile flag instead\nof calling BlockProfile directly.\n\nGo input arguments: (p []BlockProfileRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/BlockProfileRecord) p]\n\nJoker return type: [Int Bool]"
@@ -10297,6 +10874,7 @@ JOKER FUNC runtime.Version from runtime/extern.go:
     :doc "Provides a low-level interface to the runtime package."
     :empty false}
   go.std.runtime)
+JOKER TYPE runtime/debug.GCStats from runtime/debug/garbage.go:
 JOKER FUNC runtime/debug.FreeOSMemory from runtime/debug/garbage.go:
 ;; (defn FreeOSMemory
 ;;   "FreeOSMemory forces a garbage collection followed by an\nattempt to return as much memory to the operating system\nas possible. (Even if this is not called, the runtime gradually\nreturns memory to the operating system in a background task.)\n\nJoker input arguments: []"
@@ -10374,6 +10952,8 @@ JOKER FUNC runtime/debug.WriteHeapDump from runtime/debug/garbage.go:
     :doc "Provides a low-level interface to the runtime/debug package."
     :empty false}
   go.std.runtime.debug)
+JOKER TYPE runtime/pprof.LabelSet from runtime/pprof/label.go:
+JOKER TYPE runtime/pprof.Profile from runtime/pprof/pprof.go:
 JOKER FUNC runtime/pprof.Do from runtime/pprof/runtime.go:
 ;; (defn Do
 ;;   "Do calls f with a copy of the parent context with the\ngiven labels added to the parent's label map.\nEach key/value pair in labels is inserted into the label map in the\norder provided, overriding any previous value for the same key.\nThe augmented label map will be set for the duration of the call to f\nand restored once f returns.\n\nGo input arguments: (ctx context.Context, labels LabelSet, f func)\n\nJoker input arguments: [^go.std.context/Context ctx, ^go.std.runtime.pprof/LabelSet labels, ^fn f]"
@@ -10465,6 +11045,8 @@ JOKER FUNC runtime/pprof.WriteHeapProfile from runtime/pprof/pprof.go:
     :doc "Provides a low-level interface to the runtime/pprof package."
     :empty false}
   go.std.runtime.pprof)
+JOKER TYPE runtime/trace.Region from runtime/trace/annotation.go:
+JOKER TYPE runtime/trace.Task from runtime/trace/annotation.go:
 JOKER FUNC runtime/trace.IsEnabled from runtime/trace/annotation.go:
 (defn ^"Bool" IsEnabled
   "IsEnabled returns whether tracing is enabled.\nThe information is advisory only. The tracing status\nmay have changed by the time this function returns.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
@@ -10528,6 +11110,10 @@ JOKER FUNC runtime/trace.WithRegion from runtime/trace/annotation.go:
     :doc "Provides a low-level interface to the runtime/trace package."
     :empty false}
   go.std.runtime.trace)
+JOKER TYPE sort.Float64Slice from sort/sort.go:
+JOKER TYPE sort.IntSlice from sort/sort.go:
+JOKER TYPE sort.Interface from sort/sort.go:
+JOKER TYPE sort.StringSlice from sort/sort.go:
 JOKER FUNC sort.Float64s from sort/sort.go:
 ;; (defn Float64s
 ;;   "Float64s sorts a slice of float64s in increasing order\n(not-a-number values are treated as less than other values).\n\nGo input arguments: (a []float64)\n\nJoker input arguments: [^(vector-of float64) a]"
@@ -10654,6 +11240,7 @@ JOKER FUNC sort.StringsAreSorted from sort/sort.go:
     :doc "Provides a low-level interface to the sort package."
     :empty false}
   go.std.sort)
+JOKER TYPE strconv.NumError from strconv/atoi.go:
 JOKER FUNC strconv.AppendBool from strconv/atob.go:
 ;; (defn AppendBool
 ;;   "AppendBool appends \"true\" or \"false\", according to the value of b,\nto dst and returns the extended buffer.\n\nGo input arguments: (dst []byte, b bool)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Byte) dst, ^Bool b]\n\nJoker return type: (vector-of Int)"
@@ -10878,6 +11465,9 @@ JOKER FUNC strconv.UnquoteChar from strconv/quote.go:
     :doc "Provides a low-level interface to the strconv package."
     :empty false}
   go.std.strconv)
+JOKER TYPE strings.Builder from strings/builder.go:
+JOKER TYPE strings.Reader from strings/reader.go:
+JOKER TYPE strings.Replacer from strings/replace.go:
 JOKER FUNC strings.Compare from strings/compare.go:
 (defn ^"Int" Compare
   "Compare returns an integer comparing two strings lexicographically.\nThe result will be 0 if a==b, -1 if a < b, and +1 if a > b.\n\nCompare is included only for symmetry with package bytes.\nIt is usually clearer and always faster to use the built-in\nstring comparison operators ==, <, >, and so on.\n\nGo input arguments: (a string, b string)\n\nGo return type: int\n\nJoker input arguments: [^String a, ^String b]\n\nJoker return type: Int"
@@ -11200,6 +11790,14 @@ JOKER FUNC strings.TrimSuffix from strings/strings.go:
     :doc "Provides a low-level interface to the strings package."
     :empty false}
   go.std.strings)
+JOKER TYPE sync.Cond from sync/cond.go:
+JOKER TYPE sync.Locker from sync/mutex.go:
+JOKER TYPE sync.Map from sync/map.go:
+JOKER TYPE sync.Mutex from sync/mutex.go:
+JOKER TYPE sync.Once from sync/once.go:
+JOKER TYPE sync.Pool from sync/pool.go:
+JOKER TYPE sync.RWMutex from sync/rwmutex.go:
+JOKER TYPE sync.WaitGroup from sync/waitgroup.go:
 JOKER FUNC sync.NewCond from sync/cond.go:
 (defn NewCond
   "NewCond returns a new Cond with Locker l.\n\nGo input arguments: (l Locker)\n\nGo return type: *Cond\n\nJoker input arguments: [^go.std.sync/Locker l]\n\nJoker return type: (atom-of go.std.sync/Cond)"
@@ -11417,6 +12015,77 @@ JOKER FUNC sync/atomic.SwapUintptr from sync/atomic/doc.go:
 ;;    :go "__swapUintptr(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfuintptr(_addr)), _new)"}
 ;;   [^Object _addr, ^UIntPtr _new])
 
+JOKER TYPE syscall.Cmsghdr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Conn from syscall/net.go:
+JOKER TYPE syscall.Credential from syscall/exec_unix.go:
+JOKER TYPE syscall.Dirent from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.EpollEvent from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Errno from syscall/syscall_unix.go:
+JOKER TYPE syscall.FdSet from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Flock_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Fsid from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.ICMPv6Filter from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IPMreq from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IPMreqn from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IPv6MTUInfo from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IPv6Mreq from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IfAddrmsg from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.IfInfomsg from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Inet4Pktinfo from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Inet6Pktinfo from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.InotifyEvent from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Iovec from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Linger from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Msghdr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.NetlinkMessage from syscall/netlink_linux.go:
+JOKER TYPE syscall.NetlinkRouteAttr from syscall/netlink_linux.go:
+JOKER TYPE syscall.NetlinkRouteRequest from syscall/netlink_linux.go:
+JOKER TYPE syscall.NlAttr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.NlMsgerr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.NlMsghdr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.ProcAttr from syscall/exec_unix.go:
+JOKER TYPE syscall.PtraceRegs from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawConn from syscall/net.go:
+JOKER TYPE syscall.RawSockaddr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrAny from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrInet4 from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrInet6 from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrLinklayer from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrNetlink from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RawSockaddrUnix from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Rlimit from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RtAttr from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RtGenmsg from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RtMsg from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.RtNexthop from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Rusage from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Signal from syscall/syscall_unix.go:
+JOKER TYPE syscall.SockFilter from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.SockFprog from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Sockaddr from syscall/syscall_unix.go:
+JOKER TYPE syscall.SockaddrInet4 from syscall/syscall_unix.go:
+JOKER TYPE syscall.SockaddrInet6 from syscall/syscall_unix.go:
+JOKER TYPE syscall.SockaddrLinklayer from syscall/syscall_linux.go:
+JOKER TYPE syscall.SockaddrNetlink from syscall/syscall_linux.go:
+JOKER TYPE syscall.SockaddrUnix from syscall/syscall_unix.go:
+JOKER TYPE syscall.SocketControlMessage from syscall/sockcmsg_unix.go:
+JOKER TYPE syscall.Stat_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Statfs_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.SysProcAttr from syscall/exec_linux.go:
+JOKER TYPE syscall.SysProcIDMap from syscall/exec_linux.go:
+JOKER TYPE syscall.Sysinfo_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.TCPInfo from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Termios from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Time_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Timespec from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Timeval from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Timex from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Tms from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Ucred from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Ustat_t from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Utimbuf from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.Utsname from syscall/ztypes_linux_amd64.go:
+JOKER TYPE syscall.WaitStatus from syscall/syscall_linux.go:
 JOKER FUNC syscall.Accept from syscall/syscall_linux.go:
 (defn Accept
   "Go input arguments: (fd int)\n\nGo return type: (nfd int, sa Sockaddr, err error)\n\nJoker input arguments: [^Int fd]\n\nJoker return type: [Int go.std.syscall/Sockaddr Error]"
@@ -13013,6 +13682,17 @@ JOKER FUNC syscall.Write from syscall/syscall_unix.go:
     :doc "Provides a low-level interface to the syscall package."
     :empty false}
   go.std.syscall)
+JOKER TYPE testing.B from testing/benchmark.go:
+JOKER TYPE testing.BenchmarkResult from testing/benchmark.go:
+JOKER TYPE testing.Cover from testing/cover.go:
+JOKER TYPE testing.CoverBlock from testing/cover.go:
+JOKER TYPE testing.InternalBenchmark from testing/benchmark.go:
+JOKER TYPE testing.InternalExample from testing/example.go:
+JOKER TYPE testing.InternalTest from testing/testing.go:
+JOKER TYPE testing.M from testing/testing.go:
+JOKER TYPE testing.PB from testing/benchmark.go:
+JOKER TYPE testing.T from testing/testing.go:
+JOKER TYPE testing.TB from testing/testing.go:
 JOKER FUNC testing.AllocsPerRun from testing/allocs.go:
 ;; (defn AllocsPerRun
 ;;   "AllocsPerRun returns the average number of allocations during calls to f.\nAlthough the return value has type float64, it will always be an integral value.\n\nTo compute the number of allocations, the function will first be run once as\na warm-up. The average number of allocations over the specified number of\nruns will then be measured and returned.\n\nAllocsPerRun sets GOMAXPROCS to 1 during its measurement and will restore\nit before returning.\n\nGo input arguments: (runs int, f func)\n\nGo return type: ...\n\nJoker input arguments: [^Int runs, ^fn f]\n\nJoker return type: ABEND043(post.go: unsupported built-in type float64)"
@@ -13188,6 +13868,9 @@ JOKER FUNC text/tabwriter.NewWriter from text/tabwriter/tabwriter.go:
 ;;    :go "__newWriter(*_output, _minwidth, _tabwidth, _padding, _padchar, _flags)"}
 ;;   [^io/Writer _output, ^Int _minwidth, ^Int _tabwidth, ^Int _padding, ^Byte _padchar, ^UInt _flags])
 
+JOKER TYPE text/template.ExecError from text/template/exec.go:
+JOKER TYPE text/template.FuncMap from text/template/funcs.go:
+JOKER TYPE text/template.Template from text/template/template.go:
 JOKER FUNC text/template.HTMLEscape from text/template/funcs.go:
 ;; (defn HTMLEscape
 ;;   "HTMLEscape writes to w the escaped HTML equivalent of the plain text data b.\n\nGo input arguments: (w io.Writer, b []byte)\n\nJoker input arguments: [^go.std.io/Writer w, ^(vector-of Byte) b]"
@@ -13279,6 +13962,29 @@ JOKER FUNC text/template.URLQueryEscaper from text/template/funcs.go:
     :doc "Provides a low-level interface to the text/template package."
     :empty false}
   go.std.text.template)
+JOKER TYPE text/template/parse.ActionNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.BoolNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.BranchNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.ChainNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.CommandNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.DotNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.FieldNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.IdentifierNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.IfNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.ListNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.NilNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.Node from text/template/parse/node.go:
+JOKER TYPE text/template/parse.NodeType from text/template/parse/node.go:
+JOKER TYPE text/template/parse.NumberNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.PipeNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.Pos from text/template/parse/node.go:
+JOKER TYPE text/template/parse.RangeNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.StringNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.TemplateNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.TextNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.Tree from text/template/parse/parse.go:
+JOKER TYPE text/template/parse.VariableNode from text/template/parse/node.go:
+JOKER TYPE text/template/parse.WithNode from text/template/parse/node.go:
 JOKER FUNC text/template/parse.IsEmptyTree from text/template/parse/parse.go:
 (defn ^"Bool" IsEmptyTree
   "IsEmptyTree reports whether this tree (node) is empty of everything but space.\n\nGo input arguments: (n Node)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.text.template.parse/Node n]\n\nJoker return type: Bool"
@@ -13314,6 +14020,14 @@ JOKER FUNC text/template/parse.Parse from text/template/parse/parse.go:
     :doc "Provides a low-level interface to the text/template/parse package."
     :empty false}
   go.std.text.template.parse)
+JOKER TYPE time.Duration from time/time.go:
+JOKER TYPE time.Location from time/zoneinfo.go:
+JOKER TYPE time.Month from time/time.go:
+JOKER TYPE time.ParseError from time/format.go:
+JOKER TYPE time.Ticker from time/tick.go:
+JOKER TYPE time.Time from time/time.go:
+JOKER TYPE time.Timer from time/sleep.go:
+JOKER TYPE time.Weekday from time/time.go:
 JOKER FUNC time.After from time/sleep.go:
 ;; (defn After
 ;;   "After waits for the duration to elapse and then sends the current time\non the returned channel.\nIt is equivalent to NewTimer(d).C.\nThe underlying Timer is not recovered by the garbage collector\nuntil the timer fires. If efficiency is a concern, use NewTimer\ninstead and call Timer.Stop if the timer is no longer needed.\n\nGo input arguments: (d Duration)\n\nGo return type: ...\n\nJoker input arguments: [^go.std.time/Duration d]\n\nJoker return type: ABEND883(post.go: unrecognized Expr type *ast.ChanType at: /usr/local/go-1.11.4/src/time/sleep.go:152:24)"

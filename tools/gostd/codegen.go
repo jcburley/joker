@@ -326,5 +326,5 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	typeName := path.Base(t)
 	baseTypeName := ti.td.Name
 	others := maybeImplicitConvert(typeName, ti.td)
-	ti.typeCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	ti.goCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 }

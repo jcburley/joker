@@ -58,10 +58,11 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 }
 
 type typeInfo struct {
-	sourceFile *goFile
-	td         *TypeSpec
-	where      token.Pos
-	typeCode   string
+	sourceFile  *goFile
+	td          *TypeSpec
+	where       token.Pos
+	clojureCode string
+	goCode      string
 }
 
 type typeMap map[string]*typeInfo
@@ -90,7 +91,7 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
-	types[typename] = &typeInfo{gf, ts, ts.Pos(), ""}
+	types[typename] = &typeInfo{gf, ts, ts.Pos(), "", ""}
 }
 
 func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
