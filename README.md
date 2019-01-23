@@ -317,7 +317,23 @@ As a result, pointers to such objects are returned as `atom` references to the v
 
 ### Constructing a GoObject
 
-TBD.
+Akin to Clojure, `(type. ...)` functions are supported for `GoObject` types:
+
+```
+user=> (use '[go.std.os])
+nil
+user=> (FileMode. 0321)
+--wx-w---x
+user=> (use '[go.std.html.template])
+nil
+user=> (type (HTML. "this is an html object"))
+GoObject[template.HTML]
+user=>
+```
+
+If a particular constructor seems to be missing, that likely indicates lack of support for the underlying type. Most built-in types are supported.
+
+NOTE: The `(new ...)` special form is _not_ currently supported.
 
 ### Calling a Go API
 
