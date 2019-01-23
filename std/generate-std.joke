@@ -49,9 +49,12 @@
               (rpl "-" "_")
               (rpl "?" "")
               (str "_"))]
-    (if (s/ends-with? fn-name "?")
+    (cond
+      (s/ends-with? fn-name "?")
       (str "is" n)
-      n)))
+      (s/ends-with? fn-name ".")
+      (rpl n "." "")
+      :else n)))
 
 (defn resolve-package
   [pkg ns-name-final]

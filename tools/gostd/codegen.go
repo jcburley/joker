@@ -331,7 +331,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	const clojureTemplate = `
-(defn %s.
+(defn ^"GoObject" %s.
   "Constructor for %s"
   {:added "1.0"
    :go "_Construct%s(_v)"}
@@ -382,10 +382,16 @@ func nonGoObjectTypeFor(ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extr
 	case *Ident:
 		switch t.Name {
 		case "string":
-			return "case String", "String", "String().S"
-		case "uint32":
+			return "case String", "String", "S"
+		case "bool":
+			return "case Bool", "Bool", "Bool().B"
+		case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
 			return "case Number", "Number", "Int().I"
+		case "int64":
+			return "case Number", "Number", "BigInt().Int64()"
+		case "uint64", "uintptr":
+			return "case Number", "Number", "BigInt().Uint64()"
 		}
 	}
-	return "default", "whatever", fmt.Sprintf("ABEND674(unknown underlying type %v for %s)", ti.td.Type, ti.td.Name)
+	return "default", "whatever", fmt.Sprintf("ABEND674(unknown underlying type %T for %s)", ti.td.Type, ti.td.Name)
 }
