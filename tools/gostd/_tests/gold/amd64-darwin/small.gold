@@ -10,28 +10,28 @@ Processing net/url:
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
 Processing package=net/url:
 JOKER TYPE net.MX from net/dnsclient.go:
-;; (defn MX.
+;; (defn ^"GoObject" MX.
 ;;   "Constructor for net.MX"
 ;;   {:added "1.0"
 ;;    :go "_ConstructMX(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net.NS from net/dnsclient.go:
-;; (defn NS.
+;; (defn ^"GoObject" NS.
 ;;   "Constructor for net.NS"
 ;;   {:added "1.0"
 ;;    :go "_ConstructNS(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net.Resolver from net/lookup.go:
-;; (defn Resolver.
+;; (defn ^"GoObject" Resolver.
 ;;   "Constructor for net.Resolver"
 ;;   {:added "1.0"
 ;;    :go "_ConstructResolver(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net.SRV from net/dnsclient.go:
-;; (defn SRV.
+;; (defn ^"GoObject" SRV.
 ;;   "Constructor for net.SRV"
 ;;   {:added "1.0"
 ;;    :go "_ConstructSRV(_v)"}
@@ -108,42 +108,42 @@ JOKER FUNC net.LookupTXT from net/lookup.go:
     :empty false}
   go.std.net)
 JOKER TYPE net/url.Error from net/url/url.go:
-;; (defn Error.
+;; (defn ^"GoObject" Error.
 ;;   "Constructor for url.Error"
 ;;   {:added "1.0"
 ;;    :go "_ConstructError(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net/url.EscapeError from net/url/url.go:
-(defn EscapeError.
+(defn ^"GoObject" EscapeError.
   "Constructor for url.EscapeError"
   {:added "1.0"
    :go "_ConstructEscapeError(_v)"}
   [^Object _v])
 
 JOKER TYPE net/url.InvalidHostError from net/url/url.go:
-(defn InvalidHostError.
+(defn ^"GoObject" InvalidHostError.
   "Constructor for url.InvalidHostError"
   {:added "1.0"
    :go "_ConstructInvalidHostError(_v)"}
   [^Object _v])
 
 JOKER TYPE net/url.URL from net/url/url.go:
-;; (defn URL.
+;; (defn ^"GoObject" URL.
 ;;   "Constructor for url.URL"
 ;;   {:added "1.0"
 ;;    :go "_ConstructURL(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net/url.Userinfo from net/url/url.go:
-;; (defn Userinfo.
+;; (defn ^"GoObject" Userinfo.
 ;;   "Constructor for url.Userinfo"
 ;;   {:added "1.0"
 ;;    :go "_ConstructUserinfo(_v)"}
 ;;   [^Object _v])
 
 JOKER TYPE net/url.Values from net/url/url.go:
-;; (defn Values.
+;; (defn ^"GoObject" Values.
 ;;   "Constructor for url.Values"
 ;;   {:added "1.0"
 ;;    :go "_ConstructValues(_v)"}
@@ -242,7 +242,7 @@ func ExtractGoObjectMX(args []Object, index int) *_net.MX {
 // 			return _g
 // 		}
 // 	default:
-// 		return _net.MX(_o.ABEND674(unknown underlying type &{18890 0xc00012e000 false} for MX))
+// 		return _net.MX(_o.ABEND674(unknown underlying type *ast.StructType for MX))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or whatever"))
 // }
@@ -270,7 +270,7 @@ func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 // 			return _g
 // 		}
 // 	default:
-// 		return _net.NS(_o.ABEND674(unknown underlying type &{19425 0xc00012e870 false} for NS))
+// 		return _net.NS(_o.ABEND674(unknown underlying type *ast.StructType for NS))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or whatever"))
 // }
@@ -298,7 +298,7 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 // 			return _g
 // 		}
 // 	default:
-// 		return _net.Resolver(_o.ABEND674(unknown underlying type &{2955 0xc0000758c0 false} for Resolver))
+// 		return _net.Resolver(_o.ABEND674(unknown underlying type *ast.StructType for Resolver))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or whatever"))
 // }
@@ -326,7 +326,7 @@ func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 // 			return _g
 // 		}
 // 	default:
-// 		return _net.SRV(_o.ABEND674(unknown underlying type &{17610 0xc000124f90 false} for SRV))
+// 		return _net.SRV(_o.ABEND674(unknown underlying type *ast.StructType for SRV))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or whatever"))
 // }
@@ -472,7 +472,7 @@ func ExtractGoObjectError(args []Object, index int) *_url.Error {
 // 			return _g
 // 		}
 // 	default:
-// 		return _url.Error(_o.ABEND674(unknown underlying type &{20084 0xc00012ec00 false} for Error))
+// 		return _url.Error(_o.ABEND674(unknown underlying type *ast.StructType for Error))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or whatever"))
 // }
@@ -503,7 +503,7 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 			return _g
 		}
 	case String:
-		return _url.EscapeError(_o.String().S)
+		return _url.EscapeError(_o.S)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or String"))
 }
@@ -534,7 +534,7 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 			return _g
 		}
 	case String:
-		return _url.InvalidHostError(_o.String().S)
+		return _url.InvalidHostError(_o.S)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or String"))
 }
@@ -562,7 +562,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 			return _g
 // 		}
 // 	default:
-// 		return _url.URL(_o.ABEND674(unknown underlying type &{28944 0xc0001550e0 false} for URL))
+// 		return _url.URL(_o.ABEND674(unknown underlying type *ast.StructType for URL))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or whatever"))
 // }
@@ -590,7 +590,7 @@ func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 // 			return _g
 // 		}
 // 	default:
-// 		return _url.Userinfo(_o.ABEND674(unknown underlying type &{30372 0xc000155380 false} for Userinfo))
+// 		return _url.Userinfo(_o.ABEND674(unknown underlying type *ast.StructType for Userinfo))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or whatever"))
 // }
@@ -618,7 +618,7 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 			return _g
 // 		}
 // 	default:
-// 		return _url.Values(_o.ABEND674(unknown underlying type &{42747 string 0xc00017e270} for Values))
+// 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or whatever"))
 // }
