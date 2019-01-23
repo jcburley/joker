@@ -10,9 +10,33 @@ Processing net/url:
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
 Processing package=net/url:
 JOKER TYPE net.MX from net/dnsclient.go:
+(defn MX.
+  "Constructor for net.MX"
+  {:added "1.0"
+   :go "_ConstructMX(_v)"}
+  [^Object _v])
+
 JOKER TYPE net.NS from net/dnsclient.go:
+(defn NS.
+  "Constructor for net.NS"
+  {:added "1.0"
+   :go "_ConstructNS(_v)"}
+  [^Object _v])
+
 JOKER TYPE net.Resolver from net/lookup.go:
+(defn Resolver.
+  "Constructor for net.Resolver"
+  {:added "1.0"
+   :go "_ConstructResolver(_v)"}
+  [^Object _v])
+
 JOKER TYPE net.SRV from net/dnsclient.go:
+(defn SRV.
+  "Constructor for net.SRV"
+  {:added "1.0"
+   :go "_ConstructSRV(_v)"}
+  [^Object _v])
+
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
@@ -84,11 +108,47 @@ JOKER FUNC net.LookupTXT from net/lookup.go:
     :empty false}
   go.std.net)
 JOKER TYPE net/url.Error from net/url/url.go:
+(defn Error.
+  "Constructor for url.Error"
+  {:added "1.0"
+   :go "_ConstructError(_v)"}
+  [^Object _v])
+
 JOKER TYPE net/url.EscapeError from net/url/url.go:
+(defn EscapeError.
+  "Constructor for url.EscapeError"
+  {:added "1.0"
+   :go "_ConstructEscapeError(_v)"}
+  [^Object _v])
+
 JOKER TYPE net/url.InvalidHostError from net/url/url.go:
+(defn InvalidHostError.
+  "Constructor for url.InvalidHostError"
+  {:added "1.0"
+   :go "_ConstructInvalidHostError(_v)"}
+  [^Object _v])
+
 JOKER TYPE net/url.URL from net/url/url.go:
+(defn URL.
+  "Constructor for url.URL"
+  {:added "1.0"
+   :go "_ConstructURL(_v)"}
+  [^Object _v])
+
 JOKER TYPE net/url.Userinfo from net/url/url.go:
+(defn Userinfo.
+  "Constructor for url.Userinfo"
+  {:added "1.0"
+   :go "_ConstructUserinfo(_v)"}
+  [^Object _v])
+
 JOKER TYPE net/url.Values from net/url/url.go:
+(defn Values.
+  "Constructor for url.Values"
+  {:added "1.0"
+   :go "_ConstructValues(_v)"}
+  [^Object _v])
+
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
