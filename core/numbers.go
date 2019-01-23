@@ -35,8 +35,14 @@ type (
 	RatioOps    struct{}
 )
 
+const (
+	INTEGER_CATEGORY  = iota
+	FLOATING_CATEGORY = iota
+	RATIO_CATEGORY    = iota
+)
+
 const MAX_UINT = ^uint(0)
-const MAX_INT = int(MAX_UINT >> 1)
+const MAX_INT = int(^uint(0) >> 1)
 const MIN_INT = -MAX_INT - 1
 const MAX_RUNE = int(^uint32(0) >> 1)
 const MIN_RUNE = -MAX_RUNE - 1
@@ -48,6 +54,13 @@ var (
 	BIGFLOAT_OPS = BigFloatOps{}
 	RATIO_OPS    = RatioOps{}
 )
+
+func ratioOrInt(r *big.Rat) Number {
+	if r.IsInt() {
+		return MakeInt(int(r.Num().Int64()))
+	}
+	return &Ratio{r: *r}
+}
 
 func (ops IntOps) Combine(other Ops) Ops {
 	return other
@@ -249,8 +262,7 @@ func (ops BigFloatOps) Add(x, y Number) Number {
 func (ops RatioOps) Add(x, y Number) Number {
 	r := big.Rat{}
 	r.Add(x.Ratio(), y.Ratio())
-	res := Ratio{r: r}
-	return &res
+	return ratioOrInt(&r)
 }
 
 // Subtract
@@ -280,8 +292,7 @@ func (ops BigFloatOps) Subtract(x, y Number) Number {
 func (ops RatioOps) Subtract(x, y Number) Number {
 	r := big.Rat{}
 	r.Sub(x.Ratio(), y.Ratio())
-	res := Ratio{r: r}
-	return &res
+	return ratioOrInt(&r)
 }
 
 // Multiply
@@ -311,8 +322,7 @@ func (ops BigFloatOps) Multiply(x, y Number) Number {
 func (ops RatioOps) Multiply(x, y Number) Number {
 	r := big.Rat{}
 	r.Mul(x.Ratio(), y.Ratio())
-	res := Ratio{r: r}
-	return &res
+	return ratioOrInt(&r)
 }
 
 func panicOnZero(ops Ops, n Number) {
@@ -326,11 +336,7 @@ func panicOnZero(ops Ops, n Number) {
 func (ops IntOps) Divide(x, y Number) Number {
 	panicOnZero(ops, y)
 	b := big.NewRat(int64(x.Int().I), int64(y.Int().I))
-	if b.IsInt() {
-		return Int{I: int(b.Num().Int64())}
-	}
-	res := Ratio{r: *b}
-	return &res
+	return ratioOrInt(b)
 }
 
 func (ops DoubleOps) Divide(x, y Number) Number {
@@ -362,8 +368,7 @@ func (ops RatioOps) Divide(x, y Number) Number {
 	}
 	r := big.Rat{}
 	r.Quo(x.Ratio(), y.Ratio())
-	res := Ratio{r: r}
-	return &res
+	return ratioOrInt(&r)
 }
 
 // Quotient
@@ -447,7 +452,7 @@ func (ops RatioOps) Rem(x, y Number) Number {
 	f, _ := z.Quo(n, d).Float64()
 	d.Mul(d, big.NewRat(int64(f), 1))
 	z.Sub(n, d)
-	return &Ratio{r: z}
+	return ratioOrInt(&z)
 }
 
 // IsZero
@@ -582,6 +587,10 @@ func (ops RatioOps) Eq(x Number, y Number) bool {
 	return x.Ratio().Cmp(y.Ratio()) == 0
 }
 
+func numbersEq(x Number, y Number) bool {
+	return GetOps(x).Combine(GetOps(y)).Eq(x, y)
+}
+
 func CompareNumbers(x Number, y Number) int {
 	ops := GetOps(x).Combine(GetOps(y))
 	if ops.Lt(x, y) {
@@ -607,4 +616,17 @@ func Min(x Number, y Number) Number {
 		return x
 	}
 	return y
+}
+
+func category(x Number) int {
+	switch x.(type) {
+	case *BigFloat:
+		return FLOATING_CATEGORY
+	case Double:
+		return FLOATING_CATEGORY
+	case *Ratio:
+		return RATIO_CATEGORY
+	default:
+		return INTEGER_CATEGORY
+	}
 }

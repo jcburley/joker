@@ -221,6 +221,11 @@ cd $GOPATH/src/github.com/candid82/joker
 ./run.sh --version && go install
 ```
 
+## Coding Guidelines
+
+- Dashes (`-`) in namespaces are not converted to underscores (`_`) by Joker, so (unlike with Clojure) there's no need to name `.joke` files accordingly.
+- Avoid `:refer :all` and the `use` function, as that reduces the effectiveness of linting.
+
 # The go.std.* Namespaces
 
 On this experimental branch, Joker is built against a Golang tree in order to pull in and "wrap" functions (and, someday, types) provides by Go `std` packages.

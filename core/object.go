@@ -527,6 +527,15 @@ func hashGobEncoder(e gob.GobEncoder) uint32 {
 	return h.Sum32()
 }
 
+func equalsNumbers(x Number, y interface{}) bool {
+	switch y := y.(type) {
+	case Number:
+		return category(x) == category(y) && numbersEq(x, y)
+	default:
+		return false
+	}
+}
+
 func (a *Atom) ToString(escape bool) string {
 	return "#object[Atom {:val " + a.value.ToString(escape) + "}]"
 }
@@ -958,22 +967,7 @@ func (rat *Ratio) ToString(escape bool) string {
 }
 
 func (rat *Ratio) Equals(other interface{}) bool {
-	if rat == other {
-		return true
-	}
-	switch r := other.(type) {
-	case *Ratio:
-		return rat.r.Cmp(&r.r) == 0
-	case *BigInt:
-		var otherRat big.Rat
-		otherRat.SetInt(&r.b)
-		return rat.r.Cmp(&otherRat) == 0
-	case Int:
-		var otherRat big.Rat
-		otherRat.SetInt64(int64(r.I))
-		return rat.r.Cmp(&otherRat) == 0
-	}
-	return false
+	return equalsNumbers(rat, other)
 }
 
 func (rat *Ratio) GetType() *Type {
@@ -999,17 +993,7 @@ func (bi *BigInt) ToString(escape bool) string {
 }
 
 func (bi *BigInt) Equals(other interface{}) bool {
-	if bi == other {
-		return true
-	}
-	switch b := other.(type) {
-	case *BigInt:
-		return bi.b.Cmp(&b.b) == 0
-	case Int:
-		bi2 := big.NewInt(int64(b.I))
-		return bi.b.Cmp(bi2) == 0
-	}
-	return false
+	return equalsNumbers(bi, other)
 }
 
 func (bi *BigInt) GetType() *Type {
@@ -1029,17 +1013,7 @@ func (bf *BigFloat) ToString(escape bool) string {
 }
 
 func (bf *BigFloat) Equals(other interface{}) bool {
-	if bf == other {
-		return true
-	}
-	switch b := other.(type) {
-	case *BigFloat:
-		return bf.b.Cmp(&b.b) == 0
-	case Double:
-		bf2 := big.NewFloat(b.D)
-		return bf.b.Cmp(bf2) == 0
-	}
-	return false
+	return equalsNumbers(bf, other)
 }
 
 func (bf *BigFloat) GetType() *Type {
@@ -1167,12 +1141,7 @@ func (d Double) ToString(escape bool) string {
 }
 
 func (d Double) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Double:
-		return d.D == other.D
-	default:
-		return false
-	}
+	return equalsNumbers(d, other)
 }
 
 func (d Double) GetType() *Type {
@@ -1204,12 +1173,7 @@ func MakeInt(i int) Int {
 }
 
 func (i Int) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case Int:
-		return i.I == other.I
-	default:
-		return false
-	}
+	return equalsNumbers(i, other)
 }
 
 func (i Int) GetType() *Type {
