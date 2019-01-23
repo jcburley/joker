@@ -308,7 +308,7 @@ func genType(t string, ti *typeInfo) {
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
 
-	const goTemplate = `
+	const goExtractTemplate = `
 func ExtractGoObject%s(args []Object, index int) *_%s {
 	a := args[index]
 	switch o := a.(type) {
@@ -328,7 +328,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	baseTypeName := ti.td.Name
 
 	others := maybeImplicitConvert(typeName, ti.td)
-	ti.goCode = fmt.Sprintf(goTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	const clojureTemplate = `
 (defn %s.
@@ -339,4 +339,53 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 
 	ti.clojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
+
+	const goConstructTemplate = `
+func _Construct%s(_v Object) _%s {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _%s:
+			return _g
+		}
+	%s
+	}
+	panic(RT.NewArgTypeError(0, _v, "%s"))
+}
+`
+
+	nonGoObject, expectedObjectDoc := nonGoObjectCase(typeName, ti)
+	goConstructor := fmt.Sprintf(goConstructTemplate, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
+
+	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
+		ti.clojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.clojureCode, `;; $1`)
+		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
+		trackAbends(ti.clojureCode)
+		trackAbends(goConstructor)
+	}
+
+	ti.goCode += goConstructor
+}
+
+func nonGoObjectCase(typeName string, ti *typeInfo) (string, string) {
+	const nonGoObjectCaseTemplate = `%s:
+		return _%s(_o.%s)`
+
+	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(ti)
+
+	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, typeName, extractClojureObject),
+		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc)
+}
+
+func nonGoObjectTypeFor(ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+	switch t := ti.td.Type.(type) {
+	case *Ident:
+		switch t.Name {
+		case "string":
+			return "case String", "String", "String().S"
+		case "uint32":
+			return "case Number", "Number", "Int().I"
+		}
+	}
+	return "default", "whatever", fmt.Sprintf("ABEND674(unknown underlying type %v for %s)", ti.td.Type, ti.td.Name)
 }
