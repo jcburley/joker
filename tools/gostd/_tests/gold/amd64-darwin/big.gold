@@ -335,6 +335,41 @@ Ignoring test code in example_test.go
 Matchfile(_tests/big/src/net/url/url.go) => true <nil>
 Ignoring test code in url_test.go
 Processing package=net/url:
+JOKER TYPE net.Addr from net/net.go:
+JOKER TYPE net.AddrError from net/net.go:
+JOKER TYPE net.Buffers from net/net.go:
+JOKER TYPE net.Conn from net/net.go:
+JOKER TYPE net.DNSConfigError from net/net.go:
+JOKER TYPE net.DNSError from net/net.go:
+JOKER TYPE net.Dialer from net/dial.go:
+JOKER TYPE net.Error from net/net.go:
+JOKER TYPE net.Flags from net/interface.go:
+JOKER TYPE net.HardwareAddr from net/mac.go:
+JOKER TYPE net.IP from net/ip.go:
+JOKER TYPE net.IPAddr from net/iprawsock.go:
+JOKER TYPE net.IPConn from net/iprawsock.go:
+JOKER TYPE net.IPMask from net/ip.go:
+JOKER TYPE net.IPNet from net/ip.go:
+JOKER TYPE net.Interface from net/interface.go:
+JOKER TYPE net.InvalidAddrError from net/net.go:
+JOKER TYPE net.ListenConfig from net/dial.go:
+JOKER TYPE net.Listener from net/net.go:
+JOKER TYPE net.MX from net/dnsclient.go:
+JOKER TYPE net.NS from net/dnsclient.go:
+JOKER TYPE net.OpError from net/net.go:
+JOKER TYPE net.PacketConn from net/net.go:
+JOKER TYPE net.ParseError from net/net.go:
+JOKER TYPE net.Resolver from net/lookup.go:
+JOKER TYPE net.SRV from net/dnsclient.go:
+JOKER TYPE net.TCPAddr from net/tcpsock.go:
+JOKER TYPE net.TCPConn from net/tcpsock.go:
+JOKER TYPE net.TCPListener from net/tcpsock.go:
+JOKER TYPE net.UDPAddr from net/udpsock.go:
+JOKER TYPE net.UDPConn from net/udpsock.go:
+JOKER TYPE net.UnixAddr from net/unixsock.go:
+JOKER TYPE net.UnixConn from net/unixsock.go:
+JOKER TYPE net.UnixListener from net/unixsock.go:
+JOKER TYPE net.UnknownNetworkError from net/net.go:
 JOKER FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
@@ -636,6 +671,30 @@ JOKER FUNC net.SplitHostPort from net/ipsock.go:
    :go "__splitHostPort(_hostport)"}
   [^String _hostport])
 
+JOKER TYPE net/http.Client from net/http/client.go:
+JOKER TYPE net/http.CloseNotifier from net/http/server.go:
+JOKER TYPE net/http.ConnState from net/http/server.go:
+JOKER TYPE net/http.Cookie from net/http/cookie.go:
+JOKER TYPE net/http.CookieJar from net/http/jar.go:
+JOKER TYPE net/http.Dir from net/http/fs.go:
+JOKER TYPE net/http.File from net/http/fs.go:
+JOKER TYPE net/http.FileSystem from net/http/fs.go:
+JOKER TYPE net/http.Flusher from net/http/server.go:
+JOKER TYPE net/http.Handler from net/http/server.go:
+JOKER TYPE net/http.HandlerFunc from net/http/server.go:
+JOKER TYPE net/http.Header from net/http/header.go:
+JOKER TYPE net/http.Hijacker from net/http/server.go:
+JOKER TYPE net/http.ProtocolError from net/http/request.go:
+JOKER TYPE net/http.PushOptions from net/http/http.go:
+JOKER TYPE net/http.Pusher from net/http/http.go:
+JOKER TYPE net/http.Request from net/http/request.go:
+JOKER TYPE net/http.Response from net/http/response.go:
+JOKER TYPE net/http.ResponseWriter from net/http/server.go:
+JOKER TYPE net/http.RoundTripper from net/http/client.go:
+JOKER TYPE net/http.SameSite from net/http/cookie.go:
+JOKER TYPE net/http.ServeMux from net/http/server.go:
+JOKER TYPE net/http.Server from net/http/server.go:
+JOKER TYPE net/http.Transport from net/http/transport.go:
 JOKER FUNC net/http.CanonicalHeaderKey from net/http/header.go:
 (defn ^"String" CanonicalHeaderKey
   "CanonicalHeaderKey returns the canonical format of the\nheader key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
@@ -874,6 +933,7 @@ JOKER FUNC net/http.TimeoutHandler from net/http/server.go:
 ;;    :go "__timeoutHandler(*_h, *_dt, _msg)"}
 ;;   [^http/Handler _h, ^time/Duration _dt, ^String _msg])
 
+JOKER TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 JOKER FUNC net/http/cgi.Request from net/http/cgi/child.go:
 (defn Request
   "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [(atom-of go.std.net.http/Request) Error]"
@@ -895,6 +955,9 @@ JOKER FUNC net/http/cgi.Serve from net/http/cgi/child.go:
 ;;    :go "cgi.Serve(*_handler)"}
 ;;   [^http/Handler _handler])
 
+JOKER TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
+JOKER TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
+JOKER TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 JOKER FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 (defn New
   "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(atom-of go.std.net.http.cookiejar/Options) o]\n\nJoker return type: [(atom-of go.std.net.http.cookiejar/Jar) Error]"
@@ -916,6 +979,8 @@ JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 ;;    :go "fcgi.Serve(*_l, *_handler)"}
 ;;   [^net/Listener _l, ^http/Handler _handler])
 
+JOKER TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go:
+JOKER TYPE net/http/httptest.Server from net/http/httptest/server.go:
 JOKER FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 (defn NewRecorder
   "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: (atom-of go.std.net.http.httptest/ResponseRecorder)"
@@ -1070,6 +1135,10 @@ JOKER FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
 ;;    :go "__trace(*_w, _r)"}
 ;;   [^http/ResponseWriter _w, ^http/Request _r])
 
+JOKER TYPE net/mail.Address from net/mail/message.go:
+JOKER TYPE net/mail.AddressParser from net/mail/message.go:
+JOKER TYPE net/mail.Header from net/mail/message.go:
+JOKER TYPE net/mail.Message from net/mail/message.go:
 JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
 (defn ParseAddress
   "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [(atom-of go.std.net.mail/Address) Error]"
@@ -1098,6 +1167,14 @@ JOKER FUNC net/mail.ReadMessage from net/mail/message.go:
 ;;    :go "__readMessage(*_r)"}
 ;;   [^io/Reader _r])
 
+JOKER TYPE net/rpc.Call from net/rpc/client.go:
+JOKER TYPE net/rpc.Client from net/rpc/client.go:
+JOKER TYPE net/rpc.ClientCodec from net/rpc/client.go:
+JOKER TYPE net/rpc.Request from net/rpc/server.go:
+JOKER TYPE net/rpc.Response from net/rpc/server.go:
+JOKER TYPE net/rpc.Server from net/rpc/server.go:
+JOKER TYPE net/rpc.ServerCodec from net/rpc/server.go:
+JOKER TYPE net/rpc.ServerError from net/rpc/client.go:
 JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 ;; (defn Accept
 ;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis net.Listener)\n\nJoker input arguments: [^go.std.net/Listener lis]"
@@ -1224,6 +1301,9 @@ JOKER FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 ;;    :go "__serveConn(*_conn)"}
 ;;   [^io/ReadWriteCloser _conn])
 
+JOKER TYPE net/smtp.Auth from net/smtp/auth.go:
+JOKER TYPE net/smtp.Client from net/smtp/smtp.go:
+JOKER TYPE net/smtp.ServerInfo from net/smtp/auth.go:
 JOKER FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 (defn CRAMMD5Auth
   "CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication\nmechanism as defined in RFC 2195.\nThe returned Auth uses the given username and secret to authenticate\nto the server using the challenge-response mechanism.\n\nGo input arguments: (username string, secret string)\n\nGo return type: Auth\n\nJoker input arguments: [^String username, ^String secret]\n\nJoker return type: go.std.net.smtp/Auth"
@@ -1259,6 +1339,13 @@ JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
 ;;    :go "smtp.SendMail(_addr, *_a, _from, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfstring(_to)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_msg)))"}
 ;;   [^String _addr, ^smtp/Auth _a, ^String _from, ^Object _to, ^Object _msg])
 
+JOKER TYPE net/textproto.Conn from net/textproto/textproto.go:
+JOKER TYPE net/textproto.Error from net/textproto/textproto.go:
+JOKER TYPE net/textproto.MIMEHeader from net/textproto/header.go:
+JOKER TYPE net/textproto.Pipeline from net/textproto/pipeline.go:
+JOKER TYPE net/textproto.ProtocolError from net/textproto/textproto.go:
+JOKER TYPE net/textproto.Reader from net/textproto/reader.go:
+JOKER TYPE net/textproto.Writer from net/textproto/writer.go:
 JOKER FUNC net/textproto.CanonicalMIMEHeaderKey from net/textproto/reader.go:
 (defn ^"String" CanonicalMIMEHeaderKey
   "CanonicalMIMEHeaderKey returns the canonical format of the\nMIME header key s. The canonicalization converts the first\nletter and any letter following a hyphen to upper case;\nthe rest are converted to lowercase. For example, the\ncanonical key for \"accept-encoding\" is \"Accept-Encoding\".\nMIME header keys are assumed to be ASCII only.\nIf s contains a space or invalid header field bytes, it is\nreturned without modifications.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
@@ -1308,6 +1395,12 @@ JOKER FUNC net/textproto.TrimString from net/textproto/textproto.go:
    :go "textproto.TrimString(_s)"}
   [^String _s])
 
+JOKER TYPE net/url.Error from net/url/url.go:
+JOKER TYPE net/url.EscapeError from net/url/url.go:
+JOKER TYPE net/url.InvalidHostError from net/url/url.go:
+JOKER TYPE net/url.URL from net/url/url.go:
+JOKER TYPE net/url.Userinfo from net/url/url.go:
+JOKER TYPE net/url.Values from net/url/url.go:
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
