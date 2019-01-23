@@ -166,7 +166,7 @@ func genFunction(fn *funcInfo) {
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := filepath.Base(pkgDirUnix)
 
-	const jokerTemplate = `
+	const clojureTemplate = `
 (defn %s%s
 %s  {:added "1.0"
    :go "%s"}
@@ -188,7 +188,7 @@ func genFunction(fn *funcInfo) {
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
 
-	clojureFn := fmt.Sprintf(jokerTemplate, clojureReturnType, d.Name.Name,
+	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
 		commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc),
 		cl2golCall, fc.clojureParamList)
@@ -308,7 +308,7 @@ func genType(t string, ti *typeInfo) {
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
 
-	const exTemplate = `
+	const goTemplate = `
 func ExtractGoObject%s(args []Object, index int) *_%s {
 	a := args[index]
 	switch o := a.(type) {
@@ -323,8 +323,20 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
 }
 `
+
 	typeName := path.Base(t)
 	baseTypeName := ti.td.Name
+
 	others := maybeImplicitConvert(typeName, ti.td)
-	ti.goCode = fmt.Sprintf(exTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	ti.goCode = fmt.Sprintf(goTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+
+	const clojureTemplate = `
+(defn %s.
+  "Constructor for %s"
+  {:added "1.0"
+   :go "_Construct%s(_v)"}
+  [^Object _v])
+`
+
+	ti.clojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
 }
