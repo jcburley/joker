@@ -369,7 +369,7 @@ func _Construct%s(_v Object) _%s {
 
 func nonGoObjectCase(typeName string, ti *typeInfo) (string, string) {
 	const nonGoObjectCaseTemplate = `%s:
-		return _%s(_o.%s)`
+		return _%s(_o%s)`
 
 	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(ti)
 
@@ -382,16 +382,18 @@ func nonGoObjectTypeFor(ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extr
 	case *Ident:
 		switch t.Name {
 		case "string":
-			return "case String", "String", "S"
+			return "case String", "String", ".S"
 		case "bool":
-			return "case Bool", "Bool", "Bool().B"
+			return "case Bool", "Bool", ".Bool().B"
 		case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
-			return "case Number", "Number", "Int().I"
+			return "case Number", "Number", ".Int().I"
 		case "int64":
-			return "case Number", "Number", "BigInt().Int64()"
+			return "case Number", "Number", ".BigInt().Int64()"
 		case "uint64", "uintptr":
-			return "case Number", "Number", "BigInt().Uint64()"
+			return "case Number", "Number", ".BigInt().Uint64()"
 		}
+	case *StructType:
+		return "case *ArrayMap, *HashMap", "Map", ""
 	}
-	return "default", "whatever", fmt.Sprintf("ABEND674(unknown underlying type %T for %s)", ti.td.Type, ti.td.Name)
+	return "default", "whatever", fmt.Sprintf(".ABEND674(unknown underlying type %T for %s)", ti.td.Type, ti.td.Name)
 }
