@@ -166,7 +166,7 @@ func genFunction(fn *funcInfo) {
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := filepath.Base(pkgDirUnix)
 
-	jfmt := `
+	const jokerTemplate = `
 (defn %s%s
 %s  {:added "1.0"
    :go "%s"}
@@ -188,17 +188,17 @@ func genFunction(fn *funcInfo) {
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
 
-	clojureFn := fmt.Sprintf(jfmt, clojureReturnType, d.Name.Name,
+	clojureFn := fmt.Sprintf(jokerTemplate, clojureReturnType, d.Name.Name,
 		commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc),
 		cl2golCall, fc.clojureParamList)
 
-	gfmt := `
+	const goTemplate = `
 func %s(%s) %s {
 %s}
 `
 
-	goFn := fmt.Sprintf(gfmt, goFname, fc.goParamList, goReturnType, fc.goCode)
+	goFn := fmt.Sprintf(goTemplate, goFname, fc.goParamList, goReturnType, fc.goCode)
 	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
 		goFn = ""
 	}
@@ -288,7 +288,7 @@ func maybeImplicitConvert(typeName string, td *TypeSpec) string {
 	if declType == "" {
 		return ""
 	}
-	const exTemplate string = `case %s:
+	const exTemplate = `case %s:
 		v := _%s(Extract%s(args, index))
 		return &v
 	`
@@ -308,7 +308,7 @@ func genType(t string, ti *typeInfo) {
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
 
-	exTemplate := `
+	const exTemplate = `
 func ExtractGoObject%s(args []Object, index int) *_%s {
 	a := args[index]
 	switch o := a.(type) {
