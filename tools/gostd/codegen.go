@@ -341,7 +341,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.clojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
 
 	const goConstructTemplate = `
-func _Construct%s(_v Object) _%s {
+%sfunc _Construct%s(_v Object) _%s {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
@@ -354,8 +354,8 @@ func _Construct%s(_v Object) _%s {
 }
 `
 
-	nonGoObject, expectedObjectDoc := nonGoObjectCase(typeName, baseTypeName, ti)
-	goConstructor := fmt.Sprintf(goConstructTemplate, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
+	nonGoObject, expectedObjectDoc, helperFunc := nonGoObjectCase(typeName, baseTypeName, ti)
+	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
 
 	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
 		ti.clojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.clojureCode, `;; $1`)
@@ -367,17 +367,16 @@ func _Construct%s(_v Object) _%s {
 	ti.goCode += goConstructor
 }
 
-func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (string, string) {
+func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (string, string, string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
-	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(typeName, baseTypeName, ti)
+	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc := nonGoObjectTypeFor(typeName, baseTypeName, ti)
 
-	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject),
-		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc)
+	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject), fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc), helperFunc
 }
 
-func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject = simpleTypeFor(t.Name)
@@ -386,9 +385,10 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 			return
 		}
 	case *StructType:
-		return "case *ArrayMap, *HashMap", "Map", "_mapTo" + baseTypeName + "(_o)"
+		helperFName := "_mapTo" + baseTypeName
+		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o)", mapToType(helperFName, ti.td.Type)
 	}
-	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name)
+	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name), ""
 }
 
 func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
@@ -405,4 +405,8 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 		return "case Number", "Number", ".BigInt().Uint64()"
 	}
 	return
+}
+
+func mapToType(helperFName string, ty Expr) string {
+	return ""
 }
