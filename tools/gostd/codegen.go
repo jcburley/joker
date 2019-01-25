@@ -386,7 +386,7 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 		}
 	case *StructType:
 		helperFName := "_mapTo" + baseTypeName
-		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o)", mapToType(helperFName, ti.td.Type)
+		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o)", mapToType(helperFName, typeName, ti.td.Type)
 	}
 	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name), ""
 }
@@ -407,6 +407,11 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 	return
 }
 
-func mapToType(helperFName string, ty Expr) string {
-	return ""
+func mapToType(helperFName, typeName string, ty Expr) string {
+	const hFunc = `func %s(Map o) %s {
+	return nil
+}
+
+`
+	return fmt.Sprintf(hFunc, helperFName, "_"+typeName)
 }
