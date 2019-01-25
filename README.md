@@ -74,7 +74,7 @@ joker --hashmap-threshold -1 -e "(pprint (read))"
   |------------|-----------------------|
   | BigFloat   | big.Float             |
   | BigInt     | big.Int               |
-  | Bool       | bool                  |
+  | Boolean       | bool                  |
   | Char       | rune                  |
   | Double     | float64               |
   | Int        | int                   |
