@@ -325,7 +325,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 
 	typeName := path.Base(t)
-	baseTypeName := ti.td.Name
+	baseTypeName := ti.td.Name.Name
 
 	others := maybeImplicitConvert(typeName, ti.td)
 	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
@@ -354,7 +354,7 @@ func _Construct%s(_v Object) _%s {
 }
 `
 
-	nonGoObject, expectedObjectDoc := nonGoObjectCase(typeName, ti)
+	nonGoObject, expectedObjectDoc := nonGoObjectCase(typeName, baseTypeName, ti)
 	goConstructor := fmt.Sprintf(goConstructTemplate, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
 
 	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
@@ -367,17 +367,17 @@ func _Construct%s(_v Object) _%s {
 	ti.goCode += goConstructor
 }
 
-func nonGoObjectCase(typeName string, ti *typeInfo) (string, string) {
+func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (string, string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
-	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(typeName, ti)
+	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(typeName, baseTypeName, ti)
 
 	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject),
 		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc)
 }
 
-func nonGoObjectTypeFor(typeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject = simpleTypeFor(t.Name)
@@ -386,7 +386,7 @@ func nonGoObjectTypeFor(typeName string, ti *typeInfo) (nonGoObjectType, nonGoOb
 			return
 		}
 	case *StructType:
-		return "case *ArrayMap, *HashMap", "Map", "_" + typeName + "(_o)"
+		return "case *ArrayMap, *HashMap", "Map", "_mapTo" + baseTypeName + "(_o)"
 	}
 	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name)
 }
