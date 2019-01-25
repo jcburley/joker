@@ -5,4 +5,23 @@
 # variables. (That's why joker's run.sh file does not vet everything
 # in its entire directory tree.)
 
-go vet -all -shadow=true && go build && ./test.sh --on-error :
+if which shadow >/dev/null 2>/dev/null; then
+    # Install via: go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
+    SHADOW="-vettool=$(which shadow)"
+elif $(go tool vet nonexistent.go 2>&1 | grep -q -v unsupported); then
+    SHADOW="-shadow=true"
+fi
+
+vet() {
+    go vet -all
+
+    if [ -n "$SHADOW" ]; then
+        go vet -all "$SHADOW" && echo "Shadowed-variables check complete."
+    else
+        echo "Not performing shadowed-variables check; consider installing shadow tool via:"
+        echo "  go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow"
+        echo "and rebuilding."
+    fi
+}
+
+vet && go build && ./test.sh --on-error :
