@@ -369,31 +369,40 @@ func _Construct%s(_v Object) _%s {
 
 func nonGoObjectCase(typeName string, ti *typeInfo) (string, string) {
 	const nonGoObjectCaseTemplate = `%s:
-		return _%s(_o%s)`
+		return %s`
 
-	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(ti)
+	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(typeName, ti)
 
-	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, typeName, extractClojureObject),
+	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject),
 		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc)
 }
 
-func nonGoObjectTypeFor(ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func nonGoObjectTypeFor(typeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
-		switch t.Name {
-		case "string":
-			return "case String", "String", ".S"
-		case "bool":
-			return "case Bool", "Bool", ".Bool().B"
-		case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
-			return "case Number", "Number", ".Int().I"
-		case "int64":
-			return "case Number", "Number", ".BigInt().Int64()"
-		case "uint64", "uintptr":
-			return "case Number", "Number", ".BigInt().Uint64()"
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject = simpleTypeFor(t.Name)
+		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
+		if nonGoObjectType != "" {
+			return
 		}
 	case *StructType:
-		return "case *ArrayMap, *HashMap", "Map", ""
+		return "case *ArrayMap, *HashMap", "Map", "_" + typeName + "(_o)"
 	}
-	return "default", "whatever", fmt.Sprintf(".ABEND674(unknown underlying type %T for %s)", ti.td.Type, ti.td.Name)
+	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name)
+}
+
+func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+	switch name {
+	case "string":
+		return "case String", "String", ".S"
+	case "bool":
+		return "case Bool", "Bool", ".Bool().B"
+	case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
+		return "case Number", "Number", ".Int().I"
+	case "int64":
+		return "case Number", "Number", ".BigInt().Int64()"
+	case "uint64", "uintptr":
+		return "case Number", "Number", ".BigInt().Uint64()"
+	}
+	return
 }
