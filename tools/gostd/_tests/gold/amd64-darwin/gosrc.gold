@@ -18508,7 +18508,7 @@ func _ConstructFile(_v Object) _zip.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[zip.File] or Map"))
 }
@@ -18541,7 +18541,7 @@ func _ConstructFileHeader(_v Object) _zip.FileHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileHeader(_o)
+		return _mapToFileHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[zip.FileHeader] or Map"))
 }
@@ -18574,7 +18574,7 @@ func _ConstructReadCloser(_v Object) _zip.ReadCloser {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReadCloser(_o)
+		return _mapToReadCloser(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[zip.ReadCloser] or Map"))
 }
@@ -18607,7 +18607,7 @@ func _ConstructReader(_v Object) _zip.Reader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReader(_o)
+		return _mapToReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[zip.Reader] or Map"))
 }
@@ -18640,7 +18640,7 @@ func _ConstructWriter(_v Object) _zip.Writer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWriter(_o)
+		return _mapToWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[zip.Writer] or Map"))
 }
@@ -18726,7 +18726,7 @@ func _ConstructReadWriter(_v Object) _bufio.ReadWriter {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReadWriter(_o)
+		return _mapToReadWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bufio.ReadWriter] or Map"))
 }
@@ -18759,7 +18759,7 @@ func _ConstructReader(_v Object) _bufio.Reader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReader(_o)
+		return _mapToReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bufio.Reader] or Map"))
 }
@@ -18792,7 +18792,7 @@ func _ConstructScanner(_v Object) _bufio.Scanner {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToScanner(_o)
+		return _mapToScanner(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bufio.Scanner] or Map"))
 }
@@ -18853,7 +18853,7 @@ func _ConstructWriter(_v Object) _bufio.Writer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWriter(_o)
+		return _mapToWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bufio.Writer] or Map"))
 }
@@ -18986,7 +18986,7 @@ func _ConstructBuffer(_v Object) _bytes.Buffer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBuffer(_o)
+		return _mapToBuffer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bytes.Buffer] or Map"))
 }
@@ -19019,7 +19019,7 @@ func _ConstructReader(_v Object) _bytes.Reader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReader(_o)
+		return _mapToReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[bytes.Reader] or Map"))
 }
@@ -19622,7 +19622,7 @@ func _ConstructElement(_v Object) _list.Element {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToElement(_o)
+		return _mapToElement(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[list.Element] or Map"))
 }
@@ -19655,7 +19655,7 @@ func _ConstructList(_v Object) _list.List {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToList(_o)
+		return _mapToList(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[list.List] or Map"))
 }
@@ -19702,7 +19702,7 @@ func _ConstructRing(_v Object) _ring.Ring {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRing(_o)
+		return _mapToRing(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ring.Ring] or Map"))
 }
@@ -19985,7 +19985,7 @@ func _ConstructStreamReader(_v Object) _cipher.StreamReader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStreamReader(_o)
+		return _mapToStreamReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[cipher.StreamReader] or Map"))
 }
@@ -20018,7 +20018,7 @@ func _ConstructStreamWriter(_v Object) _cipher.StreamWriter {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStreamWriter(_o)
+		return _mapToStreamWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[cipher.StreamWriter] or Map"))
 }
@@ -20221,7 +20221,7 @@ func _ConstructCurveParams(_v Object) _elliptic.CurveParams {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCurveParams(_o)
+		return _mapToCurveParams(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elliptic.CurveParams] or Map"))
 }
@@ -20666,7 +20666,7 @@ func _ConstructCertificate(_v Object) _tls.Certificate {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertificate(_o)
+		return _mapToCertificate(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.Certificate] or Map"))
 }
@@ -20699,7 +20699,7 @@ func _ConstructCertificateRequestInfo(_v Object) _tls.CertificateRequestInfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertificateRequestInfo(_o)
+		return _mapToCertificateRequestInfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.CertificateRequestInfo] or Map"))
 }
@@ -20763,7 +20763,7 @@ func _ConstructClientHelloInfo(_v Object) _tls.ClientHelloInfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToClientHelloInfo(_o)
+		return _mapToClientHelloInfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.ClientHelloInfo] or Map"))
 }
@@ -20824,7 +20824,7 @@ func _ConstructClientSessionState(_v Object) _tls.ClientSessionState {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToClientSessionState(_o)
+		return _mapToClientSessionState(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.ClientSessionState] or Map"))
 }
@@ -20857,7 +20857,7 @@ func _ConstructConfig(_v Object) _tls.Config {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConfig(_o)
+		return _mapToConfig(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.Config] or Map"))
 }
@@ -20890,7 +20890,7 @@ func _ConstructConn(_v Object) _tls.Conn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConn(_o)
+		return _mapToConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.Conn] or Map"))
 }
@@ -20923,7 +20923,7 @@ func _ConstructConnectionState(_v Object) _tls.ConnectionState {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConnectionState(_o)
+		return _mapToConnectionState(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.ConnectionState] or Map"))
 }
@@ -20987,7 +20987,7 @@ func _ConstructRecordHeaderError(_v Object) _tls.RecordHeaderError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRecordHeaderError(_o)
+		return _mapToRecordHeaderError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.RecordHeaderError] or Map"))
 }
@@ -21159,7 +21159,7 @@ func _ConstructCertPool(_v Object) _x509.CertPool {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertPool(_o)
+		return _mapToCertPool(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.CertPool] or Map"))
 }
@@ -21192,7 +21192,7 @@ func _ConstructCertificate(_v Object) _x509.Certificate {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertificate(_o)
+		return _mapToCertificate(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.Certificate] or Map"))
 }
@@ -21225,7 +21225,7 @@ func _ConstructCertificateInvalidError(_v Object) _x509.CertificateInvalidError 
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertificateInvalidError(_o)
+		return _mapToCertificateInvalidError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.CertificateInvalidError] or Map"))
 }
@@ -21258,7 +21258,7 @@ func _ConstructCertificateRequest(_v Object) _x509.CertificateRequest {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCertificateRequest(_o)
+		return _mapToCertificateRequest(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.CertificateRequest] or Map"))
 }
@@ -21291,7 +21291,7 @@ func _ConstructConstraintViolationError(_v Object) _x509.ConstraintViolationErro
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConstraintViolationError(_o)
+		return _mapToConstraintViolationError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.ConstraintViolationError] or Map"))
 }
@@ -21355,7 +21355,7 @@ func _ConstructHostnameError(_v Object) _x509.HostnameError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToHostnameError(_o)
+		return _mapToHostnameError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.HostnameError] or Map"))
 }
@@ -21571,7 +21571,7 @@ func _ConstructSystemRootsError(_v Object) _x509.SystemRootsError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSystemRootsError(_o)
+		return _mapToSystemRootsError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.SystemRootsError] or Map"))
 }
@@ -21604,7 +21604,7 @@ func _ConstructUnhandledCriticalExtension(_v Object) _x509.UnhandledCriticalExte
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnhandledCriticalExtension(_o)
+		return _mapToUnhandledCriticalExtension(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.UnhandledCriticalExtension] or Map"))
 }
@@ -21637,7 +21637,7 @@ func _ConstructUnknownAuthorityError(_v Object) _x509.UnknownAuthorityError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnknownAuthorityError(_o)
+		return _mapToUnknownAuthorityError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.UnknownAuthorityError] or Map"))
 }
@@ -21670,7 +21670,7 @@ func _ConstructVerifyOptions(_v Object) _x509.VerifyOptions {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToVerifyOptions(_o)
+		return _mapToVerifyOptions(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.VerifyOptions] or Map"))
 }
@@ -21933,7 +21933,7 @@ func _ConstructColumnType(_v Object) _sql.ColumnType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToColumnType(_o)
+		return _mapToColumnType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.ColumnType] or Map"))
 }
@@ -21966,7 +21966,7 @@ func _ConstructConn(_v Object) _sql.Conn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConn(_o)
+		return _mapToConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Conn] or Map"))
 }
@@ -21999,7 +21999,7 @@ func _ConstructDB(_v Object) _sql.DB {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDB(_o)
+		return _mapToDB(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.DB] or Map"))
 }
@@ -22032,7 +22032,7 @@ func _ConstructDBStats(_v Object) _sql.DBStats {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDBStats(_o)
+		return _mapToDBStats(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.DBStats] or Map"))
 }
@@ -22096,7 +22096,7 @@ func _ConstructNamedArg(_v Object) _sql.NamedArg {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNamedArg(_o)
+		return _mapToNamedArg(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.NamedArg] or Map"))
 }
@@ -22129,7 +22129,7 @@ func _ConstructNullBool(_v Object) _sql.NullBool {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNullBool(_o)
+		return _mapToNullBool(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.NullBool] or Map"))
 }
@@ -22162,7 +22162,7 @@ func _ConstructNullFloat64(_v Object) _sql.NullFloat64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNullFloat64(_o)
+		return _mapToNullFloat64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.NullFloat64] or Map"))
 }
@@ -22195,7 +22195,7 @@ func _ConstructNullInt64(_v Object) _sql.NullInt64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNullInt64(_o)
+		return _mapToNullInt64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.NullInt64] or Map"))
 }
@@ -22228,7 +22228,7 @@ func _ConstructNullString(_v Object) _sql.NullString {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNullString(_o)
+		return _mapToNullString(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.NullString] or Map"))
 }
@@ -22261,7 +22261,7 @@ func _ConstructOut(_v Object) _sql.Out {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOut(_o)
+		return _mapToOut(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Out] or Map"))
 }
@@ -22350,7 +22350,7 @@ func _ConstructRow(_v Object) _sql.Row {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRow(_o)
+		return _mapToRow(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Row] or Map"))
 }
@@ -22383,7 +22383,7 @@ func _ConstructRows(_v Object) _sql.Rows {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRows(_o)
+		return _mapToRows(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Rows] or Map"))
 }
@@ -22444,7 +22444,7 @@ func _ConstructStmt(_v Object) _sql.Stmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStmt(_o)
+		return _mapToStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Stmt] or Map"))
 }
@@ -22477,7 +22477,7 @@ func _ConstructTx(_v Object) _sql.Tx {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTx(_o)
+		return _mapToTx(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.Tx] or Map"))
 }
@@ -22510,7 +22510,7 @@ func _ConstructTxOptions(_v Object) _sql.TxOptions {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTxOptions(_o)
+		return _mapToTxOptions(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sql.TxOptions] or Map"))
 }
@@ -22609,7 +22609,7 @@ func _ConstructChdr32(_v Object) _elf.Chdr32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChdr32(_o)
+		return _mapToChdr32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Chdr32] or Map"))
 }
@@ -22642,7 +22642,7 @@ func _ConstructChdr64(_v Object) _elf.Chdr64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChdr64(_o)
+		return _mapToChdr64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Chdr64] or Map"))
 }
@@ -22768,7 +22768,7 @@ func _ConstructDyn32(_v Object) _elf.Dyn32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDyn32(_o)
+		return _mapToDyn32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Dyn32] or Map"))
 }
@@ -22801,7 +22801,7 @@ func _ConstructDyn64(_v Object) _elf.Dyn64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDyn64(_o)
+		return _mapToDyn64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Dyn64] or Map"))
 }
@@ -22896,7 +22896,7 @@ func _ConstructFile(_v Object) _elf.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.File] or Map"))
 }
@@ -22929,7 +22929,7 @@ func _ConstructFileHeader(_v Object) _elf.FileHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileHeader(_o)
+		return _mapToFileHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.FileHeader] or Map"))
 }
@@ -22962,7 +22962,7 @@ func _ConstructFormatError(_v Object) _elf.FormatError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFormatError(_o)
+		return _mapToFormatError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.FormatError] or Map"))
 }
@@ -22995,7 +22995,7 @@ func _ConstructHeader32(_v Object) _elf.Header32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToHeader32(_o)
+		return _mapToHeader32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Header32] or Map"))
 }
@@ -23028,7 +23028,7 @@ func _ConstructHeader64(_v Object) _elf.Header64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToHeader64(_o)
+		return _mapToHeader64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Header64] or Map"))
 }
@@ -23061,7 +23061,7 @@ func _ConstructImportedSymbol(_v Object) _elf.ImportedSymbol {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToImportedSymbol(_o)
+		return _mapToImportedSymbol(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.ImportedSymbol] or Map"))
 }
@@ -23187,7 +23187,7 @@ func _ConstructProg(_v Object) _elf.Prog {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProg(_o)
+		return _mapToProg(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Prog] or Map"))
 }
@@ -23220,7 +23220,7 @@ func _ConstructProg32(_v Object) _elf.Prog32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProg32(_o)
+		return _mapToProg32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Prog32] or Map"))
 }
@@ -23253,7 +23253,7 @@ func _ConstructProg64(_v Object) _elf.Prog64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProg64(_o)
+		return _mapToProg64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Prog64] or Map"))
 }
@@ -23317,7 +23317,7 @@ func _ConstructProgHeader(_v Object) _elf.ProgHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProgHeader(_o)
+		return _mapToProgHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.ProgHeader] or Map"))
 }
@@ -23722,7 +23722,7 @@ func _ConstructRel32(_v Object) _elf.Rel32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRel32(_o)
+		return _mapToRel32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Rel32] or Map"))
 }
@@ -23755,7 +23755,7 @@ func _ConstructRel64(_v Object) _elf.Rel64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRel64(_o)
+		return _mapToRel64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Rel64] or Map"))
 }
@@ -23788,7 +23788,7 @@ func _ConstructRela32(_v Object) _elf.Rela32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRela32(_o)
+		return _mapToRela32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Rela32] or Map"))
 }
@@ -23821,7 +23821,7 @@ func _ConstructRela64(_v Object) _elf.Rela64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRela64(_o)
+		return _mapToRela64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Rela64] or Map"))
 }
@@ -23854,7 +23854,7 @@ func _ConstructSection(_v Object) _elf.Section {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection(_o)
+		return _mapToSection(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Section] or Map"))
 }
@@ -23887,7 +23887,7 @@ func _ConstructSection32(_v Object) _elf.Section32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection32(_o)
+		return _mapToSection32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Section32] or Map"))
 }
@@ -23920,7 +23920,7 @@ func _ConstructSection64(_v Object) _elf.Section64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection64(_o)
+		return _mapToSection64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Section64] or Map"))
 }
@@ -23984,7 +23984,7 @@ func _ConstructSectionHeader(_v Object) _elf.SectionHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionHeader(_o)
+		return _mapToSectionHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.SectionHeader] or Map"))
 }
@@ -24079,7 +24079,7 @@ func _ConstructSym32(_v Object) _elf.Sym32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSym32(_o)
+		return _mapToSym32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Sym32] or Map"))
 }
@@ -24112,7 +24112,7 @@ func _ConstructSym64(_v Object) _elf.Sym64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSym64(_o)
+		return _mapToSym64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Sym64] or Map"))
 }
@@ -24238,7 +24238,7 @@ func _ConstructSymbol(_v Object) _elf.Symbol {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSymbol(_o)
+		return _mapToSymbol(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Symbol] or Map"))
 }
@@ -24464,7 +24464,7 @@ func _ConstructDylib(_v Object) _macho.Dylib {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDylib(_o)
+		return _mapToDylib(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Dylib] or Map"))
 }
@@ -24497,7 +24497,7 @@ func _ConstructDylibCmd(_v Object) _macho.DylibCmd {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDylibCmd(_o)
+		return _mapToDylibCmd(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.DylibCmd] or Map"))
 }
@@ -24530,7 +24530,7 @@ func _ConstructDysymtab(_v Object) _macho.Dysymtab {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDysymtab(_o)
+		return _mapToDysymtab(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Dysymtab] or Map"))
 }
@@ -24563,7 +24563,7 @@ func _ConstructDysymtabCmd(_v Object) _macho.DysymtabCmd {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDysymtabCmd(_o)
+		return _mapToDysymtabCmd(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.DysymtabCmd] or Map"))
 }
@@ -24596,7 +24596,7 @@ func _ConstructFatArch(_v Object) _macho.FatArch {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFatArch(_o)
+		return _mapToFatArch(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.FatArch] or Map"))
 }
@@ -24629,7 +24629,7 @@ func _ConstructFatArchHeader(_v Object) _macho.FatArchHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFatArchHeader(_o)
+		return _mapToFatArchHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.FatArchHeader] or Map"))
 }
@@ -24662,7 +24662,7 @@ func _ConstructFatFile(_v Object) _macho.FatFile {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFatFile(_o)
+		return _mapToFatFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.FatFile] or Map"))
 }
@@ -24695,7 +24695,7 @@ func _ConstructFile(_v Object) _macho.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.File] or Map"))
 }
@@ -24728,7 +24728,7 @@ func _ConstructFileHeader(_v Object) _macho.FileHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileHeader(_o)
+		return _mapToFileHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.FileHeader] or Map"))
 }
@@ -24761,7 +24761,7 @@ func _ConstructFormatError(_v Object) _macho.FormatError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFormatError(_o)
+		return _mapToFormatError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.FormatError] or Map"))
 }
@@ -24881,7 +24881,7 @@ func _ConstructNlist32(_v Object) _macho.Nlist32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNlist32(_o)
+		return _mapToNlist32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Nlist32] or Map"))
 }
@@ -24914,7 +24914,7 @@ func _ConstructNlist64(_v Object) _macho.Nlist64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNlist64(_o)
+		return _mapToNlist64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Nlist64] or Map"))
 }
@@ -24947,7 +24947,7 @@ func _ConstructRegs386(_v Object) _macho.Regs386 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRegs386(_o)
+		return _mapToRegs386(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Regs386] or Map"))
 }
@@ -24980,7 +24980,7 @@ func _ConstructRegsAMD64(_v Object) _macho.RegsAMD64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRegsAMD64(_o)
+		return _mapToRegsAMD64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.RegsAMD64] or Map"))
 }
@@ -25013,7 +25013,7 @@ func _ConstructReloc(_v Object) _macho.Reloc {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReloc(_o)
+		return _mapToReloc(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Reloc] or Map"))
 }
@@ -25170,7 +25170,7 @@ func _ConstructRpath(_v Object) _macho.Rpath {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRpath(_o)
+		return _mapToRpath(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Rpath] or Map"))
 }
@@ -25203,7 +25203,7 @@ func _ConstructRpathCmd(_v Object) _macho.RpathCmd {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRpathCmd(_o)
+		return _mapToRpathCmd(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.RpathCmd] or Map"))
 }
@@ -25236,7 +25236,7 @@ func _ConstructSection(_v Object) _macho.Section {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection(_o)
+		return _mapToSection(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Section] or Map"))
 }
@@ -25269,7 +25269,7 @@ func _ConstructSection32(_v Object) _macho.Section32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection32(_o)
+		return _mapToSection32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Section32] or Map"))
 }
@@ -25302,7 +25302,7 @@ func _ConstructSection64(_v Object) _macho.Section64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection64(_o)
+		return _mapToSection64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Section64] or Map"))
 }
@@ -25335,7 +25335,7 @@ func _ConstructSectionHeader(_v Object) _macho.SectionHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionHeader(_o)
+		return _mapToSectionHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.SectionHeader] or Map"))
 }
@@ -25368,7 +25368,7 @@ func _ConstructSegment(_v Object) _macho.Segment {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSegment(_o)
+		return _mapToSegment(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Segment] or Map"))
 }
@@ -25401,7 +25401,7 @@ func _ConstructSegment32(_v Object) _macho.Segment32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSegment32(_o)
+		return _mapToSegment32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Segment32] or Map"))
 }
@@ -25434,7 +25434,7 @@ func _ConstructSegment64(_v Object) _macho.Segment64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSegment64(_o)
+		return _mapToSegment64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Segment64] or Map"))
 }
@@ -25467,7 +25467,7 @@ func _ConstructSegmentHeader(_v Object) _macho.SegmentHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSegmentHeader(_o)
+		return _mapToSegmentHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.SegmentHeader] or Map"))
 }
@@ -25500,7 +25500,7 @@ func _ConstructSymbol(_v Object) _macho.Symbol {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSymbol(_o)
+		return _mapToSymbol(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Symbol] or Map"))
 }
@@ -25533,7 +25533,7 @@ func _ConstructSymtab(_v Object) _macho.Symtab {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSymtab(_o)
+		return _mapToSymtab(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Symtab] or Map"))
 }
@@ -25566,7 +25566,7 @@ func _ConstructSymtabCmd(_v Object) _macho.SymtabCmd {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSymtabCmd(_o)
+		return _mapToSymtabCmd(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.SymtabCmd] or Map"))
 }
@@ -25599,7 +25599,7 @@ func _ConstructThread(_v Object) _macho.Thread {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToThread(_o)
+		return _mapToThread(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[macho.Thread] or Map"))
 }
@@ -25707,7 +25707,7 @@ func _ConstructCOFFSymbol(_v Object) _pe.COFFSymbol {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCOFFSymbol(_o)
+		return _mapToCOFFSymbol(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.COFFSymbol] or Map"))
 }
@@ -25740,7 +25740,7 @@ func _ConstructDataDirectory(_v Object) _pe.DataDirectory {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDataDirectory(_o)
+		return _mapToDataDirectory(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.DataDirectory] or Map"))
 }
@@ -25773,7 +25773,7 @@ func _ConstructFile(_v Object) _pe.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.File] or Map"))
 }
@@ -25806,7 +25806,7 @@ func _ConstructFileHeader(_v Object) _pe.FileHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileHeader(_o)
+		return _mapToFileHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.FileHeader] or Map"))
 }
@@ -25839,7 +25839,7 @@ func _ConstructFormatError(_v Object) _pe.FormatError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFormatError(_o)
+		return _mapToFormatError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.FormatError] or Map"))
 }
@@ -25872,7 +25872,7 @@ func _ConstructImportDirectory(_v Object) _pe.ImportDirectory {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToImportDirectory(_o)
+		return _mapToImportDirectory(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.ImportDirectory] or Map"))
 }
@@ -25905,7 +25905,7 @@ func _ConstructOptionalHeader32(_v Object) _pe.OptionalHeader32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOptionalHeader32(_o)
+		return _mapToOptionalHeader32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.OptionalHeader32] or Map"))
 }
@@ -25938,7 +25938,7 @@ func _ConstructOptionalHeader64(_v Object) _pe.OptionalHeader64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOptionalHeader64(_o)
+		return _mapToOptionalHeader64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.OptionalHeader64] or Map"))
 }
@@ -25971,7 +25971,7 @@ func _ConstructReloc(_v Object) _pe.Reloc {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReloc(_o)
+		return _mapToReloc(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.Reloc] or Map"))
 }
@@ -26004,7 +26004,7 @@ func _ConstructSection(_v Object) _pe.Section {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection(_o)
+		return _mapToSection(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.Section] or Map"))
 }
@@ -26037,7 +26037,7 @@ func _ConstructSectionHeader(_v Object) _pe.SectionHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionHeader(_o)
+		return _mapToSectionHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.SectionHeader] or Map"))
 }
@@ -26070,7 +26070,7 @@ func _ConstructSectionHeader32(_v Object) _pe.SectionHeader32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionHeader32(_o)
+		return _mapToSectionHeader32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.SectionHeader32] or Map"))
 }
@@ -26131,7 +26131,7 @@ func _ConstructSymbol(_v Object) _pe.Symbol {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSymbol(_o)
+		return _mapToSymbol(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pe.Symbol] or Map"))
 }
@@ -26190,7 +26190,7 @@ func _ConstructFile(_v Object) _plan9obj.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plan9obj.File] or Map"))
 }
@@ -26223,7 +26223,7 @@ func _ConstructFileHeader(_v Object) _plan9obj.FileHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileHeader(_o)
+		return _mapToFileHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plan9obj.FileHeader] or Map"))
 }
@@ -26256,7 +26256,7 @@ func _ConstructSection(_v Object) _plan9obj.Section {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSection(_o)
+		return _mapToSection(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plan9obj.Section] or Map"))
 }
@@ -26289,7 +26289,7 @@ func _ConstructSectionHeader(_v Object) _plan9obj.SectionHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionHeader(_o)
+		return _mapToSectionHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plan9obj.SectionHeader] or Map"))
 }
@@ -26322,7 +26322,7 @@ func _ConstructSym(_v Object) _plan9obj.Sym {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSym(_o)
+		return _mapToSym(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plan9obj.Sym] or Map"))
 }
@@ -26531,7 +26531,7 @@ func _ConstructEncoding(_v Object) _base32.Encoding {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEncoding(_o)
+		return _mapToEncoding(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[base32.Encoding] or Map"))
 }
@@ -26621,7 +26621,7 @@ func _ConstructEncoding(_v Object) _base64.Encoding {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEncoding(_o)
+		return _mapToEncoding(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[base64.Encoding] or Map"))
 }
@@ -26947,7 +26947,7 @@ func _ConstructBlock(_v Object) _pem.Block {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBlock(_o)
+		return _mapToBlock(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pem.Block] or Map"))
 }
@@ -27017,7 +27017,7 @@ func _ConstructAttr(_v Object) _xml.Attr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAttr(_o)
+		return _mapToAttr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.Attr] or Map"))
 }
@@ -27106,7 +27106,7 @@ func _ConstructDecoder(_v Object) _xml.Decoder {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDecoder(_o)
+		return _mapToDecoder(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.Decoder] or Map"))
 }
@@ -27167,7 +27167,7 @@ func _ConstructEncoder(_v Object) _xml.Encoder {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEncoder(_o)
+		return _mapToEncoder(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.Encoder] or Map"))
 }
@@ -27200,7 +27200,7 @@ func _ConstructEndElement(_v Object) _xml.EndElement {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEndElement(_o)
+		return _mapToEndElement(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.EndElement] or Map"))
 }
@@ -27289,7 +27289,7 @@ func _ConstructName(_v Object) _xml.Name {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToName(_o)
+		return _mapToName(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.Name] or Map"))
 }
@@ -27322,7 +27322,7 @@ func _ConstructProcInst(_v Object) _xml.ProcInst {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProcInst(_o)
+		return _mapToProcInst(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.ProcInst] or Map"))
 }
@@ -27355,7 +27355,7 @@ func _ConstructStartElement(_v Object) _xml.StartElement {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStartElement(_o)
+		return _mapToStartElement(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.StartElement] or Map"))
 }
@@ -27388,7 +27388,7 @@ func _ConstructSyntaxError(_v Object) _xml.SyntaxError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSyntaxError(_o)
+		return _mapToSyntaxError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.SyntaxError] or Map"))
 }
@@ -27421,7 +27421,7 @@ func _ConstructTagPathError(_v Object) _xml.TagPathError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTagPathError(_o)
+		return _mapToTagPathError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.TagPathError] or Map"))
 }
@@ -27597,7 +27597,7 @@ func _ConstructUnsupportedTypeError(_v Object) _xml.UnsupportedTypeError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnsupportedTypeError(_o)
+		return _mapToUnsupportedTypeError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[xml.UnsupportedTypeError] or Map"))
 }
@@ -27712,7 +27712,7 @@ func _ConstructFloat(_v Object) _expvar.Float {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFloat(_o)
+		return _mapToFloat(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[expvar.Float] or Map"))
 }
@@ -27773,7 +27773,7 @@ func _ConstructInt(_v Object) _expvar.Int {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInt(_o)
+		return _mapToInt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[expvar.Int] or Map"))
 }
@@ -27806,7 +27806,7 @@ func _ConstructKeyValue(_v Object) _expvar.KeyValue {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToKeyValue(_o)
+		return _mapToKeyValue(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[expvar.KeyValue] or Map"))
 }
@@ -27839,7 +27839,7 @@ func _ConstructMap(_v Object) _expvar.Map {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMap(_o)
+		return _mapToMap(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[expvar.Map] or Map"))
 }
@@ -27872,7 +27872,7 @@ func _ConstructString(_v Object) _expvar.String {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToString(_o)
+		return _mapToString(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[expvar.String] or Map"))
 }
@@ -28020,7 +28020,7 @@ func _ConstructFlag(_v Object) _flag.Flag {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFlag(_o)
+		return _mapToFlag(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[flag.Flag] or Map"))
 }
@@ -28053,7 +28053,7 @@ func _ConstructFlagSet(_v Object) _flag.FlagSet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFlagSet(_o)
+		return _mapToFlagSet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[flag.FlagSet] or Map"))
 }
@@ -28466,7 +28466,7 @@ func _ConstructArrayType(_v Object) _ast.ArrayType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToArrayType(_o)
+		return _mapToArrayType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ArrayType] or Map"))
 }
@@ -28499,7 +28499,7 @@ func _ConstructAssignStmt(_v Object) _ast.AssignStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAssignStmt(_o)
+		return _mapToAssignStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.AssignStmt] or Map"))
 }
@@ -28532,7 +28532,7 @@ func _ConstructBadDecl(_v Object) _ast.BadDecl {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBadDecl(_o)
+		return _mapToBadDecl(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BadDecl] or Map"))
 }
@@ -28565,7 +28565,7 @@ func _ConstructBadExpr(_v Object) _ast.BadExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBadExpr(_o)
+		return _mapToBadExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BadExpr] or Map"))
 }
@@ -28598,7 +28598,7 @@ func _ConstructBadStmt(_v Object) _ast.BadStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBadStmt(_o)
+		return _mapToBadStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BadStmt] or Map"))
 }
@@ -28631,7 +28631,7 @@ func _ConstructBasicLit(_v Object) _ast.BasicLit {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBasicLit(_o)
+		return _mapToBasicLit(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BasicLit] or Map"))
 }
@@ -28664,7 +28664,7 @@ func _ConstructBinaryExpr(_v Object) _ast.BinaryExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBinaryExpr(_o)
+		return _mapToBinaryExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BinaryExpr] or Map"))
 }
@@ -28697,7 +28697,7 @@ func _ConstructBlockStmt(_v Object) _ast.BlockStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBlockStmt(_o)
+		return _mapToBlockStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BlockStmt] or Map"))
 }
@@ -28730,7 +28730,7 @@ func _ConstructBranchStmt(_v Object) _ast.BranchStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBranchStmt(_o)
+		return _mapToBranchStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.BranchStmt] or Map"))
 }
@@ -28763,7 +28763,7 @@ func _ConstructCallExpr(_v Object) _ast.CallExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCallExpr(_o)
+		return _mapToCallExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.CallExpr] or Map"))
 }
@@ -28796,7 +28796,7 @@ func _ConstructCaseClause(_v Object) _ast.CaseClause {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCaseClause(_o)
+		return _mapToCaseClause(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.CaseClause] or Map"))
 }
@@ -28860,7 +28860,7 @@ func _ConstructChanType(_v Object) _ast.ChanType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChanType(_o)
+		return _mapToChanType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ChanType] or Map"))
 }
@@ -28893,7 +28893,7 @@ func _ConstructCommClause(_v Object) _ast.CommClause {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCommClause(_o)
+		return _mapToCommClause(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.CommClause] or Map"))
 }
@@ -28926,7 +28926,7 @@ func _ConstructComment(_v Object) _ast.Comment {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToComment(_o)
+		return _mapToComment(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Comment] or Map"))
 }
@@ -28959,7 +28959,7 @@ func _ConstructCommentGroup(_v Object) _ast.CommentGroup {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCommentGroup(_o)
+		return _mapToCommentGroup(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.CommentGroup] or Map"))
 }
@@ -29020,7 +29020,7 @@ func _ConstructCompositeLit(_v Object) _ast.CompositeLit {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCompositeLit(_o)
+		return _mapToCompositeLit(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.CompositeLit] or Map"))
 }
@@ -29081,7 +29081,7 @@ func _ConstructDeclStmt(_v Object) _ast.DeclStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDeclStmt(_o)
+		return _mapToDeclStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.DeclStmt] or Map"))
 }
@@ -29114,7 +29114,7 @@ func _ConstructDeferStmt(_v Object) _ast.DeferStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDeferStmt(_o)
+		return _mapToDeferStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.DeferStmt] or Map"))
 }
@@ -29147,7 +29147,7 @@ func _ConstructEllipsis(_v Object) _ast.Ellipsis {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEllipsis(_o)
+		return _mapToEllipsis(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Ellipsis] or Map"))
 }
@@ -29180,7 +29180,7 @@ func _ConstructEmptyStmt(_v Object) _ast.EmptyStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToEmptyStmt(_o)
+		return _mapToEmptyStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.EmptyStmt] or Map"))
 }
@@ -29241,7 +29241,7 @@ func _ConstructExprStmt(_v Object) _ast.ExprStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToExprStmt(_o)
+		return _mapToExprStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ExprStmt] or Map"))
 }
@@ -29274,7 +29274,7 @@ func _ConstructField(_v Object) _ast.Field {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToField(_o)
+		return _mapToField(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Field] or Map"))
 }
@@ -29335,7 +29335,7 @@ func _ConstructFieldList(_v Object) _ast.FieldList {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFieldList(_o)
+		return _mapToFieldList(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.FieldList] or Map"))
 }
@@ -29368,7 +29368,7 @@ func _ConstructFile(_v Object) _ast.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.File] or Map"))
 }
@@ -29429,7 +29429,7 @@ func _ConstructForStmt(_v Object) _ast.ForStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToForStmt(_o)
+		return _mapToForStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ForStmt] or Map"))
 }
@@ -29462,7 +29462,7 @@ func _ConstructFuncDecl(_v Object) _ast.FuncDecl {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFuncDecl(_o)
+		return _mapToFuncDecl(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.FuncDecl] or Map"))
 }
@@ -29495,7 +29495,7 @@ func _ConstructFuncLit(_v Object) _ast.FuncLit {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFuncLit(_o)
+		return _mapToFuncLit(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.FuncLit] or Map"))
 }
@@ -29528,7 +29528,7 @@ func _ConstructFuncType(_v Object) _ast.FuncType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFuncType(_o)
+		return _mapToFuncType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.FuncType] or Map"))
 }
@@ -29561,7 +29561,7 @@ func _ConstructGenDecl(_v Object) _ast.GenDecl {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGenDecl(_o)
+		return _mapToGenDecl(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.GenDecl] or Map"))
 }
@@ -29594,7 +29594,7 @@ func _ConstructGoStmt(_v Object) _ast.GoStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGoStmt(_o)
+		return _mapToGoStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.GoStmt] or Map"))
 }
@@ -29627,7 +29627,7 @@ func _ConstructIdent(_v Object) _ast.Ident {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIdent(_o)
+		return _mapToIdent(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Ident] or Map"))
 }
@@ -29660,7 +29660,7 @@ func _ConstructIfStmt(_v Object) _ast.IfStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfStmt(_o)
+		return _mapToIfStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.IfStmt] or Map"))
 }
@@ -29693,7 +29693,7 @@ func _ConstructImportSpec(_v Object) _ast.ImportSpec {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToImportSpec(_o)
+		return _mapToImportSpec(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ImportSpec] or Map"))
 }
@@ -29754,7 +29754,7 @@ func _ConstructIncDecStmt(_v Object) _ast.IncDecStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIncDecStmt(_o)
+		return _mapToIncDecStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.IncDecStmt] or Map"))
 }
@@ -29787,7 +29787,7 @@ func _ConstructIndexExpr(_v Object) _ast.IndexExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIndexExpr(_o)
+		return _mapToIndexExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.IndexExpr] or Map"))
 }
@@ -29820,7 +29820,7 @@ func _ConstructInterfaceType(_v Object) _ast.InterfaceType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterfaceType(_o)
+		return _mapToInterfaceType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.InterfaceType] or Map"))
 }
@@ -29853,7 +29853,7 @@ func _ConstructKeyValueExpr(_v Object) _ast.KeyValueExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToKeyValueExpr(_o)
+		return _mapToKeyValueExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.KeyValueExpr] or Map"))
 }
@@ -29886,7 +29886,7 @@ func _ConstructLabeledStmt(_v Object) _ast.LabeledStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLabeledStmt(_o)
+		return _mapToLabeledStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.LabeledStmt] or Map"))
 }
@@ -29919,7 +29919,7 @@ func _ConstructMapType(_v Object) _ast.MapType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMapType(_o)
+		return _mapToMapType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.MapType] or Map"))
 }
@@ -30042,7 +30042,7 @@ func _ConstructObject(_v Object) _ast.Object {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToObject(_o)
+		return _mapToObject(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Object] or Map"))
 }
@@ -30075,7 +30075,7 @@ func _ConstructPackage(_v Object) _ast.Package {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPackage(_o)
+		return _mapToPackage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Package] or Map"))
 }
@@ -30108,7 +30108,7 @@ func _ConstructParenExpr(_v Object) _ast.ParenExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToParenExpr(_o)
+		return _mapToParenExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ParenExpr] or Map"))
 }
@@ -30141,7 +30141,7 @@ func _ConstructRangeStmt(_v Object) _ast.RangeStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRangeStmt(_o)
+		return _mapToRangeStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.RangeStmt] or Map"))
 }
@@ -30174,7 +30174,7 @@ func _ConstructReturnStmt(_v Object) _ast.ReturnStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReturnStmt(_o)
+		return _mapToReturnStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ReturnStmt] or Map"))
 }
@@ -30207,7 +30207,7 @@ func _ConstructScope(_v Object) _ast.Scope {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToScope(_o)
+		return _mapToScope(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.Scope] or Map"))
 }
@@ -30240,7 +30240,7 @@ func _ConstructSelectStmt(_v Object) _ast.SelectStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSelectStmt(_o)
+		return _mapToSelectStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.SelectStmt] or Map"))
 }
@@ -30273,7 +30273,7 @@ func _ConstructSelectorExpr(_v Object) _ast.SelectorExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSelectorExpr(_o)
+		return _mapToSelectorExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.SelectorExpr] or Map"))
 }
@@ -30306,7 +30306,7 @@ func _ConstructSendStmt(_v Object) _ast.SendStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSendStmt(_o)
+		return _mapToSendStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.SendStmt] or Map"))
 }
@@ -30339,7 +30339,7 @@ func _ConstructSliceExpr(_v Object) _ast.SliceExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSliceExpr(_o)
+		return _mapToSliceExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.SliceExpr] or Map"))
 }
@@ -30400,7 +30400,7 @@ func _ConstructStarExpr(_v Object) _ast.StarExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStarExpr(_o)
+		return _mapToStarExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.StarExpr] or Map"))
 }
@@ -30461,7 +30461,7 @@ func _ConstructStructType(_v Object) _ast.StructType {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStructType(_o)
+		return _mapToStructType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.StructType] or Map"))
 }
@@ -30494,7 +30494,7 @@ func _ConstructSwitchStmt(_v Object) _ast.SwitchStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSwitchStmt(_o)
+		return _mapToSwitchStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.SwitchStmt] or Map"))
 }
@@ -30527,7 +30527,7 @@ func _ConstructTypeAssertExpr(_v Object) _ast.TypeAssertExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeAssertExpr(_o)
+		return _mapToTypeAssertExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.TypeAssertExpr] or Map"))
 }
@@ -30560,7 +30560,7 @@ func _ConstructTypeSpec(_v Object) _ast.TypeSpec {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeSpec(_o)
+		return _mapToTypeSpec(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.TypeSpec] or Map"))
 }
@@ -30593,7 +30593,7 @@ func _ConstructTypeSwitchStmt(_v Object) _ast.TypeSwitchStmt {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeSwitchStmt(_o)
+		return _mapToTypeSwitchStmt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.TypeSwitchStmt] or Map"))
 }
@@ -30626,7 +30626,7 @@ func _ConstructUnaryExpr(_v Object) _ast.UnaryExpr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnaryExpr(_o)
+		return _mapToUnaryExpr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.UnaryExpr] or Map"))
 }
@@ -30659,7 +30659,7 @@ func _ConstructValueSpec(_v Object) _ast.ValueSpec {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToValueSpec(_o)
+		return _mapToValueSpec(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[ast.ValueSpec] or Map"))
 }
@@ -30803,7 +30803,7 @@ func _ConstructContext(_v Object) _build.Context {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToContext(_o)
+		return _mapToContext(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[build.Context] or Map"))
 }
@@ -30867,7 +30867,7 @@ func _ConstructMultiplePackageError(_v Object) _build.MultiplePackageError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMultiplePackageError(_o)
+		return _mapToMultiplePackageError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[build.MultiplePackageError] or Map"))
 }
@@ -30900,7 +30900,7 @@ func _ConstructNoGoError(_v Object) _build.NoGoError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNoGoError(_o)
+		return _mapToNoGoError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[build.NoGoError] or Map"))
 }
@@ -30933,7 +30933,7 @@ func _ConstructPackage(_v Object) _build.Package {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPackage(_o)
+		return _mapToPackage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[build.Package] or Map"))
 }
@@ -31234,7 +31234,7 @@ func _ConstructExample(_v Object) _doc.Example {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToExample(_o)
+		return _mapToExample(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Example] or Map"))
 }
@@ -31295,7 +31295,7 @@ func _ConstructFunc(_v Object) _doc.Func {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFunc(_o)
+		return _mapToFunc(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Func] or Map"))
 }
@@ -31359,7 +31359,7 @@ func _ConstructNote(_v Object) _doc.Note {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNote(_o)
+		return _mapToNote(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Note] or Map"))
 }
@@ -31392,7 +31392,7 @@ func _ConstructPackage(_v Object) _doc.Package {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPackage(_o)
+		return _mapToPackage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Package] or Map"))
 }
@@ -31425,7 +31425,7 @@ func _ConstructType(_v Object) _doc.Type {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToType(_o)
+		return _mapToType(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Type] or Map"))
 }
@@ -31458,7 +31458,7 @@ func _ConstructValue(_v Object) _doc.Value {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToValue(_o)
+		return _mapToValue(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[doc.Value] or Map"))
 }
@@ -31681,7 +31681,7 @@ func _ConstructFile(_v Object) _token.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[token.File] or Map"))
 }
@@ -31714,7 +31714,7 @@ func _ConstructFileSet(_v Object) _token.FileSet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFileSet(_o)
+		return _mapToFileSet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[token.FileSet] or Map"))
 }
@@ -31778,7 +31778,7 @@ func _ConstructPosition(_v Object) _token.Position {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPosition(_o)
+		return _mapToPosition(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[token.Position] or Map"))
 }
@@ -31862,7 +31862,7 @@ func _ConstructArray(_v Object) _types.Array {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToArray(_o)
+		return _mapToArray(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Array] or Map"))
 }
@@ -31895,7 +31895,7 @@ func _ConstructBasic(_v Object) _types.Basic {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBasic(_o)
+		return _mapToBasic(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Basic] or Map"))
 }
@@ -31990,7 +31990,7 @@ func _ConstructBuiltin(_v Object) _types.Builtin {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBuiltin(_o)
+		return _mapToBuiltin(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Builtin] or Map"))
 }
@@ -32023,7 +32023,7 @@ func _ConstructChan(_v Object) _types.Chan {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChan(_o)
+		return _mapToChan(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Chan] or Map"))
 }
@@ -32087,7 +32087,7 @@ func _ConstructChecker(_v Object) _types.Checker {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChecker(_o)
+		return _mapToChecker(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Checker] or Map"))
 }
@@ -32120,7 +32120,7 @@ func _ConstructConfig(_v Object) _types.Config {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConfig(_o)
+		return _mapToConfig(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Config] or Map"))
 }
@@ -32153,7 +32153,7 @@ func _ConstructConst(_v Object) _types.Const {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConst(_o)
+		return _mapToConst(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Const] or Map"))
 }
@@ -32186,7 +32186,7 @@ func _ConstructError(_v Object) _types.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Error] or Map"))
 }
@@ -32219,7 +32219,7 @@ func _ConstructFunc(_v Object) _types.Func {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFunc(_o)
+		return _mapToFunc(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Func] or Map"))
 }
@@ -32339,7 +32339,7 @@ func _ConstructInfo(_v Object) _types.Info {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInfo(_o)
+		return _mapToInfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Info] or Map"))
 }
@@ -32372,7 +32372,7 @@ func _ConstructInitializer(_v Object) _types.Initializer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInitializer(_o)
+		return _mapToInitializer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Initializer] or Map"))
 }
@@ -32405,7 +32405,7 @@ func _ConstructInterface(_v Object) _types.Interface {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterface(_o)
+		return _mapToInterface(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Interface] or Map"))
 }
@@ -32438,7 +32438,7 @@ func _ConstructLabel(_v Object) _types.Label {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLabel(_o)
+		return _mapToLabel(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Label] or Map"))
 }
@@ -32471,7 +32471,7 @@ func _ConstructMap(_v Object) _types.Map {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMap(_o)
+		return _mapToMap(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Map] or Map"))
 }
@@ -32504,7 +32504,7 @@ func _ConstructMethodSet(_v Object) _types.MethodSet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMethodSet(_o)
+		return _mapToMethodSet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.MethodSet] or Map"))
 }
@@ -32537,7 +32537,7 @@ func _ConstructNamed(_v Object) _types.Named {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNamed(_o)
+		return _mapToNamed(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Named] or Map"))
 }
@@ -32570,7 +32570,7 @@ func _ConstructNil(_v Object) _types.Nil {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNil(_o)
+		return _mapToNil(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Nil] or Map"))
 }
@@ -32631,7 +32631,7 @@ func _ConstructPackage(_v Object) _types.Package {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPackage(_o)
+		return _mapToPackage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Package] or Map"))
 }
@@ -32664,7 +32664,7 @@ func _ConstructPkgName(_v Object) _types.PkgName {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPkgName(_o)
+		return _mapToPkgName(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.PkgName] or Map"))
 }
@@ -32697,7 +32697,7 @@ func _ConstructPointer(_v Object) _types.Pointer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPointer(_o)
+		return _mapToPointer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Pointer] or Map"))
 }
@@ -32758,7 +32758,7 @@ func _ConstructScope(_v Object) _types.Scope {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToScope(_o)
+		return _mapToScope(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Scope] or Map"))
 }
@@ -32791,7 +32791,7 @@ func _ConstructSelection(_v Object) _types.Selection {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSelection(_o)
+		return _mapToSelection(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Selection] or Map"))
 }
@@ -32855,7 +32855,7 @@ func _ConstructSignature(_v Object) _types.Signature {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSignature(_o)
+		return _mapToSignature(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Signature] or Map"))
 }
@@ -32916,7 +32916,7 @@ func _ConstructSlice(_v Object) _types.Slice {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSlice(_o)
+		return _mapToSlice(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Slice] or Map"))
 }
@@ -32949,7 +32949,7 @@ func _ConstructStdSizes(_v Object) _types.StdSizes {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStdSizes(_o)
+		return _mapToStdSizes(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.StdSizes] or Map"))
 }
@@ -32982,7 +32982,7 @@ func _ConstructStruct(_v Object) _types.Struct {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStruct(_o)
+		return _mapToStruct(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Struct] or Map"))
 }
@@ -33015,7 +33015,7 @@ func _ConstructTuple(_v Object) _types.Tuple {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTuple(_o)
+		return _mapToTuple(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Tuple] or Map"))
 }
@@ -33076,7 +33076,7 @@ func _ConstructTypeAndValue(_v Object) _types.TypeAndValue {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeAndValue(_o)
+		return _mapToTypeAndValue(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.TypeAndValue] or Map"))
 }
@@ -33109,7 +33109,7 @@ func _ConstructTypeName(_v Object) _types.TypeName {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeName(_o)
+		return _mapToTypeName(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.TypeName] or Map"))
 }
@@ -33142,7 +33142,7 @@ func _ConstructVar(_v Object) _types.Var {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToVar(_o)
+		return _mapToVar(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[types.Var] or Map"))
 }
@@ -33634,7 +33634,7 @@ func _ConstructError(_v Object) _template.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[template.Error] or Map"))
 }
@@ -33881,7 +33881,7 @@ func _ConstructTemplate(_v Object) _template.Template {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTemplate(_o)
+		return _mapToTemplate(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[template.Template] or Map"))
 }
@@ -34022,7 +34022,7 @@ func _ConstructAlpha(_v Object) _image.Alpha {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAlpha(_o)
+		return _mapToAlpha(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Alpha] or Map"))
 }
@@ -34055,7 +34055,7 @@ func _ConstructAlpha16(_v Object) _image.Alpha16 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAlpha16(_o)
+		return _mapToAlpha16(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Alpha16] or Map"))
 }
@@ -34088,7 +34088,7 @@ func _ConstructCMYK(_v Object) _image.CMYK {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCMYK(_o)
+		return _mapToCMYK(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.CMYK] or Map"))
 }
@@ -34121,7 +34121,7 @@ func _ConstructConfig(_v Object) _image.Config {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConfig(_o)
+		return _mapToConfig(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Config] or Map"))
 }
@@ -34154,7 +34154,7 @@ func _ConstructGray(_v Object) _image.Gray {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGray(_o)
+		return _mapToGray(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Gray] or Map"))
 }
@@ -34187,7 +34187,7 @@ func _ConstructGray16(_v Object) _image.Gray16 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGray16(_o)
+		return _mapToGray16(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Gray16] or Map"))
 }
@@ -34248,7 +34248,7 @@ func _ConstructNRGBA(_v Object) _image.NRGBA {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNRGBA(_o)
+		return _mapToNRGBA(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.NRGBA] or Map"))
 }
@@ -34281,7 +34281,7 @@ func _ConstructNRGBA64(_v Object) _image.NRGBA64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNRGBA64(_o)
+		return _mapToNRGBA64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.NRGBA64] or Map"))
 }
@@ -34314,7 +34314,7 @@ func _ConstructNYCbCrA(_v Object) _image.NYCbCrA {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNYCbCrA(_o)
+		return _mapToNYCbCrA(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.NYCbCrA] or Map"))
 }
@@ -34347,7 +34347,7 @@ func _ConstructPaletted(_v Object) _image.Paletted {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPaletted(_o)
+		return _mapToPaletted(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Paletted] or Map"))
 }
@@ -34408,7 +34408,7 @@ func _ConstructPoint(_v Object) _image.Point {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPoint(_o)
+		return _mapToPoint(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Point] or Map"))
 }
@@ -34441,7 +34441,7 @@ func _ConstructRGBA(_v Object) _image.RGBA {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRGBA(_o)
+		return _mapToRGBA(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.RGBA] or Map"))
 }
@@ -34474,7 +34474,7 @@ func _ConstructRGBA64(_v Object) _image.RGBA64 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRGBA64(_o)
+		return _mapToRGBA64(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.RGBA64] or Map"))
 }
@@ -34507,7 +34507,7 @@ func _ConstructRectangle(_v Object) _image.Rectangle {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRectangle(_o)
+		return _mapToRectangle(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Rectangle] or Map"))
 }
@@ -34540,7 +34540,7 @@ func _ConstructUniform(_v Object) _image.Uniform {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUniform(_o)
+		return _mapToUniform(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.Uniform] or Map"))
 }
@@ -34573,7 +34573,7 @@ func _ConstructYCbCr(_v Object) _image.YCbCr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToYCbCr(_o)
+		return _mapToYCbCr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[image.YCbCr] or Map"))
 }
@@ -35025,7 +35025,7 @@ func _ConstructLimitedReader(_v Object) _io.LimitedReader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLimitedReader(_o)
+		return _mapToLimitedReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[io.LimitedReader] or Map"))
 }
@@ -35058,7 +35058,7 @@ func _ConstructPipeReader(_v Object) _io.PipeReader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPipeReader(_o)
+		return _mapToPipeReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[io.PipeReader] or Map"))
 }
@@ -35091,7 +35091,7 @@ func _ConstructPipeWriter(_v Object) _io.PipeWriter {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPipeWriter(_o)
+		return _mapToPipeWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[io.PipeWriter] or Map"))
 }
@@ -35404,7 +35404,7 @@ func _ConstructSectionReader(_v Object) _io.SectionReader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSectionReader(_o)
+		return _mapToSectionReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[io.SectionReader] or Map"))
 }
@@ -35783,7 +35783,7 @@ func _ConstructLogger(_v Object) _log.Logger {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLogger(_o)
+		return _mapToLogger(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[log.Logger] or Map"))
 }
@@ -35933,7 +35933,7 @@ func _ConstructWriter(_v Object) _syslog.Writer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWriter(_o)
+		return _mapToWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syslog.Writer] or Map"))
 }
@@ -36384,7 +36384,7 @@ func _ConstructErrNaN(_v Object) _big.ErrNaN {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToErrNaN(_o)
+		return _mapToErrNaN(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[big.ErrNaN] or Map"))
 }
@@ -36417,7 +36417,7 @@ func _ConstructFloat(_v Object) _big.Float {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFloat(_o)
+		return _mapToFloat(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[big.Float] or Map"))
 }
@@ -36450,7 +36450,7 @@ func _ConstructInt(_v Object) _big.Int {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInt(_o)
+		return _mapToInt(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[big.Int] or Map"))
 }
@@ -36483,7 +36483,7 @@ func _ConstructRat(_v Object) _big.Rat {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRat(_o)
+		return _mapToRat(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[big.Rat] or Map"))
 }
@@ -36893,7 +36893,7 @@ func _ConstructRand(_v Object) _rand.Rand {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRand(_o)
+		return _mapToRand(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rand.Rand] or Map"))
 }
@@ -36982,7 +36982,7 @@ func _ConstructZipf(_v Object) _rand.Zipf {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToZipf(_o)
+		return _mapToZipf(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rand.Zipf] or Map"))
 }
@@ -37128,7 +37128,7 @@ func _ConstructWordDecoder(_v Object) _mime.WordDecoder {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWordDecoder(_o)
+		return _mapToWordDecoder(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[mime.WordDecoder] or Map"))
 }
@@ -37281,7 +37281,7 @@ func _ConstructAddrError(_v Object) _net.AddrError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAddrError(_o)
+		return _mapToAddrError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or Map"))
 }
@@ -37370,7 +37370,7 @@ func _ConstructDNSConfigError(_v Object) _net.DNSConfigError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDNSConfigError(_o)
+		return _mapToDNSConfigError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or Map"))
 }
@@ -37403,7 +37403,7 @@ func _ConstructDNSError(_v Object) _net.DNSError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDNSError(_o)
+		return _mapToDNSError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or Map"))
 }
@@ -37436,7 +37436,7 @@ func _ConstructDialer(_v Object) _net.Dialer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDialer(_o)
+		return _mapToDialer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Dialer] or Map"))
 }
@@ -37584,7 +37584,7 @@ func _ConstructIPAddr(_v Object) _net.IPAddr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPAddr(_o)
+		return _mapToIPAddr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or Map"))
 }
@@ -37617,7 +37617,7 @@ func _ConstructIPConn(_v Object) _net.IPConn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPConn(_o)
+		return _mapToIPConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or Map"))
 }
@@ -37678,7 +37678,7 @@ func _ConstructIPNet(_v Object) _net.IPNet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPNet(_o)
+		return _mapToIPNet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or Map"))
 }
@@ -37711,7 +37711,7 @@ func _ConstructInterface(_v Object) _net.Interface {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterface(_o)
+		return _mapToInterface(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Interface] or Map"))
 }
@@ -37775,7 +37775,7 @@ func _ConstructListenConfig(_v Object) _net.ListenConfig {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToListenConfig(_o)
+		return _mapToListenConfig(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ListenConfig] or Map"))
 }
@@ -37836,7 +37836,7 @@ func _ConstructMX(_v Object) _net.MX {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMX(_o)
+		return _mapToMX(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or Map"))
 }
@@ -37869,7 +37869,7 @@ func _ConstructNS(_v Object) _net.NS {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNS(_o)
+		return _mapToNS(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or Map"))
 }
@@ -37902,7 +37902,7 @@ func _ConstructOpError(_v Object) _net.OpError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOpError(_o)
+		return _mapToOpError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or Map"))
 }
@@ -37963,7 +37963,7 @@ func _ConstructParseError(_v Object) _net.ParseError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToParseError(_o)
+		return _mapToParseError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or Map"))
 }
@@ -37996,7 +37996,7 @@ func _ConstructResolver(_v Object) _net.Resolver {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToResolver(_o)
+		return _mapToResolver(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or Map"))
 }
@@ -38029,7 +38029,7 @@ func _ConstructSRV(_v Object) _net.SRV {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSRV(_o)
+		return _mapToSRV(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or Map"))
 }
@@ -38062,7 +38062,7 @@ func _ConstructTCPAddr(_v Object) _net.TCPAddr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTCPAddr(_o)
+		return _mapToTCPAddr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPAddr] or Map"))
 }
@@ -38095,7 +38095,7 @@ func _ConstructTCPConn(_v Object) _net.TCPConn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTCPConn(_o)
+		return _mapToTCPConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPConn] or Map"))
 }
@@ -38128,7 +38128,7 @@ func _ConstructTCPListener(_v Object) _net.TCPListener {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTCPListener(_o)
+		return _mapToTCPListener(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPListener] or Map"))
 }
@@ -38161,7 +38161,7 @@ func _ConstructUDPAddr(_v Object) _net.UDPAddr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUDPAddr(_o)
+		return _mapToUDPAddr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPAddr] or Map"))
 }
@@ -38194,7 +38194,7 @@ func _ConstructUDPConn(_v Object) _net.UDPConn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUDPConn(_o)
+		return _mapToUDPConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPConn] or Map"))
 }
@@ -38227,7 +38227,7 @@ func _ConstructUnixAddr(_v Object) _net.UnixAddr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnixAddr(_o)
+		return _mapToUnixAddr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixAddr] or Map"))
 }
@@ -38260,7 +38260,7 @@ func _ConstructUnixConn(_v Object) _net.UnixConn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnixConn(_o)
+		return _mapToUnixConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixConn] or Map"))
 }
@@ -38293,7 +38293,7 @@ func _ConstructUnixListener(_v Object) _net.UnixListener {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUnixListener(_o)
+		return _mapToUnixListener(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixListener] or Map"))
 }
@@ -38770,7 +38770,7 @@ func _ConstructClient(_v Object) _http.Client {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToClient(_o)
+		return _mapToClient(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Client] or Map"))
 }
@@ -38862,7 +38862,7 @@ func _ConstructCookie(_v Object) _http.Cookie {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCookie(_o)
+		return _mapToCookie(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Cookie] or Map"))
 }
@@ -39150,7 +39150,7 @@ func _ConstructProtocolError(_v Object) _http.ProtocolError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProtocolError(_o)
+		return _mapToProtocolError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ProtocolError] or Map"))
 }
@@ -39183,7 +39183,7 @@ func _ConstructPushOptions(_v Object) _http.PushOptions {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPushOptions(_o)
+		return _mapToPushOptions(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or Map"))
 }
@@ -39244,7 +39244,7 @@ func _ConstructRequest(_v Object) _http.Request {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRequest(_o)
+		return _mapToRequest(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Request] or Map"))
 }
@@ -39277,7 +39277,7 @@ func _ConstructResponse(_v Object) _http.Response {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToResponse(_o)
+		return _mapToResponse(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Response] or Map"))
 }
@@ -39397,7 +39397,7 @@ func _ConstructServeMux(_v Object) _http.ServeMux {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToServeMux(_o)
+		return _mapToServeMux(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ServeMux] or Map"))
 }
@@ -39430,7 +39430,7 @@ func _ConstructServer(_v Object) _http.Server {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToServer(_o)
+		return _mapToServer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Server] or Map"))
 }
@@ -39463,7 +39463,7 @@ func _ConstructTransport(_v Object) _http.Transport {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTransport(_o)
+		return _mapToTransport(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Transport] or Map"))
 }
@@ -39714,7 +39714,7 @@ func _ConstructHandler(_v Object) _cgi.Handler {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToHandler(_o)
+		return _mapToHandler(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[cgi.Handler] or Map"))
 }
@@ -39779,7 +39779,7 @@ func _ConstructJar(_v Object) _cookiejar.Jar {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToJar(_o)
+		return _mapToJar(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Jar] or Map"))
 }
@@ -39812,7 +39812,7 @@ func _ConstructOptions(_v Object) _cookiejar.Options {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOptions(_o)
+		return _mapToOptions(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or Map"))
 }
@@ -39901,7 +39901,7 @@ func _ConstructResponseRecorder(_v Object) _httptest.ResponseRecorder {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToResponseRecorder(_o)
+		return _mapToResponseRecorder(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.ResponseRecorder] or Map"))
 }
@@ -39934,7 +39934,7 @@ func _ConstructServer(_v Object) _httptest.Server {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToServer(_o)
+		return _mapToServer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.Server] or Map"))
 }
@@ -40136,7 +40136,7 @@ func _ConstructAddress(_v Object) _mail.Address {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAddress(_o)
+		return _mapToAddress(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Address] or Map"))
 }
@@ -40169,7 +40169,7 @@ func _ConstructAddressParser(_v Object) _mail.AddressParser {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToAddressParser(_o)
+		return _mapToAddressParser(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.AddressParser] or Map"))
 }
@@ -40230,7 +40230,7 @@ func _ConstructMessage(_v Object) _mail.Message {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMessage(_o)
+		return _mapToMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Message] or Map"))
 }
@@ -40311,7 +40311,7 @@ func _ConstructCall(_v Object) _rpc.Call {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCall(_o)
+		return _mapToCall(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Call] or Map"))
 }
@@ -40344,7 +40344,7 @@ func _ConstructClient(_v Object) _rpc.Client {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToClient(_o)
+		return _mapToClient(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Client] or Map"))
 }
@@ -40405,7 +40405,7 @@ func _ConstructRequest(_v Object) _rpc.Request {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRequest(_o)
+		return _mapToRequest(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Request] or Map"))
 }
@@ -40438,7 +40438,7 @@ func _ConstructResponse(_v Object) _rpc.Response {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToResponse(_o)
+		return _mapToResponse(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Response] or Map"))
 }
@@ -40471,7 +40471,7 @@ func _ConstructServer(_v Object) _rpc.Server {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToServer(_o)
+		return _mapToServer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Server] or Map"))
 }
@@ -40721,7 +40721,7 @@ func _ConstructClient(_v Object) _smtp.Client {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToClient(_o)
+		return _mapToClient(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Client] or Map"))
 }
@@ -40754,7 +40754,7 @@ func _ConstructServerInfo(_v Object) _smtp.ServerInfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToServerInfo(_o)
+		return _mapToServerInfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or Map"))
 }
@@ -40831,7 +40831,7 @@ func _ConstructConn(_v Object) _textproto.Conn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToConn(_o)
+		return _mapToConn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Conn] or Map"))
 }
@@ -40864,7 +40864,7 @@ func _ConstructError(_v Object) _textproto.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Error] or Map"))
 }
@@ -40925,7 +40925,7 @@ func _ConstructPipeline(_v Object) _textproto.Pipeline {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPipeline(_o)
+		return _mapToPipeline(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Pipeline] or Map"))
 }
@@ -40989,7 +40989,7 @@ func _ConstructReader(_v Object) _textproto.Reader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReader(_o)
+		return _mapToReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Reader] or Map"))
 }
@@ -41022,7 +41022,7 @@ func _ConstructWriter(_v Object) _textproto.Writer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWriter(_o)
+		return _mapToWriter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Writer] or Map"))
 }
@@ -41100,7 +41100,7 @@ func _ConstructError(_v Object) _url.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or Map"))
 }
@@ -41195,7 +41195,7 @@ func _ConstructURL(_v Object) _url.URL {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToURL(_o)
+		return _mapToURL(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or Map"))
 }
@@ -41228,7 +41228,7 @@ func _ConstructUserinfo(_v Object) _url.Userinfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUserinfo(_o)
+		return _mapToUserinfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or Map"))
 }
@@ -41354,7 +41354,7 @@ func _ConstructFile(_v Object) _os.File {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFile(_o)
+		return _mapToFile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.File] or Map"))
 }
@@ -41446,7 +41446,7 @@ func _ConstructLinkError(_v Object) _os.LinkError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLinkError(_o)
+		return _mapToLinkError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.LinkError] or Map"))
 }
@@ -41479,7 +41479,7 @@ func _ConstructPathError(_v Object) _os.PathError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPathError(_o)
+		return _mapToPathError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.PathError] or Map"))
 }
@@ -41512,7 +41512,7 @@ func _ConstructProcAttr(_v Object) _os.ProcAttr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProcAttr(_o)
+		return _mapToProcAttr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.ProcAttr] or Map"))
 }
@@ -41545,7 +41545,7 @@ func _ConstructProcess(_v Object) _os.Process {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProcess(_o)
+		return _mapToProcess(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.Process] or Map"))
 }
@@ -41578,7 +41578,7 @@ func _ConstructProcessState(_v Object) _os.ProcessState {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProcessState(_o)
+		return _mapToProcessState(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.ProcessState] or Map"))
 }
@@ -41639,7 +41639,7 @@ func _ConstructSyscallError(_v Object) _os.SyscallError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSyscallError(_o)
+		return _mapToSyscallError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[os.SyscallError] or Map"))
 }
@@ -41896,7 +41896,7 @@ func _ConstructCmd(_v Object) _exec.Cmd {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCmd(_o)
+		return _mapToCmd(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[exec.Cmd] or Map"))
 }
@@ -41929,7 +41929,7 @@ func _ConstructError(_v Object) _exec.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[exec.Error] or Map"))
 }
@@ -41962,7 +41962,7 @@ func _ConstructExitError(_v Object) _exec.ExitError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToExitError(_o)
+		return _mapToExitError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[exec.ExitError] or Map"))
 }
@@ -42054,7 +42054,7 @@ func _ConstructGroup(_v Object) _user.Group {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGroup(_o)
+		return _mapToGroup(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[user.Group] or Map"))
 }
@@ -42211,7 +42211,7 @@ func _ConstructUser(_v Object) _user.User {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUser(_o)
+		return _mapToUser(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[user.User] or Map"))
 }
@@ -42439,7 +42439,7 @@ func _ConstructPlugin(_v Object) _plugin.Plugin {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPlugin(_o)
+		return _mapToPlugin(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[plugin.Plugin] or Map"))
 }
@@ -42579,7 +42579,7 @@ func _ConstructMethod(_v Object) _reflect.Method {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMethod(_o)
+		return _mapToMethod(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.Method] or Map"))
 }
@@ -42612,7 +42612,7 @@ func _ConstructSelectCase(_v Object) _reflect.SelectCase {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSelectCase(_o)
+		return _mapToSelectCase(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.SelectCase] or Map"))
 }
@@ -42676,7 +42676,7 @@ func _ConstructSliceHeader(_v Object) _reflect.SliceHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSliceHeader(_o)
+		return _mapToSliceHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.SliceHeader] or Map"))
 }
@@ -42709,7 +42709,7 @@ func _ConstructStringHeader(_v Object) _reflect.StringHeader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStringHeader(_o)
+		return _mapToStringHeader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.StringHeader] or Map"))
 }
@@ -42742,7 +42742,7 @@ func _ConstructStructField(_v Object) _reflect.StructField {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStructField(_o)
+		return _mapToStructField(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.StructField] or Map"))
 }
@@ -42834,7 +42834,7 @@ func _ConstructValue(_v Object) _reflect.Value {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToValue(_o)
+		return _mapToValue(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.Value] or Map"))
 }
@@ -42867,7 +42867,7 @@ func _ConstructValueError(_v Object) _reflect.ValueError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToValueError(_o)
+		return _mapToValueError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[reflect.ValueError] or Map"))
 }
@@ -43049,7 +43049,7 @@ func _ConstructRegexp(_v Object) _regexp.Regexp {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRegexp(_o)
+		return _mapToRegexp(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[regexp.Regexp] or Map"))
 }
@@ -43178,7 +43178,7 @@ func _ConstructError(_v Object) _syntax.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Error] or Map"))
 }
@@ -43273,7 +43273,7 @@ func _ConstructInst(_v Object) _syntax.Inst {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInst(_o)
+		return _mapToInst(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Inst] or Map"))
 }
@@ -43368,7 +43368,7 @@ func _ConstructProg(_v Object) _syntax.Prog {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProg(_o)
+		return _mapToProg(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Prog] or Map"))
 }
@@ -43401,7 +43401,7 @@ func _ConstructRegexp(_v Object) _syntax.Regexp {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRegexp(_o)
+		return _mapToRegexp(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Regexp] or Map"))
 }
@@ -43472,7 +43472,7 @@ func _ConstructBlockProfileRecord(_v Object) _runtime.BlockProfileRecord {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBlockProfileRecord(_o)
+		return _mapToBlockProfileRecord(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.BlockProfileRecord] or Map"))
 }
@@ -43533,7 +43533,7 @@ func _ConstructFrame(_v Object) _runtime.Frame {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFrame(_o)
+		return _mapToFrame(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.Frame] or Map"))
 }
@@ -43566,7 +43566,7 @@ func _ConstructFrames(_v Object) _runtime.Frames {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFrames(_o)
+		return _mapToFrames(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.Frames] or Map"))
 }
@@ -43599,7 +43599,7 @@ func _ConstructFunc(_v Object) _runtime.Func {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFunc(_o)
+		return _mapToFunc(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.Func] or Map"))
 }
@@ -43632,7 +43632,7 @@ func _ConstructMemProfileRecord(_v Object) _runtime.MemProfileRecord {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMemProfileRecord(_o)
+		return _mapToMemProfileRecord(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.MemProfileRecord] or Map"))
 }
@@ -43665,7 +43665,7 @@ func _ConstructMemStats(_v Object) _runtime.MemStats {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMemStats(_o)
+		return _mapToMemStats(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.MemStats] or Map"))
 }
@@ -43698,7 +43698,7 @@ func _ConstructStackRecord(_v Object) _runtime.StackRecord {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStackRecord(_o)
+		return _mapToStackRecord(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.StackRecord] or Map"))
 }
@@ -43731,7 +43731,7 @@ func _ConstructTypeAssertionError(_v Object) _runtime.TypeAssertionError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTypeAssertionError(_o)
+		return _mapToTypeAssertionError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[runtime.TypeAssertionError] or Map"))
 }
@@ -43956,7 +43956,7 @@ func _ConstructGCStats(_v Object) _debug.GCStats {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToGCStats(_o)
+		return _mapToGCStats(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[debug.GCStats] or Map"))
 }
@@ -44037,7 +44037,7 @@ func _ConstructLabelSet(_v Object) _pprof.LabelSet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLabelSet(_o)
+		return _mapToLabelSet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pprof.LabelSet] or Map"))
 }
@@ -44070,7 +44070,7 @@ func _ConstructProfile(_v Object) _pprof.Profile {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProfile(_o)
+		return _mapToProfile(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[pprof.Profile] or Map"))
 }
@@ -44190,7 +44190,7 @@ func _ConstructRegion(_v Object) _trace.Region {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRegion(_o)
+		return _mapToRegion(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[trace.Region] or Map"))
 }
@@ -44223,7 +44223,7 @@ func _ConstructTask(_v Object) _trace.Task {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTask(_o)
+		return _mapToTask(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[trace.Task] or Map"))
 }
@@ -44525,7 +44525,7 @@ func _ConstructNumError(_v Object) _strconv.NumError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNumError(_o)
+		return _mapToNumError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[strconv.NumError] or Map"))
 }
@@ -44773,7 +44773,7 @@ func _ConstructBuilder(_v Object) _strings.Builder {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBuilder(_o)
+		return _mapToBuilder(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[strings.Builder] or Map"))
 }
@@ -44806,7 +44806,7 @@ func _ConstructReader(_v Object) _strings.Reader {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReader(_o)
+		return _mapToReader(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[strings.Reader] or Map"))
 }
@@ -44839,7 +44839,7 @@ func _ConstructReplacer(_v Object) _strings.Replacer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToReplacer(_o)
+		return _mapToReplacer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[strings.Replacer] or Map"))
 }
@@ -45024,7 +45024,7 @@ func _ConstructCond(_v Object) _sync.Cond {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCond(_o)
+		return _mapToCond(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.Cond] or Map"))
 }
@@ -45085,7 +45085,7 @@ func _ConstructMap(_v Object) _sync.Map {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMap(_o)
+		return _mapToMap(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.Map] or Map"))
 }
@@ -45118,7 +45118,7 @@ func _ConstructMutex(_v Object) _sync.Mutex {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMutex(_o)
+		return _mapToMutex(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.Mutex] or Map"))
 }
@@ -45151,7 +45151,7 @@ func _ConstructOnce(_v Object) _sync.Once {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToOnce(_o)
+		return _mapToOnce(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.Once] or Map"))
 }
@@ -45184,7 +45184,7 @@ func _ConstructPool(_v Object) _sync.Pool {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPool(_o)
+		return _mapToPool(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.Pool] or Map"))
 }
@@ -45217,7 +45217,7 @@ func _ConstructRWMutex(_v Object) _sync.RWMutex {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRWMutex(_o)
+		return _mapToRWMutex(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.RWMutex] or Map"))
 }
@@ -45250,7 +45250,7 @@ func _ConstructWaitGroup(_v Object) _sync.WaitGroup {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWaitGroup(_o)
+		return _mapToWaitGroup(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[sync.WaitGroup] or Map"))
 }
@@ -45469,7 +45469,7 @@ func _ConstructBpfHdr(_v Object) _syscall.BpfHdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBpfHdr(_o)
+		return _mapToBpfHdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.BpfHdr] or Map"))
 }
@@ -45502,7 +45502,7 @@ func _ConstructBpfInsn(_v Object) _syscall.BpfInsn {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBpfInsn(_o)
+		return _mapToBpfInsn(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.BpfInsn] or Map"))
 }
@@ -45535,7 +45535,7 @@ func _ConstructBpfProgram(_v Object) _syscall.BpfProgram {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBpfProgram(_o)
+		return _mapToBpfProgram(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.BpfProgram] or Map"))
 }
@@ -45568,7 +45568,7 @@ func _ConstructBpfStat(_v Object) _syscall.BpfStat {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBpfStat(_o)
+		return _mapToBpfStat(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.BpfStat] or Map"))
 }
@@ -45601,7 +45601,7 @@ func _ConstructBpfVersion(_v Object) _syscall.BpfVersion {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBpfVersion(_o)
+		return _mapToBpfVersion(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.BpfVersion] or Map"))
 }
@@ -45634,7 +45634,7 @@ func _ConstructCmsghdr(_v Object) _syscall.Cmsghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCmsghdr(_o)
+		return _mapToCmsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Cmsghdr] or Map"))
 }
@@ -45695,7 +45695,7 @@ func _ConstructCredential(_v Object) _syscall.Credential {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCredential(_o)
+		return _mapToCredential(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Credential] or Map"))
 }
@@ -45728,7 +45728,7 @@ func _ConstructDirent(_v Object) _syscall.Dirent {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDirent(_o)
+		return _mapToDirent(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Dirent] or Map"))
 }
@@ -45792,7 +45792,7 @@ func _ConstructFbootstraptransfer_t(_v Object) _syscall.Fbootstraptransfer_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFbootstraptransfer_t(_o)
+		return _mapToFbootstraptransfer_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Fbootstraptransfer_t] or Map"))
 }
@@ -45825,7 +45825,7 @@ func _ConstructFdSet(_v Object) _syscall.FdSet {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFdSet(_o)
+		return _mapToFdSet(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.FdSet] or Map"))
 }
@@ -45858,7 +45858,7 @@ func _ConstructFlock_t(_v Object) _syscall.Flock_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFlock_t(_o)
+		return _mapToFlock_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Flock_t] or Map"))
 }
@@ -45891,7 +45891,7 @@ func _ConstructFsid(_v Object) _syscall.Fsid {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFsid(_o)
+		return _mapToFsid(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Fsid] or Map"))
 }
@@ -45924,7 +45924,7 @@ func _ConstructFstore_t(_v Object) _syscall.Fstore_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFstore_t(_o)
+		return _mapToFstore_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Fstore_t] or Map"))
 }
@@ -45957,7 +45957,7 @@ func _ConstructICMPv6Filter(_v Object) _syscall.ICMPv6Filter {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToICMPv6Filter(_o)
+		return _mapToICMPv6Filter(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.ICMPv6Filter] or Map"))
 }
@@ -45990,7 +45990,7 @@ func _ConstructIPMreq(_v Object) _syscall.IPMreq {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPMreq(_o)
+		return _mapToIPMreq(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IPMreq] or Map"))
 }
@@ -46023,7 +46023,7 @@ func _ConstructIPv6MTUInfo(_v Object) _syscall.IPv6MTUInfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPv6MTUInfo(_o)
+		return _mapToIPv6MTUInfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IPv6MTUInfo] or Map"))
 }
@@ -46056,7 +46056,7 @@ func _ConstructIPv6Mreq(_v Object) _syscall.IPv6Mreq {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIPv6Mreq(_o)
+		return _mapToIPv6Mreq(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IPv6Mreq] or Map"))
 }
@@ -46089,7 +46089,7 @@ func _ConstructIfData(_v Object) _syscall.IfData {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfData(_o)
+		return _mapToIfData(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IfData] or Map"))
 }
@@ -46122,7 +46122,7 @@ func _ConstructIfMsghdr(_v Object) _syscall.IfMsghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfMsghdr(_o)
+		return _mapToIfMsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IfMsghdr] or Map"))
 }
@@ -46155,7 +46155,7 @@ func _ConstructIfaMsghdr(_v Object) _syscall.IfaMsghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfaMsghdr(_o)
+		return _mapToIfaMsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IfaMsghdr] or Map"))
 }
@@ -46188,7 +46188,7 @@ func _ConstructIfmaMsghdr(_v Object) _syscall.IfmaMsghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfmaMsghdr(_o)
+		return _mapToIfmaMsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IfmaMsghdr] or Map"))
 }
@@ -46221,7 +46221,7 @@ func _ConstructIfmaMsghdr2(_v Object) _syscall.IfmaMsghdr2 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfmaMsghdr2(_o)
+		return _mapToIfmaMsghdr2(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.IfmaMsghdr2] or Map"))
 }
@@ -46254,7 +46254,7 @@ func _ConstructInet4Pktinfo(_v Object) _syscall.Inet4Pktinfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInet4Pktinfo(_o)
+		return _mapToInet4Pktinfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Inet4Pktinfo] or Map"))
 }
@@ -46287,7 +46287,7 @@ func _ConstructInet6Pktinfo(_v Object) _syscall.Inet6Pktinfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInet6Pktinfo(_o)
+		return _mapToInet6Pktinfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Inet6Pktinfo] or Map"))
 }
@@ -46320,7 +46320,7 @@ func _ConstructInterfaceAddrMessage(_v Object) _syscall.InterfaceAddrMessage {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterfaceAddrMessage(_o)
+		return _mapToInterfaceAddrMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.InterfaceAddrMessage] or Map"))
 }
@@ -46353,7 +46353,7 @@ func _ConstructInterfaceMessage(_v Object) _syscall.InterfaceMessage {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterfaceMessage(_o)
+		return _mapToInterfaceMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.InterfaceMessage] or Map"))
 }
@@ -46386,7 +46386,7 @@ func _ConstructInterfaceMulticastAddrMessage(_v Object) _syscall.InterfaceMultic
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInterfaceMulticastAddrMessage(_o)
+		return _mapToInterfaceMulticastAddrMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.InterfaceMulticastAddrMessage] or Map"))
 }
@@ -46419,7 +46419,7 @@ func _ConstructIovec(_v Object) _syscall.Iovec {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIovec(_o)
+		return _mapToIovec(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Iovec] or Map"))
 }
@@ -46452,7 +46452,7 @@ func _ConstructKevent_t(_v Object) _syscall.Kevent_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToKevent_t(_o)
+		return _mapToKevent_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Kevent_t] or Map"))
 }
@@ -46485,7 +46485,7 @@ func _ConstructLinger(_v Object) _syscall.Linger {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLinger(_o)
+		return _mapToLinger(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Linger] or Map"))
 }
@@ -46518,7 +46518,7 @@ func _ConstructLog2phys_t(_v Object) _syscall.Log2phys_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLog2phys_t(_o)
+		return _mapToLog2phys_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Log2phys_t] or Map"))
 }
@@ -46551,7 +46551,7 @@ func _ConstructMsghdr(_v Object) _syscall.Msghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMsghdr(_o)
+		return _mapToMsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Msghdr] or Map"))
 }
@@ -46584,7 +46584,7 @@ func _ConstructProcAttr(_v Object) _syscall.ProcAttr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToProcAttr(_o)
+		return _mapToProcAttr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.ProcAttr] or Map"))
 }
@@ -46617,7 +46617,7 @@ func _ConstructRadvisory_t(_v Object) _syscall.Radvisory_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRadvisory_t(_o)
+		return _mapToRadvisory_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Radvisory_t] or Map"))
 }
@@ -46678,7 +46678,7 @@ func _ConstructRawSockaddr(_v Object) _syscall.RawSockaddr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddr(_o)
+		return _mapToRawSockaddr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddr] or Map"))
 }
@@ -46711,7 +46711,7 @@ func _ConstructRawSockaddrAny(_v Object) _syscall.RawSockaddrAny {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddrAny(_o)
+		return _mapToRawSockaddrAny(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddrAny] or Map"))
 }
@@ -46744,7 +46744,7 @@ func _ConstructRawSockaddrDatalink(_v Object) _syscall.RawSockaddrDatalink {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddrDatalink(_o)
+		return _mapToRawSockaddrDatalink(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddrDatalink] or Map"))
 }
@@ -46777,7 +46777,7 @@ func _ConstructRawSockaddrInet4(_v Object) _syscall.RawSockaddrInet4 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddrInet4(_o)
+		return _mapToRawSockaddrInet4(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddrInet4] or Map"))
 }
@@ -46810,7 +46810,7 @@ func _ConstructRawSockaddrInet6(_v Object) _syscall.RawSockaddrInet6 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddrInet6(_o)
+		return _mapToRawSockaddrInet6(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddrInet6] or Map"))
 }
@@ -46843,7 +46843,7 @@ func _ConstructRawSockaddrUnix(_v Object) _syscall.RawSockaddrUnix {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRawSockaddrUnix(_o)
+		return _mapToRawSockaddrUnix(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RawSockaddrUnix] or Map"))
 }
@@ -46876,7 +46876,7 @@ func _ConstructRlimit(_v Object) _syscall.Rlimit {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRlimit(_o)
+		return _mapToRlimit(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Rlimit] or Map"))
 }
@@ -46909,7 +46909,7 @@ func _ConstructRouteMessage(_v Object) _syscall.RouteMessage {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRouteMessage(_o)
+		return _mapToRouteMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RouteMessage] or Map"))
 }
@@ -46970,7 +46970,7 @@ func _ConstructRtMetrics(_v Object) _syscall.RtMetrics {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRtMetrics(_o)
+		return _mapToRtMetrics(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RtMetrics] or Map"))
 }
@@ -47003,7 +47003,7 @@ func _ConstructRtMsghdr(_v Object) _syscall.RtMsghdr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRtMsghdr(_o)
+		return _mapToRtMsghdr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.RtMsghdr] or Map"))
 }
@@ -47036,7 +47036,7 @@ func _ConstructRusage(_v Object) _syscall.Rusage {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRusage(_o)
+		return _mapToRusage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Rusage] or Map"))
 }
@@ -47128,7 +47128,7 @@ func _ConstructSockaddrDatalink(_v Object) _syscall.SockaddrDatalink {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSockaddrDatalink(_o)
+		return _mapToSockaddrDatalink(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SockaddrDatalink] or Map"))
 }
@@ -47161,7 +47161,7 @@ func _ConstructSockaddrInet4(_v Object) _syscall.SockaddrInet4 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSockaddrInet4(_o)
+		return _mapToSockaddrInet4(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SockaddrInet4] or Map"))
 }
@@ -47194,7 +47194,7 @@ func _ConstructSockaddrInet6(_v Object) _syscall.SockaddrInet6 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSockaddrInet6(_o)
+		return _mapToSockaddrInet6(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SockaddrInet6] or Map"))
 }
@@ -47227,7 +47227,7 @@ func _ConstructSockaddrUnix(_v Object) _syscall.SockaddrUnix {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSockaddrUnix(_o)
+		return _mapToSockaddrUnix(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SockaddrUnix] or Map"))
 }
@@ -47260,7 +47260,7 @@ func _ConstructSocketControlMessage(_v Object) _syscall.SocketControlMessage {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSocketControlMessage(_o)
+		return _mapToSocketControlMessage(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SocketControlMessage] or Map"))
 }
@@ -47293,7 +47293,7 @@ func _ConstructStat_t(_v Object) _syscall.Stat_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStat_t(_o)
+		return _mapToStat_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Stat_t] or Map"))
 }
@@ -47326,7 +47326,7 @@ func _ConstructStatfs_t(_v Object) _syscall.Statfs_t {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStatfs_t(_o)
+		return _mapToStatfs_t(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Statfs_t] or Map"))
 }
@@ -47359,7 +47359,7 @@ func _ConstructSysProcAttr(_v Object) _syscall.SysProcAttr {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSysProcAttr(_o)
+		return _mapToSysProcAttr(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.SysProcAttr] or Map"))
 }
@@ -47392,7 +47392,7 @@ func _ConstructTermios(_v Object) _syscall.Termios {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTermios(_o)
+		return _mapToTermios(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Termios] or Map"))
 }
@@ -47425,7 +47425,7 @@ func _ConstructTimespec(_v Object) _syscall.Timespec {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTimespec(_o)
+		return _mapToTimespec(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Timespec] or Map"))
 }
@@ -47458,7 +47458,7 @@ func _ConstructTimeval(_v Object) _syscall.Timeval {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTimeval(_o)
+		return _mapToTimeval(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Timeval] or Map"))
 }
@@ -47491,7 +47491,7 @@ func _ConstructTimeval32(_v Object) _syscall.Timeval32 {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTimeval32(_o)
+		return _mapToTimeval32(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Timeval32] or Map"))
 }
@@ -48407,7 +48407,7 @@ func _ConstructB(_v Object) _testing.B {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToB(_o)
+		return _mapToB(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.B] or Map"))
 }
@@ -48440,7 +48440,7 @@ func _ConstructBenchmarkResult(_v Object) _testing.BenchmarkResult {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBenchmarkResult(_o)
+		return _mapToBenchmarkResult(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.BenchmarkResult] or Map"))
 }
@@ -48473,7 +48473,7 @@ func _ConstructCover(_v Object) _testing.Cover {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCover(_o)
+		return _mapToCover(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.Cover] or Map"))
 }
@@ -48506,7 +48506,7 @@ func _ConstructCoverBlock(_v Object) _testing.CoverBlock {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCoverBlock(_o)
+		return _mapToCoverBlock(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.CoverBlock] or Map"))
 }
@@ -48539,7 +48539,7 @@ func _ConstructInternalBenchmark(_v Object) _testing.InternalBenchmark {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInternalBenchmark(_o)
+		return _mapToInternalBenchmark(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.InternalBenchmark] or Map"))
 }
@@ -48572,7 +48572,7 @@ func _ConstructInternalExample(_v Object) _testing.InternalExample {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInternalExample(_o)
+		return _mapToInternalExample(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.InternalExample] or Map"))
 }
@@ -48605,7 +48605,7 @@ func _ConstructInternalTest(_v Object) _testing.InternalTest {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToInternalTest(_o)
+		return _mapToInternalTest(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.InternalTest] or Map"))
 }
@@ -48638,7 +48638,7 @@ func _ConstructM(_v Object) _testing.M {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToM(_o)
+		return _mapToM(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.M] or Map"))
 }
@@ -48671,7 +48671,7 @@ func _ConstructPB(_v Object) _testing.PB {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPB(_o)
+		return _mapToPB(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.PB] or Map"))
 }
@@ -48704,7 +48704,7 @@ func _ConstructT(_v Object) _testing.T {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToT(_o)
+		return _mapToT(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[testing.T] or Map"))
 }
@@ -48900,7 +48900,7 @@ func _ConstructExecError(_v Object) _template.ExecError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToExecError(_o)
+		return _mapToExecError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[template.ExecError] or Map"))
 }
@@ -48961,7 +48961,7 @@ func _ConstructTemplate(_v Object) _template.Template {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTemplate(_o)
+		return _mapToTemplate(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[template.Template] or Map"))
 }
@@ -49071,7 +49071,7 @@ func _ConstructActionNode(_v Object) _parse.ActionNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToActionNode(_o)
+		return _mapToActionNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.ActionNode] or Map"))
 }
@@ -49104,7 +49104,7 @@ func _ConstructBoolNode(_v Object) _parse.BoolNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBoolNode(_o)
+		return _mapToBoolNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.BoolNode] or Map"))
 }
@@ -49137,7 +49137,7 @@ func _ConstructBranchNode(_v Object) _parse.BranchNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToBranchNode(_o)
+		return _mapToBranchNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.BranchNode] or Map"))
 }
@@ -49170,7 +49170,7 @@ func _ConstructChainNode(_v Object) _parse.ChainNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToChainNode(_o)
+		return _mapToChainNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.ChainNode] or Map"))
 }
@@ -49203,7 +49203,7 @@ func _ConstructCommandNode(_v Object) _parse.CommandNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToCommandNode(_o)
+		return _mapToCommandNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.CommandNode] or Map"))
 }
@@ -49236,7 +49236,7 @@ func _ConstructDotNode(_v Object) _parse.DotNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToDotNode(_o)
+		return _mapToDotNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.DotNode] or Map"))
 }
@@ -49269,7 +49269,7 @@ func _ConstructFieldNode(_v Object) _parse.FieldNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToFieldNode(_o)
+		return _mapToFieldNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.FieldNode] or Map"))
 }
@@ -49302,7 +49302,7 @@ func _ConstructIdentifierNode(_v Object) _parse.IdentifierNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIdentifierNode(_o)
+		return _mapToIdentifierNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.IdentifierNode] or Map"))
 }
@@ -49335,7 +49335,7 @@ func _ConstructIfNode(_v Object) _parse.IfNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToIfNode(_o)
+		return _mapToIfNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.IfNode] or Map"))
 }
@@ -49368,7 +49368,7 @@ func _ConstructListNode(_v Object) _parse.ListNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToListNode(_o)
+		return _mapToListNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.ListNode] or Map"))
 }
@@ -49401,7 +49401,7 @@ func _ConstructNilNode(_v Object) _parse.NilNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNilNode(_o)
+		return _mapToNilNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.NilNode] or Map"))
 }
@@ -49493,7 +49493,7 @@ func _ConstructNumberNode(_v Object) _parse.NumberNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNumberNode(_o)
+		return _mapToNumberNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.NumberNode] or Map"))
 }
@@ -49526,7 +49526,7 @@ func _ConstructPipeNode(_v Object) _parse.PipeNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToPipeNode(_o)
+		return _mapToPipeNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.PipeNode] or Map"))
 }
@@ -49590,7 +49590,7 @@ func _ConstructRangeNode(_v Object) _parse.RangeNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToRangeNode(_o)
+		return _mapToRangeNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.RangeNode] or Map"))
 }
@@ -49623,7 +49623,7 @@ func _ConstructStringNode(_v Object) _parse.StringNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToStringNode(_o)
+		return _mapToStringNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.StringNode] or Map"))
 }
@@ -49656,7 +49656,7 @@ func _ConstructTemplateNode(_v Object) _parse.TemplateNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTemplateNode(_o)
+		return _mapToTemplateNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.TemplateNode] or Map"))
 }
@@ -49689,7 +49689,7 @@ func _ConstructTextNode(_v Object) _parse.TextNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTextNode(_o)
+		return _mapToTextNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.TextNode] or Map"))
 }
@@ -49722,7 +49722,7 @@ func _ConstructTree(_v Object) _parse.Tree {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTree(_o)
+		return _mapToTree(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.Tree] or Map"))
 }
@@ -49755,7 +49755,7 @@ func _ConstructVariableNode(_v Object) _parse.VariableNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToVariableNode(_o)
+		return _mapToVariableNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.VariableNode] or Map"))
 }
@@ -49788,7 +49788,7 @@ func _ConstructWithNode(_v Object) _parse.WithNode {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToWithNode(_o)
+		return _mapToWithNode(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.WithNode] or Map"))
 }
@@ -49881,7 +49881,7 @@ func _ConstructLocation(_v Object) _time.Location {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToLocation(_o)
+		return _mapToLocation(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[time.Location] or Map"))
 }
@@ -49945,7 +49945,7 @@ func _ConstructParseError(_v Object) _time.ParseError {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToParseError(_o)
+		return _mapToParseError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[time.ParseError] or Map"))
 }
@@ -49978,7 +49978,7 @@ func _ConstructTicker(_v Object) _time.Ticker {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTicker(_o)
+		return _mapToTicker(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[time.Ticker] or Map"))
 }
@@ -50011,7 +50011,7 @@ func _ConstructTime(_v Object) _time.Time {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTime(_o)
+		return _mapToTime(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[time.Time] or Map"))
 }
@@ -50044,7 +50044,7 @@ func _ConstructTimer(_v Object) _time.Timer {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToTimer(_o)
+		return _mapToTimer(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[time.Timer] or Map"))
 }

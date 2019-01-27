@@ -247,7 +247,7 @@ func _ConstructMX(_v Object) _net.MX {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToMX(_o)
+		return _mapToMX(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or Map"))
 }
@@ -280,7 +280,7 @@ func _ConstructNS(_v Object) _net.NS {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToNS(_o)
+		return _mapToNS(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or Map"))
 }
@@ -313,7 +313,7 @@ func _ConstructResolver(_v Object) _net.Resolver {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToResolver(_o)
+		return _mapToResolver(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or Map"))
 }
@@ -346,7 +346,7 @@ func _ConstructSRV(_v Object) _net.SRV {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToSRV(_o)
+		return _mapToSRV(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or Map"))
 }
@@ -497,7 +497,7 @@ func _ConstructError(_v Object) _url.Error {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToError(_o)
+		return _mapToError(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or Map"))
 }
@@ -592,7 +592,7 @@ func _ConstructURL(_v Object) _url.URL {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToURL(_o)
+		return _mapToURL(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or Map"))
 }
@@ -625,7 +625,7 @@ func _ConstructUserinfo(_v Object) _url.Userinfo {
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _mapToUserinfo(_o)
+		return _mapToUserinfo(_o.(Map))
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or Map"))
 }

@@ -386,7 +386,7 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 		}
 	case *StructType:
 		helperFName := "_mapTo" + baseTypeName
-		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o)", mapToType(helperFName, "_"+typeName, ti.td.Type)
+		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o.(Map))", mapToType(helperFName, "_"+typeName, ti.td.Type)
 	}
 	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name), ""
 }
