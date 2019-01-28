@@ -859,7 +859,7 @@ var procChar Proc = func(args []Object) Object {
 }
 
 var procBoolean Proc = func(args []Object) Object {
-	return Boolean{B: ToBoolean(args[0])}
+	return Boolean{B: ToBool(args[0])}
 }
 
 var procNumerator Proc = func(args []Object) Object {
