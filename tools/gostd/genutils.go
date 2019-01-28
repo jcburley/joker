@@ -178,7 +178,7 @@ func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *strin
 // through or "Object" is returned for it if cl is returned as empty.
 func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 	switch in_cl {
-	case "String", "Int", "Byte", "Double", "Bool", "Time", "Error": // TODO: Have tested only String so far
+	case "String", "Int", "Byte", "Double", "Boolean", "Time", "Error": // TODO: Have tested only String so far
 		cl = `^"` + in_cl + `"`
 	default:
 		cl = ""

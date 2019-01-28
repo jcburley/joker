@@ -1163,7 +1163,7 @@ JOKER FUNC net/http.NotFoundHandler from net/http/server.go:
 
 JOKER FUNC net/http.ParseHTTPVersion from net/http/request.go:
 (defn ParseHTTPVersion
-  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo input arguments: (vers string)\n\nGo return type: (major int, minor int, ok bool)\n\nJoker input arguments: [^String vers]\n\nJoker return type: [Int Int Bool]"
+  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo input arguments: (vers string)\n\nGo return type: (major int, minor int, ok bool)\n\nJoker input arguments: [^String vers]\n\nJoker return type: [Int Int Boolean]"
   {:added "1.0"
    :go "__parseHTTPVersion(_vers)"}
   [^String _vers])
@@ -1422,24 +1422,24 @@ JOKER FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 
 JOKER FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 ;; (defn DumpRequest
-;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpRequest(_req, _body)"}
-;;   [^http/Request _req, ^Bool _body])
+;;   [^http/Request _req, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 ;; (defn DumpRequestOut
-;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpRequestOut(_req, _body)"}
-;;   [^http/Request _req, ^Bool _body])
+;;   [^http/Request _req, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 ;; (defn DumpResponse
-;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Response) resp, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Response) resp, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpResponse(_resp, _body)"}
-;;   [^http/Response _resp, ^Bool _body])
+;;   [^http/Response _resp, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
 ;; (defn NewChunkedReader
@@ -4349,7 +4349,7 @@ func __parseHTTPVersion(vers string) Object {
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeInt(major))
 	_res = _res.Conjoin(MakeInt(minor))
-	_res = _res.Conjoin(MakeBool(ok))
+	_res = _res.Conjoin(MakeBoolean(ok))
 	return _res
 }
 

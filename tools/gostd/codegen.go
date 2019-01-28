@@ -242,8 +242,8 @@ func maybeImplicitConvert(typeName string, td *TypeSpec) string {
 			argType = "Int"
 			declType = "Byte"
 		case "bool":
-			argType = "Bool"
-			declType = "Bool"
+			argType = "Boolean"
+			declType = "Boolean"
 		case "int8":
 			argType = "Int"
 			declType = "Byte"
@@ -396,7 +396,7 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 	case "string":
 		return "case String", "String", ".S"
 	case "bool":
-		return "case Bool", "Bool", ".Bool().B"
+		return "case Boolean", "Boolean", ".Boolean().B"
 	case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
 		return "case Number", "Number", ".Int().I"
 	case "int64":

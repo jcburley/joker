@@ -167,7 +167,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 		case "byte":
 			clType = "Byte"
 		case "bool":
-			clType = "Bool"
+			clType = "Boolean"
 		case "int16":
 			clType = "Int16"
 		case "uint":

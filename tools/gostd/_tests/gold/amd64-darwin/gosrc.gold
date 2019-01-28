@@ -2753,31 +2753,31 @@ JOKER FUNC bufio.NewWriterSize from bufio/bufio.go:
 
 JOKER FUNC bufio.ScanBytes from bufio/scan.go:
 ;; (defn ScanBytes
-;;   "ScanBytes is a split function for a Scanner that returns each byte as a token.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Bool atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
+;;   "ScanBytes is a split function for a Scanner that returns each byte as a token.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Boolean atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__scanBytes(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)), _atEOF)"}
-;;   [^Object _data, ^Bool _atEOF])
+;;   [^Object _data, ^Boolean _atEOF])
 
 JOKER FUNC bufio.ScanLines from bufio/scan.go:
 ;; (defn ScanLines
-;;   "ScanLines is a split function for a Scanner that returns each line of\ntext, stripped of any trailing end-of-line marker. The returned line may\nbe empty. The end-of-line marker is one optional carriage return followed\nby one mandatory newline. In regular expression notation, it is `\\r?\\n`.\nThe last non-empty line of input will be returned even if it has no\nnewline.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Bool atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
+;;   "ScanLines is a split function for a Scanner that returns each line of\ntext, stripped of any trailing end-of-line marker. The returned line may\nbe empty. The end-of-line marker is one optional carriage return followed\nby one mandatory newline. In regular expression notation, it is `\\r?\\n`.\nThe last non-empty line of input will be returned even if it has no\nnewline.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Boolean atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__scanLines(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)), _atEOF)"}
-;;   [^Object _data, ^Bool _atEOF])
+;;   [^Object _data, ^Boolean _atEOF])
 
 JOKER FUNC bufio.ScanRunes from bufio/scan.go:
 ;; (defn ScanRunes
-;;   "ScanRunes is a split function for a Scanner that returns each\nUTF-8-encoded rune as a token. The sequence of runes returned is\nequivalent to that from a range loop over the input as a string, which\nmeans that erroneous UTF-8 encodings translate to U+FFFD = \"\\xef\\xbf\\xbd\".\nBecause of the Scan interface, this makes it impossible for the client to\ndistinguish correctly encoded replacement runes from encoding errors.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Bool atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
+;;   "ScanRunes is a split function for a Scanner that returns each\nUTF-8-encoded rune as a token. The sequence of runes returned is\nequivalent to that from a range loop over the input as a string, which\nmeans that erroneous UTF-8 encodings translate to U+FFFD = \"\\xef\\xbf\\xbd\".\nBecause of the Scan interface, this makes it impossible for the client to\ndistinguish correctly encoded replacement runes from encoding errors.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Boolean atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__scanRunes(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)), _atEOF)"}
-;;   [^Object _data, ^Bool _atEOF])
+;;   [^Object _data, ^Boolean _atEOF])
 
 JOKER FUNC bufio.ScanWords from bufio/scan.go:
 ;; (defn ScanWords
-;;   "ScanWords is a split function for a Scanner that returns each\nspace-separated word of text, with surrounding spaces deleted. It will\nnever return an empty string. The definition of space is set by\nunicode.IsSpace.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Bool atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
+;;   "ScanWords is a split function for a Scanner that returns each\nspace-separated word of text, with surrounding spaces deleted. It will\nnever return an empty string. The definition of space is set by\nunicode.IsSpace.\n\nGo input arguments: (data []byte, atEOF bool)\n\nGo return type: (advance int, token []byte, err error)\n\nJoker input arguments: [^(vector-of Byte) data, ^Boolean atEOF]\n\nJoker return type: [Int (vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__scanWords(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)), _atEOF)"}
-;;   [^Object _data, ^Bool _atEOF])
+;;   [^Object _data, ^Boolean _atEOF])
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -2808,22 +2808,22 @@ JOKER FUNC bytes.Compare from bytes/bytes_decl.go:
 ;;   [^Object _a, ^Object _b])
 
 JOKER FUNC bytes.Contains from bytes/bytes.go:
-;; (defn ^"Bool" Contains
-;;   "Contains reports whether subslice is within b.\n\nGo input arguments: (b []byte, subslice []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^(vector-of Byte) subslice]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Contains
+;;   "Contains reports whether subslice is within b.\n\nGo input arguments: (b []byte, subslice []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^(vector-of Byte) subslice]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.Contains(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_subslice)))"}
 ;;   [^Object _b, ^Object _subslice])
 
 JOKER FUNC bytes.ContainsAny from bytes/bytes.go:
-;; (defn ^"Bool" ContainsAny
-;;   "ContainsAny reports whether any of the UTF-8-encoded code points in chars are within b.\n\nGo input arguments: (b []byte, chars string)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^String chars]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" ContainsAny
+;;   "ContainsAny reports whether any of the UTF-8-encoded code points in chars are within b.\n\nGo input arguments: (b []byte, chars string)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^String chars]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.ContainsAny(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), _chars)"}
 ;;   [^Object _b, ^String _chars])
 
 JOKER FUNC bytes.ContainsRune from bytes/bytes.go:
-;; (defn ^"Bool" ContainsRune
-;;   "ContainsRune reports whether the rune is contained in the UTF-8-encoded byte slice b.\n\nGo input arguments: (b []byte, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" ContainsRune
+;;   "ContainsRune reports whether the rune is contained in the UTF-8-encoded byte slice b.\n\nGo input arguments: (b []byte, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) b, ^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.ContainsRune(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), _r)"}
 ;;   [^Object _b, ^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -2836,15 +2836,15 @@ JOKER FUNC bytes.Count from bytes/bytes.go:
 ;;   [^Object _s, ^Object _sep])
 
 JOKER FUNC bytes.Equal from bytes/bytes_decl.go:
-;; (defn ^"Bool" Equal
-;;   "Equal returns a boolean reporting whether a and b\nare the same length and contain the same bytes.\nA nil argument is equivalent to an empty slice.\n\nGo input arguments: (a []byte, b []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) a, ^(vector-of Byte) b]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Equal
+;;   "Equal returns a boolean reporting whether a and b\nare the same length and contain the same bytes.\nA nil argument is equivalent to an empty slice.\n\nGo input arguments: (a []byte, b []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) a, ^(vector-of Byte) b]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.Equal(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_a)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))"}
 ;;   [^Object _a, ^Object _b])
 
 JOKER FUNC bytes.EqualFold from bytes/bytes.go:
-;; (defn ^"Bool" EqualFold
-;;   "EqualFold reports whether s and t, interpreted as UTF-8 strings,\nare equal under Unicode case-folding.\n\nGo input arguments: (s []byte, t []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) t]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" EqualFold
+;;   "EqualFold reports whether s and t, interpreted as UTF-8 strings,\nare equal under Unicode case-folding.\n\nGo input arguments: (s []byte, t []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) t]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.EqualFold(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_s)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_t)))"}
 ;;   [^Object _s, ^Object _t])
@@ -2864,15 +2864,15 @@ JOKER FUNC bytes.FieldsFunc from bytes/bytes.go:
 ;;   [^Object _s, ^fn _f])
 
 JOKER FUNC bytes.HasPrefix from bytes/bytes.go:
-;; (defn ^"Bool" HasPrefix
-;;   "HasPrefix tests whether the byte slice s begins with prefix.\n\nGo input arguments: (s []byte, prefix []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) prefix]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" HasPrefix
+;;   "HasPrefix tests whether the byte slice s begins with prefix.\n\nGo input arguments: (s []byte, prefix []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) prefix]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.HasPrefix(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_s)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_prefix)))"}
 ;;   [^Object _s, ^Object _prefix])
 
 JOKER FUNC bytes.HasSuffix from bytes/bytes.go:
-;; (defn ^"Bool" HasSuffix
-;;   "HasSuffix tests whether the byte slice s ends with suffix.\n\nGo input arguments: (s []byte, suffix []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) suffix]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" HasSuffix
+;;   "HasSuffix tests whether the byte slice s ends with suffix.\n\nGo input arguments: (s []byte, suffix []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) s, ^(vector-of Byte) suffix]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "bytes.HasSuffix(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_s)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_suffix)))"}
 ;;   [^Object _s, ^Object _suffix])
@@ -3557,8 +3557,8 @@ JOKER FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 ;;   [^io/Reader _rand, ^dsa/PrivateKey _priv, ^Object _hash])
 
 JOKER FUNC crypto/dsa.Verify from crypto/dsa/dsa.go:
-;; (defn ^"Bool" Verify
-;;   "Verify verifies the signature in r, s of hash using the public key, pub. It\nreports whether the signature is valid.\n\nNote that FIPS 186-3 section 4.6 specifies that the hash should be truncated\nto the byte-length of the subgroup. This function does not perform that\ntruncation itself.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.dsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Verify
+;;   "Verify verifies the signature in r, s of hash using the public key, pub. It\nreports whether the signature is valid.\n\nNote that FIPS 186-3 section 4.6 specifies that the hash should be truncated\nto the byte-length of the subgroup. This function does not perform that\ntruncation itself.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.dsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "dsa.Verify(_pub, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), _r, _s)"}
 ;;   [^dsa/PublicKey _pub, ^Object _hash, ^big/Int _r, ^big/Int _s])
@@ -3578,8 +3578,8 @@ JOKER FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
 ;;   [^io/Reader _rand, ^ecdsa/PrivateKey _priv, ^Object _hash])
 
 JOKER FUNC crypto/ecdsa.Verify from crypto/ecdsa/ecdsa.go:
-;; (defn ^"Bool" Verify
-;;   "Verify verifies the signature in r, s of hash using the public key, pub. Its\nreturn value records whether the signature is valid.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.ecdsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Verify
+;;   "Verify verifies the signature in r, s of hash using the public key, pub. Its\nreturn value records whether the signature is valid.\n\nGo input arguments: (pub *PublicKey, hash []byte, r *big.Int, s *big.Int)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.crypto.ecdsa/PublicKey) pub, ^(vector-of Byte) hash, ^(atom-of go.std.math.big/Int) r, ^(atom-of go.std.math.big/Int) s]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "ecdsa.Verify(_pub, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_hash)), _r, _s)"}
 ;;   [^ecdsa/PublicKey _pub, ^Object _hash, ^big/Int _r, ^big/Int _s])
@@ -3655,8 +3655,8 @@ JOKER FUNC crypto/elliptic.Unmarshal from crypto/elliptic/elliptic.go:
     :empty false}
   go.std.crypto.elliptic)
 JOKER FUNC crypto/hmac.Equal from crypto/hmac/hmac.go:
-;; (defn ^"Bool" Equal
-;;   "Equal compares two MACs for equality without leaking timing information.\n\nGo input arguments: (mac1 []byte, mac2 []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) mac1, ^(vector-of Byte) mac2]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Equal
+;;   "Equal compares two MACs for equality without leaking timing information.\n\nGo input arguments: (mac1 []byte, mac2 []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) mac1, ^(vector-of Byte) mac2]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "hmac.Equal(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_mac1)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_mac2)))"}
 ;;   [^Object _mac1, ^Object _mac2])
@@ -4271,8 +4271,8 @@ JOKER FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
 ;;   [^io/Reader _rand, ^String _blockType, ^Object _data, ^Object _password, ^x509/PEMCipher _alg])
 
 JOKER FUNC crypto/x509.IsEncryptedPEMBlock from crypto/x509/pem_decrypt.go:
-;; (defn ^"Bool" IsEncryptedPEMBlock
-;;   "IsEncryptedPEMBlock returns if the PEM block is password encrypted.\n\nGo input arguments: (b *pem.Block)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.encoding.pem/Block) b]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsEncryptedPEMBlock
+;;   "IsEncryptedPEMBlock returns if the PEM block is password encrypted.\n\nGo input arguments: (b *pem.Block)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.encoding.pem/Block) b]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "x509.IsEncryptedPEMBlock(_b)"}
 ;;   [^pem/Block _b])
@@ -4579,15 +4579,15 @@ JOKER FUNC database/sql.Register from database/sql/sql.go:
     :empty false}
   go.std.database.sql)
 JOKER FUNC database/sql/driver.IsScanValue from database/sql/driver/types.go:
-;; (defn ^"Bool" IsScanValue
-;;   "IsScanValue is equivalent to IsValue.\nIt exists for compatibility.\n\nGo input arguments: (v interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> v]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsScanValue
+;;   "IsScanValue is equivalent to IsValue.\nIt exists for compatibility.\n\nGo input arguments: (v interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> v]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "driver.IsScanValue(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^<protocol-or-something> _v])
 
 JOKER FUNC database/sql/driver.IsValue from database/sql/driver/types.go:
-;; (defn ^"Bool" IsValue
-;;   "IsValue reports whether v is a valid Value parameter type.\n\nGo input arguments: (v interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> v]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsValue
+;;   "IsValue reports whether v is a valid Value parameter type.\n\nGo input arguments: (v interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> v]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "driver.IsValue(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^<protocol-or-something> _v])
@@ -5567,10 +5567,10 @@ JOKER TYPE encoding/ascii85.CorruptInputError from encoding/ascii85/ascii85.go:
 
 JOKER FUNC encoding/ascii85.Decode from encoding/ascii85/ascii85.go:
 ;; (defn Decode
-;;   "Decode decodes src into dst, returning both the number\nof bytes written to dst and the number consumed from src.\nIf src contains invalid ascii85 data, Decode will return the\nnumber of bytes successfully written and a CorruptInputError.\nDecode ignores space and control characters in src.\nOften, ascii85-encoded data is wrapped in <~ and ~> symbols.\nDecode expects these to have been stripped by the caller.\n\nIf flush is true, Decode assumes that src represents the\nend of the input stream and processes it completely rather\nthan wait for the completion of another 32-bit block.\n\nNewDecoder wraps an io.Reader interface around Decode.\n\nGo input arguments: (dst []byte, src []byte, flush bool)\n\nGo return type: (ndst int, nsrc int, err error)\n\nJoker input arguments: [^(vector-of Byte) dst, ^(vector-of Byte) src, ^Bool flush]\n\nJoker return type: [Int Int Error]"
+;;   "Decode decodes src into dst, returning both the number\nof bytes written to dst and the number consumed from src.\nIf src contains invalid ascii85 data, Decode will return the\nnumber of bytes successfully written and a CorruptInputError.\nDecode ignores space and control characters in src.\nOften, ascii85-encoded data is wrapped in <~ and ~> symbols.\nDecode expects these to have been stripped by the caller.\n\nIf flush is true, Decode assumes that src represents the\nend of the input stream and processes it completely rather\nthan wait for the completion of another 32-bit block.\n\nNewDecoder wraps an io.Reader interface around Decode.\n\nGo input arguments: (dst []byte, src []byte, flush bool)\n\nGo return type: (ndst int, nsrc int, err error)\n\nJoker input arguments: [^(vector-of Byte) dst, ^(vector-of Byte) src, ^Boolean flush]\n\nJoker return type: [Int Int Error]"
 ;;   {:added "1.0"
 ;;    :go "__decode(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_dst)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_src)), _flush)"}
-;;   [^Object _dst, ^Object _src, ^Bool _flush])
+;;   [^Object _dst, ^Object _src, ^Boolean _flush])
 
 JOKER FUNC encoding/ascii85.Encode from encoding/ascii85/ascii85.go:
 ;; (defn ^"Int" Encode
@@ -5965,8 +5965,8 @@ JOKER FUNC encoding/json.Unmarshal from encoding/json/decode.go:
 ;;   [^Object _data, ^<protocol-or-something> _v])
 
 JOKER FUNC encoding/json.Valid from encoding/json/scanner.go:
-;; (defn ^"Bool" Valid
-;;   "Valid reports whether data is a valid JSON encoding.\n\nGo input arguments: (data []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Valid
+;;   "Valid reports whether data is a valid JSON encoding.\n\nGo input arguments: (data []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "json.Valid(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)))"}
 ;;   [^Object _data])
@@ -6393,17 +6393,17 @@ JOKER FUNC flag.Args from flag/flag.go:
 
 JOKER FUNC flag.Bool from flag/flag.go:
 (defn Bool
-  "Bool defines a bool flag with specified name, default value, and usage string.\nThe return value is the address of a bool variable that stores the value of the flag.\n\nGo input arguments: (name string, value bool, usage string)\n\nGo return type: *bool\n\nJoker input arguments: [^String name, ^Bool value, ^String usage]\n\nJoker return type: (atom-of Bool)"
+  "Bool defines a bool flag with specified name, default value, and usage string.\nThe return value is the address of a bool variable that stores the value of the flag.\n\nGo input arguments: (name string, value bool, usage string)\n\nGo return type: *bool\n\nJoker input arguments: [^String name, ^Boolean value, ^String usage]\n\nJoker return type: (atom-of Boolean)"
   {:added "1.0"
    :go "__bool(_name, _value, _usage)"}
-  [^String _name, ^Bool _value, ^String _usage])
+  [^String _name, ^Boolean _value, ^String _usage])
 
 JOKER FUNC flag.BoolVar from flag/flag.go:
 ;; (defn BoolVar
-;;   "BoolVar defines a bool flag with specified name, default value, and usage string.\nThe argument p points to a bool variable in which to store the value of the flag.\n\nGo input arguments: (p *bool, name string, value bool, usage string)\n\nJoker input arguments: [^(atom-of Bool) p, ^String name, ^Bool value, ^String usage]"
+;;   "BoolVar defines a bool flag with specified name, default value, and usage string.\nThe argument p points to a bool variable in which to store the value of the flag.\n\nGo input arguments: (p *bool, name string, value bool, usage string)\n\nJoker input arguments: [^(atom-of Boolean) p, ^String name, ^Boolean value, ^String usage]"
 ;;   {:added "1.0"
 ;;    :go "__boolVar(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfbool(_p)), _name, _value, _usage)"}
-;;   [^Object _p, ^String _name, ^Bool _value, ^String _usage])
+;;   [^Object _p, ^String _name, ^Boolean _value, ^String _usage])
 
 JOKER FUNC flag.Duration from flag/flag.go:
 ;; (defn Duration
@@ -6497,8 +6497,8 @@ JOKER FUNC flag.Parse from flag/flag.go:
 ;;   [])
 
 JOKER FUNC flag.Parsed from flag/flag.go:
-(defn ^"Bool" Parsed
-  "Parsed reports whether the command-line flags have been parsed.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
+(defn ^"Boolean" Parsed
+  "Parsed reports whether the command-line flags have been parsed.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "flag.Parsed()"}
   [])
@@ -7218,29 +7218,29 @@ JOKER TYPE go/ast.Visitor from go/ast/walk.go:
 ;;   [^Object _v])
 
 JOKER FUNC go/ast.FileExports from go/ast/filter.go:
-(defn ^"Bool" FileExports
-  "FileExports trims the AST for a Go source file in place such that\nonly exported nodes remain: all top-level identifiers which are not exported\nand their associated information (such as type, initial value, or function\nbody) are removed. Non-exported fields and methods of exported types are\nstripped. The File.Comments list is not changed.\n\nFileExports reports whether there are exported declarations.\n\nGo input arguments: (src *File)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/File) src]\n\nJoker return type: Bool"
+(defn ^"Boolean" FileExports
+  "FileExports trims the AST for a Go source file in place such that\nonly exported nodes remain: all top-level identifiers which are not exported\nand their associated information (such as type, initial value, or function\nbody) are removed. Non-exported fields and methods of exported types are\nstripped. The File.Comments list is not changed.\n\nFileExports reports whether there are exported declarations.\n\nGo input arguments: (src *File)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/File) src]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.FileExports(_src)"}
   [^ast/File _src])
 
 JOKER FUNC go/ast.FilterDecl from go/ast/filter.go:
-(defn ^"Bool" FilterDecl
-  "FilterDecl trims the AST for a Go declaration in place by removing\nall names (including struct field and interface method names, but\nnot from parameter lists) that don't pass through the filter f.\n\nFilterDecl reports whether there are any declared names left after\nfiltering.\n\nGo input arguments: (decl Decl, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.ast/Decl decl, ^go.std.go.ast/Filter f]\n\nJoker return type: Bool"
+(defn ^"Boolean" FilterDecl
+  "FilterDecl trims the AST for a Go declaration in place by removing\nall names (including struct field and interface method names, but\nnot from parameter lists) that don't pass through the filter f.\n\nFilterDecl reports whether there are any declared names left after\nfiltering.\n\nGo input arguments: (decl Decl, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.ast/Decl decl, ^go.std.go.ast/Filter f]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.FilterDecl(*_decl, *_f)"}
   [^ast/Decl _decl, ^ast/Filter _f])
 
 JOKER FUNC go/ast.FilterFile from go/ast/filter.go:
-(defn ^"Bool" FilterFile
-  "FilterFile trims the AST for a Go file in place by removing all\nnames from top-level declarations (including struct field and\ninterface method names, but not from parameter lists) that don't\npass through the filter f. If the declaration is empty afterwards,\nthe declaration is removed from the AST. Import declarations are\nalways removed. The File.Comments list is not changed.\n\nFilterFile reports whether there are any top-level declarations\nleft after filtering.\n\nGo input arguments: (src *File, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/File) src, ^go.std.go.ast/Filter f]\n\nJoker return type: Bool"
+(defn ^"Boolean" FilterFile
+  "FilterFile trims the AST for a Go file in place by removing all\nnames from top-level declarations (including struct field and\ninterface method names, but not from parameter lists) that don't\npass through the filter f. If the declaration is empty afterwards,\nthe declaration is removed from the AST. Import declarations are\nalways removed. The File.Comments list is not changed.\n\nFilterFile reports whether there are any top-level declarations\nleft after filtering.\n\nGo input arguments: (src *File, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/File) src, ^go.std.go.ast/Filter f]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.FilterFile(_src, *_f)"}
   [^ast/File _src, ^ast/Filter _f])
 
 JOKER FUNC go/ast.FilterPackage from go/ast/filter.go:
-(defn ^"Bool" FilterPackage
-  "FilterPackage trims the AST for a Go package in place by removing\nall names from top-level declarations (including struct field and\ninterface method names, but not from parameter lists) that don't\npass through the filter f. If the declaration is empty afterwards,\nthe declaration is removed from the AST. The pkg.Files list is not\nchanged, so that file names and top-level package comments don't get\nlost.\n\nFilterPackage reports whether there are any top-level declarations\nleft after filtering.\n\nGo input arguments: (pkg *Package, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/Package) pkg, ^go.std.go.ast/Filter f]\n\nJoker return type: Bool"
+(defn ^"Boolean" FilterPackage
+  "FilterPackage trims the AST for a Go package in place by removing\nall names from top-level declarations (including struct field and\ninterface method names, but not from parameter lists) that don't\npass through the filter f. If the declaration is empty afterwards,\nthe declaration is removed from the AST. The pkg.Files list is not\nchanged, so that file names and top-level package comments don't get\nlost.\n\nFilterPackage reports whether there are any top-level declarations\nleft after filtering.\n\nGo input arguments: (pkg *Package, f Filter)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/Package) pkg, ^go.std.go.ast/Filter f]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.FilterPackage(_pkg, *_f)"}
   [^ast/Package _pkg, ^ast/Filter _f])
@@ -7260,8 +7260,8 @@ JOKER FUNC go/ast.Inspect from go/ast/walk.go:
 ;;   [^ast/Node _node, ^fn _f])
 
 JOKER FUNC go/ast.IsExported from go/ast/ast.go:
-(defn ^"Bool" IsExported
-  "IsExported reports whether name is an exported Go symbol\n(that is, whether it begins with an upper-case letter).\n\nGo input arguments: (name string)\n\nGo return type: bool\n\nJoker input arguments: [^String name]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsExported
+  "IsExported reports whether name is an exported Go symbol\n(that is, whether it begins with an upper-case letter).\n\nGo input arguments: (name string)\n\nGo return type: bool\n\nJoker input arguments: [^String name]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.IsExported(_name)"}
   [^String _name])
@@ -7309,15 +7309,15 @@ JOKER FUNC go/ast.NewScope from go/ast/scope.go:
   [^ast/Scope _outer])
 
 JOKER FUNC go/ast.NotNilFilter from go/ast/print.go:
-;; (defn ^"Bool" NotNilFilter
-;;   "NotNilFilter returns true for field values that are not nil;\nit returns false otherwise.\n\nGo input arguments: (_ string, v reflect.Value)\n\nGo return type: bool\n\nJoker input arguments: [^String _, ^go.std.reflect/Value v]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" NotNilFilter
+;;   "NotNilFilter returns true for field values that are not nil;\nit returns false otherwise.\n\nGo input arguments: (_ string, v reflect.Value)\n\nGo return type: bool\n\nJoker input arguments: [^String _, ^go.std.reflect/Value v]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "ast.NotNilFilter(__, *_v)"}
 ;;   [^String __, ^reflect/Value _v])
 
 JOKER FUNC go/ast.PackageExports from go/ast/filter.go:
-(defn ^"Bool" PackageExports
-  "PackageExports trims the AST for a Go package in place such that\nonly exported nodes remain. The pkg.Files list is not changed, so that\nfile names and top-level package comments don't get lost.\n\nPackageExports reports whether there are exported declarations;\nit returns false otherwise.\n\nGo input arguments: (pkg *Package)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/Package) pkg]\n\nJoker return type: Bool"
+(defn ^"Boolean" PackageExports
+  "PackageExports trims the AST for a Go package in place such that\nonly exported nodes remain. The pkg.Files list is not changed, so that\nfile names and top-level package comments don't get lost.\n\nPackageExports reports whether there are exported declarations;\nit returns false otherwise.\n\nGo input arguments: (pkg *Package)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.ast/Package) pkg]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "ast.PackageExports(_pkg)"}
   [^ast/Package _pkg])
@@ -7407,8 +7407,8 @@ JOKER FUNC go/build.ImportDir from go/build/build.go:
   [^String _dir, ^build/ImportMode _mode])
 
 JOKER FUNC go/build.IsLocalImport from go/build/build.go:
-(defn ^"Bool" IsLocalImport
-  "IsLocalImport reports whether the import path is\na local import path, like \".\", \"..\", \"./foo\", or \"../foo\".\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsLocalImport
+  "IsLocalImport reports whether the import path is\na local import path, like \".\", \"..\", \"./foo\", or \"../foo\".\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "build.IsLocalImport(_path)"}
   [^String _path])
@@ -7449,8 +7449,8 @@ JOKER FUNC go/constant.BitLen from go/constant/value.go:
   [^constant/Value _x])
 
 JOKER FUNC go/constant.BoolVal from go/constant/value.go:
-(defn ^"Bool" BoolVal
-  "BoolVal returns the Go boolean value of x, which must be a Bool or an Unknown.\nIf x is Unknown, the result is false.\n\nGo input arguments: (x Value)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: Bool"
+(defn ^"Boolean" BoolVal
+  "BoolVal returns the Go boolean value of x, which must be a Bool or an Unknown.\nIf x is Unknown, the result is false.\n\nGo input arguments: (x Value)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "constant.BoolVal(*_x)"}
   [^constant/Value _x])
@@ -7463,8 +7463,8 @@ JOKER FUNC go/constant.Bytes from go/constant/value.go:
   [^constant/Value _x])
 
 JOKER FUNC go/constant.Compare from go/constant/value.go:
-;; (defn ^"Bool" Compare
-;;   "Compare returns the result of the comparison x op y.\nThe comparison must be defined for the operands.\nIf one of the operands is Unknown, the result is\nfalse.\n\nGo input arguments: (x_ Value, op token.Token, y_ Value)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.constant/Value x_, ^go.std.go.token/Token op, ^go.std.go.constant/Value y_]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Compare
+;;   "Compare returns the result of the comparison x op y.\nThe comparison must be defined for the operands.\nIf one of the operands is Unknown, the result is\nfalse.\n\nGo input arguments: (x_ Value, op token.Token, y_ Value)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.constant/Value x_, ^go.std.go.token/Token op, ^go.std.go.constant/Value y_]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "constant.Compare(*_x_, *_op, *_y_)"}
 ;;   [^constant/Value _x_, ^token/Token _op, ^constant/Value _y_])
@@ -7478,14 +7478,14 @@ JOKER FUNC go/constant.Denom from go/constant/value.go:
 
 JOKER FUNC go/constant.Float32Val from go/constant/value.go:
 ;; (defn Float32Val
-;;   "Float32Val is like Float64Val but for float32 instead of float64.\n\nGo input arguments: (x Value)\n\nGo return type: (..., bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type float32) Bool]"
+;;   "Float32Val is like Float64Val but for float32 instead of float64.\n\nGo input arguments: (x Value)\n\nGo return type: (..., bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type float32) Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__float32Val(*_x)"}
 ;;   [^constant/Value _x])
 
 JOKER FUNC go/constant.Float64Val from go/constant/value.go:
 ;; (defn Float64Val
-;;   "Float64Val returns the nearest Go float64 value of x and whether the result is exact;\nx must be numeric or an Unknown, but not Complex. For values too small (too close to 0)\nto represent as float64, Float64Val silently underflows to 0. The result sign always\nmatches the sign of x, even for 0.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (..., bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type float64) Bool]"
+;;   "Float64Val returns the nearest Go float64 value of x and whether the result is exact;\nx must be numeric or an Unknown, but not Complex. For values too small (too close to 0)\nto represent as float64, Float64Val silently underflows to 0. The result sign always\nmatches the sign of x, even for 0.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (..., bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type float64) Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__float64Val(*_x)"}
 ;;   [^constant/Value _x])
@@ -7499,17 +7499,17 @@ JOKER FUNC go/constant.Imag from go/constant/value.go:
 
 JOKER FUNC go/constant.Int64Val from go/constant/value.go:
 (defn Int64Val
-  "Int64Val returns the Go int64 value of x and whether the result is exact;\nx must be an Int or an Unknown. If the result is not exact, its value is undefined.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (int64, bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [Int Bool]"
+  "Int64Val returns the Go int64 value of x and whether the result is exact;\nx must be an Int or an Unknown. If the result is not exact, its value is undefined.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (int64, bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [Int Boolean]"
   {:added "1.0"
    :go "__int64Val(*_x)"}
   [^constant/Value _x])
 
 JOKER FUNC go/constant.MakeBool from go/constant/value.go:
 (defn MakeBool
-  "MakeBool returns the Bool value for b.\n\nGo input arguments: (b bool)\n\nGo return type: Value\n\nJoker input arguments: [^Bool b]\n\nJoker return type: go.std.go.constant/Value"
+  "MakeBool returns the Bool value for b.\n\nGo input arguments: (b bool)\n\nGo return type: Value\n\nJoker input arguments: [^Boolean b]\n\nJoker return type: go.std.go.constant/Value"
   {:added "1.0"
    :go "__makeBool(_b)"}
-  [^Bool _b])
+  [^Boolean _b])
 
 JOKER FUNC go/constant.MakeFloat64 from go/constant/value.go:
 ;; (defn MakeFloat64
@@ -7625,7 +7625,7 @@ JOKER FUNC go/constant.ToInt from go/constant/value.go:
 
 JOKER FUNC go/constant.Uint64Val from go/constant/value.go:
 (defn Uint64Val
-  "Uint64Val returns the Go uint64 value of x and whether the result is exact;\nx must be an Int or an Unknown. If the result is not exact, its value is undefined.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (uint64, bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [BigInt Bool]"
+  "Uint64Val returns the Go uint64 value of x and whether the result is exact;\nx must be an Int or an Unknown. If the result is not exact, its value is undefined.\nIf x is Unknown, the result is (0, false).\n\nGo input arguments: (x Value)\n\nGo return type: (uint64, bool)\n\nJoker input arguments: [^go.std.go.constant/Value x]\n\nJoker return type: [BigInt Boolean]"
   {:added "1.0"
    :go "__uint64Val(*_x)"}
   [^constant/Value _x])
@@ -7708,8 +7708,8 @@ JOKER FUNC go/doc.Examples from go/doc/example.go:
 ;;   [^ast/File _files])
 
 JOKER FUNC go/doc.IsPredeclared from go/doc/reader.go:
-(defn ^"Bool" IsPredeclared
-  "IsPredeclared reports whether s is a predeclared identifier.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsPredeclared
+  "IsPredeclared reports whether s is a predeclared identifier.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "doc.IsPredeclared(_s)"}
   [^String _s])
@@ -8191,29 +8191,29 @@ JOKER TYPE go/types.Var from go/types/object.go:
   [^Object _v])
 
 JOKER FUNC go/types.AssertableTo from go/types/api.go:
-(defn ^"Bool" AssertableTo
-  "AssertableTo reports whether a value of type V can be asserted to have type T.\n\nGo input arguments: (V *Interface, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.types/Interface) V, ^go.std.go.types/Type T]\n\nJoker return type: Bool"
+(defn ^"Boolean" AssertableTo
+  "AssertableTo reports whether a value of type V can be asserted to have type T.\n\nGo input arguments: (V *Interface, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.go.types/Interface) V, ^go.std.go.types/Type T]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.AssertableTo(_V, *_T)"}
   [^types/Interface _V, ^types/Type _T])
 
 JOKER FUNC go/types.AssignableTo from go/types/api.go:
-(defn ^"Bool" AssignableTo
-  "AssignableTo reports whether a value of type V is assignable to a variable of type T.\n\nGo input arguments: (V Type, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]\n\nJoker return type: Bool"
+(defn ^"Boolean" AssignableTo
+  "AssignableTo reports whether a value of type V is assignable to a variable of type T.\n\nGo input arguments: (V Type, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.AssignableTo(*_V, *_T)"}
   [^types/Type _V, ^types/Type _T])
 
 JOKER FUNC go/types.Comparable from go/types/predicates.go:
-(defn ^"Bool" Comparable
-  "Comparable reports whether values of type T are comparable.\n\nGo input arguments: (T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type T]\n\nJoker return type: Bool"
+(defn ^"Boolean" Comparable
+  "Comparable reports whether values of type T are comparable.\n\nGo input arguments: (T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type T]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.Comparable(*_T)"}
   [^types/Type _T])
 
 JOKER FUNC go/types.ConvertibleTo from go/types/api.go:
-(defn ^"Bool" ConvertibleTo
-  "ConvertibleTo reports whether a value of type V is convertible to a value of type T.\n\nGo input arguments: (V Type, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]\n\nJoker return type: Bool"
+(defn ^"Boolean" ConvertibleTo
+  "ConvertibleTo reports whether a value of type V is convertible to a value of type T.\n\nGo input arguments: (V Type, T Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.ConvertibleTo(*_V, *_T)"}
   [^types/Type _V, ^types/Type _T])
@@ -8254,46 +8254,46 @@ JOKER FUNC go/types.Id from go/types/object.go:
   [^types/Package _pkg, ^String _name])
 
 JOKER FUNC go/types.Identical from go/types/predicates.go:
-(defn ^"Bool" Identical
-  "Identical reports whether x and y are identical types.\nReceivers of Signature types are ignored.\n\nGo input arguments: (x Type, y Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]\n\nJoker return type: Bool"
+(defn ^"Boolean" Identical
+  "Identical reports whether x and y are identical types.\nReceivers of Signature types are ignored.\n\nGo input arguments: (x Type, y Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.Identical(*_x, *_y)"}
   [^types/Type _x, ^types/Type _y])
 
 JOKER FUNC go/types.IdenticalIgnoreTags from go/types/predicates.go:
-(defn ^"Bool" IdenticalIgnoreTags
-  "IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.\nReceivers of Signature types are ignored.\n\nGo input arguments: (x Type, y Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]\n\nJoker return type: Bool"
+(defn ^"Boolean" IdenticalIgnoreTags
+  "IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.\nReceivers of Signature types are ignored.\n\nGo input arguments: (x Type, y Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.IdenticalIgnoreTags(*_x, *_y)"}
   [^types/Type _x, ^types/Type _y])
 
 JOKER FUNC go/types.Implements from go/types/api.go:
-(defn ^"Bool" Implements
-  "Implements reports whether type V implements interface T.\n\nGo input arguments: (V Type, T *Interface)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T]\n\nJoker return type: Bool"
+(defn ^"Boolean" Implements
+  "Implements reports whether type V implements interface T.\n\nGo input arguments: (V Type, T *Interface)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.Implements(*_V, _T)"}
   [^types/Type _V, ^types/Interface _T])
 
 JOKER FUNC go/types.IsInterface from go/types/predicates.go:
-(defn ^"Bool" IsInterface
-  "IsInterface reports whether typ is an interface type.\n\nGo input arguments: (typ Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type typ]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsInterface
+  "IsInterface reports whether typ is an interface type.\n\nGo input arguments: (typ Type)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.go.types/Type typ]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "types.IsInterface(*_typ)"}
   [^types/Type _typ])
 
 JOKER FUNC go/types.LookupFieldOrMethod from go/types/lookup.go:
 (defn LookupFieldOrMethod
-  "LookupFieldOrMethod looks up a field or method with given package and name\nin T and returns the corresponding *Var or *Func, an index sequence, and a\nbool indicating if there were any pointer indirections on the path to the\nfield or method. If addressable is set, T is the type of an addressable\nvariable (only matters for method lookups).\n\nThe last index entry is the field or method index in the (possibly embedded)\ntype where the entry was found, either:\n\n\t1) the list of declared methods of a named type; or\n\t2) the list of all methods (method set) of an interface type; or\n\t3) the list of fields of a struct type.\n\nThe earlier index entries are the indices of the embedded struct fields\ntraversed to get to the found entry, starting at depth 0.\n\nIf no entry is found, a nil object is returned. In this case, the returned\nindex and indirect values have the following meaning:\n\n\t- If index != nil, the index sequence points to an ambiguous entry\n\t(the same name appeared more than once at the same embedding level).\n\n\t- If indirect is set, a method with a pointer receiver type was found\n     but there was no pointer on the path from the actual receiver type to\n\tthe method's formal receiver base type, nor was the receiver addressable.\n\nGo input arguments: (T Type, addressable bool, pkg *Package, name string)\n\nGo return type: (obj Object, index []int, indirect bool)\n\nJoker input arguments: [^go.std.go.types/Type T, ^Bool addressable, ^(atom-of go.std.go.types/Package) pkg, ^String name]\n\nJoker return type: [go.std.go.types/Object (vector-of Int) Bool]"
+  "LookupFieldOrMethod looks up a field or method with given package and name\nin T and returns the corresponding *Var or *Func, an index sequence, and a\nbool indicating if there were any pointer indirections on the path to the\nfield or method. If addressable is set, T is the type of an addressable\nvariable (only matters for method lookups).\n\nThe last index entry is the field or method index in the (possibly embedded)\ntype where the entry was found, either:\n\n\t1) the list of declared methods of a named type; or\n\t2) the list of all methods (method set) of an interface type; or\n\t3) the list of fields of a struct type.\n\nThe earlier index entries are the indices of the embedded struct fields\ntraversed to get to the found entry, starting at depth 0.\n\nIf no entry is found, a nil object is returned. In this case, the returned\nindex and indirect values have the following meaning:\n\n\t- If index != nil, the index sequence points to an ambiguous entry\n\t(the same name appeared more than once at the same embedding level).\n\n\t- If indirect is set, a method with a pointer receiver type was found\n     but there was no pointer on the path from the actual receiver type to\n\tthe method's formal receiver base type, nor was the receiver addressable.\n\nGo input arguments: (T Type, addressable bool, pkg *Package, name string)\n\nGo return type: (obj Object, index []int, indirect bool)\n\nJoker input arguments: [^go.std.go.types/Type T, ^Boolean addressable, ^(atom-of go.std.go.types/Package) pkg, ^String name]\n\nJoker return type: [go.std.go.types/Object (vector-of Int) Boolean]"
   {:added "1.0"
    :go "__lookupFieldOrMethod(*_T, _addressable, _pkg, _name)"}
-  [^types/Type _T, ^Bool _addressable, ^types/Package _pkg, ^String _name])
+  [^types/Type _T, ^Boolean _addressable, ^types/Package _pkg, ^String _name])
 
 JOKER FUNC go/types.MissingMethod from go/types/lookup.go:
 (defn MissingMethod
-  "MissingMethod returns (nil, false) if V implements T, otherwise it\nreturns a missing method required by T and whether it is missing or\njust has the wrong type.\n\nFor non-interface types V, or if static is set, V implements T if all\nmethods of T are present in V. Otherwise (V is an interface and static\nis not set), MissingMethod only checks that methods of T which are also\npresent in V have matching types (e.g., for a type assertion x.(T) where\nx is of interface type V).\n\nGo input arguments: (V Type, T *Interface, static bool)\n\nGo return type: (method *Func, wrongType bool)\n\nJoker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T, ^Bool static]\n\nJoker return type: [(atom-of go.std.go.types/Func) Bool]"
+  "MissingMethod returns (nil, false) if V implements T, otherwise it\nreturns a missing method required by T and whether it is missing or\njust has the wrong type.\n\nFor non-interface types V, or if static is set, V implements T if all\nmethods of T are present in V. Otherwise (V is an interface and static\nis not set), MissingMethod only checks that methods of T which are also\npresent in V have matching types (e.g., for a type assertion x.(T) where\nx is of interface type V).\n\nGo input arguments: (V Type, T *Interface, static bool)\n\nGo return type: (method *Func, wrongType bool)\n\nJoker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T, ^Boolean static]\n\nJoker return type: [(atom-of go.std.go.types/Func) Boolean]"
   {:added "1.0"
    :go "__missingMethod(*_V, _T, _static)"}
-  [^types/Type _V, ^types/Interface _T, ^Bool _static])
+  [^types/Type _V, ^types/Interface _T, ^Boolean _static])
 
 JOKER FUNC go/types.NewArray from go/types/type.go:
 (defn NewArray
@@ -8325,10 +8325,10 @@ JOKER FUNC go/types.NewConst from go/types/object.go:
 
 JOKER FUNC go/types.NewField from go/types/object.go:
 ;; (defn NewField
-;;   "NewField returns a new variable representing a struct field.\nFor embedded fields, the name is the unqualified type name\n/ under which the field is accessible.\n\nGo input arguments: (pos token.Pos, pkg *Package, name string, typ Type, embedded bool)\n\nGo return type: *Var\n\nJoker input arguments: [^go.std.go.token/Pos pos, ^(atom-of go.std.go.types/Package) pkg, ^String name, ^go.std.go.types/Type typ, ^Bool embedded]\n\nJoker return type: (atom-of go.std.go.types/Var)"
+;;   "NewField returns a new variable representing a struct field.\nFor embedded fields, the name is the unqualified type name\n/ under which the field is accessible.\n\nGo input arguments: (pos token.Pos, pkg *Package, name string, typ Type, embedded bool)\n\nGo return type: *Var\n\nJoker input arguments: [^go.std.go.token/Pos pos, ^(atom-of go.std.go.types/Package) pkg, ^String name, ^go.std.go.types/Type typ, ^Boolean embedded]\n\nJoker return type: (atom-of go.std.go.types/Var)"
 ;;   {:added "1.0"
 ;;    :go "__newField(*_pos, _pkg, _name, *_typ, _embedded)"}
-;;   [^token/Pos _pos, ^types/Package _pkg, ^String _name, ^types/Type _typ, ^Bool _embedded])
+;;   [^token/Pos _pos, ^types/Package _pkg, ^String _name, ^types/Type _typ, ^Boolean _embedded])
 
 JOKER FUNC go/types.NewFunc from go/types/object.go:
 ;; (defn NewFunc
@@ -8416,10 +8416,10 @@ JOKER FUNC go/types.NewScope from go/types/scope.go:
 
 JOKER FUNC go/types.NewSignature from go/types/type.go:
 (defn NewSignature
-  "NewSignature returns a new function type for the given receiver, parameters,\nand results, either of which may be nil. If variadic is set, the function\nis variadic, it must have at least one parameter, and the last parameter\nmust be of unnamed slice type.\n\nGo input arguments: (recv *Var, params *Tuple, results *Tuple, variadic bool)\n\nGo return type: *Signature\n\nJoker input arguments: [^(atom-of go.std.go.types/Var) recv, ^(atom-of go.std.go.types/Tuple) params, ^(atom-of go.std.go.types/Tuple) results, ^Bool variadic]\n\nJoker return type: (atom-of go.std.go.types/Signature)"
+  "NewSignature returns a new function type for the given receiver, parameters,\nand results, either of which may be nil. If variadic is set, the function\nis variadic, it must have at least one parameter, and the last parameter\nmust be of unnamed slice type.\n\nGo input arguments: (recv *Var, params *Tuple, results *Tuple, variadic bool)\n\nGo return type: *Signature\n\nJoker input arguments: [^(atom-of go.std.go.types/Var) recv, ^(atom-of go.std.go.types/Tuple) params, ^(atom-of go.std.go.types/Tuple) results, ^Boolean variadic]\n\nJoker return type: (atom-of go.std.go.types/Signature)"
   {:added "1.0"
    :go "__newSignature(_recv, _params, _results, _variadic)"}
-  [^types/Var _recv, ^types/Tuple _params, ^types/Tuple _results, ^Bool _variadic])
+  [^types/Var _recv, ^types/Tuple _params, ^types/Tuple _results, ^Boolean _variadic])
 
 JOKER FUNC go/types.NewSlice from go/types/type.go:
 (defn NewSlice
@@ -8808,7 +8808,7 @@ JOKER FUNC html/template.HTMLEscaper from html/template/escape.go:
 
 JOKER FUNC html/template.IsTrue from html/template/template.go:
 ;; (defn IsTrue
-;;   "IsTrue reports whether the value is 'true', in the sense of not the zero of its type,\nand whether the value has a meaningful truth value. This is the definition of\ntruth used by if and other such actions.\n\nGo input arguments: (val interface {})\n\nGo return type: (truth bool, ok bool)\n\nJoker input arguments: [^<protocol-or-something> val]\n\nJoker return type: [Bool Bool]"
+;;   "IsTrue reports whether the value is 'true', in the sense of not the zero of its type,\nand whether the value has a meaningful truth value. This is the definition of\ntruth used by if and other such actions.\n\nGo input arguments: (val interface {})\n\nGo return type: (truth bool, ok bool)\n\nJoker input arguments: [^<protocol-or-something> val]\n\nJoker return type: [Boolean Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__isTrue(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^<protocol-or-something> _val])
@@ -9976,15 +9976,15 @@ JOKER FUNC math.Inf from math/bits.go:
 ;;   [^Int _sign])
 
 JOKER FUNC math.IsInf from math/bits.go:
-;; (defn ^"Bool" IsInf
-;;   "IsInf reports whether f is an infinity, according to sign.\nIf sign > 0, IsInf reports whether f is positive infinity.\nIf sign < 0, IsInf reports whether f is negative infinity.\nIf sign == 0, IsInf reports whether f is either infinity.\n\nGo input arguments: (f float64, sign int)\n\nGo return type: bool\n\nJoker input arguments: [^float64 f, ^Int sign]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsInf
+;;   "IsInf reports whether f is an infinity, according to sign.\nIf sign > 0, IsInf reports whether f is positive infinity.\nIf sign < 0, IsInf reports whether f is negative infinity.\nIf sign == 0, IsInf reports whether f is either infinity.\n\nGo input arguments: (f float64, sign int)\n\nGo return type: bool\n\nJoker input arguments: [^float64 f, ^Int sign]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "math.IsInf(_f, _sign)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type float64) _f, ^Int _sign])
 
 JOKER FUNC math.IsNaN from math/bits.go:
-;; (defn ^"Bool" IsNaN
-;;   "IsNaN reports whether f is an IEEE 754 ``not-a-number'' value.\n\nGo input arguments: (f float64)\n\nGo return type: bool\n\nJoker input arguments: [^float64 f]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsNaN
+;;   "IsNaN reports whether f is an IEEE 754 ``not-a-number'' value.\n\nGo input arguments: (f float64)\n\nGo return type: bool\n\nJoker input arguments: [^float64 f]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "math.IsNaN(_f)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type float64) _f])
@@ -10144,8 +10144,8 @@ JOKER FUNC math.RoundToEven from math/floor.go:
 ;;   [^ABEND044(pre.go: unsupported built-in type float64) _x])
 
 JOKER FUNC math.Signbit from math/signbit.go:
-;; (defn ^"Bool" Signbit
-;;   "Signbit returns true if x is negative or negative zero.\n\nGo input arguments: (x float64)\n\nGo return type: bool\n\nJoker input arguments: [^float64 x]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Signbit
+;;   "Signbit returns true if x is negative or negative zero.\n\nGo input arguments: (x float64)\n\nGo return type: bool\n\nJoker input arguments: [^float64 x]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "math.Signbit(_x)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type float64) _x])
@@ -10648,15 +10648,15 @@ JOKER FUNC math/cmplx.Inf from math/cmplx/isinf.go:
 ;;   [])
 
 JOKER FUNC math/cmplx.IsInf from math/cmplx/isinf.go:
-;; (defn ^"Bool" IsInf
-;;   "IsInf returns true if either real(x) or imag(x) is an infinity.\n\nGo input arguments: (x complex128)\n\nGo return type: bool\n\nJoker input arguments: [^complex128 x]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsInf
+;;   "IsInf returns true if either real(x) or imag(x) is an infinity.\n\nGo input arguments: (x complex128)\n\nGo return type: bool\n\nJoker input arguments: [^complex128 x]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "cmplx.IsInf(_x)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type complex128) _x])
 
 JOKER FUNC math/cmplx.IsNaN from math/cmplx/isnan.go:
-;; (defn ^"Bool" IsNaN
-;;   "IsNaN returns true if either real(x) or imag(x) is NaN\nand neither is an infinity.\n\nGo input arguments: (x complex128)\n\nGo return type: bool\n\nJoker input arguments: [^complex128 x]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsNaN
+;;   "IsNaN returns true if either real(x) or imag(x) is NaN\nand neither is an infinity.\n\nGo input arguments: (x complex128)\n\nGo return type: bool\n\nJoker input arguments: [^complex128 x]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "cmplx.IsNaN(_x)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type complex128) _x])
@@ -11832,7 +11832,7 @@ JOKER FUNC net/http.NotFoundHandler from net/http/server.go:
 
 JOKER FUNC net/http.ParseHTTPVersion from net/http/request.go:
 (defn ParseHTTPVersion
-  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo input arguments: (vers string)\n\nGo return type: (major int, minor int, ok bool)\n\nJoker input arguments: [^String vers]\n\nJoker return type: [Int Int Bool]"
+  "ParseHTTPVersion parses a HTTP version string.\n\"HTTP/1.0\" returns (1, 0, true).\n\nGo input arguments: (vers string)\n\nGo return type: (major int, minor int, ok bool)\n\nJoker input arguments: [^String vers]\n\nJoker return type: [Int Int Boolean]"
   {:added "1.0"
    :go "__parseHTTPVersion(_vers)"}
   [^String _vers])
@@ -12119,24 +12119,24 @@ JOKER FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 
 JOKER FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 ;; (defn DumpRequest
-;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpRequest(_req, _body)"}
-;;   [^http/Request _req, ^Bool _body])
+;;   [^http/Request _req, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 ;; (defn DumpRequestOut
-;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpRequestOut(_req, _body)"}
-;;   [^http/Request _req, ^Bool _body])
+;;   [^http/Request _req, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 ;; (defn DumpResponse
-;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Response) resp, ^Bool body]\n\nJoker return type: [(vector-of Int) Error]"
+;;   "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(atom-of go.std.net.http/Response) resp, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
 ;;   {:added "1.0"
 ;;    :go "__dumpResponse(_resp, _body)"}
-;;   [^http/Response _resp, ^Bool _body])
+;;   [^http/Response _resp, ^Boolean _body])
 
 JOKER FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
 ;; (defn NewChunkedReader
@@ -13000,36 +13000,36 @@ JOKER FUNC os.Hostname from os/sys.go:
   [])
 
 JOKER FUNC os.IsExist from os/error.go:
-;; (defn ^"Bool" IsExist
-;;   "IsExist returns a boolean indicating whether the error is known to report\nthat a file or directory already exists. It is satisfied by ErrExist as\nwell as some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:68:18) err]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsExist
+;;   "IsExist returns a boolean indicating whether the error is known to report\nthat a file or directory already exists. It is satisfied by ErrExist as\nwell as some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:68:18) err]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "os.IsExist(_err)"}
 ;;   [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:68:18) _err])
 
 JOKER FUNC os.IsNotExist from os/error.go:
-;; (defn ^"Bool" IsNotExist
-;;   "IsNotExist returns a boolean indicating whether the error is known to\nreport that a file or directory does not exist. It is satisfied by\nErrNotExist as well as some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:75:21) err]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsNotExist
+;;   "IsNotExist returns a boolean indicating whether the error is known to\nreport that a file or directory does not exist. It is satisfied by\nErrNotExist as well as some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:75:21) err]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "os.IsNotExist(_err)"}
 ;;   [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:75:21) _err])
 
 JOKER FUNC os.IsPathSeparator from os/path_unix.go:
-;; (defn ^"Bool" IsPathSeparator
-;;   "IsPathSeparator reports whether c is a directory separator character.\n\nGo input arguments: (c uint8)\n\nGo return type: bool\n\nJoker input arguments: [^uint8 c]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsPathSeparator
+;;   "IsPathSeparator reports whether c is a directory separator character.\n\nGo input arguments: (c uint8)\n\nGo return type: bool\n\nJoker input arguments: [^uint8 c]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "os.IsPathSeparator(_c)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type uint8) _c])
 
 JOKER FUNC os.IsPermission from os/error.go:
-;; (defn ^"Bool" IsPermission
-;;   "IsPermission returns a boolean indicating whether the error is known to\nreport that permission is denied. It is satisfied by ErrPermission as well\nas some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:82:23) err]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsPermission
+;;   "IsPermission returns a boolean indicating whether the error is known to\nreport that permission is denied. It is satisfied by ErrPermission as well\nas some syscall errors.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:82:23) err]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "os.IsPermission(_err)"}
 ;;   [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:82:23) _err])
 
 JOKER FUNC os.IsTimeout from os/error.go:
-;; (defn ^"Bool" IsTimeout
-;;   "IsTimeout returns a boolean indicating whether the error is known\nto report that a timeout occurred.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:88:20) err]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsTimeout
+;;   "IsTimeout returns a boolean indicating whether the error is known\nto report that a timeout occurred.\n\nGo input arguments: (err error)\n\nGo return type: bool\n\nJoker input arguments: [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:88:20) err]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "os.IsTimeout(_err)"}
 ;;   [^ABEND885(pre.go: unrecognized type error at: /usr/local/Cellar/go/1.11.4/libexec/src/os/error.go:88:20) _err])
@@ -13050,7 +13050,7 @@ JOKER FUNC os.Link from os/file_unix.go:
 
 JOKER FUNC os.LookupEnv from os/env.go:
 (defn LookupEnv
-  "LookupEnv retrieves the value of the environment variable named\nby the key. If the variable is present in the environment the\nvalue (which may be empty) is returned and the boolean is true.\nOtherwise the returned value will be empty and the boolean will\nbe false.\n\nGo input arguments: (key string)\n\nGo return type: (string, bool)\n\nJoker input arguments: [^String key]\n\nJoker return type: [String Bool]"
+  "LookupEnv retrieves the value of the environment variable named\nby the key. If the variable is present in the environment the\nvalue (which may be empty) is returned and the boolean is true.\nOtherwise the returned value will be empty and the boolean will\nbe false.\n\nGo input arguments: (key string)\n\nGo return type: (string, bool)\n\nJoker input arguments: [^String key]\n\nJoker return type: [String Boolean]"
   {:added "1.0"
    :go "__lookupEnv(_key)"}
   [^String _key])
@@ -13140,8 +13140,8 @@ JOKER FUNC os.Rename from os/file.go:
   [^String _oldpath, ^String _newpath])
 
 JOKER FUNC os.SameFile from os/types.go:
-(defn ^"Bool" SameFile
-  "SameFile reports whether fi1 and fi2 describe the same file.\nFor example, on Unix this means that the device and inode fields\nof the two underlying structures are identical; on other systems\nthe decision may be based on the path names.\nSameFile only applies to results returned by this package's Stat.\nIt returns false in other cases.\n\nGo input arguments: (fi1 FileInfo, fi2 FileInfo)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.os/FileInfo fi1, ^go.std.os/FileInfo fi2]\n\nJoker return type: Bool"
+(defn ^"Boolean" SameFile
+  "SameFile reports whether fi1 and fi2 describe the same file.\nFor example, on Unix this means that the device and inode fields\nof the two underlying structures are identical; on other systems\nthe decision may be based on the path names.\nSameFile only applies to results returned by this package's Stat.\nIt returns false in other cases.\n\nGo input arguments: (fi1 FileInfo, fi2 FileInfo)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.os/FileInfo fi1, ^go.std.os/FileInfo fi2]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "os.SameFile(*_fi1, *_fi2)"}
   [^os/FileInfo _fi1, ^os/FileInfo _fi2])
@@ -13266,8 +13266,8 @@ JOKER FUNC os/signal.Ignore from os/signal/signal.go:
 ;;   [^os/Signal _sig])
 
 JOKER FUNC os/signal.Ignored from os/signal/signal.go:
-;; (defn ^"Bool" Ignored
-;;   "Ignored reports whether sig is currently ignored.\n\nGo input arguments: (sig os.Signal)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.os/Signal sig]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Ignored
+;;   "Ignored reports whether sig is currently ignored.\n\nGo input arguments: (sig os.Signal)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.os/Signal sig]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "signal.Ignored(*_sig)"}
 ;;   [^os/Signal _sig])
@@ -13406,8 +13406,8 @@ JOKER FUNC path.Ext from path/path.go:
   [^String _path])
 
 JOKER FUNC path.IsAbs from path/path.go:
-(defn ^"Bool" IsAbs
-  "IsAbs reports whether the path is absolute.\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsAbs
+  "IsAbs reports whether the path is absolute.\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "path.IsAbs(_path)"}
   [^String _path])
@@ -13421,7 +13421,7 @@ JOKER FUNC path.Join from path/path.go:
 
 JOKER FUNC path.Match from path/match.go:
 (defn Match
-  "Match reports whether name matches the shell pattern.\nThe pattern syntax is:\n\n\tpattern:\n\t\t{ term }\n\tterm:\n\t\t'*'         matches any sequence of non-/ characters\n\t\t'?'         matches any single non-/ character\n\t\t'[' [ '^' ] { character-range } ']'\n\t\t            character class (must be non-empty)\n\t\tc           matches character c (c != '*', '?', '\\\\', '[')\n\t\t'\\\\' c      matches character c\n\n\tcharacter-range:\n\t\tc           matches character c (c != '\\\\', '-', ']')\n\t\t'\\\\' c      matches character c\n\t\tlo '-' hi   matches character c for lo <= c <= hi\n\nMatch requires pattern to match all of name, not just a substring.\nThe only possible returned error is ErrBadPattern, when pattern\nis malformed.\n\nGo input arguments: (pattern string, name string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String name]\n\nJoker return type: [Bool Error]"
+  "Match reports whether name matches the shell pattern.\nThe pattern syntax is:\n\n\tpattern:\n\t\t{ term }\n\tterm:\n\t\t'*'         matches any sequence of non-/ characters\n\t\t'?'         matches any single non-/ character\n\t\t'[' [ '^' ] { character-range } ']'\n\t\t            character class (must be non-empty)\n\t\tc           matches character c (c != '*', '?', '\\\\', '[')\n\t\t'\\\\' c      matches character c\n\n\tcharacter-range:\n\t\tc           matches character c (c != '\\\\', '-', ']')\n\t\t'\\\\' c      matches character c\n\t\tlo '-' hi   matches character c for lo <= c <= hi\n\nMatch requires pattern to match all of name, not just a substring.\nThe only possible returned error is ErrBadPattern, when pattern\nis malformed.\n\nGo input arguments: (pattern string, name string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String name]\n\nJoker return type: [Boolean Error]"
   {:added "1.0"
    :go "__match(_pattern, _name)"}
   [^String _pattern, ^String _name])
@@ -13504,15 +13504,15 @@ JOKER FUNC path/filepath.Glob from path/filepath/match.go:
   [^String _pattern])
 
 JOKER FUNC path/filepath.HasPrefix from path/filepath/path_unix.go:
-(defn ^"Bool" HasPrefix
-  "HasPrefix exists for historical compatibility and should not be used.\n\nDeprecated: HasPrefix does not respect path boundaries and\ndoes not ignore case when required.\n\nGo input arguments: (p string, prefix string)\n\nGo return type: bool\n\nJoker input arguments: [^String p, ^String prefix]\n\nJoker return type: Bool"
+(defn ^"Boolean" HasPrefix
+  "HasPrefix exists for historical compatibility and should not be used.\n\nDeprecated: HasPrefix does not respect path boundaries and\ndoes not ignore case when required.\n\nGo input arguments: (p string, prefix string)\n\nGo return type: bool\n\nJoker input arguments: [^String p, ^String prefix]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "filepath.HasPrefix(_p, _prefix)"}
   [^String _p, ^String _prefix])
 
 JOKER FUNC path/filepath.IsAbs from path/filepath/path_unix.go:
-(defn ^"Bool" IsAbs
-  "IsAbs reports whether the path is absolute.\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsAbs
+  "IsAbs reports whether the path is absolute.\n\nGo input arguments: (path string)\n\nGo return type: bool\n\nJoker input arguments: [^String path]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "filepath.IsAbs(_path)"}
   [^String _path])
@@ -13526,7 +13526,7 @@ JOKER FUNC path/filepath.Join from path/filepath/path.go:
 
 JOKER FUNC path/filepath.Match from path/filepath/match.go:
 (defn Match
-  "Match reports whether name matches the shell file name pattern.\nThe pattern syntax is:\n\n\tpattern:\n\t\t{ term }\n\tterm:\n\t\t'*'         matches any sequence of non-Separator characters\n\t\t'?'         matches any single non-Separator character\n\t\t'[' [ '^' ] { character-range } ']'\n\t\t            character class (must be non-empty)\n\t\tc           matches character c (c != '*', '?', '\\\\', '[')\n\t\t'\\\\' c      matches character c\n\n\tcharacter-range:\n\t\tc           matches character c (c != '\\\\', '-', ']')\n\t\t'\\\\' c      matches character c\n\t\tlo '-' hi   matches character c for lo <= c <= hi\n\nMatch requires pattern to match all of name, not just a substring.\nThe only possible returned error is ErrBadPattern, when pattern\nis malformed.\n\nOn Windows, escaping is disabled. Instead, '\\\\' is treated as\npath separator.\n\nGo input arguments: (pattern string, name string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String name]\n\nJoker return type: [Bool Error]"
+  "Match reports whether name matches the shell file name pattern.\nThe pattern syntax is:\n\n\tpattern:\n\t\t{ term }\n\tterm:\n\t\t'*'         matches any sequence of non-Separator characters\n\t\t'?'         matches any single non-Separator character\n\t\t'[' [ '^' ] { character-range } ']'\n\t\t            character class (must be non-empty)\n\t\tc           matches character c (c != '*', '?', '\\\\', '[')\n\t\t'\\\\' c      matches character c\n\n\tcharacter-range:\n\t\tc           matches character c (c != '\\\\', '-', ']')\n\t\t'\\\\' c      matches character c\n\t\tlo '-' hi   matches character c for lo <= c <= hi\n\nMatch requires pattern to match all of name, not just a substring.\nThe only possible returned error is ErrBadPattern, when pattern\nis malformed.\n\nOn Windows, escaping is disabled. Instead, '\\\\' is treated as\npath separator.\n\nGo input arguments: (pattern string, name string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String name]\n\nJoker return type: [Boolean Error]"
   {:added "1.0"
    :go "__match(_pattern, _name)"}
   [^String _pattern, ^String _name])
@@ -13728,18 +13728,18 @@ JOKER FUNC reflect.Copy from reflect/value.go:
   [^reflect/Value _dst, ^reflect/Value _src])
 
 JOKER FUNC reflect.DeepEqual from reflect/deepequal.go:
-;; (defn ^"Bool" DeepEqual
-;;   "DeepEqual reports whether x and y are ``deeply equal,'' defined as follows.\nTwo values of identical type are deeply equal if one of the following cases applies.\nValues of distinct types are never deeply equal.\n\nArray values are deeply equal when their corresponding elements are deeply equal.\n\nStruct values are deeply equal if their corresponding fields,\nboth exported and unexported, are deeply equal.\n\nFunc values are deeply equal if both are nil; otherwise they are not deeply equal.\n\nInterface values are deeply equal if they hold deeply equal concrete values.\n\nMap values are deeply equal when all of the following are true:\nthey are both nil or both non-nil, they have the same length,\nand either they are the same map object or their corresponding keys\n(matched using Go equality) map to deeply equal values.\n\nPointer values are deeply equal if they are equal using Go's == operator\nor if they point to deeply equal values.\n\nSlice values are deeply equal when all of the following are true:\nthey are both nil or both non-nil, they have the same length,\nand either they point to the same initial entry of the same underlying array\n(that is, &x[0] == &y[0]) or their corresponding elements (up to length) are deeply equal.\nNote that a non-nil empty slice and a nil slice (for example, []byte{} and []byte(nil))\nare not deeply equal.\n\nOther values - numbers, bools, strings, and channels - are deeply equal\nif they are equal using Go's == operator.\n\nIn general DeepEqual is a recursive relaxation of Go's == operator.\nHowever, this idea is impossible to implement without some inconsistency.\nSpecifically, it is possible for a value to be unequal to itself,\neither because it is of func type (uncomparable in general)\nor because it is a floating-point NaN value (not equal to itself in floating-point comparison),\nor because it is an array, struct, or interface containing\nsuch a value.\nOn the other hand, pointer values are always equal to themselves,\neven if they point at or contain such problematic values,\nbecause they compare equal using Go's == operator, and that\nis a sufficient condition to be deeply equal, regardless of content.\nDeepEqual has been defined so that the same short-cut applies\nto slices and maps: if x and y are the same slice or the same map,\nthey are deeply equal regardless of content.\n\nAs DeepEqual traverses the data values it may find a cycle. The\nsecond and subsequent times that DeepEqual compares two pointer\nvalues that have been compared before, it treats the values as\nequal rather than examining the values to which they point.\nThis ensures that DeepEqual terminates.\n\nGo input arguments: (x interface {}, y interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> x, ^<protocol-or-something> y]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" DeepEqual
+;;   "DeepEqual reports whether x and y are ``deeply equal,'' defined as follows.\nTwo values of identical type are deeply equal if one of the following cases applies.\nValues of distinct types are never deeply equal.\n\nArray values are deeply equal when their corresponding elements are deeply equal.\n\nStruct values are deeply equal if their corresponding fields,\nboth exported and unexported, are deeply equal.\n\nFunc values are deeply equal if both are nil; otherwise they are not deeply equal.\n\nInterface values are deeply equal if they hold deeply equal concrete values.\n\nMap values are deeply equal when all of the following are true:\nthey are both nil or both non-nil, they have the same length,\nand either they are the same map object or their corresponding keys\n(matched using Go equality) map to deeply equal values.\n\nPointer values are deeply equal if they are equal using Go's == operator\nor if they point to deeply equal values.\n\nSlice values are deeply equal when all of the following are true:\nthey are both nil or both non-nil, they have the same length,\nand either they point to the same initial entry of the same underlying array\n(that is, &x[0] == &y[0]) or their corresponding elements (up to length) are deeply equal.\nNote that a non-nil empty slice and a nil slice (for example, []byte{} and []byte(nil))\nare not deeply equal.\n\nOther values - numbers, bools, strings, and channels - are deeply equal\nif they are equal using Go's == operator.\n\nIn general DeepEqual is a recursive relaxation of Go's == operator.\nHowever, this idea is impossible to implement without some inconsistency.\nSpecifically, it is possible for a value to be unequal to itself,\neither because it is of func type (uncomparable in general)\nor because it is a floating-point NaN value (not equal to itself in floating-point comparison),\nor because it is an array, struct, or interface containing\nsuch a value.\nOn the other hand, pointer values are always equal to themselves,\neven if they point at or contain such problematic values,\nbecause they compare equal using Go's == operator, and that\nis a sufficient condition to be deeply equal, regardless of content.\nDeepEqual has been defined so that the same short-cut applies\nto slices and maps: if x and y are the same slice or the same map,\nthey are deeply equal regardless of content.\n\nAs DeepEqual traverses the data values it may find a cycle. The\nsecond and subsequent times that DeepEqual compares two pointer\nvalues that have been compared before, it treats the values as\nequal rather than examining the values to which they point.\nThis ensures that DeepEqual terminates.\n\nGo input arguments: (x interface {}, y interface {})\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> x, ^<protocol-or-something> y]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "reflect.DeepEqual(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^<protocol-or-something> _x, ^<protocol-or-something> _y])
 
 JOKER FUNC reflect.FuncOf from reflect/type.go:
 ;; (defn FuncOf
-;;   "FuncOf returns the function type with the given argument and result types.\nFor example if k represents int and e represents string,\nFuncOf([]Type{k}, []Type{e}, false) represents func(int) string.\n\nThe variadic argument controls whether the function is variadic. FuncOf\npanics if the in[len(in)-1] does not represent a slice and variadic is\ntrue.\n\nGo input arguments: (in []Type, out []Type, variadic bool)\n\nGo return type: Type\n\nJoker input arguments: [^(vector-of go.std.reflect/Type) in, ^(vector-of go.std.reflect/Type) out, ^Bool variadic]\n\nJoker return type: go.std.reflect/Type"
+;;   "FuncOf returns the function type with the given argument and result types.\nFor example if k represents int and e represents string,\nFuncOf([]Type{k}, []Type{e}, false) represents func(int) string.\n\nThe variadic argument controls whether the function is variadic. FuncOf\npanics if the in[len(in)-1] does not represent a slice and variadic is\ntrue.\n\nGo input arguments: (in []Type, out []Type, variadic bool)\n\nGo return type: Type\n\nJoker input arguments: [^(vector-of go.std.reflect/Type) in, ^(vector-of go.std.reflect/Type) out, ^Boolean variadic]\n\nJoker return type: go.std.reflect/Type"
 ;;   {:added "1.0"
 ;;    :go "__funcOf(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_reflect.Type(*_in)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_reflect.Type(*_out)), _variadic)"}
-;;   [^Object _in, ^Object _out, ^Bool _variadic])
+;;   [^Object _in, ^Object _out, ^Boolean _variadic])
 
 JOKER FUNC reflect.Indirect from reflect/value.go:
 (defn Indirect
@@ -13813,7 +13813,7 @@ JOKER FUNC reflect.PtrTo from reflect/type.go:
 
 JOKER FUNC reflect.Select from reflect/value.go:
 ;; (defn Select
-;;   "Select executes a select operation described by the list of cases.\nLike the Go select statement, it blocks until at least one of the cases\ncan proceed, makes a uniform pseudo-random choice,\nand then executes that case. It returns the index of the chosen case\nand, if that case was a receive operation, the value received and a\nboolean indicating whether the value corresponds to a send on the channel\n(as opposed to a zero value received because the channel is closed).\n\nGo input arguments: (cases []SelectCase)\n\nGo return type: (chosen int, recv Value, recvOK bool)\n\nJoker input arguments: [^(vector-of go.std.reflect/SelectCase) cases]\n\nJoker return type: [Int go.std.reflect/Value Bool]"
+;;   "Select executes a select operation described by the list of cases.\nLike the Go select statement, it blocks until at least one of the cases\ncan proceed, makes a uniform pseudo-random choice,\nand then executes that case. It returns the index of the chosen case\nand, if that case was a receive operation, the value received and a\nboolean indicating whether the value corresponds to a send on the channel\n(as opposed to a zero value received because the channel is closed).\n\nGo input arguments: (cases []SelectCase)\n\nGo return type: (chosen int, recv Value, recvOK bool)\n\nJoker input arguments: [^(vector-of go.std.reflect/SelectCase) cases]\n\nJoker return type: [Int go.std.reflect/Value Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__select(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_reflect.SelectCase(*_cases)))"}
 ;;   [^Object _cases])
@@ -13890,21 +13890,21 @@ JOKER FUNC regexp.CompilePOSIX from regexp/regexp.go:
 
 JOKER FUNC regexp.Match from regexp/regexp.go:
 ;; (defn Match
-;;   "MatchString reports whether the byte slice b\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, b []byte)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^(vector-of Byte) b]\n\nJoker return type: [Bool Error]"
+;;   "MatchString reports whether the byte slice b\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, b []byte)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^(vector-of Byte) b]\n\nJoker return type: [Boolean Error]"
 ;;   {:added "1.0"
 ;;    :go "__match(_pattern, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))"}
 ;;   [^String _pattern, ^Object _b])
 
 JOKER FUNC regexp.MatchReader from regexp/regexp.go:
 ;; (defn MatchReader
-;;   "MatchReader reports whether the text returned by the RuneReader\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, r io.RuneReader)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^go.std.io/RuneReader r]\n\nJoker return type: [Bool Error]"
+;;   "MatchReader reports whether the text returned by the RuneReader\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, r io.RuneReader)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^go.std.io/RuneReader r]\n\nJoker return type: [Boolean Error]"
 ;;   {:added "1.0"
 ;;    :go "__matchReader(_pattern, *_r)"}
 ;;   [^String _pattern, ^io/RuneReader _r])
 
 JOKER FUNC regexp.MatchString from regexp/regexp.go:
 (defn MatchString
-  "MatchString reports whether the string s\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, s string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String s]\n\nJoker return type: [Bool Error]"
+  "MatchString reports whether the string s\ncontains any match of the regular expression pattern.\nMore complicated queries need to use Compile and the full Regexp interface.\n\nGo input arguments: (pattern string, s string)\n\nGo return type: (matched bool, err error)\n\nJoker input arguments: [^String pattern, ^String s]\n\nJoker return type: [Boolean Error]"
   {:added "1.0"
    :go "__matchString(_pattern, _s)"}
   [^String _pattern, ^String _s])
@@ -14015,8 +14015,8 @@ JOKER FUNC regexp/syntax.EmptyOpContext from regexp/syntax/prog.go:
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r1, ^ABEND044(pre.go: unsupported built-in type rune) _r2])
 
 JOKER FUNC regexp/syntax.IsWordChar from regexp/syntax/prog.go:
-;; (defn ^"Bool" IsWordChar
-;;   "IsWordChar reports whether r is consider a ``word character''\nduring the evaluation of the \\b and \\B zero-width assertions.\nThese assertions are ASCII-only: the word characters are [A-Za-z0-9_].\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsWordChar
+;;   "IsWordChar reports whether r is consider a ``word character''\nduring the evaluation of the \\b and \\B zero-width assertions.\nThese assertions are ASCII-only: the word characters are [A-Za-z0-9_].\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "syntax.IsWordChar(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -14100,7 +14100,7 @@ JOKER TYPE runtime.TypeAssertionError from runtime/error.go:
 
 JOKER FUNC runtime.BlockProfile from runtime/mprof.go:
 ;; (defn BlockProfile
-;;   "BlockProfile returns n, the number of records in the current blocking profile.\nIf len(p) >= n, BlockProfile copies the profile into p and returns n, true.\nIf len(p) < n, BlockProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package or\nthe testing package's -test.blockprofile flag instead\nof calling BlockProfile directly.\n\nGo input arguments: (p []BlockProfileRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/BlockProfileRecord) p]\n\nJoker return type: [Int Bool]"
+;;   "BlockProfile returns n, the number of records in the current blocking profile.\nIf len(p) >= n, BlockProfile copies the profile into p and returns n, true.\nIf len(p) < n, BlockProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package or\nthe testing package's -test.blockprofile flag instead\nof calling BlockProfile directly.\n\nGo input arguments: (p []BlockProfileRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/BlockProfileRecord) p]\n\nJoker return type: [Int Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__blockProfile(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_runtime.BlockProfileRecord(*_p)))"}
 ;;   [^Object _p])
@@ -14121,7 +14121,7 @@ JOKER FUNC runtime.CPUProfile from runtime/cpuprof.go:
 
 JOKER FUNC runtime.Caller from runtime/extern.go:
 (defn Caller
-  "Caller reports file and line number information about function invocations on\nthe calling goroutine's stack. The argument skip is the number of stack frames\nto ascend, with 0 identifying the caller of Caller.  (For historical reasons the\nmeaning of skip differs between Caller and Callers.) The return values report the\nprogram counter, file name, and line number within the file of the corresponding\ncall. The boolean ok is false if it was not possible to recover the information.\n\nGo input arguments: (skip int)\n\nGo return type: (pc uintptr, file string, line int, ok bool)\n\nJoker input arguments: [^Int skip]\n\nJoker return type: [BigInt String Int Bool]"
+  "Caller reports file and line number information about function invocations on\nthe calling goroutine's stack. The argument skip is the number of stack frames\nto ascend, with 0 identifying the caller of Caller.  (For historical reasons the\nmeaning of skip differs between Caller and Callers.) The return values report the\nprogram counter, file name, and line number within the file of the corresponding\ncall. The boolean ok is false if it was not possible to recover the information.\n\nGo input arguments: (skip int)\n\nGo return type: (pc uintptr, file string, line int, ok bool)\n\nJoker input arguments: [^Int skip]\n\nJoker return type: [BigInt String Int Boolean]"
   {:added "1.0"
    :go "__caller(_skip)"}
   [^Int _skip])
@@ -14177,7 +14177,7 @@ JOKER FUNC runtime.Goexit from runtime/panic.go:
 
 JOKER FUNC runtime.GoroutineProfile from runtime/mprof.go:
 ;; (defn GoroutineProfile
-;;   "GoroutineProfile returns n, the number of records in the active goroutine stack profile.\nIf len(p) >= n, GoroutineProfile copies the profile into p and returns n, true.\nIf len(p) < n, GoroutineProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package instead\nof calling GoroutineProfile directly.\n\nGo input arguments: (p []StackRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/StackRecord) p]\n\nJoker return type: [Int Bool]"
+;;   "GoroutineProfile returns n, the number of records in the active goroutine stack profile.\nIf len(p) >= n, GoroutineProfile copies the profile into p and returns n, true.\nIf len(p) < n, GoroutineProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package instead\nof calling GoroutineProfile directly.\n\nGo input arguments: (p []StackRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/StackRecord) p]\n\nJoker return type: [Int Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__goroutineProfile(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_runtime.StackRecord(*_p)))"}
 ;;   [^Object _p])
@@ -14205,14 +14205,14 @@ JOKER FUNC runtime.LockOSThread from runtime/proc.go:
 
 JOKER FUNC runtime.MemProfile from runtime/mprof.go:
 ;; (defn MemProfile
-;;   "MemProfile returns a profile of memory allocated and freed per allocation\nsite.\n\nMemProfile returns n, the number of records in the current memory profile.\nIf len(p) >= n, MemProfile copies the profile into p and returns n, true.\nIf len(p) < n, MemProfile does not change p and returns n, false.\n\nIf inuseZero is true, the profile includes allocation records\nwhere r.AllocBytes > 0 but r.AllocBytes == r.FreeBytes.\nThese are sites where memory was allocated, but it has all\nbeen released back to the runtime.\n\nThe returned profile may be up to two garbage collection cycles old.\nThis is to avoid skewing the profile toward allocations; because\nallocations happen in real time but frees are delayed until the garbage\ncollector performs sweeping, the profile only accounts for allocations\nthat have had a chance to be freed by the garbage collector.\n\nMost clients should use the runtime/pprof package or\nthe testing package's -test.memprofile flag instead\nof calling MemProfile directly.\n\nGo input arguments: (p []MemProfileRecord, inuseZero bool)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/MemProfileRecord) p, ^Bool inuseZero]\n\nJoker return type: [Int Bool]"
+;;   "MemProfile returns a profile of memory allocated and freed per allocation\nsite.\n\nMemProfile returns n, the number of records in the current memory profile.\nIf len(p) >= n, MemProfile copies the profile into p and returns n, true.\nIf len(p) < n, MemProfile does not change p and returns n, false.\n\nIf inuseZero is true, the profile includes allocation records\nwhere r.AllocBytes > 0 but r.AllocBytes == r.FreeBytes.\nThese are sites where memory was allocated, but it has all\nbeen released back to the runtime.\n\nThe returned profile may be up to two garbage collection cycles old.\nThis is to avoid skewing the profile toward allocations; because\nallocations happen in real time but frees are delayed until the garbage\ncollector performs sweeping, the profile only accounts for allocations\nthat have had a chance to be freed by the garbage collector.\n\nMost clients should use the runtime/pprof package or\nthe testing package's -test.memprofile flag instead\nof calling MemProfile directly.\n\nGo input arguments: (p []MemProfileRecord, inuseZero bool)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/MemProfileRecord) p, ^Boolean inuseZero]\n\nJoker return type: [Int Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__memProfile(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_runtime.MemProfileRecord(*_p)), _inuseZero)"}
-;;   [^Object _p, ^Bool _inuseZero])
+;;   [^Object _p, ^Boolean _inuseZero])
 
 JOKER FUNC runtime.MutexProfile from runtime/mprof.go:
 ;; (defn MutexProfile
-;;   "MutexProfile returns n, the number of records in the current mutex profile.\nIf len(p) >= n, MutexProfile copies the profile into p and returns n, true.\nOtherwise, MutexProfile does not change p, and returns n, false.\n\nMost clients should use the runtime/pprof package\ninstead of calling MutexProfile directly.\n\nGo input arguments: (p []BlockProfileRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/BlockProfileRecord) p]\n\nJoker return type: [Int Bool]"
+;;   "MutexProfile returns n, the number of records in the current mutex profile.\nIf len(p) >= n, MutexProfile copies the profile into p and returns n, true.\nOtherwise, MutexProfile does not change p, and returns n, false.\n\nMost clients should use the runtime/pprof package\ninstead of calling MutexProfile directly.\n\nGo input arguments: (p []BlockProfileRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/BlockProfileRecord) p]\n\nJoker return type: [Int Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__mutexProfile(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_runtime.BlockProfileRecord(*_p)))"}
 ;;   [^Object _p])
@@ -14289,10 +14289,10 @@ JOKER FUNC runtime.SetMutexProfileFraction from runtime/mprof.go:
 
 JOKER FUNC runtime.Stack from runtime/mprof.go:
 ;; (defn ^"Int" Stack
-;;   "Stack formats a stack trace of the calling goroutine into buf\nand returns the number of bytes written to buf.\nIf all is true, Stack formats stack traces of all other goroutines\ninto buf after the trace for the current goroutine.\n\nGo input arguments: (buf []byte, all bool)\n\nGo return type: int\n\nJoker input arguments: [^(vector-of Byte) buf, ^Bool all]\n\nJoker return type: Int"
+;;   "Stack formats a stack trace of the calling goroutine into buf\nand returns the number of bytes written to buf.\nIf all is true, Stack formats stack traces of all other goroutines\ninto buf after the trace for the current goroutine.\n\nGo input arguments: (buf []byte, all bool)\n\nGo return type: int\n\nJoker input arguments: [^(vector-of Byte) buf, ^Boolean all]\n\nJoker return type: Int"
 ;;   {:added "1.0"
 ;;    :go "runtime.Stack(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_buf)), _all)"}
-;;   [^Object _buf, ^Bool _all])
+;;   [^Object _buf, ^Boolean _all])
 
 JOKER FUNC runtime.StartTrace from runtime/trace.go:
 (defn ^"Error" StartTrace
@@ -14310,7 +14310,7 @@ JOKER FUNC runtime.StopTrace from runtime/trace.go:
 
 JOKER FUNC runtime.ThreadCreateProfile from runtime/mprof.go:
 ;; (defn ThreadCreateProfile
-;;   "ThreadCreateProfile returns n, the number of records in the thread creation profile.\nIf len(p) >= n, ThreadCreateProfile copies the profile into p and returns n, true.\nIf len(p) < n, ThreadCreateProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package instead\nof calling ThreadCreateProfile directly.\n\nGo input arguments: (p []StackRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/StackRecord) p]\n\nJoker return type: [Int Bool]"
+;;   "ThreadCreateProfile returns n, the number of records in the thread creation profile.\nIf len(p) >= n, ThreadCreateProfile copies the profile into p and returns n, true.\nIf len(p) < n, ThreadCreateProfile does not change p and returns n, false.\n\nMost clients should use the runtime/pprof package instead\nof calling ThreadCreateProfile directly.\n\nGo input arguments: (p []StackRecord)\n\nGo return type: (n int, ok bool)\n\nJoker input arguments: [^(vector-of go.std.runtime/StackRecord) p]\n\nJoker return type: [Int Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__threadCreateProfile(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_runtime.StackRecord(*_p)))"}
 ;;   [^Object _p])
@@ -14386,11 +14386,11 @@ JOKER FUNC runtime/debug.SetMaxThreads from runtime/debug/garbage.go:
   [^Int _threads])
 
 JOKER FUNC runtime/debug.SetPanicOnFault from runtime/debug/garbage.go:
-(defn ^"Bool" SetPanicOnFault
-  "SetPanicOnFault controls the runtime's behavior when a program faults\nat an unexpected (non-nil) address. Such faults are typically caused by\nbugs such as runtime memory corruption, so the default response is to crash\nthe program. Programs working with memory-mapped files or unsafe\nmanipulation of memory may cause faults at non-nil addresses in less\ndramatic situations; SetPanicOnFault allows such programs to request\nthat the runtime trigger only a panic, not a crash.\nSetPanicOnFault applies only to the current goroutine.\nIt returns the previous setting.\n\nGo input arguments: (enabled bool)\n\nGo return type: bool\n\nJoker input arguments: [^Bool enabled]\n\nJoker return type: Bool"
+(defn ^"Boolean" SetPanicOnFault
+  "SetPanicOnFault controls the runtime's behavior when a program faults\nat an unexpected (non-nil) address. Such faults are typically caused by\nbugs such as runtime memory corruption, so the default response is to crash\nthe program. Programs working with memory-mapped files or unsafe\nmanipulation of memory may cause faults at non-nil addresses in less\ndramatic situations; SetPanicOnFault allows such programs to request\nthat the runtime trigger only a panic, not a crash.\nSetPanicOnFault applies only to the current goroutine.\nIt returns the previous setting.\n\nGo input arguments: (enabled bool)\n\nGo return type: bool\n\nJoker input arguments: [^Boolean enabled]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "debug.SetPanicOnFault(_enabled)"}
-  [^Bool _enabled])
+  [^Boolean _enabled])
 
 JOKER FUNC runtime/debug.SetTraceback from runtime/debug/garbage.go:
 ;; (defn SetTraceback
@@ -14450,7 +14450,7 @@ JOKER FUNC runtime/pprof.ForLabels from runtime/pprof/label.go:
 
 JOKER FUNC runtime/pprof.Label from runtime/pprof/label.go:
 ;; (defn Label
-;;   "Label returns the value of the label with the given key on ctx, and a boolean indicating\nwhether that label exists.\n\nGo input arguments: (ctx context.Context, key string)\n\nGo return type: (string, bool)\n\nJoker input arguments: [^go.std.context/Context ctx, ^String key]\n\nJoker return type: [String Bool]"
+;;   "Label returns the value of the label with the given key on ctx, and a boolean indicating\nwhether that label exists.\n\nGo input arguments: (ctx context.Context, key string)\n\nGo return type: (string, bool)\n\nJoker input arguments: [^go.std.context/Context ctx, ^String key]\n\nJoker return type: [String Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__label(*_ctx, _key)"}
 ;;   [^context/Context _ctx, ^String _key])
@@ -14540,8 +14540,8 @@ JOKER TYPE runtime/trace.Task from runtime/trace/annotation.go:
   [^Object _v])
 
 JOKER FUNC runtime/trace.IsEnabled from runtime/trace/annotation.go:
-(defn ^"Bool" IsEnabled
-  "IsEnabled returns whether tracing is enabled.\nThe information is advisory only. The tracing status\nmay have changed by the time this function returns.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
+(defn ^"Boolean" IsEnabled
+  "IsEnabled returns whether tracing is enabled.\nThe information is advisory only. The tracing status\nmay have changed by the time this function returns.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "trace.IsEnabled()"}
   [])
@@ -14638,8 +14638,8 @@ JOKER FUNC sort.Float64s from sort/sort.go:
 ;;   [^Object _a])
 
 JOKER FUNC sort.Float64sAreSorted from sort/sort.go:
-;; (defn ^"Bool" Float64sAreSorted
-;;   "Float64sAreSorted tests whether a slice of float64s is sorted in increasing order\n(not-a-number values are treated as less than other values).\n\nGo input arguments: (a []float64)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of float64) a]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Float64sAreSorted
+;;   "Float64sAreSorted tests whether a slice of float64s is sorted in increasing order\n(not-a-number values are treated as less than other values).\n\nGo input arguments: (a []float64)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of float64) a]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "sort.Float64sAreSorted(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOffloat64(_a)))"}
 ;;   [^Object _a])
@@ -14652,15 +14652,15 @@ JOKER FUNC sort.Ints from sort/sort.go:
 ;;   [^Object _a])
 
 JOKER FUNC sort.IntsAreSorted from sort/sort.go:
-;; (defn ^"Bool" IntsAreSorted
-;;   "IntsAreSorted tests whether a slice of ints is sorted in increasing order.\n\nGo input arguments: (a []int)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Int) a]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IntsAreSorted
+;;   "IntsAreSorted tests whether a slice of ints is sorted in increasing order.\n\nGo input arguments: (a []int)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Int) a]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "sort.IntsAreSorted(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfint(_a)))"}
 ;;   [^Object _a])
 
 JOKER FUNC sort.IsSorted from sort/sort.go:
-(defn ^"Bool" IsSorted
-  "IsSorted reports whether data is sorted.\n\nGo input arguments: (data Interface)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.sort/Interface data]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsSorted
+  "IsSorted reports whether data is sorted.\n\nGo input arguments: (data Interface)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.sort/Interface data]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "sort.IsSorted(*_data)"}
   [^sort/Interface _data])
@@ -14708,8 +14708,8 @@ JOKER FUNC sort.Slice from sort/slice.go:
 ;;   [^<protocol-or-something> _slice, ^fn _less])
 
 JOKER FUNC sort.SliceIsSorted from sort/slice.go:
-;; (defn ^"Bool" SliceIsSorted
-;;   "SliceIsSorted tests whether a slice is sorted.\n\nThe function panics if the provided interface is not a slice.\n\nGo input arguments: (slice interface {}, less func)\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> slice, ^fn less]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" SliceIsSorted
+;;   "SliceIsSorted tests whether a slice is sorted.\n\nThe function panics if the provided interface is not a slice.\n\nGo input arguments: (slice interface {}, less func)\n\nGo return type: bool\n\nJoker input arguments: [^<protocol-or-something> slice, ^fn less]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "sort.SliceIsSorted(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()))"}
 ;;   [^<protocol-or-something> _slice, ^fn _less])
@@ -14743,8 +14743,8 @@ JOKER FUNC sort.Strings from sort/sort.go:
 ;;   [^Object _a])
 
 JOKER FUNC sort.StringsAreSorted from sort/sort.go:
-;; (defn ^"Bool" StringsAreSorted
-;;   "StringsAreSorted tests whether a slice of strings is sorted in increasing order.\n\nGo input arguments: (a []string)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of String) a]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" StringsAreSorted
+;;   "StringsAreSorted tests whether a slice of strings is sorted in increasing order.\n\nGo input arguments: (a []string)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of String) a]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "sort.StringsAreSorted(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfstring(_a)))"}
 ;;   [^Object _a])
@@ -14765,10 +14765,10 @@ JOKER TYPE strconv.NumError from strconv/atoi.go:
 
 JOKER FUNC strconv.AppendBool from strconv/atob.go:
 ;; (defn AppendBool
-;;   "AppendBool appends \"true\" or \"false\", according to the value of b,\nto dst and returns the extended buffer.\n\nGo input arguments: (dst []byte, b bool)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Byte) dst, ^Bool b]\n\nJoker return type: (vector-of Int)"
+;;   "AppendBool appends \"true\" or \"false\", according to the value of b,\nto dst and returns the extended buffer.\n\nGo input arguments: (dst []byte, b bool)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Byte) dst, ^Boolean b]\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
 ;;    :go "__appendBool(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_dst)), _b)"}
-;;   [^Object _dst, ^Bool _b])
+;;   [^Object _dst, ^Boolean _b])
 
 JOKER FUNC strconv.AppendFloat from strconv/ftoa.go:
 ;; (defn AppendFloat
@@ -14841,18 +14841,18 @@ JOKER FUNC strconv.Atoi from strconv/atoi.go:
   [^String _s])
 
 JOKER FUNC strconv.CanBackquote from strconv/quote.go:
-(defn ^"Bool" CanBackquote
-  "CanBackquote reports whether the string s can be represented\nunchanged as a single-line backquoted string without control\ncharacters other than tab.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Bool"
+(defn ^"Boolean" CanBackquote
+  "CanBackquote reports whether the string s can be represented\nunchanged as a single-line backquoted string without control\ncharacters other than tab.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strconv.CanBackquote(_s)"}
   [^String _s])
 
 JOKER FUNC strconv.FormatBool from strconv/atob.go:
 (defn ^"String" FormatBool
-  "FormatBool returns \"true\" or \"false\" according to the value of b.\n\nGo input arguments: (b bool)\n\nGo return type: string\n\nJoker input arguments: [^Bool b]\n\nJoker return type: String"
+  "FormatBool returns \"true\" or \"false\" according to the value of b.\n\nGo input arguments: (b bool)\n\nGo return type: string\n\nJoker input arguments: [^Boolean b]\n\nJoker return type: String"
   {:added "1.0"
    :go "strconv.FormatBool(_b)"}
-  [^Bool _b])
+  [^Boolean _b])
 
 JOKER FUNC strconv.FormatFloat from strconv/ftoa.go:
 ;; (defn ^"String" FormatFloat
@@ -14876,15 +14876,15 @@ JOKER FUNC strconv.FormatUint from strconv/itoa.go:
 ;;   [^ABEND044(pre.go: unsupported built-in type uint64) _i, ^Int _base])
 
 JOKER FUNC strconv.IsGraphic from strconv/quote.go:
-;; (defn ^"Bool" IsGraphic
-;;   "IsGraphic reports whether the rune is defined as a Graphic by Unicode. Such\ncharacters include letters, marks, numbers, punctuation, symbols, and\nspaces, from categories L, M, N, P, S, and Zs.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsGraphic
+;;   "IsGraphic reports whether the rune is defined as a Graphic by Unicode. Such\ncharacters include letters, marks, numbers, punctuation, symbols, and\nspaces, from categories L, M, N, P, S, and Zs.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "strconv.IsGraphic(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC strconv.IsPrint from strconv/quote.go:
-;; (defn ^"Bool" IsPrint
-;;   "IsPrint reports whether the rune is defined as printable by Go, with\nthe same definition as unicode.IsPrint: letters, numbers, punctuation,\nsymbols and ASCII space.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsPrint
+;;   "IsPrint reports whether the rune is defined as printable by Go, with\nthe same definition as unicode.IsPrint: letters, numbers, punctuation,\nsymbols and ASCII space.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "strconv.IsPrint(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -14898,7 +14898,7 @@ JOKER FUNC strconv.Itoa from strconv/itoa.go:
 
 JOKER FUNC strconv.ParseBool from strconv/atob.go:
 (defn ParseBool
-  "ParseBool returns the boolean value represented by the string.\nIt accepts 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False.\nAny other value returns an error.\n\nGo input arguments: (str string)\n\nGo return type: (bool, error)\n\nJoker input arguments: [^String str]\n\nJoker return type: [Bool Error]"
+  "ParseBool returns the boolean value represented by the string.\nIt accepts 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False.\nAny other value returns an error.\n\nGo input arguments: (str string)\n\nGo return type: (bool, error)\n\nJoker input arguments: [^String str]\n\nJoker return type: [Boolean Error]"
   {:added "1.0"
    :go "__parseBool(_str)"}
   [^String _str])
@@ -14975,7 +14975,7 @@ JOKER FUNC strconv.Unquote from strconv/quote.go:
 
 JOKER FUNC strconv.UnquoteChar from strconv/quote.go:
 ;; (defn UnquoteChar
-;;   "UnquoteChar decodes the first character or byte in the escaped string\nor character literal represented by the string s.\nIt returns four values:\n\n\t1) value, the decoded Unicode code point or byte value;\n\t2) multibyte, a boolean indicating whether the decoded character requires a multibyte UTF-8 representation;\n\t3) tail, the remainder of the string after the character; and\n\t4) an error that will be nil if the character is syntactically valid.\n\nThe second argument, quote, specifies the type of literal being parsed\nand therefore which escaped quote character is permitted.\nIf set to a single quote, it permits the sequence \\' and disallows unescaped '.\nIf set to a double quote, it permits \\\" and disallows unescaped \".\nIf set to zero, it does not permit either escape and allows both quote characters to appear unescaped.\n\nGo input arguments: (s string, quote byte)\n\nGo return type: (value ..., multibyte bool, tail string, err error)\n\nJoker input arguments: [^String s, ^Byte quote]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type rune) Bool String Error]"
+;;   "UnquoteChar decodes the first character or byte in the escaped string\nor character literal represented by the string s.\nIt returns four values:\n\n\t1) value, the decoded Unicode code point or byte value;\n\t2) multibyte, a boolean indicating whether the decoded character requires a multibyte UTF-8 representation;\n\t3) tail, the remainder of the string after the character; and\n\t4) an error that will be nil if the character is syntactically valid.\n\nThe second argument, quote, specifies the type of literal being parsed\nand therefore which escaped quote character is permitted.\nIf set to a single quote, it permits the sequence \\' and disallows unescaped '.\nIf set to a double quote, it permits \\\" and disallows unescaped \".\nIf set to zero, it does not permit either escape and allows both quote characters to appear unescaped.\n\nGo input arguments: (s string, quote byte)\n\nGo return type: (value ..., multibyte bool, tail string, err error)\n\nJoker input arguments: [^String s, ^Byte quote]\n\nJoker return type: [ABEND043(post.go: unsupported built-in type rune) Boolean String Error]"
 ;;   {:added "1.0"
 ;;    :go "__unquoteChar(_s, _quote)"}
 ;;   [^String _s, ^Byte _quote])
@@ -15016,22 +15016,22 @@ JOKER FUNC strings.Compare from strings/compare.go:
   [^String _a, ^String _b])
 
 JOKER FUNC strings.Contains from strings/strings.go:
-(defn ^"Bool" Contains
-  "Contains reports whether substr is within s.\n\nGo input arguments: (s string, substr string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String substr]\n\nJoker return type: Bool"
+(defn ^"Boolean" Contains
+  "Contains reports whether substr is within s.\n\nGo input arguments: (s string, substr string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String substr]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strings.Contains(_s, _substr)"}
   [^String _s, ^String _substr])
 
 JOKER FUNC strings.ContainsAny from strings/strings.go:
-(defn ^"Bool" ContainsAny
-  "ContainsAny reports whether any Unicode code points in chars are within s.\n\nGo input arguments: (s string, chars string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String chars]\n\nJoker return type: Bool"
+(defn ^"Boolean" ContainsAny
+  "ContainsAny reports whether any Unicode code points in chars are within s.\n\nGo input arguments: (s string, chars string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String chars]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strings.ContainsAny(_s, _chars)"}
   [^String _s, ^String _chars])
 
 JOKER FUNC strings.ContainsRune from strings/strings.go:
-;; (defn ^"Bool" ContainsRune
-;;   "ContainsRune reports whether the Unicode code point r is within s.\n\nGo input arguments: (s string, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" ContainsRune
+;;   "ContainsRune reports whether the Unicode code point r is within s.\n\nGo input arguments: (s string, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "strings.ContainsRune(_s, _r)"}
 ;;   [^String _s, ^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -15044,8 +15044,8 @@ JOKER FUNC strings.Count from strings/strings.go:
   [^String _s, ^String _substr])
 
 JOKER FUNC strings.EqualFold from strings/strings.go:
-(defn ^"Bool" EqualFold
-  "EqualFold reports whether s and t, interpreted as UTF-8 strings,\nare equal under Unicode case-folding.\n\nGo input arguments: (s string, t string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String t]\n\nJoker return type: Bool"
+(defn ^"Boolean" EqualFold
+  "EqualFold reports whether s and t, interpreted as UTF-8 strings,\nare equal under Unicode case-folding.\n\nGo input arguments: (s string, t string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String t]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strings.EqualFold(_s, _t)"}
   [^String _s, ^String _t])
@@ -15065,15 +15065,15 @@ JOKER FUNC strings.FieldsFunc from strings/strings.go:
 ;;   [^String _s, ^fn _f])
 
 JOKER FUNC strings.HasPrefix from strings/strings.go:
-(defn ^"Bool" HasPrefix
-  "HasPrefix tests whether the string s begins with prefix.\n\nGo input arguments: (s string, prefix string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String prefix]\n\nJoker return type: Bool"
+(defn ^"Boolean" HasPrefix
+  "HasPrefix tests whether the string s begins with prefix.\n\nGo input arguments: (s string, prefix string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String prefix]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strings.HasPrefix(_s, _prefix)"}
   [^String _s, ^String _prefix])
 
 JOKER FUNC strings.HasSuffix from strings/strings.go:
-(defn ^"Bool" HasSuffix
-  "HasSuffix tests whether the string s ends with suffix.\n\nGo input arguments: (s string, suffix string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String suffix]\n\nJoker return type: Bool"
+(defn ^"Boolean" HasSuffix
+  "HasSuffix tests whether the string s ends with suffix.\n\nGo input arguments: (s string, suffix string)\n\nGo return type: bool\n\nJoker input arguments: [^String s, ^String suffix]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "strings.HasSuffix(_s, _suffix)"}
   [^String _s, ^String _suffix])
@@ -15436,43 +15436,43 @@ JOKER FUNC sync/atomic.AddUintptr from sync/atomic/doc.go:
 ;;   [^Object _addr, ^UIntPtr _delta])
 
 JOKER FUNC sync/atomic.CompareAndSwapInt32 from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapInt32
-;;   "CompareAndSwapInt32 executes the compare-and-swap operation for an int32 value.\n\nGo input arguments: (addr *int32, old int32, new int32)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of Int32) addr, ^Int32 old, ^Int32 new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapInt32
+;;   "CompareAndSwapInt32 executes the compare-and-swap operation for an int32 value.\n\nGo input arguments: (addr *int32, old int32, new int32)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of Int32) addr, ^Int32 old, ^Int32 new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapInt32(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfint32(_addr)), _old, _new)"}
 ;;   [^Object _addr, ^Int32 _old, ^Int32 _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapInt64 from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapInt64
-;;   "CompareAndSwapInt64 executes the compare-and-swap operation for an int64 value.\n\nGo input arguments: (addr *int64, old int64, new int64)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of Int64) addr, ^Int64 old, ^Int64 new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapInt64
+;;   "CompareAndSwapInt64 executes the compare-and-swap operation for an int64 value.\n\nGo input arguments: (addr *int64, old int64, new int64)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of Int64) addr, ^Int64 old, ^Int64 new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapInt64(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfint64(_addr)), _old, _new)"}
 ;;   [^Object _addr, ^Int64 _old, ^Int64 _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapPointer from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapPointer
-;;   "CompareAndSwapPointer executes the compare-and-swap operation for a unsafe.Pointer value.\n\nGo input arguments: (addr *unsafe.Pointer, old unsafe.Pointer, new unsafe.Pointer)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr, ^go.std.unsafe/Pointer old, ^go.std.unsafe/Pointer new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapPointer
+;;   "CompareAndSwapPointer executes the compare-and-swap operation for a unsafe.Pointer value.\n\nGo input arguments: (addr *unsafe.Pointer, old unsafe.Pointer, new unsafe.Pointer)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.unsafe/Pointer) addr, ^go.std.unsafe/Pointer old, ^go.std.unsafe/Pointer new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapPointer(_addr, *_old, *_new)"}
 ;;   [^unsafe/Pointer _addr, ^unsafe/Pointer _old, ^unsafe/Pointer _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapUint32 from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapUint32
-;;   "CompareAndSwapUint32 executes the compare-and-swap operation for a uint32 value.\n\nGo input arguments: (addr *uint32, old uint32, new uint32)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of UInt32) addr, ^UInt32 old, ^UInt32 new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapUint32
+;;   "CompareAndSwapUint32 executes the compare-and-swap operation for a uint32 value.\n\nGo input arguments: (addr *uint32, old uint32, new uint32)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of UInt32) addr, ^UInt32 old, ^UInt32 new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapUint32(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfuint32(_addr)), _old, _new)"}
 ;;   [^Object _addr, ^UInt32 _old, ^UInt32 _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapUint64 from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapUint64
-;;   "CompareAndSwapUint64 executes the compare-and-swap operation for a uint64 value.\n\nGo input arguments: (addr *uint64, old uint64, new uint64)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of uint64) addr, ^uint64 old, ^uint64 new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapUint64
+;;   "CompareAndSwapUint64 executes the compare-and-swap operation for a uint64 value.\n\nGo input arguments: (addr *uint64, old uint64, new uint64)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of uint64) addr, ^uint64 old, ^uint64 new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapUint64(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfuint64(_addr)), _old, _new)"}
 ;;   [^Object _addr, ^ABEND044(pre.go: unsupported built-in type uint64) _old, ^ABEND044(pre.go: unsupported built-in type uint64) _new])
 
 JOKER FUNC sync/atomic.CompareAndSwapUintptr from sync/atomic/doc.go:
-;; (defn ^"Bool" CompareAndSwapUintptr
-;;   "CompareAndSwapUintptr executes the compare-and-swap operation for a uintptr value.\n\nGo input arguments: (addr *uintptr, old uintptr, new uintptr)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of UIntPtr) addr, ^UIntPtr old, ^UIntPtr new]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" CompareAndSwapUintptr
+;;   "CompareAndSwapUintptr executes the compare-and-swap operation for a uintptr value.\n\nGo input arguments: (addr *uintptr, old uintptr, new uintptr)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of UIntPtr) addr, ^UIntPtr old, ^UIntPtr new]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "atomic.CompareAndSwapUintptr(ABEND903(pre.go: custom-runtime routine not implemented: ConvertToIndirectOfuintptr(_addr)), _old, _new)"}
 ;;   [^Object _addr, ^UIntPtr _old, ^UIntPtr _new])
@@ -16396,7 +16396,7 @@ JOKER FUNC syscall.Getegid from syscall/zsyscall_darwin_amd64.go:
 
 JOKER FUNC syscall.Getenv from syscall/env_unix.go:
 (defn Getenv
-  "Go input arguments: (key string)\n\nGo return type: (value string, found bool)\n\nJoker input arguments: [^String key]\n\nJoker return type: [String Bool]"
+  "Go input arguments: (key string)\n\nGo return type: (value string, found bool)\n\nJoker input arguments: [^String key]\n\nJoker return type: [String Boolean]"
   {:added "1.0"
    :go "__getenv(_key)"}
   [^String _key])
@@ -16577,8 +16577,8 @@ JOKER FUNC syscall.Getwd from syscall/syscall_darwin.go:
   [])
 
 JOKER FUNC syscall.Issetugid from syscall/zsyscall_darwin_amd64.go:
-(defn ^"Bool" Issetugid
-  "Go return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
+(defn ^"Boolean" Issetugid
+  "Go return type: bool\n\nJoker input arguments: []\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "syscall.Issetugid()"}
   [])
@@ -16984,10 +16984,10 @@ JOKER FUNC syscall.SetKevent from syscall/syscall_darwin_amd64.go:
 
 JOKER FUNC syscall.SetNonblock from syscall/exec_unix.go:
 (defn ^"Error" SetNonblock
-  "Go input arguments: (fd int, nonblocking bool)\n\nGo return type: error\n\nJoker input arguments: [^Int fd, ^Bool nonblocking]\n\nJoker return type: Error"
+  "Go input arguments: (fd int, nonblocking bool)\n\nGo return type: error\n\nJoker input arguments: [^Int fd, ^Boolean nonblocking]\n\nJoker return type: Error"
   {:added "1.0"
    :go "syscall.SetNonblock(_fd, _nonblocking)"}
-  [^Int _fd, ^Bool _nonblocking])
+  [^Int _fd, ^Boolean _nonblocking])
 
 JOKER FUNC syscall.Setegid from syscall/zsyscall_darwin_amd64.go:
 (defn ^"Error" Setegid
@@ -17508,29 +17508,29 @@ JOKER FUNC testing.RunBenchmarks from testing/benchmark.go:
 ;;   [^fn _matchString, ^Object _benchmarks])
 
 JOKER FUNC testing.RunExamples from testing/example.go:
-;; (defn ^"Bool" RunExamples
-;;   "An internal function but exported because it is cross-package; part of the implementation\nof the \"go test\" command.\n\nGo input arguments: (matchString func, examples []InternalExample)\n\nGo return type: bool\n\nJoker input arguments: [^fn matchString, ^(vector-of go.std.testing/InternalExample) examples]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" RunExamples
+;;   "An internal function but exported because it is cross-package; part of the implementation\nof the \"go test\" command.\n\nGo input arguments: (matchString func, examples []InternalExample)\n\nGo return type: bool\n\nJoker input arguments: [^fn matchString, ^(vector-of go.std.testing/InternalExample) examples]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "testing.RunExamples(ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_testing.InternalExample(*_examples)))"}
 ;;   [^fn _matchString, ^Object _examples])
 
 JOKER FUNC testing.RunTests from testing/testing.go:
-;; (defn ^"Bool" RunTests
-;;   "An internal function but exported because it is cross-package; part of the implementation\nof the \"go test\" command.\n\nGo input arguments: (matchString func, tests []InternalTest)\n\nGo return type: bool\n\nJoker input arguments: [^fn matchString, ^(vector-of go.std.testing/InternalTest) tests]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" RunTests
+;;   "An internal function but exported because it is cross-package; part of the implementation\nof the \"go test\" command.\n\nGo input arguments: (matchString func, tests []InternalTest)\n\nGo return type: bool\n\nJoker input arguments: [^fn matchString, ^(vector-of go.std.testing/InternalTest) tests]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "testing.RunTests(ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf_testing.InternalTest(*_tests)))"}
 ;;   [^fn _matchString, ^Object _tests])
 
 JOKER FUNC testing.Short from testing/testing.go:
-(defn ^"Bool" Short
-  "Short reports whether the -test.short flag is set.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
+(defn ^"Boolean" Short
+  "Short reports whether the -test.short flag is set.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "testing.Short()"}
   [])
 
 JOKER FUNC testing.Verbose from testing/testing.go:
-(defn ^"Bool" Verbose
-  "Verbose reports whether the -test.v flag is set.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Bool"
+(defn ^"Boolean" Verbose
+  "Verbose reports whether the -test.v flag is set.\n\nGo return type: bool\n\nJoker input arguments: []\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "testing.Verbose()"}
   [])
@@ -17607,7 +17607,7 @@ JOKER FUNC testing/quick.CheckEqual from testing/quick/quick.go:
 
 JOKER FUNC testing/quick.Value from testing/quick/quick.go:
 ;; (defn Value
-;;   "Value returns an arbitrary value of the given type.\nIf the type implements the Generator interface, that will be used.\nNote: To create arbitrary values for structs, all the fields must be exported.\n\nGo input arguments: (t reflect.Type, rand *rand.Rand)\n\nGo return type: (value reflect.Value, ok bool)\n\nJoker input arguments: [^go.std.reflect/Type t, ^(atom-of go.std.math.rand/Rand) rand]\n\nJoker return type: [go.std.reflect/Value Bool]"
+;;   "Value returns an arbitrary value of the given type.\nIf the type implements the Generator interface, that will be used.\nNote: To create arbitrary values for structs, all the fields must be exported.\n\nGo input arguments: (t reflect.Type, rand *rand.Rand)\n\nGo return type: (value reflect.Value, ok bool)\n\nJoker input arguments: [^go.std.reflect/Type t, ^(atom-of go.std.math.rand/Rand) rand]\n\nJoker return type: [go.std.reflect/Value Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__value(*_t, _rand)"}
 ;;   [^reflect/Type _t, ^rand/Rand _rand])
@@ -17670,7 +17670,7 @@ JOKER FUNC text/template.HTMLEscaper from text/template/funcs.go:
 
 JOKER FUNC text/template.IsTrue from text/template/exec.go:
 ;; (defn IsTrue
-;;   "IsTrue reports whether the value is 'true', in the sense of not the zero of its type,\nand whether the value has a meaningful truth value. This is the definition of\ntruth used by if and other such actions.\n\nGo input arguments: (val interface {})\n\nGo return type: (truth bool, ok bool)\n\nJoker input arguments: [^<protocol-or-something> val]\n\nJoker return type: [Bool Bool]"
+;;   "IsTrue reports whether the value is 'true', in the sense of not the zero of its type,\nand whether the value has a meaningful truth value. This is the definition of\ntruth used by if and other such actions.\n\nGo input arguments: (val interface {})\n\nGo return type: (truth bool, ok bool)\n\nJoker input arguments: [^<protocol-or-something> val]\n\nJoker return type: [Boolean Boolean]"
 ;;   {:added "1.0"
 ;;    :go "__isTrue(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))"}
 ;;   [^<protocol-or-something> _val])
@@ -17900,8 +17900,8 @@ JOKER TYPE text/template/parse.WithNode from text/template/parse/node.go:
   [^Object _v])
 
 JOKER FUNC text/template/parse.IsEmptyTree from text/template/parse/parse.go:
-(defn ^"Bool" IsEmptyTree
-  "IsEmptyTree reports whether this tree (node) is empty of everything but space.\n\nGo input arguments: (n Node)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.text.template.parse/Node n]\n\nJoker return type: Bool"
+(defn ^"Boolean" IsEmptyTree
+  "IsEmptyTree reports whether this tree (node) is empty of everything but space.\n\nGo input arguments: (n Node)\n\nGo return type: bool\n\nJoker input arguments: [^go.std.text.template.parse/Node n]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "parse.IsEmptyTree(*_n)"}
   [^parse/Node _n])
@@ -18117,113 +18117,113 @@ JOKER FUNC time.Until from time/time.go:
     :empty false}
   go.std.time)
 JOKER FUNC unicode.In from unicode/graphic.go:
-;; (defn ^"Bool" In
-;;   "In reports whether the rune is a member of one of the ranges.\n\nGo input arguments: (r rune, ranges ...*RangeTable)\n\nGo return type: bool\n\nJoker input arguments: [^rune r, ^(ellipsis-somehow unicode/RangeTable) ranges]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" In
+;;   "In reports whether the rune is a member of one of the ranges.\n\nGo input arguments: (r rune, ranges ...*RangeTable)\n\nGo return type: bool\n\nJoker input arguments: [^rune r, ^(ellipsis-somehow unicode/RangeTable) ranges]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.In(_r, ABEND905(pre.go: custom-runtime routine not implemented: ConvertToEllipsisHaHa*_unicode.RangeTable(_ranges)))"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r, ^unicode/RangeTable _ranges])
 
 JOKER FUNC unicode.Is from unicode/letter.go:
-;; (defn ^"Bool" Is
-;;   "Is reports whether the rune is in the specified table of ranges.\n\nGo input arguments: (rangeTab *RangeTable, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.unicode/RangeTable) rangeTab, ^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Is
+;;   "Is reports whether the rune is in the specified table of ranges.\n\nGo input arguments: (rangeTab *RangeTable, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(atom-of go.std.unicode/RangeTable) rangeTab, ^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.Is(_rangeTab, _r)"}
 ;;   [^unicode/RangeTable _rangeTab, ^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsControl from unicode/graphic.go:
-;; (defn ^"Bool" IsControl
-;;   "IsControl reports whether the rune is a control character.\nThe C (Other) Unicode category includes more code points\nsuch as surrogates; use Is(C, r) to test for them.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsControl
+;;   "IsControl reports whether the rune is a control character.\nThe C (Other) Unicode category includes more code points\nsuch as surrogates; use Is(C, r) to test for them.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsControl(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsDigit from unicode/digit.go:
-;; (defn ^"Bool" IsDigit
-;;   "IsDigit reports whether the rune is a decimal digit.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsDigit
+;;   "IsDigit reports whether the rune is a decimal digit.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsDigit(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsGraphic from unicode/graphic.go:
-;; (defn ^"Bool" IsGraphic
-;;   "IsGraphic reports whether the rune is defined as a Graphic by Unicode.\nSuch characters include letters, marks, numbers, punctuation, symbols, and\nspaces, from categories L, M, N, P, S, Zs.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsGraphic
+;;   "IsGraphic reports whether the rune is defined as a Graphic by Unicode.\nSuch characters include letters, marks, numbers, punctuation, symbols, and\nspaces, from categories L, M, N, P, S, Zs.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsGraphic(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsLetter from unicode/graphic.go:
-;; (defn ^"Bool" IsLetter
-;;   "IsLetter reports whether the rune is a letter (category L).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsLetter
+;;   "IsLetter reports whether the rune is a letter (category L).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsLetter(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsLower from unicode/letter.go:
-;; (defn ^"Bool" IsLower
-;;   "IsLower reports whether the rune is a lower case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsLower
+;;   "IsLower reports whether the rune is a lower case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsLower(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsMark from unicode/graphic.go:
-;; (defn ^"Bool" IsMark
-;;   "IsMark reports whether the rune is a mark character (category M).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsMark
+;;   "IsMark reports whether the rune is a mark character (category M).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsMark(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsNumber from unicode/graphic.go:
-;; (defn ^"Bool" IsNumber
-;;   "IsNumber reports whether the rune is a number (category N).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsNumber
+;;   "IsNumber reports whether the rune is a number (category N).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsNumber(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsOneOf from unicode/graphic.go:
-;; (defn ^"Bool" IsOneOf
-;;   "IsOneOf reports whether the rune is a member of one of the ranges.\nThe function \"In\" provides a nicer signature and should be used in preference to IsOneOf.\n\nGo input arguments: (ranges []*RangeTable, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of (atom-of go.std.unicode/RangeTable)) ranges, ^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsOneOf
+;;   "IsOneOf reports whether the rune is a member of one of the ranges.\nThe function \"In\" provides a nicer signature and should be used in preference to IsOneOf.\n\nGo input arguments: (ranges []*RangeTable, r rune)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of (atom-of go.std.unicode/RangeTable)) ranges, ^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsOneOf(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf*_unicode.RangeTable(_ranges)), _r)"}
 ;;   [^Object _ranges, ^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsPrint from unicode/graphic.go:
-;; (defn ^"Bool" IsPrint
-;;   "IsPrint reports whether the rune is defined as printable by Go. Such\ncharacters include letters, marks, numbers, punctuation, symbols, and the\nASCII space character, from categories L, M, N, P, S and the ASCII space\ncharacter. This categorization is the same as IsGraphic except that the\nonly spacing character is ASCII space, U+0020.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsPrint
+;;   "IsPrint reports whether the rune is defined as printable by Go. Such\ncharacters include letters, marks, numbers, punctuation, symbols, and the\nASCII space character, from categories L, M, N, P, S and the ASCII space\ncharacter. This categorization is the same as IsGraphic except that the\nonly spacing character is ASCII space, U+0020.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsPrint(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsPunct from unicode/graphic.go:
-;; (defn ^"Bool" IsPunct
-;;   "IsPunct reports whether the rune is a Unicode punctuation character\n(category P).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsPunct
+;;   "IsPunct reports whether the rune is a Unicode punctuation character\n(category P).\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsPunct(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsSpace from unicode/graphic.go:
-;; (defn ^"Bool" IsSpace
-;;   "IsSpace reports whether the rune is a space character as defined\nby Unicode's White Space property; in the Latin-1 space\nthis is\n\t'\\t', '\\n', '\\v', '\\f', '\\r', ' ', U+0085 (NEL), U+00A0 (NBSP).\nOther definitions of spacing characters are set by category\nZ and property Pattern_White_Space.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsSpace
+;;   "IsSpace reports whether the rune is a space character as defined\nby Unicode's White Space property; in the Latin-1 space\nthis is\n\t'\\t', '\\n', '\\v', '\\f', '\\r', ' ', U+0085 (NEL), U+00A0 (NBSP).\nOther definitions of spacing characters are set by category\nZ and property Pattern_White_Space.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsSpace(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsSymbol from unicode/graphic.go:
-;; (defn ^"Bool" IsSymbol
-;;   "IsSymbol reports whether the rune is a symbolic character.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsSymbol
+;;   "IsSymbol reports whether the rune is a symbolic character.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsSymbol(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsTitle from unicode/letter.go:
-;; (defn ^"Bool" IsTitle
-;;   "IsTitle reports whether the rune is a title case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsTitle
+;;   "IsTitle reports whether the rune is a title case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsTitle(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode.IsUpper from unicode/letter.go:
-;; (defn ^"Bool" IsUpper
-;;   "IsUpper reports whether the rune is an upper case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsUpper
+;;   "IsUpper reports whether the rune is an upper case letter.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "unicode.IsUpper(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -18292,8 +18292,8 @@ JOKER FUNC unicode/utf16.EncodeRune from unicode/utf16/utf16.go:
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode/utf16.IsSurrogate from unicode/utf16/utf16.go:
-;; (defn ^"Bool" IsSurrogate
-;;   "IsSurrogate reports whether the specified Unicode code point\ncan appear in a surrogate pair.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" IsSurrogate
+;;   "IsSurrogate reports whether the specified Unicode code point\ncan appear in a surrogate pair.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "utf16.IsSurrogate(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
@@ -18334,15 +18334,15 @@ JOKER FUNC unicode/utf8.EncodeRune from unicode/utf8/utf8.go:
 ;;   [^Object _p, ^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode/utf8.FullRune from unicode/utf8/utf8.go:
-;; (defn ^"Bool" FullRune
-;;   "FullRune reports whether the bytes in p begin with a full UTF-8 encoding of a rune.\nAn invalid encoding is considered a full Rune since it will convert as a width-1 error rune.\n\nGo input arguments: (p []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) p]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" FullRune
+;;   "FullRune reports whether the bytes in p begin with a full UTF-8 encoding of a rune.\nAn invalid encoding is considered a full Rune since it will convert as a width-1 error rune.\n\nGo input arguments: (p []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) p]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "utf8.FullRune(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_p)))"}
 ;;   [^Object _p])
 
 JOKER FUNC unicode/utf8.FullRuneInString from unicode/utf8/utf8.go:
-(defn ^"Bool" FullRuneInString
-  "FullRuneInString is like FullRune but its input is a string.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Bool"
+(defn ^"Boolean" FullRuneInString
+  "FullRuneInString is like FullRune but its input is a string.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "utf8.FullRuneInString(_s)"}
   [^String _s])
@@ -18369,29 +18369,29 @@ JOKER FUNC unicode/utf8.RuneLen from unicode/utf8/utf8.go:
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode/utf8.RuneStart from unicode/utf8/utf8.go:
-(defn ^"Bool" RuneStart
-  "RuneStart reports whether the byte could be the first byte of an encoded,\npossibly invalid rune. Second and subsequent bytes always have the top two\nbits set to 10.\n\nGo input arguments: (b byte)\n\nGo return type: bool\n\nJoker input arguments: [^Byte b]\n\nJoker return type: Bool"
+(defn ^"Boolean" RuneStart
+  "RuneStart reports whether the byte could be the first byte of an encoded,\npossibly invalid rune. Second and subsequent bytes always have the top two\nbits set to 10.\n\nGo input arguments: (b byte)\n\nGo return type: bool\n\nJoker input arguments: [^Byte b]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "utf8.RuneStart(_b)"}
   [^Byte _b])
 
 JOKER FUNC unicode/utf8.Valid from unicode/utf8/utf8.go:
-;; (defn ^"Bool" Valid
-;;   "Valid reports whether p consists entirely of valid UTF-8-encoded runes.\n\nGo input arguments: (p []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) p]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" Valid
+;;   "Valid reports whether p consists entirely of valid UTF-8-encoded runes.\n\nGo input arguments: (p []byte)\n\nGo return type: bool\n\nJoker input arguments: [^(vector-of Byte) p]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "utf8.Valid(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_p)))"}
 ;;   [^Object _p])
 
 JOKER FUNC unicode/utf8.ValidRune from unicode/utf8/utf8.go:
-;; (defn ^"Bool" ValidRune
-;;   "ValidRune reports whether r can be legally encoded as UTF-8.\nCode points that are out of range or a surrogate half are illegal.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Bool"
+;; (defn ^"Boolean" ValidRune
+;;   "ValidRune reports whether r can be legally encoded as UTF-8.\nCode points that are out of range or a surrogate half are illegal.\n\nGo input arguments: (r rune)\n\nGo return type: bool\n\nJoker input arguments: [^rune r]\n\nJoker return type: Boolean"
 ;;   {:added "1.0"
 ;;    :go "utf8.ValidRune(_r)"}
 ;;   [^ABEND044(pre.go: unsupported built-in type rune) _r])
 
 JOKER FUNC unicode/utf8.ValidString from unicode/utf8/utf8.go:
-(defn ^"Bool" ValidString
-  "ValidString reports whether s consists entirely of valid UTF-8-encoded runes.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Bool"
+(defn ^"Boolean" ValidString
+  "ValidString reports whether s consists entirely of valid UTF-8-encoded runes.\n\nGo input arguments: (s string)\n\nGo return type: bool\n\nJoker input arguments: [^String s]\n\nJoker return type: Boolean"
   {:added "1.0"
    :go "utf8.ValidString(_s)"}
   [^String _s])
@@ -19033,19 +19033,19 @@ GO FUNC bytes.Compare from bytes/bytes_decl.go:
 GO FUNC bytes.Contains from bytes/bytes.go:
 // func __contains(b []byte, subslice []byte)  {
 // 	_res := _bytes.Contains(b, subslice)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.ContainsAny from bytes/bytes.go:
 // func __containsAny(b []byte, chars string)  {
 // 	_res := _bytes.ContainsAny(b, chars)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.ContainsRune from bytes/bytes.go:
 // func __containsRune(b []byte, r rune)  {
 // 	_res := _bytes.ContainsRune(b, r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.Count from bytes/bytes.go:
@@ -19057,13 +19057,13 @@ GO FUNC bytes.Count from bytes/bytes.go:
 GO FUNC bytes.Equal from bytes/bytes_decl.go:
 // func __equal(a []byte, b []byte)  {
 // 	_res := _bytes.Equal(a, b)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.EqualFold from bytes/bytes.go:
 // func __equalFold(s []byte, t []byte)  {
 // 	_res := _bytes.EqualFold(s, t)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.Fields from bytes/bytes.go:
@@ -19097,13 +19097,13 @@ GO FUNC bytes.FieldsFunc from bytes/bytes.go:
 GO FUNC bytes.HasPrefix from bytes/bytes.go:
 // func __hasPrefix(s []byte, prefix []byte)  {
 // 	_res := _bytes.HasPrefix(s, prefix)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.HasSuffix from bytes/bytes.go:
 // func __hasSuffix(s []byte, suffix []byte)  {
 // 	_res := _bytes.HasSuffix(s, suffix)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC bytes.Index from bytes/bytes.go:
@@ -20137,7 +20137,7 @@ GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 GO FUNC crypto/dsa.Verify from crypto/dsa/dsa.go:
 // func __verify(pub *_dsa.PublicKey, hash []byte, r *ABEND987(genutils.go: imports not yet supported: big.Int), s *ABEND987(genutils.go: imports not yet supported: big.Int))  {
 // 	_res := _dsa.Verify(pub, hash, r, s)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
@@ -20162,7 +20162,7 @@ GO FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
 GO FUNC crypto/ecdsa.Verify from crypto/ecdsa/ecdsa.go:
 // func __verify(pub *_ecdsa.PublicKey, hash []byte, r *ABEND987(genutils.go: imports not yet supported: big.Int), s *ABEND987(genutils.go: imports not yet supported: big.Int))  {
 // 	_res := _ecdsa.Verify(pub, hash, r, s)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO TYPE crypto/elliptic.Curve from crypto/elliptic/elliptic.go:
@@ -20295,7 +20295,7 @@ import (
 GO FUNC crypto/hmac.Equal from crypto/hmac/hmac.go:
 // func __equal(mac1 []byte, mac2 []byte)  {
 // 	_res := _hmac.Equal(mac1, mac2)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC crypto/hmac.New from crypto/hmac/hmac.go:
@@ -21726,7 +21726,7 @@ GO FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
 GO FUNC crypto/x509.IsEncryptedPEMBlock from crypto/x509/pem_decrypt.go:
 // func __isEncryptedPEMBlock(b *ABEND987(genutils.go: imports not yet supported: pem.Block))  {
 // 	_res := _x509.IsEncryptedPEMBlock(b)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
@@ -22563,13 +22563,13 @@ import (
 GO FUNC database/sql/driver.IsScanValue from database/sql/driver/types.go:
 // func __isScanValue(v interface {})  {
 // 	_res := _driver.IsScanValue(v)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC database/sql/driver.IsValue from database/sql/driver/types.go:
 // func __isValue(v interface {})  {
 // 	_res := _driver.IsValue(v)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC debug/dwarf.New from debug/dwarf/open.go:
@@ -26916,7 +26916,7 @@ GO FUNC encoding/json.Unmarshal from encoding/json/decode.go:
 GO FUNC encoding/json.Valid from encoding/json/scanner.go:
 // func __valid(data []byte)  {
 // 	_res := _json.Valid(data)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO TYPE encoding/pem.Block from encoding/pem/pem.go:
@@ -30746,7 +30746,7 @@ func __newScope(outer *_ast.Scope) Object {
 GO FUNC go/ast.NotNilFilter from go/ast/print.go:
 // func __notNilFilter(_ string, v ABEND987(genutils.go: imports not yet supported: reflect.Value))  {
 // 	_res := _ast.NotNilFilter(_, v)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC go/ast.Print from go/ast/print.go:
@@ -31051,7 +31051,7 @@ func __bytes(x _constant.Value) Object {
 GO FUNC go/constant.Compare from go/constant/value.go:
 // func __compare(x_ _constant.Value, op ABEND987(genutils.go: imports not yet supported: token.Token), y_ _constant.Value)  {
 // 	_res := _constant.Compare(x_, op, y_)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC go/constant.Denom from go/constant/value.go:
@@ -31065,7 +31065,7 @@ GO FUNC go/constant.Float32Val from go/constant/value.go:
 // 	_res1, _res2 := _constant.Float32Val(x)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(_res1)
-// 	_res = _res.Conjoin(MakeBool(_res2))
+// 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
 // }
 
@@ -31074,7 +31074,7 @@ GO FUNC go/constant.Float64Val from go/constant/value.go:
 // 	_res1, _res2 := _constant.Float64Val(x)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(_res1)
-// 	_res = _res.Conjoin(MakeBool(_res2))
+// 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
 // }
 
@@ -31089,7 +31089,7 @@ func __int64Val(x _constant.Value) Object {
 	_res1, _res2 := _constant.Int64Val(x)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeInt(int(_res1)))
-	_res = _res.Conjoin(MakeBool(_res2))
+	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
 }
 
@@ -31188,7 +31188,7 @@ func __uint64Val(x _constant.Value) Object {
 	_res1, _res2 := _constant.Uint64Val(x)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeBigInt(uint64(_res1)))
-	_res = _res.Conjoin(MakeBool(_res2))
+	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
 }
 
@@ -33184,7 +33184,7 @@ func __lookupFieldOrMethod(T _types.Type, addressable bool, pkg *_types.Package,
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
 	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(MakeBool(indirect))
+	_res = _res.Conjoin(MakeBoolean(indirect))
 	return _res
 }
 
@@ -33193,7 +33193,7 @@ func __missingMethod(V _types.Type, T *_types.Interface, static bool) Object {
 	method, wrongType := _types.MissingMethod(V, T, static)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeGoObject(method))
-	_res = _res.Conjoin(MakeBool(wrongType))
+	_res = _res.Conjoin(MakeBoolean(wrongType))
 	return _res
 }
 
@@ -33933,8 +33933,8 @@ GO FUNC html/template.IsTrue from html/template/template.go:
 // func __isTrue(val interface {}) Object {
 // 	truth, ok := _template.IsTrue(val)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeBool(truth))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(truth))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -36138,13 +36138,13 @@ GO FUNC math.Inf from math/bits.go:
 GO FUNC math.IsInf from math/bits.go:
 // func __isInf(f float64, sign int)  {
 // 	_res := _math.IsInf(f, sign)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC math.IsNaN from math/bits.go:
 // func __isNaN(f float64)  {
 // 	_res := _math.IsNaN(f)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC math.J0 from math/j0.go:
@@ -36268,7 +36268,7 @@ GO FUNC math.RoundToEven from math/floor.go:
 GO FUNC math.Signbit from math/signbit.go:
 // func __signbit(x float64)  {
 // 	_res := _math.Signbit(x)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC math.Sin from math/sin.go:
@@ -36792,13 +36792,13 @@ GO FUNC math/cmplx.Inf from math/cmplx/isinf.go:
 GO FUNC math/cmplx.IsInf from math/cmplx/isinf.go:
 // func __isInf(x complex128)  {
 // 	_res := _cmplx.IsInf(x)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC math/cmplx.IsNaN from math/cmplx/isnan.go:
 // func __isNaN(x complex128)  {
 // 	_res := _cmplx.IsNaN(x)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC math/cmplx.Log from math/cmplx/log.go:
@@ -39561,7 +39561,7 @@ func __parseHTTPVersion(vers string) Object {
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeInt(major))
 	_res = _res.Conjoin(MakeInt(minor))
-	_res = _res.Conjoin(MakeBool(ok))
+	_res = _res.Conjoin(MakeBoolean(ok))
 	return _res
 }
 
@@ -41739,31 +41739,31 @@ func __hostname() Object {
 GO FUNC os.IsExist from os/error.go:
 // func __isExist(err error)  {
 // 	_res := _os.IsExist(err)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os.IsNotExist from os/error.go:
 // func __isNotExist(err error)  {
 // 	_res := _os.IsNotExist(err)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os.IsPathSeparator from os/path_unix.go:
 // func __isPathSeparator(c uint8)  {
 // 	_res := _os.IsPathSeparator(c)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os.IsPermission from os/error.go:
 // func __isPermission(err error)  {
 // 	_res := _os.IsPermission(err)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os.IsTimeout from os/error.go:
 // func __isTimeout(err error)  {
 // 	_res := _os.IsTimeout(err)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os.LookupEnv from os/env.go:
@@ -41771,7 +41771,7 @@ func __lookupEnv(key string) Object {
 	_res1, _res2 := _os.LookupEnv(key)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeString(_res1))
-	_res = _res.Conjoin(MakeBool(_res2))
+	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
 }
 
@@ -42005,7 +42005,7 @@ GO FUNC os/signal.Ignore from os/signal/signal.go:
 GO FUNC os/signal.Ignored from os/signal/signal.go:
 // func __ignored(sig ABEND987(genutils.go: imports not yet supported: os.Signal))  {
 // 	_res := _signal.Ignored(sig)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC os/signal.Notify from os/signal/signal.go:
@@ -42279,7 +42279,7 @@ GO FUNC path.Match from path/match.go:
 func __match(pattern string, name string) Object {
 	matched, err := _path.Match(pattern, name)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeBool(matched))
+	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -42370,7 +42370,7 @@ GO FUNC path/filepath.Match from path/filepath/match.go:
 func __match(pattern string, name string) Object {
 	matched, err := _filepath.Match(pattern, name)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeBool(matched))
+	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -42899,7 +42899,7 @@ func __chanOf(dir _reflect.ChanDir, t _reflect.Type) Object {
 GO FUNC reflect.DeepEqual from reflect/deepequal.go:
 // func __deepEqual(x interface {}, y interface {})  {
 // 	_res := _reflect.DeepEqual(x, y)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC reflect.FuncOf from reflect/type.go:
@@ -42974,7 +42974,7 @@ GO FUNC reflect.Select from reflect/value.go:
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(chosen))
 // 	_res = _res.Conjoin(MakeGoObject(recv))
-// 	_res = _res.Conjoin(MakeBool(recvOK))
+// 	_res = _res.Conjoin(MakeBoolean(recvOK))
 // 	return _res
 // }
 
@@ -43076,7 +43076,7 @@ GO FUNC regexp.Match from regexp/regexp.go:
 // func __match(pattern string, b []byte) Object {
 // 	matched, err := _regexp.Match(pattern, b)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeBool(matched))
+// 	_res = _res.Conjoin(MakeBoolean(matched))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -43085,7 +43085,7 @@ GO FUNC regexp.MatchReader from regexp/regexp.go:
 // func __matchReader(pattern string, r ABEND987(genutils.go: imports not yet supported: io.RuneReader)) Object {
 // 	matched, err := _regexp.MatchReader(pattern, r)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeBool(matched))
+// 	_res = _res.Conjoin(MakeBoolean(matched))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -43094,7 +43094,7 @@ GO FUNC regexp.MatchString from regexp/regexp.go:
 func __matchString(pattern string, s string) Object {
 	matched, err := _regexp.MatchString(pattern, s)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeBool(matched))
+	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -43424,7 +43424,7 @@ GO FUNC regexp/syntax.EmptyOpContext from regexp/syntax/prog.go:
 GO FUNC regexp/syntax.IsWordChar from regexp/syntax/prog.go:
 // func __isWordChar(r rune)  {
 // 	_res := _syntax.IsWordChar(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC regexp/syntax.Parse from regexp/syntax/parse.go:
@@ -43741,7 +43741,7 @@ GO FUNC runtime.BlockProfile from runtime/mprof.go:
 // 	n, ok := _runtime.BlockProfile(p)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -43768,7 +43768,7 @@ func __caller(skip int) Object {
 	_res = _res.Conjoin(MakeBigInt(uint64(pc)))
 	_res = _res.Conjoin(MakeString(file))
 	_res = _res.Conjoin(MakeInt(line))
-	_res = _res.Conjoin(MakeBool(ok))
+	_res = _res.Conjoin(MakeBoolean(ok))
 	return _res
 }
 
@@ -43807,7 +43807,7 @@ GO FUNC runtime.GoroutineProfile from runtime/mprof.go:
 // 	n, ok := _runtime.GoroutineProfile(p)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -43834,7 +43834,7 @@ GO FUNC runtime.MemProfile from runtime/mprof.go:
 // 	n, ok := _runtime.MemProfile(p, inuseZero)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -43843,7 +43843,7 @@ GO FUNC runtime.MutexProfile from runtime/mprof.go:
 // 	n, ok := _runtime.MutexProfile(p)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -43910,7 +43910,7 @@ GO FUNC runtime.ThreadCreateProfile from runtime/mprof.go:
 // 	n, ok := _runtime.ThreadCreateProfile(p)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -44092,7 +44092,7 @@ GO FUNC runtime/pprof.Label from runtime/pprof/label.go:
 // 	_res1, _res2 := _pprof.Label(ctx, key)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeString(_res1))
-// 	_res = _res.Conjoin(MakeBool(_res2))
+// 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
 // }
 
@@ -44402,7 +44402,7 @@ GO FUNC sort.Float64s from sort/sort.go:
 GO FUNC sort.Float64sAreSorted from sort/sort.go:
 // func __float64sAreSorted(a []float64)  {
 // 	_res := _sort.Float64sAreSorted(a)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sort.Ints from sort/sort.go:
@@ -44414,7 +44414,7 @@ GO FUNC sort.Ints from sort/sort.go:
 GO FUNC sort.IntsAreSorted from sort/sort.go:
 // func __intsAreSorted(a []int)  {
 // 	_res := _sort.IntsAreSorted(a)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sort.Reverse from sort/sort.go:
@@ -44456,7 +44456,7 @@ GO FUNC sort.Slice from sort/slice.go:
 GO FUNC sort.SliceIsSorted from sort/slice.go:
 // func __sliceIsSorted(slice interface {}, less func)  {
 // 	_res := _sort.SliceIsSorted(slice, less)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sort.SliceStable from sort/slice.go:
@@ -44486,7 +44486,7 @@ GO FUNC sort.Strings from sort/sort.go:
 GO FUNC sort.StringsAreSorted from sort/sort.go:
 // func __stringsAreSorted(a []string)  {
 // 	_res := _sort.StringsAreSorted(a)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!
@@ -44654,20 +44654,20 @@ GO FUNC strconv.FormatUint from strconv/itoa.go:
 GO FUNC strconv.IsGraphic from strconv/quote.go:
 // func __isGraphic(r rune)  {
 // 	_res := _strconv.IsGraphic(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC strconv.IsPrint from strconv/quote.go:
 // func __isPrint(r rune)  {
 // 	_res := _strconv.IsPrint(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC strconv.ParseBool from strconv/atob.go:
 func __parseBool(str string) Object {
 	_res1, _res2 := _strconv.ParseBool(str)
 	_res := EmptyVector
-	_res = _res.Conjoin(MakeBool(_res1))
+	_res = _res.Conjoin(MakeBoolean(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -44731,7 +44731,7 @@ GO FUNC strconv.UnquoteChar from strconv/quote.go:
 // 	value, multibyte, tail, err := _strconv.UnquoteChar(s, quote)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(value)
-// 	_res = _res.Conjoin(MakeBool(multibyte))
+// 	_res = _res.Conjoin(MakeBoolean(multibyte))
 // 	_res = _res.Conjoin(MakeString(tail))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -44847,7 +44847,7 @@ func _ConstructReplacer(_v Object) _strings.Replacer {
 GO FUNC strings.ContainsRune from strings/strings.go:
 // func __containsRune(s string, r rune)  {
 // 	_res := _strings.ContainsRune(s, r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC strings.Fields from strings/strings.go:
@@ -45302,37 +45302,37 @@ GO FUNC sync/atomic.AddUintptr from sync/atomic/doc.go:
 GO FUNC sync/atomic.CompareAndSwapInt32 from sync/atomic/doc.go:
 // func __compareAndSwapInt32(addr *int32, old int32, new int32)  {
 // 	_res := _atomic.CompareAndSwapInt32(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.CompareAndSwapInt64 from sync/atomic/doc.go:
 // func __compareAndSwapInt64(addr *int64, old int64, new int64)  {
 // 	_res := _atomic.CompareAndSwapInt64(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.CompareAndSwapPointer from sync/atomic/doc.go:
 // func __compareAndSwapPointer(addr *ABEND987(genutils.go: imports not yet supported: unsafe.Pointer), old ABEND987(genutils.go: imports not yet supported: unsafe.Pointer), new ABEND987(genutils.go: imports not yet supported: unsafe.Pointer))  {
 // 	_res := _atomic.CompareAndSwapPointer(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.CompareAndSwapUint32 from sync/atomic/doc.go:
 // func __compareAndSwapUint32(addr *uint32, old uint32, new uint32)  {
 // 	_res := _atomic.CompareAndSwapUint32(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.CompareAndSwapUint64 from sync/atomic/doc.go:
 // func __compareAndSwapUint64(addr *uint64, old uint64, new uint64)  {
 // 	_res := _atomic.CompareAndSwapUint64(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.CompareAndSwapUintptr from sync/atomic/doc.go:
 // func __compareAndSwapUintptr(addr *uintptr, old uintptr, new uintptr)  {
 // 	_res := _atomic.CompareAndSwapUintptr(addr, old, new)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC sync/atomic.LoadInt32 from sync/atomic/doc.go:
@@ -47706,7 +47706,7 @@ func __getenv(key string) Object {
 	value, found := _syscall.Getenv(key)
 	_res := EmptyVector
 	_res = _res.Conjoin(MakeString(value))
-	_res = _res.Conjoin(MakeBool(found))
+	_res = _res.Conjoin(MakeBoolean(found))
 	return _res
 }
 
@@ -48780,13 +48780,13 @@ GO FUNC testing.RunBenchmarks from testing/benchmark.go:
 GO FUNC testing.RunExamples from testing/example.go:
 // func __runExamples(matchString func, examples []_testing.InternalExample)  {
 // 	_res := _testing.RunExamples(matchString, examples)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC testing.RunTests from testing/testing.go:
 // func __runTests(matchString func, tests []_testing.InternalTest)  {
 // 	_res := _testing.RunTests(matchString, tests)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!
@@ -48856,7 +48856,7 @@ GO FUNC testing/quick.Value from testing/quick/quick.go:
 // 	value, ok := _quick.Value(t, rand)
 // 	_res := EmptyVector
 // 	_res = _res.Conjoin(MakeGoObject(value))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -48982,8 +48982,8 @@ GO FUNC text/template.IsTrue from text/template/exec.go:
 // func __isTrue(val interface {}) Object {
 // 	truth, ok := _template.IsTrue(val)
 // 	_res := EmptyVector
-// 	_res = _res.Conjoin(MakeBool(truth))
-// 	_res = _res.Conjoin(MakeBool(ok))
+// 	_res = _res.Conjoin(MakeBoolean(truth))
+// 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
 // }
 
@@ -50206,97 +50206,97 @@ import (
 GO FUNC unicode.In from unicode/graphic.go:
 // func __in(r rune, ranges ...*_unicode.RangeTable)  {
 // 	_res := _unicode.In(r, ranges)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.Is from unicode/letter.go:
 // func __is(rangeTab *_unicode.RangeTable, r rune)  {
 // 	_res := _unicode.Is(rangeTab, r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsControl from unicode/graphic.go:
 // func __isControl(r rune)  {
 // 	_res := _unicode.IsControl(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsDigit from unicode/digit.go:
 // func __isDigit(r rune)  {
 // 	_res := _unicode.IsDigit(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsGraphic from unicode/graphic.go:
 // func __isGraphic(r rune)  {
 // 	_res := _unicode.IsGraphic(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsLetter from unicode/graphic.go:
 // func __isLetter(r rune)  {
 // 	_res := _unicode.IsLetter(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsLower from unicode/letter.go:
 // func __isLower(r rune)  {
 // 	_res := _unicode.IsLower(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsMark from unicode/graphic.go:
 // func __isMark(r rune)  {
 // 	_res := _unicode.IsMark(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsNumber from unicode/graphic.go:
 // func __isNumber(r rune)  {
 // 	_res := _unicode.IsNumber(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsOneOf from unicode/graphic.go:
 // func __isOneOf(ranges []*_unicode.RangeTable, r rune)  {
 // 	_res := _unicode.IsOneOf(ranges, r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsPrint from unicode/graphic.go:
 // func __isPrint(r rune)  {
 // 	_res := _unicode.IsPrint(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsPunct from unicode/graphic.go:
 // func __isPunct(r rune)  {
 // 	_res := _unicode.IsPunct(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsSpace from unicode/graphic.go:
 // func __isSpace(r rune)  {
 // 	_res := _unicode.IsSpace(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsSymbol from unicode/graphic.go:
 // func __isSymbol(r rune)  {
 // 	_res := _unicode.IsSymbol(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsTitle from unicode/letter.go:
 // func __isTitle(r rune)  {
 // 	_res := _unicode.IsTitle(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.IsUpper from unicode/letter.go:
 // func __isUpper(r rune)  {
 // 	_res := _unicode.IsUpper(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode.SimpleFold from unicode/letter.go:
@@ -50361,7 +50361,7 @@ GO FUNC unicode/utf16.EncodeRune from unicode/utf16/utf16.go:
 GO FUNC unicode/utf16.IsSurrogate from unicode/utf16/utf16.go:
 // func __isSurrogate(r rune)  {
 // 	_res := _utf16.IsSurrogate(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode/utf8.DecodeLastRune from unicode/utf8/utf8.go:
@@ -50409,7 +50409,7 @@ GO FUNC unicode/utf8.EncodeRune from unicode/utf8/utf8.go:
 GO FUNC unicode/utf8.FullRune from unicode/utf8/utf8.go:
 // func __fullRune(p []byte)  {
 // 	_res := _utf8.FullRune(p)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode/utf8.RuneCount from unicode/utf8/utf8.go:
@@ -50427,13 +50427,13 @@ GO FUNC unicode/utf8.RuneLen from unicode/utf8/utf8.go:
 GO FUNC unicode/utf8.Valid from unicode/utf8/utf8.go:
 // func __valid(p []byte)  {
 // 	_res := _utf8.Valid(p)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 GO FUNC unicode/utf8.ValidRune from unicode/utf8/utf8.go:
 // func __validRune(r rune)  {
 // 	_res := _utf8.ValidRune(r)
-// 	return MakeBool(_res)
+// 	return MakeBoolean(_res)
 // }
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!

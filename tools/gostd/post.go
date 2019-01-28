@@ -158,8 +158,8 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 			cl = "BigInt"
 			out = "MakeBigInt(uint64(" + captureName + "))"
 		case "bool":
-			cl = "Bool"
-			out = "MakeBool(" + captureName + ")"
+			cl = "Boolean"
+			out = "MakeBoolean(" + captureName + ")"
 		case "error":
 			cl = "Error"
 			out = maybeNil(captureName, "MakeError("+captureName+")") // TODO: Test this against the MakeError() added to joker/core/object.go
