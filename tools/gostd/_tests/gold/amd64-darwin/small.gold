@@ -239,11 +239,13 @@ func _mapToMX(o Map) _net.MX {
 	}
 }
 
-func _ConstructMX(_v Object) _net.MX {
+func _ConstructMX(_v Object) *_net.MX {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.MX:
+			return &_g
+		case *_net.MX:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -272,11 +274,13 @@ func _mapToNS(o Map) _net.NS {
 	}
 }
 
-func _ConstructNS(_v Object) _net.NS {
+func _ConstructNS(_v Object) *_net.NS {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.NS:
+			return &_g
+		case *_net.NS:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -305,11 +309,13 @@ func _mapToResolver(o Map) _net.Resolver {
 	}
 }
 
-func _ConstructResolver(_v Object) _net.Resolver {
+func _ConstructResolver(_v Object) *_net.Resolver {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.Resolver:
+			return &_g
+		case *_net.Resolver:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -338,11 +344,13 @@ func _mapToSRV(o Map) _net.SRV {
 	}
 }
 
-func _ConstructSRV(_v Object) _net.SRV {
+func _ConstructSRV(_v Object) *_net.SRV {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.SRV:
+			return &_g
+		case *_net.SRV:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -489,11 +497,13 @@ func _mapToError(o Map) _url.Error {
 	}
 }
 
-func _ConstructError(_v Object) _url.Error {
+func _ConstructError(_v Object) *_url.Error {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.Error:
+			return &_g
+		case *_url.Error:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -525,6 +535,8 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.EscapeError:
+			return &_g
+		case *_url.EscapeError:
 			return _g
 		}
 	case String:
@@ -556,6 +568,8 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.InvalidHostError:
+			return &_g
+		case *_url.InvalidHostError:
 			return _g
 		}
 	case String:
@@ -584,11 +598,13 @@ func _mapToURL(o Map) _url.URL {
 	}
 }
 
-func _ConstructURL(_v Object) _url.URL {
+func _ConstructURL(_v Object) *_url.URL {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.URL:
+			return &_g
+		case *_url.URL:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -617,11 +633,13 @@ func _mapToUserinfo(o Map) _url.Userinfo {
 	}
 }
 
-func _ConstructUserinfo(_v Object) _url.Userinfo {
+func _ConstructUserinfo(_v Object) *_url.Userinfo {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.Userinfo:
+			return &_g
+		case *_url.Userinfo:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
@@ -650,6 +668,8 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _url.Values:
+// 			return &_g
+// 		case *_url.Values:
 // 			return _g
 // 		}
 // 	default:
