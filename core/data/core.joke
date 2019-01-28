@@ -14,14 +14,16 @@
 (def
   ^{:arglists '([& items])
     :doc "Creates a new list containing the items."
-    :added "1.0"}
+    :added "1.0"
+    :tag List}
   list list__)
 
 (def
   ^{:arglists '([x seq])
     :doc "Returns a new seq where x is the first element and seq is
          the rest."
-         :added "1.0"}
+         :added "1.0"
+         :tag Seq}
   cons cons__)
 
 ;during bootstrap we don't have destructuring let, loop or fn, will redefine later
@@ -57,7 +59,8 @@
   ^{:arglists '([coll])
     :doc "Returns a seq of the items after the first. Calls seq on its
          argument.  If there are no more items, returns nil."
-         :added "1.0"}
+         :added "1.0"
+         :tag Seq}
   next next__)
 
 (def
@@ -316,7 +319,7 @@
 
 (defn nil?
   "Returns true if x is nil, false otherwise."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (=__ x nil))
 
@@ -381,37 +384,37 @@
 
 (defn false?
   "Returns true if x is the value false, false otherwise."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (=__ x false))
 
 (defn true?
   "Returns true if x is the value true, false otherwise."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (=__ x true))
 
 (defn boolean?
-  "Return true if x is a Bool"
-  {:tag Bool
+  "Return true if x is a Boolean"
+  {:tag Boolean
   :added "1.0"}
-  [x] (instance? Bool x))
+  [x] (instance? Boolean x))
 
 (defn any?
   "Returns true given any argument."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] true)
 
 (defn not
   "Returns true if x is logical false, false otherwise."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
-  [x] (if x false true))
+  ^Boolean [x] (if x false true))
 
 (defn some?
   "Returns true if x is not nil, false otherwise."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (not (nil? x)))
 
@@ -610,7 +613,7 @@
 
 (defn not=
   "Same as (not (= obj1 obj2))"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   ([x] false)
   ([x y] (not (= x y)))
@@ -992,34 +995,34 @@
 
 (defn int?
   "Return true if x is a fixed precision integer"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (instance? Int x))
 
 (defn pos-int?
   "Return true if x is a positive fixed precision integer"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (int? x)
            (pos? x)))
 
 (defn neg-int?
   "Return true if x is a negative fixed precision integer"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (int? x)
            (neg? x)))
 
 (defn nat-int?
   "Return true if x is a non-negative fixed precision integer"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (int? x)
            (not (neg? x))))
 
 (defn double?
   "Return true if x is a Double"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (instance? Double x))
 
@@ -1174,37 +1177,37 @@
 
 (defn simple-ident?
   "Return true if x is a symbol or keyword without a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (ident? x) (nil? (namespace x))))
 
 (defn qualified-ident?
   "Return true if x is a symbol or keyword with a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (ident? x) (namespace x) true))
 
 (defn simple-symbol?
   "Return true if x is a symbol without a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (symbol? x) (nil? (namespace x))))
 
 (defn qualified-symbol?
   "Return true if x is a symbol with a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (symbol? x) (namespace x) true))
 
 (defn simple-keyword?
   "Return true if x is a keyword without a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (keyword? x) (nil? (namespace x))))
 
 (defn qualified-keyword?
   "Return true if x is a keyword with a namespace"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (and (keyword? x) (namespace x) true))
 
@@ -1604,7 +1607,7 @@
 (defn every?
   "Returns true if (pred x) is logical true for every x in coll, else
   false."
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [^Callable pred ^Seqable coll]
   (cond
@@ -1613,7 +1616,7 @@
     :else false))
 
 (def
-  ^{:tag Bool
+  ^{:tag Boolean
     :doc "Returns false if (pred x) is logical true for every x in
          coll, else true."
          :arglists '([pred coll])
@@ -1631,7 +1634,7 @@
     (or (pred (first coll)) (recur pred (next coll)))))
 
 (def
-  ^{:tag Bool
+  ^{:tag Boolean
     :doc "Returns false if (pred x) is logical true for any x in coll,
          else true."
          :arglists '([pred coll])
@@ -1644,7 +1647,8 @@
   of second items in each coll, until any one of the colls is
   exhausted.  Any remaining items in other colls are ignored. Function
   f should accept number-of-colls arguments."
-  {:added "1.0"}
+  {:added "1.0"
+  :tag Seq}
   ([^Callable f ^Seqable coll]
    (lazy-seq
     (when-let [s (seq coll)]
@@ -3100,7 +3104,7 @@
 
 (defn distinct?
   "Returns true if no two of the arguments are ="
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   ([x] true)
   ([x y] (not (= x y)))
@@ -3549,7 +3553,7 @@
 
 (defn seqable?
   "Return true if the seq function is supported for x"
-  {:tag Bool
+  {:tag Boolean
   :added "1.0"}
   [x] (or (nil? x)
           (instance? Seqable x)))
@@ -3796,6 +3800,13 @@
       (let [seg (doall (take n s))]
         (cons seg (partition-all n step (nthrest s step))))))))
 
+(defn into
+  "Returns a new coll consisting of to-coll with all of the items of
+  from-coll conjoined."
+  {:added "1.0"}
+  [to from]
+  (reduce conj to from))
+
 (defmacro case
   "Takes an expression, and a set of clauses.
 
@@ -3812,6 +3823,16 @@
   and no clause matches, an exception is thrown."
   {:added "1.0"}
   [expr & clauses]
+  (loop [all-cases #{}
+         [[test then] & more-clauses] (partition 2 clauses)]
+    (when test
+      (let [cases (if (list? test) (set test) (set [test]))]
+        (when (some cases all-cases)
+          (let [e (ex-info (str "Duplicate case test constant: " test) {:form test :_prefix "Parse error"})]
+            (if *linter-mode*
+              (println-linter__ e)
+              (throw e))))
+        (recur (into all-cases cases) more-clauses))))
   (let [parts (partition-all 2 clauses)
         setized (for [p parts
                       :let [[test then] p]]
@@ -3821,13 +3842,6 @@
         transformed-clauses (apply concat setized)]
     `(condp contains? ~expr
        ~@transformed-clauses)))
-
-(defn into
-  "Returns a new coll consisting of to-coll with all of the items of
-  from-coll conjoined."
-  {:added "1.0"}
-  [to from]
-  (reduce conj to from))
 
 (defn mapv
   "Returns a vector consisting of the result of applying f to the
