@@ -325,7 +325,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 
 	typeName := path.Base(t)
-	baseTypeName := ti.td.Name
+	baseTypeName := ti.td.Name.Name
 
 	others := maybeImplicitConvert(typeName, ti.td)
 	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
@@ -341,7 +341,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.clojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
 
 	const goConstructTemplate = `
-func _Construct%s(_v Object) _%s {
+%sfunc _Construct%s(_v Object) _%s {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
@@ -354,8 +354,8 @@ func _Construct%s(_v Object) _%s {
 }
 `
 
-	nonGoObject, expectedObjectDoc := nonGoObjectCase(typeName, ti)
-	goConstructor := fmt.Sprintf(goConstructTemplate, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
+	nonGoObject, expectedObjectDoc, helperFunc := nonGoObjectCase(typeName, baseTypeName, ti)
+	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, typeName, typeName, nonGoObject, expectedObjectDoc)
 
 	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
 		ti.clojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.clojureCode, `;; $1`)
@@ -367,31 +367,51 @@ func _Construct%s(_v Object) _%s {
 	ti.goCode += goConstructor
 }
 
-func nonGoObjectCase(typeName string, ti *typeInfo) (string, string) {
+func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (string, string, string) {
 	const nonGoObjectCaseTemplate = `%s:
-		return _%s(_o.%s)`
+		return %s`
 
-	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := nonGoObjectTypeFor(ti)
+	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc := nonGoObjectTypeFor(typeName, baseTypeName, ti)
 
-	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, typeName, extractClojureObject),
-		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc)
+	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject), fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc), helperFunc
 }
 
-func nonGoObjectTypeFor(ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
-		switch t.Name {
-		case "string":
-			return "case String", "String", "S"
-		case "bool":
-			return "case Bool", "Bool", "Bool().B"
-		case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
-			return "case Number", "Number", "Int().I"
-		case "int64":
-			return "case Number", "Number", "BigInt().Int64()"
-		case "uint64", "uintptr":
-			return "case Number", "Number", "BigInt().Uint64()"
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject = simpleTypeFor(t.Name)
+		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
+		if nonGoObjectType != "" {
+			return
 		}
+	case *StructType:
+		helperFName := "_mapTo" + baseTypeName
+		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o)", mapToType(helperFName, typeName, ti.td.Type)
 	}
-	return "default", "whatever", fmt.Sprintf("ABEND674(unknown underlying type %T for %s)", ti.td.Type, ti.td.Name)
+	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name), ""
+}
+
+func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+	switch name {
+	case "string":
+		return "case String", "String", ".S"
+	case "bool":
+		return "case Bool", "Bool", ".Bool().B"
+	case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
+		return "case Number", "Number", ".Int().I"
+	case "int64":
+		return "case Number", "Number", ".BigInt().Int64()"
+	case "uint64", "uintptr":
+		return "case Number", "Number", ".BigInt().Uint64()"
+	}
+	return
+}
+
+func mapToType(helperFName, typeName string, ty Expr) string {
+	const hFunc = `func %s(Map o) %s {
+	return nil
+}
+
+`
+	return fmt.Sprintf(hFunc, helperFName, "_"+typeName)
 }
