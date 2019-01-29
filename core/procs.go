@@ -179,7 +179,7 @@ func ExtractUIntPtr(args []Object, index int) uintptr {
 	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
 }
 
-func ExtractBool(args []Object, index int) bool {
+func ExtractBoolean(args []Object, index int) bool {
 	return ToBool(args[index])
 }
 
