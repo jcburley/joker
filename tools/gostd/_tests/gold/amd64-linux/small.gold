@@ -234,8 +234,8 @@ func ExtractGoObjectMX(args []Object, index int) *_net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
 }
 
-func _mapToMX(o Map) _net.MX {
-	return _net.MX{
+func _mapToMX(o Map) *_net.MX {
+	return &_net.MX{
 	}
 }
 
@@ -269,8 +269,8 @@ func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
 }
 
-func _mapToNS(o Map) _net.NS {
-	return _net.NS{
+func _mapToNS(o Map) *_net.NS {
+	return &_net.NS{
 	}
 }
 
@@ -304,8 +304,8 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
 }
 
-func _mapToResolver(o Map) _net.Resolver {
-	return _net.Resolver{
+func _mapToResolver(o Map) *_net.Resolver {
+	return &_net.Resolver{
 	}
 }
 
@@ -339,8 +339,8 @@ func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
 }
 
-func _mapToSRV(o Map) _net.SRV {
-	return _net.SRV{
+func _mapToSRV(o Map) *_net.SRV {
+	return &_net.SRV{
 	}
 }
 
@@ -492,8 +492,8 @@ func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
 }
 
-func _mapToError(o Map) _url.Error {
-	return _url.Error{
+func _mapToError(o Map) *_url.Error {
+	return &_url.Error{
 	}
 }
 
@@ -535,9 +535,9 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.EscapeError:
-			return &_g
-		case *_url.EscapeError:
 			return _g
+		case *_url.EscapeError:
+			return *_g
 		}
 	case String:
 		return _url.EscapeError(_o.S)
@@ -568,9 +568,9 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.InvalidHostError:
-			return &_g
-		case *_url.InvalidHostError:
 			return _g
+		case *_url.InvalidHostError:
+			return *_g
 		}
 	case String:
 		return _url.InvalidHostError(_o.S)
@@ -593,8 +593,8 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func _mapToURL(o Map) _url.URL {
-	return _url.URL{
+func _mapToURL(o Map) *_url.URL {
+	return &_url.URL{
 	}
 }
 
@@ -628,8 +628,8 @@ func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
 }
 
-func _mapToUserinfo(o Map) _url.Userinfo {
-	return _url.Userinfo{
+func _mapToUserinfo(o Map) *_url.Userinfo {
+	return &_url.Userinfo{
 	}
 }
 
@@ -668,9 +668,9 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _url.Values:
-// 			return &_g
-// 		case *_url.Values:
 // 			return _g
+// 		case *_url.Values:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))

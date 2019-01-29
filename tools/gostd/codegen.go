@@ -295,6 +295,20 @@ func maybeImplicitConvert(typeName string, td *TypeSpec) string {
 	return fmt.Sprintf(exTemplate, argType, typeName, declType)
 }
 
+func addressOf(ptrTo string) string {
+	if ptrTo == "*" {
+		return "&"
+	}
+	return ""
+}
+
+func maybeDeref(ptrTo string) string {
+	if ptrTo == "*" {
+		return ""
+	}
+	return "*"
+}
+
 func genType(t string, ti *typeInfo) {
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
@@ -346,9 +360,9 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _%s:
-			return &_g
+			return %s_g
 		case *_%s:
-			return _g
+			return %s_g
 		}
 	%s
 	}
@@ -357,7 +371,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 
 	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(typeName, baseTypeName, ti)
-	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, typeName, typeName, nonGoObject, expectedObjectDoc)
+	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, typeName, addressOf(ptrTo), typeName, maybeDeref(ptrTo), nonGoObject, expectedObjectDoc)
 
 	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
 		ti.clojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.clojureCode, `;; $1`)
@@ -410,8 +424,8 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 }
 
 func mapToType(helperFName, typeName string, ty Expr) string {
-	const hFunc = `func %s(o Map) %s {
-	return %s{
+	const hFunc = `func %s(o Map) *%s {
+	return &%s{
 %s	}
 }
 
