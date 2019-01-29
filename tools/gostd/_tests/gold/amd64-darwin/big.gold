@@ -2042,9 +2042,9 @@ func ExtractGoObjectAddr(args []Object, index int) *_net.Addr {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.Addr:
-// 			return &_g
-// 		case *_net.Addr:
 // 			return _g
+// 		case *_net.Addr:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.Addr(_o.ABEND674(unknown underlying type *ast.InterfaceType for Addr))
@@ -2067,8 +2067,8 @@ func ExtractGoObjectAddrError(args []Object, index int) *_net.AddrError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.AddrError]"))
 }
 
-func _mapToAddrError(o Map) _net.AddrError {
-	return _net.AddrError{
+func _mapToAddrError(o Map) *_net.AddrError {
+	return &_net.AddrError{
 	}
 }
 
@@ -2107,9 +2107,9 @@ func ExtractGoObjectBuffers(args []Object, index int) *_net.Buffers {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.Buffers:
-// 			return &_g
-// 		case *_net.Buffers:
 // 			return _g
+// 		case *_net.Buffers:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.Buffers(_o.ABEND674(unknown underlying type *ast.ArrayType for Buffers))
@@ -2137,9 +2137,9 @@ func ExtractGoObjectConn(args []Object, index int) *_net.Conn {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.Conn:
-// 			return &_g
-// 		case *_net.Conn:
 // 			return _g
+// 		case *_net.Conn:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.Conn(_o.ABEND674(unknown underlying type *ast.InterfaceType for Conn))
@@ -2162,8 +2162,8 @@ func ExtractGoObjectDNSConfigError(args []Object, index int) *_net.DNSConfigErro
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.DNSConfigError]"))
 }
 
-func _mapToDNSConfigError(o Map) _net.DNSConfigError {
-	return _net.DNSConfigError{
+func _mapToDNSConfigError(o Map) *_net.DNSConfigError {
+	return &_net.DNSConfigError{
 	}
 }
 
@@ -2197,8 +2197,8 @@ func ExtractGoObjectDNSError(args []Object, index int) *_net.DNSError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.DNSError]"))
 }
 
-func _mapToDNSError(o Map) _net.DNSError {
-	return _net.DNSError{
+func _mapToDNSError(o Map) *_net.DNSError {
+	return &_net.DNSError{
 	}
 }
 
@@ -2232,8 +2232,8 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Dialer]"))
 }
 
-func _mapToDialer(o Map) _net.Dialer {
-	return _net.Dialer{
+func _mapToDialer(o Map) *_net.Dialer {
+	return &_net.Dialer{
 	}
 }
 
@@ -2272,9 +2272,9 @@ func ExtractGoObjectError(args []Object, index int) *_net.Error {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.Error:
-// 			return &_g
-// 		case *_net.Error:
 // 			return _g
+// 		case *_net.Error:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.Error(_o.ABEND674(unknown underlying type *ast.InterfaceType for Error))
@@ -2305,9 +2305,9 @@ func _ConstructFlags(_v Object) _net.Flags {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.Flags:
-			return &_g
-		case *_net.Flags:
 			return _g
+		case *_net.Flags:
+			return *_g
 		}
 	case Number:
 		return _net.Flags(_o.Int().I)
@@ -2335,9 +2335,9 @@ func ExtractGoObjectHardwareAddr(args []Object, index int) *_net.HardwareAddr {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.HardwareAddr:
-// 			return &_g
-// 		case *_net.HardwareAddr:
 // 			return _g
+// 		case *_net.HardwareAddr:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.HardwareAddr(_o.ABEND674(unknown underlying type *ast.ArrayType for HardwareAddr))
@@ -2365,9 +2365,9 @@ func ExtractGoObjectIP(args []Object, index int) *_net.IP {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.IP:
-// 			return &_g
-// 		case *_net.IP:
 // 			return _g
+// 		case *_net.IP:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.IP(_o.ABEND674(unknown underlying type *ast.ArrayType for IP))
@@ -2390,8 +2390,8 @@ func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPAddr]"))
 }
 
-func _mapToIPAddr(o Map) _net.IPAddr {
-	return _net.IPAddr{
+func _mapToIPAddr(o Map) *_net.IPAddr {
+	return &_net.IPAddr{
 	}
 }
 
@@ -2425,8 +2425,8 @@ func ExtractGoObjectIPConn(args []Object, index int) *_net.IPConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPConn]"))
 }
 
-func _mapToIPConn(o Map) _net.IPConn {
-	return _net.IPConn{
+func _mapToIPConn(o Map) *_net.IPConn {
+	return &_net.IPConn{
 	}
 }
 
@@ -2465,9 +2465,9 @@ func ExtractGoObjectIPMask(args []Object, index int) *_net.IPMask {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.IPMask:
-// 			return &_g
-// 		case *_net.IPMask:
 // 			return _g
+// 		case *_net.IPMask:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.IPMask(_o.ABEND674(unknown underlying type *ast.ArrayType for IPMask))
@@ -2490,8 +2490,8 @@ func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPNet]"))
 }
 
-func _mapToIPNet(o Map) _net.IPNet {
-	return _net.IPNet{
+func _mapToIPNet(o Map) *_net.IPNet {
+	return &_net.IPNet{
 	}
 }
 
@@ -2525,8 +2525,8 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Interface]"))
 }
 
-func _mapToInterface(o Map) _net.Interface {
-	return _net.Interface{
+func _mapToInterface(o Map) *_net.Interface {
+	return &_net.Interface{
 	}
 }
 
@@ -2568,9 +2568,9 @@ func _ConstructInvalidAddrError(_v Object) _net.InvalidAddrError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.InvalidAddrError:
-			return &_g
-		case *_net.InvalidAddrError:
 			return _g
+		case *_net.InvalidAddrError:
+			return *_g
 		}
 	case String:
 		return _net.InvalidAddrError(_o.S)
@@ -2593,8 +2593,8 @@ func ExtractGoObjectListenConfig(args []Object, index int) *_net.ListenConfig {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.ListenConfig]"))
 }
 
-func _mapToListenConfig(o Map) _net.ListenConfig {
-	return _net.ListenConfig{
+func _mapToListenConfig(o Map) *_net.ListenConfig {
+	return &_net.ListenConfig{
 	}
 }
 
@@ -2633,9 +2633,9 @@ func ExtractGoObjectListener(args []Object, index int) *_net.Listener {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.Listener:
-// 			return &_g
-// 		case *_net.Listener:
 // 			return _g
+// 		case *_net.Listener:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.Listener(_o.ABEND674(unknown underlying type *ast.InterfaceType for Listener))
@@ -2658,8 +2658,8 @@ func ExtractGoObjectMX(args []Object, index int) *_net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
 }
 
-func _mapToMX(o Map) _net.MX {
-	return _net.MX{
+func _mapToMX(o Map) *_net.MX {
+	return &_net.MX{
 	}
 }
 
@@ -2693,8 +2693,8 @@ func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
 }
 
-func _mapToNS(o Map) _net.NS {
-	return _net.NS{
+func _mapToNS(o Map) *_net.NS {
+	return &_net.NS{
 	}
 }
 
@@ -2728,8 +2728,8 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.OpError]"))
 }
 
-func _mapToOpError(o Map) _net.OpError {
-	return _net.OpError{
+func _mapToOpError(o Map) *_net.OpError {
+	return &_net.OpError{
 	}
 }
 
@@ -2768,9 +2768,9 @@ func ExtractGoObjectPacketConn(args []Object, index int) *_net.PacketConn {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _net.PacketConn:
-// 			return &_g
-// 		case *_net.PacketConn:
 // 			return _g
+// 		case *_net.PacketConn:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _net.PacketConn(_o.ABEND674(unknown underlying type *ast.InterfaceType for PacketConn))
@@ -2793,8 +2793,8 @@ func ExtractGoObjectParseError(args []Object, index int) *_net.ParseError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.ParseError]"))
 }
 
-func _mapToParseError(o Map) _net.ParseError {
-	return _net.ParseError{
+func _mapToParseError(o Map) *_net.ParseError {
+	return &_net.ParseError{
 	}
 }
 
@@ -2828,8 +2828,8 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
 }
 
-func _mapToResolver(o Map) _net.Resolver {
-	return _net.Resolver{
+func _mapToResolver(o Map) *_net.Resolver {
+	return &_net.Resolver{
 	}
 }
 
@@ -2863,8 +2863,8 @@ func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
 }
 
-func _mapToSRV(o Map) _net.SRV {
-	return _net.SRV{
+func _mapToSRV(o Map) *_net.SRV {
+	return &_net.SRV{
 	}
 }
 
@@ -2898,8 +2898,8 @@ func ExtractGoObjectTCPAddr(args []Object, index int) *_net.TCPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPAddr]"))
 }
 
-func _mapToTCPAddr(o Map) _net.TCPAddr {
-	return _net.TCPAddr{
+func _mapToTCPAddr(o Map) *_net.TCPAddr {
+	return &_net.TCPAddr{
 	}
 }
 
@@ -2933,8 +2933,8 @@ func ExtractGoObjectTCPConn(args []Object, index int) *_net.TCPConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPConn]"))
 }
 
-func _mapToTCPConn(o Map) _net.TCPConn {
-	return _net.TCPConn{
+func _mapToTCPConn(o Map) *_net.TCPConn {
+	return &_net.TCPConn{
 	}
 }
 
@@ -2968,8 +2968,8 @@ func ExtractGoObjectTCPListener(args []Object, index int) *_net.TCPListener {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPListener]"))
 }
 
-func _mapToTCPListener(o Map) _net.TCPListener {
-	return _net.TCPListener{
+func _mapToTCPListener(o Map) *_net.TCPListener {
+	return &_net.TCPListener{
 	}
 }
 
@@ -3003,8 +3003,8 @@ func ExtractGoObjectUDPAddr(args []Object, index int) *_net.UDPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UDPAddr]"))
 }
 
-func _mapToUDPAddr(o Map) _net.UDPAddr {
-	return _net.UDPAddr{
+func _mapToUDPAddr(o Map) *_net.UDPAddr {
+	return &_net.UDPAddr{
 	}
 }
 
@@ -3038,8 +3038,8 @@ func ExtractGoObjectUDPConn(args []Object, index int) *_net.UDPConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UDPConn]"))
 }
 
-func _mapToUDPConn(o Map) _net.UDPConn {
-	return _net.UDPConn{
+func _mapToUDPConn(o Map) *_net.UDPConn {
+	return &_net.UDPConn{
 	}
 }
 
@@ -3073,8 +3073,8 @@ func ExtractGoObjectUnixAddr(args []Object, index int) *_net.UnixAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixAddr]"))
 }
 
-func _mapToUnixAddr(o Map) _net.UnixAddr {
-	return _net.UnixAddr{
+func _mapToUnixAddr(o Map) *_net.UnixAddr {
+	return &_net.UnixAddr{
 	}
 }
 
@@ -3108,8 +3108,8 @@ func ExtractGoObjectUnixConn(args []Object, index int) *_net.UnixConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixConn]"))
 }
 
-func _mapToUnixConn(o Map) _net.UnixConn {
-	return _net.UnixConn{
+func _mapToUnixConn(o Map) *_net.UnixConn {
+	return &_net.UnixConn{
 	}
 }
 
@@ -3143,8 +3143,8 @@ func ExtractGoObjectUnixListener(args []Object, index int) *_net.UnixListener {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnixListener]"))
 }
 
-func _mapToUnixListener(o Map) _net.UnixListener {
-	return _net.UnixListener{
+func _mapToUnixListener(o Map) *_net.UnixListener {
+	return &_net.UnixListener{
 	}
 }
 
@@ -3186,9 +3186,9 @@ func _ConstructUnknownNetworkError(_v Object) _net.UnknownNetworkError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.UnknownNetworkError:
-			return &_g
-		case *_net.UnknownNetworkError:
 			return _g
+		case *_net.UnknownNetworkError:
+			return *_g
 		}
 	case String:
 		return _net.UnknownNetworkError(_o.S)
@@ -3616,8 +3616,8 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Client]"))
 }
 
-func _mapToClient(o Map) _http.Client {
-	return _http.Client{
+func _mapToClient(o Map) *_http.Client {
+	return &_http.Client{
 	}
 }
 
@@ -3656,9 +3656,9 @@ func ExtractGoObjectCloseNotifier(args []Object, index int) *_http.CloseNotifier
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.CloseNotifier:
-// 			return &_g
-// 		case *_http.CloseNotifier:
 // 			return _g
+// 		case *_http.CloseNotifier:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.CloseNotifier(_o.ABEND674(unknown underlying type *ast.InterfaceType for CloseNotifier))
@@ -3689,9 +3689,9 @@ func _ConstructConnState(_v Object) _http.ConnState {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _http.ConnState:
-			return &_g
-		case *_http.ConnState:
 			return _g
+		case *_http.ConnState:
+			return *_g
 		}
 	case Number:
 		return _http.ConnState(_o.Int().I)
@@ -3714,8 +3714,8 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Cookie]"))
 }
 
-func _mapToCookie(o Map) _http.Cookie {
-	return _http.Cookie{
+func _mapToCookie(o Map) *_http.Cookie {
+	return &_http.Cookie{
 	}
 }
 
@@ -3754,9 +3754,9 @@ func ExtractGoObjectCookieJar(args []Object, index int) *_http.CookieJar {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.CookieJar:
-// 			return &_g
-// 		case *_http.CookieJar:
 // 			return _g
+// 		case *_http.CookieJar:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.CookieJar(_o.ABEND674(unknown underlying type *ast.InterfaceType for CookieJar))
@@ -3787,9 +3787,9 @@ func _ConstructDir(_v Object) _http.Dir {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _http.Dir:
-			return &_g
-		case *_http.Dir:
 			return _g
+		case *_http.Dir:
+			return *_g
 		}
 	case String:
 		return _http.Dir(_o.S)
@@ -3817,9 +3817,9 @@ func ExtractGoObjectFile(args []Object, index int) *_http.File {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.File:
-// 			return &_g
-// 		case *_http.File:
 // 			return _g
+// 		case *_http.File:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.File(_o.ABEND674(unknown underlying type *ast.InterfaceType for File))
@@ -3847,9 +3847,9 @@ func ExtractGoObjectFileSystem(args []Object, index int) *_http.FileSystem {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.FileSystem:
-// 			return &_g
-// 		case *_http.FileSystem:
 // 			return _g
+// 		case *_http.FileSystem:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.FileSystem(_o.ABEND674(unknown underlying type *ast.InterfaceType for FileSystem))
@@ -3877,9 +3877,9 @@ func ExtractGoObjectFlusher(args []Object, index int) *_http.Flusher {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.Flusher:
-// 			return &_g
-// 		case *_http.Flusher:
 // 			return _g
+// 		case *_http.Flusher:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.Flusher(_o.ABEND674(unknown underlying type *ast.InterfaceType for Flusher))
@@ -3907,9 +3907,9 @@ func ExtractGoObjectHandler(args []Object, index int) *_http.Handler {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.Handler:
-// 			return &_g
-// 		case *_http.Handler:
 // 			return _g
+// 		case *_http.Handler:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.Handler(_o.ABEND674(unknown underlying type *ast.InterfaceType for Handler))
@@ -3937,9 +3937,9 @@ func ExtractGoObjectHandlerFunc(args []Object, index int) *_http.HandlerFunc {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.HandlerFunc:
-// 			return &_g
-// 		case *_http.HandlerFunc:
 // 			return _g
+// 		case *_http.HandlerFunc:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.HandlerFunc(_o.ABEND674(unknown underlying type *ast.FuncType for HandlerFunc))
@@ -3967,9 +3967,9 @@ func ExtractGoObjectHeader(args []Object, index int) *_http.Header {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.Header:
-// 			return &_g
-// 		case *_http.Header:
 // 			return _g
+// 		case *_http.Header:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.Header(_o.ABEND674(unknown underlying type *ast.MapType for Header))
@@ -3997,9 +3997,9 @@ func ExtractGoObjectHijacker(args []Object, index int) *_http.Hijacker {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.Hijacker:
-// 			return &_g
-// 		case *_http.Hijacker:
 // 			return _g
+// 		case *_http.Hijacker:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.Hijacker(_o.ABEND674(unknown underlying type *ast.InterfaceType for Hijacker))
@@ -4022,8 +4022,8 @@ func ExtractGoObjectProtocolError(args []Object, index int) *_http.ProtocolError
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ProtocolError]"))
 }
 
-func _mapToProtocolError(o Map) _http.ProtocolError {
-	return _http.ProtocolError{
+func _mapToProtocolError(o Map) *_http.ProtocolError {
+	return &_http.ProtocolError{
 	}
 }
 
@@ -4057,8 +4057,8 @@ func ExtractGoObjectPushOptions(args []Object, index int) *_http.PushOptions {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.PushOptions]"))
 }
 
-func _mapToPushOptions(o Map) _http.PushOptions {
-	return _http.PushOptions{
+func _mapToPushOptions(o Map) *_http.PushOptions {
+	return &_http.PushOptions{
 	}
 }
 
@@ -4097,9 +4097,9 @@ func ExtractGoObjectPusher(args []Object, index int) *_http.Pusher {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.Pusher:
-// 			return &_g
-// 		case *_http.Pusher:
 // 			return _g
+// 		case *_http.Pusher:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.Pusher(_o.ABEND674(unknown underlying type *ast.InterfaceType for Pusher))
@@ -4122,8 +4122,8 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Request]"))
 }
 
-func _mapToRequest(o Map) _http.Request {
-	return _http.Request{
+func _mapToRequest(o Map) *_http.Request {
+	return &_http.Request{
 	}
 }
 
@@ -4157,8 +4157,8 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Response]"))
 }
 
-func _mapToResponse(o Map) _http.Response {
-	return _http.Response{
+func _mapToResponse(o Map) *_http.Response {
+	return &_http.Response{
 	}
 }
 
@@ -4197,9 +4197,9 @@ func ExtractGoObjectResponseWriter(args []Object, index int) *_http.ResponseWrit
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.ResponseWriter:
-// 			return &_g
-// 		case *_http.ResponseWriter:
 // 			return _g
+// 		case *_http.ResponseWriter:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.ResponseWriter(_o.ABEND674(unknown underlying type *ast.InterfaceType for ResponseWriter))
@@ -4227,9 +4227,9 @@ func ExtractGoObjectRoundTripper(args []Object, index int) *_http.RoundTripper {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _http.RoundTripper:
-// 			return &_g
-// 		case *_http.RoundTripper:
 // 			return _g
+// 		case *_http.RoundTripper:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _http.RoundTripper(_o.ABEND674(unknown underlying type *ast.InterfaceType for RoundTripper))
@@ -4260,9 +4260,9 @@ func _ConstructSameSite(_v Object) _http.SameSite {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _http.SameSite:
-			return &_g
-		case *_http.SameSite:
 			return _g
+		case *_http.SameSite:
+			return *_g
 		}
 	case Number:
 		return _http.SameSite(_o.Int().I)
@@ -4285,8 +4285,8 @@ func ExtractGoObjectServeMux(args []Object, index int) *_http.ServeMux {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.ServeMux]"))
 }
 
-func _mapToServeMux(o Map) _http.ServeMux {
-	return _http.ServeMux{
+func _mapToServeMux(o Map) *_http.ServeMux {
+	return &_http.ServeMux{
 	}
 }
 
@@ -4320,8 +4320,8 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Server]"))
 }
 
-func _mapToServer(o Map) _http.Server {
-	return _http.Server{
+func _mapToServer(o Map) *_http.Server {
+	return &_http.Server{
 	}
 }
 
@@ -4355,8 +4355,8 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Transport]"))
 }
 
-func _mapToTransport(o Map) _http.Transport {
-	return _http.Transport{
+func _mapToTransport(o Map) *_http.Transport {
+	return &_http.Transport{
 	}
 }
 
@@ -4599,8 +4599,8 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/cgi.Handler]"))
 }
 
-func _mapToHandler(o Map) _cgi.Handler {
-	return _cgi.Handler{
+func _mapToHandler(o Map) *_cgi.Handler {
+	return &_cgi.Handler{
 	}
 }
 
@@ -4658,8 +4658,8 @@ func ExtractGoObjectJar(args []Object, index int) *_cookiejar.Jar {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/cookiejar.Jar]"))
 }
 
-func _mapToJar(o Map) _cookiejar.Jar {
-	return _cookiejar.Jar{
+func _mapToJar(o Map) *_cookiejar.Jar {
+	return &_cookiejar.Jar{
 	}
 }
 
@@ -4693,8 +4693,8 @@ func ExtractGoObjectOptions(args []Object, index int) *_cookiejar.Options {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/cookiejar.Options]"))
 }
 
-func _mapToOptions(o Map) _cookiejar.Options {
-	return _cookiejar.Options{
+func _mapToOptions(o Map) *_cookiejar.Options {
+	return &_cookiejar.Options{
 	}
 }
 
@@ -4733,9 +4733,9 @@ func ExtractGoObjectPublicSuffixList(args []Object, index int) *_cookiejar.Publi
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _cookiejar.PublicSuffixList:
-// 			return &_g
-// 		case *_cookiejar.PublicSuffixList:
 // 			return _g
+// 		case *_cookiejar.PublicSuffixList:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _cookiejar.PublicSuffixList(_o.ABEND674(unknown underlying type *ast.InterfaceType for PublicSuffixList))
@@ -4778,8 +4778,8 @@ func ExtractGoObjectResponseRecorder(args []Object, index int) *_httptest.Respon
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptest.ResponseRecorder]"))
 }
 
-func _mapToResponseRecorder(o Map) _httptest.ResponseRecorder {
-	return _httptest.ResponseRecorder{
+func _mapToResponseRecorder(o Map) *_httptest.ResponseRecorder {
+	return &_httptest.ResponseRecorder{
 	}
 }
 
@@ -4813,8 +4813,8 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptest.Server]"))
 }
 
-func _mapToServer(o Map) _httptest.Server {
-	return _httptest.Server{
+func _mapToServer(o Map) *_httptest.Server {
+	return &_httptest.Server{
 	}
 }
 
@@ -4998,8 +4998,8 @@ func ExtractGoObjectAddress(args []Object, index int) *_mail.Address {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.Address]"))
 }
 
-func _mapToAddress(o Map) _mail.Address {
-	return _mail.Address{
+func _mapToAddress(o Map) *_mail.Address {
+	return &_mail.Address{
 	}
 }
 
@@ -5033,8 +5033,8 @@ func ExtractGoObjectAddressParser(args []Object, index int) *_mail.AddressParser
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.AddressParser]"))
 }
 
-func _mapToAddressParser(o Map) _mail.AddressParser {
-	return _mail.AddressParser{
+func _mapToAddressParser(o Map) *_mail.AddressParser {
+	return &_mail.AddressParser{
 	}
 }
 
@@ -5073,9 +5073,9 @@ func ExtractGoObjectHeader(args []Object, index int) *_mail.Header {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _mail.Header:
-// 			return &_g
-// 		case *_mail.Header:
 // 			return _g
+// 		case *_mail.Header:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _mail.Header(_o.ABEND674(unknown underlying type *ast.MapType for Header))
@@ -5098,8 +5098,8 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/mail.Message]"))
 }
 
-func _mapToMessage(o Map) _mail.Message {
-	return _mail.Message{
+func _mapToMessage(o Map) *_mail.Message {
+	return &_mail.Message{
 	}
 }
 
@@ -5173,8 +5173,8 @@ func ExtractGoObjectCall(args []Object, index int) *_rpc.Call {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Call]"))
 }
 
-func _mapToCall(o Map) _rpc.Call {
-	return _rpc.Call{
+func _mapToCall(o Map) *_rpc.Call {
+	return &_rpc.Call{
 	}
 }
 
@@ -5208,8 +5208,8 @@ func ExtractGoObjectClient(args []Object, index int) *_rpc.Client {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Client]"))
 }
 
-func _mapToClient(o Map) _rpc.Client {
-	return _rpc.Client{
+func _mapToClient(o Map) *_rpc.Client {
+	return &_rpc.Client{
 	}
 }
 
@@ -5248,9 +5248,9 @@ func ExtractGoObjectClientCodec(args []Object, index int) *_rpc.ClientCodec {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _rpc.ClientCodec:
-// 			return &_g
-// 		case *_rpc.ClientCodec:
 // 			return _g
+// 		case *_rpc.ClientCodec:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _rpc.ClientCodec(_o.ABEND674(unknown underlying type *ast.InterfaceType for ClientCodec))
@@ -5273,8 +5273,8 @@ func ExtractGoObjectRequest(args []Object, index int) *_rpc.Request {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Request]"))
 }
 
-func _mapToRequest(o Map) _rpc.Request {
-	return _rpc.Request{
+func _mapToRequest(o Map) *_rpc.Request {
+	return &_rpc.Request{
 	}
 }
 
@@ -5308,8 +5308,8 @@ func ExtractGoObjectResponse(args []Object, index int) *_rpc.Response {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Response]"))
 }
 
-func _mapToResponse(o Map) _rpc.Response {
-	return _rpc.Response{
+func _mapToResponse(o Map) *_rpc.Response {
+	return &_rpc.Response{
 	}
 }
 
@@ -5343,8 +5343,8 @@ func ExtractGoObjectServer(args []Object, index int) *_rpc.Server {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/rpc.Server]"))
 }
 
-func _mapToServer(o Map) _rpc.Server {
-	return _rpc.Server{
+func _mapToServer(o Map) *_rpc.Server {
+	return &_rpc.Server{
 	}
 }
 
@@ -5383,9 +5383,9 @@ func ExtractGoObjectServerCodec(args []Object, index int) *_rpc.ServerCodec {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _rpc.ServerCodec:
-// 			return &_g
-// 		case *_rpc.ServerCodec:
 // 			return _g
+// 		case *_rpc.ServerCodec:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _rpc.ServerCodec(_o.ABEND674(unknown underlying type *ast.InterfaceType for ServerCodec))
@@ -5416,9 +5416,9 @@ func _ConstructServerError(_v Object) _rpc.ServerError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _rpc.ServerError:
-			return &_g
-		case *_rpc.ServerError:
 			return _g
+		case *_rpc.ServerError:
+			return *_g
 		}
 	case String:
 		return _rpc.ServerError(_o.S)
@@ -5560,9 +5560,9 @@ func ExtractGoObjectAuth(args []Object, index int) *_smtp.Auth {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _smtp.Auth:
-// 			return &_g
-// 		case *_smtp.Auth:
 // 			return _g
+// 		case *_smtp.Auth:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _smtp.Auth(_o.ABEND674(unknown underlying type *ast.InterfaceType for Auth))
@@ -5585,8 +5585,8 @@ func ExtractGoObjectClient(args []Object, index int) *_smtp.Client {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.Client]"))
 }
 
-func _mapToClient(o Map) _smtp.Client {
-	return _smtp.Client{
+func _mapToClient(o Map) *_smtp.Client {
+	return &_smtp.Client{
 	}
 }
 
@@ -5620,8 +5620,8 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.ServerInfo]"))
 }
 
-func _mapToServerInfo(o Map) _smtp.ServerInfo {
-	return _smtp.ServerInfo{
+func _mapToServerInfo(o Map) *_smtp.ServerInfo {
+	return &_smtp.ServerInfo{
 	}
 }
 
@@ -5691,8 +5691,8 @@ func ExtractGoObjectConn(args []Object, index int) *_textproto.Conn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Conn]"))
 }
 
-func _mapToConn(o Map) _textproto.Conn {
-	return _textproto.Conn{
+func _mapToConn(o Map) *_textproto.Conn {
+	return &_textproto.Conn{
 	}
 }
 
@@ -5726,8 +5726,8 @@ func ExtractGoObjectError(args []Object, index int) *_textproto.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Error]"))
 }
 
-func _mapToError(o Map) _textproto.Error {
-	return _textproto.Error{
+func _mapToError(o Map) *_textproto.Error {
+	return &_textproto.Error{
 	}
 }
 
@@ -5766,9 +5766,9 @@ func ExtractGoObjectMIMEHeader(args []Object, index int) *_textproto.MIMEHeader 
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _textproto.MIMEHeader:
-// 			return &_g
-// 		case *_textproto.MIMEHeader:
 // 			return _g
+// 		case *_textproto.MIMEHeader:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _textproto.MIMEHeader(_o.ABEND674(unknown underlying type *ast.MapType for MIMEHeader))
@@ -5791,8 +5791,8 @@ func ExtractGoObjectPipeline(args []Object, index int) *_textproto.Pipeline {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Pipeline]"))
 }
 
-func _mapToPipeline(o Map) _textproto.Pipeline {
-	return _textproto.Pipeline{
+func _mapToPipeline(o Map) *_textproto.Pipeline {
+	return &_textproto.Pipeline{
 	}
 }
 
@@ -5834,9 +5834,9 @@ func _ConstructProtocolError(_v Object) _textproto.ProtocolError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _textproto.ProtocolError:
-			return &_g
-		case *_textproto.ProtocolError:
 			return _g
+		case *_textproto.ProtocolError:
+			return *_g
 		}
 	case String:
 		return _textproto.ProtocolError(_o.S)
@@ -5859,8 +5859,8 @@ func ExtractGoObjectReader(args []Object, index int) *_textproto.Reader {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Reader]"))
 }
 
-func _mapToReader(o Map) _textproto.Reader {
-	return _textproto.Reader{
+func _mapToReader(o Map) *_textproto.Reader {
+	return &_textproto.Reader{
 	}
 }
 
@@ -5894,8 +5894,8 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Writer]"))
 }
 
-func _mapToWriter(o Map) _textproto.Writer {
-	return _textproto.Writer{
+func _mapToWriter(o Map) *_textproto.Writer {
+	return &_textproto.Writer{
 	}
 }
 
@@ -5966,8 +5966,8 @@ func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
 }
 
-func _mapToError(o Map) _url.Error {
-	return _url.Error{
+func _mapToError(o Map) *_url.Error {
+	return &_url.Error{
 	}
 }
 
@@ -6009,9 +6009,9 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.EscapeError:
-			return &_g
-		case *_url.EscapeError:
 			return _g
+		case *_url.EscapeError:
+			return *_g
 		}
 	case String:
 		return _url.EscapeError(_o.S)
@@ -6042,9 +6042,9 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.InvalidHostError:
-			return &_g
-		case *_url.InvalidHostError:
 			return _g
+		case *_url.InvalidHostError:
+			return *_g
 		}
 	case String:
 		return _url.InvalidHostError(_o.S)
@@ -6067,8 +6067,8 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func _mapToURL(o Map) _url.URL {
-	return _url.URL{
+func _mapToURL(o Map) *_url.URL {
+	return &_url.URL{
 	}
 }
 
@@ -6102,8 +6102,8 @@ func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
 }
 
-func _mapToUserinfo(o Map) _url.Userinfo {
-	return _url.Userinfo{
+func _mapToUserinfo(o Map) *_url.Userinfo {
+	return &_url.Userinfo{
 	}
 }
 
@@ -6142,9 +6142,9 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	case GoObject:
 // 		switch _g := _o.O.(type) {
 // 		case _url.Values:
-// 			return &_g
-// 		case *_url.Values:
 // 			return _g
+// 		case *_url.Values:
+// 			return *_g
 // 		}
 // 	default:
 // 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))
