@@ -387,24 +387,50 @@ func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectCa
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
-	nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc, ptrTo := nonGoObjectTypeFor(typeName, baseTypeName, ti)
+	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(typeName, baseTypeName, ti)
 
-	return fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectType, extractClojureObject), fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDoc), helperFunc, ptrTo
+	nonGoObjectCasePrefix := ""
+	nonGoObjectCase = ""
+	for i := 0; i < len(nonGoObjectTypes); i++ {
+		nonGoObjectCase += nonGoObjectCasePrefix + fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectTypes[i], extractClojureObjects[i])
+		nonGoObjectCasePrefix = `
+	case `
+	}
+
+	return nonGoObjectCase,
+		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDocs[0]), // strings.Join(nonGoObjectTypeDocs, " or ")
+		strings.Join(helperFuncs, ""),
+		ptrTo
 }
 
-func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject, helperFunc, ptrTo string) {
+func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject = simpleTypeFor(t.Name)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(t.Name)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
+		nonGoObjectTypes = []string{nonGoObjectType}
+		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
+		extractClojureObjects = []string{extractClojureObject}
 		if nonGoObjectType != "" {
 			return
 		}
 	case *StructType:
-		helperFName := "_mapTo" + baseTypeName
-		return "case *ArrayMap, *HashMap", "Map", helperFName + "(_o.(Map))", mapToType(helperFName, "_"+typeName, ti.td.Type), "*"
+		uniqueTypeName := "_" + typeName
+		mapHelperFName := "_mapTo" + baseTypeName
+		vectorHelperFName := "_vectorTo" + baseTypeName
+		return []string{"case *ArrayMap, *HashMap", "case *Vector"},
+			[]string{"Map", "Vector"},
+			[]string{mapHelperFName + "(_o.(Map))", vectorHelperFName + "(_o)"},
+			[]string{mapToType(mapHelperFName, uniqueTypeName, ti.td.Type),
+				vectorToType(vectorHelperFName, uniqueTypeName, ti.td.Type)},
+			"*"
 	}
-	return "default", "whatever", fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))", typeName, ti.td.Type, ti.td.Name), "", ""
+	return []string{"default"},
+		[]string{"whatever"},
+		[]string{fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))",
+			typeName, ti.td.Type, ti.td.Name)},
+		[]string{""},
+		""
 }
 
 func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
@@ -425,6 +451,16 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 
 func mapToType(helperFName, typeName string, ty Expr) string {
 	const hFunc = `func %s(o Map) *%s {
+	return &%s{
+%s	}
+}
+
+`
+	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
+}
+
+func vectorToType(helperFName, typeName string, ty Expr) string {
+	const hFunc = `func %s(o *Vector) *%s {
 	return &%s{
 %s	}
 }
