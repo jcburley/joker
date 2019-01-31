@@ -438,51 +438,15 @@ func vectorElementToType(i int, name string, f *Field) string {
 }
 
 func elementToType(el string, e Expr) string {
-	switch v := e.(type) {
-	case *Ident:
-		switch v.Name {
-		case "string":
-			return "AssertString(" + el + `, "").S`
-		case "bool":
-			return "ToBool(" + el + ")"
-		case "rune":
-			return "AssertChar(" + el + `, "").Ch`
-		case "int":
-			return "AssertInt(" + el + `, "").I`
-		case "byte":
-			return "byte(AssertInt(" + el + `, "").I)`
-		case "int8":
-			return "int8(AssertInt(" + el + `, "").I)`
-		case "uint8":
-			return "uint8(AssertInt(" + el + `, "").I)`
-		case "int16":
-			return "int16(AssertInt(" + el + `, "").I)`
-		case "uint":
-			return "uint(AssertInt(" + el + `, "").I)`
-		case "uint16":
-			return "uint16(AssertInt(" + el + `, "").I)`
-		case "int32":
-			return "int32(AssertInt(" + el + `, "").I)`
-		case "uint32":
-			return "uint32(AssertNumber(" + el + `, "").BigInt().Uint64())`
-		case "int64":
-			return "AssertNumber(" + el + `, "").BigInt().Int64()`
-		case "uint64":
-			return "AssertNumber(" + el + `, "").BigInt().Uint64()`
-		case "uintptr":
-			return "uintptr(AssertNumber(" + el + `, "").BigInt().Uint64())`
-		case "float64":
-			return "float64(AssertDouble(" + el + `, "").D)`
-		case "complex128":
-			return "complex128(0)" // TODO: support this in Joker, even if via just [real imag]
-		case "error":
-			return "_errors.New(AssertString(" + el + `, "").S)`
-		default:
-			if isPrivate(v.Name) {
-				return fmt.Sprintf("ABEND049(codegen.go: unsupported built-in type %s)", v.Name)
-			}
-			return "_Construct" + v.Name + "(" + el + ")"
+	v := toGoExprInfo(e)
+	if v.convertFromClojure != "" {
+		return fmt.Sprintf(v.convertFromClojure, el)
+	}
+	if v.declared {
+		if v.private {
+			return fmt.Sprintf("ABEND049(codegen.go: unsupported built-in type %s)", v.fullName)
 		}
+		return "_Construct" + v.fullName + "(" + el + ")"
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(e))
 }

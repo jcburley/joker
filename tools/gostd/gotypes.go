@@ -11,7 +11,9 @@ type goTypeInfo struct {
 	argFromClojureObject string // Append this to Clojure object to extract value of my type
 	argClojureArgType    string // Clojure argument type for a Go function arg with my type
 	argExtractFunc       string // Call Extract<this>() for arg with my type
+	convertFromClojure   string // Pattern to convert a (scalar) %s to this type
 	builtin              bool   // Is this a builtin Go type?
+	declared             bool   // Given a declared name?
 	private              bool   // Is this a private type?
 }
 
@@ -24,6 +26,8 @@ func toGoTypeInfo(ts *TypeSpec) *goTypeInfo {
 
 func toGoExprInfo(e Expr) *goTypeInfo {
 	fullName := fmt.Sprintf("<notfound>%T</notfound>", e)
+	private := false
+	declared := false
 	switch td := e.(type) {
 	case *Ident:
 		fullName = td.Name
@@ -31,15 +35,17 @@ func toGoExprInfo(e Expr) *goTypeInfo {
 		if v != nil {
 			return v
 		}
+		private = isPrivate(td.Name)
+		declared = true
 	case *ArrayType:
 		return goArrayType(td.Len, td.Elt)
 	case *StarExpr:
 		return goStarExpr(td.X)
 	}
 	v := &goTypeInfo{
-		fullName:             fullName,
-		argClojureType:       "",
-		argFromClojureObject: "",
+		fullName: fullName,
+		private:  private,
+		declared: declared,
 	}
 	goTypes[v.fullName] = v
 	return v
@@ -55,7 +61,6 @@ func toGoExprString(e Expr) string {
 
 func goArrayType(len Expr, elt Expr) *goTypeInfo {
 	var fullName string
-	ev := toGoExprInfo(elt)
 	en := toGoExprString(elt)
 	if len == nil {
 		fullName = "[]" + en
@@ -66,9 +71,7 @@ func goArrayType(len Expr, elt Expr) *goTypeInfo {
 		return v
 	}
 	v := &goTypeInfo{
-		fullName:             fullName,
-		argClojureType:       ev.argClojureType,
-		argFromClojureObject: ev.argFromClojureObject,
+		fullName: fullName,
 	}
 	goTypes[fullName] = v
 	return v
@@ -81,37 +84,38 @@ func goStarExpr(x Expr) *goTypeInfo {
 		return v
 	}
 	v := &goTypeInfo{
-		fullName:             fullName,
-		argClojureType:       ex.argClojureType,
-		argFromClojureObject: ex.argFromClojureObject,
+		fullName: fullName,
 	}
 	goTypes[fullName] = v
 	return v
 }
 
 func init() {
-	goBuiltinTypes["string"] = &goTypeInfo{
-		fullName:             "string",
-		argClojureType:       "String",
-		argFromClojureObject: ".S",
-		argClojureArgType:    "String",
-		argExtractFunc:       "String",
-		builtin:              true,
-	}
 	goBuiltinTypes["bool"] = &goTypeInfo{
 		fullName:             "bool",
 		argClojureType:       "Boolean",
 		argFromClojureObject: ".Boolean().B",
 		argClojureArgType:    "Boolean",
 		argExtractFunc:       "Boolean",
+		convertFromClojure:   "ToBool(%s)",
 		builtin:              true,
 	}
-	goBuiltinTypes["int"] = &goTypeInfo{
-		fullName:             "int",
-		argClojureType:       "Number",
-		argFromClojureObject: ".Int().I",
-		argClojureArgType:    "Int",
-		argExtractFunc:       "Int",
+	goBuiltinTypes["string"] = &goTypeInfo{
+		fullName:             "string",
+		argClojureType:       "String",
+		argFromClojureObject: ".S",
+		argClojureArgType:    "String",
+		argExtractFunc:       "String",
+		convertFromClojure:   `AssertString(%s, "").S`,
+		builtin:              true,
+	}
+	goBuiltinTypes["rune"] = &goTypeInfo{
+		fullName:             "rune",
+		argClojureType:       "Char",
+		argFromClojureObject: ".Ch",
+		argClojureArgType:    "Char",
+		argExtractFunc:       "Char",
+		convertFromClojure:   `AssertChar(%s, "").Ch`,
 		builtin:              true,
 	}
 	goBuiltinTypes["byte"] = &goTypeInfo{
@@ -120,22 +124,16 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
+		convertFromClojure:   `byte(AssertInt(%s, "").I)`,
 		builtin:              true,
 	}
-	goBuiltinTypes["int8"] = &goTypeInfo{
-		fullName:             "int8",
+	goBuiltinTypes["int"] = &goTypeInfo{
+		fullName:             "int",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
-		argExtractFunc:       "Byte",
-		builtin:              true,
-	}
-	goBuiltinTypes["int16"] = &goTypeInfo{
-		fullName:             "int16",
-		argClojureType:       "Number",
-		argFromClojureObject: ".Int().I",
-		argClojureArgType:    "Int",
-		argExtractFunc:       "Int16",
+		argExtractFunc:       "Int",
+		convertFromClojure:   `AssertInt(%s, "").I`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uint"] = &goTypeInfo{
@@ -144,6 +142,16 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt",
+		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
+		builtin:              true,
+	}
+	goBuiltinTypes["int8"] = &goTypeInfo{
+		fullName:             "int8",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+		argClojureArgType:    "Int",
+		argExtractFunc:       "Byte",
+		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uint8"] = &goTypeInfo{
@@ -152,6 +160,16 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt8",
+		convertFromClojure:   `uint8(AssertInt(%s, "").I)`,
+		builtin:              true,
+	}
+	goBuiltinTypes["int16"] = &goTypeInfo{
+		fullName:             "int16",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+		argClojureArgType:    "Int",
+		argExtractFunc:       "Int16",
+		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uint16"] = &goTypeInfo{
@@ -160,6 +178,7 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt16",
+		convertFromClojure:   `uint16(AssertInt(%s, "").I)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["int32"] = &goTypeInfo{
@@ -168,6 +187,7 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int32",
+		convertFromClojure:   `int32(AssertInt(%s, "").I)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uint32"] = &goTypeInfo{
@@ -176,6 +196,7 @@ func init() {
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt32",
+		convertFromClojure:   `uint32(AssertNumber(%s, "").BigInt().Uint64())`,
 		builtin:              true,
 	}
 	goBuiltinTypes["int64"] = &goTypeInfo{
@@ -184,6 +205,7 @@ func init() {
 		argFromClojureObject: ".BigInt().Int64()",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "Int64",
+		convertFromClojure:   `AssertNumber(%s, "").BigInt().Int64()`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uint64"] = &goTypeInfo{
@@ -192,6 +214,7 @@ func init() {
 		argFromClojureObject: ".BigInt().Uint64()",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt64",
+		convertFromClojure:   `AssertNumber(%s, "").BigInt().Uint64()`,
 		builtin:              true,
 	}
 	goBuiltinTypes["uintptr"] = &goTypeInfo{
@@ -200,38 +223,52 @@ func init() {
 		argFromClojureObject: ".BigInt().Uint64()",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UIntPtr",
+		convertFromClojure:   `uintptr(AssertNumber(%s, "").BigInt().Uint64())`,
 		builtin:              true,
 	}
 	goBuiltinTypes["float32"] = &goTypeInfo{
 		fullName:             "float32",
-		argClojureType:       "float32",
+		argClojureType:       "Double",
 		argFromClojureObject: "",
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
+		convertFromClojure:   `float32(AssertDouble(%s, "").D)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["float64"] = &goTypeInfo{
 		fullName:             "float64",
-		argClojureType:       "float64",
+		argClojureType:       "Double",
 		argFromClojureObject: "",
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
+		convertFromClojure:   `float64(AssertDouble(%s, "").D)`,
 		builtin:              true,
 	}
 	goBuiltinTypes["complex64"] = &goTypeInfo{
 		fullName:             "complex64",
-		argClojureType:       "complex64",
+		argClojureType:       "",
 		argFromClojureObject: "",
 		argClojureArgType:    "",
 		argExtractFunc:       "ABEND007(find these)",
+		convertFromClojure:   "", // TODO: support this in Joker, even if via just [real imag]
 		builtin:              true,
 	}
 	goBuiltinTypes["complex128"] = &goTypeInfo{
 		fullName:             "complex128",
-		argClojureType:       "complex128",
+		argClojureType:       "",
 		argFromClojureObject: "",
 		argClojureArgType:    "",
 		argExtractFunc:       "ABEND007(find these)",
+		convertFromClojure:   "", // TODO: support this in Joker, even if via just [real imag]
+		builtin:              true,
+	}
+	goBuiltinTypes["error"] = &goTypeInfo{
+		fullName:             "error",
+		argClojureType:       "Error",
+		argFromClojureObject: "",
+		argClojureArgType:    "String",
+		argExtractFunc:       "",
+		convertFromClojure:   `_errors.New(AssertString(%s, "").S)`,
 		builtin:              true,
 	}
 }

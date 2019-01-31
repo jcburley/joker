@@ -18152,11 +18152,11 @@ JOKER TYPE text/template/parse.NodeType from text/template/parse/node.go:
   [^Object _v])
 
 JOKER TYPE text/template/parse.NumberNode from text/template/parse/node.go:
-(defn ^"GoObject" NumberNode.
-  "Constructor for parse.NumberNode"
-  {:added "1.0"
-   :go "_ConstructNumberNode(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" NumberNode.
+;;   "Constructor for parse.NumberNode"
+;;   {:added "1.0"
+;;    :go "_ConstructNumberNode(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE text/template/parse.PipeNode from text/template/parse/node.go:
 ;; (defn ^"GoObject" PipeNode.
@@ -56005,40 +56005,40 @@ func ExtractGoObjectNumberNode(args []Object, index int) *_parse.NumberNode {
 	panic(RT.NewArgTypeError(index, a, "GoObject[text/template/parse.NumberNode]"))
 }
 
-func _mapToNumberNode(o Map) *_parse.NumberNode {
-	return &_parse.NumberNode{}
-}
+// func _mapToNumberNode(o Map) *_parse.NumberNode {
+// 	return &_parse.NumberNode{}
+// }
 
-func _vectorToNumberNode(o *Vector) *_parse.NumberNode {
-	return &_parse.NumberNode{
-		IsInt: ToBool(o.Nth(0)),
-		IsUint: ToBool(o.Nth(1)),
-		IsFloat: ToBool(o.Nth(2)),
-		IsComplex: ToBool(o.Nth(3)),
-		Int64: AssertNumber(o.Nth(4), "").BigInt().Int64(),
-		Uint64: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
-		Float64: float64(AssertDouble(o.Nth(6), "").D),
-		Complex128: complex128(0),
-		Text: AssertString(o.Nth(8), "").S,
-	}
-}
+// func _vectorToNumberNode(o *Vector) *_parse.NumberNode {
+// 	return &_parse.NumberNode{
+// 		IsInt: ToBool(o.Nth(0)),
+// 		IsUint: ToBool(o.Nth(1)),
+// 		IsFloat: ToBool(o.Nth(2)),
+// 		IsComplex: ToBool(o.Nth(3)),
+// 		Int64: AssertNumber(o.Nth(4), "").BigInt().Int64(),
+// 		Uint64: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
+// 		Float64: float64(AssertDouble(o.Nth(6), "").D),
+// 		Complex128: ABEND048(codegen.go: unsupported type complex128),
+// 		Text: AssertString(o.Nth(8), "").S,
+// 	}
+// }
 
-func _ConstructNumberNode(_v Object) *_parse.NumberNode {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _parse.NumberNode:
-			return &_g
-		case *_parse.NumberNode:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToNumberNode(_o.(Map))
-	case *Vector:
-		return _vectorToNumberNode(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.NumberNode] or: Map or Vector"))
-}
+// func _ConstructNumberNode(_v Object) *_parse.NumberNode {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _parse.NumberNode:
+// 			return &_g
+// 		case *_parse.NumberNode:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToNumberNode(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToNumberNode(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[parse.NumberNode] or: Map or Vector"))
+// }
 
 GO TYPE text/template/parse.PipeNode from text/template/parse/node.go:
 func ExtractGoObjectPipeNode(args []Object, index int) *_parse.PipeNode {
@@ -57113,5 +57113,5 @@ package utf8
 
 import (
 )
-ABENDs: 048(566) 987(309) 902(301) 044(203) 043(129) 675(129) 674(122) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 901(1)
+ABENDs: 048(567) 987(309) 902(301) 044(203) 043(129) 675(129) 674(122) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 901(1)
 Totals: types=962 functions=7132 methods=5623 (78.84%) standalone=1509 (21.16%) generated=667 (44.20%)
