@@ -394,7 +394,7 @@ func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectCa
 	for i := 0; i < len(nonGoObjectTypes); i++ {
 		nonGoObjectCase += nonGoObjectCasePrefix + fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectTypes[i], extractClojureObjects[i])
 		nonGoObjectCasePrefix = `
-	case `
+	`
 	}
 
 	return nonGoObjectCase,
@@ -421,13 +421,14 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 		return []string{"case *ArrayMap, *HashMap", "case *Vector"},
 			[]string{"Map", "Vector"},
 			[]string{mapHelperFName + "(_o.(Map))", vectorHelperFName + "(_o)"},
-			[]string{mapToType(mapHelperFName, uniqueTypeName, ti.td.Type),
-				vectorToType(vectorHelperFName, uniqueTypeName, ti.td.Type)},
+			[]string{mapToType(mapHelperFName, uniqueTypeName, t),
+				vectorToType(vectorHelperFName, uniqueTypeName, t)},
 			"*"
+	case *ArrayType:
 	}
 	return []string{"default"},
 		[]string{"whatever"},
-		[]string{fmt.Sprintf("_%s(_o.ABEND674(unknown underlying type %T for %s))",
+		[]string{fmt.Sprintf("_%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
 			typeName, ti.td.Type, ti.td.Name)},
 		[]string{""},
 		""
@@ -449,22 +450,99 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 	return
 }
 
-func mapToType(helperFName, typeName string, ty Expr) string {
+func mapToType(helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
-	return &%s{
-%s	}
+	return &%s{%s}
 }
 
 `
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
 }
 
-func vectorToType(helperFName, typeName string, ty Expr) string {
+func vectorToType(helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o *Vector) *%s {
-	return &%s{
-%s	}
+	return &%s{%s}
 }
 
 `
-	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
+
+	elToType := elementsToType(ty, vectorElementToType)
+	if elToType != "" {
+		elToType = `
+		` + elToType + `
+	`
+	}
+
+	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
+}
+
+func elementsToType(ty *StructType, toType func(i int, name string, f *Field) string) string {
+	els := []string{}
+	i := 0
+	for _, f := range ty.Fields.List {
+		for _, p := range f.Names {
+			fieldName := p.Name
+			if fieldName == "" || isPrivate(fieldName) {
+				continue
+			}
+			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(i, p.Name, f)))
+			i++
+		}
+	}
+	return strings.Join(els, `
+		`)
+}
+
+func vectorElementToType(i int, name string, f *Field) string {
+	return elementToType(fmt.Sprintf("o.Nth(%d)", i), f.Type)
+}
+
+func elementToType(el string, e Expr) string {
+	switch v := e.(type) {
+	case *Ident:
+		switch v.Name {
+		case "string":
+			return "AssertString(" + el + `, "").S`
+		case "bool":
+			return "ToBool(" + el + ")"
+		case "rune":
+			return "AssertChar(" + el + `, "").Ch`
+		case "int":
+			return "AssertInt(" + el + `, "").I`
+		case "byte":
+			return "byte(AssertInt(" + el + `, "").I)`
+		case "int8":
+			return "int8(AssertInt(" + el + `, "").I)`
+		case "uint8":
+			return "uint8(AssertInt(" + el + `, "").I)`
+		case "int16":
+			return "int16(AssertInt(" + el + `, "").I)`
+		case "uint":
+			return "uint(AssertInt(" + el + `, "").I)`
+		case "uint16":
+			return "uint16(AssertInt(" + el + `, "").I)`
+		case "int32":
+			return "int32(AssertInt(" + el + `, "").I)`
+		case "uint32":
+			return "uint32(AssertNumber(" + el + `, "").BigInt().Uint64())`
+		case "int64":
+			return "AssertNumber(" + el + `, "").BigInt().Int64()`
+		case "uint64":
+			return "AssertNumber(" + el + `, "").BigInt().Uint64()`
+		case "uintptr":
+			return "uintptr(AssertNumber(" + el + `, "").BigInt().Uint64())`
+		case "float64":
+			return "float64(AssertDouble(" + el + `, "").D)`
+		case "complex128":
+			return "complex128(0)" // TODO: support this in Joker, even if via just [real imag]
+		case "error":
+			return "_errors.New(AssertString(" + el + `, "").S)`
+		default:
+			if isPrivate(v.Name) {
+				return fmt.Sprintf("ABEND049(codegen.go: unsupported built-in type %s)", v.Name)
+			}
+			return "_Construct" + v.Name + "(" + el + ")"
+		}
+	}
+	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %v)", e)
 }
