@@ -132,7 +132,7 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
     :empty %s}
   go.std.%s)
 `,
-			strings.TrimPrefix(packageQuotedImportList(pi.importsAutoGen, " ", false), " "),
+			strings.TrimPrefix(packageQuotedImportList(*pi.importsAutoGen, " ", false), " "),
 			pkgDirUnix,
 			func() string {
 				if pi.nonEmpty {
@@ -199,7 +199,7 @@ func outputGoCode(pkgDirUnix string, v codeInfo, jokerLibDir string, outputCode,
 	}
 
 	importCore := ""
-	if _, f := pi.importsNative[pkgDirUnix]; f {
+	if _, f := pi.importsNative.fullNames[pkgDirUnix]; f {
 		importCore = `
 	. "github.com/candid82/joker/core"`
 	}
@@ -214,7 +214,7 @@ import (%s%s
 )
 `,
 			pkgBaseName,
-			packageQuotedImportList(pi.importsNative, "\n\t", true),
+			packageQuotedImportList(*pi.importsNative, "\n\t", true),
 			importCore)
 	}
 

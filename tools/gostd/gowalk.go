@@ -177,13 +177,54 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (g
 	return
 }
 
-var exists = struct{}{}
+/* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
+type packageImport struct {
+	local string // "foo", "_", ".", or empty
+	full  string // "bar/bletch/foo"
+}
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
-type packageImports map[string]struct{}
+type packageImportMap struct {
+	localNames map[string]string         // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
+	fullNames  map[string]*packageImport // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
+}
+type packageImports packageImportMap
+
+/* Given desired local and the full (though relative) name of the
+/* package, make sure the local name agrees with any existing entry
+/* and isn't already used (someday picking an alternate local name if
+/* necessary), add the mapping if necessary, and return the (possibly
+/* alternate) local name. */
+func addImport(packageImports *packageImports, local, full string) string {
+	if e, found := packageImports.fullNames[full]; found {
+		if e.local == local {
+			return local
+		}
+		/* If collisions really do happen, here is where a new
+		   local name can be picked and returned, and callers
+		   modified to use that instead of assuming one. That
+		   won't handle a local=="" not being able to replace
+		   a local!="", perhaps; but worry about that only if
+		   it actually happens. */
+		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,...)", local, full, e.local))
+	}
+	if curFull, found := packageImports.localNames[local]; found {
+		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (...,%s)", local, full, curFull))
+	}
+	if packageImports.localNames == nil {
+		packageImports.localNames = map[string]string{}
+	}
+	packageImports.localNames[local] = full
+	if packageImports.fullNames == nil {
+		packageImports.fullNames = map[string]*packageImport{}
+	}
+	packageImports.fullNames[full] = &packageImport{local, full}
+	return local
+}
+
 type packageInfo struct {
-	importsNative  packageImports
-	importsAutoGen packageImports
+	importsNative  *packageImports
+	importsAutoGen *packageImports
 	nonEmpty       bool // Whether any non-comment code has been generated
 	hasGoFiles     bool // Whether any .go files (would) have been generated
 }
@@ -206,7 +247,7 @@ func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageIn
 
 func sortedPackageImports(pi packageImports, f func(k string)) {
 	var keys []string
-	for k, _ := range pi {
+	for k, _ := range pi.fullNames {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
@@ -230,7 +271,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	}
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
-			packagesInfo[pkgDirUnix] = &packageInfo{packageImports{}, packageImports{}, false, false}
+			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
 			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
 			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
 		}

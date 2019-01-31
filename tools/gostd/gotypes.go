@@ -6,15 +6,16 @@ import (
 )
 
 type goTypeInfo struct {
-	fullName             string
-	argClojureType       string // Can convert this type to a Go function arg with my type
-	argFromClojureObject string // Append this to Clojure object to extract value of my type
-	argClojureArgType    string // Clojure argument type for a Go function arg with my type
-	argExtractFunc       string // Call Extract<this>() for arg with my type
-	convertFromClojure   string // Pattern to convert a (scalar) %s to this type
-	builtin              bool   // Is this a builtin Go type?
-	declared             bool   // Given a declared name?
-	private              bool   // Is this a private type?
+	fullName                  string
+	argClojureType            string   // Can convert this type to a Go function arg with my type
+	argFromClojureObject      string   // Append this to Clojure object to extract value of my type
+	argClojureArgType         string   // Clojure argument type for a Go function arg with my type
+	argExtractFunc            string   // Call Extract<this>() for arg with my type
+	convertFromClojure        string   // Pattern to convert a (scalar) %s to this type
+	convertFromClojureImports []string // Imports needed to support the above
+	builtin                   bool     // Is this a builtin Go type?
+	declared                  bool     // Given a declared name?
+	private                   bool     // Is this a private type?
 }
 
 var goBuiltinTypes = map[string]*goTypeInfo{}
@@ -263,12 +264,13 @@ func init() {
 		builtin:              true,
 	}
 	goBuiltinTypes["error"] = &goTypeInfo{
-		fullName:             "error",
-		argClojureType:       "Error",
-		argFromClojureObject: "",
-		argClojureArgType:    "String",
-		argExtractFunc:       "",
-		convertFromClojure:   `_errors.New(AssertString(%s, "").S)`,
-		builtin:              true,
+		fullName:                  "error",
+		argClojureType:            "Error",
+		argFromClojureObject:      "",
+		argClojureArgType:         "String",
+		argExtractFunc:            "",
+		convertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
+		convertFromClojureImports: []string{"errors"},
+		builtin:                   true,
 	}
 }

@@ -212,10 +212,10 @@ func %s(%s) %s {
 		generatedFunctions++
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
-			packagesInfo[pkgDirUnix].importsNative[pkgDirUnix] = exists
+			addImport(packagesInfo[pkgDirUnix].importsNative, "", pkgDirUnix)
 		}
 		if clojureReturnType != "" || fn.refersToSelf {
-			packagesInfo[pkgDirUnix].importsAutoGen[pkgDirUnix] = exists
+			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix)
 		}
 	}
 
@@ -265,7 +265,7 @@ func genType(t string, ti *typeInfo) {
 		return // no functions generated
 	}
 
-	packagesInfo[pkgDirUnix].importsNative[pkgDirUnix] = exists
+	addImport(packagesInfo[pkgDirUnix].importsNative, "", pkgDirUnix)
 
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
