@@ -2049,7 +2049,7 @@ func ExtractGoObjectAddr(args []Object, index int) *_net.Addr {
 // 	default:
 // 		return _net.Addr(_o.ABEND674(unknown underlying type *ast.InterfaceType for Addr))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Addr] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Addr] or: whatever"))
 // }
 
 GO TYPE net.AddrError from net/net.go:
@@ -2091,7 +2091,7 @@ func _ConstructAddrError(_v Object) *_net.AddrError {
 	case case *Vector:
 		return _vectorToAddrError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or: Map or Vector"))
 }
 
 GO TYPE net.Buffers from net/net.go:
@@ -2121,7 +2121,7 @@ func ExtractGoObjectBuffers(args []Object, index int) *_net.Buffers {
 // 	default:
 // 		return _net.Buffers(_o.ABEND674(unknown underlying type *ast.ArrayType for Buffers))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Buffers] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Buffers] or: whatever"))
 // }
 
 GO TYPE net.Conn from net/net.go:
@@ -2151,7 +2151,7 @@ func ExtractGoObjectConn(args []Object, index int) *_net.Conn {
 // 	default:
 // 		return _net.Conn(_o.ABEND674(unknown underlying type *ast.InterfaceType for Conn))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Conn] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Conn] or: whatever"))
 // }
 
 GO TYPE net.DNSConfigError from net/net.go:
@@ -2193,7 +2193,7 @@ func _ConstructDNSConfigError(_v Object) *_net.DNSConfigError {
 	case case *Vector:
 		return _vectorToDNSConfigError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or: Map or Vector"))
 }
 
 GO TYPE net.DNSError from net/net.go:
@@ -2235,7 +2235,7 @@ func _ConstructDNSError(_v Object) *_net.DNSError {
 	case case *Vector:
 		return _vectorToDNSError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or: Map or Vector"))
 }
 
 GO TYPE net.Dialer from net/dial.go:
@@ -2277,7 +2277,7 @@ func _ConstructDialer(_v Object) *_net.Dialer {
 	case case *Vector:
 		return _vectorToDialer(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Dialer] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Dialer] or: Map or Vector"))
 }
 
 GO TYPE net.Error from net/net.go:
@@ -2307,7 +2307,7 @@ func ExtractGoObjectError(args []Object, index int) *_net.Error {
 // 	default:
 // 		return _net.Error(_o.ABEND674(unknown underlying type *ast.InterfaceType for Error))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Error] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Error] or: whatever"))
 // }
 
 GO TYPE net.Flags from net/interface.go:
@@ -2340,7 +2340,7 @@ func _ConstructFlags(_v Object) _net.Flags {
 	case Number:
 		return _net.Flags(_o.Int().I)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Flags] or Number"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Flags] or: Number"))
 }
 
 GO TYPE net.HardwareAddr from net/mac.go:
@@ -2370,7 +2370,7 @@ func ExtractGoObjectHardwareAddr(args []Object, index int) *_net.HardwareAddr {
 // 	default:
 // 		return _net.HardwareAddr(_o.ABEND674(unknown underlying type *ast.ArrayType for HardwareAddr))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.HardwareAddr] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.HardwareAddr] or: whatever"))
 // }
 
 GO TYPE net.IP from net/ip.go:
@@ -2400,7 +2400,7 @@ func ExtractGoObjectIP(args []Object, index int) *_net.IP {
 // 	default:
 // 		return _net.IP(_o.ABEND674(unknown underlying type *ast.ArrayType for IP))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IP] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IP] or: whatever"))
 // }
 
 GO TYPE net.IPAddr from net/iprawsock.go:
@@ -2442,7 +2442,7 @@ func _ConstructIPAddr(_v Object) *_net.IPAddr {
 	case case *Vector:
 		return _vectorToIPAddr(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map or Vector"))
 }
 
 GO TYPE net.IPConn from net/iprawsock.go:
@@ -2484,7 +2484,7 @@ func _ConstructIPConn(_v Object) *_net.IPConn {
 	case case *Vector:
 		return _vectorToIPConn(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or: Map or Vector"))
 }
 
 GO TYPE net.IPMask from net/ip.go:
@@ -2514,7 +2514,7 @@ func ExtractGoObjectIPMask(args []Object, index int) *_net.IPMask {
 // 	default:
 // 		return _net.IPMask(_o.ABEND674(unknown underlying type *ast.ArrayType for IPMask))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPMask] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPMask] or: whatever"))
 // }
 
 GO TYPE net.IPNet from net/ip.go:
@@ -2556,7 +2556,7 @@ func _ConstructIPNet(_v Object) *_net.IPNet {
 	case case *Vector:
 		return _vectorToIPNet(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map or Vector"))
 }
 
 GO TYPE net.Interface from net/interface.go:
@@ -2598,7 +2598,7 @@ func _ConstructInterface(_v Object) *_net.Interface {
 	case case *Vector:
 		return _vectorToInterface(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Interface] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Interface] or: Map or Vector"))
 }
 
 GO TYPE net.InvalidAddrError from net/net.go:
@@ -2631,7 +2631,7 @@ func _ConstructInvalidAddrError(_v Object) _net.InvalidAddrError {
 	case String:
 		return _net.InvalidAddrError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.InvalidAddrError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.InvalidAddrError] or: String"))
 }
 
 GO TYPE net.ListenConfig from net/dial.go:
@@ -2673,7 +2673,7 @@ func _ConstructListenConfig(_v Object) *_net.ListenConfig {
 	case case *Vector:
 		return _vectorToListenConfig(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ListenConfig] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ListenConfig] or: Map or Vector"))
 }
 
 GO TYPE net.Listener from net/net.go:
@@ -2703,7 +2703,7 @@ func ExtractGoObjectListener(args []Object, index int) *_net.Listener {
 // 	default:
 // 		return _net.Listener(_o.ABEND674(unknown underlying type *ast.InterfaceType for Listener))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Listener] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Listener] or: whatever"))
 // }
 
 GO TYPE net.MX from net/dnsclient.go:
@@ -2745,7 +2745,7 @@ func _ConstructMX(_v Object) *_net.MX {
 	case case *Vector:
 		return _vectorToMX(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map or Vector"))
 }
 
 GO TYPE net.NS from net/dnsclient.go:
@@ -2787,7 +2787,7 @@ func _ConstructNS(_v Object) *_net.NS {
 	case case *Vector:
 		return _vectorToNS(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map or Vector"))
 }
 
 GO TYPE net.OpError from net/net.go:
@@ -2829,7 +2829,7 @@ func _ConstructOpError(_v Object) *_net.OpError {
 	case case *Vector:
 		return _vectorToOpError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map or Vector"))
 }
 
 GO TYPE net.PacketConn from net/net.go:
@@ -2859,7 +2859,7 @@ func ExtractGoObjectPacketConn(args []Object, index int) *_net.PacketConn {
 // 	default:
 // 		return _net.PacketConn(_o.ABEND674(unknown underlying type *ast.InterfaceType for PacketConn))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.PacketConn] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.PacketConn] or: whatever"))
 // }
 
 GO TYPE net.ParseError from net/net.go:
@@ -2901,7 +2901,7 @@ func _ConstructParseError(_v Object) *_net.ParseError {
 	case case *Vector:
 		return _vectorToParseError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or: Map or Vector"))
 }
 
 GO TYPE net.Resolver from net/lookup.go:
@@ -2943,7 +2943,7 @@ func _ConstructResolver(_v Object) *_net.Resolver {
 	case case *Vector:
 		return _vectorToResolver(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map or Vector"))
 }
 
 GO TYPE net.SRV from net/dnsclient.go:
@@ -2985,7 +2985,7 @@ func _ConstructSRV(_v Object) *_net.SRV {
 	case case *Vector:
 		return _vectorToSRV(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map or Vector"))
 }
 
 GO TYPE net.TCPAddr from net/tcpsock.go:
@@ -3027,7 +3027,7 @@ func _ConstructTCPAddr(_v Object) *_net.TCPAddr {
 	case case *Vector:
 		return _vectorToTCPAddr(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPAddr] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPAddr] or: Map or Vector"))
 }
 
 GO TYPE net.TCPConn from net/tcpsock.go:
@@ -3069,7 +3069,7 @@ func _ConstructTCPConn(_v Object) *_net.TCPConn {
 	case case *Vector:
 		return _vectorToTCPConn(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPConn] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPConn] or: Map or Vector"))
 }
 
 GO TYPE net.TCPListener from net/tcpsock.go:
@@ -3111,7 +3111,7 @@ func _ConstructTCPListener(_v Object) *_net.TCPListener {
 	case case *Vector:
 		return _vectorToTCPListener(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPListener] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPListener] or: Map or Vector"))
 }
 
 GO TYPE net.UDPAddr from net/udpsock.go:
@@ -3153,7 +3153,7 @@ func _ConstructUDPAddr(_v Object) *_net.UDPAddr {
 	case case *Vector:
 		return _vectorToUDPAddr(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPAddr] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPAddr] or: Map or Vector"))
 }
 
 GO TYPE net.UDPConn from net/udpsock.go:
@@ -3195,7 +3195,7 @@ func _ConstructUDPConn(_v Object) *_net.UDPConn {
 	case case *Vector:
 		return _vectorToUDPConn(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPConn] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPConn] or: Map or Vector"))
 }
 
 GO TYPE net.UnixAddr from net/unixsock.go:
@@ -3237,7 +3237,7 @@ func _ConstructUnixAddr(_v Object) *_net.UnixAddr {
 	case case *Vector:
 		return _vectorToUnixAddr(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixAddr] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixAddr] or: Map or Vector"))
 }
 
 GO TYPE net.UnixConn from net/unixsock.go:
@@ -3279,7 +3279,7 @@ func _ConstructUnixConn(_v Object) *_net.UnixConn {
 	case case *Vector:
 		return _vectorToUnixConn(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixConn] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixConn] or: Map or Vector"))
 }
 
 GO TYPE net.UnixListener from net/unixsock.go:
@@ -3321,7 +3321,7 @@ func _ConstructUnixListener(_v Object) *_net.UnixListener {
 	case case *Vector:
 		return _vectorToUnixListener(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixListener] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnixListener] or: Map or Vector"))
 }
 
 GO TYPE net.UnknownNetworkError from net/net.go:
@@ -3354,7 +3354,7 @@ func _ConstructUnknownNetworkError(_v Object) _net.UnknownNetworkError {
 	case String:
 		return _net.UnknownNetworkError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnknownNetworkError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnknownNetworkError] or: String"))
 }
 
 GO FUNC net.CIDRMask from net/ip.go:
@@ -3801,7 +3801,7 @@ func _ConstructClient(_v Object) *_http.Client {
 	case case *Vector:
 		return _vectorToClient(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Client] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Client] or: Map or Vector"))
 }
 
 GO TYPE net/http.CloseNotifier from net/http/server.go:
@@ -3831,7 +3831,7 @@ func ExtractGoObjectCloseNotifier(args []Object, index int) *_http.CloseNotifier
 // 	default:
 // 		return _http.CloseNotifier(_o.ABEND674(unknown underlying type *ast.InterfaceType for CloseNotifier))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.CloseNotifier] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.CloseNotifier] or: whatever"))
 // }
 
 GO TYPE net/http.ConnState from net/http/server.go:
@@ -3864,7 +3864,7 @@ func _ConstructConnState(_v Object) _http.ConnState {
 	case Number:
 		return _http.ConnState(_o.Int().I)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ConnState] or Number"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ConnState] or: Number"))
 }
 
 GO TYPE net/http.Cookie from net/http/cookie.go:
@@ -3906,7 +3906,7 @@ func _ConstructCookie(_v Object) *_http.Cookie {
 	case case *Vector:
 		return _vectorToCookie(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Cookie] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Cookie] or: Map or Vector"))
 }
 
 GO TYPE net/http.CookieJar from net/http/jar.go:
@@ -3936,7 +3936,7 @@ func ExtractGoObjectCookieJar(args []Object, index int) *_http.CookieJar {
 // 	default:
 // 		return _http.CookieJar(_o.ABEND674(unknown underlying type *ast.InterfaceType for CookieJar))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.CookieJar] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.CookieJar] or: whatever"))
 // }
 
 GO TYPE net/http.Dir from net/http/fs.go:
@@ -3969,7 +3969,7 @@ func _ConstructDir(_v Object) _http.Dir {
 	case String:
 		return _http.Dir(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Dir] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Dir] or: String"))
 }
 
 GO TYPE net/http.File from net/http/fs.go:
@@ -3999,7 +3999,7 @@ func ExtractGoObjectFile(args []Object, index int) *_http.File {
 // 	default:
 // 		return _http.File(_o.ABEND674(unknown underlying type *ast.InterfaceType for File))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.File] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.File] or: whatever"))
 // }
 
 GO TYPE net/http.FileSystem from net/http/fs.go:
@@ -4029,7 +4029,7 @@ func ExtractGoObjectFileSystem(args []Object, index int) *_http.FileSystem {
 // 	default:
 // 		return _http.FileSystem(_o.ABEND674(unknown underlying type *ast.InterfaceType for FileSystem))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.FileSystem] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.FileSystem] or: whatever"))
 // }
 
 GO TYPE net/http.Flusher from net/http/server.go:
@@ -4059,7 +4059,7 @@ func ExtractGoObjectFlusher(args []Object, index int) *_http.Flusher {
 // 	default:
 // 		return _http.Flusher(_o.ABEND674(unknown underlying type *ast.InterfaceType for Flusher))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Flusher] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Flusher] or: whatever"))
 // }
 
 GO TYPE net/http.Handler from net/http/server.go:
@@ -4089,7 +4089,7 @@ func ExtractGoObjectHandler(args []Object, index int) *_http.Handler {
 // 	default:
 // 		return _http.Handler(_o.ABEND674(unknown underlying type *ast.InterfaceType for Handler))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Handler] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Handler] or: whatever"))
 // }
 
 GO TYPE net/http.HandlerFunc from net/http/server.go:
@@ -4119,7 +4119,7 @@ func ExtractGoObjectHandlerFunc(args []Object, index int) *_http.HandlerFunc {
 // 	default:
 // 		return _http.HandlerFunc(_o.ABEND674(unknown underlying type *ast.FuncType for HandlerFunc))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.HandlerFunc] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.HandlerFunc] or: whatever"))
 // }
 
 GO TYPE net/http.Header from net/http/header.go:
@@ -4149,7 +4149,7 @@ func ExtractGoObjectHeader(args []Object, index int) *_http.Header {
 // 	default:
 // 		return _http.Header(_o.ABEND674(unknown underlying type *ast.MapType for Header))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Header] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Header] or: whatever"))
 // }
 
 GO TYPE net/http.Hijacker from net/http/server.go:
@@ -4179,7 +4179,7 @@ func ExtractGoObjectHijacker(args []Object, index int) *_http.Hijacker {
 // 	default:
 // 		return _http.Hijacker(_o.ABEND674(unknown underlying type *ast.InterfaceType for Hijacker))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Hijacker] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Hijacker] or: whatever"))
 // }
 
 GO TYPE net/http.ProtocolError from net/http/request.go:
@@ -4221,7 +4221,7 @@ func _ConstructProtocolError(_v Object) *_http.ProtocolError {
 	case case *Vector:
 		return _vectorToProtocolError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ProtocolError] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ProtocolError] or: Map or Vector"))
 }
 
 GO TYPE net/http.PushOptions from net/http/http.go:
@@ -4263,7 +4263,7 @@ func _ConstructPushOptions(_v Object) *_http.PushOptions {
 	case case *Vector:
 		return _vectorToPushOptions(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or: Map or Vector"))
 }
 
 GO TYPE net/http.Pusher from net/http/http.go:
@@ -4293,7 +4293,7 @@ func ExtractGoObjectPusher(args []Object, index int) *_http.Pusher {
 // 	default:
 // 		return _http.Pusher(_o.ABEND674(unknown underlying type *ast.InterfaceType for Pusher))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Pusher] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Pusher] or: whatever"))
 // }
 
 GO TYPE net/http.Request from net/http/request.go:
@@ -4335,7 +4335,7 @@ func _ConstructRequest(_v Object) *_http.Request {
 	case case *Vector:
 		return _vectorToRequest(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Request] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Request] or: Map or Vector"))
 }
 
 GO TYPE net/http.Response from net/http/response.go:
@@ -4377,7 +4377,7 @@ func _ConstructResponse(_v Object) *_http.Response {
 	case case *Vector:
 		return _vectorToResponse(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Response] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Response] or: Map or Vector"))
 }
 
 GO TYPE net/http.ResponseWriter from net/http/server.go:
@@ -4407,7 +4407,7 @@ func ExtractGoObjectResponseWriter(args []Object, index int) *_http.ResponseWrit
 // 	default:
 // 		return _http.ResponseWriter(_o.ABEND674(unknown underlying type *ast.InterfaceType for ResponseWriter))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ResponseWriter] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ResponseWriter] or: whatever"))
 // }
 
 GO TYPE net/http.RoundTripper from net/http/client.go:
@@ -4437,7 +4437,7 @@ func ExtractGoObjectRoundTripper(args []Object, index int) *_http.RoundTripper {
 // 	default:
 // 		return _http.RoundTripper(_o.ABEND674(unknown underlying type *ast.InterfaceType for RoundTripper))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.RoundTripper] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.RoundTripper] or: whatever"))
 // }
 
 GO TYPE net/http.SameSite from net/http/cookie.go:
@@ -4470,7 +4470,7 @@ func _ConstructSameSite(_v Object) _http.SameSite {
 	case Number:
 		return _http.SameSite(_o.Int().I)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.SameSite] or Number"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.SameSite] or: Number"))
 }
 
 GO TYPE net/http.ServeMux from net/http/server.go:
@@ -4512,7 +4512,7 @@ func _ConstructServeMux(_v Object) *_http.ServeMux {
 	case case *Vector:
 		return _vectorToServeMux(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ServeMux] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ServeMux] or: Map or Vector"))
 }
 
 GO TYPE net/http.Server from net/http/server.go:
@@ -4554,7 +4554,7 @@ func _ConstructServer(_v Object) *_http.Server {
 	case case *Vector:
 		return _vectorToServer(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Server] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Server] or: Map or Vector"))
 }
 
 GO TYPE net/http.Transport from net/http/transport.go:
@@ -4596,7 +4596,7 @@ func _ConstructTransport(_v Object) *_http.Transport {
 	case case *Vector:
 		return _vectorToTransport(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Transport] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Transport] or: Map or Vector"))
 }
 
 GO FUNC net/http.DetectContentType from net/http/sniff.go:
@@ -4847,7 +4847,7 @@ func _ConstructHandler(_v Object) *_cgi.Handler {
 	case case *Vector:
 		return _vectorToHandler(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[cgi.Handler] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[cgi.Handler] or: Map or Vector"))
 }
 
 GO FUNC net/http/cgi.Request from net/http/cgi/child.go:
@@ -4913,7 +4913,7 @@ func _ConstructJar(_v Object) *_cookiejar.Jar {
 	case case *Vector:
 		return _vectorToJar(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Jar] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Jar] or: Map or Vector"))
 }
 
 GO TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
@@ -4955,7 +4955,7 @@ func _ConstructOptions(_v Object) *_cookiejar.Options {
 	case case *Vector:
 		return _vectorToOptions(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or: Map or Vector"))
 }
 
 GO TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
@@ -4985,7 +4985,7 @@ func ExtractGoObjectPublicSuffixList(args []Object, index int) *_cookiejar.Publi
 // 	default:
 // 		return _cookiejar.PublicSuffixList(_o.ABEND674(unknown underlying type *ast.InterfaceType for PublicSuffixList))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.PublicSuffixList] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.PublicSuffixList] or: whatever"))
 // }
 
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
@@ -5047,7 +5047,7 @@ func _ConstructResponseRecorder(_v Object) *_httptest.ResponseRecorder {
 	case case *Vector:
 		return _vectorToResponseRecorder(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.ResponseRecorder] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.ResponseRecorder] or: Map or Vector"))
 }
 
 GO TYPE net/http/httptest.Server from net/http/httptest/server.go:
@@ -5089,7 +5089,7 @@ func _ConstructServer(_v Object) *_httptest.Server {
 	case case *Vector:
 		return _vectorToServer(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.Server] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.Server] or: Map or Vector"))
 }
 
 GO FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
@@ -5281,7 +5281,7 @@ func _ConstructAddress(_v Object) *_mail.Address {
 	case case *Vector:
 		return _vectorToAddress(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Address] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Address] or: Map or Vector"))
 }
 
 GO TYPE net/mail.AddressParser from net/mail/message.go:
@@ -5323,7 +5323,7 @@ func _ConstructAddressParser(_v Object) *_mail.AddressParser {
 	case case *Vector:
 		return _vectorToAddressParser(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.AddressParser] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.AddressParser] or: Map or Vector"))
 }
 
 GO TYPE net/mail.Header from net/mail/message.go:
@@ -5353,7 +5353,7 @@ func ExtractGoObjectHeader(args []Object, index int) *_mail.Header {
 // 	default:
 // 		return _mail.Header(_o.ABEND674(unknown underlying type *ast.MapType for Header))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Header] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Header] or: whatever"))
 // }
 
 GO TYPE net/mail.Message from net/mail/message.go:
@@ -5395,7 +5395,7 @@ func _ConstructMessage(_v Object) *_mail.Message {
 	case case *Vector:
 		return _vectorToMessage(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Message] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Message] or: Map or Vector"))
 }
 
 GO FUNC net/mail.ParseAddress from net/mail/message.go:
@@ -5477,7 +5477,7 @@ func _ConstructCall(_v Object) *_rpc.Call {
 	case case *Vector:
 		return _vectorToCall(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Call] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Call] or: Map or Vector"))
 }
 
 GO TYPE net/rpc.Client from net/rpc/client.go:
@@ -5519,7 +5519,7 @@ func _ConstructClient(_v Object) *_rpc.Client {
 	case case *Vector:
 		return _vectorToClient(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Client] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Client] or: Map or Vector"))
 }
 
 GO TYPE net/rpc.ClientCodec from net/rpc/client.go:
@@ -5549,7 +5549,7 @@ func ExtractGoObjectClientCodec(args []Object, index int) *_rpc.ClientCodec {
 // 	default:
 // 		return _rpc.ClientCodec(_o.ABEND674(unknown underlying type *ast.InterfaceType for ClientCodec))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ClientCodec] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ClientCodec] or: whatever"))
 // }
 
 GO TYPE net/rpc.Request from net/rpc/server.go:
@@ -5591,7 +5591,7 @@ func _ConstructRequest(_v Object) *_rpc.Request {
 	case case *Vector:
 		return _vectorToRequest(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Request] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Request] or: Map or Vector"))
 }
 
 GO TYPE net/rpc.Response from net/rpc/server.go:
@@ -5633,7 +5633,7 @@ func _ConstructResponse(_v Object) *_rpc.Response {
 	case case *Vector:
 		return _vectorToResponse(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Response] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Response] or: Map or Vector"))
 }
 
 GO TYPE net/rpc.Server from net/rpc/server.go:
@@ -5675,7 +5675,7 @@ func _ConstructServer(_v Object) *_rpc.Server {
 	case case *Vector:
 		return _vectorToServer(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Server] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Server] or: Map or Vector"))
 }
 
 GO TYPE net/rpc.ServerCodec from net/rpc/server.go:
@@ -5705,7 +5705,7 @@ func ExtractGoObjectServerCodec(args []Object, index int) *_rpc.ServerCodec {
 // 	default:
 // 		return _rpc.ServerCodec(_o.ABEND674(unknown underlying type *ast.InterfaceType for ServerCodec))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ServerCodec] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ServerCodec] or: whatever"))
 // }
 
 GO TYPE net/rpc.ServerError from net/rpc/client.go:
@@ -5738,7 +5738,7 @@ func _ConstructServerError(_v Object) _rpc.ServerError {
 	case String:
 		return _rpc.ServerError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ServerError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ServerError] or: String"))
 }
 
 GO FUNC net/rpc.Accept from net/rpc/server.go:
@@ -5882,7 +5882,7 @@ func ExtractGoObjectAuth(args []Object, index int) *_smtp.Auth {
 // 	default:
 // 		return _smtp.Auth(_o.ABEND674(unknown underlying type *ast.InterfaceType for Auth))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Auth] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Auth] or: whatever"))
 // }
 
 GO TYPE net/smtp.Client from net/smtp/smtp.go:
@@ -5924,7 +5924,7 @@ func _ConstructClient(_v Object) *_smtp.Client {
 	case case *Vector:
 		return _vectorToClient(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Client] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Client] or: Map or Vector"))
 }
 
 GO TYPE net/smtp.ServerInfo from net/smtp/auth.go:
@@ -5966,7 +5966,7 @@ func _ConstructServerInfo(_v Object) *_smtp.ServerInfo {
 	case case *Vector:
 		return _vectorToServerInfo(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or: Map or Vector"))
 }
 
 GO FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
@@ -6044,7 +6044,7 @@ func _ConstructConn(_v Object) *_textproto.Conn {
 	case case *Vector:
 		return _vectorToConn(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Conn] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Conn] or: Map or Vector"))
 }
 
 GO TYPE net/textproto.Error from net/textproto/textproto.go:
@@ -6086,7 +6086,7 @@ func _ConstructError(_v Object) *_textproto.Error {
 	case case *Vector:
 		return _vectorToError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Error] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Error] or: Map or Vector"))
 }
 
 GO TYPE net/textproto.MIMEHeader from net/textproto/header.go:
@@ -6116,7 +6116,7 @@ func ExtractGoObjectMIMEHeader(args []Object, index int) *_textproto.MIMEHeader 
 // 	default:
 // 		return _textproto.MIMEHeader(_o.ABEND674(unknown underlying type *ast.MapType for MIMEHeader))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.MIMEHeader] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.MIMEHeader] or: whatever"))
 // }
 
 GO TYPE net/textproto.Pipeline from net/textproto/pipeline.go:
@@ -6158,7 +6158,7 @@ func _ConstructPipeline(_v Object) *_textproto.Pipeline {
 	case case *Vector:
 		return _vectorToPipeline(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Pipeline] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Pipeline] or: Map or Vector"))
 }
 
 GO TYPE net/textproto.ProtocolError from net/textproto/textproto.go:
@@ -6191,7 +6191,7 @@ func _ConstructProtocolError(_v Object) _textproto.ProtocolError {
 	case String:
 		return _textproto.ProtocolError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.ProtocolError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.ProtocolError] or: String"))
 }
 
 GO TYPE net/textproto.Reader from net/textproto/reader.go:
@@ -6233,7 +6233,7 @@ func _ConstructReader(_v Object) *_textproto.Reader {
 	case case *Vector:
 		return _vectorToReader(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Reader] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Reader] or: Map or Vector"))
 }
 
 GO TYPE net/textproto.Writer from net/textproto/writer.go:
@@ -6275,7 +6275,7 @@ func _ConstructWriter(_v Object) *_textproto.Writer {
 	case case *Vector:
 		return _vectorToWriter(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Writer] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Writer] or: Map or Vector"))
 }
 
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
@@ -6354,7 +6354,7 @@ func _ConstructError(_v Object) *_url.Error {
 	case case *Vector:
 		return _vectorToError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map or Vector"))
 }
 
 GO TYPE net/url.EscapeError from net/url/url.go:
@@ -6387,7 +6387,7 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	case String:
 		return _url.EscapeError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
 GO TYPE net/url.InvalidHostError from net/url/url.go:
@@ -6420,7 +6420,7 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 	case String:
 		return _url.InvalidHostError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
 }
 
 GO TYPE net/url.URL from net/url/url.go:
@@ -6462,7 +6462,7 @@ func _ConstructURL(_v Object) *_url.URL {
 	case case *Vector:
 		return _vectorToURL(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
 }
 
 GO TYPE net/url.Userinfo from net/url/url.go:
@@ -6504,7 +6504,7 @@ func _ConstructUserinfo(_v Object) *_url.Userinfo {
 	case case *Vector:
 		return _vectorToUserinfo(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map or Vector"))
 }
 
 GO TYPE net/url.Values from net/url/url.go:
@@ -6534,7 +6534,7 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	default:
 // 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
