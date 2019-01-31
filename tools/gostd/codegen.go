@@ -227,64 +227,12 @@ func %s(%s) %s {
 }
 
 func maybeImplicitConvert(typeName string, ts *TypeSpec) string {
-	var declType string
-	var argType string
-	switch t := ts.Type.(type) {
-	case *Ident:
-		switch t.Name {
-		case "string":
-			argType = "String"
-			declType = "String"
-		case "int":
-			argType = "Int"
-			declType = "Int"
-		case "byte":
-			argType = "Int"
-			declType = "Byte"
-		case "bool":
-			argType = "Boolean"
-			declType = "Boolean"
-		case "int8":
-			argType = "Int"
-			declType = "Byte"
-		case "int16":
-			argType = "Int"
-			declType = "Int16"
-		case "uint":
-			argType = "Number"
-			declType = "UInt"
-		case "uint8":
-			argType = "Int"
-			declType = "UInt8"
-		case "uint16":
-			argType = "Int"
-			declType = "UInt16"
-		case "int32":
-			argType = "Int"
-			declType = "Int32"
-		case "uint32":
-			argType = "Number"
-			declType = "UInt32"
-		case "int64":
-			argType = "Number"
-			declType = "Int64"
-		case "uintptr":
-			argType = "Number"
-			declType = "UIntPtr"
-		case "float32":
-			argType = "Double"
-			declType = "ABEND007(find these)"
-		case "float64":
-			argType = "Double"
-			declType = "ABEND007(find these)"
-		case "complex64":
-			argType = "Double"
-			declType = "ABEND007(find these)"
-		case "complex128":
-			argType = "Double"
-			declType = "ABEND007(find these)"
-		}
+	t := toGoTypeInfo(ts)
+	if t == nil || !t.builtin {
+		return ""
 	}
+	argType := t.argClojureArgType
+	declType := t.argExtractFunc
 	if declType == "" {
 		return ""
 	}
@@ -438,18 +386,6 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 	v, ok := goBuiltinTypes[name]
 	if ok {
 		return "case " + v.argClojureType, v.argClojureType, v.argFromClojureObject
-	}
-	switch name {
-	case "string":
-		return "case String", "String", ".S"
-	case "bool":
-		return "case Boolean", "Boolean", ".Boolean().B"
-	case "int", "byte", "int8", "int16", "uint", "uint8", "uin16", "int32", "uint32":
-		return "case Number", "Number", ".Int().I"
-	case "int64":
-		return "case Number", "Number", ".BigInt().Int64()"
-	case "uint64", "uintptr":
-		return "case Number", "Number", ".BigInt().Uint64()"
 	}
 	return
 }
