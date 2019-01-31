@@ -18882,7 +18882,7 @@ func ExtractGoObjectFileHeader(args []Object, index int) *_zip.FileHeader {
 // 		UncompressedSize: uint32(AssertNumber(o.Nth(12), "").BigInt().Uint64()),
 // 		CompressedSize64: AssertNumber(o.Nth(13), "").BigInt().Uint64(),
 // 		UncompressedSize64: AssertNumber(o.Nth(14), "").BigInt().Uint64(),
-// 		Extra: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Extra: ABEND048(codegen.go: unsupported type []byte),
 // 		ExternalAttrs: uint32(AssertNumber(o.Nth(16), "").BigInt().Uint64()),
 // 	}
 // }
@@ -18965,7 +18965,7 @@ func ExtractGoObjectReader(args []Object, index int) *_zip.Reader {
 
 // func _vectorToReader(o *Vector) *_zip.Reader {
 // 	return &_zip.Reader{
-// 		File: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		File: ABEND048(codegen.go: unsupported type []*File),
 // 		Comment: AssertString(o.Nth(1), "").S,
 // 	}
 // }
@@ -21160,10 +21160,10 @@ func ExtractGoObjectCertificate(args []Object, index int) *_tls.Certificate {
 
 // func _vectorToCertificate(o *Vector) *_tls.Certificate {
 // 	return &_tls.Certificate{
-// 		Certificate: ABEND048(codegen.go: unsupported type [][]<notfound>*ast.Ident</notfound>),
+// 		Certificate: ABEND048(codegen.go: unsupported type [][]byte),
 // 		PrivateKey: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		OCSPStaple: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]<notfound>*ast.Ident</notfound>),
+// 		OCSPStaple: ABEND048(codegen.go: unsupported type []byte),
+// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]byte),
 // 		Leaf: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -21206,8 +21206,8 @@ func ExtractGoObjectCertificateRequestInfo(args []Object, index int) *_tls.Certi
 
 // func _vectorToCertificateRequestInfo(o *Vector) *_tls.CertificateRequestInfo {
 // 	return &_tls.CertificateRequestInfo{
-// 		AcceptableCAs: ABEND048(codegen.go: unsupported type [][]<notfound>*ast.Ident</notfound>),
-// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		AcceptableCAs: ABEND048(codegen.go: unsupported type [][]byte),
+// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []SignatureScheme),
 // 	}
 // }
 
@@ -21282,13 +21282,13 @@ func ExtractGoObjectClientHelloInfo(args []Object, index int) *_tls.ClientHelloI
 
 // func _vectorToClientHelloInfo(o *Vector) *_tls.ClientHelloInfo {
 // 	return &_tls.ClientHelloInfo{
-// 		CipherSuites: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		CipherSuites: ABEND048(codegen.go: unsupported type []uint16),
 // 		ServerName: AssertString(o.Nth(1), "").S,
-// 		SupportedCurves: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		SupportedPoints: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		SupportedCurves: ABEND048(codegen.go: unsupported type []CurveID),
+// 		SupportedPoints: ABEND048(codegen.go: unsupported type []uint8),
+// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []SignatureScheme),
 // 		SupportedProtos: ABEND048(codegen.go: unsupported type []string),
-// 		SupportedVersions: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		SupportedVersions: ABEND048(codegen.go: unsupported type []uint16),
 // 		Conn: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -21403,7 +21403,7 @@ func ExtractGoObjectConfig(args []Object, index int) *_tls.Config {
 // 	return &_tls.Config{
 // 		Rand: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Time: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		Certificates: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Certificates: ABEND048(codegen.go: unsupported type []Certificate),
 // 		NameToCertificate: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 		GetCertificate: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
 // 		GetClientCertificate: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
@@ -21415,14 +21415,14 @@ func ExtractGoObjectConfig(args []Object, index int) *_tls.Config {
 // 		ClientAuth: _ConstructClientAuthType(o.Nth(11)),
 // 		ClientCAs: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
 // 		InsecureSkipVerify: ToBool(o.Nth(13)),
-// 		CipherSuites: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		CipherSuites: ABEND048(codegen.go: unsupported type []uint16),
 // 		PreferServerCipherSuites: ToBool(o.Nth(15)),
 // 		SessionTicketsDisabled: ToBool(o.Nth(16)),
-// 		SessionTicketKey: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		SessionTicketKey: ABEND048(codegen.go: unsupported type ...byte),
 // 		ClientSessionCache: _ConstructClientSessionCache(o.Nth(18)),
 // 		MinVersion: uint16(AssertInt(o.Nth(19), "").I),
 // 		MaxVersion: uint16(AssertInt(o.Nth(20), "").I),
-// 		CurvePreferences: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		CurvePreferences: ABEND048(codegen.go: unsupported type []CurveID),
 // 		DynamicRecordSizingDisabled: ToBool(o.Nth(22)),
 // 		Renegotiation: _ConstructRenegotiationSupport(o.Nth(23)),
 // 		KeyLogWriter: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
@@ -21516,9 +21516,9 @@ func ExtractGoObjectConnectionState(args []Object, index int) *_tls.ConnectionSt
 // 		ServerName: AssertString(o.Nth(6), "").S,
 // 		PeerCertificates: ABEND048(codegen.go: unsupported type []*<notfound>*ast.SelectorExpr</notfound>),
 // 		VerifiedChains: ABEND048(codegen.go: unsupported type [][]*<notfound>*ast.SelectorExpr</notfound>),
-// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]<notfound>*ast.Ident</notfound>),
-// 		OCSPResponse: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		TLSUnique: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]byte),
+// 		OCSPResponse: ABEND048(codegen.go: unsupported type []byte),
+// 		TLSUnique: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -21594,7 +21594,7 @@ func ExtractGoObjectRecordHeaderError(args []Object, index int) *_tls.RecordHead
 // func _vectorToRecordHeaderError(o *Vector) *_tls.RecordHeaderError {
 // 	return &_tls.RecordHeaderError{
 // 		Msg: AssertString(o.Nth(0), "").S,
-// 		RecordHeader: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		RecordHeader: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -21819,12 +21819,12 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 
 // func _vectorToCertificate(o *Vector) *_x509.Certificate {
 // 	return &_x509.Certificate{
-// 		Raw: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawTBSCertificate: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawSubject: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawIssuer: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Signature: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Raw: ABEND048(codegen.go: unsupported type []byte),
+// 		RawTBSCertificate: ABEND048(codegen.go: unsupported type []byte),
+// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []byte),
+// 		RawSubject: ABEND048(codegen.go: unsupported type []byte),
+// 		RawIssuer: ABEND048(codegen.go: unsupported type []byte),
+// 		Signature: ABEND048(codegen.go: unsupported type []byte),
 // 		SignatureAlgorithm: _ConstructSignatureAlgorithm(o.Nth(6)),
 // 		PublicKeyAlgorithm: _ConstructPublicKeyAlgorithm(o.Nth(7)),
 // 		PublicKey: ABEND048(codegen.go: unsupported type <notfound>*ast.InterfaceType</notfound>),
@@ -21838,14 +21838,14 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 // 		Extensions: ABEND048(codegen.go: unsupported type []<notfound>*ast.SelectorExpr</notfound>),
 // 		ExtraExtensions: ABEND048(codegen.go: unsupported type []<notfound>*ast.SelectorExpr</notfound>),
 // 		UnhandledCriticalExtensions: ABEND048(codegen.go: unsupported type []<notfound>*ast.SelectorExpr</notfound>),
-// 		ExtKeyUsage: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		ExtKeyUsage: ABEND048(codegen.go: unsupported type []ExtKeyUsage),
 // 		UnknownExtKeyUsage: ABEND048(codegen.go: unsupported type []<notfound>*ast.SelectorExpr</notfound>),
 // 		BasicConstraintsValid: ToBool(o.Nth(21)),
 // 		IsCA: ToBool(o.Nth(22)),
 // 		MaxPathLen: AssertInt(o.Nth(23), "").I,
 // 		MaxPathLenZero: ToBool(o.Nth(24)),
-// 		SubjectKeyId: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		AuthorityKeyId: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		SubjectKeyId: ABEND048(codegen.go: unsupported type []byte),
+// 		AuthorityKeyId: ABEND048(codegen.go: unsupported type []byte),
 // 		OCSPServer: ABEND048(codegen.go: unsupported type []string),
 // 		IssuingCertificateURL: ABEND048(codegen.go: unsupported type []string),
 // 		DNSNames: ABEND048(codegen.go: unsupported type []string),
@@ -21904,7 +21904,7 @@ func ExtractGoObjectCertificateInvalidError(args []Object, index int) *_x509.Cer
 
 // func _vectorToCertificateInvalidError(o *Vector) *_x509.CertificateInvalidError {
 // 	return &_x509.CertificateInvalidError{
-// 		Cert: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Cert: ABEND048(codegen.go: unsupported type *Certificate),
 // 		Reason: _ConstructInvalidReason(o.Nth(1)),
 // 		Detail: AssertString(o.Nth(2), "").S,
 // 	}
@@ -21948,12 +21948,12 @@ func ExtractGoObjectCertificateRequest(args []Object, index int) *_x509.Certific
 
 // func _vectorToCertificateRequest(o *Vector) *_x509.CertificateRequest {
 // 	return &_x509.CertificateRequest{
-// 		Raw: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawTBSCertificateRequest: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		RawSubject: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Raw: ABEND048(codegen.go: unsupported type []byte),
+// 		RawTBSCertificateRequest: ABEND048(codegen.go: unsupported type []byte),
+// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []byte),
+// 		RawSubject: ABEND048(codegen.go: unsupported type []byte),
 // 		Version: AssertInt(o.Nth(4), "").I,
-// 		Signature: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Signature: ABEND048(codegen.go: unsupported type []byte),
 // 		SignatureAlgorithm: _ConstructSignatureAlgorithm(o.Nth(6)),
 // 		PublicKeyAlgorithm: _ConstructPublicKeyAlgorithm(o.Nth(7)),
 // 		PublicKey: ABEND048(codegen.go: unsupported type <notfound>*ast.InterfaceType</notfound>),
@@ -22079,7 +22079,7 @@ func ExtractGoObjectHostnameError(args []Object, index int) *_x509.HostnameError
 
 // func _vectorToHostnameError(o *Vector) *_x509.HostnameError {
 // 	return &_x509.HostnameError{
-// 		Certificate: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Certificate: ABEND048(codegen.go: unsupported type *Certificate),
 // 		Host: AssertString(o.Nth(1), "").S,
 // 	}
 // }
@@ -22399,7 +22399,7 @@ func ExtractGoObjectUnknownAuthorityError(args []Object, index int) *_x509.Unkno
 
 // func _vectorToUnknownAuthorityError(o *Vector) *_x509.UnknownAuthorityError {
 // 	return &_x509.UnknownAuthorityError{
-// 		Cert: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Cert: ABEND048(codegen.go: unsupported type *Certificate),
 // 	}
 // }
 
@@ -22442,10 +22442,10 @@ func ExtractGoObjectVerifyOptions(args []Object, index int) *_x509.VerifyOptions
 // func _vectorToVerifyOptions(o *Vector) *_x509.VerifyOptions {
 // 	return &_x509.VerifyOptions{
 // 		DNSName: AssertString(o.Nth(0), "").S,
-// 		Intermediates: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Roots: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Intermediates: ABEND048(codegen.go: unsupported type *CertPool),
+// 		Roots: ABEND048(codegen.go: unsupported type *CertPool),
 // 		CurrentTime: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		KeyUsages: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		KeyUsages: ABEND048(codegen.go: unsupported type []ExtKeyUsage),
 // 		MaxConstraintComparisions: AssertInt(o.Nth(5), "").I,
 // 	}
 // }
@@ -23876,8 +23876,8 @@ func ExtractGoObjectFile(args []Object, index int) *_elf.File {
 
 // func _vectorToFile(o *Vector) *_elf.File {
 // 	return &_elf.File{
-// 		Sections: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Progs: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Sections: ABEND048(codegen.go: unsupported type []*Section),
+// 		Progs: ABEND048(codegen.go: unsupported type []*Prog),
 // 	}
 // }
 
@@ -24009,7 +24009,7 @@ func ExtractGoObjectHeader32(args []Object, index int) *_elf.Header32 {
 
 // func _vectorToHeader32(o *Vector) *_elf.Header32 {
 // 	return &_elf.Header32{
-// 		Ident: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Ident: ABEND048(codegen.go: unsupported type ...byte),
 // 		Type: uint16(AssertInt(o.Nth(1), "").I),
 // 		Machine: uint16(AssertInt(o.Nth(2), "").I),
 // 		Version: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -24064,7 +24064,7 @@ func ExtractGoObjectHeader64(args []Object, index int) *_elf.Header64 {
 
 // func _vectorToHeader64(o *Vector) *_elf.Header64 {
 // 	return &_elf.Header64{
-// 		Ident: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Ident: ABEND048(codegen.go: unsupported type ...byte),
 // 		Type: uint16(AssertInt(o.Nth(1), "").I),
 // 		Machine: uint16(AssertInt(o.Nth(2), "").I),
 // 		Version: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -25876,7 +25876,7 @@ func ExtractGoObjectDysymtab(args []Object, index int) *_macho.Dysymtab {
 
 // func _vectorToDysymtab(o *Vector) *_macho.Dysymtab {
 // 	return &_macho.Dysymtab{
-// 		IndirectSyms: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		IndirectSyms: ABEND048(codegen.go: unsupported type []uint32),
 // 	}
 // }
 
@@ -26066,7 +26066,7 @@ func ExtractGoObjectFatFile(args []Object, index int) *_macho.FatFile {
 // func _vectorToFatFile(o *Vector) *_macho.FatFile {
 // 	return &_macho.FatFile{
 // 		Magic: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
-// 		Arches: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Arches: ABEND048(codegen.go: unsupported type []FatArch),
 // 	}
 // }
 
@@ -26109,10 +26109,10 @@ func ExtractGoObjectFile(args []Object, index int) *_macho.File {
 // func _vectorToFile(o *Vector) *_macho.File {
 // 	return &_macho.File{
 // 		ByteOrder: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Loads: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Sections: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Symtab: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Dysymtab: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Loads: ABEND048(codegen.go: unsupported type []Load),
+// 		Sections: ABEND048(codegen.go: unsupported type []*Section),
+// 		Symtab: ABEND048(codegen.go: unsupported type *Symtab),
+// 		Dysymtab: ABEND048(codegen.go: unsupported type *Dysymtab),
 // 	}
 // }
 
@@ -26812,7 +26812,7 @@ func ExtractGoObjectSection(args []Object, index int) *_macho.Section {
 
 // func _vectorToSection(o *Vector) *_macho.Section {
 // 	return &_macho.Section{
-// 		Relocs: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Relocs: ABEND048(codegen.go: unsupported type []Reloc),
 // 	}
 // }
 
@@ -26854,8 +26854,8 @@ func ExtractGoObjectSection32(args []Object, index int) *_macho.Section32 {
 
 // func _vectorToSection32(o *Vector) *_macho.Section32 {
 // 	return &_macho.Section32{
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Seg: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...byte),
+// 		Seg: ABEND048(codegen.go: unsupported type ...byte),
 // 		Addr: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Size: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Offset: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
@@ -26906,8 +26906,8 @@ func ExtractGoObjectSection64(args []Object, index int) *_macho.Section64 {
 
 // func _vectorToSection64(o *Vector) *_macho.Section64 {
 // 	return &_macho.Section64{
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Seg: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...byte),
+// 		Seg: ABEND048(codegen.go: unsupported type ...byte),
 // 		Addr: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
 // 		Size: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Offset: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
@@ -27051,7 +27051,7 @@ func ExtractGoObjectSegment32(args []Object, index int) *_macho.Segment32 {
 // 	return &_macho.Segment32{
 // 		Cmd: _ConstructLoadCmd(o.Nth(0)),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...byte),
 // 		Addr: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Memsz: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 // 		Offset: uint32(AssertNumber(o.Nth(5), "").BigInt().Uint64()),
@@ -27103,7 +27103,7 @@ func ExtractGoObjectSegment64(args []Object, index int) *_macho.Segment64 {
 // 	return &_macho.Segment64{
 // 		Cmd: _ConstructLoadCmd(o.Nth(0)),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...byte),
 // 		Addr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Memsz: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
 // 		Offset: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
@@ -27251,7 +27251,7 @@ func ExtractGoObjectSymtab(args []Object, index int) *_macho.Symtab {
 
 // func _vectorToSymtab(o *Vector) *_macho.Symtab {
 // 	return &_macho.Symtab{
-// 		Syms: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Syms: ABEND048(codegen.go: unsupported type []Symbol),
 // 	}
 // }
 
@@ -27343,7 +27343,7 @@ func ExtractGoObjectThread(args []Object, index int) *_macho.Thread {
 // 		Cmd: _ConstructLoadCmd(o.Nth(0)),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Type: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Data: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Data: ABEND048(codegen.go: unsupported type []uint32),
 // 	}
 // }
 
@@ -27462,7 +27462,7 @@ func ExtractGoObjectCOFFSymbol(args []Object, index int) *_pe.COFFSymbol {
 
 // func _vectorToCOFFSymbol(o *Vector) *_pe.COFFSymbol {
 // 	return &_pe.COFFSymbol{
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
 // 		Value: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		SectionNumber: int16(AssertInt(o.Nth(2), "").I),
 // 		Type: uint16(AssertInt(o.Nth(3), "").I),
@@ -27553,9 +27553,9 @@ func ExtractGoObjectFile(args []Object, index int) *_pe.File {
 // func _vectorToFile(o *Vector) *_pe.File {
 // 	return &_pe.File{
 // 		OptionalHeader: ABEND048(codegen.go: unsupported type <notfound>*ast.InterfaceType</notfound>),
-// 		Sections: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Symbols: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		COFFSymbols: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Sections: ABEND048(codegen.go: unsupported type []*Section),
+// 		Symbols: ABEND048(codegen.go: unsupported type []*Symbol),
+// 		COFFSymbols: ABEND048(codegen.go: unsupported type []COFFSymbol),
 // 		StringTable: _ConstructStringTable(o.Nth(4)),
 // 	}
 // }
@@ -27762,7 +27762,7 @@ func ExtractGoObjectOptionalHeader32(args []Object, index int) *_pe.OptionalHead
 // 		SizeOfHeapCommit: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		LoaderFlags: uint32(AssertNumber(o.Nth(28), "").BigInt().Uint64()),
 // 		NumberOfRvaAndSizes: uint32(AssertNumber(o.Nth(29), "").BigInt().Uint64()),
-// 		DataDirectory: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		DataDirectory: ABEND048(codegen.go: unsupported type ...DataDirectory),
 // 	}
 // }
 
@@ -27833,7 +27833,7 @@ func ExtractGoObjectOptionalHeader64(args []Object, index int) *_pe.OptionalHead
 // 		SizeOfHeapCommit: AssertNumber(o.Nth(26), "").BigInt().Uint64(),
 // 		LoaderFlags: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		NumberOfRvaAndSizes: uint32(AssertNumber(o.Nth(28), "").BigInt().Uint64()),
-// 		DataDirectory: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		DataDirectory: ABEND048(codegen.go: unsupported type ...DataDirectory),
 // 	}
 // }
 
@@ -27919,7 +27919,7 @@ func ExtractGoObjectSection(args []Object, index int) *_pe.Section {
 
 // func _vectorToSection(o *Vector) *_pe.Section {
 // 	return &_pe.Section{
-// 		Relocs: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Relocs: ABEND048(codegen.go: unsupported type []Reloc),
 // 	}
 // }
 
@@ -28012,7 +28012,7 @@ func ExtractGoObjectSectionHeader32(args []Object, index int) *_pe.SectionHeader
 
 // func _vectorToSectionHeader32(o *Vector) *_pe.SectionHeader32 {
 // 	return &_pe.SectionHeader32{
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
 // 		VirtualSize: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		VirtualAddress: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		SizeOfRawData: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -28165,7 +28165,7 @@ func ExtractGoObjectFile(args []Object, index int) *_plan9obj.File {
 
 // func _vectorToFile(o *Vector) *_plan9obj.File {
 // 	return &_plan9obj.File{
-// 		Sections: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Sections: ABEND048(codegen.go: unsupported type []*Section),
 // 	}
 // }
 
@@ -28998,7 +28998,7 @@ func ExtractGoObjectBlock(args []Object, index int) *_pem.Block {
 // 	return &_pem.Block{
 // 		Type: AssertString(o.Nth(0), "").S,
 // 		Headers: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
-// 		Bytes: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Bytes: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -29442,7 +29442,7 @@ func ExtractGoObjectProcInst(args []Object, index int) *_xml.ProcInst {
 // func _vectorToProcInst(o *Vector) *_xml.ProcInst {
 // 	return &_xml.ProcInst{
 // 		Target: AssertString(o.Nth(0), "").S,
-// 		Inst: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Inst: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -29485,7 +29485,7 @@ func ExtractGoObjectStartElement(args []Object, index int) *_xml.StartElement {
 // func _vectorToStartElement(o *Vector) *_xml.StartElement {
 // 	return &_xml.StartElement{
 // 		Name: _ConstructName(o.Nth(0)),
-// 		Attr: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Attr: ABEND048(codegen.go: unsupported type []Attr),
 // 	}
 // }
 
@@ -30760,10 +30760,10 @@ func ExtractGoObjectAssignStmt(args []Object, index int) *_ast.AssignStmt {
 
 // func _vectorToAssignStmt(o *Vector) *_ast.AssignStmt {
 // 	return &_ast.AssignStmt{
-// 		Lhs: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Lhs: ABEND048(codegen.go: unsupported type []Expr),
 // 		TokPos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Tok: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Rhs: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Rhs: ABEND048(codegen.go: unsupported type []Expr),
 // 	}
 // }
 
@@ -31024,7 +31024,7 @@ func ExtractGoObjectBlockStmt(args []Object, index int) *_ast.BlockStmt {
 // func _vectorToBlockStmt(o *Vector) *_ast.BlockStmt {
 // 	return &_ast.BlockStmt{
 // 		Lbrace: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		List: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		List: ABEND048(codegen.go: unsupported type []Stmt),
 // 		Rbrace: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -31069,7 +31069,7 @@ func ExtractGoObjectBranchStmt(args []Object, index int) *_ast.BranchStmt {
 // 	return &_ast.BranchStmt{
 // 		TokPos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Tok: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Label: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Label: ABEND048(codegen.go: unsupported type *Ident),
 // 	}
 // }
 
@@ -31113,7 +31113,7 @@ func ExtractGoObjectCallExpr(args []Object, index int) *_ast.CallExpr {
 // 	return &_ast.CallExpr{
 // 		Fun: _ConstructExpr(o.Nth(0)),
 // 		Lparen: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Args: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Args: ABEND048(codegen.go: unsupported type []Expr),
 // 		Ellipsis: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Rparen: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
@@ -31158,9 +31158,9 @@ func ExtractGoObjectCaseClause(args []Object, index int) *_ast.CaseClause {
 // func _vectorToCaseClause(o *Vector) *_ast.CaseClause {
 // 	return &_ast.CaseClause{
 // 		Case: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		List: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		List: ABEND048(codegen.go: unsupported type []Expr),
 // 		Colon: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type []Stmt),
 // 	}
 // }
 
@@ -31283,7 +31283,7 @@ func ExtractGoObjectCommClause(args []Object, index int) *_ast.CommClause {
 // 		Case: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Comm: _ConstructStmt(o.Nth(1)),
 // 		Colon: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type []Stmt),
 // 	}
 // }
 
@@ -31368,7 +31368,7 @@ func ExtractGoObjectCommentGroup(args []Object, index int) *_ast.CommentGroup {
 
 // func _vectorToCommentGroup(o *Vector) *_ast.CommentGroup {
 // 	return &_ast.CommentGroup{
-// 		List: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		List: ABEND048(codegen.go: unsupported type []*Comment),
 // 	}
 // }
 
@@ -31442,7 +31442,7 @@ func ExtractGoObjectCompositeLit(args []Object, index int) *_ast.CompositeLit {
 // 	return &_ast.CompositeLit{
 // 		Type: _ConstructExpr(o.Nth(0)),
 // 		Lbrace: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Elts: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Elts: ABEND048(codegen.go: unsupported type []Expr),
 // 		Rbrace: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Incomplete: ToBool(o.Nth(4)),
 // 	}
@@ -31559,7 +31559,7 @@ func ExtractGoObjectDeferStmt(args []Object, index int) *_ast.DeferStmt {
 // func _vectorToDeferStmt(o *Vector) *_ast.DeferStmt {
 // 	return &_ast.DeferStmt{
 // 		Defer: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Call: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Call: ABEND048(codegen.go: unsupported type *CallExpr),
 // 	}
 // }
 
@@ -31759,11 +31759,11 @@ func ExtractGoObjectField(args []Object, index int) *_ast.Field {
 
 // func _vectorToField(o *Vector) *_ast.Field {
 // 	return &_ast.Field{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Names: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
+// 		Names: ABEND048(codegen.go: unsupported type []*Ident),
 // 		Type: _ConstructExpr(o.Nth(2)),
-// 		Tag: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Comment: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Tag: ABEND048(codegen.go: unsupported type *BasicLit),
+// 		Comment: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 	}
 // }
 
@@ -31836,7 +31836,7 @@ func ExtractGoObjectFieldList(args []Object, index int) *_ast.FieldList {
 // func _vectorToFieldList(o *Vector) *_ast.FieldList {
 // 	return &_ast.FieldList{
 // 		Opening: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		List: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		List: ABEND048(codegen.go: unsupported type []*Field),
 // 		Closing: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -31879,14 +31879,14 @@ func ExtractGoObjectFile(args []Object, index int) *_ast.File {
 
 // func _vectorToFile(o *Vector) *_ast.File {
 // 	return &_ast.File{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 		Package: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Name: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Decls: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Scope: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Imports: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Unresolved: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Comments: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type *Ident),
+// 		Decls: ABEND048(codegen.go: unsupported type []Decl),
+// 		Scope: ABEND048(codegen.go: unsupported type *Scope),
+// 		Imports: ABEND048(codegen.go: unsupported type []*ImportSpec),
+// 		Unresolved: ABEND048(codegen.go: unsupported type []*Ident),
+// 		Comments: ABEND048(codegen.go: unsupported type []*CommentGroup),
 // 	}
 // }
 
@@ -31962,7 +31962,7 @@ func ExtractGoObjectForStmt(args []Object, index int) *_ast.ForStmt {
 // 		Init: _ConstructStmt(o.Nth(1)),
 // 		Cond: _ConstructExpr(o.Nth(2)),
 // 		Post: _ConstructStmt(o.Nth(3)),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -32004,11 +32004,11 @@ func ExtractGoObjectFuncDecl(args []Object, index int) *_ast.FuncDecl {
 
 // func _vectorToFuncDecl(o *Vector) *_ast.FuncDecl {
 // 	return &_ast.FuncDecl{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Recv: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Name: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Type: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
+// 		Recv: ABEND048(codegen.go: unsupported type *FieldList),
+// 		Name: ABEND048(codegen.go: unsupported type *Ident),
+// 		Type: ABEND048(codegen.go: unsupported type *FuncType),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -32050,8 +32050,8 @@ func ExtractGoObjectFuncLit(args []Object, index int) *_ast.FuncLit {
 
 // func _vectorToFuncLit(o *Vector) *_ast.FuncLit {
 // 	return &_ast.FuncLit{
-// 		Type: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Type: ABEND048(codegen.go: unsupported type *FuncType),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -32094,8 +32094,8 @@ func ExtractGoObjectFuncType(args []Object, index int) *_ast.FuncType {
 // func _vectorToFuncType(o *Vector) *_ast.FuncType {
 // 	return &_ast.FuncType{
 // 		Func: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Params: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Results: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Params: ABEND048(codegen.go: unsupported type *FieldList),
+// 		Results: ABEND048(codegen.go: unsupported type *FieldList),
 // 	}
 // }
 
@@ -32137,11 +32137,11 @@ func ExtractGoObjectGenDecl(args []Object, index int) *_ast.GenDecl {
 
 // func _vectorToGenDecl(o *Vector) *_ast.GenDecl {
 // 	return &_ast.GenDecl{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 		TokPos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Tok: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Lparen: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Specs: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Specs: ABEND048(codegen.go: unsupported type []Spec),
 // 		Rparen: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -32185,7 +32185,7 @@ func ExtractGoObjectGoStmt(args []Object, index int) *_ast.GoStmt {
 // func _vectorToGoStmt(o *Vector) *_ast.GoStmt {
 // 	return &_ast.GoStmt{
 // 		Go: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Call: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Call: ABEND048(codegen.go: unsupported type *CallExpr),
 // 	}
 // }
 
@@ -32229,7 +32229,7 @@ func ExtractGoObjectIdent(args []Object, index int) *_ast.Ident {
 // 	return &_ast.Ident{
 // 		NamePos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Name: AssertString(o.Nth(1), "").S,
-// 		Obj: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Obj: ABEND048(codegen.go: unsupported type *Object),
 // 	}
 // }
 
@@ -32274,7 +32274,7 @@ func ExtractGoObjectIfStmt(args []Object, index int) *_ast.IfStmt {
 // 		If: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Init: _ConstructStmt(o.Nth(1)),
 // 		Cond: _ConstructExpr(o.Nth(2)),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 		Else: _ConstructStmt(o.Nth(4)),
 // 	}
 // }
@@ -32317,10 +32317,10 @@ func ExtractGoObjectImportSpec(args []Object, index int) *_ast.ImportSpec {
 
 // func _vectorToImportSpec(o *Vector) *_ast.ImportSpec {
 // 	return &_ast.ImportSpec{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Name: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Path: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Comment: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
+// 		Name: ABEND048(codegen.go: unsupported type *Ident),
+// 		Path: ABEND048(codegen.go: unsupported type *BasicLit),
+// 		Comment: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 		EndPos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -32483,7 +32483,7 @@ func ExtractGoObjectInterfaceType(args []Object, index int) *_ast.InterfaceType 
 // func _vectorToInterfaceType(o *Vector) *_ast.InterfaceType {
 // 	return &_ast.InterfaceType{
 // 		Interface: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Methods: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Methods: ABEND048(codegen.go: unsupported type *FieldList),
 // 		Incomplete: ToBool(o.Nth(2)),
 // 	}
 // }
@@ -32570,7 +32570,7 @@ func ExtractGoObjectLabeledStmt(args []Object, index int) *_ast.LabeledStmt {
 
 // func _vectorToLabeledStmt(o *Vector) *_ast.LabeledStmt {
 // 	return &_ast.LabeledStmt{
-// 		Label: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Label: ABEND048(codegen.go: unsupported type *Ident),
 // 		Colon: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Stmt: _ConstructStmt(o.Nth(2)),
 // 	}
@@ -32801,7 +32801,7 @@ func ExtractGoObjectPackage(args []Object, index int) *_ast.Package {
 // func _vectorToPackage(o *Vector) *_ast.Package {
 // 	return &_ast.Package{
 // 		Name: AssertString(o.Nth(0), "").S,
-// 		Scope: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Scope: ABEND048(codegen.go: unsupported type *Scope),
 // 		Imports: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 		Files: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 	}
@@ -32895,7 +32895,7 @@ func ExtractGoObjectRangeStmt(args []Object, index int) *_ast.RangeStmt {
 // 		TokPos: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Tok: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		X: _ConstructExpr(o.Nth(5)),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -32938,7 +32938,7 @@ func ExtractGoObjectReturnStmt(args []Object, index int) *_ast.ReturnStmt {
 // func _vectorToReturnStmt(o *Vector) *_ast.ReturnStmt {
 // 	return &_ast.ReturnStmt{
 // 		Return: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Results: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Results: ABEND048(codegen.go: unsupported type []Expr),
 // 	}
 // }
 
@@ -32980,7 +32980,7 @@ func ExtractGoObjectScope(args []Object, index int) *_ast.Scope {
 
 // func _vectorToScope(o *Vector) *_ast.Scope {
 // 	return &_ast.Scope{
-// 		Outer: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Outer: ABEND048(codegen.go: unsupported type *Scope),
 // 		Objects: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 	}
 // }
@@ -33024,7 +33024,7 @@ func ExtractGoObjectSelectStmt(args []Object, index int) *_ast.SelectStmt {
 // func _vectorToSelectStmt(o *Vector) *_ast.SelectStmt {
 // 	return &_ast.SelectStmt{
 // 		Select: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -33067,7 +33067,7 @@ func ExtractGoObjectSelectorExpr(args []Object, index int) *_ast.SelectorExpr {
 // func _vectorToSelectorExpr(o *Vector) *_ast.SelectorExpr {
 // 	return &_ast.SelectorExpr{
 // 		X: _ConstructExpr(o.Nth(0)),
-// 		Sel: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Sel: ABEND048(codegen.go: unsupported type *Ident),
 // 	}
 // }
 
@@ -33305,7 +33305,7 @@ func ExtractGoObjectStructType(args []Object, index int) *_ast.StructType {
 // func _vectorToStructType(o *Vector) *_ast.StructType {
 // 	return &_ast.StructType{
 // 		Struct: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Fields: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Fields: ABEND048(codegen.go: unsupported type *FieldList),
 // 		Incomplete: ToBool(o.Nth(2)),
 // 	}
 // }
@@ -33351,7 +33351,7 @@ func ExtractGoObjectSwitchStmt(args []Object, index int) *_ast.SwitchStmt {
 // 		Switch: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Init: _ConstructStmt(o.Nth(1)),
 // 		Tag: _ConstructExpr(o.Nth(2)),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -33438,11 +33438,11 @@ func ExtractGoObjectTypeSpec(args []Object, index int) *_ast.TypeSpec {
 
 // func _vectorToTypeSpec(o *Vector) *_ast.TypeSpec {
 // 	return &_ast.TypeSpec{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Name: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
+// 		Name: ABEND048(codegen.go: unsupported type *Ident),
 // 		Assign: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Type: _ConstructExpr(o.Nth(3)),
-// 		Comment: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Comment: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 	}
 // }
 
@@ -33487,7 +33487,7 @@ func ExtractGoObjectTypeSwitchStmt(args []Object, index int) *_ast.TypeSwitchStm
 // 		Switch: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		Init: _ConstructStmt(o.Nth(1)),
 // 		Assign: _ConstructStmt(o.Nth(2)),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Body: ABEND048(codegen.go: unsupported type *BlockStmt),
 // 	}
 // }
 
@@ -33573,11 +33573,11 @@ func ExtractGoObjectValueSpec(args []Object, index int) *_ast.ValueSpec {
 
 // func _vectorToValueSpec(o *Vector) *_ast.ValueSpec {
 // 	return &_ast.ValueSpec{
-// 		Doc: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		Names: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Doc: ABEND048(codegen.go: unsupported type *CommentGroup),
+// 		Names: ABEND048(codegen.go: unsupported type []*Ident),
 // 		Type: _ConstructExpr(o.Nth(2)),
-// 		Values: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Comment: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Values: ABEND048(codegen.go: unsupported type []Expr),
+// 		Comment: ABEND048(codegen.go: unsupported type *CommentGroup),
 // 	}
 // }
 
@@ -34476,10 +34476,10 @@ func ExtractGoObjectPackage(args []Object, index int) *_doc.Package {
 // 		Filenames: ABEND048(codegen.go: unsupported type []string),
 // 		Notes: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 		Bugs: ABEND048(codegen.go: unsupported type []string),
-// 		Consts: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Types: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Vars: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Funcs: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Consts: ABEND048(codegen.go: unsupported type []*Value),
+// 		Types: ABEND048(codegen.go: unsupported type []*Type),
+// 		Vars: ABEND048(codegen.go: unsupported type []*Value),
+// 		Funcs: ABEND048(codegen.go: unsupported type []*Func),
 // 	}
 // }
 
@@ -34524,10 +34524,10 @@ func ExtractGoObjectType(args []Object, index int) *_doc.Type {
 // 		Doc: AssertString(o.Nth(0), "").S,
 // 		Name: AssertString(o.Nth(1), "").S,
 // 		Decl: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		Consts: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Vars: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Funcs: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Methods: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Consts: ABEND048(codegen.go: unsupported type []*Value),
+// 		Vars: ABEND048(codegen.go: unsupported type []*Value),
+// 		Funcs: ABEND048(codegen.go: unsupported type []*Func),
+// 		Methods: ABEND048(codegen.go: unsupported type []*Func),
 // 	}
 // }
 
@@ -35588,7 +35588,7 @@ func ExtractGoObjectInfo(args []Object, index int) *_types.Info {
 // 		Implicits: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 		Selections: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
 // 		Scopes: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
-// 		InitOrder: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		InitOrder: ABEND048(codegen.go: unsupported type []*Initializer),
 // 	}
 // }
 
@@ -35630,7 +35630,7 @@ func ExtractGoObjectInitializer(args []Object, index int) *_types.Initializer {
 
 // func _vectorToInitializer(o *Vector) *_types.Initializer {
 // 	return &_types.Initializer{
-// 		Lhs: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Lhs: ABEND048(codegen.go: unsupported type []*Var),
 // 		Rhs: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -37483,7 +37483,7 @@ func ExtractGoObjectAlpha(args []Object, index int) *_image.Alpha {
 
 // func _vectorToAlpha(o *Vector) *_image.Alpha {
 // 	return &_image.Alpha{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37527,7 +37527,7 @@ func ExtractGoObjectAlpha16(args []Object, index int) *_image.Alpha16 {
 
 // func _vectorToAlpha16(o *Vector) *_image.Alpha16 {
 // 	return &_image.Alpha16{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37571,7 +37571,7 @@ func ExtractGoObjectCMYK(args []Object, index int) *_image.CMYK {
 
 // func _vectorToCMYK(o *Vector) *_image.CMYK {
 // 	return &_image.CMYK{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37659,7 +37659,7 @@ func ExtractGoObjectGray(args []Object, index int) *_image.Gray {
 
 // func _vectorToGray(o *Vector) *_image.Gray {
 // 	return &_image.Gray{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37703,7 +37703,7 @@ func ExtractGoObjectGray16(args []Object, index int) *_image.Gray16 {
 
 // func _vectorToGray16(o *Vector) *_image.Gray16 {
 // 	return &_image.Gray16{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37777,7 +37777,7 @@ func ExtractGoObjectNRGBA(args []Object, index int) *_image.NRGBA {
 
 // func _vectorToNRGBA(o *Vector) *_image.NRGBA {
 // 	return &_image.NRGBA{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37821,7 +37821,7 @@ func ExtractGoObjectNRGBA64(args []Object, index int) *_image.NRGBA64 {
 
 // func _vectorToNRGBA64(o *Vector) *_image.NRGBA64 {
 // 	return &_image.NRGBA64{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -37865,7 +37865,7 @@ func ExtractGoObjectNYCbCrA(args []Object, index int) *_image.NYCbCrA {
 
 // func _vectorToNYCbCrA(o *Vector) *_image.NYCbCrA {
 // 	return &_image.NYCbCrA{
-// 		A: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		A: ABEND048(codegen.go: unsupported type []uint8),
 // 		AStride: AssertInt(o.Nth(1), "").I,
 // 	}
 // }
@@ -37908,7 +37908,7 @@ func ExtractGoObjectPaletted(args []Object, index int) *_image.Paletted {
 
 // func _vectorToPaletted(o *Vector) *_image.Paletted {
 // 	return &_image.Paletted{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 		Palette: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
@@ -38026,7 +38026,7 @@ func ExtractGoObjectRGBA(args []Object, index int) *_image.RGBA {
 
 // func _vectorToRGBA(o *Vector) *_image.RGBA {
 // 	return &_image.RGBA{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -38070,7 +38070,7 @@ func ExtractGoObjectRGBA64(args []Object, index int) *_image.RGBA64 {
 
 // func _vectorToRGBA64(o *Vector) *_image.RGBA64 {
 // 	return &_image.RGBA64{
-// 		Pix: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: _ConstructRectangle(o.Nth(2)),
 // 	}
@@ -38199,9 +38199,9 @@ func ExtractGoObjectYCbCr(args []Object, index int) *_image.YCbCr {
 
 // func _vectorToYCbCr(o *Vector) *_image.YCbCr {
 // 	return &_image.YCbCr{
-// 		Y: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Cb: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Cr: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Y: ABEND048(codegen.go: unsupported type []uint8),
+// 		Cb: ABEND048(codegen.go: unsupported type []uint8),
+// 		Cr: ABEND048(codegen.go: unsupported type []uint8),
 // 		YStride: AssertInt(o.Nth(3), "").I,
 // 		CStride: AssertInt(o.Nth(4), "").I,
 // 		SubsampleRatio: _ConstructYCbCrSubsampleRatio(o.Nth(5)),
@@ -41273,7 +41273,7 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 // 		DualStack: ToBool(o.Nth(3)),
 // 		FallbackDelay: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
 // 		KeepAlive: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Resolver: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Resolver: ABEND048(codegen.go: unsupported type *Resolver),
 // 		Cancel: ABEND048(codegen.go: unsupported type <notfound>*ast.ChanType</notfound>),
 // 		Control: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
 // 	}
@@ -43386,7 +43386,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		RequestURI: AssertString(o.Nth(17), "").S,
 // 		TLS: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
 // 		Cancel: ABEND048(codegen.go: unsupported type <notfound>*ast.ChanType</notfound>),
-// 		Response: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Response: ABEND048(codegen.go: unsupported type *Response),
 // 	}
 // }
 
@@ -43440,7 +43440,7 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
 // 		Trailer: _ConstructHeader(o.Nth(11)),
-// 		Request: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Request: ABEND048(codegen.go: unsupported type *Request),
 // 		TLS: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -45654,7 +45654,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		User: ABEND048(codegen.go: unsupported type *Userinfo),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -46031,7 +46031,7 @@ func ExtractGoObjectProcAttr(args []Object, index int) *_os.ProcAttr {
 // 	return &_os.ProcAttr{
 // 		Dir: AssertString(o.Nth(0), "").S,
 // 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		Files: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Files: ABEND048(codegen.go: unsupported type []*File),
 // 		Sys: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
 // 	}
 // }
@@ -46548,7 +46548,7 @@ func ExtractGoObjectExitError(args []Object, index int) *_exec.ExitError {
 
 // func _vectorToExitError(o *Vector) *_exec.ExitError {
 // 	return &_exec.ExitError{
-// 		Stderr: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Stderr: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -47435,7 +47435,7 @@ func ExtractGoObjectStructField(args []Object, index int) *_reflect.StructField 
 // 		Type: _ConstructType(o.Nth(2)),
 // 		Tag: _ConstructStructTag(o.Nth(3)),
 // 		Offset: uintptr(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
-// 		Index: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Index: ABEND048(codegen.go: unsupported type []int),
 // 		Anonymous: ToBool(o.Nth(6)),
 // 	}
 // }
@@ -48023,7 +48023,7 @@ func ExtractGoObjectInst(args []Object, index int) *_syntax.Inst {
 // 		Op: _ConstructInstOp(o.Nth(0)),
 // 		Out: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Arg: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Rune: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Rune: ABEND048(codegen.go: unsupported type []rune),
 // 	}
 // }
 
@@ -48131,7 +48131,7 @@ func ExtractGoObjectProg(args []Object, index int) *_syntax.Prog {
 
 // func _vectorToProg(o *Vector) *_syntax.Prog {
 // 	return &_syntax.Prog{
-// 		Inst: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Inst: ABEND048(codegen.go: unsupported type []Inst),
 // 		Start: AssertInt(o.Nth(1), "").I,
 // 		NumCap: AssertInt(o.Nth(2), "").I,
 // 	}
@@ -48177,10 +48177,10 @@ func ExtractGoObjectRegexp(args []Object, index int) *_syntax.Regexp {
 // 	return &_syntax.Regexp{
 // 		Op: _ConstructOp(o.Nth(0)),
 // 		Flags: _ConstructFlags(o.Nth(1)),
-// 		Sub: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Sub0: ABEND048(codegen.go: unsupported type ...*<notfound>*ast.Ident</notfound>),
-// 		Rune: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Rune0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Sub: ABEND048(codegen.go: unsupported type []*Regexp),
+// 		Sub0: ABEND048(codegen.go: unsupported type ...*Regexp),
+// 		Rune: ABEND048(codegen.go: unsupported type []rune),
+// 		Rune0: ABEND048(codegen.go: unsupported type ...rune),
 // 		Min: AssertInt(o.Nth(6), "").I,
 // 		Max: AssertInt(o.Nth(7), "").I,
 // 		Cap: AssertInt(o.Nth(8), "").I,
@@ -48338,7 +48338,7 @@ func ExtractGoObjectFrame(args []Object, index int) *_runtime.Frame {
 // func _vectorToFrame(o *Vector) *_runtime.Frame {
 // 	return &_runtime.Frame{
 // 		PC: uintptr(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
-// 		Func: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Func: ABEND048(codegen.go: unsupported type *Func),
 // 		Function: AssertString(o.Nth(2), "").S,
 // 		File: AssertString(o.Nth(3), "").S,
 // 		Line: AssertInt(o.Nth(4), "").I,
@@ -48468,7 +48468,7 @@ func ExtractGoObjectMemProfileRecord(args []Object, index int) *_runtime.MemProf
 // 		FreeBytes: AssertNumber(o.Nth(1), "").BigInt().Int64(),
 // 		AllocObjects: AssertNumber(o.Nth(2), "").BigInt().Int64(),
 // 		FreeObjects: AssertNumber(o.Nth(3), "").BigInt().Int64(),
-// 		Stack0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Stack0: ABEND048(codegen.go: unsupported type ...uintptr),
 // 	}
 // }
 
@@ -48534,8 +48534,8 @@ func ExtractGoObjectMemStats(args []Object, index int) *_runtime.MemStats {
 // 		NextGC: AssertNumber(o.Nth(21), "").BigInt().Uint64(),
 // 		LastGC: AssertNumber(o.Nth(22), "").BigInt().Uint64(),
 // 		PauseTotalNs: AssertNumber(o.Nth(23), "").BigInt().Uint64(),
-// 		PauseNs: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		PauseEnd: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		PauseNs: ABEND048(codegen.go: unsupported type ...uint64),
+// 		PauseEnd: ABEND048(codegen.go: unsupported type ...uint64),
 // 		NumGC: uint32(AssertNumber(o.Nth(26), "").BigInt().Uint64()),
 // 		NumForcedGC: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		GCCPUFraction: float64(AssertDouble(o.Nth(28), "").D),
@@ -48583,7 +48583,7 @@ func ExtractGoObjectStackRecord(args []Object, index int) *_runtime.StackRecord 
 
 // func _vectorToStackRecord(o *Vector) *_runtime.StackRecord {
 // 	return &_runtime.StackRecord{
-// 		Stack0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Stack0: ABEND048(codegen.go: unsupported type ...uintptr),
 // 	}
 // }
 
@@ -50583,7 +50583,7 @@ func ExtractGoObjectCredential(args []Object, index int) *_syscall.Credential {
 // 	return &_syscall.Credential{
 // 		Uid: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
 // 		Gid: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Groups: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Groups: ABEND048(codegen.go: unsupported type []uint32),
 // 		NoSetGroups: ToBool(o.Nth(3)),
 // 	}
 // }
@@ -50630,8 +50630,8 @@ func ExtractGoObjectDirent(args []Object, index int) *_syscall.Dirent {
 // 		Off: AssertNumber(o.Nth(1), "").BigInt().Int64(),
 // 		Reclen: uint16(AssertInt(o.Nth(2), "").I),
 // 		Type: uint8(AssertInt(o.Nth(3), "").I),
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...int8),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -50750,7 +50750,7 @@ func ExtractGoObjectFdSet(args []Object, index int) *_syscall.FdSet {
 
 // func _vectorToFdSet(o *Vector) *_syscall.FdSet {
 // 	return &_syscall.FdSet{
-// 		Bits: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Bits: ABEND048(codegen.go: unsupported type ...int64),
 // 	}
 // }
 
@@ -50794,11 +50794,11 @@ func ExtractGoObjectFlock_t(args []Object, index int) *_syscall.Flock_t {
 // 	return &_syscall.Flock_t{
 // 		Type: int16(AssertInt(o.Nth(0), "").I),
 // 		Whence: int16(AssertInt(o.Nth(1), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Start: AssertNumber(o.Nth(3), "").BigInt().Int64(),
 // 		Len: AssertNumber(o.Nth(4), "").BigInt().Int64(),
 // 		Pid: int32(AssertInt(o.Nth(5), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -50840,7 +50840,7 @@ func ExtractGoObjectFsid(args []Object, index int) *_syscall.Fsid {
 
 // func _vectorToFsid(o *Vector) *_syscall.Fsid {
 // 	return &_syscall.Fsid{
-// 		X__val: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		X__val: ABEND048(codegen.go: unsupported type ...int32),
 // 	}
 // }
 
@@ -50882,7 +50882,7 @@ func ExtractGoObjectICMPv6Filter(args []Object, index int) *_syscall.ICMPv6Filte
 
 // func _vectorToICMPv6Filter(o *Vector) *_syscall.ICMPv6Filter {
 // 	return &_syscall.ICMPv6Filter{
-// 		Data: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Data: ABEND048(codegen.go: unsupported type ...uint32),
 // 	}
 // }
 
@@ -50924,8 +50924,8 @@ func ExtractGoObjectIPMreq(args []Object, index int) *_syscall.IPMreq {
 
 // func _vectorToIPMreq(o *Vector) *_syscall.IPMreq {
 // 	return &_syscall.IPMreq{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Interface: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Interface: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -50967,8 +50967,8 @@ func ExtractGoObjectIPMreqn(args []Object, index int) *_syscall.IPMreqn {
 
 // func _vectorToIPMreqn(o *Vector) *_syscall.IPMreqn {
 // 	return &_syscall.IPMreqn{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Address: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Address: ABEND048(codegen.go: unsupported type ...byte),
 // 		Ifindex: int32(AssertInt(o.Nth(2), "").I),
 // 	}
 // }
@@ -51054,7 +51054,7 @@ func ExtractGoObjectIPv6Mreq(args []Object, index int) *_syscall.IPv6Mreq {
 
 // func _vectorToIPv6Mreq(o *Vector) *_syscall.IPv6Mreq {
 // 	return &_syscall.IPv6Mreq{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
 // 		Interface: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 	}
 // }
@@ -51191,8 +51191,8 @@ func ExtractGoObjectInet4Pktinfo(args []Object, index int) *_syscall.Inet4Pktinf
 // func _vectorToInet4Pktinfo(o *Vector) *_syscall.Inet4Pktinfo {
 // 	return &_syscall.Inet4Pktinfo{
 // 		Ifindex: int32(AssertInt(o.Nth(0), "").I),
-// 		Spec_dst: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Spec_dst: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -51234,7 +51234,7 @@ func ExtractGoObjectInet6Pktinfo(args []Object, index int) *_syscall.Inet6Pktinf
 
 // func _vectorToInet6Pktinfo(o *Vector) *_syscall.Inet6Pktinfo {
 // 	return &_syscall.Inet6Pktinfo{
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 		Ifindex: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 	}
 // }
@@ -51281,7 +51281,7 @@ func ExtractGoObjectInotifyEvent(args []Object, index int) *_syscall.InotifyEven
 // 		Mask: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Cookie: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Len: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
 // 	}
 // }
 
@@ -51323,7 +51323,7 @@ func ExtractGoObjectIovec(args []Object, index int) *_syscall.Iovec {
 
 // func _vectorToIovec(o *Vector) *_syscall.Iovec {
 // 	return &_syscall.Iovec{
-// 		Base: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Base: ABEND048(codegen.go: unsupported type *byte),
 // 		Len: AssertNumber(o.Nth(1), "").BigInt().Uint64(),
 // 	}
 // }
@@ -51409,15 +51409,15 @@ func ExtractGoObjectMsghdr(args []Object, index int) *_syscall.Msghdr {
 
 // func _vectorToMsghdr(o *Vector) *_syscall.Msghdr {
 // 	return &_syscall.Msghdr{
-// 		Name: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Name: ABEND048(codegen.go: unsupported type *byte),
 // 		Namelen: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Iov: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Iov: ABEND048(codegen.go: unsupported type *Iovec),
 // 		Iovlen: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
-// 		Control: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Control: ABEND048(codegen.go: unsupported type *byte),
 // 		Controllen: AssertNumber(o.Nth(6), "").BigInt().Uint64(),
 // 		Flags: int32(AssertInt(o.Nth(7), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -51460,7 +51460,7 @@ func ExtractGoObjectNetlinkMessage(args []Object, index int) *_syscall.NetlinkMe
 // func _vectorToNetlinkMessage(o *Vector) *_syscall.NetlinkMessage {
 // 	return &_syscall.NetlinkMessage{
 // 		Header: _ConstructNlMsghdr(o.Nth(0)),
-// 		Data: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Data: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -51503,7 +51503,7 @@ func ExtractGoObjectNetlinkRouteAttr(args []Object, index int) *_syscall.Netlink
 // func _vectorToNetlinkRouteAttr(o *Vector) *_syscall.NetlinkRouteAttr {
 // 	return &_syscall.NetlinkRouteAttr{
 // 		Attr: _ConstructRtAttr(o.Nth(0)),
-// 		Value: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Value: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -51722,8 +51722,8 @@ func ExtractGoObjectProcAttr(args []Object, index int) *_syscall.ProcAttr {
 // 	return &_syscall.ProcAttr{
 // 		Dir: AssertString(o.Nth(0), "").S,
 // 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		Files: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		Sys: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Files: ABEND048(codegen.go: unsupported type []uintptr),
+// 		Sys: ABEND048(codegen.go: unsupported type *SysProcAttr),
 // 	}
 // }
 
@@ -51864,7 +51864,7 @@ func ExtractGoObjectRawSockaddr(args []Object, index int) *_syscall.RawSockaddr 
 // func _vectorToRawSockaddr(o *Vector) *_syscall.RawSockaddr {
 // 	return &_syscall.RawSockaddr{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
-// 		Data: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Data: ABEND048(codegen.go: unsupported type ...int8),
 // 	}
 // }
 
@@ -51907,7 +51907,7 @@ func ExtractGoObjectRawSockaddrAny(args []Object, index int) *_syscall.RawSockad
 // func _vectorToRawSockaddrAny(o *Vector) *_syscall.RawSockaddrAny {
 // 	return &_syscall.RawSockaddrAny{
 // 		Addr: _ConstructRawSockaddr(o.Nth(0)),
-// 		Pad: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad: ABEND048(codegen.go: unsupported type ...int8),
 // 	}
 // }
 
@@ -51951,8 +51951,8 @@ func ExtractGoObjectRawSockaddrInet4(args []Object, index int) *_syscall.RawSock
 // 	return &_syscall.RawSockaddrInet4{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
 // 		Port: uint16(AssertInt(o.Nth(1), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Zero: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Zero: ABEND048(codegen.go: unsupported type ...uint8),
 // 	}
 // }
 
@@ -51997,7 +51997,7 @@ func ExtractGoObjectRawSockaddrInet6(args []Object, index int) *_syscall.RawSock
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
 // 		Port: uint16(AssertInt(o.Nth(1), "").I),
 // 		Flowinfo: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 		Scope_id: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 // 	}
 // }
@@ -52046,7 +52046,7 @@ func ExtractGoObjectRawSockaddrLinklayer(args []Object, index int) *_syscall.Raw
 // 		Hatype: uint16(AssertInt(o.Nth(3), "").I),
 // 		Pkttype: uint8(AssertInt(o.Nth(4), "").I),
 // 		Halen: uint8(AssertInt(o.Nth(5), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...uint8),
 // 	}
 // }
 
@@ -52134,7 +52134,7 @@ func ExtractGoObjectRawSockaddrUnix(args []Object, index int) *_syscall.RawSocka
 // func _vectorToRawSockaddrUnix(o *Vector) *_syscall.RawSockaddrUnix {
 // 	return &_syscall.RawSockaddrUnix{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
-// 		Path: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Path: ABEND048(codegen.go: unsupported type ...int8),
 // 	}
 // }
 
@@ -52535,8 +52535,8 @@ func ExtractGoObjectSockFprog(args []Object, index int) *_syscall.SockFprog {
 // func _vectorToSockFprog(o *Vector) *_syscall.SockFprog {
 // 	return &_syscall.SockFprog{
 // 		Len: uint16(AssertInt(o.Nth(0), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Filter: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Filter: ABEND048(codegen.go: unsupported type *SockFilter),
 // 	}
 // }
 
@@ -52609,7 +52609,7 @@ func ExtractGoObjectSockaddrInet4(args []Object, index int) *_syscall.SockaddrIn
 // func _vectorToSockaddrInet4(o *Vector) *_syscall.SockaddrInet4 {
 // 	return &_syscall.SockaddrInet4{
 // 		Port: AssertInt(o.Nth(0), "").I,
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -52653,7 +52653,7 @@ func ExtractGoObjectSockaddrInet6(args []Object, index int) *_syscall.SockaddrIn
 // 	return &_syscall.SockaddrInet6{
 // 		Port: AssertInt(o.Nth(0), "").I,
 // 		ZoneId: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -52700,7 +52700,7 @@ func ExtractGoObjectSockaddrLinklayer(args []Object, index int) *_syscall.Sockad
 // 		Hatype: uint16(AssertInt(o.Nth(2), "").I),
 // 		Pkttype: uint8(AssertInt(o.Nth(3), "").I),
 // 		Halen: uint8(AssertInt(o.Nth(4), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -52830,7 +52830,7 @@ func ExtractGoObjectSocketControlMessage(args []Object, index int) *_syscall.Soc
 // func _vectorToSocketControlMessage(o *Vector) *_syscall.SocketControlMessage {
 // 	return &_syscall.SocketControlMessage{
 // 		Header: _ConstructCmsghdr(o.Nth(0)),
-// 		Data: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Data: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -52886,7 +52886,7 @@ func ExtractGoObjectStat_t(args []Object, index int) *_syscall.Stat_t {
 // 		Atim: _ConstructTimespec(o.Nth(11)),
 // 		Mtim: _ConstructTimespec(o.Nth(12)),
 // 		Ctim: _ConstructTimespec(o.Nth(13)),
-// 		X__unused: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		X__unused: ABEND048(codegen.go: unsupported type ...int64),
 // 	}
 // }
 
@@ -52939,7 +52939,7 @@ func ExtractGoObjectStatfs_t(args []Object, index int) *_syscall.Statfs_t {
 // 		Namelen: AssertNumber(o.Nth(8), "").BigInt().Int64(),
 // 		Frsize: AssertNumber(o.Nth(9), "").BigInt().Int64(),
 // 		Flags: AssertNumber(o.Nth(10), "").BigInt().Int64(),
-// 		Spare: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Spare: ABEND048(codegen.go: unsupported type ...int64),
 // 	}
 // }
 
@@ -52982,7 +52982,7 @@ func ExtractGoObjectSysProcAttr(args []Object, index int) *_syscall.SysProcAttr 
 // func _vectorToSysProcAttr(o *Vector) *_syscall.SysProcAttr {
 // 	return &_syscall.SysProcAttr{
 // 		Chroot: AssertString(o.Nth(0), "").S,
-// 		Credential: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Credential: ABEND048(codegen.go: unsupported type *Credential),
 // 		Ptrace: ToBool(o.Nth(2)),
 // 		Setsid: ToBool(o.Nth(3)),
 // 		Setpgid: ToBool(o.Nth(4)),
@@ -52994,10 +52994,10 @@ func ExtractGoObjectSysProcAttr(args []Object, index int) *_syscall.SysProcAttr 
 // 		Pdeathsig: _ConstructSignal(o.Nth(10)),
 // 		Cloneflags: uintptr(AssertNumber(o.Nth(11), "").BigInt().Uint64()),
 // 		Unshareflags: uintptr(AssertNumber(o.Nth(12), "").BigInt().Uint64()),
-// 		UidMappings: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
-// 		GidMappings: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		UidMappings: ABEND048(codegen.go: unsupported type []SysProcIDMap),
+// 		GidMappings: ABEND048(codegen.go: unsupported type []SysProcIDMap),
 // 		GidMappingsEnableSetgroups: ToBool(o.Nth(15)),
-// 		AmbientCaps: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		AmbientCaps: ABEND048(codegen.go: unsupported type []uintptr),
 // 	}
 // }
 
@@ -53084,7 +53084,7 @@ func ExtractGoObjectSysinfo_t(args []Object, index int) *_syscall.Sysinfo_t {
 // func _vectorToSysinfo_t(o *Vector) *_syscall.Sysinfo_t {
 // 	return &_syscall.Sysinfo_t{
 // 		Uptime: AssertNumber(o.Nth(0), "").BigInt().Int64(),
-// 		Loads: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Loads: ABEND048(codegen.go: unsupported type ...uint64),
 // 		Totalram: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
 // 		Freeram: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Sharedram: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
@@ -53093,12 +53093,12 @@ func ExtractGoObjectSysinfo_t(args []Object, index int) *_syscall.Sysinfo_t {
 // 		Freeswap: AssertNumber(o.Nth(7), "").BigInt().Uint64(),
 // 		Procs: uint16(AssertInt(o.Nth(8), "").I),
 // 		Pad: uint16(AssertInt(o.Nth(9), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Totalhigh: AssertNumber(o.Nth(11), "").BigInt().Uint64(),
 // 		Freehigh: AssertNumber(o.Nth(12), "").BigInt().Uint64(),
 // 		Unit: uint32(AssertNumber(o.Nth(13), "").BigInt().Uint64()),
-// 		X_f: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		X_f: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -53146,7 +53146,7 @@ func ExtractGoObjectTCPInfo(args []Object, index int) *_syscall.TCPInfo {
 // 		Probes: uint8(AssertInt(o.Nth(3), "").I),
 // 		Backoff: uint8(AssertInt(o.Nth(4), "").I),
 // 		Options: uint8(AssertInt(o.Nth(5), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Rto: uint32(AssertNumber(o.Nth(7), "").BigInt().Uint64()),
 // 		Ato: uint32(AssertNumber(o.Nth(8), "").BigInt().Uint64()),
 // 		Snd_mss: uint32(AssertNumber(o.Nth(9), "").BigInt().Uint64()),
@@ -53217,8 +53217,8 @@ func ExtractGoObjectTermios(args []Object, index int) *_syscall.Termios {
 // 		Cflag: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Lflag: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Line: uint8(AssertInt(o.Nth(4), "").I),
-// 		Cc: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Cc: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Ispeed: uint32(AssertNumber(o.Nth(7), "").BigInt().Uint64()),
 // 		Ospeed: uint32(AssertNumber(o.Nth(8), "").BigInt().Uint64()),
 // 	}
@@ -53382,13 +53382,13 @@ func ExtractGoObjectTimex(args []Object, index int) *_syscall.Timex {
 // func _vectorToTimex(o *Vector) *_syscall.Timex {
 // 	return &_syscall.Timex{
 // 		Modes: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Offset: AssertNumber(o.Nth(2), "").BigInt().Int64(),
 // 		Freq: AssertNumber(o.Nth(3), "").BigInt().Int64(),
 // 		Maxerror: AssertNumber(o.Nth(4), "").BigInt().Int64(),
 // 		Esterror: AssertNumber(o.Nth(5), "").BigInt().Int64(),
 // 		Status: int32(AssertInt(o.Nth(6), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
 // 		Constant: AssertNumber(o.Nth(8), "").BigInt().Int64(),
 // 		Precision: AssertNumber(o.Nth(9), "").BigInt().Int64(),
 // 		Tolerance: AssertNumber(o.Nth(10), "").BigInt().Int64(),
@@ -53397,14 +53397,14 @@ func ExtractGoObjectTimex(args []Object, index int) *_syscall.Timex {
 // 		Ppsfreq: AssertNumber(o.Nth(13), "").BigInt().Int64(),
 // 		Jitter: AssertNumber(o.Nth(14), "").BigInt().Int64(),
 // 		Shift: int32(AssertInt(o.Nth(15), "").I),
-// 		Pad_cgo_2: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_2: ABEND048(codegen.go: unsupported type ...byte),
 // 		Stabil: AssertNumber(o.Nth(17), "").BigInt().Int64(),
 // 		Jitcnt: AssertNumber(o.Nth(18), "").BigInt().Int64(),
 // 		Calcnt: AssertNumber(o.Nth(19), "").BigInt().Int64(),
 // 		Errcnt: AssertNumber(o.Nth(20), "").BigInt().Int64(),
 // 		Stbcnt: AssertNumber(o.Nth(21), "").BigInt().Int64(),
 // 		Tai: int32(AssertInt(o.Nth(22), "").I),
-// 		Pad_cgo_3: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_3: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -53536,11 +53536,11 @@ func ExtractGoObjectUstat_t(args []Object, index int) *_syscall.Ustat_t {
 // func _vectorToUstat_t(o *Vector) *_syscall.Ustat_t {
 // 	return &_syscall.Ustat_t{
 // 		Tfree: int32(AssertInt(o.Nth(0), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
 // 		Tinode: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
-// 		Fname: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Fpack: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Fname: ABEND048(codegen.go: unsupported type ...int8),
+// 		Fpack: ABEND048(codegen.go: unsupported type ...int8),
+// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
 // 	}
 // }
 
@@ -53625,12 +53625,12 @@ func ExtractGoObjectUtsname(args []Object, index int) *_syscall.Utsname {
 
 // func _vectorToUtsname(o *Vector) *_syscall.Utsname {
 // 	return &_syscall.Utsname{
-// 		Sysname: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Nodename: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Release: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Version: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Machine: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
-// 		Domainname: ABEND048(codegen.go: unsupported type ...<notfound>*ast.Ident</notfound>),
+// 		Sysname: ABEND048(codegen.go: unsupported type ...int8),
+// 		Nodename: ABEND048(codegen.go: unsupported type ...int8),
+// 		Release: ABEND048(codegen.go: unsupported type ...int8),
+// 		Version: ABEND048(codegen.go: unsupported type ...int8),
+// 		Machine: ABEND048(codegen.go: unsupported type ...int8),
+// 		Domainname: ABEND048(codegen.go: unsupported type ...int8),
 // 	}
 // }
 
@@ -55488,7 +55488,7 @@ func ExtractGoObjectActionNode(args []Object, index int) *_parse.ActionNode {
 // func _vectorToActionNode(o *Vector) *_parse.ActionNode {
 // 	return &_parse.ActionNode{
 // 		Line: AssertInt(o.Nth(0), "").I,
-// 		Pipe: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Pipe: ABEND048(codegen.go: unsupported type *PipeNode),
 // 	}
 // }
 
@@ -55573,9 +55573,9 @@ func ExtractGoObjectBranchNode(args []Object, index int) *_parse.BranchNode {
 // func _vectorToBranchNode(o *Vector) *_parse.BranchNode {
 // 	return &_parse.BranchNode{
 // 		Line: AssertInt(o.Nth(0), "").I,
-// 		Pipe: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		List: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
-// 		ElseList: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Pipe: ABEND048(codegen.go: unsupported type *PipeNode),
+// 		List: ABEND048(codegen.go: unsupported type *ListNode),
+// 		ElseList: ABEND048(codegen.go: unsupported type *ListNode),
 // 	}
 // }
 
@@ -55660,7 +55660,7 @@ func ExtractGoObjectCommandNode(args []Object, index int) *_parse.CommandNode {
 
 // func _vectorToCommandNode(o *Vector) *_parse.CommandNode {
 // 	return &_parse.CommandNode{
-// 		Args: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Args: ABEND048(codegen.go: unsupported type []Node),
 // 	}
 // }
 
@@ -55866,7 +55866,7 @@ func ExtractGoObjectListNode(args []Object, index int) *_parse.ListNode {
 
 // func _vectorToListNode(o *Vector) *_parse.ListNode {
 // 	return &_parse.ListNode{
-// 		Nodes: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Nodes: ABEND048(codegen.go: unsupported type []Node),
 // 	}
 // }
 
@@ -56063,8 +56063,8 @@ func ExtractGoObjectPipeNode(args []Object, index int) *_parse.PipeNode {
 // 	return &_parse.PipeNode{
 // 		Line: AssertInt(o.Nth(0), "").I,
 // 		IsAssign: ToBool(o.Nth(1)),
-// 		Decl: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
-// 		Cmds: ABEND048(codegen.go: unsupported type []*<notfound>*ast.Ident</notfound>),
+// 		Decl: ABEND048(codegen.go: unsupported type []*VariableNode),
+// 		Cmds: ABEND048(codegen.go: unsupported type []*CommandNode),
 // 	}
 // }
 
@@ -56224,7 +56224,7 @@ func ExtractGoObjectTemplateNode(args []Object, index int) *_parse.TemplateNode 
 // 	return &_parse.TemplateNode{
 // 		Line: AssertInt(o.Nth(0), "").I,
 // 		Name: AssertString(o.Nth(1), "").S,
-// 		Pipe: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Pipe: ABEND048(codegen.go: unsupported type *PipeNode),
 // 	}
 // }
 
@@ -56266,7 +56266,7 @@ func ExtractGoObjectTextNode(args []Object, index int) *_parse.TextNode {
 
 // func _vectorToTextNode(o *Vector) *_parse.TextNode {
 // 	return &_parse.TextNode{
-// 		Text: ABEND048(codegen.go: unsupported type []<notfound>*ast.Ident</notfound>),
+// 		Text: ABEND048(codegen.go: unsupported type []byte),
 // 	}
 // }
 
@@ -56310,7 +56310,7 @@ func ExtractGoObjectTree(args []Object, index int) *_parse.Tree {
 // 	return &_parse.Tree{
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		ParseName: AssertString(o.Nth(1), "").S,
-// 		Root: ABEND048(codegen.go: unsupported type *<notfound>*ast.Ident</notfound>),
+// 		Root: ABEND048(codegen.go: unsupported type *ListNode),
 // 	}
 // }
 

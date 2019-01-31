@@ -19,8 +19,10 @@ func toGoTypeInfo(ts *TypeSpec) *goTypeInfo {
 }
 
 func toGoExprInfo(e Expr) *goTypeInfo {
+	fullName := fmt.Sprintf("<notfound>%T</notfound>", e)
 	switch td := e.(type) {
 	case *Ident:
+		fullName = td.Name
 		v := goBuiltinTypes[td.Name]
 		if v != nil {
 			return v
@@ -31,9 +33,9 @@ func toGoExprInfo(e Expr) *goTypeInfo {
 		return goStarExpr(td.X)
 	}
 	v := &goTypeInfo{
-		fullName:             fmt.Sprintf("<notfound>%T</notfound>", e),
-		argClojureType:       "<clojuretype>",
-		argFromClojureObject: "<fromclojureobject>",
+		fullName:             fullName,
+		argClojureType:       "",
+		argFromClojureObject: "",
 	}
 	goTypes[v.fullName] = v
 	return v
