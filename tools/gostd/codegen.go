@@ -226,10 +226,10 @@ func %s(%s) %s {
 	}
 }
 
-func maybeImplicitConvert(typeName string, td *TypeSpec) string {
+func maybeImplicitConvert(typeName string, ts *TypeSpec) string {
 	var declType string
 	var argType string
-	switch t := td.Type.(type) {
+	switch t := ts.Type.(type) {
 	case *Ident:
 		switch t.Name {
 		case "string":
@@ -435,6 +435,10 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 }
 
 func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+	v, ok := goBuiltinTypes[name]
+	if ok {
+		return "case " + v.argClojureType, v.argClojureType, v.argFromClojureObject
+	}
 	switch name {
 	case "string":
 		return "case String", "String", ".S"
@@ -544,5 +548,5 @@ func elementToType(el string, e Expr) string {
 			return "_Construct" + v.Name + "(" + el + ")"
 		}
 	}
-	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %v)", e)
+	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(e))
 }
