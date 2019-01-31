@@ -91,4 +91,69 @@ func init() {
 		argClojureType:       "String",
 		argFromClojureObject: ".S",
 	}
+	goBuiltinTypes["bool"] = &goTypeInfo{
+		fullName:             "bool",
+		argClojureType:       "Boolean",
+		argFromClojureObject: ".Boolean().B",
+	}
+	goBuiltinTypes["int"] = &goTypeInfo{
+		fullName:             "int",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["byte"] = &goTypeInfo{
+		fullName:             "byte",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["int8"] = &goTypeInfo{
+		fullName:             "int8",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["int16"] = &goTypeInfo{
+		fullName:             "int16",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["uint"] = &goTypeInfo{
+		fullName:             "uint",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["uint8"] = &goTypeInfo{
+		fullName:             "uint8",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["uint16"] = &goTypeInfo{
+		fullName:             "uint16",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["int32"] = &goTypeInfo{
+		fullName:             "int32",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["uint32"] = &goTypeInfo{
+		fullName:             "uint32",
+		argClojureType:       "Number",
+		argFromClojureObject: ".Int().I",
+	}
+	goBuiltinTypes["int64"] = &goTypeInfo{
+		fullName:             "int64",
+		argClojureType:       "Number",
+		argFromClojureObject: ".BigInt().Int64()",
+	}
+	goBuiltinTypes["uint64"] = &goTypeInfo{
+		fullName:             "uint64",
+		argClojureType:       "Number",
+		argFromClojureObject: ".BigInt().Uint64()",
+	}
+	goBuiltinTypes["uintptr"] = &goTypeInfo{
+		fullName:             "uintptr",
+		argClojureType:       "Number",
+		argFromClojureObject: ".BigInt().Uint64()",
+	}
 }

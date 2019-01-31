@@ -4026,11 +4026,11 @@ JOKER TYPE crypto/tls.ConnectionState from crypto/tls/common.go:
 ;;   [^Object _v])
 
 JOKER TYPE crypto/tls.CurveID from crypto/tls/common.go:
-;; (defn ^"GoObject" CurveID.
-;;   "Constructor for tls.CurveID"
-;;   {:added "1.0"
-;;    :go "_ConstructCurveID(_v)"}
-;;   [^Object _v])
+(defn ^"GoObject" CurveID.
+  "Constructor for tls.CurveID"
+  {:added "1.0"
+   :go "_ConstructCurveID(_v)"}
+  [^Object _v])
 
 JOKER TYPE crypto/tls.RecordHeaderError from crypto/tls/conn.go:
 ;; (defn ^"GoObject" RecordHeaderError.
@@ -4047,11 +4047,11 @@ JOKER TYPE crypto/tls.RenegotiationSupport from crypto/tls/common.go:
   [^Object _v])
 
 JOKER TYPE crypto/tls.SignatureScheme from crypto/tls/common.go:
-;; (defn ^"GoObject" SignatureScheme.
-;;   "Constructor for tls.SignatureScheme"
-;;   {:added "1.0"
-;;    :go "_ConstructSignatureScheme(_v)"}
-;;   [^Object _v])
+(defn ^"GoObject" SignatureScheme.
+  "Constructor for tls.SignatureScheme"
+  {:added "1.0"
+   :go "_ConstructSignatureScheme(_v)"}
+  [^Object _v])
 
 JOKER FUNC crypto/tls.Client from crypto/tls/tls.go:
 ;; (defn Client
@@ -4705,11 +4705,11 @@ JOKER TYPE debug/elf.ImportedSymbol from debug/elf/file.go:
   [^Object _v])
 
 JOKER TYPE debug/elf.Machine from debug/elf/elf.go:
-;; (defn ^"GoObject" Machine.
-;;   "Constructor for elf.Machine"
-;;   {:added "1.0"
-;;    :go "_ConstructMachine(_v)"}
-;;   [^Object _v])
+(defn ^"GoObject" Machine.
+  "Constructor for elf.Machine"
+  {:added "1.0"
+   :go "_ConstructMachine(_v)"}
+  [^Object _v])
 
 JOKER TYPE debug/elf.NType from debug/elf/elf.go:
 (defn ^"GoObject" NType.
@@ -4964,11 +4964,11 @@ JOKER TYPE debug/elf.Symbol from debug/elf/file.go:
   [^Object _v])
 
 JOKER TYPE debug/elf.Type from debug/elf/elf.go:
-;; (defn ^"GoObject" Type.
-;;   "Constructor for elf.Type"
-;;   {:added "1.0"
-;;    :go "_ConstructType(_v)"}
-;;   [^Object _v])
+(defn ^"GoObject" Type.
+  "Constructor for elf.Type"
+  {:added "1.0"
+   :go "_ConstructType(_v)"}
+  [^Object _v])
 
 JOKER TYPE debug/elf.Version from debug/elf/elf.go:
 (defn ^"GoObject" Version.
@@ -13959,11 +13959,11 @@ JOKER TYPE regexp/syntax.ErrorCode from regexp/syntax/parse.go:
   [^Object _v])
 
 JOKER TYPE regexp/syntax.Flags from regexp/syntax/parse.go:
-;; (defn ^"GoObject" Flags.
-;;   "Constructor for syntax.Flags"
-;;   {:added "1.0"
-;;    :go "_ConstructFlags(_v)"}
-;;   [^Object _v])
+(defn ^"GoObject" Flags.
+  "Constructor for syntax.Flags"
+  {:added "1.0"
+   :go "_ConstructFlags(_v)"}
+  [^Object _v])
 
 JOKER TYPE regexp/syntax.Inst from regexp/syntax/prog.go:
 ;; (defn ^"GoObject" Inst.
@@ -21557,20 +21557,20 @@ func ExtractGoObjectCurveID(args []Object, index int) *_tls.CurveID {
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.CurveID]"))
 }
 
-// func _ConstructCurveID(_v Object) _tls.CurveID {
-// 	switch _o := _v.(type) {
-// 	case GoObject:
-// 		switch _g := _o.O.(type) {
-// 		case _tls.CurveID:
-// 			return _g
-// 		case *_tls.CurveID:
-// 			return *_g
-// 		}
-// 	default:
-// 		return _tls.CurveID(_o.ABEND674(codegen.go: unknown underlying type *ast.Ident for CurveID))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.CurveID] or: whatever"))
-// }
+func _ConstructCurveID(_v Object) _tls.CurveID {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _tls.CurveID:
+			return _g
+		case *_tls.CurveID:
+			return *_g
+		}
+	case Number:
+		return _tls.CurveID(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.CurveID] or: Number"))
+}
 
 GO TYPE crypto/tls.RecordHeaderError from crypto/tls/conn.go:
 func ExtractGoObjectRecordHeaderError(args []Object, index int) *_tls.RecordHeaderError {
@@ -21666,20 +21666,20 @@ func ExtractGoObjectSignatureScheme(args []Object, index int) *_tls.SignatureSch
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/tls.SignatureScheme]"))
 }
 
-// func _ConstructSignatureScheme(_v Object) _tls.SignatureScheme {
-// 	switch _o := _v.(type) {
-// 	case GoObject:
-// 		switch _g := _o.O.(type) {
-// 		case _tls.SignatureScheme:
-// 			return _g
-// 		case *_tls.SignatureScheme:
-// 			return *_g
-// 		}
-// 	default:
-// 		return _tls.SignatureScheme(_o.ABEND674(codegen.go: unknown underlying type *ast.Ident for SignatureScheme))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.SignatureScheme] or: whatever"))
-// }
+func _ConstructSignatureScheme(_v Object) _tls.SignatureScheme {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _tls.SignatureScheme:
+			return _g
+		case *_tls.SignatureScheme:
+			return *_g
+		}
+	case Number:
+		return _tls.SignatureScheme(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[tls.SignatureScheme] or: Number"))
+}
 
 GO FUNC crypto/tls.Client from crypto/tls/tls.go:
 // func __client(conn ABEND987(genutils.go: imports not yet supported: net.Conn), config *_tls.Config) Object {
@@ -24160,20 +24160,20 @@ func ExtractGoObjectMachine(args []Object, index int) *_elf.Machine {
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Machine]"))
 }
 
-// func _ConstructMachine(_v Object) _elf.Machine {
-// 	switch _o := _v.(type) {
-// 	case GoObject:
-// 		switch _g := _o.O.(type) {
-// 		case _elf.Machine:
-// 			return _g
-// 		case *_elf.Machine:
-// 			return *_g
-// 		}
-// 	default:
-// 		return _elf.Machine(_o.ABEND674(codegen.go: unknown underlying type *ast.Ident for Machine))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Machine] or: whatever"))
-// }
+func _ConstructMachine(_v Object) _elf.Machine {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _elf.Machine:
+			return _g
+		case *_elf.Machine:
+			return *_g
+		}
+	case Number:
+		return _elf.Machine(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Machine] or: Number"))
+}
 
 GO TYPE debug/elf.NType from debug/elf/elf.go:
 func ExtractGoObjectNType(args []Object, index int) *_elf.NType {
@@ -25582,20 +25582,20 @@ func ExtractGoObjectType(args []Object, index int) *_elf.Type {
 	panic(RT.NewArgTypeError(index, a, "GoObject[debug/elf.Type]"))
 }
 
-// func _ConstructType(_v Object) _elf.Type {
-// 	switch _o := _v.(type) {
-// 	case GoObject:
-// 		switch _g := _o.O.(type) {
-// 		case _elf.Type:
-// 			return _g
-// 		case *_elf.Type:
-// 			return *_g
-// 		}
-// 	default:
-// 		return _elf.Type(_o.ABEND674(codegen.go: unknown underlying type *ast.Ident for Type))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Type] or: whatever"))
-// }
+func _ConstructType(_v Object) _elf.Type {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _elf.Type:
+			return _g
+		case *_elf.Type:
+			return *_g
+		}
+	case Number:
+		return _elf.Type(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[elf.Type] or: Number"))
+}
 
 GO TYPE debug/elf.Version from debug/elf/elf.go:
 func ExtractGoObjectVersion(args []Object, index int) *_elf.Version {
@@ -47984,20 +47984,20 @@ func ExtractGoObjectFlags(args []Object, index int) *_syntax.Flags {
 	panic(RT.NewArgTypeError(index, a, "GoObject[regexp/syntax.Flags]"))
 }
 
-// func _ConstructFlags(_v Object) _syntax.Flags {
-// 	switch _o := _v.(type) {
-// 	case GoObject:
-// 		switch _g := _o.O.(type) {
-// 		case _syntax.Flags:
-// 			return _g
-// 		case *_syntax.Flags:
-// 			return *_g
-// 		}
-// 	default:
-// 		return _syntax.Flags(_o.ABEND674(codegen.go: unknown underlying type *ast.Ident for Flags))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Flags] or: whatever"))
-// }
+func _ConstructFlags(_v Object) _syntax.Flags {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _syntax.Flags:
+			return _g
+		case *_syntax.Flags:
+			return *_g
+		}
+	case Number:
+		return _syntax.Flags(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[syntax.Flags] or: Number"))
+}
 
 GO TYPE regexp/syntax.Inst from regexp/syntax/prog.go:
 func ExtractGoObjectInst(args []Object, index int) *_syntax.Inst {
@@ -57113,5 +57113,5 @@ package utf8
 
 import (
 )
-ABENDs: 048(566) 987(309) 902(301) 044(203) 043(129) 675(129) 674(127) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 901(1)
+ABENDs: 048(566) 987(309) 902(301) 044(203) 043(129) 675(129) 674(122) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 901(1)
 Totals: types=962 functions=7132 methods=5623 (78.84%) standalone=1509 (21.16%) generated=667 (44.20%)
