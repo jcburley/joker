@@ -398,7 +398,7 @@ func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectCa
 	}
 
 	return nonGoObjectCase,
-		fmt.Sprintf("GoObject[%s] or %s", typeName, nonGoObjectTypeDocs[0]), // strings.Join(nonGoObjectTypeDocs, " or ")
+		fmt.Sprintf("GoObject[%s] or: %s", typeName, strings.Join(nonGoObjectTypeDocs, " or ")),
 		strings.Join(helperFuncs, ""),
 		ptrTo
 }

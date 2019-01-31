@@ -258,7 +258,7 @@ func _ConstructMX(_v Object) *_net.MX {
 	case case *Vector:
 		return _vectorToMX(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map or Vector"))
 }
 
 GO TYPE net.NS from net/dnsclient.go:
@@ -300,7 +300,7 @@ func _ConstructNS(_v Object) *_net.NS {
 	case case *Vector:
 		return _vectorToNS(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map or Vector"))
 }
 
 GO TYPE net.Resolver from net/lookup.go:
@@ -342,7 +342,7 @@ func _ConstructResolver(_v Object) *_net.Resolver {
 	case case *Vector:
 		return _vectorToResolver(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map or Vector"))
 }
 
 GO TYPE net.SRV from net/dnsclient.go:
@@ -384,7 +384,7 @@ func _ConstructSRV(_v Object) *_net.SRV {
 	case case *Vector:
 		return _vectorToSRV(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map or Vector"))
 }
 
 GO FUNC net.LookupAddr from net/lookup.go:
@@ -544,7 +544,7 @@ func _ConstructError(_v Object) *_url.Error {
 	case case *Vector:
 		return _vectorToError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map or Vector"))
 }
 
 GO TYPE net/url.EscapeError from net/url/url.go:
@@ -577,7 +577,7 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	case String:
 		return _url.EscapeError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
 GO TYPE net/url.InvalidHostError from net/url/url.go:
@@ -610,7 +610,7 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 	case String:
 		return _url.InvalidHostError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
 }
 
 GO TYPE net/url.URL from net/url/url.go:
@@ -652,7 +652,7 @@ func _ConstructURL(_v Object) *_url.URL {
 	case case *Vector:
 		return _vectorToURL(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
 }
 
 GO TYPE net/url.Userinfo from net/url/url.go:
@@ -694,7 +694,7 @@ func _ConstructUserinfo(_v Object) *_url.Userinfo {
 	case case *Vector:
 		return _vectorToUserinfo(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map or Vector"))
 }
 
 GO TYPE net/url.Values from net/url/url.go:
@@ -724,7 +724,7 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	default:
 // 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
