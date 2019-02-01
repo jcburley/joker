@@ -245,14 +245,15 @@ func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageIn
 	}
 }
 
-func sortedPackageImports(pi packageImports, f func(k string)) {
+func sortedPackageImports(pi packageImports, f func(k, local, full string)) {
 	var keys []string
 	for k, _ := range pi.fullNames {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		f(k)
+		v := pi.fullNames[k]
+		f(k, v.local, v.full)
 	}
 }
 

@@ -212,7 +212,8 @@ func %s(%s) %s {
 		generatedFunctions++
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
-			addImport(packagesInfo[pkgDirUnix].importsNative, "", pkgDirUnix)
+			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
+			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
 		}
 		if clojureReturnType != "" || fn.refersToSelf {
 			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix)
@@ -259,13 +260,15 @@ func maybeDeref(ptrTo string) string {
 
 func genType(t string, ti *typeInfo) {
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
+	pkgBaseName := filepath.Base(pkgDirUnix)
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
 		return // no public functions available for package, so don't try to generate type info either
 	} else if !pi.nonEmpty {
 		return // no functions generated
 	}
 
-	addImport(packagesInfo[pkgDirUnix].importsNative, "", pkgDirUnix)
+	addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
+	addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
 
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
