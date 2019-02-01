@@ -321,7 +321,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 }
 `
 
-	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(typeName, baseTypeName, ti)
+	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(ti, typeName, baseTypeName)
 	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, typeName, addressOf(ptrTo), typeName, maybeDeref(ptrTo), nonGoObject, expectedObjectDoc)
 
 	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
@@ -334,11 +334,11 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.goCode += goConstructor
 }
 
-func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
-	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(typeName, baseTypeName, ti)
+	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(ti, typeName, baseTypeName)
 
 	nonGoObjectCasePrefix := ""
 	nonGoObjectCase = ""
@@ -354,7 +354,7 @@ func nonGoObjectCase(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectCa
 		ptrTo
 }
 
-func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+func nonGoObjectTypeFor(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(t.Name)
@@ -372,8 +372,8 @@ func nonGoObjectTypeFor(typeName, baseTypeName string, ti *typeInfo) (nonGoObjec
 		return []string{"case *ArrayMap, *HashMap", "case *Vector"},
 			[]string{"Map", "Vector"},
 			[]string{mapHelperFName + "(_o.(Map))", vectorHelperFName + "(_o)"},
-			[]string{mapToType(mapHelperFName, uniqueTypeName, t),
-				vectorToType(vectorHelperFName, uniqueTypeName, t)},
+			[]string{mapToType(ti, mapHelperFName, uniqueTypeName, t),
+				vectorToType(ti, vectorHelperFName, uniqueTypeName, t)},
 			"*"
 	case *ArrayType:
 	}
@@ -393,7 +393,7 @@ func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClo
 	return
 }
 
-func mapToType(helperFName, typeName string, ty *StructType) string {
+func mapToType(ti *typeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
@@ -402,14 +402,14 @@ func mapToType(helperFName, typeName string, ty *StructType) string {
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
 }
 
-func vectorToType(helperFName, typeName string, ty *StructType) string {
+func vectorToType(ti *typeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o *Vector) *%s {
 	return &%s{%s}
 }
 
 `
 
-	elToType := elementsToType(ty, vectorElementToType)
+	elToType := elementsToType(ti, ty, vectorElementToType)
 	if elToType != "" {
 		elToType = `
 		` + elToType + `
@@ -419,7 +419,7 @@ func vectorToType(helperFName, typeName string, ty *StructType) string {
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
 }
 
-func elementsToType(ty *StructType, toType func(i int, name string, f *Field) string) string {
+func elementsToType(ti *typeInfo, ty *StructType, toType func(ti *typeInfo, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -428,7 +428,7 @@ func elementsToType(ty *StructType, toType func(i int, name string, f *Field) st
 			if fieldName == "" || isPrivate(fieldName) {
 				continue
 			}
-			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(i, p.Name, f)))
+			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(ti, i, p.Name, f)))
 			i++
 		}
 	}
@@ -436,13 +436,14 @@ func elementsToType(ty *StructType, toType func(i int, name string, f *Field) st
 		`)
 }
 
-func vectorElementToType(i int, name string, f *Field) string {
-	return elementToType(fmt.Sprintf("o.Nth(%d)", i), f.Type)
+func vectorElementToType(ti *typeInfo, i int, name string, f *Field) string {
+	return elementToType(ti, fmt.Sprintf("o.Nth(%d)", i), f.Type)
 }
 
-func elementToType(el string, e Expr) string {
+func elementToType(ti *typeInfo, el string, e Expr) string {
 	v := toGoExprInfo(e)
 	if v.convertFromClojure != "" {
+		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
 	}
 	if v.declared {
@@ -452,4 +453,7 @@ func elementToType(el string, e Expr) string {
 		return "_Construct" + v.fullName + "(" + el + ")"
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(e))
+}
+
+func addRequiredImports(ti *typeInfo, imports []string) {
 }
