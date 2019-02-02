@@ -229,7 +229,7 @@ func %s(%s) %s {
 
 func maybeImplicitConvert(src *goFile, typeName string, ts *TypeSpec) string {
 	t := toGoTypeInfo(src, ts)
-	if t == nil || !t.builtin {
+	if t == nil || t.custom {
 		return ""
 	}
 	argType := t.argClojureArgType

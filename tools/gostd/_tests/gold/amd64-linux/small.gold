@@ -5,20 +5,10 @@ Processing net:
 Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Matchfile(_tests/small/src/net/lookup.go) => true <nil>
 Processing package=net:
-registerType: net.SRV
-registerType: net.MX
-registerType: net.NS
-registerType: net.Resolver
 Walking from _tests/small/src to _tests/small/src/net/url
 Processing net/url:
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
 Processing package=net/url:
-registerType: net/url.Error
-registerType: net/url.EscapeError
-registerType: net/url.InvalidHostError
-registerType: net/url.URL
-registerType: net/url.Userinfo
-registerType: net/url.Values
 JOKER TYPE net.MX from net/dnsclient.go:
 (defn ^"GoObject" MX.
   "Constructor for net.MX"
@@ -251,7 +241,7 @@ func _mapToMX(o Map) *_net.MX {
 func _vectorToMX(o *Vector) *_net.MX {
 	return &_net.MX{
 		Host: AssertString(o.Nth(0), "").S,
-		Pref: uint16(AssertInt(o.Nth(1), "").I),
+		Pref: _Constructuint16(o.Nth(1)),
 	}
 }
 
@@ -380,9 +370,9 @@ func _mapToSRV(o Map) *_net.SRV {
 func _vectorToSRV(o *Vector) *_net.SRV {
 	return &_net.SRV{
 		Target: AssertString(o.Nth(0), "").S,
-		Port: uint16(AssertInt(o.Nth(1), "").I),
-		Priority: uint16(AssertInt(o.Nth(2), "").I),
-		Weight: uint16(AssertInt(o.Nth(3), "").I),
+		Port: _Constructuint16(o.Nth(1)),
+		Priority: _Constructuint16(o.Nth(2)),
+		Weight: _Constructuint16(o.Nth(3)),
 	}
 }
 

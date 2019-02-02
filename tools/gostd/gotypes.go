@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "go/ast"
+	gotypes "go/types"
 )
 
 type goTypeInfo struct {
@@ -15,7 +16,8 @@ type goTypeInfo struct {
 	argExtractFunc            string          // Call Extract<this>() for arg with my type
 	convertFromClojure        string          // Pattern to convert a (scalar) %s to this type
 	convertFromClojureImports []packageImport // Imports needed to support the above
-	builtin                   bool            // Is this a builtin Go type?
+	uncompleted               bool            // Has this type's info been filled in beyond the registration step?
+	custom                    bool            // Is this not a builtin Go type?
 	private                   bool            // Is this a private type?
 	unsupported               bool            // Is this unsupported?
 	constructs                bool            // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
@@ -29,24 +31,32 @@ func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) {
 		return
 	}
 	ti := &goTypeInfo{
-		typeName: ts.Name.Name,
-		fullName: fullTypeName,
-		subType:  &ts.Type,
-		private:  isPrivate(ts.Name.Name),
+		typeName:    ts.Name.Name,
+		fullName:    fullTypeName,
+		subType:     &ts.Type,
+		private:     isPrivate(ts.Name.Name),
+		custom:      true,
+		uncompleted: true,
 	}
 	goTypes[fullTypeName] = ti
-	fmt.Printf("registerType: %s\n", fullTypeName)
 }
 
 func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *goTypeInfo {
 	if ti, found := goTypes[baseName]; found {
-		if !ti.builtin {
-			fmt.Printf("toGoTypeNameInfo: Found %s:%v\n", baseName, ti)
-		}
 		return ti
 	}
 	fullName := pkgDirUnix + "." + baseName
 	if ti, found := goTypes[fullName]; found {
+		return ti
+	}
+	// Check whether type is builtin but not supported here. If so, register it accordingly and return it.
+	if gotypes.Universe.Lookup(baseName) != nil {
+		ti := &goTypeInfo{
+			typeName:    baseName,
+			fullName:    baseName,
+			unsupported: true,
+		}
+		goTypes[fullName] = ti
 		return ti
 	}
 	panic(fmt.Sprintf("type %s not found at %s", fullName, whereAt(e.Pos())))
@@ -65,7 +75,16 @@ func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
 	unsupported := false
 	switch td := e.(type) {
 	case *Ident:
-		return toGoTypeNameInfo(src.pkgDirUnix, td.Name, e)
+		ti := toGoTypeNameInfo(src.pkgDirUnix, td.Name, e)
+		if !ti.custom {
+			return ti
+		}
+		if ti.uncompleted {
+			// Fill in other info now that all types are registered.
+			// Is type actually builtin by Go? See special code to check that and define it as unsupported if so.
+			ti.uncompleted = false
+		}
+		return ti
 	case *ArrayType:
 		return goArrayType(src, td.Len, td.Elt)
 	case *StarExpr:
@@ -149,7 +168,6 @@ func init() {
 		argClojureArgType:    "Boolean",
 		argExtractFunc:       "Boolean",
 		convertFromClojure:   "ToBool(%s)",
-		builtin:              true,
 	}
 	goTypes["string"] = &goTypeInfo{
 		typeName:             "string",
@@ -159,7 +177,6 @@ func init() {
 		argClojureArgType:    "String",
 		argExtractFunc:       "String",
 		convertFromClojure:   `AssertString(%s, "").S`,
-		builtin:              true,
 	}
 	goTypes["rune"] = &goTypeInfo{
 		typeName:             "rune",
@@ -169,7 +186,6 @@ func init() {
 		argClojureArgType:    "Char",
 		argExtractFunc:       "Char",
 		convertFromClojure:   `AssertChar(%s, "").Ch`,
-		builtin:              true,
 	}
 	goTypes["byte"] = &goTypeInfo{
 		typeName:             "byte",
@@ -179,7 +195,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `byte(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["int"] = &goTypeInfo{
 		typeName:             "int",
@@ -189,7 +204,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int",
 		convertFromClojure:   `AssertInt(%s, "").I`,
-		builtin:              true,
 	}
 	goTypes["uint"] = &goTypeInfo{
 		typeName:             "uint",
@@ -199,7 +213,6 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt",
 		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["int8"] = &goTypeInfo{
 		typeName:             "int8",
@@ -209,7 +222,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["uint8"] = &goTypeInfo{
 		typeName:             "uint8",
@@ -219,7 +231,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt8",
 		convertFromClojure:   `uint8(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["int16"] = &goTypeInfo{
 		typeName:             "int16",
@@ -229,9 +240,8 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int16",
 		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
-	goTypes["uint16"] = &goTypeInfo{
+	goTypes["uint16x"] = &goTypeInfo{
 		typeName:             "uint16",
 		fullName:             "uint16",
 		argClojureType:       "Number",
@@ -239,7 +249,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt16",
 		convertFromClojure:   `uint16(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["int32"] = &goTypeInfo{
 		typeName:             "int32",
@@ -249,7 +258,6 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int32",
 		convertFromClojure:   `int32(AssertInt(%s, "").I)`,
-		builtin:              true,
 	}
 	goTypes["uint32"] = &goTypeInfo{
 		typeName:             "uint32",
@@ -259,7 +267,6 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt32",
 		convertFromClojure:   `uint32(AssertNumber(%s, "").BigInt().Uint64())`,
-		builtin:              true,
 	}
 	goTypes["int64"] = &goTypeInfo{
 		typeName:             "int64",
@@ -269,7 +276,6 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "Int64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Int64()`,
-		builtin:              true,
 	}
 	goTypes["uint64"] = &goTypeInfo{
 		typeName:             "uint64",
@@ -279,7 +285,6 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Uint64()`,
-		builtin:              true,
 	}
 	goTypes["uintptr"] = &goTypeInfo{
 		typeName:             "uintptr",
@@ -289,7 +294,6 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UIntPtr",
 		convertFromClojure:   `uintptr(AssertNumber(%s, "").BigInt().Uint64())`,
-		builtin:              true,
 	}
 	goTypes["float32"] = &goTypeInfo{
 		typeName:             "float32",
@@ -299,7 +303,6 @@ func init() {
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   `float32(AssertDouble(%s, "").D)`,
-		builtin:              true,
 	}
 	goTypes["float64"] = &goTypeInfo{
 		typeName:             "float64",
@@ -309,7 +312,6 @@ func init() {
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   `float64(AssertDouble(%s, "").D)`,
-		builtin:              true,
 	}
 	goTypes["complex64"] = &goTypeInfo{
 		typeName:             "complex64",
@@ -319,7 +321,6 @@ func init() {
 		argClojureArgType:    "",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   "", // TODO: support this in Joker, even if via just [real imag]
-		builtin:              true,
 	}
 	goTypes["complex128"] = &goTypeInfo{
 		typeName:             "complex128",
@@ -329,7 +330,6 @@ func init() {
 		argClojureArgType:    "",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   "", // TODO: support this in Joker, even if via just [real imag]
-		builtin:              true,
 	}
 	goTypes["error"] = &goTypeInfo{
 		typeName:                  "error",
@@ -340,6 +340,5 @@ func init() {
 		argExtractFunc:            "",
 		convertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
 		convertFromClojureImports: []packageImport{{"_errors", "errors"}},
-		builtin:                   true,
 	}
 }
