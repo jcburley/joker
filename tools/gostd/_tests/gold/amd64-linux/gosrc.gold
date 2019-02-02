@@ -15737,11 +15737,11 @@ JOKER TYPE syscall.InotifyEvent from syscall/ztypes_linux_amd64.go:
 ;;   [^Object _v])
 
 JOKER TYPE syscall.Iovec from syscall/ztypes_linux_amd64.go:
-(defn ^"GoObject" Iovec.
-  "Constructor for syscall.Iovec"
-  {:added "1.0"
-   :go "_ConstructIovec(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" Iovec.
+;;   "Constructor for syscall.Iovec"
+;;   {:added "1.0"
+;;    :go "_ConstructIovec(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE syscall.Linger from syscall/ztypes_linux_amd64.go:
 (defn ^"GoObject" Linger.
@@ -51323,33 +51323,33 @@ func ExtractGoObjectIovec(args []Object, index int) *_syscall.Iovec {
 	panic(RT.NewArgTypeError(index, a, "GoObject[syscall.Iovec]"))
 }
 
-func _mapToIovec(o Map) *_syscall.Iovec {
-	return &_syscall.Iovec{}
-}
+// func _mapToIovec(o Map) *_syscall.Iovec {
+// 	return &_syscall.Iovec{}
+// }
 
-func _vectorToIovec(o *Vector) *_syscall.Iovec {
-	return &_syscall.Iovec{
-		Base: &byte(AssertInt(o.Nth(0), "").I),
-		Len: AssertNumber(o.Nth(1), "").BigInt().Uint64(),
-	}
-}
+// func _vectorToIovec(o *Vector) *_syscall.Iovec {
+// 	return &_syscall.Iovec{
+// 		Base: ABEND048(codegen.go: no conversion from Clojure for *byte (byte)),
+// 		Len: AssertNumber(o.Nth(1), "").BigInt().Uint64(),
+// 	}
+// }
 
-func _ConstructIovec(_v Object) *_syscall.Iovec {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _syscall.Iovec:
-			return &_g
-		case *_syscall.Iovec:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToIovec(_o.(Map))
-	case *Vector:
-		return _vectorToIovec(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Iovec] or: Map or Vector"))
-}
+// func _ConstructIovec(_v Object) *_syscall.Iovec {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _syscall.Iovec:
+// 			return &_g
+// 		case *_syscall.Iovec:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToIovec(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToIovec(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[syscall.Iovec] or: Map or Vector"))
+// }
 
 GO TYPE syscall.Linger from syscall/ztypes_linux_amd64.go:
 func ExtractGoObjectLinger(args []Object, index int) *_syscall.Linger {
@@ -51415,12 +51415,12 @@ func ExtractGoObjectMsghdr(args []Object, index int) *_syscall.Msghdr {
 
 // func _vectorToMsghdr(o *Vector) *_syscall.Msghdr {
 // 	return &_syscall.Msghdr{
-// 		Name: &byte(AssertInt(o.Nth(0), "").I),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for *byte (byte)),
 // 		Namelen: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Iov: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Iovlen: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
-// 		Control: &byte(AssertInt(o.Nth(5), "").I),
+// 		Control: ABEND048(codegen.go: no conversion from Clojure for *byte (byte)),
 // 		Controllen: AssertNumber(o.Nth(6), "").BigInt().Uint64(),
 // 		Flags: int32(AssertInt(o.Nth(7), "").I),
 // 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
@@ -57120,5 +57120,5 @@ package utf8
 
 import (
 )
-ABENDs: 047(479) 987(309) 902(301) 044(203) 048(200) 043(129) 675(129) 674(121) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 171(1) 901(1)
+ABENDs: 047(479) 987(309) 902(301) 044(203) 048(203) 043(129) 675(129) 674(121) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 171(1) 901(1)
 Totals: types=962 functions=7132 methods=5623 (78.84%) standalone=1509 (21.16%) generated=667 (44.20%)

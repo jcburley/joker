@@ -181,7 +181,8 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 	if e.convertFromClojure != "" {
 		if e.constructs {
 			convertFromClojure = e.convertFromClojure
-		} else {
+		} else if e.argClojureArgType == e.argExtractFunc {
+			/* Not a conversion, so can take address of the Clojure object's internals. */
 			convertFromClojure = "&" + e.convertFromClojure
 		}
 	}
