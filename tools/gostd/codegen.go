@@ -329,9 +329,17 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		trackAbends(ti.clojureCode)
 		trackAbends(goConstructor)
+	} else {
+		promoteImports(ti)
 	}
 
 	ti.goCode += goConstructor
+}
+
+func promoteImports(ti *typeInfo) {
+	for _, imp := range ti.requiredImports.fullNames {
+		addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, imp.local, imp.full)
+	}
 }
 
 func nonGoObjectCase(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
@@ -455,5 +463,9 @@ func elementToType(ti *typeInfo, el string, e Expr) string {
 	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(e))
 }
 
-func addRequiredImports(ti *typeInfo, imports []string) {
+/* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */
+func addRequiredImports(ti *typeInfo, imports []packageImport) {
+	for _, imp := range imports {
+		addImport(ti.requiredImports, imp.local, imp.full)
+	}
 }

@@ -58,11 +58,12 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 }
 
 type typeInfo struct {
-	sourceFile  *goFile
-	td          *TypeSpec
-	where       token.Pos
-	clojureCode string
-	goCode      string
+	sourceFile      *goFile
+	td              *TypeSpec
+	where           token.Pos
+	clojureCode     string
+	goCode          string
+	requiredImports *packageImports
 }
 
 type typeMap map[string]*typeInfo
@@ -91,7 +92,7 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
-	types[typename] = &typeInfo{gf, ts, ts.Pos(), "", ""}
+	types[typename] = &typeInfo{gf, ts, ts.Pos(), "", "", &packageImports{}}
 }
 
 func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
@@ -184,11 +185,10 @@ type packageImport struct {
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
-type packageImportMap struct {
+type packageImports struct {
 	localNames map[string]string         // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
 	fullNames  map[string]*packageImport // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
 }
-type packageImports packageImportMap
 
 /* Given desired local and the full (though relative) name of the
 /* package, make sure the local name agrees with any existing entry
