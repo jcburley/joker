@@ -460,7 +460,8 @@ func elementToType(ti *typeInfo, el string, e *Expr) string {
 		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
 	}
-	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(ti.sourceFile, e))
+	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
+		v.fullName, toGoExprString(ti.sourceFile, v.underlyingType))
 }
 
 /* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */

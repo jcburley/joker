@@ -78,9 +78,6 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	switch td := (*e).(type) {
 	case *Ident:
 		ti := toGoTypeNameInfo(src.pkgDirUnix, td.Name, e)
-		if !ti.custom {
-			return ti
-		}
 		if ti.uncompleted {
 			// Fill in other info now that all types are registered.
 			ut := toGoExprInfo(src, ti.underlyingType)
@@ -98,7 +95,7 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 		}
 		return ti
 	case *ArrayType:
-		return goArrayType(src, td.Len, &td.Elt)
+		return goArrayType(src, &td.Len, &td.Elt)
 	case *StarExpr:
 		return goStarExpr(src, &td.X)
 	}
@@ -120,6 +117,9 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 }
 
 func toGoExprString(src *goFile, e *Expr) string {
+	if e == nil {
+		return "-"
+	}
 	t := toGoExprInfo(src, e)
 	if t != nil {
 		return t.fullName
@@ -127,21 +127,31 @@ func toGoExprString(src *goFile, e *Expr) string {
 	return fmt.Sprintf("%T", e)
 }
 
-func goArrayType(src *goFile, len Expr, elt *Expr) *goTypeInfo {
+func lenString(len *Expr) string {
+	if len == nil || *len == nil {
+		return ""
+	}
+	l := *len
+	switch n := l.(type) {
+	case *Ident:
+		return n.Name
+	case *BasicLit:
+		return n.Value
+	}
+	return fmt.Sprintf("%T", l)
+}
+
+func goArrayType(src *goFile, len *Expr, elt *Expr) *goTypeInfo {
 	var fullName string
 	e := toGoExprInfo(src, elt)
-	if len == nil {
-		fullName = "[]" + e.fullName
-	} else {
-		fullName = "..." + e.fullName
-	}
+	fullName = "[" + lenString(len) + "]" + e.fullName
 	if v, ok := goTypes[fullName]; ok {
 		return v
 	}
 	v := &goTypeInfo{
 		typeName:       e.typeName,
 		fullName:       fullName,
-		underlyingType: e.underlyingType,
+		underlyingType: elt,
 		custom:         true,
 		unsupported:    e.unsupported,
 		constructs:     e.constructs,

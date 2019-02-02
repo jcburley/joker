@@ -2437,7 +2437,7 @@ func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
 
 // func _vectorToIPAddr(o *Vector) *_net.IPAddr {
 // 	return &_net.IPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Zone: AssertString(o.Nth(1), "").S,
 // 	}
 // }
@@ -2550,8 +2550,8 @@ func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
 
 // func _vectorToIPNet(o *Vector) *_net.IPNet {
 // 	return &_net.IPNet{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
-// 		Mask: ABEND048(codegen.go: unsupported type net.IPMask),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
 // 	}
 // }
 
@@ -2596,7 +2596,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		Index: AssertInt(o.Nth(0), "").I,
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
-// 		HardwareAddr: ABEND048(codegen.go: unsupported type net.HardwareAddr),
+// 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
 // 		Flags: uint(AssertInt(o.Nth(4), "").I),
 // 	}
 // }
@@ -3037,7 +3037,7 @@ func ExtractGoObjectTCPAddr(args []Object, index int) *_net.TCPAddr {
 
 // func _vectorToTCPAddr(o *Vector) *_net.TCPAddr {
 // 	return &_net.TCPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Port: AssertInt(o.Nth(1), "").I,
 // 		Zone: AssertString(o.Nth(2), "").S,
 // 	}
@@ -3161,7 +3161,7 @@ func ExtractGoObjectUDPAddr(args []Object, index int) *_net.UDPAddr {
 
 // func _vectorToUDPAddr(o *Vector) *_net.UDPAddr {
 // 	return &_net.UDPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Port: AssertInt(o.Nth(1), "").I,
 // 		Zone: AssertString(o.Nth(2), "").S,
 // 	}
@@ -3925,7 +3925,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		HttpOnly: ToBool(o.Nth(8)),
 // 		SameSite: AssertInt(o.Nth(9), "").I,
 // 		Raw: AssertString(o.Nth(10), "").S,
-// 		Unparsed: ABEND048(codegen.go: unsupported type []string),
+// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -4364,7 +4364,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(10)),
 // 		Host: AssertString(o.Nth(11), "").S,
 // 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -4425,7 +4425,7 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
 // 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
@@ -4927,10 +4927,10 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 // 		Path: AssertString(o.Nth(0), "").S,
 // 		Root: AssertString(o.Nth(1), "").S,
 // 		Dir: AssertString(o.Nth(2), "").S,
-// 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		InheritEnv: ABEND048(codegen.go: unsupported type []string),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Logger: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Args: ABEND048(codegen.go: unsupported type []string),
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Stderr: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PathLocationHandler: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
@@ -6062,7 +6062,7 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 // 	return &_smtp.ServerInfo{
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		TLS: ToBool(o.Nth(1)),
-// 		Auth: ABEND048(codegen.go: unsupported type []string),
+// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 

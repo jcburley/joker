@@ -18882,7 +18882,7 @@ func ExtractGoObjectFileHeader(args []Object, index int) *_zip.FileHeader {
 // 		UncompressedSize: uint32(AssertNumber(o.Nth(12), "").BigInt().Uint64()),
 // 		CompressedSize64: AssertNumber(o.Nth(13), "").BigInt().Uint64(),
 // 		UncompressedSize64: AssertNumber(o.Nth(14), "").BigInt().Uint64(),
-// 		Extra: ABEND048(codegen.go: unsupported type []byte),
+// 		Extra: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		ExternalAttrs: uint32(AssertNumber(o.Nth(16), "").BigInt().Uint64()),
 // 	}
 // }
@@ -21160,10 +21160,10 @@ func ExtractGoObjectCertificate(args []Object, index int) *_tls.Certificate {
 
 // func _vectorToCertificate(o *Vector) *_tls.Certificate {
 // 	return &_tls.Certificate{
-// 		Certificate: ABEND048(codegen.go: unsupported type [][]byte),
+// 		Certificate: ABEND048(codegen.go: no conversion from Clojure for [][]byte ([]byte)),
 // 		PrivateKey: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		OCSPStaple: ABEND048(codegen.go: unsupported type []byte),
-// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]byte),
+// 		OCSPStaple: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		SignedCertificateTimestamps: ABEND048(codegen.go: no conversion from Clojure for [][]byte ([]byte)),
 // 		Leaf: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -21206,8 +21206,8 @@ func ExtractGoObjectCertificateRequestInfo(args []Object, index int) *_tls.Certi
 
 // func _vectorToCertificateRequestInfo(o *Vector) *_tls.CertificateRequestInfo {
 // 	return &_tls.CertificateRequestInfo{
-// 		AcceptableCAs: ABEND048(codegen.go: unsupported type [][]byte),
-// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []crypto/tls.SignatureScheme),
+// 		AcceptableCAs: ABEND048(codegen.go: no conversion from Clojure for [][]byte ([]byte)),
+// 		SignatureSchemes: ABEND048(codegen.go: no conversion from Clojure for []crypto/tls.SignatureScheme (crypto/tls.SignatureScheme)),
 // 	}
 // }
 
@@ -21282,13 +21282,13 @@ func ExtractGoObjectClientHelloInfo(args []Object, index int) *_tls.ClientHelloI
 
 // func _vectorToClientHelloInfo(o *Vector) *_tls.ClientHelloInfo {
 // 	return &_tls.ClientHelloInfo{
-// 		CipherSuites: ABEND048(codegen.go: unsupported type []uint16),
+// 		CipherSuites: ABEND048(codegen.go: no conversion from Clojure for []uint16 (uint16)),
 // 		ServerName: AssertString(o.Nth(1), "").S,
-// 		SupportedCurves: ABEND048(codegen.go: unsupported type []crypto/tls.CurveID),
-// 		SupportedPoints: ABEND048(codegen.go: unsupported type []uint8),
-// 		SignatureSchemes: ABEND048(codegen.go: unsupported type []crypto/tls.SignatureScheme),
-// 		SupportedProtos: ABEND048(codegen.go: unsupported type []string),
-// 		SupportedVersions: ABEND048(codegen.go: unsupported type []uint16),
+// 		SupportedCurves: ABEND048(codegen.go: no conversion from Clojure for []crypto/tls.CurveID (crypto/tls.CurveID)),
+// 		SupportedPoints: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
+// 		SignatureSchemes: ABEND048(codegen.go: no conversion from Clojure for []crypto/tls.SignatureScheme (crypto/tls.SignatureScheme)),
+// 		SupportedProtos: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		SupportedVersions: ABEND048(codegen.go: no conversion from Clojure for []uint16 (uint16)),
 // 		Conn: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -21410,19 +21410,19 @@ func ExtractGoObjectConfig(args []Object, index int) *_tls.Config {
 // 		GetConfigForClient: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		VerifyPeerCertificate: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		RootCAs: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		NextProtos: ABEND048(codegen.go: unsupported type []string),
+// 		NextProtos: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		ServerName: AssertString(o.Nth(10), "").S,
 // 		ClientAuth: AssertInt(o.Nth(11), "").I,
 // 		ClientCAs: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		InsecureSkipVerify: ToBool(o.Nth(13)),
-// 		CipherSuites: ABEND048(codegen.go: unsupported type []uint16),
+// 		CipherSuites: ABEND048(codegen.go: no conversion from Clojure for []uint16 (uint16)),
 // 		PreferServerCipherSuites: ToBool(o.Nth(15)),
 // 		SessionTicketsDisabled: ToBool(o.Nth(16)),
-// 		SessionTicketKey: ABEND048(codegen.go: unsupported type ...byte),
+// 		SessionTicketKey: ABEND048(codegen.go: no conversion from Clojure for [32]byte (byte)),
 // 		ClientSessionCache: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		MinVersion: uint16(AssertInt(o.Nth(19), "").I),
 // 		MaxVersion: uint16(AssertInt(o.Nth(20), "").I),
-// 		CurvePreferences: ABEND048(codegen.go: unsupported type []crypto/tls.CurveID),
+// 		CurvePreferences: ABEND048(codegen.go: no conversion from Clojure for []crypto/tls.CurveID (crypto/tls.CurveID)),
 // 		DynamicRecordSizingDisabled: ToBool(o.Nth(22)),
 // 		Renegotiation: AssertInt(o.Nth(23), "").I,
 // 		KeyLogWriter: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -21516,9 +21516,9 @@ func ExtractGoObjectConnectionState(args []Object, index int) *_tls.ConnectionSt
 // 		ServerName: AssertString(o.Nth(6), "").S,
 // 		PeerCertificates: []*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		VerifiedChains: [][]*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		SignedCertificateTimestamps: ABEND048(codegen.go: unsupported type [][]byte),
-// 		OCSPResponse: ABEND048(codegen.go: unsupported type []byte),
-// 		TLSUnique: ABEND048(codegen.go: unsupported type []byte),
+// 		SignedCertificateTimestamps: ABEND048(codegen.go: no conversion from Clojure for [][]byte ([]byte)),
+// 		OCSPResponse: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		TLSUnique: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -21594,7 +21594,7 @@ func ExtractGoObjectRecordHeaderError(args []Object, index int) *_tls.RecordHead
 // func _vectorToRecordHeaderError(o *Vector) *_tls.RecordHeaderError {
 // 	return &_tls.RecordHeaderError{
 // 		Msg: AssertString(o.Nth(0), "").S,
-// 		RecordHeader: ABEND048(codegen.go: unsupported type ...byte),
+// 		RecordHeader: ABEND048(codegen.go: no conversion from Clojure for [5]byte (byte)),
 // 	}
 // }
 
@@ -21819,12 +21819,12 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 
 // func _vectorToCertificate(o *Vector) *_x509.Certificate {
 // 	return &_x509.Certificate{
-// 		Raw: ABEND048(codegen.go: unsupported type []byte),
-// 		RawTBSCertificate: ABEND048(codegen.go: unsupported type []byte),
-// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []byte),
-// 		RawSubject: ABEND048(codegen.go: unsupported type []byte),
-// 		RawIssuer: ABEND048(codegen.go: unsupported type []byte),
-// 		Signature: ABEND048(codegen.go: unsupported type []byte),
+// 		Raw: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawTBSCertificate: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawSubject: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawIssuer: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		Signature: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		SignatureAlgorithm: AssertInt(o.Nth(6), "").I,
 // 		PublicKeyAlgorithm: AssertInt(o.Nth(7), "").I,
 // 		PublicKey: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
@@ -21838,30 +21838,30 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 // 		Extensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ExtraExtensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		UnhandledCriticalExtensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		ExtKeyUsage: ABEND048(codegen.go: unsupported type []crypto/x509.ExtKeyUsage),
+// 		ExtKeyUsage: ABEND048(codegen.go: no conversion from Clojure for []crypto/x509.ExtKeyUsage (crypto/x509.ExtKeyUsage)),
 // 		UnknownExtKeyUsage: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		BasicConstraintsValid: ToBool(o.Nth(21)),
 // 		IsCA: ToBool(o.Nth(22)),
 // 		MaxPathLen: AssertInt(o.Nth(23), "").I,
 // 		MaxPathLenZero: ToBool(o.Nth(24)),
-// 		SubjectKeyId: ABEND048(codegen.go: unsupported type []byte),
-// 		AuthorityKeyId: ABEND048(codegen.go: unsupported type []byte),
-// 		OCSPServer: ABEND048(codegen.go: unsupported type []string),
-// 		IssuingCertificateURL: ABEND048(codegen.go: unsupported type []string),
-// 		DNSNames: ABEND048(codegen.go: unsupported type []string),
-// 		EmailAddresses: ABEND048(codegen.go: unsupported type []string),
+// 		SubjectKeyId: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		AuthorityKeyId: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		OCSPServer: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		IssuingCertificateURL: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		DNSNames: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		EmailAddresses: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		IPAddresses: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		URIs: []*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PermittedDNSDomainsCritical: ToBool(o.Nth(33)),
-// 		PermittedDNSDomains: ABEND048(codegen.go: unsupported type []string),
-// 		ExcludedDNSDomains: ABEND048(codegen.go: unsupported type []string),
+// 		PermittedDNSDomains: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		ExcludedDNSDomains: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		PermittedIPRanges: []*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ExcludedIPRanges: []*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		PermittedEmailAddresses: ABEND048(codegen.go: unsupported type []string),
-// 		ExcludedEmailAddresses: ABEND048(codegen.go: unsupported type []string),
-// 		PermittedURIDomains: ABEND048(codegen.go: unsupported type []string),
-// 		ExcludedURIDomains: ABEND048(codegen.go: unsupported type []string),
-// 		CRLDistributionPoints: ABEND048(codegen.go: unsupported type []string),
+// 		PermittedEmailAddresses: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		ExcludedEmailAddresses: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		PermittedURIDomains: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		ExcludedURIDomains: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CRLDistributionPoints: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		PolicyIdentifiers: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -21948,12 +21948,12 @@ func ExtractGoObjectCertificateRequest(args []Object, index int) *_x509.Certific
 
 // func _vectorToCertificateRequest(o *Vector) *_x509.CertificateRequest {
 // 	return &_x509.CertificateRequest{
-// 		Raw: ABEND048(codegen.go: unsupported type []byte),
-// 		RawTBSCertificateRequest: ABEND048(codegen.go: unsupported type []byte),
-// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: unsupported type []byte),
-// 		RawSubject: ABEND048(codegen.go: unsupported type []byte),
+// 		Raw: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawTBSCertificateRequest: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawSubjectPublicKeyInfo: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
+// 		RawSubject: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		Version: AssertInt(o.Nth(4), "").I,
-// 		Signature: ABEND048(codegen.go: unsupported type []byte),
+// 		Signature: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		SignatureAlgorithm: AssertInt(o.Nth(6), "").I,
 // 		PublicKeyAlgorithm: AssertInt(o.Nth(7), "").I,
 // 		PublicKey: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
@@ -21961,8 +21961,8 @@ func ExtractGoObjectCertificateRequest(args []Object, index int) *_x509.Certific
 // 		Attributes: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Extensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ExtraExtensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		DNSNames: ABEND048(codegen.go: unsupported type []string),
-// 		EmailAddresses: ABEND048(codegen.go: unsupported type []string),
+// 		DNSNames: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		EmailAddresses: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		IPAddresses: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		URIs: []*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
@@ -22445,7 +22445,7 @@ func ExtractGoObjectVerifyOptions(args []Object, index int) *_x509.VerifyOptions
 // 		Intermediates: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Roots: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		CurrentTime: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		KeyUsages: ABEND048(codegen.go: unsupported type []crypto/x509.ExtKeyUsage),
+// 		KeyUsages: ABEND048(codegen.go: no conversion from Clojure for []crypto/x509.ExtKeyUsage (crypto/x509.ExtKeyUsage)),
 // 		MaxConstraintComparisions: AssertInt(o.Nth(5), "").I,
 // 	}
 // }
@@ -24010,7 +24010,7 @@ func ExtractGoObjectHeader32(args []Object, index int) *_elf.Header32 {
 
 // func _vectorToHeader32(o *Vector) *_elf.Header32 {
 // 	return &_elf.Header32{
-// 		Ident: ABEND048(codegen.go: unsupported type ...byte),
+// 		Ident: ABEND048(codegen.go: no conversion from Clojure for [EI_NIDENT]byte (byte)),
 // 		Type: uint16(AssertInt(o.Nth(1), "").I),
 // 		Machine: uint16(AssertInt(o.Nth(2), "").I),
 // 		Version: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -24065,7 +24065,7 @@ func ExtractGoObjectHeader64(args []Object, index int) *_elf.Header64 {
 
 // func _vectorToHeader64(o *Vector) *_elf.Header64 {
 // 	return &_elf.Header64{
-// 		Ident: ABEND048(codegen.go: unsupported type ...byte),
+// 		Ident: ABEND048(codegen.go: no conversion from Clojure for [EI_NIDENT]byte (byte)),
 // 		Type: uint16(AssertInt(o.Nth(1), "").I),
 // 		Machine: uint16(AssertInt(o.Nth(2), "").I),
 // 		Version: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -25877,7 +25877,7 @@ func ExtractGoObjectDysymtab(args []Object, index int) *_macho.Dysymtab {
 
 // func _vectorToDysymtab(o *Vector) *_macho.Dysymtab {
 // 	return &_macho.Dysymtab{
-// 		IndirectSyms: ABEND048(codegen.go: unsupported type []uint32),
+// 		IndirectSyms: ABEND048(codegen.go: no conversion from Clojure for []uint32 (uint32)),
 // 	}
 // }
 
@@ -26855,8 +26855,8 @@ func ExtractGoObjectSection32(args []Object, index int) *_macho.Section32 {
 
 // func _vectorToSection32(o *Vector) *_macho.Section32 {
 // 	return &_macho.Section32{
-// 		Name: ABEND048(codegen.go: unsupported type ...byte),
-// 		Seg: ABEND048(codegen.go: unsupported type ...byte),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
+// 		Seg: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Size: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Offset: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
@@ -26907,8 +26907,8 @@ func ExtractGoObjectSection64(args []Object, index int) *_macho.Section64 {
 
 // func _vectorToSection64(o *Vector) *_macho.Section64 {
 // 	return &_macho.Section64{
-// 		Name: ABEND048(codegen.go: unsupported type ...byte),
-// 		Seg: ABEND048(codegen.go: unsupported type ...byte),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
+// 		Seg: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
 // 		Size: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Offset: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
@@ -27052,7 +27052,7 @@ func ExtractGoObjectSegment32(args []Object, index int) *_macho.Segment32 {
 // 	return &_macho.Segment32{
 // 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...byte),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Memsz: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 // 		Offset: uint32(AssertNumber(o.Nth(5), "").BigInt().Uint64()),
@@ -27104,7 +27104,7 @@ func ExtractGoObjectSegment64(args []Object, index int) *_macho.Segment64 {
 // 	return &_macho.Segment64{
 // 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...byte),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Memsz: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
 // 		Offset: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
@@ -27344,7 +27344,7 @@ func ExtractGoObjectThread(args []Object, index int) *_macho.Thread {
 // 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Type: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Data: ABEND048(codegen.go: unsupported type []uint32),
+// 		Data: ABEND048(codegen.go: no conversion from Clojure for []uint32 (uint32)),
 // 	}
 // }
 
@@ -27463,7 +27463,7 @@ func ExtractGoObjectCOFFSymbol(args []Object, index int) *_pe.COFFSymbol {
 
 // func _vectorToCOFFSymbol(o *Vector) *_pe.COFFSymbol {
 // 	return &_pe.COFFSymbol{
-// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [8]uint8 (uint8)),
 // 		Value: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		SectionNumber: int16(AssertInt(o.Nth(2), "").I),
 // 		Type: uint16(AssertInt(o.Nth(3), "").I),
@@ -27557,7 +27557,7 @@ func ExtractGoObjectFile(args []Object, index int) *_pe.File {
 // 		Sections: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Symbols: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		COFFSymbols: []ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		StringTable: ABEND048(codegen.go: unsupported type debug/pe.StringTable),
+// 		StringTable: ABEND048(codegen.go: no conversion from Clojure for debug/pe.StringTable ([]byte)),
 // 	}
 // }
 
@@ -27763,7 +27763,7 @@ func ExtractGoObjectOptionalHeader32(args []Object, index int) *_pe.OptionalHead
 // 		SizeOfHeapCommit: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		LoaderFlags: uint32(AssertNumber(o.Nth(28), "").BigInt().Uint64()),
 // 		NumberOfRvaAndSizes: uint32(AssertNumber(o.Nth(29), "").BigInt().Uint64()),
-// 		DataDirectory: ...ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		DataDirectory: [16]ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
 
@@ -27834,7 +27834,7 @@ func ExtractGoObjectOptionalHeader64(args []Object, index int) *_pe.OptionalHead
 // 		SizeOfHeapCommit: AssertNumber(o.Nth(26), "").BigInt().Uint64(),
 // 		LoaderFlags: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		NumberOfRvaAndSizes: uint32(AssertNumber(o.Nth(28), "").BigInt().Uint64()),
-// 		DataDirectory: ...ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		DataDirectory: [16]ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
 
@@ -28013,7 +28013,7 @@ func ExtractGoObjectSectionHeader32(args []Object, index int) *_pe.SectionHeader
 
 // func _vectorToSectionHeader32(o *Vector) *_pe.SectionHeader32 {
 // 	return &_pe.SectionHeader32{
-// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [8]uint8 (uint8)),
 // 		VirtualSize: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		VirtualAddress: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		SizeOfRawData: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -28999,7 +28999,7 @@ func ExtractGoObjectBlock(args []Object, index int) *_pem.Block {
 // 	return &_pem.Block{
 // 		Type: AssertString(o.Nth(0), "").S,
 // 		Headers: ABEND047(gotypes.go: unsupported type *ast.MapType),
-// 		Bytes: ABEND048(codegen.go: unsupported type []byte),
+// 		Bytes: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -29182,7 +29182,7 @@ func ExtractGoObjectDecoder(args []Object, index int) *_xml.Decoder {
 // func _vectorToDecoder(o *Vector) *_xml.Decoder {
 // 	return &_xml.Decoder{
 // 		Strict: ToBool(o.Nth(0)),
-// 		AutoClose: ABEND048(codegen.go: unsupported type []string),
+// 		AutoClose: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Entity: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		CharsetReader: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		DefaultSpace: AssertString(o.Nth(4), "").S,
@@ -29443,7 +29443,7 @@ func ExtractGoObjectProcInst(args []Object, index int) *_xml.ProcInst {
 // func _vectorToProcInst(o *Vector) *_xml.ProcInst {
 // 	return &_xml.ProcInst{
 // 		Target: AssertString(o.Nth(0), "").S,
-// 		Inst: ABEND048(codegen.go: unsupported type []byte),
+// 		Inst: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -33740,8 +33740,8 @@ func ExtractGoObjectContext(args []Object, index int) *_build.Context {
 // 		CgoEnabled: ToBool(o.Nth(4)),
 // 		UseAllFiles: ToBool(o.Nth(5)),
 // 		Compiler: AssertString(o.Nth(6), "").S,
-// 		BuildTags: ABEND048(codegen.go: unsupported type []string),
-// 		ReleaseTags: ABEND048(codegen.go: unsupported type []string),
+// 		BuildTags: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		ReleaseTags: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		InstallSuffix: AssertString(o.Nth(9), "").S,
 // 		JoinPath: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		SplitPathList: ABEND047(gotypes.go: unsupported type *ast.FuncType),
@@ -33825,8 +33825,8 @@ func ExtractGoObjectMultiplePackageError(args []Object, index int) *_build.Multi
 // func _vectorToMultiplePackageError(o *Vector) *_build.MultiplePackageError {
 // 	return &_build.MultiplePackageError{
 // 		Dir: AssertString(o.Nth(0), "").S,
-// 		Packages: ABEND048(codegen.go: unsupported type []string),
-// 		Files: ABEND048(codegen.go: unsupported type []string),
+// 		Packages: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Files: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -33922,35 +33922,35 @@ func ExtractGoObjectPackage(args []Object, index int) *_build.Package {
 // 		BinDir: AssertString(o.Nth(9), "").S,
 // 		Goroot: ToBool(o.Nth(10)),
 // 		PkgObj: AssertString(o.Nth(11), "").S,
-// 		AllTags: ABEND048(codegen.go: unsupported type []string),
+// 		AllTags: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		ConflictDir: AssertString(o.Nth(13), "").S,
 // 		BinaryOnly: ToBool(o.Nth(14)),
-// 		GoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		CgoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		IgnoredGoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		InvalidGoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		CFiles: ABEND048(codegen.go: unsupported type []string),
-// 		CXXFiles: ABEND048(codegen.go: unsupported type []string),
-// 		MFiles: ABEND048(codegen.go: unsupported type []string),
-// 		HFiles: ABEND048(codegen.go: unsupported type []string),
-// 		FFiles: ABEND048(codegen.go: unsupported type []string),
-// 		SFiles: ABEND048(codegen.go: unsupported type []string),
-// 		SwigFiles: ABEND048(codegen.go: unsupported type []string),
-// 		SwigCXXFiles: ABEND048(codegen.go: unsupported type []string),
-// 		SysoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		CgoCFLAGS: ABEND048(codegen.go: unsupported type []string),
-// 		CgoCPPFLAGS: ABEND048(codegen.go: unsupported type []string),
-// 		CgoCXXFLAGS: ABEND048(codegen.go: unsupported type []string),
-// 		CgoFFLAGS: ABEND048(codegen.go: unsupported type []string),
-// 		CgoLDFLAGS: ABEND048(codegen.go: unsupported type []string),
-// 		CgoPkgConfig: ABEND048(codegen.go: unsupported type []string),
-// 		Imports: ABEND048(codegen.go: unsupported type []string),
+// 		GoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		IgnoredGoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		InvalidGoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CXXFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		MFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		HFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		FFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		SFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		SwigFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		SwigCXXFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		SysoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoCFLAGS: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoCPPFLAGS: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoCXXFLAGS: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoFFLAGS: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoLDFLAGS: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		CgoPkgConfig: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Imports: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		ImportPos: ABEND047(gotypes.go: unsupported type *ast.MapType),
-// 		TestGoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		TestImports: ABEND048(codegen.go: unsupported type []string),
+// 		TestGoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		TestImports: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		TestImportPos: ABEND047(gotypes.go: unsupported type *ast.MapType),
-// 		XTestGoFiles: ABEND048(codegen.go: unsupported type []string),
-// 		XTestImports: ABEND048(codegen.go: unsupported type []string),
+// 		XTestGoFiles: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		XTestImports: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		XTestImportPos: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 	}
 // }
@@ -34473,10 +34473,10 @@ func ExtractGoObjectPackage(args []Object, index int) *_doc.Package {
 // 		Doc: AssertString(o.Nth(0), "").S,
 // 		Name: AssertString(o.Nth(1), "").S,
 // 		ImportPath: AssertString(o.Nth(2), "").S,
-// 		Imports: ABEND048(codegen.go: unsupported type []string),
-// 		Filenames: ABEND048(codegen.go: unsupported type []string),
+// 		Imports: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Filenames: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Notes: ABEND047(gotypes.go: unsupported type *ast.MapType),
-// 		Bugs: ABEND048(codegen.go: unsupported type []string),
+// 		Bugs: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Consts: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Types: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Vars: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
@@ -34571,7 +34571,7 @@ func ExtractGoObjectValue(args []Object, index int) *_doc.Value {
 // func _vectorToValue(o *Vector) *_doc.Value {
 // 	return &_doc.Value{
 // 		Doc: AssertString(o.Nth(0), "").S,
-// 		Names: ABEND048(codegen.go: unsupported type []string),
+// 		Names: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Decl: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -37484,7 +37484,7 @@ func ExtractGoObjectAlpha(args []Object, index int) *_image.Alpha {
 
 // func _vectorToAlpha(o *Vector) *_image.Alpha {
 // 	return &_image.Alpha{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37528,7 +37528,7 @@ func ExtractGoObjectAlpha16(args []Object, index int) *_image.Alpha16 {
 
 // func _vectorToAlpha16(o *Vector) *_image.Alpha16 {
 // 	return &_image.Alpha16{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37572,7 +37572,7 @@ func ExtractGoObjectCMYK(args []Object, index int) *_image.CMYK {
 
 // func _vectorToCMYK(o *Vector) *_image.CMYK {
 // 	return &_image.CMYK{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37660,7 +37660,7 @@ func ExtractGoObjectGray(args []Object, index int) *_image.Gray {
 
 // func _vectorToGray(o *Vector) *_image.Gray {
 // 	return &_image.Gray{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37704,7 +37704,7 @@ func ExtractGoObjectGray16(args []Object, index int) *_image.Gray16 {
 
 // func _vectorToGray16(o *Vector) *_image.Gray16 {
 // 	return &_image.Gray16{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37778,7 +37778,7 @@ func ExtractGoObjectNRGBA(args []Object, index int) *_image.NRGBA {
 
 // func _vectorToNRGBA(o *Vector) *_image.NRGBA {
 // 	return &_image.NRGBA{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37822,7 +37822,7 @@ func ExtractGoObjectNRGBA64(args []Object, index int) *_image.NRGBA64 {
 
 // func _vectorToNRGBA64(o *Vector) *_image.NRGBA64 {
 // 	return &_image.NRGBA64{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -37866,7 +37866,7 @@ func ExtractGoObjectNYCbCrA(args []Object, index int) *_image.NYCbCrA {
 
 // func _vectorToNYCbCrA(o *Vector) *_image.NYCbCrA {
 // 	return &_image.NYCbCrA{
-// 		A: ABEND048(codegen.go: unsupported type []uint8),
+// 		A: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		AStride: AssertInt(o.Nth(1), "").I,
 // 	}
 // }
@@ -37909,7 +37909,7 @@ func ExtractGoObjectPaletted(args []Object, index int) *_image.Paletted {
 
 // func _vectorToPaletted(o *Vector) *_image.Paletted {
 // 	return &_image.Paletted{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Palette: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -38027,7 +38027,7 @@ func ExtractGoObjectRGBA(args []Object, index int) *_image.RGBA {
 
 // func _vectorToRGBA(o *Vector) *_image.RGBA {
 // 	return &_image.RGBA{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -38071,7 +38071,7 @@ func ExtractGoObjectRGBA64(args []Object, index int) *_image.RGBA64 {
 
 // func _vectorToRGBA64(o *Vector) *_image.RGBA64 {
 // 	return &_image.RGBA64{
-// 		Pix: ABEND048(codegen.go: unsupported type []uint8),
+// 		Pix: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		Stride: AssertInt(o.Nth(1), "").I,
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -38200,9 +38200,9 @@ func ExtractGoObjectYCbCr(args []Object, index int) *_image.YCbCr {
 
 // func _vectorToYCbCr(o *Vector) *_image.YCbCr {
 // 	return &_image.YCbCr{
-// 		Y: ABEND048(codegen.go: unsupported type []uint8),
-// 		Cb: ABEND048(codegen.go: unsupported type []uint8),
-// 		Cr: ABEND048(codegen.go: unsupported type []uint8),
+// 		Y: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
+// 		Cb: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
+// 		Cr: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		YStride: AssertInt(o.Nth(3), "").I,
 // 		CStride: AssertInt(o.Nth(4), "").I,
 // 		SubsampleRatio: AssertInt(o.Nth(5), "").I,
@@ -41441,7 +41441,7 @@ func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
 
 // func _vectorToIPAddr(o *Vector) *_net.IPAddr {
 // 	return &_net.IPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Zone: AssertString(o.Nth(1), "").S,
 // 	}
 // }
@@ -41554,8 +41554,8 @@ func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
 
 // func _vectorToIPNet(o *Vector) *_net.IPNet {
 // 	return &_net.IPNet{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
-// 		Mask: ABEND048(codegen.go: unsupported type net.IPMask),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
 // 	}
 // }
 
@@ -41600,7 +41600,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		Index: AssertInt(o.Nth(0), "").I,
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
-// 		HardwareAddr: ABEND048(codegen.go: unsupported type net.HardwareAddr),
+// 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
 // 		Flags: uint(AssertInt(o.Nth(4), "").I),
 // 	}
 // }
@@ -42041,7 +42041,7 @@ func ExtractGoObjectTCPAddr(args []Object, index int) *_net.TCPAddr {
 
 // func _vectorToTCPAddr(o *Vector) *_net.TCPAddr {
 // 	return &_net.TCPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Port: AssertInt(o.Nth(1), "").I,
 // 		Zone: AssertString(o.Nth(2), "").S,
 // 	}
@@ -42165,7 +42165,7 @@ func ExtractGoObjectUDPAddr(args []Object, index int) *_net.UDPAddr {
 
 // func _vectorToUDPAddr(o *Vector) *_net.UDPAddr {
 // 	return &_net.UDPAddr{
-// 		IP: ABEND048(codegen.go: unsupported type net.IP),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
 // 		Port: AssertInt(o.Nth(1), "").I,
 // 		Zone: AssertString(o.Nth(2), "").S,
 // 	}
@@ -42938,7 +42938,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		HttpOnly: ToBool(o.Nth(8)),
 // 		SameSite: AssertInt(o.Nth(9), "").I,
 // 		Raw: AssertString(o.Nth(10), "").S,
-// 		Unparsed: ABEND048(codegen.go: unsupported type []string),
+// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -43377,7 +43377,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(10)),
 // 		Host: AssertString(o.Nth(11), "").S,
 // 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -43438,7 +43438,7 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
 // 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
@@ -43949,10 +43949,10 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 // 		Path: AssertString(o.Nth(0), "").S,
 // 		Root: AssertString(o.Nth(1), "").S,
 // 		Dir: AssertString(o.Nth(2), "").S,
-// 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		InheritEnv: ABEND048(codegen.go: unsupported type []string),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Logger: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Args: ABEND048(codegen.go: unsupported type []string),
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Stderr: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PathLocationHandler: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
@@ -45143,7 +45143,7 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 // 	return &_smtp.ServerInfo{
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		TLS: ToBool(o.Nth(1)),
-// 		Auth: ABEND048(codegen.go: unsupported type []string),
+// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -46033,7 +46033,7 @@ func ExtractGoObjectProcAttr(args []Object, index int) *_os.ProcAttr {
 // func _vectorToProcAttr(o *Vector) *_os.ProcAttr {
 // 	return &_os.ProcAttr{
 // 		Dir: AssertString(o.Nth(0), "").S,
-// 		Env: ABEND048(codegen.go: unsupported type []string),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Files: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Sys: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
@@ -46458,8 +46458,8 @@ func ExtractGoObjectCmd(args []Object, index int) *_exec.Cmd {
 // func _vectorToCmd(o *Vector) *_exec.Cmd {
 // 	return &_exec.Cmd{
 // 		Path: AssertString(o.Nth(0), "").S,
-// 		Args: ABEND048(codegen.go: unsupported type []string),
-// 		Env: ABEND048(codegen.go: unsupported type []string),
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Dir: AssertString(o.Nth(3), "").S,
 // 		Stdin: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Stdout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -46552,7 +46552,7 @@ func ExtractGoObjectExitError(args []Object, index int) *_exec.ExitError {
 
 // func _vectorToExitError(o *Vector) *_exec.ExitError {
 // 	return &_exec.ExitError{
-// 		Stderr: ABEND048(codegen.go: unsupported type []byte),
+// 		Stderr: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -47440,7 +47440,7 @@ func ExtractGoObjectStructField(args []Object, index int) *_reflect.StructField 
 // 		Type: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Tag: AssertString(o.Nth(3), "").S,
 // 		Offset: uintptr(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
-// 		Index: ABEND048(codegen.go: unsupported type []int),
+// 		Index: ABEND048(codegen.go: no conversion from Clojure for []int (int)),
 // 		Anonymous: ToBool(o.Nth(6)),
 // 	}
 // }
@@ -48028,7 +48028,7 @@ func ExtractGoObjectInst(args []Object, index int) *_syntax.Inst {
 // 		Op: uint8(AssertInt(o.Nth(0), "").I),
 // 		Out: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Arg: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Rune: ABEND048(codegen.go: unsupported type []rune),
+// 		Rune: ABEND048(codegen.go: no conversion from Clojure for []rune (rune)),
 // 	}
 // }
 
@@ -48183,9 +48183,9 @@ func ExtractGoObjectRegexp(args []Object, index int) *_syntax.Regexp {
 // 		Op: uint8(AssertInt(o.Nth(0), "").I),
 // 		Flags: uint16(AssertInt(o.Nth(1), "").I),
 // 		Sub: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Sub0: ...*ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Rune: ABEND048(codegen.go: unsupported type []rune),
-// 		Rune0: ABEND048(codegen.go: unsupported type ...rune),
+// 		Sub0: [1]*ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		Rune: ABEND048(codegen.go: no conversion from Clojure for []rune (rune)),
+// 		Rune0: ABEND048(codegen.go: no conversion from Clojure for [2]rune (rune)),
 // 		Min: AssertInt(o.Nth(6), "").I,
 // 		Max: AssertInt(o.Nth(7), "").I,
 // 		Cap: AssertInt(o.Nth(8), "").I,
@@ -48473,7 +48473,7 @@ func ExtractGoObjectMemProfileRecord(args []Object, index int) *_runtime.MemProf
 // 		FreeBytes: AssertNumber(o.Nth(1), "").BigInt().Int64(),
 // 		AllocObjects: AssertNumber(o.Nth(2), "").BigInt().Int64(),
 // 		FreeObjects: AssertNumber(o.Nth(3), "").BigInt().Int64(),
-// 		Stack0: ABEND048(codegen.go: unsupported type ...uintptr),
+// 		Stack0: ABEND048(codegen.go: no conversion from Clojure for [32]uintptr (uintptr)),
 // 	}
 // }
 
@@ -48539,14 +48539,14 @@ func ExtractGoObjectMemStats(args []Object, index int) *_runtime.MemStats {
 // 		NextGC: AssertNumber(o.Nth(21), "").BigInt().Uint64(),
 // 		LastGC: AssertNumber(o.Nth(22), "").BigInt().Uint64(),
 // 		PauseTotalNs: AssertNumber(o.Nth(23), "").BigInt().Uint64(),
-// 		PauseNs: ABEND048(codegen.go: unsupported type ...uint64),
-// 		PauseEnd: ABEND048(codegen.go: unsupported type ...uint64),
+// 		PauseNs: ABEND048(codegen.go: no conversion from Clojure for [256]uint64 (uint64)),
+// 		PauseEnd: ABEND048(codegen.go: no conversion from Clojure for [256]uint64 (uint64)),
 // 		NumGC: uint32(AssertNumber(o.Nth(26), "").BigInt().Uint64()),
 // 		NumForcedGC: uint32(AssertNumber(o.Nth(27), "").BigInt().Uint64()),
 // 		GCCPUFraction: float64(AssertDouble(o.Nth(28), "").D),
 // 		EnableGC: ToBool(o.Nth(29)),
 // 		DebugGC: ToBool(o.Nth(30)),
-// 		BySize: ...ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		BySize: [61]ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
 
@@ -48588,7 +48588,7 @@ func ExtractGoObjectStackRecord(args []Object, index int) *_runtime.StackRecord 
 
 // func _vectorToStackRecord(o *Vector) *_runtime.StackRecord {
 // 	return &_runtime.StackRecord{
-// 		Stack0: ABEND048(codegen.go: unsupported type ...uintptr),
+// 		Stack0: ABEND048(codegen.go: no conversion from Clojure for [32]uintptr (uintptr)),
 // 	}
 // }
 
@@ -50589,7 +50589,7 @@ func ExtractGoObjectCredential(args []Object, index int) *_syscall.Credential {
 // 	return &_syscall.Credential{
 // 		Uid: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
 // 		Gid: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Groups: ABEND048(codegen.go: unsupported type []uint32),
+// 		Groups: ABEND048(codegen.go: no conversion from Clojure for []uint32 (uint32)),
 // 		NoSetGroups: ToBool(o.Nth(3)),
 // 	}
 // }
@@ -50636,8 +50636,8 @@ func ExtractGoObjectDirent(args []Object, index int) *_syscall.Dirent {
 // 		Off: AssertNumber(o.Nth(1), "").BigInt().Int64(),
 // 		Reclen: uint16(AssertInt(o.Nth(2), "").I),
 // 		Type: uint8(AssertInt(o.Nth(3), "").I),
-// 		Name: ABEND048(codegen.go: unsupported type ...int8),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [256]int8 (int8)),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [5]byte (byte)),
 // 	}
 // }
 
@@ -50756,7 +50756,7 @@ func ExtractGoObjectFdSet(args []Object, index int) *_syscall.FdSet {
 
 // func _vectorToFdSet(o *Vector) *_syscall.FdSet {
 // 	return &_syscall.FdSet{
-// 		Bits: ABEND048(codegen.go: unsupported type ...int64),
+// 		Bits: ABEND048(codegen.go: no conversion from Clojure for [16]int64 (int64)),
 // 	}
 // }
 
@@ -50800,11 +50800,11 @@ func ExtractGoObjectFlock_t(args []Object, index int) *_syscall.Flock_t {
 // 	return &_syscall.Flock_t{
 // 		Type: int16(AssertInt(o.Nth(0), "").I),
 // 		Whence: int16(AssertInt(o.Nth(1), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Start: AssertNumber(o.Nth(3), "").BigInt().Int64(),
 // 		Len: AssertNumber(o.Nth(4), "").BigInt().Int64(),
 // 		Pid: int32(AssertInt(o.Nth(5), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -50846,7 +50846,7 @@ func ExtractGoObjectFsid(args []Object, index int) *_syscall.Fsid {
 
 // func _vectorToFsid(o *Vector) *_syscall.Fsid {
 // 	return &_syscall.Fsid{
-// 		X__val: ABEND048(codegen.go: unsupported type ...int32),
+// 		X__val: ABEND048(codegen.go: no conversion from Clojure for [2]int32 (int32)),
 // 	}
 // }
 
@@ -50888,7 +50888,7 @@ func ExtractGoObjectICMPv6Filter(args []Object, index int) *_syscall.ICMPv6Filte
 
 // func _vectorToICMPv6Filter(o *Vector) *_syscall.ICMPv6Filter {
 // 	return &_syscall.ICMPv6Filter{
-// 		Data: ABEND048(codegen.go: unsupported type ...uint32),
+// 		Data: ABEND048(codegen.go: no conversion from Clojure for [8]uint32 (uint32)),
 // 	}
 // }
 
@@ -50930,8 +50930,8 @@ func ExtractGoObjectIPMreq(args []Object, index int) *_syscall.IPMreq {
 
 // func _vectorToIPMreq(o *Vector) *_syscall.IPMreq {
 // 	return &_syscall.IPMreq{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
-// 		Interface: ABEND048(codegen.go: unsupported type ...byte),
+// 		Multiaddr: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
+// 		Interface: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -50973,8 +50973,8 @@ func ExtractGoObjectIPMreqn(args []Object, index int) *_syscall.IPMreqn {
 
 // func _vectorToIPMreqn(o *Vector) *_syscall.IPMreqn {
 // 	return &_syscall.IPMreqn{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
-// 		Address: ABEND048(codegen.go: unsupported type ...byte),
+// 		Multiaddr: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
+// 		Address: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Ifindex: int32(AssertInt(o.Nth(2), "").I),
 // 	}
 // }
@@ -51060,7 +51060,7 @@ func ExtractGoObjectIPv6Mreq(args []Object, index int) *_syscall.IPv6Mreq {
 
 // func _vectorToIPv6Mreq(o *Vector) *_syscall.IPv6Mreq {
 // 	return &_syscall.IPv6Mreq{
-// 		Multiaddr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Multiaddr: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Interface: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 	}
 // }
@@ -51197,8 +51197,8 @@ func ExtractGoObjectInet4Pktinfo(args []Object, index int) *_syscall.Inet4Pktinf
 // func _vectorToInet4Pktinfo(o *Vector) *_syscall.Inet4Pktinfo {
 // 	return &_syscall.Inet4Pktinfo{
 // 		Ifindex: int32(AssertInt(o.Nth(0), "").I),
-// 		Spec_dst: ABEND048(codegen.go: unsupported type ...byte),
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Spec_dst: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -51240,7 +51240,7 @@ func ExtractGoObjectInet6Pktinfo(args []Object, index int) *_syscall.Inet6Pktinf
 
 // func _vectorToInet6Pktinfo(o *Vector) *_syscall.Inet6Pktinfo {
 // 	return &_syscall.Inet6Pktinfo{
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Ifindex: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 	}
 // }
@@ -51287,7 +51287,7 @@ func ExtractGoObjectInotifyEvent(args []Object, index int) *_syscall.InotifyEven
 // 		Mask: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Cookie: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Len: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
-// 		Name: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Name: ABEND048(codegen.go: no conversion from Clojure for [0]uint8 (uint8)),
 // 	}
 // }
 
@@ -51417,13 +51417,13 @@ func ExtractGoObjectMsghdr(args []Object, index int) *_syscall.Msghdr {
 // 	return &_syscall.Msghdr{
 // 		Name: &byte(AssertInt(o.Nth(0), "").I),
 // 		Namelen: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Iov: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Iovlen: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
 // 		Control: &byte(AssertInt(o.Nth(5), "").I),
 // 		Controllen: AssertNumber(o.Nth(6), "").BigInt().Uint64(),
 // 		Flags: int32(AssertInt(o.Nth(7), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -51466,7 +51466,7 @@ func ExtractGoObjectNetlinkMessage(args []Object, index int) *_syscall.NetlinkMe
 // func _vectorToNetlinkMessage(o *Vector) *_syscall.NetlinkMessage {
 // 	return &_syscall.NetlinkMessage{
 // 		Header: ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Data: ABEND048(codegen.go: unsupported type []byte),
+// 		Data: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -51509,7 +51509,7 @@ func ExtractGoObjectNetlinkRouteAttr(args []Object, index int) *_syscall.Netlink
 // func _vectorToNetlinkRouteAttr(o *Vector) *_syscall.NetlinkRouteAttr {
 // 	return &_syscall.NetlinkRouteAttr{
 // 		Attr: ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Value: ABEND048(codegen.go: unsupported type []byte),
+// 		Value: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -51727,8 +51727,8 @@ func ExtractGoObjectProcAttr(args []Object, index int) *_syscall.ProcAttr {
 // func _vectorToProcAttr(o *Vector) *_syscall.ProcAttr {
 // 	return &_syscall.ProcAttr{
 // 		Dir: AssertString(o.Nth(0), "").S,
-// 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		Files: ABEND048(codegen.go: unsupported type []uintptr),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Files: ABEND048(codegen.go: no conversion from Clojure for []uintptr (uintptr)),
 // 		Sys: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
@@ -51870,7 +51870,7 @@ func ExtractGoObjectRawSockaddr(args []Object, index int) *_syscall.RawSockaddr 
 // func _vectorToRawSockaddr(o *Vector) *_syscall.RawSockaddr {
 // 	return &_syscall.RawSockaddr{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
-// 		Data: ABEND048(codegen.go: unsupported type ...int8),
+// 		Data: ABEND048(codegen.go: no conversion from Clojure for [14]int8 (int8)),
 // 	}
 // }
 
@@ -51913,7 +51913,7 @@ func ExtractGoObjectRawSockaddrAny(args []Object, index int) *_syscall.RawSockad
 // func _vectorToRawSockaddrAny(o *Vector) *_syscall.RawSockaddrAny {
 // 	return &_syscall.RawSockaddrAny{
 // 		Addr: ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Pad: ABEND048(codegen.go: unsupported type ...int8),
+// 		Pad: ABEND048(codegen.go: no conversion from Clojure for [96]int8 (int8)),
 // 	}
 // }
 
@@ -51957,8 +51957,8 @@ func ExtractGoObjectRawSockaddrInet4(args []Object, index int) *_syscall.RawSock
 // 	return &_syscall.RawSockaddrInet4{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
 // 		Port: uint16(AssertInt(o.Nth(1), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
-// 		Zero: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
+// 		Zero: ABEND048(codegen.go: no conversion from Clojure for [8]uint8 (uint8)),
 // 	}
 // }
 
@@ -52003,7 +52003,7 @@ func ExtractGoObjectRawSockaddrInet6(args []Object, index int) *_syscall.RawSock
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
 // 		Port: uint16(AssertInt(o.Nth(1), "").I),
 // 		Flowinfo: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Scope_id: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 // 	}
 // }
@@ -52052,7 +52052,7 @@ func ExtractGoObjectRawSockaddrLinklayer(args []Object, index int) *_syscall.Raw
 // 		Hatype: uint16(AssertInt(o.Nth(3), "").I),
 // 		Pkttype: uint8(AssertInt(o.Nth(4), "").I),
 // 		Halen: uint8(AssertInt(o.Nth(5), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...uint8),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [8]uint8 (uint8)),
 // 	}
 // }
 
@@ -52140,7 +52140,7 @@ func ExtractGoObjectRawSockaddrUnix(args []Object, index int) *_syscall.RawSocka
 // func _vectorToRawSockaddrUnix(o *Vector) *_syscall.RawSockaddrUnix {
 // 	return &_syscall.RawSockaddrUnix{
 // 		Family: uint16(AssertInt(o.Nth(0), "").I),
-// 		Path: ABEND048(codegen.go: unsupported type ...int8),
+// 		Path: ABEND048(codegen.go: no conversion from Clojure for [108]int8 (int8)),
 // 	}
 // }
 
@@ -52541,7 +52541,7 @@ func ExtractGoObjectSockFprog(args []Object, index int) *_syscall.SockFprog {
 // func _vectorToSockFprog(o *Vector) *_syscall.SockFprog {
 // 	return &_syscall.SockFprog{
 // 		Len: uint16(AssertInt(o.Nth(0), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [6]byte (byte)),
 // 		Filter: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
@@ -52615,7 +52615,7 @@ func ExtractGoObjectSockaddrInet4(args []Object, index int) *_syscall.SockaddrIn
 // func _vectorToSockaddrInet4(o *Vector) *_syscall.SockaddrInet4 {
 // 	return &_syscall.SockaddrInet4{
 // 		Port: AssertInt(o.Nth(0), "").I,
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -52659,7 +52659,7 @@ func ExtractGoObjectSockaddrInet6(args []Object, index int) *_syscall.SockaddrIn
 // 	return &_syscall.SockaddrInet6{
 // 		Port: AssertInt(o.Nth(0), "").I,
 // 		ZoneId: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 	}
 // }
 
@@ -52706,7 +52706,7 @@ func ExtractGoObjectSockaddrLinklayer(args []Object, index int) *_syscall.Sockad
 // 		Hatype: uint16(AssertInt(o.Nth(2), "").I),
 // 		Pkttype: uint8(AssertInt(o.Nth(3), "").I),
 // 		Halen: uint8(AssertInt(o.Nth(4), "").I),
-// 		Addr: ABEND048(codegen.go: unsupported type ...byte),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for [8]byte (byte)),
 // 	}
 // }
 
@@ -52836,7 +52836,7 @@ func ExtractGoObjectSocketControlMessage(args []Object, index int) *_syscall.Soc
 // func _vectorToSocketControlMessage(o *Vector) *_syscall.SocketControlMessage {
 // 	return &_syscall.SocketControlMessage{
 // 		Header: ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Data: ABEND048(codegen.go: unsupported type []byte),
+// 		Data: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -52892,7 +52892,7 @@ func ExtractGoObjectStat_t(args []Object, index int) *_syscall.Stat_t {
 // 		Atim: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Mtim: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Ctim: ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		X__unused: ABEND048(codegen.go: unsupported type ...int64),
+// 		X__unused: ABEND048(codegen.go: no conversion from Clojure for [3]int64 (int64)),
 // 	}
 // }
 
@@ -52945,7 +52945,7 @@ func ExtractGoObjectStatfs_t(args []Object, index int) *_syscall.Statfs_t {
 // 		Namelen: AssertNumber(o.Nth(8), "").BigInt().Int64(),
 // 		Frsize: AssertNumber(o.Nth(9), "").BigInt().Int64(),
 // 		Flags: AssertNumber(o.Nth(10), "").BigInt().Int64(),
-// 		Spare: ABEND048(codegen.go: unsupported type ...int64),
+// 		Spare: ABEND048(codegen.go: no conversion from Clojure for [4]int64 (int64)),
 // 	}
 // }
 
@@ -53003,7 +53003,7 @@ func ExtractGoObjectSysProcAttr(args []Object, index int) *_syscall.SysProcAttr 
 // 		UidMappings: []ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		GidMappings: []ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		GidMappingsEnableSetgroups: ToBool(o.Nth(15)),
-// 		AmbientCaps: ABEND048(codegen.go: unsupported type []uintptr),
+// 		AmbientCaps: ABEND048(codegen.go: no conversion from Clojure for []uintptr (uintptr)),
 // 	}
 // }
 
@@ -53090,7 +53090,7 @@ func ExtractGoObjectSysinfo_t(args []Object, index int) *_syscall.Sysinfo_t {
 // func _vectorToSysinfo_t(o *Vector) *_syscall.Sysinfo_t {
 // 	return &_syscall.Sysinfo_t{
 // 		Uptime: AssertNumber(o.Nth(0), "").BigInt().Int64(),
-// 		Loads: ABEND048(codegen.go: unsupported type ...uint64),
+// 		Loads: ABEND048(codegen.go: no conversion from Clojure for [3]uint64 (uint64)),
 // 		Totalram: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
 // 		Freeram: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 // 		Sharedram: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
@@ -53099,12 +53099,12 @@ func ExtractGoObjectSysinfo_t(args []Object, index int) *_syscall.Sysinfo_t {
 // 		Freeswap: AssertNumber(o.Nth(7), "").BigInt().Uint64(),
 // 		Procs: uint16(AssertInt(o.Nth(8), "").I),
 // 		Pad: uint16(AssertInt(o.Nth(9), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Totalhigh: AssertNumber(o.Nth(11), "").BigInt().Uint64(),
 // 		Freehigh: AssertNumber(o.Nth(12), "").BigInt().Uint64(),
 // 		Unit: uint32(AssertNumber(o.Nth(13), "").BigInt().Uint64()),
-// 		X_f: ABEND048(codegen.go: unsupported type ...byte),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
+// 		X_f: ABEND048(codegen.go: no conversion from Clojure for [0]byte (byte)),
+// 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -53152,7 +53152,7 @@ func ExtractGoObjectTCPInfo(args []Object, index int) *_syscall.TCPInfo {
 // 		Probes: uint8(AssertInt(o.Nth(3), "").I),
 // 		Backoff: uint8(AssertInt(o.Nth(4), "").I),
 // 		Options: uint8(AssertInt(o.Nth(5), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [2]byte (byte)),
 // 		Rto: uint32(AssertNumber(o.Nth(7), "").BigInt().Uint64()),
 // 		Ato: uint32(AssertNumber(o.Nth(8), "").BigInt().Uint64()),
 // 		Snd_mss: uint32(AssertNumber(o.Nth(9), "").BigInt().Uint64()),
@@ -53223,8 +53223,8 @@ func ExtractGoObjectTermios(args []Object, index int) *_syscall.Termios {
 // 		Cflag: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Lflag: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
 // 		Line: uint8(AssertInt(o.Nth(4), "").I),
-// 		Cc: ABEND048(codegen.go: unsupported type ...uint8),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Cc: ABEND048(codegen.go: no conversion from Clojure for [32]uint8 (uint8)),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [3]byte (byte)),
 // 		Ispeed: uint32(AssertNumber(o.Nth(7), "").BigInt().Uint64()),
 // 		Ospeed: uint32(AssertNumber(o.Nth(8), "").BigInt().Uint64()),
 // 	}
@@ -53388,13 +53388,13 @@ func ExtractGoObjectTimex(args []Object, index int) *_syscall.Timex {
 // func _vectorToTimex(o *Vector) *_syscall.Timex {
 // 	return &_syscall.Timex{
 // 		Modes: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Offset: AssertNumber(o.Nth(2), "").BigInt().Int64(),
 // 		Freq: AssertNumber(o.Nth(3), "").BigInt().Int64(),
 // 		Maxerror: AssertNumber(o.Nth(4), "").BigInt().Int64(),
 // 		Esterror: AssertNumber(o.Nth(5), "").BigInt().Int64(),
 // 		Status: int32(AssertInt(o.Nth(6), "").I),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Constant: AssertNumber(o.Nth(8), "").BigInt().Int64(),
 // 		Precision: AssertNumber(o.Nth(9), "").BigInt().Int64(),
 // 		Tolerance: AssertNumber(o.Nth(10), "").BigInt().Int64(),
@@ -53403,14 +53403,14 @@ func ExtractGoObjectTimex(args []Object, index int) *_syscall.Timex {
 // 		Ppsfreq: AssertNumber(o.Nth(13), "").BigInt().Int64(),
 // 		Jitter: AssertNumber(o.Nth(14), "").BigInt().Int64(),
 // 		Shift: int32(AssertInt(o.Nth(15), "").I),
-// 		Pad_cgo_2: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_2: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Stabil: AssertNumber(o.Nth(17), "").BigInt().Int64(),
 // 		Jitcnt: AssertNumber(o.Nth(18), "").BigInt().Int64(),
 // 		Calcnt: AssertNumber(o.Nth(19), "").BigInt().Int64(),
 // 		Errcnt: AssertNumber(o.Nth(20), "").BigInt().Int64(),
 // 		Stbcnt: AssertNumber(o.Nth(21), "").BigInt().Int64(),
 // 		Tai: int32(AssertInt(o.Nth(22), "").I),
-// 		Pad_cgo_3: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_3: ABEND048(codegen.go: no conversion from Clojure for [44]byte (byte)),
 // 	}
 // }
 
@@ -53542,11 +53542,11 @@ func ExtractGoObjectUstat_t(args []Object, index int) *_syscall.Ustat_t {
 // func _vectorToUstat_t(o *Vector) *_syscall.Ustat_t {
 // 	return &_syscall.Ustat_t{
 // 		Tfree: int32(AssertInt(o.Nth(0), "").I),
-// 		Pad_cgo_0: ABEND048(codegen.go: unsupported type ...byte),
+// 		Pad_cgo_0: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 		Tinode: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
-// 		Fname: ABEND048(codegen.go: unsupported type ...int8),
-// 		Fpack: ABEND048(codegen.go: unsupported type ...int8),
-// 		Pad_cgo_1: ABEND048(codegen.go: unsupported type ...byte),
+// 		Fname: ABEND048(codegen.go: no conversion from Clojure for [6]int8 (int8)),
+// 		Fpack: ABEND048(codegen.go: no conversion from Clojure for [6]int8 (int8)),
+// 		Pad_cgo_1: ABEND048(codegen.go: no conversion from Clojure for [4]byte (byte)),
 // 	}
 // }
 
@@ -53631,12 +53631,12 @@ func ExtractGoObjectUtsname(args []Object, index int) *_syscall.Utsname {
 
 // func _vectorToUtsname(o *Vector) *_syscall.Utsname {
 // 	return &_syscall.Utsname{
-// 		Sysname: ABEND048(codegen.go: unsupported type ...int8),
-// 		Nodename: ABEND048(codegen.go: unsupported type ...int8),
-// 		Release: ABEND048(codegen.go: unsupported type ...int8),
-// 		Version: ABEND048(codegen.go: unsupported type ...int8),
-// 		Machine: ABEND048(codegen.go: unsupported type ...int8),
-// 		Domainname: ABEND048(codegen.go: unsupported type ...int8),
+// 		Sysname: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
+// 		Nodename: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
+// 		Release: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
+// 		Version: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
+// 		Machine: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
+// 		Domainname: ABEND048(codegen.go: no conversion from Clojure for [65]int8 (int8)),
 // 	}
 // }
 
@@ -55625,7 +55625,7 @@ func ExtractGoObjectChainNode(args []Object, index int) *_parse.ChainNode {
 // func _vectorToChainNode(o *Vector) *_parse.ChainNode {
 // 	return &_parse.ChainNode{
 // 		Node: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
-// 		Field: ABEND048(codegen.go: unsupported type []string),
+// 		Field: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -55749,7 +55749,7 @@ func ExtractGoObjectFieldNode(args []Object, index int) *_parse.FieldNode {
 
 // func _vectorToFieldNode(o *Vector) *_parse.FieldNode {
 // 	return &_parse.FieldNode{
-// 		Ident: ABEND048(codegen.go: unsupported type []string),
+// 		Ident: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -56025,7 +56025,7 @@ func ExtractGoObjectNumberNode(args []Object, index int) *_parse.NumberNode {
 // 		Int64: AssertNumber(o.Nth(4), "").BigInt().Int64(),
 // 		Uint64: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
 // 		Float64: float64(AssertDouble(o.Nth(6), "").D),
-// 		Complex128: ABEND048(codegen.go: unsupported type complex128),
+// 		Complex128: ABEND048(codegen.go: no conversion from Clojure for complex128 (-)),
 // 		Text: AssertString(o.Nth(8), "").S,
 // 	}
 // }
@@ -56273,7 +56273,7 @@ func ExtractGoObjectTextNode(args []Object, index int) *_parse.TextNode {
 
 // func _vectorToTextNode(o *Vector) *_parse.TextNode {
 // 	return &_parse.TextNode{
-// 		Text: ABEND048(codegen.go: unsupported type []byte),
+// 		Text: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 	}
 // }
 
@@ -56359,7 +56359,7 @@ func ExtractGoObjectVariableNode(args []Object, index int) *_parse.VariableNode 
 
 // func _vectorToVariableNode(o *Vector) *_parse.VariableNode {
 // 	return &_parse.VariableNode{
-// 		Ident: ABEND048(codegen.go: unsupported type []string),
+// 		Ident: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
