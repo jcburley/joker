@@ -2597,7 +2597,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
-// 		Flags: uint(AssertInt(o.Nth(4), "").I),
+// 		Flags: _net.Flags(uint(AssertInt(o.Nth(4), "").I)),
 // 	}
 // }
 
@@ -3923,7 +3923,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: AssertInt(o.Nth(9), "").I,
+// 		SameSite: _http.SameSite(AssertInt(o.Nth(9), "").I),
 // 		Raw: AssertString(o.Nth(10), "").S,
 // 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}

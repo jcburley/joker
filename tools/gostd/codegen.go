@@ -4,7 +4,6 @@ import (
 	"fmt"
 	. "go/ast"
 	"path"
-	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
@@ -164,7 +163,7 @@ func genFunction(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
-	pkgBaseName := filepath.Base(pkgDirUnix)
+	pkgBaseName := fn.sourceFile.pkgBaseName
 
 	const clojureTemplate = `
 (defn %s%s
@@ -260,7 +259,7 @@ func maybeDeref(ptrTo string) string {
 
 func genType(t string, ti *typeInfo) {
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
-	pkgBaseName := filepath.Base(pkgDirUnix)
+	pkgBaseName := ti.sourceFile.pkgBaseName
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
 		return // no public functions available for package, so don't try to generate type info either
 	} else if !pi.nonEmpty {
@@ -398,8 +397,8 @@ func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObje
 	nonGoObjectType = "case " + v.argClojureType
 	nonGoObjectTypeDoc = v.argClojureType
 	extractClojureObject = v.argFromClojureObject
-	if v.unsupported {
-		nonGoObjectType += " /* " + v.fullName + " */"
+	if v.unsupported || v.argClojureType == "" || extractClojureObject == "" {
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.fullName)
 	}
 	return
 }

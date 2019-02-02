@@ -4173,11 +4173,11 @@ JOKER TYPE crypto/x509.HostnameError from crypto/x509/verify.go:
 ;;   [^Object _v])
 
 JOKER TYPE crypto/x509.InsecureAlgorithmError from crypto/x509/x509.go:
-(defn ^"GoObject" InsecureAlgorithmError.
-  "Constructor for x509.InsecureAlgorithmError"
-  {:added "1.0"
-   :go "_ConstructInsecureAlgorithmError(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" InsecureAlgorithmError.
+;;   "Constructor for x509.InsecureAlgorithmError"
+;;   {:added "1.0"
+;;    :go "_ConstructInsecureAlgorithmError(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE crypto/x509.InvalidReason from crypto/x509/verify.go:
 (defn ^"GoObject" InvalidReason.
@@ -21412,7 +21412,7 @@ func ExtractGoObjectConfig(args []Object, index int) *_tls.Config {
 // 		RootCAs: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		NextProtos: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		ServerName: AssertString(o.Nth(10), "").S,
-// 		ClientAuth: AssertInt(o.Nth(11), "").I,
+// 		ClientAuth: _tls.ClientAuthType(AssertInt(o.Nth(11), "").I),
 // 		ClientCAs: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		InsecureSkipVerify: ToBool(o.Nth(13)),
 // 		CipherSuites: ABEND048(codegen.go: no conversion from Clojure for []uint16 (uint16)),
@@ -21424,7 +21424,7 @@ func ExtractGoObjectConfig(args []Object, index int) *_tls.Config {
 // 		MaxVersion: uint16(AssertInt(o.Nth(20), "").I),
 // 		CurvePreferences: ABEND048(codegen.go: no conversion from Clojure for []crypto/tls.CurveID (crypto/tls.CurveID)),
 // 		DynamicRecordSizingDisabled: ToBool(o.Nth(22)),
-// 		Renegotiation: AssertInt(o.Nth(23), "").I,
+// 		Renegotiation: _tls.RenegotiationSupport(AssertInt(o.Nth(23), "").I),
 // 		KeyLogWriter: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -21825,8 +21825,8 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 // 		RawSubject: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		RawIssuer: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		Signature: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
-// 		SignatureAlgorithm: AssertInt(o.Nth(6), "").I,
-// 		PublicKeyAlgorithm: AssertInt(o.Nth(7), "").I,
+// 		SignatureAlgorithm: _x509.SignatureAlgorithm(AssertInt(o.Nth(6), "").I),
+// 		PublicKeyAlgorithm: _x509.PublicKeyAlgorithm(AssertInt(o.Nth(7), "").I),
 // 		PublicKey: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Version: AssertInt(o.Nth(9), "").I,
 // 		SerialNumber: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -21834,7 +21834,7 @@ func ExtractGoObjectCertificate(args []Object, index int) *_x509.Certificate {
 // 		Subject: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		NotBefore: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		NotAfter: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		KeyUsage: AssertInt(o.Nth(15), "").I,
+// 		KeyUsage: _x509.KeyUsage(AssertInt(o.Nth(15), "").I),
 // 		Extensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ExtraExtensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		UnhandledCriticalExtensions: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -21905,7 +21905,7 @@ func ExtractGoObjectCertificateInvalidError(args []Object, index int) *_x509.Cer
 // func _vectorToCertificateInvalidError(o *Vector) *_x509.CertificateInvalidError {
 // 	return &_x509.CertificateInvalidError{
 // 		Cert: *ABEND047(gotypes.go: unsupported type *ast.StructType),
-// 		Reason: AssertInt(o.Nth(1), "").I,
+// 		Reason: _x509.InvalidReason(AssertInt(o.Nth(1), "").I),
 // 		Detail: AssertString(o.Nth(2), "").S,
 // 	}
 // }
@@ -21954,8 +21954,8 @@ func ExtractGoObjectCertificateRequest(args []Object, index int) *_x509.Certific
 // 		RawSubject: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
 // 		Version: AssertInt(o.Nth(4), "").I,
 // 		Signature: ABEND048(codegen.go: no conversion from Clojure for []byte (byte)),
-// 		SignatureAlgorithm: AssertInt(o.Nth(6), "").I,
-// 		PublicKeyAlgorithm: AssertInt(o.Nth(7), "").I,
+// 		SignatureAlgorithm: _x509.SignatureAlgorithm(AssertInt(o.Nth(6), "").I),
+// 		PublicKeyAlgorithm: _x509.PublicKeyAlgorithm(AssertInt(o.Nth(7), "").I),
 // 		PublicKey: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Subject: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Attributes: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -22116,20 +22116,20 @@ func ExtractGoObjectInsecureAlgorithmError(args []Object, index int) *_x509.Inse
 	panic(RT.NewArgTypeError(index, a, "GoObject[crypto/x509.InsecureAlgorithmError]"))
 }
 
-func _ConstructInsecureAlgorithmError(_v Object) _x509.InsecureAlgorithmError {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _x509.InsecureAlgorithmError:
-			return _g
-		case *_x509.InsecureAlgorithmError:
-			return *_g
-		}
-	case :
-		return _x509.InsecureAlgorithmError(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.InsecureAlgorithmError] or: "))
-}
+// func _ConstructInsecureAlgorithmError(_v Object) _x509.InsecureAlgorithmError {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _x509.InsecureAlgorithmError:
+// 			return _g
+// 		case *_x509.InsecureAlgorithmError:
+// 			return *_g
+// 		}
+// 	case  /* ABEND171(missing go object type or clojure-object extraction for crypto/x509.SignatureAlgorithm) */:
+// 		return _x509.InsecureAlgorithmError(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[x509.InsecureAlgorithmError] or: "))
+// }
 
 GO TYPE crypto/x509.InvalidReason from crypto/x509/verify.go:
 func ExtractGoObjectInvalidReason(args []Object, index int) *_x509.InvalidReason {
@@ -23429,7 +23429,7 @@ func _mapToTxOptions(o Map) *_sql.TxOptions {
 
 func _vectorToTxOptions(o *Vector) *_sql.TxOptions {
 	return &_sql.TxOptions{
-		Isolation: AssertInt(o.Nth(0), "").I,
+		Isolation: _sql.IsolationLevel(AssertInt(o.Nth(0), "").I),
 		ReadOnly: ToBool(o.Nth(1)),
 	}
 }
@@ -23920,14 +23920,14 @@ func ExtractGoObjectFileHeader(args []Object, index int) *_elf.FileHeader {
 
 // func _vectorToFileHeader(o *Vector) *_elf.FileHeader {
 // 	return &_elf.FileHeader{
-// 		Class: byte(AssertInt(o.Nth(0), "").I),
-// 		Data: byte(AssertInt(o.Nth(1), "").I),
-// 		Version: byte(AssertInt(o.Nth(2), "").I),
-// 		OSABI: byte(AssertInt(o.Nth(3), "").I),
+// 		Class: _elf.Class(byte(AssertInt(o.Nth(0), "").I)),
+// 		Data: _elf.Data(byte(AssertInt(o.Nth(1), "").I)),
+// 		Version: _elf.Version(byte(AssertInt(o.Nth(2), "").I)),
+// 		OSABI: _elf.OSABI(byte(AssertInt(o.Nth(3), "").I)),
 // 		ABIVersion: uint8(AssertInt(o.Nth(4), "").I),
 // 		ByteOrder: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Type: uint16(AssertInt(o.Nth(6), "").I),
-// 		Machine: uint16(AssertInt(o.Nth(7), "").I),
+// 		Type: _elf.Type(uint16(AssertInt(o.Nth(6), "").I)),
+// 		Machine: _elf.Machine(uint16(AssertInt(o.Nth(7), "").I)),
 // 		Entry: AssertNumber(o.Nth(8), "").BigInt().Uint64(),
 // 	}
 // }
@@ -24434,8 +24434,8 @@ func _mapToProgHeader(o Map) *_elf.ProgHeader {
 
 func _vectorToProgHeader(o *Vector) *_elf.ProgHeader {
 	return &_elf.ProgHeader{
-		Type: AssertInt(o.Nth(0), "").I,
-		Flags: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
+		Type: _elf.ProgType(AssertInt(o.Nth(0), "").I),
+		Flags: _elf.ProgFlag(uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64())),
 		Off: AssertNumber(o.Nth(2), "").BigInt().Uint64(),
 		Vaddr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 		Paddr: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
@@ -25229,8 +25229,8 @@ func _mapToSectionHeader(o Map) *_elf.SectionHeader {
 func _vectorToSectionHeader(o *Vector) *_elf.SectionHeader {
 	return &_elf.SectionHeader{
 		Name: AssertString(o.Nth(0), "").S,
-		Type: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
-		Flags: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
+		Type: _elf.SectionType(uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64())),
+		Flags: _elf.SectionFlag(uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64())),
 		Addr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
 		Offset: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
 		Size: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
@@ -25542,7 +25542,7 @@ func _vectorToSymbol(o *Vector) *_elf.Symbol {
 		Name: AssertString(o.Nth(0), "").S,
 		Info: byte(AssertInt(o.Nth(1), "").I),
 		Other: byte(AssertInt(o.Nth(2), "").I),
-		Section: AssertInt(o.Nth(3), "").I,
+		Section: _elf.SectionIndex(AssertInt(o.Nth(3), "").I),
 		Value: AssertNumber(o.Nth(4), "").BigInt().Uint64(),
 		Size: AssertNumber(o.Nth(5), "").BigInt().Uint64(),
 	}
@@ -25830,7 +25830,7 @@ func _mapToDylibCmd(o Map) *_macho.DylibCmd {
 
 func _vectorToDylibCmd(o *Vector) *_macho.DylibCmd {
 	return &_macho.DylibCmd{
-		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Name: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 		Time: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -25919,7 +25919,7 @@ func _mapToDysymtabCmd(o Map) *_macho.DysymtabCmd {
 
 func _vectorToDysymtabCmd(o *Vector) *_macho.DysymtabCmd {
 	return &_macho.DysymtabCmd{
-		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Ilocalsym: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 		Nlocalsym: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -26020,7 +26020,7 @@ func _mapToFatArchHeader(o Map) *_macho.FatArchHeader {
 
 func _vectorToFatArchHeader(o *Vector) *_macho.FatArchHeader {
 	return &_macho.FatArchHeader{
-		Cpu: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cpu: _macho.Cpu(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		SubCpu: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Offset: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 		Size: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -26156,9 +26156,9 @@ func _mapToFileHeader(o Map) *_macho.FileHeader {
 func _vectorToFileHeader(o *Vector) *_macho.FileHeader {
 	return &_macho.FileHeader{
 		Magic: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
-		Cpu: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
+		Cpu: _macho.Cpu(uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64())),
 		SubCpu: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
-		Type: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
+		Type: _macho.Type(uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64())),
 		Ncmd: uint32(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 		Cmdsz: uint32(AssertNumber(o.Nth(5), "").BigInt().Uint64()),
 		Flags: uint32(AssertNumber(o.Nth(6), "").BigInt().Uint64()),
@@ -26769,7 +26769,7 @@ func _mapToRpathCmd(o Map) *_macho.RpathCmd {
 
 func _vectorToRpathCmd(o *Vector) *_macho.RpathCmd {
 	return &_macho.RpathCmd{
-		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Path: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 	}
@@ -27050,7 +27050,7 @@ func ExtractGoObjectSegment32(args []Object, index int) *_macho.Segment32 {
 
 // func _vectorToSegment32(o *Vector) *_macho.Segment32 {
 // 	return &_macho.Segment32{
-// 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+// 		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -27102,7 +27102,7 @@ func ExtractGoObjectSegment64(args []Object, index int) *_macho.Segment64 {
 
 // func _vectorToSegment64(o *Vector) *_macho.Segment64 {
 // 	return &_macho.Segment64{
-// 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+// 		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Name: ABEND048(codegen.go: no conversion from Clojure for [16]byte (byte)),
 // 		Addr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
@@ -27154,7 +27154,7 @@ func _mapToSegmentHeader(o Map) *_macho.SegmentHeader {
 
 func _vectorToSegmentHeader(o *Vector) *_macho.SegmentHeader {
 	return &_macho.SegmentHeader{
-		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Name: AssertString(o.Nth(2), "").S,
 		Addr: AssertNumber(o.Nth(3), "").BigInt().Uint64(),
@@ -27294,7 +27294,7 @@ func _mapToSymtabCmd(o Map) *_macho.SymtabCmd {
 
 func _vectorToSymtabCmd(o *Vector) *_macho.SymtabCmd {
 	return &_macho.SymtabCmd{
-		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 		Symoff: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 		Nsyms: uint32(AssertNumber(o.Nth(3), "").BigInt().Uint64()),
@@ -27341,7 +27341,7 @@ func ExtractGoObjectThread(args []Object, index int) *_macho.Thread {
 
 // func _vectorToThread(o *Vector) *_macho.Thread {
 // 	return &_macho.Thread{
-// 		Cmd: uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64()),
+// 		Cmd: _macho.LoadCmd(uint32(AssertNumber(o.Nth(0), "").BigInt().Uint64())),
 // 		Len: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Type: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Data: ABEND048(codegen.go: no conversion from Clojure for []uint32 (uint32)),
@@ -31238,7 +31238,7 @@ func ExtractGoObjectChanType(args []Object, index int) *_ast.ChanType {
 // 	return &_ast.ChanType{
 // 		Begin: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Arrow: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Dir: AssertInt(o.Nth(2), "").I,
+// 		Dir: _ast.ChanDir(AssertInt(o.Nth(2), "").I),
 // 		Value: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 	}
 // }
@@ -32755,7 +32755,7 @@ func ExtractGoObjectObject(args []Object, index int) *_ast.Object {
 
 // func _vectorToObject(o *Vector) *_ast.Object {
 // 	return &_ast.Object{
-// 		Kind: AssertInt(o.Nth(0), "").I,
+// 		Kind: _ast.ObjKind(AssertInt(o.Nth(0), "").I),
 // 		Name: AssertString(o.Nth(1), "").S,
 // 		Decl: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Data: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
@@ -37058,7 +37058,7 @@ func ExtractGoObjectError(args []Object, index int) *_template.Error {
 
 // func _vectorToError(o *Vector) *_template.Error {
 // 	return &_template.Error{
-// 		ErrorCode: AssertInt(o.Nth(0), "").I,
+// 		ErrorCode: _template.ErrorCode(AssertInt(o.Nth(0), "").I),
 // 		Node: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		Line: AssertInt(o.Nth(3), "").I,
@@ -38205,7 +38205,7 @@ func ExtractGoObjectYCbCr(args []Object, index int) *_image.YCbCr {
 // 		Cr: ABEND048(codegen.go: no conversion from Clojure for []uint8 (uint8)),
 // 		YStride: AssertInt(o.Nth(3), "").I,
 // 		CStride: AssertInt(o.Nth(4), "").I,
-// 		SubsampleRatio: AssertInt(o.Nth(5), "").I,
+// 		SubsampleRatio: _image.YCbCrSubsampleRatio(AssertInt(o.Nth(5), "").I),
 // 		Rect: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
@@ -41601,7 +41601,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
-// 		Flags: uint(AssertInt(o.Nth(4), "").I),
+// 		Flags: _net.Flags(uint(AssertInt(o.Nth(4), "").I)),
 // 	}
 // }
 
@@ -42936,7 +42936,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: AssertInt(o.Nth(9), "").I,
+// 		SameSite: _http.SameSite(AssertInt(o.Nth(9), "").I),
 // 		Raw: AssertString(o.Nth(10), "").S,
 // 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
@@ -47271,7 +47271,7 @@ func ExtractGoObjectSelectCase(args []Object, index int) *_reflect.SelectCase {
 
 // func _vectorToSelectCase(o *Vector) *_reflect.SelectCase {
 // 	return &_reflect.SelectCase{
-// 		Dir: AssertInt(o.Nth(0), "").I,
+// 		Dir: _reflect.SelectDir(AssertInt(o.Nth(0), "").I),
 // 		Chan: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Send: ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
@@ -47438,7 +47438,7 @@ func ExtractGoObjectStructField(args []Object, index int) *_reflect.StructField 
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		PkgPath: AssertString(o.Nth(1), "").S,
 // 		Type: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
-// 		Tag: AssertString(o.Nth(3), "").S,
+// 		Tag: _reflect.StructTag(AssertString(o.Nth(3), "").S),
 // 		Offset: uintptr(AssertNumber(o.Nth(4), "").BigInt().Uint64()),
 // 		Index: ABEND048(codegen.go: no conversion from Clojure for []int (int)),
 // 		Anonymous: ToBool(o.Nth(6)),
@@ -47587,7 +47587,7 @@ func _mapToValueError(o Map) *_reflect.ValueError {
 func _vectorToValueError(o *Vector) *_reflect.ValueError {
 	return &_reflect.ValueError{
 		Method: AssertString(o.Nth(0), "").S,
-		Kind: uint(AssertInt(o.Nth(1), "").I),
+		Kind: _reflect.Kind(uint(AssertInt(o.Nth(1), "").I)),
 	}
 }
 
@@ -47916,7 +47916,7 @@ func _mapToError(o Map) *_syntax.Error {
 
 func _vectorToError(o *Vector) *_syntax.Error {
 	return &_syntax.Error{
-		Code: AssertString(o.Nth(0), "").S,
+		Code: _syntax.ErrorCode(AssertString(o.Nth(0), "").S),
 		Expr: AssertString(o.Nth(1), "").S,
 	}
 }
@@ -48025,7 +48025,7 @@ func ExtractGoObjectInst(args []Object, index int) *_syntax.Inst {
 
 // func _vectorToInst(o *Vector) *_syntax.Inst {
 // 	return &_syntax.Inst{
-// 		Op: uint8(AssertInt(o.Nth(0), "").I),
+// 		Op: _syntax.InstOp(uint8(AssertInt(o.Nth(0), "").I)),
 // 		Out: uint32(AssertNumber(o.Nth(1), "").BigInt().Uint64()),
 // 		Arg: uint32(AssertNumber(o.Nth(2), "").BigInt().Uint64()),
 // 		Rune: ABEND048(codegen.go: no conversion from Clojure for []rune (rune)),
@@ -48180,8 +48180,8 @@ func ExtractGoObjectRegexp(args []Object, index int) *_syntax.Regexp {
 
 // func _vectorToRegexp(o *Vector) *_syntax.Regexp {
 // 	return &_syntax.Regexp{
-// 		Op: uint8(AssertInt(o.Nth(0), "").I),
-// 		Flags: uint16(AssertInt(o.Nth(1), "").I),
+// 		Op: _syntax.Op(uint8(AssertInt(o.Nth(0), "").I)),
+// 		Flags: _syntax.Flags(uint16(AssertInt(o.Nth(1), "").I)),
 // 		Sub: []*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Sub0: [1]*ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Rune: ABEND048(codegen.go: no conversion from Clojure for []rune (rune)),
@@ -52997,7 +52997,7 @@ func ExtractGoObjectSysProcAttr(args []Object, index int) *_syscall.SysProcAttr 
 // 		Ctty: AssertInt(o.Nth(7), "").I,
 // 		Foreground: ToBool(o.Nth(8)),
 // 		Pgid: AssertInt(o.Nth(9), "").I,
-// 		Pdeathsig: AssertInt(o.Nth(10), "").I,
+// 		Pdeathsig: _syscall.Signal(AssertInt(o.Nth(10), "").I),
 // 		Cloneflags: uintptr(AssertNumber(o.Nth(11), "").BigInt().Uint64()),
 // 		Unshareflags: uintptr(AssertNumber(o.Nth(12), "").BigInt().Uint64()),
 // 		UidMappings: []ABEND047(gotypes.go: unsupported type *ast.StructType),
@@ -57120,5 +57120,5 @@ package utf8
 
 import (
 )
-ABENDs: 047(479) 987(309) 902(301) 044(203) 048(200) 043(129) 675(129) 674(121) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 901(1)
+ABENDs: 047(479) 987(309) 902(301) 044(203) 048(200) 043(129) 675(129) 674(121) 907(85) 906(42) 903(35) 885(16) 905(14) 883(12) 908(6) 042(2) 909(2) 171(1) 901(1)
 Totals: types=962 functions=7132 methods=5623 (78.84%) standalone=1509 (21.16%) generated=667 (44.20%)

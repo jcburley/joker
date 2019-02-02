@@ -135,11 +135,11 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 }
 
 type goFile struct {
-	name       string
-	rootUnix   string
-	pkgDirUnix string
-	pkgName    string
-	spaces     *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+	name        string
+	rootUnix    string
+	pkgDirUnix  string
+	pkgBaseName string
+	spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
 }
 
 var goFiles = map[string]*goFile{}
