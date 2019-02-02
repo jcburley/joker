@@ -93,6 +93,7 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
 	types[typename] = &typeInfo{gf, ts, ts.Pos(), "", "", &packageImports{}}
+	registerType(gf, typename, ts)
 }
 
 func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {

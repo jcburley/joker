@@ -227,8 +227,8 @@ func %s(%s) %s {
 	}
 }
 
-func maybeImplicitConvert(typeName string, ts *TypeSpec) string {
-	t := toGoTypeInfo(ts)
+func maybeImplicitConvert(src *goFile, typeName string, ts *TypeSpec) string {
+	t := toGoTypeInfo(src, ts)
 	if t == nil || !t.builtin {
 		return ""
 	}
@@ -292,7 +292,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	typeName := path.Base(t)
 	baseTypeName := ti.td.Name.Name
 
-	others := maybeImplicitConvert(typeName, ti.td)
+	others := maybeImplicitConvert(ti.sourceFile, typeName, ti.td)
 	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	const clojureTemplate = `
@@ -394,7 +394,7 @@ func nonGoObjectTypeFor(ti *typeInfo, typeName, baseTypeName string) (nonGoObjec
 }
 
 func simpleTypeFor(name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v, ok := goBuiltinTypes[name]
+	v, ok := goTypes[name]
 	if ok {
 		return "case " + v.argClojureType, v.argClojureType, v.argFromClojureObject
 	}
@@ -449,18 +449,21 @@ func vectorElementToType(ti *typeInfo, i int, name string, f *Field) string {
 }
 
 func elementToType(ti *typeInfo, el string, e Expr) string {
-	v := toGoExprInfo(e)
+	v := toGoExprInfo(ti.sourceFile, e)
 	if v.convertFromClojure != "" {
 		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
 	}
-	if v.declared {
+	if v.subType == nil {
 		if v.private {
 			return fmt.Sprintf("ABEND049(codegen.go: unsupported built-in type %s)", v.fullName)
 		}
 		return "_Construct" + v.fullName + "(" + el + ")"
 	}
-	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(e))
+	if v.unsupported {
+		return v.fullName
+	}
+	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(ti.sourceFile, e))
 }
 
 /* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */
