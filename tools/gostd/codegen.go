@@ -365,7 +365,7 @@ func nonGoObjectCase(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectCa
 func nonGoObjectTypeFor(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile.pkgDirUnix, t.Name, ti.td.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile.pkgDirUnix, t.Name, &ti.td.Type)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -393,7 +393,7 @@ func nonGoObjectTypeFor(ti *typeInfo, typeName, baseTypeName string) (nonGoObjec
 		""
 }
 
-func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	v := toGoTypeNameInfo(pkgDirUnix, name, e)
 	nonGoObjectType = "case " + v.argClojureType
 	nonGoObjectTypeDoc = v.argClojureType
@@ -448,10 +448,10 @@ func elementsToType(ti *typeInfo, ty *StructType, toType func(ti *typeInfo, i in
 }
 
 func vectorElementToType(ti *typeInfo, i int, name string, f *Field) string {
-	return elementToType(ti, fmt.Sprintf("o.Nth(%d)", i), f.Type)
+	return elementToType(ti, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
 }
 
-func elementToType(ti *typeInfo, el string, e Expr) string {
+func elementToType(ti *typeInfo, el string, e *Expr) string {
 	v := toGoExprInfo(ti.sourceFile, e)
 	if v.unsupported {
 		return v.fullName
@@ -459,9 +459,6 @@ func elementToType(ti *typeInfo, el string, e Expr) string {
 	if v.convertFromClojure != "" {
 		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
-	}
-	if v.subType == nil {
-		return "_Construct" + v.fullName + "(" + el + ")"
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: unsupported type %s)", toGoExprString(ti.sourceFile, e))
 }

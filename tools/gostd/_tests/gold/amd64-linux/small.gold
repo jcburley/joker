@@ -129,11 +129,11 @@ JOKER TYPE net/url.InvalidHostError from net/url/url.go:
   [^Object _v])
 
 JOKER TYPE net/url.URL from net/url/url.go:
-(defn ^"GoObject" URL.
-  "Constructor for url.URL"
-  {:added "1.0"
-   :go "_ConstructURL(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" URL.
+;;   "Constructor for url.URL"
+;;   {:added "1.0"
+;;    :go "_ConstructURL(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net/url.Userinfo from net/url/url.go:
 (defn ^"GoObject" Userinfo.
@@ -636,40 +636,40 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func _mapToURL(o Map) *_url.URL {
-	return &_url.URL{}
-}
+// func _mapToURL(o Map) *_url.URL {
+// 	return &_url.URL{}
+// }
 
-func _vectorToURL(o *Vector) *_url.URL {
-	return &_url.URL{
-		Scheme: AssertString(o.Nth(0), "").S,
-		Opaque: AssertString(o.Nth(1), "").S,
-		User: _Construct*net/url.Userinfo(o.Nth(2)),
-		Host: AssertString(o.Nth(3), "").S,
-		Path: AssertString(o.Nth(4), "").S,
-		RawPath: AssertString(o.Nth(5), "").S,
-		ForceQuery: ToBool(o.Nth(6)),
-		RawQuery: AssertString(o.Nth(7), "").S,
-		Fragment: AssertString(o.Nth(8), "").S,
-	}
-}
+// func _vectorToURL(o *Vector) *_url.URL {
+// 	return &_url.URL{
+// 		Scheme: AssertString(o.Nth(0), "").S,
+// 		Opaque: AssertString(o.Nth(1), "").S,
+// 		User: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		Host: AssertString(o.Nth(3), "").S,
+// 		Path: AssertString(o.Nth(4), "").S,
+// 		RawPath: AssertString(o.Nth(5), "").S,
+// 		ForceQuery: ToBool(o.Nth(6)),
+// 		RawQuery: AssertString(o.Nth(7), "").S,
+// 		Fragment: AssertString(o.Nth(8), "").S,
+// 	}
+// }
 
-func _ConstructURL(_v Object) *_url.URL {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _url.URL:
-			return &_g
-		case *_url.URL:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToURL(_o.(Map))
-	case *Vector:
-		return _vectorToURL(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
-}
+// func _ConstructURL(_v Object) *_url.URL {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _url.URL:
+// 			return &_g
+// 		case *_url.URL:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToURL(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToURL(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
+// }
 
 GO TYPE net/url.Userinfo from net/url/url.go:
 func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
@@ -807,5 +807,5 @@ import (
 	. "github.com/candid82/joker/core"
 	_url "net/url"
 )
-ABENDs: 042(1) 047(1) 674(1)
+ABENDs: 047(2) 042(1) 674(1)
 Totals: types=10 functions=64 methods=46 (71.88%) standalone=18 (28.12%) generated=17 (94.44%)

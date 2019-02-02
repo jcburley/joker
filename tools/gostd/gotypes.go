@@ -9,7 +9,7 @@ import (
 type goTypeInfo struct {
 	typeName                  string          // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
 	fullName                  string          // empty ("struct {...}" etc.), typeName (built-in), path/to/pkg.typeName, or ABEND if unsupported
-	subType                   *Expr           // nil if not a declared type
+	underlyingType            *Expr           // nil if not a declared type
 	argClojureType            string          // Can convert this type to a Go function arg with my type
 	argFromClojureObject      string          // Append this to Clojure object to extract value of my type
 	argClojureArgType         string          // Clojure argument type for a Go function arg with my type
@@ -31,17 +31,17 @@ func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) {
 		return
 	}
 	ti := &goTypeInfo{
-		typeName:    ts.Name.Name,
-		fullName:    fullTypeName,
-		subType:     &ts.Type,
-		private:     isPrivate(ts.Name.Name),
-		custom:      true,
-		uncompleted: true,
+		typeName:       ts.Name.Name,
+		fullName:       fullTypeName,
+		underlyingType: &ts.Type,
+		private:        isPrivate(ts.Name.Name),
+		custom:         true,
+		uncompleted:    true,
 	}
 	goTypes[fullTypeName] = ti
 }
 
-func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *goTypeInfo {
+func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 	if ti, found := goTypes[baseName]; found {
 		return ti
 	}
@@ -49,7 +49,6 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *goTypeInfo {
 	if ti, found := goTypes[fullName]; found {
 		return ti
 	}
-	// Check whether type is builtin but not supported here. If so, register it accordingly and return it.
 	if gotypes.Universe.Lookup(baseName) != nil {
 		ti := &goTypeInfo{
 			typeName:           baseName,
@@ -62,21 +61,21 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *goTypeInfo {
 		goTypes[baseName] = ti
 		return ti
 	}
-	panic(fmt.Sprintf("type %s not found at %s", fullName, whereAt(e.Pos())))
+	panic(fmt.Sprintf("type %s not found at %s", fullName, whereAt((*e).Pos())))
 }
 
 func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
-	return toGoExprInfo(src, ts.Type)
+	return toGoExprInfo(src, &ts.Type)
 }
 
-func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
+func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	typeName := ""
 	fullName := ""
 	convertFromClojure := ""
 	private := false
-	var subType *Expr
+	var underlyingType *Expr
 	unsupported := false
-	switch td := e.(type) {
+	switch td := (*e).(type) {
 	case *Ident:
 		ti := toGoTypeNameInfo(src.pkgDirUnix, td.Name, e)
 		if !ti.custom {
@@ -84,24 +83,34 @@ func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
 		}
 		if ti.uncompleted {
 			// Fill in other info now that all types are registered.
-			// Is type actually builtin by Go? See special code to check that and define it as unsupported if so.
+			ut := toGoExprInfo(src, ti.underlyingType)
+			if ut.unsupported {
+				ti.fullName = ut.fullName
+				ti.unsupported = true
+			}
+			if ut.constructs {
+				ti.convertFromClojure = "*" + ut.convertFromClojure
+			} else {
+				ti.convertFromClojure = ut.convertFromClojure
+			}
+			ti.convertFromClojureImports = ut.convertFromClojureImports
 			ti.uncompleted = false
 		}
 		return ti
 	case *ArrayType:
-		return goArrayType(src, td.Len, td.Elt)
+		return goArrayType(src, td.Len, &td.Elt)
 	case *StarExpr:
-		return goStarExpr(src, td.X)
+		return goStarExpr(src, &td.X)
 	}
 	if typeName == "" || fullName == "" {
-		typeName = fmt.Sprintf("%T", e)
+		typeName = fmt.Sprintf("%T", *e)
 		fullName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", typeName)
 		unsupported = true
 	}
 	v := &goTypeInfo{
 		typeName:           typeName,
 		fullName:           fullName,
-		subType:            subType,
+		underlyingType:     underlyingType,
 		private:            private,
 		unsupported:        unsupported,
 		convertFromClojure: convertFromClojure,
@@ -110,7 +119,7 @@ func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
 	return v
 }
 
-func toGoExprString(src *goFile, e Expr) string {
+func toGoExprString(src *goFile, e *Expr) string {
 	t := toGoExprInfo(src, e)
 	if t != nil {
 		return t.fullName
@@ -118,19 +127,24 @@ func toGoExprString(src *goFile, e Expr) string {
 	return fmt.Sprintf("%T", e)
 }
 
-func goArrayType(src *goFile, len Expr, elt Expr) *goTypeInfo {
+func goArrayType(src *goFile, len Expr, elt *Expr) *goTypeInfo {
 	var fullName string
-	en := toGoExprString(src, elt)
+	e := toGoExprInfo(src, elt)
 	if len == nil {
-		fullName = "[]" + en
+		fullName = "[]" + e.fullName
 	} else {
-		fullName = "..." + en
+		fullName = "..." + e.fullName
 	}
 	if v, ok := goTypes[fullName]; ok {
 		return v
 	}
 	v := &goTypeInfo{
-		fullName: fullName,
+		typeName:       e.typeName,
+		fullName:       fullName,
+		underlyingType: e.underlyingType,
+		custom:         true,
+		unsupported:    e.unsupported,
+		constructs:     e.constructs,
 	}
 	goTypes[fullName] = v
 	return v
@@ -143,21 +157,28 @@ func ptrTo(expr string) string {
 	return expr
 }
 
-func goStarExpr(src *goFile, x Expr) *goTypeInfo {
-	ex := toGoExprInfo(src, x)
-	fullName := "*" + ex.fullName
+func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
+	e := toGoExprInfo(src, x)
+	fullName := "*" + e.fullName
 	if v, ok := goTypes[fullName]; ok {
 		return v
 	}
-	typeName := "*" + ex.typeName
 	convertFromClojure := ""
-	if !ex.unsupported && ex.convertFromClojure != "" {
-		convertFromClojure = ptrTo(ex.convertFromClojure)
+	if e.convertFromClojure != "" {
+		if e.constructs {
+			convertFromClojure = e.convertFromClojure
+		} else {
+			convertFromClojure = "&" + e.convertFromClojure
+		}
 	}
 	v := &goTypeInfo{
-		typeName:           typeName,
+		typeName:           e.typeName,
 		fullName:           fullName,
+		underlyingType:     x,
 		convertFromClojure: convertFromClojure,
+		custom:             true,
+		private:            e.private,
+		unsupported:        e.unsupported,
 	}
 	goTypes[fullName] = v
 	return v

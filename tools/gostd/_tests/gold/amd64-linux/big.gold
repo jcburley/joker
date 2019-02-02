@@ -1778,11 +1778,11 @@ JOKER TYPE net/smtp.Client from net/smtp/smtp.go:
 ;;   [^Object _v])
 
 JOKER TYPE net/smtp.ServerInfo from net/smtp/auth.go:
-(defn ^"GoObject" ServerInfo.
-  "Constructor for smtp.ServerInfo"
-  {:added "1.0"
-   :go "_ConstructServerInfo(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" ServerInfo.
+;;   "Constructor for smtp.ServerInfo"
+;;   {:added "1.0"
+;;    :go "_ConstructServerInfo(_v)"}
+;;   [^Object _v])
 
 JOKER FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 (defn CRAMMD5Auth
@@ -1939,11 +1939,11 @@ JOKER TYPE net/url.InvalidHostError from net/url/url.go:
   [^Object _v])
 
 JOKER TYPE net/url.URL from net/url/url.go:
-(defn ^"GoObject" URL.
-  "Constructor for url.URL"
-  {:added "1.0"
-   :go "_ConstructURL(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" URL.
+;;   "Constructor for url.URL"
+;;   {:added "1.0"
+;;    :go "_ConstructURL(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net/url.Userinfo from net/url/url.go:
 (defn ^"GoObject" Userinfo.
@@ -2266,11 +2266,11 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 // 	return &_net.Dialer{
 // 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Deadline: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		LocalAddr: ABEND048(codegen.go: unsupported type net.Addr),
+// 		LocalAddr: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		DualStack: ToBool(o.Nth(3)),
 // 		FallbackDelay: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		KeepAlive: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Resolver: _Construct*net.Resolver(o.Nth(6)),
+// 		Resolver: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
 // 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
@@ -2597,7 +2597,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		HardwareAddr: ABEND048(codegen.go: unsupported type net.HardwareAddr),
-// 		Flags: ABEND048(codegen.go: unsupported type net.Flags),
+// 		Flags: uint(AssertInt(o.Nth(4), "").I),
 // 	}
 // }
 
@@ -2831,8 +2831,8 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 // 	return &_net.OpError{
 // 		Op: AssertString(o.Nth(0), "").S,
 // 		Net: AssertString(o.Nth(1), "").S,
-// 		Source: ABEND048(codegen.go: unsupported type net.Addr),
-// 		Addr: ABEND048(codegen.go: unsupported type net.Addr),
+// 		Source: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Addr: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Err: _errors.New(AssertString(o.Nth(4), "").S),
 // 	}
 // }
@@ -3806,9 +3806,9 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 
 // func _vectorToClient(o *Vector) *_http.Client {
 // 	return &_http.Client{
-// 		Transport: ABEND048(codegen.go: unsupported type net/http.RoundTripper),
+// 		Transport: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType),
-// 		Jar: ABEND048(codegen.go: unsupported type net/http.CookieJar),
+// 		Jar: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -3923,9 +3923,9 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: ABEND048(codegen.go: unsupported type net/http.SameSite),
+// 		SameSite: AssertInt(o.Nth(9), "").I,
 // 		Raw: AssertString(o.Nth(10), "").S,
-// 		Unparsed: _Construct[]string(o.Nth(11)),
+// 		Unparsed: ABEND048(codegen.go: unsupported type []string),
 // 	}
 // }
 
@@ -4283,7 +4283,7 @@ func ExtractGoObjectPushOptions(args []Object, index int) *_http.PushOptions {
 // func _vectorToPushOptions(o *Vector) *_http.PushOptions {
 // 	return &_http.PushOptions{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		Header: ABEND048(codegen.go: unsupported type net/http.Header),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 	}
 // }
 
@@ -4356,26 +4356,26 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // func _vectorToRequest(o *Vector) *_http.Request {
 // 	return &_http.Request{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		URL: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(1)),
+// 		URL: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: unsupported type net/http.Header),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
-// 		TransferEncoding: _Construct[]string(o.Nth(9)),
+// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
 // 		Close: ToBool(o.Nth(10)),
 // 		Host: AssertString(o.Nth(11), "").S,
 // 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PostForm: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		MultipartForm: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(14)),
-// 		Trailer: ABEND048(codegen.go: unsupported type net/http.Header),
+// 		MultipartForm: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		RemoteAddr: AssertString(o.Nth(16), "").S,
 // 		RequestURI: AssertString(o.Nth(17), "").S,
-// 		TLS: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(18)),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
-// 		Response: _Construct*net/http.Response(o.Nth(20)),
+// 		Response: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
 
@@ -4422,15 +4422,15 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: unsupported type net/http.Header),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
-// 		TransferEncoding: _Construct[]string(o.Nth(8)),
+// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
-// 		Trailer: ABEND048(codegen.go: unsupported type net/http.Header),
-// 		Request: _Construct*net/http.Request(o.Nth(12)),
-// 		TLS: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(13)),
+// 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		Request: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -4606,8 +4606,8 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // func _vectorToServer(o *Vector) *_http.Server {
 // 	return &_http.Server{
 // 		Addr: AssertString(o.Nth(0), "").S,
-// 		Handler: ABEND048(codegen.go: unsupported type net/http.Handler),
-// 		TLSConfig: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(2)),
+// 		Handler: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		TLSConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ReadTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ReadHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		WriteTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -4615,7 +4615,7 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // 		MaxHeaderBytes: AssertInt(o.Nth(7), "").I,
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		ConnState: ABEND047(gotypes.go: unsupported type *ast.FuncType),
-// 		ErrorLog: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(10)),
+// 		ErrorLog: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -4661,7 +4661,7 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // 		DialContext: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		DialTLS: ABEND047(gotypes.go: unsupported type *ast.FuncType),
-// 		TLSClientConfig: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(4)),
+// 		TLSClientConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		TLSHandshakeTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		DisableKeepAlives: ToBool(o.Nth(6)),
 // 		DisableCompression: ToBool(o.Nth(7)),
@@ -4672,7 +4672,7 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // 		ResponseHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ExpectContinueTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
-// 		ProxyConnectHeader: ABEND048(codegen.go: unsupported type net/http.Header),
+// 		ProxyConnectHeader: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		MaxResponseHeaderBytes: AssertNumber(o.Nth(16), "").BigInt().Int64(),
 // 	}
 // }
@@ -4927,10 +4927,10 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 // 		Path: AssertString(o.Nth(0), "").S,
 // 		Root: AssertString(o.Nth(1), "").S,
 // 		Dir: AssertString(o.Nth(2), "").S,
-// 		Env: _Construct[]string(o.Nth(3)),
-// 		InheritEnv: _Construct[]string(o.Nth(4)),
-// 		Logger: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(5)),
-// 		Args: _Construct[]string(o.Nth(6)),
+// 		Env: ABEND048(codegen.go: unsupported type []string),
+// 		InheritEnv: ABEND048(codegen.go: unsupported type []string),
+// 		Logger: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Args: ABEND048(codegen.go: unsupported type []string),
 // 		Stderr: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PathLocationHandler: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
@@ -5038,7 +5038,7 @@ func ExtractGoObjectOptions(args []Object, index int) *_cookiejar.Options {
 
 // func _vectorToOptions(o *Vector) *_cookiejar.Options {
 // 	return &_cookiejar.Options{
-// 		PublicSuffixList: ABEND048(codegen.go: unsupported type net/http/cookiejar.PublicSuffixList),
+// 		PublicSuffixList: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 	}
 // }
 
@@ -5132,7 +5132,7 @@ func ExtractGoObjectResponseRecorder(args []Object, index int) *_httptest.Respon
 // 	return &_httptest.ResponseRecorder{
 // 		Code: AssertInt(o.Nth(0), "").I,
 // 		HeaderMap: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Body: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(2)),
+// 		Body: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Flushed: ToBool(o.Nth(3)),
 // 	}
 // }
@@ -5177,8 +5177,8 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 // 	return &_httptest.Server{
 // 		URL: AssertString(o.Nth(0), "").S,
 // 		Listener: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		TLS: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(2)),
-// 		Config: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(3)),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Config: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5413,7 +5413,7 @@ func ExtractGoObjectAddressParser(args []Object, index int) *_mail.AddressParser
 
 // func _vectorToAddressParser(o *Vector) *_mail.AddressParser {
 // 	return &_mail.AddressParser{
-// 		WordDecoder: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(0)),
+// 		WordDecoder: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5485,7 +5485,7 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 
 // func _vectorToMessage(o *Vector) *_mail.Message {
 // 	return &_mail.Message{
-// 		Header: ABEND048(codegen.go: unsupported type net/mail.Header),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -6018,7 +6018,7 @@ func ExtractGoObjectClient(args []Object, index int) *_smtp.Client {
 
 // func _vectorToClient(o *Vector) *_smtp.Client {
 // 	return &_smtp.Client{
-// 		Text: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(0)),
+// 		Text: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6054,34 +6054,34 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/smtp.ServerInfo]"))
 }
 
-func _mapToServerInfo(o Map) *_smtp.ServerInfo {
-	return &_smtp.ServerInfo{}
-}
+// func _mapToServerInfo(o Map) *_smtp.ServerInfo {
+// 	return &_smtp.ServerInfo{}
+// }
 
-func _vectorToServerInfo(o *Vector) *_smtp.ServerInfo {
-	return &_smtp.ServerInfo{
-		Name: AssertString(o.Nth(0), "").S,
-		TLS: ToBool(o.Nth(1)),
-		Auth: _Construct[]string(o.Nth(2)),
-	}
-}
+// func _vectorToServerInfo(o *Vector) *_smtp.ServerInfo {
+// 	return &_smtp.ServerInfo{
+// 		Name: AssertString(o.Nth(0), "").S,
+// 		TLS: ToBool(o.Nth(1)),
+// 		Auth: ABEND048(codegen.go: unsupported type []string),
+// 	}
+// }
 
-func _ConstructServerInfo(_v Object) *_smtp.ServerInfo {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _smtp.ServerInfo:
-			return &_g
-		case *_smtp.ServerInfo:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToServerInfo(_o.(Map))
-	case *Vector:
-		return _vectorToServerInfo(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or: Map or Vector"))
-}
+// func _ConstructServerInfo(_v Object) *_smtp.ServerInfo {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _smtp.ServerInfo:
+// 			return &_g
+// 		case *_smtp.ServerInfo:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToServerInfo(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToServerInfo(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or: Map or Vector"))
+// }
 
 GO FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 func __cRAMMD5Auth(username string, secret string) Object {
@@ -6326,7 +6326,7 @@ func ExtractGoObjectReader(args []Object, index int) *_textproto.Reader {
 
 // func _vectorToReader(o *Vector) *_textproto.Reader {
 // 	return &_textproto.Reader{
-// 		R: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(0)),
+// 		R: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6368,7 +6368,7 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 
 // func _vectorToWriter(o *Vector) *_textproto.Writer {
 // 	return &_textproto.Writer{
-// 		W: _Construct*ABEND047(gotypes.go: unsupported type *ast.SelectorExpr)(o.Nth(0)),
+// 		W: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6551,40 +6551,40 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func _mapToURL(o Map) *_url.URL {
-	return &_url.URL{}
-}
+// func _mapToURL(o Map) *_url.URL {
+// 	return &_url.URL{}
+// }
 
-func _vectorToURL(o *Vector) *_url.URL {
-	return &_url.URL{
-		Scheme: AssertString(o.Nth(0), "").S,
-		Opaque: AssertString(o.Nth(1), "").S,
-		User: _Construct*net/url.Userinfo(o.Nth(2)),
-		Host: AssertString(o.Nth(3), "").S,
-		Path: AssertString(o.Nth(4), "").S,
-		RawPath: AssertString(o.Nth(5), "").S,
-		ForceQuery: ToBool(o.Nth(6)),
-		RawQuery: AssertString(o.Nth(7), "").S,
-		Fragment: AssertString(o.Nth(8), "").S,
-	}
-}
+// func _vectorToURL(o *Vector) *_url.URL {
+// 	return &_url.URL{
+// 		Scheme: AssertString(o.Nth(0), "").S,
+// 		Opaque: AssertString(o.Nth(1), "").S,
+// 		User: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		Host: AssertString(o.Nth(3), "").S,
+// 		Path: AssertString(o.Nth(4), "").S,
+// 		RawPath: AssertString(o.Nth(5), "").S,
+// 		ForceQuery: ToBool(o.Nth(6)),
+// 		RawQuery: AssertString(o.Nth(7), "").S,
+// 		Fragment: AssertString(o.Nth(8), "").S,
+// 	}
+// }
 
-func _ConstructURL(_v Object) *_url.URL {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _url.URL:
-			return &_g
-		case *_url.URL:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToURL(_o.(Map))
-	case *Vector:
-		return _vectorToURL(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
-}
+// func _ConstructURL(_v Object) *_url.URL {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _url.URL:
+// 			return &_g
+// 		case *_url.URL:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToURL(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToURL(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
+// }
 
 GO TYPE net/url.Userinfo from net/url/url.go:
 func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
@@ -6715,5 +6715,5 @@ func __userPassword(username string, password string) Object {
 
 Adding custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/core.joke
-ABENDs: 987(60) 047(55) 674(28) 048(22) 675(18) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
+ABENDs: 047(73) 987(60) 674(28) 675(18) 048(13) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
 Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=81 (54.73%)
