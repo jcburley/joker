@@ -329,6 +329,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 		trackAbends(ti.clojureCode)
 		trackAbends(goConstructor)
 	} else {
+		generatedTypes++
 		promoteImports(ti)
 	}
 

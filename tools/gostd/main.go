@@ -40,6 +40,7 @@ var dump bool
 var verbose bool
 var methods int
 var generatedFunctions int
+var generatedTypes int
 
 func notOption(arg string) bool {
 	return arg == "-" || !strings.HasPrefix(arg, "-")
@@ -238,11 +239,15 @@ func main() {
 	if verbose || summary {
 		fmt.Printf("ABENDs:")
 		printAbends(abends)
-		fmt.Printf("\nTotals: types=%d functions=%d methods=%d (%s%%) standalone=%d (%s%%) generated=%d (%s%%)\n",
-			len(types), len(qualifiedFunctions)+methods, methods,
+		fmt.Printf(`
+Totals: functions=%d methods=%d (%s%%) standalone=%d (%s%%) generated=%d (%s%%)
+        types=%d generated=%d (%s%%)
+`,
+			len(qualifiedFunctions)+methods, methods,
 			pct(methods, len(qualifiedFunctions)+methods),
 			len(qualifiedFunctions), pct(len(qualifiedFunctions), len(qualifiedFunctions)+methods),
-			generatedFunctions, pct(generatedFunctions, len(qualifiedFunctions)))
+			generatedFunctions, pct(generatedFunctions, len(qualifiedFunctions)),
+			len(types), generatedTypes, pct(generatedTypes, len(types)))
 	}
 
 	os.Exit(0)
