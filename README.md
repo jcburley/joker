@@ -337,7 +337,7 @@ GoObject[*os.LinkError]
 user=>
 ```
 
-If a particular constructor is be missing, that indicates lack of support for the underlying type. Most built-in types are supported.
+If a particular constructor is missing, that indicates lack of support for the underlying type. Most built-in types are supported.
 
 NOTE: The `(new ...)` special form is _not_ currently supported.
 
