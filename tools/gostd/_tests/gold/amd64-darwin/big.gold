@@ -413,11 +413,11 @@ JOKER TYPE net.IP from net/ip.go:
 ;;   [^Object _v])
 
 JOKER TYPE net.IPAddr from net/iprawsock.go:
-(defn ^"GoObject" IPAddr.
-  "Constructor for net.IPAddr"
-  {:added "1.0"
-   :go "_ConstructIPAddr(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" IPAddr.
+;;   "Constructor for net.IPAddr"
+;;   {:added "1.0"
+;;    :go "_ConstructIPAddr(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.IPConn from net/iprawsock.go:
 (defn ^"GoObject" IPConn.
@@ -434,18 +434,18 @@ JOKER TYPE net.IPMask from net/ip.go:
 ;;   [^Object _v])
 
 JOKER TYPE net.IPNet from net/ip.go:
-(defn ^"GoObject" IPNet.
-  "Constructor for net.IPNet"
-  {:added "1.0"
-   :go "_ConstructIPNet(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" IPNet.
+;;   "Constructor for net.IPNet"
+;;   {:added "1.0"
+;;    :go "_ConstructIPNet(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.Interface from net/interface.go:
-(defn ^"GoObject" Interface.
-  "Constructor for net.Interface"
-  {:added "1.0"
-   :go "_ConstructInterface(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" Interface.
+;;   "Constructor for net.Interface"
+;;   {:added "1.0"
+;;    :go "_ConstructInterface(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.InvalidAddrError from net/net.go:
 (defn ^"GoObject" InvalidAddrError.
@@ -483,11 +483,11 @@ JOKER TYPE net.NS from net/dnsclient.go:
   [^Object _v])
 
 JOKER TYPE net.OpError from net/net.go:
-(defn ^"GoObject" OpError.
-  "Constructor for net.OpError"
-  {:added "1.0"
-   :go "_ConstructOpError(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" OpError.
+;;   "Constructor for net.OpError"
+;;   {:added "1.0"
+;;    :go "_ConstructOpError(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.PacketConn from net/net.go:
 ;; (defn ^"GoObject" PacketConn.
@@ -518,11 +518,11 @@ JOKER TYPE net.SRV from net/dnsclient.go:
   [^Object _v])
 
 JOKER TYPE net.TCPAddr from net/tcpsock.go:
-(defn ^"GoObject" TCPAddr.
-  "Constructor for net.TCPAddr"
-  {:added "1.0"
-   :go "_ConstructTCPAddr(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" TCPAddr.
+;;   "Constructor for net.TCPAddr"
+;;   {:added "1.0"
+;;    :go "_ConstructTCPAddr(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.TCPConn from net/tcpsock.go:
 (defn ^"GoObject" TCPConn.
@@ -539,11 +539,11 @@ JOKER TYPE net.TCPListener from net/tcpsock.go:
   [^Object _v])
 
 JOKER TYPE net.UDPAddr from net/udpsock.go:
-(defn ^"GoObject" UDPAddr.
-  "Constructor for net.UDPAddr"
-  {:added "1.0"
-   :go "_ConstructUDPAddr(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" UDPAddr.
+;;   "Constructor for net.UDPAddr"
+;;   {:added "1.0"
+;;    :go "_ConstructUDPAddr(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.UDPConn from net/udpsock.go:
 (defn ^"GoObject" UDPConn.
@@ -980,11 +980,11 @@ JOKER TYPE net/http.ProtocolError from net/http/request.go:
   [^Object _v])
 
 JOKER TYPE net/http.PushOptions from net/http/http.go:
-(defn ^"GoObject" PushOptions.
-  "Constructor for http.PushOptions"
-  {:added "1.0"
-   :go "_ConstructPushOptions(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" PushOptions.
+;;   "Constructor for http.PushOptions"
+;;   {:added "1.0"
+;;    :go "_ConstructPushOptions(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net/http.Pusher from net/http/http.go:
 ;; (defn ^"GoObject" Pusher.
@@ -1323,11 +1323,11 @@ JOKER TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
   [^Object _v])
 
 JOKER TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
-(defn ^"GoObject" Options.
-  "Constructor for cookiejar.Options"
-  {:added "1.0"
-   :go "_ConstructOptions(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" Options.
+;;   "Constructor for cookiejar.Options"
+;;   {:added "1.0"
+;;    :go "_ConstructOptions(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 ;; (defn ^"GoObject" PublicSuffixList.
@@ -2264,15 +2264,15 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 
 // func _vectorToDialer(o *Vector) *_net.Dialer {
 // 	return &_net.Dialer{
-// 		Timeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Deadline: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		LocalAddr: _ConstructAddr(o.Nth(2)),
+// 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Deadline: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		LocalAddr: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		DualStack: ToBool(o.Nth(3)),
-// 		FallbackDelay: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		KeepAlive: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Resolver: ABEND048(codegen.go: unsupported type *Resolver),
-// 		Cancel: ABEND048(codegen.go: unsupported type <notfound>*ast.ChanType</notfound>),
-// 		Control: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
+// 		FallbackDelay: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		KeepAlive: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Resolver: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
+// 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
 
@@ -2431,33 +2431,33 @@ func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPAddr]"))
 }
 
-func _mapToIPAddr(o Map) *_net.IPAddr {
-	return &_net.IPAddr{}
-}
+// func _mapToIPAddr(o Map) *_net.IPAddr {
+// 	return &_net.IPAddr{}
+// }
 
-func _vectorToIPAddr(o *Vector) *_net.IPAddr {
-	return &_net.IPAddr{
-		IP: _ConstructIP(o.Nth(0)),
-		Zone: AssertString(o.Nth(1), "").S,
-	}
-}
+// func _vectorToIPAddr(o *Vector) *_net.IPAddr {
+// 	return &_net.IPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Zone: AssertString(o.Nth(1), "").S,
+// 	}
+// }
 
-func _ConstructIPAddr(_v Object) *_net.IPAddr {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.IPAddr:
-			return &_g
-		case *_net.IPAddr:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToIPAddr(_o.(Map))
-	case *Vector:
-		return _vectorToIPAddr(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map or Vector"))
-}
+// func _ConstructIPAddr(_v Object) *_net.IPAddr {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.IPAddr:
+// 			return &_g
+// 		case *_net.IPAddr:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToIPAddr(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToIPAddr(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map or Vector"))
+// }
 
 GO TYPE net.IPConn from net/iprawsock.go:
 func ExtractGoObjectIPConn(args []Object, index int) *_net.IPConn {
@@ -2544,33 +2544,33 @@ func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPNet]"))
 }
 
-func _mapToIPNet(o Map) *_net.IPNet {
-	return &_net.IPNet{}
-}
+// func _mapToIPNet(o Map) *_net.IPNet {
+// 	return &_net.IPNet{}
+// }
 
-func _vectorToIPNet(o *Vector) *_net.IPNet {
-	return &_net.IPNet{
-		IP: _ConstructIP(o.Nth(0)),
-		Mask: _ConstructIPMask(o.Nth(1)),
-	}
-}
+// func _vectorToIPNet(o *Vector) *_net.IPNet {
+// 	return &_net.IPNet{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
+// 	}
+// }
 
-func _ConstructIPNet(_v Object) *_net.IPNet {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.IPNet:
-			return &_g
-		case *_net.IPNet:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToIPNet(_o.(Map))
-	case *Vector:
-		return _vectorToIPNet(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map or Vector"))
-}
+// func _ConstructIPNet(_v Object) *_net.IPNet {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.IPNet:
+// 			return &_g
+// 		case *_net.IPNet:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToIPNet(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToIPNet(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map or Vector"))
+// }
 
 GO TYPE net.Interface from net/interface.go:
 func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
@@ -2587,36 +2587,36 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Interface]"))
 }
 
-func _mapToInterface(o Map) *_net.Interface {
-	return &_net.Interface{}
-}
+// func _mapToInterface(o Map) *_net.Interface {
+// 	return &_net.Interface{}
+// }
 
-func _vectorToInterface(o *Vector) *_net.Interface {
-	return &_net.Interface{
-		Index: AssertInt(o.Nth(0), "").I,
-		MTU: AssertInt(o.Nth(1), "").I,
-		Name: AssertString(o.Nth(2), "").S,
-		HardwareAddr: _ConstructHardwareAddr(o.Nth(3)),
-		Flags: _ConstructFlags(o.Nth(4)),
-	}
-}
+// func _vectorToInterface(o *Vector) *_net.Interface {
+// 	return &_net.Interface{
+// 		Index: AssertInt(o.Nth(0), "").I,
+// 		MTU: AssertInt(o.Nth(1), "").I,
+// 		Name: AssertString(o.Nth(2), "").S,
+// 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
+// 		Flags: _net.Flags(uint(AssertInt(o.Nth(4), "").I)),
+// 	}
+// }
 
-func _ConstructInterface(_v Object) *_net.Interface {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.Interface:
-			return &_g
-		case *_net.Interface:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToInterface(_o.(Map))
-	case *Vector:
-		return _vectorToInterface(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Interface] or: Map or Vector"))
-}
+// func _ConstructInterface(_v Object) *_net.Interface {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.Interface:
+// 			return &_g
+// 		case *_net.Interface:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToInterface(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToInterface(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Interface] or: Map or Vector"))
+// }
 
 GO TYPE net.InvalidAddrError from net/net.go:
 func ExtractGoObjectInvalidAddrError(args []Object, index int) *_net.InvalidAddrError {
@@ -2672,7 +2672,7 @@ func ExtractGoObjectListenConfig(args []Object, index int) *_net.ListenConfig {
 
 // func _vectorToListenConfig(o *Vector) *_net.ListenConfig {
 // 	return &_net.ListenConfig{
-// 		Control: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
+// 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
 
@@ -2823,36 +2823,36 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.OpError]"))
 }
 
-func _mapToOpError(o Map) *_net.OpError {
-	return &_net.OpError{}
-}
+// func _mapToOpError(o Map) *_net.OpError {
+// 	return &_net.OpError{}
+// }
 
-func _vectorToOpError(o *Vector) *_net.OpError {
-	return &_net.OpError{
-		Op: AssertString(o.Nth(0), "").S,
-		Net: AssertString(o.Nth(1), "").S,
-		Source: _ConstructAddr(o.Nth(2)),
-		Addr: _ConstructAddr(o.Nth(3)),
-		Err: _errors.New(AssertString(o.Nth(4), "").S),
-	}
-}
+// func _vectorToOpError(o *Vector) *_net.OpError {
+// 	return &_net.OpError{
+// 		Op: AssertString(o.Nth(0), "").S,
+// 		Net: AssertString(o.Nth(1), "").S,
+// 		Source: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Addr: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Err: _errors.New(AssertString(o.Nth(4), "").S),
+// 	}
+// }
 
-func _ConstructOpError(_v Object) *_net.OpError {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.OpError:
-			return &_g
-		case *_net.OpError:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToOpError(_o.(Map))
-	case *Vector:
-		return _vectorToOpError(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map or Vector"))
-}
+// func _ConstructOpError(_v Object) *_net.OpError {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.OpError:
+// 			return &_g
+// 		case *_net.OpError:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToOpError(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToOpError(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map or Vector"))
+// }
 
 GO TYPE net.PacketConn from net/net.go:
 func ExtractGoObjectPacketConn(args []Object, index int) *_net.PacketConn {
@@ -2950,7 +2950,7 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 // 	return &_net.Resolver{
 // 		PreferGo: ToBool(o.Nth(0)),
 // 		StrictErrors: ToBool(o.Nth(1)),
-// 		Dial: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
 
@@ -3031,34 +3031,34 @@ func ExtractGoObjectTCPAddr(args []Object, index int) *_net.TCPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.TCPAddr]"))
 }
 
-func _mapToTCPAddr(o Map) *_net.TCPAddr {
-	return &_net.TCPAddr{}
-}
+// func _mapToTCPAddr(o Map) *_net.TCPAddr {
+// 	return &_net.TCPAddr{}
+// }
 
-func _vectorToTCPAddr(o *Vector) *_net.TCPAddr {
-	return &_net.TCPAddr{
-		IP: _ConstructIP(o.Nth(0)),
-		Port: AssertInt(o.Nth(1), "").I,
-		Zone: AssertString(o.Nth(2), "").S,
-	}
-}
+// func _vectorToTCPAddr(o *Vector) *_net.TCPAddr {
+// 	return &_net.TCPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Port: AssertInt(o.Nth(1), "").I,
+// 		Zone: AssertString(o.Nth(2), "").S,
+// 	}
+// }
 
-func _ConstructTCPAddr(_v Object) *_net.TCPAddr {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.TCPAddr:
-			return &_g
-		case *_net.TCPAddr:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToTCPAddr(_o.(Map))
-	case *Vector:
-		return _vectorToTCPAddr(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPAddr] or: Map or Vector"))
-}
+// func _ConstructTCPAddr(_v Object) *_net.TCPAddr {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.TCPAddr:
+// 			return &_g
+// 		case *_net.TCPAddr:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToTCPAddr(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToTCPAddr(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.TCPAddr] or: Map or Vector"))
+// }
 
 GO TYPE net.TCPConn from net/tcpsock.go:
 func ExtractGoObjectTCPConn(args []Object, index int) *_net.TCPConn {
@@ -3155,34 +3155,34 @@ func ExtractGoObjectUDPAddr(args []Object, index int) *_net.UDPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UDPAddr]"))
 }
 
-func _mapToUDPAddr(o Map) *_net.UDPAddr {
-	return &_net.UDPAddr{}
-}
+// func _mapToUDPAddr(o Map) *_net.UDPAddr {
+// 	return &_net.UDPAddr{}
+// }
 
-func _vectorToUDPAddr(o *Vector) *_net.UDPAddr {
-	return &_net.UDPAddr{
-		IP: _ConstructIP(o.Nth(0)),
-		Port: AssertInt(o.Nth(1), "").I,
-		Zone: AssertString(o.Nth(2), "").S,
-	}
-}
+// func _vectorToUDPAddr(o *Vector) *_net.UDPAddr {
+// 	return &_net.UDPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Port: AssertInt(o.Nth(1), "").I,
+// 		Zone: AssertString(o.Nth(2), "").S,
+// 	}
+// }
 
-func _ConstructUDPAddr(_v Object) *_net.UDPAddr {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.UDPAddr:
-			return &_g
-		case *_net.UDPAddr:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToUDPAddr(_o.(Map))
-	case *Vector:
-		return _vectorToUDPAddr(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPAddr] or: Map or Vector"))
-}
+// func _ConstructUDPAddr(_v Object) *_net.UDPAddr {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.UDPAddr:
+// 			return &_g
+// 		case *_net.UDPAddr:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToUDPAddr(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToUDPAddr(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UDPAddr] or: Map or Vector"))
+// }
 
 GO TYPE net.UDPConn from net/udpsock.go:
 func ExtractGoObjectUDPConn(args []Object, index int) *_net.UDPConn {
@@ -3806,10 +3806,10 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 
 // func _vectorToClient(o *Vector) *_http.Client {
 // 	return &_http.Client{
-// 		Transport: _ConstructRoundTripper(o.Nth(0)),
-// 		CheckRedirect: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		Jar: _ConstructCookieJar(o.Nth(2)),
-// 		Timeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Transport: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Jar: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -3918,14 +3918,14 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		Value: AssertString(o.Nth(1), "").S,
 // 		Path: AssertString(o.Nth(2), "").S,
 // 		Domain: AssertString(o.Nth(3), "").S,
-// 		Expires: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Expires: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		RawExpires: AssertString(o.Nth(5), "").S,
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: _ConstructSameSite(o.Nth(9)),
+// 		SameSite: _http.SameSite(AssertInt(o.Nth(9), "").I),
 // 		Raw: AssertString(o.Nth(10), "").S,
-// 		Unparsed: ABEND048(codegen.go: unsupported type []string),
+// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -4276,33 +4276,33 @@ func ExtractGoObjectPushOptions(args []Object, index int) *_http.PushOptions {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.PushOptions]"))
 }
 
-func _mapToPushOptions(o Map) *_http.PushOptions {
-	return &_http.PushOptions{}
-}
+// func _mapToPushOptions(o Map) *_http.PushOptions {
+// 	return &_http.PushOptions{}
+// }
 
-func _vectorToPushOptions(o *Vector) *_http.PushOptions {
-	return &_http.PushOptions{
-		Method: AssertString(o.Nth(0), "").S,
-		Header: _ConstructHeader(o.Nth(1)),
-	}
-}
+// func _vectorToPushOptions(o *Vector) *_http.PushOptions {
+// 	return &_http.PushOptions{
+// 		Method: AssertString(o.Nth(0), "").S,
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 	}
+// }
 
-func _ConstructPushOptions(_v Object) *_http.PushOptions {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _http.PushOptions:
-			return &_g
-		case *_http.PushOptions:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToPushOptions(_o.(Map))
-	case *Vector:
-		return _vectorToPushOptions(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or: Map or Vector"))
-}
+// func _ConstructPushOptions(_v Object) *_http.PushOptions {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _http.PushOptions:
+// 			return &_g
+// 		case *_http.PushOptions:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToPushOptions(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToPushOptions(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or: Map or Vector"))
+// }
 
 GO TYPE net/http.Pusher from net/http/http.go:
 func ExtractGoObjectPusher(args []Object, index int) *_http.Pusher {
@@ -4356,26 +4356,26 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // func _vectorToRequest(o *Vector) *_http.Request {
 // 	return &_http.Request{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		URL: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		URL: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: _ConstructHeader(o.Nth(5)),
-// 		Body: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		GetBody: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(10)),
 // 		Host: AssertString(o.Nth(11), "").S,
-// 		Form: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		PostForm: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		MultipartForm: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		Trailer: _ConstructHeader(o.Nth(15)),
+// 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		PostForm: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		MultipartForm: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		RemoteAddr: AssertString(o.Nth(16), "").S,
 // 		RequestURI: AssertString(o.Nth(17), "").S,
-// 		TLS: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		Cancel: ABEND048(codegen.go: unsupported type <notfound>*ast.ChanType</notfound>),
-// 		Response: ABEND048(codegen.go: unsupported type *Response),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
+// 		Response: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 	}
 // }
 
@@ -4422,15 +4422,15 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: _ConstructHeader(o.Nth(5)),
-// 		Body: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: unsupported type []string),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
-// 		Trailer: _ConstructHeader(o.Nth(11)),
-// 		Request: ABEND048(codegen.go: unsupported type *Request),
-// 		TLS: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		Trailer: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		Request: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -4606,16 +4606,16 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // func _vectorToServer(o *Vector) *_http.Server {
 // 	return &_http.Server{
 // 		Addr: AssertString(o.Nth(0), "").S,
-// 		Handler: _ConstructHandler(o.Nth(1)),
-// 		TLSConfig: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		ReadTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		ReadHeaderTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		WriteTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		IdleTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Handler: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		TLSConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ReadTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ReadHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		WriteTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		IdleTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		MaxHeaderBytes: AssertInt(o.Nth(7), "").I,
-// 		TLSNextProto: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
-// 		ConnState: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		ErrorLog: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		ConnState: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ErrorLog: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -4657,22 +4657,22 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 
 // func _vectorToTransport(o *Vector) *_http.Transport {
 // 	return &_http.Transport{
-// 		Proxy: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		DialContext: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		Dial: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		DialTLS: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
-// 		TLSClientConfig: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		TLSHandshakeTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Proxy: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DialContext: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DialTLS: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSClientConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLSHandshakeTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		DisableKeepAlives: ToBool(o.Nth(6)),
 // 		DisableCompression: ToBool(o.Nth(7)),
 // 		MaxIdleConns: AssertInt(o.Nth(8), "").I,
 // 		MaxIdleConnsPerHost: AssertInt(o.Nth(9), "").I,
 // 		MaxConnsPerHost: AssertInt(o.Nth(10), "").I,
-// 		IdleConnTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		ResponseHeaderTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		ExpectContinueTimeout: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		TLSNextProto: ABEND048(codegen.go: unsupported type <notfound>*ast.MapType</notfound>),
-// 		ProxyConnectHeader: _ConstructHeader(o.Nth(15)),
+// 		IdleConnTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ResponseHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ExpectContinueTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		ProxyConnectHeader: ABEND047(gotypes.go: unsupported type *ast.MapType),
 // 		MaxResponseHeaderBytes: AssertNumber(o.Nth(16), "").BigInt().Int64(),
 // 	}
 // }
@@ -4927,12 +4927,12 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 // 		Path: AssertString(o.Nth(0), "").S,
 // 		Root: AssertString(o.Nth(1), "").S,
 // 		Dir: AssertString(o.Nth(2), "").S,
-// 		Env: ABEND048(codegen.go: unsupported type []string),
-// 		InheritEnv: ABEND048(codegen.go: unsupported type []string),
-// 		Logger: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		Args: ABEND048(codegen.go: unsupported type []string),
-// 		Stderr: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		PathLocationHandler: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Logger: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Stderr: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		PathLocationHandler: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5032,32 +5032,32 @@ func ExtractGoObjectOptions(args []Object, index int) *_cookiejar.Options {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/cookiejar.Options]"))
 }
 
-func _mapToOptions(o Map) *_cookiejar.Options {
-	return &_cookiejar.Options{}
-}
+// func _mapToOptions(o Map) *_cookiejar.Options {
+// 	return &_cookiejar.Options{}
+// }
 
-func _vectorToOptions(o *Vector) *_cookiejar.Options {
-	return &_cookiejar.Options{
-		PublicSuffixList: _ConstructPublicSuffixList(o.Nth(0)),
-	}
-}
+// func _vectorToOptions(o *Vector) *_cookiejar.Options {
+// 	return &_cookiejar.Options{
+// 		PublicSuffixList: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 	}
+// }
 
-func _ConstructOptions(_v Object) *_cookiejar.Options {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _cookiejar.Options:
-			return &_g
-		case *_cookiejar.Options:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _mapToOptions(_o.(Map))
-	case *Vector:
-		return _vectorToOptions(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or: Map or Vector"))
-}
+// func _ConstructOptions(_v Object) *_cookiejar.Options {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _cookiejar.Options:
+// 			return &_g
+// 		case *_cookiejar.Options:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToOptions(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToOptions(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or: Map or Vector"))
+// }
 
 GO TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 func ExtractGoObjectPublicSuffixList(args []Object, index int) *_cookiejar.PublicSuffixList {
@@ -5131,8 +5131,8 @@ func ExtractGoObjectResponseRecorder(args []Object, index int) *_httptest.Respon
 // func _vectorToResponseRecorder(o *Vector) *_httptest.ResponseRecorder {
 // 	return &_httptest.ResponseRecorder{
 // 		Code: AssertInt(o.Nth(0), "").I,
-// 		HeaderMap: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		Body: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		HeaderMap: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Body: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Flushed: ToBool(o.Nth(3)),
 // 	}
 // }
@@ -5176,9 +5176,9 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 // func _vectorToServer(o *Vector) *_httptest.Server {
 // 	return &_httptest.Server{
 // 		URL: AssertString(o.Nth(0), "").S,
-// 		Listener: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
-// 		TLS: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
-// 		Config: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		Listener: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Config: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5413,7 +5413,7 @@ func ExtractGoObjectAddressParser(args []Object, index int) *_mail.AddressParser
 
 // func _vectorToAddressParser(o *Vector) *_mail.AddressParser {
 // 	return &_mail.AddressParser{
-// 		WordDecoder: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		WordDecoder: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5485,8 +5485,8 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 
 // func _vectorToMessage(o *Vector) *_mail.Message {
 // 	return &_mail.Message{
-// 		Header: _ConstructHeader(o.Nth(0)),
-// 		Body: ABEND048(codegen.go: unsupported type <notfound>*ast.SelectorExpr</notfound>),
+// 		Header: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -5569,10 +5569,10 @@ func ExtractGoObjectCall(args []Object, index int) *_rpc.Call {
 // func _vectorToCall(o *Vector) *_rpc.Call {
 // 	return &_rpc.Call{
 // 		ServiceMethod: AssertString(o.Nth(0), "").S,
-// 		Args: ABEND048(codegen.go: unsupported type <notfound>*ast.InterfaceType</notfound>),
-// 		Reply: ABEND048(codegen.go: unsupported type <notfound>*ast.InterfaceType</notfound>),
+// 		Args: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Reply: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Error: _errors.New(AssertString(o.Nth(3), "").S),
-// 		Done: ABEND048(codegen.go: unsupported type <notfound>*ast.ChanType</notfound>),
+// 		Done: ABEND047(gotypes.go: unsupported type *ast.ChanType),
 // 	}
 // }
 
@@ -6018,7 +6018,7 @@ func ExtractGoObjectClient(args []Object, index int) *_smtp.Client {
 
 // func _vectorToClient(o *Vector) *_smtp.Client {
 // 	return &_smtp.Client{
-// 		Text: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		Text: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6062,7 +6062,7 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 // 	return &_smtp.ServerInfo{
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		TLS: ToBool(o.Nth(1)),
-// 		Auth: ABEND048(codegen.go: unsupported type []string),
+// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
@@ -6326,7 +6326,7 @@ func ExtractGoObjectReader(args []Object, index int) *_textproto.Reader {
 
 // func _vectorToReader(o *Vector) *_textproto.Reader {
 // 	return &_textproto.Reader{
-// 		R: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		R: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6368,7 +6368,7 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 
 // func _vectorToWriter(o *Vector) *_textproto.Writer {
 // 	return &_textproto.Writer{
-// 		W: ABEND048(codegen.go: unsupported type *<notfound>*ast.SelectorExpr</notfound>),
+// 		W: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
@@ -6559,7 +6559,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: unsupported type *Userinfo),
+// 		User: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -6715,5 +6715,5 @@ func __userPassword(username string, password string) Object {
 
 Adding custom imports to _tests/gold/amd64-darwin/joker/custom.go
 Adding custom loaded libraries to _tests/gold/amd64-darwin/joker/core/data/core.joke
-ABENDs: 048(66) 987(60) 674(28) 675(18) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
+ABENDs: 047(73) 987(60) 674(28) 675(18) 048(13) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
 Totals: types=102 functions=1348 methods=1200 (89.02%) standalone=148 (10.98%) generated=81 (54.73%)

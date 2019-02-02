@@ -327,7 +327,7 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 // 	return &_net.Resolver{
 // 		PreferGo: ToBool(o.Nth(0)),
 // 		StrictErrors: ToBool(o.Nth(1)),
-// 		Dial: ABEND048(codegen.go: unsupported type <notfound>*ast.FuncType</notfound>),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
 
@@ -644,7 +644,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: unsupported type *Userinfo),
+// 		User: *ABEND047(gotypes.go: unsupported type *ast.StructType),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -807,5 +807,5 @@ import (
 	. "github.com/candid82/joker/core"
 	_url "net/url"
 )
-ABENDs: 048(2) 042(1) 674(1)
+ABENDs: 047(2) 042(1) 674(1)
 Totals: types=10 functions=64 methods=46 (71.88%) standalone=18 (28.12%) generated=17 (94.44%)
