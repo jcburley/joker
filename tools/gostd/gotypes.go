@@ -8,7 +8,7 @@ import (
 
 type goTypeInfo struct {
 	typeName                  string          // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
-	fullName                  string          // empty ("struct {...}" etc.), typeName (built-in), or path/to/pkg.typeName
+	fullName                  string          // empty ("struct {...}" etc.), typeName (built-in), path/to/pkg.typeName, or ABEND if unsupported
 	subType                   *Expr           // nil if not a declared type
 	argClojureType            string          // Can convert this type to a Go function arg with my type
 	argFromClojureObject      string          // Append this to Clojure object to extract value of my type
@@ -52,11 +52,14 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *goTypeInfo {
 	// Check whether type is builtin but not supported here. If so, register it accordingly and return it.
 	if gotypes.Universe.Lookup(baseName) != nil {
 		ti := &goTypeInfo{
-			typeName:    baseName,
-			fullName:    baseName,
-			unsupported: true,
+			typeName:           baseName,
+			fullName:           fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s)", baseName),
+			argClojureType:     baseName,
+			argClojureArgType:  baseName,
+			convertFromClojure: baseName + "(%s)",
+			unsupported:        true,
 		}
-		goTypes[fullName] = ti
+		goTypes[baseName] = ti
 		return ti
 	}
 	panic(fmt.Sprintf("type %s not found at %s", fullName, whereAt(e.Pos())))
@@ -90,8 +93,9 @@ func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
 	case *StarExpr:
 		return goStarExpr(src, td.X)
 	}
-	if typeName == "" {
-		typeName = fmt.Sprintf("ABEND047(codegen.go: unsupported type %T)", e)
+	if typeName == "" || fullName == "" {
+		typeName = fmt.Sprintf("%T", e)
+		fullName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", typeName)
 		unsupported = true
 	}
 	v := &goTypeInfo{
@@ -102,7 +106,7 @@ func toGoExprInfo(src *goFile, e Expr) *goTypeInfo {
 		unsupported:        unsupported,
 		convertFromClojure: convertFromClojure,
 	}
-	goTypes[v.fullName] = v
+	goTypes[fullName] = v
 	return v
 }
 
@@ -241,7 +245,7 @@ func init() {
 		argExtractFunc:       "Int16",
 		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
 	}
-	goTypes["uint16x"] = &goTypeInfo{
+	goTypes["uint16"] = &goTypeInfo{
 		typeName:             "uint16",
 		fullName:             "uint16",
 		argClojureType:       "Number",
