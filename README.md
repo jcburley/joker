@@ -275,7 +275,7 @@ Yet, by providing _all_ the (supported) APIs, Joker enables higher-level, Clojur
 
 ## GoObject
 
-A `GoObject` is a Joker (Clojure) object that wraps a Go object (of type `interface{}`) -- currently always an object of a named type. E.g.:
+A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interface{}`) -- currently always an object of a named type. E.g.:
 
 ```
 $ joker
@@ -328,10 +328,16 @@ user=> (use '[go.std.html.template])
 nil
 user=> (type (HTML. "this is an html object"))
 GoObject[template.HTML]
+user=> (def le (LinkError. ["hey" "there" "you" "silly"]))
+#'user/le
+user=> le
+hey there you: silly
+user=> (type le)
+GoObject[*os.LinkError]
 user=>
 ```
 
-If a particular constructor seems to be missing, that likely indicates lack of support for the underlying type. Most built-in types are supported.
+If a particular constructor is be missing, that indicates lack of support for the underlying type. Most built-in types are supported.
 
 NOTE: The `(new ...)` special form is _not_ currently supported.
 
@@ -343,16 +349,16 @@ Calling a Go wrapper function in Joker requires ensuring the input arguments (if
 
 Generally, the types of an input argument (to a Go wrapper function) must be either a built-in type (such as `int`) or a `GoObject` wrapping an object of the same (named) type as the corresponding input argument to the Go API.
 
-Arguments with built-in types must be passed appropriate Joker objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported.
+Arguments with built-in types must be passed appropriate Clojure objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported.
 
 Other arguments (with named types) are passed `GoObject` instances that can be:
 * Constructed
 * Extracted as members of other `GoObject` instances
 * Returned by Go API wrappers
 
-However, Joker does support some implicit conversion of Joker objects (such as `Int`) _to_ `GoObject`, in some ways beyond what the Go language itself provides, as explained below.
+However, Joker does support some implicit conversion of Clojure objects (such as `Int`) _to_ `GoObject`, in some ways beyond what the Go language itself provides, as explained below.
 
-##### Implicit Conversion from Joker Type to GoObject
+##### Implicit Conversion from Clojure Type to GoObject
 
 Though somewhat strongly typed, the Go language makes some common operations convenient via implicit type conversion. Consider `go/std/os.Chmod()`, for example:
 
@@ -454,7 +460,7 @@ Returned `GoObject` instances can be:
 * Passed as arguments to Go API wrappers
 * Provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
 
-Built-in type instances are converted directly to appropriate Joker types. For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported:
+Built-in type instances are converted directly to appropriate Clojure types. For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported:
 
 
 ```
