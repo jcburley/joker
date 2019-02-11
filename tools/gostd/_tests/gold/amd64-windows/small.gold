@@ -24,11 +24,11 @@ JOKER TYPE net.NS from net/dnsclient.go:
   [^Object _v])
 
 JOKER TYPE net.Resolver from net/lookup.go:
-(defn ^"GoObject" Resolver.
-  "Constructor for net.Resolver"
-  {:added "1.0"
-   :go "_ConstructResolver(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" Resolver.
+;;   "Constructor for net.Resolver"
+;;   {:added "1.0"
+;;    :go "_ConstructResolver(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net.SRV from net/dnsclient.go:
 (defn ^"GoObject" SRV.
@@ -129,11 +129,11 @@ JOKER TYPE net/url.InvalidHostError from net/url/url.go:
   [^Object _v])
 
 JOKER TYPE net/url.URL from net/url/url.go:
-(defn ^"GoObject" URL.
-  "Constructor for url.URL"
-  {:added "1.0"
-   :go "_ConstructURL(_v)"}
-  [^Object _v])
+;; (defn ^"GoObject" URL.
+;;   "Constructor for url.URL"
+;;   {:added "1.0"
+;;    :go "_ConstructURL(_v)"}
+;;   [^Object _v])
 
 JOKER TYPE net/url.Userinfo from net/url/url.go:
 (defn ^"GoObject" Userinfo.
@@ -234,17 +234,32 @@ func ExtractGoObjectMX(args []Object, index int) *_net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.MX]"))
 }
 
-func _ConstructMX(_v Object) _net.MX {
+func _mapToMX(o Map) *_net.MX {
+	return &_net.MX{}
+}
+
+func _vectorToMX(o *Vector) *_net.MX {
+	return &_net.MX{
+		Host: AssertString(o.Nth(0), "").S,
+		Pref: uint16(AssertInt(o.Nth(1), "").I),
+	}
+}
+
+func _ConstructMX(_v Object) *_net.MX {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.MX:
+			return &_g
+		case *_net.MX:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _net.MX(_o)
+		return _mapToMX(_o.(Map))
+	case *Vector:
+		return _vectorToMX(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map or Vector"))
 }
 
 GO TYPE net.NS from net/dnsclient.go:
@@ -262,17 +277,31 @@ func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.NS]"))
 }
 
-func _ConstructNS(_v Object) _net.NS {
+func _mapToNS(o Map) *_net.NS {
+	return &_net.NS{}
+}
+
+func _vectorToNS(o *Vector) *_net.NS {
+	return &_net.NS{
+		Host: AssertString(o.Nth(0), "").S,
+	}
+}
+
+func _ConstructNS(_v Object) *_net.NS {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.NS:
+			return &_g
+		case *_net.NS:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _net.NS(_o)
+		return _mapToNS(_o.(Map))
+	case *Vector:
+		return _vectorToNS(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map or Vector"))
 }
 
 GO TYPE net.Resolver from net/lookup.go:
@@ -290,18 +319,34 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
 }
 
-func _ConstructResolver(_v Object) _net.Resolver {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _net.Resolver:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _net.Resolver(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or Map"))
-}
+// func _mapToResolver(o Map) *_net.Resolver {
+// 	return &_net.Resolver{}
+// }
+
+// func _vectorToResolver(o *Vector) *_net.Resolver {
+// 	return &_net.Resolver{
+// 		PreferGo: ToBool(o.Nth(0)),
+// 		StrictErrors: ToBool(o.Nth(1)),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
+// }
+
+// func _ConstructResolver(_v Object) *_net.Resolver {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _net.Resolver:
+// 			return &_g
+// 		case *_net.Resolver:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToResolver(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToResolver(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map or Vector"))
+// }
 
 GO TYPE net.SRV from net/dnsclient.go:
 func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
@@ -318,24 +363,41 @@ func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.SRV]"))
 }
 
-func _ConstructSRV(_v Object) _net.SRV {
+func _mapToSRV(o Map) *_net.SRV {
+	return &_net.SRV{}
+}
+
+func _vectorToSRV(o *Vector) *_net.SRV {
+	return &_net.SRV{
+		Target: AssertString(o.Nth(0), "").S,
+		Port: uint16(AssertInt(o.Nth(1), "").I),
+		Priority: uint16(AssertInt(o.Nth(2), "").I),
+		Weight: uint16(AssertInt(o.Nth(3), "").I),
+	}
+}
+
+func _ConstructSRV(_v Object) *_net.SRV {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _net.SRV:
+			return &_g
+		case *_net.SRV:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _net.SRV(_o)
+		return _mapToSRV(_o.(Map))
+	case *Vector:
+		return _vectorToSRV(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map or Vector"))
 }
 
 GO FUNC net.LookupAddr from net/lookup.go:
 func __lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range names {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -347,7 +409,7 @@ func __lookupAddr(addr string) Object {
 GO FUNC net.LookupCNAME from net/lookup.go:
 func __lookupCNAME(host string) Object {
 	cname, err := _net.LookupCNAME(host)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -356,8 +418,8 @@ func __lookupCNAME(host string) Object {
 GO FUNC net.LookupHost from net/lookup.go:
 func __lookupHost(host string) Object {
 	addrs, err := _net.LookupHost(host)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -369,8 +431,8 @@ func __lookupHost(host string) Object {
 GO FUNC net.LookupIP from net/lookup.go:
 // func __lookupIP(host string) Object {
 // 	_res1, _res2 := _net.LookupIP(host)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(_elem1)
 // 	}
@@ -382,8 +444,8 @@ GO FUNC net.LookupIP from net/lookup.go:
 GO FUNC net.LookupMX from net/lookup.go:
 func __lookupMX(name string) Object {
 	_res1, _res2 := _net.LookupMX(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -395,8 +457,8 @@ func __lookupMX(name string) Object {
 GO FUNC net.LookupNS from net/lookup.go:
 func __lookupNS(name string) Object {
 	_res1, _res2 := _net.LookupNS(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -408,7 +470,7 @@ func __lookupNS(name string) Object {
 GO FUNC net.LookupPort from net/lookup.go:
 func __lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -417,9 +479,9 @@ func __lookupPort(network string, service string) Object {
 GO FUNC net.LookupSRV from net/lookup.go:
 func __lookupSRV(service string, proto string, name string) Object {
 	cname, addrs, err := _net.LookupSRV(service, proto, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -431,8 +493,8 @@ func __lookupSRV(service string, proto string, name string) Object {
 GO FUNC net.LookupTXT from net/lookup.go:
 func __lookupTXT(name string) Object {
 	_res1, _res2 := _net.LookupTXT(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -446,8 +508,8 @@ func __lookupTXT(name string) Object {
 package net
 
 import (
-	_net "net"
 	. "github.com/candid82/joker/core"
+	_net "net"
 )
 GO TYPE net/url.Error from net/url/url.go:
 func ExtractGoObjectError(args []Object, index int) *_url.Error {
@@ -464,17 +526,33 @@ func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
 }
 
-func _ConstructError(_v Object) _url.Error {
+func _mapToError(o Map) *_url.Error {
+	return &_url.Error{}
+}
+
+func _vectorToError(o *Vector) *_url.Error {
+	return &_url.Error{
+		Op: AssertString(o.Nth(0), "").S,
+		URL: AssertString(o.Nth(1), "").S,
+		Err: _errors.New(AssertString(o.Nth(2), "").S),
+	}
+}
+
+func _ConstructError(_v Object) *_url.Error {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.Error:
+			return &_g
+		case *_url.Error:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _url.Error(_o)
+		return _mapToError(_o.(Map))
+	case *Vector:
+		return _vectorToError(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map or Vector"))
 }
 
 GO TYPE net/url.EscapeError from net/url/url.go:
@@ -501,11 +579,13 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 		switch _g := _o.O.(type) {
 		case _url.EscapeError:
 			return _g
+		case *_url.EscapeError:
+			return *_g
 		}
 	case String:
 		return _url.EscapeError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
 GO TYPE net/url.InvalidHostError from net/url/url.go:
@@ -532,11 +612,13 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 		switch _g := _o.O.(type) {
 		case _url.InvalidHostError:
 			return _g
+		case *_url.InvalidHostError:
+			return *_g
 		}
 	case String:
 		return _url.InvalidHostError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
 }
 
 GO TYPE net/url.URL from net/url/url.go:
@@ -554,18 +636,40 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func _ConstructURL(_v Object) _url.URL {
-	switch _o := _v.(type) {
-	case GoObject:
-		switch _g := _o.O.(type) {
-		case _url.URL:
-			return _g
-		}
-	case *ArrayMap, *HashMap:
-		return _url.URL(_o)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or Map"))
-}
+// func _mapToURL(o Map) *_url.URL {
+// 	return &_url.URL{}
+// }
+
+// func _vectorToURL(o *Vector) *_url.URL {
+// 	return &_url.URL{
+// 		Scheme: AssertString(o.Nth(0), "").S,
+// 		Opaque: AssertString(o.Nth(1), "").S,
+// 		User: *ABEND047(gotypes.go: unsupported type *ast.StructType),
+// 		Host: AssertString(o.Nth(3), "").S,
+// 		Path: AssertString(o.Nth(4), "").S,
+// 		RawPath: AssertString(o.Nth(5), "").S,
+// 		ForceQuery: ToBool(o.Nth(6)),
+// 		RawQuery: AssertString(o.Nth(7), "").S,
+// 		Fragment: AssertString(o.Nth(8), "").S,
+// 	}
+// }
+
+// func _ConstructURL(_v Object) *_url.URL {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _url.URL:
+// 			return &_g
+// 		case *_url.URL:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToURL(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToURL(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
+// }
 
 GO TYPE net/url.Userinfo from net/url/url.go:
 func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
@@ -582,17 +686,29 @@ func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Userinfo]"))
 }
 
-func _ConstructUserinfo(_v Object) _url.Userinfo {
+func _mapToUserinfo(o Map) *_url.Userinfo {
+	return &_url.Userinfo{}
+}
+
+func _vectorToUserinfo(o *Vector) *_url.Userinfo {
+	return &_url.Userinfo{}
+}
+
+func _ConstructUserinfo(_v Object) *_url.Userinfo {
 	switch _o := _v.(type) {
 	case GoObject:
 		switch _g := _o.O.(type) {
 		case _url.Userinfo:
+			return &_g
+		case *_url.Userinfo:
 			return _g
 		}
 	case *ArrayMap, *HashMap:
-		return _url.Userinfo(_o)
+		return _mapToUserinfo(_o.(Map))
+	case *Vector:
+		return _vectorToUserinfo(_o)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map or Vector"))
 }
 
 GO TYPE net/url.Values from net/url/url.go:
@@ -616,17 +732,19 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 		switch _g := _o.O.(type) {
 // 		case _url.Values:
 // 			return _g
+// 		case *_url.Values:
+// 			return *_g
 // 		}
 // 	default:
-// 		return _url.Values(_o.ABEND674(unknown underlying type *ast.MapType for Values))
+// 		return _url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
 func __parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -635,7 +753,7 @@ func __parse(rawurl string) Object {
 GO FUNC net/url.ParseQuery from net/url/url.go:
 func __parseQuery(query string) Object {
 	_res1, _res2 := _url.ParseQuery(query)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -644,7 +762,7 @@ func __parseQuery(query string) Object {
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
 func __parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -653,7 +771,7 @@ func __parseRequestURI(rawurl string) Object {
 GO FUNC net/url.PathUnescape from net/url/url.go:
 func __pathUnescape(s string) Object {
 	_res1, _res2 := _url.PathUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -662,7 +780,7 @@ func __pathUnescape(s string) Object {
 GO FUNC net/url.QueryUnescape from net/url/url.go:
 func __queryUnescape(s string) Object {
 	_res1, _res2 := _url.QueryUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -685,8 +803,10 @@ func __userPassword(username string, password string) Object {
 package url
 
 import (
-	_url "net/url"
+	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_url "net/url"
 )
-ABENDs: 042(1) 674(1)
-Totals: types=10 functions=64 methods=46 (71.88%) standalone=18 (28.12%) generated=17 (94.44%)
+ABENDs: 047(2) 042(1) 674(1)
+Totals: functions=64 methods=46 (71.88%) standalone=18 (28.12%) generated=17 (94.44%)
+        types=10 generated=7 (70.00%)

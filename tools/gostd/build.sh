@@ -16,7 +16,7 @@ vet() {
     go vet -all
 
     if [ -n "$SHADOW" ]; then
-        go vet -all "$SHADOW" && echo "Shadowed-variables check complete."
+        go vet -all "$SHADOW" && echo "Shadowed-variables check complete." || echo "Shadowed-variables check failed."
     else
         echo "Not performing shadowed-variables check; consider installing shadow tool via:"
         echo "  go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow"

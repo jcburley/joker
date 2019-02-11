@@ -118,7 +118,7 @@ func genGoPostArray(fn *funcInfo, indent, captureName string, el Expr, onlyIf st
 		goc += goc_pre
 		goc += indent + "\t" + tmpvec + " = " + tmpvec + ".Conjoin(" + out + ")\n"
 		goc += indent + "}\n"
-		goc = wrapStmtOnlyIfs(indent, tmpvec, "Vector", "EmptyVector", onlyIf, goc, &out)
+		goc = wrapStmtOnlyIfs(indent, tmpvec, "Vector", "EmptyVector()", onlyIf, goc, &out)
 	} else {
 		goc = ""
 	}
@@ -273,7 +273,7 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, clDoc, gol, g
 
 	if multipleCaptures {
 		if useful {
-			goc = indent + result + " := EmptyVector\n" + goc + indent + "return " + result + "\n"
+			goc = indent + result + " := EmptyVector()\n" + goc + indent + "return " + result + "\n"
 		} else {
 			goc = indent + "ABEND123(post.go: no public information returned)\n"
 		}
