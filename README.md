@@ -230,6 +230,8 @@ cd $GOPATH/src/github.com/candid82/joker
 
 On this experimental branch, Joker is built against a Golang tree in order to pull in and "wrap" functions (and, someday, types) provides by Go `std` packages.
 
+NOTE: Only Joker versions >= 0.12 are now supported by this branch.
+
 ## Quick Start
 
 To make this "magic" happen:
@@ -254,7 +256,7 @@ Assuming Joker has been built as described above:
 
 ```
 $ joker
-Welcome to joker v0.11.1. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
+Welcome to joker v0.12.0. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
 user=> (require '[go.std.net :as n])
 nil
 user=> (sort (map #(key %) (ns-map 'go.std.net)))
@@ -279,7 +281,7 @@ A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interf
 
 ```
 $ joker
-Welcome to joker v0.11.1. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
+Welcome to joker v0.12.0. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
 user=> (use '[go.std.net :as n])
 nil
 user=> (doc n/Interfaces)
