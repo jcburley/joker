@@ -396,8 +396,8 @@ func _ConstructSRV(_v Object) *_net.SRV {
 GO FUNC net.LookupAddr from net/lookup.go:
 func __lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range names {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -409,7 +409,7 @@ func __lookupAddr(addr string) Object {
 GO FUNC net.LookupCNAME from net/lookup.go:
 func __lookupCNAME(host string) Object {
 	cname, err := _net.LookupCNAME(host)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -418,8 +418,8 @@ func __lookupCNAME(host string) Object {
 GO FUNC net.LookupHost from net/lookup.go:
 func __lookupHost(host string) Object {
 	addrs, err := _net.LookupHost(host)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -431,8 +431,8 @@ func __lookupHost(host string) Object {
 GO FUNC net.LookupIP from net/lookup.go:
 // func __lookupIP(host string) Object {
 // 	_res1, _res2 := _net.LookupIP(host)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(_elem1)
 // 	}
@@ -444,8 +444,8 @@ GO FUNC net.LookupIP from net/lookup.go:
 GO FUNC net.LookupMX from net/lookup.go:
 func __lookupMX(name string) Object {
 	_res1, _res2 := _net.LookupMX(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -457,8 +457,8 @@ func __lookupMX(name string) Object {
 GO FUNC net.LookupNS from net/lookup.go:
 func __lookupNS(name string) Object {
 	_res1, _res2 := _net.LookupNS(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -470,7 +470,7 @@ func __lookupNS(name string) Object {
 GO FUNC net.LookupPort from net/lookup.go:
 func __lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -479,9 +479,9 @@ func __lookupPort(network string, service string) Object {
 GO FUNC net.LookupSRV from net/lookup.go:
 func __lookupSRV(service string, proto string, name string) Object {
 	cname, addrs, err := _net.LookupSRV(service, proto, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -493,8 +493,8 @@ func __lookupSRV(service string, proto string, name string) Object {
 GO FUNC net.LookupTXT from net/lookup.go:
 func __lookupTXT(name string) Object {
 	_res1, _res2 := _net.LookupTXT(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -744,7 +744,7 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 GO FUNC net/url.Parse from net/url/url.go:
 func __parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -753,7 +753,7 @@ func __parse(rawurl string) Object {
 GO FUNC net/url.ParseQuery from net/url/url.go:
 func __parseQuery(query string) Object {
 	_res1, _res2 := _url.ParseQuery(query)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -762,7 +762,7 @@ func __parseQuery(query string) Object {
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
 func __parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -771,7 +771,7 @@ func __parseRequestURI(rawurl string) Object {
 GO FUNC net/url.PathUnescape from net/url/url.go:
 func __pathUnescape(s string) Object {
 	_res1, _res2 := _url.PathUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -780,7 +780,7 @@ func __pathUnescape(s string) Object {
 GO FUNC net/url.QueryUnescape from net/url/url.go:
 func __queryUnescape(s string) Object {
 	_res1, _res2 := _url.QueryUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
