@@ -18406,7 +18406,7 @@ JOKER FUNC unicode/utf8.ValidString from unicode/utf8/utf8.go:
 GO FUNC archive/tar.FileInfoHeader from archive/tar/common.go:
 // func __fileInfoHeader(fi ABEND987(genutils.go: imports not yet supported: os.FileInfo), link string) Object {
 // 	_res1, _res2 := _tar.FileInfoHeader(fi, link)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -18708,7 +18708,7 @@ func _ConstructWriter(_v Object) *_zip.Writer {
 GO FUNC archive/zip.FileInfoHeader from archive/zip/struct.go:
 // func __fileInfoHeader(fi ABEND987(genutils.go: imports not yet supported: os.FileInfo)) Object {
 // 	_res1, _res2 := _zip.FileInfoHeader(fi)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -18717,7 +18717,7 @@ GO FUNC archive/zip.FileInfoHeader from archive/zip/struct.go:
 GO FUNC archive/zip.NewReader from archive/zip/reader.go:
 // func __newReader(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt), size int64) Object {
 // 	_res1, _res2 := _zip.NewReader(r, size)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -18732,7 +18732,7 @@ GO FUNC archive/zip.NewWriter from archive/zip/writer.go:
 GO FUNC archive/zip.OpenReader from archive/zip/reader.go:
 func __openReader(name string) Object {
 	_res1, _res2 := _zip.OpenReader(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -18987,9 +18987,9 @@ GO FUNC bufio.NewWriterSize from bufio/bufio.go:
 GO FUNC bufio.ScanBytes from bufio/scan.go:
 // func __scanBytes(data []byte, atEOF bool) Object {
 // 	advance, token, err := _bufio.ScanBytes(data, atEOF)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(advance))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range token {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19001,9 +19001,9 @@ GO FUNC bufio.ScanBytes from bufio/scan.go:
 GO FUNC bufio.ScanLines from bufio/scan.go:
 // func __scanLines(data []byte, atEOF bool) Object {
 // 	advance, token, err := _bufio.ScanLines(data, atEOF)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(advance))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range token {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19015,9 +19015,9 @@ GO FUNC bufio.ScanLines from bufio/scan.go:
 GO FUNC bufio.ScanRunes from bufio/scan.go:
 // func __scanRunes(data []byte, atEOF bool) Object {
 // 	advance, token, err := _bufio.ScanRunes(data, atEOF)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(advance))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range token {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19029,9 +19029,9 @@ GO FUNC bufio.ScanRunes from bufio/scan.go:
 GO FUNC bufio.ScanWords from bufio/scan.go:
 // func __scanWords(data []byte, atEOF bool) Object {
 // 	advance, token, err := _bufio.ScanWords(data, atEOF)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(advance))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range token {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19173,9 +19173,9 @@ GO FUNC bytes.EqualFold from bytes/bytes.go:
 GO FUNC bytes.Fields from bytes/bytes.go:
 // func __fields(s []byte) Object {
 // 	_res := _bytes.Fields(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19187,9 +19187,9 @@ GO FUNC bytes.Fields from bytes/bytes.go:
 GO FUNC bytes.FieldsFunc from bytes/bytes.go:
 // func __fieldsFunc(s []byte, f func) Object {
 // 	_res := _bytes.FieldsFunc(s, f)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19243,7 +19243,7 @@ GO FUNC bytes.IndexRune from bytes/bytes.go:
 GO FUNC bytes.Join from bytes/bytes.go:
 // func __join(s [][]byte, sep []byte) Object {
 // 	_res := _bytes.Join(s, sep)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19277,7 +19277,7 @@ GO FUNC bytes.LastIndexFunc from bytes/bytes.go:
 GO FUNC bytes.Map from bytes/bytes.go:
 // func __map(mapping func, s []byte) Object {
 // 	_res := _bytes.Map(mapping, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19305,7 +19305,7 @@ GO FUNC bytes.NewReader from bytes/reader.go:
 GO FUNC bytes.Repeat from bytes/bytes.go:
 // func __repeat(b []byte, count int) Object {
 // 	_res := _bytes.Repeat(b, count)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19315,7 +19315,7 @@ GO FUNC bytes.Repeat from bytes/bytes.go:
 GO FUNC bytes.Replace from bytes/bytes.go:
 // func __replace(s []byte, old []byte, new []byte, n int) Object {
 // 	_res := _bytes.Replace(s, old, new, n)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19325,7 +19325,7 @@ GO FUNC bytes.Replace from bytes/bytes.go:
 GO FUNC bytes.Runes from bytes/bytes.go:
 // func __runes(s []byte) Object {
 // 	_res := _bytes.Runes(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(_elem1)
 // 	}
@@ -19335,9 +19335,9 @@ GO FUNC bytes.Runes from bytes/bytes.go:
 GO FUNC bytes.Split from bytes/bytes.go:
 // func __split(s []byte, sep []byte) Object {
 // 	_res := _bytes.Split(s, sep)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19349,9 +19349,9 @@ GO FUNC bytes.Split from bytes/bytes.go:
 GO FUNC bytes.SplitAfter from bytes/bytes.go:
 // func __splitAfter(s []byte, sep []byte) Object {
 // 	_res := _bytes.SplitAfter(s, sep)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19363,9 +19363,9 @@ GO FUNC bytes.SplitAfter from bytes/bytes.go:
 GO FUNC bytes.SplitAfterN from bytes/bytes.go:
 // func __splitAfterN(s []byte, sep []byte, n int) Object {
 // 	_res := _bytes.SplitAfterN(s, sep, n)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19377,9 +19377,9 @@ GO FUNC bytes.SplitAfterN from bytes/bytes.go:
 GO FUNC bytes.SplitN from bytes/bytes.go:
 // func __splitN(s []byte, sep []byte, n int) Object {
 // 	_res := _bytes.SplitN(s, sep, n)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
-// 		_vec2 := EmptyVector
+// 		_vec2 := EmptyVector()
 // 		for _, _elem2 := range _elem1 {
 // 			_vec2 = _vec2.Conjoin(MakeInt(int(_elem2)))
 // 		}
@@ -19391,7 +19391,7 @@ GO FUNC bytes.SplitN from bytes/bytes.go:
 GO FUNC bytes.Title from bytes/bytes.go:
 // func __title(s []byte) Object {
 // 	_res := _bytes.Title(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19401,7 +19401,7 @@ GO FUNC bytes.Title from bytes/bytes.go:
 GO FUNC bytes.ToLower from bytes/bytes.go:
 // func __toLower(s []byte) Object {
 // 	_res := _bytes.ToLower(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19411,7 +19411,7 @@ GO FUNC bytes.ToLower from bytes/bytes.go:
 GO FUNC bytes.ToLowerSpecial from bytes/bytes.go:
 // func __toLowerSpecial(c ABEND987(genutils.go: imports not yet supported: unicode.SpecialCase), s []byte) Object {
 // 	_res := _bytes.ToLowerSpecial(c, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19421,7 +19421,7 @@ GO FUNC bytes.ToLowerSpecial from bytes/bytes.go:
 GO FUNC bytes.ToTitle from bytes/bytes.go:
 // func __toTitle(s []byte) Object {
 // 	_res := _bytes.ToTitle(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19431,7 +19431,7 @@ GO FUNC bytes.ToTitle from bytes/bytes.go:
 GO FUNC bytes.ToTitleSpecial from bytes/bytes.go:
 // func __toTitleSpecial(c ABEND987(genutils.go: imports not yet supported: unicode.SpecialCase), s []byte) Object {
 // 	_res := _bytes.ToTitleSpecial(c, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19441,7 +19441,7 @@ GO FUNC bytes.ToTitleSpecial from bytes/bytes.go:
 GO FUNC bytes.ToUpper from bytes/bytes.go:
 // func __toUpper(s []byte) Object {
 // 	_res := _bytes.ToUpper(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19451,7 +19451,7 @@ GO FUNC bytes.ToUpper from bytes/bytes.go:
 GO FUNC bytes.ToUpperSpecial from bytes/bytes.go:
 // func __toUpperSpecial(c ABEND987(genutils.go: imports not yet supported: unicode.SpecialCase), s []byte) Object {
 // 	_res := _bytes.ToUpperSpecial(c, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19461,7 +19461,7 @@ GO FUNC bytes.ToUpperSpecial from bytes/bytes.go:
 GO FUNC bytes.Trim from bytes/bytes.go:
 // func __trim(s []byte, cutset string) Object {
 // 	_res := _bytes.Trim(s, cutset)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19471,7 +19471,7 @@ GO FUNC bytes.Trim from bytes/bytes.go:
 GO FUNC bytes.TrimFunc from bytes/bytes.go:
 // func __trimFunc(s []byte, f func) Object {
 // 	_res := _bytes.TrimFunc(s, f)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19481,7 +19481,7 @@ GO FUNC bytes.TrimFunc from bytes/bytes.go:
 GO FUNC bytes.TrimLeft from bytes/bytes.go:
 // func __trimLeft(s []byte, cutset string) Object {
 // 	_res := _bytes.TrimLeft(s, cutset)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19491,7 +19491,7 @@ GO FUNC bytes.TrimLeft from bytes/bytes.go:
 GO FUNC bytes.TrimLeftFunc from bytes/bytes.go:
 // func __trimLeftFunc(s []byte, f func) Object {
 // 	_res := _bytes.TrimLeftFunc(s, f)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19501,7 +19501,7 @@ GO FUNC bytes.TrimLeftFunc from bytes/bytes.go:
 GO FUNC bytes.TrimPrefix from bytes/bytes.go:
 // func __trimPrefix(s []byte, prefix []byte) Object {
 // 	_res := _bytes.TrimPrefix(s, prefix)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19511,7 +19511,7 @@ GO FUNC bytes.TrimPrefix from bytes/bytes.go:
 GO FUNC bytes.TrimRight from bytes/bytes.go:
 // func __trimRight(s []byte, cutset string) Object {
 // 	_res := _bytes.TrimRight(s, cutset)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19521,7 +19521,7 @@ GO FUNC bytes.TrimRight from bytes/bytes.go:
 GO FUNC bytes.TrimRightFunc from bytes/bytes.go:
 // func __trimRightFunc(s []byte, f func) Object {
 // 	_res := _bytes.TrimRightFunc(s, f)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19531,7 +19531,7 @@ GO FUNC bytes.TrimRightFunc from bytes/bytes.go:
 GO FUNC bytes.TrimSpace from bytes/bytes.go:
 // func __trimSpace(s []byte) Object {
 // 	_res := _bytes.TrimSpace(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19541,7 +19541,7 @@ GO FUNC bytes.TrimSpace from bytes/bytes.go:
 GO FUNC bytes.TrimSuffix from bytes/bytes.go:
 // func __trimSuffix(s []byte, suffix []byte) Object {
 // 	_res := _bytes.TrimSuffix(s, suffix)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -19577,7 +19577,7 @@ GO FUNC compress/flate.NewReaderDict from compress/flate/inflate.go:
 GO FUNC compress/flate.NewWriter from compress/flate/deflate.go:
 // func __newWriter(w ABEND987(genutils.go: imports not yet supported: io.Writer), level int) Object {
 // 	_res1, _res2 := _flate.NewWriter(w, level)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19586,7 +19586,7 @@ GO FUNC compress/flate.NewWriter from compress/flate/deflate.go:
 GO FUNC compress/flate.NewWriterDict from compress/flate/deflate.go:
 // func __newWriterDict(w ABEND987(genutils.go: imports not yet supported: io.Writer), level int, dict []byte) Object {
 // 	_res1, _res2 := _flate.NewWriterDict(w, level, dict)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19595,7 +19595,7 @@ GO FUNC compress/flate.NewWriterDict from compress/flate/deflate.go:
 GO FUNC compress/gzip.NewReader from compress/gzip/gunzip.go:
 // func __newReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _gzip.NewReader(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19610,7 +19610,7 @@ GO FUNC compress/gzip.NewWriter from compress/gzip/gzip.go:
 GO FUNC compress/gzip.NewWriterLevel from compress/gzip/gzip.go:
 // func __newWriterLevel(w ABEND987(genutils.go: imports not yet supported: io.Writer), level int) Object {
 // 	_res1, _res2 := _gzip.NewWriterLevel(w, level)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19631,7 +19631,7 @@ GO FUNC compress/lzw.NewWriter from compress/lzw/writer.go:
 GO FUNC compress/zlib.NewReader from compress/zlib/reader.go:
 // func __newReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _zlib.NewReader(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19640,7 +19640,7 @@ GO FUNC compress/zlib.NewReader from compress/zlib/reader.go:
 GO FUNC compress/zlib.NewReaderDict from compress/zlib/reader.go:
 // func __newReaderDict(r ABEND987(genutils.go: imports not yet supported: io.Reader), dict []byte) Object {
 // 	_res1, _res2 := _zlib.NewReaderDict(r, dict)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19655,7 +19655,7 @@ GO FUNC compress/zlib.NewWriter from compress/zlib/writer.go:
 GO FUNC compress/zlib.NewWriterLevel from compress/zlib/writer.go:
 // func __newWriterLevel(w ABEND987(genutils.go: imports not yet supported: io.Writer), level int) Object {
 // 	_res1, _res2 := _zlib.NewWriterLevel(w, level)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19664,7 +19664,7 @@ GO FUNC compress/zlib.NewWriterLevel from compress/zlib/writer.go:
 GO FUNC compress/zlib.NewWriterLevelDict from compress/zlib/writer.go:
 // func __newWriterLevelDict(w ABEND987(genutils.go: imports not yet supported: io.Writer), level int, dict []byte) Object {
 // 	_res1, _res2 := _zlib.NewWriterLevelDict(w, level, dict)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -19925,7 +19925,7 @@ func __tODO() Object {
 GO FUNC context.WithCancel from context/context.go:
 func __withCancel(parent _context.Context) Object {
 	ctx, cancel := _context.WithCancel(parent)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(ctx))
 	_res = _res.Conjoin(MakeGoObject(cancel))
 	return _res
@@ -19934,7 +19934,7 @@ func __withCancel(parent _context.Context) Object {
 GO FUNC context.WithDeadline from context/context.go:
 // func __withDeadline(parent _context.Context, d ABEND987(genutils.go: imports not yet supported: time.Time)) Object {
 // 	_res1, _res2 := _context.WithDeadline(parent, d)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(MakeGoObject(_res2))
 // 	return _res
@@ -19943,7 +19943,7 @@ GO FUNC context.WithDeadline from context/context.go:
 GO FUNC context.WithTimeout from context/context.go:
 // func __withTimeout(parent _context.Context, timeout ABEND987(genutils.go: imports not yet supported: time.Duration)) Object {
 // 	_res1, _res2 := _context.WithTimeout(parent, timeout)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(MakeGoObject(_res2))
 // 	return _res
@@ -19972,7 +19972,7 @@ GO FUNC crypto.RegisterHash from crypto/crypto.go:
 GO FUNC crypto/aes.NewCipher from crypto/aes/cipher.go:
 // func __newCipher(key []byte) Object {
 // 	_res1, _res2 := _aes.NewCipher(key)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20218,7 +20218,7 @@ GO FUNC crypto/cipher.NewCTR from crypto/cipher/ctr.go:
 GO FUNC crypto/cipher.NewGCM from crypto/cipher/gcm.go:
 func __newGCM(cipher _cipher.Block) Object {
 	_res1, _res2 := _cipher.NewGCM(cipher)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -20227,7 +20227,7 @@ func __newGCM(cipher _cipher.Block) Object {
 GO FUNC crypto/cipher.NewGCMWithNonceSize from crypto/cipher/gcm.go:
 func __newGCMWithNonceSize(cipher _cipher.Block, size int) Object {
 	_res1, _res2 := _cipher.NewGCMWithNonceSize(cipher, size)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -20236,7 +20236,7 @@ func __newGCMWithNonceSize(cipher _cipher.Block, size int) Object {
 GO FUNC crypto/cipher.NewGCMWithTagSize from crypto/cipher/gcm.go:
 func __newGCMWithTagSize(cipher _cipher.Block, tagSize int) Object {
 	_res1, _res2 := _cipher.NewGCMWithTagSize(cipher, tagSize)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -20259,7 +20259,7 @@ import (
 GO FUNC crypto/des.NewCipher from crypto/des/cipher.go:
 // func __newCipher(key []byte) Object {
 // 	_res1, _res2 := _des.NewCipher(key)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20268,7 +20268,7 @@ GO FUNC crypto/des.NewCipher from crypto/des/cipher.go:
 GO FUNC crypto/des.NewTripleDESCipher from crypto/des/cipher.go:
 // func __newTripleDESCipher(key []byte) Object {
 // 	_res1, _res2 := _des.NewTripleDESCipher(key)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20289,7 +20289,7 @@ GO FUNC crypto/dsa.GenerateParameters from crypto/dsa/dsa.go:
 GO FUNC crypto/dsa.Sign from crypto/dsa/dsa.go:
 // func __sign(rand ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_dsa.PrivateKey, hash []byte) Object {
 // 	r, s, err := _dsa.Sign(rand, priv, hash)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(r))
 // 	_res = _res.Conjoin(MakeGoObject(s))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -20305,7 +20305,7 @@ GO FUNC crypto/dsa.Verify from crypto/dsa/dsa.go:
 GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
 // func __generateKey(c ABEND987(genutils.go: imports not yet supported: elliptic.Curve), rand ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _ecdsa.GenerateKey(c, rand)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20314,7 +20314,7 @@ GO FUNC crypto/ecdsa.GenerateKey from crypto/ecdsa/ecdsa.go:
 GO FUNC crypto/ecdsa.Sign from crypto/ecdsa/ecdsa.go:
 // func __sign(rand ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_ecdsa.PrivateKey, hash []byte) Object {
 // 	r, s, err := _ecdsa.Sign(rand, priv, hash)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(r))
 // 	_res = _res.Conjoin(MakeGoObject(s))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -20408,8 +20408,8 @@ func ExtractGoObjectCurveParams(args []Object, index int) *_elliptic.CurveParams
 GO FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
 // func __generateKey(curve _elliptic.Curve, rand ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	priv, x, y, err := _elliptic.GenerateKey(curve, rand)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range priv {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20423,7 +20423,7 @@ GO FUNC crypto/elliptic.GenerateKey from crypto/elliptic/elliptic.go:
 GO FUNC crypto/elliptic.Marshal from crypto/elliptic/elliptic.go:
 // func __marshal(curve _elliptic.Curve, x *ABEND987(genutils.go: imports not yet supported: big.Int), y *ABEND987(genutils.go: imports not yet supported: big.Int)) Object {
 // 	_res := _elliptic.Marshal(curve, x, y)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20457,7 +20457,7 @@ func __p521() Object {
 GO FUNC crypto/elliptic.Unmarshal from crypto/elliptic/elliptic.go:
 // func __unmarshal(curve _elliptic.Curve, data []byte) Object {
 // 	x, y := _elliptic.Unmarshal(curve, data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(x))
 // 	_res = _res.Conjoin(MakeGoObject(y))
 // 	return _res
@@ -20492,7 +20492,7 @@ func __new() Object {
 GO FUNC crypto/md5.Sum from crypto/md5/md5.go:
 // func __sum(data []byte) Object {
 // 	_res := _md5.Sum(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20510,7 +20510,7 @@ import (
 GO FUNC crypto/rand.Int from crypto/rand/util.go:
 // func __int(rand ABEND987(genutils.go: imports not yet supported: io.Reader), max *ABEND987(genutils.go: imports not yet supported: big.Int)) Object {
 // 	n, err := _rand.Int(rand, max)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -20519,7 +20519,7 @@ GO FUNC crypto/rand.Int from crypto/rand/util.go:
 GO FUNC crypto/rand.Prime from crypto/rand/util.go:
 // func __prime(rand ABEND987(genutils.go: imports not yet supported: io.Reader), bits int) Object {
 // 	p, err := _rand.Prime(rand, bits)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(p))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -20528,7 +20528,7 @@ GO FUNC crypto/rand.Prime from crypto/rand/util.go:
 GO FUNC crypto/rand.Read from crypto/rand/rand.go:
 // func __read(b []byte) Object {
 // 	n, err := _rand.Read(b)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -20537,7 +20537,7 @@ GO FUNC crypto/rand.Read from crypto/rand/rand.go:
 GO FUNC crypto/rc4.NewCipher from crypto/rc4/rc4.go:
 // func __newCipher(key []byte) Object {
 // 	_res1, _res2 := _rc4.NewCipher(key)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20546,8 +20546,8 @@ GO FUNC crypto/rc4.NewCipher from crypto/rc4/rc4.go:
 GO FUNC crypto/rsa.DecryptOAEP from crypto/rsa/rsa.go:
 // func __decryptOAEP(hash ABEND987(genutils.go: imports not yet supported: hash.Hash), random ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_rsa.PrivateKey, ciphertext []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.DecryptOAEP(hash, random, priv, ciphertext, label)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20559,8 +20559,8 @@ GO FUNC crypto/rsa.DecryptOAEP from crypto/rsa/rsa.go:
 GO FUNC crypto/rsa.DecryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // func __decryptPKCS1v15(rand ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_rsa.PrivateKey, ciphertext []byte) Object {
 // 	_res1, _res2 := _rsa.DecryptPKCS1v15(rand, priv, ciphertext)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20578,8 +20578,8 @@ GO FUNC crypto/rsa.DecryptPKCS1v15SessionKey from crypto/rsa/pkcs1v15.go:
 GO FUNC crypto/rsa.EncryptOAEP from crypto/rsa/rsa.go:
 // func __encryptOAEP(hash ABEND987(genutils.go: imports not yet supported: hash.Hash), random ABEND987(genutils.go: imports not yet supported: io.Reader), pub *_rsa.PublicKey, msg []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.EncryptOAEP(hash, random, pub, msg, label)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20591,8 +20591,8 @@ GO FUNC crypto/rsa.EncryptOAEP from crypto/rsa/rsa.go:
 GO FUNC crypto/rsa.EncryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // func __encryptPKCS1v15(rand ABEND987(genutils.go: imports not yet supported: io.Reader), pub *_rsa.PublicKey, msg []byte) Object {
 // 	_res1, _res2 := _rsa.EncryptPKCS1v15(rand, pub, msg)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20604,7 +20604,7 @@ GO FUNC crypto/rsa.EncryptPKCS1v15 from crypto/rsa/pkcs1v15.go:
 GO FUNC crypto/rsa.GenerateKey from crypto/rsa/rsa.go:
 // func __generateKey(random ABEND987(genutils.go: imports not yet supported: io.Reader), bits int) Object {
 // 	_res1, _res2 := _rsa.GenerateKey(random, bits)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20613,7 +20613,7 @@ GO FUNC crypto/rsa.GenerateKey from crypto/rsa/rsa.go:
 GO FUNC crypto/rsa.GenerateMultiPrimeKey from crypto/rsa/rsa.go:
 // func __generateMultiPrimeKey(random ABEND987(genutils.go: imports not yet supported: io.Reader), nprimes int, bits int) Object {
 // 	_res1, _res2 := _rsa.GenerateMultiPrimeKey(random, nprimes, bits)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -20622,8 +20622,8 @@ GO FUNC crypto/rsa.GenerateMultiPrimeKey from crypto/rsa/rsa.go:
 GO FUNC crypto/rsa.SignPKCS1v15 from crypto/rsa/pkcs1v15.go:
 // func __signPKCS1v15(rand ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_rsa.PrivateKey, hash ABEND987(genutils.go: imports not yet supported: crypto.Hash), hashed []byte) Object {
 // 	_res1, _res2 := _rsa.SignPKCS1v15(rand, priv, hash, hashed)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20635,8 +20635,8 @@ GO FUNC crypto/rsa.SignPKCS1v15 from crypto/rsa/pkcs1v15.go:
 GO FUNC crypto/rsa.SignPSS from crypto/rsa/pss.go:
 // func __signPSS(rand ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_rsa.PrivateKey, hash ABEND987(genutils.go: imports not yet supported: crypto.Hash), hashed []byte, opts *_rsa.PSSOptions) Object {
 // 	_res1, _res2 := _rsa.SignPSS(rand, priv, hash, hashed, opts)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20666,7 +20666,7 @@ func __new() Object {
 GO FUNC crypto/sha1.Sum from crypto/sha1/sha1.go:
 // func __sum(data []byte) Object {
 // 	_res := _sha1.Sum(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20696,7 +20696,7 @@ func __new224() Object {
 GO FUNC crypto/sha256.Sum224 from crypto/sha256/sha256.go:
 // func __sum224(data []byte) Object {
 // 	_res := _sha256.Sum224(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20706,7 +20706,7 @@ GO FUNC crypto/sha256.Sum224 from crypto/sha256/sha256.go:
 GO FUNC crypto/sha256.Sum256 from crypto/sha256/sha256.go:
 // func __sum256(data []byte) Object {
 // 	_res := _sha256.Sum256(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20748,7 +20748,7 @@ func __new512_256() Object {
 GO FUNC crypto/sha512.Sum384 from crypto/sha512/sha512.go:
 // func __sum384(data []byte) Object {
 // 	_res := _sha512.Sum384(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20758,7 +20758,7 @@ GO FUNC crypto/sha512.Sum384 from crypto/sha512/sha512.go:
 GO FUNC crypto/sha512.Sum512 from crypto/sha512/sha512.go:
 // func __sum512(data []byte) Object {
 // 	_res := _sha512.Sum512(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20768,7 +20768,7 @@ GO FUNC crypto/sha512.Sum512 from crypto/sha512/sha512.go:
 GO FUNC crypto/sha512.Sum512_224 from crypto/sha512/sha512.go:
 // func __sum512_224(data []byte) Object {
 // 	_res := _sha512.Sum512_224(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -20778,7 +20778,7 @@ GO FUNC crypto/sha512.Sum512_224 from crypto/sha512/sha512.go:
 GO FUNC crypto/sha512.Sum512_256 from crypto/sha512/sha512.go:
 // func __sum512_256(data []byte) Object {
 // 	_res := _sha512.Sum512_256(data)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -21368,7 +21368,7 @@ GO FUNC crypto/tls.Client from crypto/tls/tls.go:
 GO FUNC crypto/tls.Dial from crypto/tls/tls.go:
 func __dial(network string, addr string, config *_tls.Config) Object {
 	_res1, _res2 := _tls.Dial(network, addr, config)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -21377,7 +21377,7 @@ func __dial(network string, addr string, config *_tls.Config) Object {
 GO FUNC crypto/tls.DialWithDialer from crypto/tls/tls.go:
 // func __dialWithDialer(dialer *ABEND987(genutils.go: imports not yet supported: net.Dialer), network string, addr string, config *_tls.Config) Object {
 // 	_res1, _res2 := _tls.DialWithDialer(dialer, network, addr, config)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -21386,7 +21386,7 @@ GO FUNC crypto/tls.DialWithDialer from crypto/tls/tls.go:
 GO FUNC crypto/tls.Listen from crypto/tls/tls.go:
 func __listen(network string, laddr string, config *_tls.Config) Object {
 	_res1, _res2 := _tls.Listen(network, laddr, config)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -21395,7 +21395,7 @@ func __listen(network string, laddr string, config *_tls.Config) Object {
 GO FUNC crypto/tls.LoadX509KeyPair from crypto/tls/tls.go:
 func __loadX509KeyPair(certFile string, keyFile string) Object {
 	_res1, _res2 := _tls.LoadX509KeyPair(certFile, keyFile)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -21422,7 +21422,7 @@ GO FUNC crypto/tls.Server from crypto/tls/tls.go:
 GO FUNC crypto/tls.X509KeyPair from crypto/tls/tls.go:
 // func __x509KeyPair(certPEMBlock []byte, keyPEMBlock []byte) Object {
 // 	_res1, _res2 := _tls.X509KeyPair(certPEMBlock, keyPEMBlock)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22148,8 +22148,8 @@ func ExtractGoObjectVerifyOptions(args []Object, index int) *_x509.VerifyOptions
 GO FUNC crypto/x509.CreateCertificate from crypto/x509/x509.go:
 // func __createCertificate(rand ABEND987(genutils.go: imports not yet supported: io.Reader), template *_x509.Certificate, parent *_x509.Certificate, pub interface {}, priv interface {}) Object {
 // 	cert, err := _x509.CreateCertificate(rand, template, parent, pub, priv)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range cert {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22161,8 +22161,8 @@ GO FUNC crypto/x509.CreateCertificate from crypto/x509/x509.go:
 GO FUNC crypto/x509.CreateCertificateRequest from crypto/x509/x509.go:
 // func __createCertificateRequest(rand ABEND987(genutils.go: imports not yet supported: io.Reader), template *_x509.CertificateRequest, priv interface {}) Object {
 // 	csr, err := _x509.CreateCertificateRequest(rand, template, priv)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range csr {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22174,8 +22174,8 @@ GO FUNC crypto/x509.CreateCertificateRequest from crypto/x509/x509.go:
 GO FUNC crypto/x509.DecryptPEMBlock from crypto/x509/pem_decrypt.go:
 // func __decryptPEMBlock(b *ABEND987(genutils.go: imports not yet supported: pem.Block), password []byte) Object {
 // 	_res1, _res2 := _x509.DecryptPEMBlock(b, password)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22187,7 +22187,7 @@ GO FUNC crypto/x509.DecryptPEMBlock from crypto/x509/pem_decrypt.go:
 GO FUNC crypto/x509.EncryptPEMBlock from crypto/x509/pem_decrypt.go:
 // func __encryptPEMBlock(rand ABEND987(genutils.go: imports not yet supported: io.Reader), blockType string, data []byte, password []byte, alg _x509.PEMCipher) Object {
 // 	_res1, _res2 := _x509.EncryptPEMBlock(rand, blockType, data, password, alg)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22202,8 +22202,8 @@ GO FUNC crypto/x509.IsEncryptedPEMBlock from crypto/x509/pem_decrypt.go:
 GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
 // func __marshalECPrivateKey(key *ABEND987(genutils.go: imports not yet supported: ecdsa.PrivateKey)) Object {
 // 	_res1, _res2 := _x509.MarshalECPrivateKey(key)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22215,7 +22215,7 @@ GO FUNC crypto/x509.MarshalECPrivateKey from crypto/x509/sec1.go:
 GO FUNC crypto/x509.MarshalPKCS1PrivateKey from crypto/x509/pkcs1.go:
 // func __marshalPKCS1PrivateKey(key *ABEND987(genutils.go: imports not yet supported: rsa.PrivateKey)) Object {
 // 	_res := _x509.MarshalPKCS1PrivateKey(key)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22225,7 +22225,7 @@ GO FUNC crypto/x509.MarshalPKCS1PrivateKey from crypto/x509/pkcs1.go:
 GO FUNC crypto/x509.MarshalPKCS1PublicKey from crypto/x509/pkcs1.go:
 // func __marshalPKCS1PublicKey(key *ABEND987(genutils.go: imports not yet supported: rsa.PublicKey)) Object {
 // 	_res := _x509.MarshalPKCS1PublicKey(key)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22235,8 +22235,8 @@ GO FUNC crypto/x509.MarshalPKCS1PublicKey from crypto/x509/pkcs1.go:
 GO FUNC crypto/x509.MarshalPKCS8PrivateKey from crypto/x509/pkcs8.go:
 // func __marshalPKCS8PrivateKey(key interface {}) Object {
 // 	_res1, _res2 := _x509.MarshalPKCS8PrivateKey(key)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22248,8 +22248,8 @@ GO FUNC crypto/x509.MarshalPKCS8PrivateKey from crypto/x509/pkcs8.go:
 GO FUNC crypto/x509.MarshalPKIXPublicKey from crypto/x509/x509.go:
 // func __marshalPKIXPublicKey(pub interface {}) Object {
 // 	_res1, _res2 := _x509.MarshalPKIXPublicKey(pub)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -22267,7 +22267,7 @@ func __newCertPool() Object {
 GO FUNC crypto/x509.ParseCRL from crypto/x509/x509.go:
 // func __parseCRL(crlBytes []byte) Object {
 // 	_res1, _res2 := _x509.ParseCRL(crlBytes)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22276,7 +22276,7 @@ GO FUNC crypto/x509.ParseCRL from crypto/x509/x509.go:
 GO FUNC crypto/x509.ParseCertificate from crypto/x509/x509.go:
 // func __parseCertificate(asn1Data []byte) Object {
 // 	_res1, _res2 := _x509.ParseCertificate(asn1Data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22285,7 +22285,7 @@ GO FUNC crypto/x509.ParseCertificate from crypto/x509/x509.go:
 GO FUNC crypto/x509.ParseCertificateRequest from crypto/x509/x509.go:
 // func __parseCertificateRequest(asn1Data []byte) Object {
 // 	_res1, _res2 := _x509.ParseCertificateRequest(asn1Data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22294,8 +22294,8 @@ GO FUNC crypto/x509.ParseCertificateRequest from crypto/x509/x509.go:
 GO FUNC crypto/x509.ParseCertificates from crypto/x509/x509.go:
 // func __parseCertificates(asn1Data []byte) Object {
 // 	_res1, _res2 := _x509.ParseCertificates(asn1Data)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -22307,7 +22307,7 @@ GO FUNC crypto/x509.ParseCertificates from crypto/x509/x509.go:
 GO FUNC crypto/x509.ParseDERCRL from crypto/x509/x509.go:
 // func __parseDERCRL(derBytes []byte) Object {
 // 	_res1, _res2 := _x509.ParseDERCRL(derBytes)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22316,7 +22316,7 @@ GO FUNC crypto/x509.ParseDERCRL from crypto/x509/x509.go:
 GO FUNC crypto/x509.ParseECPrivateKey from crypto/x509/sec1.go:
 // func __parseECPrivateKey(der []byte) Object {
 // 	_res1, _res2 := _x509.ParseECPrivateKey(der)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22325,7 +22325,7 @@ GO FUNC crypto/x509.ParseECPrivateKey from crypto/x509/sec1.go:
 GO FUNC crypto/x509.ParsePKCS1PrivateKey from crypto/x509/pkcs1.go:
 // func __parsePKCS1PrivateKey(der []byte) Object {
 // 	_res1, _res2 := _x509.ParsePKCS1PrivateKey(der)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22334,7 +22334,7 @@ GO FUNC crypto/x509.ParsePKCS1PrivateKey from crypto/x509/pkcs1.go:
 GO FUNC crypto/x509.ParsePKCS1PublicKey from crypto/x509/pkcs1.go:
 // func __parsePKCS1PublicKey(der []byte) Object {
 // 	_res1, _res2 := _x509.ParsePKCS1PublicKey(der)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -22343,7 +22343,7 @@ GO FUNC crypto/x509.ParsePKCS1PublicKey from crypto/x509/pkcs1.go:
 GO FUNC crypto/x509.ParsePKCS8PrivateKey from crypto/x509/pkcs8.go:
 // func __parsePKCS8PrivateKey(der []byte) Object {
 // 	key, err := _x509.ParsePKCS8PrivateKey(der)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(key)
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -22352,7 +22352,7 @@ GO FUNC crypto/x509.ParsePKCS8PrivateKey from crypto/x509/pkcs8.go:
 GO FUNC crypto/x509.ParsePKIXPublicKey from crypto/x509/x509.go:
 // func __parsePKIXPublicKey(derBytes []byte) Object {
 // 	pub, err := _x509.ParsePKIXPublicKey(derBytes)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(pub)
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -22361,7 +22361,7 @@ GO FUNC crypto/x509.ParsePKIXPublicKey from crypto/x509/x509.go:
 GO FUNC crypto/x509.SystemCertPool from crypto/x509/cert_pool.go:
 func __systemCertPool() Object {
 	_res1, _res2 := _x509.SystemCertPool()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -23132,7 +23132,7 @@ func _ConstructTxOptions(_v Object) *_sql.TxOptions {
 GO FUNC database/sql.Drivers from database/sql/sql.go:
 func __drivers() Object {
 	_res := _sql.Drivers()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -23148,7 +23148,7 @@ GO FUNC database/sql.Named from database/sql/sql.go:
 GO FUNC database/sql.Open from database/sql/sql.go:
 func __open(driverName string, dataSourceName string) Object {
 	_res1, _res2 := _sql.Open(driverName, dataSourceName)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -23189,7 +23189,7 @@ GO FUNC database/sql/driver.IsValue from database/sql/driver/types.go:
 GO FUNC debug/dwarf.New from debug/dwarf/open.go:
 // func __new(abbrev []byte, aranges []byte, frame []byte, info []byte, line []byte, pubnames []byte, ranges []byte, str []byte) Object {
 // 	_res1, _res2 := _dwarf.New(abbrev, aranges, frame, info, line, pubnames, ranges, str)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -25312,7 +25312,7 @@ func _ConstructVersion(_v Object) _elf.Version {
 GO FUNC debug/elf.NewFile from debug/elf/file.go:
 // func __newFile(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt)) Object {
 // 	_res1, _res2 := _elf.NewFile(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -25321,7 +25321,7 @@ GO FUNC debug/elf.NewFile from debug/elf/file.go:
 GO FUNC debug/elf.Open from debug/elf/file.go:
 func __open(name string) Object {
 	_res1, _res2 := _elf.Open(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -25403,7 +25403,7 @@ GO FUNC debug/gosym.NewLineTable from debug/gosym/pclntab.go:
 GO FUNC debug/gosym.NewTable from debug/gosym/symtab.go:
 // func __newTable(symtab []byte, pcln *_gosym.LineTable) Object {
 // 	_res1, _res2 := _gosym.NewTable(symtab, pcln)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -27079,7 +27079,7 @@ func _ConstructType(_v Object) _macho.Type {
 GO FUNC debug/macho.NewFatFile from debug/macho/fat.go:
 // func __newFatFile(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt)) Object {
 // 	_res1, _res2 := _macho.NewFatFile(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -27088,7 +27088,7 @@ GO FUNC debug/macho.NewFatFile from debug/macho/fat.go:
 GO FUNC debug/macho.NewFile from debug/macho/file.go:
 // func __newFile(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt)) Object {
 // 	_res1, _res2 := _macho.NewFile(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -27097,7 +27097,7 @@ GO FUNC debug/macho.NewFile from debug/macho/file.go:
 GO FUNC debug/macho.Open from debug/macho/file.go:
 func __open(name string) Object {
 	_res1, _res2 := _macho.Open(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -27106,7 +27106,7 @@ func __open(name string) Object {
 GO FUNC debug/macho.OpenFat from debug/macho/fat.go:
 func __openFat(name string) Object {
 	_res1, _res2 := _macho.OpenFat(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -27800,7 +27800,7 @@ func _ConstructSymbol(_v Object) *_pe.Symbol {
 GO FUNC debug/pe.NewFile from debug/pe/file.go:
 // func __newFile(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt)) Object {
 // 	_res1, _res2 := _pe.NewFile(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -27809,7 +27809,7 @@ GO FUNC debug/pe.NewFile from debug/pe/file.go:
 GO FUNC debug/pe.Open from debug/pe/file.go:
 func __open(name string) Object {
 	_res1, _res2 := _pe.Open(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -28043,7 +28043,7 @@ func _ConstructSym(_v Object) *_plan9obj.Sym {
 GO FUNC debug/plan9obj.NewFile from debug/plan9obj/file.go:
 // func __newFile(r ABEND987(genutils.go: imports not yet supported: io.ReaderAt)) Object {
 // 	_res1, _res2 := _plan9obj.NewFile(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -28052,7 +28052,7 @@ GO FUNC debug/plan9obj.NewFile from debug/plan9obj/file.go:
 GO FUNC debug/plan9obj.Open from debug/plan9obj/file.go:
 func __open(name string) Object {
 	_res1, _res2 := _plan9obj.Open(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -28102,7 +28102,7 @@ func _ConstructCorruptInputError(_v Object) _ascii85.CorruptInputError {
 GO FUNC encoding/ascii85.Decode from encoding/ascii85/ascii85.go:
 // func __decode(dst []byte, src []byte, flush bool) Object {
 // 	ndst, nsrc, err := _ascii85.Decode(dst, src, flush)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(ndst))
 // 	_res = _res.Conjoin(MakeInt(nsrc))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -28138,8 +28138,8 @@ import (
 GO FUNC encoding/asn1.Marshal from encoding/asn1/marshal.go:
 // func __marshal(val interface {}) Object {
 // 	_res1, _res2 := _asn1.Marshal(val)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28151,8 +28151,8 @@ GO FUNC encoding/asn1.Marshal from encoding/asn1/marshal.go:
 GO FUNC encoding/asn1.MarshalWithParams from encoding/asn1/marshal.go:
 // func __marshalWithParams(val interface {}, params string) Object {
 // 	_res1, _res2 := _asn1.MarshalWithParams(val, params)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28164,8 +28164,8 @@ GO FUNC encoding/asn1.MarshalWithParams from encoding/asn1/marshal.go:
 GO FUNC encoding/asn1.Unmarshal from encoding/asn1/asn1.go:
 // func __unmarshal(b []byte, val interface {}) Object {
 // 	rest, err := _asn1.Unmarshal(b, val)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range rest {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28177,8 +28177,8 @@ GO FUNC encoding/asn1.Unmarshal from encoding/asn1/asn1.go:
 GO FUNC encoding/asn1.UnmarshalWithParams from encoding/asn1/asn1.go:
 // func __unmarshalWithParams(b []byte, val interface {}, params string) Object {
 // 	rest, err := _asn1.UnmarshalWithParams(b, val, params)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range rest {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28406,7 +28406,7 @@ GO FUNC encoding/binary.Read from encoding/binary/binary.go:
 GO FUNC encoding/binary.ReadUvarint from encoding/binary/varint.go:
 // func __readUvarint(r ABEND987(genutils.go: imports not yet supported: io.ByteReader)) Object {
 // 	_res1, _res2 := _binary.ReadUvarint(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBigInt(uint64(_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -28415,7 +28415,7 @@ GO FUNC encoding/binary.ReadUvarint from encoding/binary/varint.go:
 GO FUNC encoding/binary.ReadVarint from encoding/binary/varint.go:
 // func __readVarint(r ABEND987(genutils.go: imports not yet supported: io.ByteReader)) Object {
 // 	_res1, _res2 := _binary.ReadVarint(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(int(_res1)))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -28430,7 +28430,7 @@ GO FUNC encoding/binary.Size from encoding/binary/binary.go:
 GO FUNC encoding/binary.Uvarint from encoding/binary/varint.go:
 // func __uvarint(buf []byte) Object {
 // 	_res1, _res2 := _binary.Uvarint(buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBigInt(uint64(_res1)))
 // 	_res = _res.Conjoin(MakeInt(_res2))
 // 	return _res
@@ -28439,7 +28439,7 @@ GO FUNC encoding/binary.Uvarint from encoding/binary/varint.go:
 GO FUNC encoding/binary.Varint from encoding/binary/varint.go:
 // func __varint(buf []byte) Object {
 // 	_res1, _res2 := _binary.Varint(buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(int(_res1)))
 // 	_res = _res.Conjoin(MakeInt(_res2))
 // 	return _res
@@ -28523,7 +28523,7 @@ func _ConstructInvalidByteError(_v Object) _hex.InvalidByteError {
 GO FUNC encoding/hex.Decode from encoding/hex/hex.go:
 // func __decode(dst []byte, src []byte) Object {
 // 	_res1, _res2 := _hex.Decode(dst, src)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -28532,8 +28532,8 @@ GO FUNC encoding/hex.Decode from encoding/hex/hex.go:
 GO FUNC encoding/hex.DecodeString from encoding/hex/hex.go:
 func __decodeString(s string) Object {
 	_res1, _res2 := _hex.DecodeString(s)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -28607,8 +28607,8 @@ GO FUNC encoding/json.Indent from encoding/json/indent.go:
 GO FUNC encoding/json.Marshal from encoding/json/encode.go:
 // func __marshal(v interface {}) Object {
 // 	_res1, _res2 := _json.Marshal(v)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28620,8 +28620,8 @@ GO FUNC encoding/json.Marshal from encoding/json/encode.go:
 GO FUNC encoding/json.MarshalIndent from encoding/json/encode.go:
 // func __marshalIndent(v interface {}, prefix string, indent string) Object {
 // 	_res1, _res2 := _json.MarshalIndent(v, prefix, indent)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28701,9 +28701,9 @@ func ExtractGoObjectBlock(args []Object, index int) *_pem.Block {
 GO FUNC encoding/pem.Decode from encoding/pem/pem.go:
 // func __decode(data []byte) Object {
 // 	p, rest := _pem.Decode(data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(p))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range rest {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -28720,7 +28720,7 @@ GO FUNC encoding/pem.Encode from encoding/pem/pem.go:
 GO FUNC encoding/pem.EncodeToMemory from encoding/pem/pem.go:
 func __encodeToMemory(b *_pem.Block) Object {
 	_res := _pem.EncodeToMemory(b)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -29490,8 +29490,8 @@ GO FUNC encoding/xml.EscapeText from encoding/xml/xml.go:
 GO FUNC encoding/xml.Marshal from encoding/xml/marshal.go:
 // func __marshal(v interface {}) Object {
 // 	_res1, _res2 := _xml.Marshal(v)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -29503,8 +29503,8 @@ GO FUNC encoding/xml.Marshal from encoding/xml/marshal.go:
 GO FUNC encoding/xml.MarshalIndent from encoding/xml/marshal.go:
 // func __marshalIndent(v interface {}, prefix string, indent string) Object {
 // 	_res1, _res2 := _xml.MarshalIndent(v, prefix, indent)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -30053,7 +30053,7 @@ func ExtractGoObjectValue(args []Object, index int) *_flag.Value {
 GO FUNC flag.Args from flag/flag.go:
 func __args() Object {
 	_res := _flag.Args()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -30183,7 +30183,7 @@ GO FUNC flag.UintVar from flag/flag.go:
 GO FUNC flag.UnquoteUsage from flag/flag.go:
 func __unquoteUsage(flag *_flag.Flag) Object {
 	name, usage := _flag.UnquoteUsage(flag)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(name))
 	_res = _res.Conjoin(MakeString(usage))
 	return _res
@@ -30224,7 +30224,7 @@ GO FUNC fmt.Errorf from fmt/print.go:
 GO FUNC fmt.Fprint from fmt/print.go:
 // func __fprint(w ABEND987(genutils.go: imports not yet supported: io.Writer), a ...interface {}) Object {
 // 	n, err := _fmt.Fprint(w, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30233,7 +30233,7 @@ GO FUNC fmt.Fprint from fmt/print.go:
 GO FUNC fmt.Fprintf from fmt/print.go:
 // func __fprintf(w ABEND987(genutils.go: imports not yet supported: io.Writer), format string, a ...interface {}) Object {
 // 	n, err := _fmt.Fprintf(w, format, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30242,7 +30242,7 @@ GO FUNC fmt.Fprintf from fmt/print.go:
 GO FUNC fmt.Fprintln from fmt/print.go:
 // func __fprintln(w ABEND987(genutils.go: imports not yet supported: io.Writer), a ...interface {}) Object {
 // 	n, err := _fmt.Fprintln(w, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30251,7 +30251,7 @@ GO FUNC fmt.Fprintln from fmt/print.go:
 GO FUNC fmt.Fscan from fmt/scan.go:
 // func __fscan(r ABEND987(genutils.go: imports not yet supported: io.Reader), a ...interface {}) Object {
 // 	n, err := _fmt.Fscan(r, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30260,7 +30260,7 @@ GO FUNC fmt.Fscan from fmt/scan.go:
 GO FUNC fmt.Fscanf from fmt/scan.go:
 // func __fscanf(r ABEND987(genutils.go: imports not yet supported: io.Reader), format string, a ...interface {}) Object {
 // 	n, err := _fmt.Fscanf(r, format, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30269,7 +30269,7 @@ GO FUNC fmt.Fscanf from fmt/scan.go:
 GO FUNC fmt.Fscanln from fmt/scan.go:
 // func __fscanln(r ABEND987(genutils.go: imports not yet supported: io.Reader), a ...interface {}) Object {
 // 	n, err := _fmt.Fscanln(r, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30278,7 +30278,7 @@ GO FUNC fmt.Fscanln from fmt/scan.go:
 GO FUNC fmt.Print from fmt/print.go:
 // func __print(a ...interface {}) Object {
 // 	n, err := _fmt.Print(a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30287,7 +30287,7 @@ GO FUNC fmt.Print from fmt/print.go:
 GO FUNC fmt.Printf from fmt/print.go:
 // func __printf(format string, a ...interface {}) Object {
 // 	n, err := _fmt.Printf(format, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30296,7 +30296,7 @@ GO FUNC fmt.Printf from fmt/print.go:
 GO FUNC fmt.Println from fmt/print.go:
 // func __println(a ...interface {}) Object {
 // 	n, err := _fmt.Println(a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30305,7 +30305,7 @@ GO FUNC fmt.Println from fmt/print.go:
 GO FUNC fmt.Scan from fmt/scan.go:
 // func __scan(a ...interface {}) Object {
 // 	n, err := _fmt.Scan(a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30314,7 +30314,7 @@ GO FUNC fmt.Scan from fmt/scan.go:
 GO FUNC fmt.Scanf from fmt/scan.go:
 // func __scanf(format string, a ...interface {}) Object {
 // 	n, err := _fmt.Scanf(format, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30323,7 +30323,7 @@ GO FUNC fmt.Scanf from fmt/scan.go:
 GO FUNC fmt.Scanln from fmt/scan.go:
 // func __scanln(a ...interface {}) Object {
 // 	n, err := _fmt.Scanln(a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30350,7 +30350,7 @@ GO FUNC fmt.Sprintln from fmt/print.go:
 GO FUNC fmt.Sscan from fmt/scan.go:
 // func __sscan(str string, a ...interface {}) Object {
 // 	n, err := _fmt.Sscan(str, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30359,7 +30359,7 @@ GO FUNC fmt.Sscan from fmt/scan.go:
 GO FUNC fmt.Sscanf from fmt/scan.go:
 // func __sscanf(str string, format string, a ...interface {}) Object {
 // 	n, err := _fmt.Sscanf(str, format, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -30368,7 +30368,7 @@ GO FUNC fmt.Sscanf from fmt/scan.go:
 GO FUNC fmt.Sscanln from fmt/scan.go:
 // func __sscanln(str string, a ...interface {}) Object {
 // 	n, err := _fmt.Sscanln(str, a)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -33346,7 +33346,7 @@ func __newObj(kind _ast.ObjKind, name string) Object {
 GO FUNC go/ast.NewPackage from go/ast/resolve.go:
 // func __newPackage(fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), files map[], importer _ast.Importer, universe *_ast.Scope) Object {
 // 	_res1, _res2 := _ast.NewPackage(fset, files, importer, universe)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -33653,7 +33653,7 @@ func ExtractGoObjectPackage(args []Object, index int) *_build.Package {
 GO FUNC go/build.ArchChar from go/build/build.go:
 func __archChar(goarch string) Object {
 	_res1, _res2 := _build.ArchChar(goarch)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -33662,7 +33662,7 @@ func __archChar(goarch string) Object {
 GO FUNC go/build.Import from go/build/build.go:
 func __import(path string, srcDir string, mode _build.ImportMode) Object {
 	_res1, _res2 := _build.Import(path, srcDir, mode)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -33671,7 +33671,7 @@ func __import(path string, srcDir string, mode _build.ImportMode) Object {
 GO FUNC go/build.ImportDir from go/build/build.go:
 func __importDir(dir string, mode _build.ImportMode) Object {
 	_res1, _res2 := _build.ImportDir(dir, mode)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -33757,7 +33757,7 @@ GO FUNC go/constant.BinaryOp from go/constant/value.go:
 GO FUNC go/constant.Bytes from go/constant/value.go:
 func __bytes(x _constant.Value) Object {
 	_res := _constant.Bytes(x)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -33779,7 +33779,7 @@ func __denom(x _constant.Value) Object {
 GO FUNC go/constant.Float32Val from go/constant/value.go:
 // func __float32Val(x _constant.Value) Object {
 // 	_res1, _res2 := _constant.Float32Val(x)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
@@ -33788,7 +33788,7 @@ GO FUNC go/constant.Float32Val from go/constant/value.go:
 GO FUNC go/constant.Float64Val from go/constant/value.go:
 // func __float64Val(x _constant.Value) Object {
 // 	_res1, _res2 := _constant.Float64Val(x)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
@@ -33803,7 +33803,7 @@ func __imag(x _constant.Value) Object {
 GO FUNC go/constant.Int64Val from go/constant/value.go:
 func __int64Val(x _constant.Value) Object {
 	_res1, _res2 := _constant.Int64Val(x)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(_res1)))
 	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
@@ -33902,7 +33902,7 @@ func __toInt(x _constant.Value) Object {
 GO FUNC go/constant.Uint64Val from go/constant/value.go:
 func __uint64Val(x _constant.Value) Object {
 	_res1, _res2 := _constant.Uint64Val(x)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(_res1)))
 	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
@@ -34274,7 +34274,7 @@ func ExtractGoObjectValue(args []Object, index int) *_doc.Value {
 GO FUNC go/doc.Examples from go/doc/example.go:
 // func __examples(files ...*ABEND987(genutils.go: imports not yet supported: ast.File)) Object {
 // 	_res := _doc.Examples(files)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -34316,8 +34316,8 @@ GO FUNC go/format.Node from go/format/format.go:
 GO FUNC go/format.Source from go/format/format.go:
 // func __source(src []byte) Object {
 // 	_res1, _res2 := _format.Source(src)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -34412,7 +34412,7 @@ func _ConstructMode(_v Object) _parser.Mode {
 GO FUNC go/parser.ParseDir from go/parser/interface.go:
 // func __parseDir(fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), path string, filter func, mode _parser.Mode) Object {
 // 	pkgs, first := _parser.ParseDir(fset, path, filter, mode)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(pkgs)
 // 	_res = _res.Conjoin(func () Object { if (first) == nil { return NIL } else { return MakeError(first) } }())
 // 	return _res
@@ -34421,7 +34421,7 @@ GO FUNC go/parser.ParseDir from go/parser/interface.go:
 GO FUNC go/parser.ParseExpr from go/parser/interface.go:
 func __parseExpr(x string) Object {
 	_res1, _res2 := _parser.ParseExpr(x)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -34430,7 +34430,7 @@ func __parseExpr(x string) Object {
 GO FUNC go/parser.ParseExprFrom from go/parser/interface.go:
 // func __parseExprFrom(fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), filename string, src interface {}, mode _parser.Mode) Object {
 // 	_res1, _res2 := _parser.ParseExprFrom(fset, filename, src, mode)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -34439,7 +34439,7 @@ GO FUNC go/parser.ParseExprFrom from go/parser/interface.go:
 GO FUNC go/parser.ParseFile from go/parser/interface.go:
 // func __parseFile(fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), filename string, src interface {}, mode _parser.Mode) Object {
 // 	f, err := _parser.ParseFile(fset, filename, src, mode)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(f))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -36265,7 +36265,7 @@ func __default(typ _types.Type) Object {
 GO FUNC go/types.Eval from go/types/eval.go:
 // func __eval(fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), pkg *_types.Package, pos ABEND987(genutils.go: imports not yet supported: token.Pos), expr string) Object {
 // 	_, err := _types.Eval(fset, pkg, pos, expr)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -36280,9 +36280,9 @@ GO FUNC go/types.ExprString from go/types/exprstring.go:
 GO FUNC go/types.LookupFieldOrMethod from go/types/lookup.go:
 func __lookupFieldOrMethod(T _types.Type, addressable bool, pkg *_types.Package, name string) Object {
 	obj, index, indirect := _types.LookupFieldOrMethod(T, addressable, pkg, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(obj))
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range index {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -36294,7 +36294,7 @@ func __lookupFieldOrMethod(T _types.Type, addressable bool, pkg *_types.Package,
 GO FUNC go/types.MissingMethod from go/types/lookup.go:
 func __missingMethod(V _types.Type, T *_types.Interface, static bool) Object {
 	method, wrongType := _types.MissingMethod(V, T, static)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(method))
 	_res = _res.Conjoin(MakeBoolean(wrongType))
 	return _res
@@ -37079,7 +37079,7 @@ GO FUNC html/template.HTMLEscaper from html/template/escape.go:
 GO FUNC html/template.IsTrue from html/template/template.go:
 // func __isTrue(val interface {}) Object {
 // 	truth, ok := _template.IsTrue(val)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBoolean(truth))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -37112,7 +37112,7 @@ func __new(name string) Object {
 GO FUNC html/template.ParseFiles from html/template/template.go:
 // func __parseFiles(filenames ...string) Object {
 // 	_res1, _res2 := _template.ParseFiles(filenames)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -37121,7 +37121,7 @@ GO FUNC html/template.ParseFiles from html/template/template.go:
 GO FUNC html/template.ParseGlob from html/template/template.go:
 func __parseGlob(pattern string) Object {
 	_res1, _res2 := _template.ParseGlob(pattern)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -37941,7 +37941,7 @@ func _ConstructYCbCrSubsampleRatio(_v Object) _image.YCbCrSubsampleRatio {
 GO FUNC image.Decode from image/format.go:
 // func __decode(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2, _res3 := _image.Decode(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(MakeString(_res2))
 // 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
@@ -37951,7 +37951,7 @@ GO FUNC image.Decode from image/format.go:
 GO FUNC image.DecodeConfig from image/format.go:
 // func __decodeConfig(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2, _res3 := _image.DecodeConfig(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(MakeString(_res2))
 // 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
@@ -38065,7 +38065,7 @@ import (
 GO FUNC image/color.CMYKToRGB from image/color/ycbcr.go:
 // func __cMYKToRGB(c uint8, m uint8, y uint8, k uint8) Object {
 // 	_res1, _res2, _res3 := _color.CMYKToRGB(c, m, y, k)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(_res2)
 // 	_res = _res.Conjoin(_res3)
@@ -38081,7 +38081,7 @@ GO FUNC image/color.ModelFunc from image/color/color.go:
 GO FUNC image/color.RGBToCMYK from image/color/ycbcr.go:
 // func __rGBToCMYK(r uint8, g uint8, b uint8) Object {
 // 	_res1, _res2, _res3, _res4 := _color.RGBToCMYK(r, g, b)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(_res2)
 // 	_res = _res.Conjoin(_res3)
@@ -38092,7 +38092,7 @@ GO FUNC image/color.RGBToCMYK from image/color/ycbcr.go:
 GO FUNC image/color.RGBToYCbCr from image/color/ycbcr.go:
 // func __rGBToYCbCr(r uint8, g uint8, b uint8) Object {
 // 	_res1, _res2, _res3 := _color.RGBToYCbCr(r, g, b)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(_res2)
 // 	_res = _res.Conjoin(_res3)
@@ -38102,7 +38102,7 @@ GO FUNC image/color.RGBToYCbCr from image/color/ycbcr.go:
 GO FUNC image/color.YCbCrToRGB from image/color/ycbcr.go:
 // func __yCbCrToRGB(y uint8, cb uint8, cr uint8) Object {
 // 	_res1, _res2, _res3 := _color.YCbCrToRGB(y, cb, cr)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(_res2)
 // 	_res = _res.Conjoin(_res3)
@@ -38124,7 +38124,7 @@ GO FUNC image/draw.DrawMask from image/draw/draw.go:
 GO FUNC image/gif.Decode from image/gif/reader.go:
 // func __decode(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _gif.Decode(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38133,7 +38133,7 @@ GO FUNC image/gif.Decode from image/gif/reader.go:
 GO FUNC image/gif.DecodeAll from image/gif/reader.go:
 // func __decodeAll(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _gif.DecodeAll(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38142,7 +38142,7 @@ GO FUNC image/gif.DecodeAll from image/gif/reader.go:
 GO FUNC image/gif.DecodeConfig from image/gif/reader.go:
 // func __decodeConfig(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _gif.DecodeConfig(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38163,7 +38163,7 @@ GO FUNC image/gif.EncodeAll from image/gif/writer.go:
 GO FUNC image/jpeg.Decode from image/jpeg/reader.go:
 // func __decode(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _jpeg.Decode(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38172,7 +38172,7 @@ GO FUNC image/jpeg.Decode from image/jpeg/reader.go:
 GO FUNC image/jpeg.DecodeConfig from image/jpeg/reader.go:
 // func __decodeConfig(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _jpeg.DecodeConfig(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38187,7 +38187,7 @@ GO FUNC image/jpeg.Encode from image/jpeg/writer.go:
 GO FUNC image/png.Decode from image/png/reader.go:
 // func __decode(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _png.Decode(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38196,7 +38196,7 @@ GO FUNC image/png.Decode from image/png/reader.go:
 GO FUNC image/png.DecodeConfig from image/png/reader.go:
 // func __decodeConfig(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _png.DecodeConfig(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -38980,7 +38980,7 @@ func ExtractGoObjectWriterTo(args []Object, index int) *_io.WriterTo {
 GO FUNC io.Copy from io/io.go:
 func __copy(dst _io.Writer, src _io.Reader) Object {
 	written, err := _io.Copy(dst, src)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(written)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -38989,7 +38989,7 @@ func __copy(dst _io.Writer, src _io.Reader) Object {
 GO FUNC io.CopyBuffer from io/io.go:
 // func __copyBuffer(dst _io.Writer, src _io.Reader, buf []byte) Object {
 // 	written, err := _io.CopyBuffer(dst, src, buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(int(written)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -38998,7 +38998,7 @@ GO FUNC io.CopyBuffer from io/io.go:
 GO FUNC io.CopyN from io/io.go:
 func __copyN(dst _io.Writer, src _io.Reader, n int64) Object {
 	written, err := _io.CopyN(dst, src, n)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(written)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -39031,7 +39031,7 @@ func __newSectionReader(r _io.ReaderAt, off int64, n int64) Object {
 GO FUNC io.Pipe from io/pipe.go:
 func __pipe() Object {
 	_res1, _res2 := _io.Pipe()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(MakeGoObject(_res2))
 	return _res
@@ -39040,7 +39040,7 @@ func __pipe() Object {
 GO FUNC io.ReadAtLeast from io/io.go:
 // func __readAtLeast(r _io.Reader, buf []byte, min int) Object {
 // 	n, err := _io.ReadAtLeast(r, buf, min)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -39049,7 +39049,7 @@ GO FUNC io.ReadAtLeast from io/io.go:
 GO FUNC io.ReadFull from io/io.go:
 // func __readFull(r _io.Reader, buf []byte) Object {
 // 	n, err := _io.ReadFull(r, buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -39064,7 +39064,7 @@ func __teeReader(r _io.Reader, w _io.Writer) Object {
 GO FUNC io.WriteString from io/io.go:
 func __writeString(w _io.Writer, s string) Object {
 	n, err := _io.WriteString(w, s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -39087,8 +39087,8 @@ GO FUNC io/ioutil.NopCloser from io/ioutil/ioutil.go:
 GO FUNC io/ioutil.ReadAll from io/ioutil/ioutil.go:
 // func __readAll(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _ioutil.ReadAll(r)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -39100,8 +39100,8 @@ GO FUNC io/ioutil.ReadAll from io/ioutil/ioutil.go:
 GO FUNC io/ioutil.ReadDir from io/ioutil/ioutil.go:
 func __readDir(dirname string) Object {
 	_res1, _res2 := _ioutil.ReadDir(dirname)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -39113,8 +39113,8 @@ func __readDir(dirname string) Object {
 GO FUNC io/ioutil.ReadFile from io/ioutil/ioutil.go:
 func __readFile(filename string) Object {
 	_res1, _res2 := _ioutil.ReadFile(filename)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -39126,7 +39126,7 @@ func __readFile(filename string) Object {
 GO FUNC io/ioutil.TempDir from io/ioutil/tempfile.go:
 func __tempDir(dir string, prefix string) Object {
 	name, err := _ioutil.TempDir(dir, prefix)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(name))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -39135,7 +39135,7 @@ func __tempDir(dir string, prefix string) Object {
 GO FUNC io/ioutil.TempFile from io/ioutil/tempfile.go:
 func __tempFile(dir string, pattern string) Object {
 	f, err := _ioutil.TempFile(dir, pattern)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(f))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -39357,7 +39357,7 @@ func _ConstructWriter(_v Object) *_syslog.Writer {
 GO FUNC log/syslog.Dial from log/syslog/syslog.go:
 func __dial(network string, raddr string, priority _syslog.Priority, tag string) Object {
 	_res1, _res2 := _syslog.Dial(network, raddr, priority, tag)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -39366,7 +39366,7 @@ func __dial(network string, raddr string, priority _syslog.Priority, tag string)
 GO FUNC log/syslog.New from log/syslog/syslog.go:
 func __new(priority _syslog.Priority, tag string) Object {
 	_res1, _res2 := _syslog.New(priority, tag)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -39375,7 +39375,7 @@ func __new(priority _syslog.Priority, tag string) Object {
 GO FUNC log/syslog.NewLogger from log/syslog/syslog.go:
 func __newLogger(p _syslog.Priority, logFlag int) Object {
 	_res1, _res2 := _syslog.NewLogger(p, logFlag)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -39524,7 +39524,7 @@ GO FUNC math.Floor from math/floor.go:
 GO FUNC math.Frexp from math/frexp.go:
 // func __frexp(f float64) Object {
 // 	frac, exp := _math.Frexp(f)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(frac)
 // 	_res = _res.Conjoin(MakeInt(exp))
 // 	return _res
@@ -39586,7 +39586,7 @@ GO FUNC math.Ldexp from math/ldexp.go:
 GO FUNC math.Lgamma from math/lgamma.go:
 // func __lgamma(x float64) Object {
 // 	lgamma, sign := _math.Lgamma(x)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(lgamma)
 // 	_res = _res.Conjoin(MakeInt(sign))
 // 	return _res
@@ -39635,7 +39635,7 @@ GO FUNC math.Mod from math/mod.go:
 GO FUNC math.Modf from math/modf.go:
 // func __modf(f float64) Object {
 // 	int, frac := _math.Modf(f)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(int)
 // 	_res = _res.Conjoin(frac)
 // 	return _res
@@ -39695,7 +39695,7 @@ GO FUNC math.Sin from math/sin.go:
 GO FUNC math.Sincos from math/sincos.go:
 // func __sincos(x float64) Object {
 // 	sin, cos := _math.Sincos(x)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(sin)
 // 	_res = _res.Conjoin(cos)
 // 	return _res
@@ -40021,7 +40021,7 @@ func __newRat(a int64, b int64) Object {
 GO FUNC math/big.ParseFloat from math/big/floatconv.go:
 func __parseFloat(s string, base int, prec uint, mode _big.RoundingMode) Object {
 	f, b, err := _big.ParseFloat(s, base, prec, mode)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(f))
 	_res = _res.Conjoin(MakeInt(b))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -40274,7 +40274,7 @@ GO FUNC math/cmplx.Phase from math/cmplx/phase.go:
 GO FUNC math/cmplx.Polar from math/cmplx/polar.go:
 // func __polar(x complex128) Object {
 // 	r, θ := _cmplx.Polar(x)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(θ)
 // 	return _res
@@ -40520,7 +40520,7 @@ GO FUNC math/rand.NormFloat64 from math/rand/rand.go:
 GO FUNC math/rand.Perm from math/rand/rand.go:
 func __perm(n int) Object {
 	_res := _rand.Perm(n)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -40530,7 +40530,7 @@ func __perm(n int) Object {
 GO FUNC math/rand.Read from math/rand/rand.go:
 // func __read(p []byte) Object {
 // 	n, err := _rand.Read(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -40646,8 +40646,8 @@ func _ConstructWordEncoder(_v Object) _mime.WordEncoder {
 GO FUNC mime.ExtensionsByType from mime/type.go:
 func __extensionsByType(typ string) Object {
 	_res1, _res2 := _mime.ExtensionsByType(typ)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -40665,7 +40665,7 @@ GO FUNC mime.FormatMediaType from mime/mediatype.go:
 GO FUNC mime.ParseMediaType from mime/mediatype.go:
 // func __parseMediaType(v string) Object {
 // 	mediatype, params, err := _mime.ParseMediaType(v)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeString(mediatype))
 // 	_res = _res.Conjoin(params)
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -42071,7 +42071,7 @@ func __cIDRMask(ones int, bits int) Object {
 GO FUNC net.Dial from net/dial.go:
 func __dial(network string, address string) Object {
 	_res1, _res2 := _net.Dial(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42080,7 +42080,7 @@ func __dial(network string, address string) Object {
 GO FUNC net.DialIP from net/iprawsock.go:
 func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 	_res1, _res2 := _net.DialIP(network, laddr, raddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42089,7 +42089,7 @@ func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 GO FUNC net.DialTCP from net/tcpsock.go:
 func __dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object {
 	_res1, _res2 := _net.DialTCP(network, laddr, raddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42098,7 +42098,7 @@ func __dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object 
 GO FUNC net.DialTimeout from net/dial.go:
 // func __dialTimeout(network string, address string, timeout ABEND987(genutils.go: imports not yet supported: time.Duration)) Object {
 // 	_res1, _res2 := _net.DialTimeout(network, address, timeout)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -42107,7 +42107,7 @@ GO FUNC net.DialTimeout from net/dial.go:
 GO FUNC net.DialUDP from net/udpsock.go:
 func __dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object {
 	_res1, _res2 := _net.DialUDP(network, laddr, raddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42116,7 +42116,7 @@ func __dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object 
 GO FUNC net.DialUnix from net/unixsock.go:
 func __dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Object {
 	_res1, _res2 := _net.DialUnix(network, laddr, raddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42125,7 +42125,7 @@ func __dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Obje
 GO FUNC net.FileConn from net/file.go:
 // func __fileConn(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
 // 	c, err := _net.FileConn(f)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -42134,7 +42134,7 @@ GO FUNC net.FileConn from net/file.go:
 GO FUNC net.FileListener from net/file.go:
 // func __fileListener(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
 // 	ln, err := _net.FileListener(f)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(ln))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -42143,7 +42143,7 @@ GO FUNC net.FileListener from net/file.go:
 GO FUNC net.FilePacketConn from net/file.go:
 // func __filePacketConn(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
 // 	c, err := _net.FilePacketConn(f)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -42164,8 +42164,8 @@ func __iPv4Mask(a byte, b byte, c byte, d byte) Object {
 GO FUNC net.InterfaceAddrs from net/interface.go:
 func __interfaceAddrs() Object {
 	_res1, _res2 := _net.InterfaceAddrs()
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42177,7 +42177,7 @@ func __interfaceAddrs() Object {
 GO FUNC net.InterfaceByIndex from net/interface.go:
 func __interfaceByIndex(index int) Object {
 	_res1, _res2 := _net.InterfaceByIndex(index)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42186,7 +42186,7 @@ func __interfaceByIndex(index int) Object {
 GO FUNC net.InterfaceByName from net/interface.go:
 func __interfaceByName(name string) Object {
 	_res1, _res2 := _net.InterfaceByName(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42195,8 +42195,8 @@ func __interfaceByName(name string) Object {
 GO FUNC net.Interfaces from net/interface.go:
 func __interfaces() Object {
 	_res1, _res2 := _net.Interfaces()
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42208,7 +42208,7 @@ func __interfaces() Object {
 GO FUNC net.Listen from net/dial.go:
 func __listen(network string, address string) Object {
 	_res1, _res2 := _net.Listen(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42217,7 +42217,7 @@ func __listen(network string, address string) Object {
 GO FUNC net.ListenIP from net/iprawsock.go:
 func __listenIP(network string, laddr *_net.IPAddr) Object {
 	_res1, _res2 := _net.ListenIP(network, laddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42226,7 +42226,7 @@ func __listenIP(network string, laddr *_net.IPAddr) Object {
 GO FUNC net.ListenMulticastUDP from net/udpsock.go:
 func __listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAddr) Object {
 	_res1, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42235,7 +42235,7 @@ func __listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAd
 GO FUNC net.ListenPacket from net/dial.go:
 func __listenPacket(network string, address string) Object {
 	_res1, _res2 := _net.ListenPacket(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42244,7 +42244,7 @@ func __listenPacket(network string, address string) Object {
 GO FUNC net.ListenTCP from net/tcpsock.go:
 func __listenTCP(network string, laddr *_net.TCPAddr) Object {
 	_res1, _res2 := _net.ListenTCP(network, laddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42253,7 +42253,7 @@ func __listenTCP(network string, laddr *_net.TCPAddr) Object {
 GO FUNC net.ListenUDP from net/udpsock.go:
 func __listenUDP(network string, laddr *_net.UDPAddr) Object {
 	_res1, _res2 := _net.ListenUDP(network, laddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42262,7 +42262,7 @@ func __listenUDP(network string, laddr *_net.UDPAddr) Object {
 GO FUNC net.ListenUnix from net/unixsock.go:
 func __listenUnix(network string, laddr *_net.UnixAddr) Object {
 	_res1, _res2 := _net.ListenUnix(network, laddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42271,7 +42271,7 @@ func __listenUnix(network string, laddr *_net.UnixAddr) Object {
 GO FUNC net.ListenUnixgram from net/unixsock.go:
 func __listenUnixgram(network string, laddr *_net.UnixAddr) Object {
 	_res1, _res2 := _net.ListenUnixgram(network, laddr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42280,8 +42280,8 @@ func __listenUnixgram(network string, laddr *_net.UnixAddr) Object {
 GO FUNC net.LookupAddr from net/lookup.go:
 func __lookupAddr(addr string) Object {
 	names, err := _net.LookupAddr(addr)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range names {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -42293,7 +42293,7 @@ func __lookupAddr(addr string) Object {
 GO FUNC net.LookupCNAME from net/lookup.go:
 func __lookupCNAME(host string) Object {
 	cname, err := _net.LookupCNAME(host)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -42302,8 +42302,8 @@ func __lookupCNAME(host string) Object {
 GO FUNC net.LookupHost from net/lookup.go:
 func __lookupHost(host string) Object {
 	addrs, err := _net.LookupHost(host)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -42315,8 +42315,8 @@ func __lookupHost(host string) Object {
 GO FUNC net.LookupIP from net/lookup.go:
 func __lookupIP(host string) Object {
 	_res1, _res2 := _net.LookupIP(host)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42328,8 +42328,8 @@ func __lookupIP(host string) Object {
 GO FUNC net.LookupMX from net/lookup.go:
 func __lookupMX(name string) Object {
 	_res1, _res2 := _net.LookupMX(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42341,8 +42341,8 @@ func __lookupMX(name string) Object {
 GO FUNC net.LookupNS from net/lookup.go:
 func __lookupNS(name string) Object {
 	_res1, _res2 := _net.LookupNS(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42354,7 +42354,7 @@ func __lookupNS(name string) Object {
 GO FUNC net.LookupPort from net/lookup.go:
 func __lookupPort(network string, service string) Object {
 	port, err := _net.LookupPort(network, service)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -42363,9 +42363,9 @@ func __lookupPort(network string, service string) Object {
 GO FUNC net.LookupSRV from net/lookup.go:
 func __lookupSRV(service string, proto string, name string) Object {
 	cname, addrs, err := _net.LookupSRV(service, proto, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -42377,8 +42377,8 @@ func __lookupSRV(service string, proto string, name string) Object {
 GO FUNC net.LookupTXT from net/lookup.go:
 func __lookupTXT(name string) Object {
 	_res1, _res2 := _net.LookupTXT(name)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -42390,7 +42390,7 @@ func __lookupTXT(name string) Object {
 GO FUNC net.ParseCIDR from net/ip.go:
 func __parseCIDR(s string) Object {
 	_res1, _res2, _res3 := _net.ParseCIDR(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(MakeGoObject(_res2))
 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
@@ -42406,7 +42406,7 @@ func __parseIP(s string) Object {
 GO FUNC net.ParseMAC from net/mac.go:
 func __parseMAC(s string) Object {
 	hw, err := _net.ParseMAC(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(hw))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -42415,7 +42415,7 @@ func __parseMAC(s string) Object {
 GO FUNC net.Pipe from net/pipe.go:
 func __pipe() Object {
 	_res1, _res2 := _net.Pipe()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(MakeGoObject(_res2))
 	return _res
@@ -42424,7 +42424,7 @@ func __pipe() Object {
 GO FUNC net.ResolveIPAddr from net/iprawsock.go:
 func __resolveIPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveIPAddr(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42433,7 +42433,7 @@ func __resolveIPAddr(network string, address string) Object {
 GO FUNC net.ResolveTCPAddr from net/tcpsock.go:
 func __resolveTCPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveTCPAddr(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42442,7 +42442,7 @@ func __resolveTCPAddr(network string, address string) Object {
 GO FUNC net.ResolveUDPAddr from net/udpsock.go:
 func __resolveUDPAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUDPAddr(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42451,7 +42451,7 @@ func __resolveUDPAddr(network string, address string) Object {
 GO FUNC net.ResolveUnixAddr from net/unixsock.go:
 func __resolveUnixAddr(network string, address string) Object {
 	_res1, _res2 := _net.ResolveUnixAddr(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -42460,7 +42460,7 @@ func __resolveUnixAddr(network string, address string) Object {
 GO FUNC net.SplitHostPort from net/ipsock.go:
 func __splitHostPort(hostport string) Object {
 	host, port, err := _net.SplitHostPort(hostport)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(host))
 	_res = _res.Conjoin(MakeString(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -43406,7 +43406,7 @@ func __fileServer(root _http.FileSystem) Object {
 GO FUNC net/http.Get from net/http/client.go:
 func __get(url string) Object {
 	resp, err := _http.Get(url)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -43427,7 +43427,7 @@ GO FUNC net/http.HandleFunc from net/http/server.go:
 GO FUNC net/http.Head from net/http/client.go:
 func __head(url string) Object {
 	resp, err := _http.Head(url)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -43448,7 +43448,7 @@ func __newFileTransport(fs _http.FileSystem) Object {
 GO FUNC net/http.NewRequest from net/http/request.go:
 // func __newRequest(method string, url string, body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _http.NewRequest(method, url, body)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -43475,7 +43475,7 @@ func __notFoundHandler() Object {
 GO FUNC net/http.ParseHTTPVersion from net/http/request.go:
 func __parseHTTPVersion(vers string) Object {
 	major, minor, ok := _http.ParseHTTPVersion(vers)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(major))
 	_res = _res.Conjoin(MakeInt(minor))
 	_res = _res.Conjoin(MakeBoolean(ok))
@@ -43485,7 +43485,7 @@ func __parseHTTPVersion(vers string) Object {
 GO FUNC net/http.ParseTime from net/http/header.go:
 func __parseTime(text string) Object {
 	t, err := _http.ParseTime(text)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(t))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -43494,7 +43494,7 @@ func __parseTime(text string) Object {
 GO FUNC net/http.Post from net/http/client.go:
 // func __post(url string, contentType string, body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	resp, err := _http.Post(url, contentType, body)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -43503,7 +43503,7 @@ GO FUNC net/http.Post from net/http/client.go:
 GO FUNC net/http.PostForm from net/http/client.go:
 // func __postForm(url string, data ABEND987(genutils.go: imports not yet supported: url.Values)) Object {
 // 	resp, err := _http.PostForm(url, data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -43512,7 +43512,7 @@ GO FUNC net/http.PostForm from net/http/client.go:
 GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 func __proxyFromEnvironment(req *_http.Request) Object {
 	_res1, _res2 := _http.ProxyFromEnvironment(req)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -43526,7 +43526,7 @@ GO FUNC net/http.ProxyURL from net/http/transport.go:
 GO FUNC net/http.ReadRequest from net/http/request.go:
 // func __readRequest(b *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
 // 	_res1, _res2 := _http.ReadRequest(b)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -43535,7 +43535,7 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 GO FUNC net/http.ReadResponse from net/http/response.go:
 // func __readResponse(r *ABEND987(genutils.go: imports not yet supported: bufio.Reader), req *_http.Request) Object {
 // 	_res1, _res2 := _http.ReadResponse(r, req)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -43656,7 +43656,7 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 GO FUNC net/http/cgi.Request from net/http/cgi/child.go:
 func __request() Object {
 	_res1, _res2 := _cgi.Request()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -43665,7 +43665,7 @@ func __request() Object {
 GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // func __requestFromMap(params map[]) Object {
 // 	_res1, _res2 := _cgi.RequestFromMap(params)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -43800,7 +43800,7 @@ func ExtractGoObjectPublicSuffixList(args []Object, index int) *_cookiejar.Publi
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 func __new(o *_cookiejar.Options) Object {
 	_res1, _res2 := _cookiejar.New(o)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -43968,8 +43968,8 @@ GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 // func __dumpRequest(req *ABEND987(genutils.go: imports not yet supported: http.Request), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequest(req, body)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -43981,8 +43981,8 @@ GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 // func __dumpRequestOut(req *ABEND987(genutils.go: imports not yet supported: http.Request), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpRequestOut(req, body)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -43994,8 +43994,8 @@ GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 // func __dumpResponse(resp *ABEND987(genutils.go: imports not yet supported: http.Response), body bool) Object {
 // 	_res1, _res2 := _httputil.DumpResponse(resp, body)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -44245,7 +44245,7 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 GO FUNC net/mail.ParseAddress from net/mail/message.go:
 func __parseAddress(address string) Object {
 	_res1, _res2 := _mail.ParseAddress(address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44254,8 +44254,8 @@ func __parseAddress(address string) Object {
 GO FUNC net/mail.ParseAddressList from net/mail/message.go:
 func __parseAddressList(list string) Object {
 	_res1, _res2 := _mail.ParseAddressList(list)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -44267,7 +44267,7 @@ func __parseAddressList(list string) Object {
 GO FUNC net/mail.ParseDate from net/mail/message.go:
 func __parseDate(date string) Object {
 	_res1, _res2 := _mail.ParseDate(date)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44276,7 +44276,7 @@ func __parseDate(date string) Object {
 GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // func __readMessage(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	msg, err := _mail.ReadMessage(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(msg))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -44605,7 +44605,7 @@ GO FUNC net/rpc.Accept from net/rpc/server.go:
 GO FUNC net/rpc.Dial from net/rpc/client.go:
 func __dial(network string, address string) Object {
 	_res1, _res2 := _rpc.Dial(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44614,7 +44614,7 @@ func __dial(network string, address string) Object {
 GO FUNC net/rpc.DialHTTP from net/rpc/client.go:
 func __dialHTTP(network string, address string) Object {
 	_res1, _res2 := _rpc.DialHTTP(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44623,7 +44623,7 @@ func __dialHTTP(network string, address string) Object {
 GO FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
 func __dialHTTPPath(network string, address string, path string) Object {
 	_res1, _res2 := _rpc.DialHTTPPath(network, address, path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44688,7 +44688,7 @@ import (
 GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 func __dial(network string, address string) Object {
 	_res1, _res2 := _jsonrpc.Dial(network, address)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44851,7 +44851,7 @@ func __cRAMMD5Auth(username string, secret string) Object {
 GO FUNC net/smtp.Dial from net/smtp/smtp.go:
 func __dial(addr string) Object {
 	_res1, _res2 := _smtp.Dial(addr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -44860,7 +44860,7 @@ func __dial(addr string) Object {
 GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
 // func __newClient(conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -45159,7 +45159,7 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
 func __dial(network string, addr string) Object {
 	_res1, _res2 := _textproto.Dial(network, addr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45186,7 +45186,7 @@ GO FUNC net/textproto.NewWriter from net/textproto/writer.go:
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 // func __trimBytes(b []byte) Object {
 // 	_res := _textproto.TrimBytes(b)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -45434,7 +45434,7 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 GO FUNC net/url.Parse from net/url/url.go:
 func __parse(rawurl string) Object {
 	_res1, _res2 := _url.Parse(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45443,7 +45443,7 @@ func __parse(rawurl string) Object {
 GO FUNC net/url.ParseQuery from net/url/url.go:
 func __parseQuery(query string) Object {
 	_res1, _res2 := _url.ParseQuery(query)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45452,7 +45452,7 @@ func __parseQuery(query string) Object {
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
 func __parseRequestURI(rawurl string) Object {
 	_res1, _res2 := _url.ParseRequestURI(rawurl)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45461,7 +45461,7 @@ func __parseRequestURI(rawurl string) Object {
 GO FUNC net/url.PathUnescape from net/url/url.go:
 func __pathUnescape(s string) Object {
 	_res1, _res2 := _url.PathUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45470,7 +45470,7 @@ func __pathUnescape(s string) Object {
 GO FUNC net/url.QueryUnescape from net/url/url.go:
 func __queryUnescape(s string) Object {
 	_res1, _res2 := _url.QueryUnescape(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45904,7 +45904,7 @@ GO FUNC os.Clearenv from os/env.go:
 GO FUNC os.Create from os/file.go:
 func __create(name string) Object {
 	_res1, _res2 := _os.Create(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45913,7 +45913,7 @@ func __create(name string) Object {
 GO FUNC os.Environ from os/env.go:
 func __environ() Object {
 	_res := _os.Environ()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -45923,7 +45923,7 @@ func __environ() Object {
 GO FUNC os.Executable from os/executable.go:
 func __executable() Object {
 	_res1, _res2 := _os.Executable()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45944,7 +45944,7 @@ GO FUNC os.Expand from os/env.go:
 GO FUNC os.FindProcess from os/exec.go:
 func __findProcess(pid int) Object {
 	_res1, _res2 := _os.FindProcess(pid)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -45953,8 +45953,8 @@ func __findProcess(pid int) Object {
 GO FUNC os.Getgroups from os/proc.go:
 func __getgroups() Object {
 	_res1, _res2 := _os.Getgroups()
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -45966,7 +45966,7 @@ func __getgroups() Object {
 GO FUNC os.Getwd from os/getwd.go:
 func __getwd() Object {
 	dir, err := _os.Getwd()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(dir))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -45975,7 +45975,7 @@ func __getwd() Object {
 GO FUNC os.Hostname from os/sys.go:
 func __hostname() Object {
 	name, err := _os.Hostname()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(name))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -46014,7 +46014,7 @@ GO FUNC os.IsTimeout from os/error.go:
 GO FUNC os.LookupEnv from os/env.go:
 func __lookupEnv(key string) Object {
 	_res1, _res2 := _os.LookupEnv(key)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(MakeBoolean(_res2))
 	return _res
@@ -46023,7 +46023,7 @@ func __lookupEnv(key string) Object {
 GO FUNC os.Lstat from os/stat.go:
 func __lstat(name string) Object {
 	_res1, _res2 := _os.Lstat(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46044,7 +46044,7 @@ GO FUNC os.NewSyscallError from os/error.go:
 GO FUNC os.Open from os/file.go:
 func __open(name string) Object {
 	_res1, _res2 := _os.Open(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46053,7 +46053,7 @@ func __open(name string) Object {
 GO FUNC os.OpenFile from os/file.go:
 func __openFile(name string, flag int, perm _os.FileMode) Object {
 	_res1, _res2 := _os.OpenFile(name, flag, perm)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46062,7 +46062,7 @@ func __openFile(name string, flag int, perm _os.FileMode) Object {
 GO FUNC os.Pipe from os/pipe_bsd.go:
 func __pipe() Object {
 	r, w, err := _os.Pipe()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(r))
 	_res = _res.Conjoin(MakeGoObject(w))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -46072,7 +46072,7 @@ func __pipe() Object {
 GO FUNC os.Readlink from os/file_posix.go:
 func __readlink(name string) Object {
 	_res1, _res2 := _os.Readlink(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46081,7 +46081,7 @@ func __readlink(name string) Object {
 GO FUNC os.StartProcess from os/exec.go:
 // func __startProcess(name string, argv []string, attr *_os.ProcAttr) Object {
 // 	_res1, _res2 := _os.StartProcess(name, argv, attr)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -46090,7 +46090,7 @@ GO FUNC os.StartProcess from os/exec.go:
 GO FUNC os.Stat from os/stat.go:
 func __stat(name string) Object {
 	_res1, _res2 := _os.Stat(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46099,7 +46099,7 @@ func __stat(name string) Object {
 GO FUNC os.UserCacheDir from os/file.go:
 func __userCacheDir() Object {
 	_res1, _res2 := _os.UserCacheDir()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46266,7 +46266,7 @@ GO FUNC os/exec.CommandContext from os/exec/exec.go:
 GO FUNC os/exec.LookPath from os/exec/lp_unix.go:
 func __lookPath(file string) Object {
 	_res1, _res2 := _exec.LookPath(file)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46535,7 +46535,7 @@ func _ConstructUser(_v Object) *_user.User {
 GO FUNC os/user.Current from os/user/lookup.go:
 func __current() Object {
 	_res1, _res2 := _user.Current()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46544,7 +46544,7 @@ func __current() Object {
 GO FUNC os/user.Lookup from os/user/lookup.go:
 func __lookup(username string) Object {
 	_res1, _res2 := _user.Lookup(username)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46553,7 +46553,7 @@ func __lookup(username string) Object {
 GO FUNC os/user.LookupGroup from os/user/lookup.go:
 func __lookupGroup(name string) Object {
 	_res1, _res2 := _user.LookupGroup(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46562,7 +46562,7 @@ func __lookupGroup(name string) Object {
 GO FUNC os/user.LookupGroupId from os/user/lookup.go:
 func __lookupGroupId(gid string) Object {
 	_res1, _res2 := _user.LookupGroupId(gid)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46571,7 +46571,7 @@ func __lookupGroupId(gid string) Object {
 GO FUNC os/user.LookupId from os/user/lookup.go:
 func __lookupId(uid string) Object {
 	_res1, _res2 := _user.LookupId(uid)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46594,7 +46594,7 @@ GO FUNC path.Join from path/path.go:
 GO FUNC path.Match from path/match.go:
 func __match(pattern string, name string) Object {
 	matched, err := _path.Match(pattern, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -46603,7 +46603,7 @@ func __match(pattern string, name string) Object {
 GO FUNC path.Split from path/path.go:
 func __split(path string) Object {
 	dir, file := _path.Split(path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(dir))
 	_res = _res.Conjoin(MakeString(file))
 	return _res
@@ -46650,7 +46650,7 @@ func ExtractGoObjectWalkFunc(args []Object, index int) *_filepath.WalkFunc {
 GO FUNC path/filepath.Abs from path/filepath/path.go:
 func __abs(path string) Object {
 	_res1, _res2 := _filepath.Abs(path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46659,7 +46659,7 @@ func __abs(path string) Object {
 GO FUNC path/filepath.EvalSymlinks from path/filepath/path.go:
 func __evalSymlinks(path string) Object {
 	_res1, _res2 := _filepath.EvalSymlinks(path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46668,8 +46668,8 @@ func __evalSymlinks(path string) Object {
 GO FUNC path/filepath.Glob from path/filepath/match.go:
 func __glob(pattern string) Object {
 	matches, err := _filepath.Glob(pattern)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range matches {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -46687,7 +46687,7 @@ GO FUNC path/filepath.Join from path/filepath/path.go:
 GO FUNC path/filepath.Match from path/filepath/match.go:
 func __match(pattern string, name string) Object {
 	matched, err := _filepath.Match(pattern, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -46696,7 +46696,7 @@ func __match(pattern string, name string) Object {
 GO FUNC path/filepath.Rel from path/filepath/path.go:
 func __rel(basepath string, targpath string) Object {
 	_res1, _res2 := _filepath.Rel(basepath, targpath)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -46705,7 +46705,7 @@ func __rel(basepath string, targpath string) Object {
 GO FUNC path/filepath.Split from path/filepath/path.go:
 func __split(path string) Object {
 	dir, file := _filepath.Split(path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(dir))
 	_res = _res.Conjoin(MakeString(file))
 	return _res
@@ -46714,7 +46714,7 @@ func __split(path string) Object {
 GO FUNC path/filepath.SplitList from path/filepath/path.go:
 func __splitList(path string) Object {
 	_res := _filepath.SplitList(path)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -46802,7 +46802,7 @@ func ExtractGoObjectSymbol(args []Object, index int) *_plugin.Symbol {
 GO FUNC plugin.Open from plugin/plugin.go:
 func __open(path string) Object {
 	_res1, _res2 := _plugin.Open(path)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -47385,7 +47385,7 @@ func __ptrTo(t _reflect.Type) Object {
 GO FUNC reflect.Select from reflect/value.go:
 // func __select(cases []_reflect.SelectCase) Object {
 // 	chosen, recv, recvOK := _reflect.Select(cases)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(chosen))
 // 	_res = _res.Conjoin(MakeGoObject(recv))
 // 	_res = _res.Conjoin(MakeBoolean(recvOK))
@@ -47478,7 +47478,7 @@ func _ConstructRegexp(_v Object) *_regexp.Regexp {
 GO FUNC regexp.Compile from regexp/regexp.go:
 func __compile(expr string) Object {
 	_res1, _res2 := _regexp.Compile(expr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -47487,7 +47487,7 @@ func __compile(expr string) Object {
 GO FUNC regexp.CompilePOSIX from regexp/regexp.go:
 func __compilePOSIX(expr string) Object {
 	_res1, _res2 := _regexp.CompilePOSIX(expr)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -47496,7 +47496,7 @@ func __compilePOSIX(expr string) Object {
 GO FUNC regexp.Match from regexp/regexp.go:
 // func __match(pattern string, b []byte) Object {
 // 	matched, err := _regexp.Match(pattern, b)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBoolean(matched))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -47505,7 +47505,7 @@ GO FUNC regexp.Match from regexp/regexp.go:
 GO FUNC regexp.MatchReader from regexp/regexp.go:
 // func __matchReader(pattern string, r ABEND987(genutils.go: imports not yet supported: io.RuneReader)) Object {
 // 	matched, err := _regexp.MatchReader(pattern, r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBoolean(matched))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -47514,7 +47514,7 @@ GO FUNC regexp.MatchReader from regexp/regexp.go:
 GO FUNC regexp.MatchString from regexp/regexp.go:
 func __matchString(pattern string, s string) Object {
 	matched, err := _regexp.MatchString(pattern, s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(matched))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -47891,7 +47891,7 @@ func ExtractGoObjectRegexp(args []Object, index int) *_syntax.Regexp {
 GO FUNC regexp/syntax.Compile from regexp/syntax/compile.go:
 func __compile(re *_syntax.Regexp) Object {
 	_res1, _res2 := _syntax.Compile(re)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -47912,7 +47912,7 @@ GO FUNC regexp/syntax.IsWordChar from regexp/syntax/prog.go:
 GO FUNC regexp/syntax.Parse from regexp/syntax/parse.go:
 func __parse(s string, flags _syntax.Flags) Object {
 	_res1, _res2 := _syntax.Parse(s, flags)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -48330,7 +48330,7 @@ func _ConstructTypeAssertionError(_v Object) *_runtime.TypeAssertionError {
 GO FUNC runtime.BlockProfile from runtime/mprof.go:
 // func __blockProfile(p []_runtime.BlockProfileRecord) Object {
 // 	n, ok := _runtime.BlockProfile(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -48345,7 +48345,7 @@ GO FUNC runtime.Breakpoint from runtime/proc.go:
 GO FUNC runtime.CPUProfile from runtime/cpuprof.go:
 func __cPUProfile() Object {
 	_res := _runtime.CPUProfile()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -48355,7 +48355,7 @@ func __cPUProfile() Object {
 GO FUNC runtime.Caller from runtime/extern.go:
 func __caller(skip int) Object {
 	pc, file, line, ok := _runtime.Caller(skip)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(pc)))
 	_res = _res.Conjoin(MakeString(file))
 	_res = _res.Conjoin(MakeInt(line))
@@ -48396,7 +48396,7 @@ GO FUNC runtime.Goexit from runtime/panic.go:
 GO FUNC runtime.GoroutineProfile from runtime/mprof.go:
 // func __goroutineProfile(p []_runtime.StackRecord) Object {
 // 	n, ok := _runtime.GoroutineProfile(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -48423,7 +48423,7 @@ GO FUNC runtime.LockOSThread from runtime/proc.go:
 GO FUNC runtime.MemProfile from runtime/mprof.go:
 // func __memProfile(p []_runtime.MemProfileRecord, inuseZero bool) Object {
 // 	n, ok := _runtime.MemProfile(p, inuseZero)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -48432,7 +48432,7 @@ GO FUNC runtime.MemProfile from runtime/mprof.go:
 GO FUNC runtime.MutexProfile from runtime/mprof.go:
 // func __mutexProfile(p []_runtime.BlockProfileRecord) Object {
 // 	n, ok := _runtime.MutexProfile(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -48453,7 +48453,7 @@ GO FUNC runtime.ReadMemStats from runtime/mstats.go:
 GO FUNC runtime.ReadTrace from runtime/trace.go:
 func __readTrace() Object {
 	_res := _runtime.ReadTrace()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -48499,7 +48499,7 @@ GO FUNC runtime.StopTrace from runtime/trace.go:
 GO FUNC runtime.ThreadCreateProfile from runtime/mprof.go:
 // func __threadCreateProfile(p []_runtime.StackRecord) Object {
 // 	n, ok := _runtime.ThreadCreateProfile(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -48593,7 +48593,7 @@ GO FUNC runtime/debug.SetTraceback from runtime/debug/garbage.go:
 GO FUNC runtime/debug.Stack from runtime/debug/stack.go:
 func __stack() Object {
 	_res := _debug.Stack()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -48709,7 +48709,7 @@ GO FUNC runtime/pprof.ForLabels from runtime/pprof/label.go:
 GO FUNC runtime/pprof.Label from runtime/pprof/label.go:
 // func __label(ctx ABEND987(genutils.go: imports not yet supported: context.Context), key string) Object {
 // 	_res1, _res2 := _pprof.Label(ctx, key)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeString(_res1))
 // 	_res = _res.Conjoin(MakeBoolean(_res2))
 // 	return _res
@@ -48736,7 +48736,7 @@ func __newProfile(name string) Object {
 GO FUNC runtime/pprof.Profiles from runtime/pprof/pprof.go:
 func __profiles() Object {
 	_res := _pprof.Profiles()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -48876,7 +48876,7 @@ GO FUNC runtime/trace.Logf from runtime/trace/annotation.go:
 GO FUNC runtime/trace.NewTask from runtime/trace/annotation.go:
 // func __newTask(pctx ABEND987(genutils.go: imports not yet supported: context.Context), taskType string) Object {
 // 	ctx, task := _trace.NewTask(pctx, taskType)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(ctx))
 // 	_res = _res.Conjoin(MakeGoObject(task))
 // 	return _res
@@ -49185,7 +49185,7 @@ func _ConstructNumError(_v Object) *_strconv.NumError {
 GO FUNC strconv.AppendBool from strconv/atob.go:
 // func __appendBool(dst []byte, b bool) Object {
 // 	_res := _strconv.AppendBool(dst, b)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49195,7 +49195,7 @@ GO FUNC strconv.AppendBool from strconv/atob.go:
 GO FUNC strconv.AppendFloat from strconv/ftoa.go:
 // func __appendFloat(dst []byte, f float64, fmt byte, prec int, bitSize int) Object {
 // 	_res := _strconv.AppendFloat(dst, f, fmt, prec, bitSize)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49205,7 +49205,7 @@ GO FUNC strconv.AppendFloat from strconv/ftoa.go:
 GO FUNC strconv.AppendInt from strconv/itoa.go:
 // func __appendInt(dst []byte, i int64, base int) Object {
 // 	_res := _strconv.AppendInt(dst, i, base)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49215,7 +49215,7 @@ GO FUNC strconv.AppendInt from strconv/itoa.go:
 GO FUNC strconv.AppendQuote from strconv/quote.go:
 // func __appendQuote(dst []byte, s string) Object {
 // 	_res := _strconv.AppendQuote(dst, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49225,7 +49225,7 @@ GO FUNC strconv.AppendQuote from strconv/quote.go:
 GO FUNC strconv.AppendQuoteRune from strconv/quote.go:
 // func __appendQuoteRune(dst []byte, r rune) Object {
 // 	_res := _strconv.AppendQuoteRune(dst, r)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49235,7 +49235,7 @@ GO FUNC strconv.AppendQuoteRune from strconv/quote.go:
 GO FUNC strconv.AppendQuoteRuneToASCII from strconv/quote.go:
 // func __appendQuoteRuneToASCII(dst []byte, r rune) Object {
 // 	_res := _strconv.AppendQuoteRuneToASCII(dst, r)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49245,7 +49245,7 @@ GO FUNC strconv.AppendQuoteRuneToASCII from strconv/quote.go:
 GO FUNC strconv.AppendQuoteRuneToGraphic from strconv/quote.go:
 // func __appendQuoteRuneToGraphic(dst []byte, r rune) Object {
 // 	_res := _strconv.AppendQuoteRuneToGraphic(dst, r)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49255,7 +49255,7 @@ GO FUNC strconv.AppendQuoteRuneToGraphic from strconv/quote.go:
 GO FUNC strconv.AppendQuoteToASCII from strconv/quote.go:
 // func __appendQuoteToASCII(dst []byte, s string) Object {
 // 	_res := _strconv.AppendQuoteToASCII(dst, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49265,7 +49265,7 @@ GO FUNC strconv.AppendQuoteToASCII from strconv/quote.go:
 GO FUNC strconv.AppendQuoteToGraphic from strconv/quote.go:
 // func __appendQuoteToGraphic(dst []byte, s string) Object {
 // 	_res := _strconv.AppendQuoteToGraphic(dst, s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49275,7 +49275,7 @@ GO FUNC strconv.AppendQuoteToGraphic from strconv/quote.go:
 GO FUNC strconv.AppendUint from strconv/itoa.go:
 // func __appendUint(dst []byte, i uint64, base int) Object {
 // 	_res := _strconv.AppendUint(dst, i, base)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -49285,7 +49285,7 @@ GO FUNC strconv.AppendUint from strconv/itoa.go:
 GO FUNC strconv.Atoi from strconv/atoi.go:
 func __atoi(s string) Object {
 	_res1, _res2 := _strconv.Atoi(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -49318,7 +49318,7 @@ GO FUNC strconv.IsPrint from strconv/quote.go:
 GO FUNC strconv.ParseBool from strconv/atob.go:
 func __parseBool(str string) Object {
 	_res1, _res2 := _strconv.ParseBool(str)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -49327,7 +49327,7 @@ func __parseBool(str string) Object {
 GO FUNC strconv.ParseFloat from strconv/atof.go:
 // func __parseFloat(s string, bitSize int) Object {
 // 	_res1, _res2 := _strconv.ParseFloat(s, bitSize)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -49336,7 +49336,7 @@ GO FUNC strconv.ParseFloat from strconv/atof.go:
 GO FUNC strconv.ParseInt from strconv/atoi.go:
 func __parseInt(s string, base int, bitSize int) Object {
 	i, err := _strconv.ParseInt(s, base, bitSize)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(i)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -49345,7 +49345,7 @@ func __parseInt(s string, base int, bitSize int) Object {
 GO FUNC strconv.ParseUint from strconv/atoi.go:
 func __parseUint(s string, base int, bitSize int) Object {
 	_res1, _res2 := _strconv.ParseUint(s, base, bitSize)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(_res1)))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -49372,7 +49372,7 @@ GO FUNC strconv.QuoteRuneToGraphic from strconv/quote.go:
 GO FUNC strconv.Unquote from strconv/quote.go:
 func __unquote(s string) Object {
 	_res1, _res2 := _strconv.Unquote(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -49381,7 +49381,7 @@ func __unquote(s string) Object {
 GO FUNC strconv.UnquoteChar from strconv/quote.go:
 // func __unquoteChar(s string, quote byte) Object {
 // 	value, multibyte, tail, err := _strconv.UnquoteChar(s, quote)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(value)
 // 	_res = _res.Conjoin(MakeBoolean(multibyte))
 // 	_res = _res.Conjoin(MakeString(tail))
@@ -49527,7 +49527,7 @@ GO FUNC strings.ContainsRune from strings/strings.go:
 GO FUNC strings.Fields from strings/strings.go:
 func __fields(s string) Object {
 	_res := _strings.Fields(s)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -49537,7 +49537,7 @@ func __fields(s string) Object {
 GO FUNC strings.FieldsFunc from strings/strings.go:
 // func __fieldsFunc(s string, f func) Object {
 // 	_res := _strings.FieldsFunc(s, f)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 // 	}
@@ -49589,7 +49589,7 @@ GO FUNC strings.NewReplacer from strings/replace.go:
 GO FUNC strings.Split from strings/strings.go:
 func __split(s string, sep string) Object {
 	_res := _strings.Split(s, sep)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -49599,7 +49599,7 @@ func __split(s string, sep string) Object {
 GO FUNC strings.SplitAfter from strings/strings.go:
 func __splitAfter(s string, sep string) Object {
 	_res := _strings.SplitAfter(s, sep)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -49609,7 +49609,7 @@ func __splitAfter(s string, sep string) Object {
 GO FUNC strings.SplitAfterN from strings/strings.go:
 func __splitAfterN(s string, sep string, n int) Object {
 	_res := _strings.SplitAfterN(s, sep, n)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -49619,7 +49619,7 @@ func __splitAfterN(s string, sep string, n int) Object {
 GO FUNC strings.SplitN from strings/strings.go:
 func __splitN(s string, sep string, n int) Object {
 	_res := _strings.SplitN(s, sep, n)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -53028,7 +53028,7 @@ func _ConstructWaitStatus(_v Object) _syscall.WaitStatus {
 GO FUNC syscall.Accept from syscall/syscall_bsd.go:
 func __accept(fd int) Object {
 	nfd, sa, err := _syscall.Accept(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(nfd))
 	_res = _res.Conjoin(MakeGoObject(sa))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -53038,7 +53038,7 @@ func __accept(fd int) Object {
 GO FUNC syscall.BpfBuflen from syscall/bpf_bsd.go:
 func __bpfBuflen(fd int) Object {
 	_res1, _res2 := _syscall.BpfBuflen(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53047,7 +53047,7 @@ func __bpfBuflen(fd int) Object {
 GO FUNC syscall.BpfDatalink from syscall/bpf_bsd.go:
 func __bpfDatalink(fd int) Object {
 	_res1, _res2 := _syscall.BpfDatalink(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53056,7 +53056,7 @@ func __bpfDatalink(fd int) Object {
 GO FUNC syscall.BpfHeadercmpl from syscall/bpf_bsd.go:
 func __bpfHeadercmpl(fd int) Object {
 	_res1, _res2 := _syscall.BpfHeadercmpl(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53065,7 +53065,7 @@ func __bpfHeadercmpl(fd int) Object {
 GO FUNC syscall.BpfInterface from syscall/bpf_bsd.go:
 func __bpfInterface(fd int, name string) Object {
 	_res1, _res2 := _syscall.BpfInterface(fd, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53080,7 +53080,7 @@ func __bpfJump(code int, k int, jt int, jf int) Object {
 GO FUNC syscall.BpfStats from syscall/bpf_bsd.go:
 func __bpfStats(fd int) Object {
 	_res1, _res2 := _syscall.BpfStats(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53095,7 +53095,7 @@ func __bpfStmt(code int, k int) Object {
 GO FUNC syscall.BpfTimeout from syscall/bpf_bsd.go:
 func __bpfTimeout(fd int) Object {
 	_res1, _res2 := _syscall.BpfTimeout(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53104,7 +53104,7 @@ func __bpfTimeout(fd int) Object {
 GO FUNC syscall.BytePtrFromString from syscall/syscall.go:
 func __bytePtrFromString(s string) Object {
 	_res1, _res2 := _syscall.BytePtrFromString(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53113,8 +53113,8 @@ func __bytePtrFromString(s string) Object {
 GO FUNC syscall.ByteSliceFromString from syscall/syscall.go:
 func __byteSliceFromString(s string) Object {
 	_res1, _res2 := _syscall.ByteSliceFromString(s)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -53138,7 +53138,7 @@ GO FUNC syscall.CloseOnExec from syscall/exec_unix.go:
 GO FUNC syscall.Dup from syscall/zsyscall_darwin_amd64.go:
 func __dup(fd int) Object {
 	nfd, err := _syscall.Dup(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(nfd))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53147,7 +53147,7 @@ func __dup(fd int) Object {
 GO FUNC syscall.Environ from syscall/env_unix.go:
 func __environ() Object {
 	_res := _syscall.Environ()
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 	}
@@ -53169,7 +53169,7 @@ GO FUNC syscall.Exit from syscall/syscall.go:
 GO FUNC syscall.ForkExec from syscall/exec_unix.go:
 // func __forkExec(argv0 string, argv []string, attr *_syscall.ProcAttr) Object {
 // 	pid, err := _syscall.ForkExec(argv0, argv, attr)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(pid))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53178,7 +53178,7 @@ GO FUNC syscall.ForkExec from syscall/exec_unix.go:
 GO FUNC syscall.Fpathconf from syscall/zsyscall_darwin_amd64.go:
 func __fpathconf(fd int, name int) Object {
 	val, err := _syscall.Fpathconf(fd, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(val))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53193,7 +53193,7 @@ GO FUNC syscall.Futimes from syscall/syscall_bsd.go:
 GO FUNC syscall.Getdirentries from syscall/zsyscall_darwin_amd64.go:
 // func __getdirentries(fd int, buf []byte, basep *uintptr) Object {
 // 	n, err := _syscall.Getdirentries(fd, buf, basep)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53202,7 +53202,7 @@ GO FUNC syscall.Getdirentries from syscall/zsyscall_darwin_amd64.go:
 GO FUNC syscall.Getenv from syscall/env_unix.go:
 func __getenv(key string) Object {
 	value, found := _syscall.Getenv(key)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(value))
 	_res = _res.Conjoin(MakeBoolean(found))
 	return _res
@@ -53211,7 +53211,7 @@ func __getenv(key string) Object {
 GO FUNC syscall.Getfsstat from syscall/syscall_darwin.go:
 // func __getfsstat(buf []_syscall.Statfs_t, flags int) Object {
 // 	n, err := _syscall.Getfsstat(buf, flags)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53220,8 +53220,8 @@ GO FUNC syscall.Getfsstat from syscall/syscall_darwin.go:
 GO FUNC syscall.Getgroups from syscall/syscall_bsd.go:
 func __getgroups() Object {
 	gids, err := _syscall.Getgroups()
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range gids {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -53233,7 +53233,7 @@ func __getgroups() Object {
 GO FUNC syscall.Getpeername from syscall/syscall_unix.go:
 func __getpeername(fd int) Object {
 	sa, err := _syscall.Getpeername(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(sa))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53242,7 +53242,7 @@ func __getpeername(fd int) Object {
 GO FUNC syscall.Getpgid from syscall/zsyscall_darwin_amd64.go:
 func __getpgid(pid int) Object {
 	pgid, err := _syscall.Getpgid(pid)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(pgid))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53251,7 +53251,7 @@ func __getpgid(pid int) Object {
 GO FUNC syscall.Getpriority from syscall/zsyscall_darwin_amd64.go:
 func __getpriority(which int, who int) Object {
 	prio, err := _syscall.Getpriority(which, who)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(prio))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53260,7 +53260,7 @@ func __getpriority(which int, who int) Object {
 GO FUNC syscall.Getsid from syscall/zsyscall_darwin_amd64.go:
 func __getsid(pid int) Object {
 	sid, err := _syscall.Getsid(pid)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(sid))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53269,7 +53269,7 @@ func __getsid(pid int) Object {
 GO FUNC syscall.Getsockname from syscall/syscall_bsd.go:
 func __getsockname(fd int) Object {
 	sa, err := _syscall.Getsockname(fd)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(sa))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53278,7 +53278,7 @@ func __getsockname(fd int) Object {
 GO FUNC syscall.GetsockoptByte from syscall/syscall_bsd.go:
 func __getsockoptByte(fd int, level int, opt int) Object {
 	value, err := _syscall.GetsockoptByte(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(value)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53287,7 +53287,7 @@ func __getsockoptByte(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptICMPv6Filter from syscall/syscall_bsd.go:
 func __getsockoptICMPv6Filter(fd int, level int, opt int) Object {
 	_res1, _res2 := _syscall.GetsockoptICMPv6Filter(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53296,7 +53296,7 @@ func __getsockoptICMPv6Filter(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptIPMreq from syscall/syscall_bsd.go:
 func __getsockoptIPMreq(fd int, level int, opt int) Object {
 	_res1, _res2 := _syscall.GetsockoptIPMreq(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53305,7 +53305,7 @@ func __getsockoptIPMreq(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptIPv6MTUInfo from syscall/syscall_bsd.go:
 func __getsockoptIPv6MTUInfo(fd int, level int, opt int) Object {
 	_res1, _res2 := _syscall.GetsockoptIPv6MTUInfo(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53314,7 +53314,7 @@ func __getsockoptIPv6MTUInfo(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptIPv6Mreq from syscall/syscall_bsd.go:
 func __getsockoptIPv6Mreq(fd int, level int, opt int) Object {
 	_res1, _res2 := _syscall.GetsockoptIPv6Mreq(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53323,8 +53323,8 @@ func __getsockoptIPv6Mreq(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptInet4Addr from syscall/syscall_bsd.go:
 func __getsockoptInet4Addr(fd int, level int, opt int) Object {
 	value, err := _syscall.GetsockoptInet4Addr(fd, level, opt)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range value {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -53336,7 +53336,7 @@ func __getsockoptInet4Addr(fd int, level int, opt int) Object {
 GO FUNC syscall.GetsockoptInt from syscall/syscall_unix.go:
 func __getsockoptInt(fd int, level int, opt int) Object {
 	value, err := _syscall.GetsockoptInt(fd, level, opt)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(value))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53345,7 +53345,7 @@ func __getsockoptInt(fd int, level int, opt int) Object {
 GO FUNC syscall.Getwd from syscall/syscall_darwin.go:
 func __getwd() Object {
 	_res1, _res2 := _syscall.Getwd()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53354,7 +53354,7 @@ func __getwd() Object {
 GO FUNC syscall.Kevent from syscall/syscall_bsd.go:
 // func __kevent(kq int, changes []_syscall.Kevent_t, events []_syscall.Kevent_t, timeout *_syscall.Timespec) Object {
 // 	n, err := _syscall.Kevent(kq, changes, events, timeout)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53363,7 +53363,7 @@ GO FUNC syscall.Kevent from syscall/syscall_bsd.go:
 GO FUNC syscall.Kqueue from syscall/zsyscall_darwin_amd64.go:
 func __kqueue() Object {
 	fd, err := _syscall.Kqueue()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(fd))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53378,8 +53378,8 @@ GO FUNC syscall.Mlock from syscall/zsyscall_darwin_amd64.go:
 GO FUNC syscall.Mmap from syscall/syscall_bsd.go:
 func __mmap(fd int, offset int64, length int, prot int, flags int) Object {
 	data, err := _syscall.Mmap(fd, offset, length, prot, flags)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range data {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -53421,7 +53421,7 @@ func __nsecToTimeval(nsec int64) Object {
 GO FUNC syscall.Open from syscall/zsyscall_darwin_amd64.go:
 func __open(path string, mode int, perm uint32) Object {
 	fd, err := _syscall.Open(path, mode, perm)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(fd))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53430,10 +53430,10 @@ func __open(path string, mode int, perm uint32) Object {
 GO FUNC syscall.ParseDirent from syscall/dirent.go:
 // func __parseDirent(buf []byte, max int, names []string) Object {
 // 	consumed, count, newnames := _syscall.ParseDirent(buf, max, names)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(consumed))
 // 	_res = _res.Conjoin(MakeInt(count))
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range newnames {
 // 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
 // 	}
@@ -53444,8 +53444,8 @@ GO FUNC syscall.ParseDirent from syscall/dirent.go:
 GO FUNC syscall.ParseRoutingMessage from syscall/route_bsd.go:
 // func __parseRoutingMessage(b []byte) Object {
 // 	msgs, err := _syscall.ParseRoutingMessage(b)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range msgs {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -53457,8 +53457,8 @@ GO FUNC syscall.ParseRoutingMessage from syscall/route_bsd.go:
 GO FUNC syscall.ParseRoutingSockaddr from syscall/route_bsd.go:
 func __parseRoutingSockaddr(msg _syscall.RoutingMessage) Object {
 	_res1, _res2 := _syscall.ParseRoutingSockaddr(msg)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
@@ -53470,8 +53470,8 @@ func __parseRoutingSockaddr(msg _syscall.RoutingMessage) Object {
 GO FUNC syscall.ParseSocketControlMessage from syscall/sockcmsg_unix.go:
 // func __parseSocketControlMessage(b []byte) Object {
 // 	_res1, _res2 := _syscall.ParseSocketControlMessage(b)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -53483,8 +53483,8 @@ GO FUNC syscall.ParseSocketControlMessage from syscall/sockcmsg_unix.go:
 GO FUNC syscall.ParseUnixRights from syscall/sockcmsg_unix.go:
 func __parseUnixRights(m *_syscall.SocketControlMessage) Object {
 	_res1, _res2 := _syscall.ParseUnixRights(m)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -53496,7 +53496,7 @@ func __parseUnixRights(m *_syscall.SocketControlMessage) Object {
 GO FUNC syscall.Pathconf from syscall/zsyscall_darwin_amd64.go:
 func __pathconf(path string, name int) Object {
 	val, err := _syscall.Pathconf(path, name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(val))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53511,7 +53511,7 @@ GO FUNC syscall.Pipe from syscall/syscall_darwin.go:
 GO FUNC syscall.Pread from syscall/zsyscall_darwin_amd64.go:
 // func __pread(fd int, p []byte, offset int64) Object {
 // 	n, err := _syscall.Pread(fd, p, offset)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53520,7 +53520,7 @@ GO FUNC syscall.Pread from syscall/zsyscall_darwin_amd64.go:
 GO FUNC syscall.Pwrite from syscall/zsyscall_darwin_amd64.go:
 // func __pwrite(fd int, p []byte, offset int64) Object {
 // 	n, err := _syscall.Pwrite(fd, p, offset)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53529,7 +53529,7 @@ GO FUNC syscall.Pwrite from syscall/zsyscall_darwin_amd64.go:
 GO FUNC syscall.RawSyscall from syscall/syscall_unix.go:
 func __rawSyscall(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr) Object {
 	r1, r2, err := _syscall.RawSyscall(trap, a1, a2, a3)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(r1)))
 	_res = _res.Conjoin(MakeBigInt(uint64(r2)))
 	_res = _res.Conjoin(MakeGoObject(err))
@@ -53539,7 +53539,7 @@ func __rawSyscall(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr) Object {
 GO FUNC syscall.RawSyscall6 from syscall/syscall_unix.go:
 func __rawSyscall6(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr, a5 uintptr, a6 uintptr) Object {
 	r1, r2, err := _syscall.RawSyscall6(trap, a1, a2, a3, a4, a5, a6)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(r1)))
 	_res = _res.Conjoin(MakeBigInt(uint64(r2)))
 	_res = _res.Conjoin(MakeGoObject(err))
@@ -53549,7 +53549,7 @@ func __rawSyscall6(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr,
 GO FUNC syscall.Read from syscall/syscall_unix.go:
 // func __read(fd int, p []byte) Object {
 // 	n, err := _syscall.Read(fd, p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53558,7 +53558,7 @@ GO FUNC syscall.Read from syscall/syscall_unix.go:
 GO FUNC syscall.ReadDirent from syscall/syscall_bsd.go:
 // func __readDirent(fd int, buf []byte) Object {
 // 	n, err := _syscall.ReadDirent(fd, buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53567,7 +53567,7 @@ GO FUNC syscall.ReadDirent from syscall/syscall_bsd.go:
 GO FUNC syscall.Readlink from syscall/zsyscall_darwin_amd64.go:
 // func __readlink(path string, buf []byte) Object {
 // 	n, err := _syscall.Readlink(path, buf)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53576,7 +53576,7 @@ GO FUNC syscall.Readlink from syscall/zsyscall_darwin_amd64.go:
 GO FUNC syscall.Recvfrom from syscall/syscall_unix.go:
 // func __recvfrom(fd int, p []byte, flags int) Object {
 // 	n, from, err := _syscall.Recvfrom(fd, p, flags)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeGoObject(from))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -53586,7 +53586,7 @@ GO FUNC syscall.Recvfrom from syscall/syscall_unix.go:
 GO FUNC syscall.Recvmsg from syscall/syscall_bsd.go:
 // func __recvmsg(fd int, p []byte, oob []byte, flags int) Object {
 // 	n, oobn, recvflags, from, err := _syscall.Recvmsg(fd, p, oob, flags)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(MakeInt(oobn))
 // 	_res = _res.Conjoin(MakeInt(recvflags))
@@ -53598,8 +53598,8 @@ GO FUNC syscall.Recvmsg from syscall/syscall_bsd.go:
 GO FUNC syscall.RouteRIB from syscall/route_bsd.go:
 func __routeRIB(facility int, param int) Object {
 	_res1, _res2 := _syscall.RouteRIB(facility, param)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -53611,7 +53611,7 @@ func __routeRIB(facility int, param int) Object {
 GO FUNC syscall.Seek from syscall/zsyscall_darwin_amd64.go:
 func __seek(fd int, offset int64, whence int) Object {
 	newoffset, err := _syscall.Seek(fd, offset, whence)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(newoffset)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53620,7 +53620,7 @@ func __seek(fd int, offset int64, whence int) Object {
 GO FUNC syscall.Sendfile from syscall/syscall_unix.go:
 // func __sendfile(outfd int, infd int, offset *int64, count int) Object {
 // 	written, err := _syscall.Sendfile(outfd, infd, offset, count)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(written))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53635,7 +53635,7 @@ GO FUNC syscall.Sendmsg from syscall/syscall_bsd.go:
 GO FUNC syscall.SendmsgN from syscall/syscall_bsd.go:
 // func __sendmsgN(fd int, p []byte, oob []byte, to _syscall.Sockaddr, flags int) Object {
 // 	n, err := _syscall.SendmsgN(fd, p, oob, to, flags)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -53656,7 +53656,7 @@ GO FUNC syscall.SetBpf from syscall/bpf_bsd.go:
 GO FUNC syscall.SetBpfBuflen from syscall/bpf_bsd.go:
 func __setBpfBuflen(fd int, l int) Object {
 	_res1, _res2 := _syscall.SetBpfBuflen(fd, l)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53665,7 +53665,7 @@ func __setBpfBuflen(fd int, l int) Object {
 GO FUNC syscall.SetBpfDatalink from syscall/bpf_bsd.go:
 func __setBpfDatalink(fd int, t int) Object {
 	_res1, _res2 := _syscall.SetBpfDatalink(fd, t)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -53686,7 +53686,7 @@ GO FUNC syscall.Setgroups from syscall/syscall_bsd.go:
 GO FUNC syscall.Setsid from syscall/zsyscall_darwin_amd64.go:
 func __setsid() Object {
 	pid, err := _syscall.Setsid()
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(pid))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53701,8 +53701,8 @@ GO FUNC syscall.SetsockoptInet4Addr from syscall/syscall_unix.go:
 GO FUNC syscall.SlicePtrFromStrings from syscall/exec_unix.go:
 // func __slicePtrFromStrings(ss []string) Object {
 // 	_res1, _res2 := _syscall.SlicePtrFromStrings(ss)
-// 	_res := EmptyVector
-// 	_vec1 := EmptyVector
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -53714,7 +53714,7 @@ GO FUNC syscall.SlicePtrFromStrings from syscall/exec_unix.go:
 GO FUNC syscall.Socket from syscall/syscall_unix.go:
 func __socket(domain int, typ int, proto int) Object {
 	fd, err := _syscall.Socket(domain, typ, proto)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(fd))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53723,8 +53723,8 @@ func __socket(domain int, typ int, proto int) Object {
 GO FUNC syscall.Socketpair from syscall/syscall_unix.go:
 func __socketpair(domain int, typ int, proto int) Object {
 	fd, err := _syscall.Socketpair(domain, typ, proto)
-	_res := EmptyVector
-	_vec1 := EmptyVector
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
 	for _, _elem1 := range fd {
 		_vec1 = _vec1.Conjoin(MakeInt(_elem1))
 	}
@@ -53736,7 +53736,7 @@ func __socketpair(domain int, typ int, proto int) Object {
 GO FUNC syscall.StartProcess from syscall/exec_unix.go:
 // func __startProcess(argv0 string, argv []string, attr *_syscall.ProcAttr) Object {
 // 	pid, handle, err := _syscall.StartProcess(argv0, argv, attr)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(pid))
 // 	_res = _res.Conjoin(MakeBigInt(uint64(handle)))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -53752,7 +53752,7 @@ func __stringBytePtr(s string) Object {
 GO FUNC syscall.StringByteSlice from syscall/syscall.go:
 func __stringByteSlice(s string) Object {
 	_res := _syscall.StringByteSlice(s)
-	_vec1 := EmptyVector
+	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 	}
@@ -53762,7 +53762,7 @@ func __stringByteSlice(s string) Object {
 GO FUNC syscall.StringSlicePtr from syscall/exec_unix.go:
 // func __stringSlicePtr(ss []string) Object {
 // 	_res := _syscall.StringSlicePtr(ss)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 // 	}
@@ -53772,7 +53772,7 @@ GO FUNC syscall.StringSlicePtr from syscall/exec_unix.go:
 GO FUNC syscall.Syscall from syscall/syscall_unix.go:
 func __syscall(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr) Object {
 	r1, r2, err := _syscall.Syscall(trap, a1, a2, a3)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(r1)))
 	_res = _res.Conjoin(MakeBigInt(uint64(r2)))
 	_res = _res.Conjoin(MakeGoObject(err))
@@ -53782,7 +53782,7 @@ func __syscall(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr) Object {
 GO FUNC syscall.Syscall6 from syscall/syscall_unix.go:
 func __syscall6(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr, a5 uintptr, a6 uintptr) Object {
 	r1, r2, err := _syscall.Syscall6(trap, a1, a2, a3, a4, a5, a6)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(r1)))
 	_res = _res.Conjoin(MakeBigInt(uint64(r2)))
 	_res = _res.Conjoin(MakeGoObject(err))
@@ -53792,7 +53792,7 @@ func __syscall6(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr, a5
 GO FUNC syscall.Syscall9 from syscall/syscall_darwin_amd64.go:
 func __syscall9(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr, a5 uintptr, a6 uintptr, a7 uintptr, a8 uintptr, a9 uintptr) Object {
 	r1, r2, err := _syscall.Syscall9(trap, a1, a2, a3, a4, a5, a6, a7, a8, a9)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBigInt(uint64(r1)))
 	_res = _res.Conjoin(MakeBigInt(uint64(r2)))
 	_res = _res.Conjoin(MakeGoObject(err))
@@ -53802,7 +53802,7 @@ func __syscall9(trap uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr, a5
 GO FUNC syscall.Sysctl from syscall/syscall_bsd.go:
 func __sysctl(name string) Object {
 	value, err := _syscall.Sysctl(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(value))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53811,7 +53811,7 @@ func __sysctl(name string) Object {
 GO FUNC syscall.SysctlUint32 from syscall/syscall_bsd.go:
 func __sysctlUint32(name string) Object {
 	value, err := _syscall.SysctlUint32(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(int(value)))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53832,7 +53832,7 @@ func __timevalToNsec(tv _syscall.Timeval) Object {
 GO FUNC syscall.UnixRights from syscall/sockcmsg_unix.go:
 // func __unixRights(fds ...int) Object {
 // 	_res := _syscall.UnixRights(fds)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -53854,7 +53854,7 @@ GO FUNC syscall.UtimesNano from syscall/syscall_bsd.go:
 GO FUNC syscall.Wait4 from syscall/syscall_bsd.go:
 func __wait4(pid int, wstatus *_syscall.WaitStatus, options int, rusage *_syscall.Rusage) Object {
 	wpid, err := _syscall.Wait4(pid, wstatus, options, rusage)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(wpid))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
@@ -53863,7 +53863,7 @@ func __wait4(pid int, wstatus *_syscall.WaitStatus, options int, rusage *_syscal
 GO FUNC syscall.Write from syscall/syscall_unix.go:
 // func __write(fd int, p []byte) Object {
 // 	n, err := _syscall.Write(fd, p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeInt(n))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
@@ -54454,7 +54454,7 @@ GO FUNC testing/quick.CheckEqual from testing/quick/quick.go:
 GO FUNC testing/quick.Value from testing/quick/quick.go:
 // func __value(t ABEND987(genutils.go: imports not yet supported: reflect.Type), rand *ABEND987(genutils.go: imports not yet supported: rand.Rand)) Object {
 // 	value, ok := _quick.Value(t, rand)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(value))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -54600,7 +54600,7 @@ GO FUNC text/template.HTMLEscaper from text/template/funcs.go:
 GO FUNC text/template.IsTrue from text/template/exec.go:
 // func __isTrue(val interface {}) Object {
 // 	truth, ok := _template.IsTrue(val)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeBoolean(truth))
 // 	_res = _res.Conjoin(MakeBoolean(ok))
 // 	return _res
@@ -54633,7 +54633,7 @@ func __new(name string) Object {
 GO FUNC text/template.ParseFiles from text/template/helper.go:
 // func __parseFiles(filenames ...string) Object {
 // 	_res1, _res2 := _template.ParseFiles(filenames)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -54642,7 +54642,7 @@ GO FUNC text/template.ParseFiles from text/template/helper.go:
 GO FUNC text/template.ParseGlob from text/template/helper.go:
 func __parseGlob(pattern string) Object {
 	_res1, _res2 := _template.ParseGlob(pattern)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -55625,7 +55625,7 @@ func __newIdentifier(ident string) Object {
 GO FUNC text/template/parse.Parse from text/template/parse/parse.go:
 // func __parse(name string, text string, leftDelim string, rightDelim string, funcs ...map[]) Object {
 // 	_res1, _res2 := _parse.Parse(name, text, leftDelim, rightDelim, funcs)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -55974,7 +55974,7 @@ func __fixedZone(name string, offset int) Object {
 GO FUNC time.LoadLocation from time/zoneinfo.go:
 func __loadLocation(name string) Object {
 	_res1, _res2 := _time.LoadLocation(name)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -55983,7 +55983,7 @@ func __loadLocation(name string) Object {
 GO FUNC time.LoadLocationFromTZData from time/zoneinfo_read.go:
 // func __loadLocationFromTZData(name string, data []byte) Object {
 // 	_res1, _res2 := _time.LoadLocationFromTZData(name, data)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
@@ -56010,7 +56010,7 @@ func __now() Object {
 GO FUNC time.Parse from time/format.go:
 func __parse(layout string, value string) Object {
 	_res1, _res2 := _time.Parse(layout, value)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -56019,7 +56019,7 @@ func __parse(layout string, value string) Object {
 GO FUNC time.ParseDuration from time/format.go:
 func __parseDuration(s string) Object {
 	_res1, _res2 := _time.ParseDuration(s)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -56028,7 +56028,7 @@ func __parseDuration(s string) Object {
 GO FUNC time.ParseInLocation from time/format.go:
 func __parseInLocation(layout string, value string, loc *_time.Location) Object {
 	_res1, _res2 := _time.ParseInLocation(layout, value, loc)
-	_res := EmptyVector
+	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
@@ -56195,7 +56195,7 @@ GO FUNC unicode.ToUpper from unicode/letter.go:
 GO FUNC unicode/utf16.Decode from unicode/utf16/utf16.go:
 // func __decode(s []uint16) Object {
 // 	_res := _utf16.Decode(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(_elem1)
 // 	}
@@ -56210,7 +56210,7 @@ GO FUNC unicode/utf16.DecodeRune from unicode/utf16/utf16.go:
 GO FUNC unicode/utf16.Encode from unicode/utf16/utf16.go:
 // func __encode(s []rune) Object {
 // 	_res := _utf16.Encode(s)
-// 	_vec1 := EmptyVector
+// 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
 // 	}
@@ -56220,7 +56220,7 @@ GO FUNC unicode/utf16.Encode from unicode/utf16/utf16.go:
 GO FUNC unicode/utf16.EncodeRune from unicode/utf16/utf16.go:
 // func __encodeRune(r rune) Object {
 // 	r1, r2 := _utf16.EncodeRune(r)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r1)
 // 	_res = _res.Conjoin(r2)
 // 	return _res
@@ -56235,7 +56235,7 @@ GO FUNC unicode/utf16.IsSurrogate from unicode/utf16/utf16.go:
 GO FUNC unicode/utf8.DecodeLastRune from unicode/utf8/utf8.go:
 // func __decodeLastRune(p []byte) Object {
 // 	r, size := _utf8.DecodeLastRune(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(MakeInt(size))
 // 	return _res
@@ -56244,7 +56244,7 @@ GO FUNC unicode/utf8.DecodeLastRune from unicode/utf8/utf8.go:
 GO FUNC unicode/utf8.DecodeLastRuneInString from unicode/utf8/utf8.go:
 // func __decodeLastRuneInString(s string) Object {
 // 	r, size := _utf8.DecodeLastRuneInString(s)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(MakeInt(size))
 // 	return _res
@@ -56253,7 +56253,7 @@ GO FUNC unicode/utf8.DecodeLastRuneInString from unicode/utf8/utf8.go:
 GO FUNC unicode/utf8.DecodeRune from unicode/utf8/utf8.go:
 // func __decodeRune(p []byte) Object {
 // 	r, size := _utf8.DecodeRune(p)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(MakeInt(size))
 // 	return _res
@@ -56262,7 +56262,7 @@ GO FUNC unicode/utf8.DecodeRune from unicode/utf8/utf8.go:
 GO FUNC unicode/utf8.DecodeRuneInString from unicode/utf8/utf8.go:
 // func __decodeRuneInString(s string) Object {
 // 	r, size := _utf8.DecodeRuneInString(s)
-// 	_res := EmptyVector
+// 	_res := EmptyVector()
 // 	_res = _res.Conjoin(r)
 // 	_res = _res.Conjoin(MakeInt(size))
 // 	return _res
