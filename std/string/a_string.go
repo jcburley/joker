@@ -28,7 +28,7 @@ var capitalize_ Proc = func(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := ExtractStringable(_args, 0)
 		_res := capitalize(s)
 		return MakeString(_res)
 
@@ -43,7 +43,7 @@ var isends_with_ Proc = func(_args []Object) Object {
 	switch {
 	case _c == 2:
 		s := ExtractString(_args, 0)
-		substr := ExtractString(_args, 1)
+		substr := ExtractStringable(_args, 1)
 		_res := strings.HasSuffix(s, substr)
 		return MakeBoolean(_res)
 
@@ -73,7 +73,7 @@ var isincludes_ Proc = func(_args []Object) Object {
 	switch {
 	case _c == 2:
 		s := ExtractString(_args, 0)
-		substr := ExtractString(_args, 1)
+		substr := ExtractStringable(_args, 1)
 		_res := strings.Contains(s, substr)
 		return MakeBoolean(_res)
 
@@ -114,7 +114,7 @@ var join_ Proc = func(_args []Object) Object {
 		return MakeString(_res)
 
 	case _c == 2:
-		separator := ExtractString(_args, 0)
+		separator := ExtractStringable(_args, 0)
 		coll := ExtractSeqable(_args, 1)
 		_res := join(separator, coll)
 		return MakeString(_res)
@@ -151,7 +151,7 @@ var lower_case_ Proc = func(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
-		s := ExtractString(_args, 0)
+		s := ExtractStringable(_args, 0)
 		_res := strings.ToLower(s)
 		return MakeString(_res)
 
@@ -166,7 +166,7 @@ var pad_left_ Proc = func(_args []Object) Object {
 	switch {
 	case _c == 3:
 		s := ExtractString(_args, 0)
-		pad := ExtractString(_args, 1)
+		pad := ExtractStringable(_args, 1)
 		n := ExtractInt(_args, 2)
 		_res := padLeft(s, pad, n)
 		return MakeString(_res)
@@ -182,7 +182,7 @@ var pad_right_ Proc = func(_args []Object) Object {
 	switch {
 	case _c == 3:
 		s := ExtractString(_args, 0)
-		pad := ExtractString(_args, 1)
+		pad := ExtractStringable(_args, 1)
 		n := ExtractInt(_args, 2)
 		_res := padRight(s, pad, n)
 		return MakeString(_res)
@@ -199,7 +199,7 @@ var replace_ Proc = func(_args []Object) Object {
 	case _c == 3:
 		s := ExtractString(_args, 0)
 		match := ExtractObject(_args, 1)
-		repl := ExtractString(_args, 2)
+		repl := ExtractStringable(_args, 2)
 		_res := replace(s, match, repl)
 		return MakeString(_res)
 
@@ -215,7 +215,7 @@ var replace_first_ Proc = func(_args []Object) Object {
 	case _c == 3:
 		s := ExtractString(_args, 0)
 		match := ExtractObject(_args, 1)
-		repl := ExtractString(_args, 2)
+		repl := ExtractStringable(_args, 2)
 		_res := replaceFirst(s, match, repl)
 		return MakeString(_res)
 
@@ -280,7 +280,7 @@ var isstarts_with_ Proc = func(_args []Object) Object {
 	switch {
 	case _c == 2:
 		s := ExtractString(_args, 0)
-		substr := ExtractString(_args, 1)
+		substr := ExtractStringable(_args, 1)
 		_res := strings.HasPrefix(s, substr)
 		return MakeBoolean(_res)
 
@@ -346,11 +346,39 @@ var trim_right_ Proc = func(_args []Object) Object {
 	return NIL
 }
 
-var upper_case_ Proc = func(_args []Object) Object {
+var triml_ Proc = func(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
 		s := ExtractString(_args, 0)
+		_res := strings.TrimLeftFunc(s, unicode.IsSpace)
+		return MakeString(_res)
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var trimr_ Proc = func(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		s := ExtractString(_args, 0)
+		_res := strings.TrimRightFunc(s, unicode.IsSpace)
+		return MakeString(_res)
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var upper_case_ Proc = func(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		s := ExtractStringable(_args, 0)
 		_res := strings.ToUpper(s)
 		return MakeString(_res)
 
@@ -482,6 +510,16 @@ func init() {
 			`Removes all trailing newline \n or return \r characters from string.`, "1.0"))
 
 	stringNamespace.InternVar("trim-right", trim_right_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
+			`Removes whitespace from the right side of string.`, "1.0"))
+
+	stringNamespace.InternVar("triml", triml_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
+			`Removes whitespace from the left side of string.`, "1.0"))
+
+	stringNamespace.InternVar("trimr", trimr_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
 			`Removes whitespace from the right side of string.`, "1.0"))

@@ -30,6 +30,7 @@ var (
 	templateData     []byte
 	testData         []byte
 	setData          []byte
+	tools_cliData    []byte
 	linter_allData   []byte
 	linter_jokerData []byte
 	linter_cljxData  []byte
@@ -52,7 +53,7 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.12.0"
+const VERSION = "v0.12.1"
 
 var internalLibs map[string][]byte
 
@@ -66,11 +67,12 @@ const (
 
 func InitInternalLibs() {
 	internalLibs = map[string][]byte{
-		"joker.walk":     walkData,
-		"joker.template": templateData,
-		"joker.repl":     replData,
-		"joker.test":     testData,
-		"joker.set":      setData,
+		"joker.walk":      walkData,
+		"joker.template":  templateData,
+		"joker.repl":      replData,
+		"joker.test":      testData,
+		"joker.set":       setData,
+		"joker.tools.cli": tools_cliData,
 	}
 }
 
@@ -97,6 +99,10 @@ func ExtractGoObject(args []Object, index int) interface{} {
 
 func ExtractString(args []Object, index int) string {
 	return EnsureString(args, index).S
+}
+
+func ExtractStringable(args []Object, index int) string {
+	return EnsureStringable(args, index).S
 }
 
 func ExtractStrings(args []Object, index int) []string {
@@ -422,21 +428,38 @@ var procRegex Proc = func(args []Object) Object {
 	return Regex{R: r}
 }
 
+func reGroups(s string, indexes []int) Object {
+	if indexes == nil {
+		return NIL
+	} else if len(indexes) == 2 {
+		if indexes[0] == -1 {
+			return NIL
+		} else {
+			return String{S: s[indexes[0]:indexes[1]]}
+		}
+	} else {
+		v := EmptyVector()
+		for i := 0; i < len(indexes); i += 2 {
+			if indexes[i] == -1 {
+				v = v.Conjoin(NIL)
+			} else {
+				v = v.Conjoin(String{S: s[indexes[i]:indexes[i+1]]})
+			}
+		}
+		return v
+	}
+}
+
 var procReSeq Proc = func(args []Object) Object {
 	re := EnsureRegex(args, 0)
 	s := EnsureString(args, 1)
-	matches := re.R.FindAllStringSubmatch(s.S, -1)
+	matches := re.R.FindAllStringSubmatchIndex(s.S, -1)
+	if matches == nil {
+		return NIL
+	}
 	res := make([]Object, len(matches))
 	for i, match := range matches {
-		if len(match) == 1 {
-			res[i] = String{S: match[0]}
-		} else {
-			v := EmptyVector()
-			for _, str := range match {
-				v = v.Conjoin(String{S: str})
-			}
-			res[i] = v
-		}
+		res[i] = reGroups(s.S, match)
 	}
 	return &ArraySeq{arr: res}
 }
@@ -444,18 +467,8 @@ var procReSeq Proc = func(args []Object) Object {
 var procReFind Proc = func(args []Object) Object {
 	re := EnsureRegex(args, 0)
 	s := EnsureString(args, 1)
-	match := re.R.FindStringSubmatch(s.S)
-	if len(match) == 0 {
-		return NIL
-	}
-	if len(match) == 1 {
-		return String{S: match[0]}
-	}
-	v := EmptyVector()
-	for _, str := range match {
-		v = v.Conjoin(String{S: str})
-	}
-	return v
+	match := re.R.FindStringSubmatchIndex(s.S)
+	return reGroups(s.S, match)
 }
 
 var procRand Proc = func(args []Object) Object {
