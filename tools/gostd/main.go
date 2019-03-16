@@ -38,9 +38,6 @@ func check(e error) {
 var fset *token.FileSet
 var dump bool
 var verbose bool
-var methods int
-var generatedFunctions int
-var generatedTypes int
 
 func notOption(arg string) bool {
 	return arg == "-" || !strings.HasPrefix(arg, "-")
@@ -211,9 +208,11 @@ func main() {
 	/* package, types are generated only if at least one function
 	/* is generated (above) -- so genFunction() must be called for
 	/* all functions beforehand. */
-	sortedTypeInfoMap(types,
-		func(t string, ti *typeInfo) {
-			genType(t, ti)
+	sortedTypeInfoMap(goTypes,
+		func(t string, ti *goTypeInfo) {
+			if ti.td != nil {
+				genType(t, ti)
+			}
 		})
 
 	outputPackageCode(jokerLibDir, outputCode, generateEmpty)
@@ -243,11 +242,11 @@ func main() {
 Totals: functions=%d methods=%d (%s%%) standalone=%d (%s%%) generated=%d (%s%%)
         types=%d generated=%d (%s%%)
 `,
-			len(qualifiedFunctions)+methods, methods,
-			pct(methods, len(qualifiedFunctions)+methods),
-			len(qualifiedFunctions), pct(len(qualifiedFunctions), len(qualifiedFunctions)+methods),
-			generatedFunctions, pct(generatedFunctions, len(qualifiedFunctions)),
-			len(types), generatedTypes, pct(generatedTypes, len(types)))
+			len(qualifiedFunctions)+numMethods, numMethods,
+			pct(numMethods, len(qualifiedFunctions)+numMethods),
+			len(qualifiedFunctions), pct(len(qualifiedFunctions), len(qualifiedFunctions)+numMethods),
+			numGeneratedFunctions, pct(numGeneratedFunctions, len(qualifiedFunctions)),
+			numDeclaredGoTypes, numGeneratedTypes, pct(numGeneratedTypes, numDeclaredGoTypes))
 	}
 
 	os.Exit(0)

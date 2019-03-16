@@ -3,13 +3,16 @@ package main
 import (
 	"fmt"
 	. "go/ast"
+	"go/token"
 	gotypes "go/types"
 )
 
 type goTypeInfo struct {
-	localName                 string          // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
-	fullName                  string          // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.localName, or ABEND if unsupported
-	sourceFile                *goFile         // location of the type defintion
+	localName                 string  // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
+	fullName                  string  // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.localName, or ABEND if unsupported
+	sourceFile                *goFile // location of the type defintion
+	td                        *TypeSpec
+	where                     token.Pos
 	underlyingType            *Expr           // nil if not a declared type
 	argClojureType            string          // Can convert this type to a Go function arg with my type
 	argFromClojureObject      string          // Append this to Clojure object to extract value of my type
@@ -17,19 +20,24 @@ type goTypeInfo struct {
 	argExtractFunc            string          // Call Extract<this>() for arg with my type
 	convertFromClojure        string          // Pattern to convert a (scalar) %s to this type
 	convertFromClojureImports []packageImport // Imports needed to support the above
-	uncompleted               bool            // Has this type's info been filled in beyond the registration step?
-	custom                    bool            // Is this not a builtin Go type?
-	private                   bool            // Is this a private type?
-	unsupported               bool            // Is this unsupported?
-	constructs                bool            // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
+	clojureCode               string
+	goCode                    string
+	requiredImports           *packageImports
+	uncompleted               bool // Has this type's info been filled in beyond the registration step?
+	custom                    bool // Is this not a builtin Go type?
+	private                   bool // Is this a private type?
+	unsupported               bool // Is this unsupported?
+	constructs                bool // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
 }
 
-/* These map fullNames to type info. */
-var goTypes = map[string]*goTypeInfo{}
+type goTypeMap map[string]*goTypeInfo
 
-func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) {
-	if _, found := goTypes[fullTypeName]; found {
-		return
+/* These map fullNames to type info. */
+var goTypes = goTypeMap{}
+
+func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) *goTypeInfo {
+	if ti, found := goTypes[fullTypeName]; found {
+		return ti
 	}
 	ti := &goTypeInfo{
 		localName:      ts.Name.Name,
@@ -41,6 +49,7 @@ func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) {
 		uncompleted:    true,
 	}
 	goTypes[fullTypeName] = ti
+	return ti
 }
 
 func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {

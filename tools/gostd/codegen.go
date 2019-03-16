@@ -208,7 +208,7 @@ func %s(%s) %s {
 		trackAbends(clojureFn)
 		trackAbends(goFn)
 	} else {
-		generatedFunctions++
+		numGeneratedFunctions++
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
 			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
@@ -257,7 +257,7 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
-func genType(t string, ti *typeInfo) {
+func genType(t string, ti *goTypeInfo) {
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
 	pkgBaseName := ti.sourceFile.pkgBaseName
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
@@ -329,20 +329,20 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 		trackAbends(ti.clojureCode)
 		trackAbends(goConstructor)
 	} else {
-		generatedTypes++
+		numGeneratedTypes++
 		promoteImports(ti)
 	}
 
 	ti.goCode += goConstructor
 }
 
-func promoteImports(ti *typeInfo) {
+func promoteImports(ti *goTypeInfo) {
 	for _, imp := range ti.requiredImports.fullNames {
 		addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, imp.local, imp.full)
 	}
 }
 
-func nonGoObjectCase(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
@@ -362,7 +362,7 @@ func nonGoObjectCase(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectCa
 		ptrTo
 }
 
-func nonGoObjectTypeFor(ti *typeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+func nonGoObjectTypeFor(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile.pkgDirUnix, t.Name, &ti.td.Type)
@@ -404,7 +404,7 @@ func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObje
 	return
 }
 
-func mapToType(ti *typeInfo, helperFName, typeName string, ty *StructType) string {
+func mapToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
@@ -413,7 +413,7 @@ func mapToType(ti *typeInfo, helperFName, typeName string, ty *StructType) strin
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
 }
 
-func vectorToType(ti *typeInfo, helperFName, typeName string, ty *StructType) string {
+func vectorToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o *Vector) *%s {
 	return &%s{%s}
 }
@@ -430,7 +430,7 @@ func vectorToType(ti *typeInfo, helperFName, typeName string, ty *StructType) st
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
 }
 
-func elementsToType(ti *typeInfo, ty *StructType, toType func(ti *typeInfo, i int, name string, f *Field) string) string {
+func elementsToType(ti *goTypeInfo, ty *StructType, toType func(ti *goTypeInfo, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -447,11 +447,11 @@ func elementsToType(ti *typeInfo, ty *StructType, toType func(ti *typeInfo, i in
 		`)
 }
 
-func vectorElementToType(ti *typeInfo, i int, name string, f *Field) string {
+func vectorElementToType(ti *goTypeInfo, i int, name string, f *Field) string {
 	return elementToType(ti, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
 }
 
-func elementToType(ti *typeInfo, el string, e *Expr) string {
+func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 	v := toGoExprInfo(ti.sourceFile, e)
 	if v.unsupported {
 		return v.fullName
@@ -465,7 +465,7 @@ func elementToType(ti *typeInfo, el string, e *Expr) string {
 }
 
 /* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */
-func addRequiredImports(ti *typeInfo, imports []packageImport) {
+func addRequiredImports(ti *goTypeInfo, imports []packageImport) {
 	for _, imp := range imports {
 		addImport(ti.requiredImports, imp.local, imp.full)
 	}

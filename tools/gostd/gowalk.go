@@ -13,6 +13,11 @@ import (
 	"strings"
 )
 
+var numMethods int
+var numGeneratedFunctions int
+var numGeneratedTypes int
+var numDeclaredGoTypes int
+
 type funcInfo struct {
 	fd           *FuncDecl
 	sourceFile   *goFile
@@ -57,18 +62,7 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 	return true
 }
 
-type typeInfo struct {
-	sourceFile      *goFile
-	td              *TypeSpec
-	where           token.Pos
-	clojureCode     string
-	goCode          string
-	requiredImports *packageImports
-}
-
-type typeMap map[string]*typeInfo
-
-func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
+func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -80,20 +74,21 @@ func sortedTypeInfoMap(m map[string]*typeInfo, f func(k string, v *typeInfo)) {
 }
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-var types = map[string]*typeInfo{}
-
 func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeSpec) {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(fset, ts)
 	}
-	if c, ok := types[typename]; ok {
+	if c, ok := goTypes[typename]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
-	types[typename] = &typeInfo{gf, ts, ts.Pos(), "", "", &packageImports{}}
-	registerType(gf, typename, ts)
+	gt := registerType(gf, typename, ts)
+	gt.td = ts
+	gt.where = ts.Pos()
+	gt.requiredImports = &packageImports{}
+	numDeclaredGoTypes++
 }
 
 func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
@@ -113,7 +108,7 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 		case *FuncDecl:
 			rcv := v.Recv // *FieldList of methods or nil (functions)
 			if rcv != nil {
-				methods += 1
+				numMethods += 1
 				continue // Skipping these for now
 			}
 			if isPrivate(v.Name.Name) {
@@ -274,8 +269,8 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
-			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
-			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, typeMap{}}
+			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{}}
+			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{}}
 		}
 	}
 }
@@ -383,7 +378,7 @@ type fnCodeMap map[string]fnCodeInfo
 
 type codeInfo struct {
 	functions fnCodeMap
-	types     typeMap
+	types     goTypeMap
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
