@@ -665,6 +665,11 @@ var procIsInstance Proc = func(args []Object) Object {
 	return Boolean{B: IsInstance(t, args[1])}
 }
 
+var procGoObject Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	return Boolean{B: IsGoObject(args[0])}
+}
+
 var procAssoc Proc = func(args []Object) Object {
 	return EnsureAssociative(args, 0).Assoc(args[1], args[2])
 }
@@ -1967,6 +1972,7 @@ func init() {
 	intern("conj__", procConj)
 	intern("seq__", procSeq)
 	intern("instance?__", procIsInstance)
+	intern("goobject?__", procGoObject)
 	intern("assoc__", procAssoc)
 	intern("meta__", procMeta)
 	intern("with-meta__", procWithMeta)

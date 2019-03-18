@@ -367,6 +367,7 @@ func init() {
 		Fn:             regRefType("Fn", (*Fn)(nil)),
 		File:           regRefType("File", (*File)(nil)),
 		BufferedReader: regRefType("BufferedReader", (*BufferedReader)(nil)),
+		GoObject:       regType("GoObject", (*GoObject)(nil)),
 		HashMap:        regRefType("HashMap", (*HashMap)(nil)),
 		Int:            regType("Int", (*Int)(nil)),
 		Keyword:        regType("Keyword", (*Keyword)(nil)),
@@ -1531,6 +1532,11 @@ func IsInstance(t *Type, obj Object) bool {
 		return false
 	}
 	return IsEqualOrImplements(t, obj.GetType())
+}
+
+func IsGoObject(obj Object) bool {
+	_, ok := obj.(GoObject)
+	return ok
 }
 
 func IsSpecialSymbol(obj Object) bool {
