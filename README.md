@@ -336,6 +336,10 @@ user=> le
 hey there you: silly
 user=> (type le)
 GoObject[*os.LinkError]
+user=> (goobject? le)
+true
+user=> (goobject? "foo")
+false
 user=>
 ```
 
