@@ -252,9 +252,12 @@
       (apply concat (list dirs subdirs)))))
 
 (def custom-namespaces (mapv (comp symbol #(rpl % "/" "."))
-                             (sort (mapcat new-custom-namespaces-here (walk-dirs "go")))))
+                             (sort (mapcat new-custom-namespaces-here
+                                           (try (walk-dirs "go")
+                                                (catch Error e nil))))))
 
-(apply require :reload custom-namespaces)
+(when (seq custom-namespaces)
+  (apply require :reload custom-namespaces))
 
 (doseq [ns-sym custom-namespaces]
   (let [ns-name (str ns-sym)
