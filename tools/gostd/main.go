@@ -59,6 +59,7 @@ Options:
   --empty                     # Generate empty packages (those with no Joker code)
   --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp              # Don't put the time (and version) info in generated/modified files
+  --undo                      # Undo effects of --joker ...
   --help, -h                  # Print this information
 
 If <joker-std-subdir> is not specified, no Go nor Clojure source files
@@ -81,6 +82,7 @@ func main() {
 	summary := false
 	generateEmpty := false
 	outputCode := false
+	undo := false
 
 	var mode parser.Mode = parser.ParseComments
 
@@ -113,6 +115,8 @@ func main() {
 				outputCode = true
 			case "--empty":
 				generateEmpty = true
+			case "--undo":
+				undo = true
 			case "--go":
 				if goSourceDir != "" {
 					panic("cannot specify --go <go-source-dir> more than once")
@@ -164,10 +168,14 @@ func main() {
 	jokerLibDir := ""
 	if jokerSourceDir != "" && jokerSourceDir != "-" {
 		jokerLibDir = filepath.Join(jokerSourceDir, "std", "go", "std")
-		if replace {
+		if replace || undo {
 			if e := os.RemoveAll(jokerLibDir); e != nil {
 				panic(fmt.Sprintf("Unable to effectively 'rm -fr %s'", jokerLibDir))
 			}
+		}
+
+		if undo {
+			os.Exit(0)
 		}
 
 		if !overwrite {

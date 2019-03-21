@@ -123,8 +123,8 @@
         (string/replace "{namespaces}" namespaces-docs))))
 
 (defn full-doc
-  []
-  (let [namespaces (->> (all-ns)
+  [ns-fn]
+  (let [namespaces (->> (ns-fn)
                         (map ns-name)
                         (remove #(= 'user %))
                         (sort))]
@@ -132,9 +132,20 @@
     (doseq [ns namespaces]
       (spit (str ns ".html") (ns-doc ns)))))
 
-(full-doc)
+(defn is-go
+  [ns]
+  (string/starts-with? (str ns) "go.std."))
 
+(defn no-go-ns
+  []
+  (->> (all-ns)
+      (remove #(is-go %))))
 
+(defn have-option
+  "Quick and dirty options parser."
+  [opt]
+  (some #(= opt %) *command-line-args*))
 
-
-
+(if (have-option "--no-go")
+  (full-doc no-go-ns)
+  (full-doc all-ns))
