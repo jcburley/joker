@@ -1225,7 +1225,7 @@
 </li>
 <li>
   <h3 id="*command-line-args*">*command-line-args*</h3>
-  <span class="var-type Nil">Nil</span>
+  <span class="var-type Seq">Seq</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">A sequence of the supplied command line arguments, or nil if<br>  none were supplied</p>
@@ -1244,7 +1244,7 @@
   <span class="var-type IOWriter">IOWriter</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">A File object representing standard error for print operations.<br><br>  Defaults to stderr.</p>
+  <p class="var-docstr">A IOWriter object representing standard error for print operations.<br><br>  Defaults to stderr.</p>
   
 </li>
 <li>
@@ -1268,7 +1268,7 @@
   <span class="var-type BufferedReader">BufferedReader</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">A File object representing standard input for read operations.<br><br>  Defaults to stdin.</p>
+  <p class="var-docstr">A BufferedReader object representing standard input for read operations.<br><br>  Defaults to stdin.</p>
   
 </li>
 <li>
@@ -1308,7 +1308,7 @@
   <span class="var-type IOWriter">IOWriter</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
-  <p class="var-docstr">A File object representing standard output for print operations.<br><br>  Defaults to stdout.</p>
+  <p class="var-docstr">A IOWriter object representing standard output for print operations.<br><br>  Defaults to stdout.</p>
   
 </li>
 <li>
@@ -1536,7 +1536,7 @@
   <pre class="var-usage"><div><code>(as-> expr name & forms)</code></div>
 </pre>
   <p class="var-docstr">Binds name to expr, evaluates the first form in the lexical context<br>  of that binding, then binds name to that result, repeating for each<br>  successive form, returning the result of the last form.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4188">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4189">source</a>
 </li>
 <li>
   <h3 id="assert">assert</h3>
@@ -1758,7 +1758,7 @@
   <pre class="var-usage"><div><code>(bounded-count n coll)</code></div>
 </pre>
   <p class="var-docstr">If coll is counted? returns its count, else will count at most the first n<br>  elements of coll using its seq</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4024">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4025">source</a>
 </li>
 <li>
   <h3 id="butlast">butlast</h3>
@@ -1785,7 +1785,7 @@
   <pre class="var-usage"><div><code>(case expr & clauses)</code></div>
 </pre>
   <p class="var-docstr">Takes an expression, and a set of clauses.<br><br>  Each clause can take the form of either:<br><br>  test-expr result-expr<br><br>  (test-expr ... test-expr)  result-expr<br><br>  If the expression is equal to a value of<br>  test-expr, the corresponding result-expr is returned. A single<br>  default expression can follow the clauses, and its value will be<br>  returned if no clause matches. If no default expression is provided<br>  and no clause matches, an exception is thrown.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3838">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3839">source</a>
 </li>
 <li>
   <h3 id="cast">cast</h3>
@@ -1909,7 +1909,7 @@
   <pre class="var-usage"><div><code>(cond-> expr & clauses)</code></div>
 </pre>
   <p class="var-docstr">Takes an expression and a set of test/form pairs. Threads expr (via ->)<br>  through each form for which the corresponding test<br>  expression is true. Note that, unlike cond branching, cond-> threading does<br>  not short circuit after the first true test expression.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4144">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4145">source</a>
 </li>
 <li>
   <h3 id="cond->>">cond->></h3>
@@ -1918,7 +1918,7 @@
   <pre class="var-usage"><div><code>(cond->> expr & clauses)</code></div>
 </pre>
   <p class="var-docstr">Takes an expression and a set of test/form pairs. Threads expr (via ->>)<br>  through each form for which the corresponding test expression<br>  is true.  Note that, unlike cond branching, cond->> threading does not short circuit<br>  after the first true test expression.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4166">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4167">source</a>
 </li>
 <li>
   <h3 id="condp">condp</h3>
@@ -2036,7 +2036,7 @@
   <pre class="var-usage"><div><code>(dedupe coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence removing consecutive duplicates in coll.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4234">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4235">source</a>
 </li>
 <li>
   <h3 id="default-data-readers">default-data-readers</h3>
@@ -2044,7 +2044,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>  overridden by binding *data-readers*.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4258">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4259">source</a>
 </li>
 <li>
   <h3 id="defmacro">defmacro</h3>
@@ -2063,7 +2063,7 @@
   <pre class="var-usage"><div><code>(defmethod multifn dispatch-val & fn-tail)</code></div>
 </pre>
   <p class="var-docstr">Creates and installs a new method of multimethod associated with dispatch-value. </p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4361">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4362">source</a>
 </li>
 <li>
   <h3 id="defmulti">defmulti</h3>
@@ -2072,7 +2072,7 @@
   <pre class="var-usage"><div><code>(defmulti name docstring? attr-map? dispatch-fn & options)</code></div>
 </pre>
   <p class="var-docstr">Creates a new multimethod with the associated dispatch function.<br>  The docstring and attr-map are optional.<br><br>  Options are key-value pairs and may be one of:<br><br>  :default<br><br>  The default dispatch value, defaults to :default<br><br>  :hierarchy (UNSUPPORTED)<br><br>  The value used for hierarchical dispatch (e.g. ::square is-a ::shape)<br><br>  Hierarchies are type-like relationships that do not depend upon type<br>  inheritance. By default Clojure's multimethods dispatch off of a<br>  global hierarchy map.  However, a hierarchy relationship can be<br>  created with the derive function used to augment the root ancestor<br>  created with make-hierarchy.<br><br>  Multimethods expect the value of the hierarchy option to be supplied as<br>  a reference type e.g. a var (i.e. via the Var-quote dispatch macro #'<br>  or the var special form).</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4301">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4302">source</a>
 </li>
 <li>
   <h3 id="defn">defn</h3>
@@ -2319,7 +2319,7 @@
 <div><code>(every-pred p1 p2 p3 & ps)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of predicates and returns a function f that returns true if all of its<br>  composing predicates return a logical true value against all of its arguments, else it returns<br>  false. Note that f is short-circuiting in that it will stop execution on the first<br>  argument that triggers a logical false result against the original predicates.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4036">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4037">source</a>
 </li>
 <li>
   <h3 id="every?">every?</h3>
@@ -2401,7 +2401,7 @@
   <pre class="var-usage"><div><code>(filterv pred coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector of the items in coll for which<br>  (pred item) returns true. pred must be free of side-effects.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3890">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3891">source</a>
 </li>
 <li>
   <h3 id="find">find</h3>
@@ -2446,7 +2446,7 @@
   <pre class="var-usage"><div><code>(flatten x)</code></div>
 </pre>
   <p class="var-docstr">Takes any nested combination of sequential things (lists, vectors,<br>  etc.) and returns their contents as a single, flat sequence.<br>  (flatten nil) returns an empty sequence.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3912">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3913">source</a>
 </li>
 <li>
   <h3 id="float?">float?</h3>
@@ -2503,7 +2503,7 @@
 <div><code>(fnil f x y z)</code></div>
 </pre>
   <p class="var-docstr">Takes a function f, and returns a function that calls f, replacing<br>  a nil first argument to f with the supplied value x. Higher arity<br>  versions can replace arguments in the second and third<br>  positions (y, z). Note that the function f can take any number of<br>  arguments, not just the one(s) being nil-patched.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3795">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3796">source</a>
 </li>
 <li>
   <h3 id="for">for</h3>
@@ -2539,7 +2539,7 @@
   <pre class="var-usage"><div><code>(frequencies coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a map from distinct items in coll to the number of times<br>  they appear.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3945">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3946">source</a>
 </li>
 <li>
   <h3 id="gensym">gensym</h3>
@@ -2578,7 +2578,7 @@
   <pre class="var-usage"><div><code>(get-method multifn dispatch-val)</code></div>
 </pre>
   <p class="var-docstr">Given a multimethod and a dispatch value, returns the dispatch fn<br>  that would apply to that value, or nil if none apply and no default</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4399">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4400">source</a>
 </li>
 <li>
   <h3 id="goobject?">goobject?</h3>
@@ -2596,7 +2596,7 @@
   <pre class="var-usage"><div><code>(group-by f coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a map of the elements of coll keyed by the result of<br>  f on each element. The value at each key will be a vector of the<br>  corresponding elements, in the order they appeared in coll.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3921">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3922">source</a>
 </li>
 <li>
   <h3 id="hash">hash</h3>
@@ -2792,7 +2792,7 @@
   <pre class="var-usage"><div><code>(into to from)</code></div>
 </pre>
   <p class="var-docstr">Returns a new coll consisting of to-coll with all of the items of<br>  from-coll conjoined.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3831">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3832">source</a>
 </li>
 <li>
   <h3 id="iterate">iterate</h3>
@@ -2810,7 +2810,7 @@
   <pre class="var-usage"><div><code>(joker-version)</code></div>
 </pre>
   <p class="var-docstr">Returns joker version as a printable string.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4263">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4264">source</a>
 </li>
 <li>
   <h3 id="juxt">juxt</h3>
@@ -2831,7 +2831,7 @@
   <pre class="var-usage"><div><code>(keep f coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the non-nil results of (f item). Note,<br>  this means false return values will be included.  f must be free of<br>  side-effects.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3996">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3997">source</a>
 </li>
 <li>
   <h3 id="keep-indexed">keep-indexed</h3>
@@ -2840,7 +2840,7 @@
   <pre class="var-usage"><div><code>(keep-indexed f coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of the non-nil results of (f index item). Note,<br>  this means false return values will be included.  f must be free of<br>  side-effects.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4009">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4010">source</a>
 </li>
 <li>
   <h3 id="key">key</h3>
@@ -3028,7 +3028,7 @@
   <pre class="var-usage"><div><code>(map-indexed f coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence consisting of the result of applying f to 0<br>  and the first item of coll, followed by applying f to 1 and the second<br>  item in coll, etc, until coll is exhausted. Thus function f should<br>  accept 2 arguments, index and item.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3983">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3984">source</a>
 </li>
 <li>
   <h3 id="map?">map?</h3>
@@ -3058,7 +3058,7 @@
 <div><code>(mapv f c1 c2 c3 & colls)</code></div>
 </pre>
   <p class="var-docstr">Returns a vector consisting of the result of applying f to the<br>  set of first items of each coll, followed by applying f to the set<br>  of second items in each coll, until any one of the colls is<br>  exhausted.  Any remaining items in other colls are ignored. Function<br>  f should accept number-of-colls arguments.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3874">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3875">source</a>
 </li>
 <li>
   <h3 id="max">max</h3>
@@ -3125,7 +3125,7 @@
   <pre class="var-usage"><div><code>(methods multifn)</code></div>
 </pre>
   <p class="var-docstr">Given a multimethod, returns a map of dispatch values -> dispatch fns</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4391">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4392">source</a>
 </li>
 <li>
   <h3 id="min">min</h3>
@@ -3493,7 +3493,7 @@
 <div><code>(partition-all n step coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy sequence of lists like partition, but may include<br>  partitions with fewer than n items at the end.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3819">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3820">source</a>
 </li>
 <li>
   <h3 id="partition-by">partition-by</h3>
@@ -3502,7 +3502,7 @@
   <pre class="var-usage"><div><code>(partition-by f coll)</code></div>
 </pre>
   <p class="var-docstr">Applies f to each value in coll, splitting it each time f returns a<br>  new value.  Returns a lazy seq of partitions.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3933">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3934">source</a>
 </li>
 <li>
   <h3 id="peek">peek</h3>
@@ -3583,7 +3583,7 @@
   <pre class="var-usage"><div><code>(prefer-method multifn dispatch-val-x dispatch-val-y)</code></div>
 </pre>
   <p class="var-docstr">Causes the multimethod to prefer matches of dispatch-val-x over dispatch-val-y<br>   when there is a conflict</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4384">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4385">source</a>
 </li>
 <li>
   <h3 id="prefers">prefers</h3>
@@ -3592,7 +3592,7 @@
   <pre class="var-usage"><div><code>(prefers multifn)</code></div>
 </pre>
   <p class="var-docstr">Given a multimethod, returns a map of preferred value -> set of other values</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4411">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4412">source</a>
 </li>
 <li>
   <h3 id="print">print</h3>
@@ -3746,7 +3746,7 @@
   <pre class="var-usage"><div><code>(rand-nth coll)</code></div>
 </pre>
   <p class="var-docstr">Return a random element of the (sequential) collection. Will have<br>  the same performance characteristics as nth for the given<br>  collection.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3969">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3970">source</a>
 </li>
 <li>
   <h3 id="random-sample">random-sample</h3>
@@ -3755,7 +3755,7 @@
   <pre class="var-usage"><div><code>(random-sample prob coll)</code></div>
 </pre>
   <p class="var-docstr">Returns items from coll with random probability of prob (0.0 -<br>  1.0).</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4243">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4244">source</a>
 </li>
 <li>
   <h3 id="range">range</h3>
@@ -3858,7 +3858,7 @@
   <pre class="var-usage"><div><code>(realized? x)</code></div>
 </pre>
   <p class="var-docstr">Returns true if a value has been produced for a delay or lazy sequence.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4139">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4140">source</a>
 </li>
 <li>
   <h3 id="reduce">reduce</h3>
@@ -3887,7 +3887,7 @@
 <div><code>(reductions f init coll)</code></div>
 </pre>
   <p class="var-docstr">Returns a lazy seq of the intermediate values of the reduction (as<br>  per reduce) of coll by f, starting with init.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3954">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3955">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
@@ -3932,7 +3932,7 @@
   <pre class="var-usage"><div><code>(remove-all-methods multifn)</code></div>
 </pre>
   <p class="var-docstr">Removes all of the methods of multimethod.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4369">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4370">source</a>
 </li>
 <li>
   <h3 id="remove-method">remove-method</h3>
@@ -3941,7 +3941,7 @@
   <pre class="var-usage"><div><code>(remove-method multifn dispatch-val)</code></div>
 </pre>
   <p class="var-docstr">Removes the method of multimethod associated with dispatch-value.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4378">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4379">source</a>
 </li>
 <li>
   <h3 id="remove-ns">remove-ns</h3>
@@ -4079,7 +4079,7 @@
   <pre class="var-usage"><div><code>(run! proc coll)</code></div>
 </pre>
   <p class="var-docstr">Runs the supplied procedure (via reduce), for purposes of side<br>  effects, on successive items in the collection. Returns nil.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4250">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4251">source</a>
 </li>
 <li>
   <h3 id="second">second</h3>
@@ -4169,7 +4169,7 @@
   <pre class="var-usage"><div><code>(shuffle coll)</code></div>
 </pre>
   <p class="var-docstr">Return a random permutation of coll</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3977">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3978">source</a>
 </li>
 <li>
   <h3 id="simple-ident?">simple-ident?</h3>
@@ -4205,7 +4205,7 @@
   <pre class="var-usage"><div><code>(slurp f)</code></div>
 </pre>
   <p class="var-docstr">Opens file f and reads all its contents, returning a string.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3899">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3900">source</a>
 </li>
 <li>
   <h3 id="some">some</h3>
@@ -4223,7 +4223,7 @@
   <pre class="var-usage"><div><code>(some-> expr & forms)</code></div>
 </pre>
   <p class="var-docstr">When expr is not nil, threads it into the first form (via ->),<br>  and when that result is not nil, through the next etc.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4202">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4203">source</a>
 </li>
 <li>
   <h3 id="some->>">some->></h3>
@@ -4232,7 +4232,7 @@
   <pre class="var-usage"><div><code>(some->> expr & forms)</code></div>
 </pre>
   <p class="var-docstr">When expr is not nil, threads it into the first form (via ->>),<br>  and when that result is not nil, through the next etc.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4218">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4219">source</a>
 </li>
 <li>
   <h3 id="some-fn">some-fn</h3>
@@ -4244,7 +4244,7 @@
 <div><code>(some-fn p1 p2 p3 & ps)</code></div>
 </pre>
   <p class="var-docstr">Takes a set of predicates and returns a function f that returns the first logical true value<br>  returned by one of its composing predicates against any of its arguments, else it returns<br>  logical false. Note that f is short-circuiting in that it will stop execution on the first<br>  argument that triggers a logical true result against the original predicates.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4076">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4077">source</a>
 </li>
 <li>
   <h3 id="some?">some?</h3>
@@ -4291,7 +4291,7 @@
   <pre class="var-usage"><div><code>(spit f content)</code></div>
 </pre>
   <p class="var-docstr">Opposite of slurp.  Opens file f, writes content, then<br>  closes f.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3905">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3906">source</a>
 </li>
 <li>
   <h3 id="split-at">split-at</h3>
