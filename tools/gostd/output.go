@@ -26,6 +26,20 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
+func registerPackages(pkgs []string, jokerSourceDir string) {
+	updateCustomLibsGo(pkgs, filepath.Join(jokerSourceDir, "custom.go"))
+}
+
+func registerJokerFiles(jokerFiles []string, jokerSourceDir string) {
+	const cl = `
+(def ^:dynamic
+  ^{:private true
+    :doc "A set of symbols representing loaded custom libs"}
+  *custom-libs* #{%s})
+`
+	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
+}
+
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
 	if verbose {
