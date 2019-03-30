@@ -43,24 +43,34 @@ func registerJokerFiles(jokerFiles []string, jokerSourceDir string) {
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
 	if verbose {
-		fmt.Printf("Adding custom imports to %s\n", filepath.ToSlash(f))
+		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	m := "// Auto-modified by gostd at " + curTimeAndVersion() + "\n"
+	var m string
+	if len(pkgs) > 0 {
+		m = "// Auto-modified by gostd at " + curTimeAndVersion()
+	} else {
+		m = "// Placeholder for custom libraries. Overwritten by gostd."
+	}
 
-	newImports := `
+	m += `
+
 package main
+`
+
+	if len(pkgs) > 0 {
+		newImports := `
 
 import (
 `
-	importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
-	for _, p := range pkgs {
-		newImports += importPrefix + p + "\"\n"
-	}
-	newImports += `)
+		importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
+		for _, p := range pkgs {
+			newImports += importPrefix + p + "\"\n"
+		}
+		newImports += `)
 `
-
-	m += newImports
+		m += newImports
+	}
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
 	check(err)
