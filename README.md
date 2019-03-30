@@ -609,6 +609,18 @@ $
 
 (Don't forget to `git pull gostd gostd` on your other development machines after updating test results, to avoid having to do the `git merge` dance when you make changes on them and try to `git push`.)
 
+### Clean Up After Full Build
+
+After building the `gostd` branch, numerous additional files will have been created, and several existing files (in the source distribution, including generated files) will have been modified.
+
+Restore them via:
+
+```
+$ ./cleanup.sh
+```
+
+This should result in `git` showing no differences (tracked nor untracked files) if only `gostd` has made changes to the source tree.
+
 # Formalities
 
 ## Contributors
