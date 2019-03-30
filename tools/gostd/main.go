@@ -175,6 +175,8 @@ func main() {
 		}
 
 		if undo {
+			cleanJokerMain(filepath.Join(jokerSourceDir, "custom.go"))
+			cleanCoreDotJoke(filepath.Join(jokerSourceDir, "core", "data", "core.joke"))
 			os.Exit(0)
 		}
 
@@ -240,7 +242,7 @@ func main() {
 				dotJokeArray = append(dotJokeArray, p)
 			})
 		updateJokerMain(packagesArray, filepath.Join(jokerSourceDir, "custom.go"))
-		updateCoreDotJoke(dotJokeArray, filepath.Join(jokerSourceDir, "core", "data", "core.joke"))
+		//		updateCoreDotJoke(dotJokeArray, filepath.Join(jokerSourceDir, "core", "data", "core.joke"))
 	}
 
 	if verbose || summary {

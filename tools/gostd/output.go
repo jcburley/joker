@@ -52,6 +52,15 @@ import (
 	check(err)
 }
 
+func cleanJokerMain(f string) {
+	orig := `// Placeholder for custom libraries. Overwritten by gostd.
+
+package main
+`
+	err := ioutil.WriteFile(f, []byte(orig), 0777)
+	check(err)
+}
+
 func updateCoreDotJoke(pkgs []string, f string) {
 	if verbose {
 		fmt.Printf("Adding custom loaded libraries to %s\n", filepath.ToSlash(f))
@@ -87,6 +96,10 @@ func updateCoreDotJoke(pkgs []string, f string) {
 
 	err = ioutil.WriteFile(f, []byte(m), 0777)
 	check(err)
+}
+
+func cleanCoreDotJoke(f string) {
+	return
 }
 
 func packageQuotedImportList(pi packageImports, prefix string) string {

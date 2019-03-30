@@ -3195,9 +3195,11 @@
 (defonce ^:dynamic
   ^{:private true
     :doc "A set of symbols representing loaded libs"}
-  *loaded-libs* #{'joker.base64 'joker.core 'joker.html 'joker.http 'joker.json
-                  'joker.math 'joker.os 'joker.string 'joker.time 'joker.url
-                  'joker.yaml})
+  *loaded-libs* (reduce conj
+                        *custom-libs*
+                        #{'joker.base64 'joker.core 'joker.html 'joker.http 'joker.json
+                          'joker.math 'joker.os 'joker.string 'joker.time 'joker.url
+                          'joker.yaml}))
 
 (defonce ^:dynamic
   ^{:private true
@@ -4385,3 +4387,4 @@
   ^Map [multifn]
   (throw (ex-info "method preference not yet supported by joker.core" {})))
 
+(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
