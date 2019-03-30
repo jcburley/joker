@@ -27,7 +27,7 @@ func curTimeAndVersion() string {
 }
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
-func updateJokerMain(pkgs []string, f string) {
+func updateCustomLibsGo(pkgs []string, f string) {
 	if verbose {
 		fmt.Printf("Adding custom imports to %s\n", filepath.ToSlash(f))
 	}
@@ -52,7 +52,7 @@ import (
 	check(err)
 }
 
-func cleanJokerMain(f string) {
+func cleanCustomLibsGo(f string) {
 	orig := `// Placeholder for custom libraries. Overwritten by gostd.
 
 package main
@@ -61,7 +61,7 @@ package main
 	check(err)
 }
 
-func updateCoreDotJoke(pkgs []string, f string) {
+func updateCustomLibsJoker(pkgs []string, f string) {
 	if verbose {
 		fmt.Printf("Adding custom loaded libraries to %s\n", filepath.ToSlash(f))
 	}
@@ -98,7 +98,7 @@ func updateCoreDotJoke(pkgs []string, f string) {
 	check(err)
 }
 
-func cleanCoreDotJoke(f string) {
+func cleanCustomLibsJoker(f string) {
 	return
 }
 
