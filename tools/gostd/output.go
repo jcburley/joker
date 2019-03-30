@@ -7,7 +7,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 )
@@ -31,12 +30,6 @@ func registerPackages(pkgs []string, jokerSourceDir string) {
 }
 
 func registerJokerFiles(jokerFiles []string, jokerSourceDir string) {
-	const cl = `
-(def ^:dynamic
-  ^{:private true
-    :doc "A set of symbols representing loaded custom libs"}
-  *custom-libs* #{%s})
-`
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
@@ -76,54 +69,35 @@ import (
 	check(err)
 }
 
-func cleanCustomLibsGo(f string) {
-	orig := `// Placeholder for custom libraries. Overwritten by gostd.
-
-package main
-`
-	err := ioutil.WriteFile(f, []byte(orig), 0777)
-	check(err)
-}
-
 func updateCustomLibsJoker(pkgs []string, f string) {
 	if verbose {
-		fmt.Printf("Adding custom loaded libraries to %s\n", filepath.ToSlash(f))
+		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	by, err := ioutil.ReadFile(f)
-	check(err)
-	m := string(by)
-	flag := "Loaded-libraries added by gostd"
-	endflag := "End gostd-added loaded-libraries"
-
-	if !strings.Contains(m, flag) {
-		m = strings.Replace(m, "\n  *loaded-libs* #{",
-			"\n  *loaded-libs* #{\n   ;; "+flag+"\n   ;; "+endflag+"\n", 1)
-		m = ";;;; Auto-modified by gostd at " + curTimeAndVersion() + "\n\n" + m
+	var m string
+	if len(pkgs) > 0 {
+		m = ";; Auto-modified by gostd at " + curTimeAndVersion()
+	} else {
+		m = ";; Placeholder for custom libraries. Overwritten by gostd."
 	}
 
-	reImport := regexp.MustCompile("(?msU)" + flag + ".*" + endflag + "\n *?")
-	newImports := "\n  "
-	importPrefix := " 'go.std."
-	curLine := ""
+	m += `
+
+(def ^:dynamic
+  ^{:private true
+    :doc "A set of symbols representing loaded custom libs"}
+  *custom-libs* #{
+`
+
+	const importPrefix = " 'go.std."
 	for _, p := range pkgs {
-		more := importPrefix + strings.Replace(p, "/", ".", -1)
-		if curLine != "" && len(curLine)+len(more) > 77 {
-			newImports += curLine + "\n  "
-			curLine = more
-		} else {
-			curLine += more
-		}
+		m += "    " + importPrefix + strings.Replace(p, "/", ".", -1) + "\n"
 	}
-	newImports += curLine
-	m = reImport.ReplaceAllString(m, flag+newImports+"\n   ;; "+endflag+"\n   ")
+	m += `    })
+`
 
-	err = ioutil.WriteFile(f, []byte(m), 0777)
+	err := ioutil.WriteFile(f, []byte(m), 0777)
 	check(err)
-}
-
-func cleanCustomLibsJoker(f string) {
-	return
 }
 
 func packageQuotedImportList(pi packageImports, prefix string) string {
