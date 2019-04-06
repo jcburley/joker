@@ -54,7 +54,7 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.12.1"
+const VERSION = "v0.12.2"
 
 var internalLibs map[string][]byte
 
@@ -187,7 +187,11 @@ func ExtractUIntPtr(args []Object, index int) uintptr {
 }
 
 func ExtractBoolean(args []Object, index int) bool {
-	return ToBool(args[index])
+	return EnsureBoolean(args, index).B
+}
+
+func ExtractChar(args []Object, index int) rune {
+	return EnsureChar(args, index).Ch
 }
 
 func ExtractTime(args []Object, index int) time.Time {
