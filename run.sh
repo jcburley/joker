@@ -1,33 +1,12 @@
 #!/usr/bin/env bash
 
 build() {
-    go clean -x
-
-    rm -f core/a_*_data.go  # Eases development across multiple branches introducing new core/data/*.joke files
-
-    go generate ./...
-
-    # Don't vet things in tools/, they have their own vetting, plus "problematic" code for test purposes.
-    go vet -all main.go
-    go vet -all ./core/... ./std/...
-
-    if [ -n "$SHADOW" ]; then
-        go vet -all "$SHADOW" main.go && go vet -all "$SHADOW" ./core/... ./std/... && echo "Shadowed-variables check complete."
-    else
-        echo "Not performing shadowed-variables check; consider installing shadow tool via:"
-        echo "  go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow"
-        echo "and rebuilding."
-    fi
-
-    go build
+  go clean
+  go generate ./...
+  go vet main.go
+  go vet ./core/... ./std/...
+  go build
 }
-
-if which shadow >/dev/null 2>/dev/null; then
-    # Install via: go install golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
-    SHADOW="-vettool=$(which shadow)"
-elif $(go tool vet nonexistent.go 2>&1 | grep -q -v unsupported); then
-    SHADOW="-shadow=true"
-fi
 
 set -e  # Exit on error.
 
@@ -35,22 +14,17 @@ set -e  # Exit on error.
 
 build
 
-./joker -e '(print "\nLibraries available in this build:\n  ") (loaded-libs) (println)'
+if [ "$1" == "-v" ]; then
+  ./joker -e '(print "\nLibraries available in this build:\n  ") (loaded-libs) (println)'
+fi
 
 SUM256="$(go run tools/sum256dir/main.go std)"
-
-(cd std; ../joker generate-std.joke)
-
+(cd std; ../joker generate-std.joke 2> /dev/null)
 NEW_SUM256="$(go run tools/sum256dir/main.go std)"
 
 if [ "$SUM256" != "$NEW_SUM256" ]; then
-    cat <<EOF
-Rebuilding Joker, as the libraries have changed; then regenerating docs.
-
-EOF
-    build
-
-    (cd docs; ../joker generate-docs.joke)
+  echo 'std has changed, rebuilding...'
+  build
 fi
 
 ./joker "$@"
