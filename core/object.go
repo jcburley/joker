@@ -439,6 +439,18 @@ func MakeSymbol(nsname string) Symbol {
 	}
 }
 
+type BySymbolName []Symbol
+
+func (s BySymbolName) Len() int {
+	return len(s)
+}
+func (s BySymbolName) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s BySymbolName) Less(i, j int) bool {
+	return s[i].ToString(false) < s[j].ToString(false)
+}
+
 func MakeKeyword(nsname string) Keyword {
 	index := strings.IndexRune(nsname, '/')
 	if index == -1 || nsname == "/" {
