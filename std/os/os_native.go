@@ -83,7 +83,10 @@ func sh(dir string, stdin io.Reader, name string, args []string) Object {
 	go io.Copy(bufOut, stdoutReader)
 	go io.Copy(bufErr, stderrReader)
 	if stdin != nil {
-		go io.Copy(stdinWriter, stdin)
+		go func() {
+			io.Copy(stdinWriter, stdin)
+			stdinWriter.Close()
+		}()
 	}
 
 	err = cmd.Wait()
@@ -156,11 +159,5 @@ func chdir(dirname string) Object {
 func stat(filename string) Object {
 	info, err := os.Stat(filename)
 	PanicOnErr(err)
-	m := EmptyArrayMap()
-	m.Add(MakeKeyword("name"), MakeString(info.Name()))
-	m.Add(MakeKeyword("size"), MakeInt(int(info.Size())))
-	m.Add(MakeKeyword("mode"), MakeInt(int(info.Mode())))
-	m.Add(MakeKeyword("modtime"), MakeTime(info.ModTime()))
-	m.Add(MakeKeyword("dir?"), MakeBoolean(info.IsDir()))
-	return m
+	return FileInfoMap(info.Name(), info)
 }
