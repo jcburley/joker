@@ -42,6 +42,24 @@
 <li>
   <a href="#join">join</a>
 </li>
+<li>
+  <a href="#matches?">matches?</a>
+</li>
+<li>
+  <a href="#rel">rel</a>
+</li>
+<li>
+  <a href="#split">split</a>
+</li>
+<li>
+  <a href="#split-list">split-list</a>
+</li>
+<li>
+  <a href="#to-slash">to-slash</a>
+</li>
+<li>
+  <a href="#volume-name">volume-name</a>
+</li>
 
     </ul>
     <ul>
@@ -175,6 +193,72 @@ If the result of this process is an empty string, returns the string ".".</p>
   <p class="var-docstr">Joins any number of path elements into a single path, adding a Separator if necessary.<br>
   Calls clean on the result; in particular, all empty strings are ignored. On Windows,<br>
   the result is a UNC path if and only if the first path element is a UNC path.</p>
+  
+</li>
+<li>
+  <h3 id="matches?">matches?</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(matches? pattern name)</code></div>
+</pre>
+  <p class="var-docstr">Reports whether name matches the shell file name pattern.<br>
+  Requires pattern to match all of name, not just a substring.<br>
+  Throws exception if pattern is malformed.<br>
+  On Windows, escaping is disabled. Instead, '\' is treated as path separator.</p>
+  
+</li>
+<li>
+  <h3 id="rel">rel</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(rel basepath targpath)</code></div>
+</pre>
+  <p class="var-docstr">Returns a relative path that is lexically equivalent to targpath when joined to basepath<br>
+  with an intervening separator. On success, the returned path will always be relative to basepath,<br>
+  even if basepath and targpath share no elements. An exception is thrown if targpath can't be made<br>
+  relative to basepath or if knowing the current working directory would be necessary to compute it.<br>
+  Calls clean on the result.</p>
+  
+</li>
+<li>
+  <h3 id="split">split</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(split path)</code></div>
+</pre>
+  <p class="var-docstr">Splits path immediately following the final Separator, separating it into a directory and file name component.<br>
+  If there is no Separator in path, returns an empty dir and file set to path. The returned values have<br>
+  the property that path = dir+file.</p>
+  
+</li>
+<li>
+  <h3 id="split-list">split-list</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(split-list path)</code></div>
+</pre>
+  <p class="var-docstr">Splits a list of paths joined by the OS-specific ListSeparator, usually found in PATH or GOPATH environment variables.<br>
+  Returns an empty slice when passed an empty string.</p>
+  
+</li>
+<li>
+  <h3 id="to-slash">to-slash</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(to-slash path)</code></div>
+</pre>
+  <p class="var-docstr">Returns the result of replacing each separator character in path with a slash ('/') character.<br>
+  Multiple separators are replaced by multiple slashes.</p>
+  
+</li>
+<li>
+  <h3 id="volume-name">volume-name</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(volume-name path)</code></div>
+</pre>
+  <p class="var-docstr">Returns leading volume name. Given "C:\foo\bar" it returns "C:" on Windows. Given "\\host\share\foo"<br>
+  returns "\\host\share". On other platforms it returns "".</p>
   
 </li>
 
