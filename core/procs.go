@@ -24,8 +24,6 @@ import (
 var (
 	customlibsData   []byte
 	coreData         []byte
-	timeData         []byte
-	mathData         []byte
 	replData         []byte
 	walkData         []byte
 	templateData     []byte
@@ -1766,9 +1764,6 @@ func processData(data []byte) {
 func ProcessCoreData() {
 	processData(customlibsData)
 	processData(coreData)
-	/* Might be faster startup if the rest of these were deferred until actually :require'd? */
-	processData(timeData)
-	processData(mathData)
 }
 
 func ProcessReplData() {
