@@ -75,15 +75,6 @@ func InitInternalLibs() {
 	}
 }
 
-func ensureArrayMap(args []Object, index int) *ArrayMap {
-	switch obj := args[index].(type) {
-	case *ArrayMap:
-		return obj
-	default:
-		panic(RT.NewArgTypeError(index, obj, "Map"))
-	}
-}
-
 func ExtractCallable(args []Object, index int) Callable {
 	return EnsureCallable(args, index)
 }
@@ -218,6 +209,14 @@ func ExtractSeqable(args []Object, index int) Seqable {
 
 func ExtractMap(args []Object, index int) Map {
 	return EnsureMap(args, index)
+}
+
+func ExtractIOReader(args []Object, index int) io.Reader {
+	return Ensureio_Reader(args, index)
+}
+
+func ExtractIOWriter(args []Object, index int) io.Writer {
+	return Ensureio_Writer(args, index)
 }
 
 var procMeta Proc = func(args []Object) Object {
@@ -1128,7 +1127,7 @@ var procType Proc = func(args []Object) Object {
 
 var procPprint Proc = func(args []Object) Object {
 	obj := args[0]
-	w := AssertIOWriter(GLOBAL_ENV.stdout.Value, "")
+	w := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
 	pprintObject(obj, 0, w)
 	fmt.Fprint(w, "\n")
 	return NIL
@@ -1147,7 +1146,7 @@ func PrintObject(obj Object, w io.Writer) {
 var procPr Proc = func(args []Object) Object {
 	n := len(args)
 	if n > 0 {
-		f := AssertIOWriter(GLOBAL_ENV.stdout.Value, "")
+		f := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
 		for _, arg := range args[:n-1] {
 			PrintObject(arg, f)
 			fmt.Fprint(f, " ")
@@ -1158,7 +1157,7 @@ var procPr Proc = func(args []Object) Object {
 }
 
 var procNewline Proc = func(args []Object) Object {
-	f := AssertIOWriter(GLOBAL_ENV.stdout.Value, "")
+	f := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
 	fmt.Fprintln(f)
 	return NIL
 }
@@ -1178,50 +1177,8 @@ func readFromReader(reader io.RuneReader) Object {
 	return obj
 }
 
-func EnsureRuneReader(args []Object, index int) io.RuneReader {
-	switch c := args[index].(type) {
-	case io.RuneReader:
-		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "RuneReader"))
-	}
-}
-
-func AssertStringReader(obj Object, msg string) StringReader {
-	switch c := obj.(type) {
-	case StringReader:
-		return c
-	default:
-		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "StringReader", obj.GetType().ToString(false))
-		}
-		panic(RT.NewError(msg))
-	}
-}
-
-func EnsureIOWriter(args []Object, index int) io.Writer {
-	switch c := args[index].(type) {
-	case io.Writer:
-		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "IOWriter"))
-	}
-}
-
-func AssertIOWriter(obj Object, msg string) io.Writer {
-	switch c := obj.(type) {
-	case io.Writer:
-		return c
-	default:
-		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "IOWriter", obj.GetType().ToString(false))
-		}
-		panic(RT.NewError(msg))
-	}
-}
-
 var procRead Proc = func(args []Object) Object {
-	f := EnsureRuneReader(args, 0)
+	f := Ensureio_RuneReader(args, 0)
 	return readFromReader(f)
 }
 
@@ -1251,6 +1208,16 @@ var procReadLine Proc = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	f := AssertStringReader(GLOBAL_ENV.stdin.Value, "")
 	line, err := readLine(f)
+	if err != nil {
+		return NIL
+	}
+	return String{S: line}
+}
+
+var procReaderReadLine Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	rdr := EnsureStringReader(args, 0)
+	line, err := readLine(rdr)
 	if err != nil {
 		return NIL
 	}
@@ -1441,6 +1408,15 @@ var procBuffer Proc = func(args []Object) Object {
 		return &Buffer{bytes.NewBufferString(s.S)}
 	}
 	return &Buffer{&bytes.Buffer{}}
+}
+
+var procBufferedReader Proc = func(args []Object) Object {
+	switch rdr := args[0].(type) {
+	case io.Reader:
+		return &BufferedReader{bufio.NewReader(rdr)}
+	default:
+		panic(RT.NewArgTypeError(0, args[0], "IOReader"))
+	}
 }
 
 var procSlurp Proc = func(args []Object) Object {
@@ -2100,6 +2076,7 @@ func init() {
 	intern("flush__", procFlush)
 	intern("read__", procRead)
 	intern("read-line__", procReadLine)
+	intern("reader-read-line__", procReaderReadLine)
 	intern("read-string__", procReadString)
 	intern("nano-time__", procNanoTime)
 	intern("macroexpand-1__", procMacroexpand1)
@@ -2122,6 +2099,7 @@ func init() {
 	intern("ns-resolve__", procNsResolve)
 	intern("array-map__", procArrayMap)
 	intern("buffer__", procBuffer)
+	intern("buffered-reader__", procBufferedReader)
 	intern("ex-info__", procExInfo)
 	intern("ex-data__", procExData)
 	intern("ex-cause__", procExCause)
