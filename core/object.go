@@ -1019,7 +1019,11 @@ func (rat *Ratio) Compare(other Object) int {
 	return CompareNumbers(rat, AssertNumber(other, "Cannot compare Ratio and "+other.GetType().ToString(false)))
 }
 
-func MakeBigInt(b uint64) *BigInt {
+func MakeBigInt(bi int64) *BigInt {
+	return &BigInt{b: *big.NewInt(bi)}
+}
+
+func MakeBigUInt(b uint64) *BigInt {
 	bigint := big.NewInt(0)
 	bigint.SetUint64(b)
 	return &BigInt{b: *bigint}

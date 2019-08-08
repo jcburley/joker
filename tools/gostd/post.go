@@ -156,7 +156,7 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 			out = "MakeInt(int(" + captureName + "))"
 		case "uint64", "uintptr":
 			cl = "BigInt"
-			out = "MakeBigInt(uint64(" + captureName + "))"
+			out = "MakeBigUInt(uint64(" + captureName + "))"
 		case "bool":
 			cl = "Boolean"
 			out = "MakeBoolean(" + captureName + ")"
