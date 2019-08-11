@@ -1143,9 +1143,19 @@ func (o GoObject) WithInfo(info *ObjectInfo) Object {
 	return o
 }
 
+func typeToString(ty reflect.Type) string {
+	switch ty.Kind() {
+	case reflect.Array:
+		return "[]" + typeToString(ty.Elem())
+	case reflect.Ptr:
+		return "*" + typeToString(ty.Elem())
+	}
+	return ty.PkgPath() + "." + ty.Name()
+}
+
 func (o GoObject) GetType() *Type {
 	ty := reflect.TypeOf(o.O)
-	s := fmt.Sprintf("GoObject[%v]", ty)
+	s := fmt.Sprintf("GoObject[%s]", typeToString(ty))
 	k := STRINGS.Intern(s)
 	var t *Type
 	var found bool
