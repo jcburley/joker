@@ -50,13 +50,38 @@ var qualifiedFunctions = map[string]*funcInfo{}
 
 var alreadySeen = []string{}
 
+func receiverList(src *goFile, rl *FieldList) string {
+	if rl == nil {
+		return ""
+	}
+	res := "("
+	for i, r := range rl.List {
+		if i != 0 {
+			res += ","
+		}
+		switch x := r.Type.(type) {
+		case *Ident:
+			res += x.Name
+		case *ArrayType:
+			res += x.Elt.(*Ident).Name
+		case *StarExpr:
+			res += x.X.(*Ident).Name
+		default:
+			panic(fmt.Sprintf("receiverList: unrecognized expr %T", x))
+		}
+	}
+	res += ")"
+	return res
+}
+
 // Returns whether any public functions were actually processed.
 func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
 	if dump {
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
 		Print(fset, fd)
 	}
-	fname := pkgDirUnix + "." + fd.Name.Name
+	rcvrs := receiverList(gf, fd.Recv)
+	fname := pkgDirUnix + "." + rcvrs + fd.Name.Name
 	if v, ok := qualifiedFunctions[fname]; ok {
 		alreadySeen = append(alreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
@@ -92,38 +117,36 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 	gt.td = ts
 	gt.where = ts.Pos()
 	gt.requiredImports = &packageImports{}
-	numDeclaredGoTypes++
+	if !isPrivate(ts.Name.Name) {
+		numDeclaredGoTypes++
+	}
 }
 
 func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		if isPrivate(ts.Name.Name) {
-			continue // Skipping non-exported functions
-		}
 		processTypeSpec(gf, pkg, pathUnix, f, ts)
 	}
 }
 
+func isPrivateType(f *Expr) bool {
+	switch td := (*f).(type) {
+	case *Ident:
+		return isPrivate(td.Name)
+	case *ArrayType:
+		return isPrivateType(&td.Elt)
+	case *StarExpr:
+		return isPrivateType(&td.X)
+	default:
+		panic(fmt.Sprintf("isPrivateType: Unsupported expr type %T", f))
+	}
+}
+
 // Returns whether any public functions were actually processed.
-func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
+func processTypes(gf *goFile, pkgDirUnix, pathUnix string, f *File) bool {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
-			rcv := v.Recv // *FieldList of receivers or nil (functions)
-			if isPrivate(v.Name.Name) {
-				continue // Skipping non-exported functions
-			}
-			numFunctions += 1
-			if rcv == nil {
-				numStandalones += 1
-			} else {
-				numReceivers += 1
-				continue // Skipping these for now
-			}
-			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
-				found = true
-			}
 		case *GenDecl:
 			if v.Tok != token.TYPE {
 				continue
@@ -131,6 +154,34 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 			processTypeSpecs(gf, pkgDirUnix, pathUnix, f, v.Specs)
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
+		}
+	}
+	return false
+}
+
+func processFuncs(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
+Funcs:
+	for _, s := range f.Decls {
+		switch v := s.(type) {
+		case *FuncDecl:
+			if isPrivate(v.Name.Name) {
+				continue // Skipping non-exported functions
+			}
+			if v.Recv != nil {
+				for _, r := range v.Recv.List {
+					if isPrivateType(&r.Type) {
+						continue Funcs // Publishable receivers must operate on public types
+					}
+				}
+				numReceivers += 1
+			} else {
+				numStandalones += 1
+			}
+			numFunctions += 1
+			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
+				found = true
+			}
+		case *GenDecl:
 		}
 	}
 	return
@@ -269,7 +320,14 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, f)
-		if processDecls(gf, pkgDirUnix, goFilePathUnix, f) {
+		if processTypes(gf, pkgDirUnix, goFilePathUnix, f) {
+			found = true
+		}
+	}
+	for path, f := range p.Files {
+		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		gf := goFiles[goFilePathUnix]
+		if processFuncs(gf, pkgDirUnix, goFilePathUnix, f) {
 			found = true
 		}
 	}

@@ -162,6 +162,9 @@ func printAbends(m map[string]int) {
 func genFunction(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
+	if d.Recv != nil {
+		return // NOT YET
+	}
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := fn.sourceFile.pkgBaseName
 
@@ -263,6 +266,10 @@ func maybeDeref(ptrTo string) string {
 }
 
 func genType(t string, ti *goTypeInfo) {
+	td := ti.td
+	if isPrivate(td.Name.Name) {
+		return // Do not generate anything for private types
+	}
 	pkgDirUnix := ti.sourceFile.pkgDirUnix
 	pkgBaseName := ti.sourceFile.pkgBaseName
 	if pi, found := packagesInfo[pkgDirUnix]; !found {
@@ -294,9 +301,9 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 `
 
 	typeName := path.Base(t)
-	baseTypeName := ti.td.Name.Name
+	baseTypeName := td.Name.Name
 
-	others := maybeImplicitConvert(ti.sourceFile, typeName, ti.td)
+	others := maybeImplicitConvert(ti.sourceFile, typeName, td)
 	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	const clojureTemplate = `

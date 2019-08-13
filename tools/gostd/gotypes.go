@@ -63,7 +63,7 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 	if gotypes.Universe.Lookup(baseName) != nil {
 		ti := &goTypeInfo{
 			localName:          baseName,
-			fullName:           fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s)", baseName),
+			fullName:           fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", baseName, pkgDirUnix),
 			argClojureType:     baseName,
 			argClojureArgType:  baseName,
 			convertFromClojure: baseName + "(%s)",
@@ -136,6 +136,17 @@ func toGoExprString(src *goFile, e *Expr) string {
 	t := toGoExprInfo(src, e)
 	if t != nil {
 		return t.fullName
+	}
+	return fmt.Sprintf("%T", e)
+}
+
+func toGoExprTypeName(src *goFile, e *Expr) string {
+	if e == nil {
+		return "-"
+	}
+	t := toGoExprInfo(src, e)
+	if t != nil {
+		return t.localName
 	}
 	return fmt.Sprintf("%T", e)
 }
