@@ -103,7 +103,7 @@ func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)
 }
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeSpec) {
+func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeSpec) bool {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
@@ -120,13 +120,17 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 	if !isPrivate(ts.Name.Name) {
 		numDeclaredGoTypes++
 	}
+	return true
 }
 
-func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) {
+func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) (found bool) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		processTypeSpec(gf, pkg, pathUnix, f, ts)
+		if processTypeSpec(gf, pkg, pathUnix, f, ts) {
+			found = true
+		}
 	}
+	return
 }
 
 func isPrivateType(f *Expr) bool {
@@ -143,7 +147,7 @@ func isPrivateType(f *Expr) bool {
 }
 
 // Returns whether any public functions were actually processed.
-func processTypes(gf *goFile, pkgDirUnix, pathUnix string, f *File) bool {
+func processTypes(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -151,7 +155,9 @@ func processTypes(gf *goFile, pkgDirUnix, pathUnix string, f *File) bool {
 			if v.Tok != token.TYPE {
 				continue
 			}
-			processTypeSpecs(gf, pkgDirUnix, pathUnix, f, v.Specs)
+			if processTypeSpecs(gf, pkgDirUnix, pathUnix, f, v.Specs) {
+				found = true
+			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
 		}
@@ -317,6 +323,8 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	}
 
 	found := false
+
+	// Must process all types before processing functions, since receivers are defined on types.
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, f)
@@ -324,6 +332,8 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 			found = true
 		}
 	}
+
+	// Now process functions.
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := goFiles[goFilePathUnix]
@@ -331,6 +341,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 			found = true
 		}
 	}
+
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
