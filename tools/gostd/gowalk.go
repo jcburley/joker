@@ -23,6 +23,7 @@ var numGeneratedTypes int
 var numDeclaredGoTypes int
 
 type funcInfo struct {
+	name         string // RcvrType_name for a receiver
 	fd           *FuncDecl
 	sourceFile   *goFile
 	refersToSelf bool // whether :go-imports should list itself
@@ -50,28 +51,27 @@ var qualifiedFunctions = map[string]*funcInfo{}
 
 var alreadySeen = []string{}
 
-func receiverList(src *goFile, rl *FieldList) string {
+func receiverPrefix(src *goFile, rl *FieldList) string {
 	if rl == nil {
 		return ""
 	}
-	res := "("
+	res := ""
 	for i, r := range rl.List {
 		if i != 0 {
-			res += ","
+			res += "_"
 		}
 		switch x := r.Type.(type) {
 		case *Ident:
 			res += x.Name
 		case *ArrayType:
-			res += x.Elt.(*Ident).Name
+			res += "ArrayOf_" + x.Elt.(*Ident).Name
 		case *StarExpr:
-			res += x.X.(*Ident).Name
+			res += "PtrTo_" + x.X.(*Ident).Name
 		default:
-			panic(fmt.Sprintf("receiverList: unrecognized expr %T", x))
+			panic(fmt.Sprintf("receiverList: unrecognized expr %T in %s", x, src.name))
 		}
 	}
-	res += ")"
-	return res
+	return res + "_"
 }
 
 // Returns whether any public functions were actually processed.
@@ -80,14 +80,14 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
 		Print(fset, fd)
 	}
-	rcvrs := receiverList(gf, fd.Recv)
-	fname := pkgDirUnix + "." + rcvrs + fd.Name.Name
-	if v, ok := qualifiedFunctions[fname]; ok {
+	fnName := receiverPrefix(gf, fd.Recv) + fd.Name.Name
+	fullName := pkgDirUnix + "." + fnName
+	if v, ok := qualifiedFunctions[fullName]; ok {
 		alreadySeen = append(alreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
-				fname, v.sourceFile.name, filename))
+				fullName, v.sourceFile.name, filename))
 	}
-	qualifiedFunctions[fname] = &funcInfo{fd, gf, false}
+	qualifiedFunctions[fullName] = &funcInfo{fnName, fd, gf, false}
 	return true
 }
 

@@ -159,12 +159,71 @@ func printAbends(m map[string]int) {
 	}
 }
 
-func genFunction(fn *funcInfo) {
+func genReceiver(fn *funcInfo) {
 	genSymReset()
 	d := fn.fd
-	if d.Recv != nil {
-		return // NOT YET
+	pkgDirUnix := fn.sourceFile.pkgDirUnix
+	pkgBaseName := fn.sourceFile.pkgBaseName
+
+	const goTemplate = `
+func %s(o GoObject, args Object) Object {
+%s}
+`
+
+	goFname := funcNameAsGoPrivate(fn.name)
+	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
+	clojureReturnType, _ := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
+
+	/*
+		var cl2gol string
+		if clojureReturnType == "" {
+			cl2gol = goFname
+		} else {
+			clojureReturnType += " "
+			cl2gol = pkgBaseName + "." + d.Name.Name
+			if _, found := packagesInfo[pkgDirUnix]; !found {
+				panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
+			}
+		}
+
+		cl2golCall := cl2gol + fc.clojureGoParams
+		clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
+			commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+				fc.goParamListDoc, fc.goReturnTypeForDoc),
+			cl2golCall, fc.clojureParamList)
+	*/
+	clojureFn := ""
+
+	goFn := fmt.Sprintf(goTemplate, goFname, fc.goCode)
+
+	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
+		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
+		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
+		trackAbends(clojureFn)
+		trackAbends(goFn)
+	} else {
+		numGeneratedFunctions++
+		numGeneratedReceivers++
+		packagesInfo[pkgDirUnix].nonEmpty = true
+		if clojureReturnType == "" {
+			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
+			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
+		}
+		if clojureReturnType != "" || fn.refersToSelf {
+			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix)
+		}
 	}
+
+	//	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
+
+	if goFn != "" {
+		goCode[pkgDirUnix].functions[goFname] = fnCodeInfo{fn.sourceFile, goFn}
+	}
+}
+
+func genStandalone(fn *funcInfo) {
+	genSymReset()
+	d := fn.fd
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := fn.sourceFile.pkgBaseName
 
@@ -212,11 +271,7 @@ func %s(%s) %s {
 		trackAbends(goFn)
 	} else {
 		numGeneratedFunctions++
-		if d.Recv == nil {
-			numGeneratedStandalones++
-		} else {
-			numGeneratedReceivers++
-		}
+		numGeneratedStandalones++
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
 			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")

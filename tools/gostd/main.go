@@ -211,7 +211,11 @@ func main() {
 	/* Generate function-code snippets in alphabetical order. */
 	sortedFuncInfoMap(qualifiedFunctions,
 		func(f string, v *funcInfo) {
-			genFunction(v)
+			if v.fd.Recv == nil {
+				genStandalone(v)
+			} else {
+				genReceiver(v)
+			}
 		})
 
 	/* Generate type-code snippets in sorted order. For each
