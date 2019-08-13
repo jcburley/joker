@@ -249,13 +249,14 @@ func main() {
 		fmt.Printf("ABENDs:")
 		printAbends(abends)
 		fmt.Printf(`
-Totals: functions=%d methods=%d (%s%%) standalone=%d (%s%%) generated=%d (%s%%)
+Totals: functions=%d generated=%d (%s%%)
+          non-receivers=%d (%s%%) generated=%d (%s%%)
+          receivers=%d (%s%%) generated=%d (%s%%)
         types=%d generated=%d (%s%%)
 `,
-			len(qualifiedFunctions)+numMethods, numMethods,
-			pct(numMethods, len(qualifiedFunctions)+numMethods),
-			len(qualifiedFunctions), pct(len(qualifiedFunctions), len(qualifiedFunctions)+numMethods),
-			numGeneratedFunctions, pct(numGeneratedFunctions, len(qualifiedFunctions)),
+			numFunctions, numGeneratedFunctions, pct(numGeneratedFunctions, numFunctions),
+			numStandalones, pct(numStandalones, numFunctions), numGeneratedStandalones, pct(numGeneratedStandalones, numStandalones),
+			numReceivers, pct(numReceivers, numFunctions), numGeneratedReceivers, pct(numGeneratedReceivers, numReceivers),
 			numDeclaredGoTypes, numGeneratedTypes, pct(numGeneratedTypes, numDeclaredGoTypes))
 	}
 

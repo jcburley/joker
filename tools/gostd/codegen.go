@@ -209,6 +209,11 @@ func %s(%s) %s {
 		trackAbends(goFn)
 	} else {
 		numGeneratedFunctions++
+		if d.Recv == nil {
+			numGeneratedStandalones++
+		} else {
+			numGeneratedReceivers++
+		}
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
 			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")

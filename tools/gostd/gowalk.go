@@ -13,8 +13,12 @@ import (
 	"strings"
 )
 
-var numMethods int
+var numFunctions int
+var numStandalones int
+var numReceivers int
+var numGeneratedStandalones int
 var numGeneratedFunctions int
+var numGeneratedReceivers int
 var numGeneratedTypes int
 var numDeclaredGoTypes int
 
@@ -106,13 +110,16 @@ func processDecls(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool)
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
-			rcv := v.Recv // *FieldList of methods or nil (functions)
-			if rcv != nil {
-				numMethods += 1
-				continue // Skipping these for now
-			}
+			rcv := v.Recv // *FieldList of receivers or nil (functions)
 			if isPrivate(v.Name.Name) {
 				continue // Skipping non-exported functions
+			}
+			numFunctions += 1
+			if rcv == nil {
+				numStandalones += 1
+			} else {
+				numReceivers += 1
+				continue // Skipping these for now
 			}
 			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
 				found = true
