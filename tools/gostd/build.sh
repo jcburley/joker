@@ -24,4 +24,7 @@ vet() {
     fi
 }
 
-vet && go build && ./test.sh --on-error :
+ONERROR=":"
+[ -r ONERROR.txt ] && ONERROR="$(cat ONERROR.txt)"
+
+vet && go build && ./test.sh --on-error "$ONERROR"
