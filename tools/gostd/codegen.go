@@ -160,6 +160,9 @@ func printAbends(m map[string]int) {
 }
 
 func genReceiver(fn *funcInfo) {
+	if fn != nil {
+		return
+	}
 	genSymReset()
 	d := fn.fd
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
