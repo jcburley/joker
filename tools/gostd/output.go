@@ -248,6 +248,7 @@ import (%s
 	}
 	sortedStringMap(v.initTypes,
 		func(k, v string) {
+			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", k, v))
 		})
 	if out != nil {
 		out.WriteString("}\n")

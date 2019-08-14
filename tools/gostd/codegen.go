@@ -171,6 +171,36 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	return fmt.Sprintf(template[1:], fn.docName, fn.receiverId, receiverName, argList)
 }
 
+func typeKey(pkgPrefix string, fl *Field) string {
+	t := ""
+	suffix := ""
+	switch x := fl.Type.(type) {
+	case *Ident:
+		t = "*" + pkgPrefix + x.Name
+		suffix = ".Elem()"
+	case *StarExpr:
+		t = "*" + pkgPrefix + x.X.(*Ident).Name
+	default:
+		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
+	}
+	return fmt.Sprintf("reflect.TypeOf((%s)(nil))%s", t, suffix)
+}
+
+func typeInfoName(fl *Field) string {
+	res := ""
+	switch x := fl.Type.(type) {
+	case *Ident:
+		res += x.Name
+	case *ArrayType:
+		res += "ArrayOf_" + x.Elt.(*Ident).Name
+	case *StarExpr:
+		res += "PtrTo_" + x.X.(*Ident).Name
+	default:
+		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
+	}
+	return "members_" + res
+}
+
 func genReceiver(fn *funcInfo) {
 	if fn.fd.Type.Params != nil && len(fn.fd.Type.Params.List) != 0 {
 		return
@@ -198,26 +228,6 @@ func %s(o GoObject, args Object) Object {
 
 	goFname := funcNameAsGoPrivate(fn.name)
 
-	/*
-		clojureReturnType, _ := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
-
-		var cl2gol string
-		if clojureReturnType == "" {
-			cl2gol = goFname
-		} else {
-			clojureReturnType += " "
-			cl2gol = pkgBaseName + "." + d.Name.Name
-			if _, found := packagesInfo[pkgDirUnix]; !found {
-				panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
-			}
-		}
-
-		cl2golCall := cl2gol + fc.clojureGoParams
-		clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
-			commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
-				fc.goParamListDoc, fc.goReturnTypeForDoc),
-			cl2golCall, fc.clojureParamList)
-	*/
 	clojureFn := ""
 
 	goFn := fmt.Sprintf(goTemplate, goFname, genReceiverCode(fn, goFname))
@@ -233,6 +243,9 @@ func %s(o GoObject, args Object) Object {
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
+		for _, r := range fn.fd.Recv.List {
+			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = typeInfoName(r)
+		}
 	}
 
 	//	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
