@@ -224,7 +224,7 @@ func init() {
 		localName:            "bool",
 		fullName:             "bool",
 		argClojureType:       "Boolean",
-		argFromClojureObject: ".Boolean().B",
+		argFromClojureObject: ".B",
 		argClojureArgType:    "Boolean",
 		argExtractFunc:       "Boolean",
 		convertFromClojure:   "ToBool(%s)",
