@@ -183,7 +183,7 @@ func typeKey(pkgPrefix string, fl *Field) string {
 	default:
 		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
 	}
-	return fmt.Sprintf("reflect.TypeOf((%s)(nil))%s", t, suffix)
+	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
 }
 
 func typeInfoName(fl *Field) string {
@@ -243,6 +243,7 @@ func %s(o GoObject, args Object) Object {
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
+		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect")
 		for _, r := range fn.fd.Recv.List {
 			tin := typeInfoName(r)
 			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = tin

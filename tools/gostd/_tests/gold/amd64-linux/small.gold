@@ -887,6 +887,7 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_url "net/url"
+	_reflect "reflect"
 )
 var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
 	"Error": __ptrTo_Error_Error,
@@ -919,12 +920,12 @@ var members_Values = GoTypeInfo{Members: GoMembers{
 
 
 func init() {
-	GoTypes[reflect.TypeOf((*_url.Error)(nil))] = &members_PtrTo_Error
-	GoTypes[reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &members_EscapeError
-	GoTypes[reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &members_InvalidHostError
-	GoTypes[reflect.TypeOf((*_url.URL)(nil))] = &members_PtrTo_URL
-	GoTypes[reflect.TypeOf((*_url.Userinfo)(nil))] = &members_PtrTo_Userinfo
-	GoTypes[reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &members_EscapeError
+	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &members_InvalidHostError
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil))] = &members_PtrTo_URL
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil))] = &members_PtrTo_Userinfo
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
 ABENDs: 047(2) 042(1) 674(1)
