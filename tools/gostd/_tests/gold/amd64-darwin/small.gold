@@ -511,6 +511,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_net "net"
 )
+
+func init() {
+}
+
 GO TYPE net/url.Error from net/url/url.go:
 func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	a := args[index]
@@ -883,7 +887,47 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_url "net/url"
+	_reflect "reflect"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_EscapeError = GoTypeInfo{Members: GoMembers{
+	"Error": __escapeError_Error,
+}}
+
+var members_InvalidHostError = GoTypeInfo{Members: GoMembers{
+	"Error": __invalidHostError_Error,
+}}
+
+var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
+	"EscapedPath": __ptrTo_URL_EscapedPath,
+	"Hostname": __ptrTo_URL_Hostname,
+	"Port": __ptrTo_URL_Port,
+	"RequestURI": __ptrTo_URL_RequestURI,
+	"String": __ptrTo_URL_String,
+}}
+
+var members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Userinfo_String,
+	"Username": __ptrTo_Userinfo_Username,
+}}
+
+var members_Values = GoTypeInfo{Members: GoMembers{
+	"Encode": __values_Encode,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &members_EscapeError
+	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &members_InvalidHostError
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil))] = &members_PtrTo_URL
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil))] = &members_PtrTo_Userinfo
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
+}
+
 ABENDs: 047(2) 042(1) 674(1)
 Totals: functions=51 generated=28 (54.90%)
           non-receivers=18 (35.29%) generated=17 (94.44%)

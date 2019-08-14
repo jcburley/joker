@@ -19828,7 +19828,17 @@ package tar
 import (
 	_tar "archive/tar"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_Format = GoTypeInfo{Members: GoMembers{
+	"String": __format_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_tar.Format)(nil)).Elem()] = &members_Format
+}
+
 GO TYPE archive/zip.Compressor from archive/zip/register.go:
 func ExtractGoObjectCompressor(args []Object, index int) *_zip.Compressor {
 	a := args[index]
@@ -20163,6 +20173,10 @@ import (
 	_zip "archive/zip"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE bufio.ReadWriter from bufio/bufio.go:
 func ExtractGoObjectReadWriter(args []Object, index int) *_bufio.ReadWriter {
 	a := args[index]
@@ -20459,7 +20473,17 @@ package bufio
 import (
 	_bufio "bufio"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_Scanner = GoTypeInfo{Members: GoMembers{
+	"Text": __ptrTo_Scanner_Text,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_bufio.Scanner)(nil))] = &members_PtrTo_Scanner
+}
+
 GO TYPE bytes.Buffer from bytes/buffer.go:
 func ExtractGoObjectBuffer(args []Object, index int) *_bytes.Buffer {
 	a := args[index]
@@ -20984,7 +21008,17 @@ package bytes
 import (
 	_bytes "bytes"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_Buffer = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Buffer_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_bytes.Buffer)(nil))] = &members_PtrTo_Buffer
+}
+
 GO TYPE compress/bzip2.StructuralError from compress/bzip2/bzip2.go:
 func ExtractGoObjectStructuralError(args []Object, index int) *_bzip2.StructuralError {
 	a := args[index]
@@ -21038,7 +21072,17 @@ package bzip2
 import (
 	_bzip2 "compress/bzip2"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_StructuralError = GoTypeInfo{Members: GoMembers{
+	"Error": __structuralError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_bzip2.StructuralError)(nil)).Elem()] = &members_StructuralError
+}
+
 GO TYPE compress/flate.CorruptInputError from compress/flate/inflate.go:
 func ExtractGoObjectCorruptInputError(args []Object, index int) *_flate.CorruptInputError {
 	a := args[index]
@@ -21357,7 +21401,32 @@ import (
 	_flate "compress/flate"
 	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_CorruptInputError = GoTypeInfo{Members: GoMembers{
+	"Error": __corruptInputError_Error,
+}}
+
+var members_InternalError = GoTypeInfo{Members: GoMembers{
+	"Error": __internalError_Error,
+}}
+
+var members_PtrTo_ReadError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ReadError_Error,
+}}
+
+var members_PtrTo_WriteError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_WriteError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_flate.CorruptInputError)(nil)).Elem()] = &members_CorruptInputError
+	GoTypes[_reflect.TypeOf((*_flate.InternalError)(nil)).Elem()] = &members_InternalError
+	GoTypes[_reflect.TypeOf((*_flate.ReadError)(nil))] = &members_PtrTo_ReadError
+	GoTypes[_reflect.TypeOf((*_flate.WriteError)(nil))] = &members_PtrTo_WriteError
+}
+
 GO FUNC compress/gzip.NewReader from compress/gzip/gunzip.go:
 // func __newReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res1, _res2 := _gzip.NewReader(r)
@@ -21560,6 +21629,10 @@ import (
 	_list "container/list"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE container/ring.Ring from container/ring/ring.go:
 func ExtractGoObjectRing(args []Object, index int) *_ring.Ring {
 	a := args[index]
@@ -21616,6 +21689,10 @@ import (
 	_ring "container/ring"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE context.CancelFunc from context/context.go:
 func ExtractGoObjectCancelFunc(args []Object, index int) *_context.CancelFunc {
 	a := args[index]
@@ -21729,6 +21806,10 @@ import (
 	_context "context"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto.RegisterHash from crypto/crypto.go:
 // func __registerHash(h _crypto.Hash, f func) Object {
 // 	_crypto.RegisterHash(h, f)
@@ -21791,7 +21872,17 @@ package aes
 import (
 	_aes "crypto/aes"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_KeySizeError = GoTypeInfo{Members: GoMembers{
+	"Error": __keySizeError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_aes.KeySizeError)(nil)).Elem()] = &members_KeySizeError
+}
+
 GO TYPE crypto/cipher.AEAD from crypto/cipher/gcm.go:
 func ExtractGoObjectAEAD(args []Object, index int) *_cipher.AEAD {
 	a := args[index]
@@ -22070,6 +22161,10 @@ import (
 	_cipher "crypto/cipher"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE crypto/des.KeySizeError from crypto/des/cipher.go:
 func ExtractGoObjectKeySizeError(args []Object, index int) *_des.KeySizeError {
 	a := args[index]
@@ -22135,7 +22230,17 @@ package des
 import (
 	_des "crypto/des"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_KeySizeError = GoTypeInfo{Members: GoMembers{
+	"Error": __keySizeError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_des.KeySizeError)(nil)).Elem()] = &members_KeySizeError
+}
+
 GO FUNC crypto/dsa.GenerateKey from crypto/dsa/dsa.go:
 // func __generateKey(priv *_dsa.PrivateKey, rand ABEND987(genutils.go: imports not yet supported: io.Reader))  {
 // 	_res := _dsa.GenerateKey(priv, rand)
@@ -22333,6 +22438,10 @@ import (
 	_elliptic "crypto/elliptic"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto/hmac.Equal from crypto/hmac/hmac.go:
 // func __equal(mac1 []byte, mac2 []byte)  {
 // 	_res := _hmac.Equal(mac1, mac2)
@@ -22369,6 +22478,10 @@ import (
 	_md5 "crypto/md5"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto/rand.Int from crypto/rand/util.go:
 // func __int(rand ABEND987(genutils.go: imports not yet supported: io.Reader), max *ABEND987(genutils.go: imports not yet supported: big.Int)) Object {
 // 	n, err := _rand.Int(rand, max)
@@ -22492,7 +22605,17 @@ package rc4
 import (
 	_rc4 "crypto/rc4"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_KeySizeError = GoTypeInfo{Members: GoMembers{
+	"Error": __keySizeError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_rc4.KeySizeError)(nil)).Elem()] = &members_KeySizeError
+}
+
 GO FUNC crypto/rsa.DecryptOAEP from crypto/rsa/rsa.go:
 // func __decryptOAEP(hash ABEND987(genutils.go: imports not yet supported: hash.Hash), random ABEND987(genutils.go: imports not yet supported: io.Reader), priv *_rsa.PrivateKey, ciphertext []byte, label []byte) Object {
 // 	_res1, _res2 := _rsa.DecryptOAEP(hash, random, priv, ciphertext, label)
@@ -22631,6 +22754,10 @@ import (
 	_sha1 "crypto/sha1"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto/sha256.New from crypto/sha256/sha256.go:
 func __new() Object {
 	_res := _sha256.New()
@@ -22671,6 +22798,10 @@ import (
 	_sha256 "crypto/sha256"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto/sha512.New from crypto/sha512/sha512.go:
 func __new() Object {
 	_res := _sha512.New()
@@ -22743,6 +22874,10 @@ import (
 	_sha512 "crypto/sha512"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO FUNC crypto/subtle.ConstantTimeByteEq from crypto/subtle/constant_time.go:
 // func __constantTimeByteEq(x uint8, y uint8)  {
 // 	_res := _subtle.ConstantTimeByteEq(x, y)
@@ -22767,6 +22902,10 @@ package subtle
 
 import (
 )
+
+func init() {
+}
+
 GO TYPE crypto/tls.Certificate from crypto/tls/common.go:
 func ExtractGoObjectCertificate(args []Object, index int) *_tls.Certificate {
 	a := args[index]
@@ -23393,7 +23532,17 @@ package tls
 import (
 	_tls "crypto/tls"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_RecordHeaderError = GoTypeInfo{Members: GoMembers{
+	"Error": __recordHeaderError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_tls.RecordHeaderError)(nil)).Elem()] = &members_RecordHeaderError
+}
+
 GO TYPE crypto/x509.CertPool from crypto/x509/cert_pool.go:
 func ExtractGoObjectCertPool(args []Object, index int) *_x509.CertPool {
 	a := args[index]
@@ -24396,7 +24545,57 @@ import (
 	_x509 "crypto/x509"
 	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_CertificateInvalidError = GoTypeInfo{Members: GoMembers{
+	"Error": __certificateInvalidError_Error,
+}}
+
+var members_ConstraintViolationError = GoTypeInfo{Members: GoMembers{
+	"Error": __constraintViolationError_Error,
+}}
+
+var members_HostnameError = GoTypeInfo{Members: GoMembers{
+	"Error": __hostnameError_Error,
+}}
+
+var members_InsecureAlgorithmError = GoTypeInfo{Members: GoMembers{
+	"Error": __insecureAlgorithmError_Error,
+}}
+
+var members_PublicKeyAlgorithm = GoTypeInfo{Members: GoMembers{
+	"String": __publicKeyAlgorithm_String,
+}}
+
+var members_SignatureAlgorithm = GoTypeInfo{Members: GoMembers{
+	"String": __signatureAlgorithm_String,
+}}
+
+var members_SystemRootsError = GoTypeInfo{Members: GoMembers{
+	"Error": __systemRootsError_Error,
+}}
+
+var members_UnhandledCriticalExtension = GoTypeInfo{Members: GoMembers{
+	"Error": __unhandledCriticalExtension_Error,
+}}
+
+var members_UnknownAuthorityError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownAuthorityError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_x509.CertificateInvalidError)(nil)).Elem()] = &members_CertificateInvalidError
+	GoTypes[_reflect.TypeOf((*_x509.ConstraintViolationError)(nil)).Elem()] = &members_ConstraintViolationError
+	GoTypes[_reflect.TypeOf((*_x509.HostnameError)(nil)).Elem()] = &members_HostnameError
+	GoTypes[_reflect.TypeOf((*_x509.InsecureAlgorithmError)(nil)).Elem()] = &members_InsecureAlgorithmError
+	GoTypes[_reflect.TypeOf((*_x509.PublicKeyAlgorithm)(nil)).Elem()] = &members_PublicKeyAlgorithm
+	GoTypes[_reflect.TypeOf((*_x509.SignatureAlgorithm)(nil)).Elem()] = &members_SignatureAlgorithm
+	GoTypes[_reflect.TypeOf((*_x509.SystemRootsError)(nil)).Elem()] = &members_SystemRootsError
+	GoTypes[_reflect.TypeOf((*_x509.UnhandledCriticalExtension)(nil)).Elem()] = &members_UnhandledCriticalExtension
+	GoTypes[_reflect.TypeOf((*_x509.UnknownAuthorityError)(nil)).Elem()] = &members_UnknownAuthorityError
+}
+
 GO TYPE crypto/x509/pkix.AlgorithmIdentifier from crypto/x509/pkix/pkix.go:
 func ExtractGoObjectAlgorithmIdentifier(args []Object, index int) *_pkix.AlgorithmIdentifier {
 	a := args[index]
@@ -24840,7 +25039,22 @@ package pkix
 import (
 	_pkix "crypto/x509/pkix"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_Name = GoTypeInfo{Members: GoMembers{
+	"String": __name_String,
+}}
+
+var members_RDNSequence = GoTypeInfo{Members: GoMembers{
+	"String": __rDNSequence_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_pkix.Name)(nil)).Elem()] = &members_Name
+	GoTypes[_reflect.TypeOf((*_pkix.RDNSequence)(nil)).Elem()] = &members_RDNSequence
+}
+
 GO TYPE database/sql.ColumnType from database/sql/sql.go:
 func ExtractGoObjectColumnType(args []Object, index int) *_sql.ColumnType {
 	a := args[index]
@@ -25659,7 +25873,23 @@ package sql
 import (
 	_sql "database/sql"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_ColumnType = GoTypeInfo{Members: GoMembers{
+	"DatabaseTypeName": __ptrTo_ColumnType_DatabaseTypeName,
+	"Name": __ptrTo_ColumnType_Name,
+}}
+
+var members_IsolationLevel = GoTypeInfo{Members: GoMembers{
+	"String": __isolationLevel_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_sql.ColumnType)(nil))] = &members_PtrTo_ColumnType
+	GoTypes[_reflect.TypeOf((*_sql.IsolationLevel)(nil)).Elem()] = &members_IsolationLevel
+}
+
 GO FUNC database/sql/driver.IsScanValue from database/sql/driver/types.go:
 // func __isScanValue(v interface {})  {
 // 	_res := _driver.IsScanValue(v)
@@ -27284,7 +27514,86 @@ package dwarf
 import (
 	_dwarf "debug/dwarf"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_ArrayType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_ArrayType_String,
+}}
+
+var members_Attr = GoTypeInfo{Members: GoMembers{
+	"GoString": __attr_GoString,
+	"String": __attr_String,
+}}
+
+var members_PtrTo_BasicType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_BasicType_String,
+}}
+
+var members_Class = GoTypeInfo{Members: GoMembers{
+	"GoString": __class_GoString,
+	"String": __class_String,
+}}
+
+var members_DecodeError = GoTypeInfo{Members: GoMembers{
+	"Error": __decodeError_Error,
+}}
+
+var members_PtrTo_DotDotDotType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_DotDotDotType_String,
+}}
+
+var members_PtrTo_EnumType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_EnumType_String,
+}}
+
+var members_PtrTo_FuncType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_FuncType_String,
+}}
+
+var members_PtrTo_PtrType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_PtrType_String,
+}}
+
+var members_PtrTo_QualType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_QualType_String,
+}}
+
+var members_PtrTo_StructType = GoTypeInfo{Members: GoMembers{
+	"Defn": __ptrTo_StructType_Defn,
+	"String": __ptrTo_StructType_String,
+}}
+
+var members_Tag = GoTypeInfo{Members: GoMembers{
+	"GoString": __tag_GoString,
+	"String": __tag_String,
+}}
+
+var members_PtrTo_TypedefType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_TypedefType_String,
+}}
+
+var members_PtrTo_VoidType = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_VoidType_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_dwarf.ArrayType)(nil))] = &members_PtrTo_ArrayType
+	GoTypes[_reflect.TypeOf((*_dwarf.Attr)(nil)).Elem()] = &members_Attr
+	GoTypes[_reflect.TypeOf((*_dwarf.BasicType)(nil))] = &members_PtrTo_BasicType
+	GoTypes[_reflect.TypeOf((*_dwarf.Class)(nil)).Elem()] = &members_Class
+	GoTypes[_reflect.TypeOf((*_dwarf.DecodeError)(nil)).Elem()] = &members_DecodeError
+	GoTypes[_reflect.TypeOf((*_dwarf.DotDotDotType)(nil))] = &members_PtrTo_DotDotDotType
+	GoTypes[_reflect.TypeOf((*_dwarf.EnumType)(nil))] = &members_PtrTo_EnumType
+	GoTypes[_reflect.TypeOf((*_dwarf.FuncType)(nil))] = &members_PtrTo_FuncType
+	GoTypes[_reflect.TypeOf((*_dwarf.PtrType)(nil))] = &members_PtrTo_PtrType
+	GoTypes[_reflect.TypeOf((*_dwarf.QualType)(nil))] = &members_PtrTo_QualType
+	GoTypes[_reflect.TypeOf((*_dwarf.StructType)(nil))] = &members_PtrTo_StructType
+	GoTypes[_reflect.TypeOf((*_dwarf.Tag)(nil)).Elem()] = &members_Tag
+	GoTypes[_reflect.TypeOf((*_dwarf.TypedefType)(nil))] = &members_PtrTo_TypedefType
+	GoTypes[_reflect.TypeOf((*_dwarf.VoidType)(nil))] = &members_PtrTo_VoidType
+}
+
 GO TYPE debug/elf.Chdr32 from debug/elf/elf.go:
 func ExtractGoObjectChdr32(args []Object, index int) *_elf.Chdr32 {
 	a := args[index]
@@ -29896,7 +30205,191 @@ package elf
 import (
 	_elf "debug/elf"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_Class = GoTypeInfo{Members: GoMembers{
+	"GoString": __class_GoString,
+	"String": __class_String,
+}}
+
+var members_CompressionType = GoTypeInfo{Members: GoMembers{
+	"GoString": __compressionType_GoString,
+	"String": __compressionType_String,
+}}
+
+var members_Data = GoTypeInfo{Members: GoMembers{
+	"GoString": __data_GoString,
+	"String": __data_String,
+}}
+
+var members_DynFlag = GoTypeInfo{Members: GoMembers{
+	"GoString": __dynFlag_GoString,
+	"String": __dynFlag_String,
+}}
+
+var members_DynTag = GoTypeInfo{Members: GoMembers{
+	"GoString": __dynTag_GoString,
+	"String": __dynTag_String,
+}}
+
+var members_PtrTo_FormatError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_FormatError_Error,
+}}
+
+var members_Machine = GoTypeInfo{Members: GoMembers{
+	"GoString": __machine_GoString,
+	"String": __machine_String,
+}}
+
+var members_NType = GoTypeInfo{Members: GoMembers{
+	"GoString": __nType_GoString,
+	"String": __nType_String,
+}}
+
+var members_OSABI = GoTypeInfo{Members: GoMembers{
+	"GoString": __oSABI_GoString,
+	"String": __oSABI_String,
+}}
+
+var members_ProgFlag = GoTypeInfo{Members: GoMembers{
+	"GoString": __progFlag_GoString,
+	"String": __progFlag_String,
+}}
+
+var members_ProgType = GoTypeInfo{Members: GoMembers{
+	"GoString": __progType_GoString,
+	"String": __progType_String,
+}}
+
+var members_R_386 = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_386_GoString,
+	"String": __r_386_String,
+}}
+
+var members_R_390 = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_390_GoString,
+	"String": __r_390_String,
+}}
+
+var members_R_AARCH64 = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_AARCH64_GoString,
+	"String": __r_AARCH64_String,
+}}
+
+var members_R_ALPHA = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_ALPHA_GoString,
+	"String": __r_ALPHA_String,
+}}
+
+var members_R_ARM = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_ARM_GoString,
+	"String": __r_ARM_String,
+}}
+
+var members_R_MIPS = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_MIPS_GoString,
+	"String": __r_MIPS_String,
+}}
+
+var members_R_PPC = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_PPC_GoString,
+	"String": __r_PPC_String,
+}}
+
+var members_R_PPC64 = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_PPC64_GoString,
+	"String": __r_PPC64_String,
+}}
+
+var members_R_RISCV = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_RISCV_GoString,
+	"String": __r_RISCV_String,
+}}
+
+var members_R_SPARC = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_SPARC_GoString,
+	"String": __r_SPARC_String,
+}}
+
+var members_R_X86_64 = GoTypeInfo{Members: GoMembers{
+	"GoString": __r_X86_64_GoString,
+	"String": __r_X86_64_String,
+}}
+
+var members_SectionFlag = GoTypeInfo{Members: GoMembers{
+	"GoString": __sectionFlag_GoString,
+	"String": __sectionFlag_String,
+}}
+
+var members_SectionIndex = GoTypeInfo{Members: GoMembers{
+	"GoString": __sectionIndex_GoString,
+	"String": __sectionIndex_String,
+}}
+
+var members_SectionType = GoTypeInfo{Members: GoMembers{
+	"GoString": __sectionType_GoString,
+	"String": __sectionType_String,
+}}
+
+var members_SymBind = GoTypeInfo{Members: GoMembers{
+	"GoString": __symBind_GoString,
+	"String": __symBind_String,
+}}
+
+var members_SymType = GoTypeInfo{Members: GoMembers{
+	"GoString": __symType_GoString,
+	"String": __symType_String,
+}}
+
+var members_SymVis = GoTypeInfo{Members: GoMembers{
+	"GoString": __symVis_GoString,
+	"String": __symVis_String,
+}}
+
+var members_Type = GoTypeInfo{Members: GoMembers{
+	"GoString": __type_GoString,
+	"String": __type_String,
+}}
+
+var members_Version = GoTypeInfo{Members: GoMembers{
+	"GoString": __version_GoString,
+	"String": __version_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_elf.Class)(nil)).Elem()] = &members_Class
+	GoTypes[_reflect.TypeOf((*_elf.CompressionType)(nil)).Elem()] = &members_CompressionType
+	GoTypes[_reflect.TypeOf((*_elf.Data)(nil)).Elem()] = &members_Data
+	GoTypes[_reflect.TypeOf((*_elf.DynFlag)(nil)).Elem()] = &members_DynFlag
+	GoTypes[_reflect.TypeOf((*_elf.DynTag)(nil)).Elem()] = &members_DynTag
+	GoTypes[_reflect.TypeOf((*_elf.FormatError)(nil))] = &members_PtrTo_FormatError
+	GoTypes[_reflect.TypeOf((*_elf.Machine)(nil)).Elem()] = &members_Machine
+	GoTypes[_reflect.TypeOf((*_elf.NType)(nil)).Elem()] = &members_NType
+	GoTypes[_reflect.TypeOf((*_elf.OSABI)(nil)).Elem()] = &members_OSABI
+	GoTypes[_reflect.TypeOf((*_elf.ProgFlag)(nil)).Elem()] = &members_ProgFlag
+	GoTypes[_reflect.TypeOf((*_elf.ProgType)(nil)).Elem()] = &members_ProgType
+	GoTypes[_reflect.TypeOf((*_elf.R_386)(nil)).Elem()] = &members_R_386
+	GoTypes[_reflect.TypeOf((*_elf.R_390)(nil)).Elem()] = &members_R_390
+	GoTypes[_reflect.TypeOf((*_elf.R_AARCH64)(nil)).Elem()] = &members_R_AARCH64
+	GoTypes[_reflect.TypeOf((*_elf.R_ALPHA)(nil)).Elem()] = &members_R_ALPHA
+	GoTypes[_reflect.TypeOf((*_elf.R_ARM)(nil)).Elem()] = &members_R_ARM
+	GoTypes[_reflect.TypeOf((*_elf.R_MIPS)(nil)).Elem()] = &members_R_MIPS
+	GoTypes[_reflect.TypeOf((*_elf.R_PPC)(nil)).Elem()] = &members_R_PPC
+	GoTypes[_reflect.TypeOf((*_elf.R_PPC64)(nil)).Elem()] = &members_R_PPC64
+	GoTypes[_reflect.TypeOf((*_elf.R_RISCV)(nil)).Elem()] = &members_R_RISCV
+	GoTypes[_reflect.TypeOf((*_elf.R_SPARC)(nil)).Elem()] = &members_R_SPARC
+	GoTypes[_reflect.TypeOf((*_elf.R_X86_64)(nil)).Elem()] = &members_R_X86_64
+	GoTypes[_reflect.TypeOf((*_elf.SectionFlag)(nil)).Elem()] = &members_SectionFlag
+	GoTypes[_reflect.TypeOf((*_elf.SectionIndex)(nil)).Elem()] = &members_SectionIndex
+	GoTypes[_reflect.TypeOf((*_elf.SectionType)(nil)).Elem()] = &members_SectionType
+	GoTypes[_reflect.TypeOf((*_elf.SymBind)(nil)).Elem()] = &members_SymBind
+	GoTypes[_reflect.TypeOf((*_elf.SymType)(nil)).Elem()] = &members_SymType
+	GoTypes[_reflect.TypeOf((*_elf.SymVis)(nil)).Elem()] = &members_SymVis
+	GoTypes[_reflect.TypeOf((*_elf.Type)(nil)).Elem()] = &members_Type
+	GoTypes[_reflect.TypeOf((*_elf.Version)(nil)).Elem()] = &members_Version
+}
+
 GO TYPE debug/gosym.DecodingError from debug/gosym/symtab.go:
 func ExtractGoObjectDecodingError(args []Object, index int) *_gosym.DecodingError {
 	a := args[index]
@@ -30303,7 +30796,34 @@ package gosym
 import (
 	_gosym "debug/gosym"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_DecodingError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_DecodingError_Error,
+}}
+
+var members_PtrTo_Sym = GoTypeInfo{Members: GoMembers{
+	"BaseName": __ptrTo_Sym_BaseName,
+	"PackageName": __ptrTo_Sym_PackageName,
+	"ReceiverName": __ptrTo_Sym_ReceiverName,
+}}
+
+var members_UnknownFileError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownFileError_Error,
+}}
+
+var members_PtrTo_UnknownLineError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnknownLineError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_gosym.DecodingError)(nil))] = &members_PtrTo_DecodingError
+	GoTypes[_reflect.TypeOf((*_gosym.Sym)(nil))] = &members_PtrTo_Sym
+	GoTypes[_reflect.TypeOf((*_gosym.UnknownFileError)(nil)).Elem()] = &members_UnknownFileError
+	GoTypes[_reflect.TypeOf((*_gosym.UnknownLineError)(nil))] = &members_PtrTo_UnknownLineError
+}
+
 GO TYPE debug/macho.Cpu from debug/macho/macho.go:
 func ExtractGoObjectCpu(args []Object, index int) *_macho.Cpu {
 	a := args[index]
@@ -32119,7 +32639,59 @@ package macho
 import (
 	_macho "debug/macho"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_Cpu = GoTypeInfo{Members: GoMembers{
+	"GoString": __cpu_GoString,
+	"String": __cpu_String,
+}}
+
+var members_PtrTo_FormatError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_FormatError_Error,
+}}
+
+var members_LoadCmd = GoTypeInfo{Members: GoMembers{
+	"GoString": __loadCmd_GoString,
+	"String": __loadCmd_String,
+}}
+
+var members_RelocTypeARM = GoTypeInfo{Members: GoMembers{
+	"GoString": __relocTypeARM_GoString,
+	"String": __relocTypeARM_String,
+}}
+
+var members_RelocTypeARM64 = GoTypeInfo{Members: GoMembers{
+	"GoString": __relocTypeARM64_GoString,
+	"String": __relocTypeARM64_String,
+}}
+
+var members_RelocTypeGeneric = GoTypeInfo{Members: GoMembers{
+	"GoString": __relocTypeGeneric_GoString,
+	"String": __relocTypeGeneric_String,
+}}
+
+var members_RelocTypeX86_64 = GoTypeInfo{Members: GoMembers{
+	"GoString": __relocTypeX86_64_GoString,
+	"String": __relocTypeX86_64_String,
+}}
+
+var members_Type = GoTypeInfo{Members: GoMembers{
+	"GoString": __type_GoString,
+	"String": __type_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_macho.Cpu)(nil)).Elem()] = &members_Cpu
+	GoTypes[_reflect.TypeOf((*_macho.FormatError)(nil))] = &members_PtrTo_FormatError
+	GoTypes[_reflect.TypeOf((*_macho.LoadCmd)(nil)).Elem()] = &members_LoadCmd
+	GoTypes[_reflect.TypeOf((*_macho.RelocTypeARM)(nil)).Elem()] = &members_RelocTypeARM
+	GoTypes[_reflect.TypeOf((*_macho.RelocTypeARM64)(nil)).Elem()] = &members_RelocTypeARM64
+	GoTypes[_reflect.TypeOf((*_macho.RelocTypeGeneric)(nil)).Elem()] = &members_RelocTypeGeneric
+	GoTypes[_reflect.TypeOf((*_macho.RelocTypeX86_64)(nil)).Elem()] = &members_RelocTypeX86_64
+	GoTypes[_reflect.TypeOf((*_macho.Type)(nil)).Elem()] = &members_Type
+}
+
 GO TYPE debug/pe.COFFSymbol from debug/pe/symbol.go:
 func ExtractGoObjectCOFFSymbol(args []Object, index int) *_pe.COFFSymbol {
 	a := args[index]
@@ -32829,7 +33401,17 @@ package pe
 import (
 	_pe "debug/pe"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_FormatError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_FormatError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_pe.FormatError)(nil))] = &members_PtrTo_FormatError
+}
+
 GO TYPE debug/plan9obj.File from debug/plan9obj/file.go:
 func ExtractGoObjectFile(args []Object, index int) *_plan9obj.File {
 	a := args[index]
@@ -33073,6 +33655,10 @@ import (
 	_plan9obj "debug/plan9obj"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE encoding/ascii85.CorruptInputError from encoding/ascii85/ascii85.go:
 func ExtractGoObjectCorruptInputError(args []Object, index int) *_ascii85.CorruptInputError {
 	a := args[index]
@@ -33148,7 +33734,17 @@ package ascii85
 import (
 	_ascii85 "encoding/ascii85"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_CorruptInputError = GoTypeInfo{Members: GoMembers{
+	"Error": __corruptInputError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_ascii85.CorruptInputError)(nil)).Elem()] = &members_CorruptInputError
+}
+
 GO TYPE encoding/asn1.BitString from encoding/asn1/asn1.go:
 func ExtractGoObjectBitString(args []Object, index int) *_asn1.BitString {
 	a := args[index]
@@ -33528,7 +34124,27 @@ package asn1
 import (
 	_asn1 "encoding/asn1"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_ObjectIdentifier = GoTypeInfo{Members: GoMembers{
+	"String": __objectIdentifier_String,
+}}
+
+var members_StructuralError = GoTypeInfo{Members: GoMembers{
+	"Error": __structuralError_Error,
+}}
+
+var members_SyntaxError = GoTypeInfo{Members: GoMembers{
+	"Error": __syntaxError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_asn1.ObjectIdentifier)(nil)).Elem()] = &members_ObjectIdentifier
+	GoTypes[_reflect.TypeOf((*_asn1.StructuralError)(nil)).Elem()] = &members_StructuralError
+	GoTypes[_reflect.TypeOf((*_asn1.SyntaxError)(nil)).Elem()] = &members_SyntaxError
+}
+
 GO TYPE encoding/base32.CorruptInputError from encoding/base32/base32.go:
 func ExtractGoObjectCorruptInputError(args []Object, index int) *_base32.CorruptInputError {
 	a := args[index]
@@ -33634,7 +34250,17 @@ package base32
 import (
 	_base32 "encoding/base32"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_CorruptInputError = GoTypeInfo{Members: GoMembers{
+	"Error": __corruptInputError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_base32.CorruptInputError)(nil)).Elem()] = &members_CorruptInputError
+}
+
 GO TYPE encoding/base64.CorruptInputError from encoding/base64/base64.go:
 func ExtractGoObjectCorruptInputError(args []Object, index int) *_base64.CorruptInputError {
 	a := args[index]
@@ -33740,7 +34366,17 @@ package base64
 import (
 	_base64 "encoding/base64"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_CorruptInputError = GoTypeInfo{Members: GoMembers{
+	"Error": __corruptInputError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_base64.CorruptInputError)(nil)).Elem()] = &members_CorruptInputError
+}
+
 GO FUNC encoding/binary.PutUvarint from encoding/binary/varint.go:
 // func __putUvarint(buf []byte, x uint64)  {
 // 	_res := _binary.PutUvarint(buf, x)
@@ -33970,7 +34606,17 @@ import (
 	_csv "encoding/csv"
 	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ParseError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_csv.ParseError)(nil))] = &members_PtrTo_ParseError
+}
+
 GO FUNC encoding/gob.NewDecoder from encoding/gob/decoder.go:
 // func __newDecoder(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res := _gob.NewDecoder(r)
@@ -34100,7 +34746,17 @@ package hex
 import (
 	_hex "encoding/hex"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_InvalidByteError = GoTypeInfo{Members: GoMembers{
+	"Error": __invalidByteError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_hex.InvalidByteError)(nil)).Elem()] = &members_InvalidByteError
+}
+
 GO TYPE encoding/json.Decoder from encoding/json/stream.go:
 func ExtractGoObjectDecoder(args []Object, index int) *_json.Decoder {
 	a := args[index]
@@ -34856,7 +35512,62 @@ package json
 import (
 	_json "encoding/json"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_Delim = GoTypeInfo{Members: GoMembers{
+	"String": __delim_String,
+}}
+
+var members_PtrTo_InvalidUTF8Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_InvalidUTF8Error_Error,
+}}
+
+var members_PtrTo_InvalidUnmarshalError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_InvalidUnmarshalError_Error,
+}}
+
+var members_PtrTo_MarshalerError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_MarshalerError_Error,
+}}
+
+var members_Number = GoTypeInfo{Members: GoMembers{
+	"String": __number_String,
+}}
+
+var members_PtrTo_SyntaxError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_SyntaxError_Error,
+}}
+
+var members_PtrTo_UnmarshalFieldError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnmarshalFieldError_Error,
+}}
+
+var members_PtrTo_UnmarshalTypeError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnmarshalTypeError_Error,
+}}
+
+var members_PtrTo_UnsupportedTypeError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnsupportedTypeError_Error,
+}}
+
+var members_PtrTo_UnsupportedValueError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnsupportedValueError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_json.Delim)(nil)).Elem()] = &members_Delim
+	GoTypes[_reflect.TypeOf((*_json.InvalidUTF8Error)(nil))] = &members_PtrTo_InvalidUTF8Error
+	GoTypes[_reflect.TypeOf((*_json.InvalidUnmarshalError)(nil))] = &members_PtrTo_InvalidUnmarshalError
+	GoTypes[_reflect.TypeOf((*_json.MarshalerError)(nil))] = &members_PtrTo_MarshalerError
+	GoTypes[_reflect.TypeOf((*_json.Number)(nil)).Elem()] = &members_Number
+	GoTypes[_reflect.TypeOf((*_json.SyntaxError)(nil))] = &members_PtrTo_SyntaxError
+	GoTypes[_reflect.TypeOf((*_json.UnmarshalFieldError)(nil))] = &members_PtrTo_UnmarshalFieldError
+	GoTypes[_reflect.TypeOf((*_json.UnmarshalTypeError)(nil))] = &members_PtrTo_UnmarshalTypeError
+	GoTypes[_reflect.TypeOf((*_json.UnsupportedTypeError)(nil))] = &members_PtrTo_UnsupportedTypeError
+	GoTypes[_reflect.TypeOf((*_json.UnsupportedValueError)(nil))] = &members_PtrTo_UnsupportedValueError
+}
+
 GO TYPE encoding/pem.Block from encoding/pem/pem.go:
 func ExtractGoObjectBlock(args []Object, index int) *_pem.Block {
 	a := args[index]
@@ -34938,6 +35649,10 @@ import (
 	_pem "encoding/pem"
 	. "github.com/candid82/joker/core"
 )
+
+func init() {
+}
+
 GO TYPE encoding/xml.Attr from encoding/xml/xml.go:
 func ExtractGoObjectAttr(args []Object, index int) *_xml.Attr {
 	a := args[index]
@@ -35775,13 +36490,42 @@ package xml
 import (
 	_xml "encoding/xml"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_SyntaxError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_SyntaxError_Error,
+}}
+
+var members_PtrTo_TagPathError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_TagPathError_Error,
+}}
+
+var members_UnmarshalError = GoTypeInfo{Members: GoMembers{
+	"Error": __unmarshalError_Error,
+}}
+
+var members_PtrTo_UnsupportedTypeError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_UnsupportedTypeError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_xml.SyntaxError)(nil))] = &members_PtrTo_SyntaxError
+	GoTypes[_reflect.TypeOf((*_xml.TagPathError)(nil))] = &members_PtrTo_TagPathError
+	GoTypes[_reflect.TypeOf((*_xml.UnmarshalError)(nil)).Elem()] = &members_UnmarshalError
+	GoTypes[_reflect.TypeOf((*_xml.UnsupportedTypeError)(nil))] = &members_PtrTo_UnsupportedTypeError
+}
+
 // Auto-generated by gostd at (omitted for testing), do not edit!!
 
 package errors
 
 import (
 )
+
+func init() {
+}
+
 GO TYPE expvar.Float from expvar/expvar.go:
 func ExtractGoObjectFloat(args []Object, index int) *_expvar.Float {
 	a := args[index]
@@ -36142,7 +36886,38 @@ package expvar
 import (
 	_expvar "expvar"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_Float = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Float_String,
+}}
+
+var members_Func = GoTypeInfo{Members: GoMembers{
+	"String": __func_String,
+}}
+
+var members_PtrTo_Int = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Int_String,
+}}
+
+var members_PtrTo_Map = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Map_String,
+}}
+
+var members_PtrTo_String = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_String_String,
+	"Value": __ptrTo_String_Value,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_expvar.Float)(nil))] = &members_PtrTo_Float
+	GoTypes[_reflect.TypeOf((*_expvar.Func)(nil)).Elem()] = &members_Func
+	GoTypes[_reflect.TypeOf((*_expvar.Int)(nil))] = &members_PtrTo_Int
+	GoTypes[_reflect.TypeOf((*_expvar.Map)(nil))] = &members_PtrTo_Map
+	GoTypes[_reflect.TypeOf((*_expvar.String)(nil))] = &members_PtrTo_String
+}
+
 GO TYPE flag.ErrorHandling from flag/flag.go:
 func ExtractGoObjectErrorHandling(args []Object, index int) *_flag.ErrorHandling {
 	a := args[index]
@@ -36494,7 +37269,17 @@ package flag
 import (
 	_flag "flag"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 )
+var members_PtrTo_FlagSet = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_FlagSet_Name,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_flag.FlagSet)(nil))] = &members_PtrTo_FlagSet
+}
+
 GO FUNC fmt.Errorf from fmt/print.go:
 // func __errorf(format string, a ...interface {})  {
 // 	_res := _fmt.Errorf(format, a)
@@ -39704,7 +40489,37 @@ package ast
 import (
 	. "github.com/candid82/joker/core"
 	_ast "go/ast"
+	_reflect "reflect"
 )
+var members_PtrTo_CommentGroup = GoTypeInfo{Members: GoMembers{
+	"Text": __ptrTo_CommentGroup_Text,
+}}
+
+var members_CommentMap = GoTypeInfo{Members: GoMembers{
+	"String": __commentMap_String,
+}}
+
+var members_PtrTo_Ident = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Ident_String,
+}}
+
+var members_ObjKind = GoTypeInfo{Members: GoMembers{
+	"String": __objKind_String,
+}}
+
+var members_PtrTo_Scope = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Scope_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_ast.CommentGroup)(nil))] = &members_PtrTo_CommentGroup
+	GoTypes[_reflect.TypeOf((*_ast.CommentMap)(nil)).Elem()] = &members_CommentMap
+	GoTypes[_reflect.TypeOf((*_ast.Ident)(nil))] = &members_PtrTo_Ident
+	GoTypes[_reflect.TypeOf((*_ast.ObjKind)(nil)).Elem()] = &members_ObjKind
+	GoTypes[_reflect.TypeOf((*_ast.Scope)(nil))] = &members_PtrTo_Scope
+}
+
 GO TYPE go/build.Context from go/build/build.go:
 func ExtractGoObjectContext(args []Object, index int) *_build.Context {
 	a := args[index]
@@ -40013,7 +40828,22 @@ package build
 import (
 	. "github.com/candid82/joker/core"
 	_build "go/build"
+	_reflect "reflect"
 )
+var members_PtrTo_MultiplePackageError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_MultiplePackageError_Error,
+}}
+
+var members_PtrTo_NoGoError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_NoGoError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_build.MultiplePackageError)(nil))] = &members_PtrTo_MultiplePackageError
+	GoTypes[_reflect.TypeOf((*_build.NoGoError)(nil))] = &members_PtrTo_NoGoError
+}
+
 GO TYPE go/constant.Kind from go/constant/value.go:
 func ExtractGoObjectKind(args []Object, index int) *_constant.Kind {
 	a := args[index]
@@ -40251,6 +41081,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_constant "go/constant"
 )
+
+func init() {
+}
+
 GO TYPE go/doc.Example from go/doc/example.go:
 func ExtractGoObjectExample(args []Object, index int) *_doc.Example {
 	a := args[index]
@@ -40636,6 +41470,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_doc "go/doc"
 )
+
+func init() {
+}
+
 GO FUNC go/format.Node from go/format/format.go:
 // func __node(dst ABEND987(genutils.go: imports not yet supported: io.Writer), fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), node interface {})  {
 // 	_res := _format.Node(dst, fset, node)
@@ -40711,6 +41549,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_importer "go/importer"
 )
+
+func init() {
+}
+
 GO TYPE go/parser.Mode from go/parser/interface.go:
 func ExtractGoObjectMode(args []Object, index int) *_parser.Mode {
 	a := args[index]
@@ -40788,6 +41630,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_parser "go/parser"
 )
+
+func init() {
+}
+
 GO FUNC go/printer.Fprint from go/printer/printer.go:
 // func __fprint(output ABEND987(genutils.go: imports not yet supported: io.Writer), fset *ABEND987(genutils.go: imports not yet supported: token.FileSet), node interface {})  {
 // 	_res := _printer.Fprint(output, fset, node)
@@ -40999,7 +41845,22 @@ package scanner
 import (
 	. "github.com/candid82/joker/core"
 	_scanner "go/scanner"
+	_reflect "reflect"
 )
+var members_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __error_Error,
+}}
+
+var members_ErrorList = GoTypeInfo{Members: GoMembers{
+	"Error": __errorList_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_scanner.Error)(nil)).Elem()] = &members_Error
+	GoTypes[_reflect.TypeOf((*_scanner.ErrorList)(nil)).Elem()] = &members_ErrorList
+}
+
 GO TYPE go/token.File from go/token/position.go:
 func ExtractGoObjectFile(args []Object, index int) *_token.File {
 	a := args[index]
@@ -41231,7 +42092,27 @@ package token
 import (
 	. "github.com/candid82/joker/core"
 	_token "go/token"
+	_reflect "reflect"
 )
+var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_File_Name,
+}}
+
+var members_Position = GoTypeInfo{Members: GoMembers{
+	"String": __position_String,
+}}
+
+var members_Token = GoTypeInfo{Members: GoMembers{
+	"String": __token_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_token.File)(nil))] = &members_PtrTo_File
+	GoTypes[_reflect.TypeOf((*_token.Position)(nil)).Elem()] = &members_Position
+	GoTypes[_reflect.TypeOf((*_token.Token)(nil)).Elem()] = &members_Token
+}
+
 GO TYPE go/types.Array from go/types/type.go:
 func ExtractGoObjectArray(args []Object, index int) *_types.Array {
 	a := args[index]
@@ -43234,7 +44115,141 @@ package types
 import (
 	. "github.com/candid82/joker/core"
 	_types "go/types"
+	_reflect "reflect"
 )
+var members_PtrTo_Array = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Array_String,
+}}
+
+var members_PtrTo_Basic = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_Basic_Name,
+	"String": __ptrTo_Basic_String,
+}}
+
+var members_PtrTo_Builtin = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Builtin_String,
+}}
+
+var members_PtrTo_Chan = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Chan_String,
+}}
+
+var members_PtrTo_Const = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Const_String,
+}}
+
+var members_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __error_Error,
+}}
+
+var members_PtrTo_Func = GoTypeInfo{Members: GoMembers{
+	"FullName": __ptrTo_Func_FullName,
+	"String": __ptrTo_Func_String,
+}}
+
+var members_PtrTo_Initializer = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Initializer_String,
+}}
+
+var members_PtrTo_Interface = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Interface_String,
+}}
+
+var members_PtrTo_Label = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Label_String,
+}}
+
+var members_PtrTo_Map = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Map_String,
+}}
+
+var members_PtrTo_MethodSet = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_MethodSet_String,
+}}
+
+var members_PtrTo_Named = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Named_String,
+}}
+
+var members_PtrTo_Nil = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Nil_String,
+}}
+
+var members_PtrTo_Package = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_Package_Name,
+	"Path": __ptrTo_Package_Path,
+	"String": __ptrTo_Package_String,
+}}
+
+var members_PtrTo_PkgName = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_PkgName_String,
+}}
+
+var members_PtrTo_Pointer = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Pointer_String,
+}}
+
+var members_PtrTo_Scope = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Scope_String,
+}}
+
+var members_PtrTo_Selection = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Selection_String,
+}}
+
+var members_PtrTo_Signature = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Signature_String,
+}}
+
+var members_PtrTo_Slice = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Slice_String,
+}}
+
+var members_PtrTo_Struct = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Struct_String,
+}}
+
+var members_PtrTo_Tuple = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Tuple_String,
+}}
+
+var members_PtrTo_TypeName = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_TypeName_String,
+}}
+
+var members_PtrTo_Var = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Var_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_types.Array)(nil))] = &members_PtrTo_Array
+	GoTypes[_reflect.TypeOf((*_types.Basic)(nil))] = &members_PtrTo_Basic
+	GoTypes[_reflect.TypeOf((*_types.Builtin)(nil))] = &members_PtrTo_Builtin
+	GoTypes[_reflect.TypeOf((*_types.Chan)(nil))] = &members_PtrTo_Chan
+	GoTypes[_reflect.TypeOf((*_types.Const)(nil))] = &members_PtrTo_Const
+	GoTypes[_reflect.TypeOf((*_types.Error)(nil)).Elem()] = &members_Error
+	GoTypes[_reflect.TypeOf((*_types.Func)(nil))] = &members_PtrTo_Func
+	GoTypes[_reflect.TypeOf((*_types.Initializer)(nil))] = &members_PtrTo_Initializer
+	GoTypes[_reflect.TypeOf((*_types.Interface)(nil))] = &members_PtrTo_Interface
+	GoTypes[_reflect.TypeOf((*_types.Label)(nil))] = &members_PtrTo_Label
+	GoTypes[_reflect.TypeOf((*_types.Map)(nil))] = &members_PtrTo_Map
+	GoTypes[_reflect.TypeOf((*_types.MethodSet)(nil))] = &members_PtrTo_MethodSet
+	GoTypes[_reflect.TypeOf((*_types.Named)(nil))] = &members_PtrTo_Named
+	GoTypes[_reflect.TypeOf((*_types.Nil)(nil))] = &members_PtrTo_Nil
+	GoTypes[_reflect.TypeOf((*_types.Package)(nil))] = &members_PtrTo_Package
+	GoTypes[_reflect.TypeOf((*_types.PkgName)(nil))] = &members_PtrTo_PkgName
+	GoTypes[_reflect.TypeOf((*_types.Pointer)(nil))] = &members_PtrTo_Pointer
+	GoTypes[_reflect.TypeOf((*_types.Scope)(nil))] = &members_PtrTo_Scope
+	GoTypes[_reflect.TypeOf((*_types.Selection)(nil))] = &members_PtrTo_Selection
+	GoTypes[_reflect.TypeOf((*_types.Signature)(nil))] = &members_PtrTo_Signature
+	GoTypes[_reflect.TypeOf((*_types.Slice)(nil))] = &members_PtrTo_Slice
+	GoTypes[_reflect.TypeOf((*_types.Struct)(nil))] = &members_PtrTo_Struct
+	GoTypes[_reflect.TypeOf((*_types.Tuple)(nil))] = &members_PtrTo_Tuple
+	GoTypes[_reflect.TypeOf((*_types.TypeName)(nil))] = &members_PtrTo_TypeName
+	GoTypes[_reflect.TypeOf((*_types.Var)(nil))] = &members_PtrTo_Var
+}
+
 GO FUNC hash/adler32.Checksum from hash/adler32/adler32.go:
 // func __checksum(data []byte) Object {
 // 	_res := _adler32.Checksum(data)
@@ -43255,6 +44270,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_adler32 "hash/adler32"
 )
+
+func init() {
+}
+
 GO TYPE hash/crc32.Table from hash/crc32/crc32.go:
 func ExtractGoObjectTable(args []Object, index int) *_crc32.Table {
 	a := args[index]
@@ -43329,6 +44348,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_crc32 "hash/crc32"
 )
+
+func init() {
+}
+
 GO TYPE hash/crc64.Table from hash/crc64/crc64.go:
 func ExtractGoObjectTable(args []Object, index int) *_crc64.Table {
 	a := args[index]
@@ -43391,6 +44414,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_crc64 "hash/crc64"
 )
+
+func init() {
+}
+
 GO FUNC hash/fnv.New128 from hash/fnv/fnv.go:
 func __new128() Object {
 	_res := _fnv.New128()
@@ -43435,12 +44462,20 @@ import (
 	. "github.com/candid82/joker/core"
 	_fnv "hash/fnv"
 )
+
+func init() {
+}
+
 // Auto-generated by gostd at (omitted for testing), do not edit!!
 
 package html
 
 import (
 )
+
+func init() {
+}
+
 GO TYPE html/template.CSS from html/template/content.go:
 func ExtractGoObjectCSS(args []Object, index int) *_template.CSS {
 	a := args[index]
@@ -43920,7 +44955,23 @@ package template
 import (
 	. "github.com/candid82/joker/core"
 	_template "html/template"
+	_reflect "reflect"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_PtrTo_Template = GoTypeInfo{Members: GoMembers{
+	"DefinedTemplates": __ptrTo_Template_DefinedTemplates,
+	"Name": __ptrTo_Template_Name,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_template.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_template.Template)(nil))] = &members_PtrTo_Template
+}
+
 GO TYPE image.Alpha from image/image.go:
 func ExtractGoObjectAlpha(args []Object, index int) *_image.Alpha {
 	a := args[index]
@@ -44862,7 +45913,27 @@ package image
 import (
 	. "github.com/candid82/joker/core"
 	_image "image"
+	_reflect "reflect"
 )
+var members_Point = GoTypeInfo{Members: GoMembers{
+	"String": __point_String,
+}}
+
+var members_Rectangle = GoTypeInfo{Members: GoMembers{
+	"String": __rectangle_String,
+}}
+
+var members_YCbCrSubsampleRatio = GoTypeInfo{Members: GoMembers{
+	"String": __yCbCrSubsampleRatio_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_image.Point)(nil)).Elem()] = &members_Point
+	GoTypes[_reflect.TypeOf((*_image.Rectangle)(nil)).Elem()] = &members_Rectangle
+	GoTypes[_reflect.TypeOf((*_image.YCbCrSubsampleRatio)(nil)).Elem()] = &members_YCbCrSubsampleRatio
+}
+
 GO FUNC image/color.CMYKToRGB from image/color/ycbcr.go:
 // func __cMYKToRGB(c uint8, m uint8, y uint8, k uint8) Object {
 // 	_res1, _res2, _res3 := _color.CMYKToRGB(c, m, y, k)
@@ -45144,7 +46215,22 @@ package jpeg
 import (
 	. "github.com/candid82/joker/core"
 	_jpeg "image/jpeg"
+	_reflect "reflect"
 )
+var members_FormatError = GoTypeInfo{Members: GoMembers{
+	"Error": __formatError_Error,
+}}
+
+var members_UnsupportedError = GoTypeInfo{Members: GoMembers{
+	"Error": __unsupportedError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_jpeg.FormatError)(nil)).Elem()] = &members_FormatError
+	GoTypes[_reflect.TypeOf((*_jpeg.UnsupportedError)(nil)).Elem()] = &members_UnsupportedError
+}
+
 GO TYPE image/png.CompressionLevel from image/png/writer.go:
 func ExtractGoObjectCompressionLevel(args []Object, index int) *_png.CompressionLevel {
 	a := args[index]
@@ -45392,7 +46478,22 @@ package png
 import (
 	. "github.com/candid82/joker/core"
 	_png "image/png"
+	_reflect "reflect"
 )
+var members_FormatError = GoTypeInfo{Members: GoMembers{
+	"Error": __formatError_Error,
+}}
+
+var members_UnsupportedError = GoTypeInfo{Members: GoMembers{
+	"Error": __unsupportedError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_png.FormatError)(nil)).Elem()] = &members_FormatError
+	GoTypes[_reflect.TypeOf((*_png.UnsupportedError)(nil)).Elem()] = &members_UnsupportedError
+}
+
 GO FUNC index/suffixarray.New from index/suffixarray/suffixarray.go:
 // func __new(data []byte) Object {
 // 	_res := _suffixarray.New(data)
@@ -46293,6 +47394,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_io "io"
 )
+
+func init() {
+}
+
 GO FUNC io/ioutil.NopCloser from io/ioutil/ioutil.go:
 // func __nopCloser(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res := _ioutil.NopCloser(r)
@@ -46370,6 +47475,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_ioutil "io/ioutil"
 )
+
+func init() {
+}
+
 GO TYPE log.Logger from log/log.go:
 func ExtractGoObjectLogger(args []Object, index int) *_log.Logger {
 	a := args[index]
@@ -46502,7 +47611,17 @@ package log
 import (
 	. "github.com/candid82/joker/core"
 	_log "log"
+	_reflect "reflect"
 )
+var members_PtrTo_Logger = GoTypeInfo{Members: GoMembers{
+	"Prefix": __ptrTo_Logger_Prefix,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_log.Logger)(nil))] = &members_PtrTo_Logger
+}
+
 GO TYPE log/syslog.Priority from log/syslog/syslog.go:
 func ExtractGoObjectPriority(args []Object, index int) *_syslog.Priority {
 	a := args[index]
@@ -46611,6 +47730,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_syslog "log/syslog"
 )
+
+func init() {
+}
+
 GO FUNC math.Abs from math/abs.go:
 // func __abs(x float64) Object {
 // 	return _math.Abs(x)
@@ -47306,7 +48429,43 @@ package big
 import (
 	. "github.com/candid82/joker/core"
 	_big "math/big"
+	_reflect "reflect"
 )
+var members_Accuracy = GoTypeInfo{Members: GoMembers{
+	"String": __accuracy_String,
+}}
+
+var members_ErrNaN = GoTypeInfo{Members: GoMembers{
+	"Error": __errNaN_Error,
+}}
+
+var members_PtrTo_Float = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Float_String,
+}}
+
+var members_PtrTo_Int = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Int_String,
+}}
+
+var members_PtrTo_Rat = GoTypeInfo{Members: GoMembers{
+	"RatString": __ptrTo_Rat_RatString,
+	"String": __ptrTo_Rat_String,
+}}
+
+var members_RoundingMode = GoTypeInfo{Members: GoMembers{
+	"String": __roundingMode_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_big.Accuracy)(nil)).Elem()] = &members_Accuracy
+	GoTypes[_reflect.TypeOf((*_big.ErrNaN)(nil)).Elem()] = &members_ErrNaN
+	GoTypes[_reflect.TypeOf((*_big.Float)(nil))] = &members_PtrTo_Float
+	GoTypes[_reflect.TypeOf((*_big.Int)(nil))] = &members_PtrTo_Int
+	GoTypes[_reflect.TypeOf((*_big.Rat)(nil))] = &members_PtrTo_Rat
+	GoTypes[_reflect.TypeOf((*_big.RoundingMode)(nil)).Elem()] = &members_RoundingMode
+}
+
 GO FUNC math/bits.Add from math/bits/bits.go:
 func __add(x uint, y uint, carry uint) Object {
 	sum, carryOut := _bits.Add(x, y, carry)
@@ -47553,6 +48712,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_bits "math/bits"
 )
+
+func init() {
+}
+
 GO FUNC math/cmplx.Abs from math/cmplx/abs.go:
 // func __abs(x complex128) Object {
 // 	return _cmplx.Abs(x)
@@ -47947,6 +49110,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_rand "math/rand"
 )
+
+func init() {
+}
+
 GO TYPE mime.WordDecoder from mime/encodedword.go:
 func ExtractGoObjectWordDecoder(args []Object, index int) *_mime.WordDecoder {
 	a := args[index]
@@ -48059,6 +49226,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_mime "mime"
 )
+
+func init() {
+}
+
 GO TYPE mime/multipart.File from mime/multipart/formdata.go:
 func ExtractGoObjectFile(args []Object, index int) *_multipart.File {
 	a := args[index]
@@ -48345,7 +49516,24 @@ package multipart
 import (
 	. "github.com/candid82/joker/core"
 	_multipart "mime/multipart"
+	_reflect "reflect"
 )
+var members_PtrTo_Part = GoTypeInfo{Members: GoMembers{
+	"FileName": __ptrTo_Part_FileName,
+	"FormName": __ptrTo_Part_FormName,
+}}
+
+var members_PtrTo_Writer = GoTypeInfo{Members: GoMembers{
+	"Boundary": __ptrTo_Writer_Boundary,
+	"FormDataContentType": __ptrTo_Writer_FormDataContentType,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_multipart.Part)(nil))] = &members_PtrTo_Part
+	GoTypes[_reflect.TypeOf((*_multipart.Writer)(nil))] = &members_PtrTo_Writer
+}
+
 GO FUNC mime/quotedprintable.NewReader from mime/quotedprintable/reader.go:
 // func __newReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res := _quotedprintable.NewReader(r)
@@ -50276,7 +51464,97 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_net "net"
+	_reflect "reflect"
 )
+var members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_AddrError_Error,
+}}
+
+var members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_DNSConfigError_Error,
+}}
+
+var members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_DNSError_Error,
+}}
+
+var members_Flags = GoTypeInfo{Members: GoMembers{
+	"String": __flags_String,
+}}
+
+var members_HardwareAddr = GoTypeInfo{Members: GoMembers{
+	"String": __hardwareAddr_String,
+}}
+
+var members_IP = GoTypeInfo{Members: GoMembers{
+	"String": __iP_String,
+}}
+
+var members_PtrTo_IPAddr = GoTypeInfo{Members: GoMembers{
+	"Network": __ptrTo_IPAddr_Network,
+	"String": __ptrTo_IPAddr_String,
+}}
+
+var members_IPMask = GoTypeInfo{Members: GoMembers{
+	"String": __iPMask_String,
+}}
+
+var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
+	"Network": __ptrTo_IPNet_Network,
+	"String": __ptrTo_IPNet_String,
+}}
+
+var members_InvalidAddrError = GoTypeInfo{Members: GoMembers{
+	"Error": __invalidAddrError_Error,
+}}
+
+var members_PtrTo_OpError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_OpError_Error,
+}}
+
+var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ParseError_Error,
+}}
+
+var members_PtrTo_TCPAddr = GoTypeInfo{Members: GoMembers{
+	"Network": __ptrTo_TCPAddr_Network,
+	"String": __ptrTo_TCPAddr_String,
+}}
+
+var members_PtrTo_UDPAddr = GoTypeInfo{Members: GoMembers{
+	"Network": __ptrTo_UDPAddr_Network,
+	"String": __ptrTo_UDPAddr_String,
+}}
+
+var members_PtrTo_UnixAddr = GoTypeInfo{Members: GoMembers{
+	"Network": __ptrTo_UnixAddr_Network,
+	"String": __ptrTo_UnixAddr_String,
+}}
+
+var members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownNetworkError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
+	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError
+	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil))] = &members_PtrTo_DNSError
+	GoTypes[_reflect.TypeOf((*_net.Flags)(nil)).Elem()] = &members_Flags
+	GoTypes[_reflect.TypeOf((*_net.HardwareAddr)(nil)).Elem()] = &members_HardwareAddr
+	GoTypes[_reflect.TypeOf((*_net.IP)(nil)).Elem()] = &members_IP
+	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil))] = &members_PtrTo_IPAddr
+	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil)).Elem()] = &members_IPMask
+	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil))] = &members_PtrTo_IPNet
+	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &members_InvalidAddrError
+	GoTypes[_reflect.TypeOf((*_net.OpError)(nil))] = &members_PtrTo_OpError
+	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil))] = &members_PtrTo_ParseError
+	GoTypes[_reflect.TypeOf((*_net.TCPAddr)(nil))] = &members_PtrTo_TCPAddr
+	GoTypes[_reflect.TypeOf((*_net.UDPAddr)(nil))] = &members_PtrTo_UDPAddr
+	GoTypes[_reflect.TypeOf((*_net.UnixAddr)(nil))] = &members_PtrTo_UnixAddr
+	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil)).Elem()] = &members_UnknownNetworkError
+}
+
 GO TYPE net/http.Client from net/http/client.go:
 func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 	a := args[index]
@@ -51438,7 +52716,33 @@ package http
 import (
 	. "github.com/candid82/joker/core"
 	_http "net/http"
+	_reflect "reflect"
 )
+var members_ConnState = GoTypeInfo{Members: GoMembers{
+	"String": __connState_String,
+}}
+
+var members_PtrTo_Cookie = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Cookie_String,
+}}
+
+var members_PtrTo_ProtocolError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ProtocolError_Error,
+}}
+
+var members_PtrTo_Request = GoTypeInfo{Members: GoMembers{
+	"Referer": __ptrTo_Request_Referer,
+	"UserAgent": __ptrTo_Request_UserAgent,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_http.ConnState)(nil)).Elem()] = &members_ConnState
+	GoTypes[_reflect.TypeOf((*_http.Cookie)(nil))] = &members_PtrTo_Cookie
+	GoTypes[_reflect.TypeOf((*_http.ProtocolError)(nil))] = &members_PtrTo_ProtocolError
+	GoTypes[_reflect.TypeOf((*_http.Request)(nil))] = &members_PtrTo_Request
+}
+
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 	a := args[index]
@@ -51521,6 +52825,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_cgi "net/http/cgi"
 )
+
+func init() {
+}
+
 GO TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
 func ExtractGoObjectJar(args []Object, index int) *_cookiejar.Jar {
 	a := args[index]
@@ -51650,6 +52958,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_cookiejar "net/http/cookiejar"
 )
+
+func init() {
+}
+
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func __processEnv(r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
 // 	return _fcgi.ProcessEnv(r)
@@ -51789,6 +53101,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_httptest "net/http/httptest"
 )
+
+func init() {
+}
+
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func __contextClientTrace(ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
 // 	_res := _httptrace.ContextClientTrace(ctx)
@@ -51920,6 +53236,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_pprof "net/http/pprof"
 )
+
+func init() {
+}
+
 GO TYPE net/mail.Address from net/mail/message.go:
 func ExtractGoObjectAddress(args []Object, index int) *_mail.Address {
 	a := args[index]
@@ -52132,7 +53452,17 @@ package mail
 import (
 	. "github.com/candid82/joker/core"
 	_mail "net/mail"
+	_reflect "reflect"
 )
+var members_PtrTo_Address = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Address_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_mail.Address)(nil))] = &members_PtrTo_Address
+}
+
 GO TYPE net/rpc.Call from net/rpc/client.go:
 func ExtractGoObjectCall(args []Object, index int) *_rpc.Call {
 	a := args[index]
@@ -52534,7 +53864,17 @@ package rpc
 import (
 	. "github.com/candid82/joker/core"
 	_rpc "net/rpc"
+	_reflect "reflect"
 )
+var members_ServerError = GoTypeInfo{Members: GoMembers{
+	"Error": __serverError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_rpc.ServerError)(nil)).Elem()] = &members_ServerError
+}
+
 GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 func __dial(network string, address string) Object {
 	_res1, _res2 := _jsonrpc.Dial(network, address)
@@ -52576,6 +53916,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_jsonrpc "net/rpc/jsonrpc"
 )
+
+func init() {
+}
+
 GO TYPE net/smtp.Auth from net/smtp/auth.go:
 func ExtractGoObjectAuth(args []Object, index int) *_smtp.Auth {
 	a := args[index]
@@ -52736,6 +54080,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_smtp "net/smtp"
 )
+
+func init() {
+}
+
 GO TYPE net/textproto.Conn from net/textproto/textproto.go:
 func ExtractGoObjectConn(args []Object, index int) *_textproto.Conn {
 	a := args[index]
@@ -53064,7 +54412,22 @@ package textproto
 import (
 	. "github.com/candid82/joker/core"
 	_textproto "net/textproto"
+	_reflect "reflect"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_ProtocolError = GoTypeInfo{Members: GoMembers{
+	"Error": __protocolError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_textproto.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_textproto.ProtocolError)(nil)).Elem()] = &members_ProtocolError
+}
+
 GO TYPE net/url.Error from net/url/url.go:
 func ExtractGoObjectError(args []Object, index int) *_url.Error {
 	a := args[index]
@@ -53437,7 +54800,47 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_url "net/url"
+	_reflect "reflect"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_EscapeError = GoTypeInfo{Members: GoMembers{
+	"Error": __escapeError_Error,
+}}
+
+var members_InvalidHostError = GoTypeInfo{Members: GoMembers{
+	"Error": __invalidHostError_Error,
+}}
+
+var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
+	"EscapedPath": __ptrTo_URL_EscapedPath,
+	"Hostname": __ptrTo_URL_Hostname,
+	"Port": __ptrTo_URL_Port,
+	"RequestURI": __ptrTo_URL_RequestURI,
+	"String": __ptrTo_URL_String,
+}}
+
+var members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Userinfo_String,
+	"Username": __ptrTo_Userinfo_Username,
+}}
+
+var members_Values = GoTypeInfo{Members: GoMembers{
+	"Encode": __values_Encode,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &members_EscapeError
+	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &members_InvalidHostError
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil))] = &members_PtrTo_URL
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil))] = &members_PtrTo_Userinfo
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
+}
+
 GO TYPE os.File from os/types.go:
 func ExtractGoObjectFile(args []Object, index int) *_os.File {
 	a := args[index]
@@ -54105,7 +55508,42 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_os "os"
+	_reflect "reflect"
 )
+var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_File_Name,
+}}
+
+var members_FileMode = GoTypeInfo{Members: GoMembers{
+	"String": __fileMode_String,
+}}
+
+var members_PtrTo_LinkError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_LinkError_Error,
+}}
+
+var members_PtrTo_PathError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_PathError_Error,
+}}
+
+var members_PtrTo_ProcessState = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_ProcessState_String,
+}}
+
+var members_PtrTo_SyscallError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_SyscallError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_os.File)(nil))] = &members_PtrTo_File
+	GoTypes[_reflect.TypeOf((*_os.FileMode)(nil)).Elem()] = &members_FileMode
+	GoTypes[_reflect.TypeOf((*_os.LinkError)(nil))] = &members_PtrTo_LinkError
+	GoTypes[_reflect.TypeOf((*_os.PathError)(nil))] = &members_PtrTo_PathError
+	GoTypes[_reflect.TypeOf((*_os.ProcessState)(nil))] = &members_PtrTo_ProcessState
+	GoTypes[_reflect.TypeOf((*_os.SyscallError)(nil))] = &members_PtrTo_SyscallError
+}
+
 GO TYPE os/exec.Cmd from os/exec/exec.go:
 func ExtractGoObjectCmd(args []Object, index int) *_exec.Cmd {
 	a := args[index]
@@ -54286,7 +55724,22 @@ import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
 	_exec "os/exec"
+	_reflect "reflect"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_PtrTo_ExitError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ExitError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_exec.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_exec.ExitError)(nil))] = &members_PtrTo_ExitError
+}
+
 GO FUNC os/signal.Ignore from os/signal/signal.go:
 // func __ignore(sig ...ABEND987(genutils.go: imports not yet supported: os.Signal)) Object {
 // 	_signal.Ignore(sig)
@@ -54618,7 +56071,32 @@ package user
 import (
 	. "github.com/candid82/joker/core"
 	_user "os/user"
+	_reflect "reflect"
 )
+var members_UnknownGroupError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownGroupError_Error,
+}}
+
+var members_UnknownGroupIdError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownGroupIdError_Error,
+}}
+
+var members_UnknownUserError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownUserError_Error,
+}}
+
+var members_UnknownUserIdError = GoTypeInfo{Members: GoMembers{
+	"Error": __unknownUserIdError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_user.UnknownGroupError)(nil)).Elem()] = &members_UnknownGroupError
+	GoTypes[_reflect.TypeOf((*_user.UnknownGroupIdError)(nil)).Elem()] = &members_UnknownGroupIdError
+	GoTypes[_reflect.TypeOf((*_user.UnknownUserError)(nil)).Elem()] = &members_UnknownUserError
+	GoTypes[_reflect.TypeOf((*_user.UnknownUserIdError)(nil)).Elem()] = &members_UnknownUserIdError
+}
+
 GO FUNC path.Join from path/path.go:
 // func __join(elem ...string)  {
 // 	_res := _path.Join(elem)
@@ -54651,6 +56129,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_path "path"
 )
+
+func init() {
+}
+
 GO TYPE path/filepath.WalkFunc from path/filepath/path.go:
 func ExtractGoObjectWalkFunc(args []Object, index int) *_filepath.WalkFunc {
 	a := args[index]
@@ -54763,6 +56245,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_filepath "path/filepath"
 )
+
+func init() {
+}
+
 GO TYPE plugin.Plugin from plugin/plugin.go:
 func ExtractGoObjectPlugin(args []Object, index int) *_plugin.Plugin {
 	a := args[index]
@@ -54850,6 +56336,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_plugin "plugin"
 )
+
+func init() {
+}
+
 GO TYPE reflect.ChanDir from reflect/type.go:
 func ExtractGoObjectChanDir(args []Object, index int) *_reflect.ChanDir {
 	a := args[index]
@@ -55537,6 +57027,30 @@ import (
 	. "github.com/candid82/joker/core"
 	_reflect "reflect"
 )
+var members_ChanDir = GoTypeInfo{Members: GoMembers{
+	"String": __chanDir_String,
+}}
+
+var members_Kind = GoTypeInfo{Members: GoMembers{
+	"String": __kind_String,
+}}
+
+var members_Value = GoTypeInfo{Members: GoMembers{
+	"String": __value_String,
+}}
+
+var members_PtrTo_ValueError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ValueError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_reflect.ChanDir)(nil)).Elem()] = &members_ChanDir
+	GoTypes[_reflect.TypeOf((*_reflect.Kind)(nil)).Elem()] = &members_Kind
+	GoTypes[_reflect.TypeOf((*_reflect.Value)(nil)).Elem()] = &members_Value
+	GoTypes[_reflect.TypeOf((*_reflect.ValueError)(nil))] = &members_PtrTo_ValueError
+}
+
 GO TYPE regexp.Regexp from regexp/regexp.go:
 func ExtractGoObjectRegexp(args []Object, index int) *_regexp.Regexp {
 	a := args[index]
@@ -55647,8 +57161,18 @@ package regexp
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_regexp "regexp"
 )
+var members_PtrTo_Regexp = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Regexp_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_regexp.Regexp)(nil))] = &members_PtrTo_Regexp
+}
+
 GO TYPE regexp/syntax.EmptyOp from regexp/syntax/prog.go:
 func ExtractGoObjectEmptyOp(args []Object, index int) *_syntax.EmptyOp {
 	a := args[index]
@@ -56082,8 +57606,48 @@ package syntax
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_syntax "regexp/syntax"
 )
+var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_Error_Error,
+}}
+
+var members_ErrorCode = GoTypeInfo{Members: GoMembers{
+	"String": __errorCode_String,
+}}
+
+var members_PtrTo_Inst = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Inst_String,
+}}
+
+var members_InstOp = GoTypeInfo{Members: GoMembers{
+	"String": __instOp_String,
+}}
+
+var members_Op = GoTypeInfo{Members: GoMembers{
+	"String": __op_String,
+}}
+
+var members_PtrTo_Prog = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Prog_String,
+}}
+
+var members_PtrTo_Regexp = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Regexp_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_syntax.Error)(nil))] = &members_PtrTo_Error
+	GoTypes[_reflect.TypeOf((*_syntax.ErrorCode)(nil)).Elem()] = &members_ErrorCode
+	GoTypes[_reflect.TypeOf((*_syntax.Inst)(nil))] = &members_PtrTo_Inst
+	GoTypes[_reflect.TypeOf((*_syntax.InstOp)(nil)).Elem()] = &members_InstOp
+	GoTypes[_reflect.TypeOf((*_syntax.Op)(nil)).Elem()] = &members_Op
+	GoTypes[_reflect.TypeOf((*_syntax.Prog)(nil))] = &members_PtrTo_Prog
+	GoTypes[_reflect.TypeOf((*_syntax.Regexp)(nil))] = &members_PtrTo_Regexp
+}
+
 GO TYPE runtime.BlockProfileRecord from runtime/mprof.go:
 func ExtractGoObjectBlockProfileRecord(args []Object, index int) *_runtime.BlockProfileRecord {
 	a := args[index]
@@ -56689,8 +58253,23 @@ package runtime
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_runtime "runtime"
 )
+var members_PtrTo_Func = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_Func_Name,
+}}
+
+var members_PtrTo_TypeAssertionError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_TypeAssertionError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_runtime.Func)(nil))] = &members_PtrTo_Func
+	GoTypes[_reflect.TypeOf((*_runtime.TypeAssertionError)(nil))] = &members_PtrTo_TypeAssertionError
+}
+
 GO TYPE runtime/debug.BuildInfo from runtime/debug/mod.go:
 func ExtractGoObjectBuildInfo(args []Object, index int) *_debug.BuildInfo {
 	a := args[index]
@@ -56884,6 +58463,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_debug "runtime/debug"
 )
+
+func init() {
+}
+
 GO TYPE runtime/pprof.LabelSet from runtime/pprof/label.go:
 func ExtractGoObjectLabelSet(args []Object, index int) *_pprof.LabelSet {
 	a := args[index]
@@ -57056,8 +58639,18 @@ package pprof
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_pprof "runtime/pprof"
 )
+var members_PtrTo_Profile = GoTypeInfo{Members: GoMembers{
+	"Name": __ptrTo_Profile_Name,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_pprof.Profile)(nil))] = &members_PtrTo_Profile
+}
+
 GO TYPE runtime/trace.Region from runtime/trace/annotation.go:
 func ExtractGoObjectRegion(args []Object, index int) *_trace.Region {
 	a := args[index]
@@ -57191,6 +58784,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_trace "runtime/trace"
 )
+
+func init() {
+}
+
 GO TYPE sort.Float64Slice from sort/sort.go:
 func ExtractGoObjectFloat64Slice(args []Object, index int) *_sort.Float64Slice {
 	a := args[index]
@@ -57415,6 +59012,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_sort "sort"
 )
+
+func init() {
+}
+
 GO TYPE strconv.NumError from strconv/atoi.go:
 func ExtractGoObjectNumError(args []Object, index int) *_strconv.NumError {
 	a := args[index]
@@ -57680,8 +59281,18 @@ package strconv
 import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_strconv "strconv"
 )
+var members_PtrTo_NumError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_NumError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_strconv.NumError)(nil))] = &members_PtrTo_NumError
+}
+
 GO TYPE strings.Builder from strings/builder.go:
 func ExtractGoObjectBuilder(args []Object, index int) *_strings.Builder {
 	a := args[index]
@@ -57959,8 +59570,18 @@ package strings
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_strings "strings"
 )
+var members_PtrTo_Builder = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Builder_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_strings.Builder)(nil))] = &members_PtrTo_Builder
+}
+
 GO TYPE sync.Cond from sync/cond.go:
 func ExtractGoObjectCond(args []Object, index int) *_sync.Cond {
 	a := args[index]
@@ -58289,6 +59910,10 @@ import (
 	. "github.com/candid82/joker/core"
 	_sync "sync"
 )
+
+func init() {
+}
+
 GO FUNC sync/atomic.AddInt32 from sync/atomic/doc.go:
 // func __addInt32(addr *int32, delta int32) Object {
 // 	_res := _atomic.AddInt32(addr, delta)
@@ -62180,8 +63805,23 @@ package syscall
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_syscall "syscall"
 )
+var members_Errno = GoTypeInfo{Members: GoMembers{
+	"Error": __errno_Error,
+}}
+
+var members_Signal = GoTypeInfo{Members: GoMembers{
+	"String": __signal_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_syscall.Errno)(nil)).Elem()] = &members_Errno
+	GoTypes[_reflect.TypeOf((*_syscall.Signal)(nil)).Elem()] = &members_Signal
+}
+
 GO TYPE testing.B from testing/benchmark.go:
 func ExtractGoObjectB(args []Object, index int) *_testing.B {
 	a := args[index]
@@ -62714,8 +64354,19 @@ package testing
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_testing "testing"
 )
+var members_BenchmarkResult = GoTypeInfo{Members: GoMembers{
+	"MemString": __benchmarkResult_MemString,
+	"String": __benchmarkResult_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_testing.BenchmarkResult)(nil)).Elem()] = &members_BenchmarkResult
+}
+
 GO FUNC testing/iotest.DataErrReader from testing/iotest/reader.go:
 // func __dataErrReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
 // 	_res := _iotest.DataErrReader(r)
@@ -63000,8 +64651,28 @@ package quick
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_quick "testing/quick"
 )
+var members_PtrTo_CheckEqualError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_CheckEqualError_Error,
+}}
+
+var members_PtrTo_CheckError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_CheckError_Error,
+}}
+
+var members_SetupError = GoTypeInfo{Members: GoMembers{
+	"Error": __setupError_Error,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_quick.CheckEqualError)(nil))] = &members_PtrTo_CheckEqualError
+	GoTypes[_reflect.TypeOf((*_quick.CheckError)(nil))] = &members_PtrTo_CheckError
+	GoTypes[_reflect.TypeOf((*_quick.SetupError)(nil)).Elem()] = &members_SetupError
+}
+
 GO TYPE text/scanner.Position from text/scanner/scanner.go:
 func ExtractGoObjectPosition(args []Object, index int) *_scanner.Position {
 	a := args[index]
@@ -63119,8 +64790,23 @@ package scanner
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_scanner "text/scanner"
 )
+var members_Position = GoTypeInfo{Members: GoMembers{
+	"String": __position_String,
+}}
+
+var members_PtrTo_Scanner = GoTypeInfo{Members: GoMembers{
+	"TokenText": __ptrTo_Scanner_TokenText,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_scanner.Position)(nil)).Elem()] = &members_Position
+	GoTypes[_reflect.TypeOf((*_scanner.Scanner)(nil))] = &members_PtrTo_Scanner
+}
+
 GO FUNC text/tabwriter.NewWriter from text/tabwriter/tabwriter.go:
 // func __newWriter(output ABEND987(genutils.go: imports not yet supported: io.Writer), minwidth int, tabwidth int, padding int, padchar byte, flags uint) Object {
 // 	_res := _tabwriter.NewWriter(output, minwidth, tabwidth, padding, padchar, flags)
@@ -63337,8 +65023,24 @@ package template
 import (
 	_errors "errors"
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_template "text/template"
 )
+var members_ExecError = GoTypeInfo{Members: GoMembers{
+	"Error": __execError_Error,
+}}
+
+var members_PtrTo_Template = GoTypeInfo{Members: GoMembers{
+	"DefinedTemplates": __ptrTo_Template_DefinedTemplates,
+	"Name": __ptrTo_Template_Name,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_template.ExecError)(nil)).Elem()] = &members_ExecError
+	GoTypes[_reflect.TypeOf((*_template.Template)(nil))] = &members_PtrTo_Template
+}
+
 GO TYPE text/template/parse.ActionNode from text/template/parse/node.go:
 func ExtractGoObjectActionNode(args []Object, index int) *_parse.ActionNode {
 	a := args[index]
@@ -64425,8 +66127,93 @@ package parse
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_parse "text/template/parse"
 )
+var members_PtrTo_ActionNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_ActionNode_String,
+}}
+
+var members_PtrTo_BoolNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_BoolNode_String,
+}}
+
+var members_PtrTo_BranchNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_BranchNode_String,
+}}
+
+var members_PtrTo_ChainNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_ChainNode_String,
+}}
+
+var members_PtrTo_CommandNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_CommandNode_String,
+}}
+
+var members_PtrTo_DotNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_DotNode_String,
+}}
+
+var members_PtrTo_FieldNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_FieldNode_String,
+}}
+
+var members_PtrTo_IdentifierNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_IdentifierNode_String,
+}}
+
+var members_PtrTo_ListNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_ListNode_String,
+}}
+
+var members_PtrTo_NilNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_NilNode_String,
+}}
+
+var members_PtrTo_NumberNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_NumberNode_String,
+}}
+
+var members_PtrTo_PipeNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_PipeNode_String,
+}}
+
+var members_PtrTo_StringNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_StringNode_String,
+}}
+
+var members_PtrTo_TemplateNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_TemplateNode_String,
+}}
+
+var members_PtrTo_TextNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_TextNode_String,
+}}
+
+var members_PtrTo_VariableNode = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_VariableNode_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_parse.ActionNode)(nil))] = &members_PtrTo_ActionNode
+	GoTypes[_reflect.TypeOf((*_parse.BoolNode)(nil))] = &members_PtrTo_BoolNode
+	GoTypes[_reflect.TypeOf((*_parse.BranchNode)(nil))] = &members_PtrTo_BranchNode
+	GoTypes[_reflect.TypeOf((*_parse.ChainNode)(nil))] = &members_PtrTo_ChainNode
+	GoTypes[_reflect.TypeOf((*_parse.CommandNode)(nil))] = &members_PtrTo_CommandNode
+	GoTypes[_reflect.TypeOf((*_parse.DotNode)(nil))] = &members_PtrTo_DotNode
+	GoTypes[_reflect.TypeOf((*_parse.FieldNode)(nil))] = &members_PtrTo_FieldNode
+	GoTypes[_reflect.TypeOf((*_parse.IdentifierNode)(nil))] = &members_PtrTo_IdentifierNode
+	GoTypes[_reflect.TypeOf((*_parse.ListNode)(nil))] = &members_PtrTo_ListNode
+	GoTypes[_reflect.TypeOf((*_parse.NilNode)(nil))] = &members_PtrTo_NilNode
+	GoTypes[_reflect.TypeOf((*_parse.NumberNode)(nil))] = &members_PtrTo_NumberNode
+	GoTypes[_reflect.TypeOf((*_parse.PipeNode)(nil))] = &members_PtrTo_PipeNode
+	GoTypes[_reflect.TypeOf((*_parse.StringNode)(nil))] = &members_PtrTo_StringNode
+	GoTypes[_reflect.TypeOf((*_parse.TemplateNode)(nil))] = &members_PtrTo_TemplateNode
+	GoTypes[_reflect.TypeOf((*_parse.TextNode)(nil))] = &members_PtrTo_TextNode
+	GoTypes[_reflect.TypeOf((*_parse.VariableNode)(nil))] = &members_PtrTo_VariableNode
+}
+
 GO TYPE time.Duration from time/time.go:
 func ExtractGoObjectDuration(args []Object, index int) *_time.Duration {
 	a := args[index]
@@ -64899,8 +66686,43 @@ package time
 
 import (
 	. "github.com/candid82/joker/core"
+	_reflect "reflect"
 	_time "time"
 )
+var members_Duration = GoTypeInfo{Members: GoMembers{
+	"String": __duration_String,
+}}
+
+var members_PtrTo_Location = GoTypeInfo{Members: GoMembers{
+	"String": __ptrTo_Location_String,
+}}
+
+var members_Month = GoTypeInfo{Members: GoMembers{
+	"String": __month_String,
+}}
+
+var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
+	"Error": __ptrTo_ParseError_Error,
+}}
+
+var members_Time = GoTypeInfo{Members: GoMembers{
+	"String": __time_String,
+}}
+
+var members_Weekday = GoTypeInfo{Members: GoMembers{
+	"String": __weekday_String,
+}}
+
+
+func init() {
+	GoTypes[_reflect.TypeOf((*_time.Duration)(nil)).Elem()] = &members_Duration
+	GoTypes[_reflect.TypeOf((*_time.Location)(nil))] = &members_PtrTo_Location
+	GoTypes[_reflect.TypeOf((*_time.Month)(nil)).Elem()] = &members_Month
+	GoTypes[_reflect.TypeOf((*_time.ParseError)(nil))] = &members_PtrTo_ParseError
+	GoTypes[_reflect.TypeOf((*_time.Time)(nil)).Elem()] = &members_Time
+	GoTypes[_reflect.TypeOf((*_time.Weekday)(nil)).Elem()] = &members_Weekday
+}
+
 GO FUNC unicode.In from unicode/graphic.go:
 // func __in(r rune, ranges ...*_unicode.RangeTable)  {
 // 	_res := _unicode.In(r, ranges)
@@ -65140,6 +66962,10 @@ package utf8
 
 import (
 )
+
+func init() {
+}
+
 ABENDs: 047(555) 987(310) 902(292) 044(214) 048(207) 674(140) 043(129) 675(129) 907(85) 906(42) 903(34) 885(16) 905(14) 883(12) 908(6) 042(2) 171(2) 909(2) 901(1)
 Totals: functions=3450 generated=974 (28.23%)
           non-receivers=1487 (43.10%) generated=653 (43.91%)
