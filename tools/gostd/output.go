@@ -243,6 +243,16 @@ import (%s
 			}
 		})
 
+	sortedStringMap(v.initTypes,
+		func(k1, k2 string) {
+			out.WriteString(fmt.Sprintf("var %s = GoTypeInfo{Members: GoMembers{\n", k2))
+			sortedStringMap(v.initVars[k2], // Will always be populated
+				func(c, g string) {
+					out.WriteString(fmt.Sprintf("\t\"%s\": %s\n", c, g))
+				})
+			out.WriteString("}}\n\n")
+		})
+
 	if out != nil {
 		out.WriteString("\nfunc init() {\n")
 	}

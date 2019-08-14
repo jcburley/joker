@@ -244,7 +244,12 @@ func %s(o GoObject, args Object) Object {
 		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
 		for _, r := range fn.fd.Recv.List {
-			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = typeInfoName(r)
+			tin := typeInfoName(r)
+			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = tin
+			if _, ok := goCode[pkgDirUnix].initVars[tin]; !ok {
+				goCode[pkgDirUnix].initVars[tin] = map[string]string{}
+			}
+			goCode[pkgDirUnix].initVars[tin][fn.fd.Name.Name] = goFname
 		}
 	}
 

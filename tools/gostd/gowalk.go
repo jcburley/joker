@@ -77,7 +77,8 @@ type fnCodeMap map[string]fnCodeInfo
 type codeInfo struct {
 	functions fnCodeMap
 	types     goTypeMap
-	initTypes map[string]string // func init() "GoTypes[key] = value"
+	initTypes map[string]string            // func init() "GoTypes[key] = value"
+	initVars  map[string]map[string]string // "var members_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -414,9 +415,9 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
 			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
-				map[string]string{}}
+				map[string]string{}, map[string]map[string]string{}}
 			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
-				map[string]string{}}
+				map[string]string{}, map[string]map[string]string{}}
 		}
 	}
 }
