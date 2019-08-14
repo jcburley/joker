@@ -244,6 +244,19 @@ import (%s
 		})
 
 	if out != nil {
+		out.WriteString("\nfunc init() {\n")
+	}
+	sortedStringMap(v.initTypes,
+		func(k, v string) {
+		})
+	if out != nil {
+		out.WriteString("}\n")
+		if unbuf_out == os.Stdout {
+			out.WriteString("\n") // separate from next "file" output for testing
+		}
+	}
+
+	if out != nil {
 		out.Flush()
 		if unbuf_out != os.Stdout {
 			unbuf_out.Close()

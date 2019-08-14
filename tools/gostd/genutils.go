@@ -6,6 +6,7 @@ import (
 	"go/token"
 	"path"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -185,4 +186,15 @@ func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 		gol = "Object"
 	}
 	return
+}
+
+func sortedStringMap(m *map[string]string, f func(key, value string)) {
+	var keys []string
+	for k, _ := range *m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, (*m)[k])
+	}
 }

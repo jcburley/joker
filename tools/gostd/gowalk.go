@@ -22,6 +22,90 @@ var numGeneratedReceivers int
 var numGeneratedTypes int
 var numDeclaredGoTypes int
 
+type packageInfo struct {
+	importsNative  *packageImports
+	importsAutoGen *packageImports
+	nonEmpty       bool // Whether any non-comment code has been generated
+	hasGoFiles     bool // Whether any .go files (would) have been generated
+}
+
+/* Map (Unix-style) relative path to package info */
+var packagesInfo = map[string]*packageInfo{}
+
+/* Sort the packages -- currently appears to not actually be
+/* necessary, probably because of how walkDirs() works. */
+func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageInfo)) {
+	var keys []string
+	for k, _ := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m[k])
+	}
+}
+
+func sortedPackageImports(pi packageImports, f func(k, local, full string)) {
+	var keys []string
+	for k, _ := range pi.fullNames {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		v := pi.fullNames[k]
+		f(k, v.local, v.full)
+	}
+}
+
+type goFile struct {
+	name        string
+	rootUnix    string
+	pkgDirUnix  string
+	pkgBaseName string
+	spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+}
+
+var goFiles = map[string]*goFile{}
+
+type fnCodeInfo struct {
+	sourceFile *goFile
+	fnCode     string
+}
+
+type fnCodeMap map[string]fnCodeInfo
+
+type codeInfo struct {
+	functions fnCodeMap
+	types     goTypeMap
+	initTypes *map[string]string // func init() "GoTypes[key] = value"
+}
+
+/* Map relative (Unix-style) package names to maps of function names to code info and strings. */
+var clojureCode = map[string]codeInfo{}
+var goCode = map[string]codeInfo{}
+
+func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
+	var keys []string
+	for k, _ := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m[k])
+	}
+}
+
+func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
+	var keys []string
+	for k, _ := range m.functions {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m.functions[k])
+	}
+}
+
 type funcInfo struct {
 	baseName     string // Just the name without receiver-type info
 	receiverId   string // Receiver info (only one type supported here and by Golang itself for now)
@@ -222,16 +306,6 @@ Funcs:
 	return
 }
 
-type goFile struct {
-	name        string
-	rootUnix    string
-	pkgDirUnix  string
-	pkgBaseName string
-	spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
-}
-
-var goFiles = map[string]*goFile{}
-
 func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (gf *goFile) {
 	if egf, found := goFiles[goFilePathUnix]; found {
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
@@ -311,41 +385,6 @@ func addImport(packageImports *packageImports, local, full string) string {
 	return local
 }
 
-type packageInfo struct {
-	importsNative  *packageImports
-	importsAutoGen *packageImports
-	nonEmpty       bool // Whether any non-comment code has been generated
-	hasGoFiles     bool // Whether any .go files (would) have been generated
-}
-
-/* Map (Unix-style) relative path to package info */
-var packagesInfo = map[string]*packageInfo{}
-
-/* Sort the packages -- currently appears to not actually be
-/* necessary, probably because of how walkDirs() works. */
-func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageInfo)) {
-	var keys []string
-	for k, _ := range m {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		f(k, m[k])
-	}
-}
-
-func sortedPackageImports(pi packageImports, f func(k, local, full string)) {
-	var keys []string
-	for k, _ := range pi.fullNames {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		v := pi.fullNames[k]
-		f(k, v.local, v.full)
-	}
-}
-
 func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if verbose {
 		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
@@ -374,8 +413,10 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
-			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{}}
-			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{}}
+			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
+				&map[string]string{}}
+			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
+				&map[string]string{}}
 		}
 	}
 }
@@ -472,42 +513,4 @@ func walkDirs(root string, mode parser.Mode) error {
 	}
 
 	return err
-}
-
-type fnCodeInfo struct {
-	sourceFile *goFile
-	fnCode     string
-}
-
-type fnCodeMap map[string]fnCodeInfo
-
-type codeInfo struct {
-	functions fnCodeMap
-	types     goTypeMap
-}
-
-/* Map relative (Unix-style) package names to maps of function names to code info and strings. */
-var clojureCode = map[string]codeInfo{}
-var goCode = map[string]codeInfo{}
-
-func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
-	var keys []string
-	for k, _ := range m {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		f(k, m[k])
-	}
-}
-
-func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
-	var keys []string
-	for k, _ := range m.functions {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		f(k, m.functions[k])
-	}
 }
