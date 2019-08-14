@@ -679,6 +679,21 @@ var procGoObject Proc = func(args []Object) Object {
 	return Boolean{B: IsGoObject(args[0])}
 }
 
+var procGo Proc = func(args []Object) Object {
+	CheckArity(args, 3, 3)
+	o := EnsureGoObject(args, 0)
+	member := ExtractString(args, 1)
+	g := GoLookupType(o.O)
+	if g == nil {
+		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
+	}
+	f := g.Members[member]
+	if f == nil {
+		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "." + member))
+	}
+	return (func(GoObject, Object) Object)(f)(o, args[2])
+}
+
 var procAssoc Proc = func(args []Object) Object {
 	return EnsureAssociative(args, 0).Assoc(args[1], args[2])
 }
@@ -2140,4 +2155,6 @@ func init() {
 	intern("intern-fake-var__", procInternFakeVar)
 	intern("parse__", procParse)
 	intern("inc-problem-count__", procIncProblemCount)
+
+	intern("go__", procGo)
 }

@@ -477,7 +477,7 @@ func PanicArity(n int) {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s", n, name)))
 }
 
-func rangeString(min, max int) string {
+func RangeString(min, max int) string {
 	if min == max {
 		return strconv.Itoa(min)
 	}
@@ -495,7 +495,7 @@ func rangeString(min, max int) string {
 
 func PanicArityMinMax(n, min, max int) {
 	name := RT.currentExpr.(Traceable).Name()
-	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, rangeString(min, max))))
+	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, RangeString(min, max))))
 }
 
 func CheckArity(args []Object, min int, max int) {
@@ -1143,19 +1143,19 @@ func (o GoObject) WithInfo(info *ObjectInfo) Object {
 	return o
 }
 
-func typeToString(ty reflect.Type) string {
+func GoTypeToString(ty reflect.Type) string {
 	switch ty.Kind() {
 	case reflect.Array:
-		return "[]" + typeToString(ty.Elem())
+		return "[]" + GoTypeToString(ty.Elem())
 	case reflect.Ptr:
-		return "*" + typeToString(ty.Elem())
+		return "*" + GoTypeToString(ty.Elem())
 	}
 	return ty.PkgPath() + "." + ty.Name()
 }
 
 func (o GoObject) GetType() *Type {
 	ty := reflect.TypeOf(o.O)
-	s := fmt.Sprintf("GoObject[%s]", typeToString(ty))
+	s := fmt.Sprintf("GoObject[%s]", GoTypeToString(ty))
 	k := STRINGS.Intern(s)
 	var t *Type
 	var found bool

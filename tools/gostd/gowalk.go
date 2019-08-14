@@ -23,7 +23,10 @@ var numGeneratedTypes int
 var numDeclaredGoTypes int
 
 type funcInfo struct {
-	name         string // RcvrType_name for a receiver
+	baseName     string // Just the name without receiver-type info
+	receiverId   string // Receiver info (only one type supported here and by Golang itself for now)
+	name         string // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	docName      string // Everything, for documentation and diagnostics
 	fd           *FuncDecl
 	sourceFile   *goFile
 	refersToSelf bool // whether :go-imports should list itself
@@ -74,6 +77,30 @@ func receiverPrefix(src *goFile, rl *FieldList) string {
 	return res + "_"
 }
 
+func receiverId(src *goFile, pkgName string, rl *FieldList) string {
+	if rl == nil {
+		return ""
+	}
+	pkg := "_" + pkgName + "."
+	res := ""
+	for i, r := range rl.List {
+		if i != 0 {
+			res += "ABEND422(more than one receiver in list)"
+		}
+		switch x := r.Type.(type) {
+		case *Ident:
+			res += pkg + x.Name
+		case *ArrayType:
+			res += "[]" + pkg + x.Elt.(*Ident).Name
+		case *StarExpr:
+			res += "*" + pkg + x.X.(*Ident).Name
+		default:
+			panic(fmt.Sprintf("receiverId: unrecognized expr %T in %s", x, src.name))
+		}
+	}
+	return res
+}
+
 // Returns whether any public functions were actually processed.
 func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
 	if dump {
@@ -87,7 +114,9 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 				fullName, v.sourceFile.name, filename))
 	}
-	qualifiedFunctions[fullName] = &funcInfo{fnName, fd, gf, false}
+	rcvrId := receiverId(gf, gf.pkgBaseName, fd.Recv)
+	docName := "(" + receiverId(gf, pkgDirUnix, fd.Recv) + ")" + fd.Name.Name + "()"
+	qualifiedFunctions[fullName] = &funcInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
 	return true
 }
 

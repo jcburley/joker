@@ -4450,3 +4450,9 @@
   (throw (ex-info "method preference not yet supported by joker.core" {})))
 
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
+
+(defn Go
+  "Invoke a receiver for, or get/set a member of, a Go object, returning result if applicable, else nil."
+  ^{:added "1.0"}
+  [^GoObject o m & args]
+  (go__ o m args))

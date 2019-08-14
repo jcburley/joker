@@ -159,12 +159,35 @@ func printAbends(m map[string]int) {
 	}
 }
 
+func genReceiverCode(fn *funcInfo, goFname string) string {
+	const template = `
+	GoCheckArity("%s", args, 0, 0)
+	return MakeString(o.O.(%s).%s(%s))
+
+`
+
+	receiverName := fn.fd.Name.Name
+	argList := ""
+	return fmt.Sprintf(template[1:], fn.docName, fn.receiverId, receiverName, argList)
+}
+
 func genReceiver(fn *funcInfo) {
-	if fn != nil {
+	if fn.fd.Type.Params != nil && len(fn.fd.Type.Params.List) != 0 {
+		return
+	}
+	if fn.fd.Type.Results == nil || fn.fd.Type.Results.List == nil ||
+		len(fn.fd.Type.Results.List) != 1 {
+		return
+	}
+	switch v := fn.fd.Type.Results.List[0].Type.(type) {
+	case *Ident:
+		if v.Name != "string" {
+			return
+		}
+	default:
 		return
 	}
 	genSymReset()
-	d := fn.fd
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := fn.sourceFile.pkgBaseName
 
@@ -174,10 +197,10 @@ func %s(o GoObject, args Object) Object {
 `
 
 	goFname := funcNameAsGoPrivate(fn.name)
-	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
-	clojureReturnType, _ := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	/*
+		clojureReturnType, _ := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
+
 		var cl2gol string
 		if clojureReturnType == "" {
 			cl2gol = goFname
@@ -197,7 +220,7 @@ func %s(o GoObject, args Object) Object {
 	*/
 	clojureFn := ""
 
-	goFn := fmt.Sprintf(goTemplate, goFname, fc.goCode)
+	goFn := fmt.Sprintf(goTemplate, goFname, genReceiverCode(fn, goFname))
 
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
@@ -208,13 +231,8 @@ func %s(o GoObject, args Object) Object {
 		numGeneratedFunctions++
 		numGeneratedReceivers++
 		packagesInfo[pkgDirUnix].nonEmpty = true
-		if clojureReturnType == "" {
-			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
-			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
-		}
-		if clojureReturnType != "" || fn.refersToSelf {
-			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix)
-		}
+		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
+		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
 	}
 
 	//	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
