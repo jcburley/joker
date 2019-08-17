@@ -174,6 +174,13 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 
 	args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
 
+	resultAssign, _, _, _, postCode := genGoPost(fn, "\t", fn.fd)
+	if postCode == "" && resultAssign == "" {
+		return "\t...ABEND275: TODO...\n"
+	} else if postCode != "" || resultAssign != "" {
+		return "\t" + resultAssign + args + "\n" + postCode
+	}
+	//TODO: Remove the rest of this (dead) code, remove the "else if" above
 	if len(resList) == 0 {
 		prepRes = args + `
 	`
@@ -187,7 +194,9 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 		}
 		res = fmt.Sprintf(pattern, args)
 	} else {
-		res = "ABEND223(receiver returns more than one argument)"
+		prepRes = `_res := EmptyVector()
+`
+		res = "_res"
 	}
 
 	return fmt.Sprintf(template[1:], fn.docName, prepRes, res)
