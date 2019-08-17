@@ -259,8 +259,6 @@ func %s(o GoObject, args Object) Object {
 		}
 	}
 
-	//	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
-
 	if goFn != "" {
 		goCode[pkgDirUnix].functions[goFname] = fnCodeInfo{fn.sourceFile, goFn}
 	}

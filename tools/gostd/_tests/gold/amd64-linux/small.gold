@@ -873,11 +873,11 @@ func __ptrTo_URL_Port(o GoObject, args Object) Object {
 }
 
 GO FUNC net/url.__ptrTo_URL_Query from net/url/url.go:
-// func __ptrTo_URL_Query(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/url.URL)Query()", args, 0, 0)
-// 	return ABEND224(unsupported conversion of return value o.O.(*_url.URL).Query() to Clojure)
+func __ptrTo_URL_Query(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/url.URL)Query()", args, 0, 0)
+	return MakeGoObject(o.O.(*_url.URL).Query())
 
-// }
+}
 
 GO FUNC net/url.__ptrTo_URL_RequestURI from net/url/url.go:
 func __ptrTo_URL_RequestURI(o GoObject, args Object) Object {
@@ -950,6 +950,7 @@ var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
 	"Hostname": __ptrTo_URL_Hostname,
 	"IsAbs": __ptrTo_URL_IsAbs,
 	"Port": __ptrTo_URL_Port,
+	"Query": __ptrTo_URL_Query,
 	"RequestURI": __ptrTo_URL_RequestURI,
 	"String": __ptrTo_URL_String,
 }}
@@ -973,8 +974,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 047(2) 223(2) 042(1) 224(1) 674(1)
-Totals: functions=51 generated=31 (60.78%)
+ABENDs: 047(2) 223(2) 042(1) 674(1)
+Totals: functions=51 generated=32 (62.75%)
           non-receivers=18 (35.29%) generated=17 (94.44%)
-          receivers=33 (64.71%) generated=14 (42.42%)
+          receivers=33 (64.71%) generated=15 (45.45%)
         types=10 generated=7 (70.00%)

@@ -41,13 +41,14 @@ func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) *goTypeInfo {
 		return ti
 	}
 	ti := &goTypeInfo{
-		localName:      ts.Name.Name,
-		fullName:       fullTypeName,
-		sourceFile:     gf,
-		underlyingType: &ts.Type,
-		private:        isPrivate(ts.Name.Name),
-		custom:         true,
-		uncompleted:    true,
+		localName:        ts.Name.Name,
+		fullName:         fullTypeName,
+		sourceFile:       gf,
+		underlyingType:   &ts.Type,
+		private:          isPrivate(ts.Name.Name),
+		custom:           true,
+		uncompleted:      true,
+		convertToClojure: "MakeGoObject(%s)",
 	}
 	goTypes[fullTypeName] = ti
 	return ti
@@ -126,6 +127,7 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 		private:            private,
 		unsupported:        unsupported,
 		convertFromClojure: convertFromClojure,
+		convertToClojure:   "MakeGoObject(%s)",
 	}
 	goTypes[fullName] = v
 	return v
@@ -175,12 +177,13 @@ func goArrayType(src *goFile, len *Expr, elt *Expr) *goTypeInfo {
 		return v
 	}
 	v := &goTypeInfo{
-		localName:      e.localName,
-		fullName:       fullName,
-		underlyingType: elt,
-		custom:         true,
-		unsupported:    e.unsupported,
-		constructs:     e.constructs,
+		localName:        e.localName,
+		fullName:         fullName,
+		underlyingType:   elt,
+		custom:           true,
+		unsupported:      e.unsupported,
+		constructs:       e.constructs,
+		convertToClojure: "MakeGoObject(%s)",
 	}
 	goTypes[fullName] = v
 	return v
@@ -216,6 +219,7 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 		custom:             true,
 		private:            e.private,
 		unsupported:        e.unsupported,
+		convertToClojure:   "MakeGoObject(%s)",
 	}
 	goTypes[fullName] = v
 	return v
