@@ -1114,6 +1114,10 @@ func MakeBoolean(b bool) Boolean {
 	return Boolean{B: b}
 }
 
+func MakeChar(ch rune) Char {
+	return Char{Ch: ch}
+}
+
 func MakeTime(t time.Time) Time {
 	return Time{T: t}
 }

@@ -9,7 +9,7 @@ import (
 
 type goTypeInfo struct {
 	localName                 string  // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
-	fullName                  string  // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.localName, or ABEND if unsupported
+	fullGoName                string  // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.localName, or ABEND if unsupported
 	sourceFile                *goFile // location of the type defintion
 	td                        *TypeSpec
 	where                     token.Pos
@@ -29,28 +29,30 @@ type goTypeInfo struct {
 	private                   bool // Is this a private type?
 	unsupported               bool // Is this unsupported?
 	constructs                bool // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
+	nullable                  bool // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
 type goTypeMap map[string]*goTypeInfo
 
-/* These map fullNames to type info. */
+/* These map fullGoNames to type info. */
 var goTypes = goTypeMap{}
 
-func registerType(gf *goFile, fullTypeName string, ts *TypeSpec) *goTypeInfo {
-	if ti, found := goTypes[fullTypeName]; found {
+func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
+	if ti, found := goTypes[fullGoTypeName]; found {
 		return ti
 	}
 	ti := &goTypeInfo{
-		localName:        ts.Name.Name,
-		fullName:         fullTypeName,
-		sourceFile:       gf,
-		underlyingType:   &ts.Type,
-		private:          isPrivate(ts.Name.Name),
-		custom:           true,
-		uncompleted:      true,
-		convertToClojure: "MakeGoObject(%s)",
+		localName:         ts.Name.Name,
+		fullGoName:        fullGoTypeName,
+		sourceFile:        gf,
+		underlyingType:    &ts.Type,
+		argClojureArgType: fullTypeNameAsClojure(fullGoTypeName),
+		private:           isPrivate(ts.Name.Name),
+		custom:            true,
+		uncompleted:       true,
+		convertToClojure:  "MakeGoObject(%s)",
 	}
-	goTypes[fullTypeName] = ti
+	goTypes[fullGoTypeName] = ti
 	return ti
 }
 
@@ -58,14 +60,14 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 	if ti, found := goTypes[baseName]; found {
 		return ti
 	}
-	fullName := pkgDirUnix + "." + baseName
-	if ti, found := goTypes[fullName]; found {
+	fullGoName := pkgDirUnix + "." + baseName
+	if ti, found := goTypes[fullGoName]; found {
 		return ti
 	}
 	if gotypes.Universe.Lookup(baseName) != nil {
 		ti := &goTypeInfo{
 			localName:          baseName,
-			fullName:           fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", baseName, pkgDirUnix),
+			fullGoName:         fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", baseName, pkgDirUnix),
 			argClojureType:     baseName,
 			argClojureArgType:  baseName,
 			convertFromClojure: baseName + "(%s)",
@@ -75,7 +77,7 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 		goTypes[baseName] = ti
 		return ti
 	}
-	panic(fmt.Sprintf("type %s not found at %s", fullName, whereAt((*e).Pos())))
+	panic(fmt.Sprintf("type %s not found at %s", fullGoName, whereAt((*e).Pos())))
 }
 
 func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
@@ -84,7 +86,7 @@ func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
 
 func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	localName := ""
-	fullName := ""
+	fullGoName := ""
 	convertFromClojure := ""
 	private := false
 	var underlyingType *Expr
@@ -95,10 +97,10 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 		if ti.uncompleted {
 			// Fill in other info now that all types are registered.
 			ut := toGoExprInfo(src, ti.underlyingType)
-			if ut.unsupported {
-				ti.fullName = ut.fullName
-				ti.unsupported = true
-			}
+			/*			if ut.unsupported {
+						ti.fullGoName = ut.fullGoName
+						ti.unsupported = true
+					}*/
 			if ut.convertFromClojure != "" {
 				if ut.constructs {
 					ti.convertFromClojure = "*" + ut.convertFromClojure
@@ -115,21 +117,21 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	case *StarExpr:
 		return goStarExpr(src, &td.X)
 	}
-	if localName == "" || fullName == "" {
+	if localName == "" || fullGoName == "" {
 		localName = fmt.Sprintf("%T", *e)
-		fullName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", localName)
+		fullGoName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", localName)
 		unsupported = true
 	}
 	v := &goTypeInfo{
 		localName:          localName,
-		fullName:           fullName,
+		fullGoName:         fullGoName,
 		underlyingType:     underlyingType,
 		private:            private,
 		unsupported:        unsupported,
 		convertFromClojure: convertFromClojure,
 		convertToClojure:   "MakeGoObject(%s)",
 	}
-	goTypes[fullName] = v
+	goTypes[fullGoName] = v
 	return v
 }
 
@@ -139,7 +141,7 @@ func toGoExprString(src *goFile, e *Expr) string {
 	}
 	t := toGoExprInfo(src, e)
 	if t != nil {
-		return t.fullName
+		return t.fullGoName
 	}
 	return fmt.Sprintf("%T", e)
 }
@@ -170,22 +172,22 @@ func lenString(len *Expr) string {
 }
 
 func goArrayType(src *goFile, len *Expr, elt *Expr) *goTypeInfo {
-	var fullName string
+	var fullGoName string
 	e := toGoExprInfo(src, elt)
-	fullName = "[" + lenString(len) + "]" + e.fullName
-	if v, ok := goTypes[fullName]; ok {
+	fullGoName = "[" + lenString(len) + "]" + e.fullGoName
+	if v, ok := goTypes[fullGoName]; ok {
 		return v
 	}
 	v := &goTypeInfo{
 		localName:        e.localName,
-		fullName:         fullName,
+		fullGoName:       fullGoName,
 		underlyingType:   elt,
 		custom:           true,
 		unsupported:      e.unsupported,
 		constructs:       e.constructs,
 		convertToClojure: "MakeGoObject(%s)",
 	}
-	goTypes[fullName] = v
+	goTypes[fullGoName] = v
 	return v
 }
 
@@ -198,8 +200,8 @@ func ptrTo(expr string) string {
 
 func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 	e := toGoExprInfo(src, x)
-	fullName := "*" + e.fullName
-	if v, ok := goTypes[fullName]; ok {
+	fullGoName := "*" + e.fullGoName
+	if v, ok := goTypes[fullGoName]; ok {
 		return v
 	}
 	convertFromClojure := ""
@@ -213,7 +215,7 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 	}
 	v := &goTypeInfo{
 		localName:          e.localName,
-		fullName:           fullName,
+		fullGoName:         fullGoName,
 		underlyingType:     x,
 		convertFromClojure: convertFromClojure,
 		custom:             true,
@@ -221,14 +223,14 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 		unsupported:        e.unsupported,
 		convertToClojure:   "MakeGoObject(%s)",
 	}
-	goTypes[fullName] = v
+	goTypes[fullGoName] = v
 	return v
 }
 
 func init() {
 	goTypes["bool"] = &goTypeInfo{
 		localName:            "bool",
-		fullName:             "bool",
+		fullGoName:           "bool",
 		argClojureType:       "Boolean",
 		argFromClojureObject: ".B",
 		argClojureArgType:    "Boolean",
@@ -238,7 +240,7 @@ func init() {
 	}
 	goTypes["string"] = &goTypeInfo{
 		localName:            "string",
-		fullName:             "string",
+		fullGoName:           "string",
 		argClojureType:       "String",
 		argFromClojureObject: ".S",
 		argClojureArgType:    "String",
@@ -248,25 +250,27 @@ func init() {
 	}
 	goTypes["rune"] = &goTypeInfo{
 		localName:            "rune",
-		fullName:             "rune",
+		fullGoName:           "rune",
 		argClojureType:       "Char",
 		argFromClojureObject: ".Ch",
 		argClojureArgType:    "Char",
 		argExtractFunc:       "Char",
 		convertFromClojure:   `AssertChar(%s, "").Ch`,
+		convertToClojure:     "MakeChar(%s)",
 	}
 	goTypes["byte"] = &goTypeInfo{
 		localName:            "byte",
-		fullName:             "byte",
+		fullGoName:           "byte",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `byte(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["int"] = &goTypeInfo{
 		localName:            "int",
-		fullName:             "int",
+		fullGoName:           "int",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
@@ -276,7 +280,7 @@ func init() {
 	}
 	goTypes["uint"] = &goTypeInfo{
 		localName:            "uint",
-		fullName:             "uint",
+		fullGoName:           "uint",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Number",
@@ -286,79 +290,87 @@ func init() {
 	}
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",
-		fullName:             "int8",
+		fullGoName:           "int8",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["uint8"] = &goTypeInfo{
 		localName:            "uint8",
-		fullName:             "uint8",
+		fullGoName:           "uint8",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt8",
 		convertFromClojure:   `uint8(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["int16"] = &goTypeInfo{
 		localName:            "int16",
-		fullName:             "int16",
+		fullGoName:           "int16",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int16",
 		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["uint16"] = &goTypeInfo{
 		localName:            "uint16",
-		fullName:             "uint16",
+		fullGoName:           "uint16",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt16",
 		convertFromClojure:   `uint16(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["int32"] = &goTypeInfo{
 		localName:            "int32",
-		fullName:             "int32",
+		fullGoName:           "int32",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int32",
 		convertFromClojure:   `int32(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeInt(int(%s))",
 	}
 	goTypes["uint32"] = &goTypeInfo{
 		localName:            "uint32",
-		fullName:             "uint32",
+		fullGoName:           "uint32",
 		argClojureType:       "Number",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt32",
 		convertFromClojure:   `uint32(AssertNumber(%s, "").BigInt().Uint64())`,
+		convertToClojure:     "MakeBigIntU(uint64(%s))",
 	}
 	goTypes["int64"] = &goTypeInfo{
 		localName:            "int64",
-		fullName:             "int64",
+		fullGoName:           "int64",
 		argClojureType:       "Number",
 		argFromClojureObject: ".BigInt().Int64()",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "Int64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Int64()`,
+		convertToClojure:     "MakeBigInt(%s)",
 	}
 	goTypes["uint64"] = &goTypeInfo{
 		localName:            "uint64",
-		fullName:             "uint64",
+		fullGoName:           "uint64",
 		argClojureType:       "Number",
 		argFromClojureObject: ".BigInt().Uint64()",
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Uint64()`,
+		convertToClojure:     "MakeBigIntU(%s)",
 	}
 	goTypes["uintptr"] = &goTypeInfo{
 		localName:            "uintptr",
-		fullName:             "uintptr",
+		fullGoName:           "uintptr",
 		argClojureType:       "Number",
 		argFromClojureObject: ".BigInt().Uint64()",
 		argClojureArgType:    "Number",
@@ -367,7 +379,7 @@ func init() {
 	}
 	goTypes["float32"] = &goTypeInfo{
 		localName:            "float32",
-		fullName:             "float32",
+		fullGoName:           "float32",
 		argClojureType:       "Double",
 		argFromClojureObject: "",
 		argClojureArgType:    "Double",
@@ -376,7 +388,7 @@ func init() {
 	}
 	goTypes["float64"] = &goTypeInfo{
 		localName:            "float64",
-		fullName:             "float64",
+		fullGoName:           "float64",
 		argClojureType:       "Double",
 		argFromClojureObject: "",
 		argClojureArgType:    "Double",
@@ -385,7 +397,7 @@ func init() {
 	}
 	goTypes["complex64"] = &goTypeInfo{
 		localName:            "complex64",
-		fullName:             "complex64",
+		fullGoName:           "complex64",
 		argClojureType:       "",
 		argFromClojureObject: "",
 		argClojureArgType:    "",
@@ -394,7 +406,7 @@ func init() {
 	}
 	goTypes["complex128"] = &goTypeInfo{
 		localName:            "complex128",
-		fullName:             "complex128",
+		fullGoName:           "complex128",
 		argClojureType:       "",
 		argFromClojureObject: "",
 		argClojureArgType:    "",
@@ -403,13 +415,14 @@ func init() {
 	}
 	goTypes["error"] = &goTypeInfo{
 		localName:                 "error",
-		fullName:                  "error",
+		fullGoName:                "error",
 		argClojureType:            "Error",
 		argFromClojureObject:      "",
-		argClojureArgType:         "String",
-		argExtractFunc:            "",
+		argClojureArgType:         "Error",
+		argExtractFunc:            "Error",
 		convertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
 		convertFromClojureImports: []packageImport{{"_errors", "errors"}},
 		convertToClojure:          "MakeError(%s)",
+		nullable:                  true,
 	}
 }

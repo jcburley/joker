@@ -18,7 +18,9 @@
 (deftest receivers-work
   (let [i (IPv4 1 2 3 4)
         j (go.std.net/ParseIP "::ffff:c000:0280")
-        k (go.std.net/ParseIP "2001:0db8:85a3:0000:0000:8a2e:0370:7334")]
+        k (go.std.net/ParseIP "2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+        im (IPv4Mask 252 0 0 0)
+        sz (Go im "Size")]
     (is (= (Go i "String") "1.2.3.4"))
     (is (= (Go j "String") "192.0.2.128"))
     (is (= (Go k "String") "2001:db8:85a3::8a2e:370:7334"))
@@ -31,4 +33,6 @@
     ;; (is (not (Go i "Equal" j)))
     ;; (is (not (Go i "Equal" k)))
     ;; (is (not (Go j "Equal" i)))
+    (is (= (get sz 0) 6))
+    (is (= (get sz 1) 32))
     ))

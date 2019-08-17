@@ -174,7 +174,16 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 
 	args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
 
-	resultAssign, _, _, _, postCode := genGoPost(fn, "\t", fn.fd)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.fd)
+	if strings.Contains(returnTypeForDoc, "ABEND") {
+		return returnTypeForDoc
+	}
+	if strings.Contains(cljReturnType, "ABEND") {
+		return cljReturnType
+	}
+	if strings.Contains(cljReturnTypeForDoc, "ABEND") {
+		return cljReturnTypeForDoc
+	}
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
 	} else if postCode != "" || resultAssign != "" {
@@ -523,7 +532,7 @@ func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObje
 	nonGoObjectTypeDoc = v.argClojureType
 	extractClojureObject = v.argFromClojureObject
 	if v.unsupported || v.argClojureType == "" || extractClojureObject == "" {
-		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.fullName)
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.fullGoName)
 	}
 	return
 }
@@ -578,14 +587,14 @@ func vectorElementToType(ti *goTypeInfo, i int, name string, f *Field) string {
 func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 	v := toGoExprInfo(ti.sourceFile, e)
 	if v.unsupported {
-		return v.fullName
+		return v.fullGoName
 	}
 	if v.convertFromClojure != "" {
 		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.fullName, toGoExprString(ti.sourceFile, v.underlyingType))
+		v.fullGoName, toGoExprString(ti.sourceFile, v.underlyingType))
 }
 
 /* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */
