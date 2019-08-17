@@ -48,41 +48,41 @@ func genGoPostSelector(fn *funcInfo, indent, captureName string, e *SelectorExpr
 func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	tmpmap := "_map" + genSym("")
 	useful := false
-	for _, f := range fl.List {
-		for _, p := range f.Names {
-			if isPrivate(p.Name) {
-				continue // Skipping non-exported fields
-			}
-			clType, clTypeDoc, golType, more_goc, outNew :=
-				genGoPostExpr(fn, indent, captureName+"."+p.Name, f.Type, "")
-			out = outNew
-			if useful || exprIsUseful(out) {
-				useful = true
-			}
-			goc += more_goc
-			goc += indent + tmpmap +
-				".Add(MakeKeyword(\"" + p.Name + "\"), " + out + ")\n"
-			if cl != "" {
-				cl += ", "
-			}
-			if gol != "" {
-				gol += "; "
-			}
-			if p == nil {
-				cl += "_ "
-			} else {
-				cl += ":" + p.Name + " "
-				gol += p.Name + " "
-			}
-			if clType != "" {
-				cl += "^" + clType
-			}
-			if clTypeDoc != "" {
-				clDoc += "^" + clTypeDoc
-			}
-			if golType != "" {
-				gol += golType
-			}
+	fields := flattenFieldList(fl)
+	for _, field := range fields {
+		p := field.name
+		if isPrivate(p.Name) {
+			continue // Skipping non-exported fields
+		}
+		clType, clTypeDoc, golType, more_goc, outNew :=
+			genGoPostExpr(fn, indent, captureName+"."+p.Name, field.typ.Type, "")
+		out = outNew
+		if useful || exprIsUseful(out) {
+			useful = true
+		}
+		goc += more_goc
+		goc += indent + tmpmap +
+			".Add(MakeKeyword(\"" + p.Name + "\"), " + out + ")\n"
+		if cl != "" {
+			cl += ", "
+		}
+		if gol != "" {
+			gol += "; "
+		}
+		if p == nil {
+			cl += "_ "
+		} else {
+			cl += ":" + p.Name + " "
+			gol += p.Name + " "
+		}
+		if clType != "" {
+			cl += "^" + clType
+		}
+		if clTypeDoc != "" {
+			clDoc += "^" + clTypeDoc
+		}
+		if golType != "" {
+			gol += golType
 		}
 	}
 	if cl != "" {
@@ -210,7 +210,7 @@ func genGoPostItem(fn *funcInfo, indent, captureName string, f *Field, onlyIf st
 }
 
 // Caller generates "outGOCALL;goc" while saving cl and gol for type info (they go into .joke as metadata and docstrings)
-func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, clDoc, gol, goc, out string) {
+func genGoPostList(fn *funcInfo, indent string, fl *FieldList) (cl, clDoc, gol, goc, out string) {
 	useful := false
 	captureVars := []string{}
 	clType := []string{}
@@ -219,34 +219,29 @@ func genGoPostList(fn *funcInfo, indent string, fl FieldList) (cl, clDoc, gol, g
 	goCode := []string{}
 
 	result := resultName
-	multipleCaptures := len(fl.List) > 1 || (fl.List[0].Names != nil && len(fl.List[0].Names) > 1)
-	for _, f := range fl.List {
-		names := []string{}
-		if f.Names == nil {
-			names = append(names, "")
+	fields := flattenFieldList(fl)
+	multipleCaptures := len(fields) > 1
+	for _, field := range fields {
+		n := ""
+		if field.name != nil {
+			n = field.name.Name
+		}
+		captureName := result
+		if multipleCaptures {
+			captureName = n
+		}
+		captureVar, clNew, clDocNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, field.typ, "")
+		useful = useful || usefulItem
+		if multipleCaptures {
+			gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
 		} else {
-			for _, n := range f.Names {
-				names = append(names, n.Name)
-			}
+			result = outNew
 		}
-		for _, n := range names {
-			captureName := result
-			if multipleCaptures {
-				captureName = n
-			}
-			captureVar, clNew, clDocNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, f, "")
-			useful = useful || usefulItem
-			if multipleCaptures {
-				gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
-			} else {
-				result = outNew
-			}
-			captureVars = append(captureVars, captureVar)
-			clType = append(clType, clNew)
-			clTypeDoc = append(clTypeDoc, clDocNew)
-			golType = append(golType, golNew)
-			goCode = append(goCode, gocNew)
-		}
+		captureVars = append(captureVars, captureVar)
+		clType = append(clType, clNew)
+		clTypeDoc = append(clTypeDoc, clDocNew)
+		golType = append(golType, golNew)
+		goCode = append(goCode, gocNew)
 	}
 
 	out = strings.Join(captureVars, ", ")
@@ -296,6 +291,6 @@ func genGoPost(fn *funcInfo, indent string, d *FuncDecl) (goResultAssign, clojur
 	if fl == nil || fl.List == nil {
 		return
 	}
-	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(fn, indent, *fl)
+	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign = genGoPostList(fn, indent, fl)
 	return
 }

@@ -139,16 +139,13 @@ var qualifiedFunctions = map[string]*funcInfo{}
 
 var alreadySeen = []string{}
 
-func receiverPrefix(src *goFile, rl *FieldList) string {
-	if rl == nil {
-		return ""
-	}
+func receiverPrefix(src *goFile, rl []fieldItem) string {
 	res := ""
-	for i, r := range rl.List {
+	for i, r := range rl {
 		if i != 0 {
 			res += "_"
 		}
-		switch x := r.Type.(type) {
+		switch x := r.typ.Type.(type) {
 		case *Ident:
 			res += x.Name
 		case *ArrayType:
@@ -162,17 +159,14 @@ func receiverPrefix(src *goFile, rl *FieldList) string {
 	return res + "_"
 }
 
-func receiverId(src *goFile, pkgName string, rl *FieldList) string {
-	if rl == nil {
-		return ""
-	}
+func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
 	pkg := "_" + pkgName + "."
 	res := ""
-	for i, r := range rl.List {
+	for i, r := range rl {
 		if i != 0 {
 			res += "ABEND422(more than one receiver in list)"
 		}
-		switch x := r.Type.(type) {
+		switch x := r.typ.Type.(type) {
 		case *Ident:
 			res += pkg + x.Name
 		case *ArrayType:
@@ -192,15 +186,16 @@ func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncD
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
 		Print(fset, fd)
 	}
-	fnName := receiverPrefix(gf, fd.Recv) + fd.Name.Name
+	fl := flattenFieldList(fd.Recv)
+	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
 	if v, ok := qualifiedFunctions[fullName]; ok {
 		alreadySeen = append(alreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 				fullName, v.sourceFile.name, filename))
 	}
-	rcvrId := receiverId(gf, gf.pkgBaseName, fd.Recv)
-	docName := "(" + receiverId(gf, pkgDirUnix, fd.Recv) + ")" + fd.Name.Name + "()"
+	rcvrId := receiverId(gf, gf.pkgBaseName, fl)
+	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
 	qualifiedFunctions[fullName] = &funcInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
 	return true
 }

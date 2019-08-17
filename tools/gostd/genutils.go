@@ -198,3 +198,25 @@ func sortedStringMap(m map[string]string, f func(key, value string)) {
 		f(k, m[k])
 	}
 }
+
+type fieldItem struct {
+	name *Ident
+	typ  *Field
+}
+
+func flattenFieldList(fl *FieldList) (items []fieldItem) {
+	items = []fieldItem{}
+	if fl == nil {
+		return
+	}
+	for _, f := range fl.List {
+		if f.Names == nil {
+			items = append(items, fieldItem{nil, f})
+			continue
+		}
+		for _, n := range f.Names {
+			items = append(items, fieldItem{n, f})
+		}
+	}
+	return
+}

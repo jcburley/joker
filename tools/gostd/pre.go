@@ -222,52 +222,52 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	if fl == nil {
 		return
 	}
-	for _, f := range fl.List {
-		for _, p := range f.Names {
-			clType, clTypeDoc, goType, goTypeDoc, cl2golParam := genTypePre(fn, indent, f.Type, "_"+p.Name)
+	fields := flattenFieldList(fl)
+	for _, field := range fields {
+		p := field.name
+		clType, clTypeDoc, goType, goTypeDoc, cl2golParam := genTypePre(fn, indent, field.typ.Type, "_"+p.Name)
 
-			if clojureParamList != "" {
-				clojureParamList += ", "
-			}
-			if clType != "" {
-				clojureParamList += "^" + clType + " "
-			}
-			clojureParamList += "_" + paramNameAsClojure(p.Name)
-
-			if clojureParamListDoc != "" {
-				clojureParamListDoc += ", "
-			}
-			if clTypeDoc != "" {
-				clojureParamListDoc += "^" + clTypeDoc + " "
-			}
-			clojureParamListDoc += paramNameAsClojure(p.Name)
-
-			if clojureGoParams != "" {
-				clojureGoParams += ", "
-			}
-			clojureGoParams += cl2golParam
-
-			if goParamList != "" {
-				goParamList += ", "
-			}
-			goParamList += paramNameAsGo(p.Name)
-			if goType != "" {
-				goParamList += " " + goType
-			}
-
-			if goParamListDoc != "" {
-				goParamListDoc += ", "
-			}
-			goParamListDoc += paramNameAsGo(p.Name)
-			if goTypeDoc != "" {
-				goParamListDoc += " " + goTypeDoc
-			}
-
-			if goParams != "" {
-				goParams += ", "
-			}
-			goParams += paramNameAsGo(p.Name)
+		if clojureParamList != "" {
+			clojureParamList += ", "
 		}
+		if clType != "" {
+			clojureParamList += "^" + clType + " "
+		}
+		clojureParamList += "_" + paramNameAsClojure(p.Name)
+
+		if clojureParamListDoc != "" {
+			clojureParamListDoc += ", "
+		}
+		if clTypeDoc != "" {
+			clojureParamListDoc += "^" + clTypeDoc + " "
+		}
+		clojureParamListDoc += paramNameAsClojure(p.Name)
+
+		if clojureGoParams != "" {
+			clojureGoParams += ", "
+		}
+		clojureGoParams += cl2golParam
+
+		if goParamList != "" {
+			goParamList += ", "
+		}
+		goParamList += paramNameAsGo(p.Name)
+		if goType != "" {
+			goParamList += " " + goType
+		}
+
+		if goParamListDoc != "" {
+			goParamListDoc += ", "
+		}
+		goParamListDoc += paramNameAsGo(p.Name)
+		if goTypeDoc != "" {
+			goParamListDoc += " " + goTypeDoc
+		}
+
+		if goParams != "" {
+			goParams += ", "
+		}
+		goParams += paramNameAsGo(p.Name)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"
