@@ -200,8 +200,8 @@ func sortedStringMap(m map[string]string, f func(key, value string)) {
 }
 
 type fieldItem struct {
-	name *Ident
-	typ  *Field
+	name  *Ident
+	field *Field
 }
 
 func flattenFieldList(fl *FieldList) (items []fieldItem) {

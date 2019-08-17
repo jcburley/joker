@@ -55,7 +55,7 @@ func genGoPostStruct(fn *funcInfo, indent, captureName string, fl *FieldList, on
 			continue // Skipping non-exported fields
 		}
 		clType, clTypeDoc, golType, more_goc, outNew :=
-			genGoPostExpr(fn, indent, captureName+"."+p.Name, field.typ.Type, "")
+			genGoPostExpr(fn, indent, captureName+"."+p.Name, field.field.Type, "")
 		out = outNew
 		if useful || exprIsUseful(out) {
 			useful = true
@@ -230,7 +230,7 @@ func genGoPostList(fn *funcInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 		if multipleCaptures {
 			captureName = n
 		}
-		captureVar, clNew, clDocNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, field.typ, "")
+		captureVar, clNew, clDocNew, golNew, gocNew, outNew, usefulItem := genGoPostItem(fn, indent, captureName, field.field, "")
 		useful = useful || usefulItem
 		if multipleCaptures {
 			gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"

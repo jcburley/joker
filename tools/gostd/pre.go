@@ -225,7 +225,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	fields := flattenFieldList(fl)
 	for _, field := range fields {
 		p := field.name
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam := genTypePre(fn, indent, field.typ.Type, "_"+p.Name)
+		clType, clTypeDoc, goType, goTypeDoc, cl2golParam := genTypePre(fn, indent, field.field.Type, "_"+p.Name)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "

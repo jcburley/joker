@@ -162,20 +162,25 @@ func printAbends(m map[string]int) {
 func genReceiverCode(fn *funcInfo, goFname string) string {
 	const template = `
 	GoCheckArity("%s", args, 0, 0)
-	return %s
+	%sreturn %s
 
 `
 
 	receiverName := fn.fd.Name.Name
 	res := ""
+	prepRes := ""
 	argList := ""
+	resList := flattenFieldList(fn.fd.Type.Results)
 
-	if fn.fd.Type.Results == nil || fn.fd.Type.Results.List == nil ||
-		len(fn.fd.Type.Results.List) == 0 {
-		res = "MakeNil(ABEND222(fix receiver returning null arg))"
-	} else if len(fn.fd.Type.Results.List) == 1 && len(fn.fd.Type.Results.List[0].Names) <= 1 {
-		args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
-		ti := toGoExprInfo(fn.sourceFile, &fn.fd.Type.Results.List[0].Type)
+	args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
+
+	if len(resList) == 0 {
+		prepRes = args + `
+	`
+		res = "NIL"
+	} else if len(resList) == 1 {
+
+		ti := toGoExprInfo(fn.sourceFile, &resList[0].field.Type)
 		pattern := ti.convertToClojure
 		if pattern == "" {
 			pattern = "ABEND224(unsupported conversion of return value %s to Clojure)"
@@ -185,7 +190,7 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 		res = "ABEND223(receiver returns more than one argument)"
 	}
 
-	return fmt.Sprintf(template[1:], fn.docName, res)
+	return fmt.Sprintf(template[1:], fn.docName, prepRes, res)
 }
 
 func typeKey(pkgPrefix string, fl *Field) string {

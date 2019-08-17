@@ -145,7 +145,7 @@ func receiverPrefix(src *goFile, rl []fieldItem) string {
 		if i != 0 {
 			res += "_"
 		}
-		switch x := r.typ.Type.(type) {
+		switch x := r.field.Type.(type) {
 		case *Ident:
 			res += x.Name
 		case *ArrayType:
@@ -166,7 +166,7 @@ func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
 		if i != 0 {
 			res += "ABEND422(more than one receiver in list)"
 		}
-		switch x := r.typ.Type.(type) {
+		switch x := r.field.Type.(type) {
 		case *Ident:
 			res += pkg + x.Name
 		case *ArrayType:
