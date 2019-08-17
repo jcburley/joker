@@ -63,99 +63,99 @@ JOKER FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
-   :go "__cIDRMask(_ones, _bits)"}
-  [^Int _ones, ^Int _bits])
+   :go "__cIDRMask(ones, bits)"}
+  [^Int ones, ^Int bits])
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
   "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
-   :go "__iPv4(_a, _b, _c, _d)"}
-  [^Int _a, ^Int _b, ^Int _c, ^Int _d])
+   :go "__iPv4(a, b, c, d)"}
+  [^Int a, ^Int b, ^Int c, ^Int d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
   "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
-   :go "__iPv4Mask(_a, _b, _c, _d)"}
-  [^Int _a, ^Int _b, ^Int _c, ^Int _d])
+   :go "__iPv4Mask(a, b, c, d)"}
+  [^Int a, ^Int b, ^Int c, ^Int d])
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupAddr(_addr)"}
-  [^String _addr])
+   :go "__lookupAddr(addr)"}
+  [^String addr])
 
 JOKER FUNC net.LookupCNAME from net/lookup.go:
 (defn LookupCNAME
   "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: (host string)\n\nGo return type: (cname string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__lookupCNAME(_host)"}
-  [^String _host])
+   :go "__lookupCNAME(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
   "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupHost(_host)"}
-  [^String _host])
+   :go "__lookupHost(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
   {:added "1.0"
-   :go "__lookupIP(_host)"}
-  [^String _host])
+   :go "__lookupIP(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
   "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/MX)) Error]"
   {:added "1.0"
-   :go "__lookupMX(_name)"}
-  [^String _name])
+   :go "__lookupMX(name)"}
+  [^String name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
   "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/NS)) Error]"
   {:added "1.0"
-   :go "__lookupNS(_name)"}
-  [^String _name])
+   :go "__lookupNS(name)"}
+  [^String name])
 
 JOKER FUNC net.LookupPort from net/lookup.go:
 (defn LookupPort
   "LookupPort looks up the port for the given network and service.\n\nGo input arguments: (network string, service string)\n\nGo return type: (port int, err error)\n\nJoker input arguments: [^String network, ^String service]\n\nJoker return type: [Int Error]"
   {:added "1.0"
-   :go "__lookupPort(_network, _service)"}
-  [^String _network, ^String _service])
+   :go "__lookupPort(network, service)"}
+  [^String network, ^String service])
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
   "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (atom-of go.std.net/SRV)) Error]"
   {:added "1.0"
-   :go "__lookupSRV(_service, _proto, _name)"}
-  [^String _service, ^String _proto, ^String _name])
+   :go "__lookupSRV(service, proto, name)"}
+  [^String service, ^String proto, ^String name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
   "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupTXT(_name)"}
-  [^String _name])
+   :go "__lookupTXT(name)"}
+  [^String name])
 
 JOKER FUNC net.ParseCIDR from net/ip.go:
 (defn ParseCIDR
   "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP (atom-of go.std.net/IPNet) Error]"
   {:added "1.0"
-   :go "__parseCIDR(_s)"}
-  [^String _s])
+   :go "__parseCIDR(s)"}
+  [^String s])
 
 JOKER FUNC net.ParseIP from net/ip.go:
 (defn ParseIP
   "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: (s string)\n\nGo return type: IP\n\nJoker input arguments: [^String s]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
-   :go "__parseIP(_s)"}
-  [^String _s])
+   :go "__parseIP(s)"}
+  [^String s])
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -210,64 +210,64 @@ JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
   {:added "1.0"
-   :go "__parse(_rawurl)"}
-  [^String _rawurl])
+   :go "__parse(rawurl)"}
+  [^String rawurl])
 
 JOKER FUNC net/url.ParseQuery from net/url/url.go:
 (defn ParseQuery
   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [go.std.net.url/Values Error]"
   {:added "1.0"
-   :go "__parseQuery(_query)"}
-  [^String _query])
+   :go "__parseQuery(query)"}
+  [^String query])
 
 JOKER FUNC net/url.ParseRequestURI from net/url/url.go:
 (defn ParseRequestURI
   "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
   {:added "1.0"
-   :go "__parseRequestURI(_rawurl)"}
-  [^String _rawurl])
+   :go "__parseRequestURI(rawurl)"}
+  [^String rawurl])
 
 JOKER FUNC net/url.PathEscape from net/url/url.go:
 (defn ^"String" PathEscape
   "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
-   :go "url.PathEscape(_s)"}
-  [^String _s])
+   :go "url.PathEscape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.PathUnescape from net/url/url.go:
 (defn PathUnescape
   "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__pathUnescape(_s)"}
-  [^String _s])
+   :go "__pathUnescape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.QueryEscape from net/url/url.go:
 (defn ^"String" QueryEscape
   "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
-   :go "url.QueryEscape(_s)"}
-  [^String _s])
+   :go "url.QueryEscape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.QueryUnescape from net/url/url.go:
 (defn QueryUnescape
   "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__queryUnescape(_s)"}
-  [^String _s])
+   :go "__queryUnescape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.User from net/url/url.go:
 (defn User
   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
   {:added "1.0"
-   :go "__user(_username)"}
-  [^String _username])
+   :go "__user(username)"}
+  [^String username])
 
 JOKER FUNC net/url.UserPassword from net/url/url.go:
 (defn UserPassword
   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
   {:added "1.0"
-   :go "__userPassword(_username, _password)"}
-  [^String _username, ^String _password])
+   :go "__userPassword(username, password)"}
+  [^String username, ^String password])
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -720,6 +720,7 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Equal from net/ip.go:
 func __iP_Equal(o GoObject, args Object) Object {
+	*x := whatever
 	_res := o.O.(_net.IP).Equal(x)
 	return MakeBoolean(_res)
 }
@@ -781,6 +782,7 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Mask from net/ip.go:
 func __iP_Mask(o GoObject, args Object) Object {
+	*mask := whatever
 	_res := o.O.(_net.IP).Mask(mask)
 	return MakeGoObject(_res)
 }
@@ -805,6 +807,7 @@ func __iP_To4(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+	*ip := whatever
 	_res := o.O.(*_net.IPNet).Contains(ip)
 	return MakeBoolean(_res)
 }
@@ -823,7 +826,7 @@ func __ptrTo_IPNet_String(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
 // func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_text)))}
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(text)))}
 
 GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
 // func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
@@ -1255,6 +1258,7 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 
 GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
 func __ptrTo_URL_Parse(o GoObject, args Object) Object {
+	ref := whatever
 	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -1294,7 +1298,7 @@ func __ptrTo_URL_String(o GoObject, args Object) Object {
 
 GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
 // func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_text)))}
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(text)))}
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
@@ -1335,6 +1339,7 @@ func __values_Encode(o GoObject, args Object) Object {
 
 GO FUNC net/url.__values_Get from net/url/url.go:
 func __values_Get(o GoObject, args Object) Object {
+	key := whatever
 	_res := o.O.(_url.Values).Get(key)
 	return MakeString(_res)
 }

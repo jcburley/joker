@@ -199,7 +199,11 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
 	}
-	return "\t" + preCode + resultAssign + call + "\n" + postCode
+	finishPreCode := ""
+	if preCode != "" {
+		finishPreCode = "\n\t"
+	}
+	return "\t" + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
 func typeKey(pkgPrefix string, fl *Field) string {

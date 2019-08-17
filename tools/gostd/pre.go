@@ -174,6 +174,9 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 		if goTypeDoc == "" {
 			goTypeDoc = goType
 		}
+		if fn.fd.Recv != nil {
+			goPreCode = cl2golParam + " := whatever"
+		}
 	case *ArrayType:
 		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreArray(fn, indent, v, paramName)
 	case *StarExpr:
@@ -208,7 +211,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		} else {
 			resVar = p.Name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.field.Type, "_"+resVar)
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.field.Type, resVar)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -216,7 +219,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if clType != "" {
 			clojureParamList += "^" + clType + " "
 		}
-		clojureParamList += "_" + paramNameAsClojure(resVar)
+		clojureParamList += paramNameAsClojure(resVar)
 
 		if clojureParamListDoc != "" {
 			clojureParamListDoc += ", "
