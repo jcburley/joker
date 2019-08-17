@@ -3846,6 +3846,12 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 	return MakeGoObject(_res)
 }
 
+GO FUNC net.__iP_Equal from net/ip.go:
+func __iP_Equal(o GoObject, args Object) Object {
+	_res := o.O.(_net.IP).Equal(x)
+	return MakeBoolean(_res)
+}
+
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
 	_res := o.O.(_net.IP).IsGlobalUnicast()
@@ -3899,6 +3905,12 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 	_res = _res.Conjoin(_vec1)
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
+}
+
+GO FUNC net.__iP_Mask from net/ip.go:
+func __iP_Mask(o GoObject, args Object) Object {
+	_res := o.O.(_net.IP).Mask(mask)
+	return MakeGoObject(_res)
 }
 
 GO FUNC net.__iP_String from net/ip.go:
@@ -3955,6 +3967,14 @@ func __ptrTo_AddrError_Timeout(o GoObject, args Object) Object {
 	return MakeBoolean(_res)
 }
 
+GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
+// func __ptrTo_Buffers_Read(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_p)))}
+
+GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
+// func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+
 GO FUNC net.__ptrTo_DNSConfigError_Error from net/net.go:
 func __ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {
 	_res := o.O.(*_net.DNSConfigError).Error()
@@ -3991,6 +4011,19 @@ func __ptrTo_DNSError_Timeout(o GoObject, args Object) Object {
 	return MakeBoolean(_res)
 }
 
+GO FUNC net.__ptrTo_Dialer_Dial from net/dial.go:
+func __ptrTo_Dialer_Dial(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_net.Dialer).Dial(network, address)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net.__ptrTo_Dialer_DialContext from net/dial.go:
+// func __ptrTo_Dialer_DialContext(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+
 GO FUNC net.__ptrTo_IPAddr_Network from net/iprawsock.go:
 func __ptrTo_IPAddr_Network(o GoObject, args Object) Object {
 	_res := o.O.(*_net.IPAddr).Network()
@@ -4003,9 +4036,39 @@ func __ptrTo_IPAddr_String(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net.__ptrTo_IPConn_ReadFrom from net/iprawsock.go:
+// func __ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
+// func __ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
+// func __ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)))}
+
 GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func __ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename syscall.RawConn) Error]}
+
+GO FUNC net.__ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
+// func __ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)), _addr)}
+
+GO FUNC net.__ptrTo_IPConn_WriteTo from net/iprawsock.go:
+// func __ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), *_addr)}
+
+GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
+// func __ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), _addr)}
+
+GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
+func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+	_res := o.O.(*_net.IPNet).Contains(ip)
+	return MakeBoolean(_res)
+}
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
@@ -4018,6 +4081,10 @@ func __ptrTo_IPNet_String(o GoObject, args Object) Object {
 	_res := o.O.(*_net.IPNet).String()
 	return MakeString(_res)
 }
+
+GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
+// func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_text)))}
 
 GO FUNC net.__ptrTo_Interface_Addrs from net/interface.go:
 func __ptrTo_Interface_Addrs(o GoObject, args Object) Object {
@@ -4045,6 +4112,14 @@ func __ptrTo_Interface_MulticastAddrs(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net.__ptrTo_ListenConfig_Listen from net/dial.go:
+// func __ptrTo_ListenConfig_Listen(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+
+GO FUNC net.__ptrTo_ListenConfig_ListenPacket from net/dial.go:
+// func __ptrTo_ListenConfig_ListenPacket(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+
 GO FUNC net.__ptrTo_OpError_Error from net/net.go:
 func __ptrTo_OpError_Error(o GoObject, args Object) Object {
 	_res := o.O.(*_net.OpError).Error()
@@ -4069,6 +4144,42 @@ func __ptrTo_ParseError_Error(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
+// func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), addr string}
+
+GO FUNC net.__ptrTo_Resolver_LookupCNAME from net/lookup.go:
+// func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
+// func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
+// func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
+// func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
+// func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupPort from net/lookup.go:
+// func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, service string}
+
+GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
+// func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), service string, proto string, name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
+// func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+
 GO FUNC net.__ptrTo_TCPAddr_Network from net/tcpsock.go:
 func __ptrTo_TCPAddr_Network(o GoObject, args Object) Object {
 	_res := o.O.(*_net.TCPAddr).Network()
@@ -4090,6 +4201,32 @@ func __ptrTo_TCPConn_CloseRead(o GoObject, args Object) Object {
 GO FUNC net.__ptrTo_TCPConn_CloseWrite from net/tcpsock.go:
 func __ptrTo_TCPConn_CloseWrite(o GoObject, args Object) Object {
 	_res := o.O.(*_net.TCPConn).CloseWrite()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__ptrTo_TCPConn_ReadFrom from net/tcpsock.go:
+// func __ptrTo_TCPConn_ReadFrom(o GoObject, args Object) Object {
+// r ABEND987(genutils.go: imports not yet supported: io.Reader)}
+
+GO FUNC net.__ptrTo_TCPConn_SetKeepAlive from net/tcpsock.go:
+func __ptrTo_TCPConn_SetKeepAlive(o GoObject, args Object) Object {
+	_res := o.O.(*_net.TCPConn).SetKeepAlive(keepalive)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__ptrTo_TCPConn_SetKeepAlivePeriod from net/tcpsock.go:
+// func __ptrTo_TCPConn_SetKeepAlivePeriod(o GoObject, args Object) Object {
+// d ABEND987(genutils.go: imports not yet supported: time.Duration)}
+
+GO FUNC net.__ptrTo_TCPConn_SetLinger from net/tcpsock.go:
+func __ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {
+	_res := o.O.(*_net.TCPConn).SetLinger(sec)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__ptrTo_TCPConn_SetNoDelay from net/tcpsock.go:
+func __ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {
+	_res := o.O.(*_net.TCPConn).SetNoDelay(noDelay)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -4131,6 +4268,10 @@ GO FUNC net.__ptrTo_TCPListener_File from net/tcpsock.go:
 // func __ptrTo_TCPListener_File(o GoObject, args Object) Object {
 // [(atom-of ABEND042(post.go: cannot find typename os.File)) Error]}
 
+GO FUNC net.__ptrTo_TCPListener_SetDeadline from net/tcpsock.go:
+// func __ptrTo_TCPListener_SetDeadline(o GoObject, args Object) Object {
+// t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
 GO FUNC net.__ptrTo_TCPListener_SyscallConn from net/tcpsock.go:
 // func __ptrTo_TCPListener_SyscallConn(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename syscall.RawConn) Error]}
@@ -4147,9 +4288,33 @@ func __ptrTo_UDPAddr_String(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net.__ptrTo_UDPConn_ReadFrom from net/udpsock.go:
+// func __ptrTo_UDPConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_UDPConn_ReadFromUDP from net/udpsock.go:
+// func __ptrTo_UDPConn_ReadFromUDP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_UDPConn_ReadMsgUDP from net/udpsock.go:
+// func __ptrTo_UDPConn_ReadMsgUDP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)))}
+
 GO FUNC net.__ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 // func __ptrTo_UDPConn_SyscallConn(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename syscall.RawConn) Error]}
+
+GO FUNC net.__ptrTo_UDPConn_WriteMsgUDP from net/udpsock.go:
+// func __ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)), _addr)}
+
+GO FUNC net.__ptrTo_UDPConn_WriteTo from net/udpsock.go:
+// func __ptrTo_UDPConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), *_addr)}
+
+GO FUNC net.__ptrTo_UDPConn_WriteToUDP from net/udpsock.go:
+// func __ptrTo_UDPConn_WriteToUDP(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), _addr)}
 
 GO FUNC net.__ptrTo_UnixAddr_Network from net/unixsock.go:
 func __ptrTo_UnixAddr_Network(o GoObject, args Object) Object {
@@ -4175,9 +4340,33 @@ func __ptrTo_UnixConn_CloseWrite(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net.__ptrTo_UnixConn_ReadFrom from net/unixsock.go:
+// func __ptrTo_UnixConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_UnixConn_ReadFromUnix from net/unixsock.go:
+// func __ptrTo_UnixConn_ReadFromUnix(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))}
+
+GO FUNC net.__ptrTo_UnixConn_ReadMsgUnix from net/unixsock.go:
+// func __ptrTo_UnixConn_ReadMsgUnix(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)))}
+
 GO FUNC net.__ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 // func __ptrTo_UnixConn_SyscallConn(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename syscall.RawConn) Error]}
+
+GO FUNC net.__ptrTo_UnixConn_WriteMsgUnix from net/unixsock.go:
+// func __ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_oob)), _addr)}
+
+GO FUNC net.__ptrTo_UnixConn_WriteTo from net/unixsock.go:
+// func __ptrTo_UnixConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), *_addr)}
+
+GO FUNC net.__ptrTo_UnixConn_WriteToUnix from net/unixsock.go:
+// func __ptrTo_UnixConn_WriteToUnix(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)), _addr)}
 
 GO FUNC net.__ptrTo_UnixListener_Accept from net/unixsock.go:
 func __ptrTo_UnixListener_Accept(o GoObject, args Object) Object {
@@ -4212,6 +4401,15 @@ func __ptrTo_UnixListener_Close(o GoObject, args Object) Object {
 GO FUNC net.__ptrTo_UnixListener_File from net/unixsock.go:
 // func __ptrTo_UnixListener_File(o GoObject, args Object) Object {
 // [(atom-of ABEND042(post.go: cannot find typename os.File)) Error]}
+
+GO FUNC net.__ptrTo_UnixListener_SetDeadline from net/unixsock.go:
+// func __ptrTo_UnixListener_SetDeadline(o GoObject, args Object) Object {
+// t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__ptrTo_UnixListener_SetUnlinkOnClose from net/unixsock_posix.go:
+// func __ptrTo_UnixListener_SetUnlinkOnClose(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
 
 GO FUNC net.__ptrTo_UnixListener_SyscallConn from net/unixsock.go:
 // func __ptrTo_UnixListener_SyscallConn(o GoObject, args Object) Object {
@@ -5359,6 +5557,84 @@ func __connState_String(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net/http.__dir_Open from net/http/fs.go:
+func __dir_Open(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(_http.Dir).Open(name)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net/http.__handlerFunc_ServeHTTP from net/http/server.go:
+// func __handlerFunc_ServeHTTP(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__header_Add from net/http/header.go:
+// func __header_Add(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__header_Del from net/http/header.go:
+// func __header_Del(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__header_Get from net/http/header.go:
+func __header_Get(o GoObject, args Object) Object {
+	_res := o.O.(_http.Header).Get(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/http.__header_Set from net/http/header.go:
+// func __header_Set(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__header_Write from net/http/header.go:
+// func __header_Write(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+
+GO FUNC net/http.__header_WriteSubset from net/http/header.go:
+// func __header_WriteSubset(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer), exclude map[]}
+
+GO FUNC net/http.__ptrTo_Client_Do from net/http/client.go:
+func __ptrTo_Client_Do(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_http.Client).Do(req)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net/http.__ptrTo_Client_Get from net/http/client.go:
+func __ptrTo_Client_Get(o GoObject, args Object) Object {
+	resp, err := o.O.(*_http.Client).Get(url)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(resp))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
+
+GO FUNC net/http.__ptrTo_Client_Head from net/http/client.go:
+func __ptrTo_Client_Head(o GoObject, args Object) Object {
+	resp, err := o.O.(*_http.Client).Head(url)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(resp))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
+
+GO FUNC net/http.__ptrTo_Client_Post from net/http/client.go:
+// func __ptrTo_Client_Post(o GoObject, args Object) Object {
+// url string, contentType string, body ABEND987(genutils.go: imports not yet supported: io.Reader)}
+
+GO FUNC net/http.__ptrTo_Client_PostForm from net/http/client.go:
+// func __ptrTo_Client_PostForm(o GoObject, args Object) Object {
+// url string, data ABEND987(genutils.go: imports not yet supported: url.Values)}
+
 GO FUNC net/http.__ptrTo_Cookie_String from net/http/cookie.go:
 func __ptrTo_Cookie_String(o GoObject, args Object) Object {
 	_res := o.O.(*_http.Cookie).String()
@@ -5370,6 +5646,11 @@ func __ptrTo_ProtocolError_Error(o GoObject, args Object) Object {
 	_res := o.O.(*_http.ProtocolError).Error()
 	return MakeString(_res)
 }
+
+GO FUNC net/http.__ptrTo_Request_AddCookie from net/http/request.go:
+// func __ptrTo_Request_AddCookie(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
 
 GO FUNC net/http.__ptrTo_Request_BasicAuth from net/http/request.go:
 func __ptrTo_Request_BasicAuth(o GoObject, args Object) Object {
@@ -5385,6 +5666,15 @@ GO FUNC net/http.__ptrTo_Request_Context from net/http/request.go:
 // func __ptrTo_Request_Context(o GoObject, args Object) Object {
 // ABEND042(post.go: cannot find typename context.Context)}
 
+GO FUNC net/http.__ptrTo_Request_Cookie from net/http/request.go:
+func __ptrTo_Request_Cookie(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_http.Request).Cookie(name)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
 GO FUNC net/http.__ptrTo_Request_Cookies from net/http/request.go:
 func __ptrTo_Request_Cookies(o GoObject, args Object) Object {
 	_res := o.O.(*_http.Request).Cookies()
@@ -5393,6 +5683,16 @@ func __ptrTo_Request_Cookies(o GoObject, args Object) Object {
 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
 	}
 	return _vec1
+}
+
+GO FUNC net/http.__ptrTo_Request_FormFile from net/http/request.go:
+// func __ptrTo_Request_FormFile(o GoObject, args Object) Object {
+// [ABEND042(post.go: cannot find typename mime/multipart.File) (atom-of ABEND042(post.go: cannot find typename mime/multipart.FileHeader)) Error]}
+
+GO FUNC net/http.__ptrTo_Request_FormValue from net/http/request.go:
+func __ptrTo_Request_FormValue(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Request).FormValue(key)
+	return MakeString(_res)
 }
 
 GO FUNC net/http.__ptrTo_Request_MultipartReader from net/http/request.go:
@@ -5405,17 +5705,52 @@ func __ptrTo_Request_ParseForm(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/http.__ptrTo_Request_ParseMultipartForm from net/http/request.go:
+func __ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Request).ParseMultipartForm(maxMemory)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/http.__ptrTo_Request_PostFormValue from net/http/request.go:
+func __ptrTo_Request_PostFormValue(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Request).PostFormValue(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/http.__ptrTo_Request_ProtoAtLeast from net/http/request.go:
+func __ptrTo_Request_ProtoAtLeast(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Request).ProtoAtLeast(major, minor)
+	return MakeBoolean(_res)
+}
+
 GO FUNC net/http.__ptrTo_Request_Referer from net/http/request.go:
 func __ptrTo_Request_Referer(o GoObject, args Object) Object {
 	_res := o.O.(*_http.Request).Referer()
 	return MakeString(_res)
 }
 
+GO FUNC net/http.__ptrTo_Request_SetBasicAuth from net/http/request.go:
+// func __ptrTo_Request_SetBasicAuth(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/http.__ptrTo_Request_UserAgent from net/http/request.go:
 func __ptrTo_Request_UserAgent(o GoObject, args Object) Object {
 	_res := o.O.(*_http.Request).UserAgent()
 	return MakeString(_res)
 }
+
+GO FUNC net/http.__ptrTo_Request_WithContext from net/http/request.go:
+// func __ptrTo_Request_WithContext(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
+
+GO FUNC net/http.__ptrTo_Request_Write from net/http/request.go:
+// func __ptrTo_Request_Write(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+
+GO FUNC net/http.__ptrTo_Request_WriteProxy from net/http/request.go:
+// func __ptrTo_Request_WriteProxy(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net/http.__ptrTo_Response_Cookies from net/http/response.go:
 func __ptrTo_Response_Cookies(o GoObject, args Object) Object {
@@ -5436,6 +5771,39 @@ func __ptrTo_Response_Location(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/http.__ptrTo_Response_ProtoAtLeast from net/http/response.go:
+func __ptrTo_Response_ProtoAtLeast(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Response).ProtoAtLeast(major, minor)
+	return MakeBoolean(_res)
+}
+
+GO FUNC net/http.__ptrTo_Response_Write from net/http/response.go:
+// func __ptrTo_Response_Write(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+
+GO FUNC net/http.__ptrTo_ServeMux_Handle from net/http/server.go:
+// func __ptrTo_ServeMux_Handle(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__ptrTo_ServeMux_HandleFunc from net/http/server.go:
+// func __ptrTo_ServeMux_HandleFunc(o GoObject, args Object) Object {
+// (_pattern, ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()))}
+
+GO FUNC net/http.__ptrTo_ServeMux_Handler from net/http/server.go:
+func __ptrTo_ServeMux_Handler(o GoObject, args Object) Object {
+	h, pattern := o.O.(*_http.ServeMux).Handler(r)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(h))
+	_res = _res.Conjoin(MakeString(pattern))
+	return _res
+}
+
+GO FUNC net/http.__ptrTo_ServeMux_ServeHTTP from net/http/server.go:
+// func __ptrTo_ServeMux_ServeHTTP(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/http.__ptrTo_Server_Close from net/http/server.go:
 func __ptrTo_Server_Close(o GoObject, args Object) Object {
 	_res := o.O.(*_http.Server).Close()
@@ -5448,10 +5816,56 @@ func __ptrTo_Server_ListenAndServe(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/http.__ptrTo_Server_ListenAndServeTLS from net/http/server.go:
+func __ptrTo_Server_ListenAndServeTLS(o GoObject, args Object) Object {
+	_res := o.O.(*_http.Server).ListenAndServeTLS(certFile, keyFile)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/http.__ptrTo_Server_RegisterOnShutdown from net/http/server.go:
+// func __ptrTo_Server_RegisterOnShutdown(o GoObject, args Object) Object {
+// (ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()))}
+
+GO FUNC net/http.__ptrTo_Server_Serve from net/http/server.go:
+// func __ptrTo_Server_Serve(o GoObject, args Object) Object {
+// l ABEND987(genutils.go: imports not yet supported: net.Listener)}
+
+GO FUNC net/http.__ptrTo_Server_ServeTLS from net/http/server.go:
+// func __ptrTo_Server_ServeTLS(o GoObject, args Object) Object {
+// l ABEND987(genutils.go: imports not yet supported: net.Listener), certFile string, keyFile string}
+
+GO FUNC net/http.__ptrTo_Server_SetKeepAlivesEnabled from net/http/server.go:
+// func __ptrTo_Server_SetKeepAlivesEnabled(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__ptrTo_Server_Shutdown from net/http/server.go:
+// func __ptrTo_Server_Shutdown(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
+
+GO FUNC net/http.__ptrTo_Transport_CancelRequest from net/http/transport.go:
+// func __ptrTo_Transport_CancelRequest(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/http.__ptrTo_Transport_CloseIdleConnections from net/http/transport.go:
 // func __ptrTo_Transport_CloseIdleConnections(o GoObject, args Object) Object {
 // 	...ABEND275: TODO...
 // }
+
+GO FUNC net/http.__ptrTo_Transport_RegisterProtocol from net/http/transport.go:
+// func __ptrTo_Transport_RegisterProtocol(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
+func __ptrTo_Transport_RoundTrip(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_http.Transport).RoundTrip(req)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
@@ -5526,6 +5940,10 @@ GO FUNC net/http/cgi.Serve from net/http/cgi/child.go:
 // 	_res := _cgi.Serve(handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
+
+GO FUNC net/http/cgi.__ptrTo_Handler_ServeHTTP from net/http/cgi/host.go:
+// func __ptrTo_Handler_ServeHTTP(o GoObject, args Object) Object {
+// rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
 func ExtractGoObjectJar(args []Object, index int) *_cookiejar.Jar {
@@ -5647,6 +6065,14 @@ func __new(o *_cookiejar.Options) Object {
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
+
+GO FUNC net/http/cookiejar.__ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
+// func __ptrTo_Jar_Cookies(o GoObject, args Object) Object {
+// u *ABEND987(genutils.go: imports not yet supported: url.URL)}
+
+GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go:
+// func __ptrTo_Jar_SetCookies(o GoObject, args Object) Object {
+// u *ABEND987(genutils.go: imports not yet supported: url.URL), cookies []*ABEND987(genutils.go: imports not yet supported: http.Cookie)}
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func __processEnv(r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
@@ -5794,6 +6220,24 @@ GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_Result from net/http/httptest
 func __ptrTo_ResponseRecorder_Result(o GoObject, args Object) Object {
 	_res := o.O.(*_httptest.ResponseRecorder).Result()
 	return MakeGoObject(_res)
+}
+
+GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_Write from net/http/httptest/recorder.go:
+// func __ptrTo_ResponseRecorder_Write(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_buf)))}
+
+GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_WriteHeader from net/http/httptest/recorder.go:
+// func __ptrTo_ResponseRecorder_WriteHeader(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_WriteString from net/http/httptest/recorder.go:
+func __ptrTo_ResponseRecorder_WriteString(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_httptest.ResponseRecorder).WriteString(str)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
 }
 
 GO FUNC net/http/httptest.__ptrTo_Server_Certificate from net/http/httptest/server.go:
@@ -6074,6 +6518,10 @@ func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/http/httputil.__ptrTo_ClientConn_Do from net/http/httputil/persist.go:
+// func __ptrTo_ClientConn_Do(o GoObject, args Object) Object {
+// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Hijack from net/http/httputil/persist.go:
 // func __ptrTo_ClientConn_Hijack(o GoObject, args Object) Object {
 // [go.std.net/Conn (atom-of ABEND042(post.go: cannot find typename bufio.Reader))]}
@@ -6083,6 +6531,18 @@ func __ptrTo_ClientConn_Pending(o GoObject, args Object) Object {
 	_res := o.O.(*_httputil.ClientConn).Pending()
 	return MakeInt(_res)
 }
+
+GO FUNC net/http/httputil.__ptrTo_ClientConn_Read from net/http/httputil/persist.go:
+// func __ptrTo_ClientConn_Read(o GoObject, args Object) Object {
+// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+
+GO FUNC net/http/httputil.__ptrTo_ClientConn_Write from net/http/httputil/persist.go:
+// func __ptrTo_ClientConn_Write(o GoObject, args Object) Object {
+// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+
+GO FUNC net/http/httputil.__ptrTo_ReverseProxy_ServeHTTP from net/http/httputil/reverseproxy.go:
+// func __ptrTo_ReverseProxy_ServeHTTP(o GoObject, args Object) Object {
+// rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/http/httputil.__ptrTo_ServerConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ServerConn_Close(o GoObject, args Object) Object {
@@ -6108,6 +6568,10 @@ func __ptrTo_ServerConn_Read(o GoObject, args Object) Object {
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
+
+GO FUNC net/http/httputil.__ptrTo_ServerConn_Write from net/http/httputil/persist.go:
+// func __ptrTo_ServerConn_Write(o GoObject, args Object) Object {
+// req *ABEND987(genutils.go: imports not yet supported: http.Request), resp *ABEND987(genutils.go: imports not yet supported: http.Response)}
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 // func __cmdline(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
@@ -6343,9 +6807,50 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 // 	return _res
 // }
 
+GO FUNC net/mail.__header_AddressList from net/mail/message.go:
+func __header_AddressList(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(_mail.Header).AddressList(key)
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
 GO FUNC net/mail.__header_Date from net/mail/message.go:
 // func __header_Date(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename time.Time) Error]}
+
+GO FUNC net/mail.__header_Get from net/mail/message.go:
+func __header_Get(o GoObject, args Object) Object {
+	_res := o.O.(_mail.Header).Get(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/mail.__ptrTo_AddressParser_Parse from net/mail/message.go:
+func __ptrTo_AddressParser_Parse(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_mail.AddressParser).Parse(address)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net/mail.__ptrTo_AddressParser_ParseList from net/mail/message.go:
+func __ptrTo_AddressParser_ParseList(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_mail.AddressParser).ParseList(list)
+	_res := EmptyVector()
+	_vec1 := EmptyVector()
+	for _, _elem1 := range _res1 {
+		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
+	}
+	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net/mail.__ptrTo_Address_String from net/mail/message.go:
 func __ptrTo_Address_String(o GoObject, args Object) Object {
@@ -6740,9 +7245,53 @@ GO FUNC net/rpc.ServeConn from net/rpc/server.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC net/rpc.__ptrTo_Client_Call from net/rpc/client.go:
+// func __ptrTo_Client_Call(o GoObject, args Object) Object {
+// (_serviceMethod, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
 GO FUNC net/rpc.__ptrTo_Client_Close from net/rpc/client.go:
 func __ptrTo_Client_Close(o GoObject, args Object) Object {
 	_res := o.O.(*_rpc.Client).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/rpc.__ptrTo_Client_Go from net/rpc/client.go:
+// func __ptrTo_Client_Go(o GoObject, args Object) Object {
+// (_serviceMethod, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND909(pre.go: custom-runtime routine not implemented: ConvertToChanTypeHaHa()))}
+
+GO FUNC net/rpc.__ptrTo_Server_Accept from net/rpc/server.go:
+// func __ptrTo_Server_Accept(o GoObject, args Object) Object {
+// lis ABEND987(genutils.go: imports not yet supported: net.Listener)}
+
+GO FUNC net/rpc.__ptrTo_Server_HandleHTTP from net/rpc/server.go:
+// func __ptrTo_Server_HandleHTTP(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/rpc.__ptrTo_Server_Register from net/rpc/server.go:
+// func __ptrTo_Server_Register(o GoObject, args Object) Object {
+// (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
+GO FUNC net/rpc.__ptrTo_Server_RegisterName from net/rpc/server.go:
+// func __ptrTo_Server_RegisterName(o GoObject, args Object) Object {
+// (_name, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
+GO FUNC net/rpc.__ptrTo_Server_ServeCodec from net/rpc/server.go:
+// func __ptrTo_Server_ServeCodec(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/rpc.__ptrTo_Server_ServeConn from net/rpc/server.go:
+// func __ptrTo_Server_ServeConn(o GoObject, args Object) Object {
+// conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)}
+
+GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
+// func __ptrTo_Server_ServeHTTP(o GoObject, args Object) Object {
+// w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+
+GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
+func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
+	_res := o.O.(*_rpc.Server).ServeRequest(codec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -6937,6 +7486,12 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
+GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
+func __ptrTo_Client_Auth(o GoObject, args Object) Object {
+	_res := o.O.(*_smtp.Client).Auth(a)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
 GO FUNC net/smtp.__ptrTo_Client_Close from net/smtp/smtp.go:
 func __ptrTo_Client_Close(o GoObject, args Object) Object {
 	_res := o.O.(*_smtp.Client).Close()
@@ -6946,6 +7501,27 @@ func __ptrTo_Client_Close(o GoObject, args Object) Object {
 GO FUNC net/smtp.__ptrTo_Client_Data from net/smtp/smtp.go:
 // func __ptrTo_Client_Data(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename io.WriteCloser) Error]}
+
+GO FUNC net/smtp.__ptrTo_Client_Extension from net/smtp/smtp.go:
+func __ptrTo_Client_Extension(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_smtp.Client).Extension(ext)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeBoolean(_res1))
+	_res = _res.Conjoin(MakeString(_res2))
+	return _res
+}
+
+GO FUNC net/smtp.__ptrTo_Client_Hello from net/smtp/smtp.go:
+func __ptrTo_Client_Hello(o GoObject, args Object) Object {
+	_res := o.O.(*_smtp.Client).Hello(localName)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/smtp.__ptrTo_Client_Mail from net/smtp/smtp.go:
+func __ptrTo_Client_Mail(o GoObject, args Object) Object {
+	_res := o.O.(*_smtp.Client).Mail(from)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
 
 GO FUNC net/smtp.__ptrTo_Client_Noop from net/smtp/smtp.go:
 func __ptrTo_Client_Noop(o GoObject, args Object) Object {
@@ -6959,15 +7535,31 @@ func __ptrTo_Client_Quit(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/smtp.__ptrTo_Client_Rcpt from net/smtp/smtp.go:
+func __ptrTo_Client_Rcpt(o GoObject, args Object) Object {
+	_res := o.O.(*_smtp.Client).Rcpt(to)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
 GO FUNC net/smtp.__ptrTo_Client_Reset from net/smtp/smtp.go:
 func __ptrTo_Client_Reset(o GoObject, args Object) Object {
 	_res := o.O.(*_smtp.Client).Reset()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/smtp.__ptrTo_Client_StartTLS from net/smtp/smtp.go:
+// func __ptrTo_Client_StartTLS(o GoObject, args Object) Object {
+// config *ABEND987(genutils.go: imports not yet supported: tls.Config)}
+
 GO FUNC net/smtp.__ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 // func __ptrTo_Client_TLSConnectionState(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename crypto/tls.ConnectionState) Boolean]}
+
+GO FUNC net/smtp.__ptrTo_Client_Verify from net/smtp/smtp.go:
+func __ptrTo_Client_Verify(o GoObject, args Object) Object {
+	_res := o.O.(*_smtp.Client).Verify(addr)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
 
 GO TYPE net/textproto.Conn from net/textproto/textproto.go:
 func ExtractGoObjectConn(args []Object, index int) *_textproto.Conn {
@@ -7276,6 +7868,27 @@ GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 // 	return _vec1
 // }
 
+GO FUNC net/textproto.__mIMEHeader_Add from net/textproto/header.go:
+// func __mIMEHeader_Add(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/textproto.__mIMEHeader_Del from net/textproto/header.go:
+// func __mIMEHeader_Del(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/textproto.__mIMEHeader_Get from net/textproto/header.go:
+func __mIMEHeader_Get(o GoObject, args Object) Object {
+	_res := o.O.(_textproto.MIMEHeader).Get(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/textproto.__mIMEHeader_Set from net/textproto/header.go:
+// func __mIMEHeader_Set(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/textproto.__protocolError_Error from net/textproto/textproto.go:
 func __protocolError_Error(o GoObject, args Object) Object {
 	_res := o.O.(_textproto.ProtocolError).Error()
@@ -7288,11 +7901,25 @@ func __ptrTo_Conn_Close(o GoObject, args Object) Object {
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
+GO FUNC net/textproto.__ptrTo_Conn_Cmd from net/textproto/textproto.go:
+// func __ptrTo_Conn_Cmd(o GoObject, args Object) Object {
+// (_format, ConvertToEllipsisHaHainterface {}(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa())))}
+
 GO FUNC net/textproto.__ptrTo_Error_Error from net/textproto/textproto.go:
 func __ptrTo_Error_Error(o GoObject, args Object) Object {
 	_res := o.O.(*_textproto.Error).Error()
 	return MakeString(_res)
 }
+
+GO FUNC net/textproto.__ptrTo_Pipeline_EndRequest from net/textproto/pipeline.go:
+// func __ptrTo_Pipeline_EndRequest(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/textproto.__ptrTo_Pipeline_EndResponse from net/textproto/pipeline.go:
+// func __ptrTo_Pipeline_EndResponse(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
 
 GO FUNC net/textproto.__ptrTo_Pipeline_Next from net/textproto/pipeline.go:
 func __ptrTo_Pipeline_Next(o GoObject, args Object) Object {
@@ -7300,9 +7927,29 @@ func __ptrTo_Pipeline_Next(o GoObject, args Object) Object {
 	return MakeBigIntU(uint64(_res))
 }
 
+GO FUNC net/textproto.__ptrTo_Pipeline_StartRequest from net/textproto/pipeline.go:
+// func __ptrTo_Pipeline_StartRequest(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/textproto.__ptrTo_Pipeline_StartResponse from net/textproto/pipeline.go:
+// func __ptrTo_Pipeline_StartResponse(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/textproto.__ptrTo_Reader_DotReader from net/textproto/reader.go:
 // func __ptrTo_Reader_DotReader(o GoObject, args Object) Object {
 // ABEND042(post.go: cannot find typename io.Reader)}
+
+GO FUNC net/textproto.__ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
+func __ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {
+	code, message, err := o.O.(*_textproto.Reader).ReadCodeLine(expectCode)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(code))
+	_res = _res.Conjoin(MakeString(message))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net/textproto.__ptrTo_Reader_ReadContinuedLine from net/textproto/reader.go:
 func __ptrTo_Reader_ReadContinuedLine(o GoObject, args Object) Object {
@@ -7383,9 +8030,23 @@ func __ptrTo_Reader_ReadMIMEHeader(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/textproto.__ptrTo_Reader_ReadResponse from net/textproto/reader.go:
+func __ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {
+	code, message, err := o.O.(*_textproto.Reader).ReadResponse(expectCode)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(code))
+	_res = _res.Conjoin(MakeString(message))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
+
 GO FUNC net/textproto.__ptrTo_Writer_DotWriter from net/textproto/writer.go:
 // func __ptrTo_Writer_DotWriter(o GoObject, args Object) Object {
 // ABEND042(post.go: cannot find typename io.WriteCloser)}
+
+GO FUNC net/textproto.__ptrTo_Writer_PrintfLine from net/textproto/writer.go:
+// func __ptrTo_Writer_PrintfLine(o GoObject, args Object) Object {
+// (_format, ConvertToEllipsisHaHainterface {}(ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa())))}
 
 GO TYPE net/url.Error from net/url/url.go:
 func ExtractGoObjectError(args []Object, index int) *_url.Error {
@@ -7735,6 +8396,15 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
+func __ptrTo_URL_Parse(o GoObject, args Object) Object {
+	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
 GO FUNC net/url.__ptrTo_URL_Port from net/url/url.go:
 func __ptrTo_URL_Port(o GoObject, args Object) Object {
 	_res := o.O.(*_url.URL).Port()
@@ -7753,11 +8423,21 @@ func __ptrTo_URL_RequestURI(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
+func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
+	_res := o.O.(*_url.URL).ResolveReference(ref)
+	return MakeGoObject(_res)
+}
+
 GO FUNC net/url.__ptrTo_URL_String from net/url/url.go:
 func __ptrTo_URL_String(o GoObject, args Object) Object {
 	_res := o.O.(*_url.URL).String()
 	return MakeString(_res)
 }
+
+GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
+// func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_text)))}
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
@@ -7780,16 +8460,37 @@ func __ptrTo_Userinfo_Username(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__values_Add from net/url/url.go:
+// func __values_Add(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/url.__values_Del from net/url/url.go:
+// func __values_Del(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/url.__values_Encode from net/url/url.go:
 func __values_Encode(o GoObject, args Object) Object {
 	_res := o.O.(_url.Values).Encode()
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__values_Get from net/url/url.go:
+func __values_Get(o GoObject, args Object) Object {
+	_res := o.O.(_url.Values).Get(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/url.__values_Set from net/url/url.go:
+// func __values_Set(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 Adding 13 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 047(76) 987(60) 048(32) 674(29) 042(24) 675(18) 275(6) 902(4) 883(2) 907(2) 906(1) 908(1)
-Totals: functions=421 generated=195 (46.32%)
+ABENDs: 987(105) 047(76) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 906(3) 883(2) 908(1) 909(1)
+Totals: functions=421 generated=234 (55.58%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
-          receivers=273 (64.85%) generated=114 (41.76%)
+          receivers=273 (64.85%) generated=153 (56.04%)
         types=102 generated=39 (38.24%)
