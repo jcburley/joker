@@ -167,12 +167,9 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 `
 
 	receiverName := fn.fd.Name.Name
-	res := ""
-	prepRes := ""
 	argList := ""
-	resList := flattenFieldList(fn.fd.Type.Results)
-
 	args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
+	res := ""
 
 	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.fd)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
@@ -186,29 +183,8 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	}
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
-	} else if postCode != "" || resultAssign != "" {
-		return "\t" + resultAssign + args + "\n" + postCode
 	}
-	//TODO: Remove the rest of this (dead) code, remove the "else if" above
-	if len(resList) == 0 {
-		prepRes = args + `
-	`
-		res = "NIL"
-	} else if len(resList) == 1 {
-
-		ti := toGoExprInfo(fn.sourceFile, &resList[0].field.Type)
-		pattern := ti.convertToClojure
-		if pattern == "" {
-			pattern = "ABEND224(unsupported conversion of return value %s to Clojure)"
-		}
-		res = fmt.Sprintf(pattern, args)
-	} else {
-		prepRes = `_res := EmptyVector()
-`
-		res = "_res"
-	}
-
-	return fmt.Sprintf(template[1:], fn.docName, prepRes, res)
+	return "\t" + res + resultAssign + args + "\n" + postCode
 }
 
 func typeKey(pkgPrefix string, fl *Field) string {
@@ -597,7 +573,7 @@ func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 		v.fullGoName, toGoExprString(ti.sourceFile, v.underlyingType))
 }
 
-/* Add the list of imports to those required if this type's constructor can be emitted (no ABENDs). */
+// Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
 func addRequiredImports(ti *goTypeInfo, imports []packageImport) {
 	for _, imp := range imports {
 		addImport(ti.requiredImports, imp.local, imp.full)

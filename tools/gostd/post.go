@@ -154,36 +154,7 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 		if ti.nullable {
 			out = maybeNil(captureName, out)
 		}
-		clDoc = ti.argClojureArgType // fullTypeNameAsClojure(ti.fullGoName)
-		/*
-			switch v.Name {
-			case "string":
-				cl = "String"
-				out = "MakeString(" + captureName + ")"
-			case "int":
-				cl = "Int"
-				out = "MakeInt(" + captureName + ")"
-			case "int16", "uint", "uint16", "int32", "uint32", "int64", "byte": // TODO: Does Joker always have 64-bit signed ints?
-				clDoc = "Int"
-				out = "MakeInt(int(" + captureName + "))"
-			case "uint64", "uintptr":
-				cl = "BigInt"
-				out = "MakeBigIntU(uint64(" + captureName + "))"
-			case "bool":
-				cl = "Boolean"
-				out = "MakeBoolean(" + captureName + ")"
-			case "error":
-				cl = "Error"
-				out = maybeNil(captureName, "MakeError("+captureName+")") // TODO: Test this against the MakeError() added to joker/core/object.go
-			default:
-				if isPrivate(v.Name) {
-					cl = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
-					gol = "..."
-					out = captureName
-				} else {
-					cl, clDoc, _, goc, out = genGoPostNamed(fn, indent, captureName, v.Name, onlyIf)
-				}
-			}*/
+		clDoc = ti.argClojureArgType
 	case *ArrayType:
 		cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
 	case *StarExpr:
