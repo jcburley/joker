@@ -175,7 +175,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 			goTypeDoc = goType
 		}
 		if fn.fd.Recv != nil {
-			goPreCode = cl2golParam + " := whatever"
+			goPreCode = paramName + " := whatever"
 		}
 	case *ArrayType:
 		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreArray(fn, indent, v, paramName)

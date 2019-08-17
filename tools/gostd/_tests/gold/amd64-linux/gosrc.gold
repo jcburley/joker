@@ -27616,7 +27616,7 @@ func __ptrTo_Certificate_Equal(o GoObject, args Object) Object {
 
 GO FUNC crypto/x509.__ptrTo_Certificate_Verify from crypto/x509/verify.go:
 func __ptrTo_Certificate_Verify(o GoObject, args Object) Object {
-	*opts := whatever
+	opts := whatever
 	chains, err := o.O.(*_x509.Certificate).Verify(opts)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -32221,7 +32221,7 @@ func __ptrTo_Data_Reader(o GoObject, args Object) Object {
 
 GO FUNC debug/dwarf.__ptrTo_Data_Type from debug/dwarf/type.go:
 func __ptrTo_Data_Type(o GoObject, args Object) Object {
-	*off := whatever
+	off := whatever
 	_res1, _res2 := o.O.(*_dwarf.Data).Type(off)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -32237,7 +32237,7 @@ func __ptrTo_DotDotDotType_String(o GoObject, args Object) Object {
 
 GO FUNC debug/dwarf.__ptrTo_Entry_AttrField from debug/dwarf/entry.go:
 func __ptrTo_Entry_AttrField(o GoObject, args Object) Object {
-	*a := whatever
+	a := whatever
 	_res := o.O.(*_dwarf.Entry).AttrField(a)
 	return MakeGoObject(_res)
 }
@@ -34835,7 +34835,7 @@ func __ptrTo_File_DWARF(o GoObject, args Object) Object {
 
 GO FUNC debug/elf.__ptrTo_File_DynString from debug/elf/file.go:
 func __ptrTo_File_DynString(o GoObject, args Object) Object {
-	*tag := whatever
+	tag := whatever
 	_res1, _res2 := o.O.(*_elf.File).DynString(tag)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -34895,7 +34895,7 @@ func __ptrTo_File_Section(o GoObject, args Object) Object {
 
 GO FUNC debug/elf.__ptrTo_File_SectionByType from debug/elf/file.go:
 func __ptrTo_File_SectionByType(o GoObject, args Object) Object {
-	*typ := whatever
+	typ := whatever
 	_res := o.O.(*_elf.File).SectionByType(typ)
 	return MakeGoObject(_res)
 }
@@ -38596,7 +38596,7 @@ func __open(name string) Object {
 
 GO FUNC debug/pe.__ptrTo_COFFSymbol_FullName from debug/pe/symbol.go:
 func __ptrTo_COFFSymbol_FullName(o GoObject, args Object) Object {
-	*st := whatever
+	st := whatever
 	_res1, _res2 := o.O.(*_pe.COFFSymbol).FullName(st)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
@@ -39491,7 +39491,7 @@ func __bitString_RightAlign(o GoObject, args Object) Object {
 
 GO FUNC encoding/asn1.__objectIdentifier_Equal from encoding/asn1/asn1.go:
 func __objectIdentifier_Equal(o GoObject, args Object) Object {
-	*other := whatever
+	other := whatever
 	_res := o.O.(_asn1.ObjectIdentifier).Equal(other)
 	return MakeBoolean(_res)
 }
@@ -42210,7 +42210,7 @@ GO FUNC encoding/xml.__ptrTo_Encoder_EncodeElement from encoding/xml/marshal.go:
 
 GO FUNC encoding/xml.__ptrTo_Encoder_EncodeToken from encoding/xml/marshal.go:
 func __ptrTo_Encoder_EncodeToken(o GoObject, args Object) Object {
-	*t := whatever
+	t := whatever
 	_res := o.O.(*_xml.Encoder).EncodeToken(t)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -46552,7 +46552,7 @@ func __commentMap_Comments(o GoObject, args Object) Object {
 
 GO FUNC go/ast.__commentMap_Filter from go/ast/commentmap.go:
 func __commentMap_Filter(o GoObject, args Object) Object {
-	*node := whatever
+	node := whatever
 	_res := o.O.(_ast.CommentMap).Filter(node)
 	return MakeGoObject(_res)
 }
@@ -46565,8 +46565,8 @@ func __commentMap_String(o GoObject, args Object) Object {
 
 GO FUNC go/ast.__commentMap_Update from go/ast/commentmap.go:
 func __commentMap_Update(o GoObject, args Object) Object {
-	*old := whatever
-	*new := whatever
+	old := whatever
+	new := whatever
 	_res := o.O.(_ast.CommentMap).Update(old, new)
 	return MakeGoObject(_res)
 }
@@ -47949,7 +47949,7 @@ GO FUNC go/build.__ptrTo_Context_Import from go/build/build.go:
 func __ptrTo_Context_Import(o GoObject, args Object) Object {
 	path := whatever
 	srcDir := whatever
-	*mode := whatever
+	mode := whatever
 	_res1, _res2 := o.O.(*_build.Context).Import(path, srcDir, mode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -47960,7 +47960,7 @@ func __ptrTo_Context_Import(o GoObject, args Object) Object {
 GO FUNC go/build.__ptrTo_Context_ImportDir from go/build/build.go:
 func __ptrTo_Context_ImportDir(o GoObject, args Object) Object {
 	dir := whatever
-	*mode := whatever
+	mode := whatever
 	_res1, _res2 := o.O.(*_build.Context).ImportDir(dir, mode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -49365,7 +49365,7 @@ func __ptrTo_FileSet_Base(o GoObject, args Object) Object {
 
 GO FUNC go/token.__ptrTo_FileSet_File from go/token/position.go:
 func __ptrTo_FileSet_File(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(*_token.FileSet).File(p)
 	return MakeGoObject(_res)
 }
@@ -49376,14 +49376,14 @@ GO FUNC go/token.__ptrTo_FileSet_Iterate from go/token/position.go:
 
 GO FUNC go/token.__ptrTo_FileSet_Position from go/token/position.go:
 func __ptrTo_FileSet_Position(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(*_token.FileSet).Position(p)
 	return MakeGoObject(_res)
 }
 
 GO FUNC go/token.__ptrTo_FileSet_PositionFor from go/token/position.go:
 func __ptrTo_FileSet_PositionFor(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	adjusted := whatever
 	_res := o.O.(*_token.FileSet).PositionFor(p, adjusted)
 	return MakeGoObject(_res)
@@ -49420,7 +49420,7 @@ func __ptrTo_File_Base(o GoObject, args Object) Object {
 
 GO FUNC go/token.__ptrTo_File_Line from go/token/position.go:
 func __ptrTo_File_Line(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(*_token.File).Line(p)
 	return MakeInt(_res)
 }
@@ -49451,7 +49451,7 @@ func __ptrTo_File_Name(o GoObject, args Object) Object {
 
 GO FUNC go/token.__ptrTo_File_Offset from go/token/position.go:
 func __ptrTo_File_Offset(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(*_token.File).Offset(p)
 	return MakeInt(_res)
 }
@@ -49465,14 +49465,14 @@ func __ptrTo_File_Pos(o GoObject, args Object) Object {
 
 GO FUNC go/token.__ptrTo_File_Position from go/token/position.go:
 func __ptrTo_File_Position(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(*_token.File).Position(p)
 	return MakeGoObject(_res)
 }
 
 GO FUNC go/token.__ptrTo_File_PositionFor from go/token/position.go:
 func __ptrTo_File_PositionFor(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	adjusted := whatever
 	_res := o.O.(*_token.File).PositionFor(p, adjusted)
 	return MakeGoObject(_res)
@@ -51802,7 +51802,7 @@ GO FUNC go/types.__ptrTo_Scope_Innermost from go/types/scope.go:
 
 GO FUNC go/types.__ptrTo_Scope_Insert from go/types/scope.go:
 func __ptrTo_Scope_Insert(o GoObject, args Object) Object {
-	*obj := whatever
+	obj := whatever
 	_res := o.O.(*_types.Scope).Insert(obj)
 	return MakeGoObject(_res)
 }
@@ -51964,7 +51964,7 @@ func __ptrTo_Slice_Underlying(o GoObject, args Object) Object {
 
 GO FUNC go/types.__ptrTo_StdSizes_Alignof from go/types/sizes.go:
 func __ptrTo_StdSizes_Alignof(o GoObject, args Object) Object {
-	*T := whatever
+	T := whatever
 	_res := o.O.(*_types.StdSizes).Alignof(T)
 	return MakeBigInt(_res)
 }
@@ -51975,7 +51975,7 @@ GO FUNC go/types.__ptrTo_StdSizes_Offsetsof from go/types/sizes.go:
 
 GO FUNC go/types.__ptrTo_StdSizes_Sizeof from go/types/sizes.go:
 func __ptrTo_StdSizes_Sizeof(o GoObject, args Object) Object {
-	*T := whatever
+	T := whatever
 	_res := o.O.(*_types.StdSizes).Sizeof(T)
 	return MakeBigInt(_res)
 }
@@ -53071,7 +53071,7 @@ GO FUNC html/template.__ptrTo_Template_ExecuteTemplate from html/template/templa
 
 GO FUNC html/template.__ptrTo_Template_Funcs from html/template/template.go:
 func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
-	*funcMap := whatever
+	funcMap := whatever
 	_res := o.O.(*_template.Template).Funcs(funcMap)
 	return MakeGoObject(_res)
 }
@@ -54081,7 +54081,7 @@ GO FUNC image.RegisterFormat from image/format.go:
 
 GO FUNC image.__point_Add from image/geom.go:
 func __point_Add(o GoObject, args Object) Object {
-	*q := whatever
+	q := whatever
 	_res := o.O.(_image.Point).Add(q)
 	return MakeGoObject(_res)
 }
@@ -54095,21 +54095,21 @@ func __point_Div(o GoObject, args Object) Object {
 
 GO FUNC image.__point_Eq from image/geom.go:
 func __point_Eq(o GoObject, args Object) Object {
-	*q := whatever
+	q := whatever
 	_res := o.O.(_image.Point).Eq(q)
 	return MakeBoolean(_res)
 }
 
 GO FUNC image.__point_In from image/geom.go:
 func __point_In(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(_image.Point).In(r)
 	return MakeBoolean(_res)
 }
 
 GO FUNC image.__point_Mod from image/geom.go:
 func __point_Mod(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(_image.Point).Mod(r)
 	return MakeGoObject(_res)
 }
@@ -54129,7 +54129,7 @@ func __point_String(o GoObject, args Object) Object {
 
 GO FUNC image.__point_Sub from image/geom.go:
 func __point_Sub(o GoObject, args Object) Object {
-	*q := whatever
+	q := whatever
 	_res := o.O.(_image.Point).Sub(q)
 	return MakeGoObject(_res)
 }
@@ -54186,7 +54186,7 @@ GO FUNC image.__ptrTo_Alpha16_SetAlpha16 from image/image.go:
 
 GO FUNC image.__ptrTo_Alpha16_SubImage from image/image.go:
 func __ptrTo_Alpha16_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.Alpha16).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54243,7 +54243,7 @@ GO FUNC image.__ptrTo_Alpha_SetAlpha from image/image.go:
 
 GO FUNC image.__ptrTo_Alpha_SubImage from image/image.go:
 func __ptrTo_Alpha_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.Alpha).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54300,7 +54300,7 @@ GO FUNC image.__ptrTo_CMYK_SetCMYK from image/image.go:
 
 GO FUNC image.__ptrTo_CMYK_SubImage from image/image.go:
 func __ptrTo_CMYK_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.CMYK).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54357,7 +54357,7 @@ GO FUNC image.__ptrTo_Gray16_SetGray16 from image/image.go:
 
 GO FUNC image.__ptrTo_Gray16_SubImage from image/image.go:
 func __ptrTo_Gray16_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.Gray16).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54414,7 +54414,7 @@ GO FUNC image.__ptrTo_Gray_SetGray from image/image.go:
 
 GO FUNC image.__ptrTo_Gray_SubImage from image/image.go:
 func __ptrTo_Gray_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.Gray).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54471,7 +54471,7 @@ GO FUNC image.__ptrTo_NRGBA64_SetNRGBA64 from image/image.go:
 
 GO FUNC image.__ptrTo_NRGBA64_SubImage from image/image.go:
 func __ptrTo_NRGBA64_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.NRGBA64).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54528,7 +54528,7 @@ GO FUNC image.__ptrTo_NRGBA_SetNRGBA from image/image.go:
 
 GO FUNC image.__ptrTo_NRGBA_SubImage from image/image.go:
 func __ptrTo_NRGBA_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.NRGBA).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54571,7 +54571,7 @@ func __ptrTo_NYCbCrA_Opaque(o GoObject, args Object) Object {
 
 GO FUNC image.__ptrTo_NYCbCrA_SubImage from image/ycbcr.go:
 func __ptrTo_NYCbCrA_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.NYCbCrA).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54629,7 +54629,7 @@ GO FUNC image.__ptrTo_Paletted_SetColorIndex from image/image.go:
 
 GO FUNC image.__ptrTo_Paletted_SubImage from image/image.go:
 func __ptrTo_Paletted_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.Paletted).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54686,7 +54686,7 @@ GO FUNC image.__ptrTo_RGBA64_SetRGBA64 from image/image.go:
 
 GO FUNC image.__ptrTo_RGBA64_SubImage from image/image.go:
 func __ptrTo_RGBA64_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.RGBA64).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54743,7 +54743,7 @@ GO FUNC image.__ptrTo_RGBA_SetRGBA from image/image.go:
 
 GO FUNC image.__ptrTo_RGBA_SubImage from image/image.go:
 func __ptrTo_RGBA_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.RGBA).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54825,7 +54825,7 @@ func __ptrTo_YCbCr_Opaque(o GoObject, args Object) Object {
 
 GO FUNC image.__ptrTo_YCbCr_SubImage from image/ycbcr.go:
 func __ptrTo_YCbCr_SubImage(o GoObject, args Object) Object {
-	*r := whatever
+	r := whatever
 	_res := o.O.(*_image.YCbCr).SubImage(r)
 	return MakeGoObject(_res)
 }
@@ -54848,7 +54848,7 @@ func __ptrTo_YCbCr_YOffset(o GoObject, args Object) Object {
 
 GO FUNC image.__rectangle_Add from image/geom.go:
 func __rectangle_Add(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(_image.Rectangle).Add(p)
 	return MakeGoObject(_res)
 }
@@ -54899,14 +54899,14 @@ func __rectangle_Empty(o GoObject, args Object) Object {
 
 GO FUNC image.__rectangle_Eq from image/geom.go:
 func __rectangle_Eq(o GoObject, args Object) Object {
-	*s := whatever
+	s := whatever
 	_res := o.O.(_image.Rectangle).Eq(s)
 	return MakeBoolean(_res)
 }
 
 GO FUNC image.__rectangle_In from image/geom.go:
 func __rectangle_In(o GoObject, args Object) Object {
-	*s := whatever
+	s := whatever
 	_res := o.O.(_image.Rectangle).In(s)
 	return MakeBoolean(_res)
 }
@@ -54920,14 +54920,14 @@ func __rectangle_Inset(o GoObject, args Object) Object {
 
 GO FUNC image.__rectangle_Intersect from image/geom.go:
 func __rectangle_Intersect(o GoObject, args Object) Object {
-	*s := whatever
+	s := whatever
 	_res := o.O.(_image.Rectangle).Intersect(s)
 	return MakeGoObject(_res)
 }
 
 GO FUNC image.__rectangle_Overlaps from image/geom.go:
 func __rectangle_Overlaps(o GoObject, args Object) Object {
-	*s := whatever
+	s := whatever
 	_res := o.O.(_image.Rectangle).Overlaps(s)
 	return MakeBoolean(_res)
 }
@@ -54946,14 +54946,14 @@ func __rectangle_String(o GoObject, args Object) Object {
 
 GO FUNC image.__rectangle_Sub from image/geom.go:
 func __rectangle_Sub(o GoObject, args Object) Object {
-	*p := whatever
+	p := whatever
 	_res := o.O.(_image.Rectangle).Sub(p)
 	return MakeGoObject(_res)
 }
 
 GO FUNC image.__rectangle_Union from image/geom.go:
 func __rectangle_Union(o GoObject, args Object) Object {
-	*s := whatever
+	s := whatever
 	_res := o.O.(_image.Rectangle).Union(s)
 	return MakeGoObject(_res)
 }
@@ -55862,14 +55862,14 @@ func __nYCbCrA_RGBA(o GoObject, args Object) Object {
 
 GO FUNC image/color.__palette_Convert from image/color/color.go:
 func __palette_Convert(o GoObject, args Object) Object {
-	*c := whatever
+	c := whatever
 	_res := o.O.(_color.Palette).Convert(c)
 	return MakeGoObject(_res)
 }
 
 GO FUNC image/color.__palette_Index from image/color/color.go:
 func __palette_Index(o GoObject, args Object) Object {
-	*c := whatever
+	c := whatever
 	_res := o.O.(_color.Palette).Index(c)
 	return MakeInt(_res)
 }
@@ -58966,7 +58966,7 @@ func __ptrTo_Float_SetMantExp(o GoObject, args Object) Object {
 
 GO FUNC math/big.__ptrTo_Float_SetMode from math/big/float.go:
 func __ptrTo_Float_SetMode(o GoObject, args Object) Object {
-	*mode := whatever
+	mode := whatever
 	_res := o.O.(*_big.Float).SetMode(mode)
 	return MakeGoObject(_res)
 }
@@ -63001,7 +63001,7 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Equal from net/ip.go:
 func __iP_Equal(o GoObject, args Object) Object {
-	*x := whatever
+	x := whatever
 	_res := o.O.(_net.IP).Equal(x)
 	return MakeBoolean(_res)
 }
@@ -63063,7 +63063,7 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Mask from net/ip.go:
 func __iP_Mask(o GoObject, args Object) Object {
-	*mask := whatever
+	mask := whatever
 	_res := o.O.(_net.IP).Mask(mask)
 	return MakeGoObject(_res)
 }
@@ -63228,7 +63228,7 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-	*ip := whatever
+	ip := whatever
 	_res := o.O.(*_net.IPNet).Contains(ip)
 	return MakeBoolean(_res)
 }
@@ -66942,7 +66942,7 @@ GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
 
 GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
 func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
-	*codec := whatever
+	codec := whatever
 	_res := o.O.(*_rpc.Server).ServeRequest(codec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -67180,7 +67180,7 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
 func __ptrTo_Client_Auth(o GoObject, args Object) Object {
-	*a := whatever
+	a := whatever
 	_res := o.O.(*_smtp.Client).Auth(a)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -68961,7 +68961,7 @@ func __ptrTo_File_Chdir(o GoObject, args Object) Object {
 
 GO FUNC os.__ptrTo_File_Chmod from os/file.go:
 func __ptrTo_File_Chmod(o GoObject, args Object) Object {
-	*mode := whatever
+	mode := whatever
 	_res := o.O.(*_os.File).Chmod(mode)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -69182,7 +69182,7 @@ func __ptrTo_Process_Release(o GoObject, args Object) Object {
 
 GO FUNC os.__ptrTo_Process_Signal from os/exec.go:
 func __ptrTo_Process_Signal(o GoObject, args Object) Object {
-	*sig := whatever
+	sig := whatever
 	_res := o.O.(*_os.Process).Signal(sig)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -70959,7 +70959,7 @@ GO FUNC reflect.__value_Complex from reflect/value.go:
 
 GO FUNC reflect.__value_Convert from reflect/value.go:
 func __value_Convert(o GoObject, args Object) Object {
-	*t := whatever
+	t := whatever
 	_res := o.O.(_reflect.Value).Convert(t)
 	return MakeGoObject(_res)
 }
@@ -71049,7 +71049,7 @@ func __value_Len(o GoObject, args Object) Object {
 
 GO FUNC reflect.__value_MapIndex from reflect/value.go:
 func __value_MapIndex(o GoObject, args Object) Object {
-	*key := whatever
+	key := whatever
 	_res := o.O.(_reflect.Value).MapIndex(key)
 	return MakeGoObject(_res)
 }
@@ -71236,7 +71236,7 @@ func __value_TryRecv(o GoObject, args Object) Object {
 
 GO FUNC reflect.__value_TrySend from reflect/value.go:
 func __value_TrySend(o GoObject, args Object) Object {
-	*x := whatever
+	x := whatever
 	_res := o.O.(_reflect.Value).TrySend(x)
 	return MakeBoolean(_res)
 }
@@ -80911,7 +80911,7 @@ GO FUNC text/template.__ptrTo_Template_ExecuteTemplate from text/template/exec.g
 
 GO FUNC text/template.__ptrTo_Template_Funcs from text/template/template.go:
 func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
-	*funcMap := whatever
+	funcMap := whatever
 	_res := o.O.(*_template.Template).Funcs(funcMap)
 	return MakeGoObject(_res)
 }
@@ -82090,7 +82090,7 @@ func __ptrTo_IdentifierNode_Copy(o GoObject, args Object) Object {
 
 GO FUNC text/template/parse.__ptrTo_IdentifierNode_SetPos from text/template/parse/node.go:
 func __ptrTo_IdentifierNode_SetPos(o GoObject, args Object) Object {
-	*pos := whatever
+	pos := whatever
 	_res := o.O.(*_parse.IdentifierNode).SetPos(pos)
 	return MakeGoObject(_res)
 }
@@ -82229,7 +82229,7 @@ func __ptrTo_Tree_Copy(o GoObject, args Object) Object {
 
 GO FUNC text/template/parse.__ptrTo_Tree_ErrorContext from text/template/parse/parse.go:
 func __ptrTo_Tree_ErrorContext(o GoObject, args Object) Object {
-	*n := whatever
+	n := whatever
 	location, context := o.O.(*_parse.Tree).ErrorContext(n)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(location))
@@ -82845,7 +82845,7 @@ func __duration_Nanoseconds(o GoObject, args Object) Object {
 
 GO FUNC time.__duration_Round from time/time.go:
 func __duration_Round(o GoObject, args Object) Object {
-	*m := whatever
+	m := whatever
 	_res := o.O.(_time.Duration).Round(m)
 	return MakeGoObject(_res)
 }
@@ -82862,7 +82862,7 @@ func __duration_String(o GoObject, args Object) Object {
 
 GO FUNC time.__duration_Truncate from time/time.go:
 func __duration_Truncate(o GoObject, args Object) Object {
-	*m := whatever
+	m := whatever
 	_res := o.O.(_time.Duration).Truncate(m)
 	return MakeGoObject(_res)
 }
@@ -82908,7 +82908,7 @@ GO FUNC time.__ptrTo_Time_UnmarshalText from time/time.go:
 
 GO FUNC time.__ptrTo_Timer_Reset from time/sleep.go:
 func __ptrTo_Timer_Reset(o GoObject, args Object) Object {
-	*d := whatever
+	d := whatever
 	_res := o.O.(*_time.Timer).Reset(d)
 	return MakeBoolean(_res)
 }
@@ -82921,7 +82921,7 @@ func __ptrTo_Timer_Stop(o GoObject, args Object) Object {
 
 GO FUNC time.__time_Add from time/time.go:
 func __time_Add(o GoObject, args Object) Object {
-	*d := whatever
+	d := whatever
 	_res := o.O.(_time.Time).Add(d)
 	return MakeGoObject(_res)
 }
@@ -82937,7 +82937,7 @@ func __time_AddDate(o GoObject, args Object) Object {
 
 GO FUNC time.__time_After from time/time.go:
 func __time_After(o GoObject, args Object) Object {
-	*u := whatever
+	u := whatever
 	_res := o.O.(_time.Time).After(u)
 	return MakeBoolean(_res)
 }
@@ -82948,7 +82948,7 @@ GO FUNC time.__time_AppendFormat from time/format.go:
 
 GO FUNC time.__time_Before from time/time.go:
 func __time_Before(o GoObject, args Object) Object {
-	*u := whatever
+	u := whatever
 	_res := o.O.(_time.Time).Before(u)
 	return MakeBoolean(_res)
 }
@@ -82981,7 +82981,7 @@ func __time_Day(o GoObject, args Object) Object {
 
 GO FUNC time.__time_Equal from time/time.go:
 func __time_Equal(o GoObject, args Object) Object {
-	*u := whatever
+	u := whatever
 	_res := o.O.(_time.Time).Equal(u)
 	return MakeBoolean(_res)
 }
@@ -83104,7 +83104,7 @@ func __time_Nanosecond(o GoObject, args Object) Object {
 
 GO FUNC time.__time_Round from time/time.go:
 func __time_Round(o GoObject, args Object) Object {
-	*d := whatever
+	d := whatever
 	_res := o.O.(_time.Time).Round(d)
 	return MakeGoObject(_res)
 }
@@ -83123,14 +83123,14 @@ func __time_String(o GoObject, args Object) Object {
 
 GO FUNC time.__time_Sub from time/time.go:
 func __time_Sub(o GoObject, args Object) Object {
-	*u := whatever
+	u := whatever
 	_res := o.O.(_time.Time).Sub(u)
 	return MakeGoObject(_res)
 }
 
 GO FUNC time.__time_Truncate from time/time.go:
 func __time_Truncate(o GoObject, args Object) Object {
-	*d := whatever
+	d := whatever
 	_res := o.O.(_time.Time).Truncate(d)
 	return MakeGoObject(_res)
 }

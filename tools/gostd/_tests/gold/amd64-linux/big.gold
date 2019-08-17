@@ -3848,7 +3848,7 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Equal from net/ip.go:
 func __iP_Equal(o GoObject, args Object) Object {
-	*x := whatever
+	x := whatever
 	_res := o.O.(_net.IP).Equal(x)
 	return MakeBoolean(_res)
 }
@@ -3910,7 +3910,7 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 
 GO FUNC net.__iP_Mask from net/ip.go:
 func __iP_Mask(o GoObject, args Object) Object {
-	*mask := whatever
+	mask := whatever
 	_res := o.O.(_net.IP).Mask(mask)
 	return MakeGoObject(_res)
 }
@@ -4070,7 +4070,7 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-	*ip := whatever
+	ip := whatever
 	_res := o.O.(*_net.IPNet).Contains(ip)
 	return MakeBoolean(_res)
 }
@@ -7318,7 +7318,7 @@ GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
 
 GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
 func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
-	*codec := whatever
+	codec := whatever
 	_res := o.O.(*_rpc.Server).ServeRequest(codec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -7516,7 +7516,7 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
 func __ptrTo_Client_Auth(o GoObject, args Object) Object {
-	*a := whatever
+	a := whatever
 	_res := o.O.(*_smtp.Client).Auth(a)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
