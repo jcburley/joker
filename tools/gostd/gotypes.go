@@ -278,7 +278,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt",
 		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeNumber(%s)",
+		convertToClojure:     "MakeBigIntU(uint64(%s))",
 	}
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",

@@ -173,7 +173,7 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if fn.fd.Type.Results == nil || fn.fd.Type.Results.List == nil ||
 		len(fn.fd.Type.Results.List) == 0 {
 		res = "MakeNil(ABEND222(fix receiver returning null arg))"
-	} else if len(fn.fd.Type.Results.List) == 1 && len(fn.fd.Type.Results.List[0].Names) == 1 {
+	} else if len(fn.fd.Type.Results.List) == 1 && len(fn.fd.Type.Results.List[0].Names) <= 1 {
 		args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
 		ti := toGoExprInfo(fn.sourceFile, &fn.fd.Type.Results.List[0].Type)
 		pattern := ti.convertToClojure
