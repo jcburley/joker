@@ -20,6 +20,7 @@ type goTypeInfo struct {
 	argExtractFunc            string          // Call Extract<this>() for arg with my type
 	convertFromClojure        string          // Pattern to convert a (scalar) %s to this type
 	convertFromClojureImports []packageImport // Imports needed to support the above
+	convertToClojure          string          // Pattern to convert this type to an appropriate Clojure object
 	clojureCode               string
 	goCode                    string
 	requiredImports           *packageImports
@@ -67,6 +68,7 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 			argClojureType:     baseName,
 			argClojureArgType:  baseName,
 			convertFromClojure: baseName + "(%s)",
+			convertToClojure:   "MakeGoObject(%s)",
 			unsupported:        true,
 		}
 		goTypes[baseName] = ti
@@ -228,6 +230,7 @@ func init() {
 		argClojureArgType:    "Boolean",
 		argExtractFunc:       "Boolean",
 		convertFromClojure:   "ToBool(%s)",
+		convertToClojure:     "MakeBoolean(%s)",
 	}
 	goTypes["string"] = &goTypeInfo{
 		localName:            "string",
@@ -237,6 +240,7 @@ func init() {
 		argClojureArgType:    "String",
 		argExtractFunc:       "String",
 		convertFromClojure:   `AssertString(%s, "").S`,
+		convertToClojure:     "MakeString(%s)",
 	}
 	goTypes["rune"] = &goTypeInfo{
 		localName:            "rune",
@@ -264,6 +268,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int",
 		convertFromClojure:   `AssertInt(%s, "").I`,
+		convertToClojure:     "MakeInt(%s)",
 	}
 	goTypes["uint"] = &goTypeInfo{
 		localName:            "uint",
@@ -273,6 +278,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt",
 		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
+		convertToClojure:     "MakeNumber(%s)",
 	}
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",
