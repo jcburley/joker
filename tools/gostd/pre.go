@@ -9,7 +9,7 @@ import (
 func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.Elt
 	len := e.Len
-	clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genTypePre(fn, indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName)
 	runtime := "ConvertToArrayOf" + goType
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if len != nil {
@@ -30,7 +30,7 @@ func genGoPreArray(fn *funcInfo, indent string, e *ArrayType, paramName string) 
 
 func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.X
-	clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genTypePre(fn, indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName)
 	if cl2golParam[0] == '*' {
 		cl2golParam = cl2golParam[1:]
 	} else {
@@ -77,7 +77,7 @@ func genGoPreSelector(fn *funcInfo, indent string, e *SelectorExpr, paramName st
 
 func genGoPreEllipsis(fn *funcInfo, indent string, e *Ellipsis, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.Elt
-	clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genTypePre(fn, indent, el, paramName)
+	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName)
 	runtime := "ConvertToEllipsisHaHa" + goType
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if _, ok := customRuntimeImplemented[runtime]; !ok {
@@ -151,39 +151,16 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string) (c
 	return
 }
 
-func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
 	clType = fmt.Sprintf("ABEND881(pre.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 	goType = fmt.Sprintf("ABEND882(pre.go: unrecognized Expr type %T at: %s)", e, unix(whereAt(e.Pos())))
 	cl2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
 		goType = v.Name
-		clType = fmt.Sprintf("ABEND885(pre.go: unrecognized type %s at: %s)", v.Name, unix(whereAt(e.Pos())))
-		switch v.Name {
-		case "string":
-			clType = "String"
-		case "int":
-			clType = "Int"
-		case "byte":
-			clType = "Byte"
-		case "bool":
-			clType = "Boolean"
-		case "int16":
-			clType = "Int16"
-		case "uint":
-			clType = "UInt"
-		case "uint16":
-			clType = "UInt16"
-		case "int32":
-			clType = "Int32"
-		case "uint32":
-			clType = "UInt32"
-		case "int64":
-			clType = "Int64"
-		case "uintptr":
-			clType = "UIntPtr"
-		case "error":
-		default:
+		ti := toGoExprInfo(fn.sourceFile, &e)
+		clType = ti.argClojureArgType
+		if ti.sourceFile != nil { // not a builtin
 			if isPrivate(v.Name) {
 				clType = fmt.Sprintf("ABEND044(pre.go: unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
@@ -225,7 +202,13 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	fields := flattenFieldList(fl)
 	for _, field := range fields {
 		p := field.name
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam := genTypePre(fn, indent, field.field.Type, "_"+p.Name)
+		resVar := ""
+		if p == nil {
+			resVar = genSym("")
+		} else {
+			resVar = p.Name
+		}
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.field.Type, "_"+resVar)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -233,7 +216,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if clType != "" {
 			clojureParamList += "^" + clType + " "
 		}
-		clojureParamList += "_" + paramNameAsClojure(p.Name)
+		clojureParamList += "_" + paramNameAsClojure(resVar)
 
 		if clojureParamListDoc != "" {
 			clojureParamListDoc += ", "
@@ -241,7 +224,14 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if clTypeDoc != "" {
 			clojureParamListDoc += "^" + clTypeDoc + " "
 		}
-		clojureParamListDoc += paramNameAsClojure(p.Name)
+		clojureParamListDoc += paramNameAsClojure(resVar)
+
+		if preCode != "" {
+			if goPreCode != "" {
+				goPreCode += "\n" + indent
+			}
+			goPreCode += preCode
+		}
 
 		if clojureGoParams != "" {
 			clojureGoParams += ", "
@@ -251,7 +241,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParamList != "" {
 			goParamList += ", "
 		}
-		goParamList += paramNameAsGo(p.Name)
+		goParamList += paramNameAsGo(resVar)
 		if goType != "" {
 			goParamList += " " + goType
 		}
@@ -259,7 +249,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParamListDoc != "" {
 			goParamListDoc += ", "
 		}
-		goParamListDoc += paramNameAsGo(p.Name)
+		goParamListDoc += paramNameAsGo(resVar)
 		if goTypeDoc != "" {
 			goParamListDoc += " " + goTypeDoc
 		}
@@ -267,7 +257,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParams != "" {
 			goParams += ", "
 		}
-		goParams += paramNameAsGo(p.Name)
+		goParams += paramNameAsGo(resVar)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"

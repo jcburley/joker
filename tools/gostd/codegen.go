@@ -166,10 +166,25 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 
 `
 
+	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
+	if strings.Contains(paramListDoc, "ABEND") {
+		return paramListDoc
+	}
+	if strings.Contains(paramList, "ABEND") {
+		return paramList
+	}
+	if strings.Contains(cljParamListDoc, "ABEND") {
+		return cljParamListDoc
+	}
+	if strings.Contains(cljParamList, "ABEND") {
+		return cljParamList
+	}
+	if strings.Contains(cljGoParams, "ABEND") {
+		return cljGoParams
+	}
+
 	receiverName := fn.fd.Name.Name
-	argList := ""
-	args := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, argList)
-	res := ""
+	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, params)
 
 	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.fd)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
@@ -184,7 +199,7 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
 	}
-	return "\t" + res + resultAssign + args + "\n" + postCode
+	return "\t" + preCode + resultAssign + call + "\n" + postCode
 }
 
 func typeKey(pkgPrefix string, fl *Field) string {
@@ -218,9 +233,6 @@ func typeInfoName(fl *Field) string {
 }
 
 func genReceiver(fn *funcInfo) {
-	if fn.fd.Type.Params != nil && len(fn.fd.Type.Params.List) != 0 {
-		return
-	}
 	genSymReset()
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
 	pkgBaseName := fn.sourceFile.pkgBaseName

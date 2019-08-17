@@ -51,6 +51,7 @@ func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
 		custom:            true,
 		uncompleted:       true,
 		convertToClojure:  "MakeGoObject(%s)",
+		argExtractFunc:    "Object",
 	}
 	goTypes[fullGoTypeName] = ti
 	return ti

@@ -652,17 +652,17 @@ JOKER FUNC net.FilePacketConn from net/file.go:
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
-  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IP"
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
    :go "__iPv4(_a, _b, _c, _d)"}
-  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+  [^Int _a, ^Int _b, ^Int _c, ^Int _d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
-  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IPMask"
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
    :go "__iPv4Mask(_a, _b, _c, _d)"}
-  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+  [^Int _a, ^Int _b, ^Int _c, ^Int _d])
 
 JOKER FUNC net.InterfaceAddrs from net/interface.go:
 (defn InterfaceAddrs
@@ -1058,7 +1058,7 @@ JOKER FUNC net/http.CanonicalHeaderKey from net/http/header.go:
 
 JOKER FUNC net/http.DetectContentType from net/http/sniff.go:
 ;; (defn ^"String" DetectContentType
-;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Byte) data]\n\nJoker return type: String"
+;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Int) data]\n\nJoker return type: String"
 ;;   {:added "1.0"
 ;;    :go "http.DetectContentType(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_data)))"}
 ;;   [^Object _data])
@@ -1121,10 +1121,10 @@ JOKER FUNC net/http.ListenAndServeTLS from net/http/server.go:
 
 JOKER FUNC net/http.MaxBytesReader from net/http/request.go:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo return type: ...\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.io/ReadCloser r, ^Int64 n]\n\nJoker return type: ABEND042(post.go: cannot find typename io.ReadCloser)"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo return type: ...\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.io/ReadCloser r, ^Number n]\n\nJoker return type: ABEND042(post.go: cannot find typename io.ReadCloser)"
 ;;   {:added "1.0"
 ;;    :go "__maxBytesReader(*_w, *_r, _n)"}
-;;   [^http/ResponseWriter _w, ^io/ReadCloser _r, ^Int64 _n])
+;;   [^http/ResponseWriter _w, ^io/ReadCloser _r, ^Number _n])
 
 JOKER FUNC net/http.NewFileTransport from net/http/filetransport.go:
 (defn NewFileTransport
@@ -1842,7 +1842,7 @@ JOKER FUNC net/smtp.PlainAuth from net/smtp/auth.go:
 
 JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
 ;; (defn ^"Error" SendMail
-;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^(vector-of String) to, ^(vector-of Byte) msg]\n\nJoker return type: Error"
+;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^(vector-of String) to, ^(vector-of Int) msg]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "smtp.SendMail(_addr, *_a, _from, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfstring(_to)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_msg)))"}
 ;;   [^String _addr, ^smtp/Auth _a, ^String _from, ^Object _to, ^Object _msg])
@@ -1933,7 +1933,7 @@ JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 ;; (defn TrimBytes
-;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Byte) b]\n\nJoker return type: (vector-of Int)"
+;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: (vector-of Int)"
 ;;   {:added "1.0"
 ;;    :go "__trimBytes(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(_b)))"}
 ;;   [^Object _b])
