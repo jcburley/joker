@@ -5499,11 +5499,12 @@ func __ptrTo_Server_ListenAndServe(o GoObject, args Object) Object {
 }
 
 GO FUNC net/http.__ptrTo_Transport_CloseIdleConnections from net/http/transport.go:
-// func __ptrTo_Transport_CloseIdleConnections(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http.Transport)CloseIdleConnections()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_Transport_CloseIdleConnections(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http.Transport)CloseIdleConnections()", args, 0, 0)
+	o.O.(*_http.Transport).CloseIdleConnections()
+	return NIL
 
-// }
+}
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
@@ -5832,11 +5833,12 @@ GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
 // }
 
 GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_Flush from net/http/httptest/recorder.go:
-// func __ptrTo_ResponseRecorder_Flush(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http/httptest.ResponseRecorder)Flush()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_ResponseRecorder_Flush(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http/httptest.ResponseRecorder)Flush()", args, 0, 0)
+	o.O.(*_httptest.ResponseRecorder).Flush()
+	return NIL
 
-// }
+}
 
 GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_Header from net/http/httptest/recorder.go:
 func __ptrTo_ResponseRecorder_Header(o GoObject, args Object) Object {
@@ -5867,32 +5869,36 @@ func __ptrTo_Server_Client(o GoObject, args Object) Object {
 }
 
 GO FUNC net/http/httptest.__ptrTo_Server_Close from net/http/httptest/server.go:
-// func __ptrTo_Server_Close(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http/httptest.Server)Close()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_Server_Close(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http/httptest.Server)Close()", args, 0, 0)
+	o.O.(*_httptest.Server).Close()
+	return NIL
 
-// }
+}
 
 GO FUNC net/http/httptest.__ptrTo_Server_CloseClientConnections from net/http/httptest/server.go:
-// func __ptrTo_Server_CloseClientConnections(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http/httptest.Server)CloseClientConnections()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_Server_CloseClientConnections(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http/httptest.Server)CloseClientConnections()", args, 0, 0)
+	o.O.(*_httptest.Server).CloseClientConnections()
+	return NIL
 
-// }
+}
 
 GO FUNC net/http/httptest.__ptrTo_Server_Start from net/http/httptest/server.go:
-// func __ptrTo_Server_Start(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http/httptest.Server)Start()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_Server_Start(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http/httptest.Server)Start()", args, 0, 0)
+	o.O.(*_httptest.Server).Start()
+	return NIL
 
-// }
+}
 
 GO FUNC net/http/httptest.__ptrTo_Server_StartTLS from net/http/httptest/server.go:
-// func __ptrTo_Server_StartTLS(o GoObject, args Object) Object {
-// 	GoCheckArity("(*_net/http/httptest.Server)StartTLS()", args, 0, 0)
-// 	return MakeNil(ABEND222(fix receiver returning null arg))
+func __ptrTo_Server_StartTLS(o GoObject, args Object) Object {
+	GoCheckArity("(*_net/http/httptest.Server)StartTLS()", args, 0, 0)
+	o.O.(*_httptest.Server).StartTLS()
+	return NIL
 
-// }
+}
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func __contextClientTrace(ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
@@ -7867,8 +7873,8 @@ func __values_Encode(o GoObject, args Object) Object {
 
 Adding 13 custom imports to _tests/gold/amd64-darwin/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-darwin/joker/core/data/customlibs.joke
-ABENDs: 047(80) 987(60) 223(34) 674(29) 675(18) 048(13) 042(6) 222(6) 902(4) 883(2) 907(2) 906(1) 908(1)
-Totals: functions=421 generated=179 (42.52%)
+ABENDs: 047(80) 987(60) 223(34) 674(29) 675(18) 048(13) 042(6) 902(4) 883(2) 907(2) 906(1) 908(1)
+Totals: functions=421 generated=185 (43.94%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
-          receivers=273 (64.85%) generated=98 (35.90%)
+          receivers=273 (64.85%) generated=104 (38.10%)
         types=102 generated=39 (38.24%)
