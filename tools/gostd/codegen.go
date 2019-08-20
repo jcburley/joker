@@ -104,7 +104,7 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
-	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams =
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
 		genGoPre(fn, "\t", d.Type.Params, goFname)
 	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
 	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
@@ -160,13 +160,11 @@ func printAbends(m map[string]int) {
 }
 
 func genReceiverCode(fn *funcInfo, goFname string) string {
-	const template = `
-	GoCheckArity("%s", args, 0, 0)
-	%sreturn %s
+	const arityTemplate = `
+	GoCheckArity("%s", args, %d, %d)
+	`
 
-`
-
-	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
+	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
 	if strings.Contains(paramListDoc, "ABEND") {
 		return paramListDoc
 	}
@@ -203,7 +201,8 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if preCode != "" {
 		finishPreCode = "\n\t"
 	}
-	return "\t" + preCode + finishPreCode + resultAssign + call + "\n" + postCode
+	arity := fmt.Sprintf(arityTemplate, fn.docName, min, max)
+	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
 func typeKey(pkgPrefix string, fl *Field) string {

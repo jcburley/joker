@@ -198,7 +198,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string) (clType, 
 }
 
 func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (clojureParamList, clojureParamListDoc,
-	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
+	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string, min, max int) {
 	if fl == nil {
 		return
 	}
@@ -267,5 +267,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	if strings.Contains(goParamListDoc, " ") || strings.Contains(goParamListDoc, ",") {
 		goParamListDoc = "(" + goParamListDoc + ")"
 	}
+	min = len(fields)
+	max = len(fields)
 	return
 }
