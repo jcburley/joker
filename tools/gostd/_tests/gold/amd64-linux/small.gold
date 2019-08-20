@@ -1579,15 +1579,8 @@ func __ptrTo_Buffers_Read(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
-func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Buffers)WriteTo()", args, 1, 1)
-	w := 
-	n, err := o.O.(*_net.Buffers).WriteTo(w)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeBigInt(n))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
+// (w ABEND987(genutils.go: imports not yet supported: io.Writer))}
 
 GO FUNC net.__ptrTo_DNSConfigError_Error from net/net.go:
 func __ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {
@@ -1785,144 +1778,40 @@ func __ptrTo_ParseError_Error(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
-func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupAddr()", args, 2, 2)
-	ctx := 
-	addr := ExtractGoString("(*_net.Resolver)LookupAddr()", "addr", _argList, 1)
-	names, err := o.O.(*_net.Resolver).LookupAddr(ctx, addr)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range names {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), addr string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupCNAME from net/lookup.go:
-func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupCNAME()", args, 2, 2)
-	ctx := 
-	host := ExtractGoString("(*_net.Resolver)LookupCNAME()", "host", _argList, 1)
-	cname, err := o.O.(*_net.Resolver).LookupCNAME(ctx, host)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeString(cname))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
-func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupHost()", args, 2, 2)
-	ctx := 
-	host := ExtractGoString("(*_net.Resolver)LookupHost()", "host", _argList, 1)
-	addrs, err := o.O.(*_net.Resolver).LookupHost(ctx, host)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
-func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupIPAddr()", args, 2, 2)
-	ctx := 
-	host := ExtractGoString("(*_net.Resolver)LookupIPAddr()", "host", _argList, 1)
-	_res1, _res2 := o.O.(*_net.Resolver).LookupIPAddr(ctx, host)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
-func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupMX()", args, 2, 2)
-	ctx := 
-	name := ExtractGoString("(*_net.Resolver)LookupMX()", "name", _argList, 1)
-	_res1, _res2 := o.O.(*_net.Resolver).LookupMX(ctx, name)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
-func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupNS()", args, 2, 2)
-	ctx := 
-	name := ExtractGoString("(*_net.Resolver)LookupNS()", "name", _argList, 1)
-	_res1, _res2 := o.O.(*_net.Resolver).LookupNS(ctx, name)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupPort from net/lookup.go:
-func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupPort()", args, 3, 3)
-	ctx := 
-	network := ExtractGoString("(*_net.Resolver)LookupPort()", "network", _argList, 1)
-	service := ExtractGoString("(*_net.Resolver)LookupPort()", "service", _argList, 2)
-	port, err := o.O.(*_net.Resolver).LookupPort(ctx, network, service)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(port))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, service string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
-func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupSRV()", args, 4, 4)
-	ctx := 
-	service := ExtractGoString("(*_net.Resolver)LookupSRV()", "service", _argList, 1)
-	proto := ExtractGoString("(*_net.Resolver)LookupSRV()", "proto", _argList, 2)
-	name := ExtractGoString("(*_net.Resolver)LookupSRV()", "name", _argList, 3)
-	cname, addrs, err := o.O.(*_net.Resolver).LookupSRV(ctx, service, proto, name)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), service string, proto string, name string)}
 
 GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
-func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Resolver)LookupTXT()", args, 2, 2)
-	ctx := 
-	name := ExtractGoString("(*_net.Resolver)LookupTXT()", "name", _argList, 1)
-	_res1, _res2 := o.O.(*_net.Resolver).LookupTXT(ctx, name)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
+// (ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string)}
 
 GO FUNC net.__unknownNetworkError_Error from net/net.go:
 func __unknownNetworkError_Error(o GoObject, args Object) Object {
@@ -1963,7 +1852,6 @@ var members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
 
 var members_PtrTo_Buffers = GoTypeInfo{Members: GoMembers{
 	"Read": __ptrTo_Buffers_Read,
-	"WriteTo": __ptrTo_Buffers_WriteTo,
 }}
 
 var members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
@@ -2040,18 +1928,6 @@ var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
 	"Error": __ptrTo_ParseError_Error,
 }}
 
-var members_PtrTo_Resolver = GoTypeInfo{Members: GoMembers{
-	"LookupAddr": __ptrTo_Resolver_LookupAddr,
-	"LookupCNAME": __ptrTo_Resolver_LookupCNAME,
-	"LookupHost": __ptrTo_Resolver_LookupHost,
-	"LookupIPAddr": __ptrTo_Resolver_LookupIPAddr,
-	"LookupMX": __ptrTo_Resolver_LookupMX,
-	"LookupNS": __ptrTo_Resolver_LookupNS,
-	"LookupPort": __ptrTo_Resolver_LookupPort,
-	"LookupSRV": __ptrTo_Resolver_LookupSRV,
-	"LookupTXT": __ptrTo_Resolver_LookupTXT,
-}}
-
 var members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
 	"Error": __unknownNetworkError_Error,
 	"Temporary": __unknownNetworkError_Temporary,
@@ -2073,7 +1949,6 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &members_InvalidAddrError
 	GoTypes[_reflect.TypeOf((*_net.OpError)(nil))] = &members_PtrTo_OpError
 	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil))] = &members_PtrTo_ParseError
-	GoTypes[_reflect.TypeOf((*_net.Resolver)(nil))] = &members_PtrTo_Resolver
 	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil)).Elem()] = &members_UnknownNetworkError
 }
 
@@ -2602,8 +2477,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 674(9) 048(6) 275(3) 042(1) 047(1)
-Totals: functions=109 generated=105 (96.33%)
+ABENDs: 987(10) 674(9) 048(6) 275(3) 042(1) 047(1)
+Totals: functions=109 generated=95 (87.16%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
-          receivers=83 (76.15%) generated=79 (95.18%)
+          receivers=83 (76.15%) generated=69 (83.13%)
         types=28 generated=14 (50.00%)

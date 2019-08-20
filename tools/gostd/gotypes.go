@@ -188,6 +188,10 @@ func (t *goTypeInfo) goBaseName() string {
 	return strs[len(strs)-1]
 }
 
+func (t *goTypeInfo) isLocallyDefined(src *goFile) bool {
+	return src.pkgDirUnix+"."+t.goBaseName() == t.goName
+}
+
 func toGoExprString(src *goFile, e *Expr) string {
 	if e == nil {
 		return "-"
@@ -284,12 +288,12 @@ func goSelectorExpr(src *goFile, e *SelectorExpr) *goTypeInfo {
 			whereAt(e.Pos()), pkgName, src.name))
 	}
 
-	clType, _, convertFromClojure, _ := fullPkgNameAsGoType(src, fullPkgName, (*e).Sel.Name)
+	_, _, goType, _ := fullPkgNameAsGoType(src, fullPkgName, (*e).Sel.Name)
 	v := &goTypeInfo{
-		goName:             clType,
+		goName:             goType,
 		fullClojureName:    "GoObject",
 		underlyingType:     &e.X,
-		convertFromClojure: convertFromClojure,
+		convertFromClojure: goType,
 		custom:             true,
 		private:            false, // TODO: look into doing this better
 		unsupported:        false, // TODO: look into doing this better
