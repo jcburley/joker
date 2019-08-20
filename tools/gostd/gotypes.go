@@ -73,39 +73,26 @@ func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
 	if ti, found := goTypes[goName]; found {
 		return ti
 	}
-	if gotypes.Universe.Lookup(goName) != nil {
-		ti := &goTypeInfo{
-			goName:             fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s)", goName),
-			fullClojureName:    fullTypeNameAsClojure(goName),
-			argClojureType:     goName,
-			argClojureArgType:  goName,
-			convertFromClojure: goName + "(%s)",
-			convertToClojure:   "GoObject(%s%s)",
-			unsupported:        true,
-		}
-		goTypes[goName] = ti
-		return ti
-	}
 	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
 }
 
-func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
-	if ti, found := goTypes[fullGoTypeName]; found {
+func registerGoType(gf *goFile, goTypeName string, ts *TypeSpec) *goTypeInfo {
+	if ti, found := goTypes[goTypeName]; found {
 		return ti
 	}
 	ti := &goTypeInfo{
-		goName:            fullGoTypeName,
-		fullClojureName:   fullTypeNameAsClojure(fullGoTypeName),
+		goName:            goTypeName,
+		fullClojureName:   fullTypeNameAsClojure(goTypeName),
 		sourceFile:        gf,
 		underlyingType:    &ts.Type,
-		argClojureArgType: fullTypeNameAsClojure(fullGoTypeName),
+		argClojureArgType: fullTypeNameAsClojure(goTypeName),
 		private:           isPrivate(ts.Name.Name),
 		custom:            true,
 		uncompleted:       true,
 		convertToClojure:  "GoObject(%s%s)",
 		argExtractFunc:    "Object",
 	}
-	goTypes[fullGoTypeName] = ti
+	goTypes[goTypeName] = ti
 	return ti
 }
 
