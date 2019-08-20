@@ -161,7 +161,7 @@ func printAbends(m map[string]int) {
 
 func genReceiverCode(fn *funcInfo, goFname string) string {
 	const arityTemplate = `
-	CheckGoArity("%s", args, %d, %d)
+	_argList := CheckGoArity("%s", args, %d, %d)
 	`
 
 	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
