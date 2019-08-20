@@ -76,23 +76,24 @@ func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
 	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
 }
 
-func registerGoType(gf *goFile, goTypeName string, ts *TypeSpec) *goTypeInfo {
-	if ti, found := goTypes[goTypeName]; found {
+func registerGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
+	goName := src.pkgDirUnix + "." + ts.Name.Name
+	if ti, found := goTypes[goName]; found {
 		return ti
 	}
 	ti := &goTypeInfo{
-		goName:            goTypeName,
-		fullClojureName:   fullTypeNameAsClojure(goTypeName),
-		sourceFile:        gf,
+		goName:            goName,
+		fullClojureName:   fullTypeNameAsClojure(goName),
+		sourceFile:        src,
 		underlyingType:    &ts.Type,
-		argClojureArgType: fullTypeNameAsClojure(goTypeName),
+		argClojureArgType: fullTypeNameAsClojure(goName),
 		private:           isPrivate(ts.Name.Name),
 		custom:            true,
 		uncompleted:       true,
 		convertToClojure:  "GoObject(%s%s)",
 		argExtractFunc:    "Object",
 	}
-	goTypes[goTypeName] = ti
+	goTypes[goName] = ti
 	return ti
 }
 
