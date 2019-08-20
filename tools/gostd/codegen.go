@@ -97,6 +97,18 @@ var customRuntimeImplemented = map[string]struct{}{
 	"ConvertToArrayOfString": {},
 }
 
+// Either the builtin name or the full package name and type name
+// (e.g. "go.std.net/IPAddr"), possibly preceded by (say) "*" for a
+// pointer to it.
+func (t *goTypeInfo) goFullName() string {
+	return t.goName
+}
+
+func (t *goTypeInfo) goBaseName() string {
+	strs := strings.SplitAfter(t.goFullName(), ".")
+	return strs[len(strs)-1]
+}
+
 func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "_" + pkgBaseName + "." + goFname + "(" + goParams + ")\n"
 }
@@ -527,7 +539,7 @@ func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObje
 	nonGoObjectTypeDoc = v.argClojureType
 	extractClojureObject = v.argFromClojureObject
 	if v.unsupported || v.argClojureType == "" || extractClojureObject == "" {
-		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.fullGoName)
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.goFullName())
 	}
 	return
 }
@@ -582,14 +594,14 @@ func vectorElementToType(ti *goTypeInfo, i int, name string, f *Field) string {
 func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 	v := toGoExprInfo(ti.sourceFile, e)
 	if v.unsupported {
-		return v.fullGoName
+		return v.goFullName()
 	}
 	if v.convertFromClojure != "" {
 		addRequiredImports(ti, v.convertFromClojureImports)
 		return fmt.Sprintf(v.convertFromClojure, el)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.fullGoName, toGoExprString(ti.sourceFile, v.underlyingType))
+		v.goFullName(), toGoExprString(ti.sourceFile, v.underlyingType))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).

@@ -155,7 +155,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 	cl2golParam = paramName
 	extractParam := ""
 	ti := toGoExprInfo(fn.sourceFile, &e)
-	goType = ti.fullGoName
+	goType = ti.goFullName()
 	goTypeDoc = goType
 	clType = ti.fullClojureName
 	clTypeDoc = clType
