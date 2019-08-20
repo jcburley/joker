@@ -50,7 +50,7 @@ func genGoPreStar(fn *funcInfo, indent string, e *StarExpr, paramName string, ar
 }
 
 func genGoPreSelected(fn *funcInfo, indent, fullPkgName, baseTypeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	clType, clTypeDoc, goType, goTypeDoc = fullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
+	clType, clTypeDoc, goType, goTypeDoc = fullPkgNameAsGoType(fn.sourceFile, fullPkgName, baseTypeName)
 	cl2golParam = "*" + paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
 	return
 }
@@ -153,52 +153,18 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string, ar
 
 func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
 	cl2golParam = paramName
-	switch v := e.(type) {
-	case *Ident:
-		goType = v.Name
-		extractParam := ""
-		ti := toGoExprInfo(fn.sourceFile, &e)
-		clType = ti.argClojureArgType
-		if ti.sourceFile == nil { // a builtin
-			if ti.argExtractFunc != "" {
-				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.argExtractFunc, fn.docName, paramName, argNum)
-			}
-		} else {
-			if isPrivate(v.Name) {
-				clType = fmt.Sprintf("ABEND044(pre.go: unsupported built-in type %s)", v.Name)
-				clTypeDoc = v.Name
-			} else {
-				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
-			}
-			if ti.argClojureArgType != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.argClojureArgType), fn.docName, paramName, argNum)
-			}
+	extractParam := ""
+	ti := toGoExprInfo(fn.sourceFile, &e)
+	goType = ti.fullGoName
+	goTypeDoc = goType
+	clType = ti.fullClojureName
+	clTypeDoc = clType
+	if fn.fd.Recv != nil {
+		argType := ti.argExtractFunc
+		if argType != "" {
+			extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(argType), fn.docName, paramName, argNum)
 		}
-		if clTypeDoc == "" {
-			clTypeDoc = clType
-		}
-		if goTypeDoc == "" {
-			goTypeDoc = goType
-		}
-		if fn.fd.Recv != nil {
-			goPreCode = paramName + " := " + extractParam
-		}
-	case *ArrayType:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreArray(fn, indent, v, paramName, argNum)
-	case *StarExpr:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreStar(fn, indent, v, paramName, argNum)
-	case *SelectorExpr:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreSelector(fn, indent, v, paramName, argNum)
-	case *Ellipsis:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreEllipsis(fn, indent, v, paramName, argNum)
-	case *FuncType:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreFunc(fn, indent, v, paramName, argNum)
-	case *InterfaceType:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreInterface(fn, indent, v, paramName, argNum)
-	case *MapType:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreMap(fn, indent, v, paramName, argNum)
-	case *ChanType:
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreChan(fn, indent, v, paramName, argNum)
+		goPreCode = paramName + " := " + extractParam
 	}
 	if fn.fd.Recv != nil && goPreCode == "" {
 		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, unix(whereAt(e.Pos())))

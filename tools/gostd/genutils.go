@@ -81,7 +81,7 @@ func fullTypeNameAsClojure(t string) string {
 }
 
 // Given an input package name such as "foo/bar" and typename
-// "bletch", decides whether to return (for 'code' and 'cl2gol') just
+// "bletch", decides whether to return (for 'code' and 'doc') just
 // "_bar.bletch" and "bletch" if the package being compiled will be
 // implementing Go's package of the same name (in this case, the
 // generated file will be foo/bar_native.go and start with "package
@@ -89,8 +89,8 @@ func fullTypeNameAsClojure(t string) string {
 // "foo/bar" is imported (implicitly as "bar", assuming no
 // conflicts). NOTE: As a side effect, updates imports needed by the
 // function.
-func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.sourceFile.pkgDirUnix
+func fullPkgNameAsGoType(src *goFile, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
+	curPkgName := src.pkgDirUnix
 	basePkgName := path.Base(fullPkgName)
 	clType = basePkgName + "/" + baseTypeName
 	clTypeDoc = fullTypeNameAsClojure(fullPkgName + "." + baseTypeName)
