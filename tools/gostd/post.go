@@ -149,7 +149,7 @@ func genGoPostExpr(fn *funcInfo, indent, captureName string, e Expr, onlyIf stri
 		if ti.convertToClojure == "" {
 			out = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
 		} else {
-			out = fmt.Sprintf(ti.convertToClojure, captureName)
+			out = "Make" + fmt.Sprintf(ti.convertToClojure, captureName, "")
 		}
 		if ti.nullable {
 			out = maybeNil(captureName, out)

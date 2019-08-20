@@ -50,7 +50,7 @@ func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
 		private:           isPrivate(ts.Name.Name),
 		custom:            true,
 		uncompleted:       true,
-		convertToClojure:  "MakeGoObject(%s)",
+		convertToClojure:  "GoObject(%s%s)",
 		argExtractFunc:    "Object",
 	}
 	goTypes[fullGoTypeName] = ti
@@ -72,7 +72,7 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
 			argClojureType:     baseName,
 			argClojureArgType:  baseName,
 			convertFromClojure: baseName + "(%s)",
-			convertToClojure:   "MakeGoObject(%s)",
+			convertToClojure:   "GoObject(%s%s)",
 			unsupported:        true,
 		}
 		goTypes[baseName] = ti
@@ -130,7 +130,7 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 		private:            private,
 		unsupported:        unsupported,
 		convertFromClojure: convertFromClojure,
-		convertToClojure:   "MakeGoObject(%s)",
+		convertToClojure:   "GoObject(%s%s)",
 	}
 	goTypes[fullGoName] = v
 	return v
@@ -186,7 +186,7 @@ func goArrayType(src *goFile, len *Expr, elt *Expr) *goTypeInfo {
 		custom:           true,
 		unsupported:      e.unsupported,
 		constructs:       e.constructs,
-		convertToClojure: "MakeGoObject(%s)",
+		convertToClojure: "GoObject(%s%s)",
 	}
 	goTypes[fullGoName] = v
 	return v
@@ -222,7 +222,7 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 		custom:             true,
 		private:            e.private,
 		unsupported:        e.unsupported,
-		convertToClojure:   "MakeGoObject(%s)",
+		convertToClojure:   "GoObject(%s%s)",
 	}
 	goTypes[fullGoName] = v
 	return v
@@ -237,7 +237,7 @@ func init() {
 		argClojureArgType:    "Boolean",
 		argExtractFunc:       "Boolean",
 		convertFromClojure:   "ToBool(%s)",
-		convertToClojure:     "MakeBoolean(%s)",
+		convertToClojure:     "Boolean(%s%s)",
 	}
 	goTypes["string"] = &goTypeInfo{
 		localName:            "string",
@@ -247,7 +247,7 @@ func init() {
 		argClojureArgType:    "String",
 		argExtractFunc:       "String",
 		convertFromClojure:   `AssertString(%s, "").S`,
-		convertToClojure:     "MakeString(%s)",
+		convertToClojure:     "String(%s%s)",
 	}
 	goTypes["rune"] = &goTypeInfo{
 		localName:            "rune",
@@ -257,7 +257,7 @@ func init() {
 		argClojureArgType:    "Char",
 		argExtractFunc:       "Char",
 		convertFromClojure:   `AssertChar(%s, "").Ch`,
-		convertToClojure:     "MakeChar(%s)",
+		convertToClojure:     "Char(%s%s)",
 	}
 	goTypes["byte"] = &goTypeInfo{
 		localName:            "byte",
@@ -267,7 +267,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `byte(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["int"] = &goTypeInfo{
 		localName:            "int",
@@ -277,7 +277,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int",
 		convertFromClojure:   `AssertInt(%s, "").I`,
-		convertToClojure:     "MakeInt(%s)",
+		convertToClojure:     "Int(%s%s)",
 	}
 	goTypes["uint"] = &goTypeInfo{
 		localName:            "uint",
@@ -287,7 +287,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt",
 		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeBigIntU(uint64(%s))",
+		convertToClojure:     "BigIntU(uint64(%s)%s)",
 	}
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",
@@ -297,7 +297,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["uint8"] = &goTypeInfo{
 		localName:            "uint8",
@@ -307,7 +307,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt8",
 		convertFromClojure:   `uint8(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["int16"] = &goTypeInfo{
 		localName:            "int16",
@@ -317,7 +317,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int16",
 		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["uint16"] = &goTypeInfo{
 		localName:            "uint16",
@@ -327,7 +327,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt16",
 		convertFromClojure:   `uint16(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["int32"] = &goTypeInfo{
 		localName:            "int32",
@@ -337,7 +337,7 @@ func init() {
 		argClojureArgType:    "Int",
 		argExtractFunc:       "Int32",
 		convertFromClojure:   `int32(AssertInt(%s, "").I)`,
-		convertToClojure:     "MakeInt(int(%s))",
+		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["uint32"] = &goTypeInfo{
 		localName:            "uint32",
@@ -347,7 +347,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt32",
 		convertFromClojure:   `uint32(AssertNumber(%s, "").BigInt().Uint64())`,
-		convertToClojure:     "MakeBigIntU(uint64(%s))",
+		convertToClojure:     "BigIntU(uint64(%s)%s)",
 	}
 	goTypes["int64"] = &goTypeInfo{
 		localName:            "int64",
@@ -357,7 +357,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "Int64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Int64()`,
-		convertToClojure:     "MakeBigInt(%s)",
+		convertToClojure:     "BigInt(%s%s)",
 	}
 	goTypes["uint64"] = &goTypeInfo{
 		localName:            "uint64",
@@ -367,7 +367,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UInt64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Uint64()`,
-		convertToClojure:     "MakeBigIntU(%s)",
+		convertToClojure:     "BigIntU(%s%s)",
 	}
 	goTypes["uintptr"] = &goTypeInfo{
 		localName:            "uintptr",
@@ -423,7 +423,7 @@ func init() {
 		argExtractFunc:            "Error",
 		convertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
 		convertFromClojureImports: []packageImport{{"_errors", "errors"}},
-		convertToClojure:          "MakeError(%s)",
+		convertToClojure:          "Error(%s%s)",
 		nullable:                  true,
 	}
 }
