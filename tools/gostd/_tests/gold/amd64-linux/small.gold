@@ -1012,8 +1012,8 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 // 	return &_net.OpError{
 // 		Op: AssertString(o.Nth(0), "").S,
 // 		Net: AssertString(o.Nth(1), "").S,
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/small/src/net/net.go:105:11))),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/small/src/net/net.go:105:11))),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
 // 		Err: _errors.New(AssertString(o.Nth(4), "").S),
 // 	}
 // }
@@ -2602,7 +2602,7 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 674(9) 048(6) 047(3) 275(3) 042(1)
+ABENDs: 674(9) 048(6) 275(3) 042(1) 047(1)
 Totals: functions=109 generated=105 (96.33%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=79 (95.18%)

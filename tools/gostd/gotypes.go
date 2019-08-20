@@ -38,6 +38,61 @@ type goTypeMap map[string]*goTypeInfo
 /* These map goNames to type info. */
 var goTypes = goTypeMap{}
 
+func goTypeName(src *goFile, e *Expr) (goName, pkgName, baseName string) {
+	switch compound := (*e).(type) {
+	case *ArrayType:
+		goName = "[]"
+		e = &(*compound).Elt
+	case *StarExpr:
+		goName = "*"
+		e = &(*compound).X
+	}
+	switch x := (*e).(type) {
+	case *SelectorExpr:
+		pkgName = x.X.(*Ident).Name
+		baseName = x.Sel.Name
+		goName += pkgName + "." + baseName
+	case *Ident:
+		baseName = x.Name
+		if gotypes.Universe.Lookup(baseName) == nil { // builtin
+			pkgName = src.pkgDirUnix
+			goName += pkgName + "." + baseName
+		} else {
+			goName += x.Name
+		}
+	case *InterfaceType:
+		goName += "interface{}"
+	case *MapType:
+		key, _, _ := goTypeName(src, &x.Key)
+		value, _, _ := goTypeName(src, &x.Value)
+		goName += "map[" + key + "]" + value
+	default:
+		goName += fmt.Sprintf("%T", x)
+	}
+	return
+}
+
+func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
+	goName, pkgName, baseName := goTypeName(src, e)
+	if ti, found := goTypes[goName]; found {
+		return ti
+	}
+	if gotypes.Universe.Lookup(baseName) != nil {
+		ti := &goTypeInfo{
+			goName:             fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", goName, pkgName),
+			fullClojureName:    fullTypeNameAsClojure(goName),
+			argClojureType:     baseName,
+			argClojureArgType:  baseName,
+			convertFromClojure: baseName + "(%s)",
+			convertToClojure:   "GoObject(%s%s)",
+			unsupported:        true,
+		}
+		goTypes[baseName] = ti
+		return ti
+	}
+	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
+}
+
 func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
 	if ti, found := goTypes[fullGoTypeName]; found {
 		return ti
@@ -450,5 +505,15 @@ func init() {
 		convertFromClojureImports: []packageImport{{"_errors", "errors"}},
 		convertToClojure:          "Error(%s%s)",
 		nullable:                  true,
+	}
+	goTypes["interface{}"] = &goTypeInfo{
+		goName:               "interface{}",
+		fullClojureName:      "",
+		argClojureType:       "",
+		argFromClojureObject: "",
+		argClojureArgType:    "",
+		argExtractFunc:       "",
+		convertFromClojure:   "",
+		convertToClojure:     "",
 	}
 }

@@ -2329,7 +2329,7 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 // 	return &_net.Dialer{
 // 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(0)),
 // 		Deadline: ABEND987(genutils.go: imports not yet supported: time.Time)%!(EXTRA string=o.Nth(1)),
-// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/net.go:105:11))),
+// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
 // 		DualStack: ToBool(o.Nth(3)),
 // 		FallbackDelay: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(4)),
 // 		KeepAlive: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(5)),
@@ -2894,8 +2894,8 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 // 	return &_net.OpError{
 // 		Op: AssertString(o.Nth(0), "").S,
 // 		Net: AssertString(o.Nth(1), "").S,
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/net.go:105:11))),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/net.go:105:11))),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
 // 		Err: _errors.New(AssertString(o.Nth(4), "").S),
 // 	}
 // }
@@ -4890,9 +4890,9 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 
 // func _vectorToClient(o *Vector) *_http.Client {
 // 	return &_http.Client{
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/http/client.go:115:19))),
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{})),
 // 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/client.go:76:16),
-// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/http/jar.go:17:16))),
+// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{})),
 // 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(3)),
 // 	}
 // }
@@ -5367,7 +5367,7 @@ func ExtractGoObjectPushOptions(args []Object, index int) *_http.PushOptions {
 // func _vectorToPushOptions(o *Vector) *_http.PushOptions {
 // 	return &_http.PushOptions{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 	}
 // }
 
@@ -5444,7 +5444,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)%!(EXTRA string=o.Nth(6)),
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
@@ -5454,7 +5454,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Form: ABEND987(genutils.go: imports not yet supported: url.Values)%!(EXTRA string=o.Nth(12)),
 // 		PostForm: ABEND987(genutils.go: imports not yet supported: url.Values)%!(EXTRA string=o.Nth(13)),
 // 		MultipartForm: &ABEND987(genutils.go: imports not yet supported: multipart.Form)%!(EXTRA string=o.Nth(14)),
-// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		RemoteAddr: AssertString(o.Nth(16), "").S,
 // 		RequestURI: AssertString(o.Nth(17), "").S,
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)%!(EXTRA string=o.Nth(18)),
@@ -5506,13 +5506,13 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)%!(EXTRA string=o.Nth(6)),
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
-// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (net/http.Request)),
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)%!(EXTRA string=o.Nth(13)),
 // 	}
@@ -5690,7 +5690,7 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // func _vectorToServer(o *Vector) *_http.Server {
 // 	return &_http.Server{
 // 		Addr: AssertString(o.Nth(0), "").S,
-// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/http/server.go:84:14))),
+// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{})),
 // 		TLSConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)%!(EXTRA string=o.Nth(2)),
 // 		ReadTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(3)),
 // 		ReadHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(4)),
@@ -5756,7 +5756,7 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // 		ResponseHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(12)),
 // 		ExpectContinueTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(13)),
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/transport.go:243:15),
-// 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/header.go:20:13))),
+// 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		MaxResponseHeaderBytes: AssertNumber(o.Nth(16), "").BigInt().Int64(),
 // 	}
 // }
@@ -6513,7 +6513,7 @@ func ExtractGoObjectOptions(args []Object, index int) *_cookiejar.Options {
 
 // func _vectorToOptions(o *Vector) *_cookiejar.Options {
 // 	return &_cookiejar.Options{
-// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/http/cookiejar/jar.go:34:23))),
+// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{})),
 // 	}
 // }
 
@@ -6870,7 +6870,7 @@ func ExtractGoObjectDNSDoneInfo(args []Object, index int) *_httptrace.DNSDoneInf
 
 // func _vectorToDNSDoneInfo(o *Vector) *_httptrace.DNSDoneInfo {
 // 	return &_httptrace.DNSDoneInfo{
-// 		Addrs: ABEND048(codegen.go: no conversion from Clojure for []net/IPAddr (net/IPAddr)),
+// 		Addrs: ABEND048(codegen.go: no conversion from Clojure for []net/IPAddr (net.IPAddr)),
 // 		Err: _errors.New(AssertString(o.Nth(1), "").S),
 // 		Coalesced: ToBool(o.Nth(2)),
 // 	}
@@ -7128,7 +7128,7 @@ func ExtractGoObjectReverseProxy(args []Object, index int) *_httputil.ReversePro
 // 		Transport: ABEND987(genutils.go: imports not yet supported: http.RoundTripper)%!(EXTRA string=o.Nth(1)),
 // 		FlushInterval: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(2)),
 // 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)%!(EXTRA string=o.Nth(3)),
-// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (ABEND047(gotypes.go: unsupported type *ast.InterfaceType at: _tests/big/src/net/http/httputil/reverseproxy.go:79:17))),
+// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{})),
 // 		ModifyResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:67:17),
 // 		ErrorHandler: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:74:15),
 // 	}
@@ -7526,7 +7526,7 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 
 // func _vectorToMessage(o *Vector) *_mail.Message {
 // 	return &_mail.Message{
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/mail/message.go:106:13))),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (map[string][]string)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.Reader)%!(EXTRA string=o.Nth(1)),
 // 	}
 // }
@@ -9344,7 +9344,7 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 
 Adding 15 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 15 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 047(79) 987(43) 275(37) 048(33) 674(29) 042(26) 675(18) 883(2)
+ABENDs: 047(64) 987(43) 275(37) 048(33) 674(29) 042(26) 675(18) 883(2)
 Totals: functions=421 generated=327 (77.67%)
           non-receivers=148 (35.15%) generated=119 (80.41%)
           receivers=273 (64.85%) generated=208 (76.19%)
