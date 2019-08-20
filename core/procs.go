@@ -683,7 +683,7 @@ var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	o := EnsureGoObject(args, 0)
 	member := ExtractString(args, 1)
-	g := GoLookupType(o.O)
+	g := LookupGoType(o.O)
 	if g == nil {
 		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
 	}

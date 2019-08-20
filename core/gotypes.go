@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 )
 
@@ -13,11 +14,11 @@ type GoTypeInfo struct {
 	Members GoMembers
 }
 
-func GoLookupType(g interface{}) *GoTypeInfo {
+func LookupGoType(g interface{}) *GoTypeInfo {
 	return GoTypes[reflect.TypeOf(g)]
 }
 
-func GoCheckArity(rcvr string, args Object, min, max int) *ArraySeq {
+func CheckGoArity(rcvr string, args Object, min, max int) *ArraySeq {
 	n := 0
 	switch s := args.(type) {
 	case Nil:
@@ -34,24 +35,118 @@ func GoCheckArity(rcvr string, args Object, min, max int) *ArraySeq {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, rcvr, RangeString(min, max))))
 }
 
-func GoCheckNth(rcvr, t string, args *ArraySeq, n int) GoObject {
+func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	a := SeqNth(args, n)
 	res, ok := a.(GoObject)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type net.GoObject[%s], but is %T",
-			n, rcvr, t, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type net.GoObject[%s], but is %T",
+			n, name, rcvr, t, a)))
 	}
 	return res
 }
 
-func GoCheckStringNth(rcvr string, args *ArraySeq, n int) string {
+func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
+	a := SeqNth(args, n)
+	res, ok := a.(Boolean)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Boolean, but is %T",
+			n, name, rcvr, a)))
+	}
+	return res.B
+}
+
+func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
+	a := SeqNth(args, n)
+	res, ok := a.(Int)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Int, but is %T",
+			n, name, rcvr, a)))
+	}
+	return res.I
+}
+
+func ExtractGoUInt(rcvr, name string, args *ArraySeq, n int) uint {
+	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+	if v > uint64(MAX_UINT) {
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
+	}
+	return uint(v)
+}
+
+func ExtractGoByte(rcvr, name string, args *ArraySeq, n int) byte {
+	v := ExtractGoInt(rcvr, name, args, n)
+	if v < 0 || v > 255 {
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "byte"))
+	}
+	return byte(v)
+}
+
+func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
+	a := SeqNth(args, n)
+	res, ok := a.(Number)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Number, but is %T",
+			n, name, rcvr, a)))
+	}
+	return res
+}
+
+func ExtractGoInt32(rcvr, name string, args *ArraySeq, n int) int32 {
+	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
+	if v > math.MaxInt32 {
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "int32"))
+	}
+	return int32(v)
+}
+
+func ExtractGoUInt32(rcvr, name string, args *ArraySeq, n int) uint32 {
+	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+	if v > math.MaxUint32 {
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint32"))
+	}
+	return uint32(v)
+}
+
+func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
+	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
+}
+
+func ExtractGoUInt64(rcvr, name string, args *ArraySeq, n int) uint64 {
+	return ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+}
+
+func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
+	a := SeqNth(args, n)
+	res, ok := a.(Char)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Char, but is %T",
+			n, name, rcvr, a)))
+	}
+	return res.Ch
+}
+
+func ExtractGoString(rcvr, name string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type core.String, but is %T",
-			n, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.String, but is %T",
+			n, name, rcvr, a)))
 	}
 	return res.S
+}
+
+func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
+	a := SeqNth(args, n)
+	res, ok := a.(Error)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Error, but is %T",
+			n, name, rcvr, a)))
+	}
+	return res
+}
+
+func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
+	return uintptr(ExtractGoUInt64(rcvr, name, args, n))
 }
 
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}

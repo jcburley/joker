@@ -161,7 +161,7 @@ func printAbends(m map[string]int) {
 
 func genReceiverCode(fn *funcInfo, goFname string) string {
 	const arityTemplate = `
-	_argList := CheckGoArity("%s", args, %d, %d)
+	%sCheckGoArity("%s", args, %d, %d)
 	`
 
 	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
@@ -201,7 +201,11 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if preCode != "" {
 		finishPreCode = "\n\t"
 	}
-	arity := fmt.Sprintf(arityTemplate[1:], fn.docName, min, max)
+	maybeAssignArgList := ""
+	if max > 0 {
+		maybeAssignArgList = "_argList := "
+	}
+	arity := fmt.Sprintf(arityTemplate[1:], maybeAssignArgList, fn.docName, min, max)
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 

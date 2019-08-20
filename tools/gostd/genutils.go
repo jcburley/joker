@@ -69,6 +69,10 @@ func replaceAll(string, from, to string) string {
 	return strings.Replace(string, from, to, -1)
 }
 
+func typeToGoExtractFuncName(t string) string {
+	return replaceAll(replaceAll(t, ".", "_"), "/", "__")
+}
+
 func fullTypeNameAsClojure(t string) string {
 	if t[0] == '_' {
 		t = t[1:]

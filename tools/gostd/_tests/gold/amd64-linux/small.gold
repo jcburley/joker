@@ -699,7 +699,7 @@ func __parseIP(s string) Object {
 
 GO FUNC net.__iPMask_Size from net/ip.go:
 func __iPMask_Size(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IPMask)Size()", args, 0, 0)
+	CheckGoArity("(_net.IPMask)Size()", args, 0, 0)
 	ones, bits := o.O.(_net.IPMask).Size()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(ones))
@@ -709,14 +709,14 @@ func __iPMask_Size(o GoObject, args Object) Object {
 
 GO FUNC net.__iPMask_String from net/ip.go:
 func __iPMask_String(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IPMask)String()", args, 0, 0)
+	CheckGoArity("(_net.IPMask)String()", args, 0, 0)
 	_res := o.O.(_net.IPMask).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__iP_DefaultMask from net/ip.go:
 func __iP_DefaultMask(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)DefaultMask()", args, 0, 0)
+	CheckGoArity("(_net.IP)DefaultMask()", args, 0, 0)
 	_res := o.O.(_net.IP).DefaultMask()
 	return MakeGoObject(_res)
 }
@@ -724,63 +724,63 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 GO FUNC net.__iP_Equal from net/ip.go:
 func __iP_Equal(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-	x := whatever
+	x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0)
 	_res := o.O.(_net.IP).Equal(x)
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsGlobalUnicast()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsGlobalUnicast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsGlobalUnicast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsInterfaceLocalMulticast from net/ip.go:
 func __iP_IsInterfaceLocalMulticast(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsInterfaceLocalMulticast()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsInterfaceLocalMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsInterfaceLocalMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLinkLocalMulticast from net/ip.go:
 func __iP_IsLinkLocalMulticast(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsLinkLocalMulticast()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsLinkLocalMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLinkLocalMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLinkLocalUnicast from net/ip.go:
 func __iP_IsLinkLocalUnicast(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsLinkLocalUnicast()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsLinkLocalUnicast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLinkLocalUnicast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLoopback from net/ip.go:
 func __iP_IsLoopback(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsLoopback()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsLoopback()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLoopback()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsMulticast from net/ip.go:
 func __iP_IsMulticast(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsMulticast()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsUnspecified from net/ip.go:
 func __iP_IsUnspecified(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)IsUnspecified()", args, 0, 0)
+	CheckGoArity("(_net.IP)IsUnspecified()", args, 0, 0)
 	_res := o.O.(_net.IP).IsUnspecified()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_MarshalText from net/ip.go:
 func __iP_MarshalText(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)MarshalText()", args, 0, 0)
+	CheckGoArity("(_net.IP)MarshalText()", args, 0, 0)
 	_res1, _res2 := o.O.(_net.IP).MarshalText()
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -795,28 +795,28 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 GO FUNC net.__iP_Mask from net/ip.go:
 func __iP_Mask(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-	mask := whatever
+	mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0)
 	_res := o.O.(_net.IP).Mask(mask)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)String()", args, 0, 0)
+	CheckGoArity("(_net.IP)String()", args, 0, 0)
 	_res := o.O.(_net.IP).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__iP_To16 from net/ip.go:
 func __iP_To16(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)To16()", args, 0, 0)
+	CheckGoArity("(_net.IP)To16()", args, 0, 0)
 	_res := o.O.(_net.IP).To16()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.__iP_To4 from net/ip.go:
 func __iP_To4(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)To4()", args, 0, 0)
+	CheckGoArity("(_net.IP)To4()", args, 0, 0)
 	_res := o.O.(_net.IP).To4()
 	return MakeGoObject(_res)
 }
@@ -824,21 +824,21 @@ func __iP_To4(o GoObject, args Object) Object {
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-	ip := whatever
+	ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0)
 	_res := o.O.(*_net.IPNet).Contains(ip)
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPNet)Network()", args, 0, 0)
+	CheckGoArity("(*_net.IPNet)Network()", args, 0, 0)
 	_res := o.O.(*_net.IPNet).Network()
 	return MakeString(_res)
 }
 
 GO FUNC net.__ptrTo_IPNet_String from net/ip.go:
 func __ptrTo_IPNet_String(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPNet)String()", args, 0, 0)
+	CheckGoArity("(*_net.IPNet)String()", args, 0, 0)
 	_res := o.O.(*_net.IPNet).String()
 	return MakeString(_res)
 }
@@ -1216,63 +1216,63 @@ func __userPassword(username string, password string) Object {
 
 GO FUNC net/url.__escapeError_Error from net/url/url.go:
 func __escapeError_Error(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net/url.EscapeError)Error()", args, 0, 0)
+	CheckGoArity("(_net/url.EscapeError)Error()", args, 0, 0)
 	_res := o.O.(_url.EscapeError).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__invalidHostError_Error from net/url/url.go:
 func __invalidHostError_Error(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net/url.InvalidHostError)Error()", args, 0, 0)
+	CheckGoArity("(_net/url.InvalidHostError)Error()", args, 0, 0)
 	_res := o.O.(_url.InvalidHostError).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Error from net/url/url.go:
 func __ptrTo_Error_Error(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Error)Error()", args, 0, 0)
+	CheckGoArity("(*_net/url.Error)Error()", args, 0, 0)
 	_res := o.O.(*_url.Error).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Temporary from net/url/url.go:
 func __ptrTo_Error_Temporary(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Error)Temporary()", args, 0, 0)
+	CheckGoArity("(*_net/url.Error)Temporary()", args, 0, 0)
 	_res := o.O.(*_url.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Timeout from net/url/url.go:
 func __ptrTo_Error_Timeout(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Error)Timeout()", args, 0, 0)
+	CheckGoArity("(*_net/url.Error)Timeout()", args, 0, 0)
 	_res := o.O.(*_url.Error).Timeout()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_EscapedPath from net/url/url.go:
 func __ptrTo_URL_EscapedPath(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)EscapedPath()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)EscapedPath()", args, 0, 0)
 	_res := o.O.(*_url.URL).EscapedPath()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_Hostname from net/url/url.go:
 func __ptrTo_URL_Hostname(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)Hostname()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)Hostname()", args, 0, 0)
 	_res := o.O.(*_url.URL).Hostname()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_IsAbs from net/url/url.go:
 func __ptrTo_URL_IsAbs(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)IsAbs()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)IsAbs()", args, 0, 0)
 	_res := o.O.(*_url.URL).IsAbs()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_MarshalBinary from net/url/url.go:
 func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)MarshalBinary()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)MarshalBinary()", args, 0, 0)
 	text, err := o.O.(*_url.URL).MarshalBinary()
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -1287,7 +1287,7 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
 func __ptrTo_URL_Parse(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/url.URL)Parse()", args, 1, 1)
-	ref := whatever
+	ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
 	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -1297,35 +1297,36 @@ func __ptrTo_URL_Parse(o GoObject, args Object) Object {
 
 GO FUNC net/url.__ptrTo_URL_Port from net/url/url.go:
 func __ptrTo_URL_Port(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)Port()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)Port()", args, 0, 0)
 	_res := o.O.(*_url.URL).Port()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_Query from net/url/url.go:
 func __ptrTo_URL_Query(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)Query()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)Query()", args, 0, 0)
 	_res := o.O.(*_url.URL).Query()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_RequestURI from net/url/url.go:
 func __ptrTo_URL_RequestURI(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)RequestURI()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)RequestURI()", args, 0, 0)
 	_res := o.O.(*_url.URL).RequestURI()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
-func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
-	_res := o.O.(*_url.URL).ResolveReference(ref)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for ref at: _tests/small/src/net/url/url.go:973:36)
+// 	_res := o.O.(*_url.URL).ResolveReference(ref)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net/url.__ptrTo_URL_String from net/url/url.go:
 func __ptrTo_URL_String(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)String()", args, 0, 0)
+	CheckGoArity("(*_net/url.URL)String()", args, 0, 0)
 	_res := o.O.(*_url.URL).String()
 	return MakeString(_res)
 }
@@ -1336,7 +1337,7 @@ GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Userinfo)Password()", args, 0, 0)
+	CheckGoArity("(*_net/url.Userinfo)Password()", args, 0, 0)
 	_res1, _res2 := o.O.(*_url.Userinfo).Password()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
@@ -1346,14 +1347,14 @@ func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
 
 GO FUNC net/url.__ptrTo_Userinfo_String from net/url/url.go:
 func __ptrTo_Userinfo_String(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Userinfo)String()", args, 0, 0)
+	CheckGoArity("(*_net/url.Userinfo)String()", args, 0, 0)
 	_res := o.O.(*_url.Userinfo).String()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Userinfo_Username from net/url/url.go:
 func __ptrTo_Userinfo_Username(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.Userinfo)Username()", args, 0, 0)
+	CheckGoArity("(*_net/url.Userinfo)Username()", args, 0, 0)
 	_res := o.O.(*_url.Userinfo).Username()
 	return MakeString(_res)
 }
@@ -1370,7 +1371,7 @@ GO FUNC net/url.__values_Del from net/url/url.go:
 
 GO FUNC net/url.__values_Encode from net/url/url.go:
 func __values_Encode(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net/url.Values)Encode()", args, 0, 0)
+	CheckGoArity("(_net/url.Values)Encode()", args, 0, 0)
 	_res := o.O.(_url.Values).Encode()
 	return MakeString(_res)
 }
@@ -1378,7 +1379,7 @@ func __values_Encode(o GoObject, args Object) Object {
 GO FUNC net/url.__values_Get from net/url/url.go:
 func __values_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/url.Values)Get()", args, 1, 1)
-	key := whatever
+	key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
 	_res := o.O.(_url.Values).Get(key)
 	return MakeString(_res)
 }
@@ -1421,7 +1422,6 @@ var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
 	"Port": __ptrTo_URL_Port,
 	"Query": __ptrTo_URL_Query,
 	"RequestURI": __ptrTo_URL_RequestURI,
-	"ResolveReference": __ptrTo_URL_ResolveReference,
 	"String": __ptrTo_URL_String,
 }}
 
@@ -1446,8 +1446,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 987(9) 048(3) 275(3) 674(3) 902(2) 047(1)
-Totals: functions=76 generated=62 (81.58%)
+ABENDs: 987(9) 048(3) 275(3) 674(3) 902(2) 047(1) 644(1)
+Totals: functions=76 generated=61 (80.26%)
           non-receivers=23 (30.26%) generated=23 (100.00%)
-          receivers=53 (69.74%) generated=39 (73.58%)
+          receivers=53 (69.74%) generated=38 (71.70%)
         types=13 generated=7 (53.85%)
