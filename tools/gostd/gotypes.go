@@ -5,13 +5,15 @@ import (
 	. "go/ast"
 	"go/token"
 	gotypes "go/types"
+	"os"
 	"strings"
 )
 
 type goTypeInfo struct {
-	goName                    string  // empty ("struct {...}" etc.), built-in name, path/to/pkg.name, or ABEND if unsupported
-	fullClojureName           string  // Clojure version of goName
-	sourceFile                *goFile // location of the type defintion
+	goName                    string    // empty ("struct {...}" etc.), built-in name, path/to/pkg.name, or ABEND if unsupported
+	fullClojureName           string    // Clojure version of goName
+	sourceFile                *goFile   // file defining the type
+	definition                token.Pos // location of the type definition
 	td                        *TypeSpec
 	where                     token.Pos
 	underlyingType            *Expr           // nil if not a declared type
@@ -79,12 +81,17 @@ func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
 func registerGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
 	goName := src.pkgDirUnix + "." + ts.Name.Name
 	if ti, found := goTypes[goName]; found {
+		if ti.sourceFile != src || ti.definition != ts.Assign {
+			fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
+				goName, whereAt(ti.definition), whereAt(ts.Assign))
+		}
 		return ti
 	}
 	ti := &goTypeInfo{
 		goName:            goName,
 		fullClojureName:   fullTypeNameAsClojure(goName),
 		sourceFile:        src,
+		definition:        ts.Assign,
 		underlyingType:    &ts.Type,
 		argClojureArgType: fullTypeNameAsClojure(goName),
 		private:           isPrivate(ts.Name.Name),

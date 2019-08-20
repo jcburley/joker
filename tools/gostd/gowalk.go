@@ -218,10 +218,6 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(fset, ts)
 	}
-	if c, ok := goTypes[typename]; ok {
-		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
-			typename, whereAt(c.where), whereAt(ts.Pos()))
-	}
 	gt := registerGoType(gf, ts)
 	gt.td = ts
 	gt.where = ts.Pos()
