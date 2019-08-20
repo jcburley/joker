@@ -38,7 +38,8 @@ type goTypeMap map[string]*goTypeInfo
 /* These map goNames to type info. */
 var goTypes = goTypeMap{}
 
-func goTypeName(src *goFile, e *Expr) (goName, pkgName, baseName string) {
+func goTypeName(src *goFile, e *Expr) string {
+	goName := ""
 	switch compound := (*e).(type) {
 	case *ArrayType:
 		goName = "[]"
@@ -49,45 +50,40 @@ func goTypeName(src *goFile, e *Expr) (goName, pkgName, baseName string) {
 	}
 	switch x := (*e).(type) {
 	case *SelectorExpr:
-		pkgName = x.X.(*Ident).Name
-		baseName = x.Sel.Name
-		goName += pkgName + "." + baseName
+		goName += x.X.(*Ident).Name + "." + x.Sel.Name
 	case *Ident:
-		baseName = x.Name
+		baseName := x.Name
 		if gotypes.Universe.Lookup(baseName) == nil { // builtin
-			pkgName = src.pkgDirUnix
-			goName += pkgName + "." + baseName
+			goName += src.pkgDirUnix + "." + baseName
 		} else {
 			goName += x.Name
 		}
 	case *InterfaceType:
 		goName += "interface{}"
 	case *MapType:
-		key, _, _ := goTypeName(src, &x.Key)
-		value, _, _ := goTypeName(src, &x.Value)
-		goName += "map[" + key + "]" + value
+		goName += "map[" + goTypeName(src, &x.Key) + "]" + goTypeName(src, &x.Value)
 	default:
 		goName += fmt.Sprintf("%T", x)
 	}
-	return
+	return goName
 }
 
 func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
-	goName, pkgName, baseName := goTypeName(src, e)
+	goName := goTypeName(src, e)
 	if ti, found := goTypes[goName]; found {
 		return ti
 	}
-	if gotypes.Universe.Lookup(baseName) != nil {
+	if gotypes.Universe.Lookup(goName) != nil {
 		ti := &goTypeInfo{
-			goName:             fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", goName, pkgName),
+			goName:             fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s)", goName),
 			fullClojureName:    fullTypeNameAsClojure(goName),
-			argClojureType:     baseName,
-			argClojureArgType:  baseName,
-			convertFromClojure: baseName + "(%s)",
+			argClojureType:     goName,
+			argClojureArgType:  goName,
+			convertFromClojure: goName + "(%s)",
 			convertToClojure:   "GoObject(%s%s)",
 			unsupported:        true,
 		}
-		goTypes[baseName] = ti
+		goTypes[goName] = ti
 		return ti
 	}
 	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))

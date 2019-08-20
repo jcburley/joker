@@ -592,8 +592,7 @@ func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 	if v.underlyingType == nil {
 		underlying = ""
 	} else {
-		goName, _, _ := goTypeName(ti.sourceFile, v.underlyingType)
-		underlying = " (" + goName + ")"
+		underlying = " (" + goTypeName(ti.sourceFile, v.underlyingType) + ")"
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s%s)",
 		v.goFullName(), underlying)
