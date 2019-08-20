@@ -130,6 +130,18 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	return v
 }
 
+// Either the builtin name or the full package name and type name
+// (e.g. "go.std.net/IPAddr"), possibly preceded by (say) "*" for a
+// pointer to it.
+func (t *goTypeInfo) goFullName() string {
+	return t.goName
+}
+
+func (t *goTypeInfo) goBaseName() string {
+	strs := strings.SplitAfter(t.goFullName(), ".")
+	return strs[len(strs)-1]
+}
+
 func toGoExprString(src *goFile, e *Expr) string {
 	if e == nil {
 		return "-"

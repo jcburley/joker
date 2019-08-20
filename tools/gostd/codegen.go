@@ -97,18 +97,6 @@ var customRuntimeImplemented = map[string]struct{}{
 	"ConvertToArrayOfString": {},
 }
 
-// Either the builtin name or the full package name and type name
-// (e.g. "go.std.net/IPAddr"), possibly preceded by (say) "*" for a
-// pointer to it.
-func (t *goTypeInfo) goFullName() string {
-	return t.goName
-}
-
-func (t *goTypeInfo) goBaseName() string {
-	strs := strings.SplitAfter(t.goFullName(), ".")
-	return strs[len(strs)-1]
-}
-
 func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "_" + pkgBaseName + "." + goFname + "(" + goParams + ")\n"
 }
