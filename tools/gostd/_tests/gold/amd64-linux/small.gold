@@ -1568,15 +1568,15 @@ func __ptrTo_AddrError_Timeout(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
-func __ptrTo_Buffers_Read(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.Buffers)Read()", args, 1, 1)
-	p := 
-	n, err := o.O.(*_net.Buffers).Read(p)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(n))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Buffers_Read(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.Buffers)Read()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for p at: _tests/small/src/net/net.go:674:26)
+// 	n, err := o.O.(*_net.Buffers).Read(p)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
 // func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
@@ -1639,85 +1639,85 @@ func __ptrTo_IPAddr_String(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__ptrTo_IPConn_ReadFrom from net/iprawsock.go:
-func __ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)ReadFrom()", args, 1, 1)
-	b := 
-	_res1, _res2, _res3 := o.O.(*_net.IPConn).ReadFrom(b)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(_res1))
-	_res = _res.Conjoin(MakeGoObject(_res2))
-	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-	return _res
-}
+// func __ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:125:29)
+// 	_res1, _res2, _res3 := o.O.(*_net.IPConn).ReadFrom(b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
-func __ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)ReadFromIP()", args, 1, 1)
-	b := 
-	_res1, _res2, _res3 := o.O.(*_net.IPConn).ReadFromIP(b)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(_res1))
-	_res = _res.Conjoin(MakeGoObject(_res2))
-	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-	return _res
-}
+// func __ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)ReadFromIP()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:113:31)
+// 	_res1, _res2, _res3 := o.O.(*_net.IPConn).ReadFromIP(b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
-func __ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)ReadMsgIP()", args, 2, 2)
-	b := 
-	oob := 
-	n, oobn, flags, addr, err := o.O.(*_net.IPConn).ReadMsgIP(b, oob)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(n))
-	_res = _res.Conjoin(MakeInt(oobn))
-	_res = _res.Conjoin(MakeInt(flags))
-	_res = _res.Conjoin(MakeGoObject(addr))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)ReadMsgIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:146:35)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for oob at: _tests/small/src/net/iprawsock.go:146:35)
+// 	n, oobn, flags, addr, err := o.O.(*_net.IPConn).ReadMsgIP(b, oob)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(MakeInt(flags))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func __ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {
 // [ABEND042(post.go: cannot find typename syscall.RawConn) Error]}
 
 GO FUNC net.__ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
-func __ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)WriteMsgIP()", args, 3, 3)
-	b := 
-	oob := 
-	addr := 
-	n, oobn, err := o.O.(*_net.IPConn).WriteMsgIP(b, oob, addr)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(n))
-	_res = _res.Conjoin(MakeInt(oobn))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)WriteMsgIP()", args, 3, 3)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for oob at: _tests/small/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for addr at: _tests/small/src/net/iprawsock.go:191:49)
+// 	n, oobn, err := o.O.(*_net.IPConn).WriteMsgIP(b, oob, addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteTo from net/iprawsock.go:
-func __ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)WriteTo()", args, 2, 2)
-	b := 
-	addr := ExtractGoObject("(*_net.IPConn)WriteTo()", "addr", _argList, 1)
-	_res1, _res2 := o.O.(*_net.IPConn).WriteTo(b, addr)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:170:28)
+// 	addr := ExtractGoObject("(*_net.IPConn)WriteTo()", "addr", _argList, 1)
+// 	_res1, _res2 := o.O.(*_net.IPConn).WriteTo(b, addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
-func __ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPConn)WriteToIP()", args, 2, 2)
-	b := 
-	addr := 
-	_res1, _res2 := o.O.(*_net.IPConn).WriteToIP(b, addr)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeInt(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPConn)WriteToIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for b at: _tests/small/src/net/iprawsock.go:158:30)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for addr at: _tests/small/src/net/iprawsock.go:158:43)
+// 	_res1, _res2 := o.O.(*_net.IPConn).WriteToIP(b, addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
@@ -1742,12 +1742,12 @@ func __ptrTo_IPNet_String(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
-func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IP)UnmarshalText()", args, 1, 1)
-	text := 
-	_res := o.O.(*_net.IP).UnmarshalText(text)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IP)UnmarshalText()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for text at: _tests/small/src/net/ip.go:390:34)
+// 	_res := o.O.(*_net.IP).UnmarshalText(text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net.__ptrTo_OpError_Error from net/net.go:
 func __ptrTo_OpError_Error(o GoObject, args Object) Object {
@@ -1850,10 +1850,6 @@ var members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
 	"Timeout": __ptrTo_AddrError_Timeout,
 }}
 
-var members_PtrTo_Buffers = GoTypeInfo{Members: GoMembers{
-	"Read": __ptrTo_Buffers_Read,
-}}
-
 var members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
 	"Error": __ptrTo_DNSConfigError_Error,
 	"Temporary": __ptrTo_DNSConfigError_Temporary,
@@ -1864,10 +1860,6 @@ var members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
 	"Error": __ptrTo_DNSError_Error,
 	"Temporary": __ptrTo_DNSError_Temporary,
 	"Timeout": __ptrTo_DNSError_Timeout,
-}}
-
-var members_PtrTo_IP = GoTypeInfo{Members: GoMembers{
-	"UnmarshalText": __ptrTo_IP_UnmarshalText,
 }}
 
 var members_IP = GoTypeInfo{Members: GoMembers{
@@ -1890,15 +1882,6 @@ var members_IP = GoTypeInfo{Members: GoMembers{
 var members_PtrTo_IPAddr = GoTypeInfo{Members: GoMembers{
 	"Network": __ptrTo_IPAddr_Network,
 	"String": __ptrTo_IPAddr_String,
-}}
-
-var members_PtrTo_IPConn = GoTypeInfo{Members: GoMembers{
-	"ReadFrom": __ptrTo_IPConn_ReadFrom,
-	"ReadFromIP": __ptrTo_IPConn_ReadFromIP,
-	"ReadMsgIP": __ptrTo_IPConn_ReadMsgIP,
-	"WriteMsgIP": __ptrTo_IPConn_WriteMsgIP,
-	"WriteTo": __ptrTo_IPConn_WriteTo,
-	"WriteToIP": __ptrTo_IPConn_WriteToIP,
 }}
 
 var members_IPMask = GoTypeInfo{Members: GoMembers{
@@ -1937,13 +1920,10 @@ var members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
 
 func init() {
 	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
-	GoTypes[_reflect.TypeOf((*_net.Buffers)(nil))] = &members_PtrTo_Buffers
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError
 	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil))] = &members_PtrTo_DNSError
-	GoTypes[_reflect.TypeOf((*_net.IP)(nil))] = &members_PtrTo_IP
 	GoTypes[_reflect.TypeOf((*_net.IP)(nil)).Elem()] = &members_IP
 	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil))] = &members_PtrTo_IPAddr
-	GoTypes[_reflect.TypeOf((*_net.IPConn)(nil))] = &members_PtrTo_IPConn
 	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil)).Elem()] = &members_IPMask
 	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil))] = &members_PtrTo_IPNet
 	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &members_InvalidAddrError
@@ -2085,7 +2065,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND623(goStarExpr: net/url.Userinfo <<<o.Nth(2)>>>),
+// 		User: ABEND623(goStarExpr: no conversion for net/url.Userinfo <<<o.Nth(2)>>>),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -2342,12 +2322,12 @@ func __ptrTo_URL_RequestURI(o GoObject, args Object) Object {
 }
 
 GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
-func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
-	ref := 
-	_res := o.O.(*_url.URL).ResolveReference(ref)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for ref at: _tests/small/src/net/url/url.go:973:36)
+// 	_res := o.O.(*_url.URL).ResolveReference(ref)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net/url.__ptrTo_URL_String from net/url/url.go:
 func __ptrTo_URL_String(o GoObject, args Object) Object {
@@ -2357,12 +2337,12 @@ func __ptrTo_URL_String(o GoObject, args Object) Object {
 }
 
 GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
-func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/url.URL)UnmarshalBinary()", args, 1, 1)
-	text := 
-	_res := o.O.(*_url.URL).UnmarshalBinary(text)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/url.URL)UnmarshalBinary()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for text at: _tests/small/src/net/url/url.go:1079:36)
+// 	_res := o.O.(*_url.URL).UnmarshalBinary(text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
@@ -2451,9 +2431,7 @@ var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
 	"Port": __ptrTo_URL_Port,
 	"Query": __ptrTo_URL_Query,
 	"RequestURI": __ptrTo_URL_RequestURI,
-	"ResolveReference": __ptrTo_URL_ResolveReference,
 	"String": __ptrTo_URL_String,
-	"UnmarshalBinary": __ptrTo_URL_UnmarshalBinary,
 }}
 
 var members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
@@ -2477,8 +2455,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 987(10) 674(9) 048(5) 275(3) 042(1) 047(1) 623(1)
-Totals: functions=109 generated=95 (87.16%)
+ABENDs: 644(14) 987(10) 674(9) 048(5) 275(3) 042(1) 047(1) 623(1)
+Totals: functions=109 generated=85 (77.98%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
-          receivers=83 (76.15%) generated=69 (83.13%)
+          receivers=83 (76.15%) generated=59 (71.08%)
         types=28 generated=14 (50.00%)

@@ -153,7 +153,6 @@ func genGoPreChan(fn *funcInfo, indent string, e *ChanType, paramName string, ar
 
 func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
 	cl2golParam = paramName
-	extractParam := ""
 	ti := toGoExprInfo(fn.sourceFile, &e)
 	goTypeDoc = ti.goFullName()
 	if ti.isLocallyDefined(fn.sourceFile) {
@@ -170,9 +169,8 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 	if fn.fd.Recv != nil {
 		argType := ti.argExtractFunc
 		if argType != "" {
-			extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(argType), fn.docName, paramName, argNum)
+			goPreCode = paramName + " := " + fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(argType), fn.docName, paramName, argNum)
 		}
-		goPreCode = paramName + " := " + extractParam
 	}
 	if fn.fd.Recv != nil && goPreCode == "" {
 		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, unix(whereAt(e.Pos())))
