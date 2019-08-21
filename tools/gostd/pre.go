@@ -175,7 +175,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
 			if ti.argClojureArgType != "" {
-				extractParam = fmt.Sprintf("ABEND233(Unsupported: ExtractGo_%s(\"%s\", \"%s\", _argList, %d))", typeToGoExtractFuncName(ti.argClojureArgType), fn.docName, paramName, argNum)
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.argClojureArgType), fn.docName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {

@@ -264,9 +264,9 @@ func %s(o GoObject, args Object) Object {
 		numGeneratedFunctions++
 		numGeneratedReceivers++
 		packagesInfo[pkgDirUnix].nonEmpty = true
-		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
-		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
-		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect")
+		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
+		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
+		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect", false)
 		for _, r := range fn.fd.Recv.List {
 			tin := typeInfoName(r)
 			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = tin
@@ -335,11 +335,11 @@ func %s(%s) %s {
 		numGeneratedStandalones++
 		packagesInfo[pkgDirUnix].nonEmpty = true
 		if clojureReturnType == "" {
-			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
-			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
+			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
+			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		}
 		if clojureReturnType != "" || fn.refersToSelf {
-			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix)
+			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
 		}
 	}
 
@@ -381,6 +381,37 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
+func goTypeExtractor(t string, ti *goTypeInfo) string {
+	const template = `
+func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
+	a := CheckGoNth(rcvr, "%s", arg, args, n).O
+	res, ok := a.(%s)
+	if !ok {
+		panic(RT.NewError(%s.Sprintf("Argument %%d passed to %%s should be type GoObject[%s], but is GoObject[%%s]",
+			n, rcvr, GoTypeToString(%s.TypeOf(a)))))
+	}
+	return
+}
+`
+
+	mangled := typeToGoExtractFuncName(ti.argClojureArgType)
+	localType := "_" + ti.sourceFile.pkgBaseName + "." + ti.localName
+	typeDoc := ti.argClojureArgType // "path.filepath.Mode"
+
+	fmtLocal := addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, "", "fmt", true)
+	reflectLocal := addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, "", "reflect", true)
+
+	fnName := "ExtractGo_" + mangled
+	resType := localType
+	resTypeDoc := typeDoc // or similar
+	resType += ""         // repeated here
+	fmtLocal += ""        //
+	resTypeDoc += ""      // repeated here
+	reflectLocal += ""    //
+
+	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc, reflectLocal)
+}
+
 func genType(t string, ti *goTypeInfo) {
 	td := ti.td
 	if isPrivate(td.Name.Name) {
@@ -394,8 +425,8 @@ func genType(t string, ti *goTypeInfo) {
 		return // no functions generated
 	}
 
-	addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core")
-	addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix)
+	addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
+	addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
 
 	clojureCode[pkgDirUnix].types[t] = ti
 	goCode[pkgDirUnix].types[t] = ti
@@ -462,11 +493,13 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	}
 
 	ti.goCode += goConstructor
+
+	ti.goCode += goTypeExtractor(t, ti)
 }
 
 func promoteImports(ti *goTypeInfo) {
 	for _, imp := range ti.requiredImports.fullNames {
-		addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, imp.local, imp.full)
+		addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, imp.local, imp.full, false)
 	}
 }
 
@@ -595,6 +628,6 @@ func elementToType(ti *goTypeInfo, el string, e *Expr) string {
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
 func addRequiredImports(ti *goTypeInfo, imports []packageImport) {
 	for _, imp := range imports {
-		addImport(ti.requiredImports, imp.local, imp.full)
+		addImport(ti.requiredImports, imp.local, imp.full, false)
 	}
 }

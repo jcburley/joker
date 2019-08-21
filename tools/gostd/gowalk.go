@@ -339,8 +339,9 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (g
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type packageImport struct {
-	local string // "foo", "_", ".", or empty
-	full  string // "bar/bletch/foo"
+	local    string // "foo", "_", ".", or empty
+	localRef string // local unless empty, in which case final component of full (e.g. "foo")
+	full     string // "bar/bletch/foo"
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
@@ -354,31 +355,35 @@ type packageImports struct {
 /* and isn't already used (someday picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func addImport(packageImports *packageImports, local, full string) string {
+func addImport(packageImports *packageImports, local, full string, okToSubstitute bool) string {
 	if e, found := packageImports.fullNames[full]; found {
 		if e.local == local {
-			return local
+			return e.localRef
 		}
-		/* If collisions really do happen, here is where a new
-		   local name can be picked and returned, and callers
-		   modified to use that instead of assuming one. That
-		   won't handle a local=="" not being able to replace
-		   a local!="", perhaps; but worry about that only if
-		   it actually happens. */
-		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,...)", local, full, e.local))
+		if okToSubstitute {
+			return e.localRef
+		}
+		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, e.local, e.full))
 	}
-	if curFull, found := packageImports.localNames[local]; found {
-		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (...,%s)", local, full, curFull))
+	localRef := local
+	if local == "" {
+		components := strings.Split(full, "/")
+		localRef = components[len(components)-1]
+	}
+	if localRef != "." {
+		if curFull, found := packageImports.localNames[localRef]; found {
+			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, localRef, curFull))
+		}
 	}
 	if packageImports.localNames == nil {
 		packageImports.localNames = map[string]string{}
 	}
-	packageImports.localNames[local] = full
+	packageImports.localNames[localRef] = full
 	if packageImports.fullNames == nil {
 		packageImports.fullNames = map[string]*packageImport{}
 	}
-	packageImports.fullNames[full] = &packageImport{local, full}
-	return local
+	packageImports.fullNames[full] = &packageImport{local, localRef, full}
+	return localRef
 }
 
 func processPackage(rootUnix, pkgDirUnix string, p *Package) {

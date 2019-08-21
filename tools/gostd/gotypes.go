@@ -422,7 +422,7 @@ func init() {
 		argClojureArgType:         "Error",
 		argExtractFunc:            "Error",
 		convertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
-		convertFromClojureImports: []packageImport{{"_errors", "errors"}},
+		convertFromClojureImports: []packageImport{{"_errors", "_errors", "errors"}},
 		convertToClojure:          "Error(%s%s)",
 		nullable:                  true,
 	}
