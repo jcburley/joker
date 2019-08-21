@@ -162,7 +162,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 		goType = goTypeDoc
 	}
 	if ti.sourceFile != nil && fn.sourceFile.pkgDirUnix != ti.sourceFile.pkgDirUnix {
-		goType = "ABEND987(genutils.go: imports not yet supported: " + goTypeDoc + ")"
+		goType = "ABEND986(genutils.go: imports not yet supported: " + goTypeDoc + ")"
 		goTypeDoc = goType
 	}
 	clType = ti.fullClojureName

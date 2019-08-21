@@ -115,7 +115,7 @@ func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
 }
 
 func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
-	convertFromClojure := ""
+	convertFromClojure := fmt.Sprintf("ABEND622(toGoExprInfo: %T <<<%%s>>>)", e)
 	private := false
 	var underlyingType *Expr
 	unsupported := false
@@ -176,6 +176,9 @@ func (t *goTypeInfo) goBaseName() string {
 }
 
 func (t *goTypeInfo) isLocallyDefined(src *goFile) bool {
+	for t.prefix != "" {
+		t = t.innerType
+	}
 	return src.pkgDirUnix+"."+t.goBaseName() == t.goName
 }
 
@@ -207,14 +210,16 @@ func lenString(len *Expr) string {
 func goArrayType(src *goFile, len *Expr, elt *Expr) *goTypeInfo {
 	var goName string
 	e := toGoExprInfo(src, elt)
-	goName = "[" + lenString(len) + "]" + e.goName
+	prefix := "[" + lenString(len) + "]"
+	goName = prefix + e.goName
 	if v, ok := goTypes[goName]; ok {
 		return v
 	}
 	v := &goTypeInfo{
 		goName:           goName,
 		fullClojureName:  "GoObject",
-		underlyingType:   elt,
+		prefix:           prefix,
+		innerType:        e,
 		custom:           true,
 		unsupported:      e.unsupported,
 		constructs:       e.constructs,
@@ -237,7 +242,7 @@ func goStarExpr(src *goFile, x *Expr) *goTypeInfo {
 	if v, ok := goTypes[goName]; ok {
 		return v
 	}
-	convertFromClojure := ""
+	convertFromClojure := fmt.Sprintf("ABEND623(goStarExpr: no conversion for %s <<<%%s>>>)", e.goName)
 	if e.convertFromClojure != "" {
 		if e.constructs {
 			convertFromClojure = e.convertFromClojure
@@ -280,7 +285,7 @@ func goSelectorExpr(src *goFile, e *SelectorExpr) *goTypeInfo {
 		goName:             goType,
 		fullClojureName:    "GoObject",
 		underlyingType:     &e.X,
-		convertFromClojure: goType,
+		convertFromClojure: goType + "<<<%s>>>",
 		custom:             true,
 		private:            false, // TODO: look into doing this better
 		unsupported:        false, // TODO: look into doing this better

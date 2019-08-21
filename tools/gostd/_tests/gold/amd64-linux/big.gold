@@ -1233,7 +1233,7 @@ JOKER FUNC net/http.RedirectHandler from net/http/server.go:
 
 JOKER FUNC net/http.Serve from net/http/server.go:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler]\n\nJoker return type: Error"
+;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l ABEND986(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.Serve(l, handler)"}
 ;;   [^go.std.net/Listener l, ^go.std.net.http/Handler handler])
@@ -1254,7 +1254,7 @@ JOKER FUNC net/http.ServeFile from net/http/fs.go:
 
 JOKER FUNC net/http.ServeTLS from net/http/server.go:
 ;; (defn ^"Error" ServeTLS
-;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
+;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l ABEND986(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.ServeTLS(l, handler, certFile, keyFile)"}
 ;;   [^go.std.net/Listener l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile])
@@ -1352,7 +1352,7 @@ JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^GoObject handler]\n\nJoker return type: Error"
+;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo input arguments: (l ABEND986(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^GoObject handler]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "fcgi.Serve(l, handler)"}
 ;;   [^go.std.net/Listener l, ^GoObject handler])
@@ -1485,21 +1485,21 @@ JOKER FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go
 
 JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 ;; (defn NewClientConn
-;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
+;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
 ;;   {:added "1.0"
 ;;    :go "__newClientConn(c, r)"}
 ;;   [^go.std.net/Conn c, ^GoObject r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 ;; (defn NewProxyClientConn
-;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
+;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
 ;;   {:added "1.0"
 ;;    :go "__newProxyClientConn(c, r)"}
 ;;   [^go.std.net/Conn c, ^GoObject r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 ;; (defn NewServerConn
-;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ServerConn)"
+;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ServerConn)"
 ;;   {:added "1.0"
 ;;    :go "__newServerConn(c, r)"}
 ;;   [^go.std.net/Conn c, ^GoObject r])
@@ -1667,7 +1667,7 @@ JOKER TYPE net/rpc.ServerError from net/rpc/client.go:
 
 JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 ;; (defn Accept
-;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis ABEND987(genutils.go: imports not yet supported: net.Listener))\n\nJoker input arguments: [^go.std.net/Listener lis]"
+;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis ABEND986(genutils.go: imports not yet supported: net.Listener))\n\nJoker input arguments: [^go.std.net/Listener lis]"
 ;;   {:added "1.0"
 ;;    :go "__accept(lis)"}
 ;;   [^go.std.net/Listener lis])
@@ -1828,7 +1828,7 @@ JOKER FUNC net/smtp.Dial from net/smtp/smtp.go:
 
 JOKER FUNC net/smtp.NewClient from net/smtp/smtp.go:
 ;; (defn NewClient
-;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^go.std.net/Conn conn, ^String host]\n\nJoker return type: [(atom-of go.std.net.smtp/Client) Error]"
+;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn ABEND986(genutils.go: imports not yet supported: net.Conn), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^go.std.net/Conn conn, ^String host]\n\nJoker return type: [(atom-of go.std.net.smtp/Client) Error]"
 ;;   {:added "1.0"
 ;;    :go "__newClient(conn, host)"}
 ;;   [^go.std.net/Conn conn, ^String host])
@@ -2292,13 +2292,13 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 
 // func _vectorToDialer(o *Vector) *_net.Dialer {
 // 	return &_net.Dialer{
-// 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(0)),
-// 		Deadline: ABEND987(genutils.go: imports not yet supported: time.Time)%!(EXTRA string=o.Nth(1)),
+// 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(0)>>>,
+// 		Deadline: ABEND987(genutils.go: imports not yet supported: time.Time)<<<o.Nth(1)>>>,
 // 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
 // 		DualStack: ToBool(o.Nth(3)),
-// 		FallbackDelay: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(4)),
-// 		KeepAlive: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(5)),
-// 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (net.Resolver)),
+// 		FallbackDelay: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(4)>>>,
+// 		KeepAlive: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(5)>>>,
+// 		Resolver: ABEND623(goStarExpr: net.Resolver <<<o.Nth(6)>>>),
 // 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType at: _tests/big/src/net/dial.go:73:9),
 // 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/dial.go:81:10),
 // 	}
@@ -4701,7 +4701,7 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{})),
 // 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/client.go:76:16),
 // 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{})),
-// 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(3)),
+// 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(3)>>>,
 // 	}
 // }
 
@@ -4810,14 +4810,14 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		Value: AssertString(o.Nth(1), "").S,
 // 		Path: AssertString(o.Nth(2), "").S,
 // 		Domain: AssertString(o.Nth(3), "").S,
-// 		Expires: ABEND987(genutils.go: imports not yet supported: time.Time)%!(EXTRA string=o.Nth(4)),
+// 		Expires: ABEND987(genutils.go: imports not yet supported: time.Time)<<<o.Nth(4)>>>,
 // 		RawExpires: AssertString(o.Nth(5), "").S,
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
 // 		SameSite: ABEND048(codegen.go: no conversion from Clojure for net/http.SameSite (int)),
 // 		Raw: AssertString(o.Nth(10), "").S,
-// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 	}
 // }
 
@@ -5248,26 +5248,26 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // func _vectorToRequest(o *Vector) *_http.Request {
 // 	return &_http.Request{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		URL: &ABEND987(genutils.go: imports not yet supported: url.URL)%!(EXTRA string=o.Nth(1)),
+// 		URL: &ABEND987(genutils.go: imports not yet supported: url.URL)<<<o.Nth(1)>>>,
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)%!(EXTRA string=o.Nth(6)),
+// 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)<<<o.Nth(6)>>>,
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 		Close: ToBool(o.Nth(10)),
 // 		Host: AssertString(o.Nth(11), "").S,
-// 		Form: ABEND987(genutils.go: imports not yet supported: url.Values)%!(EXTRA string=o.Nth(12)),
-// 		PostForm: ABEND987(genutils.go: imports not yet supported: url.Values)%!(EXTRA string=o.Nth(13)),
-// 		MultipartForm: &ABEND987(genutils.go: imports not yet supported: multipart.Form)%!(EXTRA string=o.Nth(14)),
+// 		Form: ABEND987(genutils.go: imports not yet supported: url.Values)<<<o.Nth(12)>>>,
+// 		PostForm: ABEND987(genutils.go: imports not yet supported: url.Values)<<<o.Nth(13)>>>,
+// 		MultipartForm: &ABEND987(genutils.go: imports not yet supported: multipart.Form)<<<o.Nth(14)>>>,
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		RemoteAddr: AssertString(o.Nth(16), "").S,
 // 		RequestURI: AssertString(o.Nth(17), "").S,
-// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)%!(EXTRA string=o.Nth(18)),
+// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)<<<o.Nth(18)>>>,
 // 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType at: _tests/big/src/net/http/request.go:308:9),
-// 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (net/http.Response)),
+// 		Response: ABEND623(goStarExpr: net/http.Response <<<o.Nth(20)>>>),
 // 	}
 // }
 
@@ -5315,14 +5315,14 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)%!(EXTRA string=o.Nth(6)),
+// 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)<<<o.Nth(6)>>>,
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
-// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (net/http.Request)),
-// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)%!(EXTRA string=o.Nth(13)),
+// 		Request: ABEND623(goStarExpr: net/http.Request <<<o.Nth(12)>>>),
+// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)<<<o.Nth(13)>>>,
 // 	}
 // }
 
@@ -5499,15 +5499,15 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // 	return &_http.Server{
 // 		Addr: AssertString(o.Nth(0), "").S,
 // 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{})),
-// 		TLSConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)%!(EXTRA string=o.Nth(2)),
-// 		ReadTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(3)),
-// 		ReadHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(4)),
-// 		WriteTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(5)),
-// 		IdleTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(6)),
+// 		TLSConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)<<<o.Nth(2)>>>,
+// 		ReadTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(3)>>>,
+// 		ReadHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(4)>>>,
+// 		WriteTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(5)>>>,
+// 		IdleTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(6)>>>,
 // 		MaxHeaderBytes: AssertInt(o.Nth(7), "").I,
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/server.go:2501:15),
 // 		ConnState: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/server.go:2506:12),
-// 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)%!(EXTRA string=o.Nth(10)),
+// 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)<<<o.Nth(10)>>>,
 // 	}
 // }
 
@@ -5553,16 +5553,16 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // 		DialContext: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/transport.go:139:14),
 // 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/transport.go:151:7),
 // 		DialTLS: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/transport.go:162:10),
-// 		TLSClientConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)%!(EXTRA string=o.Nth(4)),
-// 		TLSHandshakeTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(5)),
+// 		TLSClientConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)<<<o.Nth(4)>>>,
+// 		TLSHandshakeTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(5)>>>,
 // 		DisableKeepAlives: ToBool(o.Nth(6)),
 // 		DisableCompression: ToBool(o.Nth(7)),
 // 		MaxIdleConns: AssertInt(o.Nth(8), "").I,
 // 		MaxIdleConnsPerHost: AssertInt(o.Nth(9), "").I,
 // 		MaxConnsPerHost: AssertInt(o.Nth(10), "").I,
-// 		IdleConnTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(11)),
-// 		ResponseHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(12)),
-// 		ExpectContinueTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(13)),
+// 		IdleConnTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(11)>>>,
+// 		ResponseHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(12)>>>,
+// 		ExpectContinueTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(13)>>>,
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/transport.go:243:15),
 // 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		MaxResponseHeaderBytes: AssertNumber(o.Nth(16), "").BigInt().Int64(),
@@ -5748,7 +5748,7 @@ func __redirectHandler(url string, code int) Object {
 }
 
 GO FUNC net/http.Serve from net/http/server.go:
-// func __serve(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler Handler)  {
+// func __serve(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler Handler)  {
 // 	_res := _http.Serve(l, handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
@@ -5766,7 +5766,7 @@ GO FUNC net/http.ServeFile from net/http/fs.go:
 // }
 
 GO FUNC net/http.ServeTLS from net/http/server.go:
-// func __serveTLS(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler Handler, certFile string, keyFile string)  {
+// func __serveTLS(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler Handler, certFile string, keyFile string)  {
 // 	_res := _http.ServeTLS(l, handler, certFile, keyFile)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
@@ -6107,11 +6107,11 @@ GO FUNC net/http.__ptrTo_Server_RegisterOnShutdown from net/http/server.go:
 
 GO FUNC net/http.__ptrTo_Server_Serve from net/http/server.go:
 // func __ptrTo_Server_Serve(o GoObject, args Object) Object {
-// (l ABEND987(genutils.go: imports not yet supported: net.Listener))}
+// (l ABEND986(genutils.go: imports not yet supported: net.Listener))}
 
 GO FUNC net/http.__ptrTo_Server_ServeTLS from net/http/server.go:
 // func __ptrTo_Server_ServeTLS(o GoObject, args Object) Object {
-// (l ABEND987(genutils.go: imports not yet supported: net.Listener), certFile string, keyFile string)}
+// (l ABEND986(genutils.go: imports not yet supported: net.Listener), certFile string, keyFile string)}
 
 GO FUNC net/http.__ptrTo_Server_SetKeepAlivesEnabled from net/http/server.go:
 // func __ptrTo_Server_SetKeepAlivesEnabled(o GoObject, args Object) Object {
@@ -6172,12 +6172,12 @@ func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
 // 		Path: AssertString(o.Nth(0), "").S,
 // 		Root: AssertString(o.Nth(1), "").S,
 // 		Dir: AssertString(o.Nth(2), "").S,
-// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
-// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
-// 		Logger: &ABEND987(genutils.go: imports not yet supported: log.Logger)%!(EXTRA string=o.Nth(5)),
-// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
-// 		Stderr: ABEND987(genutils.go: imports not yet supported: io.Writer)%!(EXTRA string=o.Nth(7)),
-// 		PathLocationHandler: ABEND987(genutils.go: imports not yet supported: http.Handler)%!(EXTRA string=o.Nth(8)),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string),
+// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string),
+// 		Logger: &ABEND987(genutils.go: imports not yet supported: log.Logger)<<<o.Nth(5)>>>,
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string),
+// 		Stderr: ABEND987(genutils.go: imports not yet supported: io.Writer)<<<o.Nth(7)>>>,
+// 		PathLocationHandler: ABEND987(genutils.go: imports not yet supported: http.Handler)<<<o.Nth(8)>>>,
 // 	}
 // }
 
@@ -6361,7 +6361,7 @@ GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // }
 
 GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
-// func __serve(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
+// func __serve(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
 // 	_res := _fcgi.Serve(l, handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
@@ -6388,8 +6388,8 @@ func ExtractGoObjectResponseRecorder(args []Object, index int) *_httptest.Respon
 // func _vectorToResponseRecorder(o *Vector) *_httptest.ResponseRecorder {
 // 	return &_httptest.ResponseRecorder{
 // 		Code: AssertInt(o.Nth(0), "").I,
-// 		HeaderMap: ABEND987(genutils.go: imports not yet supported: http.Header)%!(EXTRA string=o.Nth(1)),
-// 		Body: &ABEND987(genutils.go: imports not yet supported: bytes.Buffer)%!(EXTRA string=o.Nth(2)),
+// 		HeaderMap: ABEND987(genutils.go: imports not yet supported: http.Header)<<<o.Nth(1)>>>,
+// 		Body: &ABEND987(genutils.go: imports not yet supported: bytes.Buffer)<<<o.Nth(2)>>>,
 // 		Flushed: ToBool(o.Nth(3)),
 // 	}
 // }
@@ -6434,8 +6434,8 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 // 	return &_httptest.Server{
 // 		URL: AssertString(o.Nth(0), "").S,
 // 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{})),
-// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.Config)%!(EXTRA string=o.Nth(2)),
-// 		Config: &ABEND987(genutils.go: imports not yet supported: http.Server)%!(EXTRA string=o.Nth(3)),
+// 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.Config)<<<o.Nth(2)>>>,
+// 		Config: &ABEND987(genutils.go: imports not yet supported: http.Server)<<<o.Nth(3)>>>,
 // 	}
 // }
 
@@ -6666,9 +6666,9 @@ func ExtractGoObjectReverseProxy(args []Object, index int) *_httputil.ReversePro
 // func _vectorToReverseProxy(o *Vector) *_httputil.ReverseProxy {
 // 	return &_httputil.ReverseProxy{
 // 		Director: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:35:11),
-// 		Transport: ABEND987(genutils.go: imports not yet supported: http.RoundTripper)%!(EXTRA string=o.Nth(1)),
-// 		FlushInterval: ABEND987(genutils.go: imports not yet supported: time.Duration)%!(EXTRA string=o.Nth(2)),
-// 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)%!(EXTRA string=o.Nth(3)),
+// 		Transport: ABEND987(genutils.go: imports not yet supported: http.RoundTripper)<<<o.Nth(1)>>>,
+// 		FlushInterval: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(2)>>>,
+// 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)<<<o.Nth(3)>>>,
 // 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{})),
 // 		ModifyResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:67:17),
 // 		ErrorHandler: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:74:15),
@@ -6782,19 +6782,19 @@ GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
 // }
 
 GO FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
-// func __newClientConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// func __newClientConn(c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
 // 	_res := _httputil.NewClientConn(c, r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
-// func __newProxyClientConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// func __newProxyClientConn(c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
 // 	_res := _httputil.NewProxyClientConn(c, r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
-// func __newServerConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// func __newServerConn(c ABEND986(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
 // 	_res := _httputil.NewServerConn(c, r)
 // 	return MakeGoObject(_res)
 // }
@@ -6971,7 +6971,7 @@ func ExtractGoObjectAddressParser(args []Object, index int) *_mail.AddressParser
 
 // func _vectorToAddressParser(o *Vector) *_mail.AddressParser {
 // 	return &_mail.AddressParser{
-// 		WordDecoder: &ABEND987(genutils.go: imports not yet supported: mime.WordDecoder)%!(EXTRA string=o.Nth(0)),
+// 		WordDecoder: &ABEND987(genutils.go: imports not yet supported: mime.WordDecoder)<<<o.Nth(0)>>>,
 // 	}
 // }
 
@@ -7044,7 +7044,7 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 // func _vectorToMessage(o *Vector) *_mail.Message {
 // 	return &_mail.Message{
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (map[string][]string)),
-// 		Body: ABEND987(genutils.go: imports not yet supported: io.Reader)%!(EXTRA string=o.Nth(1)),
+// 		Body: ABEND987(genutils.go: imports not yet supported: io.Reader)<<<o.Nth(1)>>>,
 // 	}
 // }
 
@@ -7472,7 +7472,7 @@ func _ConstructServerError(_v Object) _rpc.ServerError {
 }
 
 GO FUNC net/rpc.Accept from net/rpc/server.go:
-// func __accept(lis ABEND987(genutils.go: imports not yet supported: net.Listener)) Object {
+// func __accept(lis ABEND986(genutils.go: imports not yet supported: net.Listener)) Object {
 // 	_rpc.Accept(lis)
 // 	...ABEND675: TODO...
 // }
@@ -7569,7 +7569,7 @@ GO FUNC net/rpc.__ptrTo_Client_Go from net/rpc/client.go:
 
 GO FUNC net/rpc.__ptrTo_Server_Accept from net/rpc/server.go:
 // func __ptrTo_Server_Accept(o GoObject, args Object) Object {
-// (lis ABEND987(genutils.go: imports not yet supported: net.Listener))}
+// (lis ABEND986(genutils.go: imports not yet supported: net.Listener))}
 
 GO FUNC net/rpc.__ptrTo_Server_HandleHTTP from net/rpc/server.go:
 // func __ptrTo_Server_HandleHTTP(o GoObject, args Object) Object {
@@ -7696,7 +7696,7 @@ func ExtractGoObjectClient(args []Object, index int) *_smtp.Client {
 
 // func _vectorToClient(o *Vector) *_smtp.Client {
 // 	return &_smtp.Client{
-// 		Text: &ABEND987(genutils.go: imports not yet supported: textproto.Conn)%!(EXTRA string=o.Nth(0)),
+// 		Text: &ABEND987(genutils.go: imports not yet supported: textproto.Conn)<<<o.Nth(0)>>>,
 // 	}
 // }
 
@@ -7740,7 +7740,7 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 // 	return &_smtp.ServerInfo{
 // 		Name: AssertString(o.Nth(0), "").S,
 // 		TLS: ToBool(o.Nth(1)),
-// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 	}
 // }
 
@@ -7777,7 +7777,7 @@ func __dial(addr string) Object {
 }
 
 GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
-// func __newClient(conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string) Object {
+// func __newClient(conn ABEND986(genutils.go: imports not yet supported: net.Conn), host string) Object {
 // 	_res1, _res2 := _smtp.NewClient(conn, host)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -8089,7 +8089,7 @@ func ExtractGoObjectReader(args []Object, index int) *_textproto.Reader {
 
 // func _vectorToReader(o *Vector) *_textproto.Reader {
 // 	return &_textproto.Reader{
-// 		R: &ABEND987(genutils.go: imports not yet supported: bufio.Reader)%!(EXTRA string=o.Nth(0)),
+// 		R: &ABEND987(genutils.go: imports not yet supported: bufio.Reader)<<<o.Nth(0)>>>,
 // 	}
 // }
 
@@ -8131,7 +8131,7 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 
 // func _vectorToWriter(o *Vector) *_textproto.Writer {
 // 	return &_textproto.Writer{
-// 		W: &ABEND987(genutils.go: imports not yet supported: bufio.Writer)%!(EXTRA string=o.Nth(0)),
+// 		W: &ABEND987(genutils.go: imports not yet supported: bufio.Writer)<<<o.Nth(0)>>>,
 // 	}
 // }
 
@@ -8519,7 +8519,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
+// 		User: ABEND623(goStarExpr: net/url.Userinfo <<<o.Nth(2)>>>),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -8854,7 +8854,7 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 
 Adding 13 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 987(205) 047(48) 048(35) 275(31) 674(29) 042(26) 675(18) 883(2)
+ABENDs: 987(186) 047(48) 048(31) 275(31) 674(29) 042(26) 986(19) 675(18) 623(4) 883(2)
 Totals: functions=421 generated=259 (61.52%)
           non-receivers=148 (35.15%) generated=84 (56.76%)
           receivers=273 (64.85%) generated=175 (64.10%)

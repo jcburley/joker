@@ -2085,7 +2085,7 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	return &_url.URL{
 // 		Scheme: AssertString(o.Nth(0), "").S,
 // 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
+// 		User: ABEND623(goStarExpr: net/url.Userinfo <<<o.Nth(2)>>>),
 // 		Host: AssertString(o.Nth(3), "").S,
 // 		Path: AssertString(o.Nth(4), "").S,
 // 		RawPath: AssertString(o.Nth(5), "").S,
@@ -2477,7 +2477,7 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 987(10) 674(9) 048(6) 275(3) 042(1) 047(1)
+ABENDs: 987(10) 674(9) 048(5) 275(3) 042(1) 047(1) 623(1)
 Totals: functions=109 generated=95 (87.16%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=69 (83.13%)
