@@ -218,7 +218,7 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(fset, ts)
 	}
-	gt := registerGoType(gf, ts)
+	gt := defineGoType(gf, ts)
 	gt.td = ts
 	gt.where = ts.Pos()
 	gt.requiredImports = &packageImports{}

@@ -10,10 +10,12 @@ import (
 )
 
 type goTypeInfo struct {
-	goName                    string    // empty ("struct {...}" etc.), built-in name, path/to/pkg.name, or ABEND if unsupported
-	fullClojureName           string    // Clojure version of goName
-	sourceFile                *goFile   // file defining the type
-	definition                token.Pos // location of the type definition
+	goName                    string      // empty ("struct {...}" etc.), built-in name, path/to/pkg.name, or ABEND if unsupported
+	fullClojureName           string      // Clojure version of goName
+	sourceFile                *goFile     // file defining the type
+	definition                token.Pos   // location of the type definition
+	prefix                    string      // "*", "[]", etc, which already prefixes goName
+	innerType                 *goTypeInfo // if prefixed, the next inner type; else nil
 	td                        *TypeSpec
 	where                     token.Pos
 	underlyingType            *Expr           // nil if not a declared type
@@ -40,34 +42,38 @@ type goTypeMap map[string]*goTypeInfo
 /* These map goNames to type info. */
 var goTypes = goTypeMap{}
 
-func goTypeName(src *goFile, e *Expr) string {
-	goName := ""
+func goTypeNameComponents(src *goFile, e *Expr) (prefix, goName string) {
 	switch compound := (*e).(type) {
 	case *ArrayType:
-		goName = "[]"
+		prefix = "[]"
 		e = &(*compound).Elt
 	case *StarExpr:
-		goName = "*"
+		prefix = "*"
 		e = &(*compound).X
 	}
 	switch x := (*e).(type) {
 	case *SelectorExpr:
-		goName += x.X.(*Ident).Name + "." + x.Sel.Name
+		goName = x.X.(*Ident).Name + "." + x.Sel.Name
 	case *Ident:
 		baseName := x.Name
 		if gotypes.Universe.Lookup(baseName) == nil { // builtin
-			goName += src.pkgDirUnix + "." + baseName
+			goName = src.pkgDirUnix + "." + baseName
 		} else {
-			goName += x.Name
+			goName = x.Name
 		}
 	case *InterfaceType:
-		goName += "interface{}"
+		goName = "interface{}"
 	case *MapType:
-		goName += "map[" + goTypeName(src, &x.Key) + "]" + goTypeName(src, &x.Value)
+		goName = "map[" + goTypeName(src, &x.Key) + "]" + goTypeName(src, &x.Value)
 	default:
-		goName += fmt.Sprintf("%T", x)
+		goName = fmt.Sprintf("%T", x)
 	}
-	return goName
+	return
+}
+
+func goTypeName(src *goFile, e *Expr) string {
+	prefix, goName := goTypeNameComponents(src, e)
+	return prefix + goName
 }
 
 func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
@@ -78,7 +84,7 @@ func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
 	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
 }
 
-func registerGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
+func defineGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
 	goName := src.pkgDirUnix + "." + ts.Name.Name
 	if ti, found := goTypes[goName]; found {
 		if ti.sourceFile != src || ti.definition != ts.Assign {
@@ -104,30 +110,6 @@ func registerGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
 	return ti
 }
 
-func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *goTypeInfo {
-	if ti, found := goTypes[baseName]; found {
-		return ti
-	}
-	goName := pkgDirUnix + "." + baseName
-	if ti, found := goTypes[goName]; found {
-		return ti
-	}
-	if gotypes.Universe.Lookup(baseName) != nil {
-		ti := &goTypeInfo{
-			goName:             fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", baseName, pkgDirUnix),
-			fullClojureName:    fullTypeNameAsClojure(goName),
-			argClojureType:     baseName,
-			argClojureArgType:  baseName,
-			convertFromClojure: baseName + "(%s)",
-			convertToClojure:   "GoObject(%s%s)",
-			unsupported:        true,
-		}
-		goTypes[baseName] = ti
-		return ti
-	}
-	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
-}
-
 func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
 	return toGoExprInfo(src, &ts.Type)
 }
@@ -139,7 +121,7 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	unsupported := false
 	switch td := (*e).(type) {
 	case *Ident:
-		ti := toGoTypeNameInfo(src.pkgDirUnix, td.Name, e)
+		ti := lookupGoType(src, e)
 		if ti.uncompleted {
 			// Fill in other info now that all types are registered.
 			ut := toGoExprInfo(src, ti.underlyingType)

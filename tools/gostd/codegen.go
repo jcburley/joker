@@ -493,7 +493,7 @@ func nonGoObjectCase(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObject
 func nonGoObjectTypeFor(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.td.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile.pkgDirUnix, t.Name, &ti.td.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile, &ti.td.Type)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -521,8 +521,8 @@ func nonGoObjectTypeFor(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObj
 		""
 }
 
-func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v := toGoTypeNameInfo(pkgDirUnix, name, e)
+func simpleTypeFor(src *goFile, e *Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+	v := lookupGoType(src, e)
 	nonGoObjectType = "case " + v.argClojureType
 	nonGoObjectTypeDoc = v.argClojureType
 	extractClojureObject = v.argFromClojureObject
