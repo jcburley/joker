@@ -185,7 +185,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 			goTypeDoc = goType
 		}
 		if fn.fd.Recv != nil {
-			goPreCode = "__" + paramName + " := " + extractParam
+			goPreCode = paramName + " := " + extractParam
 		}
 	case *ArrayType:
 		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreArray(fn, indent, v, paramName, argNum)
@@ -222,7 +222,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if p == nil {
 			resVar = genSym("")
 		} else {
-			resVar = p.Name
+			resVar = "__" + p.Name
 		}
 		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.field.Type, resVar, argNum)
 
@@ -257,7 +257,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParamList != "" {
 			goParamList += ", "
 		}
-		goParamList += "__" + paramNameAsGo(resVar)
+		goParamList += paramNameAsGo(resVar)
 		if goType != "" {
 			goParamList += " " + goType
 		}
@@ -273,7 +273,7 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParams != "" {
 			goParams += ", "
 		}
-		goParams += "__" + paramNameAsGo(resVar)
+		goParams += paramNameAsGo(resVar)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"
