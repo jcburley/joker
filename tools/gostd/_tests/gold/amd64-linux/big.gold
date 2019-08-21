@@ -1233,10 +1233,10 @@ JOKER FUNC net/http.RedirectHandler from net/http/server.go:
 
 JOKER FUNC net/http.Serve from net/http/server.go:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^GoObject l, ^go.std.net.http/Handler handler]\n\nJoker return type: Error"
+;;   "Serve accepts incoming HTTP connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nHTTP/2 support is only enabled if the Listener returns *tls.Conn\nconnections and they were configured with \"h2\" in the TLS\nConfig.NextProtos.\n\nServe always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.Serve(l, handler)"}
-;;   [^GoObject l, ^go.std.net.http/Handler handler])
+;;   [^go.std.net/Listener l, ^go.std.net.http/Handler handler])
 
 JOKER FUNC net/http.ServeContent from net/http/fs.go:
 ;; (defn ServeContent
@@ -1254,10 +1254,10 @@ JOKER FUNC net/http.ServeFile from net/http/fs.go:
 
 JOKER FUNC net/http.ServeTLS from net/http/server.go:
 ;; (defn ^"Error" ServeTLS
-;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^GoObject l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
+;;   "ServeTLS accepts incoming HTTPS connections on the listener l,\ncreating a new service goroutine for each. The service goroutines\nread requests and then call handler to reply to them.\n\nThe handler is typically nil, in which case the DefaultServeMux is used.\n\nAdditionally, files containing a certificate and matching private key\nfor the server must be provided. If the certificate is signed by a\ncertificate authority, the certFile should be the concatenation\nof the server's certificate, any intermediates, and the CA's certificate.\n\nServeTLS always returns a non-nil error.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler net/http.Handler, certFile string, keyFile string)\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "http.ServeTLS(l, handler, certFile, keyFile)"}
-;;   [^GoObject l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile])
+;;   [^go.std.net/Listener l, ^go.std.net.http/Handler handler, ^String certFile, ^String keyFile])
 
 JOKER FUNC net/http.SetCookie from net/http/cookie.go:
 ;; (defn SetCookie
@@ -1352,10 +1352,10 @@ JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 ;; (defn ^"Error" Serve
-;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))\n\nGo return type: error\n\nJoker input arguments: [^GoObject l, ^GoObject handler]\n\nJoker return type: Error"
+;;   "Serve accepts incoming FastCGI connections on the listener l, creating a new\ngoroutine for each. The goroutine reads requests and then calls handler\nto reply to them.\nIf l is nil, Serve accepts connections from os.Stdin.\nIf handler is nil, http.DefaultServeMux is used.\n\nGo input arguments: (l ABEND987(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))\n\nGo return type: error\n\nJoker input arguments: [^go.std.net/Listener l, ^GoObject handler]\n\nJoker return type: Error"
 ;;   {:added "1.0"
 ;;    :go "fcgi.Serve(l, handler)"}
-;;   [^GoObject l, ^GoObject handler])
+;;   [^go.std.net/Listener l, ^GoObject handler])
 
 JOKER TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go:
 ;; (defn ^"GoObject" ResponseRecorder.
@@ -1485,24 +1485,24 @@ JOKER FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go
 
 JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 ;; (defn NewClientConn
-;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^GoObject c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
+;;   "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
 ;;   {:added "1.0"
 ;;    :go "__newClientConn(c, r)"}
-;;   [^GoObject c, ^GoObject r])
+;;   [^go.std.net/Conn c, ^GoObject r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 ;; (defn NewProxyClientConn
-;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^GoObject c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
+;;   "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ClientConn)"
 ;;   {:added "1.0"
 ;;    :go "__newProxyClientConn(c, r)"}
-;;   [^GoObject c, ^GoObject r])
+;;   [^go.std.net/Conn c, ^GoObject r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 ;; (defn NewServerConn
-;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ServerConn\n\nJoker input arguments: [^GoObject c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ServerConn)"
+;;   "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader))\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^GoObject r]\n\nJoker return type: (atom-of go.std.net.http.httputil/ServerConn)"
 ;;   {:added "1.0"
 ;;    :go "__newServerConn(c, r)"}
-;;   [^GoObject c, ^GoObject r])
+;;   [^go.std.net/Conn c, ^GoObject r])
 
 JOKER FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
 ;; (defn NewSingleHostReverseProxy
@@ -1667,10 +1667,10 @@ JOKER TYPE net/rpc.ServerError from net/rpc/client.go:
 
 JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 ;; (defn Accept
-;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis ABEND987(genutils.go: imports not yet supported: net.Listener))\n\nJoker input arguments: [^GoObject lis]"
+;;   "Accept accepts connections on the listener and serves requests\nto DefaultServer for each incoming connection.\nAccept blocks; the caller typically invokes it in a go statement.\n\nGo input arguments: (lis ABEND987(genutils.go: imports not yet supported: net.Listener))\n\nJoker input arguments: [^go.std.net/Listener lis]"
 ;;   {:added "1.0"
 ;;    :go "__accept(lis)"}
-;;   [^GoObject lis])
+;;   [^go.std.net/Listener lis])
 
 JOKER FUNC net/rpc.Dial from net/rpc/client.go:
 (defn Dial
@@ -1828,10 +1828,10 @@ JOKER FUNC net/smtp.Dial from net/smtp/smtp.go:
 
 JOKER FUNC net/smtp.NewClient from net/smtp/smtp.go:
 ;; (defn NewClient
-;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^GoObject conn, ^String host]\n\nJoker return type: [(atom-of go.std.net.smtp/Client) Error]"
+;;   "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^go.std.net/Conn conn, ^String host]\n\nJoker return type: [(atom-of go.std.net.smtp/Client) Error]"
 ;;   {:added "1.0"
 ;;    :go "__newClient(conn, host)"}
-;;   [^GoObject conn, ^String host])
+;;   [^go.std.net/Conn conn, ^String host])
 
 JOKER FUNC net/smtp.PlainAuth from net/smtp/auth.go:
 (defn PlainAuth
@@ -2625,7 +2625,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
-// 		Flags: _net.Flags(uint(AssertInt(o.Nth(4), "").I)),
+// 		Flags: ABEND048(codegen.go: no conversion from Clojure for net.Flags (uint)),
 // 	}
 // }
 
@@ -4815,7 +4815,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: _http.SameSite(AssertInt(o.Nth(9), "").I),
+// 		SameSite: ABEND048(codegen.go: no conversion from Clojure for net/http.SameSite (int)),
 // 		Raw: AssertString(o.Nth(10), "").S,
 // 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
@@ -6433,7 +6433,7 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 // func _vectorToServer(o *Vector) *_httptest.Server {
 // 	return &_httptest.Server{
 // 		URL: AssertString(o.Nth(0), "").S,
-// 		Listener: ABEND987(genutils.go: imports not yet supported: net.Listener)%!(EXTRA string=o.Nth(1)),
+// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{})),
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.Config)%!(EXTRA string=o.Nth(2)),
 // 		Config: &ABEND987(genutils.go: imports not yet supported: http.Server)%!(EXTRA string=o.Nth(3)),
 // 	}
@@ -8854,7 +8854,7 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 
 Adding 13 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 987(206) 047(48) 048(32) 275(31) 674(29) 042(26) 675(18) 883(2)
+ABENDs: 987(205) 047(48) 048(35) 275(31) 674(29) 042(26) 675(18) 883(2)
 Totals: functions=421 generated=259 (61.52%)
           non-receivers=148 (35.15%) generated=84 (56.76%)
           receivers=273 (64.85%) generated=175 (64.10%)

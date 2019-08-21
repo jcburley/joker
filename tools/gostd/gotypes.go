@@ -81,7 +81,7 @@ func lookupGoType(src *goFile, e *Expr) *goTypeInfo {
 	if ti, found := goTypes[goName]; found {
 		return ti
 	}
-	panic(fmt.Sprintf("type %s not found at %s", goName, whereAt((*e).Pos())))
+	return nil
 }
 
 func defineGoType(src *goFile, ts *TypeSpec) *goTypeInfo {
@@ -119,6 +119,11 @@ func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
 	private := false
 	var underlyingType *Expr
 	unsupported := false
+
+	if ti := lookupGoType(src, e); ti != nil {
+		return ti
+	}
+
 	switch td := (*e).(type) {
 	case *Ident:
 		ti := lookupGoType(src, e)
@@ -483,13 +488,13 @@ func init() {
 		convertToClojure:          "Error(%s%s)",
 		nullable:                  true,
 	}
-	goTypes["interface{}"] = &goTypeInfo{
+	goTypes["interfaceX{}"] = &goTypeInfo{
 		goName:               "interface{}",
-		fullClojureName:      "",
-		argClojureType:       "",
+		fullClojureName:      "GoObject",
+		argClojureType:       "GoObject",
 		argFromClojureObject: "",
-		argClojureArgType:    "",
-		argExtractFunc:       "",
+		argClojureArgType:    "GoObject",
+		argExtractFunc:       "GoObject",
 		convertFromClojure:   "",
 		convertToClojure:     "",
 	}
