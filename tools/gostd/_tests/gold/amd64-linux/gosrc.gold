@@ -27734,23 +27734,23 @@ GO FUNC crypto/x509.__ptrTo_Certificate_Equal from crypto/x509/x509.go:
 // }
 
 GO FUNC crypto/x509.__ptrTo_Certificate_Verify from crypto/x509/verify.go:
-func __ptrTo_Certificate_Verify(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_crypto/x509.Certificate)Verify()", args, 1, 1)
-	opts := ExtractGo_go_std_crypto_x509__VerifyOptions("(*_crypto/x509.Certificate)Verify()", "opts", _argList, 0)
-	chains, err := o.O.(*_x509.Certificate).Verify(opts)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range chains {
-		_vec2 := EmptyVector()
-		for _, _elem2 := range _elem1 {
-			_vec2 = _vec2.Conjoin(MakeGoObject(_elem2))
-		}
-		_vec1 = _vec1.Conjoin(_vec2)
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __ptrTo_Certificate_Verify(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_crypto/x509.Certificate)Verify()", args, 1, 1)
+// 	opts := ABEND233(Unsupported: ExtractGo_go_std_crypto_x509__VerifyOptions("(*_crypto/x509.Certificate)Verify()", "opts", _argList, 0))
+// 	chains, err := o.O.(*_x509.Certificate).Verify(opts)
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
+// 	for _, _elem1 := range chains {
+// 		_vec2 := EmptyVector()
+// 		for _, _elem2 := range _elem1 {
+// 			_vec2 = _vec2.Conjoin(MakeGoObject(_elem2))
+// 		}
+// 		_vec1 = _vec1.Conjoin(_vec2)
+// 	}
+// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC crypto/x509.__ptrTo_Certificate_VerifyHostname from crypto/x509/verify.go:
 func __ptrTo_Certificate_VerifyHostname(o GoObject, args Object) Object {
@@ -27810,7 +27810,6 @@ var members_PtrTo_CertPool = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_Certificate = GoTypeInfo{Members: GoMembers{
-	"Verify": __ptrTo_Certificate_Verify,
 	"VerifyHostname": __ptrTo_Certificate_VerifyHostname,
 }}
 
@@ -32394,15 +32393,15 @@ func __ptrTo_Data_Reader(o GoObject, args Object) Object {
 }
 
 GO FUNC debug/dwarf.__ptrTo_Data_Type from debug/dwarf/type.go:
-func __ptrTo_Data_Type(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_debug/dwarf.Data)Type()", args, 1, 1)
-	off := ExtractGo_go_std_debug_dwarf__Offset("(*_debug/dwarf.Data)Type()", "off", _argList, 0)
-	_res1, _res2 := o.O.(*_dwarf.Data).Type(off)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Data_Type(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_debug/dwarf.Data)Type()", args, 1, 1)
+// 	off := ABEND233(Unsupported: ExtractGo_go_std_debug_dwarf__Offset("(*_debug/dwarf.Data)Type()", "off", _argList, 0))
+// 	_res1, _res2 := o.O.(*_dwarf.Data).Type(off)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC debug/dwarf.__ptrTo_DotDotDotType_String from debug/dwarf/type.go:
 func __ptrTo_DotDotDotType_String(o GoObject, args Object) Object {
@@ -32412,12 +32411,12 @@ func __ptrTo_DotDotDotType_String(o GoObject, args Object) Object {
 }
 
 GO FUNC debug/dwarf.__ptrTo_Entry_AttrField from debug/dwarf/entry.go:
-func __ptrTo_Entry_AttrField(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_debug/dwarf.Entry)AttrField()", args, 1, 1)
-	a := ExtractGo_go_std_debug_dwarf__Attr("(*_debug/dwarf.Entry)AttrField()", "a", _argList, 0)
-	_res := o.O.(*_dwarf.Entry).AttrField(a)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Entry_AttrField(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_debug/dwarf.Entry)AttrField()", args, 1, 1)
+// 	a := ABEND233(Unsupported: ExtractGo_go_std_debug_dwarf__Attr("(*_debug/dwarf.Entry)AttrField()", "a", _argList, 0))
+// 	_res := o.O.(*_dwarf.Entry).AttrField(a)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC debug/dwarf.__ptrTo_Entry_Val from debug/dwarf/entry.go:
 // func __ptrTo_Entry_Val(o GoObject, args Object) Object {
@@ -32615,7 +32614,6 @@ var members_PtrTo_CommonType = GoTypeInfo{Members: GoMembers{
 
 var members_PtrTo_Data = GoTypeInfo{Members: GoMembers{
 	"Reader": __ptrTo_Data_Reader,
-	"Type": __ptrTo_Data_Type,
 }}
 
 var members_DecodeError = GoTypeInfo{Members: GoMembers{
@@ -32624,10 +32622,6 @@ var members_DecodeError = GoTypeInfo{Members: GoMembers{
 
 var members_PtrTo_DotDotDotType = GoTypeInfo{Members: GoMembers{
 	"String": __ptrTo_DotDotDotType_String,
-}}
-
-var members_PtrTo_Entry = GoTypeInfo{Members: GoMembers{
-	"AttrField": __ptrTo_Entry_AttrField,
 }}
 
 var members_PtrTo_EnumType = GoTypeInfo{Members: GoMembers{
@@ -32686,7 +32680,6 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_dwarf.Data)(nil))] = &members_PtrTo_Data
 	GoTypes[_reflect.TypeOf((*_dwarf.DecodeError)(nil)).Elem()] = &members_DecodeError
 	GoTypes[_reflect.TypeOf((*_dwarf.DotDotDotType)(nil))] = &members_PtrTo_DotDotDotType
-	GoTypes[_reflect.TypeOf((*_dwarf.Entry)(nil))] = &members_PtrTo_Entry
 	GoTypes[_reflect.TypeOf((*_dwarf.EnumType)(nil))] = &members_PtrTo_EnumType
 	GoTypes[_reflect.TypeOf((*_dwarf.FuncType)(nil))] = &members_PtrTo_FuncType
 	GoTypes[_reflect.TypeOf((*_dwarf.LineReader)(nil))] = &members_PtrTo_LineReader
@@ -35049,19 +35042,19 @@ func __ptrTo_File_DWARF(o GoObject, args Object) Object {
 }
 
 GO FUNC debug/elf.__ptrTo_File_DynString from debug/elf/file.go:
-func __ptrTo_File_DynString(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_debug/elf.File)DynString()", args, 1, 1)
-	tag := ExtractGo_go_std_debug_elf__DynTag("(*_debug/elf.File)DynString()", "tag", _argList, 0)
-	_res1, _res2 := o.O.(*_elf.File).DynString(tag)
-	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_File_DynString(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_debug/elf.File)DynString()", args, 1, 1)
+// 	tag := ABEND233(Unsupported: ExtractGo_go_std_debug_elf__DynTag("(*_debug/elf.File)DynString()", "tag", _argList, 0))
+// 	_res1, _res2 := o.O.(*_elf.File).DynString(tag)
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
+// 	for _, _elem1 := range _res1 {
+// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
+// 	}
+// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC debug/elf.__ptrTo_File_DynamicSymbols from debug/elf/file.go:
 func __ptrTo_File_DynamicSymbols(o GoObject, args Object) Object {
@@ -35114,12 +35107,12 @@ func __ptrTo_File_Section(o GoObject, args Object) Object {
 }
 
 GO FUNC debug/elf.__ptrTo_File_SectionByType from debug/elf/file.go:
-func __ptrTo_File_SectionByType(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_debug/elf.File)SectionByType()", args, 1, 1)
-	typ := ExtractGo_go_std_debug_elf__SectionType("(*_debug/elf.File)SectionByType()", "typ", _argList, 0)
-	_res := o.O.(*_elf.File).SectionByType(typ)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_File_SectionByType(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_debug/elf.File)SectionByType()", args, 1, 1)
+// 	typ := ABEND233(Unsupported: ExtractGo_go_std_debug_elf__SectionType("(*_debug/elf.File)SectionByType()", "typ", _argList, 0))
+// 	_res := o.O.(*_elf.File).SectionByType(typ)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC debug/elf.__ptrTo_File_Symbols from debug/elf/file.go:
 func __ptrTo_File_Symbols(o GoObject, args Object) Object {
@@ -35473,12 +35466,10 @@ var members_DynTag = GoTypeInfo{Members: GoMembers{
 var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
 	"Close": __ptrTo_File_Close,
 	"DWARF": __ptrTo_File_DWARF,
-	"DynString": __ptrTo_File_DynString,
 	"DynamicSymbols": __ptrTo_File_DynamicSymbols,
 	"ImportedLibraries": __ptrTo_File_ImportedLibraries,
 	"ImportedSymbols": __ptrTo_File_ImportedSymbols,
 	"Section": __ptrTo_File_Section,
-	"SectionByType": __ptrTo_File_SectionByType,
 	"Symbols": __ptrTo_File_Symbols,
 }}
 
@@ -38901,15 +38892,15 @@ func __open(name string) Object {
 }
 
 GO FUNC debug/pe.__ptrTo_COFFSymbol_FullName from debug/pe/symbol.go:
-func __ptrTo_COFFSymbol_FullName(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_debug/pe.COFFSymbol)FullName()", args, 1, 1)
-	st := ExtractGo_go_std_debug_pe__StringTable("(*_debug/pe.COFFSymbol)FullName()", "st", _argList, 0)
-	_res1, _res2 := o.O.(*_pe.COFFSymbol).FullName(st)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeString(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_COFFSymbol_FullName(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_debug/pe.COFFSymbol)FullName()", args, 1, 1)
+// 	st := ABEND233(Unsupported: ExtractGo_go_std_debug_pe__StringTable("(*_debug/pe.COFFSymbol)FullName()", "st", _argList, 0))
+// 	_res1, _res2 := o.O.(*_pe.COFFSymbol).FullName(st)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeString(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC debug/pe.__ptrTo_File_Close from debug/pe/file.go:
 func __ptrTo_File_Close(o GoObject, args Object) Object {
@@ -39012,10 +39003,6 @@ import (
 	. "github.com/candid82/joker/core"
 	_reflect "reflect"
 )
-var members_PtrTo_COFFSymbol = GoTypeInfo{Members: GoMembers{
-	"FullName": __ptrTo_COFFSymbol_FullName,
-}}
-
 var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
 	"Close": __ptrTo_File_Close,
 	"DWARF": __ptrTo_File_DWARF,
@@ -39039,7 +39026,6 @@ var members_StringTable = GoTypeInfo{Members: GoMembers{
 
 
 func init() {
-	GoTypes[_reflect.TypeOf((*_pe.COFFSymbol)(nil))] = &members_PtrTo_COFFSymbol
 	GoTypes[_reflect.TypeOf((*_pe.File)(nil))] = &members_PtrTo_File
 	GoTypes[_reflect.TypeOf((*_pe.FormatError)(nil))] = &members_PtrTo_FormatError
 	GoTypes[_reflect.TypeOf((*_pe.Section)(nil))] = &members_PtrTo_Section
@@ -39814,12 +39800,12 @@ func __bitString_RightAlign(o GoObject, args Object) Object {
 }
 
 GO FUNC encoding/asn1.__objectIdentifier_Equal from encoding/asn1/asn1.go:
-func __objectIdentifier_Equal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_encoding/asn1.ObjectIdentifier)Equal()", args, 1, 1)
-	other := ExtractGo_go_std_encoding_asn1__ObjectIdentifier("(_encoding/asn1.ObjectIdentifier)Equal()", "other", _argList, 0)
-	_res := o.O.(_asn1.ObjectIdentifier).Equal(other)
-	return MakeBoolean(_res)
-}
+// func __objectIdentifier_Equal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_encoding/asn1.ObjectIdentifier)Equal()", args, 1, 1)
+// 	other := ABEND233(Unsupported: ExtractGo_go_std_encoding_asn1__ObjectIdentifier("(_encoding/asn1.ObjectIdentifier)Equal()", "other", _argList, 0))
+// 	_res := o.O.(_asn1.ObjectIdentifier).Equal(other)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC encoding/asn1.__objectIdentifier_String from encoding/asn1/asn1.go:
 func __objectIdentifier_String(o GoObject, args Object) Object {
@@ -39857,7 +39843,6 @@ var members_BitString = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_ObjectIdentifier = GoTypeInfo{Members: GoMembers{
-	"Equal": __objectIdentifier_Equal,
 	"String": __objectIdentifier_String,
 }}
 
@@ -42576,12 +42561,12 @@ GO FUNC encoding/xml.__ptrTo_Encoder_EncodeElement from encoding/xml/marshal.go:
 // (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), *start)}
 
 GO FUNC encoding/xml.__ptrTo_Encoder_EncodeToken from encoding/xml/marshal.go:
-func __ptrTo_Encoder_EncodeToken(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_encoding/xml.Encoder)EncodeToken()", args, 1, 1)
-	t := ExtractGo_go_std_encoding_xml__Token("(*_encoding/xml.Encoder)EncodeToken()", "t", _argList, 0)
-	_res := o.O.(*_xml.Encoder).EncodeToken(t)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Encoder_EncodeToken(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_encoding/xml.Encoder)EncodeToken()", args, 1, 1)
+// 	t := ABEND233(Unsupported: ExtractGo_go_std_encoding_xml__Token("(*_encoding/xml.Encoder)EncodeToken()", "t", _argList, 0))
+// 	_res := o.O.(*_xml.Encoder).EncodeToken(t)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC encoding/xml.__ptrTo_Encoder_Flush from encoding/xml/marshal.go:
 func __ptrTo_Encoder_Flush(o GoObject, args Object) Object {
@@ -42666,7 +42651,6 @@ var members_Directive = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_Encoder = GoTypeInfo{Members: GoMembers{
-	"EncodeToken": __ptrTo_Encoder_EncodeToken,
 	"Flush": __ptrTo_Encoder_Flush,
 }}
 
@@ -46952,12 +46936,12 @@ func __commentMap_Comments(o GoObject, args Object) Object {
 }
 
 GO FUNC go/ast.__commentMap_Filter from go/ast/commentmap.go:
-func __commentMap_Filter(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_go/ast.CommentMap)Filter()", args, 1, 1)
-	node := ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Filter()", "node", _argList, 0)
-	_res := o.O.(_ast.CommentMap).Filter(node)
-	return MakeGoObject(_res)
-}
+// func __commentMap_Filter(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_go/ast.CommentMap)Filter()", args, 1, 1)
+// 	node := ABEND233(Unsupported: ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Filter()", "node", _argList, 0))
+// 	_res := o.O.(_ast.CommentMap).Filter(node)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/ast.__commentMap_String from go/ast/commentmap.go:
 func __commentMap_String(o GoObject, args Object) Object {
@@ -46967,13 +46951,13 @@ func __commentMap_String(o GoObject, args Object) Object {
 }
 
 GO FUNC go/ast.__commentMap_Update from go/ast/commentmap.go:
-func __commentMap_Update(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_go/ast.CommentMap)Update()", args, 2, 2)
-	old := ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Update()", "old", _argList, 0)
-	new := ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Update()", "new", _argList, 1)
-	_res := o.O.(_ast.CommentMap).Update(old, new)
-	return MakeGoObject(_res)
-}
+// func __commentMap_Update(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_go/ast.CommentMap)Update()", args, 2, 2)
+// 	old := ABEND233(Unsupported: ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Update()", "old", _argList, 0))
+// 	new := ABEND233(Unsupported: ExtractGo_go_std_go_ast__Node("(_go/ast.CommentMap)Update()", "new", _argList, 1))
+// 	_res := o.O.(_ast.CommentMap).Update(old, new)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/ast.__objKind_String from go/ast/scope.go:
 func __objKind_String(o GoObject, args Object) Object {
@@ -47897,9 +47881,7 @@ var members_PtrTo_CommentGroup = GoTypeInfo{Members: GoMembers{
 
 var members_CommentMap = GoTypeInfo{Members: GoMembers{
 	"Comments": __commentMap_Comments,
-	"Filter": __commentMap_Filter,
 	"String": __commentMap_String,
-	"Update": __commentMap_Update,
 }}
 
 var members_PtrTo_CompositeLit = GoTypeInfo{Members: GoMembers{
@@ -48469,29 +48451,29 @@ func __importDir(dir string, mode _build.ImportMode) Object {
 }
 
 GO FUNC go/build.__ptrTo_Context_Import from go/build/build.go:
-func __ptrTo_Context_Import(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/build.Context)Import()", args, 3, 3)
-	path := ExtractGoString("(*_go/build.Context)Import()", "path", _argList, 0)
-	srcDir := ExtractGoString("(*_go/build.Context)Import()", "srcDir", _argList, 1)
-	mode := ExtractGo_go_std_go_build__ImportMode("(*_go/build.Context)Import()", "mode", _argList, 2)
-	_res1, _res2 := o.O.(*_build.Context).Import(path, srcDir, mode)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Context_Import(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/build.Context)Import()", args, 3, 3)
+// 	path := ExtractGoString("(*_go/build.Context)Import()", "path", _argList, 0)
+// 	srcDir := ExtractGoString("(*_go/build.Context)Import()", "srcDir", _argList, 1)
+// 	mode := ABEND233(Unsupported: ExtractGo_go_std_go_build__ImportMode("(*_go/build.Context)Import()", "mode", _argList, 2))
+// 	_res1, _res2 := o.O.(*_build.Context).Import(path, srcDir, mode)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC go/build.__ptrTo_Context_ImportDir from go/build/build.go:
-func __ptrTo_Context_ImportDir(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/build.Context)ImportDir()", args, 2, 2)
-	dir := ExtractGoString("(*_go/build.Context)ImportDir()", "dir", _argList, 0)
-	mode := ExtractGo_go_std_go_build__ImportMode("(*_go/build.Context)ImportDir()", "mode", _argList, 1)
-	_res1, _res2 := o.O.(*_build.Context).ImportDir(dir, mode)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __ptrTo_Context_ImportDir(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/build.Context)ImportDir()", args, 2, 2)
+// 	dir := ExtractGoString("(*_go/build.Context)ImportDir()", "dir", _argList, 0)
+// 	mode := ABEND233(Unsupported: ExtractGo_go_std_go_build__ImportMode("(*_go/build.Context)ImportDir()", "mode", _argList, 1))
+// 	_res1, _res2 := o.O.(*_build.Context).ImportDir(dir, mode)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC go/build.__ptrTo_Context_MatchFile from go/build/build.go:
 func __ptrTo_Context_MatchFile(o GoObject, args Object) Object {
@@ -48547,8 +48529,6 @@ import (
 	_reflect "reflect"
 )
 var members_PtrTo_Context = GoTypeInfo{Members: GoMembers{
-	"Import": __ptrTo_Context_Import,
-	"ImportDir": __ptrTo_Context_ImportDir,
 	"MatchFile": __ptrTo_Context_MatchFile,
 	"SrcDirs": __ptrTo_Context_SrcDirs,
 }}
@@ -49904,33 +49884,33 @@ func __ptrTo_FileSet_Base(o GoObject, args Object) Object {
 }
 
 GO FUNC go/token.__ptrTo_FileSet_File from go/token/position.go:
-func __ptrTo_FileSet_File(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.FileSet)File()", args, 1, 1)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)File()", "p", _argList, 0)
-	_res := o.O.(*_token.FileSet).File(p)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_FileSet_File(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.FileSet)File()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)File()", "p", _argList, 0))
+// 	_res := o.O.(*_token.FileSet).File(p)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/token.__ptrTo_FileSet_Iterate from go/token/position.go:
 // func __ptrTo_FileSet_Iterate(o GoObject, args Object) Object {
 // (ABEND906(pre.go: custom-runtime routine not implemented: ConvertToFuncTypeHaHafunc()))}
 
 GO FUNC go/token.__ptrTo_FileSet_Position from go/token/position.go:
-func __ptrTo_FileSet_Position(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.FileSet)Position()", args, 1, 1)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)Position()", "p", _argList, 0)
-	_res := o.O.(*_token.FileSet).Position(p)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_FileSet_Position(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.FileSet)Position()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)Position()", "p", _argList, 0))
+// 	_res := o.O.(*_token.FileSet).Position(p)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/token.__ptrTo_FileSet_PositionFor from go/token/position.go:
-func __ptrTo_FileSet_PositionFor(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.FileSet)PositionFor()", args, 2, 2)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)PositionFor()", "p", _argList, 0)
-	adjusted := ExtractGoBoolean("(*_go/token.FileSet)PositionFor()", "adjusted", _argList, 1)
-	_res := o.O.(*_token.FileSet).PositionFor(p, adjusted)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_FileSet_PositionFor(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.FileSet)PositionFor()", args, 2, 2)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.FileSet)PositionFor()", "p", _argList, 0))
+// 	adjusted := ExtractGoBoolean("(*_go/token.FileSet)PositionFor()", "adjusted", _argList, 1)
+// 	_res := o.O.(*_token.FileSet).PositionFor(p, adjusted)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/token.__ptrTo_FileSet_Read from go/token/serialize.go:
 // func __ptrTo_FileSet_Read(o GoObject, args Object) Object {
@@ -49963,12 +49943,12 @@ func __ptrTo_File_Base(o GoObject, args Object) Object {
 }
 
 GO FUNC go/token.__ptrTo_File_Line from go/token/position.go:
-func __ptrTo_File_Line(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.File)Line()", args, 1, 1)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.File)Line()", "p", _argList, 0)
-	_res := o.O.(*_token.File).Line(p)
-	return MakeInt(_res)
-}
+// func __ptrTo_File_Line(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.File)Line()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.File)Line()", "p", _argList, 0))
+// 	_res := o.O.(*_token.File).Line(p)
+// 	return MakeInt(_res)
+// }
 
 GO FUNC go/token.__ptrTo_File_LineCount from go/token/position.go:
 func __ptrTo_File_LineCount(o GoObject, args Object) Object {
@@ -49998,12 +49978,12 @@ func __ptrTo_File_Name(o GoObject, args Object) Object {
 }
 
 GO FUNC go/token.__ptrTo_File_Offset from go/token/position.go:
-func __ptrTo_File_Offset(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.File)Offset()", args, 1, 1)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.File)Offset()", "p", _argList, 0)
-	_res := o.O.(*_token.File).Offset(p)
-	return MakeInt(_res)
-}
+// func __ptrTo_File_Offset(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.File)Offset()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.File)Offset()", "p", _argList, 0))
+// 	_res := o.O.(*_token.File).Offset(p)
+// 	return MakeInt(_res)
+// }
 
 GO FUNC go/token.__ptrTo_File_Pos from go/token/position.go:
 func __ptrTo_File_Pos(o GoObject, args Object) Object {
@@ -50014,21 +49994,21 @@ func __ptrTo_File_Pos(o GoObject, args Object) Object {
 }
 
 GO FUNC go/token.__ptrTo_File_Position from go/token/position.go:
-func __ptrTo_File_Position(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.File)Position()", args, 1, 1)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.File)Position()", "p", _argList, 0)
-	_res := o.O.(*_token.File).Position(p)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_File_Position(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.File)Position()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.File)Position()", "p", _argList, 0))
+// 	_res := o.O.(*_token.File).Position(p)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/token.__ptrTo_File_PositionFor from go/token/position.go:
-func __ptrTo_File_PositionFor(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/token.File)PositionFor()", args, 2, 2)
-	p := ExtractGo_go_std_go_token__Pos("(*_go/token.File)PositionFor()", "p", _argList, 0)
-	adjusted := ExtractGoBoolean("(*_go/token.File)PositionFor()", "adjusted", _argList, 1)
-	_res := o.O.(*_token.File).PositionFor(p, adjusted)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_File_PositionFor(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/token.File)PositionFor()", args, 2, 2)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_go_token__Pos("(*_go/token.File)PositionFor()", "p", _argList, 0))
+// 	adjusted := ExtractGoBoolean("(*_go/token.File)PositionFor()", "adjusted", _argList, 1)
+// 	_res := o.O.(*_token.File).PositionFor(p, adjusted)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/token.__ptrTo_File_SetLines from go/token/position.go:
 // func __ptrTo_File_SetLines(o GoObject, args Object) Object {
@@ -50098,23 +50078,16 @@ import (
 )
 var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
 	"Base": __ptrTo_File_Base,
-	"Line": __ptrTo_File_Line,
 	"LineCount": __ptrTo_File_LineCount,
 	"LineStart": __ptrTo_File_LineStart,
 	"Name": __ptrTo_File_Name,
-	"Offset": __ptrTo_File_Offset,
 	"Pos": __ptrTo_File_Pos,
-	"Position": __ptrTo_File_Position,
-	"PositionFor": __ptrTo_File_PositionFor,
 	"Size": __ptrTo_File_Size,
 }}
 
 var members_PtrTo_FileSet = GoTypeInfo{Members: GoMembers{
 	"AddFile": __ptrTo_FileSet_AddFile,
 	"Base": __ptrTo_FileSet_Base,
-	"File": __ptrTo_FileSet_File,
-	"Position": __ptrTo_FileSet_Position,
-	"PositionFor": __ptrTo_FileSet_PositionFor,
 }}
 
 var members_Pos = GoTypeInfo{Members: GoMembers{
@@ -52421,12 +52394,12 @@ GO FUNC go/types.__ptrTo_Scope_Innermost from go/types/scope.go:
 // pos ABEND987(genutils.go: imports not yet supported: token.Pos)}
 
 GO FUNC go/types.__ptrTo_Scope_Insert from go/types/scope.go:
-func __ptrTo_Scope_Insert(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/types.Scope)Insert()", args, 1, 1)
-	obj := ExtractGo_go_std_go_types__Object("(*_go/types.Scope)Insert()", "obj", _argList, 0)
-	_res := o.O.(*_types.Scope).Insert(obj)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Scope_Insert(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/types.Scope)Insert()", args, 1, 1)
+// 	obj := ABEND233(Unsupported: ExtractGo_go_std_go_types__Object("(*_go/types.Scope)Insert()", "obj", _argList, 0))
+// 	_res := o.O.(*_types.Scope).Insert(obj)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC go/types.__ptrTo_Scope_Len from go/types/scope.go:
 func __ptrTo_Scope_Len(o GoObject, args Object) Object {
@@ -52607,24 +52580,24 @@ func __ptrTo_Slice_Underlying(o GoObject, args Object) Object {
 }
 
 GO FUNC go/types.__ptrTo_StdSizes_Alignof from go/types/sizes.go:
-func __ptrTo_StdSizes_Alignof(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/types.StdSizes)Alignof()", args, 1, 1)
-	T := ExtractGo_go_std_go_types__Type("(*_go/types.StdSizes)Alignof()", "T", _argList, 0)
-	_res := o.O.(*_types.StdSizes).Alignof(T)
-	return MakeBigInt(_res)
-}
+// func __ptrTo_StdSizes_Alignof(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/types.StdSizes)Alignof()", args, 1, 1)
+// 	T := ABEND233(Unsupported: ExtractGo_go_std_go_types__Type("(*_go/types.StdSizes)Alignof()", "T", _argList, 0))
+// 	_res := o.O.(*_types.StdSizes).Alignof(T)
+// 	return MakeBigInt(_res)
+// }
 
 GO FUNC go/types.__ptrTo_StdSizes_Offsetsof from go/types/sizes.go:
 // func __ptrTo_StdSizes_Offsetsof(o GoObject, args Object) Object {
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOf*_types.Var(fields)))}
 
 GO FUNC go/types.__ptrTo_StdSizes_Sizeof from go/types/sizes.go:
-func __ptrTo_StdSizes_Sizeof(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_go/types.StdSizes)Sizeof()", args, 1, 1)
-	T := ExtractGo_go_std_go_types__Type("(*_go/types.StdSizes)Sizeof()", "T", _argList, 0)
-	_res := o.O.(*_types.StdSizes).Sizeof(T)
-	return MakeBigInt(_res)
-}
+// func __ptrTo_StdSizes_Sizeof(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_go/types.StdSizes)Sizeof()", args, 1, 1)
+// 	T := ABEND233(Unsupported: ExtractGo_go_std_go_types__Type("(*_go/types.StdSizes)Sizeof()", "T", _argList, 0))
+// 	_res := o.O.(*_types.StdSizes).Sizeof(T)
+// 	return MakeBigInt(_res)
+// }
 
 GO FUNC go/types.__ptrTo_Struct_Field from go/types/type.go:
 func __ptrTo_Struct_Field(o GoObject, args Object) Object {
@@ -52910,7 +52883,6 @@ var members_PtrTo_Pointer = GoTypeInfo{Members: GoMembers{
 var members_PtrTo_Scope = GoTypeInfo{Members: GoMembers{
 	"Child": __ptrTo_Scope_Child,
 	"End": __ptrTo_Scope_End,
-	"Insert": __ptrTo_Scope_Insert,
 	"Len": __ptrTo_Scope_Len,
 	"Lookup": __ptrTo_Scope_Lookup,
 	"Names": __ptrTo_Scope_Names,
@@ -52943,11 +52915,6 @@ var members_PtrTo_Slice = GoTypeInfo{Members: GoMembers{
 	"Elem": __ptrTo_Slice_Elem,
 	"String": __ptrTo_Slice_String,
 	"Underlying": __ptrTo_Slice_Underlying,
-}}
-
-var members_PtrTo_StdSizes = GoTypeInfo{Members: GoMembers{
-	"Alignof": __ptrTo_StdSizes_Alignof,
-	"Sizeof": __ptrTo_StdSizes_Sizeof,
 }}
 
 var members_PtrTo_Struct = GoTypeInfo{Members: GoMembers{
@@ -53011,7 +52978,6 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_types.Selection)(nil))] = &members_PtrTo_Selection
 	GoTypes[_reflect.TypeOf((*_types.Signature)(nil))] = &members_PtrTo_Signature
 	GoTypes[_reflect.TypeOf((*_types.Slice)(nil))] = &members_PtrTo_Slice
-	GoTypes[_reflect.TypeOf((*_types.StdSizes)(nil))] = &members_PtrTo_StdSizes
 	GoTypes[_reflect.TypeOf((*_types.Struct)(nil))] = &members_PtrTo_Struct
 	GoTypes[_reflect.TypeOf((*_types.Tuple)(nil))] = &members_PtrTo_Tuple
 	GoTypes[_reflect.TypeOf((*_types.TypeAndValue)(nil)).Elem()] = &members_TypeAndValue
@@ -53742,12 +53708,12 @@ GO FUNC html/template.__ptrTo_Template_ExecuteTemplate from html/template/templa
 // wr ABEND987(genutils.go: imports not yet supported: io.Writer), name string, data interface {}}
 
 GO FUNC html/template.__ptrTo_Template_Funcs from html/template/template.go:
-func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_html/template.Template)Funcs()", args, 1, 1)
-	funcMap := ExtractGo_go_std_html_template__FuncMap("(*_html/template.Template)Funcs()", "funcMap", _argList, 0)
-	_res := o.O.(*_template.Template).Funcs(funcMap)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_html/template.Template)Funcs()", args, 1, 1)
+// 	funcMap := ABEND233(Unsupported: ExtractGo_go_std_html_template__FuncMap("(*_html/template.Template)Funcs()", "funcMap", _argList, 0))
+// 	_res := o.O.(*_template.Template).Funcs(funcMap)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC html/template.__ptrTo_Template_Lookup from html/template/template.go:
 func __ptrTo_Template_Lookup(o GoObject, args Object) Object {
@@ -53830,7 +53796,6 @@ var members_PtrTo_Template = GoTypeInfo{Members: GoMembers{
 	"Clone": __ptrTo_Template_Clone,
 	"DefinedTemplates": __ptrTo_Template_DefinedTemplates,
 	"Delims": __ptrTo_Template_Delims,
-	"Funcs": __ptrTo_Template_Funcs,
 	"Lookup": __ptrTo_Template_Lookup,
 	"Name": __ptrTo_Template_Name,
 	"New": __ptrTo_Template_New,
@@ -54759,12 +54724,12 @@ GO FUNC image.RegisterFormat from image/format.go:
 // }
 
 GO FUNC image.__point_Add from image/geom.go:
-func __point_Add(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Point)Add()", args, 1, 1)
-	q := ExtractGo_go_std_image__Point("(_image.Point)Add()", "q", _argList, 0)
-	_res := o.O.(_image.Point).Add(q)
-	return MakeGoObject(_res)
-}
+// func __point_Add(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Point)Add()", args, 1, 1)
+// 	q := ABEND233(Unsupported: ExtractGo_go_std_image__Point("(_image.Point)Add()", "q", _argList, 0))
+// 	_res := o.O.(_image.Point).Add(q)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__point_Div from image/geom.go:
 func __point_Div(o GoObject, args Object) Object {
@@ -54775,28 +54740,28 @@ func __point_Div(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__point_Eq from image/geom.go:
-func __point_Eq(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Point)Eq()", args, 1, 1)
-	q := ExtractGo_go_std_image__Point("(_image.Point)Eq()", "q", _argList, 0)
-	_res := o.O.(_image.Point).Eq(q)
-	return MakeBoolean(_res)
-}
+// func __point_Eq(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Point)Eq()", args, 1, 1)
+// 	q := ABEND233(Unsupported: ExtractGo_go_std_image__Point("(_image.Point)Eq()", "q", _argList, 0))
+// 	_res := o.O.(_image.Point).Eq(q)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC image.__point_In from image/geom.go:
-func __point_In(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Point)In()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(_image.Point)In()", "r", _argList, 0)
-	_res := o.O.(_image.Point).In(r)
-	return MakeBoolean(_res)
-}
+// func __point_In(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Point)In()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Point)In()", "r", _argList, 0))
+// 	_res := o.O.(_image.Point).In(r)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC image.__point_Mod from image/geom.go:
-func __point_Mod(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Point)Mod()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(_image.Point)Mod()", "r", _argList, 0)
-	_res := o.O.(_image.Point).Mod(r)
-	return MakeGoObject(_res)
-}
+// func __point_Mod(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Point)Mod()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Point)Mod()", "r", _argList, 0))
+// 	_res := o.O.(_image.Point).Mod(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__point_Mul from image/geom.go:
 func __point_Mul(o GoObject, args Object) Object {
@@ -54814,12 +54779,12 @@ func __point_String(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__point_Sub from image/geom.go:
-func __point_Sub(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Point)Sub()", args, 1, 1)
-	q := ExtractGo_go_std_image__Point("(_image.Point)Sub()", "q", _argList, 0)
-	_res := o.O.(_image.Point).Sub(q)
-	return MakeGoObject(_res)
-}
+// func __point_Sub(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Point)Sub()", args, 1, 1)
+// 	q := ABEND233(Unsupported: ExtractGo_go_std_image__Point("(_image.Point)Sub()", "q", _argList, 0))
+// 	_res := o.O.(_image.Point).Sub(q)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Alpha16_Alpha16At from image/image.go:
 func __ptrTo_Alpha16_Alpha16At(o GoObject, args Object) Object {
@@ -54878,12 +54843,12 @@ GO FUNC image.__ptrTo_Alpha16_SetAlpha16 from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.Alpha16)}
 
 GO FUNC image.__ptrTo_Alpha16_SubImage from image/image.go:
-func __ptrTo_Alpha16_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.Alpha16)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.Alpha16)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.Alpha16).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Alpha16_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.Alpha16)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.Alpha16)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.Alpha16).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Alpha_AlphaAt from image/image.go:
 func __ptrTo_Alpha_AlphaAt(o GoObject, args Object) Object {
@@ -54942,12 +54907,12 @@ GO FUNC image.__ptrTo_Alpha_SetAlpha from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.Alpha)}
 
 GO FUNC image.__ptrTo_Alpha_SubImage from image/image.go:
-func __ptrTo_Alpha_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.Alpha)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.Alpha)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.Alpha).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Alpha_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.Alpha)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.Alpha)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.Alpha).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_CMYK_At from image/image.go:
 func __ptrTo_CMYK_At(o GoObject, args Object) Object {
@@ -55006,12 +54971,12 @@ GO FUNC image.__ptrTo_CMYK_SetCMYK from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.CMYK)}
 
 GO FUNC image.__ptrTo_CMYK_SubImage from image/image.go:
-func __ptrTo_CMYK_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.CMYK)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.CMYK)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.CMYK).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_CMYK_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.CMYK)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.CMYK)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.CMYK).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Gray16_At from image/image.go:
 func __ptrTo_Gray16_At(o GoObject, args Object) Object {
@@ -55070,12 +55035,12 @@ GO FUNC image.__ptrTo_Gray16_SetGray16 from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.Gray16)}
 
 GO FUNC image.__ptrTo_Gray16_SubImage from image/image.go:
-func __ptrTo_Gray16_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.Gray16)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.Gray16)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.Gray16).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Gray16_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.Gray16)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.Gray16)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.Gray16).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Gray_At from image/image.go:
 func __ptrTo_Gray_At(o GoObject, args Object) Object {
@@ -55134,12 +55099,12 @@ GO FUNC image.__ptrTo_Gray_SetGray from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.Gray)}
 
 GO FUNC image.__ptrTo_Gray_SubImage from image/image.go:
-func __ptrTo_Gray_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.Gray)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.Gray)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.Gray).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Gray_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.Gray)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.Gray)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.Gray).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_NRGBA64_At from image/image.go:
 func __ptrTo_NRGBA64_At(o GoObject, args Object) Object {
@@ -55198,12 +55163,12 @@ GO FUNC image.__ptrTo_NRGBA64_SetNRGBA64 from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.NRGBA64)}
 
 GO FUNC image.__ptrTo_NRGBA64_SubImage from image/image.go:
-func __ptrTo_NRGBA64_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.NRGBA64)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.NRGBA64)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.NRGBA64).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_NRGBA64_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.NRGBA64)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.NRGBA64)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.NRGBA64).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_NRGBA_At from image/image.go:
 func __ptrTo_NRGBA_At(o GoObject, args Object) Object {
@@ -55262,12 +55227,12 @@ GO FUNC image.__ptrTo_NRGBA_SetNRGBA from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.NRGBA)}
 
 GO FUNC image.__ptrTo_NRGBA_SubImage from image/image.go:
-func __ptrTo_NRGBA_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.NRGBA)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.NRGBA)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.NRGBA).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_NRGBA_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.NRGBA)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.NRGBA)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.NRGBA).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_NYCbCrA_AOffset from image/ycbcr.go:
 func __ptrTo_NYCbCrA_AOffset(o GoObject, args Object) Object {
@@ -55311,12 +55276,12 @@ func __ptrTo_NYCbCrA_Opaque(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__ptrTo_NYCbCrA_SubImage from image/ycbcr.go:
-func __ptrTo_NYCbCrA_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.NYCbCrA)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.NYCbCrA)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.NYCbCrA).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_NYCbCrA_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.NYCbCrA)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.NYCbCrA)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.NYCbCrA).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Paletted_At from image/image.go:
 func __ptrTo_Paletted_At(o GoObject, args Object) Object {
@@ -55376,12 +55341,12 @@ GO FUNC image.__ptrTo_Paletted_SetColorIndex from image/image.go:
 // }
 
 GO FUNC image.__ptrTo_Paletted_SubImage from image/image.go:
-func __ptrTo_Paletted_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.Paletted)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.Paletted)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.Paletted).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Paletted_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.Paletted)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.Paletted)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.Paletted).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_RGBA64_At from image/image.go:
 func __ptrTo_RGBA64_At(o GoObject, args Object) Object {
@@ -55440,12 +55405,12 @@ GO FUNC image.__ptrTo_RGBA64_SetRGBA64 from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.RGBA64)}
 
 GO FUNC image.__ptrTo_RGBA64_SubImage from image/image.go:
-func __ptrTo_RGBA64_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.RGBA64)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.RGBA64)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.RGBA64).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_RGBA64_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.RGBA64)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.RGBA64)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.RGBA64).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_RGBA_At from image/image.go:
 func __ptrTo_RGBA_At(o GoObject, args Object) Object {
@@ -55504,12 +55469,12 @@ GO FUNC image.__ptrTo_RGBA_SetRGBA from image/image.go:
 // x int, y int, c ABEND987(genutils.go: imports not yet supported: color.RGBA)}
 
 GO FUNC image.__ptrTo_RGBA_SubImage from image/image.go:
-func __ptrTo_RGBA_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.RGBA)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.RGBA)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.RGBA).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_RGBA_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.RGBA)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.RGBA)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.RGBA).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_Uniform_At from image/names.go:
 func __ptrTo_Uniform_At(o GoObject, args Object) Object {
@@ -55597,12 +55562,12 @@ func __ptrTo_YCbCr_Opaque(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__ptrTo_YCbCr_SubImage from image/ycbcr.go:
-func __ptrTo_YCbCr_SubImage(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_image.YCbCr)SubImage()", args, 1, 1)
-	r := ExtractGo_go_std_image__Rectangle("(*_image.YCbCr)SubImage()", "r", _argList, 0)
-	_res := o.O.(*_image.YCbCr).SubImage(r)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_YCbCr_SubImage(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_image.YCbCr)SubImage()", args, 1, 1)
+// 	r := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(*_image.YCbCr)SubImage()", "r", _argList, 0))
+// 	_res := o.O.(*_image.YCbCr).SubImage(r)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__ptrTo_YCbCr_YCbCrAt from image/ycbcr.go:
 func __ptrTo_YCbCr_YCbCrAt(o GoObject, args Object) Object {
@@ -55623,12 +55588,12 @@ func __ptrTo_YCbCr_YOffset(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__rectangle_Add from image/geom.go:
-func __rectangle_Add(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Add()", args, 1, 1)
-	p := ExtractGo_go_std_image__Point("(_image.Rectangle)Add()", "p", _argList, 0)
-	_res := o.O.(_image.Rectangle).Add(p)
-	return MakeGoObject(_res)
-}
+// func __rectangle_Add(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Add()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_image__Point("(_image.Rectangle)Add()", "p", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Add(p)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__rectangle_At from image/geom.go:
 func __rectangle_At(o GoObject, args Object) Object {
@@ -55682,20 +55647,20 @@ func __rectangle_Empty(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__rectangle_Eq from image/geom.go:
-func __rectangle_Eq(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Eq()", args, 1, 1)
-	s := ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Eq()", "s", _argList, 0)
-	_res := o.O.(_image.Rectangle).Eq(s)
-	return MakeBoolean(_res)
-}
+// func __rectangle_Eq(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Eq()", args, 1, 1)
+// 	s := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Eq()", "s", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Eq(s)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC image.__rectangle_In from image/geom.go:
-func __rectangle_In(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)In()", args, 1, 1)
-	s := ExtractGo_go_std_image__Rectangle("(_image.Rectangle)In()", "s", _argList, 0)
-	_res := o.O.(_image.Rectangle).In(s)
-	return MakeBoolean(_res)
-}
+// func __rectangle_In(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)In()", args, 1, 1)
+// 	s := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Rectangle)In()", "s", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).In(s)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC image.__rectangle_Inset from image/geom.go:
 func __rectangle_Inset(o GoObject, args Object) Object {
@@ -55706,20 +55671,20 @@ func __rectangle_Inset(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__rectangle_Intersect from image/geom.go:
-func __rectangle_Intersect(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Intersect()", args, 1, 1)
-	s := ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Intersect()", "s", _argList, 0)
-	_res := o.O.(_image.Rectangle).Intersect(s)
-	return MakeGoObject(_res)
-}
+// func __rectangle_Intersect(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Intersect()", args, 1, 1)
+// 	s := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Intersect()", "s", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Intersect(s)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__rectangle_Overlaps from image/geom.go:
-func __rectangle_Overlaps(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Overlaps()", args, 1, 1)
-	s := ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Overlaps()", "s", _argList, 0)
-	_res := o.O.(_image.Rectangle).Overlaps(s)
-	return MakeBoolean(_res)
-}
+// func __rectangle_Overlaps(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Overlaps()", args, 1, 1)
+// 	s := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Overlaps()", "s", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Overlaps(s)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC image.__rectangle_Size from image/geom.go:
 func __rectangle_Size(o GoObject, args Object) Object {
@@ -55736,20 +55701,20 @@ func __rectangle_String(o GoObject, args Object) Object {
 }
 
 GO FUNC image.__rectangle_Sub from image/geom.go:
-func __rectangle_Sub(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Sub()", args, 1, 1)
-	p := ExtractGo_go_std_image__Point("(_image.Rectangle)Sub()", "p", _argList, 0)
-	_res := o.O.(_image.Rectangle).Sub(p)
-	return MakeGoObject(_res)
-}
+// func __rectangle_Sub(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Sub()", args, 1, 1)
+// 	p := ABEND233(Unsupported: ExtractGo_go_std_image__Point("(_image.Rectangle)Sub()", "p", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Sub(p)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__rectangle_Union from image/geom.go:
-func __rectangle_Union(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image.Rectangle)Union()", args, 1, 1)
-	s := ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Union()", "s", _argList, 0)
-	_res := o.O.(_image.Rectangle).Union(s)
-	return MakeGoObject(_res)
-}
+// func __rectangle_Union(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image.Rectangle)Union()", args, 1, 1)
+// 	s := ABEND233(Unsupported: ExtractGo_go_std_image__Rectangle("(_image.Rectangle)Union()", "s", _argList, 0))
+// 	_res := o.O.(_image.Rectangle).Union(s)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image.__yCbCrSubsampleRatio_String from image/ycbcr.go:
 func __yCbCrSubsampleRatio_String(o GoObject, args Object) Object {
@@ -55774,7 +55739,6 @@ var members_PtrTo_Alpha = GoTypeInfo{Members: GoMembers{
 	"ColorModel": __ptrTo_Alpha_ColorModel,
 	"Opaque": __ptrTo_Alpha_Opaque,
 	"PixOffset": __ptrTo_Alpha_PixOffset,
-	"SubImage": __ptrTo_Alpha_SubImage,
 }}
 
 var members_PtrTo_Alpha16 = GoTypeInfo{Members: GoMembers{
@@ -55784,7 +55748,6 @@ var members_PtrTo_Alpha16 = GoTypeInfo{Members: GoMembers{
 	"ColorModel": __ptrTo_Alpha16_ColorModel,
 	"Opaque": __ptrTo_Alpha16_Opaque,
 	"PixOffset": __ptrTo_Alpha16_PixOffset,
-	"SubImage": __ptrTo_Alpha16_SubImage,
 }}
 
 var members_PtrTo_CMYK = GoTypeInfo{Members: GoMembers{
@@ -55794,7 +55757,6 @@ var members_PtrTo_CMYK = GoTypeInfo{Members: GoMembers{
 	"ColorModel": __ptrTo_CMYK_ColorModel,
 	"Opaque": __ptrTo_CMYK_Opaque,
 	"PixOffset": __ptrTo_CMYK_PixOffset,
-	"SubImage": __ptrTo_CMYK_SubImage,
 }}
 
 var members_PtrTo_Gray = GoTypeInfo{Members: GoMembers{
@@ -55804,7 +55766,6 @@ var members_PtrTo_Gray = GoTypeInfo{Members: GoMembers{
 	"GrayAt": __ptrTo_Gray_GrayAt,
 	"Opaque": __ptrTo_Gray_Opaque,
 	"PixOffset": __ptrTo_Gray_PixOffset,
-	"SubImage": __ptrTo_Gray_SubImage,
 }}
 
 var members_PtrTo_Gray16 = GoTypeInfo{Members: GoMembers{
@@ -55814,7 +55775,6 @@ var members_PtrTo_Gray16 = GoTypeInfo{Members: GoMembers{
 	"Gray16At": __ptrTo_Gray16_Gray16At,
 	"Opaque": __ptrTo_Gray16_Opaque,
 	"PixOffset": __ptrTo_Gray16_PixOffset,
-	"SubImage": __ptrTo_Gray16_SubImage,
 }}
 
 var members_PtrTo_NRGBA = GoTypeInfo{Members: GoMembers{
@@ -55824,7 +55784,6 @@ var members_PtrTo_NRGBA = GoTypeInfo{Members: GoMembers{
 	"NRGBAAt": __ptrTo_NRGBA_NRGBAAt,
 	"Opaque": __ptrTo_NRGBA_Opaque,
 	"PixOffset": __ptrTo_NRGBA_PixOffset,
-	"SubImage": __ptrTo_NRGBA_SubImage,
 }}
 
 var members_PtrTo_NRGBA64 = GoTypeInfo{Members: GoMembers{
@@ -55834,7 +55793,6 @@ var members_PtrTo_NRGBA64 = GoTypeInfo{Members: GoMembers{
 	"NRGBA64At": __ptrTo_NRGBA64_NRGBA64At,
 	"Opaque": __ptrTo_NRGBA64_Opaque,
 	"PixOffset": __ptrTo_NRGBA64_PixOffset,
-	"SubImage": __ptrTo_NRGBA64_SubImage,
 }}
 
 var members_PtrTo_NYCbCrA = GoTypeInfo{Members: GoMembers{
@@ -55843,7 +55801,6 @@ var members_PtrTo_NYCbCrA = GoTypeInfo{Members: GoMembers{
 	"ColorModel": __ptrTo_NYCbCrA_ColorModel,
 	"NYCbCrAAt": __ptrTo_NYCbCrA_NYCbCrAAt,
 	"Opaque": __ptrTo_NYCbCrA_Opaque,
-	"SubImage": __ptrTo_NYCbCrA_SubImage,
 }}
 
 var members_PtrTo_Paletted = GoTypeInfo{Members: GoMembers{
@@ -55853,18 +55810,12 @@ var members_PtrTo_Paletted = GoTypeInfo{Members: GoMembers{
 	"ColorModel": __ptrTo_Paletted_ColorModel,
 	"Opaque": __ptrTo_Paletted_Opaque,
 	"PixOffset": __ptrTo_Paletted_PixOffset,
-	"SubImage": __ptrTo_Paletted_SubImage,
 }}
 
 var members_Point = GoTypeInfo{Members: GoMembers{
-	"Add": __point_Add,
 	"Div": __point_Div,
-	"Eq": __point_Eq,
-	"In": __point_In,
-	"Mod": __point_Mod,
 	"Mul": __point_Mul,
 	"String": __point_String,
-	"Sub": __point_Sub,
 }}
 
 var members_PtrTo_RGBA = GoTypeInfo{Members: GoMembers{
@@ -55874,7 +55825,6 @@ var members_PtrTo_RGBA = GoTypeInfo{Members: GoMembers{
 	"Opaque": __ptrTo_RGBA_Opaque,
 	"PixOffset": __ptrTo_RGBA_PixOffset,
 	"RGBAAt": __ptrTo_RGBA_RGBAAt,
-	"SubImage": __ptrTo_RGBA_SubImage,
 }}
 
 var members_PtrTo_RGBA64 = GoTypeInfo{Members: GoMembers{
@@ -55884,11 +55834,9 @@ var members_PtrTo_RGBA64 = GoTypeInfo{Members: GoMembers{
 	"Opaque": __ptrTo_RGBA64_Opaque,
 	"PixOffset": __ptrTo_RGBA64_PixOffset,
 	"RGBA64At": __ptrTo_RGBA64_RGBA64At,
-	"SubImage": __ptrTo_RGBA64_SubImage,
 }}
 
 var members_Rectangle = GoTypeInfo{Members: GoMembers{
-	"Add": __rectangle_Add,
 	"At": __rectangle_At,
 	"Bounds": __rectangle_Bounds,
 	"Canon": __rectangle_Canon,
@@ -55896,15 +55844,9 @@ var members_Rectangle = GoTypeInfo{Members: GoMembers{
 	"Dx": __rectangle_Dx,
 	"Dy": __rectangle_Dy,
 	"Empty": __rectangle_Empty,
-	"Eq": __rectangle_Eq,
-	"In": __rectangle_In,
 	"Inset": __rectangle_Inset,
-	"Intersect": __rectangle_Intersect,
-	"Overlaps": __rectangle_Overlaps,
 	"Size": __rectangle_Size,
 	"String": __rectangle_String,
-	"Sub": __rectangle_Sub,
-	"Union": __rectangle_Union,
 }}
 
 var members_PtrTo_Uniform = GoTypeInfo{Members: GoMembers{
@@ -55921,7 +55863,6 @@ var members_PtrTo_YCbCr = GoTypeInfo{Members: GoMembers{
 	"COffset": __ptrTo_YCbCr_COffset,
 	"ColorModel": __ptrTo_YCbCr_ColorModel,
 	"Opaque": __ptrTo_YCbCr_Opaque,
-	"SubImage": __ptrTo_YCbCr_SubImage,
 	"YCbCrAt": __ptrTo_YCbCr_YCbCrAt,
 	"YOffset": __ptrTo_YCbCr_YOffset,
 }}
@@ -56663,20 +56604,20 @@ func __nYCbCrA_RGBA(o GoObject, args Object) Object {
 }
 
 GO FUNC image/color.__palette_Convert from image/color/color.go:
-func __palette_Convert(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image/color.Palette)Convert()", args, 1, 1)
-	c := ExtractGo_go_std_image_color__Color("(_image/color.Palette)Convert()", "c", _argList, 0)
-	_res := o.O.(_color.Palette).Convert(c)
-	return MakeGoObject(_res)
-}
+// func __palette_Convert(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image/color.Palette)Convert()", args, 1, 1)
+// 	c := ABEND233(Unsupported: ExtractGo_go_std_image_color__Color("(_image/color.Palette)Convert()", "c", _argList, 0))
+// 	_res := o.O.(_color.Palette).Convert(c)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC image/color.__palette_Index from image/color/color.go:
-func __palette_Index(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_image/color.Palette)Index()", args, 1, 1)
-	c := ExtractGo_go_std_image_color__Color("(_image/color.Palette)Index()", "c", _argList, 0)
-	_res := o.O.(_color.Palette).Index(c)
-	return MakeInt(_res)
-}
+// func __palette_Index(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_image/color.Palette)Index()", args, 1, 1)
+// 	c := ABEND233(Unsupported: ExtractGo_go_std_image_color__Color("(_image/color.Palette)Index()", "c", _argList, 0))
+// 	_res := o.O.(_color.Palette).Index(c)
+// 	return MakeInt(_res)
+// }
 
 GO FUNC image/color.__rGBA64_RGBA from image/color/color.go:
 func __rGBA64_RGBA(o GoObject, args Object) Object {
@@ -56755,11 +56696,6 @@ var members_NYCbCrA = GoTypeInfo{Members: GoMembers{
 	"RGBA": __nYCbCrA_RGBA,
 }}
 
-var members_Palette = GoTypeInfo{Members: GoMembers{
-	"Convert": __palette_Convert,
-	"Index": __palette_Index,
-}}
-
 var members_RGBA = GoTypeInfo{Members: GoMembers{
 	"RGBA": __rGBA_RGBA,
 }}
@@ -56782,7 +56718,6 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_color.NRGBA)(nil)).Elem()] = &members_NRGBA
 	GoTypes[_reflect.TypeOf((*_color.NRGBA64)(nil)).Elem()] = &members_NRGBA64
 	GoTypes[_reflect.TypeOf((*_color.NYCbCrA)(nil)).Elem()] = &members_NYCbCrA
-	GoTypes[_reflect.TypeOf((*_color.Palette)(nil)).Elem()] = &members_Palette
 	GoTypes[_reflect.TypeOf((*_color.RGBA)(nil)).Elem()] = &members_RGBA
 	GoTypes[_reflect.TypeOf((*_color.RGBA64)(nil)).Elem()] = &members_RGBA64
 	GoTypes[_reflect.TypeOf((*_color.YCbCr)(nil)).Elem()] = &members_YCbCr
@@ -59840,12 +59775,12 @@ GO FUNC math/big.__ptrTo_Float_SetMantExp from math/big/float.go:
 // }
 
 GO FUNC math/big.__ptrTo_Float_SetMode from math/big/float.go:
-func __ptrTo_Float_SetMode(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_math/big.Float)SetMode()", args, 1, 1)
-	mode := ExtractGo_go_std_math_big__RoundingMode("(*_math/big.Float)SetMode()", "mode", _argList, 0)
-	_res := o.O.(*_big.Float).SetMode(mode)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Float_SetMode(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_math/big.Float)SetMode()", args, 1, 1)
+// 	mode := ABEND233(Unsupported: ExtractGo_go_std_math_big__RoundingMode("(*_math/big.Float)SetMode()", "mode", _argList, 0))
+// 	_res := o.O.(*_big.Float).SetMode(mode)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC math/big.__ptrTo_Float_SetPrec from math/big/float.go:
 func __ptrTo_Float_SetPrec(o GoObject, args Object) Object {
@@ -60674,7 +60609,6 @@ var members_PtrTo_Float = GoTypeInfo{Members: GoMembers{
 	"Prec": __ptrTo_Float_Prec,
 	"SetInf": __ptrTo_Float_SetInf,
 	"SetInt64": __ptrTo_Float_SetInt64,
-	"SetMode": __ptrTo_Float_SetMode,
 	"SetPrec": __ptrTo_Float_SetPrec,
 	"SetString": __ptrTo_Float_SetString,
 	"SetUint64": __ptrTo_Float_SetUint64,
@@ -64005,12 +63939,12 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Equal from net/ip.go:
-func __iP_Equal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-	x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0)
-	_res := o.O.(_net.IP).Equal(x)
-	return MakeBoolean(_res)
-}
+// func __iP_Equal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
+// 	x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
+// 	_res := o.O.(_net.IP).Equal(x)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
@@ -64076,12 +64010,12 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Mask from net/ip.go:
-func __iP_Mask(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-	mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0)
-	_res := o.O.(_net.IP).Mask(mask)
-	return MakeGoObject(_res)
-}
+// func __iP_Mask(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
+// 	mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
+// 	_res := o.O.(_net.IP).Mask(mask)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
@@ -64261,12 +64195,12 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(b)), addr)}
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
-func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-	ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0)
-	_res := o.O.(*_net.IPNet).Contains(ip)
-	return MakeBoolean(_res)
-}
+// func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
+// 	ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
+// 	_res := o.O.(*_net.IPNet).Contains(ip)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
@@ -64750,7 +64684,6 @@ var members_HardwareAddr = GoTypeInfo{Members: GoMembers{
 
 var members_IP = GoTypeInfo{Members: GoMembers{
 	"DefaultMask": __iP_DefaultMask,
-	"Equal": __iP_Equal,
 	"IsGlobalUnicast": __iP_IsGlobalUnicast,
 	"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
 	"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
@@ -64759,7 +64692,6 @@ var members_IP = GoTypeInfo{Members: GoMembers{
 	"IsMulticast": __iP_IsMulticast,
 	"IsUnspecified": __iP_IsUnspecified,
 	"MarshalText": __iP_MarshalText,
-	"Mask": __iP_Mask,
 	"String": __iP_String,
 	"To16": __iP_To16,
 	"To4": __iP_To4,
@@ -64780,7 +64712,6 @@ var members_IPMask = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
-	"Contains": __ptrTo_IPNet_Contains,
 	"Network": __ptrTo_IPNet_Network,
 	"String": __ptrTo_IPNet_String,
 }}
@@ -68055,12 +67986,12 @@ GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
 // w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
-func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/rpc.Server)ServeRequest()", args, 1, 1)
-	codec := ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0)
-	_res := o.O.(*_rpc.Server).ServeRequest(codec)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/rpc.Server)ServeRequest()", args, 1, 1)
+// 	codec := ABEND233(Unsupported: ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0))
+// 	_res := o.O.(*_rpc.Server).ServeRequest(codec)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/rpc.__serverError_Error from net/rpc/client.go:
 func __serverError_Error(o GoObject, args Object) Object {
@@ -68082,10 +68013,6 @@ var members_PtrTo_Client = GoTypeInfo{Members: GoMembers{
 	"Close": __ptrTo_Client_Close,
 }}
 
-var members_PtrTo_Server = GoTypeInfo{Members: GoMembers{
-	"ServeRequest": __ptrTo_Server_ServeRequest,
-}}
-
 var members_ServerError = GoTypeInfo{Members: GoMembers{
 	"Error": __serverError_Error,
 }}
@@ -68093,7 +68020,6 @@ var members_ServerError = GoTypeInfo{Members: GoMembers{
 
 func init() {
 	GoTypes[_reflect.TypeOf((*_rpc.Client)(nil))] = &members_PtrTo_Client
-	GoTypes[_reflect.TypeOf((*_rpc.Server)(nil))] = &members_PtrTo_Server
 	GoTypes[_reflect.TypeOf((*_rpc.ServerError)(nil)).Elem()] = &members_ServerError
 }
 
@@ -68295,12 +68221,12 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // }
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
-func __ptrTo_Client_Auth(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/smtp.Client)Auth()", args, 1, 1)
-	a := ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0)
-	_res := o.O.(*_smtp.Client).Auth(a)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Client_Auth(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/smtp.Client)Auth()", args, 1, 1)
+// 	a := ABEND233(Unsupported: ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0))
+// 	_res := o.O.(*_smtp.Client).Auth(a)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/smtp.__ptrTo_Client_Close from net/smtp/smtp.go:
 func __ptrTo_Client_Close(o GoObject, args Object) Object {
@@ -68407,7 +68333,6 @@ import (
 	_reflect "reflect"
 )
 var members_PtrTo_Client = GoTypeInfo{Members: GoMembers{
-	"Auth": __ptrTo_Client_Auth,
 	"Close": __ptrTo_Client_Close,
 	"Data": __ptrTo_Client_Data,
 	"Extension": __ptrTo_Client_Extension,
@@ -70129,12 +70054,12 @@ func __ptrTo_File_Chdir(o GoObject, args Object) Object {
 }
 
 GO FUNC os.__ptrTo_File_Chmod from os/file.go:
-func __ptrTo_File_Chmod(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_os.File)Chmod()", args, 1, 1)
-	mode := ExtractGo_go_std_os__FileMode("(*_os.File)Chmod()", "mode", _argList, 0)
-	_res := o.O.(*_os.File).Chmod(mode)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_File_Chmod(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_os.File)Chmod()", args, 1, 1)
+// 	mode := ABEND233(Unsupported: ExtractGo_go_std_os__FileMode("(*_os.File)Chmod()", "mode", _argList, 0))
+// 	_res := o.O.(*_os.File).Chmod(mode)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC os.__ptrTo_File_Chown from os/file_posix.go:
 func __ptrTo_File_Chown(o GoObject, args Object) Object {
@@ -70375,12 +70300,12 @@ func __ptrTo_Process_Release(o GoObject, args Object) Object {
 }
 
 GO FUNC os.__ptrTo_Process_Signal from os/exec.go:
-func __ptrTo_Process_Signal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_os.Process)Signal()", args, 1, 1)
-	sig := ExtractGo_go_std_os__Signal("(*_os.Process)Signal()", "sig", _argList, 0)
-	_res := o.O.(*_os.Process).Signal(sig)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Process_Signal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_os.Process)Signal()", args, 1, 1)
+// 	sig := ABEND233(Unsupported: ExtractGo_go_std_os__Signal("(*_os.Process)Signal()", "sig", _argList, 0))
+// 	_res := o.O.(*_os.Process).Signal(sig)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC os.__ptrTo_Process_Wait from os/exec.go:
 func __ptrTo_Process_Wait(o GoObject, args Object) Object {
@@ -70418,7 +70343,6 @@ import (
 )
 var members_PtrTo_File = GoTypeInfo{Members: GoMembers{
 	"Chdir": __ptrTo_File_Chdir,
-	"Chmod": __ptrTo_File_Chmod,
 	"Chown": __ptrTo_File_Chown,
 	"Close": __ptrTo_File_Close,
 	"Name": __ptrTo_File_Name,
@@ -70451,7 +70375,6 @@ var members_PtrTo_PathError = GoTypeInfo{Members: GoMembers{
 var members_PtrTo_Process = GoTypeInfo{Members: GoMembers{
 	"Kill": __ptrTo_Process_Kill,
 	"Release": __ptrTo_Process_Release,
-	"Signal": __ptrTo_Process_Signal,
 	"Wait": __ptrTo_Process_Wait,
 }}
 
@@ -72187,12 +72110,12 @@ GO FUNC reflect.__value_Complex from reflect/value.go:
 // ABEND007(find these)}
 
 GO FUNC reflect.__value_Convert from reflect/value.go:
-func __value_Convert(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_reflect.Value)Convert()", args, 1, 1)
-	t := ExtractGo_go_std_reflect__Type("(_reflect.Value)Convert()", "t", _argList, 0)
-	_res := o.O.(_reflect.Value).Convert(t)
-	return MakeGoObject(_res)
-}
+// func __value_Convert(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_reflect.Value)Convert()", args, 1, 1)
+// 	t := ABEND233(Unsupported: ExtractGo_go_std_reflect__Type("(_reflect.Value)Convert()", "t", _argList, 0))
+// 	_res := o.O.(_reflect.Value).Convert(t)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC reflect.__value_Elem from reflect/value.go:
 func __value_Elem(o GoObject, args Object) Object {
@@ -72288,12 +72211,12 @@ func __value_Len(o GoObject, args Object) Object {
 }
 
 GO FUNC reflect.__value_MapIndex from reflect/value.go:
-func __value_MapIndex(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_reflect.Value)MapIndex()", args, 1, 1)
-	key := ExtractGo_go_std_reflect__Value("(_reflect.Value)MapIndex()", "key", _argList, 0)
-	_res := o.O.(_reflect.Value).MapIndex(key)
-	return MakeGoObject(_res)
-}
+// func __value_MapIndex(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_reflect.Value)MapIndex()", args, 1, 1)
+// 	key := ABEND233(Unsupported: ExtractGo_go_std_reflect__Value("(_reflect.Value)MapIndex()", "key", _argList, 0))
+// 	_res := o.O.(_reflect.Value).MapIndex(key)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC reflect.__value_MapKeys from reflect/value.go:
 func __value_MapKeys(o GoObject, args Object) Object {
@@ -72492,12 +72415,12 @@ func __value_TryRecv(o GoObject, args Object) Object {
 }
 
 GO FUNC reflect.__value_TrySend from reflect/value.go:
-func __value_TrySend(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_reflect.Value)TrySend()", args, 1, 1)
-	x := ExtractGo_go_std_reflect__Value("(_reflect.Value)TrySend()", "x", _argList, 0)
-	_res := o.O.(_reflect.Value).TrySend(x)
-	return MakeBoolean(_res)
-}
+// func __value_TrySend(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_reflect.Value)TrySend()", args, 1, 1)
+// 	x := ABEND233(Unsupported: ExtractGo_go_std_reflect__Value("(_reflect.Value)TrySend()", "x", _argList, 0))
+// 	_res := o.O.(_reflect.Value).TrySend(x)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC reflect.__value_Type from reflect/value.go:
 func __value_Type(o GoObject, args Object) Object {
@@ -72555,7 +72478,6 @@ var members_Value = GoTypeInfo{Members: GoMembers{
 	"CanInterface": __value_CanInterface,
 	"CanSet": __value_CanSet,
 	"Cap": __value_Cap,
-	"Convert": __value_Convert,
 	"Elem": __value_Elem,
 	"Field": __value_Field,
 	"FieldByName": __value_FieldByName,
@@ -72565,7 +72487,6 @@ var members_Value = GoTypeInfo{Members: GoMembers{
 	"IsValid": __value_IsValid,
 	"Kind": __value_Kind,
 	"Len": __value_Len,
-	"MapIndex": __value_MapIndex,
 	"MapKeys": __value_MapKeys,
 	"MapRange": __value_MapRange,
 	"Method": __value_Method,
@@ -72579,7 +72500,6 @@ var members_Value = GoTypeInfo{Members: GoMembers{
 	"Slice3": __value_Slice3,
 	"String": __value_String,
 	"TryRecv": __value_TryRecv,
-	"TrySend": __value_TrySend,
 	"Type": __value_Type,
 	"Uint": __value_Uint,
 }}
@@ -82277,12 +82197,12 @@ GO FUNC text/template.__ptrTo_Template_ExecuteTemplate from text/template/exec.g
 // wr ABEND987(genutils.go: imports not yet supported: io.Writer), name string, data interface {}}
 
 GO FUNC text/template.__ptrTo_Template_Funcs from text/template/template.go:
-func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_text/template.Template)Funcs()", args, 1, 1)
-	funcMap := ExtractGo_go_std_text_template__FuncMap("(*_text/template.Template)Funcs()", "funcMap", _argList, 0)
-	_res := o.O.(*_template.Template).Funcs(funcMap)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_Template_Funcs(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_text/template.Template)Funcs()", args, 1, 1)
+// 	funcMap := ABEND233(Unsupported: ExtractGo_go_std_text_template__FuncMap("(*_text/template.Template)Funcs()", "funcMap", _argList, 0))
+// 	_res := o.O.(*_template.Template).Funcs(funcMap)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC text/template.__ptrTo_Template_Lookup from text/template/template.go:
 func __ptrTo_Template_Lookup(o GoObject, args Object) Object {
@@ -82366,7 +82286,6 @@ var members_PtrTo_Template = GoTypeInfo{Members: GoMembers{
 	"Clone": __ptrTo_Template_Clone,
 	"DefinedTemplates": __ptrTo_Template_DefinedTemplates,
 	"Delims": __ptrTo_Template_Delims,
-	"Funcs": __ptrTo_Template_Funcs,
 	"Lookup": __ptrTo_Template_Lookup,
 	"Name": __ptrTo_Template_Name,
 	"New": __ptrTo_Template_New,
@@ -83481,12 +83400,12 @@ func __ptrTo_IdentifierNode_Copy(o GoObject, args Object) Object {
 }
 
 GO FUNC text/template/parse.__ptrTo_IdentifierNode_SetPos from text/template/parse/node.go:
-func __ptrTo_IdentifierNode_SetPos(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_text/template/parse.IdentifierNode)SetPos()", args, 1, 1)
-	pos := ExtractGo_go_std_text_template_parse__Pos("(*_text/template/parse.IdentifierNode)SetPos()", "pos", _argList, 0)
-	_res := o.O.(*_parse.IdentifierNode).SetPos(pos)
-	return MakeGoObject(_res)
-}
+// func __ptrTo_IdentifierNode_SetPos(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_text/template/parse.IdentifierNode)SetPos()", args, 1, 1)
+// 	pos := ABEND233(Unsupported: ExtractGo_go_std_text_template_parse__Pos("(*_text/template/parse.IdentifierNode)SetPos()", "pos", _argList, 0))
+// 	_res := o.O.(*_parse.IdentifierNode).SetPos(pos)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC text/template/parse.__ptrTo_IdentifierNode_SetTree from text/template/parse/node.go:
 // func __ptrTo_IdentifierNode_SetTree(o GoObject, args Object) Object {
@@ -83644,15 +83563,15 @@ func __ptrTo_Tree_Copy(o GoObject, args Object) Object {
 }
 
 GO FUNC text/template/parse.__ptrTo_Tree_ErrorContext from text/template/parse/parse.go:
-func __ptrTo_Tree_ErrorContext(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_text/template/parse.Tree)ErrorContext()", args, 1, 1)
-	n := ExtractGo_go_std_text_template_parse__Node("(*_text/template/parse.Tree)ErrorContext()", "n", _argList, 0)
-	location, context := o.O.(*_parse.Tree).ErrorContext(n)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeString(location))
-	_res = _res.Conjoin(MakeString(context))
-	return _res
-}
+// func __ptrTo_Tree_ErrorContext(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_text/template/parse.Tree)ErrorContext()", args, 1, 1)
+// 	n := ABEND233(Unsupported: ExtractGo_go_std_text_template_parse__Node("(*_text/template/parse.Tree)ErrorContext()", "n", _argList, 0))
+// 	location, context := o.O.(*_parse.Tree).ErrorContext(n)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeString(location))
+// 	_res = _res.Conjoin(MakeString(context))
+// 	return _res
+// }
 
 GO FUNC text/template/parse.__ptrTo_Tree_Parse from text/template/parse/parse.go:
 // func __ptrTo_Tree_Parse(o GoObject, args Object) Object {
@@ -83726,7 +83645,6 @@ var members_PtrTo_FieldNode = GoTypeInfo{Members: GoMembers{
 
 var members_PtrTo_IdentifierNode = GoTypeInfo{Members: GoMembers{
 	"Copy": __ptrTo_IdentifierNode_Copy,
-	"SetPos": __ptrTo_IdentifierNode_SetPos,
 	"String": __ptrTo_IdentifierNode_String,
 }}
 
@@ -83786,7 +83704,6 @@ var members_PtrTo_TextNode = GoTypeInfo{Members: GoMembers{
 
 var members_PtrTo_Tree = GoTypeInfo{Members: GoMembers{
 	"Copy": __ptrTo_Tree_Copy,
-	"ErrorContext": __ptrTo_Tree_ErrorContext,
 }}
 
 var members_PtrTo_VariableNode = GoTypeInfo{Members: GoMembers{
@@ -84264,12 +84181,12 @@ func __duration_Nanoseconds(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__duration_Round from time/time.go:
-func __duration_Round(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Duration)Round()", args, 1, 1)
-	m := ExtractGo_go_std_time__Duration("(_time.Duration)Round()", "m", _argList, 0)
-	_res := o.O.(_time.Duration).Round(m)
-	return MakeGoObject(_res)
-}
+// func __duration_Round(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Duration)Round()", args, 1, 1)
+// 	m := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(_time.Duration)Round()", "m", _argList, 0))
+// 	_res := o.O.(_time.Duration).Round(m)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__duration_Seconds from time/time.go:
 // func __duration_Seconds(o GoObject, args Object) Object {
@@ -84283,12 +84200,12 @@ func __duration_String(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__duration_Truncate from time/time.go:
-func __duration_Truncate(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Duration)Truncate()", args, 1, 1)
-	m := ExtractGo_go_std_time__Duration("(_time.Duration)Truncate()", "m", _argList, 0)
-	_res := o.O.(_time.Duration).Truncate(m)
-	return MakeGoObject(_res)
-}
+// func __duration_Truncate(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Duration)Truncate()", args, 1, 1)
+// 	m := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(_time.Duration)Truncate()", "m", _argList, 0))
+// 	_res := o.O.(_time.Duration).Truncate(m)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__month_String from time/time.go:
 func __month_String(o GoObject, args Object) Object {
@@ -84333,12 +84250,12 @@ GO FUNC time.__ptrTo_Time_UnmarshalText from time/time.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(data)))}
 
 GO FUNC time.__ptrTo_Timer_Reset from time/sleep.go:
-func __ptrTo_Timer_Reset(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_time.Timer)Reset()", args, 1, 1)
-	d := ExtractGo_go_std_time__Duration("(*_time.Timer)Reset()", "d", _argList, 0)
-	_res := o.O.(*_time.Timer).Reset(d)
-	return MakeBoolean(_res)
-}
+// func __ptrTo_Timer_Reset(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_time.Timer)Reset()", args, 1, 1)
+// 	d := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(*_time.Timer)Reset()", "d", _argList, 0))
+// 	_res := o.O.(*_time.Timer).Reset(d)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC time.__ptrTo_Timer_Stop from time/sleep.go:
 func __ptrTo_Timer_Stop(o GoObject, args Object) Object {
@@ -84348,12 +84265,12 @@ func __ptrTo_Timer_Stop(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__time_Add from time/time.go:
-func __time_Add(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Add()", args, 1, 1)
-	d := ExtractGo_go_std_time__Duration("(_time.Time)Add()", "d", _argList, 0)
-	_res := o.O.(_time.Time).Add(d)
-	return MakeGoObject(_res)
-}
+// func __time_Add(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Add()", args, 1, 1)
+// 	d := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(_time.Time)Add()", "d", _argList, 0))
+// 	_res := o.O.(_time.Time).Add(d)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__time_AddDate from time/time.go:
 func __time_AddDate(o GoObject, args Object) Object {
@@ -84366,24 +84283,24 @@ func __time_AddDate(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__time_After from time/time.go:
-func __time_After(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)After()", args, 1, 1)
-	u := ExtractGo_go_std_time__Time("(_time.Time)After()", "u", _argList, 0)
-	_res := o.O.(_time.Time).After(u)
-	return MakeBoolean(_res)
-}
+// func __time_After(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)After()", args, 1, 1)
+// 	u := ABEND233(Unsupported: ExtractGo_go_std_time__Time("(_time.Time)After()", "u", _argList, 0))
+// 	_res := o.O.(_time.Time).After(u)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC time.__time_AppendFormat from time/format.go:
 // func __time_AppendFormat(o GoObject, args Object) Object {
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(b)), layout)}
 
 GO FUNC time.__time_Before from time/time.go:
-func __time_Before(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Before()", args, 1, 1)
-	u := ExtractGo_go_std_time__Time("(_time.Time)Before()", "u", _argList, 0)
-	_res := o.O.(_time.Time).Before(u)
-	return MakeBoolean(_res)
-}
+// func __time_Before(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Before()", args, 1, 1)
+// 	u := ABEND233(Unsupported: ExtractGo_go_std_time__Time("(_time.Time)Before()", "u", _argList, 0))
+// 	_res := o.O.(_time.Time).Before(u)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC time.__time_Clock from time/time.go:
 func __time_Clock(o GoObject, args Object) Object {
@@ -84415,12 +84332,12 @@ func __time_Day(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__time_Equal from time/time.go:
-func __time_Equal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Equal()", args, 1, 1)
-	u := ExtractGo_go_std_time__Time("(_time.Time)Equal()", "u", _argList, 0)
-	_res := o.O.(_time.Time).Equal(u)
-	return MakeBoolean(_res)
-}
+// func __time_Equal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Equal()", args, 1, 1)
+// 	u := ABEND233(Unsupported: ExtractGo_go_std_time__Time("(_time.Time)Equal()", "u", _argList, 0))
+// 	_res := o.O.(_time.Time).Equal(u)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC time.__time_Format from time/format.go:
 func __time_Format(o GoObject, args Object) Object {
@@ -84554,12 +84471,12 @@ func __time_Nanosecond(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__time_Round from time/time.go:
-func __time_Round(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Round()", args, 1, 1)
-	d := ExtractGo_go_std_time__Duration("(_time.Time)Round()", "d", _argList, 0)
-	_res := o.O.(_time.Time).Round(d)
-	return MakeGoObject(_res)
-}
+// func __time_Round(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Round()", args, 1, 1)
+// 	d := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(_time.Time)Round()", "d", _argList, 0))
+// 	_res := o.O.(_time.Time).Round(d)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__time_Second from time/time.go:
 func __time_Second(o GoObject, args Object) Object {
@@ -84576,20 +84493,20 @@ func __time_String(o GoObject, args Object) Object {
 }
 
 GO FUNC time.__time_Sub from time/time.go:
-func __time_Sub(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Sub()", args, 1, 1)
-	u := ExtractGo_go_std_time__Time("(_time.Time)Sub()", "u", _argList, 0)
-	_res := o.O.(_time.Time).Sub(u)
-	return MakeGoObject(_res)
-}
+// func __time_Sub(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Sub()", args, 1, 1)
+// 	u := ABEND233(Unsupported: ExtractGo_go_std_time__Time("(_time.Time)Sub()", "u", _argList, 0))
+// 	_res := o.O.(_time.Time).Sub(u)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__time_Truncate from time/time.go:
-func __time_Truncate(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_time.Time)Truncate()", args, 1, 1)
-	d := ExtractGo_go_std_time__Duration("(_time.Time)Truncate()", "d", _argList, 0)
-	_res := o.O.(_time.Time).Truncate(d)
-	return MakeGoObject(_res)
-}
+// func __time_Truncate(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_time.Time)Truncate()", args, 1, 1)
+// 	d := ABEND233(Unsupported: ExtractGo_go_std_time__Duration("(_time.Time)Truncate()", "d", _argList, 0))
+// 	_res := o.O.(_time.Time).Truncate(d)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC time.__time_UTC from time/time.go:
 func __time_UTC(o GoObject, args Object) Object {
@@ -84661,9 +84578,7 @@ import (
 )
 var members_Duration = GoTypeInfo{Members: GoMembers{
 	"Nanoseconds": __duration_Nanoseconds,
-	"Round": __duration_Round,
 	"String": __duration_String,
-	"Truncate": __duration_Truncate,
 }}
 
 var members_PtrTo_Location = GoTypeInfo{Members: GoMembers{
@@ -84679,14 +84594,10 @@ var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_Time = GoTypeInfo{Members: GoMembers{
-	"Add": __time_Add,
 	"AddDate": __time_AddDate,
-	"After": __time_After,
-	"Before": __time_Before,
 	"Clock": __time_Clock,
 	"Date": __time_Date,
 	"Day": __time_Day,
-	"Equal": __time_Equal,
 	"Format": __time_Format,
 	"GobEncode": __time_GobEncode,
 	"Hour": __time_Hour,
@@ -84700,11 +84611,8 @@ var members_Time = GoTypeInfo{Members: GoMembers{
 	"Minute": __time_Minute,
 	"Month": __time_Month,
 	"Nanosecond": __time_Nanosecond,
-	"Round": __time_Round,
 	"Second": __time_Second,
 	"String": __time_String,
-	"Sub": __time_Sub,
-	"Truncate": __time_Truncate,
 	"UTC": __time_UTC,
 	"Unix": __time_Unix,
 	"UnixNano": __time_UnixNano,
@@ -84715,7 +84623,6 @@ var members_Time = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_Timer = GoTypeInfo{Members: GoMembers{
-	"Reset": __ptrTo_Timer_Reset,
 	"Stop": __ptrTo_Timer_Stop,
 }}
 
@@ -85145,8 +85052,8 @@ import (
 func init() {
 }
 
-ABENDs: 048(488) 987(488) 047(436) 902(435) 674(180) 275(143) 907(141) 675(129) 043(118) 644(104) 906(60) 007(43) 903(42) 883(20) 905(18) 908(8) 909(3) 042(2) 171(2) 901(2) 044(1)
-Totals: functions=3491 generated=2125 (60.87%)
+ABENDs: 048(488) 987(488) 047(436) 902(435) 674(180) 275(143) 907(141) 675(129) 043(118) 644(104) 233(74) 906(60) 007(43) 903(42) 883(20) 905(18) 908(8) 909(3) 042(2) 171(2) 901(2) 044(1)
+Totals: functions=3491 generated=2052 (58.78%)
           non-receivers=1526 (43.71%) generated=762 (49.93%)
-          receivers=1965 (56.29%) generated=1363 (69.36%)
+          receivers=1965 (56.29%) generated=1290 (65.65%)
         types=966 generated=437 (45.24%)

@@ -1426,12 +1426,12 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Equal from net/ip.go:
-func __iP_Equal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-	x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0)
-	_res := o.O.(_net.IP).Equal(x)
-	return MakeBoolean(_res)
-}
+// func __iP_Equal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
+// 	x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
+// 	_res := o.O.(_net.IP).Equal(x)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
@@ -1497,12 +1497,12 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Mask from net/ip.go:
-func __iP_Mask(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-	mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0)
-	_res := o.O.(_net.IP).Mask(mask)
-	return MakeGoObject(_res)
-}
+// func __iP_Mask(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
+// 	mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
+// 	_res := o.O.(_net.IP).Mask(mask)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
@@ -1660,12 +1660,12 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(b)), addr)}
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
-func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-	ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0)
-	_res := o.O.(*_net.IPNet).Contains(ip)
-	return MakeBoolean(_res)
-}
+// func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
+// 	ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
+// 	_res := o.O.(*_net.IPNet).Contains(ip)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
@@ -1800,7 +1800,6 @@ var members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
 
 var members_IP = GoTypeInfo{Members: GoMembers{
 	"DefaultMask": __iP_DefaultMask,
-	"Equal": __iP_Equal,
 	"IsGlobalUnicast": __iP_IsGlobalUnicast,
 	"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
 	"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
@@ -1809,7 +1808,6 @@ var members_IP = GoTypeInfo{Members: GoMembers{
 	"IsMulticast": __iP_IsMulticast,
 	"IsUnspecified": __iP_IsUnspecified,
 	"MarshalText": __iP_MarshalText,
-	"Mask": __iP_Mask,
 	"String": __iP_String,
 	"To16": __iP_To16,
 	"To4": __iP_To4,
@@ -1826,7 +1824,6 @@ var members_IPMask = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
-	"Contains": __ptrTo_IPNet_Contains,
 	"Network": __ptrTo_IPNet_Network,
 	"String": __ptrTo_IPNet_String,
 }}
@@ -2387,8 +2384,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
-Totals: functions=109 generated=85 (77.98%)
+ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 233(3) 275(3) 042(1) 644(1)
+Totals: functions=109 generated=82 (75.23%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
-          receivers=83 (76.15%) generated=59 (71.08%)
+          receivers=83 (76.15%) generated=56 (67.47%)
         types=28 generated=14 (50.00%)

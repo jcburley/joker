@@ -3852,12 +3852,12 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Equal from net/ip.go:
-func __iP_Equal(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-	x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0)
-	_res := o.O.(_net.IP).Equal(x)
-	return MakeBoolean(_res)
-}
+// func __iP_Equal(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
+// 	x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
+// 	_res := o.O.(_net.IP).Equal(x)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
@@ -3923,12 +3923,12 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Mask from net/ip.go:
-func __iP_Mask(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-	mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0)
-	_res := o.O.(_net.IP).Mask(mask)
-	return MakeGoObject(_res)
-}
+// func __iP_Mask(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
+// 	mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
+// 	_res := o.O.(_net.IP).Mask(mask)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
@@ -4102,12 +4102,12 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(b)), addr)}
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
-func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-	ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0)
-	_res := o.O.(*_net.IPNet).Contains(ip)
-	return MakeBoolean(_res)
-}
+// func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
+// 	ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
+// 	_res := o.O.(*_net.IPNet).Contains(ip)
+// 	return MakeBoolean(_res)
+// }
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
@@ -7427,12 +7427,12 @@ GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
 // w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
-func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/rpc.Server)ServeRequest()", args, 1, 1)
-	codec := ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0)
-	_res := o.O.(*_rpc.Server).ServeRequest(codec)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/rpc.Server)ServeRequest()", args, 1, 1)
+// 	codec := ABEND233(Unsupported: ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0))
+// 	_res := o.O.(*_rpc.Server).ServeRequest(codec)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/rpc.__serverError_Error from net/rpc/client.go:
 func __serverError_Error(o GoObject, args Object) Object {
@@ -7627,12 +7627,12 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // }
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
-func __ptrTo_Client_Auth(o GoObject, args Object) Object {
-	_argList := CheckGoArity("(*_net/smtp.Client)Auth()", args, 1, 1)
-	a := ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0)
-	_res := o.O.(*_smtp.Client).Auth(a)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __ptrTo_Client_Auth(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/smtp.Client)Auth()", args, 1, 1)
+// 	a := ABEND233(Unsupported: ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0))
+// 	_res := o.O.(*_smtp.Client).Auth(a)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/smtp.__ptrTo_Client_Close from net/smtp/smtp.go:
 func __ptrTo_Client_Close(o GoObject, args Object) Object {
@@ -8685,8 +8685,8 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 
 Adding 13 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 987(105) 047(76) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 644(4) 906(3) 883(2) 908(1) 909(1)
-Totals: functions=421 generated=230 (54.63%)
+ABENDs: 987(105) 047(76) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 233(5) 644(4) 906(3) 883(2) 908(1) 909(1)
+Totals: functions=421 generated=225 (53.44%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
-          receivers=273 (64.85%) generated=149 (54.58%)
+          receivers=273 (64.85%) generated=144 (52.75%)
         types=102 generated=39 (38.24%)
