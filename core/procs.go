@@ -119,6 +119,14 @@ func ExtractByte(args []Object, index int) byte {
 	return byte(v)
 }
 
+func ExtractInt8(args []Object, index int) int8 {
+	v := ExtractInt(args, index)
+	if v < math.MinInt8 || v > math.MaxInt8 {
+		panic(RT.NewArgTypeError(index, args[index], "int8"))
+	}
+	return int8(v)
+}
+
 func ExtractInt16(args []Object, index int) int16 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt16 || v > math.MaxInt16 {
@@ -217,6 +225,10 @@ func ExtractIOReader(args []Object, index int) io.Reader {
 
 func ExtractIOWriter(args []Object, index int) io.Writer {
 	return Ensureio_Writer(args, index)
+}
+
+func ExtractError(args []Object, index int) error {
+	return EnsureError(args, index)
 }
 
 var procMeta Proc = func(args []Object) Object {
