@@ -280,6 +280,8 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	if strings.Contains(goParamListDoc, " ") || strings.Contains(goParamListDoc, ",") {
 		goParamListDoc = "(" + goParamListDoc + ")"
 	}
+	clojureParamListDoc = strings.ReplaceAll(clojureParamListDoc, "__", "")
+	goParamListDoc = strings.ReplaceAll(goParamListDoc, "__", "")
 	min = len(fields)
 	max = len(fields)
 	return
