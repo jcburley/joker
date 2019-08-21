@@ -1231,14 +1231,14 @@ func _ConstructUnknownNetworkError(_v Object) _net.UnknownNetworkError {
 }
 
 GO FUNC net.CIDRMask from net/ip.go:
-func __cIDRMask(ones int, bits int) Object {
-	_res := _net.CIDRMask(ones, bits)
+func __cIDRMask(__ones int, __bits int) Object {
+	_res := _net.CIDRMask(__ones, __bits)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.DialIP from net/iprawsock.go:
-func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
-	_res1, _res2 := _net.DialIP(network, laddr, raddr)
+func __dialIP(__network string, __laddr *_net.IPAddr, __raddr *_net.IPAddr) Object {
+	_res1, _res2 := _net.DialIP(__network, __laddr, __raddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -1246,20 +1246,20 @@ func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 }
 
 GO FUNC net.IPv4 from net/ip.go:
-func __iPv4(a byte, b byte, c byte, d byte) Object {
-	_res := _net.IPv4(a, b, c, d)
+func __iPv4(__a byte, __b byte, __c byte, __d byte) Object {
+	_res := _net.IPv4(__a, __b, __c, __d)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.IPv4Mask from net/ip.go:
-func __iPv4Mask(a byte, b byte, c byte, d byte) Object {
-	_res := _net.IPv4Mask(a, b, c, d)
+func __iPv4Mask(__a byte, __b byte, __c byte, __d byte) Object {
+	_res := _net.IPv4Mask(__a, __b, __c, __d)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.ListenIP from net/iprawsock.go:
-func __listenIP(network string, laddr *_net.IPAddr) Object {
-	_res1, _res2 := _net.ListenIP(network, laddr)
+func __listenIP(__network string, __laddr *_net.IPAddr) Object {
+	_res1, _res2 := _net.ListenIP(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -1267,8 +1267,8 @@ func __listenIP(network string, laddr *_net.IPAddr) Object {
 }
 
 GO FUNC net.LookupAddr from net/lookup.go:
-func __lookupAddr(addr string) Object {
-	names, err := _net.LookupAddr(addr)
+func __lookupAddr(__addr string) Object {
+	names, err := _net.LookupAddr(__addr)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range names {
@@ -1280,8 +1280,8 @@ func __lookupAddr(addr string) Object {
 }
 
 GO FUNC net.LookupCNAME from net/lookup.go:
-func __lookupCNAME(host string) Object {
-	cname, err := _net.LookupCNAME(host)
+func __lookupCNAME(__host string) Object {
+	cname, err := _net.LookupCNAME(__host)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -1289,8 +1289,8 @@ func __lookupCNAME(host string) Object {
 }
 
 GO FUNC net.LookupHost from net/lookup.go:
-func __lookupHost(host string) Object {
-	addrs, err := _net.LookupHost(host)
+func __lookupHost(__host string) Object {
+	addrs, err := _net.LookupHost(__host)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
@@ -1302,8 +1302,8 @@ func __lookupHost(host string) Object {
 }
 
 GO FUNC net.LookupIP from net/lookup.go:
-func __lookupIP(host string) Object {
-	_res1, _res2 := _net.LookupIP(host)
+func __lookupIP(__host string) Object {
+	_res1, _res2 := _net.LookupIP(__host)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -1315,8 +1315,8 @@ func __lookupIP(host string) Object {
 }
 
 GO FUNC net.LookupMX from net/lookup.go:
-func __lookupMX(name string) Object {
-	_res1, _res2 := _net.LookupMX(name)
+func __lookupMX(__name string) Object {
+	_res1, _res2 := _net.LookupMX(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -1328,8 +1328,8 @@ func __lookupMX(name string) Object {
 }
 
 GO FUNC net.LookupNS from net/lookup.go:
-func __lookupNS(name string) Object {
-	_res1, _res2 := _net.LookupNS(name)
+func __lookupNS(__name string) Object {
+	_res1, _res2 := _net.LookupNS(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -1341,8 +1341,8 @@ func __lookupNS(name string) Object {
 }
 
 GO FUNC net.LookupPort from net/lookup.go:
-func __lookupPort(network string, service string) Object {
-	port, err := _net.LookupPort(network, service)
+func __lookupPort(__network string, __service string) Object {
+	port, err := _net.LookupPort(__network, __service)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -1350,8 +1350,8 @@ func __lookupPort(network string, service string) Object {
 }
 
 GO FUNC net.LookupSRV from net/lookup.go:
-func __lookupSRV(service string, proto string, name string) Object {
-	cname, addrs, err := _net.LookupSRV(service, proto, name)
+func __lookupSRV(__service string, __proto string, __name string) Object {
+	cname, addrs, err := _net.LookupSRV(__service, __proto, __name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_vec1 := EmptyVector()
@@ -1364,8 +1364,8 @@ func __lookupSRV(service string, proto string, name string) Object {
 }
 
 GO FUNC net.LookupTXT from net/lookup.go:
-func __lookupTXT(name string) Object {
-	_res1, _res2 := _net.LookupTXT(name)
+func __lookupTXT(__name string) Object {
+	_res1, _res2 := _net.LookupTXT(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -1377,8 +1377,8 @@ func __lookupTXT(name string) Object {
 }
 
 GO FUNC net.ParseCIDR from net/ip.go:
-func __parseCIDR(s string) Object {
-	_res1, _res2, _res3 := _net.ParseCIDR(s)
+func __parseCIDR(__s string) Object {
+	_res1, _res2, _res3 := _net.ParseCIDR(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(MakeGoObject(_res2))
@@ -1387,14 +1387,14 @@ func __parseCIDR(s string) Object {
 }
 
 GO FUNC net.ParseIP from net/ip.go:
-func __parseIP(s string) Object {
-	_res := _net.ParseIP(s)
+func __parseIP(__s string) Object {
+	_res := _net.ParseIP(__s)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.ResolveIPAddr from net/iprawsock.go:
-func __resolveIPAddr(network string, address string) Object {
-	_res1, _res2 := _net.ResolveIPAddr(network, address)
+func __resolveIPAddr(__network string, __address string) Object {
+	_res1, _res2 := _net.ResolveIPAddr(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -1428,8 +1428,8 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 GO FUNC net.__iP_Equal from net/ip.go:
 // func __iP_Equal(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-// 	x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
-// 	_res := o.O.(_net.IP).Equal(x)
+// 	__x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
+// 	_res := o.O.(_net.IP).Equal(__x)
 // 	return MakeBoolean(_res)
 // }
 
@@ -1499,8 +1499,8 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 GO FUNC net.__iP_Mask from net/ip.go:
 // func __iP_Mask(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-// 	mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
-// 	_res := o.O.(_net.IP).Mask(mask)
+// 	__mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
+// 	_res := o.O.(_net.IP).Mask(__mask)
 // 	return MakeGoObject(_res)
 // }
 
@@ -1573,7 +1573,7 @@ GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
 // func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net.__ptrTo_DNSConfigError_Error from net/net.go:
 func __ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {
@@ -1662,8 +1662,8 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 // func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-// 	ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
-// 	_res := o.O.(*_net.IPNet).Contains(ip)
+// 	__ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
+// 	_res := o.O.(*_net.IPNet).Contains(__ip)
 // 	return MakeBoolean(_res)
 // }
 
@@ -1715,39 +1715,39 @@ func __ptrTo_ParseError_Error(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
 // func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), addr string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __addr string}
 
 GO FUNC net.__ptrTo_Resolver_LookupCNAME from net/lookup.go:
 // func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
 // func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
 // func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
 // func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupPort from net/lookup.go:
 // func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, service string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __network string, __service string}
 
 GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
 // func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), service string, proto string, name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __service string, __proto string, __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
 // func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__unknownNetworkError_Error from net/net.go:
 func __unknownNetworkError_Error(o GoObject, args Object) Object {
@@ -2096,8 +2096,8 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
-func __parse(rawurl string) Object {
-	_res1, _res2 := _url.Parse(rawurl)
+func __parse(__rawurl string) Object {
+	_res1, _res2 := _url.Parse(__rawurl)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2105,8 +2105,8 @@ func __parse(rawurl string) Object {
 }
 
 GO FUNC net/url.ParseQuery from net/url/url.go:
-func __parseQuery(query string) Object {
-	_res1, _res2 := _url.ParseQuery(query)
+func __parseQuery(__query string) Object {
+	_res1, _res2 := _url.ParseQuery(__query)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2114,8 +2114,8 @@ func __parseQuery(query string) Object {
 }
 
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
-func __parseRequestURI(rawurl string) Object {
-	_res1, _res2 := _url.ParseRequestURI(rawurl)
+func __parseRequestURI(__rawurl string) Object {
+	_res1, _res2 := _url.ParseRequestURI(__rawurl)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2123,8 +2123,8 @@ func __parseRequestURI(rawurl string) Object {
 }
 
 GO FUNC net/url.PathUnescape from net/url/url.go:
-func __pathUnescape(s string) Object {
-	_res1, _res2 := _url.PathUnescape(s)
+func __pathUnescape(__s string) Object {
+	_res1, _res2 := _url.PathUnescape(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2132,8 +2132,8 @@ func __pathUnescape(s string) Object {
 }
 
 GO FUNC net/url.QueryUnescape from net/url/url.go:
-func __queryUnescape(s string) Object {
-	_res1, _res2 := _url.QueryUnescape(s)
+func __queryUnescape(__s string) Object {
+	_res1, _res2 := _url.QueryUnescape(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2141,14 +2141,14 @@ func __queryUnescape(s string) Object {
 }
 
 GO FUNC net/url.User from net/url/url.go:
-func __user(username string) Object {
-	_res := _url.User(username)
+func __user(__username string) Object {
+	_res := _url.User(__username)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/url.UserPassword from net/url/url.go:
-func __userPassword(username string, password string) Object {
-	_res := _url.UserPassword(username, password)
+func __userPassword(__username string, __password string) Object {
+	_res := _url.UserPassword(__username, __password)
 	return MakeGoObject(_res)
 }
 
@@ -2225,8 +2225,8 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
 func __ptrTo_URL_Parse(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/url.URL)Parse()", args, 1, 1)
-	ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
-	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
+	__ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
+	_res1, _res2 := o.O.(*_url.URL).Parse(__ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -2258,7 +2258,7 @@ GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
 // func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for ref at: _tests/small/src/net/url/url.go:973:36)
-// 	_res := o.O.(*_url.URL).ResolveReference(ref)
+// 	_res := o.O.(*_url.URL).ResolveReference(__ref)
 // 	return MakeGoObject(_res)
 // }
 
@@ -2317,8 +2317,8 @@ func __values_Encode(o GoObject, args Object) Object {
 GO FUNC net/url.__values_Get from net/url/url.go:
 func __values_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/url.Values)Get()", args, 1, 1)
-	key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
-	_res := o.O.(_url.Values).Get(key)
+	__key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
+	_res := o.O.(_url.Values).Get(__key)
 	return MakeString(_res)
 }
 

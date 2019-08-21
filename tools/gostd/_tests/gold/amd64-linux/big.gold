@@ -3409,14 +3409,14 @@ func _ConstructUnknownNetworkError(_v Object) _net.UnknownNetworkError {
 }
 
 GO FUNC net.CIDRMask from net/ip.go:
-func __cIDRMask(ones int, bits int) Object {
-	_res := _net.CIDRMask(ones, bits)
+func __cIDRMask(__ones int, __bits int) Object {
+	_res := _net.CIDRMask(__ones, __bits)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.Dial from net/dial.go:
-func __dial(network string, address string) Object {
-	_res1, _res2 := _net.Dial(network, address)
+func __dial(__network string, __address string) Object {
+	_res1, _res2 := _net.Dial(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3424,8 +3424,8 @@ func __dial(network string, address string) Object {
 }
 
 GO FUNC net.DialIP from net/iprawsock.go:
-func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
-	_res1, _res2 := _net.DialIP(network, laddr, raddr)
+func __dialIP(__network string, __laddr *_net.IPAddr, __raddr *_net.IPAddr) Object {
+	_res1, _res2 := _net.DialIP(__network, __laddr, __raddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3433,8 +3433,8 @@ func __dialIP(network string, laddr *_net.IPAddr, raddr *_net.IPAddr) Object {
 }
 
 GO FUNC net.DialTCP from net/tcpsock.go:
-func __dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object {
-	_res1, _res2 := _net.DialTCP(network, laddr, raddr)
+func __dialTCP(__network string, __laddr *_net.TCPAddr, __raddr *_net.TCPAddr) Object {
+	_res1, _res2 := _net.DialTCP(__network, __laddr, __raddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3442,8 +3442,8 @@ func __dialTCP(network string, laddr *_net.TCPAddr, raddr *_net.TCPAddr) Object 
 }
 
 GO FUNC net.DialTimeout from net/dial.go:
-// func __dialTimeout(network string, address string, timeout ABEND987(genutils.go: imports not yet supported: time.Duration)) Object {
-// 	_res1, _res2 := _net.DialTimeout(network, address, timeout)
+// func __dialTimeout(__network string, __address string, __timeout ABEND987(genutils.go: imports not yet supported: time.Duration)) Object {
+// 	_res1, _res2 := _net.DialTimeout(__network, __address, __timeout)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3451,8 +3451,8 @@ GO FUNC net.DialTimeout from net/dial.go:
 // }
 
 GO FUNC net.DialUDP from net/udpsock.go:
-func __dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object {
-	_res1, _res2 := _net.DialUDP(network, laddr, raddr)
+func __dialUDP(__network string, __laddr *_net.UDPAddr, __raddr *_net.UDPAddr) Object {
+	_res1, _res2 := _net.DialUDP(__network, __laddr, __raddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3460,8 +3460,8 @@ func __dialUDP(network string, laddr *_net.UDPAddr, raddr *_net.UDPAddr) Object 
 }
 
 GO FUNC net.DialUnix from net/unixsock.go:
-func __dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Object {
-	_res1, _res2 := _net.DialUnix(network, laddr, raddr)
+func __dialUnix(__network string, __laddr *_net.UnixAddr, __raddr *_net.UnixAddr) Object {
+	_res1, _res2 := _net.DialUnix(__network, __laddr, __raddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3469,8 +3469,8 @@ func __dialUnix(network string, laddr *_net.UnixAddr, raddr *_net.UnixAddr) Obje
 }
 
 GO FUNC net.FileConn from net/file.go:
-// func __fileConn(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
-// 	c, err := _net.FileConn(f)
+// func __fileConn(__f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
+// 	c, err := _net.FileConn(__f)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3478,8 +3478,8 @@ GO FUNC net.FileConn from net/file.go:
 // }
 
 GO FUNC net.FileListener from net/file.go:
-// func __fileListener(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
-// 	ln, err := _net.FileListener(f)
+// func __fileListener(__f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
+// 	ln, err := _net.FileListener(__f)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(ln))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3487,8 +3487,8 @@ GO FUNC net.FileListener from net/file.go:
 // }
 
 GO FUNC net.FilePacketConn from net/file.go:
-// func __filePacketConn(f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
-// 	c, err := _net.FilePacketConn(f)
+// func __filePacketConn(__f *ABEND987(genutils.go: imports not yet supported: os.File)) Object {
+// 	c, err := _net.FilePacketConn(__f)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(c))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3496,14 +3496,14 @@ GO FUNC net.FilePacketConn from net/file.go:
 // }
 
 GO FUNC net.IPv4 from net/ip.go:
-func __iPv4(a byte, b byte, c byte, d byte) Object {
-	_res := _net.IPv4(a, b, c, d)
+func __iPv4(__a byte, __b byte, __c byte, __d byte) Object {
+	_res := _net.IPv4(__a, __b, __c, __d)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.IPv4Mask from net/ip.go:
-func __iPv4Mask(a byte, b byte, c byte, d byte) Object {
-	_res := _net.IPv4Mask(a, b, c, d)
+func __iPv4Mask(__a byte, __b byte, __c byte, __d byte) Object {
+	_res := _net.IPv4Mask(__a, __b, __c, __d)
 	return MakeGoObject(_res)
 }
 
@@ -3521,8 +3521,8 @@ func __interfaceAddrs() Object {
 }
 
 GO FUNC net.InterfaceByIndex from net/interface.go:
-func __interfaceByIndex(index int) Object {
-	_res1, _res2 := _net.InterfaceByIndex(index)
+func __interfaceByIndex(__index int) Object {
+	_res1, _res2 := _net.InterfaceByIndex(__index)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3530,8 +3530,8 @@ func __interfaceByIndex(index int) Object {
 }
 
 GO FUNC net.InterfaceByName from net/interface.go:
-func __interfaceByName(name string) Object {
-	_res1, _res2 := _net.InterfaceByName(name)
+func __interfaceByName(__name string) Object {
+	_res1, _res2 := _net.InterfaceByName(__name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3552,8 +3552,8 @@ func __interfaces() Object {
 }
 
 GO FUNC net.Listen from net/dial.go:
-func __listen(network string, address string) Object {
-	_res1, _res2 := _net.Listen(network, address)
+func __listen(__network string, __address string) Object {
+	_res1, _res2 := _net.Listen(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3561,8 +3561,8 @@ func __listen(network string, address string) Object {
 }
 
 GO FUNC net.ListenIP from net/iprawsock.go:
-func __listenIP(network string, laddr *_net.IPAddr) Object {
-	_res1, _res2 := _net.ListenIP(network, laddr)
+func __listenIP(__network string, __laddr *_net.IPAddr) Object {
+	_res1, _res2 := _net.ListenIP(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3570,8 +3570,8 @@ func __listenIP(network string, laddr *_net.IPAddr) Object {
 }
 
 GO FUNC net.ListenMulticastUDP from net/udpsock.go:
-func __listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAddr) Object {
-	_res1, _res2 := _net.ListenMulticastUDP(network, ifi, gaddr)
+func __listenMulticastUDP(__network string, __ifi *_net.Interface, __gaddr *_net.UDPAddr) Object {
+	_res1, _res2 := _net.ListenMulticastUDP(__network, __ifi, __gaddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3579,8 +3579,8 @@ func __listenMulticastUDP(network string, ifi *_net.Interface, gaddr *_net.UDPAd
 }
 
 GO FUNC net.ListenPacket from net/dial.go:
-func __listenPacket(network string, address string) Object {
-	_res1, _res2 := _net.ListenPacket(network, address)
+func __listenPacket(__network string, __address string) Object {
+	_res1, _res2 := _net.ListenPacket(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3588,8 +3588,8 @@ func __listenPacket(network string, address string) Object {
 }
 
 GO FUNC net.ListenTCP from net/tcpsock.go:
-func __listenTCP(network string, laddr *_net.TCPAddr) Object {
-	_res1, _res2 := _net.ListenTCP(network, laddr)
+func __listenTCP(__network string, __laddr *_net.TCPAddr) Object {
+	_res1, _res2 := _net.ListenTCP(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3597,8 +3597,8 @@ func __listenTCP(network string, laddr *_net.TCPAddr) Object {
 }
 
 GO FUNC net.ListenUDP from net/udpsock.go:
-func __listenUDP(network string, laddr *_net.UDPAddr) Object {
-	_res1, _res2 := _net.ListenUDP(network, laddr)
+func __listenUDP(__network string, __laddr *_net.UDPAddr) Object {
+	_res1, _res2 := _net.ListenUDP(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3606,8 +3606,8 @@ func __listenUDP(network string, laddr *_net.UDPAddr) Object {
 }
 
 GO FUNC net.ListenUnix from net/unixsock.go:
-func __listenUnix(network string, laddr *_net.UnixAddr) Object {
-	_res1, _res2 := _net.ListenUnix(network, laddr)
+func __listenUnix(__network string, __laddr *_net.UnixAddr) Object {
+	_res1, _res2 := _net.ListenUnix(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3615,8 +3615,8 @@ func __listenUnix(network string, laddr *_net.UnixAddr) Object {
 }
 
 GO FUNC net.ListenUnixgram from net/unixsock.go:
-func __listenUnixgram(network string, laddr *_net.UnixAddr) Object {
-	_res1, _res2 := _net.ListenUnixgram(network, laddr)
+func __listenUnixgram(__network string, __laddr *_net.UnixAddr) Object {
+	_res1, _res2 := _net.ListenUnixgram(__network, __laddr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3624,8 +3624,8 @@ func __listenUnixgram(network string, laddr *_net.UnixAddr) Object {
 }
 
 GO FUNC net.LookupAddr from net/lookup.go:
-func __lookupAddr(addr string) Object {
-	names, err := _net.LookupAddr(addr)
+func __lookupAddr(__addr string) Object {
+	names, err := _net.LookupAddr(__addr)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range names {
@@ -3637,8 +3637,8 @@ func __lookupAddr(addr string) Object {
 }
 
 GO FUNC net.LookupCNAME from net/lookup.go:
-func __lookupCNAME(host string) Object {
-	cname, err := _net.LookupCNAME(host)
+func __lookupCNAME(__host string) Object {
+	cname, err := _net.LookupCNAME(__host)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3646,8 +3646,8 @@ func __lookupCNAME(host string) Object {
 }
 
 GO FUNC net.LookupHost from net/lookup.go:
-func __lookupHost(host string) Object {
-	addrs, err := _net.LookupHost(host)
+func __lookupHost(__host string) Object {
+	addrs, err := _net.LookupHost(__host)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range addrs {
@@ -3659,8 +3659,8 @@ func __lookupHost(host string) Object {
 }
 
 GO FUNC net.LookupIP from net/lookup.go:
-func __lookupIP(host string) Object {
-	_res1, _res2 := _net.LookupIP(host)
+func __lookupIP(__host string) Object {
+	_res1, _res2 := _net.LookupIP(__host)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -3672,8 +3672,8 @@ func __lookupIP(host string) Object {
 }
 
 GO FUNC net.LookupMX from net/lookup.go:
-func __lookupMX(name string) Object {
-	_res1, _res2 := _net.LookupMX(name)
+func __lookupMX(__name string) Object {
+	_res1, _res2 := _net.LookupMX(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -3685,8 +3685,8 @@ func __lookupMX(name string) Object {
 }
 
 GO FUNC net.LookupNS from net/lookup.go:
-func __lookupNS(name string) Object {
-	_res1, _res2 := _net.LookupNS(name)
+func __lookupNS(__name string) Object {
+	_res1, _res2 := _net.LookupNS(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -3698,8 +3698,8 @@ func __lookupNS(name string) Object {
 }
 
 GO FUNC net.LookupPort from net/lookup.go:
-func __lookupPort(network string, service string) Object {
-	port, err := _net.LookupPort(network, service)
+func __lookupPort(__network string, __service string) Object {
+	port, err := _net.LookupPort(__network, __service)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(port))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3707,8 +3707,8 @@ func __lookupPort(network string, service string) Object {
 }
 
 GO FUNC net.LookupSRV from net/lookup.go:
-func __lookupSRV(service string, proto string, name string) Object {
-	cname, addrs, err := _net.LookupSRV(service, proto, name)
+func __lookupSRV(__service string, __proto string, __name string) Object {
+	cname, addrs, err := _net.LookupSRV(__service, __proto, __name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
 	_vec1 := EmptyVector()
@@ -3721,8 +3721,8 @@ func __lookupSRV(service string, proto string, name string) Object {
 }
 
 GO FUNC net.LookupTXT from net/lookup.go:
-func __lookupTXT(name string) Object {
-	_res1, _res2 := _net.LookupTXT(name)
+func __lookupTXT(__name string) Object {
+	_res1, _res2 := _net.LookupTXT(__name)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -3734,8 +3734,8 @@ func __lookupTXT(name string) Object {
 }
 
 GO FUNC net.ParseCIDR from net/ip.go:
-func __parseCIDR(s string) Object {
-	_res1, _res2, _res3 := _net.ParseCIDR(s)
+func __parseCIDR(__s string) Object {
+	_res1, _res2, _res3 := _net.ParseCIDR(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(MakeGoObject(_res2))
@@ -3744,14 +3744,14 @@ func __parseCIDR(s string) Object {
 }
 
 GO FUNC net.ParseIP from net/ip.go:
-func __parseIP(s string) Object {
-	_res := _net.ParseIP(s)
+func __parseIP(__s string) Object {
+	_res := _net.ParseIP(__s)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.ParseMAC from net/mac.go:
-func __parseMAC(s string) Object {
-	hw, err := _net.ParseMAC(s)
+func __parseMAC(__s string) Object {
+	hw, err := _net.ParseMAC(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(hw))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -3768,8 +3768,8 @@ func __pipe() Object {
 }
 
 GO FUNC net.ResolveIPAddr from net/iprawsock.go:
-func __resolveIPAddr(network string, address string) Object {
-	_res1, _res2 := _net.ResolveIPAddr(network, address)
+func __resolveIPAddr(__network string, __address string) Object {
+	_res1, _res2 := _net.ResolveIPAddr(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3777,8 +3777,8 @@ func __resolveIPAddr(network string, address string) Object {
 }
 
 GO FUNC net.ResolveTCPAddr from net/tcpsock.go:
-func __resolveTCPAddr(network string, address string) Object {
-	_res1, _res2 := _net.ResolveTCPAddr(network, address)
+func __resolveTCPAddr(__network string, __address string) Object {
+	_res1, _res2 := _net.ResolveTCPAddr(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3786,8 +3786,8 @@ func __resolveTCPAddr(network string, address string) Object {
 }
 
 GO FUNC net.ResolveUDPAddr from net/udpsock.go:
-func __resolveUDPAddr(network string, address string) Object {
-	_res1, _res2 := _net.ResolveUDPAddr(network, address)
+func __resolveUDPAddr(__network string, __address string) Object {
+	_res1, _res2 := _net.ResolveUDPAddr(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3795,8 +3795,8 @@ func __resolveUDPAddr(network string, address string) Object {
 }
 
 GO FUNC net.ResolveUnixAddr from net/unixsock.go:
-func __resolveUnixAddr(network string, address string) Object {
-	_res1, _res2 := _net.ResolveUnixAddr(network, address)
+func __resolveUnixAddr(__network string, __address string) Object {
+	_res1, _res2 := _net.ResolveUnixAddr(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -3804,8 +3804,8 @@ func __resolveUnixAddr(network string, address string) Object {
 }
 
 GO FUNC net.SplitHostPort from net/ipsock.go:
-func __splitHostPort(hostport string) Object {
-	host, port, err := _net.SplitHostPort(hostport)
+func __splitHostPort(__hostport string) Object {
+	host, port, err := _net.SplitHostPort(__hostport)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(host))
 	_res = _res.Conjoin(MakeString(port))
@@ -3854,8 +3854,8 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 GO FUNC net.__iP_Equal from net/ip.go:
 // func __iP_Equal(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-// 	x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
-// 	_res := o.O.(_net.IP).Equal(x)
+// 	__x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0))
+// 	_res := o.O.(_net.IP).Equal(__x)
 // 	return MakeBoolean(_res)
 // }
 
@@ -3925,8 +3925,8 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 GO FUNC net.__iP_Mask from net/ip.go:
 // func __iP_Mask(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-// 	mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
-// 	_res := o.O.(_net.IP).Mask(mask)
+// 	__mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0))
+// 	_res := o.O.(_net.IP).Mask(__mask)
 // 	return MakeGoObject(_res)
 // }
 
@@ -3999,7 +3999,7 @@ GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
 // func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net.__ptrTo_DNSConfigError_Error from net/net.go:
 func __ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {
@@ -4046,9 +4046,9 @@ func __ptrTo_DNSError_Timeout(o GoObject, args Object) Object {
 GO FUNC net.__ptrTo_Dialer_Dial from net/dial.go:
 func __ptrTo_Dialer_Dial(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net.Dialer)Dial()", args, 2, 2)
-	network := ExtractGoString("(*_net.Dialer)Dial()", "network", _argList, 0)
-	address := ExtractGoString("(*_net.Dialer)Dial()", "address", _argList, 1)
-	_res1, _res2 := o.O.(*_net.Dialer).Dial(network, address)
+	__network := ExtractGoString("(*_net.Dialer)Dial()", "network", _argList, 0)
+	__address := ExtractGoString("(*_net.Dialer)Dial()", "address", _argList, 1)
+	_res1, _res2 := o.O.(*_net.Dialer).Dial(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -4057,7 +4057,7 @@ func __ptrTo_Dialer_Dial(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_Dialer_DialContext from net/dial.go:
 // func __ptrTo_Dialer_DialContext(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __network string, __address string}
 
 GO FUNC net.__ptrTo_IPAddr_Network from net/iprawsock.go:
 func __ptrTo_IPAddr_Network(o GoObject, args Object) Object {
@@ -4104,8 +4104,8 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 // func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-// 	ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
-// 	_res := o.O.(*_net.IPNet).Contains(ip)
+// 	__ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0))
+// 	_res := o.O.(*_net.IPNet).Contains(__ip)
 // 	return MakeBoolean(_res)
 // }
 
@@ -4157,11 +4157,11 @@ func __ptrTo_Interface_MulticastAddrs(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_ListenConfig_Listen from net/dial.go:
 // func __ptrTo_ListenConfig_Listen(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __network string, __address string}
 
 GO FUNC net.__ptrTo_ListenConfig_ListenPacket from net/dial.go:
 // func __ptrTo_ListenConfig_ListenPacket(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, address string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __network string, __address string}
 
 GO FUNC net.__ptrTo_OpError_Error from net/net.go:
 func __ptrTo_OpError_Error(o GoObject, args Object) Object {
@@ -4193,39 +4193,39 @@ func __ptrTo_ParseError_Error(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
 // func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), addr string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __addr string}
 
 GO FUNC net.__ptrTo_Resolver_LookupCNAME from net/lookup.go:
 // func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
 // func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __host string}
 
 GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
 // func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
 // func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupPort from net/lookup.go:
 // func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, service string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __network string, __service string}
 
 GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
 // func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), service string, proto string, name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __service string, __proto string, __name string}
 
 GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
 // func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context), __name string}
 
 GO FUNC net.__ptrTo_TCPAddr_Network from net/tcpsock.go:
 func __ptrTo_TCPAddr_Network(o GoObject, args Object) Object {
@@ -4257,33 +4257,33 @@ func __ptrTo_TCPConn_CloseWrite(o GoObject, args Object) Object {
 
 GO FUNC net.__ptrTo_TCPConn_ReadFrom from net/tcpsock.go:
 // func __ptrTo_TCPConn_ReadFrom(o GoObject, args Object) Object {
-// r ABEND987(genutils.go: imports not yet supported: io.Reader)}
+// __r ABEND987(genutils.go: imports not yet supported: io.Reader)}
 
 GO FUNC net.__ptrTo_TCPConn_SetKeepAlive from net/tcpsock.go:
 func __ptrTo_TCPConn_SetKeepAlive(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net.TCPConn)SetKeepAlive()", args, 1, 1)
-	keepalive := ExtractGoBoolean("(*_net.TCPConn)SetKeepAlive()", "keepalive", _argList, 0)
-	_res := o.O.(*_net.TCPConn).SetKeepAlive(keepalive)
+	__keepalive := ExtractGoBoolean("(*_net.TCPConn)SetKeepAlive()", "keepalive", _argList, 0)
+	_res := o.O.(*_net.TCPConn).SetKeepAlive(__keepalive)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__ptrTo_TCPConn_SetKeepAlivePeriod from net/tcpsock.go:
 // func __ptrTo_TCPConn_SetKeepAlivePeriod(o GoObject, args Object) Object {
-// d ABEND987(genutils.go: imports not yet supported: time.Duration)}
+// __d ABEND987(genutils.go: imports not yet supported: time.Duration)}
 
 GO FUNC net.__ptrTo_TCPConn_SetLinger from net/tcpsock.go:
 func __ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net.TCPConn)SetLinger()", args, 1, 1)
-	sec := ExtractGoInt("(*_net.TCPConn)SetLinger()", "sec", _argList, 0)
-	_res := o.O.(*_net.TCPConn).SetLinger(sec)
+	__sec := ExtractGoInt("(*_net.TCPConn)SetLinger()", "sec", _argList, 0)
+	_res := o.O.(*_net.TCPConn).SetLinger(__sec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__ptrTo_TCPConn_SetNoDelay from net/tcpsock.go:
 func __ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net.TCPConn)SetNoDelay()", args, 1, 1)
-	noDelay := ExtractGoBoolean("(*_net.TCPConn)SetNoDelay()", "noDelay", _argList, 0)
-	_res := o.O.(*_net.TCPConn).SetNoDelay(noDelay)
+	__noDelay := ExtractGoBoolean("(*_net.TCPConn)SetNoDelay()", "noDelay", _argList, 0)
+	_res := o.O.(*_net.TCPConn).SetNoDelay(__noDelay)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -4331,7 +4331,7 @@ GO FUNC net.__ptrTo_TCPListener_File from net/tcpsock.go:
 
 GO FUNC net.__ptrTo_TCPListener_SetDeadline from net/tcpsock.go:
 // func __ptrTo_TCPListener_SetDeadline(o GoObject, args Object) Object {
-// t ABEND987(genutils.go: imports not yet supported: time.Time)}
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
 
 GO FUNC net.__ptrTo_TCPListener_SyscallConn from net/tcpsock.go:
 // func __ptrTo_TCPListener_SyscallConn(o GoObject, args Object) Object {
@@ -4475,7 +4475,7 @@ GO FUNC net.__ptrTo_UnixListener_File from net/unixsock.go:
 
 GO FUNC net.__ptrTo_UnixListener_SetDeadline from net/unixsock.go:
 // func __ptrTo_UnixListener_SetDeadline(o GoObject, args Object) Object {
-// t ABEND987(genutils.go: imports not yet supported: time.Time)}
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
 
 GO FUNC net.__ptrTo_UnixListener_SetUnlinkOnClose from net/unixsock_posix.go:
 // func __ptrTo_UnixListener_SetUnlinkOnClose(o GoObject, args Object) Object {
@@ -5417,26 +5417,26 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // }
 
 GO FUNC net/http.DetectContentType from net/http/sniff.go:
-// func __detectContentType(data []byte)  {
-// 	_res := _http.DetectContentType(data)
+// func __detectContentType(__data []byte)  {
+// 	_res := _http.DetectContentType(__data)
 // 	return MakeString(_res)
 // }
 
 GO FUNC net/http.Error from net/http/server.go:
-// func __error(w _http.ResponseWriter, error string, code int) Object {
-// 	_http.Error(w, error, code)
+// func __error(__w _http.ResponseWriter, __error string, __code int) Object {
+// 	_http.Error(__w, __error, __code)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.FileServer from net/http/fs.go:
-func __fileServer(root _http.FileSystem) Object {
-	_res := _http.FileServer(root)
+func __fileServer(__root _http.FileSystem) Object {
+	_res := _http.FileServer(__root)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.Get from net/http/client.go:
-func __get(url string) Object {
-	resp, err := _http.Get(url)
+func __get(__url string) Object {
+	resp, err := _http.Get(__url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5444,20 +5444,20 @@ func __get(url string) Object {
 }
 
 GO FUNC net/http.Handle from net/http/server.go:
-// func __handle(pattern string, handler _http.Handler) Object {
-// 	_http.Handle(pattern, handler)
+// func __handle(__pattern string, __handler _http.Handler) Object {
+// 	_http.Handle(__pattern, __handler)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.HandleFunc from net/http/server.go:
-// func __handleFunc(pattern string, handler func) Object {
-// 	_http.HandleFunc(pattern, handler)
+// func __handleFunc(__pattern string, __handler func) Object {
+// 	_http.HandleFunc(__pattern, __handler)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.Head from net/http/client.go:
-func __head(url string) Object {
-	resp, err := _http.Head(url)
+func __head(__url string) Object {
+	resp, err := _http.Head(__url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5465,19 +5465,19 @@ func __head(url string) Object {
 }
 
 GO FUNC net/http.MaxBytesReader from net/http/request.go:
-// func __maxBytesReader(w _http.ResponseWriter, r ABEND987(genutils.go: imports not yet supported: io.ReadCloser), n int64) Object {
-// 	return _http.MaxBytesReader(w, r, n)
+// func __maxBytesReader(__w _http.ResponseWriter, __r ABEND987(genutils.go: imports not yet supported: io.ReadCloser), __n int64) Object {
+// 	return _http.MaxBytesReader(__w, __r, __n)
 // }
 
 GO FUNC net/http.NewFileTransport from net/http/filetransport.go:
-func __newFileTransport(fs _http.FileSystem) Object {
-	_res := _http.NewFileTransport(fs)
+func __newFileTransport(__fs _http.FileSystem) Object {
+	_res := _http.NewFileTransport(__fs)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.NewRequest from net/http/request.go:
-// func __newRequest(method string, url string, body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
-// 	_res1, _res2 := _http.NewRequest(method, url, body)
+// func __newRequest(__method string, __url string, __body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
+// 	_res1, _res2 := _http.NewRequest(__method, __url, __body)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5491,8 +5491,8 @@ func __newServeMux() Object {
 }
 
 GO FUNC net/http.NotFound from net/http/server.go:
-// func __notFound(w _http.ResponseWriter, r *_http.Request) Object {
-// 	_http.NotFound(w, r)
+// func __notFound(__w _http.ResponseWriter, __r *_http.Request) Object {
+// 	_http.NotFound(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
@@ -5503,8 +5503,8 @@ func __notFoundHandler() Object {
 }
 
 GO FUNC net/http.ParseHTTPVersion from net/http/request.go:
-func __parseHTTPVersion(vers string) Object {
-	major, minor, ok := _http.ParseHTTPVersion(vers)
+func __parseHTTPVersion(__vers string) Object {
+	major, minor, ok := _http.ParseHTTPVersion(__vers)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(major))
 	_res = _res.Conjoin(MakeInt(minor))
@@ -5513,8 +5513,8 @@ func __parseHTTPVersion(vers string) Object {
 }
 
 GO FUNC net/http.ParseTime from net/http/header.go:
-// func __parseTime(text string) Object {
-// 	t, err := _http.ParseTime(text)
+// func __parseTime(__text string) Object {
+// 	t, err := _http.ParseTime(__text)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(t)
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5522,8 +5522,8 @@ GO FUNC net/http.ParseTime from net/http/header.go:
 // }
 
 GO FUNC net/http.Post from net/http/client.go:
-// func __post(url string, contentType string, body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
-// 	resp, err := _http.Post(url, contentType, body)
+// func __post(__url string, __contentType string, __body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
+// 	resp, err := _http.Post(__url, __contentType, __body)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5531,8 +5531,8 @@ GO FUNC net/http.Post from net/http/client.go:
 // }
 
 GO FUNC net/http.PostForm from net/http/client.go:
-// func __postForm(url string, data ABEND987(genutils.go: imports not yet supported: url.Values)) Object {
-// 	resp, err := _http.PostForm(url, data)
+// func __postForm(__url string, __data ABEND987(genutils.go: imports not yet supported: url.Values)) Object {
+// 	resp, err := _http.PostForm(__url, __data)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(resp))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5540,8 +5540,8 @@ GO FUNC net/http.PostForm from net/http/client.go:
 // }
 
 GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
-func __proxyFromEnvironment(req *_http.Request) Object {
-	_res1, _res2 := _http.ProxyFromEnvironment(req)
+func __proxyFromEnvironment(__req *_http.Request) Object {
+	_res1, _res2 := _http.ProxyFromEnvironment(__req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5549,13 +5549,13 @@ func __proxyFromEnvironment(req *_http.Request) Object {
 }
 
 GO FUNC net/http.ProxyURL from net/http/transport.go:
-// func __proxyURL(fixedURL *ABEND987(genutils.go: imports not yet supported: url.URL)) Object {
-// 	return _http.ProxyURL(fixedURL)
+// func __proxyURL(__fixedURL *ABEND987(genutils.go: imports not yet supported: url.URL)) Object {
+// 	return _http.ProxyURL(__fixedURL)
 // }
 
 GO FUNC net/http.ReadRequest from net/http/request.go:
-// func __readRequest(b *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
-// 	_res1, _res2 := _http.ReadRequest(b)
+// func __readRequest(__b *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// 	_res1, _res2 := _http.ReadRequest(__b)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5563,8 +5563,8 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 // }
 
 GO FUNC net/http.ReadResponse from net/http/response.go:
-// func __readResponse(r *ABEND987(genutils.go: imports not yet supported: bufio.Reader), req *_http.Request) Object {
-// 	_res1, _res2 := _http.ReadResponse(r, req)
+// func __readResponse(__r *ABEND987(genutils.go: imports not yet supported: bufio.Reader), __req *_http.Request) Object {
+// 	_res1, _res2 := _http.ReadResponse(__r, __req)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5572,56 +5572,56 @@ GO FUNC net/http.ReadResponse from net/http/response.go:
 // }
 
 GO FUNC net/http.Redirect from net/http/server.go:
-// func __redirect(w _http.ResponseWriter, r *_http.Request, url string, code int) Object {
-// 	_http.Redirect(w, r, url, code)
+// func __redirect(__w _http.ResponseWriter, __r *_http.Request, __url string, __code int) Object {
+// 	_http.Redirect(__w, __r, __url, __code)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.RedirectHandler from net/http/server.go:
-func __redirectHandler(url string, code int) Object {
-	_res := _http.RedirectHandler(url, code)
+func __redirectHandler(__url string, __code int) Object {
+	_res := _http.RedirectHandler(__url, __code)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.Serve from net/http/server.go:
-// func __serve(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler _http.Handler)  {
-// 	_res := _http.Serve(l, handler)
+// func __serve(__l ABEND987(genutils.go: imports not yet supported: net.Listener), __handler _http.Handler)  {
+// 	_res := _http.Serve(__l, __handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.ServeContent from net/http/fs.go:
-// func __serveContent(w _http.ResponseWriter, req *_http.Request, name string, modtime ABEND987(genutils.go: imports not yet supported: time.Time), content ABEND987(genutils.go: imports not yet supported: io.ReadSeeker)) Object {
-// 	_http.ServeContent(w, req, name, modtime, content)
+// func __serveContent(__w _http.ResponseWriter, __req *_http.Request, __name string, __modtime ABEND987(genutils.go: imports not yet supported: time.Time), __content ABEND987(genutils.go: imports not yet supported: io.ReadSeeker)) Object {
+// 	_http.ServeContent(__w, __req, __name, __modtime, __content)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.ServeFile from net/http/fs.go:
-// func __serveFile(w _http.ResponseWriter, r *_http.Request, name string) Object {
-// 	_http.ServeFile(w, r, name)
+// func __serveFile(__w _http.ResponseWriter, __r *_http.Request, __name string) Object {
+// 	_http.ServeFile(__w, __r, __name)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.ServeTLS from net/http/server.go:
-// func __serveTLS(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler _http.Handler, certFile string, keyFile string)  {
-// 	_res := _http.ServeTLS(l, handler, certFile, keyFile)
+// func __serveTLS(__l ABEND987(genutils.go: imports not yet supported: net.Listener), __handler _http.Handler, __certFile string, __keyFile string)  {
+// 	_res := _http.ServeTLS(__l, __handler, __certFile, __keyFile)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.SetCookie from net/http/cookie.go:
-// func __setCookie(w _http.ResponseWriter, cookie *_http.Cookie) Object {
-// 	_http.SetCookie(w, cookie)
+// func __setCookie(__w _http.ResponseWriter, __cookie *_http.Cookie) Object {
+// 	_http.SetCookie(__w, __cookie)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.StripPrefix from net/http/server.go:
-func __stripPrefix(prefix string, h _http.Handler) Object {
-	_res := _http.StripPrefix(prefix, h)
+func __stripPrefix(__prefix string, __h _http.Handler) Object {
+	_res := _http.StripPrefix(__prefix, __h)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.TimeoutHandler from net/http/server.go:
-// func __timeoutHandler(h _http.Handler, dt ABEND987(genutils.go: imports not yet supported: time.Duration), msg string) Object {
-// 	_res := _http.TimeoutHandler(h, dt, msg)
+// func __timeoutHandler(__h _http.Handler, __dt ABEND987(genutils.go: imports not yet supported: time.Duration), __msg string) Object {
+// 	_res := _http.TimeoutHandler(__h, __dt, __msg)
 // 	return MakeGoObject(_res)
 // }
 
@@ -5635,8 +5635,8 @@ func __connState_String(o GoObject, args Object) Object {
 GO FUNC net/http.__dir_Open from net/http/fs.go:
 func __dir_Open(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/http.Dir)Open()", args, 1, 1)
-	name := ExtractGoString("(_net/http.Dir)Open()", "name", _argList, 0)
-	_res1, _res2 := o.O.(_http.Dir).Open(name)
+	__name := ExtractGoString("(_net/http.Dir)Open()", "name", _argList, 0)
+	_res1, _res2 := o.O.(_http.Dir).Open(__name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5661,8 +5661,8 @@ GO FUNC net/http.__header_Del from net/http/header.go:
 GO FUNC net/http.__header_Get from net/http/header.go:
 func __header_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/http.Header)Get()", args, 1, 1)
-	key := ExtractGoString("(_net/http.Header)Get()", "key", _argList, 0)
-	_res := o.O.(_http.Header).Get(key)
+	__key := ExtractGoString("(_net/http.Header)Get()", "key", _argList, 0)
+	_res := o.O.(_http.Header).Get(__key)
 	return MakeString(_res)
 }
 
@@ -5673,17 +5673,17 @@ GO FUNC net/http.__header_Set from net/http/header.go:
 
 GO FUNC net/http.__header_Write from net/http/header.go:
 // func __header_Write(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net/http.__header_WriteSubset from net/http/header.go:
 // func __header_WriteSubset(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer), exclude map[]}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer), __exclude map[]}
 
 GO FUNC net/http.__ptrTo_Client_Do from net/http/client.go:
 // func __ptrTo_Client_Do(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/http.Client)Do()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for req at: _tests/big/src/net/http/client.go:508:25)
-// 	_res1, _res2 := o.O.(*_http.Client).Do(req)
+// 	_res1, _res2 := o.O.(*_http.Client).Do(__req)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5693,8 +5693,8 @@ GO FUNC net/http.__ptrTo_Client_Do from net/http/client.go:
 GO FUNC net/http.__ptrTo_Client_Get from net/http/client.go:
 func __ptrTo_Client_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Client)Get()", args, 1, 1)
-	url := ExtractGoString("(*_net/http.Client)Get()", "url", _argList, 0)
-	resp, err := o.O.(*_http.Client).Get(url)
+	__url := ExtractGoString("(*_net/http.Client)Get()", "url", _argList, 0)
+	resp, err := o.O.(*_http.Client).Get(__url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5704,8 +5704,8 @@ func __ptrTo_Client_Get(o GoObject, args Object) Object {
 GO FUNC net/http.__ptrTo_Client_Head from net/http/client.go:
 func __ptrTo_Client_Head(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Client)Head()", args, 1, 1)
-	url := ExtractGoString("(*_net/http.Client)Head()", "url", _argList, 0)
-	resp, err := o.O.(*_http.Client).Head(url)
+	__url := ExtractGoString("(*_net/http.Client)Head()", "url", _argList, 0)
+	resp, err := o.O.(*_http.Client).Head(__url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -5714,11 +5714,11 @@ func __ptrTo_Client_Head(o GoObject, args Object) Object {
 
 GO FUNC net/http.__ptrTo_Client_Post from net/http/client.go:
 // func __ptrTo_Client_Post(o GoObject, args Object) Object {
-// url string, contentType string, body ABEND987(genutils.go: imports not yet supported: io.Reader)}
+// __url string, __contentType string, __body ABEND987(genutils.go: imports not yet supported: io.Reader)}
 
 GO FUNC net/http.__ptrTo_Client_PostForm from net/http/client.go:
 // func __ptrTo_Client_PostForm(o GoObject, args Object) Object {
-// url string, data ABEND987(genutils.go: imports not yet supported: url.Values)}
+// __url string, __data ABEND987(genutils.go: imports not yet supported: url.Values)}
 
 GO FUNC net/http.__ptrTo_Cookie_String from net/http/cookie.go:
 func __ptrTo_Cookie_String(o GoObject, args Object) Object {
@@ -5757,8 +5757,8 @@ GO FUNC net/http.__ptrTo_Request_Context from net/http/request.go:
 GO FUNC net/http.__ptrTo_Request_Cookie from net/http/request.go:
 func __ptrTo_Request_Cookie(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Request)Cookie()", args, 1, 1)
-	name := ExtractGoString("(*_net/http.Request)Cookie()", "name", _argList, 0)
-	_res1, _res2 := o.O.(*_http.Request).Cookie(name)
+	__name := ExtractGoString("(*_net/http.Request)Cookie()", "name", _argList, 0)
+	_res1, _res2 := o.O.(*_http.Request).Cookie(__name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -5783,8 +5783,8 @@ GO FUNC net/http.__ptrTo_Request_FormFile from net/http/request.go:
 GO FUNC net/http.__ptrTo_Request_FormValue from net/http/request.go:
 func __ptrTo_Request_FormValue(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Request)FormValue()", args, 1, 1)
-	key := ExtractGoString("(*_net/http.Request)FormValue()", "key", _argList, 0)
-	_res := o.O.(*_http.Request).FormValue(key)
+	__key := ExtractGoString("(*_net/http.Request)FormValue()", "key", _argList, 0)
+	_res := o.O.(*_http.Request).FormValue(__key)
 	return MakeString(_res)
 }
 
@@ -5802,25 +5802,25 @@ func __ptrTo_Request_ParseForm(o GoObject, args Object) Object {
 GO FUNC net/http.__ptrTo_Request_ParseMultipartForm from net/http/request.go:
 func __ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Request)ParseMultipartForm()", args, 1, 1)
-	maxMemory := ExtractGoInt64("(*_net/http.Request)ParseMultipartForm()", "maxMemory", _argList, 0)
-	_res := o.O.(*_http.Request).ParseMultipartForm(maxMemory)
+	__maxMemory := ExtractGoInt64("(*_net/http.Request)ParseMultipartForm()", "maxMemory", _argList, 0)
+	_res := o.O.(*_http.Request).ParseMultipartForm(__maxMemory)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/http.__ptrTo_Request_PostFormValue from net/http/request.go:
 func __ptrTo_Request_PostFormValue(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Request)PostFormValue()", args, 1, 1)
-	key := ExtractGoString("(*_net/http.Request)PostFormValue()", "key", _argList, 0)
-	_res := o.O.(*_http.Request).PostFormValue(key)
+	__key := ExtractGoString("(*_net/http.Request)PostFormValue()", "key", _argList, 0)
+	_res := o.O.(*_http.Request).PostFormValue(__key)
 	return MakeString(_res)
 }
 
 GO FUNC net/http.__ptrTo_Request_ProtoAtLeast from net/http/request.go:
 func __ptrTo_Request_ProtoAtLeast(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Request)ProtoAtLeast()", args, 2, 2)
-	major := ExtractGoInt("(*_net/http.Request)ProtoAtLeast()", "major", _argList, 0)
-	minor := ExtractGoInt("(*_net/http.Request)ProtoAtLeast()", "minor", _argList, 1)
-	_res := o.O.(*_http.Request).ProtoAtLeast(major, minor)
+	__major := ExtractGoInt("(*_net/http.Request)ProtoAtLeast()", "major", _argList, 0)
+	__minor := ExtractGoInt("(*_net/http.Request)ProtoAtLeast()", "minor", _argList, 1)
+	_res := o.O.(*_http.Request).ProtoAtLeast(__major, __minor)
 	return MakeBoolean(_res)
 }
 
@@ -5845,15 +5845,15 @@ func __ptrTo_Request_UserAgent(o GoObject, args Object) Object {
 
 GO FUNC net/http.__ptrTo_Request_WithContext from net/http/request.go:
 // func __ptrTo_Request_WithContext(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
 
 GO FUNC net/http.__ptrTo_Request_Write from net/http/request.go:
 // func __ptrTo_Request_Write(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net/http.__ptrTo_Request_WriteProxy from net/http/request.go:
 // func __ptrTo_Request_WriteProxy(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net/http.__ptrTo_Response_Cookies from net/http/response.go:
 func __ptrTo_Response_Cookies(o GoObject, args Object) Object {
@@ -5879,15 +5879,15 @@ func __ptrTo_Response_Location(o GoObject, args Object) Object {
 GO FUNC net/http.__ptrTo_Response_ProtoAtLeast from net/http/response.go:
 func __ptrTo_Response_ProtoAtLeast(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Response)ProtoAtLeast()", args, 2, 2)
-	major := ExtractGoInt("(*_net/http.Response)ProtoAtLeast()", "major", _argList, 0)
-	minor := ExtractGoInt("(*_net/http.Response)ProtoAtLeast()", "minor", _argList, 1)
-	_res := o.O.(*_http.Response).ProtoAtLeast(major, minor)
+	__major := ExtractGoInt("(*_net/http.Response)ProtoAtLeast()", "major", _argList, 0)
+	__minor := ExtractGoInt("(*_net/http.Response)ProtoAtLeast()", "minor", _argList, 1)
+	_res := o.O.(*_http.Response).ProtoAtLeast(__major, __minor)
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/http.__ptrTo_Response_Write from net/http/response.go:
 // func __ptrTo_Response_Write(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: io.Writer)}
+// __w ABEND987(genutils.go: imports not yet supported: io.Writer)}
 
 GO FUNC net/http.__ptrTo_ServeMux_Handle from net/http/server.go:
 // func __ptrTo_ServeMux_Handle(o GoObject, args Object) Object {
@@ -5902,7 +5902,7 @@ GO FUNC net/http.__ptrTo_ServeMux_Handler from net/http/server.go:
 // func __ptrTo_ServeMux_Handler(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/http.ServeMux)Handler()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for r at: _tests/big/src/net/http/server.go:2296:32)
-// 	h, pattern := o.O.(*_http.ServeMux).Handler(r)
+// 	h, pattern := o.O.(*_http.ServeMux).Handler(__r)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(h))
 // 	_res = _res.Conjoin(MakeString(pattern))
@@ -5931,9 +5931,9 @@ func __ptrTo_Server_ListenAndServe(o GoObject, args Object) Object {
 GO FUNC net/http.__ptrTo_Server_ListenAndServeTLS from net/http/server.go:
 func __ptrTo_Server_ListenAndServeTLS(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http.Server)ListenAndServeTLS()", args, 2, 2)
-	certFile := ExtractGoString("(*_net/http.Server)ListenAndServeTLS()", "certFile", _argList, 0)
-	keyFile := ExtractGoString("(*_net/http.Server)ListenAndServeTLS()", "keyFile", _argList, 1)
-	_res := o.O.(*_http.Server).ListenAndServeTLS(certFile, keyFile)
+	__certFile := ExtractGoString("(*_net/http.Server)ListenAndServeTLS()", "certFile", _argList, 0)
+	__keyFile := ExtractGoString("(*_net/http.Server)ListenAndServeTLS()", "keyFile", _argList, 1)
+	_res := o.O.(*_http.Server).ListenAndServeTLS(__certFile, __keyFile)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -5943,11 +5943,11 @@ GO FUNC net/http.__ptrTo_Server_RegisterOnShutdown from net/http/server.go:
 
 GO FUNC net/http.__ptrTo_Server_Serve from net/http/server.go:
 // func __ptrTo_Server_Serve(o GoObject, args Object) Object {
-// l ABEND987(genutils.go: imports not yet supported: net.Listener)}
+// __l ABEND987(genutils.go: imports not yet supported: net.Listener)}
 
 GO FUNC net/http.__ptrTo_Server_ServeTLS from net/http/server.go:
 // func __ptrTo_Server_ServeTLS(o GoObject, args Object) Object {
-// l ABEND987(genutils.go: imports not yet supported: net.Listener), certFile string, keyFile string}
+// __l ABEND987(genutils.go: imports not yet supported: net.Listener), __certFile string, __keyFile string}
 
 GO FUNC net/http.__ptrTo_Server_SetKeepAlivesEnabled from net/http/server.go:
 // func __ptrTo_Server_SetKeepAlivesEnabled(o GoObject, args Object) Object {
@@ -5956,7 +5956,7 @@ GO FUNC net/http.__ptrTo_Server_SetKeepAlivesEnabled from net/http/server.go:
 
 GO FUNC net/http.__ptrTo_Server_Shutdown from net/http/server.go:
 // func __ptrTo_Server_Shutdown(o GoObject, args Object) Object {
-// ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
+// __ctx ABEND987(genutils.go: imports not yet supported: context.Context)}
 
 GO FUNC net/http.__ptrTo_Transport_CancelRequest from net/http/transport.go:
 // func __ptrTo_Transport_CancelRequest(o GoObject, args Object) Object {
@@ -5977,7 +5977,7 @@ GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 // func __ptrTo_Transport_RoundTrip(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/http.Transport)RoundTrip()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for req at: _tests/big/src/net/http/roundtrip.go:16:35)
-// 	_res1, _res2 := o.O.(*_http.Transport).RoundTrip(req)
+// 	_res1, _res2 := o.O.(*_http.Transport).RoundTrip(__req)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6044,8 +6044,8 @@ func __request() Object {
 }
 
 GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
-// func __requestFromMap(params map[]) Object {
-// 	_res1, _res2 := _cgi.RequestFromMap(params)
+// func __requestFromMap(__params map[]) Object {
+// 	_res1, _res2 := _cgi.RequestFromMap(__params)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6053,14 +6053,14 @@ GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 // }
 
 GO FUNC net/http/cgi.Serve from net/http/cgi/child.go:
-// func __serve(handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
-// 	_res := _cgi.Serve(handler)
+// func __serve(__handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
+// 	_res := _cgi.Serve(__handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http/cgi.__ptrTo_Handler_ServeHTTP from net/http/cgi/host.go:
 // func __ptrTo_Handler_ServeHTTP(o GoObject, args Object) Object {
-// rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
 func ExtractGoObjectJar(args []Object, index int) *_cookiejar.Jar {
@@ -6175,8 +6175,8 @@ func ExtractGoObjectPublicSuffixList(args []Object, index int) *_cookiejar.Publi
 // }
 
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
-func __new(o *_cookiejar.Options) Object {
-	_res1, _res2 := _cookiejar.New(o)
+func __new(__o *_cookiejar.Options) Object {
+	_res1, _res2 := _cookiejar.New(__o)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6185,20 +6185,20 @@ func __new(o *_cookiejar.Options) Object {
 
 GO FUNC net/http/cookiejar.__ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
 // func __ptrTo_Jar_Cookies(o GoObject, args Object) Object {
-// u *ABEND987(genutils.go: imports not yet supported: url.URL)}
+// __u *ABEND987(genutils.go: imports not yet supported: url.URL)}
 
 GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go:
 // func __ptrTo_Jar_SetCookies(o GoObject, args Object) Object {
-// u *ABEND987(genutils.go: imports not yet supported: url.URL), cookies []*ABEND987(genutils.go: imports not yet supported: http.Cookie)}
+// __u *ABEND987(genutils.go: imports not yet supported: url.URL), __cookies []*ABEND987(genutils.go: imports not yet supported: http.Cookie)}
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-// func __processEnv(r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	return _fcgi.ProcessEnv(r)
+// func __processEnv(__r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	return _fcgi.ProcessEnv(__r)
 // }
 
 GO FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
-// func __serve(l ABEND987(genutils.go: imports not yet supported: net.Listener), handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
-// 	_res := _fcgi.Serve(l, handler)
+// func __serve(__l ABEND987(genutils.go: imports not yet supported: net.Listener), __handler ABEND987(genutils.go: imports not yet supported: http.Handler))  {
+// 	_res := _fcgi.Serve(__l, __handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
@@ -6299,26 +6299,26 @@ func __newRecorder() Object {
 }
 
 GO FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
-// func __newRequest(method string, target string, body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
-// 	_res := _httptest.NewRequest(method, target, body)
+// func __newRequest(__method string, __target string, __body ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
+// 	_res := _httptest.NewRequest(__method, __target, __body)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
-// func __newServer(handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
-// 	_res := _httptest.NewServer(handler)
+// func __newServer(__handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
+// 	_res := _httptest.NewServer(__handler)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
-// func __newTLSServer(handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
-// 	_res := _httptest.NewTLSServer(handler)
+// func __newTLSServer(__handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
+// 	_res := _httptest.NewTLSServer(__handler)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
-// func __newUnstartedServer(handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
-// 	_res := _httptest.NewUnstartedServer(handler)
+// func __newUnstartedServer(__handler ABEND987(genutils.go: imports not yet supported: http.Handler)) Object {
+// 	_res := _httptest.NewUnstartedServer(__handler)
 // 	return MakeGoObject(_res)
 // }
 
@@ -6353,8 +6353,8 @@ GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_WriteHeader from net/http/htt
 GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_WriteString from net/http/httptest/recorder.go:
 func __ptrTo_ResponseRecorder_WriteString(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/http/httptest.ResponseRecorder)WriteString()", args, 1, 1)
-	str := ExtractGoString("(*_net/http/httptest.ResponseRecorder)WriteString()", "str", _argList, 0)
-	_res1, _res2 := o.O.(*_httptest.ResponseRecorder).WriteString(str)
+	__str := ExtractGoString("(*_net/http/httptest.ResponseRecorder)WriteString()", "str", _argList, 0)
+	_res1, _res2 := o.O.(*_httptest.ResponseRecorder).WriteString(__str)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6393,14 +6393,14 @@ GO FUNC net/http/httptest.__ptrTo_Server_StartTLS from net/http/httptest/server.
 // }
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
-// func __contextClientTrace(ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
-// 	_res := _httptrace.ContextClientTrace(ctx)
+// func __contextClientTrace(__ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
+// 	_res := _httptrace.ContextClientTrace(__ctx)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
-// func __withClientTrace(ctx ABEND987(genutils.go: imports not yet supported: context.Context), trace *_httptrace.ClientTrace) Object {
-// 	return _httptrace.WithClientTrace(ctx, trace)
+// func __withClientTrace(__ctx ABEND987(genutils.go: imports not yet supported: context.Context), __trace *_httptrace.ClientTrace) Object {
+// 	return _httptrace.WithClientTrace(__ctx, __trace)
 // }
 
 GO TYPE net/http/httputil.BufferPool from net/http/httputil/reverseproxy.go:
@@ -6562,8 +6562,8 @@ func _ConstructServerConn(_v Object) *_httputil.ServerConn {
 }
 
 GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
-// func __dumpRequest(req *ABEND987(genutils.go: imports not yet supported: http.Request), body bool) Object {
-// 	_res1, _res2 := _httputil.DumpRequest(req, body)
+// func __dumpRequest(__req *ABEND987(genutils.go: imports not yet supported: http.Request), __body bool) Object {
+// 	_res1, _res2 := _httputil.DumpRequest(__req, __body)
 // 	_res := EmptyVector()
 // 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
@@ -6575,8 +6575,8 @@ GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
-// func __dumpRequestOut(req *ABEND987(genutils.go: imports not yet supported: http.Request), body bool) Object {
-// 	_res1, _res2 := _httputil.DumpRequestOut(req, body)
+// func __dumpRequestOut(__req *ABEND987(genutils.go: imports not yet supported: http.Request), __body bool) Object {
+// 	_res1, _res2 := _httputil.DumpRequestOut(__req, __body)
 // 	_res := EmptyVector()
 // 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
@@ -6588,8 +6588,8 @@ GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
-// func __dumpResponse(resp *ABEND987(genutils.go: imports not yet supported: http.Response), body bool) Object {
-// 	_res1, _res2 := _httputil.DumpResponse(resp, body)
+// func __dumpResponse(__resp *ABEND987(genutils.go: imports not yet supported: http.Response), __body bool) Object {
+// 	_res1, _res2 := _httputil.DumpResponse(__resp, __body)
 // 	_res := EmptyVector()
 // 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res1 {
@@ -6601,36 +6601,36 @@ GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 // }
 
 GO FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
-// func __newChunkedReader(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
-// 	return _httputil.NewChunkedReader(r)
+// func __newChunkedReader(__r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
+// 	return _httputil.NewChunkedReader(__r)
 // }
 
 GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
-// func __newChunkedWriter(w ABEND987(genutils.go: imports not yet supported: io.Writer)) Object {
-// 	return _httputil.NewChunkedWriter(w)
+// func __newChunkedWriter(__w ABEND987(genutils.go: imports not yet supported: io.Writer)) Object {
+// 	return _httputil.NewChunkedWriter(__w)
 // }
 
 GO FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
-// func __newClientConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
-// 	_res := _httputil.NewClientConn(c, r)
+// func __newClientConn(__c ABEND987(genutils.go: imports not yet supported: net.Conn), __r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// 	_res := _httputil.NewClientConn(__c, __r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
-// func __newProxyClientConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
-// 	_res := _httputil.NewProxyClientConn(c, r)
+// func __newProxyClientConn(__c ABEND987(genutils.go: imports not yet supported: net.Conn), __r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// 	_res := _httputil.NewProxyClientConn(__c, __r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
-// func __newServerConn(c ABEND987(genutils.go: imports not yet supported: net.Conn), r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
-// 	_res := _httputil.NewServerConn(c, r)
+// func __newServerConn(__c ABEND987(genutils.go: imports not yet supported: net.Conn), __r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// 	_res := _httputil.NewServerConn(__c, __r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
-// func __newSingleHostReverseProxy(target *ABEND987(genutils.go: imports not yet supported: url.URL)) Object {
-// 	_res := _httputil.NewSingleHostReverseProxy(target)
+// func __newSingleHostReverseProxy(__target *ABEND987(genutils.go: imports not yet supported: url.URL)) Object {
+// 	_res := _httputil.NewSingleHostReverseProxy(__target)
 // 	return MakeGoObject(_res)
 // }
 
@@ -6643,7 +6643,7 @@ func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Do from net/http/httputil/persist.go:
 // func __ptrTo_ClientConn_Do(o GoObject, args Object) Object {
-// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Hijack from net/http/httputil/persist.go:
 // func __ptrTo_ClientConn_Hijack(o GoObject, args Object) Object {
@@ -6658,15 +6658,15 @@ func __ptrTo_ClientConn_Pending(o GoObject, args Object) Object {
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Read from net/http/httputil/persist.go:
 // func __ptrTo_ClientConn_Read(o GoObject, args Object) Object {
-// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Write from net/http/httputil/persist.go:
 // func __ptrTo_ClientConn_Write(o GoObject, args Object) Object {
-// req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/http/httputil.__ptrTo_ReverseProxy_ServeHTTP from net/http/httputil/reverseproxy.go:
 // func __ptrTo_ReverseProxy_ServeHTTP(o GoObject, args Object) Object {
-// rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __rw ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/http/httputil.__ptrTo_ServerConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ServerConn_Close(o GoObject, args Object) Object {
@@ -6698,41 +6698,41 @@ func __ptrTo_ServerConn_Read(o GoObject, args Object) Object {
 
 GO FUNC net/http/httputil.__ptrTo_ServerConn_Write from net/http/httputil/persist.go:
 // func __ptrTo_ServerConn_Write(o GoObject, args Object) Object {
-// req *ABEND987(genutils.go: imports not yet supported: http.Request), resp *ABEND987(genutils.go: imports not yet supported: http.Response)}
+// __req *ABEND987(genutils.go: imports not yet supported: http.Request), __resp *ABEND987(genutils.go: imports not yet supported: http.Response)}
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
-// func __cmdline(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	_pprof.Cmdline(w, r)
+// func __cmdline(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	_pprof.Cmdline(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
-func __handler(name string) Object {
-	_res := _pprof.Handler(name)
+func __handler(__name string) Object {
+	_res := _pprof.Handler(__name)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
-// func __index(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	_pprof.Index(w, r)
+// func __index(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	_pprof.Index(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Profile from net/http/pprof/pprof.go:
-// func __profile(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	_pprof.Profile(w, r)
+// func __profile(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	_pprof.Profile(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Symbol from net/http/pprof/pprof.go:
-// func __symbol(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	_pprof.Symbol(w, r)
+// func __symbol(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	_pprof.Symbol(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
-// func __trace(w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
-// 	_pprof.Trace(w, r)
+// func __trace(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
+// 	_pprof.Trace(__w, __r)
 // 	...ABEND675: TODO...
 // }
 
@@ -6895,8 +6895,8 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 // }
 
 GO FUNC net/mail.ParseAddress from net/mail/message.go:
-func __parseAddress(address string) Object {
-	_res1, _res2 := _mail.ParseAddress(address)
+func __parseAddress(__address string) Object {
+	_res1, _res2 := _mail.ParseAddress(__address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6904,8 +6904,8 @@ func __parseAddress(address string) Object {
 }
 
 GO FUNC net/mail.ParseAddressList from net/mail/message.go:
-func __parseAddressList(list string) Object {
-	_res1, _res2 := _mail.ParseAddressList(list)
+func __parseAddressList(__list string) Object {
+	_res1, _res2 := _mail.ParseAddressList(__list)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -6917,8 +6917,8 @@ func __parseAddressList(list string) Object {
 }
 
 GO FUNC net/mail.ParseDate from net/mail/message.go:
-// func __parseDate(date string) Object {
-// 	_res1, _res2 := _mail.ParseDate(date)
+// func __parseDate(__date string) Object {
+// 	_res1, _res2 := _mail.ParseDate(__date)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(_res1)
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6926,8 +6926,8 @@ GO FUNC net/mail.ParseDate from net/mail/message.go:
 // }
 
 GO FUNC net/mail.ReadMessage from net/mail/message.go:
-// func __readMessage(r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
-// 	msg, err := _mail.ReadMessage(r)
+// func __readMessage(__r ABEND987(genutils.go: imports not yet supported: io.Reader)) Object {
+// 	msg, err := _mail.ReadMessage(__r)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(msg))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
@@ -6937,8 +6937,8 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 GO FUNC net/mail.__header_AddressList from net/mail/message.go:
 func __header_AddressList(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/mail.Header)AddressList()", args, 1, 1)
-	key := ExtractGoString("(_net/mail.Header)AddressList()", "key", _argList, 0)
-	_res1, _res2 := o.O.(_mail.Header).AddressList(key)
+	__key := ExtractGoString("(_net/mail.Header)AddressList()", "key", _argList, 0)
+	_res1, _res2 := o.O.(_mail.Header).AddressList(__key)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -6956,16 +6956,16 @@ GO FUNC net/mail.__header_Date from net/mail/message.go:
 GO FUNC net/mail.__header_Get from net/mail/message.go:
 func __header_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/mail.Header)Get()", args, 1, 1)
-	key := ExtractGoString("(_net/mail.Header)Get()", "key", _argList, 0)
-	_res := o.O.(_mail.Header).Get(key)
+	__key := ExtractGoString("(_net/mail.Header)Get()", "key", _argList, 0)
+	_res := o.O.(_mail.Header).Get(__key)
 	return MakeString(_res)
 }
 
 GO FUNC net/mail.__ptrTo_AddressParser_Parse from net/mail/message.go:
 func __ptrTo_AddressParser_Parse(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/mail.AddressParser)Parse()", args, 1, 1)
-	address := ExtractGoString("(*_net/mail.AddressParser)Parse()", "address", _argList, 0)
-	_res1, _res2 := o.O.(*_mail.AddressParser).Parse(address)
+	__address := ExtractGoString("(*_net/mail.AddressParser)Parse()", "address", _argList, 0)
+	_res1, _res2 := o.O.(*_mail.AddressParser).Parse(__address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -6975,8 +6975,8 @@ func __ptrTo_AddressParser_Parse(o GoObject, args Object) Object {
 GO FUNC net/mail.__ptrTo_AddressParser_ParseList from net/mail/message.go:
 func __ptrTo_AddressParser_ParseList(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/mail.AddressParser)ParseList()", args, 1, 1)
-	list := ExtractGoString("(*_net/mail.AddressParser)ParseList()", "list", _argList, 0)
-	_res1, _res2 := o.O.(*_mail.AddressParser).ParseList(list)
+	__list := ExtractGoString("(*_net/mail.AddressParser)ParseList()", "list", _argList, 0)
+	_res1, _res2 := o.O.(*_mail.AddressParser).ParseList(__list)
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res1 {
@@ -7301,14 +7301,14 @@ func _ConstructServerError(_v Object) _rpc.ServerError {
 }
 
 GO FUNC net/rpc.Accept from net/rpc/server.go:
-// func __accept(lis ABEND987(genutils.go: imports not yet supported: net.Listener)) Object {
-// 	_rpc.Accept(lis)
+// func __accept(__lis ABEND987(genutils.go: imports not yet supported: net.Listener)) Object {
+// 	_rpc.Accept(__lis)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/rpc.Dial from net/rpc/client.go:
-func __dial(network string, address string) Object {
-	_res1, _res2 := _rpc.Dial(network, address)
+func __dial(__network string, __address string) Object {
+	_res1, _res2 := _rpc.Dial(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7316,8 +7316,8 @@ func __dial(network string, address string) Object {
 }
 
 GO FUNC net/rpc.DialHTTP from net/rpc/client.go:
-func __dialHTTP(network string, address string) Object {
-	_res1, _res2 := _rpc.DialHTTP(network, address)
+func __dialHTTP(__network string, __address string) Object {
+	_res1, _res2 := _rpc.DialHTTP(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7325,8 +7325,8 @@ func __dialHTTP(network string, address string) Object {
 }
 
 GO FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
-func __dialHTTPPath(network string, address string, path string) Object {
-	_res1, _res2 := _rpc.DialHTTPPath(network, address, path)
+func __dialHTTPPath(__network string, __address string, __path string) Object {
+	_res1, _res2 := _rpc.DialHTTPPath(__network, __address, __path)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7340,14 +7340,14 @@ GO FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc.NewClient from net/rpc/client.go:
-// func __newClient(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_res := _rpc.NewClient(conn)
+// func __newClient(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_res := _rpc.NewClient(__conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
-func __newClientWithCodec(codec _rpc.ClientCodec) Object {
-	_res := _rpc.NewClientWithCodec(codec)
+func __newClientWithCodec(__codec _rpc.ClientCodec) Object {
+	_res := _rpc.NewClientWithCodec(__codec)
 	return MakeGoObject(_res)
 }
 
@@ -7358,26 +7358,26 @@ func __newServer() Object {
 }
 
 GO FUNC net/rpc.Register from net/rpc/server.go:
-// func __register(rcvr interface {})  {
-// 	_res := _rpc.Register(rcvr)
+// func __register(__rcvr interface {})  {
+// 	_res := _rpc.Register(__rcvr)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/rpc.RegisterName from net/rpc/server.go:
-// func __registerName(name string, rcvr interface {})  {
-// 	_res := _rpc.RegisterName(name, rcvr)
+// func __registerName(__name string, __rcvr interface {})  {
+// 	_res := _rpc.RegisterName(__name, __rcvr)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
-// func __serveCodec(codec _rpc.ServerCodec) Object {
-// 	_rpc.ServeCodec(codec)
+// func __serveCodec(__codec _rpc.ServerCodec) Object {
+// 	_rpc.ServeCodec(__codec)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/rpc.ServeConn from net/rpc/server.go:
-// func __serveConn(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_rpc.ServeConn(conn)
+// func __serveConn(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_rpc.ServeConn(__conn)
 // 	...ABEND675: TODO...
 // }
 
@@ -7398,7 +7398,7 @@ GO FUNC net/rpc.__ptrTo_Client_Go from net/rpc/client.go:
 
 GO FUNC net/rpc.__ptrTo_Server_Accept from net/rpc/server.go:
 // func __ptrTo_Server_Accept(o GoObject, args Object) Object {
-// lis ABEND987(genutils.go: imports not yet supported: net.Listener)}
+// __lis ABEND987(genutils.go: imports not yet supported: net.Listener)}
 
 GO FUNC net/rpc.__ptrTo_Server_HandleHTTP from net/rpc/server.go:
 // func __ptrTo_Server_HandleHTTP(o GoObject, args Object) Object {
@@ -7420,17 +7420,17 @@ GO FUNC net/rpc.__ptrTo_Server_ServeCodec from net/rpc/server.go:
 
 GO FUNC net/rpc.__ptrTo_Server_ServeConn from net/rpc/server.go:
 // func __ptrTo_Server_ServeConn(o GoObject, args Object) Object {
-// conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)}
+// __conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)}
 
 GO FUNC net/rpc.__ptrTo_Server_ServeHTTP from net/rpc/server.go:
 // func __ptrTo_Server_ServeHTTP(o GoObject, args Object) Object {
-// w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), req *ABEND987(genutils.go: imports not yet supported: http.Request)}
+// __w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __req *ABEND987(genutils.go: imports not yet supported: http.Request)}
 
 GO FUNC net/rpc.__ptrTo_Server_ServeRequest from net/rpc/server.go:
 // func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/rpc.Server)ServeRequest()", args, 1, 1)
-// 	codec := ABEND233(Unsupported: ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0))
-// 	_res := o.O.(*_rpc.Server).ServeRequest(codec)
+// 	__codec := ABEND233(Unsupported: ExtractGo_go_std_net_rpc__ServerCodec("(*_net/rpc.Server)ServeRequest()", "codec", _argList, 0))
+// 	_res := o.O.(*_rpc.Server).ServeRequest(__codec)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
@@ -7442,8 +7442,8 @@ func __serverError_Error(o GoObject, args Object) Object {
 }
 
 GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
-func __dial(network string, address string) Object {
-	_res1, _res2 := _jsonrpc.Dial(network, address)
+func __dial(__network string, __address string) Object {
+	_res1, _res2 := _jsonrpc.Dial(__network, __address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7451,26 +7451,26 @@ func __dial(network string, address string) Object {
 }
 
 GO FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
-// func __newClient(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_res := _jsonrpc.NewClient(conn)
+// func __newClient(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_res := _jsonrpc.NewClient(__conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
-// func __newClientCodec(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_res := _jsonrpc.NewClientCodec(conn)
+// func __newClientCodec(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_res := _jsonrpc.NewClientCodec(__conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewServerCodec from net/rpc/jsonrpc/server.go:
-// func __newServerCodec(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_res := _jsonrpc.NewServerCodec(conn)
+// func __newServerCodec(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_res := _jsonrpc.NewServerCodec(__conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
-// func __serveConn(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_jsonrpc.ServeConn(conn)
+// func __serveConn(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_jsonrpc.ServeConn(__conn)
 // 	...ABEND675: TODO...
 // }
 
@@ -7591,14 +7591,14 @@ func ExtractGoObjectServerInfo(args []Object, index int) *_smtp.ServerInfo {
 // }
 
 GO FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
-func __cRAMMD5Auth(username string, secret string) Object {
-	_res := _smtp.CRAMMD5Auth(username, secret)
+func __cRAMMD5Auth(__username string, __secret string) Object {
+	_res := _smtp.CRAMMD5Auth(__username, __secret)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/smtp.Dial from net/smtp/smtp.go:
-func __dial(addr string) Object {
-	_res1, _res2 := _smtp.Dial(addr)
+func __dial(__addr string) Object {
+	_res1, _res2 := _smtp.Dial(__addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7606,8 +7606,8 @@ func __dial(addr string) Object {
 }
 
 GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
-// func __newClient(conn ABEND987(genutils.go: imports not yet supported: net.Conn), host string) Object {
-// 	_res1, _res2 := _smtp.NewClient(conn, host)
+// func __newClient(__conn ABEND987(genutils.go: imports not yet supported: net.Conn), __host string) Object {
+// 	_res1, _res2 := _smtp.NewClient(__conn, __host)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7615,22 +7615,22 @@ GO FUNC net/smtp.NewClient from net/smtp/smtp.go:
 // }
 
 GO FUNC net/smtp.PlainAuth from net/smtp/auth.go:
-func __plainAuth(identity string, username string, password string, host string) Object {
-	_res := _smtp.PlainAuth(identity, username, password, host)
+func __plainAuth(__identity string, __username string, __password string, __host string) Object {
+	_res := _smtp.PlainAuth(__identity, __username, __password, __host)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
-// func __sendMail(addr string, a _smtp.Auth, from string, to []string, msg []byte)  {
-// 	_res := _smtp.SendMail(addr, a, from, to, msg)
+// func __sendMail(__addr string, __a _smtp.Auth, __from string, __to []string, __msg []byte)  {
+// 	_res := _smtp.SendMail(__addr, __a, __from, __to, __msg)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
 // func __ptrTo_Client_Auth(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/smtp.Client)Auth()", args, 1, 1)
-// 	a := ABEND233(Unsupported: ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0))
-// 	_res := o.O.(*_smtp.Client).Auth(a)
+// 	__a := ABEND233(Unsupported: ExtractGo_go_std_net_smtp__Auth("(*_net/smtp.Client)Auth()", "a", _argList, 0))
+// 	_res := o.O.(*_smtp.Client).Auth(__a)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
@@ -7648,8 +7648,8 @@ GO FUNC net/smtp.__ptrTo_Client_Data from net/smtp/smtp.go:
 GO FUNC net/smtp.__ptrTo_Client_Extension from net/smtp/smtp.go:
 func __ptrTo_Client_Extension(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/smtp.Client)Extension()", args, 1, 1)
-	ext := ExtractGoString("(*_net/smtp.Client)Extension()", "ext", _argList, 0)
-	_res1, _res2 := o.O.(*_smtp.Client).Extension(ext)
+	__ext := ExtractGoString("(*_net/smtp.Client)Extension()", "ext", _argList, 0)
+	_res1, _res2 := o.O.(*_smtp.Client).Extension(__ext)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(_res1))
 	_res = _res.Conjoin(MakeString(_res2))
@@ -7659,16 +7659,16 @@ func __ptrTo_Client_Extension(o GoObject, args Object) Object {
 GO FUNC net/smtp.__ptrTo_Client_Hello from net/smtp/smtp.go:
 func __ptrTo_Client_Hello(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/smtp.Client)Hello()", args, 1, 1)
-	localName := ExtractGoString("(*_net/smtp.Client)Hello()", "localName", _argList, 0)
-	_res := o.O.(*_smtp.Client).Hello(localName)
+	__localName := ExtractGoString("(*_net/smtp.Client)Hello()", "localName", _argList, 0)
+	_res := o.O.(*_smtp.Client).Hello(__localName)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/smtp.__ptrTo_Client_Mail from net/smtp/smtp.go:
 func __ptrTo_Client_Mail(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/smtp.Client)Mail()", args, 1, 1)
-	from := ExtractGoString("(*_net/smtp.Client)Mail()", "from", _argList, 0)
-	_res := o.O.(*_smtp.Client).Mail(from)
+	__from := ExtractGoString("(*_net/smtp.Client)Mail()", "from", _argList, 0)
+	_res := o.O.(*_smtp.Client).Mail(__from)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -7689,8 +7689,8 @@ func __ptrTo_Client_Quit(o GoObject, args Object) Object {
 GO FUNC net/smtp.__ptrTo_Client_Rcpt from net/smtp/smtp.go:
 func __ptrTo_Client_Rcpt(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/smtp.Client)Rcpt()", args, 1, 1)
-	to := ExtractGoString("(*_net/smtp.Client)Rcpt()", "to", _argList, 0)
-	_res := o.O.(*_smtp.Client).Rcpt(to)
+	__to := ExtractGoString("(*_net/smtp.Client)Rcpt()", "to", _argList, 0)
+	_res := o.O.(*_smtp.Client).Rcpt(__to)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -7703,7 +7703,7 @@ func __ptrTo_Client_Reset(o GoObject, args Object) Object {
 
 GO FUNC net/smtp.__ptrTo_Client_StartTLS from net/smtp/smtp.go:
 // func __ptrTo_Client_StartTLS(o GoObject, args Object) Object {
-// config *ABEND987(genutils.go: imports not yet supported: tls.Config)}
+// __config *ABEND987(genutils.go: imports not yet supported: tls.Config)}
 
 GO FUNC net/smtp.__ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 // func __ptrTo_Client_TLSConnectionState(o GoObject, args Object) Object {
@@ -7712,8 +7712,8 @@ GO FUNC net/smtp.__ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 GO FUNC net/smtp.__ptrTo_Client_Verify from net/smtp/smtp.go:
 func __ptrTo_Client_Verify(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/smtp.Client)Verify()", args, 1, 1)
-	addr := ExtractGoString("(*_net/smtp.Client)Verify()", "addr", _argList, 0)
-	_res := o.O.(*_smtp.Client).Verify(addr)
+	__addr := ExtractGoString("(*_net/smtp.Client)Verify()", "addr", _argList, 0)
+	_res := o.O.(*_smtp.Client).Verify(__addr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -7988,8 +7988,8 @@ func ExtractGoObjectWriter(args []Object, index int) *_textproto.Writer {
 // }
 
 GO FUNC net/textproto.Dial from net/textproto/textproto.go:
-func __dial(network string, addr string) Object {
-	_res1, _res2 := _textproto.Dial(network, addr)
+func __dial(__network string, __addr string) Object {
+	_res1, _res2 := _textproto.Dial(__network, __addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7997,26 +7997,26 @@ func __dial(network string, addr string) Object {
 }
 
 GO FUNC net/textproto.NewConn from net/textproto/textproto.go:
-// func __newConn(conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
-// 	_res := _textproto.NewConn(conn)
+// func __newConn(__conn ABEND987(genutils.go: imports not yet supported: io.ReadWriteCloser)) Object {
+// 	_res := _textproto.NewConn(__conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.NewReader from net/textproto/reader.go:
-// func __newReader(r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
-// 	_res := _textproto.NewReader(r)
+// func __newReader(__r *ABEND987(genutils.go: imports not yet supported: bufio.Reader)) Object {
+// 	_res := _textproto.NewReader(__r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.NewWriter from net/textproto/writer.go:
-// func __newWriter(w *ABEND987(genutils.go: imports not yet supported: bufio.Writer)) Object {
-// 	_res := _textproto.NewWriter(w)
+// func __newWriter(__w *ABEND987(genutils.go: imports not yet supported: bufio.Writer)) Object {
+// 	_res := _textproto.NewWriter(__w)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
-// func __trimBytes(b []byte) Object {
-// 	_res := _textproto.TrimBytes(b)
+// func __trimBytes(__b []byte) Object {
+// 	_res := _textproto.TrimBytes(__b)
 // 	_vec1 := EmptyVector()
 // 	for _, _elem1 := range _res {
 // 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
@@ -8037,8 +8037,8 @@ GO FUNC net/textproto.__mIMEHeader_Del from net/textproto/header.go:
 GO FUNC net/textproto.__mIMEHeader_Get from net/textproto/header.go:
 func __mIMEHeader_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/textproto.MIMEHeader)Get()", args, 1, 1)
-	key := ExtractGoString("(_net/textproto.MIMEHeader)Get()", "key", _argList, 0)
-	_res := o.O.(_textproto.MIMEHeader).Get(key)
+	__key := ExtractGoString("(_net/textproto.MIMEHeader)Get()", "key", _argList, 0)
+	_res := o.O.(_textproto.MIMEHeader).Get(__key)
 	return MakeString(_res)
 }
 
@@ -8106,8 +8106,8 @@ GO FUNC net/textproto.__ptrTo_Reader_DotReader from net/textproto/reader.go:
 GO FUNC net/textproto.__ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
 func __ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/textproto.Reader)ReadCodeLine()", args, 1, 1)
-	expectCode := ExtractGoInt("(*_net/textproto.Reader)ReadCodeLine()", "expectCode", _argList, 0)
-	code, message, err := o.O.(*_textproto.Reader).ReadCodeLine(expectCode)
+	__expectCode := ExtractGoInt("(*_net/textproto.Reader)ReadCodeLine()", "expectCode", _argList, 0)
+	code, message, err := o.O.(*_textproto.Reader).ReadCodeLine(__expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
 	_res = _res.Conjoin(MakeString(message))
@@ -8204,8 +8204,8 @@ func __ptrTo_Reader_ReadMIMEHeader(o GoObject, args Object) Object {
 GO FUNC net/textproto.__ptrTo_Reader_ReadResponse from net/textproto/reader.go:
 func __ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/textproto.Reader)ReadResponse()", args, 1, 1)
-	expectCode := ExtractGoInt("(*_net/textproto.Reader)ReadResponse()", "expectCode", _argList, 0)
-	code, message, err := o.O.(*_textproto.Reader).ReadResponse(expectCode)
+	__expectCode := ExtractGoInt("(*_net/textproto.Reader)ReadResponse()", "expectCode", _argList, 0)
+	code, message, err := o.O.(*_textproto.Reader).ReadResponse(__expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
 	_res = _res.Conjoin(MakeString(message))
@@ -8452,8 +8452,8 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // }
 
 GO FUNC net/url.Parse from net/url/url.go:
-func __parse(rawurl string) Object {
-	_res1, _res2 := _url.Parse(rawurl)
+func __parse(__rawurl string) Object {
+	_res1, _res2 := _url.Parse(__rawurl)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8461,8 +8461,8 @@ func __parse(rawurl string) Object {
 }
 
 GO FUNC net/url.ParseQuery from net/url/url.go:
-func __parseQuery(query string) Object {
-	_res1, _res2 := _url.ParseQuery(query)
+func __parseQuery(__query string) Object {
+	_res1, _res2 := _url.ParseQuery(__query)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8470,8 +8470,8 @@ func __parseQuery(query string) Object {
 }
 
 GO FUNC net/url.ParseRequestURI from net/url/url.go:
-func __parseRequestURI(rawurl string) Object {
-	_res1, _res2 := _url.ParseRequestURI(rawurl)
+func __parseRequestURI(__rawurl string) Object {
+	_res1, _res2 := _url.ParseRequestURI(__rawurl)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8479,8 +8479,8 @@ func __parseRequestURI(rawurl string) Object {
 }
 
 GO FUNC net/url.PathUnescape from net/url/url.go:
-func __pathUnescape(s string) Object {
-	_res1, _res2 := _url.PathUnescape(s)
+func __pathUnescape(__s string) Object {
+	_res1, _res2 := _url.PathUnescape(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8488,8 +8488,8 @@ func __pathUnescape(s string) Object {
 }
 
 GO FUNC net/url.QueryUnescape from net/url/url.go:
-func __queryUnescape(s string) Object {
-	_res1, _res2 := _url.QueryUnescape(s)
+func __queryUnescape(__s string) Object {
+	_res1, _res2 := _url.QueryUnescape(__s)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8497,14 +8497,14 @@ func __queryUnescape(s string) Object {
 }
 
 GO FUNC net/url.User from net/url/url.go:
-func __user(username string) Object {
-	_res := _url.User(username)
+func __user(__username string) Object {
+	_res := _url.User(__username)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/url.UserPassword from net/url/url.go:
-func __userPassword(username string, password string) Object {
-	_res := _url.UserPassword(username, password)
+func __userPassword(__username string, __password string) Object {
+	_res := _url.UserPassword(__username, __password)
 	return MakeGoObject(_res)
 }
 
@@ -8581,8 +8581,8 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
 func __ptrTo_URL_Parse(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(*_net/url.URL)Parse()", args, 1, 1)
-	ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
-	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
+	__ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
+	_res1, _res2 := o.O.(*_url.URL).Parse(__ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -8614,7 +8614,7 @@ GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
 // func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
 // 	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for ref at: _tests/big/src/net/url/url.go:973:36)
-// 	_res := o.O.(*_url.URL).ResolveReference(ref)
+// 	_res := o.O.(*_url.URL).ResolveReference(__ref)
 // 	return MakeGoObject(_res)
 // }
 
@@ -8673,8 +8673,8 @@ func __values_Encode(o GoObject, args Object) Object {
 GO FUNC net/url.__values_Get from net/url/url.go:
 func __values_Get(o GoObject, args Object) Object {
 	_argList := CheckGoArity("(_net/url.Values)Get()", args, 1, 1)
-	key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
-	_res := o.O.(_url.Values).Get(key)
+	__key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
+	_res := o.O.(_url.Values).Get(__key)
 	return MakeString(_res)
 }
 
