@@ -63,99 +63,99 @@ JOKER FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
-   :go "__cIDRMask(_ones, _bits)"}
-  [^Int _ones, ^Int _bits])
+   :go "__cIDRMask(ones, bits)"}
+  [^Int ones, ^Int bits])
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
-  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IP"
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
-   :go "__iPv4(_a, _b, _c, _d)"}
-  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+   :go "__iPv4(a, b, c, d)"}
+  [^Int a, ^Int b, ^Int c, ^Int d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
-  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker return type: go.std.net/IPMask"
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
-   :go "__iPv4Mask(_a, _b, _c, _d)"}
-  [^Byte _a, ^Byte _b, ^Byte _c, ^Byte _d])
+   :go "__iPv4Mask(a, b, c, d)"}
+  [^Int a, ^Int b, ^Int c, ^Int d])
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupAddr(_addr)"}
-  [^String _addr])
+   :go "__lookupAddr(addr)"}
+  [^String addr])
 
 JOKER FUNC net.LookupCNAME from net/lookup.go:
 (defn LookupCNAME
   "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: (host string)\n\nGo return type: (cname string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__lookupCNAME(_host)"}
-  [^String _host])
+   :go "__lookupCNAME(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
   "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupHost(_host)"}
-  [^String _host])
+   :go "__lookupHost(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
   {:added "1.0"
-   :go "__lookupIP(_host)"}
-  [^String _host])
+   :go "__lookupIP(host)"}
+  [^String host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
   "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/MX)) Error]"
   {:added "1.0"
-   :go "__lookupMX(_name)"}
-  [^String _name])
+   :go "__lookupMX(name)"}
+  [^String name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
   "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/NS)) Error]"
   {:added "1.0"
-   :go "__lookupNS(_name)"}
-  [^String _name])
+   :go "__lookupNS(name)"}
+  [^String name])
 
 JOKER FUNC net.LookupPort from net/lookup.go:
 (defn LookupPort
   "LookupPort looks up the port for the given network and service.\n\nGo input arguments: (network string, service string)\n\nGo return type: (port int, err error)\n\nJoker input arguments: [^String network, ^String service]\n\nJoker return type: [Int Error]"
   {:added "1.0"
-   :go "__lookupPort(_network, _service)"}
-  [^String _network, ^String _service])
+   :go "__lookupPort(network, service)"}
+  [^String network, ^String service])
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
   "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (atom-of go.std.net/SRV)) Error]"
   {:added "1.0"
-   :go "__lookupSRV(_service, _proto, _name)"}
-  [^String _service, ^String _proto, ^String _name])
+   :go "__lookupSRV(service, proto, name)"}
+  [^String service, ^String proto, ^String name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
   "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of String) Error]"
   {:added "1.0"
-   :go "__lookupTXT(_name)"}
-  [^String _name])
+   :go "__lookupTXT(name)"}
+  [^String name])
 
 JOKER FUNC net.ParseCIDR from net/ip.go:
 (defn ParseCIDR
   "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP (atom-of go.std.net/IPNet) Error]"
   {:added "1.0"
-   :go "__parseCIDR(_s)"}
-  [^String _s])
+   :go "__parseCIDR(s)"}
+  [^String s])
 
 JOKER FUNC net.ParseIP from net/ip.go:
 (defn ParseIP
   "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: (s string)\n\nGo return type: IP\n\nJoker input arguments: [^String s]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
-   :go "__parseIP(_s)"}
-  [^String _s])
+   :go "__parseIP(s)"}
+  [^String s])
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -210,64 +210,64 @@ JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
   {:added "1.0"
-   :go "__parse(_rawurl)"}
-  [^String _rawurl])
+   :go "__parse(rawurl)"}
+  [^String rawurl])
 
 JOKER FUNC net/url.ParseQuery from net/url/url.go:
 (defn ParseQuery
   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo return type: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker return type: [go.std.net.url/Values Error]"
   {:added "1.0"
-   :go "__parseQuery(_query)"}
-  [^String _query])
+   :go "__parseQuery(query)"}
+  [^String query])
 
 JOKER FUNC net/url.ParseRequestURI from net/url/url.go:
 (defn ParseRequestURI
   "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
   {:added "1.0"
-   :go "__parseRequestURI(_rawurl)"}
-  [^String _rawurl])
+   :go "__parseRequestURI(rawurl)"}
+  [^String rawurl])
 
 JOKER FUNC net/url.PathEscape from net/url/url.go:
 (defn ^"String" PathEscape
   "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
-   :go "url.PathEscape(_s)"}
-  [^String _s])
+   :go "url.PathEscape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.PathUnescape from net/url/url.go:
 (defn PathUnescape
   "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__pathUnescape(_s)"}
-  [^String _s])
+   :go "__pathUnescape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.QueryEscape from net/url/url.go:
 (defn ^"String" QueryEscape
   "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: (s string)\n\nGo return type: string\n\nJoker input arguments: [^String s]\n\nJoker return type: String"
   {:added "1.0"
-   :go "url.QueryEscape(_s)"}
-  [^String _s])
+   :go "url.QueryEscape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.QueryUnescape from net/url/url.go:
 (defn QueryUnescape
   "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: (s string)\n\nGo return type: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [String Error]"
   {:added "1.0"
-   :go "__queryUnescape(_s)"}
-  [^String _s])
+   :go "__queryUnescape(s)"}
+  [^String s])
 
 JOKER FUNC net/url.User from net/url/url.go:
 (defn User
   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
   {:added "1.0"
-   :go "__user(_username)"}
-  [^String _username])
+   :go "__user(username)"}
+  [^String username])
 
 JOKER FUNC net/url.UserPassword from net/url/url.go:
 (defn UserPassword
   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
   {:added "1.0"
-   :go "__userPassword(_username, _password)"}
-  [^String _username, ^String _password])
+   :go "__userPassword(username, password)"}
+  [^String username, ^String password])
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -699,6 +699,7 @@ func __parseIP(s string) Object {
 
 GO FUNC net.__iPMask_Size from net/ip.go:
 func __iPMask_Size(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IPMask)Size()", args, 0, 0)
 	ones, bits := o.O.(_net.IPMask).Size()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(ones))
@@ -708,60 +709,78 @@ func __iPMask_Size(o GoObject, args Object) Object {
 
 GO FUNC net.__iPMask_String from net/ip.go:
 func __iPMask_String(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IPMask)String()", args, 0, 0)
 	_res := o.O.(_net.IPMask).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__iP_DefaultMask from net/ip.go:
 func __iP_DefaultMask(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)DefaultMask()", args, 0, 0)
 	_res := o.O.(_net.IP).DefaultMask()
 	return MakeGoObject(_res)
 }
 
+GO FUNC net.__iP_Equal from net/ip.go:
+func __iP_Equal(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
+	x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "x", _argList, 0)
+	_res := o.O.(_net.IP).Equal(x)
+	return MakeBoolean(_res)
+}
+
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsGlobalUnicast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsGlobalUnicast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsInterfaceLocalMulticast from net/ip.go:
 func __iP_IsInterfaceLocalMulticast(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsInterfaceLocalMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsInterfaceLocalMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLinkLocalMulticast from net/ip.go:
 func __iP_IsLinkLocalMulticast(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsLinkLocalMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLinkLocalMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLinkLocalUnicast from net/ip.go:
 func __iP_IsLinkLocalUnicast(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsLinkLocalUnicast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLinkLocalUnicast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsLoopback from net/ip.go:
 func __iP_IsLoopback(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsLoopback()", args, 0, 0)
 	_res := o.O.(_net.IP).IsLoopback()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsMulticast from net/ip.go:
 func __iP_IsMulticast(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsMulticast()", args, 0, 0)
 	_res := o.O.(_net.IP).IsMulticast()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_IsUnspecified from net/ip.go:
 func __iP_IsUnspecified(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)IsUnspecified()", args, 0, 0)
 	_res := o.O.(_net.IP).IsUnspecified()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__iP_MarshalText from net/ip.go:
 func __iP_MarshalText(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)MarshalText()", args, 0, 0)
 	_res1, _res2 := o.O.(_net.IP).MarshalText()
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -773,35 +792,96 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net.__iP_Mask from net/ip.go:
+func __iP_Mask(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
+	mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "mask", _argList, 0)
+	_res := o.O.(_net.IP).Mask(mask)
+	return MakeGoObject(_res)
+}
+
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)String()", args, 0, 0)
 	_res := o.O.(_net.IP).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__iP_To16 from net/ip.go:
 func __iP_To16(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)To16()", args, 0, 0)
 	_res := o.O.(_net.IP).To16()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.__iP_To4 from net/ip.go:
 func __iP_To4(o GoObject, args Object) Object {
+	CheckGoArity("(_net.IP)To4()", args, 0, 0)
 	_res := o.O.(_net.IP).To4()
 	return MakeGoObject(_res)
 }
 
+GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
+func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
+	ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "ip", _argList, 0)
+	_res := o.O.(*_net.IPNet).Contains(ip)
+	return MakeBoolean(_res)
+}
+
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
+	CheckGoArity("(*_net.IPNet)Network()", args, 0, 0)
 	_res := o.O.(*_net.IPNet).Network()
 	return MakeString(_res)
 }
 
 GO FUNC net.__ptrTo_IPNet_String from net/ip.go:
 func __ptrTo_IPNet_String(o GoObject, args Object) Object {
+	CheckGoArity("(*_net.IPNet)String()", args, 0, 0)
 	_res := o.O.(*_net.IPNet).String()
 	return MakeString(_res)
 }
+
+GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
+// func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(text)))}
+
+GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
+// func __ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), addr string}
+
+GO FUNC net.__ptrTo_Resolver_LookupCNAME from net/lookup.go:
+// func __ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
+// func __ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
+// func __ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), host string}
+
+GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
+// func __ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
+// func __ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupPort from net/lookup.go:
+// func __ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), network string, service string}
+
+GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
+// func __ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), service string, proto string, name string}
+
+GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
+// func __ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {
+// ctx ABEND987(genutils.go: imports not yet supported: context.Context), name string}
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -814,6 +894,7 @@ import (
 )
 var members_IP = GoTypeInfo{Members: GoMembers{
 	"DefaultMask": __iP_DefaultMask,
+	"Equal": __iP_Equal,
 	"IsGlobalUnicast": __iP_IsGlobalUnicast,
 	"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
 	"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
@@ -822,6 +903,7 @@ var members_IP = GoTypeInfo{Members: GoMembers{
 	"IsMulticast": __iP_IsMulticast,
 	"IsUnspecified": __iP_IsUnspecified,
 	"MarshalText": __iP_MarshalText,
+	"Mask": __iP_Mask,
 	"String": __iP_String,
 	"To16": __iP_To16,
 	"To4": __iP_To4,
@@ -833,6 +915,7 @@ var members_IPMask = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
+	"Contains": __ptrTo_IPNet_Contains,
 	"Network": __ptrTo_IPNet_Network,
 	"String": __ptrTo_IPNet_String,
 }}
@@ -1133,54 +1216,63 @@ func __userPassword(username string, password string) Object {
 
 GO FUNC net/url.__escapeError_Error from net/url/url.go:
 func __escapeError_Error(o GoObject, args Object) Object {
+	CheckGoArity("(_net/url.EscapeError)Error()", args, 0, 0)
 	_res := o.O.(_url.EscapeError).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__invalidHostError_Error from net/url/url.go:
 func __invalidHostError_Error(o GoObject, args Object) Object {
+	CheckGoArity("(_net/url.InvalidHostError)Error()", args, 0, 0)
 	_res := o.O.(_url.InvalidHostError).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Error from net/url/url.go:
 func __ptrTo_Error_Error(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Error)Error()", args, 0, 0)
 	_res := o.O.(*_url.Error).Error()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Temporary from net/url/url.go:
 func __ptrTo_Error_Temporary(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Error)Temporary()", args, 0, 0)
 	_res := o.O.(*_url.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_Error_Timeout from net/url/url.go:
 func __ptrTo_Error_Timeout(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Error)Timeout()", args, 0, 0)
 	_res := o.O.(*_url.Error).Timeout()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_EscapedPath from net/url/url.go:
 func __ptrTo_URL_EscapedPath(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)EscapedPath()", args, 0, 0)
 	_res := o.O.(*_url.URL).EscapedPath()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_Hostname from net/url/url.go:
 func __ptrTo_URL_Hostname(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)Hostname()", args, 0, 0)
 	_res := o.O.(*_url.URL).Hostname()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_IsAbs from net/url/url.go:
 func __ptrTo_URL_IsAbs(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)IsAbs()", args, 0, 0)
 	_res := o.O.(*_url.URL).IsAbs()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_MarshalBinary from net/url/url.go:
 func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)MarshalBinary()", args, 0, 0)
 	text, err := o.O.(*_url.URL).MarshalBinary()
 	_res := EmptyVector()
 	_vec1 := EmptyVector()
@@ -1192,32 +1284,60 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/url.__ptrTo_URL_Parse from net/url/url.go:
+func __ptrTo_URL_Parse(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(*_net/url.URL)Parse()", args, 1, 1)
+	ref := ExtractGoString("(*_net/url.URL)Parse()", "ref", _argList, 0)
+	_res1, _res2 := o.O.(*_url.URL).Parse(ref)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
 GO FUNC net/url.__ptrTo_URL_Port from net/url/url.go:
 func __ptrTo_URL_Port(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)Port()", args, 0, 0)
 	_res := o.O.(*_url.URL).Port()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_Query from net/url/url.go:
 func __ptrTo_URL_Query(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)Query()", args, 0, 0)
 	_res := o.O.(*_url.URL).Query()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/url.__ptrTo_URL_RequestURI from net/url/url.go:
 func __ptrTo_URL_RequestURI(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)RequestURI()", args, 0, 0)
 	_res := o.O.(*_url.URL).RequestURI()
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__ptrTo_URL_ResolveReference from net/url/url.go:
+// func __ptrTo_URL_ResolveReference(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(*_net/url.URL)ResolveReference()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for ref at: _tests/small/src/net/url/url.go:973:36)
+// 	_res := o.O.(*_url.URL).ResolveReference(ref)
+// 	return MakeGoObject(_res)
+// }
+
 GO FUNC net/url.__ptrTo_URL_String from net/url/url.go:
 func __ptrTo_URL_String(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.URL)String()", args, 0, 0)
 	_res := o.O.(*_url.URL).String()
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
+// func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(text)))}
+
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Userinfo)Password()", args, 0, 0)
 	_res1, _res2 := o.O.(*_url.Userinfo).Password()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(_res1))
@@ -1227,21 +1347,47 @@ func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {
 
 GO FUNC net/url.__ptrTo_Userinfo_String from net/url/url.go:
 func __ptrTo_Userinfo_String(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Userinfo)String()", args, 0, 0)
 	_res := o.O.(*_url.Userinfo).String()
 	return MakeString(_res)
 }
 
 GO FUNC net/url.__ptrTo_Userinfo_Username from net/url/url.go:
 func __ptrTo_Userinfo_Username(o GoObject, args Object) Object {
+	CheckGoArity("(*_net/url.Userinfo)Username()", args, 0, 0)
 	_res := o.O.(*_url.Userinfo).Username()
 	return MakeString(_res)
 }
 
+GO FUNC net/url.__values_Add from net/url/url.go:
+// func __values_Add(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/url.__values_Del from net/url/url.go:
+// func __values_Del(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/url.__values_Encode from net/url/url.go:
 func __values_Encode(o GoObject, args Object) Object {
+	CheckGoArity("(_net/url.Values)Encode()", args, 0, 0)
 	_res := o.O.(_url.Values).Encode()
 	return MakeString(_res)
 }
+
+GO FUNC net/url.__values_Get from net/url/url.go:
+func __values_Get(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(_net/url.Values)Get()", args, 1, 1)
+	key := ExtractGoString("(_net/url.Values)Get()", "key", _argList, 0)
+	_res := o.O.(_url.Values).Get(key)
+	return MakeString(_res)
+}
+
+GO FUNC net/url.__values_Set from net/url/url.go:
+// func __values_Set(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -1272,6 +1418,7 @@ var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
 	"Hostname": __ptrTo_URL_Hostname,
 	"IsAbs": __ptrTo_URL_IsAbs,
 	"MarshalBinary": __ptrTo_URL_MarshalBinary,
+	"Parse": __ptrTo_URL_Parse,
 	"Port": __ptrTo_URL_Port,
 	"Query": __ptrTo_URL_Query,
 	"RequestURI": __ptrTo_URL_RequestURI,
@@ -1286,6 +1433,7 @@ var members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
 
 var members_Values = GoTypeInfo{Members: GoMembers{
 	"Encode": __values_Encode,
+	"Get": __values_Get,
 }}
 
 
@@ -1298,8 +1446,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 048(3) 674(3) 047(1)
-Totals: functions=76 generated=56 (73.68%)
+ABENDs: 987(9) 048(3) 275(3) 674(3) 902(2) 047(1) 644(1)
+Totals: functions=76 generated=61 (80.26%)
           non-receivers=23 (30.26%) generated=23 (100.00%)
-          receivers=53 (69.74%) generated=33 (62.26%)
+          receivers=53 (69.74%) generated=38 (71.70%)
         types=13 generated=7 (53.85%)
