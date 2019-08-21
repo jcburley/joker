@@ -115,18 +115,22 @@ func toGoTypeInfo(src *goFile, ts *TypeSpec) *goTypeInfo {
 }
 
 func toGoExprInfo(src *goFile, e *Expr) *goTypeInfo {
-	convertFromClojure := fmt.Sprintf("ABEND622(toGoExprInfo: %T <<<%%s>>>)", e)
 	private := false
 	var underlyingType *Expr
 	unsupported := false
 
-	if ti := lookupGoType(src, e); ti != nil {
+	ti := lookupGoType(src, e)
+	if ti != nil && !ti.uncompleted {
 		return ti
+	}
+
+	convertFromClojure := fmt.Sprintf("ABEND622(toGoExprInfo: no conversion for %T <<<%%s>>>)", e)
+	if ti != nil {
+		convertFromClojure = fmt.Sprintf("ABEND624(toGoExprInfo: no conversion for %s <<<%%s>>>)", ti.goName)
 	}
 
 	switch td := (*e).(type) {
 	case *Ident:
-		ti := lookupGoType(src, e)
 		if ti.uncompleted {
 			// Fill in other info now that all types are registered.
 			ut := toGoExprInfo(src, ti.underlyingType)

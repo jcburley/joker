@@ -2294,7 +2294,7 @@ func ExtractGoObjectDialer(args []Object, index int) *_net.Dialer {
 // 	return &_net.Dialer{
 // 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(0)>>>,
 // 		Deadline: ABEND987(genutils.go: imports not yet supported: time.Time)<<<o.Nth(1)>>>,
-// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
+// 		LocalAddr: _net.Addr(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(2)>>>)),
 // 		DualStack: ToBool(o.Nth(3)),
 // 		FallbackDelay: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(4)>>>,
 // 		KeepAlive: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(5)>>>,
@@ -2625,7 +2625,7 @@ func ExtractGoObjectInterface(args []Object, index int) *_net.Interface {
 // 		MTU: AssertInt(o.Nth(1), "").I,
 // 		Name: AssertString(o.Nth(2), "").S,
 // 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
-// 		Flags: ABEND048(codegen.go: no conversion from Clojure for net.Flags (uint)),
+// 		Flags: _net.Flags(uint(AssertInt(o.Nth(4), "").I)),
 // 	}
 // }
 
@@ -2859,8 +2859,8 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 // 	return &_net.OpError{
 // 		Op: AssertString(o.Nth(0), "").S,
 // 		Net: AssertString(o.Nth(1), "").S,
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{})),
+// 		Source: _net.Addr(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(2)>>>)),
+// 		Addr: _net.Addr(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(3)>>>)),
 // 		Err: _errors.New(AssertString(o.Nth(4), "").S),
 // 	}
 // }
@@ -4698,9 +4698,9 @@ func ExtractGoObjectClient(args []Object, index int) *_http.Client {
 
 // func _vectorToClient(o *Vector) *_http.Client {
 // 	return &_http.Client{
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{})),
+// 		Transport: _http.RoundTripper(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(0)>>>)),
 // 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/client.go:76:16),
-// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{})),
+// 		Jar: _http.CookieJar(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(2)>>>)),
 // 		Timeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(3)>>>,
 // 	}
 // }
@@ -4815,7 +4815,7 @@ func ExtractGoObjectCookie(args []Object, index int) *_http.Cookie {
 // 		MaxAge: AssertInt(o.Nth(6), "").I,
 // 		Secure: ToBool(o.Nth(7)),
 // 		HttpOnly: ToBool(o.Nth(8)),
-// 		SameSite: ABEND048(codegen.go: no conversion from Clojure for net/http.SameSite (int)),
+// 		SameSite: _http.SameSite(AssertInt(o.Nth(9), "").I),
 // 		Raw: AssertString(o.Nth(10), "").S,
 // 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 	}
@@ -5175,7 +5175,7 @@ func ExtractGoObjectPushOptions(args []Object, index int) *_http.PushOptions {
 // func _vectorToPushOptions(o *Vector) *_http.PushOptions {
 // 	return &_http.PushOptions{
 // 		Method: AssertString(o.Nth(0), "").S,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Header: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(1)>>>)),
 // 	}
 // }
 
@@ -5252,7 +5252,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Header: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(5)>>>)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)<<<o.Nth(6)>>>,
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/request.go:189:10),
 // 		ContentLength: AssertNumber(o.Nth(8), "").BigInt().Int64(),
@@ -5262,7 +5262,7 @@ func ExtractGoObjectRequest(args []Object, index int) *_http.Request {
 // 		Form: ABEND987(genutils.go: imports not yet supported: url.Values)<<<o.Nth(12)>>>,
 // 		PostForm: ABEND987(genutils.go: imports not yet supported: url.Values)<<<o.Nth(13)>>>,
 // 		MultipartForm: &ABEND987(genutils.go: imports not yet supported: multipart.Form)<<<o.Nth(14)>>>,
-// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Trailer: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(15)>>>)),
 // 		RemoteAddr: AssertString(o.Nth(16), "").S,
 // 		RequestURI: AssertString(o.Nth(17), "").S,
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)<<<o.Nth(18)>>>,
@@ -5314,13 +5314,13 @@ func ExtractGoObjectResponse(args []Object, index int) *_http.Response {
 // 		Proto: AssertString(o.Nth(2), "").S,
 // 		ProtoMajor: AssertInt(o.Nth(3), "").I,
 // 		ProtoMinor: AssertInt(o.Nth(4), "").I,
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Header: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(5)>>>)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.ReadCloser)<<<o.Nth(6)>>>,
 // 		ContentLength: AssertNumber(o.Nth(7), "").BigInt().Int64(),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string),
 // 		Close: ToBool(o.Nth(9)),
 // 		Uncompressed: ToBool(o.Nth(10)),
-// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Trailer: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(11)>>>)),
 // 		Request: ABEND623(goStarExpr: no conversion for net/http.Request <<<o.Nth(12)>>>),
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.ConnectionState)<<<o.Nth(13)>>>,
 // 	}
@@ -5498,7 +5498,7 @@ func ExtractGoObjectServer(args []Object, index int) *_http.Server {
 // func _vectorToServer(o *Vector) *_http.Server {
 // 	return &_http.Server{
 // 		Addr: AssertString(o.Nth(0), "").S,
-// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{})),
+// 		Handler: _http.Handler(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(1)>>>)),
 // 		TLSConfig: &ABEND987(genutils.go: imports not yet supported: tls.Config)<<<o.Nth(2)>>>,
 // 		ReadTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(3)>>>,
 // 		ReadHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(4)>>>,
@@ -5564,7 +5564,7 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // 		ResponseHeaderTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(12)>>>,
 // 		ExpectContinueTimeout: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(13)>>>,
 // 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType at: _tests/big/src/net/http/transport.go:243:15),
-// 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		ProxyConnectHeader: _http.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(15)>>>)),
 // 		MaxResponseHeaderBytes: AssertNumber(o.Nth(16), "").BigInt().Int64(),
 // 	}
 // }
@@ -5587,13 +5587,13 @@ func ExtractGoObjectTransport(args []Object, index int) *_http.Transport {
 // }
 
 GO FUNC net/http.Error from net/http/server.go:
-// func __error(w ResponseWriter, error string, code int) Object {
+// func __error(w _http.ResponseWriter, error string, code int) Object {
 // 	_http.Error(w, error, code)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.FileServer from net/http/fs.go:
-func __fileServer(root FileSystem) Object {
+func __fileServer(root _http.FileSystem) Object {
 	_res := _http.FileServer(root)
 	return MakeGoObject(_res)
 }
@@ -5608,7 +5608,7 @@ func __get(url string) Object {
 }
 
 GO FUNC net/http.Handle from net/http/server.go:
-// func __handle(pattern string, handler Handler) Object {
+// func __handle(pattern string, handler _http.Handler) Object {
 // 	_http.Handle(pattern, handler)
 // 	...ABEND675: TODO...
 // }
@@ -5629,12 +5629,12 @@ func __head(url string) Object {
 }
 
 GO FUNC net/http.MaxBytesReader from net/http/request.go:
-// func __maxBytesReader(w ResponseWriter, r ABEND987(genutils.go: imports not yet supported: io.ReadCloser), n int64) Object {
+// func __maxBytesReader(w _http.ResponseWriter, r ABEND987(genutils.go: imports not yet supported: io.ReadCloser), n int64) Object {
 // 	return _http.MaxBytesReader(w, r, n)
 // }
 
 GO FUNC net/http.NewFileTransport from net/http/filetransport.go:
-func __newFileTransport(fs FileSystem) Object {
+func __newFileTransport(fs _http.FileSystem) Object {
 	_res := _http.NewFileTransport(fs)
 	return MakeGoObject(_res)
 }
@@ -5655,7 +5655,7 @@ func __newServeMux() Object {
 }
 
 GO FUNC net/http.NotFound from net/http/server.go:
-// func __notFound(w ResponseWriter, r *net/http.Request) Object {
+// func __notFound(w _http.ResponseWriter, r *net/http.Request) Object {
 // 	_http.NotFound(w, r)
 // 	...ABEND675: TODO...
 // }
@@ -5736,7 +5736,7 @@ GO FUNC net/http.ReadResponse from net/http/response.go:
 // }
 
 GO FUNC net/http.Redirect from net/http/server.go:
-// func __redirect(w ResponseWriter, r *net/http.Request, url string, code int) Object {
+// func __redirect(w _http.ResponseWriter, r *net/http.Request, url string, code int) Object {
 // 	_http.Redirect(w, r, url, code)
 // 	...ABEND675: TODO...
 // }
@@ -5748,43 +5748,43 @@ func __redirectHandler(url string, code int) Object {
 }
 
 GO FUNC net/http.Serve from net/http/server.go:
-// func __serve(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler Handler)  {
+// func __serve(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler _http.Handler)  {
 // 	_res := _http.Serve(l, handler)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.ServeContent from net/http/fs.go:
-// func __serveContent(w ResponseWriter, req *net/http.Request, name string, modtime ABEND987(genutils.go: imports not yet supported: time.Time), content ABEND987(genutils.go: imports not yet supported: io.ReadSeeker)) Object {
+// func __serveContent(w _http.ResponseWriter, req *net/http.Request, name string, modtime ABEND987(genutils.go: imports not yet supported: time.Time), content ABEND987(genutils.go: imports not yet supported: io.ReadSeeker)) Object {
 // 	_http.ServeContent(w, req, name, modtime, content)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.ServeFile from net/http/fs.go:
-// func __serveFile(w ResponseWriter, r *net/http.Request, name string) Object {
+// func __serveFile(w _http.ResponseWriter, r *net/http.Request, name string) Object {
 // 	_http.ServeFile(w, r, name)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.ServeTLS from net/http/server.go:
-// func __serveTLS(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler Handler, certFile string, keyFile string)  {
+// func __serveTLS(l ABEND986(genutils.go: imports not yet supported: net.Listener), handler _http.Handler, certFile string, keyFile string)  {
 // 	_res := _http.ServeTLS(l, handler, certFile, keyFile)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
 
 GO FUNC net/http.SetCookie from net/http/cookie.go:
-// func __setCookie(w ResponseWriter, cookie *net/http.Cookie) Object {
+// func __setCookie(w _http.ResponseWriter, cookie *net/http.Cookie) Object {
 // 	_http.SetCookie(w, cookie)
 // 	...ABEND675: TODO...
 // }
 
 GO FUNC net/http.StripPrefix from net/http/server.go:
-func __stripPrefix(prefix string, h Handler) Object {
+func __stripPrefix(prefix string, h _http.Handler) Object {
 	_res := _http.StripPrefix(prefix, h)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.TimeoutHandler from net/http/server.go:
-// func __timeoutHandler(h Handler, dt ABEND987(genutils.go: imports not yet supported: time.Duration), msg string) Object {
+// func __timeoutHandler(h _http.Handler, dt ABEND987(genutils.go: imports not yet supported: time.Duration), msg string) Object {
 // 	_res := _http.TimeoutHandler(h, dt, msg)
 // 	return MakeGoObject(_res)
 // }
@@ -6287,7 +6287,7 @@ func ExtractGoObjectOptions(args []Object, index int) *_cookiejar.Options {
 
 // func _vectorToOptions(o *Vector) *_cookiejar.Options {
 // 	return &_cookiejar.Options{
-// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{})),
+// 		PublicSuffixList: _cookiejar.PublicSuffixList(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(0)>>>)),
 // 	}
 // }
 
@@ -6433,7 +6433,7 @@ func ExtractGoObjectServer(args []Object, index int) *_httptest.Server {
 // func _vectorToServer(o *Vector) *_httptest.Server {
 // 	return &_httptest.Server{
 // 		URL: AssertString(o.Nth(0), "").S,
-// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{})),
+// 		Listener: _net.Listener(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(1)>>>)),
 // 		TLS: &ABEND987(genutils.go: imports not yet supported: tls.Config)<<<o.Nth(2)>>>,
 // 		Config: &ABEND987(genutils.go: imports not yet supported: http.Server)<<<o.Nth(3)>>>,
 // 	}
@@ -6669,7 +6669,7 @@ func ExtractGoObjectReverseProxy(args []Object, index int) *_httputil.ReversePro
 // 		Transport: ABEND987(genutils.go: imports not yet supported: http.RoundTripper)<<<o.Nth(1)>>>,
 // 		FlushInterval: ABEND987(genutils.go: imports not yet supported: time.Duration)<<<o.Nth(2)>>>,
 // 		ErrorLog: &ABEND987(genutils.go: imports not yet supported: log.Logger)<<<o.Nth(3)>>>,
-// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{})),
+// 		BufferPool: _httputil.BufferPool(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(4)>>>)),
 // 		ModifyResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:67:17),
 // 		ErrorHandler: ABEND047(gotypes.go: unsupported type *ast.FuncType at: _tests/big/src/net/http/httputil/reverseproxy.go:74:15),
 // 	}
@@ -7043,7 +7043,7 @@ func ExtractGoObjectMessage(args []Object, index int) *_mail.Message {
 
 // func _vectorToMessage(o *Vector) *_mail.Message {
 // 	return &_mail.Message{
-// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (map[string][]string)),
+// 		Header: _mail.Header(ABEND622(toGoExprInfo: no conversion for *ast.Expr <<<o.Nth(0)>>>)),
 // 		Body: ABEND987(genutils.go: imports not yet supported: io.Reader)<<<o.Nth(1)>>>,
 // 	}
 // }
@@ -7517,7 +7517,7 @@ GO FUNC net/rpc.NewClient from net/rpc/client.go:
 // }
 
 GO FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
-func __newClientWithCodec(codec ClientCodec) Object {
+func __newClientWithCodec(codec _rpc.ClientCodec) Object {
 	_res := _rpc.NewClientWithCodec(codec)
 	return MakeGoObject(_res)
 }
@@ -7541,7 +7541,7 @@ GO FUNC net/rpc.RegisterName from net/rpc/server.go:
 // }
 
 GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
-// func __serveCodec(codec ServerCodec) Object {
+// func __serveCodec(codec _rpc.ServerCodec) Object {
 // 	_rpc.ServeCodec(codec)
 // 	...ABEND675: TODO...
 // }
@@ -8854,7 +8854,7 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 
 Adding 13 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 13 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-ABENDs: 987(186) 047(48) 644(38) 048(31) 275(31) 674(29) 042(26) 986(19) 675(18) 623(4) 883(2)
+ABENDs: 987(186) 047(48) 644(38) 275(31) 674(29) 042(26) 986(19) 675(18) 622(16) 048(13) 623(4) 883(2)
 Totals: functions=421 generated=233 (55.34%)
           non-receivers=148 (35.15%) generated=84 (56.76%)
           receivers=273 (64.85%) generated=149 (54.58%)

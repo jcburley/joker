@@ -156,7 +156,7 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 	ti := toGoExprInfo(fn.sourceFile, &e)
 	goTypeDoc = ti.goFullName()
 	if ti.isLocallyDefined(fn.sourceFile) {
-		goType = ti.goBaseName()
+		goType = "_" + fn.sourceFile.pkgBaseName + "." + ti.goBaseName()
 	} else {
 		goType = goTypeDoc
 	}
