@@ -655,14 +655,14 @@ JOKER FUNC net.IPv4 from net/ip.go:
   "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IP"
   {:added "1.0"
    :go "__iPv4(a, b, c, d)"}
-  [^Int a, ^Int b, ^Int c, ^Int d])
+  [^Byte a, ^Byte b, ^Byte c, ^Byte d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
   "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker return type: go.std.net/IPMask"
   {:added "1.0"
    :go "__iPv4Mask(a, b, c, d)"}
-  [^Int a, ^Int b, ^Int c, ^Int d])
+  [^Byte a, ^Byte b, ^Byte c, ^Byte d])
 
 JOKER FUNC net.InterfaceAddrs from net/interface.go:
 (defn InterfaceAddrs
@@ -1124,7 +1124,7 @@ JOKER FUNC net/http.MaxBytesReader from net/http/request.go:
 ;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo return type: ...\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.io/ReadCloser r, ^Number n]\n\nJoker return type: ABEND042(post.go: cannot find typename io.ReadCloser)"
 ;;   {:added "1.0"
 ;;    :go "__maxBytesReader(*w, *r, n)"}
-;;   [^http/ResponseWriter w, ^io/ReadCloser r, ^Number n])
+;;   [^http/ResponseWriter w, ^io/ReadCloser r, ^Int64 n])
 
 JOKER FUNC net/http.NewFileTransport from net/http/filetransport.go:
 (defn NewFileTransport

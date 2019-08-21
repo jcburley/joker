@@ -292,17 +292,17 @@ func init() {
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",
 		fullGoName:           "int8",
-		argClojureType:       "Number",
+		argClojureType:       "Int",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
-		argExtractFunc:       "Byte",
+		argExtractFunc:       "Int8",
 		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
 	}
 	goTypes["uint8"] = &goTypeInfo{
 		localName:            "uint8",
 		fullGoName:           "uint8",
-		argClojureType:       "Number",
+		argClojureType:       "Int",
 		argFromClojureObject: ".Int().I",
 		argClojureArgType:    "Int",
 		argExtractFunc:       "UInt8",

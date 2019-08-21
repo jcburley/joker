@@ -158,7 +158,11 @@ func genTypePre(fn *funcInfo, indent string, e Expr, paramName string, argNum in
 		goType = v.Name
 		extractParam := ""
 		ti := toGoExprInfo(fn.sourceFile, &e)
-		clType = ti.argClojureArgType
+		clType = ti.argExtractFunc
+		clTypeDoc = ti.argClojureArgType
+		if clTypeDoc == "" {
+			clTypeDoc = clType
+		}
 		if ti.sourceFile == nil { // a builtin
 			if ti.argExtractFunc != "" {
 				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.argExtractFunc, fn.docName, paramName, argNum)
