@@ -272,6 +272,7 @@ func init() {
 		argExtractFunc:       "Byte",
 		convertFromClojure:   `byte(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["int"] = &goTypeInfo{
 		localName:            "int",
@@ -293,6 +294,7 @@ func init() {
 		argExtractFunc:       "UInt",
 		convertFromClojure:   `uint(AssertInt(%s, "").I)`,
 		convertToClojure:     "BigIntU(uint64(%s)%s)",
+		promoteType:          "uint64(%s)",
 	}
 	goTypes["int8"] = &goTypeInfo{
 		localName:            "int8",
@@ -303,6 +305,7 @@ func init() {
 		argExtractFunc:       "Int8",
 		convertFromClojure:   `int8(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["uint8"] = &goTypeInfo{
 		localName:            "uint8",
@@ -313,6 +316,7 @@ func init() {
 		argExtractFunc:       "UInt8",
 		convertFromClojure:   `uint8(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["int16"] = &goTypeInfo{
 		localName:            "int16",
@@ -323,6 +327,7 @@ func init() {
 		argExtractFunc:       "Int16",
 		convertFromClojure:   `int16(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["uint16"] = &goTypeInfo{
 		localName:            "uint16",
@@ -333,6 +338,7 @@ func init() {
 		argExtractFunc:       "UInt16",
 		convertFromClojure:   `uint16(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["int32"] = &goTypeInfo{
 		localName:            "int32",
@@ -343,6 +349,7 @@ func init() {
 		argExtractFunc:       "Int32",
 		convertFromClojure:   `int32(AssertInt(%s, "").I)`,
 		convertToClojure:     "Int(int(%s)%s)",
+		promoteType:          "int(%s)",
 	}
 	goTypes["uint32"] = &goTypeInfo{
 		localName:            "uint32",
@@ -391,6 +398,7 @@ func init() {
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   `float32(AssertDouble(%s, "").D)`,
+		promoteType:          "double(%s)",
 	}
 	goTypes["float64"] = &goTypeInfo{
 		localName:            "float64",
