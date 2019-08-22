@@ -434,6 +434,16 @@ func ExtractGoObjectAddr(args []Object, index int) *_net.Addr {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Addr] or: whatever"))
 // }
 
+func ExtractGo_go_std_net__Addr(rcvr, arg string, args *ArraySeq, n int) (res _net.Addr) {
+	a := CheckGoNth(rcvr, "go.std.net/Addr", arg, args, n).O
+	res, ok := a.(_net.Addr)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Addr], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.AddrError from net/net.go:
 func ExtractGoObjectAddrError(args []Object, index int) *_net.AddrError {
 	a := args[index]
@@ -477,6 +487,16 @@ func _ConstructAddrError(_v Object) *_net.AddrError {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net__AddrError(rcvr, arg string, args *ArraySeq, n int) (res _net.AddrError) {
+	a := CheckGoNth(rcvr, "go.std.net/AddrError", arg, args, n).O
+	res, ok := a.(_net.AddrError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/AddrError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.Buffers from net/net.go:
 func ExtractGoObjectBuffers(args []Object, index int) *_net.Buffers {
 	a := args[index]
@@ -507,6 +527,16 @@ func ExtractGoObjectBuffers(args []Object, index int) *_net.Buffers {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Buffers] or: whatever"))
 // }
 
+func ExtractGo_go_std_net__Buffers(rcvr, arg string, args *ArraySeq, n int) (res _net.Buffers) {
+	a := CheckGoNth(rcvr, "go.std.net/Buffers", arg, args, n).O
+	res, ok := a.(_net.Buffers)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Buffers], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.Conn from net/net.go:
 func ExtractGoObjectConn(args []Object, index int) *_net.Conn {
 	a := args[index]
@@ -536,6 +566,16 @@ func ExtractGoObjectConn(args []Object, index int) *_net.Conn {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Conn] or: whatever"))
 // }
+
+func ExtractGo_go_std_net__Conn(rcvr, arg string, args *ArraySeq, n int) (res _net.Conn) {
+	a := CheckGoNth(rcvr, "go.std.net/Conn", arg, args, n).O
+	res, ok := a.(_net.Conn)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Conn], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO TYPE net.DNSConfigError from net/net.go:
 func ExtractGoObjectDNSConfigError(args []Object, index int) *_net.DNSConfigError {
@@ -577,6 +617,16 @@ func _ConstructDNSConfigError(_v Object) *_net.DNSConfigError {
 		return _vectorToDNSConfigError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or: Map or Vector"))
+}
+
+func ExtractGo_go_std_net__DNSConfigError(rcvr, arg string, args *ArraySeq, n int) (res _net.DNSConfigError) {
+	a := CheckGoNth(rcvr, "go.std.net/DNSConfigError", arg, args, n).O
+	res, ok := a.(_net.DNSConfigError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/DNSConfigError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
 }
 
 GO TYPE net.DNSError from net/net.go:
@@ -625,6 +675,16 @@ func _ConstructDNSError(_v Object) *_net.DNSError {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net__DNSError(rcvr, arg string, args *ArraySeq, n int) (res _net.DNSError) {
+	a := CheckGoNth(rcvr, "go.std.net/DNSError", arg, args, n).O
+	res, ok := a.(_net.DNSError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/DNSError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.Error from net/net.go:
 func ExtractGoObjectError(args []Object, index int) *_net.Error {
 	a := args[index]
@@ -655,6 +715,16 @@ func ExtractGoObjectError(args []Object, index int) *_net.Error {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Error] or: whatever"))
 // }
 
+func ExtractGo_go_std_net__Error(rcvr, arg string, args *ArraySeq, n int) (res _net.Error) {
+	a := CheckGoNth(rcvr, "go.std.net/Error", arg, args, n).O
+	res, ok := a.(_net.Error)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Error], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.IP from net/ip.go:
 func ExtractGoObjectIP(args []Object, index int) *_net.IP {
 	a := args[index]
@@ -684,6 +754,16 @@ func ExtractGoObjectIP(args []Object, index int) *_net.IP {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IP] or: whatever"))
 // }
+
+func ExtractGo_go_std_net__IP(rcvr, arg string, args *ArraySeq, n int) (res _net.IP) {
+	a := CheckGoNth(rcvr, "go.std.net/IP", arg, args, n).O
+	res, ok := a.(_net.IP)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IP], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO TYPE net.IPAddr from net/iprawsock.go:
 func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
@@ -728,6 +808,16 @@ func ExtractGoObjectIPAddr(args []Object, index int) *_net.IPAddr {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map or Vector"))
 // }
 
+func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res _net.IPAddr) {
+	a := CheckGoNth(rcvr, "go.std.net/IPAddr", arg, args, n).O
+	res, ok := a.(_net.IPAddr)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPAddr], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.IPConn from net/iprawsock.go:
 func ExtractGoObjectIPConn(args []Object, index int) *_net.IPConn {
 	a := args[index]
@@ -768,6 +858,16 @@ func _ConstructIPConn(_v Object) *_net.IPConn {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net__IPConn(rcvr, arg string, args *ArraySeq, n int) (res _net.IPConn) {
+	a := CheckGoNth(rcvr, "go.std.net/IPConn", arg, args, n).O
+	res, ok := a.(_net.IPConn)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPConn], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.IPMask from net/ip.go:
 func ExtractGoObjectIPMask(args []Object, index int) *_net.IPMask {
 	a := args[index]
@@ -797,6 +897,16 @@ func ExtractGoObjectIPMask(args []Object, index int) *_net.IPMask {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPMask] or: whatever"))
 // }
+
+func ExtractGo_go_std_net__IPMask(rcvr, arg string, args *ArraySeq, n int) (res _net.IPMask) {
+	a := CheckGoNth(rcvr, "go.std.net/IPMask", arg, args, n).O
+	res, ok := a.(_net.IPMask)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPMask], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO TYPE net.IPNet from net/ip.go:
 func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
@@ -841,6 +951,16 @@ func ExtractGoObjectIPNet(args []Object, index int) *_net.IPNet {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map or Vector"))
 // }
 
+func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res _net.IPNet) {
+	a := CheckGoNth(rcvr, "go.std.net/IPNet", arg, args, n).O
+	res, ok := a.(_net.IPNet)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPNet], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.InvalidAddrError from net/net.go:
 func ExtractGoObjectInvalidAddrError(args []Object, index int) *_net.InvalidAddrError {
 	a := args[index]
@@ -874,6 +994,16 @@ func _ConstructInvalidAddrError(_v Object) _net.InvalidAddrError {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.InvalidAddrError] or: String"))
 }
 
+func ExtractGo_go_std_net__InvalidAddrError(rcvr, arg string, args *ArraySeq, n int) (res _net.InvalidAddrError) {
+	a := CheckGoNth(rcvr, "go.std.net/InvalidAddrError", arg, args, n).O
+	res, ok := a.(_net.InvalidAddrError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/InvalidAddrError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.Listener from net/net.go:
 func ExtractGoObjectListener(args []Object, index int) *_net.Listener {
 	a := args[index]
@@ -903,6 +1033,16 @@ func ExtractGoObjectListener(args []Object, index int) *_net.Listener {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Listener] or: whatever"))
 // }
+
+func ExtractGo_go_std_net__Listener(rcvr, arg string, args *ArraySeq, n int) (res _net.Listener) {
+	a := CheckGoNth(rcvr, "go.std.net/Listener", arg, args, n).O
+	res, ok := a.(_net.Listener)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Listener], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO TYPE net.MX from net/dnsclient.go:
 func ExtractGoObjectMX(args []Object, index int) *_net.MX {
@@ -947,6 +1087,16 @@ func _ConstructMX(_v Object) *_net.MX {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net__MX(rcvr, arg string, args *ArraySeq, n int) (res _net.MX) {
+	a := CheckGoNth(rcvr, "go.std.net/MX", arg, args, n).O
+	res, ok := a.(_net.MX)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/MX], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.NS from net/dnsclient.go:
 func ExtractGoObjectNS(args []Object, index int) *_net.NS {
 	a := args[index]
@@ -987,6 +1137,16 @@ func _ConstructNS(_v Object) *_net.NS {
 		return _vectorToNS(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map or Vector"))
+}
+
+func ExtractGo_go_std_net__NS(rcvr, arg string, args *ArraySeq, n int) (res _net.NS) {
+	a := CheckGoNth(rcvr, "go.std.net/NS", arg, args, n).O
+	res, ok := a.(_net.NS)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/NS], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
 }
 
 GO TYPE net.OpError from net/net.go:
@@ -1035,6 +1195,16 @@ func ExtractGoObjectOpError(args []Object, index int) *_net.OpError {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map or Vector"))
 // }
 
+func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res _net.OpError) {
+	a := CheckGoNth(rcvr, "go.std.net/OpError", arg, args, n).O
+	res, ok := a.(_net.OpError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/OpError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.PacketConn from net/net.go:
 func ExtractGoObjectPacketConn(args []Object, index int) *_net.PacketConn {
 	a := args[index]
@@ -1064,6 +1234,16 @@ func ExtractGoObjectPacketConn(args []Object, index int) *_net.PacketConn {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.PacketConn] or: whatever"))
 // }
+
+func ExtractGo_go_std_net__PacketConn(rcvr, arg string, args *ArraySeq, n int) (res _net.PacketConn) {
+	a := CheckGoNth(rcvr, "go.std.net/PacketConn", arg, args, n).O
+	res, ok := a.(_net.PacketConn)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/PacketConn], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO TYPE net.ParseError from net/net.go:
 func ExtractGoObjectParseError(args []Object, index int) *_net.ParseError {
@@ -1106,6 +1286,16 @@ func _ConstructParseError(_v Object) *_net.ParseError {
 		return _vectorToParseError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or: Map or Vector"))
+}
+
+func ExtractGo_go_std_net__ParseError(rcvr, arg string, args *ArraySeq, n int) (res _net.ParseError) {
+	a := CheckGoNth(rcvr, "go.std.net/ParseError", arg, args, n).O
+	res, ok := a.(_net.ParseError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/ParseError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
 }
 
 GO TYPE net.Resolver from net/lookup.go:
@@ -1152,6 +1342,16 @@ func ExtractGoObjectResolver(args []Object, index int) *_net.Resolver {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map or Vector"))
 // }
 
+func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (res _net.Resolver) {
+	a := CheckGoNth(rcvr, "go.std.net/Resolver", arg, args, n).O
+	res, ok := a.(_net.Resolver)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Resolver], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.SRV from net/dnsclient.go:
 func ExtractGoObjectSRV(args []Object, index int) *_net.SRV {
 	a := args[index]
@@ -1197,6 +1397,16 @@ func _ConstructSRV(_v Object) *_net.SRV {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net__SRV(rcvr, arg string, args *ArraySeq, n int) (res _net.SRV) {
+	a := CheckGoNth(rcvr, "go.std.net/SRV", arg, args, n).O
+	res, ok := a.(_net.SRV)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/SRV], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net.UnknownNetworkError from net/net.go:
 func ExtractGoObjectUnknownNetworkError(args []Object, index int) *_net.UnknownNetworkError {
 	a := args[index]
@@ -1228,6 +1438,16 @@ func _ConstructUnknownNetworkError(_v Object) _net.UnknownNetworkError {
 		return _net.UnknownNetworkError(_o.S)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnknownNetworkError] or: String"))
+}
+
+func ExtractGo_go_std_net__UnknownNetworkError(rcvr, arg string, args *ArraySeq, n int) (res _net.UnknownNetworkError) {
+	a := CheckGoNth(rcvr, "go.std.net/UnknownNetworkError", arg, args, n).O
+	res, ok := a.(_net.UnknownNetworkError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/UnknownNetworkError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
 }
 
 GO FUNC net.CIDRMask from net/ip.go:
@@ -1426,12 +1646,12 @@ func __iP_DefaultMask(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Equal from net/ip.go:
-// func __iP_Equal(o GoObject, args Object) Object {
-// 	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
-// 	__x := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(_net.IP)Equal()", "__x", _argList, 0))
-// 	_res := o.O.(_net.IP).Equal(__x)
-// 	return MakeBoolean(_res)
-// }
+func __iP_Equal(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(_net.IP)Equal()", args, 1, 1)
+	__x := ExtractGo_go_std_net__IP("(_net.IP)Equal()", "__x", _argList, 0)
+	_res := o.O.(_net.IP).Equal(__x)
+	return MakeBoolean(_res)
+}
 
 GO FUNC net.__iP_IsGlobalUnicast from net/ip.go:
 func __iP_IsGlobalUnicast(o GoObject, args Object) Object {
@@ -1497,12 +1717,12 @@ func __iP_MarshalText(o GoObject, args Object) Object {
 }
 
 GO FUNC net.__iP_Mask from net/ip.go:
-// func __iP_Mask(o GoObject, args Object) Object {
-// 	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
-// 	__mask := ABEND233(Unsupported: ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "__mask", _argList, 0))
-// 	_res := o.O.(_net.IP).Mask(__mask)
-// 	return MakeGoObject(_res)
-// }
+func __iP_Mask(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(_net.IP)Mask()", args, 1, 1)
+	__mask := ExtractGo_go_std_net__IPMask("(_net.IP)Mask()", "__mask", _argList, 0)
+	_res := o.O.(_net.IP).Mask(__mask)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net.__iP_String from net/ip.go:
 func __iP_String(o GoObject, args Object) Object {
@@ -1660,12 +1880,12 @@ GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), __addr)}
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
-// func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
-// 	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
-// 	__ip := ABEND233(Unsupported: ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "__ip", _argList, 0))
-// 	_res := o.O.(*_net.IPNet).Contains(__ip)
-// 	return MakeBoolean(_res)
-// }
+func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(*_net.IPNet)Contains()", args, 1, 1)
+	__ip := ExtractGo_go_std_net__IP("(*_net.IPNet)Contains()", "__ip", _argList, 0)
+	_res := o.O.(*_net.IPNet).Contains(__ip)
+	return MakeBoolean(_res)
+}
 
 GO FUNC net.__ptrTo_IPNet_Network from net/ip.go:
 func __ptrTo_IPNet_Network(o GoObject, args Object) Object {
@@ -1776,6 +1996,7 @@ package net
 
 import (
 	_errors "errors"
+	"fmt"
 	. "github.com/candid82/joker/core"
 	_net "net"
 	_reflect "reflect"
@@ -1800,6 +2021,7 @@ var members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
 
 var members_IP = GoTypeInfo{Members: GoMembers{
 	"DefaultMask": __iP_DefaultMask,
+	"Equal": __iP_Equal,
 	"IsGlobalUnicast": __iP_IsGlobalUnicast,
 	"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
 	"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
@@ -1808,6 +2030,7 @@ var members_IP = GoTypeInfo{Members: GoMembers{
 	"IsMulticast": __iP_IsMulticast,
 	"IsUnspecified": __iP_IsUnspecified,
 	"MarshalText": __iP_MarshalText,
+	"Mask": __iP_Mask,
 	"String": __iP_String,
 	"To16": __iP_To16,
 	"To4": __iP_To4,
@@ -1824,6 +2047,7 @@ var members_IPMask = GoTypeInfo{Members: GoMembers{
 }}
 
 var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
+	"Contains": __ptrTo_IPNet_Contains,
 	"Network": __ptrTo_IPNet_Network,
 	"String": __ptrTo_IPNet_String,
 }}
@@ -1909,6 +2133,16 @@ func _ConstructError(_v Object) *_url.Error {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (res _url.Error) {
+	a := CheckGoNth(rcvr, "go.std.net.url/Error", arg, args, n).O
+	res, ok := a.(_url.Error)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/Error], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net/url.EscapeError from net/url/url.go:
 func ExtractGoObjectEscapeError(args []Object, index int) *_url.EscapeError {
 	a := args[index]
@@ -1942,6 +2176,16 @@ func _ConstructEscapeError(_v Object) _url.EscapeError {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
+func ExtractGo_go_std_net_url__EscapeError(rcvr, arg string, args *ArraySeq, n int) (res _url.EscapeError) {
+	a := CheckGoNth(rcvr, "go.std.net.url/EscapeError", arg, args, n).O
+	res, ok := a.(_url.EscapeError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/EscapeError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net/url.InvalidHostError from net/url/url.go:
 func ExtractGoObjectInvalidHostError(args []Object, index int) *_url.InvalidHostError {
 	a := args[index]
@@ -1973,6 +2217,16 @@ func _ConstructInvalidHostError(_v Object) _url.InvalidHostError {
 		return _url.InvalidHostError(_o.S)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
+}
+
+func ExtractGo_go_std_net_url__InvalidHostError(rcvr, arg string, args *ArraySeq, n int) (res _url.InvalidHostError) {
+	a := CheckGoNth(rcvr, "go.std.net.url/InvalidHostError", arg, args, n).O
+	res, ok := a.(_url.InvalidHostError)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/InvalidHostError], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
 }
 
 GO TYPE net/url.URL from net/url/url.go:
@@ -2025,6 +2279,16 @@ func ExtractGoObjectURL(args []Object, index int) *_url.URL {
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
 // }
 
+func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res _url.URL) {
+	a := CheckGoNth(rcvr, "go.std.net.url/URL", arg, args, n).O
+	res, ok := a.(_url.URL)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/URL], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net/url.Userinfo from net/url/url.go:
 func ExtractGoObjectUserinfo(args []Object, index int) *_url.Userinfo {
 	a := args[index]
@@ -2065,6 +2329,16 @@ func _ConstructUserinfo(_v Object) *_url.Userinfo {
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map or Vector"))
 }
 
+func ExtractGo_go_std_net_url__Userinfo(rcvr, arg string, args *ArraySeq, n int) (res _url.Userinfo) {
+	a := CheckGoNth(rcvr, "go.std.net.url/Userinfo", arg, args, n).O
+	res, ok := a.(_url.Userinfo)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/Userinfo], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO TYPE net/url.Values from net/url/url.go:
 func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 	a := args[index]
@@ -2094,6 +2368,16 @@ func ExtractGoObjectValues(args []Object, index int) *_url.Values {
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
+
+func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (res _url.Values) {
+	a := CheckGoNth(rcvr, "go.std.net.url/Values", arg, args, n).O
+	res, ok := a.(_url.Values)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/Values], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(_reflect.TypeOf(a)))))
+	}
+	return
+}
 
 GO FUNC net/url.Parse from net/url/url.go:
 func __parse(__rawurl string) Object {
@@ -2333,6 +2617,7 @@ package url
 
 import (
 	_errors "errors"
+	"fmt"
 	. "github.com/candid82/joker/core"
 	_url "net/url"
 	_reflect "reflect"
@@ -2384,8 +2669,8 @@ func init() {
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &members_Values
 }
 
-ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 233(3) 275(3) 042(1) 644(1)
-Totals: functions=109 generated=82 (75.23%)
+ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
+Totals: functions=109 generated=85 (77.98%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
-          receivers=83 (76.15%) generated=56 (67.47%)
+          receivers=83 (76.15%) generated=59 (71.08%)
         types=28 generated=14 (50.00%)
