@@ -244,31 +244,31 @@ func processTypeSpecs(gf *goFile, pkg string, tss []Spec) (found bool) {
 	return
 }
 
-// func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
-// 	valName := pkg + "." + name.Name
-// 	// if val != nil {
-// 	// 	where = whereAt(val.Pos())
-// 	// }
-// 	// if valType != nil {
-// 	// 	where = whereAt(valType.Pos())
-// 	// }
-// 	// if c, ok := goConstants[valName]; ok {
-// 	// 	fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-// 	// 		valName, whereAt(c.where), whereAt(ts.Pos()))
-// 	// }
-// 	// gt := registerConstant(gf, valName, ts)
-// 	// gt.td = ts
-// 	// gt.where = ts.Pos()
-// 	// gt.requiredImports = &packageImports{}
-// 	// if !isPrivate(ts.Name.Name) {
-// 	// 	numDeclaredGoConstants++
-// 	// }
-// 	return true
-// }
+func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
+	// valName := pkg + "." + name.Name
+	// if val != nil {
+	// 	where = whereAt(val.Pos())
+	// }
+	// if valType != nil {
+	// 	where = whereAt(valType.Pos())
+	// }
+	// if c, ok := goConstants[valName]; ok {
+	// 	fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
+	// 		valName, whereAt(c.where), whereAt(ts.Pos()))
+	// }
+	// gt := registerConstant(gf, valName, ts)
+	// gt.td = ts
+	// gt.where = ts.Pos()
+	// gt.requiredImports = &packageImports{}
+	// if !isPrivate(ts.Name.Name) {
+	// 	numDeclaredGoConstants++
+	// }
+	return true
+}
 
 func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 	var previousVal, previousValType Expr
-	for _, spec := range tss {
+	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
 			if isPrivate(valName.Name) {
@@ -280,17 +280,15 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 			if ts.Values != nil {
 				val = ts.Values[jx]
 			}
-			//			fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
 			if val == nil && valType == nil {
 				if false && (previousVal == nil || previousValType == nil) {
-					panic("at the disco")
+					panic(fmt.Sprintf("unexpected lack of type or value at %s", whereAt(valName.NamePos)))
 				}
 				val = previousVal
 				valType = previousValType
 			}
-			previousVal = val
-			previousValType = valType
 			if dump {
+				fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
 				if valType != nil {
 					fmt.Printf("  valType:\n")
 					Print(fset, valType)
@@ -300,6 +298,11 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 					Print(fset, val)
 				}
 			}
+			if processConstantSpec(gf, pkg, valName, valType, val) {
+				processed = true
+			}
+			previousVal = val
+			previousValType = valType
 		}
 	}
 	return
@@ -314,7 +317,7 @@ func isPrivateType(f *Expr) bool {
 	case *StarExpr:
 		return isPrivateType(&td.X)
 	default:
-		panic(fmt.Sprintf("isPrivateType: Unsupported expr type %T", f))
+		panic(fmt.Sprintf("unsupported expr type %T", f))
 	}
 }
 
