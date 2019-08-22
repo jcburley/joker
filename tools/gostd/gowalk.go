@@ -16,11 +16,13 @@ import (
 var numFunctions int
 var numStandalones int
 var numReceivers int
-var numGeneratedStandalones int
+var numTypes int
+var numConstants int
 var numGeneratedFunctions int
+var numGeneratedStandalones int
 var numGeneratedReceivers int
 var numGeneratedTypes int
-var numDeclaredGoTypes int
+var numGeneratedConstants int
 
 type packageInfo struct {
 	importsNative  *packageImports
@@ -212,7 +214,7 @@ func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)
 }
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeSpec) bool {
+func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec) bool {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
@@ -227,16 +229,77 @@ func processTypeSpec(gf *goFile, pkg string, pathUnix string, f *File, ts *TypeS
 	gt.where = ts.Pos()
 	gt.requiredImports = &packageImports{}
 	if !isPrivate(ts.Name.Name) {
-		numDeclaredGoTypes++
+		numTypes++
 	}
 	return true
 }
 
-func processTypeSpecs(gf *goFile, pkg string, pathUnix string, f *File, tss []Spec) (found bool) {
+func processTypeSpecs(gf *goFile, pkg string, tss []Spec) (found bool) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		if processTypeSpec(gf, pkg, pathUnix, f, ts) {
+		if processTypeSpec(gf, pkg, ts) {
 			found = true
+		}
+	}
+	return
+}
+
+// func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
+// 	valName := pkg + "." + name.Name
+// 	// if val != nil {
+// 	// 	where = whereAt(val.Pos())
+// 	// }
+// 	// if valType != nil {
+// 	// 	where = whereAt(valType.Pos())
+// 	// }
+// 	// if c, ok := goConstants[valName]; ok {
+// 	// 	fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
+// 	// 		valName, whereAt(c.where), whereAt(ts.Pos()))
+// 	// }
+// 	// gt := registerConstant(gf, valName, ts)
+// 	// gt.td = ts
+// 	// gt.where = ts.Pos()
+// 	// gt.requiredImports = &packageImports{}
+// 	// if !isPrivate(ts.Name.Name) {
+// 	// 	numDeclaredGoConstants++
+// 	// }
+// 	return true
+// }
+
+func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
+	var previousVal, previousValType Expr
+	for _, spec := range tss {
+		ts := spec.(*ValueSpec)
+		for jx, valName := range ts.Names {
+			if isPrivate(valName.Name) {
+				continue
+			}
+			numConstants++
+			valType := ts.Type
+			var val Expr
+			if ts.Values != nil {
+				val = ts.Values[jx]
+			}
+			//			fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
+			if val == nil && valType == nil {
+				if false && (previousVal == nil || previousValType == nil) {
+					panic("at the disco")
+				}
+				val = previousVal
+				valType = previousValType
+			}
+			previousVal = val
+			previousValType = valType
+			if dump {
+				if valType != nil {
+					fmt.Printf("  valType:\n")
+					Print(fset, valType)
+				}
+				if val != nil {
+					fmt.Printf("  val:\n")
+					Print(fset, val)
+				}
+			}
 		}
 	}
 	return
@@ -255,26 +318,30 @@ func isPrivateType(f *Expr) bool {
 	}
 }
 
-// Returns whether any public functions were actually processed.
-func processTypes(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
+// Returns whether any public declarations were actually processed.
+func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
 		case *GenDecl:
-			if v.Tok != token.TYPE {
-				continue
-			}
-			if processTypeSpecs(gf, pkgDirUnix, pathUnix, f, v.Specs) {
-				found = true
+			switch v.Tok {
+			case token.TYPE:
+				if processTypeSpecs(gf, pkgDirUnix, v.Specs) {
+					processed = true
+				}
+			case token.CONST:
+				if processValueSpecs(gf, pkgDirUnix, v.Specs) {
+					processed = true
+				}
 			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
 		}
 	}
-	return false
+	return
 }
 
-func processFuncs(gf *goFile, pkgDirUnix, pathUnix string, f *File) (found bool) {
+func processFuncs(gf *goFile, pkgDirUnix, pathUnix string, f *File) (processed bool) {
 Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
@@ -294,7 +361,7 @@ Funcs:
 			}
 			numFunctions += 1
 			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
-				found = true
+				processed = true
 			}
 		case *GenDecl:
 		}
@@ -397,7 +464,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, f)
-		if processTypes(gf, pkgDirUnix, goFilePathUnix, f) {
+		if processDecls(gf, pkgDirUnix, f) {
 			found = true
 		}
 	}

@@ -261,7 +261,7 @@ Totals: functions=%d generated=%d (%s%%)
 			numFunctions, numGeneratedFunctions, pct(numGeneratedFunctions, numFunctions),
 			numStandalones, pct(numStandalones, numFunctions), numGeneratedStandalones, pct(numGeneratedStandalones, numStandalones),
 			numReceivers, pct(numReceivers, numFunctions), numGeneratedReceivers, pct(numGeneratedReceivers, numReceivers),
-			numDeclaredGoTypes, numGeneratedTypes, pct(numGeneratedTypes, numDeclaredGoTypes))
+			numTypes, numGeneratedTypes, pct(numGeneratedTypes, numTypes))
 	}
 
 	os.Exit(0)
