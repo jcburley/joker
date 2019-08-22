@@ -351,7 +351,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if dump || (verbose && valTypeString == "") {
+	if dump || (verbose && valTypeString == "**TODO**") {
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
@@ -397,11 +397,11 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 			if ts.Values != nil {
 				val = ts.Values[jx]
 			}
-			if val == nil && valType == nil {
-				if false && (previousVal == nil || previousValType == nil) {
-					panic(fmt.Sprintf("unexpected lack of type or value at %s", whereAt(valName.NamePos)))
-				}
+
+			if val == nil {
 				val = previousVal
+			}
+			if valType == nil {
 				valType = previousValType
 			}
 
