@@ -1029,6 +1029,10 @@ func MakeBigIntU(b uint64) *BigInt {
 	return &BigInt{b: *bigint}
 }
 
+func MakeNumber(bi uint64) *BigInt {
+	return MakeBigIntU(bi)
+}
+
 func (bi *BigInt) ToString(escape bool) string {
 	return bi.b.String() + "N"
 }
