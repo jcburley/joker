@@ -344,14 +344,14 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if dump || valTypeString == "**TODO**" {
-		fmt.Printf("Constant %s:\n", name)
+	if dump || (verbose && valTypeString == "") {
+		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
-			fmt.Printf("  valType:\n")
+			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
 			Print(fset, valType)
 		}
 		if val != nil {
-			fmt.Printf("  val:\n")
+			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
 			Print(fset, val)
 		}
 	}
@@ -385,10 +385,6 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
-			if isPrivate(valName.Name) {
-				continue
-			}
-			numConstants++
 			valType := ts.Type
 			var val Expr
 			if ts.Values != nil {
@@ -401,6 +397,15 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 				val = previousVal
 				valType = previousValType
 			}
+
+			previousVal = val
+			previousValType = valType
+
+			if isPrivate(valName.Name) {
+				continue
+			}
+			numConstants++
+
 			if dump {
 				fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
 				if valType != nil {
@@ -416,8 +421,6 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 			if processConstantSpec(gf, pkg, valName, valType, val, docString) {
 				processed = true
 			}
-			previousVal = val
-			previousValType = valType
 		}
 	}
 	return
