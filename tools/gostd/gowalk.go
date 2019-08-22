@@ -284,6 +284,7 @@ func fitInt(value string) string {
 
 func determineType(valType Expr, val Expr) (cl, gl string) {
 	typeName := ""
+	innerPromotion := "%s"
 	if valType == nil {
 		switch v := val.(type) {
 		case *BasicLit:
@@ -303,7 +304,24 @@ func determineType(valType Expr, val Expr) (cl, gl string) {
 		if !ok {
 			return
 		}
-		typeName = ident.Name
+		valObj := ident.Obj
+		if valObj != nil {
+			if valObj.Decl != nil {
+				ts, ok := valObj.Decl.(*TypeSpec)
+				if !ok {
+					return
+				}
+				if ts.Name == nil {
+					return
+				}
+				if id, ok := ts.Type.(*Ident); ok {
+					typeName = id.Name
+				}
+				innerPromotion = typeName + "(%s)"
+			}
+		} else {
+			typeName = ident.Name
+		}
 	}
 	if typeName == "" {
 		return
@@ -312,7 +330,7 @@ func determineType(valType Expr, val Expr) (cl, gl string) {
 	if !ok || gt.argClojureArgType == "" || gt.promoteType == "" {
 		return "", ""
 	}
-	return gt.argClojureArgType, gt.promoteType
+	return gt.argClojureArgType, strings.ReplaceAll(gt.promoteType, "%s", innerPromotion)
 }
 
 func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {

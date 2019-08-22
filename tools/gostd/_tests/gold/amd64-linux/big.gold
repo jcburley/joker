@@ -335,6 +335,46 @@ Ignoring test code in example_test.go
 Ignoring test code in url_test.go
 Matchfile(_tests/big/src/net/url/url.go) => true <nil>
 Processing package=net/url:
+JOKER CONSTANT FlagBroadcast from net/interface.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "uint64(uint(net.FlagBroadcast))"}
+  FlagBroadcast)
+
+JOKER CONSTANT FlagLoopback from net/interface.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "uint64(uint(net.FlagLoopback))"}
+  FlagLoopback)
+
+JOKER CONSTANT FlagMulticast from net/interface.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "uint64(uint(net.FlagMulticast))"}
+  FlagMulticast)
+
+JOKER CONSTANT FlagPointToPoint from net/interface.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "uint64(uint(net.FlagPointToPoint))"}
+  FlagPointToPoint)
+
+JOKER CONSTANT FlagUp from net/interface.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "uint64(uint(net.FlagUp))"}
+  FlagUp)
+
 JOKER CONSTANT IPv4len from net/ip.go:
 (def
   ^{:doc ""
@@ -976,6 +1016,70 @@ JOKER CONSTANT MethodTrace from net/http/method.go:
     :tag String
     :go "http.MethodTrace"}
   MethodTrace)
+
+JOKER CONSTANT SameSiteDefaultMode from net/http/cookie.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Int
+    :go "int(http.SameSiteDefaultMode)"}
+  SameSiteDefaultMode)
+
+JOKER CONSTANT SameSiteLaxMode from net/http/cookie.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Int
+    :go "int(http.SameSiteLaxMode)"}
+  SameSiteLaxMode)
+
+JOKER CONSTANT SameSiteStrictMode from net/http/cookie.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Int
+    :go "int(http.SameSiteStrictMode)"}
+  SameSiteStrictMode)
+
+JOKER CONSTANT StateActive from net/http/server.go:
+(def
+  ^{:doc "StateActive represents a connection that has read 1 or more\nbytes of a request. The Server.ConnState hook for\nStateActive fires before the request has entered a handler\nand doesn't fire again until the request has been\nhandled. After the request is handled, the state\ntransitions to StateClosed, StateHijacked, or StateIdle.\nFor HTTP/2, StateActive fires on the transition from zero\nto one active request, and only transitions away once all\nactive requests are complete. That means that ConnState\ncannot be used to do per-request work; ConnState only notes\nthe overall state of the connection.\n"
+    :added "1.0"
+    :tag Int
+    :go "int(http.StateActive)"}
+  StateActive)
+
+JOKER CONSTANT StateClosed from net/http/server.go:
+(def
+  ^{:doc "StateClosed represents a closed connection.\nThis is a terminal state. Hijacked connections do not\ntransition to StateClosed.\n"
+    :added "1.0"
+    :tag Int
+    :go "int(http.StateClosed)"}
+  StateClosed)
+
+JOKER CONSTANT StateHijacked from net/http/server.go:
+(def
+  ^{:doc "StateHijacked represents a hijacked connection.\nThis is a terminal state. It does not transition to StateClosed.\n"
+    :added "1.0"
+    :tag Int
+    :go "int(http.StateHijacked)"}
+  StateHijacked)
+
+JOKER CONSTANT StateIdle from net/http/server.go:
+(def
+  ^{:doc "StateIdle represents a connection that has finished\nhandling a request and is in the keep-alive state, waiting\nfor a new request. Connections transition from StateIdle\nto either StateActive or StateClosed.\n"
+    :added "1.0"
+    :tag Int
+    :go "int(http.StateIdle)"}
+  StateIdle)
+
+JOKER CONSTANT StateNew from net/http/server.go:
+(def
+  ^{:doc "StateNew represents a new connection that is expected to\nsend a request immediately. Connections begin at this\nstate and then transition to either StateActive or\nStateClosed.\n"
+    :added "1.0"
+    :tag Int
+    :go "int(http.StateNew)"}
+  StateNew)
 
 JOKER CONSTANT StatusAccepted from net/http/status.go:
 (def
@@ -10276,4 +10380,4 @@ Totals: functions=421 generated=230 (54.63%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
         types=102 generated=39 (38.24%)
-        constants=91 generated=77 (84.62%)
+        constants=91 generated=90 (98.90%)
