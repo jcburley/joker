@@ -19,7 +19,13 @@ if [ "$1" == "-v" ]; then
 fi
 
 SUM256="$(go run tools/sum256dir/main.go std)"
-(cd std; ../joker generate-std.joke 2> /dev/null)
+OUT="$(cd std; ../joker generate-std.joke 2>&1 | grep -v 'WARNING:.*already refers' | grep '.')"
+if [ -n "$OUT" ]; then
+    echo "$OUT"
+    echo >&2 "Unable to generate fresh library files; exiting."
+    exit 1
+fi
+
 NEW_SUM256="$(go run tools/sum256dir/main.go std)"
 
 if [ "$SUM256" != "$NEW_SUM256" ]; then
