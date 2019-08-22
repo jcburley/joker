@@ -21,6 +21,7 @@ type goTypeInfo struct {
 	convertFromClojure        string          // Pattern to convert a (scalar) %s to this type
 	convertFromClojureImports []packageImport // Imports needed to support the above
 	convertToClojure          string          // Pattern to convert this type to an appropriate Clojure object
+	promoteType               string          // Pattern to convert type to next larger Go type that Joker supports
 	clojureCode               string
 	goCode                    string
 	requiredImports           *packageImports
@@ -238,6 +239,7 @@ func init() {
 		argExtractFunc:       "Boolean",
 		convertFromClojure:   "ToBool(%s)",
 		convertToClojure:     "Boolean(%s%s)",
+		promoteType:          "%s",
 	}
 	goTypes["string"] = &goTypeInfo{
 		localName:            "string",
@@ -248,6 +250,7 @@ func init() {
 		argExtractFunc:       "String",
 		convertFromClojure:   `AssertString(%s, "").S`,
 		convertToClojure:     "String(%s%s)",
+		promoteType:          "%s",
 	}
 	goTypes["rune"] = &goTypeInfo{
 		localName:            "rune",
@@ -258,6 +261,7 @@ func init() {
 		argExtractFunc:       "Char",
 		convertFromClojure:   `AssertChar(%s, "").Ch`,
 		convertToClojure:     "Char(%s%s)",
+		promoteType:          "%s",
 	}
 	goTypes["byte"] = &goTypeInfo{
 		localName:            "byte",
@@ -278,6 +282,7 @@ func init() {
 		argExtractFunc:       "Int",
 		convertFromClojure:   `AssertInt(%s, "").I`,
 		convertToClojure:     "Int(%s%s)",
+		promoteType:          "%s",
 	}
 	goTypes["uint"] = &goTypeInfo{
 		localName:            "uint",

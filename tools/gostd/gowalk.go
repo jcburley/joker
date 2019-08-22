@@ -266,18 +266,37 @@ func sortedConstantInfoMap(m map[string]*constantInfo, f func(k string, v *const
 	}
 }
 
-func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
-	switch name.Name {
-	case "Int":
-		return false
-	}
+func determineType(valType Expr, val Expr) (cl, gl string) {
 	if valType == nil {
-		return false
+		return
 	}
 	ident, ok := valType.(*Ident)
-	if !ok || ident.Name != "int" {
+	if !ok {
+		return
+	}
+	gt, ok := goTypes[ident.Name]
+	if !ok || gt.argClojureArgType == "" || gt.promoteType == "" {
+		return "", ""
+	}
+	return gt.argClojureArgType, gt.promoteType
+}
+
+func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
+	clName := name.Name
+	localName := gf.pkgBaseName + "." + name.Name
+	fullName := pkg + "." + name.Name
+
+	switch name.Name {
+	case "Int", "String", "Boolean":
+		clName += "-renamed" // TODO: is there a better solution possible?
+	}
+
+	valTypeString, promoteType := determineType(valType, val)
+	if valTypeString == "" {
 		return false
 	}
+
+	goCode := fmt.Sprintf(promoteType, localName)
 
 	if dump {
 		fmt.Printf("Constant %s:\n", name)
@@ -290,8 +309,6 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 			Print(fset, val)
 		}
 	}
-	localName := gf.pkgBaseName + "." + name.Name
-	fullName := pkg + "." + name.Name
 	if c, ok := goConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
 			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
@@ -299,7 +316,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	def := fmt.Sprintf(`
 (def ^{:doc "" :added "1.0" :tag %s :go "%s"} %s)
 `,
-		"Int", localName, name.Name)
+		valTypeString, goCode, clName)
 	gt := &constantInfo{name, gf, def}
 	goConstants[fullName] = gt
 	numGeneratedConstants++
