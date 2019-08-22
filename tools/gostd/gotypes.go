@@ -408,6 +408,7 @@ func init() {
 		argClojureArgType:    "Double",
 		argExtractFunc:       "ABEND007(find these)",
 		convertFromClojure:   `float64(AssertDouble(%s, "").D)`,
+		promoteType:          "%s",
 	}
 	goTypes["complex64"] = &goTypeInfo{
 		localName:            "complex64",

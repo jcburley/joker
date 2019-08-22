@@ -311,8 +311,8 @@ func genStandalone(fn *funcInfo) {
 	cl2golCall := cl2gol + fc.clojureGoParams
 
 	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
-		commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
-			fc.goParamListDoc, fc.goReturnTypeForDoc),
+		"  "+commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+			fc.goParamListDoc, fc.goReturnTypeForDoc)+"\n",
 		cl2golCall, fc.clojureParamList)
 
 	const goTemplate = `

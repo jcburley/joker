@@ -54,7 +54,7 @@ func commentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) 
 		}
 		d += "Joker return type: " + jokOut
 	}
-	return `  ` + strings.Trim(strconv.Quote(d), " \t\n") + "\n"
+	return strings.Trim(strconv.Quote(d), " \t\n")
 }
 
 func paramNameAsClojure(n string) string {

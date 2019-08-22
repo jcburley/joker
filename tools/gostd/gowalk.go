@@ -281,7 +281,7 @@ func determineType(valType Expr, val Expr) (cl, gl string) {
 	return gt.argClojureArgType, gt.promoteType
 }
 
-func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
+func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
 	localName := gf.pkgBaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
@@ -314,9 +314,14 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
 	}
 	def := fmt.Sprintf(`
-(def ^{:doc "" :added "1.0" :tag %s :go "%s"} %s)
+(def
+  ^{:doc %s
+    :added "1.0"
+    :tag %s
+    :go "%s"}
+  %s)
 `,
-		valTypeString, goCode, clName)
+		docString, valTypeString, goCode, clName)
 	gt := &constantInfo{name, gf, def}
 	goConstants[fullName] = gt
 	numGeneratedConstants++
@@ -355,7 +360,8 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 					Print(fset, val)
 				}
 			}
-			if processConstantSpec(gf, pkg, valName, valType, val) {
+			docString := commentGroupInQuotes(ts.Doc, "", "", "", "")
+			if processConstantSpec(gf, pkg, valName, valType, val, docString) {
 				processed = true
 			}
 			previousVal = val
