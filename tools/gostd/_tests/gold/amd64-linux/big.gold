@@ -231,22 +231,6 @@ Ignoring test code in serve_test.go
 Ignoring test code in client_test.go
 Ignoring test code in sniff_test.go
 Processing package=net/http:
-Constant DefaultMaxHeaderBytes at _tests/big/src/net/http/server.go:861:7:
-  val at _tests/big/src/net/http/server.go:861:31:
-     0  *ast.BinaryExpr {
-     1  .  X: *ast.BasicLit {
-     2  .  .  ValuePos: _tests/big/src/net/http/server.go:861:31
-     3  .  .  Kind: INT
-     4  .  .  Value: "1"
-     5  .  }
-     6  .  OpPos: _tests/big/src/net/http/server.go:861:33
-     7  .  Op: <<
-     8  .  Y: *ast.BasicLit {
-     9  .  .  ValuePos: _tests/big/src/net/http/server.go:861:36
-    10  .  .  Kind: INT
-    11  .  .  Value: "20"
-    12  .  }
-    13  }
 Walking from _tests/big/src to _tests/big/src/net/http/cgi
 Processing net/http/cgi:
 Ignoring test code in plan9_test.go
@@ -952,6 +936,14 @@ JOKER FUNC net.SplitHostPort from net/ipsock.go:
   {:added "1.0"
    :go "__splitHostPort(__hostport)"}
   [^String __hostport])
+
+JOKER CONSTANT DefaultMaxHeaderBytes from net/http/server.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Int
+    :go "http.DefaultMaxHeaderBytes"}
+  DefaultMaxHeaderBytes)
 
 JOKER CONSTANT DefaultMaxIdleConnsPerHost from net/http/transport.go:
 (def
@@ -10396,4 +10388,4 @@ Totals: functions=421 generated=230 (54.63%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
         types=102 generated=39 (38.24%)
-        constants=91 generated=90 (98.90%)
+        constants=91 generated=91 (100.00%)

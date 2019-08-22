@@ -282,23 +282,30 @@ func fitInt(value string) string {
 	return ""
 }
 
+func determineConstExprType(val Expr) (typeName string) {
+	switch v := val.(type) {
+	case *BasicLit:
+		switch v.Kind {
+		case token.STRING:
+			typeName = "string"
+		case token.INT:
+			typeName = fitInt(v.Value)
+		case token.FLOAT:
+			typeName = "double"
+		case token.CHAR:
+			typeName = "rune"
+		}
+	case *BinaryExpr:
+		typeName = determineConstExprType(v.X)
+	}
+	return
+}
+
 func determineType(valType Expr, val Expr) (cl, gl string) {
 	typeName := ""
 	innerPromotion := "%s"
 	if valType == nil {
-		switch v := val.(type) {
-		case *BasicLit:
-			switch v.Kind {
-			case token.STRING:
-				typeName = "string"
-			case token.INT:
-				typeName = fitInt(v.Value)
-			case token.FLOAT:
-				typeName = "double"
-			case token.CHAR:
-				typeName = "rune"
-			}
-		}
+		typeName = determineConstExprType(val)
 	} else {
 		ident, ok := valType.(*Ident)
 		if !ok {
