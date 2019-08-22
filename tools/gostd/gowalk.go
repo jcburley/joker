@@ -296,7 +296,7 @@ func determineType(valType Expr, val Expr) (cl, gl string) {
 			case token.FLOAT:
 				typeName = "double"
 			case token.CHAR:
-				typeName = "char"
+				typeName = "rune"
 			}
 		}
 	} else {
