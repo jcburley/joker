@@ -208,6 +208,11 @@ func main() {
 		fmt.Fprintln(os.Stderr, a)
 	}
 
+	sortedConstantInfoMap(goConstants,
+		func(c string, ci *constantInfo) {
+			genConstant(ci)
+		})
+
 	/* Generate function-code snippets in alphabetical order. */
 	sortedFuncInfoMap(qualifiedFunctions,
 		func(f string, v *funcInfo) {
@@ -257,11 +262,13 @@ Totals: functions=%d generated=%d (%s%%)
           non-receivers=%d (%s%%) generated=%d (%s%%)
           receivers=%d (%s%%) generated=%d (%s%%)
         types=%d generated=%d (%s%%)
+        constants=%d generated=%d (%s%%)
 `,
 			numFunctions, numGeneratedFunctions, pct(numGeneratedFunctions, numFunctions),
 			numStandalones, pct(numStandalones, numFunctions), numGeneratedStandalones, pct(numGeneratedStandalones, numStandalones),
 			numReceivers, pct(numReceivers, numFunctions), numGeneratedReceivers, pct(numGeneratedReceivers, numReceivers),
-			numTypes, numGeneratedTypes, pct(numGeneratedTypes, numTypes))
+			numTypes, numGeneratedTypes, pct(numGeneratedTypes, numTypes),
+			numConstants, numGeneratedConstants, pct(numGeneratedConstants, numConstants))
 	}
 
 	os.Exit(0)

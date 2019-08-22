@@ -77,6 +77,7 @@ type fnCodeInfo struct {
 type fnCodeMap map[string]fnCodeInfo
 
 type codeInfo struct {
+	constants goConstantsMap
 	functions fnCodeMap
 	types     goTypeMap
 	initTypes map[string]string            // func init() "GoTypes[key] = value"
@@ -244,25 +245,64 @@ func processTypeSpecs(gf *goFile, pkg string, tss []Spec) (found bool) {
 	return
 }
 
+type constantInfo struct {
+	name       *Ident
+	sourceFile *goFile
+	def        string
+}
+
+type goConstantsMap map[string]*constantInfo
+
+var goConstants = goConstantsMap{}
+
+func sortedConstantInfoMap(m map[string]*constantInfo, f func(k string, v *constantInfo)) {
+	var keys []string
+	for k, _ := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m[k])
+	}
+}
+
 func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr) bool {
-	// valName := pkg + "." + name.Name
-	// if val != nil {
-	// 	where = whereAt(val.Pos())
-	// }
-	// if valType != nil {
-	// 	where = whereAt(valType.Pos())
-	// }
-	// if c, ok := goConstants[valName]; ok {
-	// 	fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-	// 		valName, whereAt(c.where), whereAt(ts.Pos()))
-	// }
-	// gt := registerConstant(gf, valName, ts)
-	// gt.td = ts
-	// gt.where = ts.Pos()
-	// gt.requiredImports = &packageImports{}
-	// if !isPrivate(ts.Name.Name) {
-	// 	numDeclaredGoConstants++
-	// }
+	switch name.Name {
+	case "Int":
+		return false
+	}
+	if valType == nil {
+		return false
+	}
+	ident, ok := valType.(*Ident)
+	if !ok || ident.Name != "int" {
+		return false
+	}
+
+	if dump {
+		fmt.Printf("Constant %s:\n", name)
+		if valType != nil {
+			fmt.Printf("  valType:\n")
+			Print(fset, valType)
+		}
+		if val != nil {
+			fmt.Printf("  val:\n")
+			Print(fset, val)
+		}
+	}
+	localName := gf.pkgBaseName + "." + name.Name
+	fullName := pkg + "." + name.Name
+	if c, ok := goConstants[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
+			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
+	}
+	def := fmt.Sprintf(`
+(def ^{:doc "" :added "1.0" :tag %s :go "%s"} %s)
+`,
+		"Int", localName, name.Name)
+	gt := &constantInfo{name, gf, def}
+	goConstants[fullName] = gt
+	numGeneratedConstants++
 	return true
 }
 
@@ -484,9 +524,9 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
-			goCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
+			goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, fnCodeMap{}, goTypeMap{},
 				map[string]string{}, map[string]map[string]string{}}
-			clojureCode[pkgDirUnix] = codeInfo{fnCodeMap{}, goTypeMap{},
+			clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, fnCodeMap{}, goTypeMap{},
 				map[string]string{}, map[string]map[string]string{}}
 		}
 	}
