@@ -1029,8 +1029,11 @@ func MakeBigIntU(b uint64) *BigInt {
 	return &BigInt{b: *bigint}
 }
 
-func MakeNumber(bi uint64) *BigInt {
-	return MakeBigIntU(bi)
+func MakeNumber(n interface{}) *BigInt {
+	if bi, ok := n.(uint64); ok {
+		return MakeBigIntU(bi)
+	}
+	return MakeBigInt(n.(int64))
 }
 
 func (bi *BigInt) ToString(escape bool) string {

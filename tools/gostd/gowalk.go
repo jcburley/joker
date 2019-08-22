@@ -266,15 +266,49 @@ func sortedConstantInfoMap(m map[string]*constantInfo, f func(k string, v *const
 	}
 }
 
+func fitInt(value string) string {
+	_, e := strconv.ParseInt(value, 0, 32)
+	if e == nil {
+		return "int"
+	}
+	_, e = strconv.ParseInt(value, 0, 64)
+	if e == nil {
+		return "int64"
+	}
+	_, e = strconv.ParseUint(value, 0, 64)
+	if e == nil {
+		return "uint64"
+	}
+	return ""
+}
+
 func determineType(valType Expr, val Expr) (cl, gl string) {
+	typeName := ""
 	if valType == nil {
+		switch v := val.(type) {
+		case *BasicLit:
+			switch v.Kind {
+			case token.STRING:
+				typeName = "string"
+			case token.INT:
+				typeName = fitInt(v.Value)
+			case token.FLOAT:
+				typeName = "double"
+			case token.CHAR:
+				typeName = "char"
+			}
+		}
+	} else {
+		ident, ok := valType.(*Ident)
+		if !ok {
+			return
+		}
+		typeName = ident.Name
+	}
+	if typeName == "" {
 		return
 	}
-	ident, ok := valType.(*Ident)
-	if !ok {
-		return
-	}
-	gt, ok := goTypes[ident.Name]
+	gt, ok := goTypes[typeName]
 	if !ok || gt.argClojureArgType == "" || gt.promoteType == "" {
 		return "", ""
 	}
@@ -292,13 +326,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if valTypeString == "" {
-		return false
-	}
-
-	goCode := fmt.Sprintf(promoteType, localName)
-
-	if dump {
+	if dump || valTypeString == "**TODO**" {
 		fmt.Printf("Constant %s:\n", name)
 		if valType != nil {
 			fmt.Printf("  valType:\n")
@@ -309,6 +337,12 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 			Print(fset, val)
 		}
 	}
+	if valTypeString == "" {
+		return false
+	}
+
+	goCode := fmt.Sprintf(promoteType, localName)
+
 	if c, ok := goConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
 			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))

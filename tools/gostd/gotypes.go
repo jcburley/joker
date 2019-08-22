@@ -360,6 +360,7 @@ func init() {
 		argExtractFunc:       "UInt32",
 		convertFromClojure:   `uint32(AssertNumber(%s, "").BigInt().Uint64())`,
 		convertToClojure:     "BigIntU(uint64(%s)%s)",
+		promoteType:          "int64(%s)",
 	}
 	goTypes["int64"] = &goTypeInfo{
 		localName:            "int64",
@@ -370,6 +371,7 @@ func init() {
 		argExtractFunc:       "Int64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Int64()`,
 		convertToClojure:     "BigInt(%s%s)",
+		promoteType:          "int64(%s)", // constants are not auto-promoted, so promote them explicitly for MakeNumber()
 	}
 	goTypes["uint64"] = &goTypeInfo{
 		localName:            "uint64",
@@ -380,6 +382,7 @@ func init() {
 		argExtractFunc:       "UInt64",
 		convertFromClojure:   `AssertNumber(%s, "").BigInt().Uint64()`,
 		convertToClojure:     "BigIntU(%s%s)",
+		promoteType:          "uint64(%s)", // constants are not auto-promoted, so promote them explicitly for MakeNumber()
 	}
 	goTypes["uintptr"] = &goTypeInfo{
 		localName:            "uintptr",
@@ -389,6 +392,7 @@ func init() {
 		argClojureArgType:    "Number",
 		argExtractFunc:       "UIntPtr",
 		convertFromClojure:   `uintptr(AssertNumber(%s, "").BigInt().Uint64())`,
+		promoteType:          "int64(%s)",
 	}
 	goTypes["float32"] = &goTypeInfo{
 		localName:            "float32",
