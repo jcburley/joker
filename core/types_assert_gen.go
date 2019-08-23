@@ -553,6 +553,27 @@ func EnsureVar(args []Object, index int) *Var {
 	}
 }
 
+func AssertGoVar(obj Object, msg string) *GoVar {
+	switch c := obj.(type) {
+	case *GoVar:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoVar", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoVar(args []Object, index int) *GoVar {
+	switch c := args[index].(type) {
+	case *GoVar:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoVar"))
+	}
+}
+
 func AssertError(obj Object, msg string) Error {
 	switch c := obj.(type) {
 	case Error:

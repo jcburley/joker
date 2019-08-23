@@ -1,6 +1,6 @@
 //go:generate go run gen_data/gen_data.go
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending GoObject *File io.Reader io.Writer StringReader io.RuneReader
-//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword Regex Symbol String *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *Namespace *Var *GoVar Error *Fn Deref *Atom Ref KVReduce Pending GoObject *File io.Reader io.Writer StringReader io.RuneReader
+//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var *GoVar Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword Regex Symbol String *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq
 
 package core
 
@@ -145,6 +145,13 @@ type (
 		isUsed     bool
 		taggedType *Type
 	}
+	GoVar struct {
+		InfoHolder
+		MetaHolder
+		Name  Symbol
+		Value interface{}
+		expr  Expr
+	}
 	Proc func([]Object) Object
 	Fn   struct {
 		InfoHolder
@@ -276,6 +283,7 @@ type (
 		Fn             *Type
 		File           *Type
 		GoObject       *Type
+		GoVar          *Type
 		BufferedReader *Type
 		HashMap        *Type
 		Int            *Type
@@ -370,6 +378,7 @@ func init() {
 		File:           RegRefType("File", (*File)(nil)),
 		BufferedReader: RegRefType("BufferedReader", (*BufferedReader)(nil)),
 		GoObject:       regType("GoObject", (*GoObject)(nil)),
+		GoVar:          RegRefType("GoVar", (*Var)(nil)),
 		HashMap:        RegRefType("HashMap", (*HashMap)(nil)),
 		Int:            regType("Int", (*Int)(nil)),
 		Keyword:        regType("Keyword", (*Keyword)(nil)),
@@ -911,6 +920,49 @@ func (v *Var) Call(args []Object) Object {
 }
 
 func (v *Var) Deref() Object {
+	return v.Resolve()
+}
+
+func (v *GoVar) ToString(escape bool) string {
+	return "GoVar[" + v.Name.ToString(false) + "]"
+}
+
+func (v *GoVar) Equals(other interface{}) bool {
+	// TODO: revisit this
+	return v == other
+}
+
+func (v *GoVar) WithMeta(meta Map) interface{} {
+	res := *v
+	res.meta = SafeMerge(res.meta, meta)
+	return &res
+}
+
+func (v *GoVar) ResetMeta(newMeta Map) Map {
+	v.meta = newMeta
+	return v.meta
+}
+
+func (v *GoVar) AlterMeta(fn *Fn, args []Object) Map {
+	return AlterMeta(&v.MetaHolder, fn, args)
+}
+
+func (v *GoVar) GetType() *Type {
+	return TYPE.GoVar
+}
+
+func (v *GoVar) Hash() uint32 {
+	return HashPtr(uintptr(unsafe.Pointer(v)))
+}
+
+func (v *GoVar) Resolve() interface{} {
+	if v.Value == nil {
+		panic(RT.NewError("Unbound var: " + v.ToString(false)))
+	}
+	return MakeGoObject(v.Value)
+}
+
+func (v *GoVar) Deref() interface{} {
 	return v.Resolve()
 }
 

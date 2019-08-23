@@ -1451,8 +1451,12 @@
 
 (defn deref
   "Also reader macro: @var/@atom/@delay. When applied to a var or atom,
-  returns its current state. When applied to a delay, forces
-  it if not already forced."
+  returns its current state. When applied to a delay, forces it if not
+  already forced. When applied to a GoVar or GoObject, returns a
+  GoObject with the value (dereferenced if already a GoObject) wrapped
+  by a go.std.reflect/Value object; an attempt to dereference a
+  GoObject wrapping a non-pointer object returns a similar GoObject,
+  wrapping a go.std.reflect/Value wrapping the original value."
   {:added "1.0"}
   [^Deref ref]
   (deref__ ref))

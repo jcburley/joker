@@ -549,7 +549,16 @@ var procAtom = func(args []Object) Object {
 }
 
 var procDeref = func(args []Object) Object {
-	return EnsureDeref(args, 0).Deref()
+	switch c := args[0].(type) {
+	case *GoVar:
+		d := reflect.Indirect(reflect.ValueOf(c.Value))
+		return MakeGoObject(d)
+	case GoObject:
+		d := reflect.Indirect(reflect.ValueOf(c.O))
+		return MakeGoObject(d)
+	default:
+		return EnsureDeref(args, 0).Deref()
+	}
 }
 
 var procSwap = func(args []Object) Object {
