@@ -282,6 +282,37 @@ func fitInt(value string) string {
 	return ""
 }
 
+func evalConstExpr(val Expr) (typeName, result string) {
+	switch v := val.(type) {
+	case *BasicLit:
+		result = v.Value
+		switch v.Kind {
+		case token.STRING:
+			typeName = "string"
+		case token.INT:
+			typeName = fitInt(result)
+		case token.FLOAT:
+			typeName = "double"
+		case token.CHAR:
+			typeName = "rune"
+		}
+	case *UnaryExpr:
+		typeName, result = evalConstExpr(v.X)
+		if result == "" && typeName == "" {
+			typeName = "int" // TODO: maybe not, but try this for now
+		}
+		switch v.Op {
+		case token.SUB:
+			result = "-" + result
+			typeName = fitInt(result)
+		default:
+		}
+	case *BinaryExpr:
+		typeName = determineConstExprType(v.X)
+	}
+	return
+}
+
 func determineConstExprType(val Expr) (typeName string) {
 	switch v := val.(type) {
 	case *BasicLit:
@@ -295,8 +326,8 @@ func determineConstExprType(val Expr) (typeName string) {
 		case token.CHAR:
 			typeName = "rune"
 		}
-	case *BinaryExpr:
-		typeName = determineConstExprType(v.X)
+	default:
+		typeName, _ = evalConstExpr(val)
 	}
 	return
 }
