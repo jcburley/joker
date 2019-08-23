@@ -253,7 +253,7 @@ To make this "magic" happen:
 ```
 -e "(require '[go.std.net :as n]) (print \"\\nNetwork interfaces:\\n  \") (n/Interfaces) (println)"
 ```
-8. `./joker` invokes the just-build Joker executable.
+8. `./joker` invokes the just-built Joker executable.
 9. `go install` installs Joker (and deletes the local copy).
 
 ## Sample Usage
