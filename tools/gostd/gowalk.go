@@ -538,7 +538,14 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	return true
 }
 
-func processValueSpecs(gf *goFile, pkg string, tss []Spec, constant bool) (processed bool) {
+func what(constant bool) string {
+	if constant {
+		return "Constant"
+	}
+	return "Variable"
+}
+
+func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) (processed bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
@@ -574,7 +581,7 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, constant bool) (proce
 			}
 
 			if dump {
-				fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
+				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, whereAt(valName.NamePos))
 				if valType != nil {
 					fmt.Printf("  valType:\n")
 					Print(fset, valType)
@@ -584,7 +591,11 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, constant bool) (proce
 					Print(fset, val)
 				}
 			}
-			docString := commentGroupInQuotes(ts.Doc, "", "", "", "")
+			doc := parentDoc
+			if doc == nil {
+				doc = ts.Doc
+			}
+			docString := commentGroupInQuotes(doc, "", "", "", "")
 			if constant {
 				if processConstantSpec(gf, pkg, valName, valType, val, docString) {
 					processed = true
@@ -624,11 +635,11 @@ func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
 					processed = true
 				}
 			case token.CONST:
-				if processValueSpecs(gf, pkgDirUnix, v.Specs, true) {
+				if processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, true) {
 					processed = true
 				}
 			case token.VAR:
-				if processValueSpecs(gf, pkgDirUnix, v.Specs, false) {
+				if processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, false) {
 					processed = true
 				}
 			case token.IMPORT: // Ignore these
