@@ -6,6 +6,7 @@ import (
 	"go/build"
 	"go/parser"
 	"go/token"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -292,7 +293,7 @@ func evalConstExpr(val Expr) (typeName, result string) {
 		case token.INT:
 			typeName = fitInt(result)
 		case token.FLOAT:
-			typeName = "double"
+			typeName = "float64"
 		case token.CHAR:
 			typeName = "rune"
 		}
@@ -303,17 +304,45 @@ func evalConstExpr(val Expr) (typeName, result string) {
 		}
 		switch v.Op {
 		case token.SUB:
-			result = "-" + result
-			typeName = fitInt(result)
+			typeName, result = fitInt(result), "-"+result
 		default:
 		}
 	case *BinaryExpr:
-		typeName, result = evalConstExpr(v.X)
+		leftType, _ := evalConstExpr(v.X)
+		rightType, rightValue := evalConstExpr(v.Y)
+		if leftType == rightType {
+			typeName = leftType
+		} else if leftType == "float64" || rightType == "float64" {
+			typeName = "float64" // TODO: probably a good guess for now
+		} else if leftType == "int64" || rightType == "int64" {
+			typeName = "int64"
+		} else if leftType == "rune" || rightType == "rune" {
+			typeName = "int"
+		}
+		if typeName == "int" && v.Op == token.SHL {
+			if rightValue == "64" { // TODO: this supports MaxUint64 but is overly specific
+				typeName, result = "uint64", strconv.FormatUint(math.MaxUint64, 10)
+			} else {
+				typeName = "int64"
+			}
+		} else if typeName == "" {
+			typeName = "uint64" // TODO: the outer MaxUint64 definition
+		}
 	case *ParenExpr:
 		typeName, result = evalConstExpr(v.X)
 	case *Ident:
+		switch v.Name {
+		case "iota":
+			typeName, result = "int", "0"
+		case "false", "true":
+			typeName, result = "bool", v.Name
+		}
 		if v.Obj != nil {
-			typeName, result = evalConstExpr(v.Obj.Decl.(*ValueSpec).Values[0])
+			if len(v.Obj.Decl.(*ValueSpec).Values) == 0 {
+				typeName, result = "int", "1" // TODO: probably a good guess for now
+			} else {
+				typeName, result = evalConstExpr(v.Obj.Decl.(*ValueSpec).Values[0])
+			}
 		}
 	}
 	return

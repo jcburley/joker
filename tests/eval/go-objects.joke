@@ -1,5 +1,5 @@
 (ns joker.test-joker.go-objects
-  (:use joker.test go.std.os go.std.hash.crc32 go.std.net))
+  (:use joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math))
 
 (deftest comparable-types
   (let [res1 ((Stat "run.sh") 0)
@@ -36,3 +36,7 @@
     (is (= (get sz 0) 6))
     (is (= (get sz 1) 32))
     ))
+
+(deftest constants-work
+  (is (> E 2.0))
+  (is (< E 3.0)))
