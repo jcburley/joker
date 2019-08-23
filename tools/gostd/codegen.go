@@ -356,6 +356,8 @@ func genConstant(ci *constantInfo) {
 
 	clojureCode[pkgDirUnix].constants[ci.name.Name] = ci
 
+	packagesInfo[pkgDirUnix].nonEmpty = true
+
 	addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
 }
 

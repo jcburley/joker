@@ -328,7 +328,7 @@ func determineConstExprType(val Expr) (typeName string) {
 		case token.INT:
 			typeName = fitInt(v.Value)
 		case token.FLOAT:
-			typeName = "double"
+			typeName = "float64"
 		case token.CHAR:
 			typeName = "rune"
 		}
