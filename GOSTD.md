@@ -1,6 +1,10 @@
 # GOSTD Usage
 
-First, build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std* Namespaces".
+Build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std* Namespaces".
+
+After building, HTML documentation is available in the `docs` directory. For example, I use a URL to [my local docs tree](file:///home/craig/go/src/github.com/candid82/joker/docs/index.html) to get the latest info.
+
+Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joker/docs) to get an idea of what is available, as those pages are generally updated when new features (supporting more, or better, conversions/wrappers of Go packages to Joker) are pushed to the repository. (The Windows pages are updated less frequently.)
 
 Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
 
@@ -202,7 +206,7 @@ Similarly, implicit conversion of `String` expressions to Go types that have `st
 
 For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
 
-For receivers, given an object of the appropriate type, the `Go` function is used, specifying the object, the name (as a string) of the receiver, and any arguments:
+For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as a string) of the receiver, and any arguments:
 
 ```
 user=> (use 'go.std.net)
@@ -227,7 +231,11 @@ Stacktrace:
 user=>
 ```
 
-Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.
+(Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.)
+
+**IMPORTANT:** The `Go` function is, like `gostd` generally, a proof-of-concept prototype. Its name was chosen to set it apart from all other Clojure code and specifically to identify it as referring to the Go language and its runtime. It might well be changed (incompatibly) or removed in the future.
+
+Also note that Clojure's `.foo` form and `.` special operator are not (yet?) supported. When they are, they'll (likely) be much more stable than `Go`.
 
 #### Returned Values
 
@@ -329,7 +337,7 @@ Among things to do to "productize" this:
 
 A handful of tests (assertions) can be found in `tests/eval/go-objects.joke`. This is automatically run by the `eval-tests.sh` script (run in turn by `all-tests.sh`), available in "canonical" Joker.
 
-`go-objects.joke` should be kept up-to-date as far as "smoke testing" basic capabilities.
+`go-objects.joke` should be kept up-to-date as far as "smoke testing" basic capabilities. It should therefore be helpful as a guide as to which features are expected to work in a given version.
 
 ### Run gostd Tests
 
