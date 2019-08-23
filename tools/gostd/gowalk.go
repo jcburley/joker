@@ -308,7 +308,13 @@ func evalConstExpr(val Expr) (typeName, result string) {
 		default:
 		}
 	case *BinaryExpr:
-		typeName = determineConstExprType(v.X)
+		typeName, result = evalConstExpr(v.X)
+	case *ParenExpr:
+		typeName, result = evalConstExpr(v.X)
+	case *Ident:
+		if v.Obj != nil {
+			typeName, result = evalConstExpr(v.Obj.Decl.(*ValueSpec).Values[0])
+		}
 	}
 	return
 }
@@ -382,7 +388,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if dump || (verbose && valTypeString == "**TODO**") {
+	if dump || (verbose && valTypeString == "") {
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
