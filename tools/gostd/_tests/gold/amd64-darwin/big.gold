@@ -937,6 +937,14 @@ JOKER FUNC net.SplitHostPort from net/ipsock.go:
    :go "__splitHostPort(__hostport)"}
   [^String __hostport])
 
+JOKER CONSTANT DefaultMaxHeaderBytes from net/http/server.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Number
+    :go "int64(http.DefaultMaxHeaderBytes)"}
+  DefaultMaxHeaderBytes)
+
 JOKER CONSTANT DefaultMaxIdleConnsPerHost from net/http/transport.go:
 (def
   ^{:doc ""
@@ -10380,4 +10388,4 @@ Totals: functions=421 generated=230 (54.63%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
         types=102 generated=39 (38.24%)
-        constants=91 generated=90 (98.90%)
+        constants=91 generated=91 (100.00%)
