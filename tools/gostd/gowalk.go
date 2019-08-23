@@ -507,12 +507,7 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
 	}
 
-	switch name.Name {
-	case "Int", "String", "Boolean":
-		clName += "-renamed" // TODO: is there a better solution possible?
-	}
-
-	if dump || verbose {
+	if dump {
 		fmt.Printf("Variable %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
@@ -548,9 +543,6 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, constant bool) (proce
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
-			if !constant && valName.Name != "DefaultResolver" {
-				continue // TODO: REMOVE TO GET MORE VARIABLES
-			}
 			valType := ts.Type
 			var val Expr
 			if ts.Values != nil {

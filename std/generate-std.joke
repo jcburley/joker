@@ -44,8 +44,8 @@
 ;;;; to a global Clojure environment with NSFULLNAME (e.g. "a.b.foo")
 ;;;; as a symbol.
 ;;;;
-;;;; Non-functions (such as constants) and functions (see above)
-;;;; follow.
+;;;; Non-functions (such as constants and variables) and functions
+;;;; (see above) follow.
 ;;;;
 ;;;; Finally, "func init() {...}" is generated, starting with:
 ;;;;
@@ -236,14 +236,22 @@
                                  ")")))]
     [fn-str intern-str]))
 
+(defn generate-const-or-var
+  [name m]
+  (if (= (type-name (:tag m)) "Var")
+    (format "var %s *GoVar = &GoVar{Value: &%s}"  ; Get pointer to the actual var, not a copy of the var
+            name
+            (:go m))
+    (format "var %s = Make%s(%s)"
+                name
+                (type-name (:tag m))
+                (:go m))))
+
 (defn generate-non-fn
   [ns-name ns-name-final k v]
   (let [m (meta v)
         go-non-fn-name (go-name (str k))
-        non-fn-str (format "var %s = Make%s(%s)"
-                           go-non-fn-name
-                           (type-name (:tag m))
-                           (:go m))
+        non-fn-str (generate-const-or-var go-non-fn-name m)
         intern-str (-> intern-template
                        (rpl "{nsFullName}" ns-name)
                        (rpl "{nsName}" ns-name-final)

@@ -551,10 +551,10 @@ var procAtom = func(args []Object) Object {
 var procDeref = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case *GoVar:
-		d := reflect.Indirect(reflect.ValueOf(c.Value))
+		d := reflect.Indirect(reflect.ValueOf(c.Value)).Interface()
 		return MakeGoObject(d)
 	case GoObject:
-		d := reflect.Indirect(reflect.ValueOf(c.O))
+		d := reflect.Indirect(reflect.ValueOf(c.O)).Interface()
 		return MakeGoObject(d)
 	default:
 		return EnsureDeref(args, 0).Deref()
