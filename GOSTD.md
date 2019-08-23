@@ -1,6 +1,8 @@
 # GOSTD Usage
 
-Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits those conversions.
+First, build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std* Namespaces".
+
+Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
 
 ## Design Principles
 
@@ -9,6 +11,14 @@ The `go.std.` namespaces being automatically generated, they are not necessarily
 * They're very low-level -- little effort is made to provide Clojure-like wrapping beyond the minimum necessary
 
 Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs (that call these low-level API wrappers) to be written without requiring changes to the Joker codebase or executable itself.
+
+## Constants
+
+(Most) constants, defined in packages, are converted and thus available for reference. In some cases, their type is `Number` when an `Int` would suffice; this is due to how the conversion code is currently implemented, in that it doesn't attempt to fully evaluate the constant expressions in all cases, just provide some "guesses".
+
+## Variables
+
+Variables are not yet converted.
 
 ## GoObject
 
@@ -188,6 +198,37 @@ As shown above, implicit conversion even from `BigInt` and `Double` (as long as 
 
 Similarly, implicit conversion of `String` expressions to Go types that have `string` as their underlying (e.g. alias) type is supported. (Conversion to the floating-point and complex types is currently not supported, but only because these types are not easily tested due to there being no applicable APIs.)
 
+#### Specifying the Target Function
+
+For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
+
+For receivers, given an object of the appropriate type, the `Go` function is used, specifying the object, the name (as a string) of the receiver, and any arguments:
+
+```
+user=> (use 'go.std.net)
+nil
+user=> (def ip (IPv4 1 2 3 4))
+#'user/ip
+user=> ip
+1.2.3.4
+user=> (def im (IPv4Mask 252 0 0 0))
+#'user/im
+user=> im
+fc000000
+user=> (Go im "Size")
+[6 32]
+user=> (Go ip "Equal" ip)
+true
+user=> (Go ip "Equal" im)
+<joker.core>:4458:3: Eval error: Argument 0 passed to (_net.IP)Equal() should be type GoObject[go.std.net/IP], but is GoObject[net.IPMask]
+Stacktrace:
+  global <repl>:20:1
+  core/Go <joker.core>:4458:3
+user=>
+```
+
+Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.
+
 #### Returned Values
 
 Multiple return values are converted to a (Clojure) vector of the arguments, each treated as its own return value as far as this section of the document is concerned.
@@ -279,6 +320,7 @@ Among things to do to "productize" this:
 
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
 * Generate docstrings for receivers and types, and somehow have `doc` be able to find them
+* Improve docstrings for constructors (show and document the members)
 * Refactor `gotypes.go`, as was started and (for the time being) abandoned on 2019-08-19 in the `gostd-bad-refactor` branch
 * Document the code better
 * Assess performance impact (especially startup time) on Joker, and mitigate as appropriate
