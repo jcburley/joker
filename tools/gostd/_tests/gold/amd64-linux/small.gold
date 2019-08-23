@@ -8,6 +8,305 @@ Matchfile(_tests/small/src/net/lookup.go) => true <nil>
 Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Matchfile(_tests/small/src/net/iprawsock.go) => true <nil>
 Processing package=net:
+Variable DefaultResolver at _tests/small/src/net/lookup.go:102:5:
+  val at _tests/small/src/net/lookup.go:102:23:
+     0  *ast.UnaryExpr {
+     1  .  OpPos: _tests/small/src/net/lookup.go:102:23
+     2  .  Op: &
+     3  .  X: *ast.CompositeLit {
+     4  .  .  Type: *ast.Ident {
+     5  .  .  .  NamePos: _tests/small/src/net/lookup.go:102:24
+     6  .  .  .  Name: "Resolver"
+     7  .  .  .  Obj: *ast.Object {
+     8  .  .  .  .  Kind: type
+     9  .  .  .  .  Name: "Resolver"
+    10  .  .  .  .  Decl: *ast.TypeSpec {
+    11  .  .  .  .  .  Name: *ast.Ident {
+    12  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:107:6
+    13  .  .  .  .  .  .  Name: "Resolver"
+    14  .  .  .  .  .  .  Obj: *(obj @ 7)
+    15  .  .  .  .  .  }
+    16  .  .  .  .  .  Assign: -
+    17  .  .  .  .  .  Type: *ast.StructType {
+    18  .  .  .  .  .  .  Struct: _tests/small/src/net/lookup.go:107:15
+    19  .  .  .  .  .  .  Fields: *ast.FieldList {
+    20  .  .  .  .  .  .  .  Opening: _tests/small/src/net/lookup.go:107:22
+    21  .  .  .  .  .  .  .  List: []*ast.Field (len = 4) {
+    22  .  .  .  .  .  .  .  .  0: *ast.Field {
+    23  .  .  .  .  .  .  .  .  .  Doc: *ast.CommentGroup {
+    24  .  .  .  .  .  .  .  .  .  .  List: []*ast.Comment (len = 3) {
+    25  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Comment {
+    26  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:108:2
+    27  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// PreferGo controls whether Go's built-in DNS resolver is preferred"
+    28  .  .  .  .  .  .  .  .  .  .  .  }
+    29  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Comment {
+    30  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:109:2
+    31  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// on platforms where it's available. It is equivalent to setting"
+    32  .  .  .  .  .  .  .  .  .  .  .  }
+    33  .  .  .  .  .  .  .  .  .  .  .  2: *ast.Comment {
+    34  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:110:2
+    35  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// GODEBUG=netdns=go, but scoped to just this resolver."
+    36  .  .  .  .  .  .  .  .  .  .  .  }
+    37  .  .  .  .  .  .  .  .  .  .  }
+    38  .  .  .  .  .  .  .  .  .  }
+    39  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+    40  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    41  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:111:2
+    42  .  .  .  .  .  .  .  .  .  .  .  Name: "PreferGo"
+    43  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+    44  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+    45  .  .  .  .  .  .  .  .  .  .  .  .  Name: "PreferGo"
+    46  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 22)
+    47  .  .  .  .  .  .  .  .  .  .  .  }
+    48  .  .  .  .  .  .  .  .  .  .  }
+    49  .  .  .  .  .  .  .  .  .  }
+    50  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+    51  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:111:11
+    52  .  .  .  .  .  .  .  .  .  .  Name: "bool"
+    53  .  .  .  .  .  .  .  .  .  }
+    54  .  .  .  .  .  .  .  .  }
+    55  .  .  .  .  .  .  .  .  1: *ast.Field {
+    56  .  .  .  .  .  .  .  .  .  Doc: *ast.CommentGroup {
+    57  .  .  .  .  .  .  .  .  .  .  List: []*ast.Comment (len = 8) {
+    58  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Comment {
+    59  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:113:2
+    60  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// StrictErrors controls the behavior of temporary errors"
+    61  .  .  .  .  .  .  .  .  .  .  .  }
+    62  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Comment {
+    63  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:114:2
+    64  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// (including timeout, socket errors, and SERVFAIL) when using"
+    65  .  .  .  .  .  .  .  .  .  .  .  }
+    66  .  .  .  .  .  .  .  .  .  .  .  2: *ast.Comment {
+    67  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:115:2
+    68  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// Go's built-in resolver. For a query composed of multiple"
+    69  .  .  .  .  .  .  .  .  .  .  .  }
+    70  .  .  .  .  .  .  .  .  .  .  .  3: *ast.Comment {
+    71  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:116:2
+    72  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// sub-queries (such as an A+AAAA address lookup, or walking the"
+    73  .  .  .  .  .  .  .  .  .  .  .  }
+    74  .  .  .  .  .  .  .  .  .  .  .  4: *ast.Comment {
+    75  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:117:2
+    76  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// DNS search list), this option causes such errors to abort the"
+    77  .  .  .  .  .  .  .  .  .  .  .  }
+    78  .  .  .  .  .  .  .  .  .  .  .  5: *ast.Comment {
+    79  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:118:2
+    80  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// whole query instead of returning a partial result. This is"
+    81  .  .  .  .  .  .  .  .  .  .  .  }
+    82  .  .  .  .  .  .  .  .  .  .  .  6: *ast.Comment {
+    83  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:119:2
+    84  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// not enabled by default because it may affect compatibility"
+    85  .  .  .  .  .  .  .  .  .  .  .  }
+    86  .  .  .  .  .  .  .  .  .  .  .  7: *ast.Comment {
+    87  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:120:2
+    88  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// with resolvers that process AAAA queries incorrectly."
+    89  .  .  .  .  .  .  .  .  .  .  .  }
+    90  .  .  .  .  .  .  .  .  .  .  }
+    91  .  .  .  .  .  .  .  .  .  }
+    92  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+    93  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    94  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:121:2
+    95  .  .  .  .  .  .  .  .  .  .  .  Name: "StrictErrors"
+    96  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+    97  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+    98  .  .  .  .  .  .  .  .  .  .  .  .  Name: "StrictErrors"
+    99  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 55)
+   100  .  .  .  .  .  .  .  .  .  .  .  }
+   101  .  .  .  .  .  .  .  .  .  .  }
+   102  .  .  .  .  .  .  .  .  .  }
+   103  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+   104  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:121:15
+   105  .  .  .  .  .  .  .  .  .  .  Name: "bool"
+   106  .  .  .  .  .  .  .  .  .  }
+   107  .  .  .  .  .  .  .  .  }
+   108  .  .  .  .  .  .  .  .  2: *ast.Field {
+   109  .  .  .  .  .  .  .  .  .  Doc: *ast.CommentGroup {
+   110  .  .  .  .  .  .  .  .  .  .  List: []*ast.Comment (len = 11) {
+   111  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Comment {
+   112  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:123:2
+   113  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// Dial optionally specifies an alternate dialer for use by"
+   114  .  .  .  .  .  .  .  .  .  .  .  }
+   115  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Comment {
+   116  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:124:2
+   117  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// Go's built-in DNS resolver to make TCP and UDP connections"
+   118  .  .  .  .  .  .  .  .  .  .  .  }
+   119  .  .  .  .  .  .  .  .  .  .  .  2: *ast.Comment {
+   120  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:125:2
+   121  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// to DNS services. The host in the address parameter will"
+   122  .  .  .  .  .  .  .  .  .  .  .  }
+   123  .  .  .  .  .  .  .  .  .  .  .  3: *ast.Comment {
+   124  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:126:2
+   125  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// always be a literal IP address and not a host name, and the"
+   126  .  .  .  .  .  .  .  .  .  .  .  }
+   127  .  .  .  .  .  .  .  .  .  .  .  4: *ast.Comment {
+   128  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:127:2
+   129  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// port in the address parameter will be a literal port number"
+   130  .  .  .  .  .  .  .  .  .  .  .  }
+   131  .  .  .  .  .  .  .  .  .  .  .  5: *ast.Comment {
+   132  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:128:2
+   133  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// and not a service name."
+   134  .  .  .  .  .  .  .  .  .  .  .  }
+   135  .  .  .  .  .  .  .  .  .  .  .  6: *ast.Comment {
+   136  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:129:2
+   137  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// If the Conn returned is also a PacketConn, sent and received DNS"
+   138  .  .  .  .  .  .  .  .  .  .  .  }
+   139  .  .  .  .  .  .  .  .  .  .  .  7: *ast.Comment {
+   140  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:130:2
+   141  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// messages must adhere to RFC 1035 section 4.2.1, \"UDP usage\"."
+   142  .  .  .  .  .  .  .  .  .  .  .  }
+   143  .  .  .  .  .  .  .  .  .  .  .  8: *ast.Comment {
+   144  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:131:2
+   145  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// Otherwise, DNS messages transmitted over Conn must adhere"
+   146  .  .  .  .  .  .  .  .  .  .  .  }
+   147  .  .  .  .  .  .  .  .  .  .  .  9: *ast.Comment {
+   148  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:132:2
+   149  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// to RFC 7766 section 5, \"Transport Protocol Selection\"."
+   150  .  .  .  .  .  .  .  .  .  .  .  }
+   151  .  .  .  .  .  .  .  .  .  .  .  10: *ast.Comment {
+   152  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:133:2
+   153  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// If nil, the default dialer is used."
+   154  .  .  .  .  .  .  .  .  .  .  .  }
+   155  .  .  .  .  .  .  .  .  .  .  }
+   156  .  .  .  .  .  .  .  .  .  }
+   157  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   158  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   159  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:2
+   160  .  .  .  .  .  .  .  .  .  .  .  Name: "Dial"
+   161  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   162  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+   163  .  .  .  .  .  .  .  .  .  .  .  .  Name: "Dial"
+   164  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 108)
+   165  .  .  .  .  .  .  .  .  .  .  .  }
+   166  .  .  .  .  .  .  .  .  .  .  }
+   167  .  .  .  .  .  .  .  .  .  }
+   168  .  .  .  .  .  .  .  .  .  Type: *ast.FuncType {
+   169  .  .  .  .  .  .  .  .  .  .  Func: _tests/small/src/net/lookup.go:134:7
+   170  .  .  .  .  .  .  .  .  .  .  Params: *ast.FieldList {
+   171  .  .  .  .  .  .  .  .  .  .  .  Opening: _tests/small/src/net/lookup.go:134:11
+   172  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 2) {
+   173  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
+   174  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   175  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   176  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:12
+   177  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "ctx"
+   178  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   179  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+   180  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "ctx"
+   181  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 173)
+   182  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   183  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   184  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   185  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.SelectorExpr {
+   186  .  .  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
+   187  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:16
+   188  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "context"
+   189  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   190  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Sel: *ast.Ident {
+   191  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:24
+   192  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "Context"
+   193  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   194  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   195  .  .  .  .  .  .  .  .  .  .  .  .  }
+   196  .  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Field {
+   197  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 2) {
+   198  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   199  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:33
+   200  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "network"
+   201  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   202  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+   203  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "network"
+   204  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 196)
+   205  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   206  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   207  .  .  .  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Ident {
+   208  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:42
+   209  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "address"
+   210  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   211  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+   212  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "address"
+   213  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 196)
+   214  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   215  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   216  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   217  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+   218  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:50
+   219  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "string"
+   220  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   221  .  .  .  .  .  .  .  .  .  .  .  .  }
+   222  .  .  .  .  .  .  .  .  .  .  .  }
+   223  .  .  .  .  .  .  .  .  .  .  .  Closing: _tests/small/src/net/lookup.go:134:56
+   224  .  .  .  .  .  .  .  .  .  .  }
+   225  .  .  .  .  .  .  .  .  .  .  Results: *ast.FieldList {
+   226  .  .  .  .  .  .  .  .  .  .  .  Opening: _tests/small/src/net/lookup.go:134:58
+   227  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 2) {
+   228  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
+   229  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+   230  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:59
+   231  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "Conn"
+   232  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   233  .  .  .  .  .  .  .  .  .  .  .  .  }
+   234  .  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Field {
+   235  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+   236  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:134:65
+   237  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "error"
+   238  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+   239  .  .  .  .  .  .  .  .  .  .  .  .  }
+   240  .  .  .  .  .  .  .  .  .  .  .  }
+   241  .  .  .  .  .  .  .  .  .  .  .  Closing: _tests/small/src/net/lookup.go:134:70
+   242  .  .  .  .  .  .  .  .  .  .  }
+   243  .  .  .  .  .  .  .  .  .  }
+   244  .  .  .  .  .  .  .  .  }
+   245  .  .  .  .  .  .  .  .  3: *ast.Field {
+   246  .  .  .  .  .  .  .  .  .  Doc: *ast.CommentGroup {
+   247  .  .  .  .  .  .  .  .  .  .  List: []*ast.Comment (len = 3) {
+   248  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Comment {
+   249  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:136:2
+   250  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// lookupGroup merges LookupIPAddr calls together for lookups for the same"
+   251  .  .  .  .  .  .  .  .  .  .  .  }
+   252  .  .  .  .  .  .  .  .  .  .  .  1: *ast.Comment {
+   253  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:137:2
+   254  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// host. The lookupGroup key is the LookupIPAddr.host argument."
+   255  .  .  .  .  .  .  .  .  .  .  .  }
+   256  .  .  .  .  .  .  .  .  .  .  .  2: *ast.Comment {
+   257  .  .  .  .  .  .  .  .  .  .  .  .  Slash: _tests/small/src/net/lookup.go:138:2
+   258  .  .  .  .  .  .  .  .  .  .  .  .  Text: "// The return values are ([]IPAddr, error)."
+   259  .  .  .  .  .  .  .  .  .  .  .  }
+   260  .  .  .  .  .  .  .  .  .  .  }
+   261  .  .  .  .  .  .  .  .  .  }
+   262  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+   263  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   264  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:139:2
+   265  .  .  .  .  .  .  .  .  .  .  .  Name: "lookupGroup"
+   266  .  .  .  .  .  .  .  .  .  .  .  Obj: *ast.Object {
+   267  .  .  .  .  .  .  .  .  .  .  .  .  Kind: var
+   268  .  .  .  .  .  .  .  .  .  .  .  .  Name: "lookupGroup"
+   269  .  .  .  .  .  .  .  .  .  .  .  .  Decl: *(obj @ 245)
+   270  .  .  .  .  .  .  .  .  .  .  .  }
+   271  .  .  .  .  .  .  .  .  .  .  }
+   272  .  .  .  .  .  .  .  .  .  }
+   273  .  .  .  .  .  .  .  .  .  Type: *ast.SelectorExpr {
+   274  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
+   275  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:139:14
+   276  .  .  .  .  .  .  .  .  .  .  .  Name: "singleflight"
+   277  .  .  .  .  .  .  .  .  .  .  }
+   278  .  .  .  .  .  .  .  .  .  .  Sel: *ast.Ident {
+   279  .  .  .  .  .  .  .  .  .  .  .  NamePos: _tests/small/src/net/lookup.go:139:27
+   280  .  .  .  .  .  .  .  .  .  .  .  Name: "Group"
+   281  .  .  .  .  .  .  .  .  .  .  }
+   282  .  .  .  .  .  .  .  .  .  }
+   283  .  .  .  .  .  .  .  .  }
+   284  .  .  .  .  .  .  .  }
+   285  .  .  .  .  .  .  .  Closing: _tests/small/src/net/lookup.go:143:1
+   286  .  .  .  .  .  .  }
+   287  .  .  .  .  .  .  Incomplete: false
+   288  .  .  .  .  .  }
+   289  .  .  .  .  }
+   290  .  .  .  }
+   291  .  .  }
+   292  .  .  Lbrace: _tests/small/src/net/lookup.go:102:32
+   293  .  .  Rbrace: _tests/small/src/net/lookup.go:102:33
+   294  .  .  Incomplete: false
+   295  .  }
+   296  }
 Walking from _tests/small/src to _tests/small/src/net/url
 Processing net/url:
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
@@ -27,6 +326,14 @@ JOKER CONSTANT IPv6len from net/ip.go:
     :tag Int
     :go "net.IPv6len"}
   IPv6len)
+
+JOKER VARIABLE DefaultResolver from net/lookup.go:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag Var
+    :go "net.DefaultResolver"}
+  DefaultResolver)
 
 JOKER TYPE net.Addr from net/net.go:
 ;; (defn ^"GoObject" Addr.
@@ -2691,3 +2998,4 @@ Totals: functions=109 generated=85 (77.98%)
           receivers=83 (76.15%) generated=59 (71.08%)
         types=28 generated=14 (50.00%)
         constants=2 generated=2 (100.00%)
+        variables=1 generated=1 (100.00%)

@@ -361,6 +361,17 @@ func genConstant(ci *constantInfo) {
 	addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
 }
 
+func genVariable(ci *variableInfo) {
+	genSymReset()
+	pkgDirUnix := ci.sourceFile.pkgDirUnix
+
+	clojureCode[pkgDirUnix].variables[ci.name.Name] = ci
+
+	packagesInfo[pkgDirUnix].nonEmpty = true
+
+	addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
+}
+
 func maybeImplicitConvert(src *goFile, typeName string, ts *TypeSpec) string {
 	t := toGoTypeInfo(src, ts)
 	if t == nil || t.custom {

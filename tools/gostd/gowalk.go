@@ -19,11 +19,13 @@ var numStandalones int
 var numReceivers int
 var numTypes int
 var numConstants int
+var numVariables int
 var numGeneratedFunctions int
 var numGeneratedStandalones int
 var numGeneratedReceivers int
 var numGeneratedTypes int
 var numGeneratedConstants int
+var numGeneratedVariables int
 
 type packageInfo struct {
 	importsNative  *packageImports
@@ -79,6 +81,7 @@ type fnCodeMap map[string]fnCodeInfo
 
 type codeInfo struct {
 	constants goConstantsMap
+	variables goVariablesMap
 	functions fnCodeMap
 	types     goTypeMap
 	initTypes map[string]string            // func init() "GoTypes[key] = value"
@@ -244,6 +247,27 @@ func processTypeSpecs(gf *goFile, pkg string, tss []Spec) (found bool) {
 		}
 	}
 	return
+}
+
+type variableInfo struct {
+	name       *Ident
+	sourceFile *goFile
+	def        string
+}
+
+type goVariablesMap map[string]*variableInfo
+
+var goVariables = goVariablesMap{}
+
+func sortedVariableInfoMap(m map[string]*variableInfo, f func(k string, v *variableInfo)) {
+	var keys []string
+	for k, _ := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m[k])
+	}
 }
 
 type constantInfo struct {
@@ -428,6 +452,11 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	localName := gf.pkgBaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
+	if c, ok := goConstants[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
+			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
+	}
+
 	switch name.Name {
 	case "Int", "String", "Boolean":
 		clName += "-renamed" // TODO: is there a better solution possible?
@@ -451,10 +480,6 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 
 	goCode := fmt.Sprintf(promoteType, localName)
 
-	if c, ok := goConstants[fullName]; ok {
-		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
-	}
 	def := fmt.Sprintf(`
 (def
   ^{:doc %s
@@ -464,20 +489,76 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
   %s)
 `,
 		docString, valTypeString, goCode, clName)
+
 	gt := &constantInfo{name, gf, def}
 	goConstants[fullName] = gt
 	numGeneratedConstants++
+
 	return true
 }
 
-func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
+func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+	clName := name.Name
+	localName := gf.pkgBaseName + "." + name.Name
+	fullName := pkg + "." + name.Name
+
+	if c, ok := goVariables[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "WARNING: variable %s found at %s and now again at %s\n",
+			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
+	}
+
+	switch name.Name {
+	case "Int", "String", "Boolean":
+		clName += "-renamed" // TODO: is there a better solution possible?
+	}
+
+	if dump || verbose {
+		fmt.Printf("Variable %s at %s:\n", name, whereAt(name.Pos()))
+		if valType != nil {
+			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
+			Print(fset, valType)
+		}
+		if val != nil {
+			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
+			Print(fset, val)
+		}
+	}
+
+	goCode := gf.pkgBaseName + "." + clName
+
+	def := fmt.Sprintf(`
+(def
+  ^{:doc %s
+    :added "1.0"
+    :tag Var
+    :go "%s"}
+  %s)
+`,
+		docString, goCode, clName)
+
+	gt := &variableInfo{name, gf, def}
+	goVariables[fullName] = gt
+	numGeneratedVariables++
+
+	return true
+}
+
+func processValueSpecs(gf *goFile, pkg string, tss []Spec, constant bool) (processed bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
+			if !constant && valName.Name != "DefaultResolver" {
+				continue // TODO: REMOVE TO GET MORE VARIABLES
+			}
 			valType := ts.Type
 			var val Expr
 			if ts.Values != nil {
+				if jx >= len(ts.Values) {
+					fmt.Printf("ts.Values index %d for %s out of range 0..%d:", jx, valName, len(ts.Values)-1)
+					Print(fset, ts)
+					continue
+				}
 				val = ts.Values[jx]
 			}
 
@@ -494,7 +575,11 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 			if isPrivate(valName.Name) {
 				continue
 			}
-			numConstants++
+			if constant {
+				numConstants++
+			} else {
+				numVariables++
+			}
 
 			if dump {
 				fmt.Printf("Constant #%d of spec #%d %s at %s:\n", jx, ix, valName, whereAt(valName.NamePos))
@@ -508,8 +593,14 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec) (processed bool) {
 				}
 			}
 			docString := commentGroupInQuotes(ts.Doc, "", "", "", "")
-			if processConstantSpec(gf, pkg, valName, valType, val, docString) {
-				processed = true
+			if constant {
+				if processConstantSpec(gf, pkg, valName, valType, val, docString) {
+					processed = true
+				}
+			} else {
+				if processVariableSpec(gf, pkg, valName, valType, val, docString) {
+					processed = true
+				}
 			}
 		}
 	}
@@ -541,9 +632,16 @@ func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
 					processed = true
 				}
 			case token.CONST:
-				if processValueSpecs(gf, pkgDirUnix, v.Specs) {
+				if processValueSpecs(gf, pkgDirUnix, v.Specs, true) {
 					processed = true
 				}
+			case token.VAR:
+				if processValueSpecs(gf, pkgDirUnix, v.Specs, false) {
+					processed = true
+				}
+			case token.IMPORT: // Ignore these
+			default:
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), whereAt(v.Pos())))
 			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
@@ -692,9 +790,9 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if found {
 		if _, ok := packagesInfo[pkgDirUnix]; !ok {
 			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
-			goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, fnCodeMap{}, goTypeMap{},
+			goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
 				map[string]string{}, map[string]map[string]string{}}
-			clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, fnCodeMap{}, goTypeMap{},
+			clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
 				map[string]string{}, map[string]map[string]string{}}
 		}
 	}

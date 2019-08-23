@@ -165,6 +165,16 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 			}
 		})
 
+	sortedVariableInfoMap(v.variables,
+		func(c string, ci *variableInfo) {
+			if outputCode {
+				fmt.Printf("JOKER VARIABLE %s from %s:%s\n", c, ci.sourceFile.name, ci.def)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(ci.def)
+			}
+		})
+
 	sortedTypeInfoMap(v.types,
 		func(t string, ti *goTypeInfo) {
 			if outputCode {
