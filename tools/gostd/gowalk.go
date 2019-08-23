@@ -283,6 +283,16 @@ func fitInt(value string) string {
 	return ""
 }
 
+func evalConstType(ty *TypeSpec) (typeName string) {
+	typeName = ty.Name.Name
+	_, ok := goTypes[typeName]
+	if !ok {
+		typeName = ty.Type.(*Ident).Name
+	}
+
+	return
+}
+
 func evalConstExpr(val Expr) (typeName, result string) {
 	switch v := val.(type) {
 	case *BasicLit:
@@ -338,12 +348,19 @@ func evalConstExpr(val Expr) (typeName, result string) {
 			typeName, result = "bool", v.Name
 		}
 		if v.Obj != nil {
-			if len(v.Obj.Decl.(*ValueSpec).Values) == 0 {
-				typeName, result = "int", "1" // TODO: probably a good guess for now
-			} else {
-				typeName, result = evalConstExpr(v.Obj.Decl.(*ValueSpec).Values[0])
+			switch spec := v.Obj.Decl.(type) {
+			case *ValueSpec:
+				if len(spec.Values) == 0 {
+					typeName, result = "int", "1" // TODO: probably a good guess for now
+				} else {
+					typeName, result = evalConstExpr(spec.Values[0])
+				}
+			case *TypeSpec:
+				typeName = evalConstType(spec)
 			}
 		}
+	case *CallExpr:
+		typeName, result = evalConstExpr(v.Fun)
 	}
 	return
 }
