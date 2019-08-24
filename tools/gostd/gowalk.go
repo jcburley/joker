@@ -372,6 +372,8 @@ func evalConstExpr(val Expr) (typeName, result string) {
 			typeName, result = "bool", v.Name
 		case "Errno": // TODO: another heuristic, for go.std.syscall only though
 			typeName, result = "uintptr", "0"
+		case "Signal": // TODO: another heuristic, for go.std.syscall only though
+			typeName, result = "int16", "0" // int16 forces "int()" conversion, which Go requires of "type Signal int"!
 		}
 		if v.Obj != nil {
 			switch spec := v.Obj.Decl.(type) {
@@ -465,7 +467,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if dump || (verbose && valTypeString == "*FOO*") {
+	if dump || (verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
