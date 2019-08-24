@@ -463,7 +463,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(valType, val)
-	if dump || (verbose && valTypeString == "") {
+	if dump || (verbose && valTypeString == "*FOO*") {
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
