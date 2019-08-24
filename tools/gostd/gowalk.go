@@ -370,6 +370,8 @@ func evalConstExpr(val Expr) (typeName, result string) {
 			typeName, result = "int", "0"
 		case "false", "true":
 			typeName, result = "bool", v.Name
+		case "Errno": // TODO: another heuristic, for go.std.syscall only though
+			typeName, result = "uintptr", "0"
 		}
 		if v.Obj != nil {
 			switch spec := v.Obj.Decl.(type) {
