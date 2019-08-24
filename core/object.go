@@ -924,7 +924,7 @@ func (v *Var) Deref() Object {
 }
 
 func (v *GoVar) ToString(escape bool) string {
-	return fmt.Sprintf("%v", reflect.ValueOf(v.Value))
+	return fmt.Sprintf("%v", reflect.ValueOf(v.Value).Interface())
 }
 
 func (v *GoVar) Equals(other interface{}) bool {
@@ -948,7 +948,16 @@ func (v *GoVar) AlterMeta(fn *Fn, args []Object) Map {
 }
 
 func (v *GoVar) GetType() *Type {
-	return TYPE.GoVar
+	ty := reflect.TypeOf(v.Value)
+	s := fmt.Sprintf("GoVar[%s]", GoTypeToString(ty))
+	k := STRINGS.Intern(s)
+	var t *Type
+	var found bool
+	if t, found = TYPES[k]; !found {
+		t = &Type{name: s, reflectType: ty}
+		TYPES[k] = t
+	}
+	return t
 }
 
 func (v *GoVar) Hash() uint32 {
