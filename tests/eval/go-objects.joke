@@ -40,3 +40,7 @@
 (deftest constants-work
   (is (> E 2.0))
   (is (< E 3.0)))
+
+(deftest variables-work
+  (is (= (str (type IPv6zero)) "GoVar[*net.IP]"))
+  (is (= (str IPv6zero) "::")))
