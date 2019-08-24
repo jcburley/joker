@@ -550,6 +550,9 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
+			if valName.Name == "IPv4zero" {
+				Print(fset, ts)
+			}
 			valType := ts.Type
 			var val Expr
 			if ts.Values != nil {
@@ -591,9 +594,12 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 					Print(fset, val)
 				}
 			}
-			doc := parentDoc
+			doc := ts.Doc // Try block comments for this specific decl
 			if doc == nil {
-				doc = ts.Doc
+				doc = ts.Comment // Use line comments if no preceding block comments are available
+			}
+			if doc == nil {
+				doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 			}
 			docString := commentGroupInQuotes(doc, "", "", "", "")
 			if constant {
