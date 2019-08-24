@@ -511,6 +511,11 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
 	}
 
+	switch name.Name {
+	case "Int", "String", "Boolean":
+		clName += "-renamed" // TODO: is there a better solution possible?
+	}
+
 	if dump {
 		fmt.Printf("Variable %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
@@ -523,8 +528,6 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		}
 	}
 
-	goCode := gf.pkgBaseName + "." + clName
-
 	def := fmt.Sprintf(`
 (def
   ^{:doc %s
@@ -533,7 +536,7 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
     :go "%s"}
   %s)
 `,
-		docString, goCode, clName)
+		docString, localName, clName)
 
 	gt := &variableInfo{name, gf, def}
 	goVariables[fullName] = gt
