@@ -497,6 +497,10 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	return true
 }
 
+// Note that the 'val' argument isn't used (except when dumping info)
+// as it isn't needed to determine the type of a variable, since the
+// type isn't needed for code generation for variables -- just for
+// constants.
 func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
 	localName := gf.pkgBaseName + "." + name.Name
@@ -550,18 +554,18 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
-			if valName.Name == "IPv4zero" {
-				Print(fset, ts)
-			}
 			valType := ts.Type
 			var val Expr
 			if ts.Values != nil {
 				if jx >= len(ts.Values) {
-					fmt.Printf("ts.Values index %d for %s out of range 0..%d:", jx, valName, len(ts.Values)-1)
-					Print(fset, ts)
-					continue
+					// This seems crazy (more names receiving values than values??) until one
+					// investigates the single case that hits this, os/executable_procfs.go, which
+					// does something like "var a, b = func() (bool, bool) { ... }()", i.e. the
+					// names receive the values returned by the function.
+					val = nil
+				} else {
+					val = ts.Values[jx]
 				}
-				val = ts.Values[jx]
 			}
 
 			if val == nil {
@@ -571,8 +575,10 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 				valType = previousValType
 			}
 
-			previousVal = val
-			previousValType = valType
+			if constant {
+				previousVal = val
+				previousValType = valType
+			}
 
 			if isPrivate(valName.Name) {
 				continue
