@@ -22,7 +22,7 @@ Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-lev
 
 ## Variables
 
-Variables are not yet converted.
+Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding `GoObject[]` objects that are "snapshots" of the values as of the invocation of `deref`.
 
 ## GoObject
 
@@ -66,6 +66,8 @@ Generally, Joker avoids ever _copying_ a `GoObject`, in order to permit maximum 
 
 As a result, pointers to such objects are returned as `atom` references to the very same objects.
 
+`(deref obj)` can be used to dereference a wrapped object, returning another `GoObject[]` with the dereferenced object as of that dereference, or to the original object if it wasn't a pointer to an object.
+
 ### Constructing a GoObject
 
 Akin to Clojure, `(type. ...)` functions are supported for (some) `GoObject` types:
@@ -92,7 +94,7 @@ false
 user=>
 ```
 
-If a particular constructor is missing, that indicates lack of support for the underlying type. Most built-in types are supported.
+If a particular constructor is missing, that indicates lack of support for the underlying type.
 
 NOTE: The `(new ...)` special form is _not_ currently supported.
 
