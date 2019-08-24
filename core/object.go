@@ -924,7 +924,7 @@ func (v *Var) Deref() Object {
 }
 
 func (v *GoVar) ToString(escape bool) string {
-	return fmt.Sprintf("%v", reflect.ValueOf(v.Value).Interface())
+	return fmt.Sprintf("%v", reflect.ValueOf(v.Value))
 }
 
 func (v *GoVar) Equals(other interface{}) bool {
