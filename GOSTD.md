@@ -16,6 +16,20 @@ The `go.std.` namespaces being automatically generated, they are not necessarily
 
 Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs (that call these low-level API wrappers) to be written without requiring changes to the Joker codebase or executable itself.
 
+## Included Other Go Libraries
+
+NOTE: This is work-in-progress and not yet complete.
+
+```
+$ touch NO-GOSTD.flag # Inhibit automatic running of gostd tool
+$ build # Build canonical Joker
+$ go get golang.org/x/crypto/ssh # Grab a sample package
+$ (cd tools/gostd && go build) # Build gostd
+$ ./tools/gostd/gostd --others golang.org/x/crypto/ssh --replace --joker . # Wrap both go.std.* and golang.org/x/crypto/ssh packages
+$ build # Build Joker again, this time with additional libraries
+$
+```
+
 ## Constants
 
 (Most) constants, defined in packages, are converted and thus available for reference. In some cases, their type is `Number` when an `Int` would suffice; this is due to how the conversion code is currently implemented, in that it doesn't attempt to fully evaluate the constant expressions in all cases, just provide some "guesses".
