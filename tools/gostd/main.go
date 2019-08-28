@@ -38,6 +38,7 @@ func check(e error) {
 var fset *token.FileSet
 var dump bool
 var verbose bool
+var goSourcePath string
 
 func notOption(arg string) bool {
 	return arg == "-" || !strings.HasPrefix(arg, "-")
@@ -49,6 +50,8 @@ Usage: gostd options...
 
 Options:
   --go <go-source-dir>        # Location of Golang's src/ subdirectory (defaults to build.Default.GOROOT)
+  --others <package-spec>...  # Location of another package directory, or a file with one <package-spec> per line
+  --go-source-path <path>     # Overrides $GOPATH/src/ as "root" of <package-spec> specifications
   --overwrite                 # Overwrite any existing <joker-std-subdir> files, leaving existing files intact
   --replace                   # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
   --fresh                     # (Default) Refuse to overwrite existing <joker-std-subdir> directory
@@ -69,6 +72,20 @@ If <joker-std-subdir> is not specified, no Go nor Clojure source files
 	os.Exit(0)
 }
 
+func listOfOthers(other string) (others []string) {
+	o := filepath.Join(goSourcePath, other)
+	s, e := os.Stat(o)
+	if e != nil {
+		o = other // try original without $GOPATH/src/ prefix
+		s, e = os.Stat(o)
+	}
+	check(e)
+	if s.IsDir() {
+		return []string{o}
+	}
+	panic(fmt.Sprintf("files not yet supported: %s", other))
+}
+
 func main() {
 	fset = token.NewFileSet() // positions are relative to fset
 	dump = false
@@ -76,6 +93,9 @@ func main() {
 	length := len(os.Args)
 	goSourceDir := ""
 	goSourceDirVia := ""
+	goSourcePath = os.Getenv("GOPATH")
+	var others []string
+	var otherSourceDirs []string
 	jokerSourceDir := ""
 	replace := false
 	overwrite := false
@@ -128,6 +148,21 @@ func main() {
 				} else {
 					panic("missing path after --go option")
 				}
+			case "--others":
+				if i >= length-1 || !notOption(os.Args[i+1]) {
+					panic("missing package-spec(s) after --others option")
+				}
+				for i < length-1 && notOption(os.Args[i+1]) {
+					i += 1 // shift
+					others = append(others, os.Args[i])
+				}
+			case "--go-source-path":
+				if i < length-1 && notOption(os.Args[i+1]) {
+					i += 1 // shift
+					goSourcePath = os.Args[i]
+				} else {
+					panic("missing package-spec(s) after --go-source-path option")
+				}
 			case "--joker":
 				if jokerSourceDir != "" {
 					panic("cannot specify --joker <joker-source-dir> more than once")
@@ -162,6 +197,24 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Does not exist or is not a Go source directory: %s (specified via %s);\n%v",
 				goSourceDir, goSourceDirVia, m)
 			os.Exit(2)
+		}
+	}
+
+	if goSourcePath == "" {
+		panic("no Go source path defined via either $GOPATH or --go-source-path")
+	}
+	if fi, e := os.Stat(goSourcePath); e == nil && fi.IsDir() && filepath.Base(goSourcePath) != "src" {
+		goSourcePath = filepath.Join(goSourcePath, "src")
+	}
+
+	if verbose {
+		fmt.Printf("goSourceDir: %s\n", goSourceDir)
+		fmt.Printf("goSourcePath: %s\n", goSourcePath)
+		for _, o := range others {
+			otherSourceDirs = append(otherSourceDirs, listOfOthers(o)...)
+		}
+		for _, o := range otherSourceDirs {
+			fmt.Printf("Other: %s\n", o)
 		}
 	}
 
@@ -201,6 +254,14 @@ func main() {
 	err := walkDirs(root, mode)
 	if err != nil {
 		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
+	}
+
+	for _, o := range otherSourceDirs {
+		root := filepath.Join(o, ".")
+		err := walkDirs(root, mode)
+		if err != nil {
+			panic("Error walking directory " + o + ": " + fmt.Sprintf("%v", err))
+		}
 	}
 
 	sort.Strings(alreadySeen)
