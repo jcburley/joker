@@ -68,6 +68,7 @@ type goFile struct {
 	pkgDirUnix  string
 	pkgBaseName string
 	spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+	nsRoot      string             // "go.std." or whatever is desired as the root namespace
 }
 
 var goFiles = map[string]*goFile{}
@@ -768,12 +769,12 @@ Funcs:
 	return
 }
 
-func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix string, f *File) (gf *goFile) {
+func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *goFile) {
 	if egf, found := goFiles[goFilePathUnix]; found {
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap}
+	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
 	goFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
@@ -852,7 +853,7 @@ func addImport(packageImports *packageImports, local, full string, okToSubstitut
 	return localRef
 }
 
-func processPackage(rootUnix, pkgDirUnix string, p *Package) {
+func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if verbose {
 		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
 	}
@@ -862,7 +863,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	// Must process all types before processing functions, since receivers are defined on types.
 	for path, f := range p.Files {
 		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, f)
+		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
 		if processDecls(gf, pkgDirUnix, f) {
 			found = true
 		}
@@ -888,7 +889,7 @@ func processPackage(rootUnix, pkgDirUnix string, p *Package) {
 	}
 }
 
-func processDir(root, rootUnix, path string, mode parser.Mode) error {
+func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 	pkgDir := strings.TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
 	if verbose {
@@ -929,7 +930,7 @@ func processDir(root, rootUnix, path string, mode parser.Mode) error {
 				fmt.Printf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix)
 			}
 		} else {
-			processPackage(rootUnix, pkgDirUnix, v)
+			processPackage(rootUnix, pkgDirUnix, nsRoot, v)
 		}
 	}
 
@@ -944,19 +945,19 @@ var excludeDirs = map[string]bool{
 	"vendor":   true,
 }
 
-func walkDirs(root string, mode parser.Mode) error {
-	rootUnix := filepath.ToSlash(root)
-	target, err := filepath.EvalSymlinks(root)
+func walkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
+	rootUnix := filepath.ToSlash(fsRoot)
+	target, err := filepath.EvalSymlinks(fsRoot)
 	check(err)
 	err = filepath.Walk(target,
 		func(path string, info os.FileInfo, err error) error {
-			rel := strings.Replace(path, target, root, 1)
+			rel := strings.Replace(path, target, fsRoot, 1)
 			relUnix := filepath.ToSlash(rel)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
 				return err
 			}
-			if rel == root {
+			if rel == fsRoot {
 				return nil // skip (implicit) "."
 			}
 			if excludeDirs[filepath.Base(rel)] {
@@ -969,13 +970,13 @@ func walkDirs(root string, mode parser.Mode) error {
 				if verbose {
 					fmt.Printf("Walking from %s to %s\n", rootUnix, relUnix)
 				}
-				return processDir(root, rootUnix, rel, mode)
+				return processDir(fsRoot, rootUnix, rel, nsRoot, mode)
 			}
 			return nil // not a directory
 		})
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", root, err)
+		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", fsRoot, err)
 		return err
 	}
 

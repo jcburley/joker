@@ -47,7 +47,7 @@ func registerType(gf *goFile, fullGoTypeName string, ts *TypeSpec) *goTypeInfo {
 		fullGoName:        fullGoTypeName,
 		sourceFile:        gf,
 		underlyingType:    &ts.Type,
-		argClojureArgType: fullTypeNameAsClojure(fullGoTypeName),
+		argClojureArgType: fullTypeNameAsClojure(gf.nsRoot, fullGoTypeName),
 		private:           isPrivate(ts.Name.Name),
 		custom:            true,
 		uncompleted:       true,

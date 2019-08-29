@@ -73,11 +73,11 @@ func typeToGoExtractFuncName(t string) string {
 	return replaceAll(replaceAll(t, ".", "_"), "/", "__")
 }
 
-func fullTypeNameAsClojure(t string) string {
+func fullTypeNameAsClojure(nsRoot, t string) string {
 	if t[0] == '_' {
 		t = t[1:]
 	}
-	return "go.std." + replaceAll(replaceAll(replaceAll(t, ".", ":"), "/", "."), ":", "/")
+	return nsRoot + replaceAll(replaceAll(replaceAll(t, ".", ":"), "/", "."), ":", "/")
 }
 
 // Given an input package name such as "foo/bar" and typename
@@ -93,7 +93,7 @@ func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType
 	curPkgName := fn.sourceFile.pkgDirUnix
 	basePkgName := path.Base(fullPkgName)
 	clType = basePkgName + "/" + baseTypeName
-	clTypeDoc = fullTypeNameAsClojure(fullPkgName + "." + baseTypeName)
+	clTypeDoc = fullTypeNameAsClojure(fn.sourceFile.nsRoot, fullPkgName+"."+baseTypeName)
 	if curPkgName == fullPkgName {
 		code = "_" + basePkgName + "." + baseTypeName
 		doc = baseTypeName

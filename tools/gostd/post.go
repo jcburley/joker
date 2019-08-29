@@ -7,7 +7,7 @@ import (
 )
 
 func genGoPostSelected(fn *funcInfo, indent, captureName, fullTypeName, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	clDoc = fullTypeNameAsClojure(fullTypeName)
+	clDoc = fullTypeNameAsClojure(fn.sourceFile.nsRoot, fullTypeName)
 	if _, ok := goTypes[fullTypeName]; ok {
 		gol = fullTypeName
 		out = "MakeGoObject(" + captureName + ")"

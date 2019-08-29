@@ -141,7 +141,7 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
   ^{:go-imports [%s]
     :doc "Provides a low-level interface to the %s package."
     :empty %s}
-  go.std.%s)
+  %s)
 `,
 			strings.TrimPrefix(packageQuotedImportList(*pi.importsAutoGen, " "), " "),
 			pkgDirUnix,
@@ -152,7 +152,7 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 					return "true"
 				}
 			}(),
-			strings.Replace(pkgDirUnix, "/", ".", -1))
+			"go.std."+strings.Replace(pkgDirUnix, "/", ".", -1))
 	}
 
 	sortedConstantInfoMap(v.constants,

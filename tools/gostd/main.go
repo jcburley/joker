@@ -251,14 +251,14 @@ func main() {
 	}
 
 	root := filepath.Join(goSourceDir, ".")
-	err := walkDirs(root, mode)
+	err := walkDirs(root, "go.std.", mode)
 	if err != nil {
 		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
 	}
 
 	for _, o := range otherSourceDirs {
 		root := filepath.Join(o, ".")
-		err := walkDirs(root, mode)
+		err := walkDirs(root, "x.y.z.", mode)
 		if err != nil {
 			panic("Error walking directory " + o + ": " + fmt.Sprintf("%v", err))
 		}
