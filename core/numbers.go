@@ -41,6 +41,9 @@ const (
 	RATIO_CATEGORY    = iota
 )
 
+const MAX_UINT = ^uint(0)
+const MAX_INT = int(^uint(0) >> 1)
+const MIN_INT = -MAX_INT - 1
 const MAX_RUNE = int(^uint32(0) >> 1)
 const MIN_RUNE = -MAX_RUNE - 1
 
