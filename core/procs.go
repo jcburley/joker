@@ -1467,7 +1467,7 @@ var procSpit Proc = func(args []Object) Object {
 	opts := EnsureMap(args, 2)
 	appendFile := false
 	if ok, append := opts.Get(MakeKeyword("append")); ok {
-		appendFile = toBool(append)
+		appendFile = ToBool(append)
 	}
 	flags := os.O_CREATE | os.O_WRONLY
 	if appendFile {
