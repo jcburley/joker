@@ -999,6 +999,17 @@ func parseTry(obj Object, ctx *ParseContext) *TryExpr {
 		}
 		seq = seq.Rest()
 	}
+	if LINTER_MODE {
+		if res.body == nil {
+			printParseWarning(res.Pos(), "try form with empty body")
+		}
+		if res.catches == nil && res.finallyExpr == nil {
+			printParseWarning(res.Pos(), "try form without catch or finally")
+		}
+		if res.finallyExpr != nil && len(res.finallyExpr) == 0 {
+			printParseWarning(GetPosition(obj), "finally form with empty body")
+		}
+	}
 	return res
 }
 
@@ -1508,10 +1519,18 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 				panic(&ParseError{obj: obj, msg: "var's argument must be a symbol"})
 			}
 		case STR.do:
-			return &DoExpr{
+			res := &DoExpr{
 				body:     parseBody(seq.Rest(), ctx),
 				Position: pos,
 			}
+			if LINTER_MODE {
+				if len(res.body) == 0 {
+					printParseWarning(pos, "do form with empty body")
+				} else if len(res.body) == 1 {
+					printParseWarning(pos, "redundant do form")
+				}
+			}
+			return res
 		case STR.throw:
 			return &ThrowExpr{
 				Position: pos,
