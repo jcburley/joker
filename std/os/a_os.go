@@ -247,7 +247,7 @@ var stat_ Proc = func(_args []Object) Object {
 
 func init() {
 
-	osNamespace.ResetMeta(MakeMeta(nil, "Provides a platform-independent interface to operating system functionality.", "1.0"))
+	osNamespace.ResetMeta(MakeMeta(nil, `Provides a platform-independent interface to operating system functionality.`, "1.0"))
 
 	
 	osNamespace.InternVar("args", args_,

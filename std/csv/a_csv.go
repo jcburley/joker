@@ -74,7 +74,7 @@ var write_string_ Proc = func(_args []Object) Object {
 
 func init() {
 
-	csvNamespace.ResetMeta(MakeMeta(nil, "Reads and writes comma-separated values (CSV) files as defined in RFC 4180.", "1.0"))
+	csvNamespace.ResetMeta(MakeMeta(nil, `Reads and writes comma-separated values (CSV) files as defined in RFC 4180.`, "1.0"))
 
 	
 	csvNamespace.InternVar("csv-seq", csv_seq_,

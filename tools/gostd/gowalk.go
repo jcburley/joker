@@ -30,6 +30,7 @@ var numGeneratedVariables int
 type packageInfo struct {
 	importsNative  *packageImports
 	importsAutoGen *packageImports
+	pkg            *Package
 	nonEmpty       bool // Whether any non-comment code has been generated
 	hasGoFiles     bool // Whether any .go files (would) have been generated
 }
@@ -878,14 +879,16 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 		}
 	}
 
-	if found {
-		if _, ok := packagesInfo[pkgDirUnix]; !ok {
-			packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, false, false}
-			goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-				map[string]string{}, map[string]map[string]string{}}
-			clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-				map[string]string{}, map[string]map[string]string{}}
-		}
+	if !found {
+		return
+	}
+
+	if _, ok := packagesInfo[pkgDirUnix]; !ok {
+		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
+		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
+			map[string]string{}, map[string]map[string]string{}}
+		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
+			map[string]string{}, map[string]map[string]string{}}
 	}
 }
 

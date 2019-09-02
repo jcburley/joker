@@ -40,7 +40,7 @@ var write_string_ Proc = func(_args []Object) Object {
 
 func init() {
 
-	jsonNamespace.ResetMeta(MakeMeta(nil, "Implements encoding and decoding of JSON as defined in RFC 4627.", "1.0"))
+	jsonNamespace.ResetMeta(MakeMeta(nil, `Implements encoding and decoding of JSON as defined in RFC 4627.`, "1.0"))
 
 	
 	jsonNamespace.InternVar("read-string", read_string_,

@@ -324,7 +324,7 @@
                                                            ". \"github.com/candid82/joker/core\""))))
                 (rpl "{non-fns}" (s/join "\n" (map first non-fns)))
                 (rpl "{fns}" (s/join "\n" (map first fns)))
-                (rpl "{nsDocstring}" (:doc m))
+                (rpl "{nsDocstring}" (raw-quoted-string (:doc m)))
                 (rpl "{non-fns-interns}" (s/join "\n\t" (map second non-fns)))
                 (rpl "{fns-interns}" (s/join "\n\t" (map second fns))))
         res (if (:empty m)

@@ -261,7 +261,7 @@ var volume_name_ Proc = func(_args []Object) Object {
 
 func init() {
 
-	filepathNamespace.ResetMeta(MakeMeta(nil, "Implements utility routines for manipulating filename paths.", "1.0"))
+	filepathNamespace.ResetMeta(MakeMeta(nil, `Implements utility routines for manipulating filename paths.`, "1.0"))
 
 	filepathNamespace.InternVar("list-separator", list_separator_,
 		MakeMeta(
