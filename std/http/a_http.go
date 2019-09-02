@@ -56,7 +56,7 @@ var start_server_ Proc = func(_args []Object) Object {
 
 func init() {
 
-	httpNamespace.ResetMeta(MakeMeta(nil, `Provides HTTP client and server implementations`, "1.0"))
+	httpNamespace.ResetMeta(MakeMeta(nil, `Provides HTTP client and server implementations.`, "1.0"))
 
 	
 	httpNamespace.InternVar("send", send_,
