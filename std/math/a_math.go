@@ -56,6 +56,8 @@ var sin_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	mathNamespace.ResetMeta(MakeMeta(nil, `Provides basic constants and mathematical functions.`, "1.0"))
 
 	mathNamespace.InternVar("pi", pi_,

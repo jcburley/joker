@@ -40,6 +40,8 @@ var write_string_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	jsonNamespace.ResetMeta(MakeMeta(nil, `Implements encoding and decoding of JSON as defined in RFC 4627.`, "1.0"))
 
 	

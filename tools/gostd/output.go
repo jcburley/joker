@@ -283,7 +283,7 @@ import (%s
 		})
 
 	if out != nil {
-		out.WriteString("\nfunc init() {\n")
+		out.WriteString("\nfunc initNative() {\n")
 	}
 	sortedStringMap(v.initTypes,
 		func(k, v string) {

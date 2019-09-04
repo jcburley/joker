@@ -169,3 +169,6 @@ func startFileServer(addr string, root string) Object {
 	PanicOnErr(err)
 	return NIL
 }
+
+func initNative() {
+}

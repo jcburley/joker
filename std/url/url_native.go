@@ -21,3 +21,6 @@ func queryUnescape(s string) string {
 	}
 	return res
 }
+
+func initNative() {
+}

@@ -31,3 +31,6 @@ func hmacSum(algorithm, message, key string) string {
 	mac.Write([]byte(message))
 	return string(mac.Sum(nil))
 }
+
+func initNative() {
+}

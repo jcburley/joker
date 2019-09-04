@@ -43,6 +43,8 @@ var encode_string_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	hexNamespace.ResetMeta(MakeMeta(nil, `Implements hexadecimal encoding and decoding.`, "1.0"))
 
 	

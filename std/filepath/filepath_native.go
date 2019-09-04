@@ -17,3 +17,6 @@ func fileSeq(root string) *Vector {
 	})
 	return res
 }
+
+func initNative() {
+}

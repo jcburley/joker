@@ -175,6 +175,6 @@ func reverse(s string) string {
 	return string(runes)
 }
 
-func init() {
+func initNative() {
 	newLine, _ = regexp.Compile("\r?\n")
 }

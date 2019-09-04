@@ -277,6 +277,8 @@ var unquote_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	strconvNamespace.ResetMeta(MakeMeta(nil, `Implements conversions to and from string representations of basic data types.`, "1.0"))
 
 	

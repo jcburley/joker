@@ -69,6 +69,8 @@ var query_unescape_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	urlNamespace.ResetMeta(MakeMeta(nil, `Parses URLs and implements query escaping.`, "1.0"))
 
 	

@@ -298,6 +298,8 @@ var until_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	timeNamespace.ResetMeta(MakeMeta(nil, `Provides functionality for measuring and displaying time.`, "1.0"))
 
 	timeNamespace.InternVar("ansi-c", ansi_c_,

@@ -1,0 +1,4 @@
+package time
+
+func initNative() {
+}

@@ -86,3 +86,6 @@ func writeString(data Seqable, opts Map) string {
 	writeWriter(&b, data, opts)
 	return b.String()
 }
+
+func initNative() {
+}

@@ -85,3 +85,6 @@ func writeString(obj Object) String {
 	}
 	return String{S: string(res)}
 }
+
+func initNative() {
+}

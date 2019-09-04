@@ -161,3 +161,6 @@ func exists(path string) bool {
 	}
 	panic(RT.NewError(err.Error()))
 }
+
+func initNative() {
+}

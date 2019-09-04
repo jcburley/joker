@@ -1,0 +1,4 @@
+package strconv
+
+func initNative() {
+}

@@ -1,0 +1,4 @@
+package hex
+
+func initNative() {
+}

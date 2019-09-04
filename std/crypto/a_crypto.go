@@ -152,6 +152,8 @@ var sha512_256_ Proc = func(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	cryptoNamespace.ResetMeta(MakeMeta(nil, `Implements common cryptographic and hash functions.`, "1.0"))
 
 	
