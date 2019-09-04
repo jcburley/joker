@@ -1,0 +1,4 @@
+package html
+
+func initNative() {
+}
