@@ -274,17 +274,21 @@ import (%s
 
 	sortedStringMap(v.initTypes,
 		func(k1, k2 string) {
-			out.WriteString(fmt.Sprintf("var %s = GoTypeInfo{Members: GoMembers{\n", k2))
-			sortedStringMap(v.initVars[k2], // Will always be populated
-				func(c, g string) {
-					out.WriteString(fmt.Sprintf("\t\"%s\": %s,\n", c, g))
-				})
-			out.WriteString("}}\n\n")
+			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", k2))
 		})
 
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
+	sortedStringMap(v.initTypes,
+		func(k1, k2 string) {
+			out.WriteString(fmt.Sprintf("\t%s = GoTypeInfo{Members: GoMembers{\n", k2))
+			sortedStringMap(v.initVars[k2], // Will always be populated
+				func(c, g string) {
+					out.WriteString(fmt.Sprintf("\t\t\"%s\": %s,\n", c, g))
+				})
+			out.WriteString("\t}}\n\n")
+		})
 	sortedStringMap(v.initTypes,
 		func(k, v string) {
 			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", k, v))
