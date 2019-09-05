@@ -11,7 +11,9 @@ var mathNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.math"))
 
 var pi_ = MakeDouble(math.Pi)
 
-var cos_ Proc = func(_args []Object) Object {
+var cos_ Proc
+
+func __cos_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -25,7 +27,9 @@ var cos_ Proc = func(_args []Object) Object {
 	return NIL
 }
 
-var hypot_ Proc = func(_args []Object) Object {
+var hypot_ Proc
+
+func __hypot_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 2:
@@ -40,7 +44,9 @@ var hypot_ Proc = func(_args []Object) Object {
 	return NIL
 }
 
-var sin_ Proc = func(_args []Object) Object {
+var sin_ Proc
+
+func __sin_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
@@ -55,6 +61,9 @@ var sin_ Proc = func(_args []Object) Object {
 }
 
 func Init() {
+	cos_ = __cos_
+	hypot_ = __hypot_
+	sin_ = __sin_
 
 	initNative()
 

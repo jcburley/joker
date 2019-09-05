@@ -236,6 +236,12 @@
                                  ")")))]
     [fn-str intern-str]))
 
+(defn generate-var-inits
+  [v]
+  (debug "Processing var-init" v)
+  (let [g (go-name (str v))]
+    (format "\t%s = __%s" g g)))
+
 (defn generate-const-or-var
   [name m]
   (if (= (type-name (:tag m)) "Var")
@@ -313,6 +319,8 @@
         go-fns (sort-by first (ns-public-go-fns ns))
         fns (for [[k v] go-fns]
               (generate-fn ns-name ns-name-final k v))
+        var-inits (for [[k _] go-fns]
+                    (generate-var-inits k))
         non-fns (for [[k v] go-non-fns]
                   (generate-non-fn ns-name ns-name-final k v))
         res (-> package-template
@@ -324,6 +332,7 @@
                                                            ". \"github.com/candid82/joker/core\""))))
                 (rpl "{non-fns}" (s/join "\n" (map first non-fns)))
                 (rpl "{fns}" (s/join "\n" (map first fns)))
+                (rpl "{var-inits}" (s/join "\n" var-inits))
                 (rpl "{nsDocstring}" (raw-quoted-string (:doc m)))
                 (rpl "{non-fns-interns}" (s/join "\n\t" (map second non-fns)))
                 (rpl "{fns-interns}" (s/join "\n\t" (map second fns))))
