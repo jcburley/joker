@@ -10,16 +10,16 @@ var {nsName}Namespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("{nsFullName}"))
 
 {non-fns}
 
-{fns}
+{fn-decls}
 func Init() {
-{var-inits}
+{fn-inits}
 
 	initNative()
 
 	{nsName}Namespace.ResetMeta(MakeMeta(nil, {nsDocstring}, "1.0"))
 
-	{non-fns-interns}
-	{fns-interns}
+	{non-fn-interns}
+	{fn-interns}
 }
 
 func init() {
