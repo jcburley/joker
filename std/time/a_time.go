@@ -9,27 +9,27 @@ import (
 
 var timeNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.time"))
 
-var ansi_c_ = MakeString(time.ANSIC)
-var hour_ = MakeBigInt(int64(time.Hour))
-var kitchen_ = MakeString(time.Kitchen)
-var microsecond_ = MakeInt(int(time.Microsecond))
-var millisecond_ = MakeInt(int(time.Millisecond))
-var minute_ = MakeBigInt(int64(time.Minute))
-var nanosecond_ = MakeInt(int(time.Nanosecond))
-var rfc1123_ = MakeString(time.RFC1123)
-var rfc1123_z_ = MakeString(time.RFC1123Z)
-var rfc3339_ = MakeString(time.RFC3339)
-var rfc3339_nano_ = MakeString(time.RFC3339Nano)
-var rfc822_ = MakeString(time.RFC822)
-var rfc822_z_ = MakeString(time.RFC822Z)
-var rfc850_ = MakeString(time.RFC850)
-var ruby_date_ = MakeString(time.RubyDate)
-var second_ = MakeInt(int(time.Second))
-var stamp_ = MakeString(time.Stamp)
-var stamp_micro_ = MakeString(time.StampMicro)
-var stamp_milli_ = MakeString(time.StampMilli)
-var stamp_nano_ = MakeString(time.StampNano)
-var unix_date_ = MakeString(time.UnixDate)
+var ansi_c_ String
+var hour_ *BigInt
+var kitchen_ String
+var microsecond_ Int
+var millisecond_ Int
+var minute_ *BigInt
+var nanosecond_ Int
+var rfc1123_ String
+var rfc1123_z_ String
+var rfc3339_ String
+var rfc3339_nano_ String
+var rfc822_ String
+var rfc822_z_ String
+var rfc850_ String
+var ruby_date_ String
+var second_ Int
+var stamp_ String
+var stamp_micro_ String
+var stamp_milli_ String
+var stamp_nano_ String
+var unix_date_ String
 
 var add_ Proc
 
@@ -333,6 +333,27 @@ func __until_(_args []Object) Object {
 }
 
 func Init() {
+	ansi_c_ = MakeString(time.ANSIC)
+	hour_ = MakeBigInt(int64(time.Hour))
+	kitchen_ = MakeString(time.Kitchen)
+	microsecond_ = MakeInt(int(time.Microsecond))
+	millisecond_ = MakeInt(int(time.Millisecond))
+	minute_ = MakeBigInt(int64(time.Minute))
+	nanosecond_ = MakeInt(int(time.Nanosecond))
+	rfc1123_ = MakeString(time.RFC1123)
+	rfc1123_z_ = MakeString(time.RFC1123Z)
+	rfc3339_ = MakeString(time.RFC3339)
+	rfc3339_nano_ = MakeString(time.RFC3339Nano)
+	rfc822_ = MakeString(time.RFC822)
+	rfc822_z_ = MakeString(time.RFC822Z)
+	rfc850_ = MakeString(time.RFC850)
+	ruby_date_ = MakeString(time.RubyDate)
+	second_ = MakeInt(int(time.Second))
+	stamp_ = MakeString(time.Stamp)
+	stamp_micro_ = MakeString(time.StampMicro)
+	stamp_milli_ = MakeString(time.StampMilli)
+	stamp_nano_ = MakeString(time.StampNano)
+	unix_date_ = MakeString(time.UnixDate)
 	add_ = __add_
 	add_date_ = __add_date_
 	format_ = __format_

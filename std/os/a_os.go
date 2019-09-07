@@ -278,6 +278,7 @@ func __stat_(_args []Object) Object {
 }
 
 func Init() {
+
 	args_ = __args_
 	chdir_ = __chdir_
 	close_ = __close_

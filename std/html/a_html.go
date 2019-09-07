@@ -44,6 +44,7 @@ func __unescape_(_args []Object) Object {
 }
 
 func Init() {
+
 	escape_ = __escape_
 	unescape_ = __unescape_
 

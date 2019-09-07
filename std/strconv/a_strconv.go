@@ -312,6 +312,7 @@ func __unquote_(_args []Object) Object {
 }
 
 func Init() {
+
 	atoi_ = __atoi_
 	iscan_backquote_ = __iscan_backquote_
 	format_bool_ = __format_bool_

@@ -76,6 +76,7 @@ func __query_unescape_(_args []Object) Object {
 }
 
 func Init() {
+
 	path_escape_ = __path_escape_
 	path_unescape_ = __path_unescape_
 	query_escape_ = __query_escape_

@@ -169,6 +169,7 @@ func __sha512_256_(_args []Object) Object {
 }
 
 func Init() {
+
 	hmac_ = __hmac_
 	md5_ = __md5_
 	sha1_ = __sha1_

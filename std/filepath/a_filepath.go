@@ -9,8 +9,8 @@ import (
 
 var filepathNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.filepath"))
 
-var list_separator_ = MakeString(string(filepath.ListSeparator))
-var separator_ = MakeString(string(filepath.Separator))
+var list_separator_ String
+var separator_ String
 
 var abs_ Proc
 
@@ -294,6 +294,8 @@ func __volume_name_(_args []Object) Object {
 }
 
 func Init() {
+	list_separator_ = MakeString(string(filepath.ListSeparator))
+	separator_ = MakeString(string(filepath.Separator))
 	abs_ = __abs_
 	isabs_ = __isabs_
 	base_ = __base_

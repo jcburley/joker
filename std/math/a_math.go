@@ -9,7 +9,7 @@ import (
 
 var mathNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.math"))
 
-var pi_ = MakeDouble(math.Pi)
+var pi_ Double
 
 var cos_ Proc
 
@@ -61,6 +61,7 @@ func __sin_(_args []Object) Object {
 }
 
 func Init() {
+	pi_ = MakeDouble(math.Pi)
 	cos_ = __cos_
 	hypot_ = __hypot_
 	sin_ = __sin_

@@ -439,6 +439,7 @@ func __upper_case_(_args []Object) Object {
 }
 
 func Init() {
+
 	isblank_ = __isblank_
 	capitalize_ = __capitalize_
 	isends_with_ = __isends_with_

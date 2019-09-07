@@ -12,7 +12,7 @@ import (
 	. "github.com/candid82/joker/core"
 )
 
-var client = &http.Client{}
+var client *http.Client
 
 func extractMethod(request Map) string {
 	if ok, m := request.Get(MakeKeyword("method")); ok {
@@ -171,4 +171,5 @@ func startFileServer(addr string, root string) Object {
 }
 
 func initNative() {
+	client = &http.Client{}
 }

@@ -440,7 +440,7 @@ func TryEval(expr Expr) (obj Object, err error) {
 			case *ExInfo:
 				err = r.(error)
 			default:
-				panic(r)
+				panic(fmt.Sprintf("Unrecoverable error %s handling %s", r, obj))
 			}
 		}
 	}()

@@ -46,6 +46,7 @@ func __encode_string_(_args []Object) Object {
 }
 
 func Init() {
+
 	decode_string_ = __decode_string_
 	encode_string_ = __encode_string_
 

@@ -43,6 +43,7 @@ func __write_string_(_args []Object) Object {
 }
 
 func Init() {
+
 	read_string_ = __read_string_
 	write_string_ = __write_string_
 

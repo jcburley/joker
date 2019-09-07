@@ -79,6 +79,7 @@ func __write_string_(_args []Object) Object {
 }
 
 func Init() {
+
 	csv_seq_ = __csv_seq_
 	write_ = __write_
 	write_string_ = __write_string_
