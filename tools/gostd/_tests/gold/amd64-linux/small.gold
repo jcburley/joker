@@ -4,9 +4,9 @@ Walking from _tests/small/src to _tests/small/src/go
 Processing go:
 Walking from _tests/small/src to _tests/small/src/net
 Processing net:
+Matchfile(_tests/small/src/net/ip.go) => true <nil>
 Matchfile(_tests/small/src/net/net.go) => true <nil>
 Matchfile(_tests/small/src/net/lookup.go) => true <nil>
-Matchfile(_tests/small/src/net/ip.go) => true <nil>
 Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Matchfile(_tests/small/src/net/iprawsock.go) => true <nil>
 Processing package=net:
@@ -2115,81 +2115,92 @@ import (
 	_net "net"
 	_reflect "reflect"
 )
-var members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_AddrError_Error,
-	"Temporary": __ptrTo_AddrError_Temporary,
-	"Timeout": __ptrTo_AddrError_Timeout,
-}}
+var members_PtrTo_AddrError GoTypeInfo
+var members_PtrTo_DNSConfigError GoTypeInfo
+var members_PtrTo_DNSError GoTypeInfo
+var members_IP GoTypeInfo
+var members_PtrTo_IPAddr GoTypeInfo
+var members_IPMask GoTypeInfo
+var members_PtrTo_IPNet GoTypeInfo
+var members_InvalidAddrError GoTypeInfo
+var members_PtrTo_OpError GoTypeInfo
+var members_PtrTo_ParseError GoTypeInfo
+var members_UnknownNetworkError GoTypeInfo
 
-var members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_DNSConfigError_Error,
-	"Temporary": __ptrTo_DNSConfigError_Temporary,
-	"Timeout": __ptrTo_DNSConfigError_Timeout,
-}}
+func initNative() {
+	members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_AddrError_Error,
+		"Temporary": __ptrTo_AddrError_Temporary,
+		"Timeout": __ptrTo_AddrError_Timeout,
+	}}
 
-var members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_DNSError_Error,
-	"Temporary": __ptrTo_DNSError_Temporary,
-	"Timeout": __ptrTo_DNSError_Timeout,
-}}
+	members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_DNSConfigError_Error,
+		"Temporary": __ptrTo_DNSConfigError_Temporary,
+		"Timeout": __ptrTo_DNSConfigError_Timeout,
+	}}
 
-var members_IP = GoTypeInfo{Members: GoMembers{
-	"DefaultMask": __iP_DefaultMask,
-	"Equal": __iP_Equal,
-	"IsGlobalUnicast": __iP_IsGlobalUnicast,
-	"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
-	"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
-	"IsLinkLocalUnicast": __iP_IsLinkLocalUnicast,
-	"IsLoopback": __iP_IsLoopback,
-	"IsMulticast": __iP_IsMulticast,
-	"IsUnspecified": __iP_IsUnspecified,
-	"MarshalText": __iP_MarshalText,
-	"Mask": __iP_Mask,
-	"String": __iP_String,
-	"To16": __iP_To16,
-	"To4": __iP_To4,
-}}
+	members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_DNSError_Error,
+		"Temporary": __ptrTo_DNSError_Temporary,
+		"Timeout": __ptrTo_DNSError_Timeout,
+	}}
 
-var members_PtrTo_IPAddr = GoTypeInfo{Members: GoMembers{
-	"Network": __ptrTo_IPAddr_Network,
-	"String": __ptrTo_IPAddr_String,
-}}
+	members_IP = GoTypeInfo{Members: GoMembers{
+		"DefaultMask": __iP_DefaultMask,
+		"Equal": __iP_Equal,
+		"IsGlobalUnicast": __iP_IsGlobalUnicast,
+		"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
+		"IsLinkLocalMulticast": __iP_IsLinkLocalMulticast,
+		"IsLinkLocalUnicast": __iP_IsLinkLocalUnicast,
+		"IsLoopback": __iP_IsLoopback,
+		"IsMulticast": __iP_IsMulticast,
+		"IsUnspecified": __iP_IsUnspecified,
+		"MarshalText": __iP_MarshalText,
+		"Mask": __iP_Mask,
+		"String": __iP_String,
+		"To16": __iP_To16,
+		"To4": __iP_To4,
+	}}
 
-var members_IPMask = GoTypeInfo{Members: GoMembers{
-	"Size": __iPMask_Size,
-	"String": __iPMask_String,
-}}
+	members_PtrTo_IPAddr = GoTypeInfo{Members: GoMembers{
+		"Network": __ptrTo_IPAddr_Network,
+		"String": __ptrTo_IPAddr_String,
+	}}
 
-var members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
-	"Contains": __ptrTo_IPNet_Contains,
-	"Network": __ptrTo_IPNet_Network,
-	"String": __ptrTo_IPNet_String,
-}}
+	members_IPMask = GoTypeInfo{Members: GoMembers{
+		"Size": __iPMask_Size,
+		"String": __iPMask_String,
+	}}
 
-var members_InvalidAddrError = GoTypeInfo{Members: GoMembers{
-	"Error": __invalidAddrError_Error,
-	"Temporary": __invalidAddrError_Temporary,
-	"Timeout": __invalidAddrError_Timeout,
-}}
+	members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
+		"Contains": __ptrTo_IPNet_Contains,
+		"Network": __ptrTo_IPNet_Network,
+		"String": __ptrTo_IPNet_String,
+	}}
 
-var members_PtrTo_OpError = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_OpError_Error,
-	"Temporary": __ptrTo_OpError_Temporary,
-	"Timeout": __ptrTo_OpError_Timeout,
-}}
+	members_InvalidAddrError = GoTypeInfo{Members: GoMembers{
+		"Error": __invalidAddrError_Error,
+		"Temporary": __invalidAddrError_Temporary,
+		"Timeout": __invalidAddrError_Timeout,
+	}}
 
-var members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_ParseError_Error,
-}}
+	members_PtrTo_OpError = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_OpError_Error,
+		"Temporary": __ptrTo_OpError_Temporary,
+		"Timeout": __ptrTo_OpError_Timeout,
+	}}
 
-var members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
-	"Error": __unknownNetworkError_Error,
-	"Temporary": __unknownNetworkError_Temporary,
-	"Timeout": __unknownNetworkError_Timeout,
-}}
+	members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_ParseError_Error,
+	}}
 
+	members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
+		"Error": __unknownNetworkError_Error,
+		"Temporary": __unknownNetworkError_Temporary,
+		"Timeout": __unknownNetworkError_Timeout,
+	}}
 
-func init() {
 	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError
 	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil))] = &members_PtrTo_DNSError
@@ -2736,45 +2747,51 @@ import (
 	_url "net/url"
 	_reflect "reflect"
 )
-var members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
-	"Error": __ptrTo_Error_Error,
-	"Temporary": __ptrTo_Error_Temporary,
-	"Timeout": __ptrTo_Error_Timeout,
-}}
+var members_PtrTo_Error GoTypeInfo
+var members_EscapeError GoTypeInfo
+var members_InvalidHostError GoTypeInfo
+var members_PtrTo_URL GoTypeInfo
+var members_PtrTo_Userinfo GoTypeInfo
+var members_Values GoTypeInfo
 
-var members_EscapeError = GoTypeInfo{Members: GoMembers{
-	"Error": __escapeError_Error,
-}}
+func initNative() {
+	members_PtrTo_Error = GoTypeInfo{Members: GoMembers{
+		"Error": __ptrTo_Error_Error,
+		"Temporary": __ptrTo_Error_Temporary,
+		"Timeout": __ptrTo_Error_Timeout,
+	}}
 
-var members_InvalidHostError = GoTypeInfo{Members: GoMembers{
-	"Error": __invalidHostError_Error,
-}}
+	members_EscapeError = GoTypeInfo{Members: GoMembers{
+		"Error": __escapeError_Error,
+	}}
 
-var members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
-	"EscapedPath": __ptrTo_URL_EscapedPath,
-	"Hostname": __ptrTo_URL_Hostname,
-	"IsAbs": __ptrTo_URL_IsAbs,
-	"MarshalBinary": __ptrTo_URL_MarshalBinary,
-	"Parse": __ptrTo_URL_Parse,
-	"Port": __ptrTo_URL_Port,
-	"Query": __ptrTo_URL_Query,
-	"RequestURI": __ptrTo_URL_RequestURI,
-	"String": __ptrTo_URL_String,
-}}
+	members_InvalidHostError = GoTypeInfo{Members: GoMembers{
+		"Error": __invalidHostError_Error,
+	}}
 
-var members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
-	"Password": __ptrTo_Userinfo_Password,
-	"String": __ptrTo_Userinfo_String,
-	"Username": __ptrTo_Userinfo_Username,
-}}
+	members_PtrTo_URL = GoTypeInfo{Members: GoMembers{
+		"EscapedPath": __ptrTo_URL_EscapedPath,
+		"Hostname": __ptrTo_URL_Hostname,
+		"IsAbs": __ptrTo_URL_IsAbs,
+		"MarshalBinary": __ptrTo_URL_MarshalBinary,
+		"Parse": __ptrTo_URL_Parse,
+		"Port": __ptrTo_URL_Port,
+		"Query": __ptrTo_URL_Query,
+		"RequestURI": __ptrTo_URL_RequestURI,
+		"String": __ptrTo_URL_String,
+	}}
 
-var members_Values = GoTypeInfo{Members: GoMembers{
-	"Encode": __values_Encode,
-	"Get": __values_Get,
-}}
+	members_PtrTo_Userinfo = GoTypeInfo{Members: GoMembers{
+		"Password": __ptrTo_Userinfo_Password,
+		"String": __ptrTo_Userinfo_String,
+		"Username": __ptrTo_Userinfo_Username,
+	}}
 
+	members_Values = GoTypeInfo{Members: GoMembers{
+		"Encode": __values_Encode,
+		"Get": __values_Get,
+	}}
 
-func init() {
 	GoTypes[_reflect.TypeOf((*_url.Error)(nil))] = &members_PtrTo_Error
 	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &members_EscapeError
 	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &members_InvalidHostError
