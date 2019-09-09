@@ -414,7 +414,11 @@ func determineConstExprType(val Expr) (typeName string) {
 	return
 }
 
-func determineType(valType Expr, val Expr) (cl, gl string) {
+func determineType(name string, valType, val Expr) (cl, gl string) {
+	switch name {
+	case "InvalidHandle": // TODO: uintptr on Windows; not found elsewhere
+		return "Number", "uint64(%s)"
+	}
 	typeName := ""
 	innerPromotion := "%s"
 	if valType == nil {
@@ -536,7 +540,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		clName += "-renamed" // TODO: is there a better solution possible?
 	}
 
-	valTypeString, promoteType := determineType(valType, val)
+	valTypeString, promoteType := determineType(name.Name, valType, val)
 	if dump || (verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
