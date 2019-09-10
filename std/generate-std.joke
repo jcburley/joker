@@ -257,7 +257,7 @@
   [name m]
   (let [type (type-name (:tag m))]
     (if (= type "Var")
-      (format "var %s *GoVar" name)
+      (format "var %s *GoVar" name)  ; Not yet supported by this version of Joker (see https://github.com/jcburley/joker/)
       (format "var %s %s" name (go-return-type type)))))
 
 (defn generate-const-or-var-init

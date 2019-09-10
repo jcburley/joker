@@ -17,7 +17,13 @@ func __read_string_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		s := ExtractString(_args, 0)
-		_res := readString(s)
+		_res := readString(s, nil)
+		return _res
+
+	case _c == 2:
+		s := ExtractString(_args, 0)
+		opts := ExtractMap(_args, 1)
+		_res := readString(s, opts)
 		return _res
 
 	default:
@@ -54,8 +60,10 @@ func Init() {
 	
 	jsonNamespace.InternVar("read-string", read_string_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Parses the JSON-encoded data and return the result as a Joker value.`, "1.0"))
+			NewListFrom(NewVectorFrom(MakeSymbol("s")), NewVectorFrom(MakeSymbol("s"), MakeSymbol("opts"))),
+			`Parses the JSON-encoded data and return the result as a Joker value.
+  Optional opts map may have the following keys:
+  :keywords? - if true, JSON keys will be converted from strings to keywords.`, "1.0"))
 
 	jsonNamespace.InternVar("write-string", write_string_,
 		MakeMeta(
