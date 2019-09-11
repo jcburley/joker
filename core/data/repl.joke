@@ -83,7 +83,7 @@
       (list? name) `(#'print-doc (meta (eval ~name)))
       (find-ns name) `(#'print-doc (#'namespace-doc (find-ns '~name)))
       (resolve name) (let [x# (resolve name)
-                           v# (if (type? x#)
+                           v# (if (= (type x#) Type)
                                 name
                                 `(var ~name))]
                        `(#'print-doc (meta ~v#))))))
