@@ -70,9 +70,29 @@
     (println "Spec"))
   (when doc (println " " doc)))
 
+;; (defn- doc-of-type-of
+;;   "Also this"
+;;   [expr]
+;;   (print-doc (meta (type (eval expr)))))
+
+;; (defn- doc-of-fn
+;;   "This too"
+;;   [^Symbol expr]
+;;   (condp = (str (first expr))
+;;     "type" (doc-of-type-of (second expr))
+;;     (println "something else involving" expr)))
+
+;; (defn- doc-of-list
+;;   "Handles a list, presumably a function call."
+;;   [expr]
+;;   (let [f (first expr)]
+;;     (cond
+;;       (symbol? f) (doc-of-fn expr)
+;;       :else `(println "not a sym"))))
+
 (defmacro doc
   "Prints documentation for a var, type, or special form given its name,
-  or for a spec if given a keyword"
+  or for the type of an expression (that is evaluated) expressed as a list."
   {:added "1.0"}
   [name]
   (if-let [special-name ('{& fn catch try finally try} name)]
@@ -80,6 +100,7 @@
     (cond
       (special-doc-map name) `(#'print-doc (#'special-doc '~name))
       (keyword? name) (println "Keywords (spec) not yet supported")
+      (list? name) `(#'print-doc (meta (eval ~name)))
       (find-ns name) `(#'print-doc (#'namespace-doc (find-ns '~name)))
       (resolve name) (let [x# (resolve name)
                            v# (if (type? x#)
