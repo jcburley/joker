@@ -70,26 +70,6 @@
     (println "Spec"))
   (when doc (println " " doc)))
 
-;; (defn- doc-of-type-of
-;;   "Also this"
-;;   [expr]
-;;   (print-doc (meta (type (eval expr)))))
-
-;; (defn- doc-of-fn
-;;   "This too"
-;;   [^Symbol expr]
-;;   (condp = (str (first expr))
-;;     "type" (doc-of-type-of (second expr))
-;;     (println "something else involving" expr)))
-
-;; (defn- doc-of-list
-;;   "Handles a list, presumably a function call."
-;;   [expr]
-;;   (let [f (first expr)]
-;;     (cond
-;;       (symbol? f) (doc-of-fn expr)
-;;       :else `(println "not a sym"))))
-
 (defmacro doc
   "Prints documentation for a var, type, or special form given its name,
   or for the type of an expression (that is evaluated) expressed as a list."
