@@ -1,12 +1,12 @@
 # GOSTD Usage
 
-Build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std* Namespaces".
+Build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std.* Namespaces".
 
 After building, HTML documentation is available in the `docs` directory. For example, I use a URL to [my local docs tree](file:///home/craig/go/src/github.com/candid82/joker/docs/index.html) to get the latest info.
 
 Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joker/docs) to get an idea of what is available, as those pages are generally updated when new features (supporting more, or better, conversions/wrappers of Go packages to Joker) are pushed to the repository. (The Windows pages are updated less frequently.)
 
-Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
+Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
 
 ## Design Principles
 
@@ -16,7 +16,7 @@ The `go.std.` namespaces being automatically generated, they are not necessarily
 
 Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs (that call these low-level API wrappers) to be written without requiring changes to the Joker codebase or executable itself.
 
-## Included Other Go Libraries
+## Including Other Go Packages
 
 NOTE: This is work-in-progress and not yet complete.
 
@@ -26,9 +26,20 @@ $ build # Build canonical Joker
 $ go get golang.org/x/crypto/ssh # Grab a sample package
 $ (cd tools/gostd && go build) # Build gostd
 $ ./tools/gostd/gostd --others golang.org/x/crypto/ssh --replace --joker . # Wrap both go.std.* and golang.org/x/crypto/ssh packages
-$ build # Build Joker again, this time with additional libraries
+$ build # Build Joker again, this time with additional packages
 $
 ```
+
+## Types
+
+Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of (abstract) type `GoType`. (TODO: CLARIFY THIS.)
+`GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
+
+For example, the `IP` type defined in the `net` package is wrapped as `go.std.net/IP`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
+
+* Constructing a new instance: `(def mx (new go.std.net/MX "burleyarch.com" 10))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
+* Identifying the type of an object: `(type mx)` => `*go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
+* Comparing types of objects: `(= (type mx) (type something-else)`
 
 ## Constants
 
