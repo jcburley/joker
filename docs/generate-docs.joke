@@ -58,10 +58,6 @@
   [ns]
   (string/join "_" (rest (string/split (str ns) #"\."))))
 
-(defn- escape
-  [d]
-  (html/escape (str d)))
-
 (defn var-doc
   [k v]
   (let [m (meta v)
