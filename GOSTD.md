@@ -18,7 +18,7 @@ Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-lev
 
 ## Including Other Go Packages
 
-NOTE: This is work-in-progress and not yet complete.
+*NOTE:* This is work-in-progress and not yet complete.
 
 ```
 $ touch NO-GOSTD.flag # Inhibit automatic running of gostd tool
@@ -31,6 +31,8 @@ $
 ```
 
 ## Types
+
+*NOTE:* This is work-in-progress and not yet complete.
 
 Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of (abstract) type `GoType`. (TODO: CLARIFY THIS.)
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
