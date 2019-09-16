@@ -1660,6 +1660,15 @@ var procParse Proc = func(args []Object) Object {
 	return res.Dump(false)
 }
 
+var procTypes Proc = func(args []Object) Object {
+	CheckArity(args, 0, 0)
+	res := EmptyArrayMap()
+	for k, v := range TYPES {
+		res.Add(String{S: *k}, v)
+	}
+	return res
+}
+
 func PackReader(reader *Reader, filename string) ([]byte, error) {
 	var p []byte
 	packEnv := NewPackEnv()
@@ -2196,4 +2205,5 @@ func init() {
 	intern("inc-problem-count__", procIncProblemCount)
 
 	intern("go__", procGo)
+	intern("types__", procTypes)
 }
