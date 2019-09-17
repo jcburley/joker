@@ -11,6 +11,9 @@ type GoFn func(GoObject, Object) Object
 type GoMembers map[string]GoFn
 
 type GoTypeInfo struct {
+	Name    string
+	GoType  GoType
+	Ctor    func(Object) Object
 	Members GoMembers
 }
 

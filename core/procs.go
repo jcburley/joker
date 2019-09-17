@@ -705,6 +705,23 @@ var procGoObject Proc = func(args []Object) Object {
 	return Boolean{B: IsGoObject(args[0])}
 }
 
+var procNew Proc = func(args []Object) Object {
+	CheckArity(args, 2, 2)
+	t := EnsureGoType(args, 0)
+	f := t.T.Ctor
+	return f(args[1])
+}
+
+var procGoType Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	o := EnsureGoObject(args, 0)
+	t := LookupGoType(o.O)
+	if t == nil {
+		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
+	}
+	return t.GoType
+}
+
 var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	o := EnsureGoObject(args, 0)
@@ -2206,4 +2223,6 @@ func init() {
 
 	intern("go__", procGo)
 	intern("types__", procTypes)
+	intern("new__", procNew)
+	intern("GoType__", procGoType)
 }

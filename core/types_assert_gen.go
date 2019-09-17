@@ -846,3 +846,24 @@ func Ensureio_RuneReader(args []Object, index int) io.RuneReader {
 		panic(RT.NewArgTypeError(index, c, "io.RuneReader"))
 	}
 }
+
+func AssertGoType(obj Object, msg string) GoType {
+	switch c := obj.(type) {
+	case GoType:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoType", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoType(args []Object, index int) GoType {
+	switch c := args[index].(type) {
+	case GoType:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoType"))
+	}
+}
