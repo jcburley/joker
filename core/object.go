@@ -153,6 +153,10 @@ type (
 		Value interface{}
 		expr  Expr
 	}
+	GoType interface {
+		Equality
+		ToString(escape bool) string
+	}
 	Proc func([]Object) Object
 	Fn   struct {
 		InfoHolder
@@ -967,16 +971,17 @@ func (v *GoVar) AlterMeta(fn *Fn, args []Object) Map {
 }
 
 func (v *GoVar) GetType() *Type {
-	ty := reflect.TypeOf(v.Value)
-	s := fmt.Sprintf("GoVar[%s]", GoTypeToString(ty))
-	k := STRINGS.Intern(s)
-	var t *Type
-	var found bool
-	if t, found = TYPES[k]; !found {
-		t = &Type{name: s, reflectType: ty}
-		TYPES[k] = t
-	}
-	return t
+	return TYPE.GoVar
+	// ty := reflect.TypeOf(v.Value)
+	// s := fmt.Sprintf("GoVar[%s]", GoTypeToString(ty))
+	// k := STRINGS.Intern(s)
+	// var t *Type
+	// var found bool
+	// if t, found = TYPES[k]; !found {
+	// 	t = &Type{name: s, reflectType: ty}
+	// 	TYPES[k] = t
+	// }
+	// return t
 }
 
 func (v *GoVar) Hash() uint32 {
@@ -1245,16 +1250,17 @@ func GoTypeToString(ty reflect.Type) string {
 }
 
 func (o GoObject) GetType() *Type {
-	ty := reflect.TypeOf(o.O)
-	s := fmt.Sprintf("GoObject[%s]", GoTypeToString(ty))
-	k := STRINGS.Intern(s)
-	var t *Type
-	var found bool
-	if t, found = TYPES[k]; !found {
-		t = &Type{name: s, reflectType: ty}
-		TYPES[k] = t
-	}
-	return t
+	return TYPE.GoObject
+	// ty := reflect.TypeOf(o.O)
+	// s := fmt.Sprintf("GoObject[%s]", GoTypeToString(ty))
+	// k := STRINGS.Intern(s)
+	// var t *Type
+	// var found bool
+	// if t, found = TYPES[k]; !found {
+	// 	t = &Type{name: s, reflectType: ty}
+	// 	TYPES[k] = t
+	// }
+	// return t
 }
 
 func (o GoObject) Native() interface{} {

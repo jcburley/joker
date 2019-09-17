@@ -1,0 +1,206 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.bufio</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the bufio package.<br>
+<br>
+Package bufio implements buffered I/O. It wraps an io.Reader or io.Writer<br>
+object, creating another object (Reader or Writer) that also implements<br>
+the interface but provides buffering and some help for textual I/O.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ErrAdvanceTooFar">ErrAdvanceTooFar</a>
+</li>
+<li>
+  <a href="#ErrBufferFull">ErrBufferFull</a>
+</li>
+<li>
+  <a href="#ErrFinalToken">ErrFinalToken</a>
+</li>
+<li>
+  <a href="#ErrInvalidUnreadByte">ErrInvalidUnreadByte</a>
+</li>
+<li>
+  <a href="#ErrInvalidUnreadRune">ErrInvalidUnreadRune</a>
+</li>
+<li>
+  <a href="#ErrNegativeAdvance">ErrNegativeAdvance</a>
+</li>
+<li>
+  <a href="#ErrNegativeCount">ErrNegativeCount</a>
+</li>
+<li>
+  <a href="#ErrTooLong">ErrTooLong</a>
+</li>
+<li>
+  <a href="#MaxScanTokenSize">MaxScanTokenSize</a>
+</li>
+<li>
+  <a href="#NewReadWriter">NewReadWriter</a>
+</li>
+<li>
+  <a href="#ReadWriter.">ReadWriter.</a>
+</li>
+<li>
+  <a href="#Reader.">Reader.</a>
+</li>
+<li>
+  <a href="#Scanner.">Scanner.</a>
+</li>
+<li>
+  <a href="#Writer.">Writer.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ErrAdvanceTooFar">ErrAdvanceTooFar</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Errors returned by Scanner.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBufferFull">ErrBufferFull</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrFinalToken">ErrFinalToken</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrFinalToken is a special sentinel error value. It is intended to be<br>
+returned by a Split function to indicate that the token being delivered<br>
+with the error is the last token and scanning should stop after this one.<br>
+After ErrFinalToken is received by Scan, scanning stops with no error.<br>
+The value is useful to stop processing early or when it is necessary to<br>
+deliver a final empty token. One could achieve the same behavior<br>
+with a custom error value but providing one here is tidier.<br>
+See the emptyFinalToken example for a use of this value.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidUnreadByte">ErrInvalidUnreadByte</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidUnreadRune">ErrInvalidUnreadRune</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrNegativeAdvance">ErrNegativeAdvance</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Errors returned by Scanner.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNegativeCount">ErrNegativeCount</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrTooLong">ErrTooLong</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Errors returned by Scanner.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="MaxScanTokenSize">MaxScanTokenSize</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">MaxScanTokenSize is the maximum size used to buffer a token<br>
+unless the user provides an explicit buffer with Scan.Buffer.<br>
+The actual maximum token size may be smaller as the buffer<br>
+may need to include, for instance, a newline.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="NewReadWriter">NewReadWriter</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewReadWriter __r __w)</code></div>
+</pre>
+  <p class="var-docstr">NewReadWriter allocates a new ReadWriter that dispatches to r and w.<br>
+<br>
+Go input arguments: (r *Reader, w *Writer)<br>
+<br>
+Go return type: *ReadWriter<br>
+<br>
+Joker input arguments: [^(atom-of go.std.bufio/Reader) r, ^(atom-of go.std.bufio/Writer) w]<br>
+<br>
+Joker return type: (atom-of go.std.bufio/ReadWriter)</p>
+  
+</li>
+<li>
+  <h3 id="ReadWriter.">ReadWriter.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ReadWriter. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for bufio.ReadWriter</p>
+  
+</li>
+<li>
+  <h3 id="Reader.">Reader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Reader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for bufio.Reader</p>
+  
+</li>
+<li>
+  <h3 id="Scanner.">Scanner.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Scanner. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for bufio.Scanner</p>
+  
+</li>
+<li>
+  <h3 id="Writer.">Writer.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Writer. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for bufio.Writer</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

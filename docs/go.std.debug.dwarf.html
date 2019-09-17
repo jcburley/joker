@@ -1,0 +1,1991 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.debug.dwarf</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the debug/dwarf package.<br>
+<br>
+Package dwarf provides access to DWARF debugging information loaded from<br>
+executable files, as defined in the DWARF 2.0 Standard at<br>
+http://dwarfstd.org/doc/dwarf-2.0.0.pdf<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#AddrType.">AddrType.</a>
+</li>
+<li>
+  <a href="#Attr.">Attr.</a>
+</li>
+<li>
+  <a href="#AttrAbstractOrigin">AttrAbstractOrigin</a>
+</li>
+<li>
+  <a href="#AttrAccessibility">AttrAccessibility</a>
+</li>
+<li>
+  <a href="#AttrAddrClass">AttrAddrClass</a>
+</li>
+<li>
+  <a href="#AttrAllocated">AttrAllocated</a>
+</li>
+<li>
+  <a href="#AttrArtificial">AttrArtificial</a>
+</li>
+<li>
+  <a href="#AttrAssociated">AttrAssociated</a>
+</li>
+<li>
+  <a href="#AttrBaseTypes">AttrBaseTypes</a>
+</li>
+<li>
+  <a href="#AttrBitOffset">AttrBitOffset</a>
+</li>
+<li>
+  <a href="#AttrBitSize">AttrBitSize</a>
+</li>
+<li>
+  <a href="#AttrByteSize">AttrByteSize</a>
+</li>
+<li>
+  <a href="#AttrCallColumn">AttrCallColumn</a>
+</li>
+<li>
+  <a href="#AttrCallFile">AttrCallFile</a>
+</li>
+<li>
+  <a href="#AttrCallLine">AttrCallLine</a>
+</li>
+<li>
+  <a href="#AttrCalling">AttrCalling</a>
+</li>
+<li>
+  <a href="#AttrCommonRef">AttrCommonRef</a>
+</li>
+<li>
+  <a href="#AttrCompDir">AttrCompDir</a>
+</li>
+<li>
+  <a href="#AttrConstValue">AttrConstValue</a>
+</li>
+<li>
+  <a href="#AttrContainingType">AttrContainingType</a>
+</li>
+<li>
+  <a href="#AttrCount">AttrCount</a>
+</li>
+<li>
+  <a href="#AttrDataLocation">AttrDataLocation</a>
+</li>
+<li>
+  <a href="#AttrDataMemberLoc">AttrDataMemberLoc</a>
+</li>
+<li>
+  <a href="#AttrDeclColumn">AttrDeclColumn</a>
+</li>
+<li>
+  <a href="#AttrDeclFile">AttrDeclFile</a>
+</li>
+<li>
+  <a href="#AttrDeclLine">AttrDeclLine</a>
+</li>
+<li>
+  <a href="#AttrDeclaration">AttrDeclaration</a>
+</li>
+<li>
+  <a href="#AttrDefaultValue">AttrDefaultValue</a>
+</li>
+<li>
+  <a href="#AttrDescription">AttrDescription</a>
+</li>
+<li>
+  <a href="#AttrDiscr">AttrDiscr</a>
+</li>
+<li>
+  <a href="#AttrDiscrList">AttrDiscrList</a>
+</li>
+<li>
+  <a href="#AttrDiscrValue">AttrDiscrValue</a>
+</li>
+<li>
+  <a href="#AttrEncoding">AttrEncoding</a>
+</li>
+<li>
+  <a href="#AttrEntrypc">AttrEntrypc</a>
+</li>
+<li>
+  <a href="#AttrExtension">AttrExtension</a>
+</li>
+<li>
+  <a href="#AttrExternal">AttrExternal</a>
+</li>
+<li>
+  <a href="#AttrFrameBase">AttrFrameBase</a>
+</li>
+<li>
+  <a href="#AttrFriend">AttrFriend</a>
+</li>
+<li>
+  <a href="#AttrHighpc">AttrHighpc</a>
+</li>
+<li>
+  <a href="#AttrIdentifierCase">AttrIdentifierCase</a>
+</li>
+<li>
+  <a href="#AttrImport">AttrImport</a>
+</li>
+<li>
+  <a href="#AttrInline">AttrInline</a>
+</li>
+<li>
+  <a href="#AttrIsOptional">AttrIsOptional</a>
+</li>
+<li>
+  <a href="#AttrLanguage">AttrLanguage</a>
+</li>
+<li>
+  <a href="#AttrLocation">AttrLocation</a>
+</li>
+<li>
+  <a href="#AttrLowerBound">AttrLowerBound</a>
+</li>
+<li>
+  <a href="#AttrLowpc">AttrLowpc</a>
+</li>
+<li>
+  <a href="#AttrMacroInfo">AttrMacroInfo</a>
+</li>
+<li>
+  <a href="#AttrName">AttrName</a>
+</li>
+<li>
+  <a href="#AttrNamelistItem">AttrNamelistItem</a>
+</li>
+<li>
+  <a href="#AttrOrdering">AttrOrdering</a>
+</li>
+<li>
+  <a href="#AttrPriority">AttrPriority</a>
+</li>
+<li>
+  <a href="#AttrProducer">AttrProducer</a>
+</li>
+<li>
+  <a href="#AttrPrototyped">AttrPrototyped</a>
+</li>
+<li>
+  <a href="#AttrRanges">AttrRanges</a>
+</li>
+<li>
+  <a href="#AttrReturnAddr">AttrReturnAddr</a>
+</li>
+<li>
+  <a href="#AttrSegment">AttrSegment</a>
+</li>
+<li>
+  <a href="#AttrSibling">AttrSibling</a>
+</li>
+<li>
+  <a href="#AttrSpecification">AttrSpecification</a>
+</li>
+<li>
+  <a href="#AttrStartScope">AttrStartScope</a>
+</li>
+<li>
+  <a href="#AttrStaticLink">AttrStaticLink</a>
+</li>
+<li>
+  <a href="#AttrStmtList">AttrStmtList</a>
+</li>
+<li>
+  <a href="#AttrStride">AttrStride</a>
+</li>
+<li>
+  <a href="#AttrStrideSize">AttrStrideSize</a>
+</li>
+<li>
+  <a href="#AttrStringLength">AttrStringLength</a>
+</li>
+<li>
+  <a href="#AttrTrampoline">AttrTrampoline</a>
+</li>
+<li>
+  <a href="#AttrType">AttrType</a>
+</li>
+<li>
+  <a href="#AttrUpperBound">AttrUpperBound</a>
+</li>
+<li>
+  <a href="#AttrUseLocation">AttrUseLocation</a>
+</li>
+<li>
+  <a href="#AttrUseUTF8">AttrUseUTF8</a>
+</li>
+<li>
+  <a href="#AttrVarParam">AttrVarParam</a>
+</li>
+<li>
+  <a href="#AttrVirtuality">AttrVirtuality</a>
+</li>
+<li>
+  <a href="#AttrVisibility">AttrVisibility</a>
+</li>
+<li>
+  <a href="#AttrVtableElemLoc">AttrVtableElemLoc</a>
+</li>
+<li>
+  <a href="#BasicType.">BasicType.</a>
+</li>
+<li>
+  <a href="#BoolType.">BoolType.</a>
+</li>
+<li>
+  <a href="#CharType.">CharType.</a>
+</li>
+<li>
+  <a href="#Class.">Class.</a>
+</li>
+<li>
+  <a href="#ClassAddress">ClassAddress</a>
+</li>
+<li>
+  <a href="#ClassBlock">ClassBlock</a>
+</li>
+<li>
+  <a href="#ClassConstant">ClassConstant</a>
+</li>
+<li>
+  <a href="#ClassExprLoc">ClassExprLoc</a>
+</li>
+<li>
+  <a href="#ClassFlag">ClassFlag</a>
+</li>
+<li>
+  <a href="#ClassLinePtr">ClassLinePtr</a>
+</li>
+<li>
+  <a href="#ClassLocListPtr">ClassLocListPtr</a>
+</li>
+<li>
+  <a href="#ClassMacPtr">ClassMacPtr</a>
+</li>
+<li>
+  <a href="#ClassRangeListPtr">ClassRangeListPtr</a>
+</li>
+<li>
+  <a href="#ClassReference">ClassReference</a>
+</li>
+<li>
+  <a href="#ClassReferenceAlt">ClassReferenceAlt</a>
+</li>
+<li>
+  <a href="#ClassReferenceSig">ClassReferenceSig</a>
+</li>
+<li>
+  <a href="#ClassString">ClassString</a>
+</li>
+<li>
+  <a href="#ClassStringAlt">ClassStringAlt</a>
+</li>
+<li>
+  <a href="#ClassUnknown">ClassUnknown</a>
+</li>
+<li>
+  <a href="#CommonType.">CommonType.</a>
+</li>
+<li>
+  <a href="#ComplexType.">ComplexType.</a>
+</li>
+<li>
+  <a href="#Data.">Data.</a>
+</li>
+<li>
+  <a href="#DecodeError.">DecodeError.</a>
+</li>
+<li>
+  <a href="#DotDotDotType.">DotDotDotType.</a>
+</li>
+<li>
+  <a href="#EnumValue.">EnumValue.</a>
+</li>
+<li>
+  <a href="#ErrUnknownPC">ErrUnknownPC</a>
+</li>
+<li>
+  <a href="#FloatType.">FloatType.</a>
+</li>
+<li>
+  <a href="#IntType.">IntType.</a>
+</li>
+<li>
+  <a href="#LineFile.">LineFile.</a>
+</li>
+<li>
+  <a href="#LineReader.">LineReader.</a>
+</li>
+<li>
+  <a href="#LineReaderPos.">LineReaderPos.</a>
+</li>
+<li>
+  <a href="#Offset.">Offset.</a>
+</li>
+<li>
+  <a href="#Reader.">Reader.</a>
+</li>
+<li>
+  <a href="#Tag.">Tag.</a>
+</li>
+<li>
+  <a href="#TagAccessDeclaration">TagAccessDeclaration</a>
+</li>
+<li>
+  <a href="#TagArrayType">TagArrayType</a>
+</li>
+<li>
+  <a href="#TagBaseType">TagBaseType</a>
+</li>
+<li>
+  <a href="#TagCatchDwarfBlock">TagCatchDwarfBlock</a>
+</li>
+<li>
+  <a href="#TagClassType">TagClassType</a>
+</li>
+<li>
+  <a href="#TagCommonDwarfBlock">TagCommonDwarfBlock</a>
+</li>
+<li>
+  <a href="#TagCommonInclusion">TagCommonInclusion</a>
+</li>
+<li>
+  <a href="#TagCompileUnit">TagCompileUnit</a>
+</li>
+<li>
+  <a href="#TagCondition">TagCondition</a>
+</li>
+<li>
+  <a href="#TagConstType">TagConstType</a>
+</li>
+<li>
+  <a href="#TagConstant">TagConstant</a>
+</li>
+<li>
+  <a href="#TagDwarfProcedure">TagDwarfProcedure</a>
+</li>
+<li>
+  <a href="#TagEntryPoint">TagEntryPoint</a>
+</li>
+<li>
+  <a href="#TagEnumerationType">TagEnumerationType</a>
+</li>
+<li>
+  <a href="#TagEnumerator">TagEnumerator</a>
+</li>
+<li>
+  <a href="#TagFileType">TagFileType</a>
+</li>
+<li>
+  <a href="#TagFormalParameter">TagFormalParameter</a>
+</li>
+<li>
+  <a href="#TagFriend">TagFriend</a>
+</li>
+<li>
+  <a href="#TagImportedDeclaration">TagImportedDeclaration</a>
+</li>
+<li>
+  <a href="#TagImportedModule">TagImportedModule</a>
+</li>
+<li>
+  <a href="#TagImportedUnit">TagImportedUnit</a>
+</li>
+<li>
+  <a href="#TagInheritance">TagInheritance</a>
+</li>
+<li>
+  <a href="#TagInlinedSubroutine">TagInlinedSubroutine</a>
+</li>
+<li>
+  <a href="#TagInterfaceType">TagInterfaceType</a>
+</li>
+<li>
+  <a href="#TagLabel">TagLabel</a>
+</li>
+<li>
+  <a href="#TagLexDwarfBlock">TagLexDwarfBlock</a>
+</li>
+<li>
+  <a href="#TagMember">TagMember</a>
+</li>
+<li>
+  <a href="#TagModule">TagModule</a>
+</li>
+<li>
+  <a href="#TagMutableType">TagMutableType</a>
+</li>
+<li>
+  <a href="#TagNamelist">TagNamelist</a>
+</li>
+<li>
+  <a href="#TagNamelistItem">TagNamelistItem</a>
+</li>
+<li>
+  <a href="#TagNamespace">TagNamespace</a>
+</li>
+<li>
+  <a href="#TagPackedType">TagPackedType</a>
+</li>
+<li>
+  <a href="#TagPartialUnit">TagPartialUnit</a>
+</li>
+<li>
+  <a href="#TagPointerType">TagPointerType</a>
+</li>
+<li>
+  <a href="#TagPtrToMemberType">TagPtrToMemberType</a>
+</li>
+<li>
+  <a href="#TagReferenceType">TagReferenceType</a>
+</li>
+<li>
+  <a href="#TagRestrictType">TagRestrictType</a>
+</li>
+<li>
+  <a href="#TagRvalueReferenceType">TagRvalueReferenceType</a>
+</li>
+<li>
+  <a href="#TagSetType">TagSetType</a>
+</li>
+<li>
+  <a href="#TagSharedType">TagSharedType</a>
+</li>
+<li>
+  <a href="#TagStringType">TagStringType</a>
+</li>
+<li>
+  <a href="#TagStructType">TagStructType</a>
+</li>
+<li>
+  <a href="#TagSubprogram">TagSubprogram</a>
+</li>
+<li>
+  <a href="#TagSubrangeType">TagSubrangeType</a>
+</li>
+<li>
+  <a href="#TagSubroutineType">TagSubroutineType</a>
+</li>
+<li>
+  <a href="#TagTemplateAlias">TagTemplateAlias</a>
+</li>
+<li>
+  <a href="#TagTemplateTypeParameter">TagTemplateTypeParameter</a>
+</li>
+<li>
+  <a href="#TagTemplateValueParameter">TagTemplateValueParameter</a>
+</li>
+<li>
+  <a href="#TagThrownType">TagThrownType</a>
+</li>
+<li>
+  <a href="#TagTryDwarfBlock">TagTryDwarfBlock</a>
+</li>
+<li>
+  <a href="#TagTypeUnit">TagTypeUnit</a>
+</li>
+<li>
+  <a href="#TagTypedef">TagTypedef</a>
+</li>
+<li>
+  <a href="#TagUnionType">TagUnionType</a>
+</li>
+<li>
+  <a href="#TagUnspecifiedParameters">TagUnspecifiedParameters</a>
+</li>
+<li>
+  <a href="#TagUnspecifiedType">TagUnspecifiedType</a>
+</li>
+<li>
+  <a href="#TagVariable">TagVariable</a>
+</li>
+<li>
+  <a href="#TagVariant">TagVariant</a>
+</li>
+<li>
+  <a href="#TagVariantPart">TagVariantPart</a>
+</li>
+<li>
+  <a href="#TagVolatileType">TagVolatileType</a>
+</li>
+<li>
+  <a href="#TagWithStmt">TagWithStmt</a>
+</li>
+<li>
+  <a href="#UcharType.">UcharType.</a>
+</li>
+<li>
+  <a href="#UintType.">UintType.</a>
+</li>
+<li>
+  <a href="#UnspecifiedType.">UnspecifiedType.</a>
+</li>
+<li>
+  <a href="#VoidType.">VoidType.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="AddrType.">AddrType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(AddrType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.AddrType</p>
+  
+</li>
+<li>
+  <h3 id="Attr.">Attr.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Attr. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Attr</p>
+  
+</li>
+<li>
+  <h3 id="AttrAbstractOrigin">AttrAbstractOrigin</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrAccessibility">AttrAccessibility</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrAddrClass">AttrAddrClass</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrAllocated">AttrAllocated</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrArtificial">AttrArtificial</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrAssociated">AttrAssociated</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrBaseTypes">AttrBaseTypes</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrBitOffset">AttrBitOffset</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrBitSize">AttrBitSize</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrByteSize">AttrByteSize</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCallColumn">AttrCallColumn</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCallFile">AttrCallFile</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCallLine">AttrCallLine</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCalling">AttrCalling</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCommonRef">AttrCommonRef</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCompDir">AttrCompDir</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrConstValue">AttrConstValue</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrContainingType">AttrContainingType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrCount">AttrCount</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDataLocation">AttrDataLocation</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDataMemberLoc">AttrDataMemberLoc</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDeclColumn">AttrDeclColumn</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDeclFile">AttrDeclFile</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDeclLine">AttrDeclLine</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDeclaration">AttrDeclaration</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDefaultValue">AttrDefaultValue</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDescription">AttrDescription</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDiscr">AttrDiscr</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDiscrList">AttrDiscrList</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrDiscrValue">AttrDiscrValue</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrEncoding">AttrEncoding</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrEntrypc">AttrEntrypc</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrExtension">AttrExtension</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrExternal">AttrExternal</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrFrameBase">AttrFrameBase</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrFriend">AttrFriend</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrHighpc">AttrHighpc</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrIdentifierCase">AttrIdentifierCase</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrImport">AttrImport</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrInline">AttrInline</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrIsOptional">AttrIsOptional</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrLanguage">AttrLanguage</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrLocation">AttrLocation</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrLowerBound">AttrLowerBound</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrLowpc">AttrLowpc</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrMacroInfo">AttrMacroInfo</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrName">AttrName</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrNamelistItem">AttrNamelistItem</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrOrdering">AttrOrdering</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrPriority">AttrPriority</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrProducer">AttrProducer</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrPrototyped">AttrPrototyped</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrRanges">AttrRanges</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrReturnAddr">AttrReturnAddr</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrSegment">AttrSegment</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrSibling">AttrSibling</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrSpecification">AttrSpecification</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStartScope">AttrStartScope</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStaticLink">AttrStaticLink</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStmtList">AttrStmtList</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStride">AttrStride</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStrideSize">AttrStrideSize</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrStringLength">AttrStringLength</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrTrampoline">AttrTrampoline</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrType">AttrType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrUpperBound">AttrUpperBound</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrUseLocation">AttrUseLocation</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrUseUTF8">AttrUseUTF8</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrVarParam">AttrVarParam</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrVirtuality">AttrVirtuality</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrVisibility">AttrVisibility</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="AttrVtableElemLoc">AttrVtableElemLoc</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="BasicType.">BasicType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BasicType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.BasicType</p>
+  
+</li>
+<li>
+  <h3 id="BoolType.">BoolType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BoolType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.BoolType</p>
+  
+</li>
+<li>
+  <h3 id="CharType.">CharType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CharType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.CharType</p>
+  
+</li>
+<li>
+  <h3 id="Class.">Class.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Class. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Class</p>
+  
+</li>
+<li>
+  <h3 id="ClassAddress">ClassAddress</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassAddress represents values of type uint64 that are<br>
+addresses on the target machine.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassBlock">ClassBlock</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassBlock represents values of type []byte whose<br>
+interpretation depends on the attribute.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassConstant">ClassConstant</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassConstant represents values of type int64 that are<br>
+constants. The interpretation of this constant depends on<br>
+the attribute.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassExprLoc">ClassExprLoc</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassExprLoc represents values of type []byte that contain<br>
+an encoded DWARF expression or location description.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassFlag">ClassFlag</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassFlag represents values of type bool.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassLinePtr">ClassLinePtr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassLinePtr represents values that are an int64 offset<br>
+into the &#34;line&#34; section.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassLocListPtr">ClassLocListPtr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassLocListPtr represents values that are an int64 offset<br>
+into the &#34;loclist&#34; section.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassMacPtr">ClassMacPtr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassMacPtr represents values that are an int64 offset into<br>
+the &#34;mac&#34; section.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassRangeListPtr">ClassRangeListPtr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassMacPtr represents values that are an int64 offset into<br>
+the &#34;rangelist&#34; section.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassReference">ClassReference</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassReference represents values that are an Offset offset<br>
+of an Entry in the info section (for use with Reader.Seek).<br>
+The DWARF specification combines ClassReference and<br>
+ClassReferenceSig into class &#34;reference&#34;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassReferenceAlt">ClassReferenceAlt</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassReferenceAlt represents values of type int64 that are<br>
+an offset into the DWARF &#34;info&#34; section of an alternate<br>
+object file.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassReferenceSig">ClassReferenceSig</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassReferenceSig represents values that are a uint64 type<br>
+signature referencing a type Entry.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassString">ClassString</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassString represents values that are strings. If the<br>
+compilation unit specifies the AttrUseUTF8 flag (strongly<br>
+recommended), the string value will be encoded in UTF-8.<br>
+Otherwise, the encoding is unspecified.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassStringAlt">ClassStringAlt</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassStringAlt represents values of type int64 that are an<br>
+offset into the DWARF string section of an alternate object<br>
+file.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ClassUnknown">ClassUnknown</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ClassUnknown represents values of unknown DWARF class.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="CommonType.">CommonType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CommonType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.CommonType</p>
+  
+</li>
+<li>
+  <h3 id="ComplexType.">ComplexType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ComplexType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.ComplexType</p>
+  
+</li>
+<li>
+  <h3 id="Data.">Data.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Data. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Data</p>
+  
+</li>
+<li>
+  <h3 id="DecodeError.">DecodeError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DecodeError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.DecodeError</p>
+  
+</li>
+<li>
+  <h3 id="DotDotDotType.">DotDotDotType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DotDotDotType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.DotDotDotType</p>
+  
+</li>
+<li>
+  <h3 id="EnumValue.">EnumValue.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EnumValue. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.EnumValue</p>
+  
+</li>
+<li>
+  <h3 id="ErrUnknownPC">ErrUnknownPC</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrUnknownPC is the error returned by LineReader.ScanPC when the<br>
+seek PC is not covered by any entry in the line table.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="FloatType.">FloatType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FloatType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.FloatType</p>
+  
+</li>
+<li>
+  <h3 id="IntType.">IntType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IntType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.IntType</p>
+  
+</li>
+<li>
+  <h3 id="LineFile.">LineFile.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LineFile. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.LineFile</p>
+  
+</li>
+<li>
+  <h3 id="LineReader.">LineReader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LineReader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.LineReader</p>
+  
+</li>
+<li>
+  <h3 id="LineReaderPos.">LineReaderPos.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LineReaderPos. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.LineReaderPos</p>
+  
+</li>
+<li>
+  <h3 id="Offset.">Offset.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Offset. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Offset</p>
+  
+</li>
+<li>
+  <h3 id="Reader.">Reader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Reader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Reader</p>
+  
+</li>
+<li>
+  <h3 id="Tag.">Tag.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Tag. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.Tag</p>
+  
+</li>
+<li>
+  <h3 id="TagAccessDeclaration">TagAccessDeclaration</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagArrayType">TagArrayType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagBaseType">TagBaseType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagCatchDwarfBlock">TagCatchDwarfBlock</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagClassType">TagClassType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagCommonDwarfBlock">TagCommonDwarfBlock</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagCommonInclusion">TagCommonInclusion</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagCompileUnit">TagCompileUnit</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagCondition">TagCondition</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagConstType">TagConstType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagConstant">TagConstant</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagDwarfProcedure">TagDwarfProcedure</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The following are new in DWARF 3.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TagEntryPoint">TagEntryPoint</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagEnumerationType">TagEnumerationType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagEnumerator">TagEnumerator</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagFileType">TagFileType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagFormalParameter">TagFormalParameter</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagFriend">TagFriend</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagImportedDeclaration">TagImportedDeclaration</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagImportedModule">TagImportedModule</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagImportedUnit">TagImportedUnit</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagInheritance">TagInheritance</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagInlinedSubroutine">TagInlinedSubroutine</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagInterfaceType">TagInterfaceType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagLabel">TagLabel</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagLexDwarfBlock">TagLexDwarfBlock</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagMember">TagMember</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagModule">TagModule</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagMutableType">TagMutableType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Later removed from DWARF.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TagNamelist">TagNamelist</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagNamelistItem">TagNamelistItem</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagNamespace">TagNamespace</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagPackedType">TagPackedType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagPartialUnit">TagPartialUnit</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagPointerType">TagPointerType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagPtrToMemberType">TagPtrToMemberType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagReferenceType">TagReferenceType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagRestrictType">TagRestrictType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagRvalueReferenceType">TagRvalueReferenceType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagSetType">TagSetType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagSharedType">TagSharedType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagStringType">TagStringType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagStructType">TagStructType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagSubprogram">TagSubprogram</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagSubrangeType">TagSubrangeType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagSubroutineType">TagSubroutineType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagTemplateAlias">TagTemplateAlias</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagTemplateTypeParameter">TagTemplateTypeParameter</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagTemplateValueParameter">TagTemplateValueParameter</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagThrownType">TagThrownType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagTryDwarfBlock">TagTryDwarfBlock</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagTypeUnit">TagTypeUnit</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The following are new in DWARF 4.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TagTypedef">TagTypedef</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagUnionType">TagUnionType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagUnspecifiedParameters">TagUnspecifiedParameters</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagUnspecifiedType">TagUnspecifiedType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagVariable">TagVariable</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagVariant">TagVariant</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagVariantPart">TagVariantPart</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagVolatileType">TagVolatileType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="TagWithStmt">TagWithStmt</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UcharType.">UcharType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UcharType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.UcharType</p>
+  
+</li>
+<li>
+  <h3 id="UintType.">UintType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UintType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.UintType</p>
+  
+</li>
+<li>
+  <h3 id="UnspecifiedType.">UnspecifiedType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UnspecifiedType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.UnspecifiedType</p>
+  
+</li>
+<li>
+  <h3 id="VoidType.">VoidType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(VoidType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for dwarf.VoidType</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

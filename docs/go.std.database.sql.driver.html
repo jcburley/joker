@@ -1,0 +1,199 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.database.sql.driver</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the database/sql/driver package.<br>
+<br>
+Package driver defines interfaces to be implemented by database<br>
+drivers as used by package sql.<br>
+<br>
+Most code should use package sql.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Bool">Bool</a>
+</li>
+<li>
+  <a href="#DefaultParameterConverter">DefaultParameterConverter</a>
+</li>
+<li>
+  <a href="#ErrBadConn">ErrBadConn</a>
+</li>
+<li>
+  <a href="#ErrRemoveArgument">ErrRemoveArgument</a>
+</li>
+<li>
+  <a href="#ErrSkip">ErrSkip</a>
+</li>
+<li>
+  <a href="#Int32">Int32</a>
+</li>
+<li>
+  <a href="#IsolationLevel.">IsolationLevel.</a>
+</li>
+<li>
+  <a href="#ResultNoRows">ResultNoRows</a>
+</li>
+<li>
+  <a href="#RowsAffected.">RowsAffected.</a>
+</li>
+<li>
+  <a href="#String-renamed">String-renamed</a>
+</li>
+<li>
+  <a href="#TxOptions.">TxOptions.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Bool">Bool</h3>
+  <span class="var-type GoVar[*database/sql/driver.boolType]">GoVar[*database/sql/driver.boolType]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Bool is a ValueConverter that converts input values to bools.<br>
+<br>
+The conversion rules are:<br>
+ - booleans are returned unchanged<br>
+ - for integer types,<br>
+      1 is true<br>
+      0 is false,<br>
+      other integers are an error<br>
+ - for strings and []byte, same rules as strconv.ParseBool<br>
+ - all other types are an error<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DefaultParameterConverter">DefaultParameterConverter</h3>
+  <span class="var-type GoVar[*database/sql/driver.defaultConverter]">GoVar[*database/sql/driver.defaultConverter]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultParameterConverter is the default implementation of<br>
+ValueConverter that&#39;s used when a Stmt doesn&#39;t implement<br>
+ColumnConverter.<br>
+<br>
+DefaultParameterConverter returns its argument directly if<br>
+IsValue(arg). Otherwise, if the argument implements Valuer, its<br>
+Value method is used to return a Value. As a fallback, the provided<br>
+argument&#39;s underlying type is used to convert it to a Value:<br>
+underlying integer types are converted to int64, floats to float64,<br>
+bool, string, and []byte to themselves. If the argument is a nil<br>
+pointer, ConvertValue returns a nil Value. If the argument is a<br>
+non-nil pointer, it is dereferenced and ConvertValue is called<br>
+recursively. Other types are an error.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBadConn">ErrBadConn</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBadConn should be returned by a driver to signal to the sql<br>
+package that a driver.Conn is in a bad state (such as the server<br>
+having earlier closed the connection) and the sql package should<br>
+retry on a new connection.<br>
+<br>
+To prevent duplicate operations, ErrBadConn should NOT be returned<br>
+if there&#39;s a possibility that the database server might have<br>
+performed the operation. Even if the server sends back an error,<br>
+you shouldn&#39;t return ErrBadConn.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrRemoveArgument">ErrRemoveArgument</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrRemoveArgument may be returned from NamedValueChecker to instruct the<br>
+sql package to not pass the argument to the driver query interface.<br>
+Return when accepting query specific options or structures that aren&#39;t<br>
+SQL query arguments.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrSkip">ErrSkip</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrSkip may be returned by some optional interfaces&#39; methods to<br>
+indicate at runtime that the fast path is unavailable and the sql<br>
+package should continue as if the optional interface was not<br>
+implemented. ErrSkip is only supported where explicitly<br>
+documented.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Int32">Int32</h3>
+  <span class="var-type GoVar[*database/sql/driver.int32Type]">GoVar[*database/sql/driver.int32Type]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Int32 is a ValueConverter that converts input values to int64,<br>
+respecting the limits of an int32 value.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsolationLevel.">IsolationLevel.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsolationLevel. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for driver.IsolationLevel</p>
+  
+</li>
+<li>
+  <h3 id="ResultNoRows">ResultNoRows</h3>
+  <span class="var-type GoVar[*database/sql/driver.noRows]">GoVar[*database/sql/driver.noRows]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ResultNoRows is a pre-defined Result for drivers to return when a DDL<br>
+command (such as a CREATE TABLE) succeeds. It returns an error for both<br>
+LastInsertId and RowsAffected.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="RowsAffected.">RowsAffected.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RowsAffected. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for driver.RowsAffected</p>
+  
+</li>
+<li>
+  <h3 id="String-renamed">String-renamed</h3>
+  <span class="var-type GoVar[*database/sql/driver.stringType]">GoVar[*database/sql/driver.stringType]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">String is a ValueConverter that converts its input to a string.<br>
+If the value is already a string or []byte, it&#39;s unchanged.<br>
+If the value is of another type, conversion to string is done<br>
+with fmt.Sprintf(&#34;%v&#34;, v).<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TxOptions.">TxOptions.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TxOptions. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for driver.TxOptions</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

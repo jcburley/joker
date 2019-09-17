@@ -1,0 +1,1509 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.go.types</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the go/types package.<br>
+<br>
+Package types declares the data types and implements<br>
+the algorithms for type-checking of Go packages. Use<br>
+Config.Check to invoke the type checker for a package.<br>
+Alternatively, create a new type checker with NewChecker<br>
+and invoke it incrementally by calling Checker.Files.<br>
+<br>
+Type-checking consists of several interdependent phases:<br>
+<br>
+Name resolution maps each identifier (ast.Ident) in the program to the<br>
+language object (Object) it denotes.<br>
+Use Info.{Defs,Uses,Implicits} for the results of name resolution.<br>
+<br>
+Constant folding computes the exact constant value (constant.Value)<br>
+for every expression (ast.Expr) that is a compile-time constant.<br>
+Use Info.Types[expr].Value for the results of constant folding.<br>
+<br>
+Type inference computes the type (Type) of every expression (ast.Expr)<br>
+and checks for compliance with the language specification.<br>
+Use Info.Types[expr].Type for the results of type inference.<br>
+<br>
+For a tutorial, see https://golang.org/s/types-tutorial.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Array.">Array.</a>
+</li>
+<li>
+  <a href="#AssertableTo">AssertableTo</a>
+</li>
+<li>
+  <a href="#AssignableTo">AssignableTo</a>
+</li>
+<li>
+  <a href="#Basic.">Basic.</a>
+</li>
+<li>
+  <a href="#BasicInfo.">BasicInfo.</a>
+</li>
+<li>
+  <a href="#BasicKind.">BasicKind.</a>
+</li>
+<li>
+  <a href="#Bool">Bool</a>
+</li>
+<li>
+  <a href="#Builtin.">Builtin.</a>
+</li>
+<li>
+  <a href="#Byte">Byte</a>
+</li>
+<li>
+  <a href="#Chan.">Chan.</a>
+</li>
+<li>
+  <a href="#ChanDir.">ChanDir.</a>
+</li>
+<li>
+  <a href="#Checker.">Checker.</a>
+</li>
+<li>
+  <a href="#Comparable">Comparable</a>
+</li>
+<li>
+  <a href="#Complex128">Complex128</a>
+</li>
+<li>
+  <a href="#Complex64">Complex64</a>
+</li>
+<li>
+  <a href="#Const.">Const.</a>
+</li>
+<li>
+  <a href="#ConvertibleTo">ConvertibleTo</a>
+</li>
+<li>
+  <a href="#Default">Default</a>
+</li>
+<li>
+  <a href="#FieldVal">FieldVal</a>
+</li>
+<li>
+  <a href="#Float32">Float32</a>
+</li>
+<li>
+  <a href="#Float64">Float64</a>
+</li>
+<li>
+  <a href="#Func.">Func.</a>
+</li>
+<li>
+  <a href="#Id">Id</a>
+</li>
+<li>
+  <a href="#Identical">Identical</a>
+</li>
+<li>
+  <a href="#IdenticalIgnoreTags">IdenticalIgnoreTags</a>
+</li>
+<li>
+  <a href="#Implements">Implements</a>
+</li>
+<li>
+  <a href="#ImportMode.">ImportMode.</a>
+</li>
+<li>
+  <a href="#Int-renamed">Int-renamed</a>
+</li>
+<li>
+  <a href="#Int16">Int16</a>
+</li>
+<li>
+  <a href="#Int32">Int32</a>
+</li>
+<li>
+  <a href="#Int64">Int64</a>
+</li>
+<li>
+  <a href="#Int8">Int8</a>
+</li>
+<li>
+  <a href="#Interface.">Interface.</a>
+</li>
+<li>
+  <a href="#Invalid">Invalid</a>
+</li>
+<li>
+  <a href="#IsBoolean">IsBoolean</a>
+</li>
+<li>
+  <a href="#IsComplex">IsComplex</a>
+</li>
+<li>
+  <a href="#IsConstType">IsConstType</a>
+</li>
+<li>
+  <a href="#IsFloat">IsFloat</a>
+</li>
+<li>
+  <a href="#IsInteger">IsInteger</a>
+</li>
+<li>
+  <a href="#IsInterface">IsInterface</a>
+</li>
+<li>
+  <a href="#IsNumeric">IsNumeric</a>
+</li>
+<li>
+  <a href="#IsOrdered">IsOrdered</a>
+</li>
+<li>
+  <a href="#IsString">IsString</a>
+</li>
+<li>
+  <a href="#IsUnsigned">IsUnsigned</a>
+</li>
+<li>
+  <a href="#IsUntyped">IsUntyped</a>
+</li>
+<li>
+  <a href="#Label.">Label.</a>
+</li>
+<li>
+  <a href="#LookupFieldOrMethod">LookupFieldOrMethod</a>
+</li>
+<li>
+  <a href="#Map.">Map.</a>
+</li>
+<li>
+  <a href="#MethodExpr">MethodExpr</a>
+</li>
+<li>
+  <a href="#MethodSet.">MethodSet.</a>
+</li>
+<li>
+  <a href="#MethodVal">MethodVal</a>
+</li>
+<li>
+  <a href="#MissingMethod">MissingMethod</a>
+</li>
+<li>
+  <a href="#Named.">Named.</a>
+</li>
+<li>
+  <a href="#NewArray">NewArray</a>
+</li>
+<li>
+  <a href="#NewChan">NewChan</a>
+</li>
+<li>
+  <a href="#NewMap">NewMap</a>
+</li>
+<li>
+  <a href="#NewMethodSet">NewMethodSet</a>
+</li>
+<li>
+  <a href="#NewPackage">NewPackage</a>
+</li>
+<li>
+  <a href="#NewPointer">NewPointer</a>
+</li>
+<li>
+  <a href="#NewSignature">NewSignature</a>
+</li>
+<li>
+  <a href="#NewSlice">NewSlice</a>
+</li>
+<li>
+  <a href="#Nil.">Nil.</a>
+</li>
+<li>
+  <a href="#ObjectString">ObjectString</a>
+</li>
+<li>
+  <a href="#Package.">Package.</a>
+</li>
+<li>
+  <a href="#PkgName.">PkgName.</a>
+</li>
+<li>
+  <a href="#Pointer.">Pointer.</a>
+</li>
+<li>
+  <a href="#RecvOnly">RecvOnly</a>
+</li>
+<li>
+  <a href="#RelativeTo">RelativeTo</a>
+</li>
+<li>
+  <a href="#Rune">Rune</a>
+</li>
+<li>
+  <a href="#Scope.">Scope.</a>
+</li>
+<li>
+  <a href="#Selection.">Selection.</a>
+</li>
+<li>
+  <a href="#SelectionKind.">SelectionKind.</a>
+</li>
+<li>
+  <a href="#SelectionString">SelectionString</a>
+</li>
+<li>
+  <a href="#SendOnly">SendOnly</a>
+</li>
+<li>
+  <a href="#SendRecv">SendRecv</a>
+</li>
+<li>
+  <a href="#Signature.">Signature.</a>
+</li>
+<li>
+  <a href="#SizesFor">SizesFor</a>
+</li>
+<li>
+  <a href="#Slice.">Slice.</a>
+</li>
+<li>
+  <a href="#StdSizes.">StdSizes.</a>
+</li>
+<li>
+  <a href="#String-renamed">String-renamed</a>
+</li>
+<li>
+  <a href="#Struct.">Struct.</a>
+</li>
+<li>
+  <a href="#Tuple.">Tuple.</a>
+</li>
+<li>
+  <a href="#Typ">Typ</a>
+</li>
+<li>
+  <a href="#TypeName.">TypeName.</a>
+</li>
+<li>
+  <a href="#TypeString">TypeString</a>
+</li>
+<li>
+  <a href="#Uint">Uint</a>
+</li>
+<li>
+  <a href="#Uint16">Uint16</a>
+</li>
+<li>
+  <a href="#Uint32">Uint32</a>
+</li>
+<li>
+  <a href="#Uint64">Uint64</a>
+</li>
+<li>
+  <a href="#Uint8">Uint8</a>
+</li>
+<li>
+  <a href="#Uintptr">Uintptr</a>
+</li>
+<li>
+  <a href="#Universe">Universe</a>
+</li>
+<li>
+  <a href="#Unsafe">Unsafe</a>
+</li>
+<li>
+  <a href="#UnsafePointer">UnsafePointer</a>
+</li>
+<li>
+  <a href="#UntypedBool">UntypedBool</a>
+</li>
+<li>
+  <a href="#UntypedComplex">UntypedComplex</a>
+</li>
+<li>
+  <a href="#UntypedFloat">UntypedFloat</a>
+</li>
+<li>
+  <a href="#UntypedInt">UntypedInt</a>
+</li>
+<li>
+  <a href="#UntypedNil">UntypedNil</a>
+</li>
+<li>
+  <a href="#UntypedRune">UntypedRune</a>
+</li>
+<li>
+  <a href="#UntypedString">UntypedString</a>
+</li>
+<li>
+  <a href="#Var.">Var.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Array.">Array.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Array. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Array</p>
+  
+</li>
+<li>
+  <h3 id="AssertableTo">AssertableTo</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(AssertableTo __V __T)</code></div>
+</pre>
+  <p class="var-docstr">AssertableTo reports whether a value of type V can be asserted to have type T.<br>
+<br>
+Go input arguments: (V *Interface, T Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^(atom-of go.std.go.types/Interface) V, ^go.std.go.types/Type T]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="AssignableTo">AssignableTo</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(AssignableTo __V __T)</code></div>
+</pre>
+  <p class="var-docstr">AssignableTo reports whether a value of type V is assignable to a variable of type T.<br>
+<br>
+Go input arguments: (V Type, T Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Basic.">Basic.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Basic. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Basic</p>
+  
+</li>
+<li>
+  <h3 id="BasicInfo.">BasicInfo.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BasicInfo. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.BasicInfo</p>
+  
+</li>
+<li>
+  <h3 id="BasicKind.">BasicKind.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BasicKind. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.BasicKind</p>
+  
+</li>
+<li>
+  <h3 id="Bool">Bool</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">predeclared types<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Builtin.">Builtin.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Builtin. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Builtin</p>
+  
+</li>
+<li>
+  <h3 id="Byte">Byte</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">aliases<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Chan.">Chan.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Chan. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Chan</p>
+  
+</li>
+<li>
+  <h3 id="ChanDir.">ChanDir.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ChanDir. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.ChanDir</p>
+  
+</li>
+<li>
+  <h3 id="Checker.">Checker.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Checker. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Checker</p>
+  
+</li>
+<li>
+  <h3 id="Comparable">Comparable</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Comparable __T)</code></div>
+</pre>
+  <p class="var-docstr">Comparable reports whether values of type T are comparable.<br>
+<br>
+Go input arguments: (T Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type T]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Complex128">Complex128</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Complex64">Complex64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Const.">Const.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Const. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Const</p>
+  
+</li>
+<li>
+  <h3 id="ConvertibleTo">ConvertibleTo</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ConvertibleTo __V __T)</code></div>
+</pre>
+  <p class="var-docstr">ConvertibleTo reports whether a value of type V is convertible to a value of type T.<br>
+<br>
+Go input arguments: (V Type, T Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type V, ^go.std.go.types/Type T]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Default">Default</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Default __typ)</code></div>
+</pre>
+  <p class="var-docstr">Default returns the default &#34;typed&#34; type for an &#34;untyped&#34; type;<br>
+it returns the incoming type for all other types. The default type<br>
+for untyped nil is untyped nil.<br>
+<br>
+Go input arguments: (typ Type)<br>
+<br>
+Go return type: Type<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type typ]<br>
+<br>
+Joker return type: go.std.go.types/Type</p>
+  
+</li>
+<li>
+  <h3 id="FieldVal">FieldVal</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">x.f is a struct field selector<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Float32">Float32</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Float64">Float64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Func.">Func.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Func. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Func</p>
+  
+</li>
+<li>
+  <h3 id="Id">Id</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Id __pkg __name)</code></div>
+</pre>
+  <p class="var-docstr">Id returns name if it is exported, otherwise it<br>
+returns the name qualified with the package path.<br>
+<br>
+Go input arguments: (pkg *Package, name string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^(atom-of go.std.go.types/Package) pkg, ^String name]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Identical">Identical</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Identical __x __y)</code></div>
+</pre>
+  <p class="var-docstr">Identical reports whether x and y are identical types.<br>
+Receivers of Signature types are ignored.<br>
+<br>
+Go input arguments: (x Type, y Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IdenticalIgnoreTags">IdenticalIgnoreTags</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IdenticalIgnoreTags __x __y)</code></div>
+</pre>
+  <p class="var-docstr">IdenticalIgnoreTags reports whether x and y are identical types if tags are ignored.<br>
+Receivers of Signature types are ignored.<br>
+<br>
+Go input arguments: (x Type, y Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type x, ^go.std.go.types/Type y]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Implements">Implements</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Implements __V __T)</code></div>
+</pre>
+  <p class="var-docstr">Implements reports whether type V implements interface T.<br>
+<br>
+Go input arguments: (V Type, T *Interface)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="ImportMode.">ImportMode.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ImportMode. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.ImportMode</p>
+  
+</li>
+<li>
+  <h3 id="Int-renamed">Int-renamed</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Int16">Int16</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Int32">Int32</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Int64">Int64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Int8">Int8</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Interface.">Interface.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Interface. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Interface</p>
+  
+</li>
+<li>
+  <h3 id="Invalid">Invalid</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">type is invalid<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsBoolean">IsBoolean</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsComplex">IsComplex</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsConstType">IsConstType</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsFloat">IsFloat</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsInteger">IsInteger</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsInterface">IsInterface</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsInterface __typ)</code></div>
+</pre>
+  <p class="var-docstr">IsInterface reports whether typ is an interface type.<br>
+<br>
+Go input arguments: (typ Type)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type typ]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsNumeric">IsNumeric</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsOrdered">IsOrdered</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsString">IsString</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsUnsigned">IsUnsigned</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsUntyped">IsUntyped</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Properties of basic types.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Label.">Label.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Label. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Label</p>
+  
+</li>
+<li>
+  <h3 id="LookupFieldOrMethod">LookupFieldOrMethod</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LookupFieldOrMethod __T __addressable __pkg __name)</code></div>
+</pre>
+  <p class="var-docstr">LookupFieldOrMethod looks up a field or method with given package and name<br>
+in T and returns the corresponding *Var or *Func, an index sequence, and a<br>
+bool indicating if there were any pointer indirections on the path to the<br>
+field or method. If addressable is set, T is the type of an addressable<br>
+variable (only matters for method lookups).<br>
+<br>
+The last index entry is the field or method index in the (possibly embedded)<br>
+type where the entry was found, either:<br>
+<br>
+	1) the list of declared methods of a named type; or<br>
+	2) the list of all methods (method set) of an interface type; or<br>
+	3) the list of fields of a struct type.<br>
+<br>
+The earlier index entries are the indices of the embedded struct fields<br>
+traversed to get to the found entry, starting at depth 0.<br>
+<br>
+If no entry is found, a nil object is returned. In this case, the returned<br>
+index and indirect values have the following meaning:<br>
+<br>
+	- If index != nil, the index sequence points to an ambiguous entry<br>
+	(the same name appeared more than once at the same embedding level).<br>
+<br>
+	- If indirect is set, a method with a pointer receiver type was found<br>
+     but there was no pointer on the path from the actual receiver type to<br>
+	the method&#39;s formal receiver base type, nor was the receiver addressable.<br>
+<br>
+Go input arguments: (T Type, addressable bool, pkg *Package, name string)<br>
+<br>
+Go return type: (obj Object, index []int, indirect bool)<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type T, ^Boolean addressable, ^(atom-of go.std.go.types/Package) pkg, ^String name]<br>
+<br>
+Joker return type: [go.std.go.types/Object (vector-of Int) Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="Map.">Map.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Map. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Map</p>
+  
+</li>
+<li>
+  <h3 id="MethodExpr">MethodExpr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">x.f is a method expression<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="MethodSet.">MethodSet.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MethodSet. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.MethodSet</p>
+  
+</li>
+<li>
+  <h3 id="MethodVal">MethodVal</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">x.f is a method selector<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="MissingMethod">MissingMethod</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MissingMethod __V __T __static)</code></div>
+</pre>
+  <p class="var-docstr">MissingMethod returns (nil, false) if V implements T, otherwise it<br>
+returns a missing method required by T and whether it is missing or<br>
+just has the wrong type.<br>
+<br>
+For non-interface types V, or if static is set, V implements T if all<br>
+methods of T are present in V. Otherwise (V is an interface and static<br>
+is not set), MissingMethod only checks that methods of T which are also<br>
+present in V have matching types (e.g., for a type assertion x.(T) where<br>
+x is of interface type V).<br>
+<br>
+Go input arguments: (V Type, T *Interface, static bool)<br>
+<br>
+Go return type: (method *Func, wrongType bool)<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type V, ^(atom-of go.std.go.types/Interface) T, ^Boolean static]<br>
+<br>
+Joker return type: [(atom-of go.std.go.types/Func) Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="Named.">Named.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Named. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Named</p>
+  
+</li>
+<li>
+  <h3 id="NewArray">NewArray</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewArray __elem __len)</code></div>
+</pre>
+  <p class="var-docstr">NewArray returns a new array type for the given element type and length.<br>
+A negative length indicates an unknown length.<br>
+<br>
+Go input arguments: (elem Type, len int64)<br>
+<br>
+Go return type: *Array<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type elem, ^Number len]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Array)</p>
+  
+</li>
+<li>
+  <h3 id="NewChan">NewChan</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewChan __dir __elem)</code></div>
+</pre>
+  <p class="var-docstr">NewChan returns a new channel type for the given direction and element type.<br>
+<br>
+Go input arguments: (dir ChanDir, elem Type)<br>
+<br>
+Go return type: *Chan<br>
+<br>
+Joker input arguments: [^go.std.go.types/ChanDir dir, ^go.std.go.types/Type elem]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Chan)</p>
+  
+</li>
+<li>
+  <h3 id="NewMap">NewMap</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewMap __key __elem)</code></div>
+</pre>
+  <p class="var-docstr">NewMap returns a new map for the given key and element types.<br>
+<br>
+Go input arguments: (key Type, elem Type)<br>
+<br>
+Go return type: *Map<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type key, ^go.std.go.types/Type elem]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Map)</p>
+  
+</li>
+<li>
+  <h3 id="NewMethodSet">NewMethodSet</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewMethodSet __T)</code></div>
+</pre>
+  <p class="var-docstr">NewMethodSet returns the method set for the given type T.<br>
+It always returns a non-nil method set, even if it is empty.<br>
+<br>
+Go input arguments: (T Type)<br>
+<br>
+Go return type: *MethodSet<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type T]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/MethodSet)</p>
+  
+</li>
+<li>
+  <h3 id="NewPackage">NewPackage</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewPackage __path __name)</code></div>
+</pre>
+  <p class="var-docstr">NewPackage returns a new Package for the given package path and name.<br>
+The package is not complete and contains no explicit imports.<br>
+<br>
+Go input arguments: (path string, name string)<br>
+<br>
+Go return type: *Package<br>
+<br>
+Joker input arguments: [^String path, ^String name]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Package)</p>
+  
+</li>
+<li>
+  <h3 id="NewPointer">NewPointer</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewPointer __elem)</code></div>
+</pre>
+  <p class="var-docstr">NewPointer returns a new pointer type for the given element (base) type.<br>
+<br>
+Go input arguments: (elem Type)<br>
+<br>
+Go return type: *Pointer<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type elem]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Pointer)</p>
+  
+</li>
+<li>
+  <h3 id="NewSignature">NewSignature</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewSignature __recv __params __results __variadic)</code></div>
+</pre>
+  <p class="var-docstr">NewSignature returns a new function type for the given receiver, parameters,<br>
+and results, either of which may be nil. If variadic is set, the function<br>
+is variadic, it must have at least one parameter, and the last parameter<br>
+must be of unnamed slice type.<br>
+<br>
+Go input arguments: (recv *Var, params *Tuple, results *Tuple, variadic bool)<br>
+<br>
+Go return type: *Signature<br>
+<br>
+Joker input arguments: [^(atom-of go.std.go.types/Var) recv, ^(atom-of go.std.go.types/Tuple) params, ^(atom-of go.std.go.types/Tuple) results, ^Boolean variadic]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Signature)</p>
+  
+</li>
+<li>
+  <h3 id="NewSlice">NewSlice</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewSlice __elem)</code></div>
+</pre>
+  <p class="var-docstr">NewSlice returns a new slice type for the given element type.<br>
+<br>
+Go input arguments: (elem Type)<br>
+<br>
+Go return type: *Slice<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type elem]<br>
+<br>
+Joker return type: (atom-of go.std.go.types/Slice)</p>
+  
+</li>
+<li>
+  <h3 id="Nil.">Nil.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Nil. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Nil</p>
+  
+</li>
+<li>
+  <h3 id="ObjectString">ObjectString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ObjectString __obj __qf)</code></div>
+</pre>
+  <p class="var-docstr">ObjectString returns the string form of obj.<br>
+The Qualifier controls the printing of<br>
+package-level objects, and may be nil.<br>
+<br>
+Go input arguments: (obj Object, qf Qualifier)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^go.std.go.types/Object obj, ^go.std.go.types/Qualifier qf]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Package.">Package.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Package. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Package</p>
+  
+</li>
+<li>
+  <h3 id="PkgName.">PkgName.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(PkgName. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.PkgName</p>
+  
+</li>
+<li>
+  <h3 id="Pointer.">Pointer.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Pointer. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Pointer</p>
+  
+</li>
+<li>
+  <h3 id="RecvOnly">RecvOnly</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The direction of a channel is indicated by one of these constants.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="RelativeTo">RelativeTo</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RelativeTo __pkg)</code></div>
+</pre>
+  <p class="var-docstr">RelativeTo(pkg) returns a Qualifier that fully qualifies members of<br>
+all packages other than pkg.<br>
+<br>
+Go input arguments: (pkg *Package)<br>
+<br>
+Go return type: Qualifier<br>
+<br>
+Joker input arguments: [^(atom-of go.std.go.types/Package) pkg]<br>
+<br>
+Joker return type: go.std.go.types/Qualifier</p>
+  
+</li>
+<li>
+  <h3 id="Rune">Rune</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Scope.">Scope.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Scope. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Scope</p>
+  
+</li>
+<li>
+  <h3 id="Selection.">Selection.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Selection. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Selection</p>
+  
+</li>
+<li>
+  <h3 id="SelectionKind.">SelectionKind.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SelectionKind. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.SelectionKind</p>
+  
+</li>
+<li>
+  <h3 id="SelectionString">SelectionString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SelectionString __s __qf)</code></div>
+</pre>
+  <p class="var-docstr">SelectionString returns the string form of s.<br>
+The Qualifier controls the printing of<br>
+package-level objects, and may be nil.<br>
+<br>
+Examples:<br>
+	&#34;field (T) f int&#34;<br>
+	&#34;method (T) f(X) Y&#34;<br>
+	&#34;method expr (T) f(X) Y&#34;<br>
+<br>
+Go input arguments: (s *Selection, qf Qualifier)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^(atom-of go.std.go.types/Selection) s, ^go.std.go.types/Qualifier qf]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="SendOnly">SendOnly</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The direction of a channel is indicated by one of these constants.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="SendRecv">SendRecv</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The direction of a channel is indicated by one of these constants.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Signature.">Signature.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Signature. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Signature</p>
+  
+</li>
+<li>
+  <h3 id="SizesFor">SizesFor</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SizesFor __compiler __arch)</code></div>
+</pre>
+  <p class="var-docstr">SizesFor returns the Sizes used by a compiler for an architecture.<br>
+The result is nil if a compiler/architecture pair is not known.<br>
+<br>
+Supported architectures for compiler &#34;gc&#34;:<br>
+&#34;386&#34;, &#34;arm&#34;, &#34;arm64&#34;, &#34;amd64&#34;, &#34;amd64p32&#34;, &#34;mips&#34;, &#34;mipsle&#34;,<br>
+&#34;mips64&#34;, &#34;mips64le&#34;, &#34;ppc64&#34;, &#34;ppc64le&#34;, &#34;riscv64&#34;, &#34;s390x&#34;, &#34;sparc64&#34;, &#34;wasm&#34;.<br>
+<br>
+Go input arguments: (compiler string, arch string)<br>
+<br>
+Go return type: Sizes<br>
+<br>
+Joker input arguments: [^String compiler, ^String arch]<br>
+<br>
+Joker return type: go.std.go.types/Sizes</p>
+  
+</li>
+<li>
+  <h3 id="Slice.">Slice.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Slice. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Slice</p>
+  
+</li>
+<li>
+  <h3 id="StdSizes.">StdSizes.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(StdSizes. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.StdSizes</p>
+  
+</li>
+<li>
+  <h3 id="String-renamed">String-renamed</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Struct.">Struct.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Struct. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Struct</p>
+  
+</li>
+<li>
+  <h3 id="Tuple.">Tuple.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Tuple. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Tuple</p>
+  
+</li>
+<li>
+  <h3 id="Typ">Typ</h3>
+  <span class="var-type GoVar[*.]">GoVar[*.]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Typ contains the predeclared *Basic types indexed by their<br>
+corresponding BasicKind.<br>
+<br>
+The *Basic type for Typ[Byte] will have the name &#34;uint8&#34;.<br>
+Use Universe.Lookup(&#34;byte&#34;).Type() to obtain the specific<br>
+alias basic type named &#34;byte&#34; (and analogous for &#34;rune&#34;).<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TypeName.">TypeName.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TypeName. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.TypeName</p>
+  
+</li>
+<li>
+  <h3 id="TypeString">TypeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TypeString __typ __qf)</code></div>
+</pre>
+  <p class="var-docstr">TypeString returns the string representation of typ.<br>
+The Qualifier controls the printing of<br>
+package-level objects, and may be nil.<br>
+<br>
+Go input arguments: (typ Type, qf Qualifier)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^go.std.go.types/Type typ, ^go.std.go.types/Qualifier qf]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Uint">Uint</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Uint16">Uint16</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Uint32">Uint32</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Uint64">Uint64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Uint8">Uint8</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Uintptr">Uintptr</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Universe">Universe</h3>
+  <span class="var-type GoVar[**go/types.Scope]">GoVar[**go/types.Scope]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The Universe scope contains all predeclared objects of Go.<br>
+It is the outermost scope of any chain of nested scopes.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Unsafe">Unsafe</h3>
+  <span class="var-type GoVar[**go/types.Package]">GoVar[**go/types.Package]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The Unsafe package is the package returned by an importer<br>
+for the import path &#34;unsafe&#34;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="UnsafePointer">UnsafePointer</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedBool">UntypedBool</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">types for untyped values<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="UntypedComplex">UntypedComplex</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedFloat">UntypedFloat</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedInt">UntypedInt</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedNil">UntypedNil</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedRune">UntypedRune</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="UntypedString">UntypedString</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Var.">Var.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Var. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for types.Var</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

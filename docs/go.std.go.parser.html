@@ -1,0 +1,150 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.go.parser</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the go/parser package.<br>
+<br>
+Package parser implements a parser for Go source files. Input may be<br>
+provided in a variety of forms (see the various Parse* functions); the<br>
+output is an abstract syntax tree (AST) representing the Go source. The<br>
+parser is invoked through one of the Parse* functions.<br>
+<br>
+The parser accepts a larger language than is syntactically permitted by<br>
+the Go spec, for simplicity, and for improved robustness in the presence<br>
+of syntax errors. For instance, in method declarations, the receiver is<br>
+treated like an ordinary parameter list and thus may contain multiple<br>
+entries where the spec permits exactly one. Consequently, the corresponding<br>
+field in the AST (ast.FuncDecl.Recv) field is not restricted to one entry.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#AllErrors">AllErrors</a>
+</li>
+<li>
+  <a href="#DeclarationErrors">DeclarationErrors</a>
+</li>
+<li>
+  <a href="#ImportsOnly">ImportsOnly</a>
+</li>
+<li>
+  <a href="#Mode.">Mode.</a>
+</li>
+<li>
+  <a href="#PackageClauseOnly">PackageClauseOnly</a>
+</li>
+<li>
+  <a href="#ParseComments">ParseComments</a>
+</li>
+<li>
+  <a href="#ParseExpr">ParseExpr</a>
+</li>
+<li>
+  <a href="#SpuriousErrors">SpuriousErrors</a>
+</li>
+<li>
+  <a href="#Trace">Trace</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="AllErrors">AllErrors</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">report all errors (not just the first 10 on different lines)<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DeclarationErrors">DeclarationErrors</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">report declaration errors<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ImportsOnly">ImportsOnly</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">stop parsing after import declarations<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Mode.">Mode.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Mode. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for parser.Mode</p>
+  
+</li>
+<li>
+  <h3 id="PackageClauseOnly">PackageClauseOnly</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">stop parsing after package clause<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ParseComments">ParseComments</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">parse comments and add them to AST<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ParseExpr">ParseExpr</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ParseExpr __x)</code></div>
+</pre>
+  <p class="var-docstr">ParseExpr is a convenience function for obtaining the AST of an expression x.<br>
+The position information recorded in the AST is undefined. The filename used<br>
+in error messages is the empty string.<br>
+<br>
+Go input arguments: (x string)<br>
+<br>
+Go return type: (go/ast.Expr, error)<br>
+<br>
+Joker input arguments: [^String x]<br>
+<br>
+Joker return type: [go.std.go.ast/Expr Error]</p>
+  
+</li>
+<li>
+  <h3 id="SpuriousErrors">SpuriousErrors</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">same as AllErrors, for backward-compatibility<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Trace">Trace</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">print a trace of parsed productions<br>
+</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

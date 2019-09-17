@@ -1,0 +1,494 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.path.filepath</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the path/filepath package.<br>
+<br>
+Package filepath implements utility routines for manipulating filename paths<br>
+in a way compatible with the target operating system-defined file paths.<br>
+<br>
+The filepath package uses either forward slashes or backslashes,<br>
+depending on the operating system. To process paths such as URLs<br>
+that always use forward slashes regardless of the operating<br>
+system, see the path package.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Abs">Abs</a>
+</li>
+<li>
+  <a href="#Base">Base</a>
+</li>
+<li>
+  <a href="#Clean">Clean</a>
+</li>
+<li>
+  <a href="#Dir">Dir</a>
+</li>
+<li>
+  <a href="#ErrBadPattern">ErrBadPattern</a>
+</li>
+<li>
+  <a href="#EvalSymlinks">EvalSymlinks</a>
+</li>
+<li>
+  <a href="#Ext">Ext</a>
+</li>
+<li>
+  <a href="#FromSlash">FromSlash</a>
+</li>
+<li>
+  <a href="#Glob">Glob</a>
+</li>
+<li>
+  <a href="#HasPrefix">HasPrefix</a>
+</li>
+<li>
+  <a href="#IsAbs">IsAbs</a>
+</li>
+<li>
+  <a href="#Match">Match</a>
+</li>
+<li>
+  <a href="#Rel">Rel</a>
+</li>
+<li>
+  <a href="#SkipDir">SkipDir</a>
+</li>
+<li>
+  <a href="#Split">Split</a>
+</li>
+<li>
+  <a href="#SplitList">SplitList</a>
+</li>
+<li>
+  <a href="#ToSlash">ToSlash</a>
+</li>
+<li>
+  <a href="#VolumeName">VolumeName</a>
+</li>
+<li>
+  <a href="#Walk">Walk</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Abs">Abs</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Abs __path)</code></div>
+</pre>
+  <p class="var-docstr">Abs returns an absolute representation of path.<br>
+If the path is not absolute it will be joined with the current<br>
+working directory to turn it into an absolute path. The absolute<br>
+path name for a given file is not guaranteed to be unique.<br>
+Abs calls Clean on the result.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="Base">Base</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Base __path)</code></div>
+</pre>
+  <p class="var-docstr">Base returns the last element of path.<br>
+Trailing path separators are removed before extracting the last element.<br>
+If the path is empty, Base returns &#34;.&#34;.<br>
+If the path consists entirely of separators, Base returns a single separator.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Clean">Clean</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Clean __path)</code></div>
+</pre>
+  <p class="var-docstr">Clean returns the shortest path name equivalent to path<br>
+by purely lexical processing. It applies the following rules<br>
+iteratively until no further processing can be done:<br>
+<br>
+	1. Replace multiple Separator elements with a single one.<br>
+	2. Eliminate each . path name element (the current directory).<br>
+	3. Eliminate each inner .. path name element (the parent directory)<br>
+	   along with the non-.. element that precedes it.<br>
+	4. Eliminate .. elements that begin a rooted path:<br>
+	   that is, replace &#34;/..&#34; by &#34;/&#34; at the beginning of a path,<br>
+	   assuming Separator is &#39;/&#39;.<br>
+<br>
+The returned path ends in a slash only if it represents a root directory,<br>
+such as &#34;/&#34; on Unix or `C:\` on Windows.<br>
+<br>
+Finally, any occurrences of slash are replaced by Separator.<br>
+<br>
+If the result of this process is an empty string, Clean<br>
+returns the string &#34;.&#34;.<br>
+<br>
+See also Rob Pike, ``Lexical File Names in Plan 9 or<br>
+Getting Dot-Dot Right,&#39;&#39;<br>
+https://9p.io/sys/doc/lexnames.html<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Dir">Dir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Dir __path)</code></div>
+</pre>
+  <p class="var-docstr">Dir returns all but the last element of path, typically the path&#39;s directory.<br>
+After dropping the final element, Dir calls Clean on the path and trailing<br>
+slashes are removed.<br>
+If the path is empty, Dir returns &#34;.&#34;.<br>
+If the path consists entirely of separators, Dir returns a single separator.<br>
+The returned path does not end in a separator unless it is the root directory.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ErrBadPattern">ErrBadPattern</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBadPattern indicates a pattern was malformed.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="EvalSymlinks">EvalSymlinks</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EvalSymlinks __path)</code></div>
+</pre>
+  <p class="var-docstr">EvalSymlinks returns the path name after the evaluation of any symbolic<br>
+links.<br>
+If path is relative the result will be relative to the current directory,<br>
+unless one of the components is an absolute symbolic link.<br>
+EvalSymlinks calls Clean on the result.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="Ext">Ext</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Ext __path)</code></div>
+</pre>
+  <p class="var-docstr">Ext returns the file name extension used by path.<br>
+The extension is the suffix beginning at the final dot<br>
+in the final element of path; it is empty if there is<br>
+no dot.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="FromSlash">FromSlash</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FromSlash __path)</code></div>
+</pre>
+  <p class="var-docstr">FromSlash returns the result of replacing each slash (&#39;/&#39;) character<br>
+in path with a separator character. Multiple slashes are replaced<br>
+by multiple separators.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Glob">Glob</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Glob __pattern)</code></div>
+</pre>
+  <p class="var-docstr">Glob returns the names of all files matching pattern or nil<br>
+if there is no matching file. The syntax of patterns is the same<br>
+as in Match. The pattern may describe hierarchical names such as<br>
+/usr/*/bin/ed (assuming the Separator is &#39;/&#39;).<br>
+<br>
+Glob ignores file system errors such as I/O errors reading directories.<br>
+The only possible returned error is ErrBadPattern, when pattern<br>
+is malformed.<br>
+<br>
+Go input arguments: (pattern string)<br>
+<br>
+Go return type: (matches []string, err error)<br>
+<br>
+Joker input arguments: [^String pattern]<br>
+<br>
+Joker return type: [(vector-of String) Error]</p>
+  
+</li>
+<li>
+  <h3 id="HasPrefix">HasPrefix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HasPrefix __p __prefix)</code></div>
+</pre>
+  <p class="var-docstr">HasPrefix exists for historical compatibility and should not be used.<br>
+<br>
+Deprecated: HasPrefix does not respect path boundaries and<br>
+does not ignore case when required.<br>
+<br>
+Go input arguments: (p string, prefix string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String p, ^String prefix]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsAbs">IsAbs</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsAbs __path)</code></div>
+</pre>
+  <p class="var-docstr">IsAbs reports whether the path is absolute.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Match">Match</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Match __pattern __name)</code></div>
+</pre>
+  <p class="var-docstr">Match reports whether name matches the shell file name pattern.<br>
+The pattern syntax is:<br>
+<br>
+	pattern:<br>
+		{ term }<br>
+	term:<br>
+		&#39;*&#39;         matches any sequence of non-Separator characters<br>
+		&#39;?&#39;         matches any single non-Separator character<br>
+		&#39;[&#39; [ &#39;^&#39; ] { character-range } &#39;]&#39;<br>
+		            character class (must be non-empty)<br>
+		c           matches character c (c != &#39;*&#39;, &#39;?&#39;, &#39;\\&#39;, &#39;[&#39;)<br>
+		&#39;\\&#39; c      matches character c<br>
+<br>
+	character-range:<br>
+		c           matches character c (c != &#39;\\&#39;, &#39;-&#39;, &#39;]&#39;)<br>
+		&#39;\\&#39; c      matches character c<br>
+		lo &#39;-&#39; hi   matches character c for lo &lt;= c &lt;= hi<br>
+<br>
+Match requires pattern to match all of name, not just a substring.<br>
+The only possible returned error is ErrBadPattern, when pattern<br>
+is malformed.<br>
+<br>
+On Windows, escaping is disabled. Instead, &#39;\\&#39; is treated as<br>
+path separator.<br>
+<br>
+Go input arguments: (pattern string, name string)<br>
+<br>
+Go return type: (matched bool, err error)<br>
+<br>
+Joker input arguments: [^String pattern, ^String name]<br>
+<br>
+Joker return type: [Boolean Error]</p>
+  
+</li>
+<li>
+  <h3 id="Rel">Rel</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Rel __basepath __targpath)</code></div>
+</pre>
+  <p class="var-docstr">Rel returns a relative path that is lexically equivalent to targpath when<br>
+joined to basepath with an intervening separator. That is,<br>
+Join(basepath, Rel(basepath, targpath)) is equivalent to targpath itself.<br>
+On success, the returned path will always be relative to basepath,<br>
+even if basepath and targpath share no elements.<br>
+An error is returned if targpath can&#39;t be made relative to basepath or if<br>
+knowing the current working directory would be necessary to compute it.<br>
+Rel calls Clean on the result.<br>
+<br>
+Go input arguments: (basepath string, targpath string)<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: [^String basepath, ^String targpath]<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="SkipDir">SkipDir</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">SkipDir is used as a return value from WalkFuncs to indicate that<br>
+the directory named in the call is to be skipped. It is not returned<br>
+as an error by any function.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Split">Split</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Split __path)</code></div>
+</pre>
+  <p class="var-docstr">Split splits path immediately following the final Separator,<br>
+separating it into a directory and file name component.<br>
+If there is no Separator in path, Split returns an empty dir<br>
+and file set to path.<br>
+The returned values have the property that path = dir+file.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: (dir string, file string)<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: [String String]</p>
+  
+</li>
+<li>
+  <h3 id="SplitList">SplitList</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SplitList __path)</code></div>
+</pre>
+  <p class="var-docstr">SplitList splits a list of paths joined by the OS-specific ListSeparator,<br>
+usually found in PATH or GOPATH environment variables.<br>
+Unlike strings.Split, SplitList returns an empty slice when passed an empty<br>
+string.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="ToSlash">ToSlash</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToSlash __path)</code></div>
+</pre>
+  <p class="var-docstr">ToSlash returns the result of replacing each separator character<br>
+in path with a slash (&#39;/&#39;) character. Multiple separators are<br>
+replaced by multiple slashes.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="VolumeName">VolumeName</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(VolumeName __path)</code></div>
+</pre>
+  <p class="var-docstr">VolumeName returns leading volume name.<br>
+Given &#34;C:\foo\bar&#34; it returns &#34;C:&#34; on Windows.<br>
+Given &#34;\\host\share\foo&#34; it returns &#34;\\host\share&#34;.<br>
+On other platforms it returns &#34;&#34;.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Walk">Walk</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Walk __root __walkFn)</code></div>
+</pre>
+  <p class="var-docstr">Walk walks the file tree rooted at root, calling walkFn for each file or<br>
+directory in the tree, including root. All errors that arise visiting files<br>
+and directories are filtered by walkFn. The files are walked in lexical<br>
+order, which makes the output deterministic but means that for very<br>
+large directories Walk can be inefficient.<br>
+Walk does not follow symbolic links.<br>
+<br>
+Go input arguments: (root string, walkFn WalkFunc)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String root, ^go.std.path.filepath/WalkFunc walkFn]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.os.exec</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the os/exec package.<br>
+<br>
+Package exec runs external commands. It wraps os.StartProcess to make it<br>
+easier to remap stdin and stdout, connect I/O with pipes, and do other<br>
+adjustments.<br>
+<br>
+Unlike the &#34;system&#34; library call from C and other languages, the<br>
+os/exec package intentionally does not invoke the system shell and<br>
+does not expand any glob patterns or handle other expansions,<br>
+pipelines, or redirections typically done by shells. The package<br>
+behaves more like C&#39;s &#34;exec&#34; family of functions. To expand glob<br>
+patterns, either call the shell directly, taking care to escape any<br>
+dangerous input, or use the path/filepath package&#39;s Glob function.<br>
+To expand environment variables, use package os&#39;s ExpandEnv.<br>
+<br>
+Note that the examples in this package assume a Unix system.<br>
+They may not run on Windows, and they do not run in the Go Playground<br>
+used by golang.org and godoc.org.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ErrNotFound">ErrNotFound</a>
+</li>
+<li>
+  <a href="#Error.">Error.</a>
+</li>
+<li>
+  <a href="#LookPath">LookPath</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ErrNotFound">ErrNotFound</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNotFound is the error resulting if a path search failed to find an executable file.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Error.">Error.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Error. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for exec.Error</p>
+  
+</li>
+<li>
+  <h3 id="LookPath">LookPath</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LookPath __file)</code></div>
+</pre>
+  <p class="var-docstr">LookPath searches for an executable named file in the<br>
+directories named by the PATH environment variable.<br>
+If file contains a slash, it is tried directly and the PATH is not consulted.<br>
+The result may be an absolute path or a path relative to the current directory.<br>
+<br>
+Go input arguments: (file string)<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: [^String file]<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

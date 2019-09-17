@@ -1,0 +1,1029 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.regexp.syntax</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the regexp/syntax package.<br>
+<br>
+Package syntax parses regular expressions into parse trees and compiles<br>
+parse trees into programs. Most clients of regular expressions will use the<br>
+facilities of package regexp (such as Compile and Match) instead of this package.<br>
+<br>
+Syntax<br>
+<br>
+The regular expression syntax understood by this package when parsing with the Perl flag is as follows.<br>
+Parts of the syntax can be disabled by passing alternate flags to Parse.<br>
+<br>
+Single characters:<br>
+  .              any character, possibly including newline (flag s=true)<br>
+  [xyz]          character class<br>
+  [^xyz]         negated character class<br>
+  \d             Perl character class<br>
+  \D             negated Perl character class<br>
+  [[:alpha:]]    ASCII character class<br>
+  [[:^alpha:]]   negated ASCII character class<br>
+  \pN            Unicode character class (one-letter name)<br>
+  \p{Greek}      Unicode character class<br>
+  \PN            negated Unicode character class (one-letter name)<br>
+  \P{Greek}      negated Unicode character class<br>
+<br>
+Composites:<br>
+  xy             x followed by y<br>
+  x|y            x or y (prefer x)<br>
+<br>
+Repetitions:<br>
+  x*             zero or more x, prefer more<br>
+  x+             one or more x, prefer more<br>
+  x?             zero or one x, prefer one<br>
+  x{n,m}         n or n+1 or ... or m x, prefer more<br>
+  x{n,}          n or more x, prefer more<br>
+  x{n}           exactly n x<br>
+  x*?            zero or more x, prefer fewer<br>
+  x+?            one or more x, prefer fewer<br>
+  x??            zero or one x, prefer zero<br>
+  x{n,m}?        n or n+1 or ... or m x, prefer fewer<br>
+  x{n,}?         n or more x, prefer fewer<br>
+  x{n}?          exactly n x<br>
+<br>
+Implementation restriction: The counting forms x{n,m}, x{n,}, and x{n}<br>
+reject forms that create a minimum or maximum repetition count above 1000.<br>
+Unlimited repetitions are not subject to this restriction.<br>
+<br>
+Grouping:<br>
+  (re)           numbered capturing group (submatch)<br>
+  (?P&lt;name&gt;re)   named &amp; numbered capturing group (submatch)<br>
+  (?:re)         non-capturing group<br>
+  (?flags)       set flags within current group; non-capturing<br>
+  (?flags:re)    set flags during re; non-capturing<br>
+<br>
+  Flag syntax is xyz (set) or -xyz (clear) or xy-z (set xy, clear z). The flags are:<br>
+<br>
+  i              case-insensitive (default false)<br>
+  m              multi-line mode: ^ and $ match begin/end line in addition to begin/end text (default false)<br>
+  s              let . match \n (default false)<br>
+  U              ungreedy: swap meaning of x* and x*?, x+ and x+?, etc (default false)<br>
+<br>
+Empty strings:<br>
+  ^              at beginning of text or line (flag m=true)<br>
+  $              at end of text (like \z not Perl&#39;s \Z) or line (flag m=true)<br>
+  \A             at beginning of text<br>
+  \b             at ASCII word boundary (\w on one side and \W, \A, or \z on the other)<br>
+  \B             not at ASCII word boundary<br>
+  \z             at end of text<br>
+<br>
+Escape sequences:<br>
+  \a             bell (== \007)<br>
+  \f             form feed (== \014)<br>
+  \t             horizontal tab (== \011)<br>
+  \n             newline (== \012)<br>
+  \r             carriage return (== \015)<br>
+  \v             vertical tab character (== \013)<br>
+  \*             literal *, for any punctuation character *<br>
+  \123           octal character code (up to three digits)<br>
+  \x7F           hex character code (exactly two digits)<br>
+  \x{10FFFF}     hex character code<br>
+  \Q...\E        literal text ... even if ... has punctuation<br>
+<br>
+Character class elements:<br>
+  x              single character<br>
+  A-Z            character range (inclusive)<br>
+  \d             Perl character class<br>
+  [:foo:]        ASCII character class foo<br>
+  \p{Foo}        Unicode character class Foo<br>
+  \pF            Unicode character class F (one-letter name)<br>
+<br>
+Named character classes as character class elements:<br>
+  [\d]           digits (== \d)<br>
+  [^\d]          not digits (== \D)<br>
+  [\D]           not digits (== \D)<br>
+  [^\D]          not not digits (== \d)<br>
+  [[:name:]]     named ASCII class inside character class (== [:name:])<br>
+  [^[:name:]]    named ASCII class inside negated character class (== [:^name:])<br>
+  [\p{Name}]     named Unicode property inside character class (== \p{Name})<br>
+  [^\p{Name}]    named Unicode property inside negated character class (== \P{Name})<br>
+<br>
+Perl character classes (all ASCII-only):<br>
+  \d             digits (== [0-9])<br>
+  \D             not digits (== [^0-9])<br>
+  \s             whitespace (== [\t\n\f\r ])<br>
+  \S             not whitespace (== [^\t\n\f\r ])<br>
+  \w             word characters (== [0-9A-Za-z_])<br>
+  \W             not word characters (== [^0-9A-Za-z_])<br>
+<br>
+ASCII character classes:<br>
+  [[:alnum:]]    alphanumeric (== [0-9A-Za-z])<br>
+  [[:alpha:]]    alphabetic (== [A-Za-z])<br>
+  [[:ascii:]]    ASCII (== [\x00-\x7F])<br>
+  [[:blank:]]    blank (== [\t ])<br>
+  [[:cntrl:]]    control (== [\x00-\x1F\x7F])<br>
+  [[:digit:]]    digits (== [0-9])<br>
+  [[:graph:]]    graphical (== [!-~] == [A-Za-z0-9!&#34;#$%&amp;&#39;()*+,\-./:;&lt;=&gt;?@[\\\]^_`{|}~])<br>
+  [[:lower:]]    lower case (== [a-z])<br>
+  [[:print:]]    printable (== [ -~] == [ [:graph:]])<br>
+  [[:punct:]]    punctuation (== [!-/:-@[-`{-~])<br>
+  [[:space:]]    whitespace (== [\t\n\v\f\r ])<br>
+  [[:upper:]]    upper case (== [A-Z])<br>
+  [[:word:]]     word characters (== [0-9A-Za-z_])<br>
+  [[:xdigit:]]   hex digit (== [0-9A-Fa-f])<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ClassNL">ClassNL</a>
+</li>
+<li>
+  <a href="#Compile">Compile</a>
+</li>
+<li>
+  <a href="#DotNL">DotNL</a>
+</li>
+<li>
+  <a href="#EmptyBeginLine">EmptyBeginLine</a>
+</li>
+<li>
+  <a href="#EmptyBeginText">EmptyBeginText</a>
+</li>
+<li>
+  <a href="#EmptyEndLine">EmptyEndLine</a>
+</li>
+<li>
+  <a href="#EmptyEndText">EmptyEndText</a>
+</li>
+<li>
+  <a href="#EmptyNoWordBoundary">EmptyNoWordBoundary</a>
+</li>
+<li>
+  <a href="#EmptyOp.">EmptyOp.</a>
+</li>
+<li>
+  <a href="#EmptyOpContext">EmptyOpContext</a>
+</li>
+<li>
+  <a href="#EmptyWordBoundary">EmptyWordBoundary</a>
+</li>
+<li>
+  <a href="#ErrInternalError">ErrInternalError</a>
+</li>
+<li>
+  <a href="#ErrInvalidCharClass">ErrInvalidCharClass</a>
+</li>
+<li>
+  <a href="#ErrInvalidCharRange">ErrInvalidCharRange</a>
+</li>
+<li>
+  <a href="#ErrInvalidEscape">ErrInvalidEscape</a>
+</li>
+<li>
+  <a href="#ErrInvalidNamedCapture">ErrInvalidNamedCapture</a>
+</li>
+<li>
+  <a href="#ErrInvalidPerlOp">ErrInvalidPerlOp</a>
+</li>
+<li>
+  <a href="#ErrInvalidRepeatOp">ErrInvalidRepeatOp</a>
+</li>
+<li>
+  <a href="#ErrInvalidRepeatSize">ErrInvalidRepeatSize</a>
+</li>
+<li>
+  <a href="#ErrInvalidUTF8">ErrInvalidUTF8</a>
+</li>
+<li>
+  <a href="#ErrMissingBracket">ErrMissingBracket</a>
+</li>
+<li>
+  <a href="#ErrMissingParen">ErrMissingParen</a>
+</li>
+<li>
+  <a href="#ErrMissingRepeatArgument">ErrMissingRepeatArgument</a>
+</li>
+<li>
+  <a href="#ErrTrailingBackslash">ErrTrailingBackslash</a>
+</li>
+<li>
+  <a href="#ErrUnexpectedParen">ErrUnexpectedParen</a>
+</li>
+<li>
+  <a href="#Error.">Error.</a>
+</li>
+<li>
+  <a href="#ErrorCode.">ErrorCode.</a>
+</li>
+<li>
+  <a href="#Flags.">Flags.</a>
+</li>
+<li>
+  <a href="#FoldCase">FoldCase</a>
+</li>
+<li>
+  <a href="#InstAlt">InstAlt</a>
+</li>
+<li>
+  <a href="#InstAltMatch">InstAltMatch</a>
+</li>
+<li>
+  <a href="#InstCapture">InstCapture</a>
+</li>
+<li>
+  <a href="#InstEmptyWidth">InstEmptyWidth</a>
+</li>
+<li>
+  <a href="#InstFail">InstFail</a>
+</li>
+<li>
+  <a href="#InstMatch">InstMatch</a>
+</li>
+<li>
+  <a href="#InstNop">InstNop</a>
+</li>
+<li>
+  <a href="#InstOp.">InstOp.</a>
+</li>
+<li>
+  <a href="#InstRune">InstRune</a>
+</li>
+<li>
+  <a href="#InstRune1">InstRune1</a>
+</li>
+<li>
+  <a href="#InstRuneAny">InstRuneAny</a>
+</li>
+<li>
+  <a href="#InstRuneAnyNotNL">InstRuneAnyNotNL</a>
+</li>
+<li>
+  <a href="#IsWordChar">IsWordChar</a>
+</li>
+<li>
+  <a href="#Literal">Literal</a>
+</li>
+<li>
+  <a href="#MatchNL">MatchNL</a>
+</li>
+<li>
+  <a href="#NonGreedy">NonGreedy</a>
+</li>
+<li>
+  <a href="#OneLine">OneLine</a>
+</li>
+<li>
+  <a href="#Op.">Op.</a>
+</li>
+<li>
+  <a href="#OpAlternate">OpAlternate</a>
+</li>
+<li>
+  <a href="#OpAnyChar">OpAnyChar</a>
+</li>
+<li>
+  <a href="#OpAnyCharNotNL">OpAnyCharNotNL</a>
+</li>
+<li>
+  <a href="#OpBeginLine">OpBeginLine</a>
+</li>
+<li>
+  <a href="#OpBeginText">OpBeginText</a>
+</li>
+<li>
+  <a href="#OpCapture">OpCapture</a>
+</li>
+<li>
+  <a href="#OpCharClass">OpCharClass</a>
+</li>
+<li>
+  <a href="#OpConcat">OpConcat</a>
+</li>
+<li>
+  <a href="#OpEmptyMatch">OpEmptyMatch</a>
+</li>
+<li>
+  <a href="#OpEndLine">OpEndLine</a>
+</li>
+<li>
+  <a href="#OpEndText">OpEndText</a>
+</li>
+<li>
+  <a href="#OpLiteral">OpLiteral</a>
+</li>
+<li>
+  <a href="#OpNoMatch">OpNoMatch</a>
+</li>
+<li>
+  <a href="#OpNoWordBoundary">OpNoWordBoundary</a>
+</li>
+<li>
+  <a href="#OpPlus">OpPlus</a>
+</li>
+<li>
+  <a href="#OpQuest">OpQuest</a>
+</li>
+<li>
+  <a href="#OpRepeat">OpRepeat</a>
+</li>
+<li>
+  <a href="#OpStar">OpStar</a>
+</li>
+<li>
+  <a href="#OpWordBoundary">OpWordBoundary</a>
+</li>
+<li>
+  <a href="#POSIX">POSIX</a>
+</li>
+<li>
+  <a href="#Parse">Parse</a>
+</li>
+<li>
+  <a href="#Perl">Perl</a>
+</li>
+<li>
+  <a href="#PerlX">PerlX</a>
+</li>
+<li>
+  <a href="#Simple">Simple</a>
+</li>
+<li>
+  <a href="#UnicodeGroups">UnicodeGroups</a>
+</li>
+<li>
+  <a href="#WasDollar">WasDollar</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ClassNL">ClassNL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">allow character classes like [^a-z] and [[:space:]] to match newline<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Compile">Compile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Compile __re)</code></div>
+</pre>
+  <p class="var-docstr">Compile compiles the regexp into a program to be executed.<br>
+The regexp should have been simplified already (returned from re.Simplify).<br>
+<br>
+Go input arguments: (re *Regexp)<br>
+<br>
+Go return type: (*Prog, error)<br>
+<br>
+Joker input arguments: [^(atom-of go.std.regexp.syntax/Regexp) re]<br>
+<br>
+Joker return type: [(atom-of go.std.regexp.syntax/Prog) Error]</p>
+  
+</li>
+<li>
+  <h3 id="DotNL">DotNL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">allow . to match newline<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="EmptyBeginLine">EmptyBeginLine</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="EmptyBeginText">EmptyBeginText</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="EmptyEndLine">EmptyEndLine</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="EmptyEndText">EmptyEndText</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="EmptyNoWordBoundary">EmptyNoWordBoundary</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="EmptyOp.">EmptyOp.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EmptyOp. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.EmptyOp</p>
+  
+</li>
+<li>
+  <h3 id="EmptyOpContext">EmptyOpContext</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EmptyOpContext __r1 __r2)</code></div>
+</pre>
+  <p class="var-docstr">EmptyOpContext returns the zero-width assertions<br>
+satisfied at the position between the runes r1 and r2.<br>
+Passing r1 == -1 indicates that the position is<br>
+at the beginning of the text.<br>
+Passing r2 == -1 indicates that the position is<br>
+at the end of the text.<br>
+<br>
+Go input arguments: (r1 rune, r2 rune)<br>
+<br>
+Go return type: EmptyOp<br>
+<br>
+Joker input arguments: [^Char r1, ^Char r2]<br>
+<br>
+Joker return type: go.std.regexp.syntax/EmptyOp</p>
+  
+</li>
+<li>
+  <h3 id="EmptyWordBoundary">EmptyWordBoundary</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInternalError">ErrInternalError</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Unexpected error<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidCharClass">ErrInvalidCharClass</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Parse errors<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidCharRange">ErrInvalidCharRange</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidEscape">ErrInvalidEscape</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidNamedCapture">ErrInvalidNamedCapture</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidPerlOp">ErrInvalidPerlOp</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidRepeatOp">ErrInvalidRepeatOp</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidRepeatSize">ErrInvalidRepeatSize</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalidUTF8">ErrInvalidUTF8</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingBracket">ErrMissingBracket</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingParen">ErrMissingParen</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingRepeatArgument">ErrMissingRepeatArgument</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrTrailingBackslash">ErrTrailingBackslash</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ErrUnexpectedParen">ErrUnexpectedParen</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Error.">Error.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Error. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.Error</p>
+  
+</li>
+<li>
+  <h3 id="ErrorCode.">ErrorCode.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ErrorCode. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.ErrorCode</p>
+  
+</li>
+<li>
+  <h3 id="Flags.">Flags.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Flags. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.Flags</p>
+  
+</li>
+<li>
+  <h3 id="FoldCase">FoldCase</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">case-insensitive match<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="InstAlt">InstAlt</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstAltMatch">InstAltMatch</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstCapture">InstCapture</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstEmptyWidth">InstEmptyWidth</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstFail">InstFail</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstMatch">InstMatch</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstNop">InstNop</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstOp.">InstOp.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(InstOp. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.InstOp</p>
+  
+</li>
+<li>
+  <h3 id="InstRune">InstRune</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstRune1">InstRune1</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstRuneAny">InstRuneAny</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="InstRuneAnyNotNL">InstRuneAnyNotNL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IsWordChar">IsWordChar</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsWordChar __r)</code></div>
+</pre>
+  <p class="var-docstr">IsWordChar reports whether r is consider a ``word character&#39;&#39;<br>
+during the evaluation of the \b and \B zero-width assertions.<br>
+These assertions are ASCII-only: the word characters are [A-Za-z0-9_].<br>
+<br>
+Go input arguments: (r rune)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Char r]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Literal">Literal</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">treat pattern as literal string<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="MatchNL">MatchNL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="NonGreedy">NonGreedy</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">make repetition operators default to non-greedy<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OneLine">OneLine</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">treat ^ and $ as only matching at beginning and end of text<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Op.">Op.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Op. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for syntax.Op</p>
+  
+</li>
+<li>
+  <h3 id="OpAlternate">OpAlternate</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches alternation of Subs<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpAnyChar">OpAnyChar</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches any character<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpAnyCharNotNL">OpAnyCharNotNL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches any character except newline<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpBeginLine">OpBeginLine</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches empty string at beginning of line<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpBeginText">OpBeginText</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches empty string at beginning of text<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpCapture">OpCapture</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">capturing subexpression with index Cap, optional name Name<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpCharClass">OpCharClass</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Runes interpreted as range pair list<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpConcat">OpConcat</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches concatenation of Subs<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpEmptyMatch">OpEmptyMatch</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches empty string<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpEndLine">OpEndLine</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches empty string at end of line<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpEndText">OpEndText</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches empty string at end of text<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpLiteral">OpLiteral</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Runes sequence<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpNoMatch">OpNoMatch</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches no strings<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpNoWordBoundary">OpNoWordBoundary</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches word non-boundary `\B`<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpPlus">OpPlus</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Sub[0] one or more times<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpQuest">OpQuest</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Sub[0] zero or one times<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpRepeat">OpRepeat</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Sub[0] at least Min times, at most Max (Max == -1 is no limit)<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpStar">OpStar</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches Sub[0] zero or more times<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="OpWordBoundary">OpWordBoundary</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">matches word boundary `\b`<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="POSIX">POSIX</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">POSIX syntax<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Parse">Parse</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Parse __s __flags)</code></div>
+</pre>
+  <p class="var-docstr">Parse parses a regular expression string s, controlled by the specified<br>
+Flags, and returns a regular expression parse tree. The syntax is<br>
+described in the top-level comment.<br>
+<br>
+Go input arguments: (s string, flags Flags)<br>
+<br>
+Go return type: (*Regexp, error)<br>
+<br>
+Joker input arguments: [^String s, ^go.std.regexp.syntax/Flags flags]<br>
+<br>
+Joker return type: [(atom-of go.std.regexp.syntax/Regexp) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Perl">Perl</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">as close to Perl as possible<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="PerlX">PerlX</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">allow Perl extensions<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Simple">Simple</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">regexp contains no counted repetition<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="UnicodeGroups">UnicodeGroups</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">allow \p{Han}, \P{Han} for Unicode group and negation<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="WasDollar">WasDollar</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">regexp OpEndText was $, not \z<br>
+</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

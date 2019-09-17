@@ -1,0 +1,249 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.unicode.utf8</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the unicode/utf8 package.<br>
+<br>
+Package utf8 implements functions and constants to support text encoded in<br>
+UTF-8. It includes functions to translate between runes and UTF-8 byte sequences.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#DecodeLastRuneInString">DecodeLastRuneInString</a>
+</li>
+<li>
+  <a href="#DecodeRuneInString">DecodeRuneInString</a>
+</li>
+<li>
+  <a href="#FullRuneInString">FullRuneInString</a>
+</li>
+<li>
+  <a href="#MaxRune">MaxRune</a>
+</li>
+<li>
+  <a href="#RuneCountInString">RuneCountInString</a>
+</li>
+<li>
+  <a href="#RuneError">RuneError</a>
+</li>
+<li>
+  <a href="#RuneLen">RuneLen</a>
+</li>
+<li>
+  <a href="#RuneSelf">RuneSelf</a>
+</li>
+<li>
+  <a href="#RuneStart">RuneStart</a>
+</li>
+<li>
+  <a href="#UTFMax">UTFMax</a>
+</li>
+<li>
+  <a href="#ValidRune">ValidRune</a>
+</li>
+<li>
+  <a href="#ValidString">ValidString</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="DecodeLastRuneInString">DecodeLastRuneInString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DecodeLastRuneInString __s)</code></div>
+</pre>
+  <p class="var-docstr">DecodeLastRuneInString is like DecodeLastRune but its input is a string. If<br>
+s is empty it returns (RuneError, 0). Otherwise, if the encoding is invalid,<br>
+it returns (RuneError, 1). Both are impossible results for correct,<br>
+non-empty UTF-8.<br>
+<br>
+An encoding is invalid if it is incorrect UTF-8, encodes a rune that is<br>
+out of range, or is not the shortest possible UTF-8 encoding for the<br>
+value. No other validation is performed.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: (r rune, size int)<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: [Char Int]</p>
+  
+</li>
+<li>
+  <h3 id="DecodeRuneInString">DecodeRuneInString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DecodeRuneInString __s)</code></div>
+</pre>
+  <p class="var-docstr">DecodeRuneInString is like DecodeRune but its input is a string. If s is<br>
+empty it returns (RuneError, 0). Otherwise, if the encoding is invalid, it<br>
+returns (RuneError, 1). Both are impossible results for correct, non-empty<br>
+UTF-8.<br>
+<br>
+An encoding is invalid if it is incorrect UTF-8, encodes a rune that is<br>
+out of range, or is not the shortest possible UTF-8 encoding for the<br>
+value. No other validation is performed.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: (r rune, size int)<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: [Char Int]</p>
+  
+</li>
+<li>
+  <h3 id="FullRuneInString">FullRuneInString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FullRuneInString __s)</code></div>
+</pre>
+  <p class="var-docstr">FullRuneInString is like FullRune but its input is a string.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="MaxRune">MaxRune</h3>
+  <span class="var-type Char">Char</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Maximum valid Unicode code point.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="RuneCountInString">RuneCountInString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RuneCountInString __s)</code></div>
+</pre>
+  <p class="var-docstr">RuneCountInString is like RuneCount but its input is a string.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="RuneError">RuneError</h3>
+  <span class="var-type Char">Char</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">the &#34;error&#34; Rune or &#34;Unicode replacement character&#34;<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="RuneLen">RuneLen</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RuneLen __r)</code></div>
+</pre>
+  <p class="var-docstr">RuneLen returns the number of bytes required to encode the rune.<br>
+It returns -1 if the rune is not a valid value to encode in UTF-8.<br>
+<br>
+Go input arguments: (r rune)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^Char r]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="RuneSelf">RuneSelf</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">characters below Runeself are represented as themselves in a single byte.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="RuneStart">RuneStart</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RuneStart __b)</code></div>
+</pre>
+  <p class="var-docstr">RuneStart reports whether the byte could be the first byte of an encoded,<br>
+possibly invalid rune. Second and subsequent bytes always have the top two<br>
+bits set to 10.<br>
+<br>
+Go input arguments: (b byte)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Int b]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="UTFMax">UTFMax</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">maximum number of bytes of a UTF-8 encoded Unicode character.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ValidRune">ValidRune</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ValidRune __r)</code></div>
+</pre>
+  <p class="var-docstr">ValidRune reports whether r can be legally encoded as UTF-8.<br>
+Code points that are out of range or a surrogate half are illegal.<br>
+<br>
+Go input arguments: (r rune)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Char r]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="ValidString">ValidString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ValidString __s)</code></div>
+</pre>
+  <p class="var-docstr">ValidString reports whether s consists entirely of valid UTF-8-encoded runes.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

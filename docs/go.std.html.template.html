@@ -1,0 +1,689 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.html.template</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the html/template package.<br>
+<br>
+Package template (html/template) implements data-driven templates for<br>
+generating HTML output safe against code injection. It provides the<br>
+same interface as package text/template and should be used instead of<br>
+text/template whenever the output is HTML.<br>
+<br>
+The documentation here focuses on the security features of the package.<br>
+For information about how to program the templates themselves, see the<br>
+documentation for text/template.<br>
+<br>
+Introduction<br>
+<br>
+This package wraps package text/template so you can share its template API<br>
+to parse and execute HTML templates safely.<br>
+<br>
+  tmpl, err := template.New(&#34;name&#34;).Parse(...)<br>
+  // Error checking elided<br>
+  err = tmpl.Execute(out, data)<br>
+<br>
+If successful, tmpl will now be injection-safe. Otherwise, err is an error<br>
+defined in the docs for ErrorCode.<br>
+<br>
+HTML templates treat data values as plain text which should be encoded so they<br>
+can be safely embedded in an HTML document. The escaping is contextual, so<br>
+actions can appear within JavaScript, CSS, and URI contexts.<br>
+<br>
+The security model used by this package assumes that template authors are<br>
+trusted, while Execute&#39;s data parameter is not. More details are<br>
+provided below.<br>
+<br>
+Example<br>
+<br>
+  import &#34;text/template&#34;<br>
+  ...<br>
+  t, err := template.New(&#34;foo&#34;).Parse(`{{define &#34;T&#34;}}Hello, {{.}}!{{end}}`)<br>
+  err = t.ExecuteTemplate(out, &#34;T&#34;, &#34;&lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;&#34;)<br>
+<br>
+produces<br>
+<br>
+  Hello, &lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;!<br>
+<br>
+but the contextual autoescaping in html/template<br>
+<br>
+  import &#34;html/template&#34;<br>
+  ...<br>
+  t, err := template.New(&#34;foo&#34;).Parse(`{{define &#34;T&#34;}}Hello, {{.}}!{{end}}`)<br>
+  err = t.ExecuteTemplate(out, &#34;T&#34;, &#34;&lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;&#34;)<br>
+<br>
+produces safe, escaped HTML output<br>
+<br>
+  Hello, &amp;lt;script&amp;gt;alert(&amp;#39;you have been pwned&amp;#39;)&amp;lt;/script&amp;gt;!<br>
+<br>
+Contexts<br>
+<br>
+This package understands HTML, CSS, JavaScript, and URIs. It adds sanitizing<br>
+functions to each simple action pipeline, so given the excerpt<br>
+<br>
+  &lt;a href=&#34;/search?q={{.}}&#34;&gt;{{.}}&lt;/a&gt;<br>
+<br>
+At parse time each {{.}} is overwritten to add escaping functions as necessary.<br>
+In this case it becomes<br>
+<br>
+  &lt;a href=&#34;/search?q={{. | urlescaper | attrescaper}}&#34;&gt;{{. | htmlescaper}}&lt;/a&gt;<br>
+<br>
+where urlescaper, attrescaper, and htmlescaper are aliases for internal escaping<br>
+functions.<br>
+<br>
+For these internal escaping functions, if an action pipeline evaluates to<br>
+a nil interface value, it is treated as though it were an empty string.<br>
+<br>
+Errors<br>
+<br>
+See the documentation of ErrorCode for details.<br>
+<br>
+A fuller picture<br>
+<br>
+The rest of this package comment may be skipped on first reading; it includes<br>
+details necessary to understand escaping contexts and error messages. Most users<br>
+will not need to understand these details.<br>
+<br>
+Contexts<br>
+<br>
+Assuming {{.}} is `O&#39;Reilly: How are &lt;i&gt;you&lt;/i&gt;?`, the table below shows<br>
+how {{.}} appears when used in the context to the left.<br>
+<br>
+  Context                          {{.}} After<br>
+  {{.}}                            O&#39;Reilly: How are &amp;lt;i&amp;gt;you&amp;lt;/i&amp;gt;?<br>
+  &lt;a title=&#39;{{.}}&#39;&gt;                O&amp;#39;Reilly: How are you?<br>
+  &lt;a href=&#34;/{{.}}&#34;&gt;                O&amp;#39;Reilly: How are %3ci%3eyou%3c/i%3e?<br>
+  &lt;a href=&#34;?q={{.}}&#34;&gt;              O&amp;#39;Reilly%3a%20How%20are%3ci%3e...%3f<br>
+  &lt;a onx=&#39;f(&#34;{{.}}&#34;)&#39;&gt;             O\x27Reilly: How are \x3ci\x3eyou...?<br>
+  &lt;a onx=&#39;f({{.}})&#39;&gt;               &#34;O\x27Reilly: How are \x3ci\x3eyou...?&#34;<br>
+  &lt;a onx=&#39;pattern = /{{.}}/;&#39;&gt;     O\x27Reilly: How are \x3ci\x3eyou...\x3f<br>
+<br>
+If used in an unsafe context, then the value might be filtered out:<br>
+<br>
+  Context                          {{.}} After<br>
+  &lt;a href=&#34;{{.}}&#34;&gt;                 #ZgotmplZ<br>
+<br>
+since &#34;O&#39;Reilly:&#34; is not an allowed protocol like &#34;http:&#34;.<br>
+<br>
+If {{.}} is the innocuous word, `left`, then it can appear more widely,<br>
+<br>
+  Context                              {{.}} After<br>
+  {{.}}                                left<br>
+  &lt;a title=&#39;{{.}}&#39;&gt;                    left<br>
+  &lt;a href=&#39;{{.}}&#39;&gt;                     left<br>
+  &lt;a href=&#39;/{{.}}&#39;&gt;                    left<br>
+  &lt;a href=&#39;?dir={{.}}&#39;&gt;                left<br>
+  &lt;a style=&#34;border-{{.}}: 4px&#34;&gt;        left<br>
+  &lt;a style=&#34;align: {{.}}&#34;&gt;             left<br>
+  &lt;a style=&#34;background: &#39;{{.}}&#39;&gt;       left<br>
+  &lt;a style=&#34;background: url(&#39;{{.}}&#39;)&gt;  left<br>
+  &lt;style&gt;p.{{.}} {color:red}&lt;/style&gt;   left<br>
+<br>
+Non-string values can be used in JavaScript contexts.<br>
+If {{.}} is<br>
+<br>
+  struct{A,B string}{ &#34;foo&#34;, &#34;bar&#34; }<br>
+<br>
+in the escaped template<br>
+<br>
+  &lt;script&gt;var pair = {{.}};&lt;/script&gt;<br>
+<br>
+then the template output is<br>
+<br>
+  &lt;script&gt;var pair = {&#34;A&#34;: &#34;foo&#34;, &#34;B&#34;: &#34;bar&#34;};&lt;/script&gt;<br>
+<br>
+See package json to understand how non-string content is marshaled for<br>
+embedding in JavaScript contexts.<br>
+<br>
+Typed Strings<br>
+<br>
+By default, this package assumes that all pipelines produce a plain text string.<br>
+It adds escaping pipeline stages necessary to correctly and safely embed that<br>
+plain text string in the appropriate context.<br>
+<br>
+When a data value is not plain text, you can make sure it is not over-escaped<br>
+by marking it with its type.<br>
+<br>
+Types HTML, JS, URL, and others from content.go can carry safe content that is<br>
+exempted from escaping.<br>
+<br>
+The template<br>
+<br>
+  Hello, {{.}}!<br>
+<br>
+can be invoked with<br>
+<br>
+  tmpl.Execute(out, template.HTML(`&lt;b&gt;World&lt;/b&gt;`))<br>
+<br>
+to produce<br>
+<br>
+  Hello, &lt;b&gt;World&lt;/b&gt;!<br>
+<br>
+instead of the<br>
+<br>
+  Hello, &amp;lt;b&amp;gt;World&amp;lt;b&amp;gt;!<br>
+<br>
+that would have been produced if {{.}} was a regular string.<br>
+<br>
+Security Model<br>
+<br>
+https://rawgit.com/mikesamuel/sanitized-jquery-templates/trunk/safetemplate.html#problem_definition defines &#34;safe&#34; as used by this package.<br>
+<br>
+This package assumes that template authors are trusted, that Execute&#39;s data<br>
+parameter is not, and seeks to preserve the properties below in the face<br>
+of untrusted data:<br>
+<br>
+Structure Preservation Property:<br>
+&#34;... when a template author writes an HTML tag in a safe templating language,<br>
+the browser will interpret the corresponding portion of the output as a tag<br>
+regardless of the values of untrusted data, and similarly for other structures<br>
+such as attribute boundaries and JS and CSS string boundaries.&#34;<br>
+<br>
+Code Effect Property:<br>
+&#34;... only code specified by the template author should run as a result of<br>
+injecting the template output into a page and all code specified by the<br>
+template author should run as a result of the same.&#34;<br>
+<br>
+Least Surprise Property:<br>
+&#34;A developer (or code reviewer) familiar with HTML, CSS, and JavaScript, who<br>
+knows that contextual autoescaping happens should be able to look at a {{.}}<br>
+and correctly infer what sanitization happens.&#34;<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#CSS.">CSS.</a>
+</li>
+<li>
+  <a href="#ErrAmbigContext">ErrAmbigContext</a>
+</li>
+<li>
+  <a href="#ErrBadHTML">ErrBadHTML</a>
+</li>
+<li>
+  <a href="#ErrBranchEnd">ErrBranchEnd</a>
+</li>
+<li>
+  <a href="#ErrEndContext">ErrEndContext</a>
+</li>
+<li>
+  <a href="#ErrNoSuchTemplate">ErrNoSuchTemplate</a>
+</li>
+<li>
+  <a href="#ErrOutputContext">ErrOutputContext</a>
+</li>
+<li>
+  <a href="#ErrPartialCharset">ErrPartialCharset</a>
+</li>
+<li>
+  <a href="#ErrPartialEscape">ErrPartialEscape</a>
+</li>
+<li>
+  <a href="#ErrPredefinedEscaper">ErrPredefinedEscaper</a>
+</li>
+<li>
+  <a href="#ErrRangeLoopReentry">ErrRangeLoopReentry</a>
+</li>
+<li>
+  <a href="#ErrSlashAmbig">ErrSlashAmbig</a>
+</li>
+<li>
+  <a href="#ErrorCode.">ErrorCode.</a>
+</li>
+<li>
+  <a href="#HTML.">HTML.</a>
+</li>
+<li>
+  <a href="#HTMLAttr.">HTMLAttr.</a>
+</li>
+<li>
+  <a href="#HTMLEscapeString">HTMLEscapeString</a>
+</li>
+<li>
+  <a href="#JS.">JS.</a>
+</li>
+<li>
+  <a href="#JSEscapeString">JSEscapeString</a>
+</li>
+<li>
+  <a href="#JSStr.">JSStr.</a>
+</li>
+<li>
+  <a href="#Must">Must</a>
+</li>
+<li>
+  <a href="#New">New</a>
+</li>
+<li>
+  <a href="#OK">OK</a>
+</li>
+<li>
+  <a href="#ParseGlob">ParseGlob</a>
+</li>
+<li>
+  <a href="#Srcset.">Srcset.</a>
+</li>
+<li>
+  <a href="#URL.">URL.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="CSS.">CSS.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CSS. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.CSS</p>
+  
+</li>
+<li>
+  <h3 id="ErrAmbigContext">ErrAmbigContext</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrAmbigContext: &#34;... appears in an ambiguous context within a URL&#34;<br>
+Example:<br>
+  &lt;a href=&#34;<br>
+     {{if .C}}<br>
+       /path/<br>
+     {{else}}<br>
+       /search?q=<br>
+     {{end}}<br>
+     {{.X}}<br>
+  &#34;&gt;<br>
+Discussion:<br>
+  {{.X}} is in an ambiguous URL context since, depending on {{.C}},<br>
+ it may be either a URL suffix or a query parameter.<br>
+  Moving {{.X}} into the condition removes the ambiguity:<br>
+  &lt;a href=&#34;{{if .C}}/path/{{.X}}{{else}}/search?q={{.X}}&#34;&gt;<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBadHTML">ErrBadHTML</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBadHTML: &#34;expected space, attr name, or end of tag, but got ...&#34;,<br>
+  &#34;... in unquoted attr&#34;, &#34;... in attribute name&#34;<br>
+Example:<br>
+  &lt;a href = /search?q=foo&gt;<br>
+  &lt;href=foo&gt;<br>
+  &lt;form na&lt;e=...&gt;<br>
+  &lt;option selected&lt;<br>
+Discussion:<br>
+  This is often due to a typo in an HTML element, but some runes<br>
+  are banned in tag names, attribute names, and unquoted attribute<br>
+  values because they can tickle parser ambiguities.<br>
+  Quoting all attributes is the best policy.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBranchEnd">ErrBranchEnd</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBranchEnd: &#34;{{if}} branches end in different contexts&#34;<br>
+Example:<br>
+  {{if .C}}&lt;a href=&#34;{{end}}{{.X}}<br>
+Discussion:<br>
+  Package html/template statically examines each path through an<br>
+  {{if}}, {{range}}, or {{with}} to escape any following pipelines.<br>
+  The example is ambiguous since {{.X}} might be an HTML text node,<br>
+  or a URL prefix in an HTML attribute. The context of {{.X}} is<br>
+  used to figure out how to escape it, but that context depends on<br>
+  the run-time value of {{.C}} which is not statically known.<br>
+<br>
+  The problem is usually something like missing quotes or angle<br>
+  brackets, or can be avoided by refactoring to put the two contexts<br>
+  into different branches of an if, range or with. If the problem<br>
+  is in a {{range}} over a collection that should never be empty,<br>
+  adding a dummy {{else}} can help.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrEndContext">ErrEndContext</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrEndContext: &#34;... ends in a non-text context: ...&#34;<br>
+Examples:<br>
+  &lt;div<br>
+  &lt;div title=&#34;no close quote&gt;<br>
+  &lt;script&gt;f()<br>
+Discussion:<br>
+  Executed templates should produce a DocumentFragment of HTML.<br>
+  Templates that end without closing tags will trigger this error.<br>
+  Templates that should not be used in an HTML context or that<br>
+  produce incomplete Fragments should not be executed directly.<br>
+<br>
+  {{define &#34;main&#34;}} &lt;script&gt;{{template &#34;helper&#34;}}&lt;/script&gt; {{end}}<br>
+  {{define &#34;helper&#34;}} document.write(&#39; &lt;div title=&#34; &#39;) {{end}}<br>
+<br>
+  &#34;helper&#34; does not produce a valid document fragment, so should<br>
+  not be Executed directly.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNoSuchTemplate">ErrNoSuchTemplate</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNoSuchTemplate: &#34;no such template ...&#34;<br>
+Examples:<br>
+  {{define &#34;main&#34;}}&lt;div {{template &#34;attrs&#34;}}&gt;{{end}}<br>
+  {{define &#34;attrs&#34;}}href=&#34;{{.URL}}&#34;{{end}}<br>
+Discussion:<br>
+  Package html/template looks through template calls to compute the<br>
+  context.<br>
+  Here the {{.URL}} in &#34;attrs&#34; must be treated as a URL when called<br>
+  from &#34;main&#34;, but you will get this error if &#34;attrs&#34; is not defined<br>
+  when &#34;main&#34; is parsed.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrOutputContext">ErrOutputContext</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrOutputContext: &#34;cannot compute output context for template ...&#34;<br>
+Examples:<br>
+  {{define &#34;t&#34;}}{{if .T}}{{template &#34;t&#34; .T}}{{end}}{{.H}}&#34;,{{end}}<br>
+Discussion:<br>
+  A recursive template does not end in the same context in which it<br>
+  starts, and a reliable output context cannot be computed.<br>
+  Look for typos in the named template.<br>
+  If the template should not be called in the named start context,<br>
+  look for calls to that template in unexpected contexts.<br>
+  Maybe refactor recursive templates to not be recursive.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrPartialCharset">ErrPartialCharset</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrPartialCharset: &#34;unfinished JS regexp charset in ...&#34;<br>
+Example:<br>
+    &lt;script&gt;var pattern = /foo[{{.Chars}}]/&lt;/script&gt;<br>
+Discussion:<br>
+  Package html/template does not support interpolation into regular<br>
+  expression literal character sets.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrPartialEscape">ErrPartialEscape</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrPartialEscape: &#34;unfinished escape sequence in ...&#34;<br>
+Example:<br>
+  &lt;script&gt;alert(&#34;\{{.X}}&#34;)&lt;/script&gt;<br>
+Discussion:<br>
+  Package html/template does not support actions following a<br>
+  backslash.<br>
+  This is usually an error and there are better solutions; for<br>
+  example<br>
+    &lt;script&gt;alert(&#34;{{.X}}&#34;)&lt;/script&gt;<br>
+  should work, and if {{.X}} is a partial escape sequence such as<br>
+  &#34;xA0&#34;, mark the whole sequence as safe content: JSStr(`\xA0`)<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrPredefinedEscaper">ErrPredefinedEscaper</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrPredefinedEscaper: &#34;predefined escaper ... disallowed in template&#34;<br>
+Example:<br>
+  &lt;div class={{. | html}}&gt;Hello&lt;div&gt;<br>
+Discussion:<br>
+  Package html/template already contextually escapes all pipelines to<br>
+  produce HTML output safe against code injection. Manually escaping<br>
+  pipeline output using the predefined escapers &#34;html&#34; or &#34;urlquery&#34; is<br>
+  unnecessary, and may affect the correctness or safety of the escaped<br>
+  pipeline output in Go 1.8 and earlier.<br>
+<br>
+  In most cases, such as the given example, this error can be resolved by<br>
+  simply removing the predefined escaper from the pipeline and letting the<br>
+  contextual autoescaper handle the escaping of the pipeline. In other<br>
+  instances, where the predefined escaper occurs in the middle of a<br>
+  pipeline where subsequent commands expect escaped input, e.g.<br>
+    {{.X | html | makeALink}}<br>
+  where makeALink does<br>
+    return `&lt;a href=&#34;`+input+`&#34;&gt;link&lt;/a&gt;`<br>
+  consider refactoring the surrounding template to make use of the<br>
+  contextual autoescaper, i.e.<br>
+    &lt;a href=&#34;{{.X}}&#34;&gt;link&lt;/a&gt;<br>
+<br>
+  To ease migration to Go 1.9 and beyond, &#34;html&#34; and &#34;urlquery&#34; will<br>
+  continue to be allowed as the last command in a pipeline. However, if the<br>
+  pipeline occurs in an unquoted attribute value context, &#34;html&#34; is<br>
+  disallowed. Avoid using &#34;html&#34; and &#34;urlquery&#34; entirely in new templates.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrRangeLoopReentry">ErrRangeLoopReentry</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrRangeLoopReentry: &#34;on range loop re-entry: ...&#34;<br>
+Example:<br>
+  &lt;script&gt;var x = [{{range .}}&#39;{{.}},{{end}}]&lt;/script&gt;<br>
+Discussion:<br>
+  If an iteration through a range would cause it to end in a<br>
+  different context than an earlier pass, there is no single context.<br>
+  In the example, there is missing a quote, so it is not clear<br>
+  whether {{.}} is meant to be inside a JS string or in a JS value<br>
+  context. The second iteration would produce something like<br>
+<br>
+    &lt;script&gt;var x = [&#39;firstValue,&#39;secondValue]&lt;/script&gt;<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrSlashAmbig">ErrSlashAmbig</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrSlashAmbig: &#39;/&#39; could start a division or regexp.<br>
+Example:<br>
+  &lt;script&gt;<br>
+    {{if .C}}var x = 1{{end}}<br>
+    /-{{.N}}/i.test(x) ? doThis : doThat();<br>
+  &lt;/script&gt;<br>
+Discussion:<br>
+  The example above could produce `var x = 1/-2/i.test(s)...`<br>
+  in which the first &#39;/&#39; is a mathematical division operator or it<br>
+  could produce `/-2/i.test(s)` in which the first &#39;/&#39; starts a<br>
+  regexp literal.<br>
+  Look for missing semicolons inside branches, and maybe add<br>
+  parentheses to make it clear which interpretation you intend.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrorCode.">ErrorCode.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ErrorCode. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.ErrorCode</p>
+  
+</li>
+<li>
+  <h3 id="HTML.">HTML.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HTML. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.HTML</p>
+  
+</li>
+<li>
+  <h3 id="HTMLAttr.">HTMLAttr.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HTMLAttr. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.HTMLAttr</p>
+  
+</li>
+<li>
+  <h3 id="HTMLEscapeString">HTMLEscapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HTMLEscapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">HTMLEscapeString returns the escaped HTML equivalent of the plain text data s.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="JS.">JS.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(JS. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.JS</p>
+  
+</li>
+<li>
+  <h3 id="JSEscapeString">JSEscapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(JSEscapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">JSEscapeString returns the escaped JavaScript equivalent of the plain text data s.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="JSStr.">JSStr.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(JSStr. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.JSStr</p>
+  
+</li>
+<li>
+  <h3 id="Must">Must</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Must __t __err)</code></div>
+</pre>
+  <p class="var-docstr">Must is a helper that wraps a call to a function returning (*Template, error)<br>
+and panics if the error is non-nil. It is intended for use in variable initializations<br>
+such as<br>
+	var t = template.Must(template.New(&#34;name&#34;).Parse(&#34;html&#34;))<br>
+<br>
+Go input arguments: (t *Template, err error)<br>
+<br>
+Go return type: *Template<br>
+<br>
+Joker input arguments: [^(atom-of go.std.html.template/Template) t, ^Error err]<br>
+<br>
+Joker return type: (atom-of go.std.html.template/Template)</p>
+  
+</li>
+<li>
+  <h3 id="New">New</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(New __name)</code></div>
+</pre>
+  <p class="var-docstr">New allocates a new HTML template with the given name.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: *Template<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: (atom-of go.std.html.template/Template)</p>
+  
+</li>
+<li>
+  <h3 id="OK">OK</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">OK indicates the lack of an error.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ParseGlob">ParseGlob</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ParseGlob __pattern)</code></div>
+</pre>
+  <p class="var-docstr">ParseGlob creates a new Template and parses the template definitions from the<br>
+files identified by the pattern, which must match at least one file. The<br>
+returned template will have the (base) name and (parsed) contents of the<br>
+first file matched by the pattern. ParseGlob is equivalent to calling<br>
+ParseFiles with the list of files matched by the pattern.<br>
+<br>
+When parsing multiple files with the same name in different directories,<br>
+the last one mentioned will be the one that results.<br>
+<br>
+Go input arguments: (pattern string)<br>
+<br>
+Go return type: (*Template, error)<br>
+<br>
+Joker input arguments: [^String pattern]<br>
+<br>
+Joker return type: [(atom-of go.std.html.template/Template) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Srcset.">Srcset.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Srcset. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.Srcset</p>
+  
+</li>
+<li>
+  <h3 id="URL.">URL.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(URL. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.URL</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

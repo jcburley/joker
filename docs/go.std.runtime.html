@@ -1,0 +1,540 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.runtime</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the runtime package.<br>
+<br>
+Package runtime contains operations that interact with Go&#39;s runtime system,<br>
+such as functions to control goroutines. It also includes the low-level type information<br>
+used by the reflect package; see reflect&#39;s documentation for the programmable<br>
+interface to the run-time type system.<br>
+<br>
+Environment Variables<br>
+<br>
+The following environment variables ($name or %name%, depending on the host<br>
+operating system) control the run-time behavior of Go programs. The meanings<br>
+and use may change from release to release.<br>
+<br>
+The GOGC variable sets the initial garbage collection target percentage.<br>
+A collection is triggered when the ratio of freshly allocated data to live data<br>
+remaining after the previous collection reaches this percentage. The default<br>
+is GOGC=100. Setting GOGC=off disables the garbage collector entirely.<br>
+The runtime/debug package&#39;s SetGCPercent function allows changing this<br>
+percentage at run time. See https://golang.org/pkg/runtime/debug/#SetGCPercent.<br>
+<br>
+The GODEBUG variable controls debugging variables within the runtime.<br>
+It is a comma-separated list of name=val pairs setting these named variables:<br>
+<br>
+	allocfreetrace: setting allocfreetrace=1 causes every allocation to be<br>
+	profiled and a stack trace printed on each object&#39;s allocation and free.<br>
+<br>
+	clobberfree: setting clobberfree=1 causes the garbage collector to<br>
+	clobber the memory content of an object with bad content when it frees<br>
+	the object.<br>
+<br>
+	cgocheck: setting cgocheck=0 disables all checks for packages<br>
+	using cgo to incorrectly pass Go pointers to non-Go code.<br>
+	Setting cgocheck=1 (the default) enables relatively cheap<br>
+	checks that may miss some errors.  Setting cgocheck=2 enables<br>
+	expensive checks that should not miss any errors, but will<br>
+	cause your program to run slower.<br>
+<br>
+	efence: setting efence=1 causes the allocator to run in a mode<br>
+	where each object is allocated on a unique page and addresses are<br>
+	never recycled.<br>
+<br>
+	gccheckmark: setting gccheckmark=1 enables verification of the<br>
+	garbage collector&#39;s concurrent mark phase by performing a<br>
+	second mark pass while the world is stopped.  If the second<br>
+	pass finds a reachable object that was not found by concurrent<br>
+	mark, the garbage collector will panic.<br>
+<br>
+	gcpacertrace: setting gcpacertrace=1 causes the garbage collector to<br>
+	print information about the internal state of the concurrent pacer.<br>
+<br>
+	gcshrinkstackoff: setting gcshrinkstackoff=1 disables moving goroutines<br>
+	onto smaller stacks. In this mode, a goroutine&#39;s stack can only grow.<br>
+<br>
+	gcstoptheworld: setting gcstoptheworld=1 disables concurrent garbage collection,<br>
+	making every garbage collection a stop-the-world event. Setting gcstoptheworld=2<br>
+	also disables concurrent sweeping after the garbage collection finishes.<br>
+<br>
+	gctrace: setting gctrace=1 causes the garbage collector to emit a single line to standard<br>
+	error at each collection, summarizing the amount of memory collected and the<br>
+	length of the pause. The format of this line is subject to change.<br>
+	Currently, it is:<br>
+		gc # @#s #%: #+#+# ms clock, #+#/#/#+# ms cpu, #-&gt;#-&gt;# MB, # MB goal, # P<br>
+	where the fields are as follows:<br>
+		gc #        the GC number, incremented at each GC<br>
+		@#s         time in seconds since program start<br>
+		#%          percentage of time spent in GC since program start<br>
+		#+...+#     wall-clock/CPU times for the phases of the GC<br>
+		#-&gt;#-&gt;# MB  heap size at GC start, at GC end, and live heap<br>
+		# MB goal   goal heap size<br>
+		# P         number of processors used<br>
+	The phases are stop-the-world (STW) sweep termination, concurrent<br>
+	mark and scan, and STW mark termination. The CPU times<br>
+	for mark/scan are broken down in to assist time (GC performed in<br>
+	line with allocation), background GC time, and idle GC time.<br>
+	If the line ends with &#34;(forced)&#34;, this GC was forced by a<br>
+	runtime.GC() call.<br>
+<br>
+	Setting gctrace to any value &gt; 0 also causes the garbage collector<br>
+	to emit a summary when memory is released back to the system.<br>
+	This process of returning memory to the system is called scavenging.<br>
+	The format of this summary is subject to change.<br>
+	Currently it is:<br>
+		scvg#: # MB released  printed only if non-zero<br>
+		scvg#: inuse: # idle: # sys: # released: # consumed: # (MB)<br>
+	where the fields are as follows:<br>
+		scvg#        the scavenge cycle number, incremented at each scavenge<br>
+		inuse: #     MB used or partially used spans<br>
+		idle: #      MB spans pending scavenging<br>
+		sys: #       MB mapped from the system<br>
+		released: #  MB released to the system<br>
+		consumed: #  MB allocated from the system<br>
+<br>
+	madvdontneed: setting madvdontneed=1 will use MADV_DONTNEED<br>
+	instead of MADV_FREE on Linux when returning memory to the<br>
+	kernel. This is less efficient, but causes RSS numbers to drop<br>
+	more quickly.<br>
+<br>
+	memprofilerate: setting memprofilerate=X will update the value of runtime.MemProfileRate.<br>
+	When set to 0 memory profiling is disabled.  Refer to the description of<br>
+	MemProfileRate for the default value.<br>
+<br>
+	invalidptr: defaults to invalidptr=1, causing the garbage collector and stack<br>
+	copier to crash the program if an invalid pointer value (for example, 1)<br>
+	is found in a pointer-typed location. Setting invalidptr=0 disables this check.<br>
+	This should only be used as a temporary workaround to diagnose buggy code.<br>
+	The real fix is to not store integers in pointer-typed locations.<br>
+<br>
+	sbrk: setting sbrk=1 replaces the memory allocator and garbage collector<br>
+	with a trivial allocator that obtains memory from the operating system and<br>
+	never reclaims any memory.<br>
+<br>
+	scavenge: scavenge=1 enables debugging mode of heap scavenger.<br>
+<br>
+	scheddetail: setting schedtrace=X and scheddetail=1 causes the scheduler to emit<br>
+	detailed multiline info every X milliseconds, describing state of the scheduler,<br>
+	processors, threads and goroutines.<br>
+<br>
+	schedtrace: setting schedtrace=X causes the scheduler to emit a single line to standard<br>
+	error every X milliseconds, summarizing the scheduler state.<br>
+<br>
+	tracebackancestors: setting tracebackancestors=N extends tracebacks with the stacks at<br>
+	which goroutines were created, where N limits the number of ancestor goroutines to<br>
+	report. This also extends the information returned by runtime.Stack. Ancestor&#39;s goroutine<br>
+	IDs will refer to the ID of the goroutine at the time of creation; it&#39;s possible for this<br>
+	ID to be reused for another goroutine. Setting N to 0 will report no ancestry information.<br>
+<br>
+The net, net/http, and crypto/tls packages also refer to debugging variables in GODEBUG.<br>
+See the documentation for those packages for details.<br>
+<br>
+The GOMAXPROCS variable limits the number of operating system threads that<br>
+can execute user-level Go code simultaneously. There is no limit to the number of threads<br>
+that can be blocked in system calls on behalf of Go code; those do not count against<br>
+the GOMAXPROCS limit. This package&#39;s GOMAXPROCS function queries and changes<br>
+the limit.<br>
+<br>
+The GOTRACEBACK variable controls the amount of output generated when a Go<br>
+program fails due to an unrecovered panic or an unexpected runtime condition.<br>
+By default, a failure prints a stack trace for the current goroutine,<br>
+eliding functions internal to the run-time system, and then exits with exit code 2.<br>
+The failure prints stack traces for all goroutines if there is no current goroutine<br>
+or the failure is internal to the run-time.<br>
+GOTRACEBACK=none omits the goroutine stack traces entirely.<br>
+GOTRACEBACK=single (the default) behaves as described above.<br>
+GOTRACEBACK=all adds stack traces for all user-created goroutines.<br>
+GOTRACEBACK=system is like ``all&#39;&#39; but adds stack frames for run-time functions<br>
+and shows goroutines created internally by the run-time.<br>
+GOTRACEBACK=crash is like ``system&#39;&#39; but crashes in an operating system-specific<br>
+manner instead of exiting. For example, on Unix systems, the crash raises<br>
+SIGABRT to trigger a core dump.<br>
+For historical reasons, the GOTRACEBACK settings 0, 1, and 2 are synonyms for<br>
+none, all, and system, respectively.<br>
+The runtime/debug package&#39;s SetTraceback function allows increasing the<br>
+amount of output at run time, but it cannot reduce the amount below that<br>
+specified by the environment variable.<br>
+See https://golang.org/pkg/runtime/debug/#SetTraceback.<br>
+<br>
+The GOARCH, GOOS, GOPATH, and GOROOT environment variables complete<br>
+the set of Go environment variables. They influence the building of Go programs<br>
+(see https://golang.org/cmd/go and https://golang.org/pkg/go/build).<br>
+GOARCH, GOOS, and GOROOT are recorded at compile time and made available by<br>
+constants or functions in this package, but they do not influence the execution<br>
+of the run-time system.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#BlockProfileRecord.">BlockProfileRecord.</a>
+</li>
+<li>
+  <a href="#CPUProfile">CPUProfile</a>
+</li>
+<li>
+  <a href="#Compiler">Compiler</a>
+</li>
+<li>
+  <a href="#Frames.">Frames.</a>
+</li>
+<li>
+  <a href="#Func.">Func.</a>
+</li>
+<li>
+  <a href="#FuncForPC">FuncForPC</a>
+</li>
+<li>
+  <a href="#GOARCH">GOARCH</a>
+</li>
+<li>
+  <a href="#GOMAXPROCS">GOMAXPROCS</a>
+</li>
+<li>
+  <a href="#GOOS">GOOS</a>
+</li>
+<li>
+  <a href="#GOROOT">GOROOT</a>
+</li>
+<li>
+  <a href="#MemProfileRate">MemProfileRate</a>
+</li>
+<li>
+  <a href="#NumCPU">NumCPU</a>
+</li>
+<li>
+  <a href="#NumCgoCall">NumCgoCall</a>
+</li>
+<li>
+  <a href="#NumGoroutine">NumGoroutine</a>
+</li>
+<li>
+  <a href="#ReadTrace">ReadTrace</a>
+</li>
+<li>
+  <a href="#SetMutexProfileFraction">SetMutexProfileFraction</a>
+</li>
+<li>
+  <a href="#StartTrace">StartTrace</a>
+</li>
+<li>
+  <a href="#TypeAssertionError.">TypeAssertionError.</a>
+</li>
+<li>
+  <a href="#Version">Version</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="BlockProfileRecord.">BlockProfileRecord.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BlockProfileRecord. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for runtime.BlockProfileRecord</p>
+  
+</li>
+<li>
+  <h3 id="CPUProfile">CPUProfile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CPUProfile)</code></div>
+</pre>
+  <p class="var-docstr">CPUProfile panics.<br>
+It formerly provided raw access to chunks of<br>
+a pprof-format profile generated by the runtime.<br>
+The details of generating that format have changed,<br>
+so this functionality has been removed.<br>
+<br>
+Deprecated: use the runtime/pprof package,<br>
+or the handlers in the net/http/pprof package,<br>
+or the testing package&#39;s -test.cpuprofile flag instead.<br>
+<br>
+Go return type: []byte<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of Int)</p>
+  
+</li>
+<li>
+  <h3 id="Compiler">Compiler</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Compiler is the name of the compiler toolchain that built the<br>
+running binary. Known toolchains are:<br>
+<br>
+	gc      Also known as cmd/compile.<br>
+	gccgo   The gccgo front end, part of the GCC compiler suite.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Frames.">Frames.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Frames. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for runtime.Frames</p>
+  
+</li>
+<li>
+  <h3 id="Func.">Func.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Func. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for runtime.Func</p>
+  
+</li>
+<li>
+  <h3 id="FuncForPC">FuncForPC</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FuncForPC __pc)</code></div>
+</pre>
+  <p class="var-docstr">FuncForPC returns a *Func describing the function that contains the<br>
+given program counter address, or else nil.<br>
+<br>
+If pc represents multiple functions because of inlining, it returns<br>
+the a *Func describing the innermost function, but with an entry<br>
+of the outermost function.<br>
+<br>
+Go input arguments: (pc uintptr)<br>
+<br>
+Go return type: *Func<br>
+<br>
+Joker input arguments: [^Number pc]<br>
+<br>
+Joker return type: (atom-of go.std.runtime/Func)</p>
+  
+</li>
+<li>
+  <h3 id="GOARCH">GOARCH</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">GOARCH is the running program&#39;s architecture target:<br>
+one of 386, amd64, arm, s390x, and so on.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="GOMAXPROCS">GOMAXPROCS</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(GOMAXPROCS __n)</code></div>
+</pre>
+  <p class="var-docstr">GOMAXPROCS sets the maximum number of CPUs that can be executing<br>
+simultaneously and returns the previous setting. If n &lt; 1, it does not<br>
+change the current setting.<br>
+The number of logical CPUs on the local machine can be queried with NumCPU.<br>
+This call will go away when the scheduler improves.<br>
+<br>
+Go input arguments: (n int)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^Int n]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="GOOS">GOOS</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">GOOS is the running program&#39;s operating system target:<br>
+one of darwin, freebsd, linux, and so on.<br>
+To view possible combinations of GOOS and GOARCH, run &#34;go tool dist list&#34;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="GOROOT">GOROOT</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(GOROOT)</code></div>
+</pre>
+  <p class="var-docstr">GOROOT returns the root of the Go tree. It uses the<br>
+GOROOT environment variable, if set at process start,<br>
+or else the root used during the Go build.<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="MemProfileRate">MemProfileRate</h3>
+  <span class="var-type GoVar[*.int]">GoVar[*.int]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">MemProfileRate controls the fraction of memory allocations<br>
+that are recorded and reported in the memory profile.<br>
+The profiler aims to sample an average of<br>
+one allocation per MemProfileRate bytes allocated.<br>
+<br>
+To include every allocated block in the profile, set MemProfileRate to 1.<br>
+To turn off profiling entirely, set MemProfileRate to 0.<br>
+<br>
+The tools that process the memory profiles assume that the<br>
+profile rate is constant across the lifetime of the program<br>
+and equal to the current value. Programs that change the<br>
+memory profiling rate should do so just once, as early as<br>
+possible in the execution of the program (for example,<br>
+at the beginning of main).<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="NumCPU">NumCPU</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NumCPU)</code></div>
+</pre>
+  <p class="var-docstr">NumCPU returns the number of logical CPUs usable by the current process.<br>
+<br>
+The set of available CPUs is checked by querying the operating system<br>
+at process startup. Changes to operating system CPU allocation after<br>
+process startup are not reflected.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="NumCgoCall">NumCgoCall</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NumCgoCall)</code></div>
+</pre>
+  <p class="var-docstr">NumCgoCall returns the number of cgo calls made by the current process.<br>
+<br>
+Go return type: int64<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Number</p>
+  
+</li>
+<li>
+  <h3 id="NumGoroutine">NumGoroutine</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NumGoroutine)</code></div>
+</pre>
+  <p class="var-docstr">NumGoroutine returns the number of goroutines that currently exist.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="ReadTrace">ReadTrace</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ReadTrace)</code></div>
+</pre>
+  <p class="var-docstr">ReadTrace returns the next chunk of binary tracing data, blocking until data<br>
+is available. If tracing is turned off and all the data accumulated while it<br>
+was on has been returned, ReadTrace returns nil. The caller must copy the<br>
+returned data before calling ReadTrace again.<br>
+ReadTrace must be called from one goroutine at a time.<br>
+<br>
+Go return type: []byte<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of Int)</p>
+  
+</li>
+<li>
+  <h3 id="SetMutexProfileFraction">SetMutexProfileFraction</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SetMutexProfileFraction __rate)</code></div>
+</pre>
+  <p class="var-docstr">SetMutexProfileFraction controls the fraction of mutex contention events<br>
+that are reported in the mutex profile. On average 1/rate events are<br>
+reported. The previous rate is returned.<br>
+<br>
+To turn off profiling entirely, pass rate 0.<br>
+To just read the current rate, pass rate &lt; 0.<br>
+(For n&gt;1 the details of sampling may change.)<br>
+<br>
+Go input arguments: (rate int)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^Int rate]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="StartTrace">StartTrace</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(StartTrace)</code></div>
+</pre>
+  <p class="var-docstr">StartTrace enables tracing for the current process.<br>
+While tracing, the data will be buffered and available via ReadTrace.<br>
+StartTrace returns an error if tracing is already enabled.<br>
+Most clients should use the runtime/trace package or the testing package&#39;s<br>
+-test.trace flag instead of calling StartTrace directly.<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="TypeAssertionError.">TypeAssertionError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TypeAssertionError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for runtime.TypeAssertionError</p>
+  
+</li>
+<li>
+  <h3 id="Version">Version</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Version)</code></div>
+</pre>
+  <p class="var-docstr">Version returns the Go tree&#39;s version string.<br>
+It is either the commit hash and date at the time of the build or,<br>
+when possible, a release tag like &#34;go1.3&#34;.<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

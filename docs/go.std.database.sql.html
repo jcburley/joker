@@ -1,0 +1,402 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.database.sql</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the database/sql package.<br>
+<br>
+Package sql provides a generic interface around SQL (or SQL-like)<br>
+databases.<br>
+<br>
+The sql package must be used in conjunction with a database driver.<br>
+See https://golang.org/s/sqldrivers for a list of drivers.<br>
+<br>
+Drivers that do not support context cancelation will not return until<br>
+after the query is completed.<br>
+<br>
+For usage examples, see the wiki page at<br>
+https://golang.org/s/sqlwiki.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ColumnType.">ColumnType.</a>
+</li>
+<li>
+  <a href="#Conn.">Conn.</a>
+</li>
+<li>
+  <a href="#DB.">DB.</a>
+</li>
+<li>
+  <a href="#Drivers">Drivers</a>
+</li>
+<li>
+  <a href="#ErrConnDone">ErrConnDone</a>
+</li>
+<li>
+  <a href="#ErrNoRows">ErrNoRows</a>
+</li>
+<li>
+  <a href="#ErrTxDone">ErrTxDone</a>
+</li>
+<li>
+  <a href="#IsolationLevel.">IsolationLevel.</a>
+</li>
+<li>
+  <a href="#LevelDefault">LevelDefault</a>
+</li>
+<li>
+  <a href="#LevelLinearizable">LevelLinearizable</a>
+</li>
+<li>
+  <a href="#LevelReadCommitted">LevelReadCommitted</a>
+</li>
+<li>
+  <a href="#LevelReadUncommitted">LevelReadUncommitted</a>
+</li>
+<li>
+  <a href="#LevelRepeatableRead">LevelRepeatableRead</a>
+</li>
+<li>
+  <a href="#LevelSerializable">LevelSerializable</a>
+</li>
+<li>
+  <a href="#LevelSnapshot">LevelSnapshot</a>
+</li>
+<li>
+  <a href="#LevelWriteCommitted">LevelWriteCommitted</a>
+</li>
+<li>
+  <a href="#NullBool.">NullBool.</a>
+</li>
+<li>
+  <a href="#NullFloat64.">NullFloat64.</a>
+</li>
+<li>
+  <a href="#NullInt64.">NullInt64.</a>
+</li>
+<li>
+  <a href="#NullString.">NullString.</a>
+</li>
+<li>
+  <a href="#Open">Open</a>
+</li>
+<li>
+  <a href="#Row.">Row.</a>
+</li>
+<li>
+  <a href="#Rows.">Rows.</a>
+</li>
+<li>
+  <a href="#Stmt.">Stmt.</a>
+</li>
+<li>
+  <a href="#Tx.">Tx.</a>
+</li>
+<li>
+  <a href="#TxOptions.">TxOptions.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ColumnType.">ColumnType.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ColumnType. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.ColumnType</p>
+  
+</li>
+<li>
+  <h3 id="Conn.">Conn.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Conn. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.Conn</p>
+  
+</li>
+<li>
+  <h3 id="DB.">DB.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DB. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.DB</p>
+  
+</li>
+<li>
+  <h3 id="Drivers">Drivers</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Drivers)</code></div>
+</pre>
+  <p class="var-docstr">Drivers returns a sorted list of the names of the registered drivers.<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="ErrConnDone">ErrConnDone</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrConnDone is returned by any operation that is performed on a connection<br>
+that has already been returned to the connection pool.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNoRows">ErrNoRows</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNoRows is returned by Scan when QueryRow doesn&#39;t return a<br>
+row. In such a case, QueryRow returns a placeholder *Row value that<br>
+defers this error until a Scan.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrTxDone">ErrTxDone</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrTxDone is returned by any operation that is performed on a transaction<br>
+that has already been committed or rolled back.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsolationLevel.">IsolationLevel.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsolationLevel. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.IsolationLevel</p>
+  
+</li>
+<li>
+  <h3 id="LevelDefault">LevelDefault</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelLinearizable">LevelLinearizable</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelReadCommitted">LevelReadCommitted</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelReadUncommitted">LevelReadUncommitted</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelRepeatableRead">LevelRepeatableRead</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelSerializable">LevelSerializable</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelSnapshot">LevelSnapshot</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LevelWriteCommitted">LevelWriteCommitted</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various isolation levels that drivers may support in BeginTx.<br>
+If a driver does not support a given isolation level an error may be returned.<br>
+<br>
+See https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="NullBool.">NullBool.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NullBool. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.NullBool</p>
+  
+</li>
+<li>
+  <h3 id="NullFloat64.">NullFloat64.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NullFloat64. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.NullFloat64</p>
+  
+</li>
+<li>
+  <h3 id="NullInt64.">NullInt64.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NullInt64. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.NullInt64</p>
+  
+</li>
+<li>
+  <h3 id="NullString.">NullString.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NullString. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.NullString</p>
+  
+</li>
+<li>
+  <h3 id="Open">Open</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Open __driverName __dataSourceName)</code></div>
+</pre>
+  <p class="var-docstr">Open opens a database specified by its database driver name and a<br>
+driver-specific data source name, usually consisting of at least a<br>
+database name and connection information.<br>
+<br>
+Most users will open a database via a driver-specific connection<br>
+helper function that returns a *DB. No database drivers are included<br>
+in the Go standard library. See https://golang.org/s/sqldrivers for<br>
+a list of third-party drivers.<br>
+<br>
+Open may just validate its arguments without creating a connection<br>
+to the database. To verify that the data source name is valid, call<br>
+Ping.<br>
+<br>
+The returned DB is safe for concurrent use by multiple goroutines<br>
+and maintains its own pool of idle connections. Thus, the Open<br>
+function should be called just once. It is rarely necessary to<br>
+close a DB.<br>
+<br>
+Go input arguments: (driverName string, dataSourceName string)<br>
+<br>
+Go return type: (*DB, error)<br>
+<br>
+Joker input arguments: [^String driverName, ^String dataSourceName]<br>
+<br>
+Joker return type: [(atom-of go.std.database.sql/DB) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Row.">Row.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Row. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.Row</p>
+  
+</li>
+<li>
+  <h3 id="Rows.">Rows.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Rows. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.Rows</p>
+  
+</li>
+<li>
+  <h3 id="Stmt.">Stmt.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Stmt. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.Stmt</p>
+  
+</li>
+<li>
+  <h3 id="Tx.">Tx.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Tx. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.Tx</p>
+  
+</li>
+<li>
+  <h3 id="TxOptions.">TxOptions.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TxOptions. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for sql.TxOptions</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

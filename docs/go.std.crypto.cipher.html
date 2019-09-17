@@ -1,0 +1,102 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.crypto.cipher</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the crypto/cipher package.<br>
+<br>
+Package cipher implements standard block cipher modes that can be wrapped<br>
+around low-level block cipher implementations.<br>
+See https://csrc.nist.gov/groups/ST/toolkit/BCM/current_modes.html<br>
+and NIST Special Publication 800-38A.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#NewGCM">NewGCM</a>
+</li>
+<li>
+  <a href="#NewGCMWithNonceSize">NewGCMWithNonceSize</a>
+</li>
+<li>
+  <a href="#NewGCMWithTagSize">NewGCMWithTagSize</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="NewGCM">NewGCM</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewGCM __cipher)</code></div>
+</pre>
+  <p class="var-docstr">NewGCM returns the given 128-bit, block cipher wrapped in Galois Counter Mode<br>
+with the standard nonce length.<br>
+<br>
+In general, the GHASH operation performed by this implementation of GCM is not constant-time.<br>
+An exception is when the underlying Block was created by aes.NewCipher<br>
+on systems with hardware support for AES. See the crypto/aes package documentation for details.<br>
+<br>
+Go input arguments: (cipher Block)<br>
+<br>
+Go return type: (AEAD, error)<br>
+<br>
+Joker input arguments: [^go.std.crypto.cipher/Block cipher]<br>
+<br>
+Joker return type: [go.std.crypto.cipher/AEAD Error]</p>
+  
+</li>
+<li>
+  <h3 id="NewGCMWithNonceSize">NewGCMWithNonceSize</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewGCMWithNonceSize __cipher __size)</code></div>
+</pre>
+  <p class="var-docstr">NewGCMWithNonceSize returns the given 128-bit, block cipher wrapped in Galois<br>
+Counter Mode, which accepts nonces of the given length.<br>
+<br>
+Only use this function if you require compatibility with an existing<br>
+cryptosystem that uses non-standard nonce lengths. All other users should use<br>
+NewGCM, which is faster and more resistant to misuse.<br>
+<br>
+Go input arguments: (cipher Block, size int)<br>
+<br>
+Go return type: (AEAD, error)<br>
+<br>
+Joker input arguments: [^go.std.crypto.cipher/Block cipher, ^Int size]<br>
+<br>
+Joker return type: [go.std.crypto.cipher/AEAD Error]</p>
+  
+</li>
+<li>
+  <h3 id="NewGCMWithTagSize">NewGCMWithTagSize</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewGCMWithTagSize __cipher __tagSize)</code></div>
+</pre>
+  <p class="var-docstr">NewGCMWithTagSize returns the given 128-bit, block cipher wrapped in Galois<br>
+Counter Mode, which generates tags with the given length.<br>
+<br>
+Tag sizes between 12 and 16 bytes are allowed.<br>
+<br>
+Only use this function if you require compatibility with an existing<br>
+cryptosystem that uses non-standard tag lengths. All other users should use<br>
+NewGCM, which is more resistant to misuse.<br>
+<br>
+Go input arguments: (cipher Block, tagSize int)<br>
+<br>
+Go return type: (AEAD, error)<br>
+<br>
+Joker input arguments: [^go.std.crypto.cipher/Block cipher, ^Int tagSize]<br>
+<br>
+Joker return type: [go.std.crypto.cipher/AEAD Error]</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

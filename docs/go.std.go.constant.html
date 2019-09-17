@@ -1,0 +1,530 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.go.constant</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the go/constant package.<br>
+<br>
+Package constant implements Values representing untyped<br>
+Go constants and their corresponding operations.<br>
+<br>
+A special Unknown value may be used when a value<br>
+is unknown due to an error. Operations on unknown<br>
+values produce unknown values unless specified<br>
+otherwise.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#BitLen">BitLen</a>
+</li>
+<li>
+  <a href="#Bool">Bool</a>
+</li>
+<li>
+  <a href="#BoolVal">BoolVal</a>
+</li>
+<li>
+  <a href="#Bytes">Bytes</a>
+</li>
+<li>
+  <a href="#Complex">Complex</a>
+</li>
+<li>
+  <a href="#Denom">Denom</a>
+</li>
+<li>
+  <a href="#Float">Float</a>
+</li>
+<li>
+  <a href="#Imag">Imag</a>
+</li>
+<li>
+  <a href="#Int-renamed">Int-renamed</a>
+</li>
+<li>
+  <a href="#Int64Val">Int64Val</a>
+</li>
+<li>
+  <a href="#Kind.">Kind.</a>
+</li>
+<li>
+  <a href="#MakeBool">MakeBool</a>
+</li>
+<li>
+  <a href="#MakeImag">MakeImag</a>
+</li>
+<li>
+  <a href="#MakeInt64">MakeInt64</a>
+</li>
+<li>
+  <a href="#MakeString">MakeString</a>
+</li>
+<li>
+  <a href="#MakeUint64">MakeUint64</a>
+</li>
+<li>
+  <a href="#MakeUnknown">MakeUnknown</a>
+</li>
+<li>
+  <a href="#Num">Num</a>
+</li>
+<li>
+  <a href="#Real">Real</a>
+</li>
+<li>
+  <a href="#Sign">Sign</a>
+</li>
+<li>
+  <a href="#String-renamed">String-renamed</a>
+</li>
+<li>
+  <a href="#StringVal">StringVal</a>
+</li>
+<li>
+  <a href="#ToComplex">ToComplex</a>
+</li>
+<li>
+  <a href="#ToFloat">ToFloat</a>
+</li>
+<li>
+  <a href="#ToInt">ToInt</a>
+</li>
+<li>
+  <a href="#Uint64Val">Uint64Val</a>
+</li>
+<li>
+  <a href="#Unknown">Unknown</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="BitLen">BitLen</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BitLen __x)</code></div>
+</pre>
+  <p class="var-docstr">BitLen returns the number of bits required to represent<br>
+the absolute value x in binary representation; x must be an Int or an Unknown.<br>
+If x is Unknown, the result is 0.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Bool">Bool</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">non-numeric values<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="BoolVal">BoolVal</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(BoolVal __x)</code></div>
+</pre>
+  <p class="var-docstr">BoolVal returns the Go boolean value of x, which must be a Bool or an Unknown.<br>
+If x is Unknown, the result is false.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Bytes">Bytes</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Bytes __x)</code></div>
+</pre>
+  <p class="var-docstr">Bytes returns the bytes for the absolute value of x in little-<br>
+endian binary representation; x must be an Int.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: []byte<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: (vector-of Int)</p>
+  
+</li>
+<li>
+  <h3 id="Complex">Complex</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Denom">Denom</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Denom __x)</code></div>
+</pre>
+  <p class="var-docstr">Denom returns the denominator of x; x must be Int, Float, or Unknown.<br>
+If x is Unknown, or if it is too large or small to represent as a<br>
+fraction, the result is Unknown. Otherwise the result is an Int &gt;= 1.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Float">Float</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="Imag">Imag</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Imag __x)</code></div>
+</pre>
+  <p class="var-docstr">Imag returns the imaginary part of x, which must be a numeric or unknown value.<br>
+If x is Unknown, the result is Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Int-renamed">Int-renamed</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">numeric values<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Int64Val">Int64Val</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Int64Val __x)</code></div>
+</pre>
+  <p class="var-docstr">Int64Val returns the Go int64 value of x and whether the result is exact;<br>
+x must be an Int or an Unknown. If the result is not exact, its value is undefined.<br>
+If x is Unknown, the result is (0, false).<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: (int64, bool)<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: [Number Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="Kind.">Kind.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Kind. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for constant.Kind</p>
+  
+</li>
+<li>
+  <h3 id="MakeBool">MakeBool</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeBool __b)</code></div>
+</pre>
+  <p class="var-docstr">MakeBool returns the Bool value for b.<br>
+<br>
+Go input arguments: (b bool)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^Boolean b]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="MakeImag">MakeImag</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeImag __x)</code></div>
+</pre>
+  <p class="var-docstr">MakeImag returns the Complex value x*i;<br>
+x must be Int, Float, or Unknown.<br>
+If x is Unknown, the result is Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="MakeInt64">MakeInt64</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeInt64 __x)</code></div>
+</pre>
+  <p class="var-docstr">MakeInt64 returns the Int value for x.<br>
+<br>
+Go input arguments: (x int64)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^Number x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="MakeString">MakeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeString __s)</code></div>
+</pre>
+  <p class="var-docstr">MakeString returns the String value for s.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="MakeUint64">MakeUint64</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeUint64 __x)</code></div>
+</pre>
+  <p class="var-docstr">MakeUint64 returns the Int value for x.<br>
+<br>
+Go input arguments: (x uint64)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^Number x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="MakeUnknown">MakeUnknown</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MakeUnknown)</code></div>
+</pre>
+  <p class="var-docstr">MakeUnknown returns the Unknown value.<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Num">Num</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Num __x)</code></div>
+</pre>
+  <p class="var-docstr">Num returns the numerator of x; x must be Int, Float, or Unknown.<br>
+If x is Unknown, or if it is too large or small to represent as a<br>
+fraction, the result is Unknown. Otherwise the result is an Int<br>
+with the same sign as x.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Real">Real</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Real __x)</code></div>
+</pre>
+  <p class="var-docstr">Real returns the real part of x, which must be a numeric or unknown value.<br>
+If x is Unknown, the result is Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Sign">Sign</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Sign __x)</code></div>
+</pre>
+  <p class="var-docstr">Sign returns -1, 0, or 1 depending on whether x &lt; 0, x == 0, or x &gt; 0;<br>
+x must be numeric or Unknown. For complex values x, the sign is 0 if x == 0,<br>
+otherwise it is != 0. If x is Unknown, the result is 1.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="String-renamed">String-renamed</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="StringVal">StringVal</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(StringVal __x)</code></div>
+</pre>
+  <p class="var-docstr">StringVal returns the Go string value of x, which must be a String or an Unknown.<br>
+If x is Unknown, the result is &#34;&#34;.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ToComplex">ToComplex</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToComplex __x)</code></div>
+</pre>
+  <p class="var-docstr">ToComplex converts x to a Complex value if x is representable as a Complex.<br>
+Otherwise it returns an Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="ToFloat">ToFloat</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToFloat __x)</code></div>
+</pre>
+  <p class="var-docstr">ToFloat converts x to a Float value if x is representable as a Float.<br>
+Otherwise it returns an Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="ToInt">ToInt</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToInt __x)</code></div>
+</pre>
+  <p class="var-docstr">ToInt converts x to an Int value if x is representable as an Int.<br>
+Otherwise it returns an Unknown.<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: Value<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: go.std.go.constant/Value</p>
+  
+</li>
+<li>
+  <h3 id="Uint64Val">Uint64Val</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Uint64Val __x)</code></div>
+</pre>
+  <p class="var-docstr">Uint64Val returns the Go uint64 value of x and whether the result is exact;<br>
+x must be an Int or an Unknown. If the result is not exact, its value is undefined.<br>
+If x is Unknown, the result is (0, false).<br>
+<br>
+Go input arguments: (x Value)<br>
+<br>
+Go return type: (uint64, bool)<br>
+<br>
+Joker input arguments: [^go.std.go.constant/Value x]<br>
+<br>
+Joker return type: [Number Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="Unknown">Unknown</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">unknown values<br>
+</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

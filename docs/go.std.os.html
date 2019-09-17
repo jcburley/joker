@@ -1,0 +1,1731 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.os</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the os package.<br>
+<br>
+Package os provides a platform-independent interface to operating system<br>
+functionality. The design is Unix-like, although the error handling is<br>
+Go-like; failing calls return values of type error rather than error numbers.<br>
+Often, more information is available within the error. For example,<br>
+if a call that takes a file name fails, such as Open or Stat, the error<br>
+will include the failing file name when printed and will be of type<br>
+*PathError, which may be unpacked for more information.<br>
+<br>
+The os interface is intended to be uniform across all operating systems.<br>
+Features not generally available appear in the system-specific package syscall.<br>
+<br>
+Here is a simple example, opening a file and reading some of it.<br>
+<br>
+	file, err := os.Open(&#34;file.go&#34;) // For read access.<br>
+	if err != nil {<br>
+		log.Fatal(err)<br>
+	}<br>
+<br>
+If the open fails, the error string will be self-explanatory, like<br>
+<br>
+	open file.go: no such file or directory<br>
+<br>
+The file&#39;s data can then be read into a slice of bytes. Read and<br>
+Write take their byte counts from the length of the argument slice.<br>
+<br>
+	data := make([]byte, 100)<br>
+	count, err := file.Read(data)<br>
+	if err != nil {<br>
+		log.Fatal(err)<br>
+	}<br>
+	fmt.Printf(&#34;read %d bytes: %q\n&#34;, count, data[:count])<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Args">Args</a>
+</li>
+<li>
+  <a href="#Chdir">Chdir</a>
+</li>
+<li>
+  <a href="#Chmod">Chmod</a>
+</li>
+<li>
+  <a href="#Chown">Chown</a>
+</li>
+<li>
+  <a href="#Create">Create</a>
+</li>
+<li>
+  <a href="#DevNull">DevNull</a>
+</li>
+<li>
+  <a href="#Environ">Environ</a>
+</li>
+<li>
+  <a href="#ErrClosed">ErrClosed</a>
+</li>
+<li>
+  <a href="#ErrExist">ErrExist</a>
+</li>
+<li>
+  <a href="#ErrInvalid">ErrInvalid</a>
+</li>
+<li>
+  <a href="#ErrNoDeadline">ErrNoDeadline</a>
+</li>
+<li>
+  <a href="#ErrNotExist">ErrNotExist</a>
+</li>
+<li>
+  <a href="#ErrPermission">ErrPermission</a>
+</li>
+<li>
+  <a href="#Executable">Executable</a>
+</li>
+<li>
+  <a href="#ExpandEnv">ExpandEnv</a>
+</li>
+<li>
+  <a href="#File.">File.</a>
+</li>
+<li>
+  <a href="#FileMode.">FileMode.</a>
+</li>
+<li>
+  <a href="#FindProcess">FindProcess</a>
+</li>
+<li>
+  <a href="#Getegid">Getegid</a>
+</li>
+<li>
+  <a href="#Getenv">Getenv</a>
+</li>
+<li>
+  <a href="#Geteuid">Geteuid</a>
+</li>
+<li>
+  <a href="#Getgid">Getgid</a>
+</li>
+<li>
+  <a href="#Getgroups">Getgroups</a>
+</li>
+<li>
+  <a href="#Getpagesize">Getpagesize</a>
+</li>
+<li>
+  <a href="#Getpid">Getpid</a>
+</li>
+<li>
+  <a href="#Getppid">Getppid</a>
+</li>
+<li>
+  <a href="#Getuid">Getuid</a>
+</li>
+<li>
+  <a href="#Getwd">Getwd</a>
+</li>
+<li>
+  <a href="#Hostname">Hostname</a>
+</li>
+<li>
+  <a href="#Interrupt">Interrupt</a>
+</li>
+<li>
+  <a href="#IsExist">IsExist</a>
+</li>
+<li>
+  <a href="#IsNotExist">IsNotExist</a>
+</li>
+<li>
+  <a href="#IsPathSeparator">IsPathSeparator</a>
+</li>
+<li>
+  <a href="#IsPermission">IsPermission</a>
+</li>
+<li>
+  <a href="#IsTimeout">IsTimeout</a>
+</li>
+<li>
+  <a href="#Kill">Kill</a>
+</li>
+<li>
+  <a href="#Lchown">Lchown</a>
+</li>
+<li>
+  <a href="#Link">Link</a>
+</li>
+<li>
+  <a href="#LinkError.">LinkError.</a>
+</li>
+<li>
+  <a href="#LookupEnv">LookupEnv</a>
+</li>
+<li>
+  <a href="#Lstat">Lstat</a>
+</li>
+<li>
+  <a href="#Mkdir">Mkdir</a>
+</li>
+<li>
+  <a href="#MkdirAll">MkdirAll</a>
+</li>
+<li>
+  <a href="#ModeAppend">ModeAppend</a>
+</li>
+<li>
+  <a href="#ModeCharDevice">ModeCharDevice</a>
+</li>
+<li>
+  <a href="#ModeDevice">ModeDevice</a>
+</li>
+<li>
+  <a href="#ModeDir">ModeDir</a>
+</li>
+<li>
+  <a href="#ModeExclusive">ModeExclusive</a>
+</li>
+<li>
+  <a href="#ModeIrregular">ModeIrregular</a>
+</li>
+<li>
+  <a href="#ModeNamedPipe">ModeNamedPipe</a>
+</li>
+<li>
+  <a href="#ModePerm">ModePerm</a>
+</li>
+<li>
+  <a href="#ModeSetgid">ModeSetgid</a>
+</li>
+<li>
+  <a href="#ModeSetuid">ModeSetuid</a>
+</li>
+<li>
+  <a href="#ModeSocket">ModeSocket</a>
+</li>
+<li>
+  <a href="#ModeSticky">ModeSticky</a>
+</li>
+<li>
+  <a href="#ModeSymlink">ModeSymlink</a>
+</li>
+<li>
+  <a href="#ModeTemporary">ModeTemporary</a>
+</li>
+<li>
+  <a href="#ModeType">ModeType</a>
+</li>
+<li>
+  <a href="#NewFile">NewFile</a>
+</li>
+<li>
+  <a href="#NewSyscallError">NewSyscallError</a>
+</li>
+<li>
+  <a href="#O_APPEND">O_APPEND</a>
+</li>
+<li>
+  <a href="#O_CREATE">O_CREATE</a>
+</li>
+<li>
+  <a href="#O_EXCL">O_EXCL</a>
+</li>
+<li>
+  <a href="#O_RDONLY">O_RDONLY</a>
+</li>
+<li>
+  <a href="#O_RDWR">O_RDWR</a>
+</li>
+<li>
+  <a href="#O_SYNC">O_SYNC</a>
+</li>
+<li>
+  <a href="#O_TRUNC">O_TRUNC</a>
+</li>
+<li>
+  <a href="#O_WRONLY">O_WRONLY</a>
+</li>
+<li>
+  <a href="#Open">Open</a>
+</li>
+<li>
+  <a href="#OpenFile">OpenFile</a>
+</li>
+<li>
+  <a href="#PathError.">PathError.</a>
+</li>
+<li>
+  <a href="#PathListSeparator">PathListSeparator</a>
+</li>
+<li>
+  <a href="#PathSeparator">PathSeparator</a>
+</li>
+<li>
+  <a href="#Pipe">Pipe</a>
+</li>
+<li>
+  <a href="#Process.">Process.</a>
+</li>
+<li>
+  <a href="#ProcessState.">ProcessState.</a>
+</li>
+<li>
+  <a href="#Readlink">Readlink</a>
+</li>
+<li>
+  <a href="#Remove">Remove</a>
+</li>
+<li>
+  <a href="#RemoveAll">RemoveAll</a>
+</li>
+<li>
+  <a href="#Rename">Rename</a>
+</li>
+<li>
+  <a href="#SEEK_CUR">SEEK_CUR</a>
+</li>
+<li>
+  <a href="#SEEK_END">SEEK_END</a>
+</li>
+<li>
+  <a href="#SEEK_SET">SEEK_SET</a>
+</li>
+<li>
+  <a href="#SameFile">SameFile</a>
+</li>
+<li>
+  <a href="#Setenv">Setenv</a>
+</li>
+<li>
+  <a href="#Stat">Stat</a>
+</li>
+<li>
+  <a href="#Stderr">Stderr</a>
+</li>
+<li>
+  <a href="#Stdin">Stdin</a>
+</li>
+<li>
+  <a href="#Stdout">Stdout</a>
+</li>
+<li>
+  <a href="#Symlink">Symlink</a>
+</li>
+<li>
+  <a href="#SyscallError.">SyscallError.</a>
+</li>
+<li>
+  <a href="#TempDir">TempDir</a>
+</li>
+<li>
+  <a href="#Truncate">Truncate</a>
+</li>
+<li>
+  <a href="#Unsetenv">Unsetenv</a>
+</li>
+<li>
+  <a href="#UserCacheDir">UserCacheDir</a>
+</li>
+<li>
+  <a href="#UserHomeDir">UserHomeDir</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Args">Args</h3>
+  <span class="var-type GoVar[*.]">GoVar[*.]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Args hold the command-line arguments, starting with the program name.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Chdir">Chdir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Chdir __dir)</code></div>
+</pre>
+  <p class="var-docstr">Chdir changes the current working directory to the named directory.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (dir string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String dir]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Chmod">Chmod</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Chmod __name __mode)</code></div>
+</pre>
+  <p class="var-docstr">Chmod changes the mode of the named file to mode.<br>
+If the file is a symbolic link, it changes the mode of the link&#39;s target.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+A different subset of the mode bits are used, depending on the<br>
+operating system.<br>
+<br>
+On Unix, the mode&#39;s permission bits, ModeSetuid, ModeSetgid, and<br>
+ModeSticky are used.<br>
+<br>
+On Windows, the mode must be non-zero but otherwise only the 0200<br>
+bit (owner writable) of mode is used; it controls whether the<br>
+file&#39;s read-only attribute is set or cleared. attribute. The other<br>
+bits are currently unused. Use mode 0400 for a read-only file and<br>
+0600 for a readable+writable file.<br>
+<br>
+On Plan 9, the mode&#39;s permission bits, ModeAppend, ModeExclusive,<br>
+and ModeTemporary are used.<br>
+<br>
+Go input arguments: (name string, mode FileMode)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^go.std.os/FileMode mode]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Chown">Chown</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Chown __name __uid __gid)</code></div>
+</pre>
+  <p class="var-docstr">Chown changes the numeric uid and gid of the named file.<br>
+If the file is a symbolic link, it changes the uid and gid of the link&#39;s target.<br>
+A uid or gid of -1 means to not change that value.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+On Windows or Plan 9, Chown always returns the syscall.EWINDOWS or<br>
+EPLAN9 error, wrapped in *PathError.<br>
+<br>
+Go input arguments: (name string, uid int, gid int)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^Int uid, ^Int gid]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Create">Create</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Create __name)</code></div>
+</pre>
+  <p class="var-docstr">Create creates the named file with mode 0666 (before umask), truncating<br>
+it if it already exists. If successful, methods on the returned<br>
+File can be used for I/O; the associated file descriptor has mode<br>
+O_RDWR.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (*File, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [(atom-of go.std.os/File) Error]</p>
+  
+</li>
+<li>
+  <h3 id="DevNull">DevNull</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DevNull is the name of the operating system&#39;s ``null device.&#39;&#39;<br>
+On Unix-like systems, it is &#34;/dev/null&#34;; on Windows, &#34;NUL&#34;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Environ">Environ</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Environ)</code></div>
+</pre>
+  <p class="var-docstr">Environ returns a copy of strings representing the environment,<br>
+in the form &#34;key=value&#34;.<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="ErrClosed">ErrClosed</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Portable analogs of some common system call errors.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrExist">ErrExist</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Portable analogs of some common system call errors.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrInvalid">ErrInvalid</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">methods on File will return this error when the receiver is nil<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNoDeadline">ErrNoDeadline</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Portable analogs of some common system call errors.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNotExist">ErrNotExist</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Portable analogs of some common system call errors.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrPermission">ErrPermission</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Portable analogs of some common system call errors.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Executable">Executable</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Executable)</code></div>
+</pre>
+  <p class="var-docstr">Executable returns the path name for the executable that started<br>
+the current process. There is no guarantee that the path is still<br>
+pointing to the correct executable. If a symlink was used to start<br>
+the process, depending on the operating system, the result might<br>
+be the symlink or the path it pointed to. If a stable result is<br>
+needed, path/filepath.EvalSymlinks might help.<br>
+<br>
+Executable returns an absolute path unless an error occurred.<br>
+<br>
+The main use case is finding resources located relative to an<br>
+executable.<br>
+<br>
+Executable is not supported on nacl.<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="ExpandEnv">ExpandEnv</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ExpandEnv __s)</code></div>
+</pre>
+  <p class="var-docstr">ExpandEnv replaces ${var} or $var in the string according to the values<br>
+of the current environment variables. References to undefined<br>
+variables are replaced by the empty string.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="File.">File.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(File. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.File</p>
+  
+</li>
+<li>
+  <h3 id="FileMode.">FileMode.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FileMode. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.FileMode</p>
+  
+</li>
+<li>
+  <h3 id="FindProcess">FindProcess</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FindProcess __pid)</code></div>
+</pre>
+  <p class="var-docstr">FindProcess looks for a running process by its pid.<br>
+<br>
+The Process it returns can be used to obtain information<br>
+about the underlying operating system process.<br>
+<br>
+On Unix systems, FindProcess always succeeds and returns a Process<br>
+for the given pid, regardless of whether the process exists.<br>
+<br>
+Go input arguments: (pid int)<br>
+<br>
+Go return type: (*Process, error)<br>
+<br>
+Joker input arguments: [^Int pid]<br>
+<br>
+Joker return type: [(atom-of go.std.os/Process) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Getegid">Getegid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getegid)</code></div>
+</pre>
+  <p class="var-docstr">Getegid returns the numeric effective group id of the caller.<br>
+<br>
+On Windows, it returns -1.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getenv">Getenv</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getenv __key)</code></div>
+</pre>
+  <p class="var-docstr">Getenv retrieves the value of the environment variable named by the key.<br>
+It returns the value, which will be empty if the variable is not present.<br>
+To distinguish between an empty value and an unset value, use LookupEnv.<br>
+<br>
+Go input arguments: (key string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String key]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Geteuid">Geteuid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Geteuid)</code></div>
+</pre>
+  <p class="var-docstr">Geteuid returns the numeric effective user id of the caller.<br>
+<br>
+On Windows, it returns -1.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getgid">Getgid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getgid)</code></div>
+</pre>
+  <p class="var-docstr">Getgid returns the numeric group id of the caller.<br>
+<br>
+On Windows, it returns -1.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getgroups">Getgroups</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getgroups)</code></div>
+</pre>
+  <p class="var-docstr">Getgroups returns a list of the numeric ids of groups that the caller belongs to.<br>
+<br>
+On Windows, it returns syscall.EWINDOWS. See the os/user package<br>
+for a possible alternative.<br>
+<br>
+Go return type: ([]int, error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [(vector-of Int) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Getpagesize">Getpagesize</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getpagesize)</code></div>
+</pre>
+  <p class="var-docstr">Getpagesize returns the underlying system&#39;s memory page size.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getpid">Getpid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getpid)</code></div>
+</pre>
+  <p class="var-docstr">Getpid returns the process id of the caller.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getppid">Getppid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getppid)</code></div>
+</pre>
+  <p class="var-docstr">Getppid returns the process id of the caller&#39;s parent.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getuid">Getuid</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getuid)</code></div>
+</pre>
+  <p class="var-docstr">Getuid returns the numeric user id of the caller.<br>
+<br>
+On Windows, it returns -1.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Getwd">Getwd</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Getwd)</code></div>
+</pre>
+  <p class="var-docstr">Getwd returns a rooted path name corresponding to the<br>
+current directory. If the current directory can be<br>
+reached via multiple paths (due to symbolic links),<br>
+Getwd may return any one of them.<br>
+<br>
+Go return type: (dir string, err error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="Hostname">Hostname</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Hostname)</code></div>
+</pre>
+  <p class="var-docstr">Hostname returns the host name reported by the kernel.<br>
+<br>
+Go return type: (name string, err error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="Interrupt">Interrupt</h3>
+  <span class="var-type GoVar[*os.Signal]">GoVar[*os.Signal]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The only signal values guaranteed to be present in the os package on all<br>
+systems are os.Interrupt (send the process an interrupt) and os.Kill (force<br>
+the process to exit). On Windows, sending os.Interrupt to a process with<br>
+os.Process.Signal is not implemented; it will return an error instead of<br>
+sending a signal.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IsExist">IsExist</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsExist __err)</code></div>
+</pre>
+  <p class="var-docstr">IsExist returns a boolean indicating whether the error is known to report<br>
+that a file or directory already exists. It is satisfied by ErrExist as<br>
+well as some syscall errors.<br>
+<br>
+Go input arguments: (err error)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Error err]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsNotExist">IsNotExist</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsNotExist __err)</code></div>
+</pre>
+  <p class="var-docstr">IsNotExist returns a boolean indicating whether the error is known to<br>
+report that a file or directory does not exist. It is satisfied by<br>
+ErrNotExist as well as some syscall errors.<br>
+<br>
+Go input arguments: (err error)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Error err]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsPathSeparator">IsPathSeparator</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsPathSeparator __c)</code></div>
+</pre>
+  <p class="var-docstr">IsPathSeparator reports whether c is a directory separator character.<br>
+<br>
+Go input arguments: (c uint8)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Int c]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsPermission">IsPermission</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsPermission __err)</code></div>
+</pre>
+  <p class="var-docstr">IsPermission returns a boolean indicating whether the error is known to<br>
+report that permission is denied. It is satisfied by ErrPermission as well<br>
+as some syscall errors.<br>
+<br>
+Go input arguments: (err error)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Error err]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="IsTimeout">IsTimeout</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IsTimeout __err)</code></div>
+</pre>
+  <p class="var-docstr">IsTimeout returns a boolean indicating whether the error is known<br>
+to report that a timeout occurred.<br>
+<br>
+Go input arguments: (err error)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^Error err]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Kill">Kill</h3>
+  <span class="var-type GoVar[*os.Signal]">GoVar[*os.Signal]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The only signal values guaranteed to be present in the os package on all<br>
+systems are os.Interrupt (send the process an interrupt) and os.Kill (force<br>
+the process to exit). On Windows, sending os.Interrupt to a process with<br>
+os.Process.Signal is not implemented; it will return an error instead of<br>
+sending a signal.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Lchown">Lchown</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Lchown __name __uid __gid)</code></div>
+</pre>
+  <p class="var-docstr">Lchown changes the numeric uid and gid of the named file.<br>
+If the file is a symbolic link, it changes the uid and gid of the link itself.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+On Windows, it always returns the syscall.EWINDOWS error, wrapped<br>
+in *PathError.<br>
+<br>
+Go input arguments: (name string, uid int, gid int)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^Int uid, ^Int gid]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Link">Link</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Link __oldname __newname)</code></div>
+</pre>
+  <p class="var-docstr">Link creates newname as a hard link to the oldname file.<br>
+If there is an error, it will be of type *LinkError.<br>
+<br>
+Go input arguments: (oldname string, newname string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String oldname, ^String newname]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="LinkError.">LinkError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LinkError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.LinkError</p>
+  
+</li>
+<li>
+  <h3 id="LookupEnv">LookupEnv</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LookupEnv __key)</code></div>
+</pre>
+  <p class="var-docstr">LookupEnv retrieves the value of the environment variable named<br>
+by the key. If the variable is present in the environment the<br>
+value (which may be empty) is returned and the boolean is true.<br>
+Otherwise the returned value will be empty and the boolean will<br>
+be false.<br>
+<br>
+Go input arguments: (key string)<br>
+<br>
+Go return type: (string, bool)<br>
+<br>
+Joker input arguments: [^String key]<br>
+<br>
+Joker return type: [String Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="Lstat">Lstat</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Lstat __name)</code></div>
+</pre>
+  <p class="var-docstr">Lstat returns a FileInfo describing the named file.<br>
+If the file is a symbolic link, the returned FileInfo<br>
+describes the symbolic link. Lstat makes no attempt to follow the link.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (FileInfo, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [go.std.os/FileInfo Error]</p>
+  
+</li>
+<li>
+  <h3 id="Mkdir">Mkdir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Mkdir __name __perm)</code></div>
+</pre>
+  <p class="var-docstr">Mkdir creates a new directory with the specified name and permission<br>
+bits (before umask).<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string, perm FileMode)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^go.std.os/FileMode perm]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="MkdirAll">MkdirAll</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MkdirAll __path __perm)</code></div>
+</pre>
+  <p class="var-docstr">MkdirAll creates a directory named path,<br>
+along with any necessary parents, and returns nil,<br>
+or else returns an error.<br>
+The permission bits perm (before umask) are used for all<br>
+directories that MkdirAll creates.<br>
+If path is already a directory, MkdirAll does nothing<br>
+and returns nil.<br>
+<br>
+Go input arguments: (path string, perm FileMode)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String path, ^go.std.os/FileMode perm]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="ModeAppend">ModeAppend</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">a: append-only<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeCharDevice">ModeCharDevice</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">c: Unix character device, when ModeDevice is set<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeDevice">ModeDevice</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">D: device file<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeDir">ModeDir</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The single letters are the abbreviations<br>
+used by the String method&#39;s formatting.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeExclusive">ModeExclusive</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">l: exclusive use<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeIrregular">ModeIrregular</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">?: non-regular file; nothing else is known about this file<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeNamedPipe">ModeNamedPipe</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">p: named pipe (FIFO)<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModePerm">ModePerm</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Unix permission bits<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeSetgid">ModeSetgid</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">g: setgid<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeSetuid">ModeSetuid</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">u: setuid<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeSocket">ModeSocket</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">S: Unix domain socket<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeSticky">ModeSticky</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">t: sticky<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeSymlink">ModeSymlink</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">L: symbolic link<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeTemporary">ModeTemporary</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">T: temporary file; Plan 9 only<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ModeType">ModeType</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Mask for the type bits. For regular files, none will be set.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="NewFile">NewFile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewFile __fd __name)</code></div>
+</pre>
+  <p class="var-docstr">NewFile returns a new File with the given file descriptor and<br>
+name. The returned value will be nil if fd is not a valid file<br>
+descriptor. On Unix systems, if the file descriptor is in<br>
+non-blocking mode, NewFile will attempt to return a pollable File<br>
+(one for which the SetDeadline methods work).<br>
+<br>
+Go input arguments: (fd uintptr, name string)<br>
+<br>
+Go return type: *File<br>
+<br>
+Joker input arguments: [^Number fd, ^String name]<br>
+<br>
+Joker return type: (atom-of go.std.os/File)</p>
+  
+</li>
+<li>
+  <h3 id="NewSyscallError">NewSyscallError</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewSyscallError __syscall __err)</code></div>
+</pre>
+  <p class="var-docstr">NewSyscallError returns, as an error, a new SyscallError<br>
+with the given system call name and error details.<br>
+As a convenience, if err is nil, NewSyscallError returns nil.<br>
+<br>
+Go input arguments: (syscall string, err error)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String syscall, ^Error err]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="O_APPEND">O_APPEND</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The remaining values may be or&#39;ed in to control behavior.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_CREATE">O_CREATE</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">create a new file if none exists.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_EXCL">O_EXCL</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">used with O_CREATE, file must not exist.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_RDONLY">O_RDONLY</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_RDWR">O_RDWR</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">open the file read-write.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_SYNC">O_SYNC</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">open for synchronous I/O.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_TRUNC">O_TRUNC</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">truncate regular writable file when opened.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="O_WRONLY">O_WRONLY</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">open the file write-only.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Open">Open</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Open __name)</code></div>
+</pre>
+  <p class="var-docstr">Open opens the named file for reading. If successful, methods on<br>
+the returned file can be used for reading; the associated file<br>
+descriptor has mode O_RDONLY.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (*File, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [(atom-of go.std.os/File) Error]</p>
+  
+</li>
+<li>
+  <h3 id="OpenFile">OpenFile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(OpenFile __name __flag __perm)</code></div>
+</pre>
+  <p class="var-docstr">OpenFile is the generalized open call; most users will use Open<br>
+or Create instead. It opens the named file with specified flag<br>
+(O_RDONLY etc.) and perm (before umask), if applicable. If successful,<br>
+methods on the returned File can be used for I/O.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string, flag int, perm FileMode)<br>
+<br>
+Go return type: (*File, error)<br>
+<br>
+Joker input arguments: [^String name, ^Int flag, ^go.std.os/FileMode perm]<br>
+<br>
+Joker return type: [(atom-of go.std.os/File) Error]</p>
+  
+</li>
+<li>
+  <h3 id="PathError.">PathError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(PathError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.PathError</p>
+  
+</li>
+<li>
+  <h3 id="PathListSeparator">PathListSeparator</h3>
+  <span class="var-type Char">Char</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">OS-specific path list separator<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="PathSeparator">PathSeparator</h3>
+  <span class="var-type Char">Char</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">OS-specific path separator<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Pipe">Pipe</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Pipe)</code></div>
+</pre>
+  <p class="var-docstr">Pipe returns a connected pair of Files; reads from r return bytes written to w.<br>
+It returns the files and an error, if any.<br>
+<br>
+Go return type: (r *File, w *File, err error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [(atom-of go.std.os/File) (atom-of go.std.os/File) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Process.">Process.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Process. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.Process</p>
+  
+</li>
+<li>
+  <h3 id="ProcessState.">ProcessState.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ProcessState. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.ProcessState</p>
+  
+</li>
+<li>
+  <h3 id="Readlink">Readlink</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Readlink __name)</code></div>
+</pre>
+  <p class="var-docstr">Readlink returns the destination of the named symbolic link.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="Remove">Remove</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Remove __name)</code></div>
+</pre>
+  <p class="var-docstr">Remove removes the named file or (empty) directory.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="RemoveAll">RemoveAll</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RemoveAll __path)</code></div>
+</pre>
+  <p class="var-docstr">RemoveAll removes path and any children it contains.<br>
+It removes everything it can but returns the first error<br>
+it encounters. If the path does not exist, RemoveAll<br>
+returns nil (no error).<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (path string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String path]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Rename">Rename</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Rename __oldpath __newpath)</code></div>
+</pre>
+  <p class="var-docstr">Rename renames (moves) oldpath to newpath.<br>
+If newpath already exists and is not a directory, Rename replaces it.<br>
+OS-specific restrictions may apply when oldpath and newpath are in different directories.<br>
+If there is an error, it will be of type *LinkError.<br>
+<br>
+Go input arguments: (oldpath string, newpath string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String oldpath, ^String newpath]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="SEEK_CUR">SEEK_CUR</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">seek relative to the current offset<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="SEEK_END">SEEK_END</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">seek relative to the end<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="SEEK_SET">SEEK_SET</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">seek relative to the origin of the file<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="SameFile">SameFile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SameFile __fi1 __fi2)</code></div>
+</pre>
+  <p class="var-docstr">SameFile reports whether fi1 and fi2 describe the same file.<br>
+For example, on Unix this means that the device and inode fields<br>
+of the two underlying structures are identical; on other systems<br>
+the decision may be based on the path names.<br>
+SameFile only applies to results returned by this package&#39;s Stat.<br>
+It returns false in other cases.<br>
+<br>
+Go input arguments: (fi1 FileInfo, fi2 FileInfo)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^go.std.os/FileInfo fi1, ^go.std.os/FileInfo fi2]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Setenv">Setenv</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Setenv __key __value)</code></div>
+</pre>
+  <p class="var-docstr">Setenv sets the value of the environment variable named by the key.<br>
+It returns an error, if any.<br>
+<br>
+Go input arguments: (key string, value string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String key, ^String value]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Stat">Stat</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Stat __name)</code></div>
+</pre>
+  <p class="var-docstr">Stat returns a FileInfo describing the named file.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (FileInfo, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [go.std.os/FileInfo Error]</p>
+  
+</li>
+<li>
+  <h3 id="Stderr">Stderr</h3>
+  <span class="var-type GoVar[**os.File]">GoVar[**os.File]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Stdin, Stdout, and Stderr are open Files pointing to the standard input,<br>
+standard output, and standard error file descriptors.<br>
+<br>
+Note that the Go runtime writes to standard error for panics and crashes;<br>
+closing Stderr may cause those messages to go elsewhere, perhaps<br>
+to a file opened later.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Stdin">Stdin</h3>
+  <span class="var-type GoVar[**os.File]">GoVar[**os.File]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Stdin, Stdout, and Stderr are open Files pointing to the standard input,<br>
+standard output, and standard error file descriptors.<br>
+<br>
+Note that the Go runtime writes to standard error for panics and crashes;<br>
+closing Stderr may cause those messages to go elsewhere, perhaps<br>
+to a file opened later.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Stdout">Stdout</h3>
+  <span class="var-type GoVar[**os.File]">GoVar[**os.File]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Stdin, Stdout, and Stderr are open Files pointing to the standard input,<br>
+standard output, and standard error file descriptors.<br>
+<br>
+Note that the Go runtime writes to standard error for panics and crashes;<br>
+closing Stderr may cause those messages to go elsewhere, perhaps<br>
+to a file opened later.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Symlink">Symlink</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Symlink __oldname __newname)</code></div>
+</pre>
+  <p class="var-docstr">Symlink creates newname as a symbolic link to oldname.<br>
+If there is an error, it will be of type *LinkError.<br>
+<br>
+Go input arguments: (oldname string, newname string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String oldname, ^String newname]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="SyscallError.">SyscallError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SyscallError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for os.SyscallError</p>
+  
+</li>
+<li>
+  <h3 id="TempDir">TempDir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TempDir)</code></div>
+</pre>
+  <p class="var-docstr">TempDir returns the default directory to use for temporary files.<br>
+<br>
+On Unix systems, it returns $TMPDIR if non-empty, else /tmp.<br>
+On Windows, it uses GetTempPath, returning the first non-empty<br>
+value from %TMP%, %TEMP%, %USERPROFILE%, or the Windows directory.<br>
+On Plan 9, it returns /tmp.<br>
+<br>
+The directory is neither guaranteed to exist nor have accessible<br>
+permissions.<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Truncate">Truncate</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Truncate __name __size)</code></div>
+</pre>
+  <p class="var-docstr">Truncate changes the size of the named file.<br>
+If the file is a symbolic link, it changes the size of the link&#39;s target.<br>
+If there is an error, it will be of type *PathError.<br>
+<br>
+Go input arguments: (name string, size int64)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^Number size]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Unsetenv">Unsetenv</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Unsetenv __key)</code></div>
+</pre>
+  <p class="var-docstr">Unsetenv unsets a single environment variable.<br>
+<br>
+Go input arguments: (key string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String key]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="UserCacheDir">UserCacheDir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UserCacheDir)</code></div>
+</pre>
+  <p class="var-docstr">UserCacheDir returns the default root directory to use for user-specific<br>
+cached data. Users should create their own application-specific subdirectory<br>
+within this one and use that.<br>
+<br>
+On Unix systems, it returns $XDG_CACHE_HOME as specified by<br>
+https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html if<br>
+non-empty, else $HOME/.cache.<br>
+On Darwin, it returns $HOME/Library/Caches.<br>
+On Windows, it returns %LocalAppData%.<br>
+On Plan 9, it returns $home/lib/cache.<br>
+<br>
+If the location cannot be determined (for example, $HOME is not defined),<br>
+then it will return an error.<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+<li>
+  <h3 id="UserHomeDir">UserHomeDir</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UserHomeDir)</code></div>
+</pre>
+  <p class="var-docstr">UserHomeDir returns the current user&#39;s home directory.<br>
+<br>
+On Unix, including macOS, it returns the $HOME environment variable.<br>
+On Windows, it returns %USERPROFILE%.<br>
+On Plan 9, it returns the $home environment variable.<br>
+<br>
+Go return type: (string, error)<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: [String Error]</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

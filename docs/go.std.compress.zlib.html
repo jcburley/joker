@@ -1,0 +1,86 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.compress.zlib</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the compress/zlib package.<br>
+<br>
+Package zlib implements reading and writing of zlib format compressed data,<br>
+as specified in RFC 1950.<br>
+<br>
+The implementation provides filters that uncompress during reading<br>
+and compress during writing.  For example, to write compressed data<br>
+to a buffer:<br>
+<br>
+	var b bytes.Buffer<br>
+	w := zlib.NewWriter(&amp;b)<br>
+	w.Write([]byte(&#34;hello, world\n&#34;))<br>
+	w.Close()<br>
+<br>
+and to read that data back:<br>
+<br>
+	r, err := zlib.NewReader(&amp;b)<br>
+	io.Copy(os.Stdout, r)<br>
+	r.Close()<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ErrChecksum">ErrChecksum</a>
+</li>
+<li>
+  <a href="#ErrDictionary">ErrDictionary</a>
+</li>
+<li>
+  <a href="#ErrHeader">ErrHeader</a>
+</li>
+<li>
+  <a href="#Writer.">Writer.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ErrChecksum">ErrChecksum</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrChecksum is returned when reading ZLIB data that has an invalid checksum.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrDictionary">ErrDictionary</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrDictionary is returned when reading ZLIB data that has an invalid dictionary.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrHeader">ErrHeader</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrHeader is returned when reading ZLIB data that has an invalid header.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Writer.">Writer.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Writer. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for zlib.Writer</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

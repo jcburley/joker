@@ -1,0 +1,817 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.strings</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the strings package.<br>
+<br>
+Package strings implements simple functions to manipulate UTF-8 encoded strings.<br>
+<br>
+For information about UTF-8 strings in Go, see https://blog.golang.org/strings.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Builder.">Builder.</a>
+</li>
+<li>
+  <a href="#Compare">Compare</a>
+</li>
+<li>
+  <a href="#Contains">Contains</a>
+</li>
+<li>
+  <a href="#ContainsAny">ContainsAny</a>
+</li>
+<li>
+  <a href="#ContainsRune">ContainsRune</a>
+</li>
+<li>
+  <a href="#Count">Count</a>
+</li>
+<li>
+  <a href="#EqualFold">EqualFold</a>
+</li>
+<li>
+  <a href="#Fields">Fields</a>
+</li>
+<li>
+  <a href="#HasPrefix">HasPrefix</a>
+</li>
+<li>
+  <a href="#HasSuffix">HasSuffix</a>
+</li>
+<li>
+  <a href="#Index">Index</a>
+</li>
+<li>
+  <a href="#IndexAny">IndexAny</a>
+</li>
+<li>
+  <a href="#IndexByte">IndexByte</a>
+</li>
+<li>
+  <a href="#IndexRune">IndexRune</a>
+</li>
+<li>
+  <a href="#LastIndex">LastIndex</a>
+</li>
+<li>
+  <a href="#LastIndexAny">LastIndexAny</a>
+</li>
+<li>
+  <a href="#LastIndexByte">LastIndexByte</a>
+</li>
+<li>
+  <a href="#NewReader">NewReader</a>
+</li>
+<li>
+  <a href="#Reader.">Reader.</a>
+</li>
+<li>
+  <a href="#Repeat">Repeat</a>
+</li>
+<li>
+  <a href="#Replace">Replace</a>
+</li>
+<li>
+  <a href="#ReplaceAll">ReplaceAll</a>
+</li>
+<li>
+  <a href="#Replacer.">Replacer.</a>
+</li>
+<li>
+  <a href="#Split">Split</a>
+</li>
+<li>
+  <a href="#SplitAfter">SplitAfter</a>
+</li>
+<li>
+  <a href="#SplitAfterN">SplitAfterN</a>
+</li>
+<li>
+  <a href="#SplitN">SplitN</a>
+</li>
+<li>
+  <a href="#Title">Title</a>
+</li>
+<li>
+  <a href="#ToLower">ToLower</a>
+</li>
+<li>
+  <a href="#ToTitle">ToTitle</a>
+</li>
+<li>
+  <a href="#ToUpper">ToUpper</a>
+</li>
+<li>
+  <a href="#Trim">Trim</a>
+</li>
+<li>
+  <a href="#TrimLeft">TrimLeft</a>
+</li>
+<li>
+  <a href="#TrimPrefix">TrimPrefix</a>
+</li>
+<li>
+  <a href="#TrimRight">TrimRight</a>
+</li>
+<li>
+  <a href="#TrimSpace">TrimSpace</a>
+</li>
+<li>
+  <a href="#TrimSuffix">TrimSuffix</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Builder.">Builder.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Builder. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for strings.Builder</p>
+  
+</li>
+<li>
+  <h3 id="Compare">Compare</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Compare __a __b)</code></div>
+</pre>
+  <p class="var-docstr">Compare returns an integer comparing two strings lexicographically.<br>
+The result will be 0 if a==b, -1 if a &lt; b, and +1 if a &gt; b.<br>
+<br>
+Compare is included only for symmetry with package bytes.<br>
+It is usually clearer and always faster to use the built-in<br>
+string comparison operators ==, &lt;, &gt;, and so on.<br>
+<br>
+Go input arguments: (a string, b string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String a, ^String b]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="Contains">Contains</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Contains __s __substr)</code></div>
+</pre>
+  <p class="var-docstr">Contains reports whether substr is within s.<br>
+<br>
+Go input arguments: (s string, substr string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^String substr]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="ContainsAny">ContainsAny</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ContainsAny __s __chars)</code></div>
+</pre>
+  <p class="var-docstr">ContainsAny reports whether any Unicode code points in chars are within s.<br>
+<br>
+Go input arguments: (s string, chars string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^String chars]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="ContainsRune">ContainsRune</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ContainsRune __s __r)</code></div>
+</pre>
+  <p class="var-docstr">ContainsRune reports whether the Unicode code point r is within s.<br>
+<br>
+Go input arguments: (s string, r rune)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^Char r]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Count">Count</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Count __s __substr)</code></div>
+</pre>
+  <p class="var-docstr">Count counts the number of non-overlapping instances of substr in s.<br>
+If substr is an empty string, Count returns 1 + the number of Unicode code points in s.<br>
+<br>
+Go input arguments: (s string, substr string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^String substr]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="EqualFold">EqualFold</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EqualFold __s __t)</code></div>
+</pre>
+  <p class="var-docstr">EqualFold reports whether s and t, interpreted as UTF-8 strings,<br>
+are equal under Unicode case-folding.<br>
+<br>
+Go input arguments: (s string, t string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^String t]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Fields">Fields</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Fields __s)</code></div>
+</pre>
+  <p class="var-docstr">Fields splits the string s around each instance of one or more consecutive white space<br>
+characters, as defined by unicode.IsSpace, returning a slice of substrings of s or an<br>
+empty slice if s contains only white space.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="HasPrefix">HasPrefix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HasPrefix __s __prefix)</code></div>
+</pre>
+  <p class="var-docstr">HasPrefix tests whether the string s begins with prefix.<br>
+<br>
+Go input arguments: (s string, prefix string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^String prefix]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="HasSuffix">HasSuffix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HasSuffix __s __suffix)</code></div>
+</pre>
+  <p class="var-docstr">HasSuffix tests whether the string s ends with suffix.<br>
+<br>
+Go input arguments: (s string, suffix string)<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: [^String s, ^String suffix]<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Index">Index</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Index __s __substr)</code></div>
+</pre>
+  <p class="var-docstr">Index returns the index of the first instance of substr in s, or -1 if substr is not present in s.<br>
+<br>
+Go input arguments: (s string, substr string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^String substr]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="IndexAny">IndexAny</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IndexAny __s __chars)</code></div>
+</pre>
+  <p class="var-docstr">IndexAny returns the index of the first instance of any Unicode code point<br>
+from chars in s, or -1 if no Unicode code point from chars is present in s.<br>
+<br>
+Go input arguments: (s string, chars string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^String chars]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="IndexByte">IndexByte</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IndexByte __s __c)</code></div>
+</pre>
+  <p class="var-docstr">IndexByte returns the index of the first instance of c in s, or -1 if c is not present in s.<br>
+<br>
+Go input arguments: (s string, c byte)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^Int c]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="IndexRune">IndexRune</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(IndexRune __s __r)</code></div>
+</pre>
+  <p class="var-docstr">IndexRune returns the index of the first instance of the Unicode code point<br>
+r, or -1 if rune is not present in s.<br>
+If r is utf8.RuneError, it returns the first instance of any<br>
+invalid UTF-8 byte sequence.<br>
+<br>
+Go input arguments: (s string, r rune)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^Char r]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="LastIndex">LastIndex</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LastIndex __s __substr)</code></div>
+</pre>
+  <p class="var-docstr">LastIndex returns the index of the last instance of substr in s, or -1 if substr is not present in s.<br>
+<br>
+Go input arguments: (s string, substr string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^String substr]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="LastIndexAny">LastIndexAny</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LastIndexAny __s __chars)</code></div>
+</pre>
+  <p class="var-docstr">LastIndexAny returns the index of the last instance of any Unicode code<br>
+point from chars in s, or -1 if no Unicode code point from chars is<br>
+present in s.<br>
+<br>
+Go input arguments: (s string, chars string)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^String chars]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="LastIndexByte">LastIndexByte</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LastIndexByte __s __c)</code></div>
+</pre>
+  <p class="var-docstr">LastIndexByte returns the index of the last instance of c in s, or -1 if c is not present in s.<br>
+<br>
+Go input arguments: (s string, c byte)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^String s, ^Int c]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="NewReader">NewReader</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewReader __s)</code></div>
+</pre>
+  <p class="var-docstr">NewReader returns a new Reader reading from s.<br>
+It is similar to bytes.NewBufferString but more efficient and read-only.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: *Reader<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: (atom-of go.std.strings/Reader)</p>
+  
+</li>
+<li>
+  <h3 id="Reader.">Reader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Reader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for strings.Reader</p>
+  
+</li>
+<li>
+  <h3 id="Repeat">Repeat</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Repeat __s __count)</code></div>
+</pre>
+  <p class="var-docstr">Repeat returns a new string consisting of count copies of the string s.<br>
+<br>
+It panics if count is negative or if<br>
+the result of (len(s) * count) overflows.<br>
+<br>
+Go input arguments: (s string, count int)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^Int count]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Replace">Replace</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Replace __s __old __new __n)</code></div>
+</pre>
+  <p class="var-docstr">Replace returns a copy of the string s with the first n<br>
+non-overlapping instances of old replaced by new.<br>
+If old is empty, it matches at the beginning of the string<br>
+and after each UTF-8 sequence, yielding up to k+1 replacements<br>
+for a k-rune string.<br>
+If n &lt; 0, there is no limit on the number of replacements.<br>
+<br>
+Go input arguments: (s string, old string, new string, n int)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String old, ^String new, ^Int n]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ReplaceAll">ReplaceAll</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ReplaceAll __s __old __new)</code></div>
+</pre>
+  <p class="var-docstr">ReplaceAll returns a copy of the string s with all<br>
+non-overlapping instances of old replaced by new.<br>
+If old is empty, it matches at the beginning of the string<br>
+and after each UTF-8 sequence, yielding up to k+1 replacements<br>
+for a k-rune string.<br>
+<br>
+Go input arguments: (s string, old string, new string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String old, ^String new]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Replacer.">Replacer.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Replacer. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for strings.Replacer</p>
+  
+</li>
+<li>
+  <h3 id="Split">Split</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Split __s __sep)</code></div>
+</pre>
+  <p class="var-docstr">Split slices s into all substrings separated by sep and returns a slice of<br>
+the substrings between those separators.<br>
+<br>
+If s does not contain sep and sep is not empty, Split returns a<br>
+slice of length 1 whose only element is s.<br>
+<br>
+If sep is empty, Split splits after each UTF-8 sequence. If both s<br>
+and sep are empty, Split returns an empty slice.<br>
+<br>
+It is equivalent to SplitN with a count of -1.<br>
+<br>
+Go input arguments: (s string, sep string)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String s, ^String sep]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="SplitAfter">SplitAfter</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SplitAfter __s __sep)</code></div>
+</pre>
+  <p class="var-docstr">SplitAfter slices s into all substrings after each instance of sep and<br>
+returns a slice of those substrings.<br>
+<br>
+If s does not contain sep and sep is not empty, SplitAfter returns<br>
+a slice of length 1 whose only element is s.<br>
+<br>
+If sep is empty, SplitAfter splits after each UTF-8 sequence. If<br>
+both s and sep are empty, SplitAfter returns an empty slice.<br>
+<br>
+It is equivalent to SplitAfterN with a count of -1.<br>
+<br>
+Go input arguments: (s string, sep string)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String s, ^String sep]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="SplitAfterN">SplitAfterN</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SplitAfterN __s __sep __n)</code></div>
+</pre>
+  <p class="var-docstr">SplitAfterN slices s into substrings after each instance of sep and<br>
+returns a slice of those substrings.<br>
+<br>
+The count determines the number of substrings to return:<br>
+  n &gt; 0: at most n substrings; the last substring will be the unsplit remainder.<br>
+  n == 0: the result is nil (zero substrings)<br>
+  n &lt; 0: all substrings<br>
+<br>
+Edge cases for s and sep (for example, empty strings) are handled<br>
+as described in the documentation for SplitAfter.<br>
+<br>
+Go input arguments: (s string, sep string, n int)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String s, ^String sep, ^Int n]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="SplitN">SplitN</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SplitN __s __sep __n)</code></div>
+</pre>
+  <p class="var-docstr">SplitN slices s into substrings separated by sep and returns a slice of<br>
+the substrings between those separators.<br>
+<br>
+The count determines the number of substrings to return:<br>
+  n &gt; 0: at most n substrings; the last substring will be the unsplit remainder.<br>
+  n == 0: the result is nil (zero substrings)<br>
+  n &lt; 0: all substrings<br>
+<br>
+Edge cases for s and sep (for example, empty strings) are handled<br>
+as described in the documentation for Split.<br>
+<br>
+Go input arguments: (s string, sep string, n int)<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: [^String s, ^String sep, ^Int n]<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="Title">Title</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Title __s)</code></div>
+</pre>
+  <p class="var-docstr">Title returns a copy of the string s with all Unicode letters that begin words<br>
+mapped to their title case.<br>
+<br>
+BUG(rsc): The rule Title uses for word boundaries does not handle Unicode punctuation properly.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ToLower">ToLower</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToLower __s)</code></div>
+</pre>
+  <p class="var-docstr">ToLower returns a copy of the string s with all Unicode letters mapped to their lower case.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ToTitle">ToTitle</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToTitle __s)</code></div>
+</pre>
+  <p class="var-docstr">ToTitle returns a copy of the string s with all Unicode letters mapped to their title case.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ToUpper">ToUpper</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ToUpper __s)</code></div>
+</pre>
+  <p class="var-docstr">ToUpper returns a copy of the string s with all Unicode letters mapped to their upper case.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Trim">Trim</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Trim __s __cutset)</code></div>
+</pre>
+  <p class="var-docstr">Trim returns a slice of the string s with all leading and<br>
+trailing Unicode code points contained in cutset removed.<br>
+<br>
+Go input arguments: (s string, cutset string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String cutset]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="TrimLeft">TrimLeft</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TrimLeft __s __cutset)</code></div>
+</pre>
+  <p class="var-docstr">TrimLeft returns a slice of the string s with all leading<br>
+Unicode code points contained in cutset removed.<br>
+<br>
+To remove a prefix, use TrimPrefix instead.<br>
+<br>
+Go input arguments: (s string, cutset string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String cutset]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="TrimPrefix">TrimPrefix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TrimPrefix __s __prefix)</code></div>
+</pre>
+  <p class="var-docstr">TrimPrefix returns s without the provided leading prefix string.<br>
+If s doesn&#39;t start with prefix, s is returned unchanged.<br>
+<br>
+Go input arguments: (s string, prefix string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String prefix]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="TrimRight">TrimRight</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TrimRight __s __cutset)</code></div>
+</pre>
+  <p class="var-docstr">TrimRight returns a slice of the string s, with all trailing<br>
+Unicode code points contained in cutset removed.<br>
+<br>
+To remove a suffix, use TrimSuffix instead.<br>
+<br>
+Go input arguments: (s string, cutset string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String cutset]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="TrimSpace">TrimSpace</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TrimSpace __s)</code></div>
+</pre>
+  <p class="var-docstr">TrimSpace returns a slice of the string s, with all leading<br>
+and trailing white space removed, as defined by Unicode.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="TrimSuffix">TrimSuffix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TrimSuffix __s __suffix)</code></div>
+</pre>
+  <p class="var-docstr">TrimSuffix returns s without the provided trailing suffix string.<br>
+If s doesn&#39;t end with suffix, s is returned unchanged.<br>
+<br>
+Go input arguments: (s string, suffix string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s, ^String suffix]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

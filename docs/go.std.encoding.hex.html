@@ -1,0 +1,115 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.encoding.hex</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the encoding/hex package.<br>
+<br>
+Package hex implements hexadecimal encoding and decoding.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#DecodeString">DecodeString</a>
+</li>
+<li>
+  <a href="#DecodedLen">DecodedLen</a>
+</li>
+<li>
+  <a href="#EncodedLen">EncodedLen</a>
+</li>
+<li>
+  <a href="#ErrLength">ErrLength</a>
+</li>
+<li>
+  <a href="#InvalidByteError.">InvalidByteError.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="DecodeString">DecodeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DecodeString __s)</code></div>
+</pre>
+  <p class="var-docstr">DecodeString returns the bytes represented by the hexadecimal string s.<br>
+<br>
+DecodeString expects that src contains only hexadecimal<br>
+characters and that src has even length.<br>
+If the input is malformed, DecodeString returns<br>
+the bytes decoded before the error.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: ([]byte, error)<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: [(vector-of Int) Error]</p>
+  
+</li>
+<li>
+  <h3 id="DecodedLen">DecodedLen</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DecodedLen __x)</code></div>
+</pre>
+  <p class="var-docstr">DecodedLen returns the length of a decoding of x source bytes.<br>
+Specifically, it returns x / 2.<br>
+<br>
+Go input arguments: (x int)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^Int x]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="EncodedLen">EncodedLen</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EncodedLen __n)</code></div>
+</pre>
+  <p class="var-docstr">EncodedLen returns the length of an encoding of n source bytes.<br>
+Specifically, it returns n * 2.<br>
+<br>
+Go input arguments: (n int)<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: [^Int n]<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="ErrLength">ErrLength</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrLength reports an attempt to decode an odd-length input<br>
+using Decode or DecodeString.<br>
+The stream-based Decoder returns io.ErrUnexpectedEOF instead of ErrLength.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="InvalidByteError.">InvalidByteError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(InvalidByteError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for hex.InvalidByteError</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

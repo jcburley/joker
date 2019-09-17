@@ -1,0 +1,156 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.context</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the context package.<br>
+<br>
+Package context defines the Context type, which carries deadlines,<br>
+cancelation signals, and other request-scoped values across API boundaries<br>
+and between processes.<br>
+<br>
+Incoming requests to a server should create a Context, and outgoing<br>
+calls to servers should accept a Context. The chain of function<br>
+calls between them must propagate the Context, optionally replacing<br>
+it with a derived Context created using WithCancel, WithDeadline,<br>
+WithTimeout, or WithValue. When a Context is canceled, all<br>
+Contexts derived from it are also canceled.<br>
+<br>
+The WithCancel, WithDeadline, and WithTimeout functions take a<br>
+Context (the parent) and return a derived Context (the child) and a<br>
+CancelFunc. Calling the CancelFunc cancels the child and its<br>
+children, removes the parent&#39;s reference to the child, and stops<br>
+any associated timers. Failing to call the CancelFunc leaks the<br>
+child and its children until the parent is canceled or the timer<br>
+fires. The go vet tool checks that CancelFuncs are used on all<br>
+control-flow paths.<br>
+<br>
+Programs that use Contexts should follow these rules to keep interfaces<br>
+consistent across packages and enable static analysis tools to check context<br>
+propagation:<br>
+<br>
+Do not store Contexts inside a struct type; instead, pass a Context<br>
+explicitly to each function that needs it. The Context should be the first<br>
+parameter, typically named ctx:<br>
+<br>
+	func DoSomething(ctx context.Context, arg Arg) error {<br>
+		// ... use ctx ...<br>
+	}<br>
+<br>
+Do not pass a nil Context, even if a function permits it. Pass context.TODO<br>
+if you are unsure about which Context to use.<br>
+<br>
+Use context Values only for request-scoped data that transits processes and<br>
+APIs, not for passing optional parameters to functions.<br>
+<br>
+The same Context may be passed to functions running in different goroutines;<br>
+Contexts are safe for simultaneous use by multiple goroutines.<br>
+<br>
+See https://blog.golang.org/context for example code for a server that uses<br>
+Contexts.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Background">Background</a>
+</li>
+<li>
+  <a href="#Canceled">Canceled</a>
+</li>
+<li>
+  <a href="#DeadlineExceeded">DeadlineExceeded</a>
+</li>
+<li>
+  <a href="#TODO">TODO</a>
+</li>
+<li>
+  <a href="#WithCancel">WithCancel</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Background">Background</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Background)</code></div>
+</pre>
+  <p class="var-docstr">Background returns a non-nil, empty Context. It is never canceled, has no<br>
+values, and has no deadline. It is typically used by the main function,<br>
+initialization, and tests, and as the top-level Context for incoming<br>
+requests.<br>
+<br>
+Go return type: Context<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: go.std.context/Context</p>
+  
+</li>
+<li>
+  <h3 id="Canceled">Canceled</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Canceled is the error returned by Context.Err when the context is canceled.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DeadlineExceeded">DeadlineExceeded</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DeadlineExceeded is the error returned by Context.Err when the context&#39;s<br>
+deadline passes.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TODO">TODO</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TODO)</code></div>
+</pre>
+  <p class="var-docstr">TODO returns a non-nil, empty Context. Code should use context.TODO when<br>
+it&#39;s unclear which Context to use or it is not yet available (because the<br>
+surrounding function has not yet been extended to accept a Context<br>
+parameter).<br>
+<br>
+Go return type: Context<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: go.std.context/Context</p>
+  
+</li>
+<li>
+  <h3 id="WithCancel">WithCancel</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(WithCancel __parent)</code></div>
+</pre>
+  <p class="var-docstr">WithCancel returns a copy of parent with a new Done channel. The returned<br>
+context&#39;s Done channel is closed when the returned cancel function is called<br>
+or when the parent context&#39;s Done channel is closed, whichever happens first.<br>
+<br>
+Canceling this context releases resources associated with it, so code should<br>
+call cancel as soon as the operations running in this Context complete.<br>
+<br>
+Go input arguments: (parent Context)<br>
+<br>
+Go return type: (ctx Context, cancel CancelFunc)<br>
+<br>
+Joker input arguments: [^go.std.context/Context parent]<br>
+<br>
+Joker return type: [go.std.context/Context go.std.context/CancelFunc]</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

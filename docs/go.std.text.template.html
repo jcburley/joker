@@ -1,0 +1,596 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.text.template</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the text/template package.<br>
+<br>
+Package template implements data-driven templates for generating textual output.<br>
+<br>
+To generate HTML output, see package html/template, which has the same interface<br>
+as this package but automatically secures HTML output against certain attacks.<br>
+<br>
+Templates are executed by applying them to a data structure. Annotations in the<br>
+template refer to elements of the data structure (typically a field of a struct<br>
+or a key in a map) to control execution and derive values to be displayed.<br>
+Execution of the template walks the structure and sets the cursor, represented<br>
+by a period &#39;.&#39; and called &#34;dot&#34;, to the value at the current location in the<br>
+structure as execution proceeds.<br>
+<br>
+The input text for a template is UTF-8-encoded text in any format.<br>
+&#34;Actions&#34;--data evaluations or control structures--are delimited by<br>
+&#34;{{&#34; and &#34;}}&#34;; all text outside actions is copied to the output unchanged.<br>
+Except for raw strings, actions may not span newlines, although comments can.<br>
+<br>
+Once parsed, a template may be executed safely in parallel, although if parallel<br>
+executions share a Writer the output may be interleaved.<br>
+<br>
+Here is a trivial example that prints &#34;17 items are made of wool&#34;.<br>
+<br>
+	type Inventory struct {<br>
+		Material string<br>
+		Count    uint<br>
+	}<br>
+	sweaters := Inventory{&#34;wool&#34;, 17}<br>
+	tmpl, err := template.New(&#34;test&#34;).Parse(&#34;{{.Count}} items are made of {{.Material}}&#34;)<br>
+	if err != nil { panic(err) }<br>
+	err = tmpl.Execute(os.Stdout, sweaters)<br>
+	if err != nil { panic(err) }<br>
+<br>
+More intricate examples appear below.<br>
+<br>
+Text and spaces<br>
+<br>
+By default, all text between actions is copied verbatim when the template is<br>
+executed. For example, the string &#34; items are made of &#34; in the example above appears<br>
+on standard output when the program is run.<br>
+<br>
+However, to aid in formatting template source code, if an action&#39;s left delimiter<br>
+(by default &#34;{{&#34;) is followed immediately by a minus sign and ASCII space character<br>
+(&#34;{{- &#34;), all trailing white space is trimmed from the immediately preceding text.<br>
+Similarly, if the right delimiter (&#34;}}&#34;) is preceded by a space and minus sign<br>
+(&#34; -}}&#34;), all leading white space is trimmed from the immediately following text.<br>
+In these trim markers, the ASCII space must be present; &#34;{{-3}}&#34; parses as an<br>
+action containing the number -3.<br>
+<br>
+For instance, when executing the template whose source is<br>
+<br>
+	&#34;{{23 -}} &lt; {{- 45}}&#34;<br>
+<br>
+the generated output would be<br>
+<br>
+	&#34;23&lt;45&#34;<br>
+<br>
+For this trimming, the definition of white space characters is the same as in Go:<br>
+space, horizontal tab, carriage return, and newline.<br>
+<br>
+Actions<br>
+<br>
+Here is the list of actions. &#34;Arguments&#34; and &#34;pipelines&#34; are evaluations of<br>
+data, defined in detail in the corresponding sections that follow.<br>
+<br>
+	{{/* a comment */}}<br>
+	{{- /* a comment with white space trimmed from preceding and following text */ -}}<br>
+		A comment; discarded. May contain newlines.<br>
+		Comments do not nest and must start and end at the<br>
+		delimiters, as shown here.<br>
+<br>
+	{{pipeline}}<br>
+		The default textual representation (the same as would be<br>
+		printed by fmt.Print) of the value of the pipeline is copied<br>
+		to the output.<br>
+<br>
+	{{if pipeline}} T1 {{end}}<br>
+		If the value of the pipeline is empty, no output is generated;<br>
+		otherwise, T1 is executed. The empty values are false, 0, any<br>
+		nil pointer or interface value, and any array, slice, map, or<br>
+		string of length zero.<br>
+		Dot is unaffected.<br>
+<br>
+	{{if pipeline}} T1 {{else}} T0 {{end}}<br>
+		If the value of the pipeline is empty, T0 is executed;<br>
+		otherwise, T1 is executed. Dot is unaffected.<br>
+<br>
+	{{if pipeline}} T1 {{else if pipeline}} T0 {{end}}<br>
+		To simplify the appearance of if-else chains, the else action<br>
+		of an if may include another if directly; the effect is exactly<br>
+		the same as writing<br>
+			{{if pipeline}} T1 {{else}}{{if pipeline}} T0 {{end}}{{end}}<br>
+<br>
+	{{range pipeline}} T1 {{end}}<br>
+		The value of the pipeline must be an array, slice, map, or channel.<br>
+		If the value of the pipeline has length zero, nothing is output;<br>
+		otherwise, dot is set to the successive elements of the array,<br>
+		slice, or map and T1 is executed. If the value is a map and the<br>
+		keys are of basic type with a defined order (&#34;comparable&#34;), the<br>
+		elements will be visited in sorted key order.<br>
+<br>
+	{{range pipeline}} T1 {{else}} T0 {{end}}<br>
+		The value of the pipeline must be an array, slice, map, or channel.<br>
+		If the value of the pipeline has length zero, dot is unaffected and<br>
+		T0 is executed; otherwise, dot is set to the successive elements<br>
+		of the array, slice, or map and T1 is executed.<br>
+<br>
+	{{template &#34;name&#34;}}<br>
+		The template with the specified name is executed with nil data.<br>
+<br>
+	{{template &#34;name&#34; pipeline}}<br>
+		The template with the specified name is executed with dot set<br>
+		to the value of the pipeline.<br>
+<br>
+	{{block &#34;name&#34; pipeline}} T1 {{end}}<br>
+		A block is shorthand for defining a template<br>
+			{{define &#34;name&#34;}} T1 {{end}}<br>
+		and then executing it in place<br>
+			{{template &#34;name&#34; pipeline}}<br>
+		The typical use is to define a set of root templates that are<br>
+		then customized by redefining the block templates within.<br>
+<br>
+	{{with pipeline}} T1 {{end}}<br>
+		If the value of the pipeline is empty, no output is generated;<br>
+		otherwise, dot is set to the value of the pipeline and T1 is<br>
+		executed.<br>
+<br>
+	{{with pipeline}} T1 {{else}} T0 {{end}}<br>
+		If the value of the pipeline is empty, dot is unaffected and T0<br>
+		is executed; otherwise, dot is set to the value of the pipeline<br>
+		and T1 is executed.<br>
+<br>
+Arguments<br>
+<br>
+An argument is a simple value, denoted by one of the following.<br>
+<br>
+	- A boolean, string, character, integer, floating-point, imaginary<br>
+	  or complex constant in Go syntax. These behave like Go&#39;s untyped<br>
+	  constants. Note that, as in Go, whether a large integer constant<br>
+	  overflows when assigned or passed to a function can depend on whether<br>
+	  the host machine&#39;s ints are 32 or 64 bits.<br>
+	- The keyword nil, representing an untyped Go nil.<br>
+	- The character &#39;.&#39; (period):<br>
+		.<br>
+	  The result is the value of dot.<br>
+	- A variable name, which is a (possibly empty) alphanumeric string<br>
+	  preceded by a dollar sign, such as<br>
+		$piOver2<br>
+	  or<br>
+		$<br>
+	  The result is the value of the variable.<br>
+	  Variables are described below.<br>
+	- The name of a field of the data, which must be a struct, preceded<br>
+	  by a period, such as<br>
+		.Field<br>
+	  The result is the value of the field. Field invocations may be<br>
+	  chained:<br>
+	    .Field1.Field2<br>
+	  Fields can also be evaluated on variables, including chaining:<br>
+	    $x.Field1.Field2<br>
+	- The name of a key of the data, which must be a map, preceded<br>
+	  by a period, such as<br>
+		.Key<br>
+	  The result is the map element value indexed by the key.<br>
+	  Key invocations may be chained and combined with fields to any<br>
+	  depth:<br>
+	    .Field1.Key1.Field2.Key2<br>
+	  Although the key must be an alphanumeric identifier, unlike with<br>
+	  field names they do not need to start with an upper case letter.<br>
+	  Keys can also be evaluated on variables, including chaining:<br>
+	    $x.key1.key2<br>
+	- The name of a niladic method of the data, preceded by a period,<br>
+	  such as<br>
+		.Method<br>
+	  The result is the value of invoking the method with dot as the<br>
+	  receiver, dot.Method(). Such a method must have one return value (of<br>
+	  any type) or two return values, the second of which is an error.<br>
+	  If it has two and the returned error is non-nil, execution terminates<br>
+	  and an error is returned to the caller as the value of Execute.<br>
+	  Method invocations may be chained and combined with fields and keys<br>
+	  to any depth:<br>
+	    .Field1.Key1.Method1.Field2.Key2.Method2<br>
+	  Methods can also be evaluated on variables, including chaining:<br>
+	    $x.Method1.Field<br>
+	- The name of a niladic function, such as<br>
+		fun<br>
+	  The result is the value of invoking the function, fun(). The return<br>
+	  types and values behave as in methods. Functions and function<br>
+	  names are described below.<br>
+	- A parenthesized instance of one the above, for grouping. The result<br>
+	  may be accessed by a field or map key invocation.<br>
+		print (.F1 arg1) (.F2 arg2)<br>
+		(.StructValuedMethod &#34;arg&#34;).Field<br>
+<br>
+Arguments may evaluate to any type; if they are pointers the implementation<br>
+automatically indirects to the base type when required.<br>
+If an evaluation yields a function value, such as a function-valued<br>
+field of a struct, the function is not invoked automatically, but it<br>
+can be used as a truth value for an if action and the like. To invoke<br>
+it, use the call function, defined below.<br>
+<br>
+Pipelines<br>
+<br>
+A pipeline is a possibly chained sequence of &#34;commands&#34;. A command is a simple<br>
+value (argument) or a function or method call, possibly with multiple arguments:<br>
+<br>
+	Argument<br>
+		The result is the value of evaluating the argument.<br>
+	.Method [Argument...]<br>
+		The method can be alone or the last element of a chain but,<br>
+		unlike methods in the middle of a chain, it can take arguments.<br>
+		The result is the value of calling the method with the<br>
+		arguments:<br>
+			dot.Method(Argument1, etc.)<br>
+	functionName [Argument...]<br>
+		The result is the value of calling the function associated<br>
+		with the name:<br>
+			function(Argument1, etc.)<br>
+		Functions and function names are described below.<br>
+<br>
+A pipeline may be &#34;chained&#34; by separating a sequence of commands with pipeline<br>
+characters &#39;|&#39;. In a chained pipeline, the result of each command is<br>
+passed as the last argument of the following command. The output of the final<br>
+command in the pipeline is the value of the pipeline.<br>
+<br>
+The output of a command will be either one value or two values, the second of<br>
+which has type error. If that second value is present and evaluates to<br>
+non-nil, execution terminates and the error is returned to the caller of<br>
+Execute.<br>
+<br>
+Variables<br>
+<br>
+A pipeline inside an action may initialize a variable to capture the result.<br>
+The initialization has syntax<br>
+<br>
+	$variable := pipeline<br>
+<br>
+where $variable is the name of the variable. An action that declares a<br>
+variable produces no output.<br>
+<br>
+Variables previously declared can also be assigned, using the syntax<br>
+<br>
+	$variable = pipeline<br>
+<br>
+If a &#34;range&#34; action initializes a variable, the variable is set to the<br>
+successive elements of the iteration. Also, a &#34;range&#34; may declare two<br>
+variables, separated by a comma:<br>
+<br>
+	range $index, $element := pipeline<br>
+<br>
+in which case $index and $element are set to the successive values of the<br>
+array/slice index or map key and element, respectively. Note that if there is<br>
+only one variable, it is assigned the element; this is opposite to the<br>
+convention in Go range clauses.<br>
+<br>
+A variable&#39;s scope extends to the &#34;end&#34; action of the control structure (&#34;if&#34;,<br>
+&#34;with&#34;, or &#34;range&#34;) in which it is declared, or to the end of the template if<br>
+there is no such control structure. A template invocation does not inherit<br>
+variables from the point of its invocation.<br>
+<br>
+When execution begins, $ is set to the data argument passed to Execute, that is,<br>
+to the starting value of dot.<br>
+<br>
+Examples<br>
+<br>
+Here are some example one-line templates demonstrating pipelines and variables.<br>
+All produce the quoted word &#34;output&#34;:<br>
+<br>
+	{{&#34;\&#34;output\&#34;&#34;}}<br>
+		A string constant.<br>
+	{{`&#34;output&#34;`}}<br>
+		A raw string constant.<br>
+	{{printf &#34;%q&#34; &#34;output&#34;}}<br>
+		A function call.<br>
+	{{&#34;output&#34; | printf &#34;%q&#34;}}<br>
+		A function call whose final argument comes from the previous<br>
+		command.<br>
+	{{printf &#34;%q&#34; (print &#34;out&#34; &#34;put&#34;)}}<br>
+		A parenthesized argument.<br>
+	{{&#34;put&#34; | printf &#34;%s%s&#34; &#34;out&#34; | printf &#34;%q&#34;}}<br>
+		A more elaborate call.<br>
+	{{&#34;output&#34; | printf &#34;%s&#34; | printf &#34;%q&#34;}}<br>
+		A longer chain.<br>
+	{{with &#34;output&#34;}}{{printf &#34;%q&#34; .}}{{end}}<br>
+		A with action using dot.<br>
+	{{with $x := &#34;output&#34; | printf &#34;%q&#34;}}{{$x}}{{end}}<br>
+		A with action that creates and uses a variable.<br>
+	{{with $x := &#34;output&#34;}}{{printf &#34;%q&#34; $x}}{{end}}<br>
+		A with action that uses the variable in another action.<br>
+	{{with $x := &#34;output&#34;}}{{$x | printf &#34;%q&#34;}}{{end}}<br>
+		The same, but pipelined.<br>
+<br>
+Functions<br>
+<br>
+During execution functions are found in two function maps: first in the<br>
+template, then in the global function map. By default, no functions are defined<br>
+in the template but the Funcs method can be used to add them.<br>
+<br>
+Predefined global functions are named as follows.<br>
+<br>
+	and<br>
+		Returns the boolean AND of its arguments by returning the<br>
+		first empty argument or the last argument, that is,<br>
+		&#34;and x y&#34; behaves as &#34;if x then y else x&#34;. All the<br>
+		arguments are evaluated.<br>
+	call<br>
+		Returns the result of calling the first argument, which<br>
+		must be a function, with the remaining arguments as parameters.<br>
+		Thus &#34;call .X.Y 1 2&#34; is, in Go notation, dot.X.Y(1, 2) where<br>
+		Y is a func-valued field, map entry, or the like.<br>
+		The first argument must be the result of an evaluation<br>
+		that yields a value of function type (as distinct from<br>
+		a predefined function such as print). The function must<br>
+		return either one or two result values, the second of which<br>
+		is of type error. If the arguments don&#39;t match the function<br>
+		or the returned error value is non-nil, execution stops.<br>
+	html<br>
+		Returns the escaped HTML equivalent of the textual<br>
+		representation of its arguments. This function is unavailable<br>
+		in html/template, with a few exceptions.<br>
+	index<br>
+		Returns the result of indexing its first argument by the<br>
+		following arguments. Thus &#34;index x 1 2 3&#34; is, in Go syntax,<br>
+		x[1][2][3]. Each indexed item must be a map, slice, or array.<br>
+	js<br>
+		Returns the escaped JavaScript equivalent of the textual<br>
+		representation of its arguments.<br>
+	len<br>
+		Returns the integer length of its argument.<br>
+	not<br>
+		Returns the boolean negation of its single argument.<br>
+	or<br>
+		Returns the boolean OR of its arguments by returning the<br>
+		first non-empty argument or the last argument, that is,<br>
+		&#34;or x y&#34; behaves as &#34;if x then x else y&#34;. All the<br>
+		arguments are evaluated.<br>
+	print<br>
+		An alias for fmt.Sprint<br>
+	printf<br>
+		An alias for fmt.Sprintf<br>
+	println<br>
+		An alias for fmt.Sprintln<br>
+	urlquery<br>
+		Returns the escaped value of the textual representation of<br>
+		its arguments in a form suitable for embedding in a URL query.<br>
+		This function is unavailable in html/template, with a few<br>
+		exceptions.<br>
+<br>
+The boolean functions take any zero value to be false and a non-zero<br>
+value to be true.<br>
+<br>
+There is also a set of binary comparison operators defined as<br>
+functions:<br>
+<br>
+	eq<br>
+		Returns the boolean truth of arg1 == arg2<br>
+	ne<br>
+		Returns the boolean truth of arg1 != arg2<br>
+	lt<br>
+		Returns the boolean truth of arg1 &lt; arg2<br>
+	le<br>
+		Returns the boolean truth of arg1 &lt;= arg2<br>
+	gt<br>
+		Returns the boolean truth of arg1 &gt; arg2<br>
+	ge<br>
+		Returns the boolean truth of arg1 &gt;= arg2<br>
+<br>
+For simpler multi-way equality tests, eq (only) accepts two or more<br>
+arguments and compares the second and subsequent to the first,<br>
+returning in effect<br>
+<br>
+	arg1==arg2 || arg1==arg3 || arg1==arg4 ...<br>
+<br>
+(Unlike with || in Go, however, eq is a function call and all the<br>
+arguments will be evaluated.)<br>
+<br>
+The comparison functions work on basic types only (or named basic<br>
+types, such as &#34;type Celsius float32&#34;). They implement the Go rules<br>
+for comparison of values, except that size and exact type are<br>
+ignored, so any integer value, signed or unsigned, may be compared<br>
+with any other integer value. (The arithmetic value is compared,<br>
+not the bit pattern, so all negative integers are less than all<br>
+unsigned integers.) However, as usual, one may not compare an int<br>
+with a float32 and so on.<br>
+<br>
+Associated templates<br>
+<br>
+Each template is named by a string specified when it is created. Also, each<br>
+template is associated with zero or more other templates that it may invoke by<br>
+name; such associations are transitive and form a name space of templates.<br>
+<br>
+A template may use a template invocation to instantiate another associated<br>
+template; see the explanation of the &#34;template&#34; action above. The name must be<br>
+that of a template associated with the template that contains the invocation.<br>
+<br>
+Nested template definitions<br>
+<br>
+When parsing a template, another template may be defined and associated with the<br>
+template being parsed. Template definitions must appear at the top level of the<br>
+template, much like global variables in a Go program.<br>
+<br>
+The syntax of such definitions is to surround each template declaration with a<br>
+&#34;define&#34; and &#34;end&#34; action.<br>
+<br>
+The define action names the template being created by providing a string<br>
+constant. Here is a simple example:<br>
+<br>
+	`{{define &#34;T1&#34;}}ONE{{end}}<br>
+	{{define &#34;T2&#34;}}TWO{{end}}<br>
+	{{define &#34;T3&#34;}}{{template &#34;T1&#34;}} {{template &#34;T2&#34;}}{{end}}<br>
+	{{template &#34;T3&#34;}}`<br>
+<br>
+This defines two templates, T1 and T2, and a third T3 that invokes the other two<br>
+when it is executed. Finally it invokes T3. If executed this template will<br>
+produce the text<br>
+<br>
+	ONE TWO<br>
+<br>
+By construction, a template may reside in only one association. If it&#39;s<br>
+necessary to have a template addressable from multiple associations, the<br>
+template definition must be parsed multiple times to create distinct *Template<br>
+values, or must be copied with the Clone or AddParseTree method.<br>
+<br>
+Parse may be called multiple times to assemble the various associated templates;<br>
+see the ParseFiles and ParseGlob functions and methods for simple ways to parse<br>
+related templates stored in files.<br>
+<br>
+A template may be executed directly or through ExecuteTemplate, which executes<br>
+an associated template identified by name. To invoke our example above, we<br>
+might write,<br>
+<br>
+	err := tmpl.Execute(os.Stdout, &#34;no data needed&#34;)<br>
+	if err != nil {<br>
+		log.Fatalf(&#34;execution failed: %s&#34;, err)<br>
+	}<br>
+<br>
+or to invoke a particular template explicitly by name,<br>
+<br>
+	err := tmpl.ExecuteTemplate(os.Stdout, &#34;T2&#34;, &#34;no data needed&#34;)<br>
+	if err != nil {<br>
+		log.Fatalf(&#34;execution failed: %s&#34;, err)<br>
+	}<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#ExecError.">ExecError.</a>
+</li>
+<li>
+  <a href="#HTMLEscapeString">HTMLEscapeString</a>
+</li>
+<li>
+  <a href="#JSEscapeString">JSEscapeString</a>
+</li>
+<li>
+  <a href="#Must">Must</a>
+</li>
+<li>
+  <a href="#New">New</a>
+</li>
+<li>
+  <a href="#ParseGlob">ParseGlob</a>
+</li>
+<li>
+  <a href="#Template.">Template.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="ExecError.">ExecError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ExecError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.ExecError</p>
+  
+</li>
+<li>
+  <h3 id="HTMLEscapeString">HTMLEscapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(HTMLEscapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">HTMLEscapeString returns the escaped HTML equivalent of the plain text data s.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="JSEscapeString">JSEscapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(JSEscapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">JSEscapeString returns the escaped JavaScript equivalent of the plain text data s.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Must">Must</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Must __t __err)</code></div>
+</pre>
+  <p class="var-docstr">Must is a helper that wraps a call to a function returning (*Template, error)<br>
+and panics if the error is non-nil. It is intended for use in variable<br>
+initializations such as<br>
+	var t = template.Must(template.New(&#34;name&#34;).Parse(&#34;text&#34;))<br>
+<br>
+Go input arguments: (t *Template, err error)<br>
+<br>
+Go return type: *Template<br>
+<br>
+Joker input arguments: [^(atom-of go.std.text.template/Template) t, ^Error err]<br>
+<br>
+Joker return type: (atom-of go.std.text.template/Template)</p>
+  
+</li>
+<li>
+  <h3 id="New">New</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(New __name)</code></div>
+</pre>
+  <p class="var-docstr">New allocates a new, undefined template with the given name.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: *Template<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: (atom-of go.std.text.template/Template)</p>
+  
+</li>
+<li>
+  <h3 id="ParseGlob">ParseGlob</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ParseGlob __pattern)</code></div>
+</pre>
+  <p class="var-docstr">ParseGlob creates a new Template and parses the template definitions from the<br>
+files identified by the pattern, which must match at least one file. The<br>
+returned template will have the (base) name and (parsed) contents of the<br>
+first file matched by the pattern. ParseGlob is equivalent to calling<br>
+ParseFiles with the list of files matched by the pattern.<br>
+<br>
+When parsing multiple files with the same name in different directories,<br>
+the last one mentioned will be the one that results.<br>
+<br>
+Go input arguments: (pattern string)<br>
+<br>
+Go return type: (*Template, error)<br>
+<br>
+Joker input arguments: [^String pattern]<br>
+<br>
+Joker return type: [(atom-of go.std.text.template/Template) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Template.">Template.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Template. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for template.Template</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

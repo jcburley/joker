@@ -1,0 +1,103 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.net.smtp</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the net/smtp package.<br>
+<br>
+Package smtp implements the Simple Mail Transfer Protocol as defined in RFC 5321.<br>
+It also implements the following extensions:<br>
+	8BITMIME  RFC 1652<br>
+	AUTH      RFC 2554<br>
+	STARTTLS  RFC 3207<br>
+Additional extensions may be handled by clients.<br>
+<br>
+The smtp package is frozen and is not accepting new features.<br>
+Some external packages provide more functionality. See:<br>
+<br>
+  https://godoc.org/?q=smtp<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#CRAMMD5Auth">CRAMMD5Auth</a>
+</li>
+<li>
+  <a href="#Dial">Dial</a>
+</li>
+<li>
+  <a href="#PlainAuth">PlainAuth</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="CRAMMD5Auth">CRAMMD5Auth</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CRAMMD5Auth __username __secret)</code></div>
+</pre>
+  <p class="var-docstr">CRAMMD5Auth returns an Auth that implements the CRAM-MD5 authentication<br>
+mechanism as defined in RFC 2195.<br>
+The returned Auth uses the given username and secret to authenticate<br>
+to the server using the challenge-response mechanism.<br>
+<br>
+Go input arguments: (username string, secret string)<br>
+<br>
+Go return type: Auth<br>
+<br>
+Joker input arguments: [^String username, ^String secret]<br>
+<br>
+Joker return type: go.std.net.smtp/Auth</p>
+  
+</li>
+<li>
+  <h3 id="Dial">Dial</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Dial __addr)</code></div>
+</pre>
+  <p class="var-docstr">Dial returns a new Client connected to an SMTP server at addr.<br>
+The addr must include a port, as in &#34;mail.example.com:smtp&#34;.<br>
+<br>
+Go input arguments: (addr string)<br>
+<br>
+Go return type: (*Client, error)<br>
+<br>
+Joker input arguments: [^String addr]<br>
+<br>
+Joker return type: [(atom-of go.std.net.smtp/Client) Error]</p>
+  
+</li>
+<li>
+  <h3 id="PlainAuth">PlainAuth</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(PlainAuth __identity __username __password __host)</code></div>
+</pre>
+  <p class="var-docstr">PlainAuth returns an Auth that implements the PLAIN authentication<br>
+mechanism as defined in RFC 4616. The returned Auth uses the given<br>
+username and password to authenticate to host and act as identity.<br>
+Usually identity should be the empty string, to act as username.<br>
+<br>
+PlainAuth will only send the credentials if the connection is using TLS<br>
+or is connected to localhost. Otherwise authentication will fail with an<br>
+error, without sending the credentials.<br>
+<br>
+Go input arguments: (identity string, username string, password string, host string)<br>
+<br>
+Go return type: Auth<br>
+<br>
+Joker input arguments: [^String identity, ^String username, ^String password, ^String host]<br>
+<br>
+Joker return type: go.std.net.smtp/Auth</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

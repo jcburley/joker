@@ -1,0 +1,559 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.debug.pe</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the debug/pe package.<br>
+<br>
+Package pe implements access to PE (Microsoft Windows Portable Executable) files.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#COFFSymbolSize">COFFSymbolSize</a>
+</li>
+<li>
+  <a href="#DataDirectory.">DataDirectory.</a>
+</li>
+<li>
+  <a href="#FileHeader.">FileHeader.</a>
+</li>
+<li>
+  <a href="#FormatError.">FormatError.</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_ARCHITECTURE">IMAGE_DIRECTORY_ENTRY_ARCHITECTURE</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_BASERELOC">IMAGE_DIRECTORY_ENTRY_BASERELOC</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT">IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR">IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_DEBUG">IMAGE_DIRECTORY_ENTRY_DEBUG</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT">IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_EXCEPTION">IMAGE_DIRECTORY_ENTRY_EXCEPTION</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_EXPORT">IMAGE_DIRECTORY_ENTRY_EXPORT</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_GLOBALPTR">IMAGE_DIRECTORY_ENTRY_GLOBALPTR</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_IAT">IMAGE_DIRECTORY_ENTRY_IAT</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_IMPORT">IMAGE_DIRECTORY_ENTRY_IMPORT</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG">IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_RESOURCE">IMAGE_DIRECTORY_ENTRY_RESOURCE</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_SECURITY">IMAGE_DIRECTORY_ENTRY_SECURITY</a>
+</li>
+<li>
+  <a href="#IMAGE_DIRECTORY_ENTRY_TLS">IMAGE_DIRECTORY_ENTRY_TLS</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_AM33">IMAGE_FILE_MACHINE_AM33</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_AMD64">IMAGE_FILE_MACHINE_AMD64</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_ARM">IMAGE_FILE_MACHINE_ARM</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_ARM64">IMAGE_FILE_MACHINE_ARM64</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_ARMNT">IMAGE_FILE_MACHINE_ARMNT</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_EBC">IMAGE_FILE_MACHINE_EBC</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_I386">IMAGE_FILE_MACHINE_I386</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_IA64">IMAGE_FILE_MACHINE_IA64</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_M32R">IMAGE_FILE_MACHINE_M32R</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_MIPS16">IMAGE_FILE_MACHINE_MIPS16</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_MIPSFPU">IMAGE_FILE_MACHINE_MIPSFPU</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_MIPSFPU16">IMAGE_FILE_MACHINE_MIPSFPU16</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_POWERPC">IMAGE_FILE_MACHINE_POWERPC</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_POWERPCFP">IMAGE_FILE_MACHINE_POWERPCFP</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_R4000">IMAGE_FILE_MACHINE_R4000</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_SH3">IMAGE_FILE_MACHINE_SH3</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_SH3DSP">IMAGE_FILE_MACHINE_SH3DSP</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_SH4">IMAGE_FILE_MACHINE_SH4</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_SH5">IMAGE_FILE_MACHINE_SH5</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_THUMB">IMAGE_FILE_MACHINE_THUMB</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_UNKNOWN">IMAGE_FILE_MACHINE_UNKNOWN</a>
+</li>
+<li>
+  <a href="#IMAGE_FILE_MACHINE_WCEMIPSV2">IMAGE_FILE_MACHINE_WCEMIPSV2</a>
+</li>
+<li>
+  <a href="#ImportDirectory.">ImportDirectory.</a>
+</li>
+<li>
+  <a href="#Open">Open</a>
+</li>
+<li>
+  <a href="#Reloc.">Reloc.</a>
+</li>
+<li>
+  <a href="#SectionHeader.">SectionHeader.</a>
+</li>
+<li>
+  <a href="#Symbol.">Symbol.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="COFFSymbolSize">COFFSymbolSize</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="DataDirectory.">DataDirectory.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DataDirectory. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.DataDirectory</p>
+  
+</li>
+<li>
+  <h3 id="FileHeader.">FileHeader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FileHeader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.FileHeader</p>
+  
+</li>
+<li>
+  <h3 id="FormatError.">FormatError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FormatError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.FormatError</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_ARCHITECTURE">IMAGE_DIRECTORY_ENTRY_ARCHITECTURE</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_BASERELOC">IMAGE_DIRECTORY_ENTRY_BASERELOC</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT">IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR">IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_DEBUG">IMAGE_DIRECTORY_ENTRY_DEBUG</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT">IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_EXCEPTION">IMAGE_DIRECTORY_ENTRY_EXCEPTION</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_EXPORT">IMAGE_DIRECTORY_ENTRY_EXPORT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_GLOBALPTR">IMAGE_DIRECTORY_ENTRY_GLOBALPTR</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_IAT">IMAGE_DIRECTORY_ENTRY_IAT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_IMPORT">IMAGE_DIRECTORY_ENTRY_IMPORT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG">IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_RESOURCE">IMAGE_DIRECTORY_ENTRY_RESOURCE</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_SECURITY">IMAGE_DIRECTORY_ENTRY_SECURITY</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_DIRECTORY_ENTRY_TLS">IMAGE_DIRECTORY_ENTRY_TLS</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IMAGE_DIRECTORY_ENTRY constants<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_AM33">IMAGE_FILE_MACHINE_AM33</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_AMD64">IMAGE_FILE_MACHINE_AMD64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_ARM">IMAGE_FILE_MACHINE_ARM</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_ARM64">IMAGE_FILE_MACHINE_ARM64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_ARMNT">IMAGE_FILE_MACHINE_ARMNT</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_EBC">IMAGE_FILE_MACHINE_EBC</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_I386">IMAGE_FILE_MACHINE_I386</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_IA64">IMAGE_FILE_MACHINE_IA64</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_M32R">IMAGE_FILE_MACHINE_M32R</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_MIPS16">IMAGE_FILE_MACHINE_MIPS16</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_MIPSFPU">IMAGE_FILE_MACHINE_MIPSFPU</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_MIPSFPU16">IMAGE_FILE_MACHINE_MIPSFPU16</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_POWERPC">IMAGE_FILE_MACHINE_POWERPC</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_POWERPCFP">IMAGE_FILE_MACHINE_POWERPCFP</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_R4000">IMAGE_FILE_MACHINE_R4000</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_SH3">IMAGE_FILE_MACHINE_SH3</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_SH3DSP">IMAGE_FILE_MACHINE_SH3DSP</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_SH4">IMAGE_FILE_MACHINE_SH4</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_SH5">IMAGE_FILE_MACHINE_SH5</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_THUMB">IMAGE_FILE_MACHINE_THUMB</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_UNKNOWN">IMAGE_FILE_MACHINE_UNKNOWN</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="IMAGE_FILE_MACHINE_WCEMIPSV2">IMAGE_FILE_MACHINE_WCEMIPSV2</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="ImportDirectory.">ImportDirectory.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ImportDirectory. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.ImportDirectory</p>
+  
+</li>
+<li>
+  <h3 id="Open">Open</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Open __name)</code></div>
+</pre>
+  <p class="var-docstr">Open opens the named file using os.Open and prepares it for use as a PE binary.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: (*File, error)<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: [(atom-of go.std.debug.pe/File) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Reloc.">Reloc.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Reloc. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.Reloc</p>
+  
+</li>
+<li>
+  <h3 id="SectionHeader.">SectionHeader.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SectionHeader. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.SectionHeader</p>
+  
+</li>
+<li>
+  <h3 id="Symbol.">Symbol.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Symbol. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pe.Symbol</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

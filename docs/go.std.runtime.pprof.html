@@ -1,0 +1,176 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.runtime.pprof</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the runtime/pprof package.<br>
+<br>
+Package pprof writes runtime profiling data in the format expected<br>
+by the pprof visualization tool.<br>
+<br>
+Profiling a Go program<br>
+<br>
+The first step to profiling a Go program is to enable profiling.<br>
+Support for profiling benchmarks built with the standard testing<br>
+package is built into go test. For example, the following command<br>
+runs benchmarks in the current directory and writes the CPU and<br>
+memory profiles to cpu.prof and mem.prof:<br>
+<br>
+    go test -cpuprofile cpu.prof -memprofile mem.prof -bench .<br>
+<br>
+To add equivalent profiling support to a standalone program, add<br>
+code like the following to your main function:<br>
+<br>
+   var cpuprofile = flag.String(&#34;cpuprofile&#34;, &#34;&#34;, &#34;write cpu profile to `file`&#34;)<br>
+   var memprofile = flag.String(&#34;memprofile&#34;, &#34;&#34;, &#34;write memory profile to `file`&#34;)<br>
+<br>
+   func main() {<br>
+       flag.Parse()<br>
+       if *cpuprofile != &#34;&#34; {<br>
+           f, err := os.Create(*cpuprofile)<br>
+           if err != nil {<br>
+               log.Fatal(&#34;could not create CPU profile: &#34;, err)<br>
+           }<br>
+           defer f.Close()<br>
+           if err := pprof.StartCPUProfile(f); err != nil {<br>
+               log.Fatal(&#34;could not start CPU profile: &#34;, err)<br>
+           }<br>
+           defer pprof.StopCPUProfile()<br>
+       }<br>
+<br>
+       // ... rest of the program ...<br>
+<br>
+       if *memprofile != &#34;&#34; {<br>
+           f, err := os.Create(*memprofile)<br>
+           if err != nil {<br>
+               log.Fatal(&#34;could not create memory profile: &#34;, err)<br>
+           }<br>
+           defer f.Close()<br>
+           runtime.GC() // get up-to-date statistics<br>
+           if err := pprof.WriteHeapProfile(f); err != nil {<br>
+               log.Fatal(&#34;could not write memory profile: &#34;, err)<br>
+           }<br>
+       }<br>
+   }<br>
+<br>
+There is also a standard HTTP interface to profiling data. Adding<br>
+the following line will install handlers under the /debug/pprof/<br>
+URL to download live profiles:<br>
+<br>
+   import _ &#34;net/http/pprof&#34;<br>
+<br>
+See the net/http/pprof package for more details.<br>
+<br>
+Profiles can then be visualized with the pprof tool:<br>
+<br>
+   go tool pprof cpu.prof<br>
+<br>
+There are many commands available from the pprof command line.<br>
+Commonly used commands include &#34;top&#34;, which prints a summary of the<br>
+top program hot-spots, and &#34;web&#34;, which opens an interactive graph<br>
+of hot-spots and their call graphs. Use &#34;help&#34; for information on<br>
+all pprof commands.<br>
+<br>
+For more information about pprof, see<br>
+https://github.com/google/pprof/blob/master/doc/README.md.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#LabelSet.">LabelSet.</a>
+</li>
+<li>
+  <a href="#Lookup">Lookup</a>
+</li>
+<li>
+  <a href="#NewProfile">NewProfile</a>
+</li>
+<li>
+  <a href="#Profile.">Profile.</a>
+</li>
+<li>
+  <a href="#Profiles">Profiles</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="LabelSet.">LabelSet.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(LabelSet. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pprof.LabelSet</p>
+  
+</li>
+<li>
+  <h3 id="Lookup">Lookup</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Lookup __name)</code></div>
+</pre>
+  <p class="var-docstr">Lookup returns the profile with the given name, or nil if no such profile exists.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: *Profile<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: (atom-of go.std.runtime.pprof/Profile)</p>
+  
+</li>
+<li>
+  <h3 id="NewProfile">NewProfile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewProfile __name)</code></div>
+</pre>
+  <p class="var-docstr">NewProfile creates a new profile with the given name.<br>
+If a profile with that name already exists, NewProfile panics.<br>
+The convention is to use a &#39;import/path.&#39; prefix to create<br>
+separate name spaces for each package.<br>
+For compatibility with various tools that read pprof data,<br>
+profile names should not contain spaces.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: *Profile<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: (atom-of go.std.runtime.pprof/Profile)</p>
+  
+</li>
+<li>
+  <h3 id="Profile.">Profile.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Profile. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for pprof.Profile</p>
+  
+</li>
+<li>
+  <h3 id="Profiles">Profiles</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Profiles)</code></div>
+</pre>
+  <p class="var-docstr">Profiles returns a slice of all the known profiles, sorted by name.<br>
+<br>
+Go return type: []*Profile<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of (atom-of go.std.runtime.pprof/Profile))</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

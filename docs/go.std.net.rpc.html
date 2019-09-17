@@ -1,0 +1,369 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.net.rpc</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the net/rpc package.<br>
+<br>
+	Package rpc provides access to the exported methods of an object across a<br>
+	network or other I/O connection.  A server registers an object, making it visible<br>
+	as a service with the name of the type of the object.  After registration, exported<br>
+	methods of the object will be accessible remotely.  A server may register multiple<br>
+	objects (services) of different types but it is an error to register multiple<br>
+	objects of the same type.<br>
+<br>
+	Only methods that satisfy these criteria will be made available for remote access;<br>
+	other methods will be ignored:<br>
+<br>
+		- the method&#39;s type is exported.<br>
+		- the method is exported.<br>
+		- the method has two arguments, both exported (or builtin) types.<br>
+		- the method&#39;s second argument is a pointer.<br>
+		- the method has return type error.<br>
+<br>
+	In effect, the method must look schematically like<br>
+<br>
+		func (t *T) MethodName(argType T1, replyType *T2) error<br>
+<br>
+	where T1 and T2 can be marshaled by encoding/gob.<br>
+	These requirements apply even if a different codec is used.<br>
+	(In the future, these requirements may soften for custom codecs.)<br>
+<br>
+	The method&#39;s first argument represents the arguments provided by the caller; the<br>
+	second argument represents the result parameters to be returned to the caller.<br>
+	The method&#39;s return value, if non-nil, is passed back as a string that the client<br>
+	sees as if created by errors.New.  If an error is returned, the reply parameter<br>
+	will not be sent back to the client.<br>
+<br>
+	The server may handle requests on a single connection by calling ServeConn.  More<br>
+	typically it will create a network listener and call Accept or, for an HTTP<br>
+	listener, HandleHTTP and http.Serve.<br>
+<br>
+	A client wishing to use the service establishes a connection and then invokes<br>
+	NewClient on the connection.  The convenience function Dial (DialHTTP) performs<br>
+	both steps for a raw network connection (an HTTP connection).  The resulting<br>
+	Client object has two methods, Call and Go, that specify the service and method to<br>
+	call, a pointer containing the arguments, and a pointer to receive the result<br>
+	parameters.<br>
+<br>
+	The Call method waits for the remote call to complete while the Go method<br>
+	launches the call asynchronously and signals completion using the Call<br>
+	structure&#39;s Done channel.<br>
+<br>
+	Unless an explicit codec is set up, package encoding/gob is used to<br>
+	transport the data.<br>
+<br>
+	Here is a simple example.  A server wishes to export an object of type Arith:<br>
+<br>
+		package server<br>
+<br>
+		import &#34;errors&#34;<br>
+<br>
+		type Args struct {<br>
+			A, B int<br>
+		}<br>
+<br>
+		type Quotient struct {<br>
+			Quo, Rem int<br>
+		}<br>
+<br>
+		type Arith int<br>
+<br>
+		func (t *Arith) Multiply(args *Args, reply *int) error {<br>
+			*reply = args.A * args.B<br>
+			return nil<br>
+		}<br>
+<br>
+		func (t *Arith) Divide(args *Args, quo *Quotient) error {<br>
+			if args.B == 0 {<br>
+				return errors.New(&#34;divide by zero&#34;)<br>
+			}<br>
+			quo.Quo = args.A / args.B<br>
+			quo.Rem = args.A % args.B<br>
+			return nil<br>
+		}<br>
+<br>
+	The server calls (for HTTP service):<br>
+<br>
+		arith := new(Arith)<br>
+		rpc.Register(arith)<br>
+		rpc.HandleHTTP()<br>
+		l, e := net.Listen(&#34;tcp&#34;, &#34;:1234&#34;)<br>
+		if e != nil {<br>
+			log.Fatal(&#34;listen error:&#34;, e)<br>
+		}<br>
+		go http.Serve(l, nil)<br>
+<br>
+	At this point, clients can see a service &#34;Arith&#34; with methods &#34;Arith.Multiply&#34; and<br>
+	&#34;Arith.Divide&#34;.  To invoke one, a client first dials the server:<br>
+<br>
+		client, err := rpc.DialHTTP(&#34;tcp&#34;, serverAddress + &#34;:1234&#34;)<br>
+		if err != nil {<br>
+			log.Fatal(&#34;dialing:&#34;, err)<br>
+		}<br>
+<br>
+	Then it can make a remote call:<br>
+<br>
+		// Synchronous call<br>
+		args := &amp;server.Args{7,8}<br>
+		var reply int<br>
+		err = client.Call(&#34;Arith.Multiply&#34;, args, &amp;reply)<br>
+		if err != nil {<br>
+			log.Fatal(&#34;arith error:&#34;, err)<br>
+		}<br>
+		fmt.Printf(&#34;Arith: %d*%d=%d&#34;, args.A, args.B, reply)<br>
+<br>
+	or<br>
+<br>
+		// Asynchronous call<br>
+		quotient := new(Quotient)<br>
+		divCall := client.Go(&#34;Arith.Divide&#34;, args, quotient, nil)<br>
+		replyCall := &lt;-divCall.Done	// will be equal to divCall<br>
+		// check errors, print, etc.<br>
+<br>
+	A server implementation will often provide a simple, type-safe wrapper for the<br>
+	client.<br>
+<br>
+	The net/rpc package is frozen and is not accepting new features.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Client.">Client.</a>
+</li>
+<li>
+  <a href="#DefaultDebugPath">DefaultDebugPath</a>
+</li>
+<li>
+  <a href="#DefaultRPCPath">DefaultRPCPath</a>
+</li>
+<li>
+  <a href="#DefaultServer">DefaultServer</a>
+</li>
+<li>
+  <a href="#Dial">Dial</a>
+</li>
+<li>
+  <a href="#DialHTTP">DialHTTP</a>
+</li>
+<li>
+  <a href="#DialHTTPPath">DialHTTPPath</a>
+</li>
+<li>
+  <a href="#ErrShutdown">ErrShutdown</a>
+</li>
+<li>
+  <a href="#NewClientWithCodec">NewClientWithCodec</a>
+</li>
+<li>
+  <a href="#NewServer">NewServer</a>
+</li>
+<li>
+  <a href="#Request.">Request.</a>
+</li>
+<li>
+  <a href="#Response.">Response.</a>
+</li>
+<li>
+  <a href="#ServeRequest">ServeRequest</a>
+</li>
+<li>
+  <a href="#Server.">Server.</a>
+</li>
+<li>
+  <a href="#ServerError.">ServerError.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Client.">Client.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Client. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for rpc.Client</p>
+  
+</li>
+<li>
+  <h3 id="DefaultDebugPath">DefaultDebugPath</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="DefaultRPCPath">DefaultRPCPath</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Defaults used by HandleHTTP<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DefaultServer">DefaultServer</h3>
+  <span class="var-type GoVar[**net/rpc.Server]">GoVar[**net/rpc.Server]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultServer is the default instance of *Server.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Dial">Dial</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Dial __network __address)</code></div>
+</pre>
+  <p class="var-docstr">Dial connects to an RPC server at the specified network address.<br>
+<br>
+Go input arguments: (network string, address string)<br>
+<br>
+Go return type: (*Client, error)<br>
+<br>
+Joker input arguments: [^String network, ^String address]<br>
+<br>
+Joker return type: [(atom-of go.std.net.rpc/Client) Error]</p>
+  
+</li>
+<li>
+  <h3 id="DialHTTP">DialHTTP</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DialHTTP __network __address)</code></div>
+</pre>
+  <p class="var-docstr">DialHTTP connects to an HTTP RPC server at the specified network address<br>
+listening on the default HTTP RPC path.<br>
+<br>
+Go input arguments: (network string, address string)<br>
+<br>
+Go return type: (*Client, error)<br>
+<br>
+Joker input arguments: [^String network, ^String address]<br>
+<br>
+Joker return type: [(atom-of go.std.net.rpc/Client) Error]</p>
+  
+</li>
+<li>
+  <h3 id="DialHTTPPath">DialHTTPPath</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(DialHTTPPath __network __address __path)</code></div>
+</pre>
+  <p class="var-docstr">DialHTTPPath connects to an HTTP RPC server<br>
+at the specified network address and path.<br>
+<br>
+Go input arguments: (network string, address string, path string)<br>
+<br>
+Go return type: (*Client, error)<br>
+<br>
+Joker input arguments: [^String network, ^String address, ^String path]<br>
+<br>
+Joker return type: [(atom-of go.std.net.rpc/Client) Error]</p>
+  
+</li>
+<li>
+  <h3 id="ErrShutdown">ErrShutdown</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr"></p>
+  
+</li>
+<li>
+  <h3 id="NewClientWithCodec">NewClientWithCodec</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewClientWithCodec __codec)</code></div>
+</pre>
+  <p class="var-docstr">NewClientWithCodec is like NewClient but uses the specified<br>
+codec to encode requests and decode responses.<br>
+<br>
+Go input arguments: (codec ClientCodec)<br>
+<br>
+Go return type: *Client<br>
+<br>
+Joker input arguments: [^go.std.net.rpc/ClientCodec codec]<br>
+<br>
+Joker return type: (atom-of go.std.net.rpc/Client)</p>
+  
+</li>
+<li>
+  <h3 id="NewServer">NewServer</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewServer)</code></div>
+</pre>
+  <p class="var-docstr">NewServer returns a new Server.<br>
+<br>
+Go return type: *Server<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (atom-of go.std.net.rpc/Server)</p>
+  
+</li>
+<li>
+  <h3 id="Request.">Request.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Request. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for rpc.Request</p>
+  
+</li>
+<li>
+  <h3 id="Response.">Response.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Response. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for rpc.Response</p>
+  
+</li>
+<li>
+  <h3 id="ServeRequest">ServeRequest</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ServeRequest __codec)</code></div>
+</pre>
+  <p class="var-docstr">ServeRequest is like ServeCodec but synchronously serves a single request.<br>
+It does not close the codec upon completion.<br>
+<br>
+Go input arguments: (codec ServerCodec)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^go.std.net.rpc/ServerCodec codec]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="Server.">Server.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Server. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for rpc.Server</p>
+  
+</li>
+<li>
+  <h3 id="ServerError.">ServerError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ServerError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for rpc.ServerError</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

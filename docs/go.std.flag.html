@@ -1,0 +1,484 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.flag</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the flag package.<br>
+<br>
+	Package flag implements command-line flag parsing.<br>
+<br>
+	Usage<br>
+<br>
+	Define flags using flag.String(), Bool(), Int(), etc.<br>
+<br>
+	This declares an integer flag, -flagname, stored in the pointer ip, with type *int.<br>
+		import &#34;flag&#34;<br>
+		var ip = flag.Int(&#34;flagname&#34;, 1234, &#34;help message for flagname&#34;)<br>
+	If you like, you can bind the flag to a variable using the Var() functions.<br>
+		var flagvar int<br>
+		func init() {<br>
+			flag.IntVar(&amp;flagvar, &#34;flagname&#34;, 1234, &#34;help message for flagname&#34;)<br>
+		}<br>
+	Or you can create custom flags that satisfy the Value interface (with<br>
+	pointer receivers) and couple them to flag parsing by<br>
+		flag.Var(&amp;flagVal, &#34;name&#34;, &#34;help message for flagname&#34;)<br>
+	For such flags, the default value is just the initial value of the variable.<br>
+<br>
+	After all flags are defined, call<br>
+		flag.Parse()<br>
+	to parse the command line into the defined flags.<br>
+<br>
+	Flags may then be used directly. If you&#39;re using the flags themselves,<br>
+	they are all pointers; if you bind to variables, they&#39;re values.<br>
+		fmt.Println(&#34;ip has value &#34;, *ip)<br>
+		fmt.Println(&#34;flagvar has value &#34;, flagvar)<br>
+<br>
+	After parsing, the arguments following the flags are available as the<br>
+	slice flag.Args() or individually as flag.Arg(i).<br>
+	The arguments are indexed from 0 through flag.NArg()-1.<br>
+<br>
+	Command line flag syntax<br>
+<br>
+	The following forms are permitted:<br>
+<br>
+		-flag<br>
+		-flag=x<br>
+		-flag x  // non-boolean flags only<br>
+	One or two minus signs may be used; they are equivalent.<br>
+	The last form is not permitted for boolean flags because the<br>
+	meaning of the command<br>
+		cmd -x *<br>
+	where * is a Unix shell wildcard, will change if there is a file<br>
+	called 0, false, etc. You must use the -flag=false form to turn<br>
+	off a boolean flag.<br>
+<br>
+	Flag parsing stops just before the first non-flag argument<br>
+	(&#34;-&#34; is a non-flag argument) or after the terminator &#34;--&#34;.<br>
+<br>
+	Integer flags accept 1234, 0664, 0x1234 and may be negative.<br>
+	Boolean flags may be:<br>
+		1, 0, t, f, T, F, true, false, TRUE, FALSE, True, False<br>
+	Duration flags accept any input valid for time.ParseDuration.<br>
+<br>
+	The default set of command-line flags is controlled by<br>
+	top-level functions.  The FlagSet type allows one to define<br>
+	independent sets of flags, such as to implement subcommands<br>
+	in a command-line interface. The methods of FlagSet are<br>
+	analogous to the top-level functions for the command-line<br>
+	flag set.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Arg">Arg</a>
+</li>
+<li>
+  <a href="#Args">Args</a>
+</li>
+<li>
+  <a href="#Bool">Bool</a>
+</li>
+<li>
+  <a href="#CommandLine">CommandLine</a>
+</li>
+<li>
+  <a href="#ContinueOnError">ContinueOnError</a>
+</li>
+<li>
+  <a href="#ErrHelp">ErrHelp</a>
+</li>
+<li>
+  <a href="#ErrorHandling.">ErrorHandling.</a>
+</li>
+<li>
+  <a href="#ExitOnError">ExitOnError</a>
+</li>
+<li>
+  <a href="#Int">Int</a>
+</li>
+<li>
+  <a href="#Int64">Int64</a>
+</li>
+<li>
+  <a href="#Lookup">Lookup</a>
+</li>
+<li>
+  <a href="#NArg">NArg</a>
+</li>
+<li>
+  <a href="#NFlag">NFlag</a>
+</li>
+<li>
+  <a href="#NewFlagSet">NewFlagSet</a>
+</li>
+<li>
+  <a href="#PanicOnError">PanicOnError</a>
+</li>
+<li>
+  <a href="#Parsed">Parsed</a>
+</li>
+<li>
+  <a href="#Set">Set</a>
+</li>
+<li>
+  <a href="#String">String</a>
+</li>
+<li>
+  <a href="#Uint">Uint</a>
+</li>
+<li>
+  <a href="#Uint64">Uint64</a>
+</li>
+<li>
+  <a href="#UnquoteUsage">UnquoteUsage</a>
+</li>
+<li>
+  <a href="#Usage">Usage</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Arg">Arg</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Arg __i)</code></div>
+</pre>
+  <p class="var-docstr">Arg returns the i&#39;th command-line argument. Arg(0) is the first remaining argument<br>
+after flags have been processed. Arg returns an empty string if the<br>
+requested element does not exist.<br>
+<br>
+Go input arguments: (i int)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^Int i]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Args">Args</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Args)</code></div>
+</pre>
+  <p class="var-docstr">Args returns the non-flag command-line arguments.<br>
+<br>
+Go return type: []string<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (vector-of String)</p>
+  
+</li>
+<li>
+  <h3 id="Bool">Bool</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Bool __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">Bool defines a bool flag with specified name, default value, and usage string.<br>
+The return value is the address of a bool variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value bool, usage string)<br>
+<br>
+Go return type: *bool<br>
+<br>
+Joker input arguments: [^String name, ^Boolean value, ^String usage]<br>
+<br>
+Joker return type: (atom-of Boolean)</p>
+  
+</li>
+<li>
+  <h3 id="CommandLine">CommandLine</h3>
+  <span class="var-type GoVar[**flag.FlagSet]">GoVar[**flag.FlagSet]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">CommandLine is the default set of command-line flags, parsed from os.Args.<br>
+The top-level functions such as BoolVar, Arg, and so on are wrappers for the<br>
+methods of CommandLine.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ContinueOnError">ContinueOnError</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Return a descriptive error.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrHelp">ErrHelp</h3>
+  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrHelp is the error returned if the -help or -h flag is invoked<br>
+but no such flag is defined.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrorHandling.">ErrorHandling.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ErrorHandling. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for flag.ErrorHandling</p>
+  
+</li>
+<li>
+  <h3 id="ExitOnError">ExitOnError</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Call os.Exit(2).<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Int">Int</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Int __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">Int defines an int flag with specified name, default value, and usage string.<br>
+The return value is the address of an int variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value int, usage string)<br>
+<br>
+Go return type: *int<br>
+<br>
+Joker input arguments: [^String name, ^Int value, ^String usage]<br>
+<br>
+Joker return type: (atom-of Int)</p>
+  
+</li>
+<li>
+  <h3 id="Int64">Int64</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Int64 __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">Int64 defines an int64 flag with specified name, default value, and usage string.<br>
+The return value is the address of an int64 variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value int64, usage string)<br>
+<br>
+Go return type: *int64<br>
+<br>
+Joker input arguments: [^String name, ^Number value, ^String usage]<br>
+<br>
+Joker return type: (atom-of Number)</p>
+  
+</li>
+<li>
+  <h3 id="Lookup">Lookup</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Lookup __name)</code></div>
+</pre>
+  <p class="var-docstr">Lookup returns the Flag structure of the named command-line flag,<br>
+returning nil if none exists.<br>
+<br>
+Go input arguments: (name string)<br>
+<br>
+Go return type: *Flag<br>
+<br>
+Joker input arguments: [^String name]<br>
+<br>
+Joker return type: (atom-of go.std.flag/Flag)</p>
+  
+</li>
+<li>
+  <h3 id="NArg">NArg</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NArg)</code></div>
+</pre>
+  <p class="var-docstr">NArg is the number of arguments remaining after flags have been processed.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="NFlag">NFlag</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NFlag)</code></div>
+</pre>
+  <p class="var-docstr">NFlag returns the number of command-line flags that have been set.<br>
+<br>
+Go return type: int<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Int</p>
+  
+</li>
+<li>
+  <h3 id="NewFlagSet">NewFlagSet</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewFlagSet __name __errorHandling)</code></div>
+</pre>
+  <p class="var-docstr">NewFlagSet returns a new, empty flag set with the specified name and<br>
+error handling property. If the name is not empty, it will be printed<br>
+in the default usage message and in error messages.<br>
+<br>
+Go input arguments: (name string, errorHandling ErrorHandling)<br>
+<br>
+Go return type: *FlagSet<br>
+<br>
+Joker input arguments: [^String name, ^go.std.flag/ErrorHandling errorHandling]<br>
+<br>
+Joker return type: (atom-of go.std.flag/FlagSet)</p>
+  
+</li>
+<li>
+  <h3 id="PanicOnError">PanicOnError</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Call panic with a descriptive error.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Parsed">Parsed</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Parsed)</code></div>
+</pre>
+  <p class="var-docstr">Parsed reports whether the command-line flags have been parsed.<br>
+<br>
+Go return type: bool<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: Boolean</p>
+  
+</li>
+<li>
+  <h3 id="Set">Set</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Set __name __value)</code></div>
+</pre>
+  <p class="var-docstr">Set sets the value of the named command-line flag.<br>
+<br>
+Go input arguments: (name string, value string)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String name, ^String value]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="String">String</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(String __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">String defines a string flag with specified name, default value, and usage string.<br>
+The return value is the address of a string variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value string, usage string)<br>
+<br>
+Go return type: *string<br>
+<br>
+Joker input arguments: [^String name, ^String value, ^String usage]<br>
+<br>
+Joker return type: (atom-of String)</p>
+  
+</li>
+<li>
+  <h3 id="Uint">Uint</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Uint __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">Uint defines a uint flag with specified name, default value, and usage string.<br>
+The return value is the address of a uint variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value uint, usage string)<br>
+<br>
+Go return type: *uint<br>
+<br>
+Joker input arguments: [^String name, ^Number value, ^String usage]<br>
+<br>
+Joker return type: (atom-of Number)</p>
+  
+</li>
+<li>
+  <h3 id="Uint64">Uint64</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Uint64 __name __value __usage)</code></div>
+</pre>
+  <p class="var-docstr">Uint64 defines a uint64 flag with specified name, default value, and usage string.<br>
+The return value is the address of a uint64 variable that stores the value of the flag.<br>
+<br>
+Go input arguments: (name string, value uint64, usage string)<br>
+<br>
+Go return type: *uint64<br>
+<br>
+Joker input arguments: [^String name, ^Number value, ^String usage]<br>
+<br>
+Joker return type: (atom-of Number)</p>
+  
+</li>
+<li>
+  <h3 id="UnquoteUsage">UnquoteUsage</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UnquoteUsage __flag)</code></div>
+</pre>
+  <p class="var-docstr">UnquoteUsage extracts a back-quoted name from the usage<br>
+string for a flag and returns it and the un-quoted usage.<br>
+Given &#34;a `name` to show&#34; it returns (&#34;name&#34;, &#34;a name to show&#34;).<br>
+If there are no back quotes, the name is an educated guess of the<br>
+type of the flag&#39;s value, or the empty string if the flag is boolean.<br>
+<br>
+Go input arguments: (flag *Flag)<br>
+<br>
+Go return type: (name string, usage string)<br>
+<br>
+Joker input arguments: [^(atom-of go.std.flag/Flag) flag]<br>
+<br>
+Joker return type: [String String]</p>
+  
+</li>
+<li>
+  <h3 id="Usage">Usage</h3>
+  <span class="var-type GoVar[*.]">GoVar[*.]</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Usage prints a usage message documenting all defined command-line flags<br>
+to CommandLine&#39;s output, which by default is os.Stderr.<br>
+It is called when an error occurs while parsing flags.<br>
+The function is a variable that may be changed to point to a custom function.<br>
+By default it prints a simple header and calls PrintDefaults; for details about the<br>
+format of the output and how to control it, see the documentation for PrintDefaults.<br>
+Custom usage functions may choose to exit the program; by default exiting<br>
+happens anyway as the command line&#39;s error handling strategy is set to<br>
+ExitOnError.<br>
+</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

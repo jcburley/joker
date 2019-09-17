@@ -1,0 +1,247 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.regexp</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the regexp package.<br>
+<br>
+Package regexp implements regular expression search.<br>
+<br>
+The syntax of the regular expressions accepted is the same<br>
+general syntax used by Perl, Python, and other languages.<br>
+More precisely, it is the syntax accepted by RE2 and described at<br>
+https://golang.org/s/re2syntax, except for \C.<br>
+For an overview of the syntax, run<br>
+  go doc regexp/syntax<br>
+<br>
+The regexp implementation provided by this package is<br>
+guaranteed to run in time linear in the size of the input.<br>
+(This is a property not guaranteed by most open source<br>
+implementations of regular expressions.) For more information<br>
+about this property, see<br>
+	https://swtch.com/~rsc/regexp/regexp1.html<br>
+or any book about automata theory.<br>
+<br>
+All characters are UTF-8-encoded code points.<br>
+<br>
+There are 16 methods of Regexp that match a regular expression and identify<br>
+the matched text. Their names are matched by this regular expression:<br>
+<br>
+	Find(All)?(String)?(Submatch)?(Index)?<br>
+<br>
+If &#39;All&#39; is present, the routine matches successive non-overlapping<br>
+matches of the entire expression. Empty matches abutting a preceding<br>
+match are ignored. The return value is a slice containing the successive<br>
+return values of the corresponding non-&#39;All&#39; routine. These routines take<br>
+an extra integer argument, n. If n &gt;= 0, the function returns at most n<br>
+matches/submatches; otherwise, it returns all of them.<br>
+<br>
+If &#39;String&#39; is present, the argument is a string; otherwise it is a slice<br>
+of bytes; return values are adjusted as appropriate.<br>
+<br>
+If &#39;Submatch&#39; is present, the return value is a slice identifying the<br>
+successive submatches of the expression. Submatches are matches of<br>
+parenthesized subexpressions (also known as capturing groups) within the<br>
+regular expression, numbered from left to right in order of opening<br>
+parenthesis. Submatch 0 is the match of the entire expression, submatch 1<br>
+the match of the first parenthesized subexpression, and so on.<br>
+<br>
+If &#39;Index&#39; is present, matches and submatches are identified by byte index<br>
+pairs within the input string: result[2*n:2*n+1] identifies the indexes of<br>
+the nth submatch. The pair for n==0 identifies the match of the entire<br>
+expression. If &#39;Index&#39; is not present, the match is identified by the<br>
+text of the match/submatch. If an index is negative, it means that<br>
+subexpression did not match any string in the input.<br>
+<br>
+There is also a subset of the methods that can be applied to text read<br>
+from a RuneReader:<br>
+<br>
+	MatchReader, FindReaderIndex, FindReaderSubmatchIndex<br>
+<br>
+This set may grow. Note that regular expression matches may need to<br>
+examine text beyond the text returned by a match, so the methods that<br>
+match text from a RuneReader may read arbitrarily far into the input<br>
+before returning.<br>
+<br>
+(There are a few other methods that do not match this pattern.)<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#Compile">Compile</a>
+</li>
+<li>
+  <a href="#CompilePOSIX">CompilePOSIX</a>
+</li>
+<li>
+  <a href="#MatchString">MatchString</a>
+</li>
+<li>
+  <a href="#MustCompile">MustCompile</a>
+</li>
+<li>
+  <a href="#MustCompilePOSIX">MustCompilePOSIX</a>
+</li>
+<li>
+  <a href="#QuoteMeta">QuoteMeta</a>
+</li>
+<li>
+  <a href="#Regexp.">Regexp.</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="Compile">Compile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Compile __expr)</code></div>
+</pre>
+  <p class="var-docstr">Compile parses a regular expression and returns, if successful,<br>
+a Regexp object that can be used to match against text.<br>
+<br>
+When matching against text, the regexp returns a match that<br>
+begins as early as possible in the input (leftmost), and among those<br>
+it chooses the one that a backtracking search would have found first.<br>
+This so-called leftmost-first matching is the same semantics<br>
+that Perl, Python, and other implementations use, although this<br>
+package implements it without the expense of backtracking.<br>
+For POSIX leftmost-longest matching, see CompilePOSIX.<br>
+<br>
+Go input arguments: (expr string)<br>
+<br>
+Go return type: (*Regexp, error)<br>
+<br>
+Joker input arguments: [^String expr]<br>
+<br>
+Joker return type: [(atom-of go.std.regexp/Regexp) Error]</p>
+  
+</li>
+<li>
+  <h3 id="CompilePOSIX">CompilePOSIX</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CompilePOSIX __expr)</code></div>
+</pre>
+  <p class="var-docstr">CompilePOSIX is like Compile but restricts the regular expression<br>
+to POSIX ERE (egrep) syntax and changes the match semantics to<br>
+leftmost-longest.<br>
+<br>
+That is, when matching against text, the regexp returns a match that<br>
+begins as early as possible in the input (leftmost), and among those<br>
+it chooses a match that is as long as possible.<br>
+This so-called leftmost-longest matching is the same semantics<br>
+that early regular expression implementations used and that POSIX<br>
+specifies.<br>
+<br>
+However, there can be multiple leftmost-longest matches, with different<br>
+submatch choices, and here this package diverges from POSIX.<br>
+Among the possible leftmost-longest matches, this package chooses<br>
+the one that a backtracking search would have found first, while POSIX<br>
+specifies that the match be chosen to maximize the length of the first<br>
+subexpression, then the second, and so on from left to right.<br>
+The POSIX rule is computationally prohibitive and not even well-defined.<br>
+See https://swtch.com/~rsc/regexp/regexp2.html#posix for details.<br>
+<br>
+Go input arguments: (expr string)<br>
+<br>
+Go return type: (*Regexp, error)<br>
+<br>
+Joker input arguments: [^String expr]<br>
+<br>
+Joker return type: [(atom-of go.std.regexp/Regexp) Error]</p>
+  
+</li>
+<li>
+  <h3 id="MatchString">MatchString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MatchString __pattern __s)</code></div>
+</pre>
+  <p class="var-docstr">MatchString reports whether the string s<br>
+contains any match of the regular expression pattern.<br>
+More complicated queries need to use Compile and the full Regexp interface.<br>
+<br>
+Go input arguments: (pattern string, s string)<br>
+<br>
+Go return type: (matched bool, err error)<br>
+<br>
+Joker input arguments: [^String pattern, ^String s]<br>
+<br>
+Joker return type: [Boolean Error]</p>
+  
+</li>
+<li>
+  <h3 id="MustCompile">MustCompile</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MustCompile __str)</code></div>
+</pre>
+  <p class="var-docstr">MustCompile is like Compile but panics if the expression cannot be parsed.<br>
+It simplifies safe initialization of global variables holding compiled regular<br>
+expressions.<br>
+<br>
+Go input arguments: (str string)<br>
+<br>
+Go return type: *Regexp<br>
+<br>
+Joker input arguments: [^String str]<br>
+<br>
+Joker return type: (atom-of go.std.regexp/Regexp)</p>
+  
+</li>
+<li>
+  <h3 id="MustCompilePOSIX">MustCompilePOSIX</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MustCompilePOSIX __str)</code></div>
+</pre>
+  <p class="var-docstr">MustCompilePOSIX is like CompilePOSIX but panics if the expression cannot be parsed.<br>
+It simplifies safe initialization of global variables holding compiled regular<br>
+expressions.<br>
+<br>
+Go input arguments: (str string)<br>
+<br>
+Go return type: *Regexp<br>
+<br>
+Joker input arguments: [^String str]<br>
+<br>
+Joker return type: (atom-of go.std.regexp/Regexp)</p>
+  
+</li>
+<li>
+  <h3 id="QuoteMeta">QuoteMeta</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(QuoteMeta __s)</code></div>
+</pre>
+  <p class="var-docstr">QuoteMeta returns a string that escapes all regular expression metacharacters<br>
+inside the argument text; the returned string is a regular expression matching<br>
+the literal text.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="Regexp.">Regexp.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Regexp. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for regexp.Regexp</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

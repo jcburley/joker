@@ -1,0 +1,254 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.text.scanner</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the text/scanner package.<br>
+<br>
+Package scanner provides a scanner and tokenizer for UTF-8-encoded text.<br>
+It takes an io.Reader providing the source, which then can be tokenized<br>
+through repeated calls to the Scan function. For compatibility with<br>
+existing tools, the NUL character is not allowed. If the first character<br>
+in the source is a UTF-8 encoded byte order mark (BOM), it is discarded.<br>
+<br>
+By default, a Scanner skips white space and Go comments and recognizes all<br>
+literals as defined by the Go language specification. It may be<br>
+customized to recognize only a subset of those literals and to recognize<br>
+different identifier and white space characters.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#GoTokens">GoTokens</a>
+</li>
+<li>
+  <a href="#GoWhitespace">GoWhitespace</a>
+</li>
+<li>
+  <a href="#Position.">Position.</a>
+</li>
+<li>
+  <a href="#ScanChars">ScanChars</a>
+</li>
+<li>
+  <a href="#ScanComments">ScanComments</a>
+</li>
+<li>
+  <a href="#ScanFloats">ScanFloats</a>
+</li>
+<li>
+  <a href="#ScanIdents">ScanIdents</a>
+</li>
+<li>
+  <a href="#ScanInts">ScanInts</a>
+</li>
+<li>
+  <a href="#ScanRawStrings">ScanRawStrings</a>
+</li>
+<li>
+  <a href="#ScanStrings">ScanStrings</a>
+</li>
+<li>
+  <a href="#SkipComments">SkipComments</a>
+</li>
+<li>
+  <a href="#TokenString">TokenString</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="GoTokens">GoTokens</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="GoWhitespace">GoWhitespace</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">GoWhitespace is the default value for the Scanner&#39;s Whitespace field.<br>
+Its value selects Go&#39;s white space characters.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="Position.">Position.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Position. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for scanner.Position</p>
+  
+</li>
+<li>
+  <h3 id="ScanChars">ScanChars</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanComments">ScanComments</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanFloats">ScanFloats</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">includes Ints<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanIdents">ScanIdents</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanInts">ScanInts</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanRawStrings">ScanRawStrings</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ScanStrings">ScanStrings</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Predefined mode bits to control recognition of tokens. For instance,<br>
+to configure a Scanner such that it only recognizes (Go) identifiers,<br>
+integers, and skips comments, set the Scanner&#39;s Mode field to:<br>
+<br>
+	ScanIdents | ScanInts | SkipComments<br>
+<br>
+With the exceptions of comments, which are skipped if SkipComments is<br>
+set, unrecognized tokens are not ignored. Instead, the scanner simply<br>
+returns the respective individual characters (or possibly sub-tokens).<br>
+For instance, if the mode is ScanIdents (not ScanStrings), the string<br>
+&#34;foo&#34; is scanned as the token sequence &#39;&#34;&#39; Ident &#39;&#34;&#39;.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="SkipComments">SkipComments</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">if set with ScanComments, comments become white space<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="TokenString">TokenString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(TokenString __tok)</code></div>
+</pre>
+  <p class="var-docstr">TokenString returns a printable string for a token or Unicode character.<br>
+<br>
+Go input arguments: (tok rune)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^Char tok]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>

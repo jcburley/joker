@@ -1,0 +1,69 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="main">
+    <h1>Namespace: go.std.html</h1>
+    <span class="var-added">v1.0</span>
+    <p class="var-docstr">Provides a low-level interface to the html package.<br>
+<br>
+Package html provides functions for escaping and unescaping HTML text.<br>
+</p>
+    <h2>Index</h2>
+    <ul class="index">
+      <li>
+  <a href="#EscapeString">EscapeString</a>
+</li>
+<li>
+  <a href="#UnescapeString">UnescapeString</a>
+</li>
+
+    </ul>
+    <ul>
+      <li>
+  <h3 id="EscapeString">EscapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(EscapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">EscapeString escapes special characters like &#34;&lt;&#34; to become &#34;&amp;lt;&#34;. It<br>
+escapes only five such characters: &lt;, &gt;, &amp;, &#39; and &#34;.<br>
+UnescapeString(EscapeString(s)) == s always holds, but the converse isn&#39;t<br>
+always true.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="UnescapeString">UnescapeString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(UnescapeString __s)</code></div>
+</pre>
+  <p class="var-docstr">UnescapeString unescapes entities like &#34;&amp;lt;&#34; to become &#34;&lt;&#34;. It unescapes a<br>
+larger range of entities than EscapeString escapes. For example, &#34;&amp;aacute;&#34;<br>
+unescapes to &#34;á&#34;, as does &#34;&amp;#225;&#34; and &#34;&amp;#xE1;&#34;.<br>
+UnescapeString(EscapeString(s)) == s always holds, but the converse isn&#39;t<br>
+always true.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+
+    </ul>
+  </div>
+</body>
+</html>
