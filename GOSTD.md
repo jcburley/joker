@@ -37,10 +37,10 @@ $
 Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of (abstract) type `GoType`. (TODO: CLARIFY THIS.)
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
 
-For example, the `IP` type defined in the `net` package is wrapped as `go.std.net/IP`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
+For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
 
-* Constructing a new instance: `(def mx (new go.std.net/MX "burleyarch.com" 10))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
-* Identifying the type of an object: `(type mx)` => `*go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
+* Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
+* Identifying the type of an object: `(GoType (deref mx))` => `go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
 * Comparing types of objects: `(= (type mx) (type something-else)`
 
 ## Constants
