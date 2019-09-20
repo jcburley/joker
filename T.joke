@@ -1,0 +1,8 @@
+(use 'go.std.net)
+(use 'go.std.net.url)
+(def i (IPv4 1 2 3 4))
+(def u (get (Parse "http://a.b.c/d") 0))
+(def mx (LookupMX "theburleys.net"))
+(def ptr-to-mx ((mx 0) 0))
+(def mx (deref ptr-to-mx))
+(println "i=" i " u=" u " ptr-to-mx=" ptr-to-mx " mx=" mx)
