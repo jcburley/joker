@@ -32,6 +32,10 @@ import (
 	"github.com/pkg/profile"
 )
 
+func DebugOut() io.Writer {
+	return debugOut
+}
+
 type (
 	ReplContext struct {
 		first  *Var

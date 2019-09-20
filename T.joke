@@ -11,5 +11,11 @@
 (def MO (deref M))
 (def members (get MO "Members"))
 (println "M=" M " MO=" MO " .Members=" members)
-(def hey (get members "Hey"))
-(println "hey=" hey)
+(def memvec (get members "Hey"))
+(println "memvec=" memvec)
+(get members nil) ;; args[2] ignored when args[1] is a reflect.Map
+(def hey (Go MX "Hey"))
+(def there (Go MX "There"))
+(println "hey=" hey " there=" there)
+(doc (with-meta hey hey))
+(doc (with-meta hey there))

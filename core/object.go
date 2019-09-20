@@ -1769,3 +1769,7 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	res.Add(KEYWORDS.added, String{S: added})
 	return res
 }
+
+func MakeMetaHolder(m *ArrayMap) MetaHolder {
+	return MetaHolder{m}
+}

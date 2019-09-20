@@ -10,11 +10,14 @@ type GoFn func(GoObject, Object) Object
 
 type GoMembers map[string]GoFn
 
+type GoMeta map[string]MetaHolder // TODO: Merge into GoMembers?
+
 type GoTypeInfo struct {
 	Name    string
 	GoType  GoType
 	Ctor    func(Object) Object
 	Members GoMembers
+	Meta    GoMeta
 }
 
 func LookupGoType(g interface{}) *GoTypeInfo {
@@ -153,16 +156,23 @@ func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
 }
 
 func GoObjectGet(o interface{}, key Object) (bool, Object) {
-	switch g := o.(type) {
-	case GoTypeInfo:
-		ty := reflect.ValueOf(g)
-		v := ty.FieldByName(key.(String).S)
-		if v != reflect.ValueOf(nil) {
-			return true, MakeGoObject(v.Interface())
+	v := reflect.Indirect(reflect.ValueOf(o))
+	switch v.Kind() {
+	case reflect.Struct:
+		f := v.FieldByName(key.(String).S)
+		if f != reflect.ValueOf(nil) {
+			return true, MakeGoObject(f.Interface())
 		}
+	case reflect.Map:
+		// Ignore key, return vector of keys (assuming they're strings)
+		keys := v.MapKeys()
+		objs := make([]Object, 0, 32)
+		for _, k := range keys {
+			objs = append(objs, MakeString(k.String()))
+		}
+		return true, NewVectorFrom(objs...)
 	}
-	fmt.Printf("type=%T\n", o)
-	return false, NIL
+	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
 }
 
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}
