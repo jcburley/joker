@@ -709,6 +709,9 @@ var procNew Proc = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	t := EnsureGoType(args, 0)
 	f := t.T.Ctor
+	if f == nil {
+		panic(RT.NewError("No constructor available for Go type " + t.T.Name))
+	}
 	return f(args[1])
 }
 
@@ -722,7 +725,20 @@ var procGoType Proc = func(args []Object) Object {
 	return t.GoType
 }
 
+// Mainly for generate-docs.joke, return information on the Go type itself.
+func goGetTypeInfo(ty GoType) Object {
+	t := ty.T
+	if t == nil {
+		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
+	}
+	return &GoVar{Value: t.GoType.T}
+}
+
 var procGo Proc = func(args []Object) Object {
+	CheckArity(args, 1, 3)
+	if ty, ok := args[0].(GoType); ok {
+		return goGetTypeInfo(ty)
+	}
 	CheckArity(args, 3, 3)
 	o := EnsureGoObject(args, 0)
 	member := ExtractString(args, 1)
@@ -732,7 +748,7 @@ var procGo Proc = func(args []Object) Object {
 	}
 	f := g.Members[member]
 	if f == nil {
-		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "." + member))
+		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
 	}
 	return (func(GoObject, Object) Object)(f)(o, args[2])
 }
