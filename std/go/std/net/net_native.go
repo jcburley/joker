@@ -3028,6 +3028,10 @@ func __unknownNetworkError_Timeout(o GoObject, args Object) Object {
 	return MakeBoolean(_res)
 }
 
+func __hey(o GoObject, args Object) Object {
+	return MakeString("wow")
+}
+
 var members_PtrTo_AddrError GoTypeInfo
 var members_PtrTo_DNSConfigError GoTypeInfo
 var members_PtrTo_DNSError GoTypeInfo
@@ -3203,8 +3207,9 @@ func initNative() {
 	}}
 
 	info_MX = GoTypeInfo{Name: "go.std.net/MX",
-		GoType: GoType{T: &info_MX},
-		Ctor:   _ConstructMX_}
+		GoType:  GoType{T: &info_MX},
+		Ctor:    _ConstructMX_,
+		Members: GoMembers{"Hey": __hey}}
 
 	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError

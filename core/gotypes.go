@@ -152,4 +152,17 @@ func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
 	return uintptr(ExtractGoUInt64(rcvr, name, args, n))
 }
 
+func GoObjectGet(o interface{}, key Object) (bool, Object) {
+	switch g := o.(type) {
+	case GoTypeInfo:
+		ty := reflect.ValueOf(g)
+		v := ty.FieldByName(key.(String).S)
+		if v != reflect.ValueOf(nil) {
+			return true, MakeGoObject(v.Interface())
+		}
+	}
+	fmt.Printf("type=%T\n", o)
+	return false, NIL
+}
+
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}

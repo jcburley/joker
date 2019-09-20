@@ -1006,6 +1006,10 @@ func (v *GoVar) Deref() interface{} {
 	return v.Resolve()
 }
 
+func (v *GoVar) Get(key Object) (bool, Object) {
+	return GoObjectGet(v.Resolve().(GoObject).O, key)
+}
+
 func (n Nil) ToString(escape bool) string {
 	return "nil"
 }
@@ -1285,6 +1289,10 @@ func (o GoObject) Hash() uint32 {
 func (o GoObject) Compare(other Object) int {
 	o2 := AssertGoObject(other, "Cannot compare GoObject and "+other.GetType().ToString(false))
 	return strings.Compare(o.ToString(false), o2.ToString(false))
+}
+
+func (o GoObject) Get(key Object) (bool, Object) {
+	return GoObjectGet(o.O, key)
 }
 
 func MakeGoType(t *GoTypeInfo) GoType {
