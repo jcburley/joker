@@ -118,26 +118,38 @@
   [s x]
   (= x (type (deref s))))
 
+(defn sym-is-constant
+  [s]
+  (condp = (type (deref s))
+    Proc false
+    GoType false
+    GoVar false
+    true))
+
 (defn filter-vals
   "Filters on values in a map using supplied function, returning map with only matching key/value pairs."
   [f m]
   (into {} (filter #(-> % val f) m)))
 
+(defn section-doc
+  [ns-sym match]
+  (string/join
+   ""
+   (for [[k v] (sort (filter-vals match (ns-publics ns-sym)))]
+     (var-doc k v))))
+
 (defn ns-doc
   [ns-sym]
   (let [ns (find-ns ns-sym)
         m (meta ns)
-        functions-doc (string/join
-                  ""
-                  (for [[k v] (sort (filter-vals #(sym-is % Proc) (ns-publics ns-sym)))]
-                    (var-doc k v)))
+        functions-doc (section-doc ns-sym #(sym-is % Proc))
         index (string/join
                        ""
                        (for [k (sort (keys (ns-publics ns-sym)))]
                          (link-item-doc (str k))))
-        constants-doc ""
-        variables-doc ""
-        types-doc ""]
+        constants-doc (section-doc ns-sym #(sym-is-constant %))
+        variables-doc (section-doc ns-sym #(sym-is % GoVar))
+        types-doc (section-doc ns-sym #(sym-is % GoType))]
     (-> ns-template
         (string/replace "{name}" (name ns-sym))
         (string/replace "{added}" (str (:added m)))
