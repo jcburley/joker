@@ -1296,7 +1296,7 @@ func (o GoObject) Get(key Object) (bool, Object) {
 }
 
 func MakeGoType(t *GoTypeInfo) GoType {
-	return GoType{T: t}
+	return t.GoType
 }
 
 func (t GoType) ToString(escape bool) string {

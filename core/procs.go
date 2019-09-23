@@ -715,7 +715,7 @@ var procNew Proc = func(args []Object) Object {
 	return f(args[1])
 }
 
-var procGoType Proc = func(args []Object) Object {
+var procGoTypeOf Proc = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	o := EnsureGoObject(args, 0)
 	t := LookupGoType(o.O)
@@ -2242,5 +2242,5 @@ func init() {
 	intern("go__", procGo)
 	intern("types__", procTypes)
 	intern("new__", procNew)
-	intern("GoType__", procGoType)
+	intern("GoTypeOf__", procGoTypeOf)
 }
