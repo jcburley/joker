@@ -121,9 +121,10 @@
 (defn sym-is-constant
   [s]
   (condp = (type (deref s))
-    Proc false
+    Fn false
     GoType false
     GoVar false
+    Proc false
     true))
 
 (defn filter-vals
@@ -142,11 +143,11 @@
   [ns-sym]
   (let [ns (find-ns ns-sym)
         m (meta ns)
-        functions-doc (section-doc ns-sym #(sym-is % Proc))
         index (string/join
                        ""
                        (for [k (sort (keys (ns-publics ns-sym)))]
                          (link-item-doc (str k))))
+        functions-doc (section-doc ns-sym #(or (sym-is % Proc) (sym-is % Fn)))
         constants-doc (section-doc ns-sym #(sym-is-constant %))
         variables-doc (section-doc ns-sym #(sym-is % GoVar))
         types-doc (section-doc ns-sym #(sym-is % GoType))]
