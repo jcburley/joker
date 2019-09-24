@@ -6,6 +6,28 @@
   <div class="main">
     <h1>Namespace: go.std.net</h1>
     <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions and Macros</a>
+      </li>
+      <li>
+        <a href="#_types">Types</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Provides a low-level interface to the net package.<br>
 <br>
 Package net provides a portable interface for network I/O, including<br>
@@ -80,7 +102,7 @@ On Plan 9, the resolver always accesses /net/cs and /net/dns.<br>
 <br>
 On Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.<br>
 </p>
-    <h2>Index</h2>
+    <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
   <a href="#AddrError.">AddrError.</a>
@@ -248,6 +270,9 @@ On Windows, the resolver always uses C library functions, such as GetAddrInfo an
   <a href="#LookupTXT">LookupTXT</a>
 </li>
 <li>
+  <a href="#MX">MX</a>
+</li>
+<li>
   <a href="#MX.">MX.</a>
 </li>
 <li>
@@ -309,6 +334,187 @@ On Windows, the resolver always uses C library functions, such as GetAddrInfo an
 </li>
 
     </ul>
+    <h2 id="_constants">Constants</h2>
+    <ul>
+      <li>
+  <h3 id="FlagBroadcast">FlagBroadcast</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">interface supports broadcast access capability<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="FlagLoopback">FlagLoopback</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">interface is a loopback interface<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="FlagMulticast">FlagMulticast</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">interface supports multicast access capability<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="FlagPointToPoint">FlagPointToPoint</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">interface belongs to a point-to-point link<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="FlagUp">FlagUp</h3>
+  <span class="var-type BigInt">BigInt</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">interface is up<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv4len">IPv4len</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IP address lengths (bytes).<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6len">IPv6len</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">IP address lengths (bytes).<br>
+</p>
+  
+</li>
+
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      <li>
+  <h3 id="DefaultResolver">DefaultResolver</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultResolver is the resolver used by the package-level Lookup<br>
+functions and by Dialers without a specified Resolver.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrWriteToConnected">ErrWriteToConnected</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Various errors contained in OpError.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv4allrouter">IPv4allrouter</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">all routers<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv4allsys">IPv4allsys</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">all systems<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv4bcast">IPv4bcast</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">limited broadcast<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv4zero">IPv4zero</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">all zeros<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6interfacelocalallnodes">IPv6interfacelocalallnodes</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6linklocalallnodes">IPv6linklocalallnodes</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6linklocalallrouters">IPv6linklocalallrouters</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6loopback">IPv6loopback</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6unspecified">IPv6unspecified</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="IPv6zero">IPv6zero</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Well-known IPv6 addresses<br>
+</p>
+  
+</li>
+
+    </ul>
+    <h2 id="_functions">Functions and Macros</h2>
     <ul>
       <li>
   <h3 id="AddrError.">AddrError.</h3>
@@ -354,16 +560,6 @@ Joker return type: go.std.net/IPMask</p>
   <pre class="var-usage"><div><code>(DNSError. _v)</code></div>
 </pre>
   <p class="var-docstr">Constructor for net.DNSError</p>
-  
-</li>
-<li>
-  <h3 id="DefaultResolver">DefaultResolver</h3>
-  <span class="var-type GoVar[**net.Resolver]">GoVar[**net.Resolver]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">DefaultResolver is the resolver used by the package-level Lookup<br>
-functions and by Dialers without a specified Resolver.<br>
-</p>
   
 </li>
 <li>
@@ -520,60 +716,6 @@ Joker return type: [(atom-of go.std.net/UnixConn) Error]</p>
   
 </li>
 <li>
-  <h3 id="ErrWriteToConnected">ErrWriteToConnected</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Various errors contained in OpError.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FlagBroadcast">FlagBroadcast</h3>
-  <span class="var-type BigInt">BigInt</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">interface supports broadcast access capability<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FlagLoopback">FlagLoopback</h3>
-  <span class="var-type BigInt">BigInt</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">interface is a loopback interface<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FlagMulticast">FlagMulticast</h3>
-  <span class="var-type BigInt">BigInt</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">interface supports multicast access capability<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FlagPointToPoint">FlagPointToPoint</h3>
-  <span class="var-type BigInt">BigInt</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">interface belongs to a point-to-point link<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FlagUp">FlagUp</h3>
-  <span class="var-type BigInt">BigInt</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">interface is up<br>
-</p>
-  
-</li>
-<li>
   <h3 id="Flags.">Flags.</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -625,114 +767,6 @@ Go return type: IPMask<br>
 Joker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]<br>
 <br>
 Joker return type: go.std.net/IPMask</p>
-  
-</li>
-<li>
-  <h3 id="IPv4allrouter">IPv4allrouter</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">all routers<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv4allsys">IPv4allsys</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">all systems<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv4bcast">IPv4bcast</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">limited broadcast<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv4len">IPv4len</h3>
-  <span class="var-type Int">Int</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">IP address lengths (bytes).<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv4zero">IPv4zero</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">all zeros<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6interfacelocalallnodes">IPv6interfacelocalallnodes</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6len">IPv6len</h3>
-  <span class="var-type Int">Int</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">IP address lengths (bytes).<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6linklocalallnodes">IPv6linklocalallnodes</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6linklocalallrouters">IPv6linklocalallrouters</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6loopback">IPv6loopback</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6unspecified">IPv6unspecified</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="IPv6zero">IPv6zero</h3>
-  <span class="var-type GoVar[*net.IP]">GoVar[*net.IP]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Well-known IPv6 addresses<br>
-</p>
   
 </li>
 <li>
@@ -1555,6 +1589,19 @@ Joker return type: [String String Error]</p>
   <pre class="var-usage"><div><code>(UnknownNetworkError. _v)</code></div>
 </pre>
   <p class="var-docstr">Constructor for net.UnknownNetworkError</p>
+  
+</li>
+
+    </ul>
+    <h2 id="_types">Types</h2>
+    <ul>
+      <li>
+  <h3 id="MX">MX</h3>
+  <span class="var-type GoType">GoType</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(MX _v)</code></div>
+</pre>
+  <p class="var-docstr">GoType[net.MX]</p>
   
 </li>
 

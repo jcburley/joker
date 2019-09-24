@@ -6,8 +6,30 @@
   <div class="main">
     <h1>Namespace: joker.core</h1>
     <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions and Macros</a>
+      </li>
+      <li>
+        <a href="#_types">Types</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Core library of Joker.</p>
-    <h2>Index</h2>
+    <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
   <a href="#*">*</a>
@@ -104,6 +126,9 @@
 </li>
 <li>
   <a href="#Go">Go</a>
+</li>
+<li>
+  <a href="#GoTypeOf">GoTypeOf</a>
 </li>
 <li>
   <a href="#alias">alias</a>
@@ -670,6 +695,9 @@
   <a href="#neg?">neg?</a>
 </li>
 <li>
+  <a href="#new">new</a>
+</li>
+<li>
   <a href="#newline">newline</a>
 </li>
 <li>
@@ -1178,36 +1206,11 @@
 </li>
 
     </ul>
+    <h2 id="_constants">Constants</h2>
     <ul>
       <li>
-  <h3 id="*">*</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(*)</code></div>
-<div><code>(* x)</code></div>
-<div><code>(* x y)</code></div>
-<div><code>(* x y & more)</code></div>
-</pre>
-  <p class="var-docstr">Returns the product of nums. (*) returns 1. Does not auto-promote<br>
-  ints, will overflow. See also: *&#39;</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L786">source</a>
-</li>
-<li>
-  <h3 id="*'">*'</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(*')</code></div>
-<div><code>(*' x)</code></div>
-<div><code>(*' x y)</code></div>
-<div><code>(*' x y & more)</code></div>
-</pre>
-  <p class="var-docstr">Returns the product of nums. (*) returns 1. Supports arbitrary precision.<br>
-  See also: *</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L776">source</a>
-</li>
-<li>
   <h3 id="*1">*1</h3>
-  <span class="var-type Object">Object</span>
+  <span class="var-type String">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">bound in a repl to the most recent value printed</p>
@@ -1215,7 +1218,7 @@
 </li>
 <li>
   <h3 id="*2">*2</h3>
-  <span class="var-type Object">Object</span>
+  <span class="var-type String">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">bound in a repl to the second most recent value printed</p>
@@ -1223,7 +1226,7 @@
 </li>
 <li>
   <h3 id="*3">*3</h3>
-  <span class="var-type Object">Object</span>
+  <span class="var-type String">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">bound in a repl to the third most recent value printed</p>
@@ -1248,7 +1251,7 @@
 </li>
 <li>
   <h3 id="*e">*e</h3>
-  <span class="var-type Object">Object</span>
+  <span class="var-type String">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">bound in a repl to the most recent exception caught by the repl</p>
@@ -1348,6 +1351,49 @@
 <br>
   Defaults to true</p>
   
+</li>
+<li>
+  <h3 id="default-data-readers">default-data-readers</h3>
+  <span class="var-type ArrayMap">ArrayMap</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>
+  overridden by binding *data-readers*.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4305">source</a>
+</li>
+
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      
+    </ul>
+    <h2 id="_functions">Functions and Macros</h2>
+    <ul>
+      <li>
+  <h3 id="*">*</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(*)</code></div>
+<div><code>(* x)</code></div>
+<div><code>(* x y)</code></div>
+<div><code>(* x y & more)</code></div>
+</pre>
+  <p class="var-docstr">Returns the product of nums. (*) returns 1. Does not auto-promote<br>
+  ints, will overflow. See also: *&#39;</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L786">source</a>
+</li>
+<li>
+  <h3 id="*'">*'</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(*')</code></div>
+<div><code>(*' x)</code></div>
+<div><code>(*' x y)</code></div>
+<div><code>(*' x y & more)</code></div>
+</pre>
+  <p class="var-docstr">Returns the product of nums. (*) returns 1. Supports arbitrary precision.<br>
+  See also: *</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L776">source</a>
 </li>
 <li>
   <h3 id="+">+</h3>
@@ -1517,8 +1563,17 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(Go o m & args)</code></div>
 </pre>
-  <p class="var-docstr">Invoke a receiver for, or get/set a member of, a Go object, returning result if applicable, else nil.</p>
+  <p class="var-docstr">Invokes a receiver for a Go object, returning result if applicable, else nil.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4472">source</a>
+</li>
+<li>
+  <h3 id="GoTypeOf">GoTypeOf</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
+</pre>
+  <p class="var-docstr">Returns the GoType of a GoObject.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4484">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -2188,15 +2243,6 @@
 </pre>
   <p class="var-docstr">Returns a lazy sequence removing consecutive duplicates in coll.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4281">source</a>
-</li>
-<li>
-  <h3 id="default-data-readers">default-data-readers</h3>
-  <span class="var-type ArrayMap">ArrayMap</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>
-  overridden by binding *data-readers*.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4305">source</a>
 </li>
 <li>
   <h3 id="defmacro">defmacro</h3>
@@ -3536,6 +3582,15 @@
 </pre>
   <p class="var-docstr">Returns true if num is less than zero, else false</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L910">source</a>
+</li>
+<li>
+  <h3 id="new">new</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(new t init)</code></div>
+</pre>
+  <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4478">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
@@ -5313,6 +5368,10 @@
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L1853">source</a>
 </li>
 
+    </ul>
+    <h2 id="_types">Types</h2>
+    <ul>
+      
     </ul>
   </div>
 </body>

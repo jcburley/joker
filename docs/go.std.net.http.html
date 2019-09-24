@@ -6,6 +6,28 @@
   <div class="main">
     <h1>Namespace: go.std.net.http</h1>
     <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions and Macros</a>
+      </li>
+      <li>
+        <a href="#_types">Types</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Provides a low-level interface to the net/http package.<br>
 <br>
 Package http provides HTTP client and server implementations.<br>
@@ -108,7 +130,7 @@ functions. Manually configuring HTTP/2 via the golang.org/x/net/http2<br>
 package takes precedence over the net/http package&#39;s built-in HTTP/2<br>
 support.<br>
 </p>
-    <h2>Index</h2>
+    <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
   <a href="#CanonicalHeaderKey">CanonicalHeaderKey</a>
@@ -499,49 +521,9 @@ support.<br>
 </li>
 
     </ul>
+    <h2 id="_constants">Constants</h2>
     <ul>
       <li>
-  <h3 id="CanonicalHeaderKey">CanonicalHeaderKey</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(CanonicalHeaderKey __s)</code></div>
-</pre>
-  <p class="var-docstr">CanonicalHeaderKey returns the canonical format of the<br>
-header key s. The canonicalization converts the first<br>
-letter and any letter following a hyphen to upper case;<br>
-the rest are converted to lowercase. For example, the<br>
-canonical key for &#34;accept-encoding&#34; is &#34;Accept-Encoding&#34;.<br>
-If s contains a space or invalid header field bytes, it is<br>
-returned without modifications.<br>
-<br>
-Go input arguments: (s string)<br>
-<br>
-Go return type: string<br>
-<br>
-Joker input arguments: [^String s]<br>
-<br>
-Joker return type: String</p>
-  
-</li>
-<li>
-  <h3 id="ConnState.">ConnState.</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ConnState. _v)</code></div>
-</pre>
-  <p class="var-docstr">Constructor for http.ConnState</p>
-  
-</li>
-<li>
-  <h3 id="DefaultClient">DefaultClient</h3>
-  <span class="var-type GoVar[**net/http.Client]">GoVar[**net/http.Client]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">DefaultClient is the default Client and is used by Get, Head, and Post.<br>
-</p>
-  
-</li>
-<li>
   <h3 id="DefaultMaxHeaderBytes">DefaultMaxHeaderBytes</h3>
   <span class="var-type BigInt">BigInt</span>
   <span class="var-added">v1.0</span>
@@ -557,412 +539,6 @@ Joker return type: String</p>
   <pre class="var-usage"></pre>
   <p class="var-docstr">DefaultMaxIdleConnsPerHost is the default value of Transport&#39;s<br>
 MaxIdleConnsPerHost.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="DefaultServeMux">DefaultServeMux</h3>
-  <span class="var-type GoVar[**net/http.ServeMux]">GoVar[**net/http.ServeMux]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">DefaultServeMux is the default ServeMux used by Serve.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="DefaultTransport">DefaultTransport</h3>
-  <span class="var-type GoVar[*net/http.RoundTripper]">GoVar[*net/http.RoundTripper]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">DefaultTransport is the default implementation of Transport and is<br>
-used by DefaultClient. It establishes network connections as needed<br>
-and caches them for reuse by subsequent calls. It uses HTTP proxies<br>
-as directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and<br>
-$no_proxy) environment variables.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="Dir.">Dir.</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(Dir. _v)</code></div>
-</pre>
-  <p class="var-docstr">Constructor for http.Dir</p>
-  
-</li>
-<li>
-  <h3 id="ErrAbortHandler">ErrAbortHandler</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrAbortHandler is a sentinel panic value to abort a handler.<br>
-While any panic from ServeHTTP aborts the response to the client,<br>
-panicking with ErrAbortHandler also suppresses logging of a stack<br>
-trace to the server&#39;s error log.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrBodyNotAllowed">ErrBodyNotAllowed</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrBodyNotAllowed is returned by ResponseWriter.Write calls<br>
-when the HTTP method or response code does not permit a<br>
-body.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrBodyReadAfterClose">ErrBodyReadAfterClose</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrBodyReadAfterClose is returned when reading a Request or Response<br>
-Body after the body has been closed. This typically happens when the body is<br>
-read after an HTTP Handler calls WriteHeader or Write on its<br>
-ResponseWriter.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrContentLength">ErrContentLength</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrContentLength is returned by ResponseWriter.Write calls<br>
-when a Handler set a Content-Length response header with a<br>
-declared size and then attempted to write more bytes than<br>
-declared.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrHandlerTimeout">ErrHandlerTimeout</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrHandlerTimeout is returned on ResponseWriter Write calls<br>
-in handlers which have timed out.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrHeaderTooLong">ErrHeaderTooLong</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Deprecated: ErrHeaderTooLong is no longer returned by<br>
-anything in the net/http package. Callers should not<br>
-compare errors against this variable.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrHijacked">ErrHijacked</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrHijacked is returned by ResponseWriter.Write calls when<br>
-the underlying connection has been hijacked using the<br>
-Hijacker interface. A zero-byte write on a hijacked<br>
-connection will return ErrHijacked without any other side<br>
-effects.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrLineTooLong">ErrLineTooLong</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrLineTooLong is returned when reading request or response bodies<br>
-with malformed chunked encoding.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrMissingBoundary">ErrMissingBoundary</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrMissingBoundary is returned by Request.MultipartReader when the<br>
-request&#39;s Content-Type does not include a &#34;boundary&#34; parameter.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrMissingContentLength">ErrMissingContentLength</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Deprecated: ErrMissingContentLength is no longer returned by<br>
-anything in the net/http package. Callers should not<br>
-compare errors against this variable.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrMissingFile">ErrMissingFile</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrMissingFile is returned by FormFile when the provided file field name<br>
-is either not present in the request or not a file field.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrNoCookie">ErrNoCookie</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrNoCookie is returned by Request&#39;s Cookie method when a cookie is not found.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrNoLocation">ErrNoLocation</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrNoLocation is returned by Response&#39;s Location method<br>
-when no Location header is present.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrNotMultipart">ErrNotMultipart</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrNotMultipart is returned by Request.MultipartReader when the<br>
-request&#39;s Content-Type is not multipart/form-data.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrNotSupported">ErrNotSupported</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrNotSupported is returned by the Push method of Pusher<br>
-implementations to indicate that HTTP/2 Push support is not<br>
-available.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrServerClosed">ErrServerClosed</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrServerClosed is returned by the Server&#39;s Serve, ServeTLS, ListenAndServe,<br>
-and ListenAndServeTLS methods after a call to Shutdown or Close.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrShortBody">ErrShortBody</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Deprecated: ErrShortBody is no longer returned by<br>
-anything in the net/http package. Callers should not<br>
-compare errors against this variable.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrSkipAltProtocol">ErrSkipAltProtocol</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrUnexpectedTrailer">ErrUnexpectedTrailer</h3>
-  <span class="var-type GoVar[**net/http.ProtocolError]">GoVar[**net/http.ProtocolError]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Deprecated: ErrUnexpectedTrailer is no longer returned by<br>
-anything in the net/http package. Callers should not<br>
-compare errors against this variable.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrUseLastResponse">ErrUseLastResponse</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ErrUseLastResponse can be returned by Client.CheckRedirect hooks to<br>
-control how redirects are processed. If returned, the next request<br>
-is not sent and the most recent response is returned with its body<br>
-unclosed.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="ErrWriteAfterFlush">ErrWriteAfterFlush</h3>
-  <span class="var-type GoVar[*.error]">GoVar[*.error]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Deprecated: ErrWriteAfterFlush is no longer returned by<br>
-anything in the net/http package. Callers should not<br>
-compare errors against this variable.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="FileServer">FileServer</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(FileServer __root)</code></div>
-</pre>
-  <p class="var-docstr">FileServer returns a handler that serves HTTP requests<br>
-with the contents of the file system rooted at root.<br>
-<br>
-To use the operating system&#39;s file system implementation,<br>
-use http.Dir:<br>
-<br>
-    http.Handle(&#34;/&#34;, http.FileServer(http.Dir(&#34;/tmp&#34;)))<br>
-<br>
-As a special case, the returned file server redirects any request<br>
-ending in &#34;/index.html&#34; to the same path, without the final<br>
-&#34;index.html&#34;.<br>
-<br>
-Go input arguments: (root FileSystem)<br>
-<br>
-Go return type: Handler<br>
-<br>
-Joker input arguments: [^go.std.net.http/FileSystem root]<br>
-<br>
-Joker return type: go.std.net.http/Handler</p>
-  
-</li>
-<li>
-  <h3 id="Get">Get</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(Get __url)</code></div>
-</pre>
-  <p class="var-docstr">Get issues a GET to the specified URL. If the response is one of<br>
-the following redirect codes, Get follows the redirect, up to a<br>
-maximum of 10 redirects:<br>
-<br>
-   301 (Moved Permanently)<br>
-   302 (Found)<br>
-   303 (See Other)<br>
-   307 (Temporary Redirect)<br>
-   308 (Permanent Redirect)<br>
-<br>
-An error is returned if there were too many redirects or if there<br>
-was an HTTP protocol error. A non-2xx response doesn&#39;t cause an<br>
-error. Any returned error will be of type *url.Error. The url.Error<br>
-value&#39;s Timeout method will report true if request timed out or was<br>
-canceled.<br>
-<br>
-When err is nil, resp always contains a non-nil resp.Body.<br>
-Caller should close resp.Body when done reading from it.<br>
-<br>
-Get is a wrapper around DefaultClient.Get.<br>
-<br>
-To make a request with custom headers, use NewRequest and<br>
-DefaultClient.Do.<br>
-<br>
-Go input arguments: (url string)<br>
-<br>
-Go return type: (resp *Response, err error)<br>
-<br>
-Joker input arguments: [^String url]<br>
-<br>
-Joker return type: [(atom-of go.std.net.http/Response) Error]</p>
-  
-</li>
-<li>
-  <h3 id="Head">Head</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(Head __url)</code></div>
-</pre>
-  <p class="var-docstr">Head issues a HEAD to the specified URL. If the response is one of<br>
-the following redirect codes, Head follows the redirect, up to a<br>
-maximum of 10 redirects:<br>
-<br>
-   301 (Moved Permanently)<br>
-   302 (Found)<br>
-   303 (See Other)<br>
-   307 (Temporary Redirect)<br>
-   308 (Permanent Redirect)<br>
-<br>
-Head is a wrapper around DefaultClient.Head<br>
-<br>
-Go input arguments: (url string)<br>
-<br>
-Go return type: (resp *Response, err error)<br>
-<br>
-Joker input arguments: [^String url]<br>
-<br>
-Joker return type: [(atom-of go.std.net.http/Response) Error]</p>
-  
-</li>
-<li>
-  <h3 id="ListenAndServe">ListenAndServe</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ListenAndServe __addr __handler)</code></div>
-</pre>
-  <p class="var-docstr">ListenAndServe listens on the TCP network address addr and then calls<br>
-Serve with handler to handle requests on incoming connections.<br>
-Accepted connections are configured to enable TCP keep-alives.<br>
-<br>
-The handler is typically nil, in which case the DefaultServeMux is used.<br>
-<br>
-ListenAndServe always returns a non-nil error.<br>
-<br>
-Go input arguments: (addr string, handler Handler)<br>
-<br>
-Go return type: error<br>
-<br>
-Joker input arguments: [^String addr, ^go.std.net.http/Handler handler]<br>
-<br>
-Joker return type: Error</p>
-  
-</li>
-<li>
-  <h3 id="ListenAndServeTLS">ListenAndServeTLS</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ListenAndServeTLS __addr __certFile __keyFile __handler)</code></div>
-</pre>
-  <p class="var-docstr">ListenAndServeTLS acts identically to ListenAndServe, except that it<br>
-expects HTTPS connections. Additionally, files containing a certificate and<br>
-matching private key for the server must be provided. If the certificate<br>
-is signed by a certificate authority, the certFile should be the concatenation<br>
-of the server&#39;s certificate, any intermediates, and the CA&#39;s certificate.<br>
-<br>
-Go input arguments: (addr string, certFile string, keyFile string, handler Handler)<br>
-<br>
-Go return type: error<br>
-<br>
-Joker input arguments: [^String addr, ^String certFile, ^String keyFile, ^go.std.net.http/Handler handler]<br>
-<br>
-Joker return type: Error</p>
-  
-</li>
-<li>
-  <h3 id="LocalAddrContextKey">LocalAddrContextKey</h3>
-  <span class="var-type GoVar[**net/http.contextKey]">GoVar[**net/http.contextKey]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">LocalAddrContextKey is a context key. It can be used in<br>
-HTTP handlers with context.WithValue to access the local<br>
-address the connection arrived on.<br>
-The associated value will be of type net.Addr.<br>
 </p>
   
 </li>
@@ -1064,187 +640,6 @@ Unless otherwise noted, these are defined in RFC 7231 section 4.3.<br>
   
 </li>
 <li>
-  <h3 id="NewFileTransport">NewFileTransport</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(NewFileTransport __fs)</code></div>
-</pre>
-  <p class="var-docstr">NewFileTransport returns a new RoundTripper, serving the provided<br>
-FileSystem. The returned RoundTripper ignores the URL host in its<br>
-incoming requests, as well as most other properties of the<br>
-request.<br>
-<br>
-The typical use case for NewFileTransport is to register the &#34;file&#34;<br>
-protocol with a Transport, as in:<br>
-<br>
-  t := &amp;http.Transport{}<br>
-  t.RegisterProtocol(&#34;file&#34;, http.NewFileTransport(http.Dir(&#34;/&#34;)))<br>
-  c := &amp;http.Client{Transport: t}<br>
-  res, err := c.Get(&#34;file:///etc/passwd&#34;)<br>
-  ...<br>
-<br>
-Go input arguments: (fs FileSystem)<br>
-<br>
-Go return type: RoundTripper<br>
-<br>
-Joker input arguments: [^go.std.net.http/FileSystem fs]<br>
-<br>
-Joker return type: go.std.net.http/RoundTripper</p>
-  
-</li>
-<li>
-  <h3 id="NewServeMux">NewServeMux</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(NewServeMux)</code></div>
-</pre>
-  <p class="var-docstr">NewServeMux allocates and returns a new ServeMux.<br>
-<br>
-Go return type: *ServeMux<br>
-<br>
-Joker input arguments: []<br>
-<br>
-Joker return type: (atom-of go.std.net.http/ServeMux)</p>
-  
-</li>
-<li>
-  <h3 id="NoBody">NoBody</h3>
-  <span class="var-type GoVar[*net/http.noBody]">GoVar[*net/http.noBody]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">NoBody is an io.ReadCloser with no bytes. Read always returns EOF<br>
-and Close always returns nil. It can be used in an outgoing client<br>
-request to explicitly signal that a request has zero bytes.<br>
-An alternative, however, is to simply set Request.Body to nil.<br>
-</p>
-  
-</li>
-<li>
-  <h3 id="NotFoundHandler">NotFoundHandler</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(NotFoundHandler)</code></div>
-</pre>
-  <p class="var-docstr">NotFoundHandler returns a simple request handler<br>
-that replies to each request with a ``404 page not found&#39;&#39; reply.<br>
-<br>
-Go return type: Handler<br>
-<br>
-Joker input arguments: []<br>
-<br>
-Joker return type: go.std.net.http/Handler</p>
-  
-</li>
-<li>
-  <h3 id="ParseHTTPVersion">ParseHTTPVersion</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ParseHTTPVersion __vers)</code></div>
-</pre>
-  <p class="var-docstr">ParseHTTPVersion parses a HTTP version string.<br>
-&#34;HTTP/1.0&#34; returns (1, 0, true).<br>
-<br>
-Go input arguments: (vers string)<br>
-<br>
-Go return type: (major int, minor int, ok bool)<br>
-<br>
-Joker input arguments: [^String vers]<br>
-<br>
-Joker return type: [Int Int Boolean]</p>
-  
-</li>
-<li>
-  <h3 id="ParseTime">ParseTime</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ParseTime __text)</code></div>
-</pre>
-  <p class="var-docstr">ParseTime parses a time header (such as the Date: header),<br>
-trying each of the three formats allowed by HTTP/1.1:<br>
-TimeFormat, time.RFC850, and time.ANSIC.<br>
-<br>
-Go input arguments: (text string)<br>
-<br>
-Go return type: (t time.Time, err error)<br>
-<br>
-Joker input arguments: [^String text]<br>
-<br>
-Joker return type: [go.std.time/Time Error]</p>
-  
-</li>
-<li>
-  <h3 id="ProtocolError.">ProtocolError.</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ProtocolError. _v)</code></div>
-</pre>
-  <p class="var-docstr">Constructor for http.ProtocolError</p>
-  
-</li>
-<li>
-  <h3 id="ProxyFromEnvironment">ProxyFromEnvironment</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ProxyFromEnvironment __req)</code></div>
-</pre>
-  <p class="var-docstr">ProxyFromEnvironment returns the URL of the proxy to use for a<br>
-given request, as indicated by the environment variables<br>
-HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions<br>
-thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https<br>
-requests.<br>
-<br>
-The environment values may be either a complete URL or a<br>
-&#34;host[:port]&#34;, in which case the &#34;http&#34; scheme is assumed.<br>
-An error is returned if the value is a different form.<br>
-<br>
-A nil URL and nil error are returned if no proxy is defined in the<br>
-environment, or a proxy should not be used for the given request,<br>
-as defined by NO_PROXY.<br>
-<br>
-As a special case, if req.URL.Host is &#34;localhost&#34; (with or without<br>
-a port number), then a nil URL and nil error will be returned.<br>
-<br>
-Go input arguments: (req *Request)<br>
-<br>
-Go return type: (*net/url.URL, error)<br>
-<br>
-Joker input arguments: [^(atom-of go.std.net.http/Request) req]<br>
-<br>
-Joker return type: [(atom-of go.std.net.url/URL) Error]</p>
-  
-</li>
-<li>
-  <h3 id="RedirectHandler">RedirectHandler</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(RedirectHandler __url __code)</code></div>
-</pre>
-  <p class="var-docstr">RedirectHandler returns a request handler that redirects<br>
-each request it receives to the given url using the given<br>
-status code.<br>
-<br>
-The provided code should be in the 3xx range and is usually<br>
-StatusMovedPermanently, StatusFound or StatusSeeOther.<br>
-<br>
-Go input arguments: (url string, code int)<br>
-<br>
-Go return type: Handler<br>
-<br>
-Joker input arguments: [^String url, ^Int code]<br>
-<br>
-Joker return type: go.std.net.http/Handler</p>
-  
-</li>
-<li>
-  <h3 id="SameSite.">SameSite.</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(SameSite. _v)</code></div>
-</pre>
-  <p class="var-docstr">Constructor for http.SameSite</p>
-  
-</li>
-<li>
   <h3 id="SameSiteDefaultMode">SameSiteDefaultMode</h3>
   <span class="var-type Int">Int</span>
   <span class="var-added">v1.0</span>
@@ -1266,27 +661,6 @@ Joker return type: go.std.net.http/Handler</p>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr"></p>
-  
-</li>
-<li>
-  <h3 id="ServeMux.">ServeMux.</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(ServeMux. _v)</code></div>
-</pre>
-  <p class="var-docstr">Constructor for http.ServeMux</p>
-  
-</li>
-<li>
-  <h3 id="ServerContextKey">ServerContextKey</h3>
-  <span class="var-type GoVar[**net/http.contextKey]">GoVar[**net/http.contextKey]</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">ServerContextKey is a context key. It can be used in HTTP<br>
-handlers with context.WithValue to access the server that<br>
-started the handler. The associated value will be of<br>
-type *Server.<br>
-</p>
   
 </li>
 <li>
@@ -1822,24 +1196,6 @@ StateClosed.<br>
   
 </li>
 <li>
-  <h3 id="StatusText">StatusText</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(StatusText __code)</code></div>
-</pre>
-  <p class="var-docstr">StatusText returns a text for the HTTP status code. It returns the empty<br>
-string if the code is unknown.<br>
-<br>
-Go input arguments: (code int)<br>
-<br>
-Go return type: string<br>
-<br>
-Joker input arguments: [^Int code]<br>
-<br>
-Joker return type: String</p>
-  
-</li>
-<li>
   <h3 id="StatusTooEarly">StatusTooEarly</h3>
   <span class="var-type Int">Int</span>
   <span class="var-added">v1.0</span>
@@ -1921,27 +1277,6 @@ Joker return type: String</p>
   
 </li>
 <li>
-  <h3 id="StripPrefix">StripPrefix</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(StripPrefix __prefix __h)</code></div>
-</pre>
-  <p class="var-docstr">StripPrefix returns a handler that serves HTTP requests<br>
-by removing the given prefix from the request URL&#39;s Path<br>
-and invoking the handler h. StripPrefix handles a<br>
-request for a path that doesn&#39;t begin with prefix by<br>
-replying with an HTTP 404 not found error.<br>
-<br>
-Go input arguments: (prefix string, h Handler)<br>
-<br>
-Go return type: Handler<br>
-<br>
-Joker input arguments: [^String prefix, ^go.std.net.http/Handler h]<br>
-<br>
-Joker return type: go.std.net.http/Handler</p>
-  
-</li>
-<li>
   <h3 id="TimeFormat">TimeFormat</h3>
   <span class="var-type String">String</span>
   <span class="var-added">v1.0</span>
@@ -1976,6 +1311,706 @@ is preferred:<br>
   
 </li>
 
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      <li>
+  <h3 id="DefaultClient">DefaultClient</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultClient is the default Client and is used by Get, Head, and Post.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DefaultServeMux">DefaultServeMux</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultServeMux is the default ServeMux used by Serve.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="DefaultTransport">DefaultTransport</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">DefaultTransport is the default implementation of Transport and is<br>
+used by DefaultClient. It establishes network connections as needed<br>
+and caches them for reuse by subsequent calls. It uses HTTP proxies<br>
+as directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and<br>
+$no_proxy) environment variables.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrAbortHandler">ErrAbortHandler</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrAbortHandler is a sentinel panic value to abort a handler.<br>
+While any panic from ServeHTTP aborts the response to the client,<br>
+panicking with ErrAbortHandler also suppresses logging of a stack<br>
+trace to the server&#39;s error log.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBodyNotAllowed">ErrBodyNotAllowed</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBodyNotAllowed is returned by ResponseWriter.Write calls<br>
+when the HTTP method or response code does not permit a<br>
+body.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrBodyReadAfterClose">ErrBodyReadAfterClose</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrBodyReadAfterClose is returned when reading a Request or Response<br>
+Body after the body has been closed. This typically happens when the body is<br>
+read after an HTTP Handler calls WriteHeader or Write on its<br>
+ResponseWriter.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrContentLength">ErrContentLength</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrContentLength is returned by ResponseWriter.Write calls<br>
+when a Handler set a Content-Length response header with a<br>
+declared size and then attempted to write more bytes than<br>
+declared.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrHandlerTimeout">ErrHandlerTimeout</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrHandlerTimeout is returned on ResponseWriter Write calls<br>
+in handlers which have timed out.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrHeaderTooLong">ErrHeaderTooLong</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Deprecated: ErrHeaderTooLong is no longer returned by<br>
+anything in the net/http package. Callers should not<br>
+compare errors against this variable.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrHijacked">ErrHijacked</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrHijacked is returned by ResponseWriter.Write calls when<br>
+the underlying connection has been hijacked using the<br>
+Hijacker interface. A zero-byte write on a hijacked<br>
+connection will return ErrHijacked without any other side<br>
+effects.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrLineTooLong">ErrLineTooLong</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrLineTooLong is returned when reading request or response bodies<br>
+with malformed chunked encoding.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingBoundary">ErrMissingBoundary</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrMissingBoundary is returned by Request.MultipartReader when the<br>
+request&#39;s Content-Type does not include a &#34;boundary&#34; parameter.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingContentLength">ErrMissingContentLength</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Deprecated: ErrMissingContentLength is no longer returned by<br>
+anything in the net/http package. Callers should not<br>
+compare errors against this variable.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrMissingFile">ErrMissingFile</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrMissingFile is returned by FormFile when the provided file field name<br>
+is either not present in the request or not a file field.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNoCookie">ErrNoCookie</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNoCookie is returned by Request&#39;s Cookie method when a cookie is not found.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNoLocation">ErrNoLocation</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNoLocation is returned by Response&#39;s Location method<br>
+when no Location header is present.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNotMultipart">ErrNotMultipart</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNotMultipart is returned by Request.MultipartReader when the<br>
+request&#39;s Content-Type is not multipart/form-data.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrNotSupported">ErrNotSupported</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrNotSupported is returned by the Push method of Pusher<br>
+implementations to indicate that HTTP/2 Push support is not<br>
+available.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrServerClosed">ErrServerClosed</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrServerClosed is returned by the Server&#39;s Serve, ServeTLS, ListenAndServe,<br>
+and ListenAndServeTLS methods after a call to Shutdown or Close.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrShortBody">ErrShortBody</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Deprecated: ErrShortBody is no longer returned by<br>
+anything in the net/http package. Callers should not<br>
+compare errors against this variable.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrSkipAltProtocol">ErrSkipAltProtocol</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrUnexpectedTrailer">ErrUnexpectedTrailer</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Deprecated: ErrUnexpectedTrailer is no longer returned by<br>
+anything in the net/http package. Callers should not<br>
+compare errors against this variable.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrUseLastResponse">ErrUseLastResponse</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ErrUseLastResponse can be returned by Client.CheckRedirect hooks to<br>
+control how redirects are processed. If returned, the next request<br>
+is not sent and the most recent response is returned with its body<br>
+unclosed.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ErrWriteAfterFlush">ErrWriteAfterFlush</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Deprecated: ErrWriteAfterFlush is no longer returned by<br>
+anything in the net/http package. Callers should not<br>
+compare errors against this variable.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="LocalAddrContextKey">LocalAddrContextKey</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">LocalAddrContextKey is a context key. It can be used in<br>
+HTTP handlers with context.WithValue to access the local<br>
+address the connection arrived on.<br>
+The associated value will be of type net.Addr.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="NoBody">NoBody</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">NoBody is an io.ReadCloser with no bytes. Read always returns EOF<br>
+and Close always returns nil. It can be used in an outgoing client<br>
+request to explicitly signal that a request has zero bytes.<br>
+An alternative, however, is to simply set Request.Body to nil.<br>
+</p>
+  
+</li>
+<li>
+  <h3 id="ServerContextKey">ServerContextKey</h3>
+  <span class="var-type GoVar">GoVar</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">ServerContextKey is a context key. It can be used in HTTP<br>
+handlers with context.WithValue to access the server that<br>
+started the handler. The associated value will be of<br>
+type *Server.<br>
+</p>
+  
+</li>
+
+    </ul>
+    <h2 id="_functions">Functions and Macros</h2>
+    <ul>
+      <li>
+  <h3 id="CanonicalHeaderKey">CanonicalHeaderKey</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(CanonicalHeaderKey __s)</code></div>
+</pre>
+  <p class="var-docstr">CanonicalHeaderKey returns the canonical format of the<br>
+header key s. The canonicalization converts the first<br>
+letter and any letter following a hyphen to upper case;<br>
+the rest are converted to lowercase. For example, the<br>
+canonical key for &#34;accept-encoding&#34; is &#34;Accept-Encoding&#34;.<br>
+If s contains a space or invalid header field bytes, it is<br>
+returned without modifications.<br>
+<br>
+Go input arguments: (s string)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^String s]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="ConnState.">ConnState.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ConnState. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for http.ConnState</p>
+  
+</li>
+<li>
+  <h3 id="Dir.">Dir.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Dir. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for http.Dir</p>
+  
+</li>
+<li>
+  <h3 id="FileServer">FileServer</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(FileServer __root)</code></div>
+</pre>
+  <p class="var-docstr">FileServer returns a handler that serves HTTP requests<br>
+with the contents of the file system rooted at root.<br>
+<br>
+To use the operating system&#39;s file system implementation,<br>
+use http.Dir:<br>
+<br>
+    http.Handle(&#34;/&#34;, http.FileServer(http.Dir(&#34;/tmp&#34;)))<br>
+<br>
+As a special case, the returned file server redirects any request<br>
+ending in &#34;/index.html&#34; to the same path, without the final<br>
+&#34;index.html&#34;.<br>
+<br>
+Go input arguments: (root FileSystem)<br>
+<br>
+Go return type: Handler<br>
+<br>
+Joker input arguments: [^go.std.net.http/FileSystem root]<br>
+<br>
+Joker return type: go.std.net.http/Handler</p>
+  
+</li>
+<li>
+  <h3 id="Get">Get</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Get __url)</code></div>
+</pre>
+  <p class="var-docstr">Get issues a GET to the specified URL. If the response is one of<br>
+the following redirect codes, Get follows the redirect, up to a<br>
+maximum of 10 redirects:<br>
+<br>
+   301 (Moved Permanently)<br>
+   302 (Found)<br>
+   303 (See Other)<br>
+   307 (Temporary Redirect)<br>
+   308 (Permanent Redirect)<br>
+<br>
+An error is returned if there were too many redirects or if there<br>
+was an HTTP protocol error. A non-2xx response doesn&#39;t cause an<br>
+error. Any returned error will be of type *url.Error. The url.Error<br>
+value&#39;s Timeout method will report true if request timed out or was<br>
+canceled.<br>
+<br>
+When err is nil, resp always contains a non-nil resp.Body.<br>
+Caller should close resp.Body when done reading from it.<br>
+<br>
+Get is a wrapper around DefaultClient.Get.<br>
+<br>
+To make a request with custom headers, use NewRequest and<br>
+DefaultClient.Do.<br>
+<br>
+Go input arguments: (url string)<br>
+<br>
+Go return type: (resp *Response, err error)<br>
+<br>
+Joker input arguments: [^String url]<br>
+<br>
+Joker return type: [(atom-of go.std.net.http/Response) Error]</p>
+  
+</li>
+<li>
+  <h3 id="Head">Head</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(Head __url)</code></div>
+</pre>
+  <p class="var-docstr">Head issues a HEAD to the specified URL. If the response is one of<br>
+the following redirect codes, Head follows the redirect, up to a<br>
+maximum of 10 redirects:<br>
+<br>
+   301 (Moved Permanently)<br>
+   302 (Found)<br>
+   303 (See Other)<br>
+   307 (Temporary Redirect)<br>
+   308 (Permanent Redirect)<br>
+<br>
+Head is a wrapper around DefaultClient.Head<br>
+<br>
+Go input arguments: (url string)<br>
+<br>
+Go return type: (resp *Response, err error)<br>
+<br>
+Joker input arguments: [^String url]<br>
+<br>
+Joker return type: [(atom-of go.std.net.http/Response) Error]</p>
+  
+</li>
+<li>
+  <h3 id="ListenAndServe">ListenAndServe</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ListenAndServe __addr __handler)</code></div>
+</pre>
+  <p class="var-docstr">ListenAndServe listens on the TCP network address addr and then calls<br>
+Serve with handler to handle requests on incoming connections.<br>
+Accepted connections are configured to enable TCP keep-alives.<br>
+<br>
+The handler is typically nil, in which case the DefaultServeMux is used.<br>
+<br>
+ListenAndServe always returns a non-nil error.<br>
+<br>
+Go input arguments: (addr string, handler Handler)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String addr, ^go.std.net.http/Handler handler]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="ListenAndServeTLS">ListenAndServeTLS</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ListenAndServeTLS __addr __certFile __keyFile __handler)</code></div>
+</pre>
+  <p class="var-docstr">ListenAndServeTLS acts identically to ListenAndServe, except that it<br>
+expects HTTPS connections. Additionally, files containing a certificate and<br>
+matching private key for the server must be provided. If the certificate<br>
+is signed by a certificate authority, the certFile should be the concatenation<br>
+of the server&#39;s certificate, any intermediates, and the CA&#39;s certificate.<br>
+<br>
+Go input arguments: (addr string, certFile string, keyFile string, handler Handler)<br>
+<br>
+Go return type: error<br>
+<br>
+Joker input arguments: [^String addr, ^String certFile, ^String keyFile, ^go.std.net.http/Handler handler]<br>
+<br>
+Joker return type: Error</p>
+  
+</li>
+<li>
+  <h3 id="NewFileTransport">NewFileTransport</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewFileTransport __fs)</code></div>
+</pre>
+  <p class="var-docstr">NewFileTransport returns a new RoundTripper, serving the provided<br>
+FileSystem. The returned RoundTripper ignores the URL host in its<br>
+incoming requests, as well as most other properties of the<br>
+request.<br>
+<br>
+The typical use case for NewFileTransport is to register the &#34;file&#34;<br>
+protocol with a Transport, as in:<br>
+<br>
+  t := &amp;http.Transport{}<br>
+  t.RegisterProtocol(&#34;file&#34;, http.NewFileTransport(http.Dir(&#34;/&#34;)))<br>
+  c := &amp;http.Client{Transport: t}<br>
+  res, err := c.Get(&#34;file:///etc/passwd&#34;)<br>
+  ...<br>
+<br>
+Go input arguments: (fs FileSystem)<br>
+<br>
+Go return type: RoundTripper<br>
+<br>
+Joker input arguments: [^go.std.net.http/FileSystem fs]<br>
+<br>
+Joker return type: go.std.net.http/RoundTripper</p>
+  
+</li>
+<li>
+  <h3 id="NewServeMux">NewServeMux</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NewServeMux)</code></div>
+</pre>
+  <p class="var-docstr">NewServeMux allocates and returns a new ServeMux.<br>
+<br>
+Go return type: *ServeMux<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: (atom-of go.std.net.http/ServeMux)</p>
+  
+</li>
+<li>
+  <h3 id="NotFoundHandler">NotFoundHandler</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(NotFoundHandler)</code></div>
+</pre>
+  <p class="var-docstr">NotFoundHandler returns a simple request handler<br>
+that replies to each request with a ``404 page not found&#39;&#39; reply.<br>
+<br>
+Go return type: Handler<br>
+<br>
+Joker input arguments: []<br>
+<br>
+Joker return type: go.std.net.http/Handler</p>
+  
+</li>
+<li>
+  <h3 id="ParseHTTPVersion">ParseHTTPVersion</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ParseHTTPVersion __vers)</code></div>
+</pre>
+  <p class="var-docstr">ParseHTTPVersion parses a HTTP version string.<br>
+&#34;HTTP/1.0&#34; returns (1, 0, true).<br>
+<br>
+Go input arguments: (vers string)<br>
+<br>
+Go return type: (major int, minor int, ok bool)<br>
+<br>
+Joker input arguments: [^String vers]<br>
+<br>
+Joker return type: [Int Int Boolean]</p>
+  
+</li>
+<li>
+  <h3 id="ParseTime">ParseTime</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ParseTime __text)</code></div>
+</pre>
+  <p class="var-docstr">ParseTime parses a time header (such as the Date: header),<br>
+trying each of the three formats allowed by HTTP/1.1:<br>
+TimeFormat, time.RFC850, and time.ANSIC.<br>
+<br>
+Go input arguments: (text string)<br>
+<br>
+Go return type: (t time.Time, err error)<br>
+<br>
+Joker input arguments: [^String text]<br>
+<br>
+Joker return type: [go.std.time/Time Error]</p>
+  
+</li>
+<li>
+  <h3 id="ProtocolError.">ProtocolError.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ProtocolError. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for http.ProtocolError</p>
+  
+</li>
+<li>
+  <h3 id="ProxyFromEnvironment">ProxyFromEnvironment</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ProxyFromEnvironment __req)</code></div>
+</pre>
+  <p class="var-docstr">ProxyFromEnvironment returns the URL of the proxy to use for a<br>
+given request, as indicated by the environment variables<br>
+HTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions<br>
+thereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https<br>
+requests.<br>
+<br>
+The environment values may be either a complete URL or a<br>
+&#34;host[:port]&#34;, in which case the &#34;http&#34; scheme is assumed.<br>
+An error is returned if the value is a different form.<br>
+<br>
+A nil URL and nil error are returned if no proxy is defined in the<br>
+environment, or a proxy should not be used for the given request,<br>
+as defined by NO_PROXY.<br>
+<br>
+As a special case, if req.URL.Host is &#34;localhost&#34; (with or without<br>
+a port number), then a nil URL and nil error will be returned.<br>
+<br>
+Go input arguments: (req *Request)<br>
+<br>
+Go return type: (*net/url.URL, error)<br>
+<br>
+Joker input arguments: [^(atom-of go.std.net.http/Request) req]<br>
+<br>
+Joker return type: [(atom-of go.std.net.url/URL) Error]</p>
+  
+</li>
+<li>
+  <h3 id="RedirectHandler">RedirectHandler</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(RedirectHandler __url __code)</code></div>
+</pre>
+  <p class="var-docstr">RedirectHandler returns a request handler that redirects<br>
+each request it receives to the given url using the given<br>
+status code.<br>
+<br>
+The provided code should be in the 3xx range and is usually<br>
+StatusMovedPermanently, StatusFound or StatusSeeOther.<br>
+<br>
+Go input arguments: (url string, code int)<br>
+<br>
+Go return type: Handler<br>
+<br>
+Joker input arguments: [^String url, ^Int code]<br>
+<br>
+Joker return type: go.std.net.http/Handler</p>
+  
+</li>
+<li>
+  <h3 id="SameSite.">SameSite.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(SameSite. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for http.SameSite</p>
+  
+</li>
+<li>
+  <h3 id="ServeMux.">ServeMux.</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ServeMux. _v)</code></div>
+</pre>
+  <p class="var-docstr">Constructor for http.ServeMux</p>
+  
+</li>
+<li>
+  <h3 id="StatusText">StatusText</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(StatusText __code)</code></div>
+</pre>
+  <p class="var-docstr">StatusText returns a text for the HTTP status code. It returns the empty<br>
+string if the code is unknown.<br>
+<br>
+Go input arguments: (code int)<br>
+<br>
+Go return type: string<br>
+<br>
+Joker input arguments: [^Int code]<br>
+<br>
+Joker return type: String</p>
+  
+</li>
+<li>
+  <h3 id="StripPrefix">StripPrefix</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(StripPrefix __prefix __h)</code></div>
+</pre>
+  <p class="var-docstr">StripPrefix returns a handler that serves HTTP requests<br>
+by removing the given prefix from the request URL&#39;s Path<br>
+and invoking the handler h. StripPrefix handles a<br>
+request for a path that doesn&#39;t begin with prefix by<br>
+replying with an HTTP 404 not found error.<br>
+<br>
+Go input arguments: (prefix string, h Handler)<br>
+<br>
+Go return type: Handler<br>
+<br>
+Joker input arguments: [^String prefix, ^go.std.net.http/Handler h]<br>
+<br>
+Joker return type: go.std.net.http/Handler</p>
+  
+</li>
+
+    </ul>
+    <h2 id="_types">Types</h2>
+    <ul>
+      
     </ul>
   </div>
 </body>
