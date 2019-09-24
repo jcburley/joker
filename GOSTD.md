@@ -40,7 +40,7 @@ Named types, defined by the packages wrapped by the `gostd` tool, are themselves
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
 
 * Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
-* Identifying the type of an object: `(GoType (deref mx))` => `go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
+* Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
 * Comparing types of objects: `(= (type mx) (type something-else)`
 
 ## Constants
