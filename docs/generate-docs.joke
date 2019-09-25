@@ -7,6 +7,8 @@
 (require 'joker.repl)
 (require 'joker.html)
 
+(def rpl joker.string/replace)
+
 (def index-template
   (slurp "templates/index.html"))
 
@@ -80,7 +82,7 @@
            (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
                    (source-file (:ns m))
                    (str (:line m)))
-           "")))))
+           "{blank}")))))
 
 (defn- first-line
   [s]
@@ -185,6 +187,11 @@
         (string/replace "{index-of-types}" type-links-doc)
         (string/replace "{types}" types-docs))))
 
+(defn remove-blanky-lines
+  [s]
+  (-> s
+      (rpl #"[[:space:]]*{blank}" "")))
+
 (defn full-doc
   [ns-fn]
   (let [namespaces (->> (ns-fn)
@@ -196,7 +203,7 @@
                    (sort))]
     (spit "index.html" (index-doc namespaces types))
     (doseq [ns namespaces]
-      (spit (str ns ".html") (ns-doc ns)))))
+      (spit (str ns ".html") (remove-blanky-lines (ns-doc ns))))))
 
 (defn is-go
   [ns]
