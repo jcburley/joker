@@ -18,6 +18,9 @@
 (def var-template
   (slurp "templates/var.html"))
 
+(def receiver-template
+  (slurp "templates/receiver.html"))
+
 (def namespace-template
   (slurp "templates/ns-summary.html"))
 
@@ -60,6 +63,35 @@
   [ns]
   (string/join "_" (rest (string/split (str ns) #"\."))))
 
+(defn receiver-doc
+  [t r]
+  (let [m (Go t r)
+        k (get m :name "fixme")]
+    (-> receiver-template
+        (string/replace "{id}" (str k))
+        (string/replace "{name}" (str k))
+        (string/replace "{type}" "Receiver")
+        (string/replace "{usage}" (usage k m))
+        (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
+        (string/replace "{added}" (str (:added m)))
+        (string/replace
+         "{source}"
+         (if (:line m)
+           (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
+                   (source-file (:ns m))
+                   (str (:line m)))
+           "{blank}")))))
+
+(defn receivers-doc
+  [k v]
+  (let [go-type-info (deref (Go v nil))
+        members (get go-type-info "Members")
+        memvec (get members nil)]
+    (string/join
+     ""
+     (for [m memvec]
+       (receiver-doc v m)))))
+
 (defn var-doc
   [k v]
   (let [m (meta v)
@@ -82,6 +114,11 @@
            (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
                    (source-file (:ns m))
                    (str (:line m)))
+           "{blank}"))
+        (string/replace
+         "{receivers}"
+         (if (= GoType (type (deref v)))
+           (receivers-doc k (deref v))
            "{blank}")))))
 
 (defn- first-line
