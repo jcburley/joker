@@ -734,7 +734,14 @@ func goGetTypeInfo(ty GoType, args []Object) Object {
 	if args[1].Equals(NIL) {
 		return &GoVar{Value: t.GoType.T}
 	}
-	return t.GoType.T.Members[args[1].ToString(false)].meta
+	mi, ok := t.GoType.T.Members[args[1].ToString(false)]
+	if !ok {
+		panic(RT.NewError("Go member not found: " + args[1].ToString(false)))
+	}
+	if mi.meta == nil {
+		panic(RT.NewError("Go receiver has no metadata: " + mi.name.Name()))
+	}
+	return mi.meta
 }
 
 var procGo Proc = func(args []Object) Object {
