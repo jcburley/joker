@@ -175,4 +175,8 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
 }
 
+func InternGoReceiver(name, doc, added string, args ...string) MetaHolder {
+	return MakeMetaHolder(MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol(args[0]))), doc, added))
+}
+
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}

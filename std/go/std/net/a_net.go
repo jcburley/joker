@@ -1834,7 +1834,7 @@ Joker return type: [(vector-of String) Error]`, "1.0"))
 
 	netNamespace.InternVar("MX", MakeGoType(&info_MX),
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("_v"))),
+			nil, /*NewListFrom(NewVectorFrom(MakeSymbol("_v")))*/
 			`GoType[net.MX]`, "1.0"))
 
 	netNamespace.InternVar("NS.", NS_,

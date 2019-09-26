@@ -3211,8 +3211,8 @@ func initNative() {
 		Ctor:   _ConstructMX_,
 		Members: GoMembers{"Hey": __hey,
 			"There": __hey},
-		Meta: GoMeta{"Hey": MakeMetaHolder(MakeMeta(nil, "wow this works", "1.0")),
-			"There": MakeMetaHolder(MakeMeta(nil, "this too!!", "1.0"))}}
+		Meta: GoMeta{"Hey": InternGoReceiver("Hey", "wow this works", "1.0", "_v"),
+			"There": MakeMetaHolder(MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("_v"))), "this too!!", "1.0"))}}
 
 	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError
