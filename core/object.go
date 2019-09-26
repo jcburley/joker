@@ -157,6 +157,10 @@ type (
 		Object
 		T *GoTypeInfo
 	}
+	GoReceiver struct {
+		Object
+		R func(GoObject, Object) Object
+	}
 	Proc func([]Object) Object
 	Fn   struct {
 		InfoHolder

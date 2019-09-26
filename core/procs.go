@@ -734,7 +734,7 @@ func goGetTypeInfo(ty GoType, args []Object) Object {
 	if args[1].Equals(NIL) {
 		return &GoVar{Value: t.GoType.T}
 	}
-	return t.GoType.T.Meta[args[1].ToString(false)].meta
+	return t.GoType.T.Members[args[1].ToString(false)].meta
 }
 
 var procGo Proc = func(args []Object) Object {
@@ -752,7 +752,7 @@ var procGo Proc = func(args []Object) Object {
 	if f == nil {
 		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
 	}
-	return (func(GoObject, Object) Object)(f)(o, args[2])
+	return (f.Value.(GoReceiver).R)(o, args[2])
 }
 
 var procAssoc Proc = func(args []Object) Object {

@@ -6,18 +6,13 @@ import (
 	"reflect"
 )
 
-type GoFn func(GoObject, Object) Object
-
-type GoMembers map[string]GoFn
-
-type GoMeta map[string]MetaHolder // TODO: Merge into GoMembers?
+type GoMembers map[string]*Var
 
 type GoTypeInfo struct {
 	Name    string
 	GoType  GoType
 	Ctor    func(Object) Object
 	Members GoMembers
-	Meta    GoMeta
 }
 
 func LookupGoType(g interface{}) *GoTypeInfo {
@@ -175,8 +170,22 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
 }
 
-func InternGoReceiver(name, doc, added string, args ...string) MetaHolder {
-	return MakeMetaHolder(MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol(args[0]))), doc, added))
+// TODO: Replace this with direct calls to the (renamed) WithMeta version, below.
+func MakeGoReceiver(name string, f func(GoObject, Object) Object) *Var {
+	r := &GoReceiver{R: f}
+	v := &Var{
+		name:  MakeSymbol(name),
+		Value: r,
+	}
+	return v
+}
+
+func MakeGoReceiverWithMeta(name string, f func(GoObject, Object) Object, doc, added string, args ...string) *Var {
+	v := MakeGoReceiver(name, f)
+	m := MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol(args[0]))), doc, added)
+	m.Add(KEYWORDS.name, v.name)
+	v.meta = m
+	return v
 }
 
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}

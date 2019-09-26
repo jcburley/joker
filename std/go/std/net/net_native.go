@@ -3032,7 +3032,7 @@ func __hey(o GoObject, args Object) Object {
 	return MakeString("wow")
 }
 
-var members_PtrTo_AddrError GoTypeInfo
+var info_PtrTo_AddrError GoTypeInfo
 var members_PtrTo_DNSConfigError GoTypeInfo
 var members_PtrTo_DNSError GoTypeInfo
 var members_PtrTo_Dialer GoTypeInfo
@@ -3060,161 +3060,163 @@ var members_UnknownNetworkError GoTypeInfo
 var info_MX GoTypeInfo
 
 func initNative() {
-	members_PtrTo_AddrError = GoTypeInfo{Members: GoMembers{
-		"Error":     __ptrTo_AddrError_Error,
-		"Temporary": __ptrTo_AddrError_Temporary,
-		"Timeout":   __ptrTo_AddrError_Timeout,
-	}}
+	info_PtrTo_AddrError = GoTypeInfo{Name: "*go.std.net/AddrError",
+		GoType: GoType{T: &info_PtrTo_AddrError},
+		Members: GoMembers{
+			"Error":     MakeGoReceiver("Error", __ptrTo_AddrError_Error),
+			"Temporary": MakeGoReceiver("Temporary", __ptrTo_AddrError_Temporary),
+			"Timeout":   MakeGoReceiver("Timeout", __ptrTo_AddrError_Timeout),
+		}}
 
 	members_PtrTo_DNSConfigError = GoTypeInfo{Members: GoMembers{
-		"Error":     __ptrTo_DNSConfigError_Error,
-		"Temporary": __ptrTo_DNSConfigError_Temporary,
-		"Timeout":   __ptrTo_DNSConfigError_Timeout,
+		"Error":     MakeGoReceiver("Error", __ptrTo_DNSConfigError_Error),
+		"Temporary": MakeGoReceiver("Temporary", __ptrTo_DNSConfigError_Temporary),
+		"Timeout":   MakeGoReceiver("Timeout", __ptrTo_DNSConfigError_Timeout),
 	}}
 
 	members_PtrTo_DNSError = GoTypeInfo{Members: GoMembers{
-		"Error":     __ptrTo_DNSError_Error,
-		"Temporary": __ptrTo_DNSError_Temporary,
-		"Timeout":   __ptrTo_DNSError_Timeout,
+		"Error":     MakeGoReceiver("Error", __ptrTo_DNSError_Error),
+		"Temporary": MakeGoReceiver("Temporary", __ptrTo_DNSError_Temporary),
+		"Timeout":   MakeGoReceiver("Timeout", __ptrTo_DNSError_Timeout),
 	}}
 
 	members_PtrTo_Dialer = GoTypeInfo{Members: GoMembers{
-		"Dial": __ptrTo_Dialer_Dial,
+		"Dial": MakeGoReceiver("Dial", __ptrTo_Dialer_Dial),
 	}}
 
 	members_Flags = GoTypeInfo{Members: GoMembers{
-		"String": __flags_String,
+		"String": MakeGoReceiver("String", __flags_String),
 	}}
 
 	members_HardwareAddr = GoTypeInfo{Members: GoMembers{
-		"String": __hardwareAddr_String,
+		"String": MakeGoReceiver("String", __hardwareAddr_String),
 	}}
 
 	members_IP = GoTypeInfo{Members: GoMembers{
-		"DefaultMask":               __iP_DefaultMask,
-		"Equal":                     __iP_Equal,
-		"IsGlobalUnicast":           __iP_IsGlobalUnicast,
-		"IsInterfaceLocalMulticast": __iP_IsInterfaceLocalMulticast,
-		"IsLinkLocalMulticast":      __iP_IsLinkLocalMulticast,
-		"IsLinkLocalUnicast":        __iP_IsLinkLocalUnicast,
-		"IsLoopback":                __iP_IsLoopback,
-		"IsMulticast":               __iP_IsMulticast,
-		"IsUnspecified":             __iP_IsUnspecified,
-		"MarshalText":               __iP_MarshalText,
-		"Mask":                      __iP_Mask,
-		"String":                    __iP_String,
-		"To16":                      __iP_To16,
-		"To4":                       __iP_To4,
+		"DefaultMask":               MakeGoReceiver("DefaultMask", __iP_DefaultMask),
+		"Equal":                     MakeGoReceiver("Equal", __iP_Equal),
+		"IsGlobalUnicast":           MakeGoReceiver("IsGlobalUnicast", __iP_IsGlobalUnicast),
+		"IsInterfaceLocalMulticast": MakeGoReceiver("IsInterfaceLocalMulticast", __iP_IsInterfaceLocalMulticast),
+		"IsLinkLocalMulticast":      MakeGoReceiver("IsLinkLocalMulticast", __iP_IsLinkLocalMulticast),
+		"IsLinkLocalUnicast":        MakeGoReceiver("IsLinkLocalUnicast", __iP_IsLinkLocalUnicast),
+		"IsLoopback":                MakeGoReceiver("IsLoopback", __iP_IsLoopback),
+		"IsMulticast":               MakeGoReceiver("IsMulticast", __iP_IsMulticast),
+		"IsUnspecified":             MakeGoReceiver("IsUnspecified", __iP_IsUnspecified),
+		"MarshalText":               MakeGoReceiver("MarshalText", __iP_MarshalText),
+		"Mask":                      MakeGoReceiver("Mask", __iP_Mask),
+		"String":                    MakeGoReceiver("String", __iP_String),
+		"To16":                      MakeGoReceiver("To16", __iP_To16),
+		"To4":                       MakeGoReceiver("To4", __iP_To4),
 	}}
 
 	members_PtrTo_IPAddr = GoTypeInfo{Members: GoMembers{
-		"Network": __ptrTo_IPAddr_Network,
-		"String":  __ptrTo_IPAddr_String,
+		"Network": MakeGoReceiver("Network", __ptrTo_IPAddr_Network),
+		"String":  MakeGoReceiver("String", __ptrTo_IPAddr_String),
 	}}
 
 	members_PtrTo_IPConn = GoTypeInfo{Members: GoMembers{
-		"SyscallConn": __ptrTo_IPConn_SyscallConn,
+		"SyscallConn": MakeGoReceiver("SyscallConn", __ptrTo_IPConn_SyscallConn),
 	}}
 
 	members_IPMask = GoTypeInfo{Members: GoMembers{
-		"Size":   __iPMask_Size,
-		"String": __iPMask_String,
+		"Size":   MakeGoReceiver("Size", __iPMask_Size),
+		"String": MakeGoReceiver("String", __iPMask_String),
 	}}
 
 	members_PtrTo_IPNet = GoTypeInfo{Members: GoMembers{
-		"Contains": __ptrTo_IPNet_Contains,
-		"Network":  __ptrTo_IPNet_Network,
-		"String":   __ptrTo_IPNet_String,
+		"Contains": MakeGoReceiver("Contains", __ptrTo_IPNet_Contains),
+		"Network":  MakeGoReceiver("Network", __ptrTo_IPNet_Network),
+		"String":   MakeGoReceiver("String", __ptrTo_IPNet_String),
 	}}
 
 	members_PtrTo_Interface = GoTypeInfo{Members: GoMembers{
-		"Addrs":          __ptrTo_Interface_Addrs,
-		"MulticastAddrs": __ptrTo_Interface_MulticastAddrs,
+		"Addrs":          MakeGoReceiver("Addrs", __ptrTo_Interface_Addrs),
+		"MulticastAddrs": MakeGoReceiver("MulticastAddrs", __ptrTo_Interface_MulticastAddrs),
 	}}
 
 	members_InvalidAddrError = GoTypeInfo{Members: GoMembers{
-		"Error":     __invalidAddrError_Error,
-		"Temporary": __invalidAddrError_Temporary,
-		"Timeout":   __invalidAddrError_Timeout,
+		"Error":     MakeGoReceiver("Error", __invalidAddrError_Error),
+		"Temporary": MakeGoReceiver("Temporary", __invalidAddrError_Temporary),
+		"Timeout":   MakeGoReceiver("Timeout", __invalidAddrError_Timeout),
 	}}
 
 	members_PtrTo_OpError = GoTypeInfo{Members: GoMembers{
-		"Error":     __ptrTo_OpError_Error,
-		"Temporary": __ptrTo_OpError_Temporary,
-		"Timeout":   __ptrTo_OpError_Timeout,
+		"Error":     MakeGoReceiver("Error", __ptrTo_OpError_Error),
+		"Temporary": MakeGoReceiver("Temporary", __ptrTo_OpError_Temporary),
+		"Timeout":   MakeGoReceiver("Timeout", __ptrTo_OpError_Timeout),
 	}}
 
 	members_PtrTo_ParseError = GoTypeInfo{Members: GoMembers{
-		"Error": __ptrTo_ParseError_Error,
+		"Error": MakeGoReceiver("Error", __ptrTo_ParseError_Error),
 	}}
 
 	members_PtrTo_TCPAddr = GoTypeInfo{Members: GoMembers{
-		"Network": __ptrTo_TCPAddr_Network,
-		"String":  __ptrTo_TCPAddr_String,
+		"Network": MakeGoReceiver("Network", __ptrTo_TCPAddr_Network),
+		"String":  MakeGoReceiver("String", __ptrTo_TCPAddr_String),
 	}}
 
 	members_PtrTo_TCPConn = GoTypeInfo{Members: GoMembers{
-		"CloseRead":    __ptrTo_TCPConn_CloseRead,
-		"CloseWrite":   __ptrTo_TCPConn_CloseWrite,
-		"SetKeepAlive": __ptrTo_TCPConn_SetKeepAlive,
-		"SetLinger":    __ptrTo_TCPConn_SetLinger,
-		"SetNoDelay":   __ptrTo_TCPConn_SetNoDelay,
-		"SyscallConn":  __ptrTo_TCPConn_SyscallConn,
+		"CloseRead":    MakeGoReceiver("CloseRead", __ptrTo_TCPConn_CloseRead),
+		"CloseWrite":   MakeGoReceiver("CloseWrite", __ptrTo_TCPConn_CloseWrite),
+		"SetKeepAlive": MakeGoReceiver("SetKeepAlive", __ptrTo_TCPConn_SetKeepAlive),
+		"SetLinger":    MakeGoReceiver("SetLinger", __ptrTo_TCPConn_SetLinger),
+		"SetNoDelay":   MakeGoReceiver("SetNoDelay", __ptrTo_TCPConn_SetNoDelay),
+		"SyscallConn":  MakeGoReceiver("SyscallConn", __ptrTo_TCPConn_SyscallConn),
 	}}
 
 	members_PtrTo_TCPListener = GoTypeInfo{Members: GoMembers{
-		"Accept":      __ptrTo_TCPListener_Accept,
-		"AcceptTCP":   __ptrTo_TCPListener_AcceptTCP,
-		"Addr":        __ptrTo_TCPListener_Addr,
-		"Close":       __ptrTo_TCPListener_Close,
-		"File":        __ptrTo_TCPListener_File,
-		"SyscallConn": __ptrTo_TCPListener_SyscallConn,
+		"Accept":      MakeGoReceiver("Accept", __ptrTo_TCPListener_Accept),
+		"AcceptTCP":   MakeGoReceiver("AcceptTCP", __ptrTo_TCPListener_AcceptTCP),
+		"Addr":        MakeGoReceiver("Addr", __ptrTo_TCPListener_Addr),
+		"Close":       MakeGoReceiver("Close", __ptrTo_TCPListener_Close),
+		"File":        MakeGoReceiver("File", __ptrTo_TCPListener_File),
+		"SyscallConn": MakeGoReceiver("SyscallConn", __ptrTo_TCPListener_SyscallConn),
 	}}
 
 	members_PtrTo_UDPAddr = GoTypeInfo{Members: GoMembers{
-		"Network": __ptrTo_UDPAddr_Network,
-		"String":  __ptrTo_UDPAddr_String,
+		"Network": MakeGoReceiver("Network", __ptrTo_UDPAddr_Network),
+		"String":  MakeGoReceiver("String", __ptrTo_UDPAddr_String),
 	}}
 
 	members_PtrTo_UDPConn = GoTypeInfo{Members: GoMembers{
-		"SyscallConn": __ptrTo_UDPConn_SyscallConn,
+		"SyscallConn": MakeGoReceiver("SyscallConn", __ptrTo_UDPConn_SyscallConn),
 	}}
 
 	members_PtrTo_UnixAddr = GoTypeInfo{Members: GoMembers{
-		"Network": __ptrTo_UnixAddr_Network,
-		"String":  __ptrTo_UnixAddr_String,
+		"Network": MakeGoReceiver("Network", __ptrTo_UnixAddr_Network),
+		"String":  MakeGoReceiver("String", __ptrTo_UnixAddr_String),
 	}}
 
 	members_PtrTo_UnixConn = GoTypeInfo{Members: GoMembers{
-		"CloseRead":   __ptrTo_UnixConn_CloseRead,
-		"CloseWrite":  __ptrTo_UnixConn_CloseWrite,
-		"SyscallConn": __ptrTo_UnixConn_SyscallConn,
+		"CloseRead":   MakeGoReceiver("CloseRead", __ptrTo_UnixConn_CloseRead),
+		"CloseWrite":  MakeGoReceiver("CloseWrite", __ptrTo_UnixConn_CloseWrite),
+		"SyscallConn": MakeGoReceiver("SyscallConn", __ptrTo_UnixConn_SyscallConn),
 	}}
 
 	members_PtrTo_UnixListener = GoTypeInfo{Members: GoMembers{
-		"Accept":      __ptrTo_UnixListener_Accept,
-		"AcceptUnix":  __ptrTo_UnixListener_AcceptUnix,
-		"Addr":        __ptrTo_UnixListener_Addr,
-		"Close":       __ptrTo_UnixListener_Close,
-		"File":        __ptrTo_UnixListener_File,
-		"SyscallConn": __ptrTo_UnixListener_SyscallConn,
+		"Accept":      MakeGoReceiver("Accept", __ptrTo_UnixListener_Accept),
+		"AcceptUnix":  MakeGoReceiver("AcceptUnix", __ptrTo_UnixListener_AcceptUnix),
+		"Addr":        MakeGoReceiver("Addr", __ptrTo_UnixListener_Addr),
+		"Close":       MakeGoReceiver("Close", __ptrTo_UnixListener_Close),
+		"File":        MakeGoReceiver("File", __ptrTo_UnixListener_File),
+		"SyscallConn": MakeGoReceiver("SyscallConn", __ptrTo_UnixListener_SyscallConn),
 	}}
 
 	members_UnknownNetworkError = GoTypeInfo{Members: GoMembers{
-		"Error":     __unknownNetworkError_Error,
-		"Temporary": __unknownNetworkError_Temporary,
-		"Timeout":   __unknownNetworkError_Timeout,
+		"Error":     MakeGoReceiver("Error", __unknownNetworkError_Error),
+		"Temporary": MakeGoReceiver("Temporary", __unknownNetworkError_Temporary),
+		"Timeout":   MakeGoReceiver("Timeout", __unknownNetworkError_Timeout),
 	}}
 
 	info_MX = GoTypeInfo{Name: "go.std.net/MX",
 		GoType: GoType{T: &info_MX},
 		Ctor:   _ConstructMX_,
-		Members: GoMembers{"Hey": __hey,
-			"There": __hey},
-		Meta: GoMeta{"Hey": InternGoReceiver("Hey", "wow this works", "1.0", "_v"),
-			"There": MakeMetaHolder(MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol("_v"))), "this too!!", "1.0"))}}
+		Members: GoMembers{
+			"Hey":   MakeGoReceiverWithMeta("Hey", __hey, "wow this works", "1.0", "_v"),
+			"There": MakeGoReceiverWithMeta("There", __hey, "this too!!", "1.0", "_x"),
+		}}
 
-	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &members_PtrTo_AddrError
+	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &info_PtrTo_AddrError
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &members_PtrTo_DNSConfigError
 	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil))] = &members_PtrTo_DNSError
 	GoTypes[_reflect.TypeOf((*_net.Dialer)(nil))] = &members_PtrTo_Dialer
