@@ -46,8 +46,10 @@
       :else (str (type @v)))))
 
 (defn link-item-doc
-  [k]
-  (string/replace link-item-template "{name}" k))
+  [n k]
+  (-> link-item-template
+      (rpl "{name}" n)
+      (rpl "{kind}" k)))
 
 (defn usage
   [k m]
@@ -184,8 +186,8 @@
         m (meta ns)
         index (string/join
                        ""
-                       (for [k (sort (keys (ns-publics ns-sym)))]
-                         (link-item-doc (str k))))
+                       (for [[k v] (sort #(compare (key %1) (key %2)) (ns-publics ns-sym))]
+                         (link-item-doc (str k) (type-name v))))
         functions-doc (section-doc ns-sym #(or (sym-is % Proc) (sym-is % Fn)))
         constants-doc (section-doc ns-sym #(sym-is-constant %))
         variables-doc (section-doc ns-sym #(sym-is % GoVar))
@@ -209,7 +211,7 @@
         ns-links-doc (string/join
                       ""
                       (->> namespaces
-                           (map #(link-item-doc (str %)))))
+                           (map #(link-item-doc (str %) "Namespace"))))
         types-docs (string/join
                     ""
                     (for [t types]
@@ -217,7 +219,7 @@
         type-links-doc (string/join
                         ""
                         (->> types
-                             (map #(link-item-doc (str %)))))]
+                             (map #(link-item-doc (str %) "Type"))))]
     (-> index-template
         (string/replace "{index-of-namespaces}" ns-links-doc)
         (string/replace "{namespaces}" namespaces-docs)
