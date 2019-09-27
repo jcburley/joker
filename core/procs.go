@@ -739,7 +739,7 @@ func goGetTypeInfo(ty GoType, args []Object) Object {
 		panic(RT.NewError("Go member not found: " + args[1].ToString(false)))
 	}
 	if mi.meta == nil {
-		panic(RT.NewError("Go receiver has no metadata: " + mi.name.Name()))
+		return NIL
 	}
 	return mi.meta
 }
