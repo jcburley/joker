@@ -82,12 +82,13 @@ type fnCodeInfo struct {
 type fnCodeMap map[string]fnCodeInfo
 
 type codeInfo struct {
-	constants goConstantsMap
-	variables goVariablesMap
-	functions fnCodeMap
-	types     goTypeMap
-	initTypes map[string]string            // func init() "GoTypes[key] = value"
-	initVars  map[string]map[string]string // "var members_key1 = ... { key2: value, ... }"
+	constants         goConstantsMap
+	variables         goVariablesMap
+	functions         fnCodeMap
+	types             goTypeMap
+	initTypes         map[string]string            // func initNative()'s "GoTypes[key] = value"
+	initVars          map[string]map[string]string // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	initTypesFullName map[string]string            // func initNative()'s `info_key={Name: "value"}`
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -890,9 +891,9 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if _, ok := packagesInfo[pkgDirUnix]; !ok {
 		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
 		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[string]string{}, map[string]map[string]string{}}
+			map[string]string{}, map[string]map[string]string{}, map[string]string{}}
 		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[string]string{}, map[string]map[string]string{}}
+			map[string]string{}, map[string]map[string]string{}, map[string]string{}}
 	}
 }
 

@@ -219,7 +219,7 @@ func typeKey(pkgPrefix string, fl *Field) string {
 	case *StarExpr:
 		t = "*" + pkgPrefix + x.X.(*Ident).Name
 	default:
-		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
+		panic(fmt.Sprintf("typeKey: unrecognized expr %T", x))
 	}
 	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
 }
@@ -236,7 +236,22 @@ func typeInfoName(fl *Field) string {
 	default:
 		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
 	}
-	return "members_" + res
+	return "info_" + res
+}
+
+func typeFullName(fl *Field, prefix string) string {
+	res := ""
+	switch x := fl.Type.(type) {
+	case *Ident:
+		res += prefix + x.Name
+	case *ArrayType:
+		res += "[]" + prefix + x.Elt.(*Ident).Name
+	case *StarExpr:
+		res += "*" + prefix + x.X.(*Ident).Name
+	default:
+		panic(fmt.Sprintf("typeFullName: unrecognized expr %T", x))
+	}
+	return res
 }
 
 func genReceiver(fn *funcInfo) {
@@ -269,7 +284,9 @@ func %s(o GoObject, args Object) Object {
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect", false)
 		for _, r := range fn.fd.Recv.List {
 			tin := typeInfoName(r)
+			tfn := typeFullName(r, "go.std."+pkgDirUnix+"/")
 			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = tin
+			goCode[pkgDirUnix].initTypesFullName[typeKey("_"+pkgBaseName+".", r)] = tfn
 			if _, ok := goCode[pkgDirUnix].initVars[tin]; !ok {
 				goCode[pkgDirUnix].initVars[tin] = map[string]string{}
 			}

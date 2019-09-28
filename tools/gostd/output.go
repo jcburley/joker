@@ -277,18 +277,44 @@ import (%s
 			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", k2))
 		})
 
+	const initInfoTemplate = `
+	%s = GoTypeInfo{Name: "%s",
+		GoType: GoType{T: &%s},
+		Members: GoMembers{
+%s		}}
+
+`
+
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
 	sortedStringMap(v.initTypes,
 		func(k1, k2 string) {
-			out.WriteString(fmt.Sprintf("\t%s = GoTypeInfo{Members: GoMembers{\n", k2))
+			mem := ""
 			sortedStringMap(v.initVars[k2], // Will always be populated
 				func(c, g string) {
-					out.WriteString(fmt.Sprintf("\t\t\"%s\": %s,\n", c, g))
+					mem += fmt.Sprintf(`
+			"%s": MakeGoReceiver("%s", %s),
+`[1:],
+						c, c, g)
 				})
-			out.WriteString("\t}}\n\n")
+			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], k2, v.initTypesFullName[k1], k2, mem))
 		})
+
+	const internTypeTemplate = `
+        %sNamespace.InternVar("%s", MakeGoType(&info_%s),
+                MakeMeta(
+                        nil,
+                        %s, "%s"))
+
+`
+
+	/*
+		sortedStringMap(v.initTypes,
+			func(k, v string) {
+				out.WriteString(fmt.Sprintf(internTypeTemplate[1:], "net", "MX", "MX", "doc for MX", "1.0"))
+			})
+	*/
 	sortedStringMap(v.initTypes,
 		func(k, v string) {
 			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", k, v))
