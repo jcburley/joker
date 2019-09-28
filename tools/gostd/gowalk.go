@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/types"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/build"
 	"go/parser"
@@ -82,13 +84,12 @@ type fnCodeInfo struct {
 type fnCodeMap map[string]fnCodeInfo
 
 type codeInfo struct {
-	constants         goConstantsMap
-	variables         goVariablesMap
-	functions         fnCodeMap
-	types             goTypeMap
-	initTypes         map[string]string            // func initNative()'s "GoTypes[key] = value"
-	initVars          map[string]map[string]string // func initNative()'s "info_key1 = ... { key2: value, ... }"
-	initTypesFullName map[string]string            // func initNative()'s `info_key={Name: "value"}`
+	constants goConstantsMap
+	variables goVariablesMap
+	functions fnCodeMap
+	types     goTypeMap
+	initTypes map[*TypeInfo]struct{}          // types that actually need to be initialized (currently meaning they have receivers)
+	initVars  map[*TypeInfo]map[string]string // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -194,7 +195,7 @@ func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
 func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
 	if dump {
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
-		Print(fset, fd)
+		Print(Fset, fd)
 	}
 	fl := flattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
@@ -226,7 +227,7 @@ func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec) bool {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
-		Print(fset, ts)
+		Print(Fset, ts)
 	}
 	if c, ok := goTypes[typename]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
@@ -546,11 +547,11 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
-			Print(fset, valType)
+			Print(Fset, valType)
 		}
 		if val != nil {
 			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
-			Print(fset, val)
+			Print(Fset, val)
 		}
 	}
 	if valTypeString == "" {
@@ -599,11 +600,11 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		fmt.Printf("Variable %s at %s:\n", name, whereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
-			Print(fset, valType)
+			Print(Fset, valType)
 		}
 		if val != nil {
 			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
-			Print(fset, val)
+			Print(Fset, val)
 		}
 	}
 
@@ -675,11 +676,11 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, whereAt(valName.NamePos))
 				if valType != nil {
 					fmt.Printf("  valType:\n")
-					Print(fset, valType)
+					Print(Fset, valType)
 				}
 				if val != nil {
 					fmt.Printf("  val:\n")
-					Print(fset, val)
+					Print(Fset, val)
 				}
 			}
 			doc := ts.Doc // Try block comments for this specific decl
@@ -786,7 +787,7 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *
 	for _, imp := range f.Imports {
 		if dump {
 			fmt.Printf("Import for file %s:\n", goFilePathUnix)
-			Print(fset, imp)
+			Print(Fset, imp)
 		}
 		importPath, err := strconv.Unquote(imp.Path.Value)
 		check(err)
@@ -891,9 +892,9 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if _, ok := packagesInfo[pkgDirUnix]; !ok {
 		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
 		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[string]string{}, map[string]map[string]string{}, map[string]string{}}
+			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]string{}}
 		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[string]string{}, map[string]map[string]string{}, map[string]string{}}
+			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]string{}}
 	}
 }
 
@@ -904,7 +905,7 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 		fmt.Printf("Processing %s:\n", pkgDirUnix)
 	}
 
-	pkgs, err := parser.ParseDir(fset, path,
+	pkgs, err := parser.ParseDir(Fset, path,
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
 			if strings.HasSuffix(info.Name(), "_test.go") {

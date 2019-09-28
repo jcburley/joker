@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/types"
 	"go/doc"
 	"io/ioutil"
 	"os"
@@ -272,9 +273,9 @@ import (%s
 			}
 		})
 
-	sortedStringMap(v.initTypes,
-		func(k1, k2 string) {
-			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", k2))
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", ti.TypeKey()))
 		})
 
 	const initInfoTemplate = `
@@ -288,17 +289,19 @@ import (%s
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
-	sortedStringMap(v.initTypes,
-		func(k1, k2 string) {
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			k1 := ti.FullName
+			k2 := ti.TypeKey()
 			mem := ""
-			sortedStringMap(v.initVars[k2], // Will always be populated
+			sortedStringMap(v.initVars[ti], // Will always be populated
 				func(c, g string) {
 					mem += fmt.Sprintf(`
 			"%s": MakeGoReceiver("%s", %s),
 `[1:],
 						c, c, g)
 				})
-			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], k2, v.initTypesFullName[k1], k2, mem))
+			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], k2, k1, k2, mem))
 		})
 
 	const internTypeTemplate = `
@@ -309,15 +312,14 @@ import (%s
 
 `
 
-	/*
-		sortedStringMap(v.initTypes,
-			func(k, v string) {
-				out.WriteString(fmt.Sprintf(internTypeTemplate[1:], "net", "MX", "MX", "doc for MX", "1.0"))
-			})
-	*/
-	sortedStringMap(v.initTypes,
-		func(k, v string) {
-			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", k, v))
+	// sortedStringMap(v.initTypes,
+	// 	func(k, v string) {
+	// 		out.WriteString(fmt.Sprintf(internTypeTemplate[1:], "net", "MX", "MX", "doc for MX", "1.0"))
+	// 	})
+
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", ti.TypeReflected(), ti.TypeKey()))
 		})
 	if out != nil {
 		out.WriteString("}\n")
