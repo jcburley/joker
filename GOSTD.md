@@ -34,7 +34,7 @@ $
 
 *NOTE:* This is work-in-progress and not yet complete.
 
-Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of (abstract) type `GoType`. (TODO: CLARIFY THIS.)
+Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`. (TODO: CLARIFY THIS.)
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
 
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
