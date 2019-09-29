@@ -759,7 +759,7 @@ var procGo Proc = func(args []Object) Object {
 	if f == nil {
 		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
 	}
-	return (f.Value.(GoReceiver).R)(o, args[2])
+	return (f.Value.(*GoReceiver).R)(o, args[2])
 }
 
 var procAssoc Proc = func(args []Object) Object {
