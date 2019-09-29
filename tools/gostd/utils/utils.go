@@ -4,6 +4,7 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/token"
+	"path/filepath"
 	. "strings"
 )
 
@@ -14,30 +15,36 @@ func WhereAt(p token.Pos) string {
 }
 
 type mapping struct {
-	prefix      string
-	jokerPrefix string
+	prefix  string
+	cljRoot string
 }
 
 var mappings = []mapping{}
 
-func AddMapping(dir string, prefix string) {
+func AddMapping(dir string, root string) {
 	for _, m := range mappings {
 		if HasPrefix(dir, m.prefix) {
 			panic(fmt.Sprintf("duplicate mapping %s and %s", dir, m.prefix))
 		}
 	}
-	mappings = append(mappings, mapping{dir, prefix})
+	mappings = append(mappings, mapping{dir, root})
 }
 
-func GoPackageForFilename(fileName string) string {
+func GoPackageForFilename(dirName string) (pkg, prefix string) {
 	for _, m := range mappings {
-		if HasPrefix(fileName, m.prefix) {
-			return fileName[len(m.prefix)+1:]
+		if HasPrefix(dirName, m.prefix) {
+			return dirName[len(m.prefix)+1:], m.cljRoot
 		}
 	}
-	panic(fmt.Sprintf("no mapping for %s", fileName))
+	panic(fmt.Sprintf("no mapping for %s", dirName))
 }
 
 func GoPackageForExpr(e Expr) string {
-	return GoPackageForFilename(Fset.Position(e.Pos()).Filename)
+	pkg, _ := GoPackageForFilename(filepath.Dir(Fset.Position(e.Pos()).Filename))
+	return pkg
+}
+
+func ClojureNamespaceForExpr(e Expr) string {
+	pkg, root := GoPackageForFilename(filepath.Dir(Fset.Position(e.Pos()).Filename))
+	return root + ReplaceAll(pkg, "/", ".")
 }

@@ -275,7 +275,7 @@ import (%s
 
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
-			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", ti.TypeKey()))
+			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", ti.TypeMappingsName()))
 		})
 
 	const initInfoTemplate = `
@@ -291,8 +291,8 @@ import (%s
 	}
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
+			tmn := ti.TypeMappingsName()
 			k1 := ti.FullName
-			k2 := ti.TypeKey()
 			mem := ""
 			sortedStringMap(v.initVars[ti], // Will always be populated
 				func(c, g string) {
@@ -301,7 +301,7 @@ import (%s
 `[1:],
 						c, c, g)
 				})
-			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], k2, k1, k2, mem))
+			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
 
 	const internTypeTemplate = `
@@ -319,7 +319,7 @@ import (%s
 
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
-			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", ti.TypeReflected(), ti.TypeKey()))
+			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", ti.TypeReflected(), ti.TypeMappingsName()))
 		})
 	if out != nil {
 		out.WriteString("}\n")

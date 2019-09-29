@@ -4,7 +4,9 @@ import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
+	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type TypeInfo struct {
@@ -18,7 +20,7 @@ var types = map[Expr]*TypeInfo{}
 // Maps a non-definitive Expr for a type to the definitive Expr for the same type
 var typeAliases = map[Expr]Expr{}
 
-// Maps the full name for a type to the definitive Expr for the same type
+// Maps the full (Clojure) name (e.g. "a.b.c/typename") for a type to the definitive Expr for the same type
 var typesByFullName = map[string]Expr{}
 
 func TypeLookup(e Expr) *TypeInfo {
@@ -41,36 +43,32 @@ func TypeLookup(e Expr) *TypeInfo {
 	return ti
 }
 
+func typeKeyForSort(k string) string {
+	if strings.HasPrefix(k, "*") {
+		return k[1:] + "*"
+	}
+	if strings.HasPrefix(k, "[]") {
+		return k[2:] + "[]"
+	}
+	return k
+}
+
 func SortedTypes(m map[*TypeInfo]struct{}, f func(ti *TypeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k.FullName)
 	}
-	sort.Strings(keys)
+	sort.SliceStable(keys, func(i, j int) bool {
+		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
+	})
 	for _, k := range keys {
 		f(types[typesByFullName[k]])
 	}
 }
 
-// func typeName(e Expr) string {
-// 	res := ""
-// 	switch x := e.(type) {
-// 	case *Ident:
-// 		res += x.Name
-// 	case *ArrayType:
-// 		res += "ArrayOf_" + x.Elt.(*Ident).Name
-// 	case *StarExpr:
-// 		res += "PtrTo_" + x.X.(*Ident).Name
-// 	default:
-// 		panic(fmt.Sprintf("typeName: unrecognized expr %T", x))
-// 	}
-// 	return "info_" + res
-// }
-
-// r, "go.std."+pkgDirUnix+"/"
 func typeFullName(e Expr) string {
 	res := ""
-	prefix := GoPackageForExpr(e)
+	prefix := ClojureNamespaceForExpr(e) + "/"
 	switch x := e.(type) {
 	case *Ident:
 		res += prefix + x.Name
@@ -87,7 +85,7 @@ func typeFullName(e Expr) string {
 func (ti *TypeInfo) TypeReflected() string {
 	t := ""
 	suffix := ""
-	prefix := GoPackageForExpr(ti.Type)
+	prefix := "_" + filepath.Base(GoPackageForExpr(ti.Type)) + "."
 	switch x := ti.Type.(type) {
 	case *Ident:
 		t = "*" + prefix + x.Name
@@ -95,7 +93,7 @@ func (ti *TypeInfo) TypeReflected() string {
 	case *StarExpr:
 		t = "*" + prefix + x.X.(*Ident).Name
 	default:
-		panic(fmt.Sprintf("typeKey: unrecognized expr %T", x))
+		panic(fmt.Sprintf("unrecognized expr %T", x))
 	}
 	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
 }
@@ -111,7 +109,22 @@ func (ti *TypeInfo) TypeKey() string {
 	case *StarExpr:
 		t = "*" + prefix + x.X.(*Ident).Name
 	default:
-		panic(fmt.Sprintf("typeKey: unrecognized expr %T", x))
+		panic(fmt.Sprintf("unrecognized expr %T", x))
 	}
 	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
+}
+
+func (ti *TypeInfo) TypeMappingsName() string {
+	res := ""
+	switch x := ti.Type.(type) {
+	case *Ident:
+		res += x.Name
+	case *ArrayType:
+		res += "ArrayOf_" + x.Elt.(*Ident).Name
+	case *StarExpr:
+		res += "PtrTo_" + x.X.(*Ident).Name
+	default:
+		panic(fmt.Sprintf("typeName: unrecognized expr %T", x))
+	}
+	return "info_" + res
 }
