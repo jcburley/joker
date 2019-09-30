@@ -159,7 +159,7 @@ func wrapOnlyIfs(onlyIf string, e string) string {
 
 // Add one level of indent to each line
 func indentedCode(c string) string {
-	return "\t" + strings.Replace(c, "\n", "\n\t", -1)
+	return strings.ReplaceAll("\t"+strings.ReplaceAll(c, "\n", "\n\t"), "\t\n", "\n")
 }
 
 func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *string) string {

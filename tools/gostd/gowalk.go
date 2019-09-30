@@ -223,12 +223,13 @@ func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)
 }
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec) bool {
+func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) bool {
 	typename := pkg + "." + ts.Name.Name
 	if dump {
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(Fset, ts)
 	}
+	TypeDefine(ts, parentDoc)
 	if c, ok := goTypes[typename]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
@@ -243,10 +244,10 @@ func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec) bool {
 	return true
 }
 
-func processTypeSpecs(gf *goFile, pkg string, tss []Spec) (found bool) {
+func processTypeSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGroup) (found bool) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		if processTypeSpec(gf, pkg, ts) {
+		if processTypeSpec(gf, pkg, ts, parentDoc) {
 			found = true
 		}
 	}
@@ -726,7 +727,7 @@ func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
 		case *GenDecl:
 			switch v.Tok {
 			case token.TYPE:
-				if processTypeSpecs(gf, pkgDirUnix, v.Specs) {
+				if processTypeSpecs(gf, pkgDirUnix, v.Specs, v.Doc) {
 					processed = true
 				}
 			case token.CONST:

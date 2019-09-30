@@ -44,7 +44,23 @@ func GoPackageForExpr(e Expr) string {
 	return pkg
 }
 
-func ClojureNamespaceForExpr(e Expr) string {
-	pkg, root := GoPackageForFilename(filepath.Dir(Fset.Position(e.Pos()).Filename))
+func ClojureNamespaceForPos(p token.Position) string {
+	pkg, root := GoPackageForFilename(filepath.Dir(p.Filename))
 	return root + ReplaceAll(pkg, "/", ".")
+}
+
+func ClojureNamespaceForExpr(e Expr) string {
+	return ClojureNamespaceForPos(Fset.Position(e.Pos()))
+}
+
+func GoPackageBaseName(e Expr) string {
+	return filepath.Base(filepath.Dir(Fset.Position(e.Pos()).Filename))
+}
+
+func CommentGroupAsString(d *CommentGroup) string {
+	s := ""
+	if d != nil {
+		s = d.Text()
+	}
+	return s
 }
