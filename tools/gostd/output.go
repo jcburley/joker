@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/types"
-	. "github.com/candid82/joker/tools/gostd/utils"
+	//	. "github.com/candid82/joker/tools/gostd/utils"
 	//	"go/ast"
 	"go/doc"
 	"io/ioutil"
@@ -306,22 +306,22 @@ import (%s
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
 
-	const internTypeTemplate = `
-        %sNamespace.InternVar("%s", MakeGoType(&%s),
-                MakeMeta(
-                        nil,
-                        %s, "%s"))
+	// 	const internTypeTemplate = `
+	//         %sNamespace.InternVar("%s", MakeGoType(&%s),
+	//                 MakeMeta(
+	//                         nil,
+	//                         %s, "%s"))
 
-`
+	// `
 
-	SortedTypes(v.initTypes,
-		func(ti *TypeInfo) {
-			typeDoc := ""
-			if ti.Definition != nil {
-				typeDoc = ti.Definition.Doc
-			}
-			out.WriteString(fmt.Sprintf(internTypeTemplate[1:], GoPackageBaseName(ti.Type), ti.LocalName, ti.TypeMappingsName(), strconv.Quote(typeDoc), "1.0"))
-		})
+	// 	SortedTypes(v.initTypes,
+	// 		func(ti *TypeInfo) {
+	// 			typeDoc := ""
+	// 			if ti.Definition != nil {
+	// 				typeDoc = ti.Definition.Doc
+	// 			}
+	// 			out.WriteString(fmt.Sprintf(internTypeTemplate[1:], GoPackageBaseName(ti.Type), ti.LocalName, ti.TypeMappingsName(), strconv.Quote(typeDoc), "1.0"))
+	// 		})
 
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
