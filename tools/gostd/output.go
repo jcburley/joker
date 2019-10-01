@@ -4,8 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/types"
-	//	. "github.com/candid82/joker/tools/gostd/utils"
-	//	"go/ast"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
 	"io/ioutil"
 	"os"
@@ -198,7 +197,7 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 		})
 
 	sortedCodeMap(v,
-		func(f string, w fnCodeInfo) {
+		func(f string, w *fnCodeInfo) {
 			if outputCode {
 				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
@@ -292,7 +291,7 @@ import (%s
 		})
 
 	sortedCodeMap(v,
-		func(f string, w fnCodeInfo) {
+		func(f string, w *fnCodeInfo) {
 			if outputCode {
 				fmt.Printf("GO FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
@@ -323,12 +322,14 @@ import (%s
 			tmn := ti.TypeMappingsName()
 			k1 := ti.FullName
 			mem := ""
-			sortedStringMap(v.initVars[ti], // Will always be populated
-				func(c, g string) {
+			sortedFnCodeInfo(v.initVars[ti], // Will always be populated
+				func(c string, r *fnCodeInfo) {
+					doc := r.fnDoc
+					g := r.fnCode
 					mem += fmt.Sprintf(`
-			"%s": MakeGoReceiver("%s", %s),
+			"%s": MakeGoReceiverWithMeta("%s", %s, %s, %s, %s),
 `[1:],
-						c, c, g)
+						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), strconv.Quote(""))
 				})
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})

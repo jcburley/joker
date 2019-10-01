@@ -79,17 +79,19 @@ var goFiles = map[string]*goFile{}
 type fnCodeInfo struct {
 	sourceFile *goFile
 	fnCode     string
+	fnDecl     *FuncDecl     // Empty for standalone functions; used to get docstring for receivers
+	fnDoc      *CommentGroup // for some reason, fnDecl.Doc disappears by the time we try to use it!!??
 }
 
-type fnCodeMap map[string]fnCodeInfo
+type fnCodeMap map[string]*fnCodeInfo
 
 type codeInfo struct {
 	constants goConstantsMap
 	variables goVariablesMap
 	functions fnCodeMap
 	types     goTypeMap
-	initTypes map[*TypeInfo]struct{}          // types that actually need to be initialized (currently meaning they have receivers)
-	initVars  map[*TypeInfo]map[string]string // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	initTypes map[*TypeInfo]struct{}               // types that actually need to be initialized (currently meaning they have receivers)
+	initVars  map[*TypeInfo]map[string]*fnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -107,7 +109,7 @@ func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
 	}
 }
 
-func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
+func sortedCodeMap(m codeInfo, f func(k string, v *fnCodeInfo)) {
 	var keys []string
 	for k, _ := range m.functions {
 		keys = append(keys, k)
@@ -115,6 +117,17 @@ func sortedCodeMap(m codeInfo, f func(k string, v fnCodeInfo)) {
 	sort.Strings(keys)
 	for _, k := range keys {
 		f(k, m.functions[k])
+	}
+}
+
+func sortedFnCodeInfo(m map[string]*fnCodeInfo, f func(k string, v *fnCodeInfo)) {
+	var keys []string
+	for k, _ := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		f(k, m[k])
 	}
 }
 
@@ -194,7 +207,7 @@ func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
 // Returns whether any public functions were actually processed.
 func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
 	if dump {
-		fmt.Printf("Func in pkgDirUnix=%s filename=%s:\n", pkgDirUnix, filename)
+		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, filename, fd, fd.Doc)
 		Print(Fset, fd)
 	}
 	fl := flattenFieldList(fd.Recv)
@@ -895,9 +908,9 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if _, ok := packagesInfo[pkgDirUnix]; !ok {
 		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
 		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]string{}}
+			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
 		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]string{}}
+			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
 	}
 }
 

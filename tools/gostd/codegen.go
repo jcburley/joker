@@ -243,14 +243,14 @@ func %s(o GoObject, args Object) Object {
 			goCode[pkgDirUnix].initTypes[ti] = struct{}{}
 			clojureCode[pkgDirUnix].initTypes[ti] = struct{}{}
 			if _, ok := goCode[pkgDirUnix].initVars[ti]; !ok {
-				goCode[pkgDirUnix].initVars[ti] = map[string]string{}
+				goCode[pkgDirUnix].initVars[ti] = map[string]*fnCodeInfo{}
 			}
-			goCode[pkgDirUnix].initVars[ti][fn.fd.Name.Name] = goFname
+			goCode[pkgDirUnix].initVars[ti][fn.fd.Name.Name] = &fnCodeInfo{fn.sourceFile, goFname, fn.fd, fn.fd.Doc}
 		}
 	}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[goFname] = fnCodeInfo{fn.sourceFile, goFn}
+		goCode[pkgDirUnix].functions[goFname] = &fnCodeInfo{fn.sourceFile, goFn, fn.fd, nil}
 	}
 }
 
@@ -315,10 +315,10 @@ func %s(%s) %s {
 		}
 	}
 
-	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
+	clojureCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, clojureFn, nil, nil}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
+		goCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, goFn, nil, nil}
 	}
 }
 
