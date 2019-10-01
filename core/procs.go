@@ -737,7 +737,7 @@ var procGoTypeOf Proc = func(args []Object) Object {
 }
 
 // Mainly for generate-docs.joke, return information on the Go type itself.
-func goGetTypeInfo(ty GoType, args []Object) Object {
+func goGetTypeInfo(ty *GoType, args []Object) Object {
 	t := ty.T
 	if t == nil {
 		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
@@ -757,7 +757,7 @@ func goGetTypeInfo(ty GoType, args []Object) Object {
 
 var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
-	if ty, ok := args[0].(GoType); ok {
+	if ty, ok := args[0].(*GoType); ok {
 		return goGetTypeInfo(ty, args)
 	}
 	o := EnsureGoObject(args, 0)

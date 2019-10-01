@@ -847,9 +847,9 @@ func Ensureio_RuneReader(args []Object, index int) io.RuneReader {
 	}
 }
 
-func AssertGoType(obj Object, msg string) GoType {
+func AssertGoType(obj Object, msg string) *GoType {
 	switch c := obj.(type) {
-	case GoType:
+	case *GoType:
 		return c
 	default:
 		if msg == "" {
@@ -859,9 +859,9 @@ func AssertGoType(obj Object, msg string) GoType {
 	}
 }
 
-func EnsureGoType(args []Object, index int) GoType {
+func EnsureGoType(args []Object, index int) *GoType {
 	switch c := args[index].(type) {
-	case GoType:
+	case *GoType:
 		return c
 	default:
 		panic(RT.NewArgTypeError(index, c, "GoType"))

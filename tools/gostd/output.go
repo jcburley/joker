@@ -282,7 +282,7 @@ import (%s
 
 	const initInfoTemplate = `
 	%s = GoTypeInfo{Name: "%s",
-		GoType: GoType{T: &%s},
+		GoType: &GoType{T: &%s},
 		Members: GoMembers{
 %s		}}
 

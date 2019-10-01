@@ -10,7 +10,7 @@ type GoMembers map[string]*Var
 
 type GoTypeInfo struct {
 	Name    string
-	GoType  GoType
+	GoType  *GoType
 	Ctor    func(Object) Object
 	Members GoMembers
 }
