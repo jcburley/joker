@@ -561,11 +561,12 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 
 	goCode := fmt.Sprintf(promoteType, localName)
 
+	// Note: :tag value is a string to avoid conflict with like-named member of namespace
 	def := fmt.Sprintf(`
 (def
   ^{:doc %s
     :added "1.0"
-    :tag %s
+    :tag "%s"
     :go "%s"}
   %s)
 `,
@@ -609,11 +610,12 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		}
 	}
 
+	// Note: :tag value is a string to avoid conflict with like-named member of namespace
 	def := fmt.Sprintf(`
 (def
   ^{:doc %s
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "%s"}
   %s)
 `,
