@@ -208,6 +208,23 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 			}
 		})
 
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			typeDoc := ""
+			if ti.Definition != nil {
+				typeDoc = ti.Definition.Doc
+			}
+			out.WriteString(fmt.Sprintf(`
+(def
+  ^{:doc %s
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_%s"}
+  %s)
+`,
+				strconv.Quote(typeDoc), ti.LocalName, ti.LocalName))
+		})
+
 	if out != nil {
 		out.Flush()
 		if unbuf_out != os.Stdout {
@@ -305,23 +322,6 @@ import (%s
 				})
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
-
-	// 	const internTypeTemplate = `
-	//         %sNamespace.InternVar("%s", MakeGoType(&%s),
-	//                 MakeMeta(
-	//                         nil,
-	//                         %s, "%s"))
-
-	// `
-
-	// 	SortedTypes(v.initTypes,
-	// 		func(ti *TypeInfo) {
-	// 			typeDoc := ""
-	// 			if ti.Definition != nil {
-	// 				typeDoc = ti.Definition.Doc
-	// 			}
-	// 			out.WriteString(fmt.Sprintf(internTypeTemplate[1:], GoPackageBaseName(ti.Type), ti.LocalName, ti.TypeMappingsName(), strconv.Quote(typeDoc), "1.0"))
-	// 		})
 
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
