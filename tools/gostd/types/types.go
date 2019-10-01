@@ -11,10 +11,11 @@ import (
 )
 
 type TypeInfo struct {
-	Type       Expr   // nil until first reference (not definition) seen
-	FullName   string // Clojure name (e.g. "a.b.c/Typename")
-	LocalName  string // Local, or base, name (e.g. "Typename")
-	Definition *TypeDefInfo
+	Type             Expr   // nil until first reference (not definition) seen
+	FullName         string // Clojure name (e.g. "a.b.c/Typename")
+	LocalName        string // Local, or base, name (e.g. "Typename")
+	Definition       *TypeDefInfo
+	SimpleIdentifier bool // Just a name, not *name, []name, etc.
 }
 
 // Maps the "definitive" (first-found) referencing Expr for a type to type info
@@ -68,15 +69,16 @@ func TypeLookup(e Expr) *TypeInfo {
 	if ta, ok := typeAliases[e]; ok {
 		return types[ta]
 	}
-	tfn, tln := typeNames(e)
+	tfn, tln, simple := typeNames(e, true)
 	if te, ok := typesByFullName[tfn]; ok {
 		typeAliases[te] = e
 		return types[te]
 	}
 	ti := &TypeInfo{
-		Type:      e,
-		FullName:  tfn,
-		LocalName: tln,
+		Type:             e,
+		FullName:         tfn,
+		LocalName:        tln,
+		SimpleIdentifier: simple,
 	}
 	types[e] = ti
 	typesByFullName[tfn] = e
@@ -111,19 +113,24 @@ func SortedTypes(m map[*TypeInfo]struct{}, f func(ti *TypeInfo)) {
 	}
 }
 
-func typeNames(e Expr) (full, local string) {
-	prefix := ClojureNamespaceForExpr(e) + "/"
+func typeNames(e Expr, root bool) (full, local string, simple bool) {
+	prefix := ""
+	if root {
+		prefix = ClojureNamespaceForExpr(e) + "/"
+	}
 	switch x := e.(type) {
 	case *Ident:
 		full = prefix + x.Name
 		local = x.Name
+		simple = true
 	case *ArrayType:
-		elFull, elLocal := typeNames(x.Elt)
+		elFull, elLocal, _ := typeNames(x.Elt, false)
 		full = "[]" + prefix + elFull
 		local = "[]" + elLocal
 	case *StarExpr:
-		full = "*" + prefix + x.X.(*Ident).Name
-		local = "*" + x.X.(*Ident).Name
+		elFull, elLocal, _ := typeNames(x.X, false)
+		full = "*" + prefix + elFull
+		local = "*" + elLocal
 	}
 	return
 }
