@@ -705,8 +705,61 @@ var procGoObject Proc = func(args []Object) Object {
 	return Boolean{B: IsGoObject(args[0])}
 }
 
+var procNew Proc = func(args []Object) Object {
+	CheckArity(args, 2, 2)
+	t := EnsureGoType(args, 0)
+	f := t.T.Ctor
+	if f == nil {
+		panic(RT.NewError("No constructor available for Go type " + t.T.Name))
+	}
+	return f(args[1])
+}
+
+var procGoTypeOf Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	var t *GoTypeInfo
+	var x interface{} = args[0]
+	switch o := x.(type) {
+	case GoObject:
+		x = o.O
+		t = LookupGoType(x)
+	case *GoVar:
+		x = o.Value
+		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
+		t = LookupGoType(y) // GoVar's are always pointers to variables
+	default:
+		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar "))
+	}
+	if t == nil {
+		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %T", x)))
+	}
+	return t.GoType
+}
+
+// Mainly for generate-docs.joke, return information on the Go type itself.
+func goGetTypeInfo(ty *GoType, args []Object) Object {
+	t := ty.T
+	if t == nil {
+		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
+	}
+	if args[1].Equals(NIL) {
+		return &GoVar{Value: t.GoType.T}
+	}
+	mi, ok := t.GoType.T.Members[args[1].ToString(false)]
+	if !ok {
+		panic(RT.NewError("Go member not found: " + args[1].ToString(false)))
+	}
+	if mi.meta == nil {
+		return NIL
+	}
+	return mi.meta
+}
+
 var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
+	if ty, ok := args[0].(*GoType); ok {
+		return goGetTypeInfo(ty, args)
+	}
 	o := EnsureGoObject(args, 0)
 	member := ExtractString(args, 1)
 	g := LookupGoType(o.O)
@@ -715,9 +768,9 @@ var procGo Proc = func(args []Object) Object {
 	}
 	f := g.Members[member]
 	if f == nil {
-		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "." + member))
+		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
 	}
-	return (func(GoObject, Object) Object)(f)(o, args[2])
+	return (f.Value.(*GoReceiver).R)(o, args[2])
 }
 
 var procAssoc Proc = func(args []Object) Object {
@@ -2206,4 +2259,6 @@ func init() {
 
 	intern("go__", procGo)
 	intern("types__", procTypes)
+	intern("new__", procNew)
+	intern("GoTypeOf__", procGoTypeOf)
 }

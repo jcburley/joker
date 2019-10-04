@@ -1,5 +1,5 @@
 //go:generate go run gen_data/gen_data.go
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *Namespace *Var *GoVar Error *Fn Deref *Atom Ref KVReduce Pending GoObject *File io.Reader io.Writer StringReader io.RuneReader
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *Namespace *Var *GoVar Error *Fn Deref *Atom Ref KVReduce Pending GoObject *File io.Reader io.Writer StringReader io.RuneReader *GoType
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var *GoVar Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword Regex Symbol String *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq
 
 package core
@@ -153,6 +153,14 @@ type (
 		Value interface{}
 		expr  Expr
 	}
+	GoType struct {
+		Object
+		T *GoTypeInfo
+	}
+	GoReceiver struct {
+		Object
+		R func(GoObject, Object) Object
+	}
 	Proc func([]Object) Object
 	Fn   struct {
 		InfoHolder
@@ -284,6 +292,7 @@ type (
 		Fn             *Type
 		File           *Type
 		GoObject       *Type
+		GoType         *Type
 		GoVar          *Type
 		BufferedReader *Type
 		HashMap        *Type
@@ -395,6 +404,8 @@ func init() {
 		BufferedReader: RegRefType("BufferedReader", (*BufferedReader)(nil), ""),
 		GoObject: regType("GoObject", (*GoObject)(nil),
 			"Wraps a Go object (of type 'interface{}'), typically an object of a named type."),
+		GoType: regType("GoType", (*GoType)(nil),
+			"An arbitrary type, typically with a constructor available via (new <type>)."),
 		GoVar: RegRefType("GoVar", (*Var)(nil),
 			"Wraps a pointer to a Go variable. (deref <govar>) dereferences and unwraps it, yielding a GoObject with the resulting snapshot of the value."),
 		HashMap: RegRefType("HashMap", (*HashMap)(nil), ""),
@@ -971,16 +982,7 @@ func (v *GoVar) AlterMeta(fn *Fn, args []Object) Map {
 }
 
 func (v *GoVar) GetType() *Type {
-	ty := reflect.TypeOf(v.Value)
-	s := fmt.Sprintf("GoVar[%s]", GoTypeToString(ty))
-	k := STRINGS.Intern(s)
-	var t *Type
-	var found bool
-	if t, found = TYPES[k]; !found {
-		t = &Type{name: s, reflectType: ty}
-		TYPES[k] = t
-	}
-	return t
+	return TYPE.GoVar
 }
 
 func (v *GoVar) Hash() uint32 {
@@ -996,6 +998,10 @@ func (v *GoVar) Resolve() interface{} {
 
 func (v *GoVar) Deref() interface{} {
 	return v.Resolve()
+}
+
+func (v *GoVar) Get(key Object) (bool, Object) {
+	return GoObjectGet(v.Resolve().(GoObject).O, key)
 }
 
 func (n Nil) ToString(escape bool) string {
@@ -1249,16 +1255,7 @@ func GoTypeToString(ty reflect.Type) string {
 }
 
 func (o GoObject) GetType() *Type {
-	ty := reflect.TypeOf(o.O)
-	s := fmt.Sprintf("GoObject[%s]", GoTypeToString(ty))
-	k := STRINGS.Intern(s)
-	var t *Type
-	var found bool
-	if t, found = TYPES[k]; !found {
-		t = &Type{name: s, reflectType: ty}
-		TYPES[k] = t
-	}
-	return t
+	return TYPE.GoObject
 }
 
 func (o GoObject) Native() interface{} {
@@ -1276,6 +1273,59 @@ func (o GoObject) Hash() uint32 {
 func (o GoObject) Compare(other Object) int {
 	o2 := AssertGoObject(other, "Cannot compare GoObject and "+other.GetType().ToString(false))
 	return strings.Compare(o.ToString(false), o2.ToString(false))
+}
+
+func (o GoObject) Get(key Object) (bool, Object) {
+	return GoObjectGet(o.O, key)
+}
+
+func MakeGoType(t *GoTypeInfo) *GoType {
+	return t.GoType
+}
+
+func (t *GoType) ToString(escape bool) string {
+	if t.T == nil {
+		return fmt.Sprintf("%v", t)
+	}
+	return fmt.Sprintf("%s", t.T.Name)
+}
+
+func (t *GoType) Equals(other interface{}) bool {
+	switch other := other.(type) {
+	case *GoType:
+		return t.T == other.T
+	default:
+		return false
+	}
+}
+
+func (t *GoType) GetInfo() *ObjectInfo {
+	return nil
+}
+
+func (t *GoType) WithInfo(info *ObjectInfo) Object {
+	return t
+}
+
+func (t *GoType) GetType() *Type {
+	return TYPE.GoType
+}
+
+func (t *GoType) Native() interface{} {
+	return t.T
+}
+
+func (t *GoType) Hash() uint32 {
+	h := getHash()
+	b := make([]byte, 8)
+	binary.LittleEndian.PutUint64(b, uint64(uintptr(unsafe.Pointer(&t.T))))
+	h.Write(b)
+	return h.Sum32()
+}
+
+func (t *GoType) Compare(other Object) int {
+	t2 := AssertGoType(other, "Cannot compare *GoType and "+other.GetType().ToString(false))
+	return strings.Compare(t.ToString(false), t2.ToString(false))
 }
 
 func MakeDouble(d float64) Double {
@@ -1702,4 +1752,8 @@ func MakeMeta(arglists Seq, docstring string, added string) *ArrayMap {
 	res.Add(KEYWORDS.doc, String{S: docstring})
 	res.Add(KEYWORDS.added, String{S: added})
 	return res
+}
+
+func MakeMetaHolder(m *ArrayMap) MetaHolder {
+	return MetaHolder{m}
 }

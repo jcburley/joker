@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/types"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
 	"io/ioutil"
 	"os"
@@ -195,13 +197,37 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 		})
 
 	sortedCodeMap(v,
-		func(f string, w fnCodeInfo) {
+		func(f string, w *fnCodeInfo) {
 			if outputCode {
 				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(w.fnCode)
+			}
+		})
+
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			typeDoc := ""
+			if ti.Definition != nil {
+				typeDoc = ti.Definition.Doc
+			}
+			fnCode := fmt.Sprintf(`
+(def
+  ^{:doc %s
+    :added "1.0"
+    :tag "GoType"
+    :go "&%s"}
+  %s)
+`,
+				strconv.Quote(typeDoc), ti.TypeMappingsName(), ti.LocalName)
+			if outputCode {
+				fmt.Printf("JOKER TYPE %s:%s\n",
+					ti.FullName, fnCode)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(fnCode)
 			}
 		})
 
@@ -262,7 +288,7 @@ import (%s
 		})
 
 	sortedCodeMap(v,
-		func(f string, w fnCodeInfo) {
+		func(f string, w *fnCodeInfo) {
 			if outputCode {
 				fmt.Printf("GO FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
@@ -272,26 +298,42 @@ import (%s
 			}
 		})
 
-	sortedStringMap(v.initTypes,
-		func(k1, k2 string) {
-			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", k2))
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", ti.TypeMappingsName()))
 		})
+
+	const initInfoTemplate = `
+	%s = GoTypeInfo{Name: "%s",
+		GoType: &GoType{T: &%s},
+		Members: GoMembers{
+%s		}}
+
+`
 
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
-	sortedStringMap(v.initTypes,
-		func(k1, k2 string) {
-			out.WriteString(fmt.Sprintf("\t%s = GoTypeInfo{Members: GoMembers{\n", k2))
-			sortedStringMap(v.initVars[k2], // Will always be populated
-				func(c, g string) {
-					out.WriteString(fmt.Sprintf("\t\t\"%s\": %s,\n", c, g))
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			tmn := ti.TypeMappingsName()
+			k1 := ti.FullName
+			mem := ""
+			sortedFnCodeInfo(v.initVars[ti], // Will always be populated
+				func(c string, r *fnCodeInfo) {
+					doc := r.fnDoc
+					g := r.fnCode
+					mem += fmt.Sprintf(`
+			"%s": MakeGoReceiver("%s", %s, %s, %s, NewVectorFrom(%s)),
+`[1:],
+						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.fnDecl.Type.Params))
 				})
-			out.WriteString("\t}}\n\n")
+			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
-	sortedStringMap(v.initTypes,
-		func(k, v string) {
-			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", k, v))
+
+	SortedTypes(v.initTypes,
+		func(ti *TypeInfo) {
+			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", ti.TypeReflected(), ti.TypeMappingsName()))
 		})
 	if out != nil {
 		out.WriteString("}\n")

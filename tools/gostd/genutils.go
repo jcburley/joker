@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
 	"path"
@@ -13,11 +14,11 @@ import (
 )
 
 func whereAt(p token.Pos) string {
-	return fmt.Sprintf("%s", fset.Position(p).String())
+	return fmt.Sprintf("%s", Fset.Position(p).String())
 }
 
 func fileAt(p token.Pos) string {
-	return token.Position{Filename: fset.Position(p).Filename,
+	return token.Position{Filename: Fset.Position(p).Filename,
 		Offset: 0, Line: 0, Column: 0}.String()
 }
 
@@ -158,7 +159,7 @@ func wrapOnlyIfs(onlyIf string, e string) string {
 
 // Add one level of indent to each line
 func indentedCode(c string) string {
-	return "\t" + strings.Replace(c, "\n", "\n\t", -1)
+	return strings.ReplaceAll("\t"+strings.ReplaceAll(c, "\n", "\n\t"), "\t\n", "\n")
 }
 
 func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *string) string {

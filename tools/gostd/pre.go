@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "go/ast"
+	"strconv"
 	"strings"
 )
 
@@ -285,4 +286,14 @@ func genGoPre(fn *funcInfo, indent string, fl *FieldList, goFname string) (cloju
 	min = len(fields)
 	max = len(fields)
 	return
+}
+
+func paramsAsSymbolVec(fl *FieldList) string {
+	fields := flattenFieldList(fl)
+	var syms []string
+	for _, field := range fields {
+		p := field.name.Name
+		syms = append(syms, "MakeSymbol("+strconv.Quote(p)+")")
+	}
+	return strings.Join(syms, ", ")
 }

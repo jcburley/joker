@@ -6,11 +6,12 @@ import (
 	"reflect"
 )
 
-type GoFn func(GoObject, Object) Object
-
-type GoMembers map[string]GoFn
+type GoMembers map[string]*Var
 
 type GoTypeInfo struct {
+	Name    string
+	GoType  *GoType
+	Ctor    func(Object) Object
 	Members GoMembers
 }
 
@@ -147,6 +148,37 @@ func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
 
 func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
 	return uintptr(ExtractGoUInt64(rcvr, name, args, n))
+}
+
+func GoObjectGet(o interface{}, key Object) (bool, Object) {
+	v := reflect.Indirect(reflect.ValueOf(o))
+	switch v.Kind() {
+	case reflect.Struct:
+		f := v.FieldByName(key.(String).S)
+		if f != reflect.ValueOf(nil) {
+			return true, MakeGoObject(f.Interface())
+		}
+	case reflect.Map:
+		// Ignore key, return vector of keys (assuming they're strings)
+		keys := v.MapKeys()
+		objs := make([]Object, 0, 32)
+		for _, k := range keys {
+			objs = append(objs, MakeString(k.String()))
+		}
+		return true, NewVectorFrom(objs...)
+	}
+	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
+}
+
+func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
+	v := &Var{
+		name:  MakeSymbol(name),
+		Value: &GoReceiver{R: f},
+	}
+	m := MakeMeta(NewListFrom(arglist), doc, added)
+	m.Add(KEYWORDS.name, v.name)
+	v.meta = m
+	return v
 }
 
 var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}

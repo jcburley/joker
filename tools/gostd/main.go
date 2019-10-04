@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
 	"go/parser"
 	"go/token"
@@ -35,7 +36,6 @@ func check(e error) {
 
 */
 
-var fset *token.FileSet
 var dump bool
 var verbose bool
 var goSourcePath string
@@ -87,7 +87,7 @@ func listOfOthers(other string) (others []string) {
 }
 
 func main() {
-	fset = token.NewFileSet() // positions are relative to fset
+	utils.Fset = token.NewFileSet() // positions are relative to Fset
 	dump = false
 
 	length := len(os.Args)
@@ -250,6 +250,7 @@ func main() {
 		}
 	}
 
+	utils.AddMapping(goSourceDir, "go.std.")
 	root := filepath.Join(goSourceDir, ".")
 	err := walkDirs(root, "go.std.", mode)
 	if err != nil {
