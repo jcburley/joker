@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/types"
 	. "go/ast"
 	"path"
 	"regexp"
@@ -209,36 +210,6 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
-func typeKey(pkgPrefix string, fl *Field) string {
-	t := ""
-	suffix := ""
-	switch x := fl.Type.(type) {
-	case *Ident:
-		t = "*" + pkgPrefix + x.Name
-		suffix = ".Elem()"
-	case *StarExpr:
-		t = "*" + pkgPrefix + x.X.(*Ident).Name
-	default:
-		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
-	}
-	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
-}
-
-func typeInfoName(fl *Field) string {
-	res := ""
-	switch x := fl.Type.(type) {
-	case *Ident:
-		res += x.Name
-	case *ArrayType:
-		res += "ArrayOf_" + x.Elt.(*Ident).Name
-	case *StarExpr:
-		res += "PtrTo_" + x.X.(*Ident).Name
-	default:
-		panic(fmt.Sprintf("typeInfoName: unrecognized expr %T", x))
-	}
-	return "members_" + res
-}
-
 func genReceiver(fn *funcInfo) {
 	genSymReset()
 	pkgDirUnix := fn.sourceFile.pkgDirUnix
@@ -268,17 +239,18 @@ func %s(o GoObject, args Object) Object {
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect", false)
 		for _, r := range fn.fd.Recv.List {
-			tin := typeInfoName(r)
-			goCode[pkgDirUnix].initTypes[typeKey("_"+pkgBaseName+".", r)] = tin
-			if _, ok := goCode[pkgDirUnix].initVars[tin]; !ok {
-				goCode[pkgDirUnix].initVars[tin] = map[string]string{}
+			ti := TypeLookup(r.Type)
+			goCode[pkgDirUnix].initTypes[ti] = struct{}{}
+			clojureCode[pkgDirUnix].initTypes[ti] = struct{}{}
+			if _, ok := goCode[pkgDirUnix].initVars[ti]; !ok {
+				goCode[pkgDirUnix].initVars[ti] = map[string]*fnCodeInfo{}
 			}
-			goCode[pkgDirUnix].initVars[tin][fn.fd.Name.Name] = goFname
+			goCode[pkgDirUnix].initVars[ti][fn.fd.Name.Name] = &fnCodeInfo{fn.sourceFile, goFname, fn.fd, fn.fd.Doc}
 		}
 	}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[goFname] = fnCodeInfo{fn.sourceFile, goFn}
+		goCode[pkgDirUnix].functions[goFname] = &fnCodeInfo{fn.sourceFile, goFn, fn.fd, nil}
 	}
 }
 
@@ -343,10 +315,10 @@ func %s(%s) %s {
 		}
 	}
 
-	clojureCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, clojureFn}
+	clojureCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, clojureFn, nil, nil}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[d.Name.Name] = fnCodeInfo{fn.sourceFile, goFn}
+		goCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, goFn, nil, nil}
 	}
 }
 

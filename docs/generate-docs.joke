@@ -7,6 +7,8 @@
 (require 'joker.repl)
 (require 'joker.html)
 
+(def rpl joker.string/replace)
+
 (def index-template
   (slurp "templates/index.html"))
 
@@ -15,6 +17,9 @@
 
 (def var-template
   (slurp "templates/var.html"))
+
+(def receiver-template
+  (slurp "templates/receiver.html"))
 
 (def namespace-template
   (slurp "templates/ns-summary.html"))
@@ -41,8 +46,10 @@
       :else (str (type @v)))))
 
 (defn link-item-doc
-  [k]
-  (string/replace link-item-template "{name}" k))
+  [n k]
+  (-> link-item-template
+      (rpl "{name}" n)
+      (rpl "{kind}" k)))
 
 (defn usage
   [k m]
@@ -57,6 +64,35 @@
 (defn- source-file
   [ns]
   (string/join "_" (rest (string/split (str ns) #"\."))))
+
+(defn receiver-doc
+  [t r]
+  (if-let [m (Go t r)]
+    (-> receiver-template
+        (string/replace "{id}" (str r))
+        (string/replace "{name}" (str r))
+        (string/replace "{type}" "Receiver")
+        (string/replace "{usage}" (string/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
+        (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
+        (string/replace "{added}" (str (:added m)))
+        (string/replace
+         "{source}"
+         (if (:line m)
+           (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
+                   (source-file (:ns m))
+                   (str (:line m)))
+           "{blank}")))
+    "{blank}"))
+
+(defn receivers-doc
+  [k v]
+  (let [go-type-info (deref (Go v nil))
+        members (get go-type-info "Members")
+        memvec (get members nil)]
+    (string/join
+     ""
+     (for [m memvec]
+       (receiver-doc v m)))))
 
 (defn var-doc
   [k v]
@@ -80,7 +116,12 @@
            (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
                    (source-file (:ns m))
                    (str (:line m)))
-           "")))))
+           "{blank}"))
+        (string/replace
+         "{receivers}"
+         (if (= GoType (type (deref v)))
+           (receivers-doc k (deref v))
+           "{blank}")))))
 
 (defn- first-line
   [s]
@@ -114,24 +155,52 @@
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m))))))
 
+(defn sym-is
+  [s x]
+  (= x (type (deref s))))
+
+(defn sym-is-constant
+  [s]
+  (condp = (type (deref s))
+    Fn false
+    GoType false
+    GoVar false
+    Proc false
+    true))
+
+(defn filter-vals
+  "Filters on values in a map using supplied function, returning map with only matching key/value pairs."
+  [f m]
+  (into {} (filter #(-> % val f) m)))
+
+(defn section-doc
+  [ns-sym match]
+  (string/join
+   ""
+   (for [[k v] (sort (filter-vals match (ns-publics ns-sym)))]
+     (var-doc k v))))
+
 (defn ns-doc
   [ns-sym]
   (let [ns (find-ns ns-sym)
         m (meta ns)
-        vars-doc (string/join
-                  ""
-                  (for [[k v] (sort (ns-publics ns-sym))]
-                    (var-doc k v)))
-        var-links-doc (string/join
+        index (string/join
                        ""
-                       (for [k (sort (keys (ns-publics ns-sym)))]
-                         (link-item-doc (str k))))]
+                       (for [[k v] (sort #(compare (key %1) (key %2)) (ns-publics ns-sym))]
+                         (link-item-doc (str k) (type-name v))))
+        functions-doc (section-doc ns-sym #(or (sym-is % Proc) (sym-is % Fn)))
+        constants-doc (section-doc ns-sym #(sym-is-constant %))
+        variables-doc (section-doc ns-sym #(sym-is % GoVar))
+        types-doc (section-doc ns-sym #(sym-is % GoType))]
     (-> ns-template
         (string/replace "{name}" (name ns-sym))
         (string/replace "{added}" (str (:added m)))
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
-        (string/replace  "{vars}" vars-doc)
-        (string/replace "{index}" var-links-doc))))
+        (string/replace "{constants}" constants-doc)
+        (string/replace "{variables}" variables-doc)
+        (string/replace "{functions}" functions-doc)
+        (string/replace "{types}" types-doc)
+        (string/replace "{index}" index))))
 
 (defn index-doc
   [namespaces types]
@@ -142,7 +211,7 @@
         ns-links-doc (string/join
                       ""
                       (->> namespaces
-                           (map #(link-item-doc (str %)))))
+                           (map #(link-item-doc (str %) "Namespace"))))
         types-docs (string/join
                     ""
                     (for [t types]
@@ -150,12 +219,17 @@
         type-links-doc (string/join
                         ""
                         (->> types
-                             (map #(link-item-doc (str %)))))]
+                             (map #(link-item-doc (str %) "Type"))))]
     (-> index-template
         (string/replace "{index-of-namespaces}" ns-links-doc)
         (string/replace "{namespaces}" namespaces-docs)
         (string/replace "{index-of-types}" type-links-doc)
         (string/replace "{types}" types-docs))))
+
+(defn remove-blanky-lines
+  [s]
+  (-> s
+      (rpl #"[[:space:]]*{blank}" "")))
 
 (defn full-doc
   [ns-fn]
@@ -168,7 +242,7 @@
                    (sort))]
     (spit "index.html" (index-doc namespaces types))
     (doseq [ns namespaces]
-      (spit (str ns ".html") (ns-doc ns)))))
+      (spit (str ns ".html") (remove-blanky-lines (ns-doc ns))))))
 
 (defn is-go
   [ns]
@@ -183,6 +257,10 @@
   "Quick and dirty options parser."
   [opt]
   (some #(= opt %) *command-line-args*))
+
+;;; Bind the REPL stuff so (deref ...) of them doesn't fail.
+(doseq [s ['*1 '*2 '*3 '*e]]
+  (intern 'joker.core s "empty"))
 
 (if (have-option "--no-go")
   (full-doc no-go-ns)

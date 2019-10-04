@@ -4480,7 +4480,19 @@
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 
 (defn Go
-  "Invoke a receiver for, or get/set a member of, a Go object, returning result if applicable, else nil."
+  "Invokes a receiver for a Go object, returning result if applicable, else nil."
   {:added "1.0"}
   [^GoObject o m & args]
   (go__ o m args))
+
+(defn new
+  "Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values."
+  {:added "1.0"}
+  [^GoType t ^"Vector|Map" init]
+  (new__ t init))
+
+(defn GoTypeOf
+  "Returns the GoType of a GoObject or GoVar."
+  {:added "1.0"}
+  [^GoType t]
+  (GoTypeOf__ t))

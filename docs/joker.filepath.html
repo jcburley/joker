@@ -6,68 +6,124 @@
   <div class="main">
     <h1>Namespace: joker.filepath</h1>
     <span class="var-added">v1.0</span>
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#_summary">Summary</a>
+      </li>
+      <li>
+        <a href="#_index">Index</a>
+      </li>
+      <li>
+        <a href="#_constants">Constants</a>
+      </li>
+      <li>
+        <a href="#_variables">Variables</a>
+      </li>
+      <li>
+        <a href="#_functions">Functions and Macros</a>
+      </li>
+      <li>
+        <a href="#_types">Types</a>
+      </li>
+    </ul>
+    <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Implements utility routines for manipulating filename paths.</p>
-    <h2>Index</h2>
+    <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
-  <a href="#abs">abs</a>
+  <a class="var-type Function" href="#abs">abs</a>
 </li>
 <li>
-  <a href="#abs?">abs?</a>
+  <a class="var-type Function" href="#abs?">abs?</a>
 </li>
 <li>
-  <a href="#base">base</a>
+  <a class="var-type Function" href="#base">base</a>
 </li>
 <li>
-  <a href="#clean">clean</a>
+  <a class="var-type Function" href="#clean">clean</a>
 </li>
 <li>
-  <a href="#dir">dir</a>
+  <a class="var-type Function" href="#dir">dir</a>
 </li>
 <li>
-  <a href="#eval-symlinks">eval-symlinks</a>
+  <a class="var-type Function" href="#eval-symlinks">eval-symlinks</a>
 </li>
 <li>
-  <a href="#ext">ext</a>
+  <a class="var-type Function" href="#ext">ext</a>
 </li>
 <li>
-  <a href="#file-seq">file-seq</a>
+  <a class="var-type Function" href="#file-seq">file-seq</a>
 </li>
 <li>
-  <a href="#from-slash">from-slash</a>
+  <a class="var-type Function" href="#from-slash">from-slash</a>
 </li>
 <li>
-  <a href="#glob">glob</a>
+  <a class="var-type Function" href="#glob">glob</a>
 </li>
 <li>
-  <a href="#join">join</a>
+  <a class="var-type Function" href="#join">join</a>
 </li>
 <li>
-  <a href="#list-separator">list-separator</a>
+  <a class="var-type String" href="#list-separator">list-separator</a>
 </li>
 <li>
-  <a href="#matches?">matches?</a>
+  <a class="var-type Function" href="#matches?">matches?</a>
 </li>
 <li>
-  <a href="#rel">rel</a>
+  <a class="var-type Function" href="#rel">rel</a>
 </li>
 <li>
-  <a href="#separator">separator</a>
+  <a class="var-type String" href="#separator">separator</a>
 </li>
 <li>
-  <a href="#split">split</a>
+  <a class="var-type Function" href="#split">split</a>
 </li>
 <li>
-  <a href="#split-list">split-list</a>
+  <a class="var-type Function" href="#split-list">split-list</a>
 </li>
 <li>
-  <a href="#to-slash">to-slash</a>
+  <a class="var-type Function" href="#to-slash">to-slash</a>
 </li>
 <li>
-  <a href="#volume-name">volume-name</a>
+  <a class="var-type Function" href="#volume-name">volume-name</a>
 </li>
 
     </ul>
+    <h3>Legend</h3>
+    <ul class="legend">
+      <span class="var-type Int">Constant</span>
+      <span class="var-type Function">Function</span>
+      <span class="var-type Macro">Macro</span>
+      <span class="var-type Object">Object</span>
+      <span class="var-type Special">Special form</span>
+      <span class="var-type GoType">GoType</span>
+      <span class="var-type GoVar">GoVar</span>
+      <span class="var-type Receiver">Receiver</span>
+    </ul>
+    <h2 id="_constants">Constants</h2>
+    <ul>
+      <li>
+  <h3 id="list-separator">list-separator</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">OS-specific path list separator.</p>
+</li>
+<li>
+  <h3 id="separator">separator</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">OS-specific path separator.</p>
+</li>
+
+    </ul>
+    <h2 id="_variables">Variables</h2>
+    <ul>
+      
+    </ul>
+    <h2 id="_functions">Functions and Macros</h2>
     <ul>
       <li>
   <h3 id="abs">abs</h3>
@@ -79,7 +135,6 @@
   joined with the current working directory to turn it into an absolute path.<br>
   The absolute path name for a given file is not guaranteed to be unique.<br>
   Calls clean on the result.</p>
-  
 </li>
 <li>
   <h3 id="abs?">abs?</h3>
@@ -88,7 +143,6 @@
   <pre class="var-usage"><div><code>(abs? path)</code></div>
 </pre>
   <p class="var-docstr">Reports whether the path is absolute.</p>
-  
 </li>
 <li>
   <h3 id="base">base</h3>
@@ -99,7 +153,6 @@
   <p class="var-docstr">Returns the last element of path. Trailing path separators are removed before<br>
   extracting the last element. If the path is empty, returns &#34;.&#34;. If the path consists<br>
   entirely of separators, returns a single separator.</p>
-  
 </li>
 <li>
   <h3 id="clean">clean</h3>
@@ -122,7 +175,6 @@ The returned path ends in a slash only if it represents a root directory, such a
 Finally, any occurrences of slash are replaced by separator.<br>
 <br>
 If the result of this process is an empty string, returns the string &#34;.&#34;.</p>
-  
 </li>
 <li>
   <h3 id="dir">dir</h3>
@@ -134,7 +186,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   After dropping the final element, calls clean on the path and trailing slashes are removed.<br>
   If the path is empty, returns &#34;.&#34;. If the path consists entirely of separators,<br>
   returns a single separator. The returned path does not end in a separator unless it is the root directory.</p>
-  
 </li>
 <li>
   <h3 id="eval-symlinks">eval-symlinks</h3>
@@ -145,7 +196,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   <p class="var-docstr">Returns the path name after the evaluation of any symbolic links. If path is relative the result will be<br>
   relative to the current directory, unless one of the components is an absolute symbolic link.<br>
   Calls clean on the result.</p>
-  
 </li>
 <li>
   <h3 id="ext">ext</h3>
@@ -155,7 +205,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 </pre>
   <p class="var-docstr">Returns the file name extension used by path. The extension is the suffix beginning at the final dot<br>
   in the final element of path; it is empty if there is no dot.</p>
-  
 </li>
 <li>
   <h3 id="file-seq">file-seq</h3>
@@ -164,7 +213,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   <pre class="var-usage"><div><code>(file-seq root)</code></div>
 </pre>
   <p class="var-docstr">Returns a seq of maps with info about files or directories under root.</p>
-  
 </li>
 <li>
   <h3 id="from-slash">from-slash</h3>
@@ -174,7 +222,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 </pre>
   <p class="var-docstr">Returns the result of replacing each slash (&#39;/&#39;) character in path with a separator character.<br>
   Multiple slashes are replaced by multiple separators.</p>
-  
 </li>
 <li>
   <h3 id="glob">glob</h3>
@@ -188,7 +235,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 <br>
   Ignores file system errors such as I/O errors reading directories.<br>
   Throws exception when pattern is malformed.</p>
-  
 </li>
 <li>
   <h3 id="join">join</h3>
@@ -199,15 +245,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   <p class="var-docstr">Joins any number of path elements into a single path, adding a separator if necessary.<br>
   Calls clean on the result; in particular, all empty strings are ignored. On Windows,<br>
   the result is a UNC path if and only if the first path element is a UNC path.</p>
-  
-</li>
-<li>
-  <h3 id="list-separator">list-separator</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">OS-specific path list separator.</p>
-  
 </li>
 <li>
   <h3 id="matches?">matches?</h3>
@@ -219,7 +256,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Requires pattern to match all of name, not just a substring.<br>
   Throws exception if pattern is malformed.<br>
   On Windows, escaping is disabled. Instead, &#39;\&#39; is treated as path separator.</p>
-  
 </li>
 <li>
   <h3 id="rel">rel</h3>
@@ -232,15 +268,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   even if basepath and targpath share no elements. An exception is thrown if targpath can&#39;t be made<br>
   relative to basepath or if knowing the current working directory would be necessary to compute it.<br>
   Calls clean on the result.</p>
-  
-</li>
-<li>
-  <h3 id="separator">separator</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">OS-specific path separator.</p>
-  
 </li>
 <li>
   <h3 id="split">split</h3>
@@ -251,7 +278,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   <p class="var-docstr">Splits path immediately following the final separator, separating it into a directory and file name component.<br>
   If there is no separator in path, returns an empty dir and file set to path. The returned values have<br>
   the property that path = dir+file.</p>
-  
 </li>
 <li>
   <h3 id="split-list">split-list</h3>
@@ -261,7 +287,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 </pre>
   <p class="var-docstr">Splits a list of paths joined by the OS-specific list-separator, usually found in PATH or GOPATH environment variables.<br>
   Returns an empty slice when passed an empty string.</p>
-  
 </li>
 <li>
   <h3 id="to-slash">to-slash</h3>
@@ -271,7 +296,6 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 </pre>
   <p class="var-docstr">Returns the result of replacing each separator character in path with a slash (&#39;/&#39;) character.<br>
   Multiple separators are replaced by multiple slashes.</p>
-  
 </li>
 <li>
   <h3 id="volume-name">volume-name</h3>
@@ -281,9 +305,12 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
 </pre>
   <p class="var-docstr">Returns leading volume name. Given &#34;C:\foo\bar&#34; it returns &#34;C:&#34; on Windows. Given &#34;\\host\share\foo&#34;<br>
   returns &#34;\\host\share&#34;. On other platforms it returns &#34;&#34;.</p>
-  
 </li>
 
+    </ul>
+    <h2 id="_types">Types</h2>
+    <ul>
+      
     </ul>
   </div>
 </body>
