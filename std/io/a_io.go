@@ -34,6 +34,8 @@ func Init() {
 
 	copy_ = __copy_
 
+	initNative()
+
 	ioNamespace.ResetMeta(MakeMeta(nil, `Provides basic interfaces to I/O primitives.`, "1.0"))
 
 	
