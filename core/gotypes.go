@@ -170,19 +170,12 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
 }
 
-// TODO: Replace this with direct calls to the (renamed) WithMeta version, below.
-func MakeGoReceiver(name string, f func(GoObject, Object) Object) *Var {
-	r := &GoReceiver{R: f}
+func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
 	v := &Var{
 		name:  MakeSymbol(name),
-		Value: r,
+		Value: &GoReceiver{R: f},
 	}
-	return v
-}
-
-func MakeGoReceiverWithMeta(name string, f func(GoObject, Object) Object, doc, added string, args ...string) *Var {
-	v := MakeGoReceiver(name, f)
-	m := MakeMeta(NewListFrom(NewVectorFrom(MakeSymbol(args[0]))), doc, added)
+	m := MakeMeta(NewListFrom(arglist), doc, added)
 	m.Add(KEYWORDS.name, v.name)
 	v.meta = m
 	return v

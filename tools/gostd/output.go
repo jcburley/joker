@@ -327,9 +327,9 @@ import (%s
 					doc := r.fnDoc
 					g := r.fnCode
 					mem += fmt.Sprintf(`
-			"%s": MakeGoReceiverWithMeta("%s", %s, %s, %s, %s),
+			"%s": MakeGoReceiver("%s", %s, %s, %s, NewVectorFrom(%s)),
 `[1:],
-						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), strconv.Quote(""))
+						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.fnDecl.Type.Params))
 				})
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})

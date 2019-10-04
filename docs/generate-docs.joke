@@ -72,7 +72,7 @@
         (string/replace "{id}" (str r))
         (string/replace "{name}" (str r))
         (string/replace "{type}" "Receiver")
-        (string/replace "{usage}" (string/replace usage-template "{usage}" (get m :arglist "(need arglist)")))
+        (string/replace "{usage}" (string/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m)))
         (string/replace
