@@ -209,9 +209,6 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 
 	SortedTypes(v.initTypes,
 		func(ti *TypeInfo) {
-			if !ti.SimpleIdentifier {
-				return
-			}
 			typeDoc := ""
 			if ti.Definition != nil {
 				typeDoc = ti.Definition.Doc
@@ -221,10 +218,10 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
   ^{:doc %s
     :added "1.0"
     :tag "GoType"
-    :go "&info_%s"}
+    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), ti.LocalName, ti.LocalName)
+				strconv.Quote(typeDoc), ti.TypeMappingsName(), ti.LocalName)
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
 					ti.FullName, fnCode)
