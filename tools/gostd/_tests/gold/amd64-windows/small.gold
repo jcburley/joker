@@ -599,7 +599,7 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
    :go "__userPassword(__username, __password)"}
   [^String __username, ^String __password])
 
-JOKER TYPE *go.std.net\url/Error:
+JOKER TYPE *go.std.net.url/Error:
 (def
   ^{:doc ""
     :added "1.0"
@@ -607,7 +607,7 @@ JOKER TYPE *go.std.net\url/Error:
     :go "&info_PtrTo_Error"}
   *Error)
 
-JOKER TYPE go.std.net\url/EscapeError:
+JOKER TYPE go.std.net.url/EscapeError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -615,7 +615,7 @@ JOKER TYPE go.std.net\url/EscapeError:
     :go "&info_EscapeError"}
   EscapeError)
 
-JOKER TYPE go.std.net\url/InvalidHostError:
+JOKER TYPE go.std.net.url/InvalidHostError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -623,7 +623,7 @@ JOKER TYPE go.std.net\url/InvalidHostError:
     :go "&info_InvalidHostError"}
   InvalidHostError)
 
-JOKER TYPE *go.std.net\url/URL:
+JOKER TYPE *go.std.net.url/URL:
 (def
   ^{:doc ""
     :added "1.0"
@@ -631,7 +631,7 @@ JOKER TYPE *go.std.net\url/URL:
     :go "&info_PtrTo_URL"}
   *URL)
 
-JOKER TYPE *go.std.net\url/Userinfo:
+JOKER TYPE *go.std.net.url/Userinfo:
 (def
   ^{:doc ""
     :added "1.0"
@@ -639,7 +639,7 @@ JOKER TYPE *go.std.net\url/Userinfo:
     :go "&info_PtrTo_Userinfo"}
   *Userinfo)
 
-JOKER TYPE go.std.net\url/Values:
+JOKER TYPE go.std.net.url/Values:
 (def
   ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
     :added "1.0"
@@ -2913,7 +2913,7 @@ var info_PtrTo_Userinfo GoTypeInfo
 var info_Values GoTypeInfo
 
 func initNative() {
-	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net\url/Error",
+	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net.url/Error",
 		GoType: &GoType{T: &info_PtrTo_Error},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __ptrTo_Error_Error, "", "1.0", NewVectorFrom()),
@@ -2921,19 +2921,19 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_Error_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
-	info_EscapeError = GoTypeInfo{Name: "go.std.net\url/EscapeError",
+	info_EscapeError = GoTypeInfo{Name: "go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_EscapeError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __escapeError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
-	info_InvalidHostError = GoTypeInfo{Name: "go.std.net\url/InvalidHostError",
+	info_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_InvalidHostError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __invalidHostError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
-	info_PtrTo_URL = GoTypeInfo{Name: "*go.std.net\url/URL",
+	info_PtrTo_URL = GoTypeInfo{Name: "*go.std.net.url/URL",
 		GoType: &GoType{T: &info_PtrTo_URL},
 		Members: GoMembers{
 			"EscapedPath": MakeGoReceiver("EscapedPath", __ptrTo_URL_EscapedPath, "EscapedPath returns the escaped form of u.Path.\nIn general there are multiple possible escaped forms of any path.\nEscapedPath returns u.RawPath when it is a valid escaping of u.Path.\nOtherwise EscapedPath ignores u.RawPath and computes an escaped\nform on its own.\nThe String and RequestURI methods use EscapedPath to construct\ntheir results.\nIn general, code should call EscapedPath instead of\nreading u.RawPath directly.\n", "1.0", NewVectorFrom()),
@@ -2947,7 +2947,7 @@ func initNative() {
 			"String": MakeGoReceiver("String", __ptrTo_URL_String, "String reassembles the URL into a valid URL string.\nThe general form of the result is one of:\n\n\tscheme:opaque?query#fragment\n\tscheme://userinfo@host/path?query#fragment\n\nIf u.Opaque is non-empty, String uses the first form;\notherwise it uses the second form.\nTo obtain the path, String uses u.EscapedPath().\n\nIn the second form, the following rules apply:\n\t- if u.Scheme is empty, scheme: is omitted.\n\t- if u.User is nil, userinfo@ is omitted.\n\t- if u.Host is empty, host/ is omitted.\n\t- if u.Scheme and u.Host are empty and u.User is nil,\n\t   the entire scheme://userinfo@host/ is omitted.\n\t- if u.Host is non-empty and u.Path begins with a /,\n\t   the form host/path does not add its own /.\n\t- if u.RawQuery is empty, ?query is omitted.\n\t- if u.Fragment is empty, #fragment is omitted.\n", "1.0", NewVectorFrom()),
 		}}
 
-	info_PtrTo_Userinfo = GoTypeInfo{Name: "*go.std.net\url/Userinfo",
+	info_PtrTo_Userinfo = GoTypeInfo{Name: "*go.std.net.url/Userinfo",
 		GoType: &GoType{T: &info_PtrTo_Userinfo},
 		Members: GoMembers{
 			"Password": MakeGoReceiver("Password", __ptrTo_Userinfo_Password, "Password returns the password in case it is set, and whether it is set.\n", "1.0", NewVectorFrom()),
@@ -2955,7 +2955,7 @@ func initNative() {
 			"Username": MakeGoReceiver("Username", __ptrTo_Userinfo_Username, "Username returns the username.\n", "1.0", NewVectorFrom()),
 		}}
 
-	info_Values = GoTypeInfo{Name: "go.std.net\url/Values",
+	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
 			"Encode": MakeGoReceiver("Encode", __values_Encode, "Encode encodes the values into ``URL encoded'' form\n(\"bar=baz&foo=quux\") sorted by key.\n", "1.0", NewVectorFrom()),
