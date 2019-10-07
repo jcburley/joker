@@ -341,7 +341,7 @@ JOKER CONSTANT FlagBroadcast from net/interface.go:
 (def
   ^{:doc "interface supports broadcast access capability\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "uint64(uint(net.FlagBroadcast))"}
   FlagBroadcast)
 
@@ -349,7 +349,7 @@ JOKER CONSTANT FlagLoopback from net/interface.go:
 (def
   ^{:doc "interface is a loopback interface\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "uint64(uint(net.FlagLoopback))"}
   FlagLoopback)
 
@@ -357,7 +357,7 @@ JOKER CONSTANT FlagMulticast from net/interface.go:
 (def
   ^{:doc "interface supports multicast access capability\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "uint64(uint(net.FlagMulticast))"}
   FlagMulticast)
 
@@ -365,7 +365,7 @@ JOKER CONSTANT FlagPointToPoint from net/interface.go:
 (def
   ^{:doc "interface belongs to a point-to-point link\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "uint64(uint(net.FlagPointToPoint))"}
   FlagPointToPoint)
 
@@ -373,7 +373,7 @@ JOKER CONSTANT FlagUp from net/interface.go:
 (def
   ^{:doc "interface is up\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "uint64(uint(net.FlagUp))"}
   FlagUp)
 
@@ -381,7 +381,7 @@ JOKER CONSTANT IPv4len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "net.IPv4len"}
   IPv4len)
 
@@ -389,7 +389,7 @@ JOKER CONSTANT IPv6len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "net.IPv6len"}
   IPv6len)
 
@@ -397,7 +397,7 @@ JOKER VARIABLE DefaultResolver from net/lookup.go:
 (def
   ^{:doc "DefaultResolver is the resolver used by the package-level Lookup\nfunctions and by Dialers without a specified Resolver.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.DefaultResolver"}
   DefaultResolver)
 
@@ -405,7 +405,7 @@ JOKER VARIABLE ErrWriteToConnected from net/net.go:
 (def
   ^{:doc "Various errors contained in OpError.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.ErrWriteToConnected"}
   ErrWriteToConnected)
 
@@ -413,7 +413,7 @@ JOKER VARIABLE IPv4allrouter from net/ip.go:
 (def
   ^{:doc "all routers\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv4allrouter"}
   IPv4allrouter)
 
@@ -421,7 +421,7 @@ JOKER VARIABLE IPv4allsys from net/ip.go:
 (def
   ^{:doc "all systems\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv4allsys"}
   IPv4allsys)
 
@@ -429,7 +429,7 @@ JOKER VARIABLE IPv4bcast from net/ip.go:
 (def
   ^{:doc "limited broadcast\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv4bcast"}
   IPv4bcast)
 
@@ -437,7 +437,7 @@ JOKER VARIABLE IPv4zero from net/ip.go:
 (def
   ^{:doc "all zeros\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv4zero"}
   IPv4zero)
 
@@ -445,7 +445,7 @@ JOKER VARIABLE IPv6interfacelocalallnodes from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6interfacelocalallnodes"}
   IPv6interfacelocalallnodes)
 
@@ -453,7 +453,7 @@ JOKER VARIABLE IPv6linklocalallnodes from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6linklocalallnodes"}
   IPv6linklocalallnodes)
 
@@ -461,7 +461,7 @@ JOKER VARIABLE IPv6linklocalallrouters from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6linklocalallrouters"}
   IPv6linklocalallrouters)
 
@@ -469,7 +469,7 @@ JOKER VARIABLE IPv6loopback from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6loopback"}
   IPv6loopback)
 
@@ -477,7 +477,7 @@ JOKER VARIABLE IPv6unspecified from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6unspecified"}
   IPv6unspecified)
 
@@ -485,7 +485,7 @@ JOKER VARIABLE IPv6zero from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "net.IPv6zero"}
   IPv6zero)
 
@@ -1035,11 +1035,187 @@ JOKER FUNC net.SplitHostPort from net/ipsock.go:
    :go "__splitHostPort(__hostport)"}
   [^String __hostport])
 
+JOKER TYPE *go.std.net/AddrError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_AddrError"}
+  *AddrError)
+
+JOKER TYPE *go.std.net/DNSConfigError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_DNSConfigError"}
+  *DNSConfigError)
+
+JOKER TYPE *go.std.net/DNSError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_DNSError"}
+  *DNSError)
+
+JOKER TYPE *go.std.net/Dialer:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Dialer"}
+  *Dialer)
+
+JOKER TYPE go.std.net/Flags:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Flags"}
+  Flags)
+
+JOKER TYPE go.std.net/HardwareAddr:
+(def
+  ^{:doc "A HardwareAddr represents a physical hardware address.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_HardwareAddr"}
+  HardwareAddr)
+
+JOKER TYPE go.std.net/IP:
+(def
+  ^{:doc "An IP is a single IP address, a slice of bytes.\nFunctions in this package accept either 4-byte (IPv4)\nor 16-byte (IPv6) slices as input.\n\nNote that in this documentation, referring to an\nIP address as an IPv4 address or an IPv6 address\nis a semantic property of the address, not just the\nlength of the byte slice: a 16-byte slice can still\nbe an IPv4 address.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_IP"}
+  IP)
+
+JOKER TYPE *go.std.net/IPAddr:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_IPAddr"}
+  *IPAddr)
+
+JOKER TYPE go.std.net/IPMask:
+(def
+  ^{:doc "An IP mask is an IP address.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_IPMask"}
+  IPMask)
+
+JOKER TYPE *go.std.net/IPNet:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_IPNet"}
+  *IPNet)
+
+JOKER TYPE *go.std.net/Interface:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Interface"}
+  *Interface)
+
+JOKER TYPE go.std.net/InvalidAddrError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_InvalidAddrError"}
+  InvalidAddrError)
+
+JOKER TYPE *go.std.net/OpError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_OpError"}
+  *OpError)
+
+JOKER TYPE *go.std.net/ParseError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_ParseError"}
+  *ParseError)
+
+JOKER TYPE *go.std.net/TCPAddr:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_TCPAddr"}
+  *TCPAddr)
+
+JOKER TYPE *go.std.net/TCPConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_TCPConn"}
+  *TCPConn)
+
+JOKER TYPE *go.std.net/TCPListener:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_TCPListener"}
+  *TCPListener)
+
+JOKER TYPE *go.std.net/UDPAddr:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_UDPAddr"}
+  *UDPAddr)
+
+JOKER TYPE *go.std.net/UnixAddr:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_UnixAddr"}
+  *UnixAddr)
+
+JOKER TYPE *go.std.net/UnixConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_UnixConn"}
+  *UnixConn)
+
+JOKER TYPE *go.std.net/UnixListener:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_UnixListener"}
+  *UnixListener)
+
+JOKER TYPE go.std.net/UnknownNetworkError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_UnknownNetworkError"}
+  UnknownNetworkError)
+
 JOKER CONSTANT DefaultMaxHeaderBytes from net/http/server.go:
 (def
   ^{:doc "1 MB\n"
     :added "1.0"
-    :tag Number
+    :tag "Number"
     :go "int64(http.DefaultMaxHeaderBytes)"}
   DefaultMaxHeaderBytes)
 
@@ -1047,7 +1223,7 @@ JOKER CONSTANT DefaultMaxIdleConnsPerHost from net/http/transport.go:
 (def
   ^{:doc "DefaultMaxIdleConnsPerHost is the default value of Transport's\nMaxIdleConnsPerHost.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.DefaultMaxIdleConnsPerHost"}
   DefaultMaxIdleConnsPerHost)
 
@@ -1055,7 +1231,7 @@ JOKER CONSTANT MethodConnect from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodConnect"}
   MethodConnect)
 
@@ -1063,7 +1239,7 @@ JOKER CONSTANT MethodDelete from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodDelete"}
   MethodDelete)
 
@@ -1071,7 +1247,7 @@ JOKER CONSTANT MethodGet from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodGet"}
   MethodGet)
 
@@ -1079,7 +1255,7 @@ JOKER CONSTANT MethodHead from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodHead"}
   MethodHead)
 
@@ -1087,7 +1263,7 @@ JOKER CONSTANT MethodOptions from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodOptions"}
   MethodOptions)
 
@@ -1095,7 +1271,7 @@ JOKER CONSTANT MethodPatch from net/http/method.go:
 (def
   ^{:doc "RFC 5789\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodPatch"}
   MethodPatch)
 
@@ -1103,7 +1279,7 @@ JOKER CONSTANT MethodPost from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodPost"}
   MethodPost)
 
@@ -1111,7 +1287,7 @@ JOKER CONSTANT MethodPut from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodPut"}
   MethodPut)
 
@@ -1119,7 +1295,7 @@ JOKER CONSTANT MethodTrace from net/http/method.go:
 (def
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.MethodTrace"}
   MethodTrace)
 
@@ -1127,7 +1303,7 @@ JOKER CONSTANT SameSiteDefaultMode from net/http/cookie.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.SameSiteDefaultMode)"}
   SameSiteDefaultMode)
 
@@ -1135,7 +1311,7 @@ JOKER CONSTANT SameSiteLaxMode from net/http/cookie.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.SameSiteLaxMode)"}
   SameSiteLaxMode)
 
@@ -1143,7 +1319,7 @@ JOKER CONSTANT SameSiteStrictMode from net/http/cookie.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.SameSiteStrictMode)"}
   SameSiteStrictMode)
 
@@ -1151,7 +1327,7 @@ JOKER CONSTANT StateActive from net/http/server.go:
 (def
   ^{:doc "StateActive represents a connection that has read 1 or more\nbytes of a request. The Server.ConnState hook for\nStateActive fires before the request has entered a handler\nand doesn't fire again until the request has been\nhandled. After the request is handled, the state\ntransitions to StateClosed, StateHijacked, or StateIdle.\nFor HTTP/2, StateActive fires on the transition from zero\nto one active request, and only transitions away once all\nactive requests are complete. That means that ConnState\ncannot be used to do per-request work; ConnState only notes\nthe overall state of the connection.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.StateActive)"}
   StateActive)
 
@@ -1159,7 +1335,7 @@ JOKER CONSTANT StateClosed from net/http/server.go:
 (def
   ^{:doc "StateClosed represents a closed connection.\nThis is a terminal state. Hijacked connections do not\ntransition to StateClosed.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.StateClosed)"}
   StateClosed)
 
@@ -1167,7 +1343,7 @@ JOKER CONSTANT StateHijacked from net/http/server.go:
 (def
   ^{:doc "StateHijacked represents a hijacked connection.\nThis is a terminal state. It does not transition to StateClosed.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.StateHijacked)"}
   StateHijacked)
 
@@ -1175,7 +1351,7 @@ JOKER CONSTANT StateIdle from net/http/server.go:
 (def
   ^{:doc "StateIdle represents a connection that has finished\nhandling a request and is in the keep-alive state, waiting\nfor a new request. Connections transition from StateIdle\nto either StateActive or StateClosed.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.StateIdle)"}
   StateIdle)
 
@@ -1183,7 +1359,7 @@ JOKER CONSTANT StateNew from net/http/server.go:
 (def
   ^{:doc "StateNew represents a new connection that is expected to\nsend a request immediately. Connections begin at this\nstate and then transition to either StateActive or\nStateClosed.\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "int(http.StateNew)"}
   StateNew)
 
@@ -1191,7 +1367,7 @@ JOKER CONSTANT StatusAccepted from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusAccepted"}
   StatusAccepted)
 
@@ -1199,7 +1375,7 @@ JOKER CONSTANT StatusAlreadyReported from net/http/status.go:
 (def
   ^{:doc "RFC 5842, 7.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusAlreadyReported"}
   StatusAlreadyReported)
 
@@ -1207,7 +1383,7 @@ JOKER CONSTANT StatusBadGateway from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusBadGateway"}
   StatusBadGateway)
 
@@ -1215,7 +1391,7 @@ JOKER CONSTANT StatusBadRequest from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusBadRequest"}
   StatusBadRequest)
 
@@ -1223,7 +1399,7 @@ JOKER CONSTANT StatusConflict from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.8\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusConflict"}
   StatusConflict)
 
@@ -1231,7 +1407,7 @@ JOKER CONSTANT StatusContinue from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.2.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusContinue"}
   StatusContinue)
 
@@ -1239,7 +1415,7 @@ JOKER CONSTANT StatusCreated from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusCreated"}
   StatusCreated)
 
@@ -1247,7 +1423,7 @@ JOKER CONSTANT StatusExpectationFailed from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.14\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusExpectationFailed"}
   StatusExpectationFailed)
 
@@ -1255,7 +1431,7 @@ JOKER CONSTANT StatusFailedDependency from net/http/status.go:
 (def
   ^{:doc "RFC 4918, 11.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusFailedDependency"}
   StatusFailedDependency)
 
@@ -1263,7 +1439,7 @@ JOKER CONSTANT StatusForbidden from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusForbidden"}
   StatusForbidden)
 
@@ -1271,7 +1447,7 @@ JOKER CONSTANT StatusFound from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusFound"}
   StatusFound)
 
@@ -1279,7 +1455,7 @@ JOKER CONSTANT StatusGatewayTimeout from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusGatewayTimeout"}
   StatusGatewayTimeout)
 
@@ -1287,7 +1463,7 @@ JOKER CONSTANT StatusGone from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.9\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusGone"}
   StatusGone)
 
@@ -1295,7 +1471,7 @@ JOKER CONSTANT StatusHTTPVersionNotSupported from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.6\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusHTTPVersionNotSupported"}
   StatusHTTPVersionNotSupported)
 
@@ -1303,7 +1479,7 @@ JOKER CONSTANT StatusIMUsed from net/http/status.go:
 (def
   ^{:doc "RFC 3229, 10.4.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusIMUsed"}
   StatusIMUsed)
 
@@ -1311,7 +1487,7 @@ JOKER CONSTANT StatusInsufficientStorage from net/http/status.go:
 (def
   ^{:doc "RFC 4918, 11.5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusInsufficientStorage"}
   StatusInsufficientStorage)
 
@@ -1319,7 +1495,7 @@ JOKER CONSTANT StatusInternalServerError from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusInternalServerError"}
   StatusInternalServerError)
 
@@ -1327,7 +1503,7 @@ JOKER CONSTANT StatusLengthRequired from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.10\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusLengthRequired"}
   StatusLengthRequired)
 
@@ -1335,7 +1511,7 @@ JOKER CONSTANT StatusLocked from net/http/status.go:
 (def
   ^{:doc "RFC 4918, 11.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusLocked"}
   StatusLocked)
 
@@ -1343,7 +1519,7 @@ JOKER CONSTANT StatusLoopDetected from net/http/status.go:
 (def
   ^{:doc "RFC 5842, 7.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusLoopDetected"}
   StatusLoopDetected)
 
@@ -1351,7 +1527,7 @@ JOKER CONSTANT StatusMethodNotAllowed from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusMethodNotAllowed"}
   StatusMethodNotAllowed)
 
@@ -1359,7 +1535,7 @@ JOKER CONSTANT StatusMisdirectedRequest from net/http/status.go:
 (def
   ^{:doc "RFC 7540, 9.1.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusMisdirectedRequest"}
   StatusMisdirectedRequest)
 
@@ -1367,7 +1543,7 @@ JOKER CONSTANT StatusMovedPermanently from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusMovedPermanently"}
   StatusMovedPermanently)
 
@@ -1375,7 +1551,7 @@ JOKER CONSTANT StatusMultiStatus from net/http/status.go:
 (def
   ^{:doc "RFC 4918, 11.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusMultiStatus"}
   StatusMultiStatus)
 
@@ -1383,7 +1559,7 @@ JOKER CONSTANT StatusMultipleChoices from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusMultipleChoices"}
   StatusMultipleChoices)
 
@@ -1391,7 +1567,7 @@ JOKER CONSTANT StatusNetworkAuthenticationRequired from net/http/status.go:
 (def
   ^{:doc "RFC 6585, 6\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNetworkAuthenticationRequired"}
   StatusNetworkAuthenticationRequired)
 
@@ -1399,7 +1575,7 @@ JOKER CONSTANT StatusNoContent from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNoContent"}
   StatusNoContent)
 
@@ -1407,7 +1583,7 @@ JOKER CONSTANT StatusNonAuthoritativeInfo from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNonAuthoritativeInfo"}
   StatusNonAuthoritativeInfo)
 
@@ -1415,7 +1591,7 @@ JOKER CONSTANT StatusNotAcceptable from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.6\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNotAcceptable"}
   StatusNotAcceptable)
 
@@ -1423,7 +1599,7 @@ JOKER CONSTANT StatusNotExtended from net/http/status.go:
 (def
   ^{:doc "RFC 2774, 7\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNotExtended"}
   StatusNotExtended)
 
@@ -1431,7 +1607,7 @@ JOKER CONSTANT StatusNotFound from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNotFound"}
   StatusNotFound)
 
@@ -1439,7 +1615,7 @@ JOKER CONSTANT StatusNotImplemented from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNotImplemented"}
   StatusNotImplemented)
 
@@ -1447,7 +1623,7 @@ JOKER CONSTANT StatusNotModified from net/http/status.go:
 (def
   ^{:doc "RFC 7232, 4.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusNotModified"}
   StatusNotModified)
 
@@ -1455,7 +1631,7 @@ JOKER CONSTANT StatusOK from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusOK"}
   StatusOK)
 
@@ -1463,7 +1639,7 @@ JOKER CONSTANT StatusPartialContent from net/http/status.go:
 (def
   ^{:doc "RFC 7233, 4.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusPartialContent"}
   StatusPartialContent)
 
@@ -1471,7 +1647,7 @@ JOKER CONSTANT StatusPaymentRequired from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusPaymentRequired"}
   StatusPaymentRequired)
 
@@ -1479,7 +1655,7 @@ JOKER CONSTANT StatusPermanentRedirect from net/http/status.go:
 (def
   ^{:doc "RFC 7538, 3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusPermanentRedirect"}
   StatusPermanentRedirect)
 
@@ -1487,7 +1663,7 @@ JOKER CONSTANT StatusPreconditionFailed from net/http/status.go:
 (def
   ^{:doc "RFC 7232, 4.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusPreconditionFailed"}
   StatusPreconditionFailed)
 
@@ -1495,7 +1671,7 @@ JOKER CONSTANT StatusPreconditionRequired from net/http/status.go:
 (def
   ^{:doc "RFC 6585, 3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusPreconditionRequired"}
   StatusPreconditionRequired)
 
@@ -1503,7 +1679,7 @@ JOKER CONSTANT StatusProcessing from net/http/status.go:
 (def
   ^{:doc "RFC 2518, 10.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusProcessing"}
   StatusProcessing)
 
@@ -1511,7 +1687,7 @@ JOKER CONSTANT StatusProxyAuthRequired from net/http/status.go:
 (def
   ^{:doc "RFC 7235, 3.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusProxyAuthRequired"}
   StatusProxyAuthRequired)
 
@@ -1519,7 +1695,7 @@ JOKER CONSTANT StatusRequestEntityTooLarge from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.11\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusRequestEntityTooLarge"}
   StatusRequestEntityTooLarge)
 
@@ -1527,7 +1703,7 @@ JOKER CONSTANT StatusRequestHeaderFieldsTooLarge from net/http/status.go:
 (def
   ^{:doc "RFC 6585, 5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusRequestHeaderFieldsTooLarge"}
   StatusRequestHeaderFieldsTooLarge)
 
@@ -1535,7 +1711,7 @@ JOKER CONSTANT StatusRequestTimeout from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.7\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusRequestTimeout"}
   StatusRequestTimeout)
 
@@ -1543,7 +1719,7 @@ JOKER CONSTANT StatusRequestURITooLong from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.12\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusRequestURITooLong"}
   StatusRequestURITooLong)
 
@@ -1551,7 +1727,7 @@ JOKER CONSTANT StatusRequestedRangeNotSatisfiable from net/http/status.go:
 (def
   ^{:doc "RFC 7233, 4.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusRequestedRangeNotSatisfiable"}
   StatusRequestedRangeNotSatisfiable)
 
@@ -1559,7 +1735,7 @@ JOKER CONSTANT StatusResetContent from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.3.6\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusResetContent"}
   StatusResetContent)
 
@@ -1567,7 +1743,7 @@ JOKER CONSTANT StatusSeeOther from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusSeeOther"}
   StatusSeeOther)
 
@@ -1575,7 +1751,7 @@ JOKER CONSTANT StatusServiceUnavailable from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.6.4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusServiceUnavailable"}
   StatusServiceUnavailable)
 
@@ -1583,7 +1759,7 @@ JOKER CONSTANT StatusSwitchingProtocols from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.2.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusSwitchingProtocols"}
   StatusSwitchingProtocols)
 
@@ -1591,7 +1767,7 @@ JOKER CONSTANT StatusTeapot from net/http/status.go:
 (def
   ^{:doc "RFC 7168, 2.3.3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusTeapot"}
   StatusTeapot)
 
@@ -1599,7 +1775,7 @@ JOKER CONSTANT StatusTemporaryRedirect from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.7\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusTemporaryRedirect"}
   StatusTemporaryRedirect)
 
@@ -1607,7 +1783,7 @@ JOKER CONSTANT StatusTooManyRequests from net/http/status.go:
 (def
   ^{:doc "RFC 6585, 4\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusTooManyRequests"}
   StatusTooManyRequests)
 
@@ -1615,7 +1791,7 @@ JOKER CONSTANT StatusUnauthorized from net/http/status.go:
 (def
   ^{:doc "RFC 7235, 3.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUnauthorized"}
   StatusUnauthorized)
 
@@ -1623,7 +1799,7 @@ JOKER CONSTANT StatusUnavailableForLegalReasons from net/http/status.go:
 (def
   ^{:doc "RFC 7725, 3\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUnavailableForLegalReasons"}
   StatusUnavailableForLegalReasons)
 
@@ -1631,7 +1807,7 @@ JOKER CONSTANT StatusUnprocessableEntity from net/http/status.go:
 (def
   ^{:doc "RFC 4918, 11.2\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUnprocessableEntity"}
   StatusUnprocessableEntity)
 
@@ -1639,7 +1815,7 @@ JOKER CONSTANT StatusUnsupportedMediaType from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.13\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUnsupportedMediaType"}
   StatusUnsupportedMediaType)
 
@@ -1647,7 +1823,7 @@ JOKER CONSTANT StatusUpgradeRequired from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.5.15\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUpgradeRequired"}
   StatusUpgradeRequired)
 
@@ -1655,7 +1831,7 @@ JOKER CONSTANT StatusUseProxy from net/http/status.go:
 (def
   ^{:doc "RFC 7231, 6.4.5\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusUseProxy"}
   StatusUseProxy)
 
@@ -1663,7 +1839,7 @@ JOKER CONSTANT StatusVariantAlsoNegotiates from net/http/status.go:
 (def
   ^{:doc "RFC 2295, 8.1\n"
     :added "1.0"
-    :tag Int
+    :tag "Int"
     :go "http.StatusVariantAlsoNegotiates"}
   StatusVariantAlsoNegotiates)
 
@@ -1671,7 +1847,7 @@ JOKER CONSTANT TimeFormat from net/http/server.go:
 (def
   ^{:doc "TimeFormat is the time format to use when generating times in HTTP\nheaders. It is like time.RFC1123 but hard-codes GMT as the time\nzone. The time being formatted must be in UTC for Format to\ngenerate the correct format.\n\nFor parsing this time format, see ParseTime.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.TimeFormat"}
   TimeFormat)
 
@@ -1679,7 +1855,7 @@ JOKER CONSTANT TrailerPrefix from net/http/server.go:
 (def
   ^{:doc "TrailerPrefix is a magic prefix for ResponseWriter.Header map keys\nthat, if present, signals that the map entry is actually for\nthe response trailers, and not the response headers. The prefix\nis stripped after the ServeHTTP call finishes and the values are\nsent in the trailers.\n\nThis mechanism is intended only for trailers that are not known\nprior to the headers being written. If the set of trailers is fixed\nor known before the header is written, the normal Go trailers mechanism\nis preferred:\n   https://golang.org/pkg/net/http/#ResponseWriter\n   https://golang.org/pkg/net/http/#example_ResponseWriter_trailers\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "http.TrailerPrefix"}
   TrailerPrefix)
 
@@ -1687,7 +1863,7 @@ JOKER VARIABLE DefaultClient from net/http/client.go:
 (def
   ^{:doc "DefaultClient is the default Client and is used by Get, Head, and Post.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.DefaultClient"}
   DefaultClient)
 
@@ -1695,7 +1871,7 @@ JOKER VARIABLE DefaultServeMux from net/http/server.go:
 (def
   ^{:doc "DefaultServeMux is the default ServeMux used by Serve.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.DefaultServeMux"}
   DefaultServeMux)
 
@@ -1703,7 +1879,7 @@ JOKER VARIABLE DefaultTransport from net/http/transport.go:
 (def
   ^{:doc "DefaultTransport is the default implementation of Transport and is\nused by DefaultClient. It establishes network connections as needed\nand caches them for reuse by subsequent calls. It uses HTTP proxies\nas directed by the $HTTP_PROXY and $NO_PROXY (or $http_proxy and\n$no_proxy) environment variables.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.DefaultTransport"}
   DefaultTransport)
 
@@ -1711,7 +1887,7 @@ JOKER VARIABLE ErrAbortHandler from net/http/server.go:
 (def
   ^{:doc "ErrAbortHandler is a sentinel panic value to abort a handler.\nWhile any panic from ServeHTTP aborts the response to the client,\npanicking with ErrAbortHandler also suppresses logging of a stack\ntrace to the server's error log.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrAbortHandler"}
   ErrAbortHandler)
 
@@ -1719,7 +1895,7 @@ JOKER VARIABLE ErrBodyNotAllowed from net/http/server.go:
 (def
   ^{:doc "ErrBodyNotAllowed is returned by ResponseWriter.Write calls\nwhen the HTTP method or response code does not permit a\nbody.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrBodyNotAllowed"}
   ErrBodyNotAllowed)
 
@@ -1727,7 +1903,7 @@ JOKER VARIABLE ErrBodyReadAfterClose from net/http/transfer.go:
 (def
   ^{:doc "ErrBodyReadAfterClose is returned when reading a Request or Response\nBody after the body has been closed. This typically happens when the body is\nread after an HTTP Handler calls WriteHeader or Write on its\nResponseWriter.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrBodyReadAfterClose"}
   ErrBodyReadAfterClose)
 
@@ -1735,7 +1911,7 @@ JOKER VARIABLE ErrContentLength from net/http/server.go:
 (def
   ^{:doc "ErrContentLength is returned by ResponseWriter.Write calls\nwhen a Handler set a Content-Length response header with a\ndeclared size and then attempted to write more bytes than\ndeclared.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrContentLength"}
   ErrContentLength)
 
@@ -1743,7 +1919,7 @@ JOKER VARIABLE ErrHandlerTimeout from net/http/server.go:
 (def
   ^{:doc "ErrHandlerTimeout is returned on ResponseWriter Write calls\nin handlers which have timed out.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrHandlerTimeout"}
   ErrHandlerTimeout)
 
@@ -1751,7 +1927,7 @@ JOKER VARIABLE ErrHeaderTooLong from net/http/request.go:
 (def
   ^{:doc "Deprecated: ErrHeaderTooLong is no longer returned by\nanything in the net/http package. Callers should not\ncompare errors against this variable.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrHeaderTooLong"}
   ErrHeaderTooLong)
 
@@ -1759,7 +1935,7 @@ JOKER VARIABLE ErrHijacked from net/http/server.go:
 (def
   ^{:doc "ErrHijacked is returned by ResponseWriter.Write calls when\nthe underlying connection has been hijacked using the\nHijacker interface. A zero-byte write on a hijacked\nconnection will return ErrHijacked without any other side\neffects.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrHijacked"}
   ErrHijacked)
 
@@ -1767,7 +1943,7 @@ JOKER VARIABLE ErrLineTooLong from net/http/transfer.go:
 (def
   ^{:doc "ErrLineTooLong is returned when reading request or response bodies\nwith malformed chunked encoding.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrLineTooLong"}
   ErrLineTooLong)
 
@@ -1775,7 +1951,7 @@ JOKER VARIABLE ErrMissingBoundary from net/http/request.go:
 (def
   ^{:doc "ErrMissingBoundary is returned by Request.MultipartReader when the\nrequest's Content-Type does not include a \"boundary\" parameter.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrMissingBoundary"}
   ErrMissingBoundary)
 
@@ -1783,7 +1959,7 @@ JOKER VARIABLE ErrMissingContentLength from net/http/request.go:
 (def
   ^{:doc "Deprecated: ErrMissingContentLength is no longer returned by\nanything in the net/http package. Callers should not\ncompare errors against this variable.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrMissingContentLength"}
   ErrMissingContentLength)
 
@@ -1791,7 +1967,7 @@ JOKER VARIABLE ErrMissingFile from net/http/request.go:
 (def
   ^{:doc "ErrMissingFile is returned by FormFile when the provided file field name\nis either not present in the request or not a file field.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrMissingFile"}
   ErrMissingFile)
 
@@ -1799,7 +1975,7 @@ JOKER VARIABLE ErrNoCookie from net/http/request.go:
 (def
   ^{:doc "ErrNoCookie is returned by Request's Cookie method when a cookie is not found.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrNoCookie"}
   ErrNoCookie)
 
@@ -1807,7 +1983,7 @@ JOKER VARIABLE ErrNoLocation from net/http/response.go:
 (def
   ^{:doc "ErrNoLocation is returned by Response's Location method\nwhen no Location header is present.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrNoLocation"}
   ErrNoLocation)
 
@@ -1815,7 +1991,7 @@ JOKER VARIABLE ErrNotMultipart from net/http/request.go:
 (def
   ^{:doc "ErrNotMultipart is returned by Request.MultipartReader when the\nrequest's Content-Type is not multipart/form-data.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrNotMultipart"}
   ErrNotMultipart)
 
@@ -1823,7 +1999,7 @@ JOKER VARIABLE ErrNotSupported from net/http/request.go:
 (def
   ^{:doc "ErrNotSupported is returned by the Push method of Pusher\nimplementations to indicate that HTTP/2 Push support is not\navailable.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrNotSupported"}
   ErrNotSupported)
 
@@ -1831,7 +2007,7 @@ JOKER VARIABLE ErrServerClosed from net/http/server.go:
 (def
   ^{:doc "ErrServerClosed is returned by the Server's Serve, ServeTLS, ListenAndServe,\nand ListenAndServeTLS methods after a call to Shutdown or Close.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrServerClosed"}
   ErrServerClosed)
 
@@ -1839,7 +2015,7 @@ JOKER VARIABLE ErrShortBody from net/http/request.go:
 (def
   ^{:doc "Deprecated: ErrShortBody is no longer returned by\nanything in the net/http package. Callers should not\ncompare errors against this variable.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrShortBody"}
   ErrShortBody)
 
@@ -1847,7 +2023,7 @@ JOKER VARIABLE ErrSkipAltProtocol from net/http/transport.go:
 (def
   ^{:doc "ErrSkipAltProtocol is a sentinel error value defined by Transport.RegisterProtocol.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrSkipAltProtocol"}
   ErrSkipAltProtocol)
 
@@ -1855,7 +2031,7 @@ JOKER VARIABLE ErrUnexpectedTrailer from net/http/request.go:
 (def
   ^{:doc "ErrUnexpectedTrailer is returned by the Transport when a server\nreplies with a Trailer header, but without a chunked reply.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrUnexpectedTrailer"}
   ErrUnexpectedTrailer)
 
@@ -1863,7 +2039,7 @@ JOKER VARIABLE ErrUseLastResponse from net/http/client.go:
 (def
   ^{:doc "ErrUseLastResponse can be returned by Client.CheckRedirect hooks to\ncontrol how redirects are processed. If returned, the next request\nis not sent and the most recent response is returned with its body\nunclosed.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrUseLastResponse"}
   ErrUseLastResponse)
 
@@ -1871,7 +2047,7 @@ JOKER VARIABLE ErrWriteAfterFlush from net/http/server.go:
 (def
   ^{:doc "Deprecated: ErrWriteAfterFlush is no longer returned by\nanything in the net/http package. Callers should not\ncompare errors against this variable.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ErrWriteAfterFlush"}
   ErrWriteAfterFlush)
 
@@ -1879,7 +2055,7 @@ JOKER VARIABLE LocalAddrContextKey from net/http/server.go:
 (def
   ^{:doc "LocalAddrContextKey is a context key. It can be used in\nHTTP handlers with context.WithValue to access the local\naddress the connection arrived on.\nThe associated value will be of type net.Addr.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.LocalAddrContextKey"}
   LocalAddrContextKey)
 
@@ -1887,7 +2063,7 @@ JOKER VARIABLE NoBody from net/http/http.go:
 (def
   ^{:doc "NoBody is an io.ReadCloser with no bytes. Read always returns EOF\nand Close always returns nil. It can be used in an outgoing client\nrequest to explicitly signal that a request has zero bytes.\nAn alternative, however, is to simply set Request.Body to nil.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.NoBody"}
   NoBody)
 
@@ -1895,7 +2071,7 @@ JOKER VARIABLE ServerContextKey from net/http/server.go:
 (def
   ^{:doc "ServerContextKey is a context key. It can be used in HTTP\nhandlers with context.WithValue to access the server that\nstarted the handler. The associated value will be of\ntype *Server.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "http.ServerContextKey"}
   ServerContextKey)
 
@@ -2305,6 +2481,78 @@ JOKER FUNC net/http.TimeoutHandler from net/http/server.go:
 ;;    :go "__timeoutHandler(*__h, *__dt, __msg)"}
 ;;   [^http/Handler __h, ^time/Duration __dt, ^String __msg])
 
+JOKER TYPE *go.std.net.http/Client:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Client"}
+  *Client)
+
+JOKER TYPE go.std.net.http/ConnState:
+(def
+  ^{:doc "A ConnState represents the state of a client connection to a server.\nIt's used by the optional Server.ConnState hook.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_ConnState"}
+  ConnState)
+
+JOKER TYPE *go.std.net.http/Cookie:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Cookie"}
+  *Cookie)
+
+JOKER TYPE go.std.net.http/Dir:
+(def
+  ^{:doc "A Dir implements FileSystem using the native file system restricted to a\nspecific directory tree.\n\nWhile the FileSystem.Open method takes '/'-separated paths, a Dir's string\nvalue is a filename on the native file system, not a URL, so it is separated\nby filepath.Separator, which isn't necessarily '/'.\n\nNote that Dir will allow access to files and directories starting with a\nperiod, which could expose sensitive directories like a .git directory or\nsensitive files like .htpasswd. To exclude files with a leading period,\nremove the files/directories from the server or create a custom FileSystem\nimplementation.\n\nAn empty Dir is treated as \".\".\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Dir"}
+  Dir)
+
+JOKER TYPE go.std.net.http/Header:
+(def
+  ^{:doc "A Header represents the key-value pairs in an HTTP header.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Header"}
+  Header)
+
+JOKER TYPE *go.std.net.http/ProtocolError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_ProtocolError"}
+  *ProtocolError)
+
+JOKER TYPE *go.std.net.http/Request:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Request"}
+  *Request)
+
+JOKER TYPE *go.std.net.http/Response:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Response"}
+  *Response)
+
+JOKER TYPE *go.std.net.http/Server:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Server"}
+  *Server)
+
 JOKER TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 ;; (defn ^"GoObject" Handler.
 ;;   "Constructor for cgi.Handler"
@@ -2365,7 +2613,7 @@ JOKER VARIABLE ErrConnClosed from net/http/fcgi/child.go:
 (def
   ^{:doc "ErrConnClosed is returned by Read when a handler attempts to read the body of\na request after the connection to the web server has been closed.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "fcgi.ErrConnClosed"}
   ErrConnClosed)
 
@@ -2373,7 +2621,7 @@ JOKER VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
 (def
   ^{:doc "ErrRequestAborted is returned by Read when a handler attempts to read the\nbody of a request that has been aborted by the web server.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "fcgi.ErrRequestAborted"}
   ErrRequestAborted)
 
@@ -2395,7 +2643,7 @@ JOKER CONSTANT DefaultRemoteAddr from net/http/httptest/recorder.go:
 (def
   ^{:doc "DefaultRemoteAddr is the default remote address to return in RemoteAddr if\nan explicit DefaultRemoteAddr isn't set on ResponseRecorder.\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "httptest.DefaultRemoteAddr"}
   DefaultRemoteAddr)
 
@@ -2448,6 +2696,22 @@ JOKER FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go
 ;;    :go "__newUnstartedServer(*__handler)"}
 ;;   [^http/Handler __handler])
 
+JOKER TYPE *go.std.net.http.httptest/ResponseRecorder:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_ResponseRecorder"}
+  *ResponseRecorder)
+
+JOKER TYPE *go.std.net.http.httptest/Server:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Server"}
+  *Server)
+
 JOKER FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 ;; (defn ContextClientTrace
 ;;   "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo input arguments: (ctx context.Context)\n\nGo return type: *ClientTrace\n\nJoker input arguments: [^go.std.context/Context ctx]\n\nJoker return type: (atom-of go.std.net.http.httptrace/ClientTrace)"
@@ -2466,7 +2730,7 @@ JOKER VARIABLE ErrClosed from net/http/httputil/persist.go:
 (def
   ^{:doc "Deprecated: No longer used.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "httputil.ErrClosed"}
   ErrClosed)
 
@@ -2474,7 +2738,7 @@ JOKER VARIABLE ErrLineTooLong from net/http/httputil/httputil.go:
 (def
   ^{:doc "ErrLineTooLong is returned when reading malformed chunked data\nwith lines that are too long.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "httputil.ErrLineTooLong"}
   ErrLineTooLong)
 
@@ -2482,7 +2746,7 @@ JOKER VARIABLE ErrPersistEOF from net/http/httputil/persist.go:
 (def
   ^{:doc "Deprecated: No longer used.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "httputil.ErrPersistEOF"}
   ErrPersistEOF)
 
@@ -2490,7 +2754,7 @@ JOKER VARIABLE ErrPipeline from net/http/httputil/persist.go:
 (def
   ^{:doc "Deprecated: No longer used.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "httputil.ErrPipeline"}
   ErrPipeline)
 
@@ -2585,6 +2849,22 @@ JOKER FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/re
 ;;    :go "__newSingleHostReverseProxy(__target)"}
 ;;   [^url/URL __target])
 
+JOKER TYPE *go.std.net.http.httputil/ClientConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_ClientConn"}
+  *ClientConn)
+
+JOKER TYPE *go.std.net.http.httputil/ServerConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_ServerConn"}
+  *ServerConn)
+
 JOKER FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 ;; (defn Cmdline
 ;;   "Cmdline responds with the running program's\ncommand line, with arguments separated by NUL bytes.\nThe package initialization registers it as /debug/pprof/cmdline.\n\nGo input arguments: (w http.ResponseWriter, r *http.Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^(atom-of go.std.net.http/Request) r]"
@@ -2631,7 +2911,7 @@ JOKER VARIABLE ErrHeaderNotPresent from net/mail/message.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "mail.ErrHeaderNotPresent"}
   ErrHeaderNotPresent)
 
@@ -2691,11 +2971,35 @@ JOKER FUNC net/mail.ReadMessage from net/mail/message.go:
 ;;    :go "__readMessage(*__r)"}
 ;;   [^io/Reader __r])
 
+JOKER TYPE *go.std.net.mail/Address:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Address"}
+  *Address)
+
+JOKER TYPE *go.std.net.mail/AddressParser:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_AddressParser"}
+  *AddressParser)
+
+JOKER TYPE go.std.net.mail/Header:
+(def
+  ^{:doc "A Header represents the key-value pairs in a mail message header.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Header"}
+  Header)
+
 JOKER CONSTANT DefaultDebugPath from net/rpc/server.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "rpc.DefaultDebugPath"}
   DefaultDebugPath)
 
@@ -2703,7 +3007,7 @@ JOKER CONSTANT DefaultRPCPath from net/rpc/server.go:
 (def
   ^{:doc "Defaults used by HandleHTTP\n"
     :added "1.0"
-    :tag String
+    :tag "String"
     :go "rpc.DefaultRPCPath"}
   DefaultRPCPath)
 
@@ -2711,7 +3015,7 @@ JOKER VARIABLE DefaultServer from net/rpc/server.go:
 (def
   ^{:doc "DefaultServer is the default instance of *Server.\n"
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "rpc.DefaultServer"}
   DefaultServer)
 
@@ -2719,7 +3023,7 @@ JOKER VARIABLE ErrShutdown from net/rpc/client.go:
 (def
   ^{:doc ""
     :added "1.0"
-    :tag Var
+    :tag "Var"
     :go "rpc.ErrShutdown"}
   ErrShutdown)
 
@@ -2870,6 +3174,30 @@ JOKER FUNC net/rpc.ServeRequest from net/rpc/server.go:
    :go "rpc.ServeRequest(*__codec)"}
   [^rpc/ServerCodec __codec])
 
+JOKER TYPE *go.std.net.rpc/Client:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Client"}
+  *Client)
+
+JOKER TYPE *go.std.net.rpc/Server:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Server"}
+  *Server)
+
+JOKER TYPE go.std.net.rpc/ServerError:
+(def
+  ^{:doc "ServerError represents an error that has been returned from\nthe remote side of the RPC connection.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_ServerError"}
+  ServerError)
+
 JOKER FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 (defn Dial
   "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [(atom-of go.std.net.rpc/Client) Error]"
@@ -2960,6 +3288,14 @@ JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
 ;;   {:added "1.0"
 ;;    :go "smtp.SendMail(__addr, *__a, __from, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfstring(__to)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__msg)))"}
 ;;   [^String __addr, ^smtp/Auth __a, ^String __from, ^Object __to, ^Object __msg])
+
+JOKER TYPE *go.std.net.smtp/Client:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Client"}
+  *Client)
 
 JOKER TYPE net/textproto.Conn from net/textproto/textproto.go:
 (defn ^"GoObject" Conn.
@@ -3058,6 +3394,54 @@ JOKER FUNC net/textproto.TrimString from net/textproto/textproto.go:
   {:added "1.0"
    :go "textproto.TrimString(__s)"}
   [^String __s])
+
+JOKER TYPE *go.std.net.textproto/Conn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Conn"}
+  *Conn)
+
+JOKER TYPE *go.std.net.textproto/Error:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Error"}
+  *Error)
+
+JOKER TYPE go.std.net.textproto/MIMEHeader:
+(def
+  ^{:doc "A MIMEHeader represents a MIME-style header mapping\nkeys to sets of values.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_MIMEHeader"}
+  MIMEHeader)
+
+JOKER TYPE *go.std.net.textproto/Pipeline:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Pipeline"}
+  *Pipeline)
+
+JOKER TYPE go.std.net.textproto/ProtocolError:
+(def
+  ^{:doc "A ProtocolError describes a protocol violation such\nas an invalid response or a hung-up connection.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_ProtocolError"}
+  ProtocolError)
+
+JOKER TYPE *go.std.net.textproto/Reader:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Reader"}
+  *Reader)
 
 JOKER TYPE net/url.Error from net/url/url.go:
 (defn ^"GoObject" Error.
@@ -3163,6 +3547,54 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
   {:added "1.0"
    :go "__userPassword(__username, __password)"}
   [^String __username, ^String __password])
+
+JOKER TYPE *go.std.net.url/Error:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Error"}
+  *Error)
+
+JOKER TYPE go.std.net.url/EscapeError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_EscapeError"}
+  EscapeError)
+
+JOKER TYPE go.std.net.url/InvalidHostError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_InvalidHostError"}
+  InvalidHostError)
+
+JOKER TYPE *go.std.net.url/URL:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_URL"}
+  *URL)
+
+JOKER TYPE *go.std.net.url/Userinfo:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Userinfo"}
+  *Userinfo)
+
+JOKER TYPE go.std.net.url/Values:
+(def
+  ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Values"}
+  Values)
 
 GO TYPE net.Addr from net/net.go:
 func ExtractGoObjectAddr(args []Object, index int) *_net.Addr {
