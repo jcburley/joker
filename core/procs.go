@@ -728,7 +728,7 @@ var procGoTypeOf Proc = func(args []Object) Object {
 		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
 		t = LookupGoType(y) // GoVar's are always pointers to variables
 	default:
-		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar "))
+		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
 	}
 	if t == nil {
 		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %T", x)))
@@ -737,17 +737,17 @@ var procGoTypeOf Proc = func(args []Object) Object {
 }
 
 // Mainly for generate-docs.joke, return information on the Go type itself.
-func goGetTypeInfo(ty *GoType, args []Object) Object {
+func goGetTypeInfo(ty *GoType, arg Object) Object {
 	t := ty.T
 	if t == nil {
 		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
 	}
-	if args[1].Equals(NIL) {
+	if arg.Equals(NIL) {
 		return &GoVar{Value: t.GoType.T}
 	}
-	mi, ok := t.GoType.T.Members[args[1].ToString(false)]
+	mi, ok := t.GoType.T.Members[arg.ToString(false)]
 	if !ok {
-		panic(RT.NewError("Go member not found: " + args[1].ToString(false)))
+		panic(RT.NewError("Go member not found: " + arg.ToString(false)))
 	}
 	if mi.meta == nil {
 		return NIL
@@ -758,10 +758,27 @@ func goGetTypeInfo(ty *GoType, args []Object) Object {
 var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	if ty, ok := args[0].(*GoType); ok {
-		return goGetTypeInfo(ty, args)
+		return goGetTypeInfo(ty, args[1])
 	}
 	o := EnsureGoObject(args, 0)
-	member := ExtractString(args, 1)
+	member := ""
+	switch s := args[1].(type) {
+	case Symbol:
+		member = s.ToString(false)
+	case String:
+		member = s.S
+	default:
+		panic(RT.NewArgTypeError(0, args[1], "Symbol or String"))
+	}
+	if member == "&" {
+		v := reflect.ValueOf(o.O)
+		if v.CanAddr() {
+			return MakeGoObject(v.Addr().Interface())
+		}
+		d := reflect.New(reflect.TypeOf(o.O))
+		reflect.Indirect(d).Set(v)
+		return MakeGoObject(d.Interface())
+	}
 	g := LookupGoType(o.O)
 	if g == nil {
 		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
