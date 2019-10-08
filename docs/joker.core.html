@@ -65,7 +65,7 @@
   <a class="var-type Boolean" href="#*flush-on-newline*">*flush-on-newline*</a>
 </li>
 <li>
-  <a class="var-type IOReader" href="#*in*">*in*</a>
+  <a class="var-type BufferedReader" href="#*in*">*in*</a>
 </li>
 <li>
   <a class="var-type ArrayMap" href="#*joker-version*">*joker-version*</a>
@@ -1575,7 +1575,7 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(Go o m & args)</code></div>
 </pre>
-  <p class="var-docstr">Invokes a receiver for a Go object, returning result if applicable, else nil.</p>
+  <p class="var-docstr">Invokes a receiver (as a symbol or string with its name) for a Go object, returning result if applicable, else nil. NOTE: As a special case, &amp; may be specified instead of a string, in which case the arguments are ignored and a GoObject that wraps a pointer (reference) to (usually a copy of) the original wrapped Go object is returned -- although the GoType of the resulting GoObject might be unsupported; this is in lieu of a proper (ref ...) function.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4488">source</a>
 </li>
 <li>
