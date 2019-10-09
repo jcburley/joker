@@ -227,8 +227,6 @@ func FullTypeNameAsClojure(nsRoot, t string) string {
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
 
-var AlreadySeen = []string{}
-
 func receiverPrefix(src *GoFile, rl []FieldItem) string {
 	res := ""
 	for i, r := range rl {
@@ -270,24 +268,21 @@ func receiverId(src *GoFile, pkgName string, rl []FieldItem) string {
 	return res
 }
 
-// Returns whether any public functions were actually processed.
-func processFuncDecl(gf *GoFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
+func processFuncDecl(gf *GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
 	if Dump {
-		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, filename, fd, fd.Doc)
+		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, FileAt(fd.Pos()), fd, fd.Doc)
 		Print(Fset, fd)
 	}
 	fl := FlattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
 	if v, ok := QualifiedFunctions[fullName]; ok {
-		AlreadySeen = append(AlreadySeen,
-			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
-				fullName, v.SourceFile.Name, filename))
+		AddSortedOutput(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
+			fullName, v.SourceFile.Name, FileAt(fd.Pos())))
 	}
 	rcvrId := receiverId(gf, gf.PkgBaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
 	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
-	return true
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
@@ -720,7 +715,7 @@ func what(constant bool) string {
 	return "Variable"
 }
 
-func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) (processed bool) {
+func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
@@ -780,17 +775,12 @@ func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGro
 			}
 			docString := CommentGroupInQuotes(doc, "", "", "", "")
 			if constant {
-				if processConstantSpec(gf, pkg, valName, valType, val, docString) {
-					processed = true
-				}
+				processConstantSpec(gf, pkg, valName, valType, val, docString)
 			} else {
-				if processVariableSpec(gf, pkg, valName, valType, val, docString) {
-					processed = true
-				}
+				processVariableSpec(gf, pkg, valName, valType, val, docString)
 			}
 		}
 	}
-	return
 }
 
 func IsPrivateType(f *Expr) bool {
@@ -806,37 +796,22 @@ func IsPrivateType(f *Expr) bool {
 	}
 }
 
-// Returns whether any public declarations were actually processed.
-func processDecls(gf *GoFile, pkgDirUnix string, f *File) (processed bool) {
+func processTypes(gf *GoFile, pkgDirUnix string, f *File) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
 		case *GenDecl:
 			switch v.Tok {
 			case token.TYPE:
-				if processTypeSpecs(gf, pkgDirUnix, v.Specs, v.Doc) {
-					processed = true
-				}
-			case token.CONST:
-				if processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, true) {
-					processed = true
-				}
-			case token.VAR:
-				if processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, false) {
-					processed = true
-				}
-			case token.IMPORT: // Ignore these
-			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), WhereAt(v.Pos())))
+				processTypeSpecs(gf, pkgDirUnix, v.Specs, v.Doc)
 			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, WhereAt(v.Pos())))
 		}
 	}
-	return
 }
 
-func processFuncs(gf *GoFile, pkgDirUnix, pathUnix string, f *File) (processed bool) {
+func processOthers(gf *GoFile, pkgDirUnix string, f *File) {
 Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
@@ -855,21 +830,29 @@ Funcs:
 				NumStandalones += 1
 			}
 			NumFunctions += 1
-			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
-				processed = true
-			}
+			processFuncDecl(gf, pkgDirUnix, f, v)
 		case *GenDecl:
+			switch v.Tok {
+			case token.TYPE:
+				// Already processed
+			case token.CONST:
+				processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, true)
+			case token.VAR:
+				processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, false)
+			case token.IMPORT: // Ignore these
+			default:
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), WhereAt(v.Pos())))
+			}
 		}
 	}
-	return
 }
 
-func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *GoFile) {
+func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) {
 	if egf, found := GoFiles[goFilePathUnix]; found {
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.PkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf = &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
+	gf := &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
 	GoFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
@@ -948,7 +931,7 @@ func AddImport(packageImports *PackageImports, local, full string, okToSubstitut
 	return localRef
 }
 
-func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func processPackageFilesMeta(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
@@ -961,28 +944,26 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*FnCodeInfo{}}
 	}
 
-	found := false
-
-	// Must process all types before processing functions, since receivers are defined on types.
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
-		if processDecls(gf, pkgDirUnix, f) {
-			found = true
-		}
+		processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
 	}
+}
 
+func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+	for path, f := range p.Files {
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		gf := GoFiles[goFilePathUnix]
+		processTypes(gf, pkgDirUnix, f)
+	}
+}
+
+func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	// Now process functions.
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := GoFiles[goFilePathUnix]
-		if processFuncs(gf, pkgDirUnix, goFilePathUnix, f) {
-			found = true
-		}
-	}
-
-	if !found {
-		return
+		processOthers(gf, pkgDirUnix, f)
 	}
 }
 
@@ -1119,7 +1100,13 @@ func WalkAllDirs() (error, string) {
 		}
 	}
 	for _, wp := range walkedPackages {
-		processPackage(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
+		processPackageFilesMeta(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
+	}
+	for _, wp := range walkedPackages {
+		processPackageFilesTypes(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
+	}
+	for _, wp := range walkedPackages {
+		processPackageFilesOthers(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
 	}
 	return nil, ""
 }

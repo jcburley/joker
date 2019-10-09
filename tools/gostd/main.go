@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 )
 
@@ -252,11 +251,6 @@ func main() {
 	err, badDir := WalkAllDirs()
 	if err != nil {
 		panic("Error walking directory " + badDir + ": " + fmt.Sprintf("%v", err))
-	}
-
-	sort.Strings(AlreadySeen)
-	for _, a := range AlreadySeen {
-		fmt.Fprintln(os.Stderr, a)
 	}
 
 	SortedConstantInfoMap(GoConstants,
