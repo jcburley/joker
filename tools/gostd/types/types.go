@@ -169,7 +169,7 @@ func (tdi *TypeDefInfo) TypeReflected() string {
 	case *StarExpr:
 		t = "*" + prefix + x.X.(*Ident).Name
 	default:
-		panic(fmt.Sprintf("unrecognized expr %T", x))
+		return ""
 	}
 	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
 }

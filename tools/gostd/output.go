@@ -302,7 +302,16 @@ import (%s
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
-			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", tdi.TypeMappingsName()))
+			tmn := tdi.TypeMappingsName()
+			if tmn != "" {
+				tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
+			}
+			if outputCode {
+				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), tmn)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(tmn)
+			}
 		})
 
 	const initInfoTemplate = `
@@ -319,6 +328,9 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
+			if tmn == "" {
+				return
+			}
 			k1 := tdi.FullName
 			mem := ""
 			SortedFnCodeInfo(v.InitVars[tdi.TypeInfo], // Will always be populated
@@ -330,13 +342,31 @@ import (%s
 `[1:],
 						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.FnDecl.Type.Params))
 				})
-			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
+			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem)
+			if outputCode {
+				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(o)
+			}
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
-			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", tdi.TypeReflected(), tdi.TypeMappingsName()))
+			reflected := tdi.TypeReflected()
+			tmn := tdi.TypeMappingsName()
+			if reflected == "" || tmn == "" {
+				return
+			}
+			o := fmt.Sprintf("\tGoTypes[%s] = &%s\n", reflected, tmn)
+			if outputCode {
+				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(o)
+			}
 		})
+
 	if out != nil {
 		out.WriteString("}\n")
 		if unbuf_out == os.Stdout {
