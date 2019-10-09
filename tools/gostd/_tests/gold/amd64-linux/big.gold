@@ -6924,6 +6924,7 @@ GO INFO FOR TYPE go.std.net/Flags from _tests/big/src/net/interface.go:38:6:
 	info_Flags = GoTypeInfo{Name: "go.std.net/Flags",
 		GoType: &GoType{T: &info_Flags},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", __flags_String, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -6931,6 +6932,7 @@ GO INFO FOR TYPE go.std.net/HardwareAddr from _tests/big/src/net/mac.go:10:6:
 	info_HardwareAddr = GoTypeInfo{Name: "go.std.net/HardwareAddr",
 		GoType: &GoType{T: &info_HardwareAddr},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", __hardwareAddr_String, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -6938,6 +6940,20 @@ GO INFO FOR TYPE go.std.net/IP from _tests/big/src/net/ip.go:32:6:
 	info_IP = GoTypeInfo{Name: "go.std.net/IP",
 		GoType: &GoType{T: &info_IP},
 		Members: GoMembers{
+			"DefaultMask": MakeGoReceiver("DefaultMask", __iP_DefaultMask, "DefaultMask returns the default IP mask for the IP address ip.\nOnly IPv4 addresses have default masks; DefaultMask returns\nnil if ip is not a valid IPv4 address.\n", "1.0", NewVectorFrom()),
+			"Equal": MakeGoReceiver("Equal", __iP_Equal, "Equal reports whether ip and x are the same IP address.\nAn IPv4 address and that same address in IPv6 form are\nconsidered to be equal.\n", "1.0", NewVectorFrom(MakeSymbol("x"))),
+			"IsGlobalUnicast": MakeGoReceiver("IsGlobalUnicast", __iP_IsGlobalUnicast, "IsGlobalUnicast reports whether ip is a global unicast\naddress.\n\nThe identification of global unicast addresses uses address type\nidentification as defined in RFC 1122, RFC 4632 and RFC 4291 with\nthe exception of IPv4 directed broadcast addresses.\nIt returns true even if ip is in IPv4 private address space or\nlocal IPv6 unicast address space.\n", "1.0", NewVectorFrom()),
+			"IsInterfaceLocalMulticast": MakeGoReceiver("IsInterfaceLocalMulticast", __iP_IsInterfaceLocalMulticast, "IsInterfaceLocalMulticast reports whether ip is\nan interface-local multicast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalMulticast": MakeGoReceiver("IsLinkLocalMulticast", __iP_IsLinkLocalMulticast, "IsLinkLocalMulticast reports whether ip is a link-local\nmulticast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalUnicast": MakeGoReceiver("IsLinkLocalUnicast", __iP_IsLinkLocalUnicast, "IsLinkLocalUnicast reports whether ip is a link-local\nunicast address.\n", "1.0", NewVectorFrom()),
+			"IsLoopback": MakeGoReceiver("IsLoopback", __iP_IsLoopback, "IsLoopback reports whether ip is a loopback address.\n", "1.0", NewVectorFrom()),
+			"IsMulticast": MakeGoReceiver("IsMulticast", __iP_IsMulticast, "IsMulticast reports whether ip is a multicast address.\n", "1.0", NewVectorFrom()),
+			"IsUnspecified": MakeGoReceiver("IsUnspecified", __iP_IsUnspecified, "IsUnspecified reports whether ip is an unspecified address, either\nthe IPv4 address \"0.0.0.0\" or the IPv6 address \"::\".\n", "1.0", NewVectorFrom()),
+			"MarshalText": MakeGoReceiver("MarshalText", __iP_MarshalText, "MarshalText implements the encoding.TextMarshaler interface.\nThe encoding is the same as returned by String, with one exception:\nWhen len(ip) is zero, it returns an empty slice.\n", "1.0", NewVectorFrom()),
+			"Mask": MakeGoReceiver("Mask", __iP_Mask, "Mask returns the result of masking the IP address ip with mask.\n", "1.0", NewVectorFrom(MakeSymbol("mask"))),
+			"String": MakeGoReceiver("String", __iP_String, "String returns the string form of the IP address ip.\nIt returns one of 4 forms:\n  - \"<nil>\", if ip has length 0\n  - dotted decimal (\"192.0.2.1\"), if ip is an IPv4 or IP4-mapped IPv6 address\n  - IPv6 (\"2001:db8::1\"), if ip is a valid IPv6 address\n  - the hexadecimal form of ip, without punctuation, if no other cases apply\n", "1.0", NewVectorFrom()),
+			"To16": MakeGoReceiver("To16", __iP_To16, "To16 converts the IP address ip to a 16-byte representation.\nIf ip is not an IP address (it is the wrong length), To16 returns nil.\n", "1.0", NewVectorFrom()),
+			"To4": MakeGoReceiver("To4", __iP_To4, "To4 converts the IPv4 address ip to a 4-byte representation.\nIf ip is not an IPv4 address, To4 returns nil.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -6959,6 +6975,8 @@ GO INFO FOR TYPE go.std.net/IPMask from _tests/big/src/net/ip.go:35:6:
 	info_IPMask = GoTypeInfo{Name: "go.std.net/IPMask",
 		GoType: &GoType{T: &info_IPMask},
 		Members: GoMembers{
+			"Size": MakeGoReceiver("Size", __iPMask_Size, "Size returns the number of leading ones and total bits in the mask.\nIf the mask is not in the canonical form--ones followed by zeros--then\nSize returns 0, 0.\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __iPMask_String, "String returns the hexadecimal form of m, with no punctuation.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -6980,6 +6998,9 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/big/src/net/net.go:545:
 	info_InvalidAddrError = GoTypeInfo{Name: "go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_InvalidAddrError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __invalidAddrError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __invalidAddrError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __invalidAddrError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7106,14 +7127,113 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/big/src/net/net.go:5
 	info_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_UnknownNetworkError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __unknownNetworkError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __unknownNetworkError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __unknownNetworkError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO VECSET FOR TYPE go.std.net/Addr from _tests/big/src/net/net.go:105:6:
+	GoTypes[_reflect.TypeOf((*_net.Addr)(nil)).Elem()] = &info_Addr
+
+GO VECSET FOR TYPE go.std.net/AddrError from _tests/big/src/net/net.go:520:6:
+	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil)).Elem()] = &info_AddrError
+
+GO VECSET FOR TYPE go.std.net/Buffers from _tests/big/src/net/net.go:642:6:
+	GoTypes[_reflect.TypeOf((*_net.Buffers)(nil)).Elem()] = &info_Buffers
+
+GO VECSET FOR TYPE go.std.net/Conn from _tests/big/src/net/net.go:113:6:
+	GoTypes[_reflect.TypeOf((*_net.Conn)(nil)).Elem()] = &info_Conn
+
+GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/big/src/net/net.go:553:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil)).Elem()] = &info_DNSConfigError
+
+GO VECSET FOR TYPE go.std.net/DNSError from _tests/big/src/net/net.go:567:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil)).Elem()] = &info_DNSError
+
+GO VECSET FOR TYPE go.std.net/Dialer from _tests/big/src/net/dial.go:20:6:
+	GoTypes[_reflect.TypeOf((*_net.Dialer)(nil)).Elem()] = &info_Dialer
+
+GO VECSET FOR TYPE go.std.net/Error from _tests/big/src/net/net.go:378:6:
+	GoTypes[_reflect.TypeOf((*_net.Error)(nil)).Elem()] = &info_Error
 
 GO VECSET FOR TYPE go.std.net/Flags from _tests/big/src/net/interface.go:38:6:
 	GoTypes[_reflect.TypeOf((*_net.Flags)(nil)).Elem()] = &info_Flags
 
+GO VECSET FOR TYPE go.std.net/HardwareAddr from _tests/big/src/net/mac.go:10:6:
+	GoTypes[_reflect.TypeOf((*_net.HardwareAddr)(nil)).Elem()] = &info_HardwareAddr
+
+GO VECSET FOR TYPE go.std.net/IP from _tests/big/src/net/ip.go:32:6:
+	GoTypes[_reflect.TypeOf((*_net.IP)(nil)).Elem()] = &info_IP
+
+GO VECSET FOR TYPE go.std.net/IPAddr from _tests/big/src/net/iprawsock.go:31:6:
+	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil)).Elem()] = &info_IPAddr
+
+GO VECSET FOR TYPE go.std.net/IPConn from _tests/big/src/net/iprawsock.go:99:6:
+	GoTypes[_reflect.TypeOf((*_net.IPConn)(nil)).Elem()] = &info_IPConn
+
+GO VECSET FOR TYPE go.std.net/IPMask from _tests/big/src/net/ip.go:35:6:
+	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil)).Elem()] = &info_IPMask
+
+GO VECSET FOR TYPE go.std.net/IPNet from _tests/big/src/net/ip.go:38:6:
+	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil)).Elem()] = &info_IPNet
+
+GO VECSET FOR TYPE go.std.net/Interface from _tests/big/src/net/interface.go:30:6:
+	GoTypes[_reflect.TypeOf((*_net.Interface)(nil)).Elem()] = &info_Interface
+
 GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/big/src/net/net.go:545:6:
 	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &info_InvalidAddrError
+
+GO VECSET FOR TYPE go.std.net/ListenConfig from _tests/big/src/net/dial.go:576:6:
+	GoTypes[_reflect.TypeOf((*_net.ListenConfig)(nil)).Elem()] = &info_ListenConfig
+
+GO VECSET FOR TYPE go.std.net/Listener from _tests/big/src/net/net.go:365:6:
+	GoTypes[_reflect.TypeOf((*_net.Listener)(nil)).Elem()] = &info_Listener
+
+GO VECSET FOR TYPE go.std.net/MX from _tests/big/src/net/dnsclient.go:193:6:
+	GoTypes[_reflect.TypeOf((*_net.MX)(nil)).Elem()] = &info_MX
+
+GO VECSET FOR TYPE go.std.net/NS from _tests/big/src/net/dnsclient.go:215:6:
+	GoTypes[_reflect.TypeOf((*_net.NS)(nil)).Elem()] = &info_NS
+
+GO VECSET FOR TYPE go.std.net/OpError from _tests/big/src/net/net.go:416:6:
+	GoTypes[_reflect.TypeOf((*_net.OpError)(nil)).Elem()] = &info_OpError
+
+GO VECSET FOR TYPE go.std.net/PacketConn from _tests/big/src/net/net.go:303:6:
+	GoTypes[_reflect.TypeOf((*_net.PacketConn)(nil)).Elem()] = &info_PacketConn
+
+GO VECSET FOR TYPE go.std.net/ParseError from _tests/big/src/net/net.go:509:6:
+	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil)).Elem()] = &info_ParseError
+
+GO VECSET FOR TYPE go.std.net/Resolver from _tests/big/src/net/lookup.go:107:6:
+	GoTypes[_reflect.TypeOf((*_net.Resolver)(nil)).Elem()] = &info_Resolver
+
+GO VECSET FOR TYPE go.std.net/SRV from _tests/big/src/net/dnsclient.go:139:6:
+	GoTypes[_reflect.TypeOf((*_net.SRV)(nil)).Elem()] = &info_SRV
+
+GO VECSET FOR TYPE go.std.net/TCPAddr from _tests/big/src/net/tcpsock.go:19:6:
+	GoTypes[_reflect.TypeOf((*_net.TCPAddr)(nil)).Elem()] = &info_TCPAddr
+
+GO VECSET FOR TYPE go.std.net/TCPConn from _tests/big/src/net/tcpsock.go:85:6:
+	GoTypes[_reflect.TypeOf((*_net.TCPConn)(nil)).Elem()] = &info_TCPConn
+
+GO VECSET FOR TYPE go.std.net/TCPListener from _tests/big/src/net/tcpsock.go:225:6:
+	GoTypes[_reflect.TypeOf((*_net.TCPListener)(nil)).Elem()] = &info_TCPListener
+
+GO VECSET FOR TYPE go.std.net/UDPAddr from _tests/big/src/net/udpsock.go:25:6:
+	GoTypes[_reflect.TypeOf((*_net.UDPAddr)(nil)).Elem()] = &info_UDPAddr
+
+GO VECSET FOR TYPE go.std.net/UDPConn from _tests/big/src/net/udpsock.go:91:6:
+	GoTypes[_reflect.TypeOf((*_net.UDPConn)(nil)).Elem()] = &info_UDPConn
+
+GO VECSET FOR TYPE go.std.net/UnixAddr from _tests/big/src/net/unixsock.go:19:6:
+	GoTypes[_reflect.TypeOf((*_net.UnixAddr)(nil)).Elem()] = &info_UnixAddr
+
+GO VECSET FOR TYPE go.std.net/UnixConn from _tests/big/src/net/unixsock.go:65:6:
+	GoTypes[_reflect.TypeOf((*_net.UnixConn)(nil)).Elem()] = &info_UnixConn
+
+GO VECSET FOR TYPE go.std.net/UnixListener from _tests/big/src/net/unixsock.go:217:6:
+	GoTypes[_reflect.TypeOf((*_net.UnixListener)(nil)).Elem()] = &info_UnixListener
 
 GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/big/src/net/net.go:539:6:
 	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil)).Elem()] = &info_UnknownNetworkError
@@ -8925,6 +9045,7 @@ GO INFO FOR TYPE go.std.net.http/ConnState from _tests/big/src/net/http/server.g
 	info_ConnState = GoTypeInfo{Name: "go.std.net.http/ConnState",
 		GoType: &GoType{T: &info_ConnState},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", __connState_String, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -8946,6 +9067,7 @@ GO INFO FOR TYPE go.std.net.http/Dir from _tests/big/src/net/http/fs.go:40:6:
 	info_Dir = GoTypeInfo{Name: "go.std.net.http/Dir",
 		GoType: &GoType{T: &info_Dir},
 		Members: GoMembers{
+			"Open": MakeGoReceiver("Open", __dir_Open, "", "1.0", NewVectorFrom(MakeSymbol("name"))),
 		}}
 
 
@@ -8988,6 +9110,7 @@ GO INFO FOR TYPE go.std.net.http/Header from _tests/big/src/net/http/header.go:2
 	info_Header = GoTypeInfo{Name: "go.std.net.http/Header",
 		GoType: &GoType{T: &info_Header},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", __header_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; textproto.CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
 
@@ -9075,14 +9198,77 @@ GO INFO FOR TYPE go.std.net.http/Transport from _tests/big/src/net/http/transpor
 		}}
 
 
+GO VECSET FOR TYPE go.std.net.http/Client from _tests/big/src/net/http/client.go:56:6:
+	GoTypes[_reflect.TypeOf((*_http.Client)(nil)).Elem()] = &info_Client
+
+GO VECSET FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/server.go:209:6:
+	GoTypes[_reflect.TypeOf((*_http.CloseNotifier)(nil)).Elem()] = &info_CloseNotifier
+
 GO VECSET FOR TYPE go.std.net.http/ConnState from _tests/big/src/net/http/server.go:2677:6:
 	GoTypes[_reflect.TypeOf((*_http.ConnState)(nil)).Elem()] = &info_ConnState
+
+GO VECSET FOR TYPE go.std.net.http/Cookie from _tests/big/src/net/http/cookie.go:19:6:
+	GoTypes[_reflect.TypeOf((*_http.Cookie)(nil)).Elem()] = &info_Cookie
+
+GO VECSET FOR TYPE go.std.net.http/CookieJar from _tests/big/src/net/http/jar.go:17:6:
+	GoTypes[_reflect.TypeOf((*_http.CookieJar)(nil)).Elem()] = &info_CookieJar
 
 GO VECSET FOR TYPE go.std.net.http/Dir from _tests/big/src/net/http/fs.go:40:6:
 	GoTypes[_reflect.TypeOf((*_http.Dir)(nil)).Elem()] = &info_Dir
 
+GO VECSET FOR TYPE go.std.net.http/File from _tests/big/src/net/http/fs.go:93:6:
+	GoTypes[_reflect.TypeOf((*_http.File)(nil)).Elem()] = &info_File
+
+GO VECSET FOR TYPE go.std.net.http/FileSystem from _tests/big/src/net/http/fs.go:85:6:
+	GoTypes[_reflect.TypeOf((*_http.FileSystem)(nil)).Elem()] = &info_FileSystem
+
+GO VECSET FOR TYPE go.std.net.http/Flusher from _tests/big/src/net/http/server.go:166:6:
+	GoTypes[_reflect.TypeOf((*_http.Flusher)(nil)).Elem()] = &info_Flusher
+
+GO VECSET FOR TYPE go.std.net.http/Handler from _tests/big/src/net/http/server.go:84:6:
+	GoTypes[_reflect.TypeOf((*_http.Handler)(nil)).Elem()] = &info_Handler
+
+GO VECSET FOR TYPE go.std.net.http/HandlerFunc from _tests/big/src/net/http/server.go:1960:6:
+	GoTypes[_reflect.TypeOf((*_http.HandlerFunc)(nil)).Elem()] = &info_HandlerFunc
+
+GO VECSET FOR TYPE go.std.net.http/Header from _tests/big/src/net/http/header.go:20:6:
+	GoTypes[_reflect.TypeOf((*_http.Header)(nil)).Elem()] = &info_Header
+
+GO VECSET FOR TYPE go.std.net.http/Hijacker from _tests/big/src/net/http/server.go:178:6:
+	GoTypes[_reflect.TypeOf((*_http.Hijacker)(nil)).Elem()] = &info_Hijacker
+
+GO VECSET FOR TYPE go.std.net.http/ProtocolError from _tests/big/src/net/http/request.go:44:6:
+	GoTypes[_reflect.TypeOf((*_http.ProtocolError)(nil)).Elem()] = &info_ProtocolError
+
+GO VECSET FOR TYPE go.std.net.http/PushOptions from _tests/big/src/net/http/http.go:105:6:
+	GoTypes[_reflect.TypeOf((*_http.PushOptions)(nil)).Elem()] = &info_PushOptions
+
+GO VECSET FOR TYPE go.std.net.http/Pusher from _tests/big/src/net/http/http.go:119:6:
+	GoTypes[_reflect.TypeOf((*_http.Pusher)(nil)).Elem()] = &info_Pusher
+
+GO VECSET FOR TYPE go.std.net.http/Request from _tests/big/src/net/http/request.go:106:6:
+	GoTypes[_reflect.TypeOf((*_http.Request)(nil)).Elem()] = &info_Request
+
+GO VECSET FOR TYPE go.std.net.http/Response from _tests/big/src/net/http/response.go:33:6:
+	GoTypes[_reflect.TypeOf((*_http.Response)(nil)).Elem()] = &info_Response
+
+GO VECSET FOR TYPE go.std.net.http/ResponseWriter from _tests/big/src/net/http/server.go:93:6:
+	GoTypes[_reflect.TypeOf((*_http.ResponseWriter)(nil)).Elem()] = &info_ResponseWriter
+
+GO VECSET FOR TYPE go.std.net.http/RoundTripper from _tests/big/src/net/http/client.go:115:6:
+	GoTypes[_reflect.TypeOf((*_http.RoundTripper)(nil)).Elem()] = &info_RoundTripper
+
 GO VECSET FOR TYPE go.std.net.http/SameSite from _tests/big/src/net/http/cookie.go:45:6:
 	GoTypes[_reflect.TypeOf((*_http.SameSite)(nil)).Elem()] = &info_SameSite
+
+GO VECSET FOR TYPE go.std.net.http/ServeMux from _tests/big/src/net/http/server.go:2149:6:
+	GoTypes[_reflect.TypeOf((*_http.ServeMux)(nil)).Elem()] = &info_ServeMux
+
+GO VECSET FOR TYPE go.std.net.http/Server from _tests/big/src/net/http/server.go:2445:6:
+	GoTypes[_reflect.TypeOf((*_http.Server)(nil)).Elem()] = &info_Server
+
+GO VECSET FOR TYPE go.std.net.http/Transport from _tests/big/src/net/http/transport.go:103:6:
+	GoTypes[_reflect.TypeOf((*_http.Transport)(nil)).Elem()] = &info_Transport
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
@@ -9181,6 +9367,9 @@ GO INFO FOR TYPE go.std.net.http.cgi/Handler from _tests/big/src/net/http/cgi/ho
 		Members: GoMembers{
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.http.cgi/Handler from _tests/big/src/net/http/cgi/host.go:47:6:
+	GoTypes[reflect.TypeOf((*_cgi.Handler)(nil)).Elem()] = &info_Handler
 
 GO TYPE net/http/cookiejar.Jar from net/http/cookiejar/jar.go:
 func ExtractGoObjectJar(args []Object, index int) *_cookiejar.Jar {
@@ -9370,6 +9559,15 @@ GO INFO FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/
 		Members: GoMembers{
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.http.cookiejar/Jar from _tests/big/src/net/http/cookiejar/jar.go:60:6:
+	GoTypes[reflect.TypeOf((*_cookiejar.Jar)(nil)).Elem()] = &info_Jar
+
+GO VECSET FOR TYPE go.std.net.http.cookiejar/Options from _tests/big/src/net/http/cookiejar/jar.go:49:6:
+	GoTypes[reflect.TypeOf((*_cookiejar.Options)(nil)).Elem()] = &info_Options
+
+GO VECSET FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/net/http/cookiejar/jar.go:34:6:
+	GoTypes[reflect.TypeOf((*_cookiejar.PublicSuffixList)(nil)).Elem()] = &info_PublicSuffixList
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func __processEnv(__r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
@@ -9612,6 +9810,12 @@ GO INFO FOR TYPE go.std.net.http.httptest/Server from _tests/big/src/net/http/ht
 		}}
 
 
+GO VECSET FOR TYPE go.std.net.http.httptest/ResponseRecorder from _tests/big/src/net/http/httptest/recorder.go:20:6:
+	GoTypes[_reflect.TypeOf((*_httptest.ResponseRecorder)(nil)).Elem()] = &info_ResponseRecorder
+
+GO VECSET FOR TYPE go.std.net.http.httptest/Server from _tests/big/src/net/http/httptest/server.go:26:6:
+	GoTypes[_reflect.TypeOf((*_httptest.Server)(nil)).Elem()] = &info_Server
+
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func __contextClientTrace(__ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
 // 	_res := _httptrace.ContextClientTrace(__ctx)
@@ -9672,6 +9876,21 @@ GO INFO FOR TYPE go.std.net.http.httptrace/WroteRequestInfo from _tests/big/src/
 		Members: GoMembers{
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.http.httptrace/ClientTrace from _tests/big/src/net/http/httptrace/trace.go:80:6:
+	GoTypes[reflect.TypeOf((*_httptrace.ClientTrace)(nil)).Elem()] = &info_ClientTrace
+
+GO VECSET FOR TYPE go.std.net.http.httptrace/DNSDoneInfo from _tests/big/src/net/http/httptrace/trace.go:216:6:
+	GoTypes[reflect.TypeOf((*_httptrace.DNSDoneInfo)(nil)).Elem()] = &info_DNSDoneInfo
+
+GO VECSET FOR TYPE go.std.net.http.httptrace/DNSStartInfo from _tests/big/src/net/http/httptrace/trace.go:211:6:
+	GoTypes[reflect.TypeOf((*_httptrace.DNSStartInfo)(nil)).Elem()] = &info_DNSStartInfo
+
+GO VECSET FOR TYPE go.std.net.http.httptrace/GotConnInfo from _tests/big/src/net/http/httptrace/trace.go:238:6:
+	GoTypes[reflect.TypeOf((*_httptrace.GotConnInfo)(nil)).Elem()] = &info_GotConnInfo
+
+GO VECSET FOR TYPE go.std.net.http.httptrace/WroteRequestInfo from _tests/big/src/net/http/httptrace/trace.go:168:6:
+	GoTypes[reflect.TypeOf((*_httptrace.WroteRequestInfo)(nil)).Elem()] = &info_WroteRequestInfo
 
 GO TYPE net/http/httputil.BufferPool from net/http/httputil/reverseproxy.go:
 func ExtractGoObjectBufferPool(args []Object, index int) *_httputil.BufferPool {
@@ -10050,6 +10269,18 @@ GO INFO FOR TYPE go.std.net.http.httputil/ServerConn from _tests/big/src/net/htt
 		}}
 
 
+GO VECSET FOR TYPE go.std.net.http.httputil/BufferPool from _tests/big/src/net/http/httputil/reverseproxy.go:79:6:
+	GoTypes[_reflect.TypeOf((*_httputil.BufferPool)(nil)).Elem()] = &info_BufferPool
+
+GO VECSET FOR TYPE go.std.net.http.httputil/ClientConn from _tests/big/src/net/http/httputil/persist.go:230:6:
+	GoTypes[_reflect.TypeOf((*_httputil.ClientConn)(nil)).Elem()] = &info_ClientConn
+
+GO VECSET FOR TYPE go.std.net.http.httputil/ReverseProxy from _tests/big/src/net/http/httputil/reverseproxy.go:28:6:
+	GoTypes[_reflect.TypeOf((*_httputil.ReverseProxy)(nil)).Elem()] = &info_ReverseProxy
+
+GO VECSET FOR TYPE go.std.net.http.httputil/ServerConn from _tests/big/src/net/http/httputil/persist.go:37:6:
+	GoTypes[_reflect.TypeOf((*_httputil.ServerConn)(nil)).Elem()] = &info_ServerConn
+
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 // func __cmdline(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
 // 	_pprof.Cmdline(__w, __r)
@@ -10414,6 +10645,8 @@ GO INFO FOR TYPE go.std.net.mail/Header from _tests/big/src/net/mail/message.go:
 	info_Header = GoTypeInfo{Name: "go.std.net.mail/Header",
 		GoType: &GoType{T: &info_Header},
 		Members: GoMembers{
+			"AddressList": MakeGoReceiver("AddressList", __header_AddressList, "AddressList parses the named header field as a list of addresses.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
+			"Get": MakeGoReceiver("Get", __header_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
 
@@ -10423,6 +10656,18 @@ GO INFO FOR TYPE go.std.net.mail/Message from _tests/big/src/net/mail/message.go
 		Members: GoMembers{
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.mail/Address from _tests/big/src/net/mail/message.go:141:6:
+	GoTypes[_reflect.TypeOf((*_mail.Address)(nil)).Elem()] = &info_Address
+
+GO VECSET FOR TYPE go.std.net.mail/AddressParser from _tests/big/src/net/mail/message.go:157:6:
+	GoTypes[_reflect.TypeOf((*_mail.AddressParser)(nil)).Elem()] = &info_AddressParser
+
+GO VECSET FOR TYPE go.std.net.mail/Header from _tests/big/src/net/mail/message.go:106:6:
+	GoTypes[_reflect.TypeOf((*_mail.Header)(nil)).Elem()] = &info_Header
+
+GO VECSET FOR TYPE go.std.net.mail/Message from _tests/big/src/net/mail/message.go:44:6:
+	GoTypes[_reflect.TypeOf((*_mail.Message)(nil)).Elem()] = &info_Message
 
 GO TYPE net/rpc.Call from net/rpc/client.go:
 func ExtractGoObjectCall(args []Object, index int) *_rpc.Call {
@@ -11028,8 +11273,30 @@ GO INFO FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client.g
 	info_ServerError = GoTypeInfo{Name: "go.std.net.rpc/ServerError",
 		GoType: &GoType{T: &info_ServerError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __serverError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.rpc/Call from _tests/big/src/net/rpc/client.go:29:6:
+	GoTypes[_reflect.TypeOf((*_rpc.Call)(nil)).Elem()] = &info_Call
+
+GO VECSET FOR TYPE go.std.net.rpc/Client from _tests/big/src/net/rpc/client.go:41:6:
+	GoTypes[_reflect.TypeOf((*_rpc.Client)(nil)).Elem()] = &info_Client
+
+GO VECSET FOR TYPE go.std.net.rpc/ClientCodec from _tests/big/src/net/rpc/client.go:63:6:
+	GoTypes[_reflect.TypeOf((*_rpc.ClientCodec)(nil)).Elem()] = &info_ClientCodec
+
+GO VECSET FOR TYPE go.std.net.rpc/Request from _tests/big/src/net/rpc/server.go:172:6:
+	GoTypes[_reflect.TypeOf((*_rpc.Request)(nil)).Elem()] = &info_Request
+
+GO VECSET FOR TYPE go.std.net.rpc/Response from _tests/big/src/net/rpc/server.go:181:6:
+	GoTypes[_reflect.TypeOf((*_rpc.Response)(nil)).Elem()] = &info_Response
+
+GO VECSET FOR TYPE go.std.net.rpc/Server from _tests/big/src/net/rpc/server.go:189:6:
+	GoTypes[_reflect.TypeOf((*_rpc.Server)(nil)).Elem()] = &info_Server
+
+GO VECSET FOR TYPE go.std.net.rpc/ServerCodec from _tests/big/src/net/rpc/server.go:658:6:
+	GoTypes[_reflect.TypeOf((*_rpc.ServerCodec)(nil)).Elem()] = &info_ServerCodec
 
 GO VECSET FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client.go:20:6:
 	GoTypes[_reflect.TypeOf((*_rpc.ServerError)(nil)).Elem()] = &info_ServerError
@@ -11369,6 +11636,15 @@ GO INFO FOR TYPE go.std.net.smtp/ServerInfo from _tests/big/src/net/smtp/auth.go
 		Members: GoMembers{
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.smtp/Auth from _tests/big/src/net/smtp/auth.go:15:6:
+	GoTypes[_reflect.TypeOf((*_smtp.Auth)(nil)).Elem()] = &info_Auth
+
+GO VECSET FOR TYPE go.std.net.smtp/Client from _tests/big/src/net/smtp/smtp.go:30:6:
+	GoTypes[_reflect.TypeOf((*_smtp.Client)(nil)).Elem()] = &info_Client
+
+GO VECSET FOR TYPE go.std.net.smtp/ServerInfo from _tests/big/src/net/smtp/auth.go:35:6:
+	GoTypes[_reflect.TypeOf((*_smtp.ServerInfo)(nil)).Elem()] = &info_ServerInfo
 
 GO TYPE net/textproto.Conn from net/textproto/textproto.go:
 func ExtractGoObjectConn(args []Object, index int) *_textproto.Conn {
@@ -11983,6 +12259,7 @@ GO INFO FOR TYPE go.std.net.textproto/MIMEHeader from _tests/big/src/net/textpro
 	info_MIMEHeader = GoTypeInfo{Name: "go.std.net.textproto/MIMEHeader",
 		GoType: &GoType{T: &info_MIMEHeader},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", __mIMEHeader_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
 
@@ -11997,6 +12274,7 @@ GO INFO FOR TYPE go.std.net.textproto/ProtocolError from _tests/big/src/net/text
 	info_ProtocolError = GoTypeInfo{Name: "go.std.net.textproto/ProtocolError",
 		GoType: &GoType{T: &info_ProtocolError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __protocolError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -12014,8 +12292,26 @@ GO INFO FOR TYPE go.std.net.textproto/Writer from _tests/big/src/net/textproto/w
 		}}
 
 
+GO VECSET FOR TYPE go.std.net.textproto/Conn from _tests/big/src/net/textproto/textproto.go:58:6:
+	GoTypes[_reflect.TypeOf((*_textproto.Conn)(nil)).Elem()] = &info_Conn
+
+GO VECSET FOR TYPE go.std.net.textproto/Error from _tests/big/src/net/textproto/textproto.go:36:6:
+	GoTypes[_reflect.TypeOf((*_textproto.Error)(nil)).Elem()] = &info_Error
+
+GO VECSET FOR TYPE go.std.net.textproto/MIMEHeader from _tests/big/src/net/textproto/header.go:9:6:
+	GoTypes[_reflect.TypeOf((*_textproto.MIMEHeader)(nil)).Elem()] = &info_MIMEHeader
+
+GO VECSET FOR TYPE go.std.net.textproto/Pipeline from _tests/big/src/net/textproto/pipeline.go:28:6:
+	GoTypes[_reflect.TypeOf((*_textproto.Pipeline)(nil)).Elem()] = &info_Pipeline
+
 GO VECSET FOR TYPE go.std.net.textproto/ProtocolError from _tests/big/src/net/textproto/textproto.go:47:6:
 	GoTypes[_reflect.TypeOf((*_textproto.ProtocolError)(nil)).Elem()] = &info_ProtocolError
+
+GO VECSET FOR TYPE go.std.net.textproto/Reader from _tests/big/src/net/textproto/reader.go:18:6:
+	GoTypes[_reflect.TypeOf((*_textproto.Reader)(nil)).Elem()] = &info_Reader
+
+GO VECSET FOR TYPE go.std.net.textproto/Writer from _tests/big/src/net/textproto/writer.go:15:6:
+	GoTypes[_reflect.TypeOf((*_textproto.Writer)(nil)).Elem()] = &info_Writer
 
 GO TYPE net/url.Error from net/url/url.go:
 func ExtractGoObjectError(args []Object, index int) *_url.Error {
@@ -12568,6 +12864,7 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/big/src/net/url/url.go:8
 	info_EscapeError = GoTypeInfo{Name: "go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_EscapeError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __escapeError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -12575,6 +12872,7 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/big/src/net/url/url
 	info_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_InvalidHostError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __invalidHostError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -12596,14 +12894,28 @@ GO INFO FOR TYPE go.std.net.url/Values from _tests/big/src/net/url/url.go:804:6:
 	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
+			"Encode": MakeGoReceiver("Encode", __values_Encode, "Encode encodes the values into ``URL encoded'' form\n(\"bar=baz&foo=quux\") sorted by key.\n", "1.0", NewVectorFrom()),
+			"Get": MakeGoReceiver("Get", __values_Get, "Get gets the first value associated with the given key.\nIf there are no values associated with the key, Get returns\nthe empty string. To access multiple values, use the map\ndirectly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.url/Error from _tests/big/src/net/url/url.go:22:6:
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil)).Elem()] = &info_Error
 
 GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/big/src/net/url/url.go:84:6:
 	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &info_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/big/src/net/url/url.go:90:6:
 	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &info_InvalidHostError
+
+GO VECSET FOR TYPE go.std.net.url/URL from _tests/big/src/net/url/url.go:344:6:
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil)).Elem()] = &info_URL
+
+GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/big/src/net/url/url.go:378:6:
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil)).Elem()] = &info_Userinfo
+
+GO VECSET FOR TYPE go.std.net.url/Values from _tests/big/src/net/url/url.go:804:6:
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &info_Values
 
 Adding 14 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 14 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke

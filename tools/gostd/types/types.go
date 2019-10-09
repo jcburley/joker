@@ -32,12 +32,12 @@ var typesByFullName = map[string]Expr{}
 // Info from the definition of the type (if any)
 type TypeDefInfo struct {
 	TypeSpec  *TypeSpec
-	TypeInfo  *TypeInfo
 	FullName  string // Clojure name (e.g. "a.b.c/Typename")
 	LocalName string // Local, or base, name (e.g. "Typename")
 	IsPrivate bool
 	Doc       string
 	DefPos    token.Pos
+	goPackage string
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
@@ -65,6 +65,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
 		IsPrivate: IsPrivate(tln),
 		Doc:       CommentGroupAsString(doc),
 		DefPos:    ts.Name.NamePos,
+		goPackage: GoPackageForTypeSpec(ts),
 	}
 	typeDefinitionsByFullName[tfn] = tdi
 	return tdi
@@ -178,19 +179,8 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 }
 
 func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
-	t := ""
-	suffix := ""
-	prefix := "_" + filepath.Base(GoPackageForExpr(tdi.TypeSpec.Type)) + "."
-	switch tdi.TypeSpec.Type.(type) {
-	case *Ident:
-		t = "*" + prefix + tdi.LocalName
-		suffix = ".Elem()"
-	case *StarExpr:
-		t = "*" + prefix + tdi.LocalName
-	default:
-		return "", ""
-	}
-	return "reflect", fmt.Sprintf("%%s.TypeOf((%s)(nil))%s", t, suffix)
+	t := "_" + filepath.Base(tdi.goPackage) + "." + tdi.LocalName
+	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil)).Elem()", t)
 }
 
 // currently unused
@@ -215,8 +205,6 @@ func (tdi *TypeDefInfo) TypeMappingsName() string {
 		return ""
 	}
 	res := "info_" + tdi.LocalName
-	switch tdi.TypeSpec.Type.(type) {
-	}
 	return res
 }
 

@@ -125,8 +125,8 @@ type CodeInfo struct {
 	Variables GoVariablesMap
 	Functions fnCodeMap
 	Types     GoTypeMap
-	InitTypes map[*TypeDefInfo]struct{}            // types to be initialized
-	InitVars  map[*TypeInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	InitTypes map[*TypeDefInfo]struct{}               // types to be initialized
+	InitVars  map[*TypeDefInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -938,9 +938,9 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{&PackageImports{}, &PackageImports{}, p, false, false}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*FnCodeInfo{}}
+			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*FnCodeInfo{}}
+			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 	}
 
 	for path, f := range p.Files {

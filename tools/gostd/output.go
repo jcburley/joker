@@ -334,7 +334,7 @@ import (%s
 			}
 			k1 := tdi.FullName
 			mem := ""
-			SortedFnCodeInfo(v.InitVars[tdi.TypeInfo], // Will always be populated
+			SortedFnCodeInfo(v.InitVars[tdi], // Will always be populated
 				func(c string, r *FnCodeInfo) {
 					doc := r.FnDoc
 					g := r.FnCode

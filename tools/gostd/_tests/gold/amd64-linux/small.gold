@@ -2444,6 +2444,20 @@ GO INFO FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	info_IP = GoTypeInfo{Name: "go.std.net/IP",
 		GoType: &GoType{T: &info_IP},
 		Members: GoMembers{
+			"DefaultMask": MakeGoReceiver("DefaultMask", __iP_DefaultMask, "DefaultMask returns the default IP mask for the IP address ip.\nOnly IPv4 addresses have default masks; DefaultMask returns\nnil if ip is not a valid IPv4 address.\n", "1.0", NewVectorFrom()),
+			"Equal": MakeGoReceiver("Equal", __iP_Equal, "Equal reports whether ip and x are the same IP address.\nAn IPv4 address and that same address in IPv6 form are\nconsidered to be equal.\n", "1.0", NewVectorFrom(MakeSymbol("x"))),
+			"IsGlobalUnicast": MakeGoReceiver("IsGlobalUnicast", __iP_IsGlobalUnicast, "IsGlobalUnicast reports whether ip is a global unicast\naddress.\n\nThe identification of global unicast addresses uses address type\nidentification as defined in RFC 1122, RFC 4632 and RFC 4291 with\nthe exception of IPv4 directed broadcast addresses.\nIt returns true even if ip is in IPv4 private address space or\nlocal IPv6 unicast address space.\n", "1.0", NewVectorFrom()),
+			"IsInterfaceLocalMulticast": MakeGoReceiver("IsInterfaceLocalMulticast", __iP_IsInterfaceLocalMulticast, "IsInterfaceLocalMulticast reports whether ip is\nan interface-local multicast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalMulticast": MakeGoReceiver("IsLinkLocalMulticast", __iP_IsLinkLocalMulticast, "IsLinkLocalMulticast reports whether ip is a link-local\nmulticast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalUnicast": MakeGoReceiver("IsLinkLocalUnicast", __iP_IsLinkLocalUnicast, "IsLinkLocalUnicast reports whether ip is a link-local\nunicast address.\n", "1.0", NewVectorFrom()),
+			"IsLoopback": MakeGoReceiver("IsLoopback", __iP_IsLoopback, "IsLoopback reports whether ip is a loopback address.\n", "1.0", NewVectorFrom()),
+			"IsMulticast": MakeGoReceiver("IsMulticast", __iP_IsMulticast, "IsMulticast reports whether ip is a multicast address.\n", "1.0", NewVectorFrom()),
+			"IsUnspecified": MakeGoReceiver("IsUnspecified", __iP_IsUnspecified, "IsUnspecified reports whether ip is an unspecified address, either\nthe IPv4 address \"0.0.0.0\" or the IPv6 address \"::\".\n", "1.0", NewVectorFrom()),
+			"MarshalText": MakeGoReceiver("MarshalText", __iP_MarshalText, "MarshalText implements the encoding.TextMarshaler interface.\nThe encoding is the same as returned by String, with one exception:\nWhen len(ip) is zero, it returns an empty slice.\n", "1.0", NewVectorFrom()),
+			"Mask": MakeGoReceiver("Mask", __iP_Mask, "Mask returns the result of masking the IP address ip with mask.\n", "1.0", NewVectorFrom(MakeSymbol("mask"))),
+			"String": MakeGoReceiver("String", __iP_String, "String returns the string form of the IP address ip.\nIt returns one of 4 forms:\n  - \"<nil>\", if ip has length 0\n  - dotted decimal (\"192.0.2.1\"), if ip is an IPv4 or IP4-mapped IPv6 address\n  - IPv6 (\"2001:db8::1\"), if ip is a valid IPv6 address\n  - the hexadecimal form of ip, without punctuation, if no other cases apply\n", "1.0", NewVectorFrom()),
+			"To16": MakeGoReceiver("To16", __iP_To16, "To16 converts the IP address ip to a 16-byte representation.\nIf ip is not an IP address (it is the wrong length), To16 returns nil.\n", "1.0", NewVectorFrom()),
+			"To4": MakeGoReceiver("To4", __iP_To4, "To4 converts the IPv4 address ip to a 4-byte representation.\nIf ip is not an IPv4 address, To4 returns nil.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2465,6 +2479,8 @@ GO INFO FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	info_IPMask = GoTypeInfo{Name: "go.std.net/IPMask",
 		GoType: &GoType{T: &info_IPMask},
 		Members: GoMembers{
+			"Size": MakeGoReceiver("Size", __iPMask_Size, "Size returns the number of leading ones and total bits in the mask.\nIf the mask is not in the canonical form--ones followed by zeros--then\nSize returns 0, 0.\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __iPMask_String, "String returns the hexadecimal form of m, with no punctuation.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2479,6 +2495,9 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:55
 	info_InvalidAddrError = GoTypeInfo{Name: "go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_InvalidAddrError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __invalidAddrError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __invalidAddrError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __invalidAddrError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2542,11 +2561,74 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go
 	info_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_UnknownNetworkError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __unknownNetworkError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __unknownNetworkError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __unknownNetworkError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
 
+GO VECSET FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
+	GoTypes[_reflect.TypeOf((*_net.Addr)(nil)).Elem()] = &info_Addr
+
+GO VECSET FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
+	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil)).Elem()] = &info_AddrError
+
+GO VECSET FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
+	GoTypes[_reflect.TypeOf((*_net.Buffers)(nil)).Elem()] = &info_Buffers
+
+GO VECSET FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
+	GoTypes[_reflect.TypeOf((*_net.Conn)(nil)).Elem()] = &info_Conn
+
+GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil)).Elem()] = &info_DNSConfigError
+
+GO VECSET FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil)).Elem()] = &info_DNSError
+
+GO VECSET FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
+	GoTypes[_reflect.TypeOf((*_net.Error)(nil)).Elem()] = &info_Error
+
+GO VECSET FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
+	GoTypes[_reflect.TypeOf((*_net.IP)(nil)).Elem()] = &info_IP
+
+GO VECSET FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
+	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil)).Elem()] = &info_IPAddr
+
+GO VECSET FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
+	GoTypes[_reflect.TypeOf((*_net.IPConn)(nil)).Elem()] = &info_IPConn
+
+GO VECSET FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
+	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil)).Elem()] = &info_IPMask
+
+GO VECSET FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
+	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil)).Elem()] = &info_IPNet
+
 GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &info_InvalidAddrError
+
+GO VECSET FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
+	GoTypes[_reflect.TypeOf((*_net.Listener)(nil)).Elem()] = &info_Listener
+
+GO VECSET FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
+	GoTypes[_reflect.TypeOf((*_net.MX)(nil)).Elem()] = &info_MX
+
+GO VECSET FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
+	GoTypes[_reflect.TypeOf((*_net.NS)(nil)).Elem()] = &info_NS
+
+GO VECSET FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
+	GoTypes[_reflect.TypeOf((*_net.OpError)(nil)).Elem()] = &info_OpError
+
+GO VECSET FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
+	GoTypes[_reflect.TypeOf((*_net.PacketConn)(nil)).Elem()] = &info_PacketConn
+
+GO VECSET FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
+	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil)).Elem()] = &info_ParseError
+
+GO VECSET FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
+	GoTypes[_reflect.TypeOf((*_net.Resolver)(nil)).Elem()] = &info_Resolver
+
+GO VECSET FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
+	GoTypes[_reflect.TypeOf((*_net.SRV)(nil)).Elem()] = &info_SRV
 
 GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil)).Elem()] = &info_UnknownNetworkError
@@ -3117,6 +3199,7 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go
 	info_EscapeError = GoTypeInfo{Name: "go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_EscapeError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __escapeError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -3124,6 +3207,7 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/u
 	info_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_InvalidHostError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", __invalidHostError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -3145,14 +3229,28 @@ GO INFO FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:
 	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
+			"Encode": MakeGoReceiver("Encode", __values_Encode, "Encode encodes the values into ``URL encoded'' form\n(\"bar=baz&foo=quux\") sorted by key.\n", "1.0", NewVectorFrom()),
+			"Get": MakeGoReceiver("Get", __values_Get, "Get gets the first value associated with the given key.\nIf there are no values associated with the key, Get returns\nthe empty string. To access multiple values, use the map\ndirectly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
+
+GO VECSET FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil)).Elem()] = &info_Error
 
 GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &info_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &info_InvalidHostError
+
+GO VECSET FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil)).Elem()] = &info_URL
+
+GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil)).Elem()] = &info_Userinfo
+
+GO VECSET FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &info_Values
 
 // Auto-generated by gostd at (omitted for testing), do not edit!!
 

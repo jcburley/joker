@@ -241,11 +241,11 @@ func %s(o GoObject, args Object) Object {
 		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", false)
 		for _, r := range fn.Fd.Recv.List {
-			ti := TypeLookup(r.Type)
-			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
-				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
+			tdi := TypeLookup(r.Type).Definition
+			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
+				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[ti][fn.Fd.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
+			GoCode[pkgDirUnix].InitVars[tdi][fn.Fd.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
 		}
 	}
 
