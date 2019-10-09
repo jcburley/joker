@@ -5,7 +5,6 @@ import (
 	. "github.com/candid82/joker/tools/gostd/gowalk"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
-	"go/parser"
 	"go/token"
 	"os"
 	"path/filepath"
@@ -96,8 +95,6 @@ func main() {
 	generateEmpty := false
 	outputCode := false
 	undo := false
-
-	var mode parser.Mode = parser.ParseComments
 
 	for i := 1; i < length; i++ { // shift
 		a := os.Args[i]
@@ -245,17 +242,16 @@ func main() {
 
 	AddMapping(goSourceDir, "go.std.")
 	root := filepath.Join(goSourceDir, ".")
-	err := WalkDirs(root, "go.std.", mode)
-	if err != nil {
-		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
-	}
+	AddWalkDir(goSourceDir, root, "go.std.")
 
 	for _, o := range otherSourceDirs {
 		root := filepath.Join(o, ".")
-		err := WalkDirs(root, "x.y.z.", mode)
-		if err != nil {
-			panic("Error walking directory " + o + ": " + fmt.Sprintf("%v", err))
-		}
+		AddWalkDir(o, root, "x.y.z.")
+	}
+
+	err, badDir := WalkAllDirs()
+	if err != nil {
+		panic("Error walking directory " + badDir + ": " + fmt.Sprintf("%v", err))
 	}
 
 	sort.Strings(AlreadySeen)

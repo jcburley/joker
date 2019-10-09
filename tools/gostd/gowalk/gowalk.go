@@ -1042,7 +1042,7 @@ var excludeDirs = map[string]bool{
 	"vendor":   true,
 }
 
-func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
+func walkDir(fsRoot, nsRoot string) error {
 	rootUnix := filepath.ToSlash(fsRoot)
 	target, err := filepath.EvalSymlinks(fsRoot)
 	Check(err)
@@ -1068,7 +1068,7 @@ func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 				return filepath.SkipDir
 			}
 			if info.IsDir() {
-				return processDir(fsRoot, rootUnix, rel, nsRoot, mode)
+				return processDir(fsRoot, rootUnix, rel, nsRoot, parser.ParseComments)
 			}
 			return nil // not a directory
 		})
@@ -1081,4 +1081,26 @@ func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 	}
 
 	return err
+}
+
+type dirToWalk struct {
+	srcDir string
+	fsRoot string
+	nsRoot string
+}
+
+var dirsToWalk []dirToWalk
+
+func AddWalkDir(srcDir, fsRoot, nsRoot string) {
+	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot})
+}
+
+func WalkAllDirs() (error, string) {
+	for _, d := range dirsToWalk {
+		err := walkDir(d.fsRoot, d.nsRoot)
+		if err != nil {
+			return err, d.srcDir
+		}
+	}
+	return nil, ""
 }
