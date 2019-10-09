@@ -159,11 +159,8 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 				panic(fmt.Sprintf("mismatch name=%s != %s or ts %p != %p!", o.Name, local, o.Decl.(*TypeSpec), ts))
 			}
 		} else {
-			// Strangely, not all *Ident's referring to
-			// defined types have x.Obj populated! Can't
-			// figure out what's different about them,
-			// though maybe it's just that they're for
-			// only those receivers currently being
+			// Strangely, not all *Ident's referring to defined types have x.Obj populated! Can't figure out what's
+			// different about them, though maybe it's just that they're for only those receivers currently being
 			// code-generated?
 		}
 	case *ArrayType:
