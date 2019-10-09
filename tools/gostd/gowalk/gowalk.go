@@ -950,7 +950,7 @@ func AddImport(packageImports *PackageImports, local, full string, okToSubstitut
 
 func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if Verbose {
-		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
+		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
@@ -990,7 +990,7 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 	pkgDir := TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
 	if Verbose {
-		fmt.Printf("Processing %s:\n", pkgDirUnix)
+		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
 
 	pkgs, err := parser.ParseDir(Fset, path,
@@ -998,15 +998,15 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
 				if Verbose {
-					fmt.Printf("Ignoring test code in %s\n", info.Name())
+					AddSortedOutput(fmt.Sprintf("Ignoring test code in %s\n", info.Name()))
 				}
 				return false
 			}
 			b, e := build.Default.MatchFile(path, info.Name())
 			if Verbose {
-				fmt.Printf("Matchfile(%s) => %v %v\n",
+				AddSortedOutput(fmt.Sprintf("Matchfile(%s) => %v %v\n",
 					filepath.ToSlash(filepath.Join(path, info.Name())),
-					b, e)
+					b, e))
 			}
 			return b && e == nil
 		},
@@ -1019,12 +1019,12 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 	for pkgBaseName, v := range pkgs {
 		if pkgBaseName != filepath.Base(path) {
 			if Verbose {
-				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
-					pkgBaseName, path)
+				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
+					pkgBaseName, path))
 			}
 		} else if pkgBaseName == "unsafe" {
 			if Verbose {
-				fmt.Printf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix)
+				AddSortedOutput(fmt.Sprintf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix))
 			}
 		} else {
 			processPackage(rootUnix, pkgDirUnix, nsRoot, v)
@@ -1046,11 +1046,15 @@ func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 	rootUnix := filepath.ToSlash(fsRoot)
 	target, err := filepath.EvalSymlinks(fsRoot)
 	Check(err)
+
+	StartSortedOutput()
+
 	err = filepath.Walk(target,
 		func(path string, info os.FileInfo, err error) error {
 			rel := Replace(path, target, fsRoot, 1)
 			relUnix := filepath.ToSlash(rel)
 			if err != nil {
+				EndSortedOutput()
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
 				return err
 			}
@@ -1059,18 +1063,17 @@ func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 			}
 			if excludeDirs[filepath.Base(rel)] {
 				if Verbose {
-					fmt.Printf("Excluding %s\n", relUnix)
+					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relUnix))
 				}
 				return filepath.SkipDir
 			}
 			if info.IsDir() {
-				if Verbose {
-					fmt.Printf("Walking from %s to %s\n", rootUnix, relUnix)
-				}
 				return processDir(fsRoot, rootUnix, rel, nsRoot, mode)
 			}
 			return nil // not a directory
 		})
+
+	EndSortedOutput()
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", fsRoot, err)

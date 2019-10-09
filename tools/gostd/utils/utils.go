@@ -4,7 +4,9 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/token"
+	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	. "strings"
 	"unicode"
@@ -138,4 +140,25 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 		}
 	}
 	return
+}
+
+var outs map[string]struct{}
+
+func StartSortedOutput() {
+	outs = map[string]struct{}{}
+}
+
+func AddSortedOutput(s string) {
+	outs[s] = struct{}{}
+}
+
+func EndSortedOutput() {
+	var keys []string
+	for k, _ := range outs {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		os.Stdout.WriteString(k)
+	}
 }
