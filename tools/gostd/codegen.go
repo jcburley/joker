@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/gowalk"
 	. "github.com/candid82/joker/tools/gostd/types"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"path"
 	"regexp"
@@ -102,7 +104,7 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "_" + pkgBaseName + "." + goFname + "(" + goParams + ")\n"
 }
 
-func genFuncCode(fn *funcInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
+func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
@@ -160,12 +162,12 @@ func printAbends(m map[string]int) {
 	}
 }
 
-func genReceiverCode(fn *funcInfo, goFname string) string {
+func genReceiverCode(fn *FuncInfo, goFname string) string {
 	const arityTemplate = `
 	%sCheckGoArity("%s", args, %d, %d)
 	`
 
-	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.fd.Type.Params, goFname)
+	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Fd.Type.Params, goFname)
 	if strings.Contains(paramListDoc, "ABEND") {
 		return paramListDoc
 	}
@@ -182,10 +184,10 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 		return cljGoParams
 	}
 
-	receiverName := fn.fd.Name.Name
-	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.receiverId, receiverName, params)
+	receiverName := fn.Fd.Name.Name
+	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.fd)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.Fd)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -206,21 +208,21 @@ func genReceiverCode(fn *funcInfo, goFname string) string {
 	if max > 0 {
 		maybeAssignArgList = "_argList := "
 	}
-	arity := fmt.Sprintf(arityTemplate[1:], maybeAssignArgList, fn.docName, min, max)
+	arity := fmt.Sprintf(arityTemplate[1:], maybeAssignArgList, fn.DocName, min, max)
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
-func genReceiver(fn *funcInfo) {
+func genReceiver(fn *FuncInfo) {
 	genSymReset()
-	pkgDirUnix := fn.sourceFile.pkgDirUnix
-	pkgBaseName := fn.sourceFile.pkgBaseName
+	pkgDirUnix := fn.SourceFile.PkgDirUnix
+	pkgBaseName := fn.SourceFile.PkgBaseName
 
 	const goTemplate = `
 func %s(o GoObject, args Object) Object {
 %s}
 `
 
-	goFname := funcNameAsGoPrivate(fn.name)
+	goFname := funcNameAsGoPrivate(fn.Name)
 
 	clojureFn := ""
 
@@ -232,31 +234,31 @@ func %s(o GoObject, args Object) Object {
 		trackAbends(clojureFn)
 		trackAbends(goFn)
 	} else {
-		numGeneratedFunctions++
-		numGeneratedReceivers++
-		packagesInfo[pkgDirUnix].nonEmpty = true
-		addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
-		addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
-		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect", false)
-		for _, r := range fn.fd.Recv.List {
+		NumGeneratedFunctions++
+		NumGeneratedReceivers++
+		PackagesInfo[pkgDirUnix].NonEmpty = true
+		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
+		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", false)
+		for _, r := range fn.Fd.Recv.List {
 			ti := TypeLookup(r.Type)
-			if _, ok := goCode[pkgDirUnix].initVars[ti]; !ok {
-				goCode[pkgDirUnix].initVars[ti] = map[string]*fnCodeInfo{}
+			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
+				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 			}
-			goCode[pkgDirUnix].initVars[ti][fn.fd.Name.Name] = &fnCodeInfo{fn.sourceFile, goFname, fn.fd, fn.fd.Doc}
+			GoCode[pkgDirUnix].InitVars[ti][fn.Fd.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
 		}
 	}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[goFname] = &fnCodeInfo{fn.sourceFile, goFn, fn.fd, nil}
+		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, FnDoc: nil}
 	}
 }
 
-func genStandalone(fn *funcInfo) {
+func genStandalone(fn *FuncInfo) {
 	genSymReset()
-	d := fn.fd
-	pkgDirUnix := fn.sourceFile.pkgDirUnix
-	pkgBaseName := fn.sourceFile.pkgBaseName
+	d := fn.Fd
+	pkgDirUnix := fn.SourceFile.PkgDirUnix
+	pkgBaseName := fn.SourceFile.PkgBaseName
 
 	const clojureTemplate = `
 (defn %s%s
@@ -274,14 +276,14 @@ func genStandalone(fn *funcInfo) {
 	} else {
 		clojureReturnType += " "
 		cl2gol = pkgBaseName + "." + d.Name.Name
-		if _, found := packagesInfo[pkgDirUnix]; !found {
+		if _, found := PackagesInfo[pkgDirUnix]; !found {
 			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
 		}
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
 
 	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
-		"  "+commentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+		"  "+CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc)+"\n",
 		cl2golCall, fc.clojureParamList)
 
@@ -301,54 +303,54 @@ func %s(%s) %s {
 		trackAbends(clojureFn)
 		trackAbends(goFn)
 	} else {
-		numGeneratedFunctions++
-		numGeneratedStandalones++
-		packagesInfo[pkgDirUnix].nonEmpty = true
+		NumGeneratedFunctions++
+		NumGeneratedStandalones++
+		PackagesInfo[pkgDirUnix].NonEmpty = true
 		if clojureReturnType == "" {
-			addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
-			addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
+			AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+			AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		}
-		if clojureReturnType != "" || fn.refersToSelf {
-			addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
+		if clojureReturnType != "" || fn.RefersToSelf {
+			AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 		}
 	}
 
-	clojureCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, clojureFn, nil, nil}
+	ClojureCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
 
 	if goFn != "" {
-		goCode[pkgDirUnix].functions[d.Name.Name] = &fnCodeInfo{fn.sourceFile, goFn, nil, nil}
+		GoCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: nil, FnDoc: nil}
 	}
 }
 
-func genConstant(ci *constantInfo) {
+func genConstant(ci *ConstantInfo) {
 	genSymReset()
-	pkgDirUnix := ci.sourceFile.pkgDirUnix
+	pkgDirUnix := ci.SourceFile.PkgDirUnix
 
-	clojureCode[pkgDirUnix].constants[ci.name.Name] = ci
+	ClojureCode[pkgDirUnix].Constants[ci.Name.Name] = ci
 
-	packagesInfo[pkgDirUnix].nonEmpty = true
+	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
+	AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
-func genVariable(ci *variableInfo) {
+func genVariable(ci *VariableInfo) {
 	genSymReset()
-	pkgDirUnix := ci.sourceFile.pkgDirUnix
+	pkgDirUnix := ci.SourceFile.PkgDirUnix
 
-	clojureCode[pkgDirUnix].variables[ci.name.Name] = ci
+	ClojureCode[pkgDirUnix].Variables[ci.Name.Name] = ci
 
-	packagesInfo[pkgDirUnix].nonEmpty = true
+	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	addImport(packagesInfo[pkgDirUnix].importsAutoGen, "", pkgDirUnix, false)
+	AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
-func maybeImplicitConvert(src *goFile, typeName string, ts *TypeSpec) string {
+func maybeImplicitConvert(src *GoFile, typeName string, ts *TypeSpec) string {
 	t := toGoTypeInfo(src, ts)
-	if t == nil || t.custom {
+	if t == nil || t.Custom {
 		return ""
 	}
-	argType := t.argClojureArgType
-	declType := t.argExtractFunc
+	argType := t.ArgClojureArgType
+	declType := t.ArgExtractFunc
 	if declType == "" {
 		return ""
 	}
@@ -373,7 +375,7 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
-func goTypeExtractor(t string, ti *goTypeInfo) string {
+func goTypeExtractor(t string, ti *GoTypeInfo) string {
 	const template = `
 func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	a := CheckGoNth(rcvr, "%s", arg, args, n).O
@@ -386,12 +388,12 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 }
 `
 
-	mangled := typeToGoExtractFuncName(ti.argClojureArgType)
-	localType := "_" + ti.sourceFile.pkgBaseName + "." + ti.localName
-	typeDoc := ti.argClojureArgType // "path.filepath.Mode"
+	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType)
+	localType := "_" + ti.SourceFile.PkgBaseName + "." + ti.LocalName
+	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
-	fmtLocal := addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, "", "fmt", true)
-	reflectLocal := addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, "", "reflect", true)
+	fmtLocal := AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "fmt", true)
+	reflectLocal := AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "reflect", true)
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -404,24 +406,24 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc, reflectLocal)
 }
 
-func genType(t string, ti *goTypeInfo) {
-	td := ti.td
-	if isPrivate(td.Name.Name) {
+func genType(t string, ti *GoTypeInfo) {
+	td := ti.Td
+	if IsPrivate(td.Name.Name) {
 		return // Do not generate anything for private types
 	}
-	pkgDirUnix := ti.sourceFile.pkgDirUnix
-	pkgBaseName := ti.sourceFile.pkgBaseName
-	if pi, found := packagesInfo[pkgDirUnix]; !found {
+	pkgDirUnix := ti.SourceFile.PkgDirUnix
+	pkgBaseName := ti.SourceFile.PkgBaseName
+	if pi, found := PackagesInfo[pkgDirUnix]; !found {
 		return // no public functions available for package, so don't try to generate type info either
-	} else if !pi.nonEmpty {
+	} else if !pi.NonEmpty {
 		return // no functions generated
 	}
 
-	addImport(packagesInfo[pkgDirUnix].importsNative, ".", "github.com/candid82/joker/core", false)
-	addImport(packagesInfo[pkgDirUnix].importsNative, "_"+pkgBaseName, pkgDirUnix, false)
+	AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+	AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 
-	clojureCode[pkgDirUnix].types[t] = ti
-	goCode[pkgDirUnix].types[t] = ti
+	ClojureCode[pkgDirUnix].Types[t] = ti
+	GoCode[pkgDirUnix].Types[t] = ti
 
 	const goExtractTemplate = `
 func ExtractGoObject%s(args []Object, index int) *_%s {
@@ -442,8 +444,8 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	typeName := path.Base(t)
 	baseTypeName := td.Name.Name
 
-	others := maybeImplicitConvert(ti.sourceFile, typeName, td)
-	ti.goCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	others := maybeImplicitConvert(ti.SourceFile, typeName, td)
+	ti.GoCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	const clojureTemplate = `
 (defn ^"GoObject" %s.
@@ -453,7 +455,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
   [^Object _v])
 `
 
-	ti.clojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
+	ti.ClojureCode = fmt.Sprintf(clojureTemplate, baseTypeName, typeName, baseTypeName)
 
 	const goConstructTemplate = `
 %sfunc _Construct%s(_v Object) %s_%s {
@@ -474,28 +476,28 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(ti, typeName, baseTypeName)
 	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, typeName, addressOf(ptrTo), typeName, maybeDeref(ptrTo), nonGoObject, expectedObjectDoc)
 
-	if strings.Contains(ti.clojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
-		ti.clojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.clojureCode, `;; $1`)
+	if strings.Contains(ti.ClojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
+		ti.ClojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.ClojureCode, `;; $1`)
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
-		trackAbends(ti.clojureCode)
+		trackAbends(ti.ClojureCode)
 		trackAbends(goConstructor)
 	} else {
-		numGeneratedTypes++
+		NumGeneratedTypes++
 		promoteImports(ti)
 	}
 
-	ti.goCode += goConstructor
+	ti.GoCode += goConstructor
 
-	ti.goCode += goTypeExtractor(t, ti)
+	ti.GoCode += goTypeExtractor(t, ti)
 }
 
-func promoteImports(ti *goTypeInfo) {
-	for _, imp := range ti.requiredImports.fullNames {
-		addImport(packagesInfo[ti.sourceFile.pkgDirUnix].importsNative, imp.local, imp.full, false)
+func promoteImports(ti *GoTypeInfo) {
+	for _, imp := range ti.RequiredImports.FullNames {
+		AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, imp.Local, imp.Full, false)
 	}
 }
 
-func nonGoObjectCase(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(ti *GoTypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
@@ -515,10 +517,10 @@ func nonGoObjectCase(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObject
 		ptrTo
 }
 
-func nonGoObjectTypeFor(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
-	switch t := ti.td.Type.(type) {
+func nonGoObjectTypeFor(ti *GoTypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+	switch t := ti.Td.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.sourceFile.pkgDirUnix, t.Name, &ti.td.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.SourceFile.PkgDirUnix, t.Name, &ti.Td.Type)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -541,23 +543,23 @@ func nonGoObjectTypeFor(ti *goTypeInfo, typeName, baseTypeName string) (nonGoObj
 	return []string{"default"},
 		[]string{"whatever"},
 		[]string{fmt.Sprintf("_%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-			typeName, ti.td.Type, ti.td.Name)},
+			typeName, ti.Td.Type, ti.Td.Name)},
 		[]string{""},
 		""
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	v := toGoTypeNameInfo(pkgDirUnix, name, e)
-	nonGoObjectType = "case " + v.argClojureType
-	nonGoObjectTypeDoc = v.argClojureType
-	extractClojureObject = v.argFromClojureObject
-	if v.unsupported || v.argClojureType == "" || extractClojureObject == "" {
-		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.fullGoName)
+	nonGoObjectType = "case " + v.ArgClojureType
+	nonGoObjectTypeDoc = v.ArgClojureType
+	extractClojureObject = v.ArgFromClojureObject
+	if v.Unsupported || v.ArgClojureType == "" || extractClojureObject == "" {
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.FullGoName)
 	}
 	return
 }
 
-func mapToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) string {
+func mapToType(ti *GoTypeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
@@ -566,7 +568,7 @@ func mapToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) str
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
 }
 
-func vectorToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) string {
+func vectorToType(ti *GoTypeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o *Vector) *%s {
 	return &%s{%s}
 }
@@ -583,13 +585,13 @@ func vectorToType(ti *goTypeInfo, helperFName, typeName string, ty *StructType) 
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
 }
 
-func elementsToType(ti *goTypeInfo, ty *StructType, toType func(ti *goTypeInfo, i int, name string, f *Field) string) string {
+func elementsToType(ti *GoTypeInfo, ty *StructType, toType func(ti *GoTypeInfo, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
 		for _, p := range f.Names {
 			fieldName := p.Name
-			if fieldName == "" || isPrivate(fieldName) {
+			if fieldName == "" || IsPrivate(fieldName) {
 				continue
 			}
 			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(ti, i, p.Name, f)))
@@ -600,26 +602,26 @@ func elementsToType(ti *goTypeInfo, ty *StructType, toType func(ti *goTypeInfo, 
 		`)
 }
 
-func vectorElementToType(ti *goTypeInfo, i int, name string, f *Field) string {
+func vectorElementToType(ti *GoTypeInfo, i int, name string, f *Field) string {
 	return elementToType(ti, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
 }
 
-func elementToType(ti *goTypeInfo, el string, e *Expr) string {
-	v := toGoExprInfo(ti.sourceFile, e)
-	if v.unsupported {
-		return v.fullGoName
+func elementToType(ti *GoTypeInfo, el string, e *Expr) string {
+	v := toGoExprInfo(ti.SourceFile, e)
+	if v.Unsupported {
+		return v.FullGoName
 	}
-	if v.convertFromClojure != "" {
-		addRequiredImports(ti, v.convertFromClojureImports)
-		return fmt.Sprintf(v.convertFromClojure, el)
+	if v.ConvertFromClojure != "" {
+		addRequiredImports(ti, v.ConvertFromClojureImports)
+		return fmt.Sprintf(v.ConvertFromClojure, el)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.fullGoName, toGoExprString(ti.sourceFile, v.underlyingType))
+		v.FullGoName, toGoExprString(ti.SourceFile, v.UnderlyingType))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(ti *goTypeInfo, imports []packageImport) {
+func addRequiredImports(ti *GoTypeInfo, imports []PackageImport) {
 	for _, imp := range imports {
-		addImport(ti.requiredImports, imp.local, imp.full, false)
+		AddImport(ti.RequiredImports, imp.Local, imp.Full, false)
 	}
 }

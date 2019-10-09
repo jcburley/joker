@@ -5,14 +5,30 @@ import (
 	. "go/ast"
 	"go/token"
 	"path/filepath"
+	"strconv"
 	. "strings"
 	"unicode"
 )
+
+func Check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
 
 var Fset *token.FileSet
 
 func WhereAt(p token.Pos) string {
 	return fmt.Sprintf("%s", Fset.Position(p).String())
+}
+
+func FileAt(p token.Pos) string {
+	return token.Position{Filename: Fset.Position(p).Filename,
+		Offset: 0, Line: 0, Column: 0}.String()
+}
+
+func Unix(p string) string {
+	return filepath.ToSlash(p)
 }
 
 type mapping struct {
@@ -68,4 +84,58 @@ func CommentGroupAsString(d *CommentGroup) string {
 
 func IsPrivate(p string) bool {
 	return !unicode.IsUpper(rune(p[0]))
+}
+
+func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {
+	var d string
+	if doc != nil {
+		d = doc.Text()
+	}
+	if goIn != "" {
+		if d != "" {
+			d = Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Go input arguments: " + goIn
+	}
+	if goOut != "" {
+		if d != "" {
+			d = Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Go return type: " + goOut
+	}
+	if jokIn != "" {
+		if d != "" {
+			d = Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker input arguments: " + jokIn
+	}
+	if jokOut != "" {
+		if d != "" {
+			d = Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker return type: " + jokOut
+	}
+	return Trim(strconv.Quote(d), " \t\n")
+}
+
+type FieldItem struct {
+	Name  *Ident
+	Field *Field
+}
+
+func FlattenFieldList(fl *FieldList) (items []FieldItem) {
+	items = []FieldItem{}
+	if fl == nil {
+		return
+	}
+	for _, f := range fl.List {
+		if f.Names == nil {
+			items = append(items, FieldItem{nil, f})
+			continue
+		}
+		for _, n := range f.Names {
+			items = append(items, FieldItem{n, f})
+		}
+	}
+	return
 }

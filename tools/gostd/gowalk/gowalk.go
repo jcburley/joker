@@ -1,4 +1,4 @@
-package main
+package gowalk
 
 import (
 	"fmt"
@@ -10,39 +10,43 @@ import (
 	"go/token"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
-	"strings"
+	. "strings"
 )
 
-var numFunctions int
-var numStandalones int
-var numReceivers int
-var numTypes int
-var numConstants int
-var numVariables int
-var numGeneratedFunctions int
-var numGeneratedStandalones int
-var numGeneratedReceivers int
-var numGeneratedTypes int
-var numGeneratedConstants int
-var numGeneratedVariables int
+var Dump bool
+var Verbose bool
 
-type packageInfo struct {
-	importsNative  *packageImports
-	importsAutoGen *packageImports
-	pkg            *Package
-	nonEmpty       bool // Whether any non-comment code has been generated
-	hasGoFiles     bool // Whether any .go files (would) have been generated
+var NumFunctions int
+var NumStandalones int
+var NumReceivers int
+var NumTypes int
+var NumConstants int
+var NumVariables int
+var NumGeneratedFunctions int
+var NumGeneratedStandalones int
+var NumGeneratedReceivers int
+var NumGeneratedTypes int
+var NumGeneratedConstants int
+var NumGeneratedVariables int
+
+type PackageInfo struct {
+	ImportsNative  *PackageImports
+	ImportsAutoGen *PackageImports
+	Pkg            *Package
+	NonEmpty       bool // Whether any non-comment code has been generated
+	HasGoFiles     bool // Whether any .go files (would) have been generated
 }
 
 /* Map (Unix-style) relative path to package info */
-var packagesInfo = map[string]*packageInfo{}
+var PackagesInfo = map[string]*PackageInfo{}
 
 /* Sort the packages -- currently appears to not actually be
 /* necessary, probably because of how walkDirs() works. */
-func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageInfo)) {
+func SortedPackagesInfo(m map[string]*PackageInfo, f func(k string, i *PackageInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -53,52 +57,83 @@ func sortedPackagesInfo(m map[string]*packageInfo, f func(k string, i *packageIn
 	}
 }
 
-func sortedPackageImports(pi packageImports, f func(k, local, full string)) {
+func SortedPackageImports(pi PackageImports, f func(k, local, full string)) {
 	var keys []string
-	for k, _ := range pi.fullNames {
+	for k, _ := range pi.FullNames {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		v := pi.fullNames[k]
-		f(k, v.local, v.full)
+		v := pi.FullNames[k]
+		f(k, v.Local, v.Full)
 	}
 }
 
-type goFile struct {
-	name        string
-	rootUnix    string
-	pkgDirUnix  string
-	pkgBaseName string
-	spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
-	nsRoot      string             // "go.std." or whatever is desired as the root namespace
+type GoFile struct {
+	Name        string
+	RootUnix    string
+	PkgDirUnix  string
+	PkgBaseName string
+	Spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+	NsRoot      string             // "go.std." or whatever is desired as the root namespace
 }
 
-var goFiles = map[string]*goFile{}
+var GoFiles = map[string]*GoFile{}
 
-type fnCodeInfo struct {
-	sourceFile *goFile
-	fnCode     string
-	fnDecl     *FuncDecl     // Empty for standalone functions; used to get docstring for receivers
-	fnDoc      *CommentGroup // for some reason, fnDecl.Doc disappears by the time we try to use it!!??
+type GoTypeInfo struct {
+	LocalName                 string  // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
+	FullGoName                string  // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
+	SourceFile                *GoFile // location of the type defintion
+	Td                        *TypeSpec
+	Where                     token.Pos
+	UnderlyingType            *Expr           // nil if not a declared type
+	ArgClojureType            string          // Can convert this type to a Go function arg with my type
+	ArgFromClojureObject      string          // Append this to Clojure object to extract value of my type
+	ArgClojureArgType         string          // Clojure argument type for a Go function arg with my type
+	ArgExtractFunc            string          // Call Extract<this>() for arg with my type
+	ConvertFromClojure        string          // Pattern to convert a (scalar) %s to this type
+	ConvertFromClojureImports []PackageImport // Imports needed to support the above
+	ConvertToClojure          string          // Pattern to convert this type to an appropriate Clojure object
+	PromoteType               string          // Pattern to convert type to next larger Go type that Joker supports
+	ClojureCode               string
+	GoCode                    string
+	RequiredImports           *PackageImports
+	Uncompleted               bool // Has this type's info been filled in beyond the registration step?
+	Custom                    bool // Is this not a builtin Go type?
+	Private                   bool // Is this a private type?
+	Unsupported               bool // Is this unsupported?
+	Constructs                bool // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
+	Nullable                  bool // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
-type fnCodeMap map[string]*fnCodeInfo
+type GoTypeMap map[string]*GoTypeInfo
 
-type codeInfo struct {
-	constants goConstantsMap
-	variables goVariablesMap
-	functions fnCodeMap
-	types     goTypeMap
-	initTypes map[*TypeDefInfo]struct{}            // types to be initialized
-	initVars  map[*TypeInfo]map[string]*fnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
+/* These map fullGoNames to type info. */
+var GoTypes = GoTypeMap{}
+
+type FnCodeInfo struct {
+	SourceFile *GoFile
+	FnCode     string
+	FnDecl     *FuncDecl     // Empty for standalone functions; used to get docstring for receivers
+	FnDoc      *CommentGroup // for some reason, fnDecl.Doc disappears by the time we try to use it!!??
+}
+
+type fnCodeMap map[string]*FnCodeInfo
+
+type CodeInfo struct {
+	Constants GoConstantsMap
+	Variables GoVariablesMap
+	Functions fnCodeMap
+	Types     GoTypeMap
+	InitTypes map[*TypeDefInfo]struct{}            // types to be initialized
+	InitVars  map[*TypeInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
-var clojureCode = map[string]codeInfo{}
-var goCode = map[string]codeInfo{}
+var ClojureCode = map[string]CodeInfo{}
+var GoCode = map[string]CodeInfo{}
 
-func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
+func SortedPackageMap(m map[string]CodeInfo, f func(k string, v CodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -109,18 +144,18 @@ func sortedPackageMap(m map[string]codeInfo, f func(k string, v codeInfo)) {
 	}
 }
 
-func sortedCodeMap(m codeInfo, f func(k string, v *fnCodeInfo)) {
+func SortedCodeMap(m CodeInfo, f func(k string, v *FnCodeInfo)) {
 	var keys []string
-	for k, _ := range m.functions {
+	for k, _ := range m.Functions {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		f(k, m.functions[k])
+		f(k, m.Functions[k])
 	}
 }
 
-func sortedFnCodeInfo(m map[string]*fnCodeInfo, f func(k string, v *fnCodeInfo)) {
+func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -131,14 +166,14 @@ func sortedFnCodeInfo(m map[string]*fnCodeInfo, f func(k string, v *fnCodeInfo))
 	}
 }
 
-type funcInfo struct {
-	baseName     string // Just the name without receiver-type info
-	receiverId   string // Receiver info (only one type supported here and by Golang itself for now)
-	name         string // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	docName      string // Everything, for documentation and diagnostics
-	fd           *FuncDecl
-	sourceFile   *goFile
-	refersToSelf bool // whether :go-imports should list itself
+type FuncInfo struct {
+	BaseName     string // Just the name without receiver-type info
+	ReceiverId   string // Receiver info (only one type supported here and by Golang itself for now)
+	Name         string // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName      string // Everything, for documentation and diagnostics
+	Fd           *FuncDecl
+	SourceFile   *GoFile
+	RefersToSelf bool // whether :go-imports should list itself
 }
 
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
@@ -147,7 +182,7 @@ type funcInfo struct {
 /* sprinkled through this code. Still get some reuse out of some of
 /* them, and it's still easier to maintain these copies than if the
 /* body of these were to be included at each call point.... */
-func sortedFuncInfoMap(m map[string]*funcInfo, f func(k string, v *funcInfo)) {
+func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -159,17 +194,17 @@ func sortedFuncInfoMap(m map[string]*funcInfo, f func(k string, v *funcInfo)) {
 }
 
 // Map qualified function names to info on each.
-var qualifiedFunctions = map[string]*funcInfo{}
+var QualifiedFunctions = map[string]*FuncInfo{}
 
-var alreadySeen = []string{}
+var AlreadySeen = []string{}
 
-func receiverPrefix(src *goFile, rl []fieldItem) string {
+func receiverPrefix(src *GoFile, rl []FieldItem) string {
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
 			res += "_"
 		}
-		switch x := r.field.Type.(type) {
+		switch x := r.Field.Type.(type) {
 		case *Ident:
 			res += x.Name
 		case *ArrayType:
@@ -177,20 +212,20 @@ func receiverPrefix(src *goFile, rl []fieldItem) string {
 		case *StarExpr:
 			res += "PtrTo_" + x.X.(*Ident).Name
 		default:
-			panic(fmt.Sprintf("receiverList: unrecognized expr %T in %s", x, src.name))
+			panic(fmt.Sprintf("receiverList: unrecognized expr %T in %s", x, src.Name))
 		}
 	}
 	return res + "_"
 }
 
-func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
+func receiverId(src *GoFile, pkgName string, rl []FieldItem) string {
 	pkg := "_" + pkgName + "."
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
 			res += "ABEND422(more than one receiver in list)"
 		}
-		switch x := r.field.Type.(type) {
+		switch x := r.Field.Type.(type) {
 		case *Ident:
 			res += pkg + x.Name
 		case *ArrayType:
@@ -198,33 +233,33 @@ func receiverId(src *goFile, pkgName string, rl []fieldItem) string {
 		case *StarExpr:
 			res += "*" + pkg + x.X.(*Ident).Name
 		default:
-			panic(fmt.Sprintf("receiverId: unrecognized expr %T in %s", x, src.name))
+			panic(fmt.Sprintf("receiverId: unrecognized expr %T in %s", x, src.Name))
 		}
 	}
 	return res
 }
 
 // Returns whether any public functions were actually processed.
-func processFuncDecl(gf *goFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
-	if dump {
+func processFuncDecl(gf *GoFile, pkgDirUnix, filename string, f *File, fd *FuncDecl) bool {
+	if Dump {
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, filename, fd, fd.Doc)
 		Print(Fset, fd)
 	}
-	fl := flattenFieldList(fd.Recv)
+	fl := FlattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
-	if v, ok := qualifiedFunctions[fullName]; ok {
-		alreadySeen = append(alreadySeen,
+	if v, ok := QualifiedFunctions[fullName]; ok {
+		AlreadySeen = append(AlreadySeen,
 			fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
-				fullName, v.sourceFile.name, filename))
+				fullName, v.SourceFile.Name, filename))
 	}
-	rcvrId := receiverId(gf, gf.pkgBaseName, fl)
+	rcvrId := receiverId(gf, gf.PkgBaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	qualifiedFunctions[fullName] = &funcInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
 	return true
 }
 
-func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)) {
+func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -235,33 +270,35 @@ func sortedTypeInfoMap(m map[string]*goTypeInfo, f func(k string, v *goTypeInfo)
 	}
 }
 
+var RegisterType_func func(gf *GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
+
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) bool {
+func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) bool {
 	typename := pkg + "." + ts.Name.Name
-	if dump {
-		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
+	if Dump {
+		fmt.Printf("Type %s at %s:\n", typename, WhereAt(ts.Pos()))
 		Print(Fset, ts)
 	}
 
 	ti := TypeDefine(ts, parentDoc)
-	if c, ok := goTypes[typename]; ok {
+	if c, ok := GoTypes[typename]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
-			typename, whereAt(c.where), whereAt(ts.Pos()))
+			typename, WhereAt(c.Where), WhereAt(ts.Pos()))
 	}
-	clojureCode[pkg].initTypes[ti] = struct{}{}
-	goCode[pkg].initTypes[ti] = struct{}{}
+	ClojureCode[pkg].InitTypes[ti] = struct{}{}
+	GoCode[pkg].InitTypes[ti] = struct{}{}
 
-	gt := registerType(gf, typename, ts)
-	gt.td = ts
-	gt.where = ts.Pos()
-	gt.requiredImports = &packageImports{}
-	if !isPrivate(ts.Name.Name) {
-		numTypes++
+	gt := RegisterType_func(gf, typename, ts)
+	gt.Td = ts
+	gt.Where = ts.Pos()
+	gt.RequiredImports = &PackageImports{}
+	if !IsPrivate(ts.Name.Name) {
+		NumTypes++
 	}
 	return true
 }
 
-func processTypeSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGroup) (found bool) {
+func processTypeSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) (found bool) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
 		if processTypeSpec(gf, pkg, ts, parentDoc) {
@@ -271,17 +308,17 @@ func processTypeSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGrou
 	return
 }
 
-type variableInfo struct {
-	name       *Ident
-	sourceFile *goFile
-	def        string
+type VariableInfo struct {
+	Name       *Ident
+	SourceFile *GoFile
+	Def        string
 }
 
-type goVariablesMap map[string]*variableInfo
+type GoVariablesMap map[string]*VariableInfo
 
-var goVariables = goVariablesMap{}
+var GoVariables = GoVariablesMap{}
 
-func sortedVariableInfoMap(m map[string]*variableInfo, f func(k string, v *variableInfo)) {
+func SortedVariableInfoMap(m map[string]*VariableInfo, f func(k string, v *VariableInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -292,17 +329,17 @@ func sortedVariableInfoMap(m map[string]*variableInfo, f func(k string, v *varia
 	}
 }
 
-type constantInfo struct {
-	name       *Ident
-	sourceFile *goFile
-	def        string
+type ConstantInfo struct {
+	Name       *Ident
+	SourceFile *GoFile
+	Def        string
 }
 
-type goConstantsMap map[string]*constantInfo
+type GoConstantsMap map[string]*ConstantInfo
 
-var goConstants = goConstantsMap{}
+var GoConstants = GoConstantsMap{}
 
-func sortedConstantInfoMap(m map[string]*constantInfo, f func(k string, v *constantInfo)) {
+func SortedConstantInfoMap(m map[string]*ConstantInfo, f func(k string, v *ConstantInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -331,7 +368,7 @@ func fitInt(value string) string {
 
 func evalConstType(ty *TypeSpec) (typeName string) {
 	typeName = ty.Name.Name
-	_, ok := goTypes[typeName]
+	_, ok := GoTypes[typeName]
 	if !ok {
 		typeName = ty.Type.(*Ident).Name
 	}
@@ -470,11 +507,11 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 	if typeName == "" {
 		return
 	}
-	gt, ok := goTypes[typeName]
-	if !ok || gt.argClojureArgType == "" || gt.promoteType == "" {
+	gt, ok := GoTypes[typeName]
+	if !ok || gt.ArgClojureArgType == "" || gt.PromoteType == "" {
 		return "", ""
 	}
-	return gt.argClojureArgType, strings.ReplaceAll(gt.promoteType, "%s", innerPromotion)
+	return gt.ArgClojureArgType, ReplaceAll(gt.PromoteType, "%s", innerPromotion)
 }
 
 // Constants are currently emitted while walking the packages. Unlike with variables, where the types are not needed,
@@ -545,14 +582,14 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 //
 // There might even be an existing Go package to do some of the heavy lifting in that direction. In any case, the result
 // would be a lot cleaner and clearer than having "constants" wrapped in GoObject's or GoVar's.
-func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processConstantSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
-	localName := gf.pkgBaseName + "." + name.Name
+	localName := gf.PkgBaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
-	if c, ok := goConstants[fullName]; ok {
+	if c, ok := GoConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
+			localName, WhereAt(c.Name.NamePos), WhereAt(name.NamePos))
 	}
 
 	switch name.Name {
@@ -561,14 +598,14 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	valTypeString, promoteType := determineType(name.Name, valType, val)
-	if dump || (verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
-		fmt.Printf("Constant %s at %s:\n", name, whereAt(name.Pos()))
+	if Dump || (Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
+		fmt.Printf("Constant %s at %s:\n", name, WhereAt(name.Pos()))
 		if valType != nil {
-			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
+			fmt.Printf("  valType at %s:\n", WhereAt(valType.Pos()))
 			Print(Fset, valType)
 		}
 		if val != nil {
-			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
+			fmt.Printf("  val at %s:\n", WhereAt(val.Pos()))
 			Print(Fset, val)
 		}
 	}
@@ -576,7 +613,7 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		return false
 	}
 
-	goCode := fmt.Sprintf(promoteType, localName)
+	GoCode := fmt.Sprintf(promoteType, localName)
 
 	// Note: :tag value is a string to avoid conflict with like-named member of namespace
 	def := fmt.Sprintf(`
@@ -587,11 +624,11 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
     :go "%s"}
   %s)
 `,
-		docString, valTypeString, goCode, clName)
+		docString, valTypeString, GoCode, clName)
 
-	gt := &constantInfo{name, gf, def}
-	goConstants[fullName] = gt
-	numGeneratedConstants++
+	gt := &ConstantInfo{name, gf, def}
+	GoConstants[fullName] = gt
+	NumGeneratedConstants++
 
 	return true
 }
@@ -600,14 +637,14 @@ func processConstantSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 // as it isn't needed to determine the type of a variable, since the
 // type isn't needed for code generation for variables -- just for
 // constants.
-func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processVariableSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
-	localName := gf.pkgBaseName + "." + name.Name
+	localName := gf.PkgBaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
-	if c, ok := goVariables[fullName]; ok {
+	if c, ok := GoVariables[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: variable %s found at %s and now again at %s\n",
-			localName, whereAt(c.name.NamePos), whereAt(name.NamePos))
+			localName, WhereAt(c.Name.NamePos), WhereAt(name.NamePos))
 	}
 
 	switch name.Name {
@@ -615,14 +652,14 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 		clName += "-renamed" // TODO: is there a better solution possible?
 	}
 
-	if dump {
-		fmt.Printf("Variable %s at %s:\n", name, whereAt(name.Pos()))
+	if Dump {
+		fmt.Printf("Variable %s at %s:\n", name, WhereAt(name.Pos()))
 		if valType != nil {
-			fmt.Printf("  valType at %s:\n", whereAt(valType.Pos()))
+			fmt.Printf("  valType at %s:\n", WhereAt(valType.Pos()))
 			Print(Fset, valType)
 		}
 		if val != nil {
-			fmt.Printf("  val at %s:\n", whereAt(val.Pos()))
+			fmt.Printf("  val at %s:\n", WhereAt(val.Pos()))
 			Print(Fset, val)
 		}
 	}
@@ -638,9 +675,9 @@ func processVariableSpec(gf *goFile, pkg string, name *Ident, valType Expr, val 
 `,
 		docString, localName, clName)
 
-	gt := &variableInfo{name, gf, def}
-	goVariables[fullName] = gt
-	numGeneratedVariables++
+	gt := &VariableInfo{name, gf, def}
+	GoVariables[fullName] = gt
+	NumGeneratedVariables++
 
 	return true
 }
@@ -652,7 +689,7 @@ func what(constant bool) string {
 	return "Variable"
 }
 
-func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) (processed bool) {
+func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) (processed bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
@@ -683,17 +720,17 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 				previousValType = valType
 			}
 
-			if isPrivate(valName.Name) {
+			if IsPrivate(valName.Name) {
 				continue
 			}
 			if constant {
-				numConstants++
+				NumConstants++
 			} else {
-				numVariables++
+				NumVariables++
 			}
 
-			if dump {
-				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, whereAt(valName.NamePos))
+			if Dump {
+				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, WhereAt(valName.NamePos))
 				if valType != nil {
 					fmt.Printf("  valType:\n")
 					Print(Fset, valType)
@@ -710,7 +747,7 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 			if doc == nil {
 				doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 			}
-			docString := commentGroupInQuotes(doc, "", "", "", "")
+			docString := CommentGroupInQuotes(doc, "", "", "", "")
 			if constant {
 				if processConstantSpec(gf, pkg, valName, valType, val, docString) {
 					processed = true
@@ -725,21 +762,21 @@ func processValueSpecs(gf *goFile, pkg string, tss []Spec, parentDoc *CommentGro
 	return
 }
 
-func isPrivateType(f *Expr) bool {
+func IsPrivateType(f *Expr) bool {
 	switch td := (*f).(type) {
 	case *Ident:
-		return isPrivate(td.Name)
+		return IsPrivate(td.Name)
 	case *ArrayType:
-		return isPrivateType(&td.Elt)
+		return IsPrivateType(&td.Elt)
 	case *StarExpr:
-		return isPrivateType(&td.X)
+		return IsPrivateType(&td.X)
 	default:
 		panic(fmt.Sprintf("unsupported expr type %T", f))
 	}
 }
 
 // Returns whether any public declarations were actually processed.
-func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
+func processDecls(gf *GoFile, pkgDirUnix string, f *File) (processed bool) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -759,34 +796,34 @@ func processDecls(gf *goFile, pkgDirUnix string, f *File) (processed bool) {
 				}
 			case token.IMPORT: // Ignore these
 			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), whereAt(v.Pos())))
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), WhereAt(v.Pos())))
 			}
 		default:
-			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, whereAt(v.Pos())))
+			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, WhereAt(v.Pos())))
 		}
 	}
 	return
 }
 
-func processFuncs(gf *goFile, pkgDirUnix, pathUnix string, f *File) (processed bool) {
+func processFuncs(gf *GoFile, pkgDirUnix, pathUnix string, f *File) (processed bool) {
 Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
-			if isPrivate(v.Name.Name) {
+			if IsPrivate(v.Name.Name) {
 				continue // Skipping non-exported functions
 			}
 			if v.Recv != nil {
 				for _, r := range v.Recv.List {
-					if isPrivateType(&r.Type) {
+					if IsPrivateType(&r.Type) {
 						continue Funcs // Publishable receivers must operate on public types
 					}
 				}
-				numReceivers += 1
+				NumReceivers += 1
 			} else {
-				numStandalones += 1
+				NumStandalones += 1
 			}
-			numFunctions += 1
+			NumFunctions += 1
 			if processFuncDecl(gf, pkgDirUnix, pathUnix, f, v) {
 				processed = true
 			}
@@ -796,28 +833,28 @@ Funcs:
 	return
 }
 
-func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *goFile) {
-	if egf, found := goFiles[goFilePathUnix]; found {
-		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.pkgDirUnix))
+func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *GoFile) {
+	if egf, found := GoFiles[goFilePathUnix]; found {
+		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.PkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf = &goFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
-	goFiles[goFilePathUnix] = gf
+	gf = &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
+	GoFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
-		if dump {
+		if Dump {
 			fmt.Printf("Import for file %s:\n", goFilePathUnix)
 			Print(Fset, imp)
 		}
 		importPath, err := strconv.Unquote(imp.Path.Value)
-		check(err)
+		Check(err)
 		var as string
 		if n := imp.Name; n != nil {
 			switch n.Name {
 			case "_":
 				continue // Ignore these
 			case ".":
-				fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", whereAt(n.NamePos))
+				fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", WhereAt(n.NamePos))
 				continue
 			default:
 				as = n.Name
@@ -832,16 +869,16 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *
 }
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
-type packageImport struct {
-	local    string // "foo", "_", ".", or empty
-	localRef string // local unless empty, in which case final component of full (e.g. "foo")
-	full     string // "bar/bletch/foo"
+type PackageImport struct {
+	Local    string // "foo", "_", ".", or empty
+	LocalRef string // local unless empty, in which case final component of full (e.g. "foo")
+	Full     string // "bar/bletch/foo"
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
-type packageImports struct {
-	localNames map[string]string         // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
-	fullNames  map[string]*packageImport // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
+type PackageImports struct {
+	LocalNames map[string]string         // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
+	FullNames  map[string]*PackageImport // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
 }
 
 /* Given desired local and the full (though relative) name of the
@@ -849,55 +886,55 @@ type packageImports struct {
 /* and isn't already used (someday picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func addImport(packageImports *packageImports, local, full string, okToSubstitute bool) string {
-	if e, found := packageImports.fullNames[full]; found {
-		if e.local == local {
-			return e.localRef
+func AddImport(packageImports *PackageImports, local, full string, okToSubstitute bool) string {
+	if e, found := packageImports.FullNames[full]; found {
+		if e.Local == local {
+			return e.LocalRef
 		}
 		if okToSubstitute {
-			return e.localRef
+			return e.LocalRef
 		}
-		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, e.local, e.full))
+		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, e.Local, e.Full))
 	}
 	localRef := local
 	if local == "" {
-		components := strings.Split(full, "/")
+		components := Split(full, "/")
 		localRef = components[len(components)-1]
 	}
 	if localRef != "." {
-		if curFull, found := packageImports.localNames[localRef]; found {
+		if curFull, found := packageImports.LocalNames[localRef]; found {
 			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, localRef, curFull))
 		}
 	}
-	if packageImports.localNames == nil {
-		packageImports.localNames = map[string]string{}
+	if packageImports.LocalNames == nil {
+		packageImports.LocalNames = map[string]string{}
 	}
-	packageImports.localNames[localRef] = full
-	if packageImports.fullNames == nil {
-		packageImports.fullNames = map[string]*packageImport{}
+	packageImports.LocalNames[localRef] = full
+	if packageImports.FullNames == nil {
+		packageImports.FullNames = map[string]*PackageImport{}
 	}
-	packageImports.fullNames[full] = &packageImport{local, localRef, full}
+	packageImports.FullNames[full] = &PackageImport{local, localRef, full}
 	return localRef
 }
 
 func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	if verbose {
+	if Verbose {
 		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
 	}
 
-	if _, ok := packagesInfo[pkgDirUnix]; !ok {
-		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
-		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
-		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
+	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
+		PackagesInfo[pkgDirUnix] = &PackageInfo{&PackageImports{}, &PackageImports{}, p, false, false}
+		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
+			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*FnCodeInfo{}}
+		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
+			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*FnCodeInfo{}}
 	}
 
 	found := false
 
 	// Must process all types before processing functions, since receivers are defined on types.
 	for path, f := range p.Files {
-		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
 		if processDecls(gf, pkgDirUnix, f) {
 			found = true
@@ -906,8 +943,8 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	// Now process functions.
 	for path, f := range p.Files {
-		goFilePathUnix := strings.TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := goFiles[goFilePathUnix]
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		gf := GoFiles[goFilePathUnix]
 		if processFuncs(gf, pkgDirUnix, goFilePathUnix, f) {
 			found = true
 		}
@@ -919,23 +956,23 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 }
 
 func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
-	pkgDir := strings.TrimPrefix(path, root+string(filepath.Separator))
+	pkgDir := TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
-	if verbose {
+	if Verbose {
 		fmt.Printf("Processing %s:\n", pkgDirUnix)
 	}
 
 	pkgs, err := parser.ParseDir(Fset, path,
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
-			if strings.HasSuffix(info.Name(), "_test.go") {
-				if verbose {
+			if HasSuffix(info.Name(), "_test.go") {
+				if Verbose {
 					fmt.Printf("Ignoring test code in %s\n", info.Name())
 				}
 				return false
 			}
 			b, e := build.Default.MatchFile(path, info.Name())
-			if verbose {
+			if Verbose {
 				fmt.Printf("Matchfile(%s) => %v %v\n",
 					filepath.ToSlash(filepath.Join(path, info.Name())),
 					b, e)
@@ -950,12 +987,12 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 
 	for pkgBaseName, v := range pkgs {
 		if pkgBaseName != filepath.Base(path) {
-			if verbose {
+			if Verbose {
 				fmt.Printf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, path)
 			}
 		} else if pkgBaseName == "unsafe" {
-			if verbose {
+			if Verbose {
 				fmt.Printf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix)
 			}
 		} else {
@@ -974,13 +1011,13 @@ var excludeDirs = map[string]bool{
 	"vendor":   true,
 }
 
-func walkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
+func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 	rootUnix := filepath.ToSlash(fsRoot)
 	target, err := filepath.EvalSymlinks(fsRoot)
-	check(err)
+	Check(err)
 	err = filepath.Walk(target,
 		func(path string, info os.FileInfo, err error) error {
-			rel := strings.Replace(path, target, fsRoot, 1)
+			rel := Replace(path, target, fsRoot, 1)
 			relUnix := filepath.ToSlash(rel)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
@@ -990,13 +1027,13 @@ func walkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 				return nil // skip (implicit) "."
 			}
 			if excludeDirs[filepath.Base(rel)] {
-				if verbose {
+				if Verbose {
 					fmt.Printf("Excluding %s\n", relUnix)
 				}
 				return filepath.SkipDir
 			}
 			if info.IsDir() {
-				if verbose {
+				if Verbose {
 					fmt.Printf("Walking from %s to %s\n", rootUnix, relUnix)
 				}
 				return processDir(fsRoot, rootUnix, rel, nsRoot, mode)
@@ -1010,4 +1047,35 @@ func walkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 	}
 
 	return err
+}
+
+// Given an input package name such as "foo/bar" and typename
+// "bletch", decides whether to return (for 'code' and 'cl2gol') just
+// "_bar.bletch" and "bletch" if the package being compiled will be
+// implementing Go's package of the same name (in this case, the
+// generated file will be foo/bar_native.go and start with "package
+// bar"); or, to return (for both) simply "bar.bletch" and ensure
+// "foo/bar" is imported (implicitly as "bar", assuming no
+// conflicts). NOTE: As a side effect, updates imports needed by the
+// function.
+func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
+	curPkgName := fn.SourceFile.PkgDirUnix
+	basePkgName := path.Base(fullPkgName)
+	clType = basePkgName + "/" + baseTypeName
+	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
+	if curPkgName == fullPkgName {
+		code = "_" + basePkgName + "." + baseTypeName
+		doc = baseTypeName
+		return
+	}
+	doc = path.Base(fullPkgName) + "." + baseTypeName
+	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
+	return
+}
+
+func FullTypeNameAsClojure(nsRoot, t string) string {
+	if t[0] == '_' {
+		t = t[1:]
+	}
+	return nsRoot + ReplaceAll(ReplaceAll(ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
 }

@@ -2,61 +2,9 @@ package main
 
 import (
 	"fmt"
-	. "github.com/candid82/joker/tools/gostd/utils"
-	. "go/ast"
-	"go/token"
-	"path"
-	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
-	"unicode"
 )
-
-func whereAt(p token.Pos) string {
-	return fmt.Sprintf("%s", Fset.Position(p).String())
-}
-
-func fileAt(p token.Pos) string {
-	return token.Position{Filename: Fset.Position(p).Filename,
-		Offset: 0, Line: 0, Column: 0}.String()
-}
-
-func unix(p string) string {
-	return filepath.ToSlash(p)
-}
-
-func commentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {
-	var d string
-	if doc != nil {
-		d = doc.Text()
-	}
-	if goIn != "" {
-		if d != "" {
-			d = strings.Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Go input arguments: " + goIn
-	}
-	if goOut != "" {
-		if d != "" {
-			d = strings.Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Go return type: " + goOut
-	}
-	if jokIn != "" {
-		if d != "" {
-			d = strings.Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Joker input arguments: " + jokIn
-	}
-	if jokOut != "" {
-		if d != "" {
-			d = strings.Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Joker return type: " + jokOut
-	}
-	return strings.Trim(strconv.Quote(d), " \t\n")
-}
 
 func paramNameAsClojure(n string) string {
 	return n
@@ -74,47 +22,12 @@ func typeToGoExtractFuncName(t string) string {
 	return replaceAll(replaceAll(t, ".", "_"), "/", "__")
 }
 
-func fullTypeNameAsClojure(nsRoot, t string) string {
-	if t[0] == '_' {
-		t = t[1:]
-	}
-	return nsRoot + replaceAll(replaceAll(replaceAll(t, ".", ":"), "/", "."), ":", "/")
-}
-
-// Given an input package name such as "foo/bar" and typename
-// "bletch", decides whether to return (for 'code' and 'cl2gol') just
-// "_bar.bletch" and "bletch" if the package being compiled will be
-// implementing Go's package of the same name (in this case, the
-// generated file will be foo/bar_native.go and start with "package
-// bar"); or, to return (for both) simply "bar.bletch" and ensure
-// "foo/bar" is imported (implicitly as "bar", assuming no
-// conflicts). NOTE: As a side effect, updates imports needed by the
-// function.
-func fullPkgNameAsGoType(fn *funcInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.sourceFile.pkgDirUnix
-	basePkgName := path.Base(fullPkgName)
-	clType = basePkgName + "/" + baseTypeName
-	clTypeDoc = fullTypeNameAsClojure(fn.sourceFile.nsRoot, fullPkgName+"."+baseTypeName)
-	if curPkgName == fullPkgName {
-		code = "_" + basePkgName + "." + baseTypeName
-		doc = baseTypeName
-		return
-	}
-	doc = path.Base(fullPkgName) + "." + baseTypeName
-	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
-	return
-}
-
 func funcNameAsGoPrivate(f string) string {
 	// s := strings.ToLower(f[0:1]) + f[1:]
 	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
 	// 	s = "_" + s
 	// }
 	return "__" + strings.ToLower(f[0:1]) + f[1:]
-}
-
-func isPrivate(p string) bool {
-	return !unicode.IsUpper(rune(p[0]))
 }
 
 func reverseJoin(a []string, infix string) string {
@@ -202,26 +115,4 @@ func sortedStringMap(m map[string]string, f func(key, value string)) {
 	for _, k := range keys {
 		f(k, m[k])
 	}
-}
-
-type fieldItem struct {
-	name  *Ident
-	field *Field
-}
-
-func flattenFieldList(fl *FieldList) (items []fieldItem) {
-	items = []fieldItem{}
-	if fl == nil {
-		return
-	}
-	for _, f := range fl.List {
-		if f.Names == nil {
-			items = append(items, fieldItem{nil, f})
-			continue
-		}
-		for _, n := range f.Names {
-			items = append(items, fieldItem{n, f})
-		}
-	}
-	return
 }

@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/candid82/joker/tools/gostd/utils"
+	. "github.com/candid82/joker/tools/gostd/gowalk"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
 	"go/parser"
 	"go/token"
@@ -14,12 +15,6 @@ import (
 )
 
 const VERSION = "0.1"
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
 
 /* Want to support e.g.:
 
@@ -36,8 +31,6 @@ func check(e error) {
 
 */
 
-var dump bool
-var verbose bool
 var goSourcePath string
 
 func notOption(arg string) bool {
@@ -79,7 +72,7 @@ func listOfOthers(other string) (others []string) {
 		o = other // try original without $GOPATH/src/ prefix
 		s, e = os.Stat(o)
 	}
-	check(e)
+	Check(e)
 	if s.IsDir() {
 		return []string{o}
 	}
@@ -87,8 +80,8 @@ func listOfOthers(other string) (others []string) {
 }
 
 func main() {
-	utils.Fset = token.NewFileSet() // positions are relative to Fset
-	dump = false
+	Fset = token.NewFileSet() // positions are relative to Fset
+	Dump = false
 
 	length := len(os.Args)
 	goSourceDir := ""
@@ -117,7 +110,7 @@ func main() {
 			case "--no-timestamp":
 				noTimeAndVersion = true
 			case "--dump":
-				dump = true
+				Dump = true
 			case "--overwrite":
 				overwrite = true
 				replace = false
@@ -128,7 +121,7 @@ func main() {
 				replace = false
 				overwrite = false
 			case "--verbose", "-v":
-				verbose = true
+				Verbose = true
 			case "--summary":
 				summary = true
 			case "--output-code":
@@ -181,7 +174,7 @@ func main() {
 		}
 	}
 
-	if verbose {
+	if Verbose {
 		fmt.Printf("Default context: %v\n", build.Default)
 	}
 
@@ -207,7 +200,7 @@ func main() {
 		goSourcePath = filepath.Join(goSourcePath, "src")
 	}
 
-	if verbose {
+	if Verbose {
 		fmt.Printf("goSourceDir: %s\n", goSourceDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
 		for _, o := range others {
@@ -250,40 +243,40 @@ func main() {
 		}
 	}
 
-	utils.AddMapping(goSourceDir, "go.std.")
+	AddMapping(goSourceDir, "go.std.")
 	root := filepath.Join(goSourceDir, ".")
-	err := walkDirs(root, "go.std.", mode)
+	err := WalkDirs(root, "go.std.", mode)
 	if err != nil {
 		panic("Error walking directory " + goSourceDir + ": " + fmt.Sprintf("%v", err))
 	}
 
 	for _, o := range otherSourceDirs {
 		root := filepath.Join(o, ".")
-		err := walkDirs(root, "x.y.z.", mode)
+		err := WalkDirs(root, "x.y.z.", mode)
 		if err != nil {
 			panic("Error walking directory " + o + ": " + fmt.Sprintf("%v", err))
 		}
 	}
 
-	sort.Strings(alreadySeen)
-	for _, a := range alreadySeen {
+	sort.Strings(AlreadySeen)
+	for _, a := range AlreadySeen {
 		fmt.Fprintln(os.Stderr, a)
 	}
 
-	sortedConstantInfoMap(goConstants,
-		func(c string, ci *constantInfo) {
+	SortedConstantInfoMap(GoConstants,
+		func(c string, ci *ConstantInfo) {
 			genConstant(ci)
 		})
 
-	sortedVariableInfoMap(goVariables,
-		func(c string, ci *variableInfo) {
+	SortedVariableInfoMap(GoVariables,
+		func(c string, ci *VariableInfo) {
 			genVariable(ci)
 		})
 
 	/* Generate function-code snippets in alphabetical order. */
-	sortedFuncInfoMap(qualifiedFunctions,
-		func(f string, v *funcInfo) {
-			if v.fd.Recv == nil {
+	SortedFuncInfoMap(QualifiedFunctions,
+		func(f string, v *FuncInfo) {
+			if v.Fd.Recv == nil {
 				genStandalone(v)
 			} else {
 				genReceiver(v)
@@ -294,9 +287,9 @@ func main() {
 	/* package, types are generated only if at least one function
 	/* is generated (above) -- so genFunction() must be called for
 	/* all functions beforehand. */
-	sortedTypeInfoMap(goTypes,
-		func(t string, ti *goTypeInfo) {
-			if ti.td != nil {
+	SortedTypeInfoMap(GoTypes,
+		func(t string, ti *GoTypeInfo) {
+			if ti.Td != nil {
 				genType(t, ti)
 			}
 		})
@@ -307,12 +300,12 @@ func main() {
 		var packagesArray = []string{} // Relative package pathnames in alphabetical order
 		var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
 
-		sortedPackagesInfo(packagesInfo,
-			func(p string, i *packageInfo) {
-				if !generateEmpty && !i.nonEmpty {
+		SortedPackagesInfo(PackagesInfo,
+			func(p string, i *PackageInfo) {
+				if !generateEmpty && !i.NonEmpty {
 					return
 				}
-				if i.hasGoFiles {
+				if i.HasGoFiles {
 					packagesArray = append(packagesArray, p)
 				}
 				dotJokeArray = append(dotJokeArray, p)
@@ -321,7 +314,7 @@ func main() {
 		registerJokerFiles(dotJokeArray, jokerSourceDir)
 	}
 
-	if verbose || summary {
+	if Verbose || summary {
 		fmt.Printf("ABENDs:")
 		printAbends(abends)
 		fmt.Printf(`
@@ -332,12 +325,12 @@ Totals: functions=%d generated=%d (%s%%)
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
 `,
-			numFunctions, numGeneratedFunctions, pct(numGeneratedFunctions, numFunctions),
-			numStandalones, pct(numStandalones, numFunctions), numGeneratedStandalones, pct(numGeneratedStandalones, numStandalones),
-			numReceivers, pct(numReceivers, numFunctions), numGeneratedReceivers, pct(numGeneratedReceivers, numReceivers),
-			numTypes, numGeneratedTypes, pct(numGeneratedTypes, numTypes),
-			numConstants, numGeneratedConstants, pct(numGeneratedConstants, numConstants),
-			numVariables, numGeneratedVariables, pct(numGeneratedVariables, numVariables))
+			NumFunctions, NumGeneratedFunctions, pct(NumGeneratedFunctions, NumFunctions),
+			NumStandalones, pct(NumStandalones, NumFunctions), NumGeneratedStandalones, pct(NumGeneratedStandalones, NumStandalones),
+			NumReceivers, pct(NumReceivers, NumFunctions), NumGeneratedReceivers, pct(NumGeneratedReceivers, NumReceivers),
+			NumTypes, NumGeneratedTypes, pct(NumGeneratedTypes, NumTypes),
+			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
+			NumVariables, NumGeneratedVariables, pct(NumGeneratedVariables, NumVariables))
 	}
 
 	os.Exit(0)

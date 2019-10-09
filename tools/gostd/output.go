@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/gowalk"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
@@ -39,7 +40,7 @@ func registerJokerFiles(jokerFiles []string, jokerSourceDir string) {
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
-	if verbose {
+	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -70,11 +71,11 @@ import (
 	}
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
-	check(err)
+	Check(err)
 }
 
 func updateCustomLibsJoker(pkgs []string, f string) {
-	if verbose {
+	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -101,12 +102,12 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 `
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
-	check(err)
+	Check(err)
 }
 
-func packageQuotedImportList(pi packageImports, prefix string) string {
+func packageQuotedImportList(pi PackageImports, prefix string) string {
 	imports := ""
-	sortedPackageImports(pi,
+	SortedPackageImports(pi,
 		func(k, local, full string) {
 			if local == "" {
 				imports += prefix + `"` + k + `"`
@@ -117,29 +118,29 @@ func packageQuotedImportList(pi packageImports, prefix string) string {
 	return imports
 }
 
-func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
 	if jokerLibDir != "" && jokerLibDir != "-" &&
-		(generateEmpty || packagesInfo[pkgDirUnix].nonEmpty) {
+		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
 		jf := filepath.Join(jokerLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
 		var e error
 		e = os.MkdirAll(filepath.Dir(jf), 0777)
 		unbuf_out, e = os.Create(jf)
-		check(e)
-	} else if generateEmpty || packagesInfo[pkgDirUnix].nonEmpty {
+		Check(e)
+	} else if generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty {
 		unbuf_out = os.Stdout
 	}
 	if unbuf_out != nil {
 		out = bufio.NewWriterSize(unbuf_out, 16384)
 	}
 
-	pi := packagesInfo[pkgDirUnix]
+	pi := PackagesInfo[pkgDirUnix]
 
 	if out != nil {
 		importPath, _ := filepath.Abs("/")
-		myDoc := doc.New(pi.pkg, importPath, doc.AllDecls)
+		myDoc := doc.New(pi.Pkg, importPath, doc.AllDecls)
 		pkgDoc := fmt.Sprintf("Provides a low-level interface to the %s package.", pkgDirUnix)
 		if myDoc.Doc != "" {
 			pkgDoc += "\n\n" + myDoc.Doc
@@ -154,10 +155,10 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
     :empty %s}
   %s)
 `,
-			strings.TrimPrefix(packageQuotedImportList(*pi.importsAutoGen, " "), " "),
+			strings.TrimPrefix(packageQuotedImportList(*pi.ImportsAutoGen, " "), " "),
 			strconv.Quote(pkgDoc),
 			func() string {
-				if pi.nonEmpty {
+				if pi.NonEmpty {
 					return "false"
 				} else {
 					return "true"
@@ -166,48 +167,48 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 			"go.std."+strings.Replace(pkgDirUnix, "/", ".", -1))
 	}
 
-	sortedConstantInfoMap(v.constants,
-		func(c string, ci *constantInfo) {
+	SortedConstantInfoMap(v.Constants,
+		func(c string, ci *ConstantInfo) {
 			if outputCode {
-				fmt.Printf("JOKER CONSTANT %s from %s:%s\n", c, ci.sourceFile.name, ci.def)
+				fmt.Printf("JOKER CONSTANT %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ci.def)
+				out.WriteString(ci.Def)
 			}
 		})
 
-	sortedVariableInfoMap(v.variables,
-		func(c string, ci *variableInfo) {
+	SortedVariableInfoMap(v.Variables,
+		func(c string, ci *VariableInfo) {
 			if outputCode {
-				fmt.Printf("JOKER VARIABLE %s from %s:%s\n", c, ci.sourceFile.name, ci.def)
+				fmt.Printf("JOKER VARIABLE %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ci.def)
+				out.WriteString(ci.Def)
 			}
 		})
 
-	sortedTypeInfoMap(v.types,
-		func(t string, ti *goTypeInfo) {
+	SortedTypeInfoMap(v.Types,
+		func(t string, ti *GoTypeInfo) {
 			if outputCode {
-				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, ti.sourceFile.name, ti.clojureCode)
+				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.ClojureCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ti.clojureCode)
+				out.WriteString(ti.ClojureCode)
 			}
 		})
 
-	sortedCodeMap(v,
-		func(f string, w *fnCodeInfo) {
+	SortedCodeMap(v,
+		func(f string, w *FnCodeInfo) {
 			if outputCode {
 				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
-					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
+					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(w.fnCode)
+				out.WriteString(w.FnCode)
 			}
 		})
 
-	SortedTypeDefinitions(v.initTypes,
+	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" {
@@ -240,25 +241,25 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 	}
 }
 
-func outputGoCode(pkgDirUnix string, v codeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	pkgBaseName := path.Base(pkgDirUnix)
-	pi := packagesInfo[pkgDirUnix]
-	packagesInfo[pkgDirUnix].hasGoFiles = true
+	pi := PackagesInfo[pkgDirUnix]
+	PackagesInfo[pkgDirUnix].HasGoFiles = true
 	pkgDirNative := filepath.FromSlash(pkgDirUnix)
 
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
 	if jokerLibDir != "" && jokerLibDir != "-" &&
-		(generateEmpty || packagesInfo[pkgDirUnix].nonEmpty) {
+		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
 		gf := filepath.Join(jokerLibDir, pkgDirNative,
 			pkgBaseName+"_native.go")
 		var e error
 		e = os.MkdirAll(filepath.Dir(gf), 0777)
-		check(e)
+		Check(e)
 		unbuf_out, e = os.Create(gf)
-		check(e)
-	} else if generateEmpty || packagesInfo[pkgDirUnix].nonEmpty {
+		Check(e)
+	} else if generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty {
 		unbuf_out = os.Stdout
 	}
 	if unbuf_out != nil {
@@ -275,31 +276,31 @@ import (%s
 )
 `,
 			pkgBaseName,
-			packageQuotedImportList(*pi.importsNative, "\n\t"))
+			packageQuotedImportList(*pi.ImportsNative, "\n\t"))
 	}
 
-	sortedTypeInfoMap(v.types,
-		func(t string, ti *goTypeInfo) {
+	SortedTypeInfoMap(v.Types,
+		func(t string, ti *GoTypeInfo) {
 			if outputCode {
-				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.sourceFile.name, ti.goCode)
+				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.GoCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ti.goCode)
+				out.WriteString(ti.GoCode)
 			}
 		})
 
-	sortedCodeMap(v,
-		func(f string, w *fnCodeInfo) {
+	SortedCodeMap(v,
+		func(f string, w *FnCodeInfo) {
 			if outputCode {
 				fmt.Printf("GO FUNC %s.%s from %s:%s\n",
-					pkgDirUnix, f, w.sourceFile.name, w.fnCode)
+					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(w.fnCode)
+				out.WriteString(w.FnCode)
 			}
 		})
 
-	SortedTypeDefinitions(v.initTypes,
+	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", tdi.TypeMappingsName()))
 		})
@@ -315,24 +316,24 @@ import (%s
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
-	SortedTypeDefinitions(v.initTypes,
+	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
 			k1 := tdi.FullName
 			mem := ""
-			sortedFnCodeInfo(v.initVars[tdi.TypeInfo], // Will always be populated
-				func(c string, r *fnCodeInfo) {
-					doc := r.fnDoc
-					g := r.fnCode
+			SortedFnCodeInfo(v.InitVars[tdi.TypeInfo], // Will always be populated
+				func(c string, r *FnCodeInfo) {
+					doc := r.FnDoc
+					g := r.FnCode
 					mem += fmt.Sprintf(`
 			"%s": MakeGoReceiver("%s", %s, %s, %s, NewVectorFrom(%s)),
 `[1:],
-						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.fnDecl.Type.Params))
+						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.FnDecl.Type.Params))
 				})
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
 
-	SortedTypeDefinitions(v.initTypes,
+	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", tdi.TypeReflected(), tdi.TypeMappingsName()))
 		})
@@ -352,13 +353,13 @@ import (%s
 }
 
 func outputPackageCode(jokerLibDir string, outputCode, generateEmpty bool) {
-	sortedPackageMap(clojureCode,
-		func(pkgDirUnix string, v codeInfo) {
+	SortedPackageMap(ClojureCode,
+		func(pkgDirUnix string, v CodeInfo) {
 			outputClojureCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
 		})
 
-	sortedPackageMap(goCode,
-		func(pkgDirUnix string, v codeInfo) {
+	SortedPackageMap(GoCode,
+		func(pkgDirUnix string, v CodeInfo) {
 			outputGoCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
 		})
 }
