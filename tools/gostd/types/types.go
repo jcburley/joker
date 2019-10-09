@@ -31,18 +31,19 @@ var typesByFullName = map[string]Expr{}
 
 // Info from the definition of the type (if any)
 type TypeDefInfo struct {
-	TypeSpec  *TypeSpec
-	FullName  string // Clojure name (e.g. "a.b.c/Typename")
-	LocalName string // Local, or base, name (e.g. "Typename")
-	IsPrivate bool
-	Doc       string
-	DefPos    token.Pos
-	goPackage string
+	TypeSpec       *TypeSpec
+	FullName       string // Clojure name (e.g. "a.b.c/Typename")
+	LocalName      string // Local, or base, name (e.g. "Typename")
+	IsPrivate      bool
+	Doc            string
+	DefPos         token.Pos
+	goPackage      string
+	underlyingType *TypeDefInfo
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
 
-func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
+func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
 	tln := ts.Name.Name
 	tfn := prefix + tln
@@ -68,7 +69,19 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
 		goPackage: GoPackageForTypeSpec(ts),
 	}
 	typeDefinitionsByFullName[tfn] = tdi
-	return tdi
+
+	tfnPtr := "*" + tfn
+	tdiPtr := &TypeDefInfo{
+		FullName:       tfnPtr,
+		LocalName:      "",
+		IsPrivate:      IsPrivate(tln),
+		Doc:            "",
+		goPackage:      tdi.goPackage,
+		underlyingType: tdi,
+	}
+	typeDefinitionsByFullName[tfnPtr] = tdiPtr
+
+	return []*TypeDefInfo{tdi, tdiPtr}
 }
 
 func TypeLookup(e Expr) *TypeInfo {
@@ -179,8 +192,15 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 }
 
 func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
-	t := "_" + filepath.Base(tdi.goPackage) + "." + tdi.LocalName
-	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil)).Elem()", t)
+	t := ""
+	suffix := ".Elem()"
+	if tdiu := tdi.underlyingType; tdiu != nil {
+		t = "_" + filepath.Base(tdiu.goPackage) + "." + tdiu.LocalName
+		suffix = ""
+	} else {
+		t = "_" + filepath.Base(tdi.goPackage) + "." + tdi.LocalName
+	}
+	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
 // currently unused
@@ -201,11 +221,13 @@ func (ti *TypeInfo) typeKey() string {
 }
 
 func (tdi *TypeDefInfo) TypeMappingsName() string {
-	if IsPrivate(tdi.LocalName) {
+	if tdi.IsPrivate {
 		return ""
 	}
-	res := "info_" + tdi.LocalName
-	return res
+	if tdi.underlyingType != nil {
+		return "info_PtrTo_" + tdi.underlyingType.LocalName
+	}
+	return "info_" + tdi.LocalName
 }
 
 func (ti *TypeInfo) TypeMappingsName() string {

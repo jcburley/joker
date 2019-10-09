@@ -308,13 +308,11 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 		Print(Fset, ts)
 	}
 
-	ti := TypeDefine(ts, parentDoc)
-	if c, ok := GoTypes[typename]; ok {
-		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
-			typename, WhereAt(c.Where), WhereAt(ts.Pos()))
+	tdiVec := TypeDefine(ts, parentDoc)
+	for _, tdi := range tdiVec {
+		ClojureCode[pkg].InitTypes[tdi] = struct{}{}
+		GoCode[pkg].InitTypes[tdi] = struct{}{}
 	}
-	ClojureCode[pkg].InitTypes[ti] = struct{}{}
-	GoCode[pkg].InitTypes[ti] = struct{}{}
 
 	gt := RegisterType_func(gf, typename, ts)
 	gt.Td = ts

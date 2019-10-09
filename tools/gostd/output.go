@@ -211,7 +211,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.IsPrivate {
+			if tmn == "" || tdi.LocalName == "" || tdi.IsPrivate {
 				return
 			}
 			typeDoc := tdi.Doc
