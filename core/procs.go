@@ -736,6 +736,27 @@ var procGoTypeOf Proc = func(args []Object) Object {
 	return t.GoType
 }
 
+var procGoSwitchType Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	var t *GoTypeInfo
+	var x interface{} = args[0]
+	switch o := x.(type) {
+	case GoObject:
+		x = o.O
+		t = SwitchGoType(x)
+	case *GoVar:
+		x = o.Value
+		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
+		t = SwitchGoType(y) // GoVar's are always pointers to variables
+	default:
+		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
+	}
+	if t == nil {
+		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %T", x)))
+	}
+	return t.GoType
+}
+
 // Mainly for generate-docs.joke, return information on the Go type itself.
 func goGetTypeInfo(ty *GoType, arg Object) Object {
 	t := ty.T
@@ -2278,4 +2299,5 @@ func init() {
 	intern("types__", procTypes)
 	intern("new__", procNew)
 	intern("GoTypeOf__", procGoTypeOf)
+	intern("GoSwitchType__", procGoSwitchType)
 }
