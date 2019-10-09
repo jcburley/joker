@@ -73,8 +73,8 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 	tfnPtr := "*" + tfn
 	tdiPtr := &TypeDefInfo{
 		FullName:       tfnPtr,
-		LocalName:      "",
-		IsPrivate:      IsPrivate(tln),
+		LocalName:      "*" + tln,
+		IsPrivate:      tdi.IsPrivate,
 		Doc:            "",
 		goPackage:      tdi.goPackage,
 		underlyingType: tdi,
