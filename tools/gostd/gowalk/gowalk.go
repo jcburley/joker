@@ -847,12 +847,12 @@ Funcs:
 	}
 }
 
-func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) {
+func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *GoFile) {
 	if egf, found := GoFiles[goFilePathUnix]; found {
 		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.PkgDirUnix))
 	}
 	importsMap := map[string]string{}
-	gf := &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
+	gf = &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
 	GoFiles[goFilePathUnix] = gf
 
 	for _, imp := range f.Imports {
@@ -931,7 +931,7 @@ func AddImport(packageImports *PackageImports, local, full string, okToSubstitut
 	return localRef
 }
 
-func processPackageFilesMeta(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
@@ -946,14 +946,7 @@ func processPackageFilesMeta(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
-	}
-}
-
-func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	for path, f := range p.Files {
-		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := GoFiles[goFilePathUnix]
+		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
 		processTypes(gf, pkgDirUnix, f)
 	}
 }
@@ -1098,9 +1091,6 @@ func WalkAllDirs() (error, string) {
 		if err != nil {
 			return err, d.srcDir
 		}
-	}
-	for _, wp := range walkedPackages {
-		processPackageFilesMeta(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
 	}
 	for _, wp := range walkedPackages {
 		processPackageFilesTypes(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
