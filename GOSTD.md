@@ -103,6 +103,8 @@ As a result, pointers to such objects are returned as `atom` references to the v
 
 `(deref obj)` can be used to dereference a wrapped object, returning another `GoObject[]` with the dereferenced object as of that dereference, or to the original object if it wasn't a pointer to an object.
 
+*NOTE*: For now, `(Go obj "&")` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that, or (more likely) to a copy that is made for this purpose. This might be replaced someday by a proper `(ref ...)` function, which would presumably also work for ordinary Joker objects as it does in Clojure.
+
 ### Constructing a GoObject
 
 Akin to Clojure, `(type. ...)` functions are supported for (some) `GoObject` types:
@@ -114,14 +116,20 @@ user=> (FileMode. 0321)
 --wx-w---x
 user=> (use '[go.std.html.template])
 nil
-user=> (type (HTML. "this is an html object"))
-GoObject[template.HTML]
+user=> (def h (HTML. "this is an html object"))
+#'user/h
+user=> (type h)
+GoObject
+user=> (GoTypeOf h)
+go.std.html.template/HTML
 user=> (def le (LinkError. ["hey" "there" "you" "silly"]))
 #'user/le
 user=> le
 hey there you: silly
 user=> (type le)
-GoObject[*os.LinkError]
+GoObject
+user=> (GoTypeOf le)
+*go.std.os/LinkError
 user=> (goobject? le)
 true
 user=> (goobject? "foo")
@@ -347,6 +355,8 @@ user=> (Go (deref Stdin) 'Name)
 "/dev/stdin"
 user=>
 ```
+
+*NOTE*: As a special case, a `receiver` of `'&` or `"&"` (with no further arguments) returns a reference (pointer) to the underlying object, wrapped by a `GoObject`. `(ref ...)` should someday replace this, as it's something of a kludge.
 
 ### Converting a GoObject to a Clojure Datatype
 
