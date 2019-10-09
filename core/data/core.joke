@@ -4486,7 +4486,7 @@
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 
 (defn Go
-  "Invokes a receiver for a Go object, returning result if applicable, else nil."
+  "Invokes a receiver (as a symbol or string with its name) for a Go object, returning result if applicable, else nil. NOTE: As a special case, & may be specified instead of a string, in which case the arguments are ignored and a GoObject that wraps a pointer (reference) to (usually a copy of) the original wrapped Go object is returned -- although the GoType of the resulting GoObject might be unsupported; this is in lieu of a proper (ref ...) function."
   {:added "1.0"}
   [^GoObject o m & args]
   (go__ o m args))

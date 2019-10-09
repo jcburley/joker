@@ -46,7 +46,7 @@ func GoPackageForExpr(e Expr) string {
 
 func ClojureNamespaceForPos(p token.Position) string {
 	pkg, root := GoPackageForFilename(filepath.Dir(p.Filename))
-	return root + ReplaceAll(pkg, "/", ".")
+	return root + ReplaceAll(pkg, (string)(filepath.Separator), ".")
 }
 
 func ClojureNamespaceForExpr(e Expr) string {
