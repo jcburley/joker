@@ -207,12 +207,13 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
 			}
 		})
 
-	SortedTypes(v.initTypes,
-		func(ti *TypeInfo) {
-			typeDoc := ""
-			if ti.Definition != nil {
-				typeDoc = ti.Definition.Doc
+	SortedTypeDefinitions(v.initTypes,
+		func(tdi *TypeDefInfo) {
+			tmn := tdi.TypeMappingsName()
+			if tmn == "" {
+				return
 			}
+			typeDoc := tdi.Doc
 			fnCode := fmt.Sprintf(`
 (def
   ^{:doc %s
@@ -221,10 +222,10 @@ func outputClojureCode(pkgDirUnix string, v codeInfo, jokerLibDir string, output
     :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), ti.TypeMappingsName(), ti.LocalName)
+				strconv.Quote(typeDoc), tmn, tdi.LocalName)
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
-					ti.FullName, fnCode)
+					tdi.FullName, fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(fnCode)
@@ -298,9 +299,9 @@ import (%s
 			}
 		})
 
-	SortedTypes(v.initTypes,
-		func(ti *TypeInfo) {
-			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", ti.TypeMappingsName()))
+	SortedTypeDefinitions(v.initTypes,
+		func(tdi *TypeDefInfo) {
+			out.WriteString(fmt.Sprintf("var %s GoTypeInfo\n", tdi.TypeMappingsName()))
 		})
 
 	const initInfoTemplate = `
@@ -314,12 +315,12 @@ import (%s
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
-	SortedTypes(v.initTypes,
-		func(ti *TypeInfo) {
-			tmn := ti.TypeMappingsName()
-			k1 := ti.FullName
+	SortedTypeDefinitions(v.initTypes,
+		func(tdi *TypeDefInfo) {
+			tmn := tdi.TypeMappingsName()
+			k1 := tdi.FullName
 			mem := ""
-			sortedFnCodeInfo(v.initVars[ti], // Will always be populated
+			sortedFnCodeInfo(v.initVars[tdi.TypeInfo], // Will always be populated
 				func(c string, r *fnCodeInfo) {
 					doc := r.fnDoc
 					g := r.fnCode
@@ -331,9 +332,9 @@ import (%s
 			out.WriteString(fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem))
 		})
 
-	SortedTypes(v.initTypes,
-		func(ti *TypeInfo) {
-			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", ti.TypeReflected(), ti.TypeMappingsName()))
+	SortedTypeDefinitions(v.initTypes,
+		func(tdi *TypeDefInfo) {
+			out.WriteString(fmt.Sprintf("\tGoTypes[%s] = &%s\n", tdi.TypeReflected(), tdi.TypeMappingsName()))
 		})
 	if out != nil {
 		out.WriteString("}\n")

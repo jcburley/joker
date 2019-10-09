@@ -90,7 +90,7 @@ type codeInfo struct {
 	variables goVariablesMap
 	functions fnCodeMap
 	types     goTypeMap
-	initTypes map[*TypeInfo]struct{}               // types that actually need to be initialized (currently meaning they have receivers)
+	initTypes map[*TypeDefInfo]struct{}            // types to be initialized
 	initVars  map[*TypeInfo]map[string]*fnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
@@ -242,11 +242,15 @@ func processTypeSpec(gf *goFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 		fmt.Printf("Type %s at %s:\n", typename, whereAt(ts.Pos()))
 		Print(Fset, ts)
 	}
-	TypeDefine(ts, parentDoc)
+
+	ti := TypeDefine(ts, parentDoc)
 	if c, ok := goTypes[typename]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: type %s found at %s and now again at %s\n",
 			typename, whereAt(c.where), whereAt(ts.Pos()))
 	}
+	clojureCode[pkg].initTypes[ti] = struct{}{}
+	goCode[pkg].initTypes[ti] = struct{}{}
+
 	gt := registerType(gf, typename, ts)
 	gt.td = ts
 	gt.where = ts.Pos()
@@ -881,6 +885,14 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 		fmt.Printf("Processing package=%s:\n", pkgDirUnix)
 	}
 
+	if _, ok := packagesInfo[pkgDirUnix]; !ok {
+		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
+		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
+			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
+		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
+			map[*TypeDefInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
+	}
+
 	found := false
 
 	// Must process all types before processing functions, since receivers are defined on types.
@@ -903,14 +915,6 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	if !found {
 		return
-	}
-
-	if _, ok := packagesInfo[pkgDirUnix]; !ok {
-		packagesInfo[pkgDirUnix] = &packageInfo{&packageImports{}, &packageImports{}, p, false, false}
-		goCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
-		clojureCode[pkgDirUnix] = codeInfo{goConstantsMap{}, goVariablesMap{}, fnCodeMap{}, goTypeMap{},
-			map[*TypeInfo]struct{}{}, map[*TypeInfo]map[string]*fnCodeInfo{}}
 	}
 }
 

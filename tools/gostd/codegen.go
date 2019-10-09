@@ -240,8 +240,6 @@ func %s(o GoObject, args Object) Object {
 		addImport(packagesInfo[pkgDirUnix].importsNative, "_reflect", "reflect", false)
 		for _, r := range fn.fd.Recv.List {
 			ti := TypeLookup(r.Type)
-			goCode[pkgDirUnix].initTypes[ti] = struct{}{}
-			clojureCode[pkgDirUnix].initTypes[ti] = struct{}{}
 			if _, ok := goCode[pkgDirUnix].initVars[ti]; !ok {
 				goCode[pkgDirUnix].initVars[ti] = map[string]*fnCodeInfo{}
 			}

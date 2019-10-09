@@ -6,6 +6,7 @@ import (
 	"go/token"
 	"path/filepath"
 	. "strings"
+	"unicode"
 )
 
 var Fset *token.FileSet
@@ -63,4 +64,8 @@ func CommentGroupAsString(d *CommentGroup) string {
 		s = d.Text()
 	}
 	return s
+}
+
+func IsPrivate(p string) bool {
+	return !unicode.IsUpper(rune(p[0]))
 }

@@ -11,9 +11,7 @@ import (
 )
 
 type TypeInfo struct {
-	Type             Expr   // nil until first reference (not definition) seen
-	FullName         string // Clojure name (e.g. "a.b.c/Typename")
-	LocalName        string // Local, or base, name (e.g. "Typename")
+	Type             Expr // nil until first reference (not definition) seen
 	Definition       *TypeDefInfo
 	SimpleIdentifier bool // Just a name, not *name, []name, etc.
 }
@@ -29,8 +27,12 @@ var typesByFullName = map[string]Expr{}
 
 // Info from the definition of the type (if any)
 type TypeDefInfo struct {
-	Doc    string
-	DefPos token.Pos
+	TypeSpec  *TypeSpec
+	TypeInfo  *TypeInfo
+	FullName  string // Clojure name (e.g. "a.b.c/Typename")
+	LocalName string // Local, or base, name (e.g. "Typename")
+	Doc       string
+	DefPos    token.Pos
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
@@ -52,12 +54,16 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
 	}
 
 	tdi := &TypeDefInfo{
-		Doc:    CommentGroupAsString(doc),
-		DefPos: ts.Name.NamePos,
+		TypeSpec:  ts,
+		FullName:  tfn,
+		LocalName: tln,
+		Doc:       CommentGroupAsString(doc),
+		DefPos:    ts.Name.NamePos,
 	}
 	typeDefinitionsByFullName[tfn] = tdi
 	if e, ok := typesByFullName[tfn]; ok {
 		types[e].Definition = tdi
+		tdi.TypeInfo = types[e]
 	}
 	return tdi
 }
@@ -69,15 +75,13 @@ func TypeLookup(e Expr) *TypeInfo {
 	if ta, ok := typeAliases[e]; ok {
 		return types[ta]
 	}
-	tfn, tln, simple := typeNames(e, true)
+	tfn, _, simple := typeNames(e, true)
 	if te, ok := typesByFullName[tfn]; ok {
 		typeAliases[te] = e
 		return types[te]
 	}
 	ti := &TypeInfo{
 		Type:             e,
-		FullName:         tfn,
-		LocalName:        tln,
 		SimpleIdentifier: simple,
 	}
 	types[e] = ti
@@ -86,6 +90,10 @@ func TypeLookup(e Expr) *TypeInfo {
 		ti.Definition = tdi
 	}
 	return ti
+}
+
+func (ti *TypeInfo) FullName() string {
+	return ti.Definition.FullName
 }
 
 func typeKeyForSort(k string) string {
@@ -98,11 +106,26 @@ func typeKeyForSort(k string) string {
 	return k
 }
 
-func SortedTypes(m map[*TypeInfo]struct{}, f func(ti *TypeInfo)) {
+func SortedTypeDefinitions(m map[*TypeDefInfo]struct{}, f func(ti *TypeDefInfo)) {
 	var keys []string
 	for k, _ := range m {
 		if k != nil {
 			keys = append(keys, k.FullName)
+		}
+	}
+	sort.SliceStable(keys, func(i, j int) bool {
+		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
+	})
+	for _, k := range keys {
+		f(typeDefinitionsByFullName[k])
+	}
+}
+
+func SortedTypes(m map[*TypeInfo]struct{}, f func(ti *TypeInfo)) {
+	var keys []string
+	for k, _ := range m {
+		if k != nil {
+			keys = append(keys, k.FullName())
 		}
 	}
 	sort.SliceStable(keys, func(i, j int) bool {
@@ -135,11 +158,11 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 	return
 }
 
-func (ti *TypeInfo) TypeReflected() string {
+func (tdi *TypeDefInfo) TypeReflected() string {
 	t := ""
 	suffix := ""
-	prefix := "_" + filepath.Base(GoPackageForExpr(ti.Type)) + "."
-	switch x := ti.Type.(type) {
+	prefix := "_" + filepath.Base(GoPackageForExpr(tdi.TypeSpec.Type)) + "."
+	switch x := tdi.TypeSpec.Type.(type) {
 	case *Ident:
 		t = "*" + prefix + x.Name
 		suffix = ".Elem()"
@@ -167,17 +190,30 @@ func (ti *TypeInfo) TypeKey() string {
 	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
 }
 
+func (tdi *TypeDefInfo) TypeMappingsName() string {
+	if IsPrivate(tdi.LocalName) {
+		return ""
+	}
+	res := "info_" + tdi.LocalName
+	switch tdi.TypeSpec.Type.(type) {
+	}
+	return res
+}
+
 func (ti *TypeInfo) TypeMappingsName() string {
-	res := ""
+	if IsPrivate(ti.Definition.LocalName) {
+		return ""
+	}
+	res := "info_"
 	switch x := ti.Type.(type) {
 	case *Ident:
 		res += x.Name
 	case *ArrayType:
-		res += "ArrayOf_" + x.Elt.(*Ident).Name
+		res = ""
 	case *StarExpr:
 		res += "PtrTo_" + x.X.(*Ident).Name
 	default:
-		panic(fmt.Sprintf("typeName: unrecognized expr %T", x))
+		panic(fmt.Sprintf("unrecognized expr %T", x))
 	}
-	return "info_" + res
+	return res
 }
