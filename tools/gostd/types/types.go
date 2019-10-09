@@ -147,6 +147,25 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 		full = prefix + x.Name
 		local = x.Name
 		simple = true
+		o := x.Obj
+		if o != nil && o.Kind == Typ {
+			tdi := typeDefinitionsByFullName[full]
+			if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
+				Print(Fset, x)
+				var ts *TypeSpec
+				if tdi != nil {
+					ts = tdi.TypeSpec
+				}
+				panic(fmt.Sprintf("mismatch name=%s != %s or ts %p != %p!", o.Name, local, o.Decl.(*TypeSpec), ts))
+			}
+		} else {
+			// Strangely, not all *Ident's referring to
+			// defined types have x.Obj populated! Can't
+			// figure out what's different about them,
+			// though maybe it's just that they're for
+			// only those receivers currently being
+			// code-generated?
+		}
 	case *ArrayType:
 		elFull, elLocal, _ := typeNames(x.Elt, false)
 		full = "[]" + prefix + elFull
