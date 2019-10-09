@@ -1,19 +1,16 @@
 goSourceDir: _tests/small/src
 goSourcePath: /Users/craig/go/src
-Walking from _tests/small/src to _tests/small/src/go
-Processing go:
-Walking from _tests/small/src to _tests/small/src/net
-Processing net:
-Matchfile(_tests/small/src/net/iprawsock.go) => true <nil>
-Matchfile(_tests/small/src/net/net.go) => true <nil>
-Matchfile(_tests/small/src/net/lookup.go) => true <nil>
 Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Matchfile(_tests/small/src/net/ip.go) => true <nil>
-Processing package=net:
-Walking from _tests/small/src to _tests/small/src/net/url
-Processing net/url:
+Matchfile(_tests/small/src/net/iprawsock.go) => true <nil>
+Matchfile(_tests/small/src/net/lookup.go) => true <nil>
+Matchfile(_tests/small/src/net/net.go) => true <nil>
 Matchfile(_tests/small/src/net/url/url.go) => true <nil>
+Processing go:
+Processing net/url:
+Processing net:
 Processing package=net/url:
+Processing package=net:
 JOKER CONSTANT IPv4len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
@@ -399,6 +396,30 @@ JOKER FUNC net.ResolveIPAddr from net/iprawsock.go:
    :go "__resolveIPAddr(__network, __address)"}
   [^String __network, ^String __address])
 
+JOKER TYPE go.std.net/Addr:
+(def
+  ^{:doc "Addr represents a network end point address.\n\nThe two methods Network and String conventionally return strings\nthat can be passed as the arguments to Dial, but the exact form\nand meaning of the strings is up to the implementation.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Addr"}
+  Addr)
+
+JOKER TYPE *go.std.net/Addr:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Addr"}
+  *Addr)
+
+JOKER TYPE go.std.net/AddrError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_AddrError"}
+  AddrError)
+
 JOKER TYPE *go.std.net/AddrError:
 (def
   ^{:doc ""
@@ -406,6 +427,46 @@ JOKER TYPE *go.std.net/AddrError:
     :tag "GoType"
     :go "&info_PtrTo_AddrError"}
   *AddrError)
+
+JOKER TYPE go.std.net/Buffers:
+(def
+  ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Buffers"}
+  Buffers)
+
+JOKER TYPE *go.std.net/Buffers:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Buffers"}
+  *Buffers)
+
+JOKER TYPE go.std.net/Conn:
+(def
+  ^{:doc "Conn is a generic stream-oriented network connection.\n\nMultiple goroutines may invoke methods on a Conn simultaneously.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Conn"}
+  Conn)
+
+JOKER TYPE *go.std.net/Conn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Conn"}
+  *Conn)
+
+JOKER TYPE go.std.net/DNSConfigError:
+(def
+  ^{:doc "DNSConfigError represents an error reading the machine's DNS configuration.\n(No longer used; kept for compatibility.)\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_DNSConfigError"}
+  DNSConfigError)
 
 JOKER TYPE *go.std.net/DNSConfigError:
 (def
@@ -415,6 +476,14 @@ JOKER TYPE *go.std.net/DNSConfigError:
     :go "&info_PtrTo_DNSConfigError"}
   *DNSConfigError)
 
+JOKER TYPE go.std.net/DNSError:
+(def
+  ^{:doc "DNSError represents a DNS lookup error.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_DNSError"}
+  DNSError)
+
 JOKER TYPE *go.std.net/DNSError:
 (def
   ^{:doc ""
@@ -422,6 +491,22 @@ JOKER TYPE *go.std.net/DNSError:
     :tag "GoType"
     :go "&info_PtrTo_DNSError"}
   *DNSError)
+
+JOKER TYPE go.std.net/Error:
+(def
+  ^{:doc "An Error represents a network error.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Error"}
+  Error)
+
+JOKER TYPE *go.std.net/Error:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Error"}
+  *Error)
 
 JOKER TYPE go.std.net/IP:
 (def
@@ -431,6 +516,22 @@ JOKER TYPE go.std.net/IP:
     :go "&info_IP"}
   IP)
 
+JOKER TYPE *go.std.net/IP:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_IP"}
+  *IP)
+
+JOKER TYPE go.std.net/IPAddr:
+(def
+  ^{:doc "IPAddr represents the address of an IP end point.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_IPAddr"}
+  IPAddr)
+
 JOKER TYPE *go.std.net/IPAddr:
 (def
   ^{:doc ""
@@ -439,6 +540,22 @@ JOKER TYPE *go.std.net/IPAddr:
     :go "&info_PtrTo_IPAddr"}
   *IPAddr)
 
+JOKER TYPE go.std.net/IPConn:
+(def
+  ^{:doc "IPConn is the implementation of the Conn and PacketConn interfaces\nfor IP network connections.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_IPConn"}
+  IPConn)
+
+JOKER TYPE *go.std.net/IPConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_IPConn"}
+  *IPConn)
+
 JOKER TYPE go.std.net/IPMask:
 (def
   ^{:doc "An IP mask is an IP address.\n"
@@ -446,6 +563,22 @@ JOKER TYPE go.std.net/IPMask:
     :tag "GoType"
     :go "&info_IPMask"}
   IPMask)
+
+JOKER TYPE *go.std.net/IPMask:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_IPMask"}
+  *IPMask)
+
+JOKER TYPE go.std.net/IPNet:
+(def
+  ^{:doc "An IPNet represents an IP network.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_IPNet"}
+  IPNet)
 
 JOKER TYPE *go.std.net/IPNet:
 (def
@@ -463,6 +596,70 @@ JOKER TYPE go.std.net/InvalidAddrError:
     :go "&info_InvalidAddrError"}
   InvalidAddrError)
 
+JOKER TYPE *go.std.net/InvalidAddrError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_InvalidAddrError"}
+  *InvalidAddrError)
+
+JOKER TYPE go.std.net/Listener:
+(def
+  ^{:doc "A Listener is a generic network listener for stream-oriented protocols.\n\nMultiple goroutines may invoke methods on a Listener simultaneously.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Listener"}
+  Listener)
+
+JOKER TYPE *go.std.net/Listener:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Listener"}
+  *Listener)
+
+JOKER TYPE go.std.net/MX:
+(def
+  ^{:doc "An MX represents a single DNS MX record.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_MX"}
+  MX)
+
+JOKER TYPE *go.std.net/MX:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_MX"}
+  *MX)
+
+JOKER TYPE go.std.net/NS:
+(def
+  ^{:doc "An NS represents a single DNS NS record.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_NS"}
+  NS)
+
+JOKER TYPE *go.std.net/NS:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_NS"}
+  *NS)
+
+JOKER TYPE go.std.net/OpError:
+(def
+  ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_OpError"}
+  OpError)
+
 JOKER TYPE *go.std.net/OpError:
 (def
   ^{:doc ""
@@ -470,6 +667,30 @@ JOKER TYPE *go.std.net/OpError:
     :tag "GoType"
     :go "&info_PtrTo_OpError"}
   *OpError)
+
+JOKER TYPE go.std.net/PacketConn:
+(def
+  ^{:doc "PacketConn is a generic packet-oriented network connection.\n\nMultiple goroutines may invoke methods on a PacketConn simultaneously.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PacketConn"}
+  PacketConn)
+
+JOKER TYPE *go.std.net/PacketConn:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_PacketConn"}
+  *PacketConn)
+
+JOKER TYPE go.std.net/ParseError:
+(def
+  ^{:doc "A ParseError is the error type of literal network address parsers.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_ParseError"}
+  ParseError)
 
 JOKER TYPE *go.std.net/ParseError:
 (def
@@ -479,6 +700,38 @@ JOKER TYPE *go.std.net/ParseError:
     :go "&info_PtrTo_ParseError"}
   *ParseError)
 
+JOKER TYPE go.std.net/Resolver:
+(def
+  ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Resolver"}
+  Resolver)
+
+JOKER TYPE *go.std.net/Resolver:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Resolver"}
+  *Resolver)
+
+JOKER TYPE go.std.net/SRV:
+(def
+  ^{:doc "An SRV represents a single DNS SRV record.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_SRV"}
+  SRV)
+
+JOKER TYPE *go.std.net/SRV:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_SRV"}
+  *SRV)
+
 JOKER TYPE go.std.net/UnknownNetworkError:
 (def
   ^{:doc ""
@@ -486,6 +739,14 @@ JOKER TYPE go.std.net/UnknownNetworkError:
     :tag "GoType"
     :go "&info_UnknownNetworkError"}
   UnknownNetworkError)
+
+JOKER TYPE *go.std.net/UnknownNetworkError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_UnknownNetworkError"}
+  *UnknownNetworkError)
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -599,6 +860,14 @@ JOKER FUNC net/url.UserPassword from net/url/url.go:
    :go "__userPassword(__username, __password)"}
   [^String __username, ^String __password])
 
+JOKER TYPE go.std.net.url/Error:
+(def
+  ^{:doc "Error reports an error and the operation and URL that caused it.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Error"}
+  Error)
+
 JOKER TYPE *go.std.net.url/Error:
 (def
   ^{:doc ""
@@ -615,6 +884,14 @@ JOKER TYPE go.std.net.url/EscapeError:
     :go "&info_EscapeError"}
   EscapeError)
 
+JOKER TYPE *go.std.net.url/EscapeError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_EscapeError"}
+  *EscapeError)
+
 JOKER TYPE go.std.net.url/InvalidHostError:
 (def
   ^{:doc ""
@@ -623,6 +900,22 @@ JOKER TYPE go.std.net.url/InvalidHostError:
     :go "&info_InvalidHostError"}
   InvalidHostError)
 
+JOKER TYPE *go.std.net.url/InvalidHostError:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_InvalidHostError"}
+  *InvalidHostError)
+
+JOKER TYPE go.std.net.url/URL:
+(def
+  ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_URL"}
+  URL)
+
 JOKER TYPE *go.std.net.url/URL:
 (def
   ^{:doc ""
@@ -630,6 +923,14 @@ JOKER TYPE *go.std.net.url/URL:
     :tag "GoType"
     :go "&info_PtrTo_URL"}
   *URL)
+
+JOKER TYPE go.std.net.url/Userinfo:
+(def
+  ^{:doc "The Userinfo type is an immutable encapsulation of username and\npassword details for a URL. An existing Userinfo value is guaranteed\nto have a username set (potentially empty, as allowed by RFC 2396),\nand optionally a password.\n"
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_Userinfo"}
+  Userinfo)
 
 JOKER TYPE *go.std.net.url/Userinfo:
 (def
@@ -646,6 +947,14 @@ JOKER TYPE go.std.net.url/Values:
     :tag "GoType"
     :go "&info_Values"}
   Values)
+
+JOKER TYPE *go.std.net.url/Values:
+(def
+  ^{:doc ""
+    :added "1.0"
+    :tag "GoType"
+    :go "&info_PtrTo_Values"}
+  *Values)
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -2240,30 +2549,160 @@ func __unknownNetworkError_Timeout(o GoObject, args Object) Object {
 	return MakeBoolean(_res)
 }
 
-// Auto-generated by gostd at (omitted for testing), do not edit!!
+GO VARDEF FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
+var info_Addr GoTypeInfo
 
-package net
+GO VARDEF FOR TYPE *go.std.net/Addr from -:
+var info_PtrTo_Addr GoTypeInfo
 
-import (
-	_errors "errors"
-	"fmt"
-	. "github.com/candid82/joker/core"
-	_net "net"
-	_reflect "reflect"
-)
+GO VARDEF FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
+var info_AddrError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/AddrError from -:
 var info_PtrTo_AddrError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
+var info_Buffers GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/Buffers from -:
+var info_PtrTo_Buffers GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
+var info_Conn GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/Conn from -:
+var info_PtrTo_Conn GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
+var info_DNSConfigError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/DNSConfigError from -:
 var info_PtrTo_DNSConfigError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
+var info_DNSError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/DNSError from -:
 var info_PtrTo_DNSError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
+var info_Error GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/Error from -:
+var info_PtrTo_Error GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 var info_IP GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/IP from -:
+var info_PtrTo_IP GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
+var info_IPAddr GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/IPAddr from -:
 var info_PtrTo_IPAddr GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
+var info_IPConn GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/IPConn from -:
+var info_PtrTo_IPConn GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 var info_IPMask GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/IPMask from -:
+var info_PtrTo_IPMask GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
+var info_IPNet GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/IPNet from -:
 var info_PtrTo_IPNet GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 var info_InvalidAddrError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/InvalidAddrError from -:
+var info_PtrTo_InvalidAddrError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
+var info_Listener GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/Listener from -:
+var info_PtrTo_Listener GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
+var info_MX GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/MX from -:
+var info_PtrTo_MX GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
+var info_NS GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/NS from -:
+var info_PtrTo_NS GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
+var info_OpError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/OpError from -:
 var info_PtrTo_OpError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
+var info_PacketConn GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/PacketConn from -:
+var info_PtrTo_PacketConn GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
+var info_ParseError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/ParseError from -:
 var info_PtrTo_ParseError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
+var info_Resolver GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/Resolver from -:
+var info_PtrTo_Resolver GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
+var info_SRV GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net/SRV from -:
+var info_PtrTo_SRV GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 var info_UnknownNetworkError GoTypeInfo
 
-func initNative() {
+GO VARDEF FOR TYPE *go.std.net/UnknownNetworkError from -:
+var info_PtrTo_UnknownNetworkError GoTypeInfo
+
+GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
+	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
+		GoType: &GoType{T: &info_Addr},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Addr from -:
+	info_PtrTo_Addr = GoTypeInfo{Name: "*go.std.net/Addr",
+		GoType: &GoType{T: &info_PtrTo_Addr},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
+	info_AddrError = GoTypeInfo{Name: "go.std.net/AddrError",
+		GoType: &GoType{T: &info_AddrError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/AddrError from -:
 	info_PtrTo_AddrError = GoTypeInfo{Name: "*go.std.net/AddrError",
 		GoType: &GoType{T: &info_PtrTo_AddrError},
 		Members: GoMembers{
@@ -2272,6 +2711,43 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_AddrError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
+	info_Buffers = GoTypeInfo{Name: "go.std.net/Buffers",
+		GoType: &GoType{T: &info_Buffers},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Buffers from -:
+	info_PtrTo_Buffers = GoTypeInfo{Name: "*go.std.net/Buffers",
+		GoType: &GoType{T: &info_PtrTo_Buffers},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
+	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
+		GoType: &GoType{T: &info_Conn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Conn from -:
+	info_PtrTo_Conn = GoTypeInfo{Name: "*go.std.net/Conn",
+		GoType: &GoType{T: &info_PtrTo_Conn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
+	info_DNSConfigError = GoTypeInfo{Name: "go.std.net/DNSConfigError",
+		GoType: &GoType{T: &info_DNSConfigError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/DNSConfigError from -:
 	info_PtrTo_DNSConfigError = GoTypeInfo{Name: "*go.std.net/DNSConfigError",
 		GoType: &GoType{T: &info_PtrTo_DNSConfigError},
 		Members: GoMembers{
@@ -2280,6 +2756,15 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_DNSConfigError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
+	info_DNSError = GoTypeInfo{Name: "go.std.net/DNSError",
+		GoType: &GoType{T: &info_DNSError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/DNSError from -:
 	info_PtrTo_DNSError = GoTypeInfo{Name: "*go.std.net/DNSError",
 		GoType: &GoType{T: &info_PtrTo_DNSError},
 		Members: GoMembers{
@@ -2288,6 +2773,22 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_DNSError_Timeout, "Timeout reports whether the DNS lookup is known to have timed out.\nThis is not always known; a DNS lookup may fail due to a timeout\nand return a DNSError for which Timeout returns false.\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
+	info_Error = GoTypeInfo{Name: "go.std.net/Error",
+		GoType: &GoType{T: &info_Error},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Error from -:
+	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net/Error",
+		GoType: &GoType{T: &info_PtrTo_Error},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	info_IP = GoTypeInfo{Name: "go.std.net/IP",
 		GoType: &GoType{T: &info_IP},
 		Members: GoMembers{
@@ -2307,6 +2808,22 @@ func initNative() {
 			"To4": MakeGoReceiver("To4", __iP_To4, "To4 converts the IPv4 address ip to a 4-byte representation.\nIf ip is not an IPv4 address, To4 returns nil.\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net/IP from -:
+	info_PtrTo_IP = GoTypeInfo{Name: "*go.std.net/IP",
+		GoType: &GoType{T: &info_PtrTo_IP},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
+	info_IPAddr = GoTypeInfo{Name: "go.std.net/IPAddr",
+		GoType: &GoType{T: &info_IPAddr},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/IPAddr from -:
 	info_PtrTo_IPAddr = GoTypeInfo{Name: "*go.std.net/IPAddr",
 		GoType: &GoType{T: &info_PtrTo_IPAddr},
 		Members: GoMembers{
@@ -2314,6 +2831,22 @@ func initNative() {
 			"String": MakeGoReceiver("String", __ptrTo_IPAddr_String, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
+	info_IPConn = GoTypeInfo{Name: "go.std.net/IPConn",
+		GoType: &GoType{T: &info_IPConn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/IPConn from -:
+	info_PtrTo_IPConn = GoTypeInfo{Name: "*go.std.net/IPConn",
+		GoType: &GoType{T: &info_PtrTo_IPConn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	info_IPMask = GoTypeInfo{Name: "go.std.net/IPMask",
 		GoType: &GoType{T: &info_IPMask},
 		Members: GoMembers{
@@ -2321,6 +2854,22 @@ func initNative() {
 			"String": MakeGoReceiver("String", __iPMask_String, "String returns the hexadecimal form of m, with no punctuation.\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net/IPMask from -:
+	info_PtrTo_IPMask = GoTypeInfo{Name: "*go.std.net/IPMask",
+		GoType: &GoType{T: &info_PtrTo_IPMask},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
+	info_IPNet = GoTypeInfo{Name: "go.std.net/IPNet",
+		GoType: &GoType{T: &info_IPNet},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/IPNet from -:
 	info_PtrTo_IPNet = GoTypeInfo{Name: "*go.std.net/IPNet",
 		GoType: &GoType{T: &info_PtrTo_IPNet},
 		Members: GoMembers{
@@ -2329,6 +2878,8 @@ func initNative() {
 			"String": MakeGoReceiver("String", __ptrTo_IPNet_String, "String returns the CIDR notation of n like \"192.0.2.1/24\"\nor \"2001:db8::/48\" as defined in RFC 4632 and RFC 4291.\nIf the mask is not in the canonical form, it returns the\nstring which consists of an IP address, followed by a slash\ncharacter and a mask expressed as hexadecimal form with no\npunctuation like \"198.51.100.1/c000ff00\".\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	info_InvalidAddrError = GoTypeInfo{Name: "go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_InvalidAddrError},
 		Members: GoMembers{
@@ -2337,6 +2888,64 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __invalidAddrError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net/InvalidAddrError from -:
+	info_PtrTo_InvalidAddrError = GoTypeInfo{Name: "*go.std.net/InvalidAddrError",
+		GoType: &GoType{T: &info_PtrTo_InvalidAddrError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
+	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
+		GoType: &GoType{T: &info_Listener},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Listener from -:
+	info_PtrTo_Listener = GoTypeInfo{Name: "*go.std.net/Listener",
+		GoType: &GoType{T: &info_PtrTo_Listener},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
+	info_MX = GoTypeInfo{Name: "go.std.net/MX",
+		GoType: &GoType{T: &info_MX},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/MX from -:
+	info_PtrTo_MX = GoTypeInfo{Name: "*go.std.net/MX",
+		GoType: &GoType{T: &info_PtrTo_MX},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
+	info_NS = GoTypeInfo{Name: "go.std.net/NS",
+		GoType: &GoType{T: &info_NS},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/NS from -:
+	info_PtrTo_NS = GoTypeInfo{Name: "*go.std.net/NS",
+		GoType: &GoType{T: &info_PtrTo_NS},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
+	info_OpError = GoTypeInfo{Name: "go.std.net/OpError",
+		GoType: &GoType{T: &info_OpError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/OpError from -:
 	info_PtrTo_OpError = GoTypeInfo{Name: "*go.std.net/OpError",
 		GoType: &GoType{T: &info_PtrTo_OpError},
 		Members: GoMembers{
@@ -2345,12 +2954,65 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_OpError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
+	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
+		GoType: &GoType{T: &info_PacketConn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/PacketConn from -:
+	info_PtrTo_PacketConn = GoTypeInfo{Name: "*go.std.net/PacketConn",
+		GoType: &GoType{T: &info_PtrTo_PacketConn},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
+	info_ParseError = GoTypeInfo{Name: "go.std.net/ParseError",
+		GoType: &GoType{T: &info_ParseError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/ParseError from -:
 	info_PtrTo_ParseError = GoTypeInfo{Name: "*go.std.net/ParseError",
 		GoType: &GoType{T: &info_PtrTo_ParseError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __ptrTo_ParseError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
+	info_Resolver = GoTypeInfo{Name: "go.std.net/Resolver",
+		GoType: &GoType{T: &info_Resolver},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/Resolver from -:
+	info_PtrTo_Resolver = GoTypeInfo{Name: "*go.std.net/Resolver",
+		GoType: &GoType{T: &info_PtrTo_Resolver},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
+	info_SRV = GoTypeInfo{Name: "go.std.net/SRV",
+		GoType: &GoType{T: &info_SRV},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net/SRV from -:
+	info_PtrTo_SRV = GoTypeInfo{Name: "*go.std.net/SRV",
+		GoType: &GoType{T: &info_PtrTo_SRV},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	info_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_UnknownNetworkError},
 		Members: GoMembers{
@@ -2359,17 +3021,159 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __unknownNetworkError_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net/UnknownNetworkError from -:
+	info_PtrTo_UnknownNetworkError = GoTypeInfo{Name: "*go.std.net/UnknownNetworkError",
+		GoType: &GoType{T: &info_PtrTo_UnknownNetworkError},
+		Members: GoMembers{
+		}}
+
+
+GO VECSET FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
+	GoTypes[_reflect.TypeOf((*_net.Addr)(nil)).Elem()] = &info_Addr
+
+GO VECSET FOR TYPE *go.std.net/Addr from -:
+	GoTypes[_reflect.TypeOf((*_net.Addr)(nil))] = &info_PtrTo_Addr
+
+GO VECSET FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
+	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil)).Elem()] = &info_AddrError
+
+GO VECSET FOR TYPE *go.std.net/AddrError from -:
 	GoTypes[_reflect.TypeOf((*_net.AddrError)(nil))] = &info_PtrTo_AddrError
+
+GO VECSET FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
+	GoTypes[_reflect.TypeOf((*_net.Buffers)(nil)).Elem()] = &info_Buffers
+
+GO VECSET FOR TYPE *go.std.net/Buffers from -:
+	GoTypes[_reflect.TypeOf((*_net.Buffers)(nil))] = &info_PtrTo_Buffers
+
+GO VECSET FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
+	GoTypes[_reflect.TypeOf((*_net.Conn)(nil)).Elem()] = &info_Conn
+
+GO VECSET FOR TYPE *go.std.net/Conn from -:
+	GoTypes[_reflect.TypeOf((*_net.Conn)(nil))] = &info_PtrTo_Conn
+
+GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil)).Elem()] = &info_DNSConfigError
+
+GO VECSET FOR TYPE *go.std.net/DNSConfigError from -:
 	GoTypes[_reflect.TypeOf((*_net.DNSConfigError)(nil))] = &info_PtrTo_DNSConfigError
+
+GO VECSET FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
+	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil)).Elem()] = &info_DNSError
+
+GO VECSET FOR TYPE *go.std.net/DNSError from -:
 	GoTypes[_reflect.TypeOf((*_net.DNSError)(nil))] = &info_PtrTo_DNSError
+
+GO VECSET FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
+	GoTypes[_reflect.TypeOf((*_net.Error)(nil)).Elem()] = &info_Error
+
+GO VECSET FOR TYPE *go.std.net/Error from -:
+	GoTypes[_reflect.TypeOf((*_net.Error)(nil))] = &info_PtrTo_Error
+
+GO VECSET FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	GoTypes[_reflect.TypeOf((*_net.IP)(nil)).Elem()] = &info_IP
+
+GO VECSET FOR TYPE *go.std.net/IP from -:
+	GoTypes[_reflect.TypeOf((*_net.IP)(nil))] = &info_PtrTo_IP
+
+GO VECSET FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
+	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil)).Elem()] = &info_IPAddr
+
+GO VECSET FOR TYPE *go.std.net/IPAddr from -:
 	GoTypes[_reflect.TypeOf((*_net.IPAddr)(nil))] = &info_PtrTo_IPAddr
+
+GO VECSET FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
+	GoTypes[_reflect.TypeOf((*_net.IPConn)(nil)).Elem()] = &info_IPConn
+
+GO VECSET FOR TYPE *go.std.net/IPConn from -:
+	GoTypes[_reflect.TypeOf((*_net.IPConn)(nil))] = &info_PtrTo_IPConn
+
+GO VECSET FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil)).Elem()] = &info_IPMask
+
+GO VECSET FOR TYPE *go.std.net/IPMask from -:
+	GoTypes[_reflect.TypeOf((*_net.IPMask)(nil))] = &info_PtrTo_IPMask
+
+GO VECSET FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
+	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil)).Elem()] = &info_IPNet
+
+GO VECSET FOR TYPE *go.std.net/IPNet from -:
 	GoTypes[_reflect.TypeOf((*_net.IPNet)(nil))] = &info_PtrTo_IPNet
+
+GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil)).Elem()] = &info_InvalidAddrError
+
+GO VECSET FOR TYPE *go.std.net/InvalidAddrError from -:
+	GoTypes[_reflect.TypeOf((*_net.InvalidAddrError)(nil))] = &info_PtrTo_InvalidAddrError
+
+GO VECSET FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
+	GoTypes[_reflect.TypeOf((*_net.Listener)(nil)).Elem()] = &info_Listener
+
+GO VECSET FOR TYPE *go.std.net/Listener from -:
+	GoTypes[_reflect.TypeOf((*_net.Listener)(nil))] = &info_PtrTo_Listener
+
+GO VECSET FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
+	GoTypes[_reflect.TypeOf((*_net.MX)(nil)).Elem()] = &info_MX
+
+GO VECSET FOR TYPE *go.std.net/MX from -:
+	GoTypes[_reflect.TypeOf((*_net.MX)(nil))] = &info_PtrTo_MX
+
+GO VECSET FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
+	GoTypes[_reflect.TypeOf((*_net.NS)(nil)).Elem()] = &info_NS
+
+GO VECSET FOR TYPE *go.std.net/NS from -:
+	GoTypes[_reflect.TypeOf((*_net.NS)(nil))] = &info_PtrTo_NS
+
+GO VECSET FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
+	GoTypes[_reflect.TypeOf((*_net.OpError)(nil)).Elem()] = &info_OpError
+
+GO VECSET FOR TYPE *go.std.net/OpError from -:
 	GoTypes[_reflect.TypeOf((*_net.OpError)(nil))] = &info_PtrTo_OpError
+
+GO VECSET FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
+	GoTypes[_reflect.TypeOf((*_net.PacketConn)(nil)).Elem()] = &info_PacketConn
+
+GO VECSET FOR TYPE *go.std.net/PacketConn from -:
+	GoTypes[_reflect.TypeOf((*_net.PacketConn)(nil))] = &info_PtrTo_PacketConn
+
+GO VECSET FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
+	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil)).Elem()] = &info_ParseError
+
+GO VECSET FOR TYPE *go.std.net/ParseError from -:
 	GoTypes[_reflect.TypeOf((*_net.ParseError)(nil))] = &info_PtrTo_ParseError
+
+GO VECSET FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
+	GoTypes[_reflect.TypeOf((*_net.Resolver)(nil)).Elem()] = &info_Resolver
+
+GO VECSET FOR TYPE *go.std.net/Resolver from -:
+	GoTypes[_reflect.TypeOf((*_net.Resolver)(nil))] = &info_PtrTo_Resolver
+
+GO VECSET FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
+	GoTypes[_reflect.TypeOf((*_net.SRV)(nil)).Elem()] = &info_SRV
+
+GO VECSET FOR TYPE *go.std.net/SRV from -:
+	GoTypes[_reflect.TypeOf((*_net.SRV)(nil))] = &info_PtrTo_SRV
+
+GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil)).Elem()] = &info_UnknownNetworkError
+
+GO VECSET FOR TYPE *go.std.net/UnknownNetworkError from -:
+	GoTypes[_reflect.TypeOf((*_net.UnknownNetworkError)(nil))] = &info_PtrTo_UnknownNetworkError
+
+// Auto-generated by gostd at (omitted for testing), do not edit!!
+
+package net
+
+import (
+	_errors "errors"
+	"fmt"
+	. "github.com/candid82/joker/core"
+	_net "net"
+	_reflect "reflect"
+)
+
+func initNative() {
 }
 
 GO TYPE net/url.Error from net/url/url.go:
@@ -2894,25 +3698,50 @@ GO FUNC net/url.__values_Set from net/url/url.go:
 // 	...ABEND275: TODO...
 // }
 
-// Auto-generated by gostd at (omitted for testing), do not edit!!
+GO VARDEF FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
+var info_Error GoTypeInfo
 
-package url
-
-import (
-	_errors "errors"
-	"fmt"
-	. "github.com/candid82/joker/core"
-	_url "net/url"
-	_reflect "reflect"
-)
+GO VARDEF FOR TYPE *go.std.net.url/Error from -:
 var info_PtrTo_Error GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 var info_EscapeError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net.url/EscapeError from -:
+var info_PtrTo_EscapeError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 var info_InvalidHostError GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net.url/InvalidHostError from -:
+var info_PtrTo_InvalidHostError GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
+var info_URL GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net.url/URL from -:
 var info_PtrTo_URL GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
+var info_Userinfo GoTypeInfo
+
+GO VARDEF FOR TYPE *go.std.net.url/Userinfo from -:
 var info_PtrTo_Userinfo GoTypeInfo
+
+GO VARDEF FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 var info_Values GoTypeInfo
 
-func initNative() {
+GO VARDEF FOR TYPE *go.std.net.url/Values from -:
+var info_PtrTo_Values GoTypeInfo
+
+GO INFO FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
+	info_Error = GoTypeInfo{Name: "go.std.net.url/Error",
+		GoType: &GoType{T: &info_Error},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net.url/Error from -:
 	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net.url/Error",
 		GoType: &GoType{T: &info_PtrTo_Error},
 		Members: GoMembers{
@@ -2921,18 +3750,45 @@ func initNative() {
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_Error_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	info_EscapeError = GoTypeInfo{Name: "go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_EscapeError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __escapeError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net.url/EscapeError from -:
+	info_PtrTo_EscapeError = GoTypeInfo{Name: "*go.std.net.url/EscapeError",
+		GoType: &GoType{T: &info_PtrTo_EscapeError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	info_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_InvalidHostError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __invalidHostError_Error, "", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net.url/InvalidHostError from -:
+	info_PtrTo_InvalidHostError = GoTypeInfo{Name: "*go.std.net.url/InvalidHostError",
+		GoType: &GoType{T: &info_PtrTo_InvalidHostError},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
+	info_URL = GoTypeInfo{Name: "go.std.net.url/URL",
+		GoType: &GoType{T: &info_URL},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net.url/URL from -:
 	info_PtrTo_URL = GoTypeInfo{Name: "*go.std.net.url/URL",
 		GoType: &GoType{T: &info_PtrTo_URL},
 		Members: GoMembers{
@@ -2947,6 +3803,15 @@ func initNative() {
 			"String": MakeGoReceiver("String", __ptrTo_URL_String, "String reassembles the URL into a valid URL string.\nThe general form of the result is one of:\n\n\tscheme:opaque?query#fragment\n\tscheme://userinfo@host/path?query#fragment\n\nIf u.Opaque is non-empty, String uses the first form;\notherwise it uses the second form.\nTo obtain the path, String uses u.EscapedPath().\n\nIn the second form, the following rules apply:\n\t- if u.Scheme is empty, scheme: is omitted.\n\t- if u.User is nil, userinfo@ is omitted.\n\t- if u.Host is empty, host/ is omitted.\n\t- if u.Scheme and u.Host are empty and u.User is nil,\n\t   the entire scheme://userinfo@host/ is omitted.\n\t- if u.Host is non-empty and u.Path begins with a /,\n\t   the form host/path does not add its own /.\n\t- if u.RawQuery is empty, ?query is omitted.\n\t- if u.Fragment is empty, #fragment is omitted.\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
+	info_Userinfo = GoTypeInfo{Name: "go.std.net.url/Userinfo",
+		GoType: &GoType{T: &info_Userinfo},
+		Members: GoMembers{
+		}}
+
+
+GO INFO FOR TYPE *go.std.net.url/Userinfo from -:
 	info_PtrTo_Userinfo = GoTypeInfo{Name: "*go.std.net.url/Userinfo",
 		GoType: &GoType{T: &info_PtrTo_Userinfo},
 		Members: GoMembers{
@@ -2955,6 +3820,8 @@ func initNative() {
 			"Username": MakeGoReceiver("Username", __ptrTo_Userinfo_Username, "Username returns the username.\n", "1.0", NewVectorFrom()),
 		}}
 
+
+GO INFO FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
@@ -2962,12 +3829,63 @@ func initNative() {
 			"Get": MakeGoReceiver("Get", __values_Get, "Get gets the first value associated with the given key.\nIf there are no values associated with the key, Get returns\nthe empty string. To access multiple values, use the map\ndirectly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		}}
 
+
+GO INFO FOR TYPE *go.std.net.url/Values from -:
+	info_PtrTo_Values = GoTypeInfo{Name: "*go.std.net.url/Values",
+		GoType: &GoType{T: &info_PtrTo_Values},
+		Members: GoMembers{
+		}}
+
+
+GO VECSET FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
+	GoTypes[_reflect.TypeOf((*_url.Error)(nil)).Elem()] = &info_Error
+
+GO VECSET FOR TYPE *go.std.net.url/Error from -:
 	GoTypes[_reflect.TypeOf((*_url.Error)(nil))] = &info_PtrTo_Error
+
+GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil)).Elem()] = &info_EscapeError
+
+GO VECSET FOR TYPE *go.std.net.url/EscapeError from -:
+	GoTypes[_reflect.TypeOf((*_url.EscapeError)(nil))] = &info_PtrTo_EscapeError
+
+GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil)).Elem()] = &info_InvalidHostError
+
+GO VECSET FOR TYPE *go.std.net.url/InvalidHostError from -:
+	GoTypes[_reflect.TypeOf((*_url.InvalidHostError)(nil))] = &info_PtrTo_InvalidHostError
+
+GO VECSET FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
+	GoTypes[_reflect.TypeOf((*_url.URL)(nil)).Elem()] = &info_URL
+
+GO VECSET FOR TYPE *go.std.net.url/URL from -:
 	GoTypes[_reflect.TypeOf((*_url.URL)(nil))] = &info_PtrTo_URL
+
+GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
+	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil)).Elem()] = &info_Userinfo
+
+GO VECSET FOR TYPE *go.std.net.url/Userinfo from -:
 	GoTypes[_reflect.TypeOf((*_url.Userinfo)(nil))] = &info_PtrTo_Userinfo
+
+GO VECSET FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 	GoTypes[_reflect.TypeOf((*_url.Values)(nil)).Elem()] = &info_Values
+
+GO VECSET FOR TYPE *go.std.net.url/Values from -:
+	GoTypes[_reflect.TypeOf((*_url.Values)(nil))] = &info_PtrTo_Values
+
+// Auto-generated by gostd at (omitted for testing), do not edit!!
+
+package url
+
+import (
+	_errors "errors"
+	"fmt"
+	. "github.com/candid82/joker/core"
+	_url "net/url"
+	_reflect "reflect"
+)
+
+func initNative() {
 }
 
 ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
@@ -2975,5 +3893,6 @@ Totals: functions=109 generated=85 (77.98%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)
         types=28 generated=14 (50.00%)
+          hits expr=0 alias=0 fullname=42
         constants=2 generated=2 (100.00%)
         variables=12 generated=12 (100.00%)
