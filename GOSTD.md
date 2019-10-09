@@ -251,7 +251,7 @@ Similarly, implicit conversion of `String` expressions to Go types that have `st
 
 For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
 
-For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as a string) of the receiver, and any arguments:
+For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as an expression that evaluates to a string or symbol) of the receiver, and any arguments:
 
 ```
 user=> (use 'go.std.net)
@@ -399,11 +399,10 @@ Anything not supported results in either a `panic` or, more often, the string `A
 Among things to do to "productize" this:
 
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
-* Generate docstrings for receivers and types, and somehow have `doc` be able to find them
 * Improve docstrings for constructors (show and document the members)
-* Refactor `gotypes.go`, as was started and (for the time being) abandoned on 2019-08-19 in the `gostd-bad-refactor` branch
+* Refactor `gotypes.go`, as was started and (for the time being) abandoned on 2019-08-19 in the `gostd-bad-refactor` branch (now in progress in the form of `types/types.go`)
 * Document the code better
-* Assess performance impact (especially startup time) on Joker, and mitigate as appropriate
+* Assess performance impact (especially startup time) on Joker, and mitigate as appropriate (good progress has already been made here, via lazy loading of namespaces; it seems to be not much slower than standard Joker)
 
 ### Evaluation Tests
 
