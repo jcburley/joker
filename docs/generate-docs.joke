@@ -88,7 +88,7 @@
   [k v]
   (let [go-type-info (deref (Go v nil))
         members (get go-type-info "Members")
-        memvec (get members nil)]
+        memvec (sort (get members nil))]
     (string/join
      ""
      (for [m memvec]
