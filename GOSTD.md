@@ -41,7 +41,13 @@ For example, the `MX` type defined in the `net` package is wrapped as `go.std.ne
 
 * Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
 * Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
-* Comparing types of objects: `(= (type mx) (type something-else)`
+* Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else)`
+
+Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`) in the namespace.
+
+Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(Go f "Name")`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, in the form of a `GoObject`, of the `GoVar` named `Stdin`).
+
+*NOTE:* Methods, or receivers, on `interface{}` types are not yet supported.
 
 ## Constants
 
@@ -57,7 +63,7 @@ A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interf
 
 ```
 $ joker
-Welcome to joker v0.12.0. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
+Welcome to joker v0.12.9. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
 user=> (use '[go.std.net :as n])
 nil
 user=> (doc n/Interfaces)
@@ -81,7 +87,9 @@ Vector
 user=> (type (r 0))
 Vector
 user=> (type ((r 0) 0))
-GoObject[net.Interface]
+GoObject
+user=> (GoTypeOf ((r 0) 0))
+go.std.net/Interface
 user=> ((r 0) 0)
 {1 65536 lo  up|loopback}
 user=>
@@ -123,11 +131,11 @@ user=>
 
 If a particular constructor is missing, that indicates lack of support for the underlying type.
 
-NOTE: The `(new ...)` special form is _not_ currently supported.
+NOTE: The `(new ...)` special form is now supported, though no corresponding constructors are available at this time; this and the "dot" forms (described above) are likely to change soon.
 
 ### Calling a Go API
 
-Calling a Go wrapper function in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned results (if any) properly.
+Calling a Go wrapper function (for a Go function, receiver, or method) in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned results (if any) properly.
 
 #### Input Arguments
 
@@ -264,7 +272,7 @@ user=>
 
 **IMPORTANT:** The `Go` function is, like `gostd` generally, a proof-of-concept prototype. Its name was chosen to set it apart from all other Clojure code and specifically to identify it as referring to the Go language and its runtime. It might well be changed (incompatibly) or removed in the future.
 
-Also note that Clojure's `.foo` form and `.` special operator are not (yet?) supported. When they are, they'll (likely) be much more stable than `Go`.
+Also note that Clojure's `.foo` form and its `.` special operator are not (yet?) supported. When they are, they'll (likely) be much more stable than `Go`.
 
 #### Returned Values
 
@@ -272,12 +280,13 @@ Multiple return values are converted to a (Clojure) vector of the arguments, eac
 
 Arrays are returned as vectors, types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
-Returned `GoObject` instances can be:
-* Ignored (they'll presumably be garbage-collected at some point)
-* Stringized (via e.g. `(str goobj)`)
-* Converted to a suitable Clojure representation
-* Passed as arguments to Go API wrappers
-* Provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
+Returned `GoObject` instances can:
+* Be ignored (they'll presumably be garbage-collected at some point)
+* Be stringized (via e.g. `(str goobj)`)
+* Be converted to a suitable Clojure representation
+* Be passed as arguments to Go API wrappers
+* Be provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
+* Have receivers/methods, defined on them, invoked via the `Go` function
 
 Built-in type instances are converted directly to appropriate Clojure types. For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported:
 
@@ -313,7 +322,31 @@ user=>
 
 ### Referencing a Member of a GoObject
 
-TBD.
+`(Go obj receiver [args...])`, where `obj` is a `GoObject`, now works. As `Go` is a function, `receiver` is evaluated; typically it should be a self-evaluating form, and must evaluate to either a symbol or string, which are supported as equivalent:
+
+```
+user=> (use 'go.std.os)
+nil
+user=> (def file (get (Create "TEMP.txt") 0))
+#'user/file
+user=> file
+&{0xc000c01b60}
+user=> (Go file "Name")
+"TEMP.txt"
+user=> (Go file "WriteString" "Hello, world!\n")
+[14 nil]
+user=> (Go file "Close")
+nil
+user=> (Go file "Name")
+"TEMP.txt"
+user=> (Go file "WriteString" "Hello, world again!\n")
+[0 "write TEMP.txt: file already closed"]
+user=> (slurp "TEMP.txt")
+"Hello, world!\n"
+user=> (Go (deref Stdin) 'Name)
+"/dev/stdin"
+user=>
+```
 
 ### Converting a GoObject to a Clojure Datatype
 
