@@ -193,6 +193,37 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 	}
 }
 
+// Given an input package name such as "foo/bar" and typename
+// "bletch", decides whether to return (for 'code' and 'cl2gol') just
+// "_bar.bletch" and "bletch" if the package being compiled will be
+// implementing Go's package of the same name (in this case, the
+// generated file will be foo/bar_native.go and start with "package
+// bar"); or, to return (for both) simply "bar.bletch" and ensure
+// "foo/bar" is imported (implicitly as "bar", assuming no
+// conflicts). NOTE: As a side effect, updates imports needed by the
+// function.
+func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
+	curPkgName := fn.SourceFile.PkgDirUnix
+	basePkgName := path.Base(fullPkgName)
+	clType = basePkgName + "/" + baseTypeName
+	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
+	if curPkgName == fullPkgName {
+		code = "_" + basePkgName + "." + baseTypeName
+		doc = baseTypeName
+		return
+	}
+	doc = path.Base(fullPkgName) + "." + baseTypeName
+	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
+	return
+}
+
+func FullTypeNameAsClojure(nsRoot, t string) string {
+	if t[0] == '_' {
+		t = t[1:]
+	}
+	return nsRoot + ReplaceAll(ReplaceAll(ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
+}
+
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
 
@@ -1047,35 +1078,4 @@ func WalkDirs(fsRoot, nsRoot string, mode parser.Mode) error {
 	}
 
 	return err
-}
-
-// Given an input package name such as "foo/bar" and typename
-// "bletch", decides whether to return (for 'code' and 'cl2gol') just
-// "_bar.bletch" and "bletch" if the package being compiled will be
-// implementing Go's package of the same name (in this case, the
-// generated file will be foo/bar_native.go and start with "package
-// bar"); or, to return (for both) simply "bar.bletch" and ensure
-// "foo/bar" is imported (implicitly as "bar", assuming no
-// conflicts). NOTE: As a side effect, updates imports needed by the
-// function.
-func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.SourceFile.PkgDirUnix
-	basePkgName := path.Base(fullPkgName)
-	clType = basePkgName + "/" + baseTypeName
-	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
-	if curPkgName == fullPkgName {
-		code = "_" + basePkgName + "." + baseTypeName
-		doc = baseTypeName
-		return
-	}
-	doc = path.Base(fullPkgName) + "." + baseTypeName
-	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
-	return
-}
-
-func FullTypeNameAsClojure(nsRoot, t string) string {
-	if t[0] == '_' {
-		t = t[1:]
-	}
-	return nsRoot + ReplaceAll(ReplaceAll(ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
 }
