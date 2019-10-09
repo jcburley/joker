@@ -986,7 +986,16 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	}
 }
 
-func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
+type walkedPackage struct {
+	rootUnix   string
+	pkgDirUnix string
+	nsRoot     string
+	pkg        *Package
+}
+
+var walkedPackages []walkedPackage
+
+func processDir(root, rootUnix, path, nsRoot string) error {
 	pkgDir := TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
 	if Verbose {
@@ -1010,12 +1019,13 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 			}
 			return b && e == nil
 		},
-		mode)
+		parser.ParseComments)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return err
 	}
 
+	found := false
 	for pkgBaseName, v := range pkgs {
 		if pkgBaseName != filepath.Base(path) {
 			if Verbose {
@@ -1027,7 +1037,11 @@ func processDir(root, rootUnix, path, nsRoot string, mode parser.Mode) error {
 				AddSortedOutput(fmt.Sprintf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix))
 			}
 		} else {
-			processPackage(rootUnix, pkgDirUnix, nsRoot, v)
+			if found {
+				panic("whaaa??")
+			}
+			walkedPackages = append(walkedPackages, walkedPackage{rootUnix, pkgDirUnix, nsRoot, v})
+			found = true
 		}
 	}
 
@@ -1046,8 +1060,6 @@ func walkDir(fsRoot, nsRoot string) error {
 	rootUnix := filepath.ToSlash(fsRoot)
 	target, err := filepath.EvalSymlinks(fsRoot)
 	Check(err)
-
-	StartSortedOutput()
 
 	err = filepath.Walk(target,
 		func(path string, info os.FileInfo, err error) error {
@@ -1068,14 +1080,13 @@ func walkDir(fsRoot, nsRoot string) error {
 				return filepath.SkipDir
 			}
 			if info.IsDir() {
-				return processDir(fsRoot, rootUnix, rel, nsRoot, parser.ParseComments)
+				return processDir(fsRoot, rootUnix, rel, nsRoot)
 			}
 			return nil // not a directory
 		})
 
-	EndSortedOutput()
-
 	if err != nil {
+		EndSortedOutput()
 		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", fsRoot, err)
 		return err
 	}
@@ -1096,11 +1107,19 @@ func AddWalkDir(srcDir, fsRoot, nsRoot string) {
 }
 
 func WalkAllDirs() (error, string) {
+	StartSortedOutput()
+	defer func() {
+		EndSortedOutput()
+	}()
+
 	for _, d := range dirsToWalk {
 		err := walkDir(d.fsRoot, d.nsRoot)
 		if err != nil {
 			return err, d.srcDir
 		}
+	}
+	for _, wp := range walkedPackages {
+		processPackage(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
 	}
 	return nil, ""
 }
