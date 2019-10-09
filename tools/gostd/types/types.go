@@ -177,23 +177,24 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 	return
 }
 
-func (tdi *TypeDefInfo) TypeReflected() string {
+func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ""
 	prefix := "_" + filepath.Base(GoPackageForExpr(tdi.TypeSpec.Type)) + "."
-	switch x := tdi.TypeSpec.Type.(type) {
+	switch tdi.TypeSpec.Type.(type) {
 	case *Ident:
-		t = "*" + prefix + x.Name
+		t = "*" + prefix + tdi.LocalName
 		suffix = ".Elem()"
 	case *StarExpr:
-		t = "*" + prefix + x.X.(*Ident).Name
+		t = "*" + prefix + tdi.LocalName
 	default:
-		return ""
+		return "", ""
 	}
-	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
+	return "reflect", fmt.Sprintf("%%s.TypeOf((%s)(nil))%s", t, suffix)
 }
 
-func (ti *TypeInfo) TypeKey() string {
+// currently unused
+func (ti *TypeInfo) typeKey() string {
 	t := ""
 	suffix := ""
 	prefix := GoPackageForExpr(ti.Type)
