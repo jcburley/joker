@@ -211,7 +211,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" {
+			if tmn == "" || tdi.IsPrivate {
 				return
 			}
 			typeDoc := tdi.Doc
@@ -303,13 +303,14 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn != "" {
-				tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
+			if tmn == "" || tdi.IsPrivate {
+				return
 			}
-			if outputCode {
+			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
+			if outputCode && tmn != "" {
 				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), tmn)
 			}
-			if out != nil && unbuf_out != os.Stdout {
+			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
 			}
 		})
@@ -328,7 +329,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" {
+			if tmn == "" || tdi.IsPrivate {
 				return
 			}
 			k1 := tdi.FullName
@@ -355,7 +356,7 @@ import (%s
 		func(tdi *TypeDefInfo) {
 			reflected := tdi.TypeReflected()
 			tmn := tdi.TypeMappingsName()
-			if reflected == "" || tmn == "" {
+			if reflected == "" || tmn == "" || tdi.IsPrivate {
 				return
 			}
 			o := fmt.Sprintf("\tGoTypes[%s] = &%s\n", reflected, tmn)

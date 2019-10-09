@@ -299,8 +299,10 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 var RegisterType_func func(gf *GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) bool {
-	typename := pkg + "." + ts.Name.Name
+func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
+	name := ts.Name.Name
+	typename := pkg + "." + name
+
 	if Dump {
 		fmt.Printf("Type %s at %s:\n", typename, WhereAt(ts.Pos()))
 		Print(Fset, ts)
@@ -318,20 +320,17 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 	gt.Td = ts
 	gt.Where = ts.Pos()
 	gt.RequiredImports = &PackageImports{}
-	if !IsPrivate(ts.Name.Name) {
+
+	if !IsPrivate(name) {
 		NumTypes++
 	}
-	return true
 }
 
-func processTypeSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) (found bool) {
+func processTypeSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		if processTypeSpec(gf, pkg, ts, parentDoc) {
-			found = true
-		}
+		processTypeSpec(gf, pkg, ts, parentDoc)
 	}
-	return
 }
 
 type VariableInfo struct {

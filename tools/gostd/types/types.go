@@ -35,6 +35,7 @@ type TypeDefInfo struct {
 	TypeInfo  *TypeInfo
 	FullName  string // Clojure name (e.g. "a.b.c/Typename")
 	LocalName string // Local, or base, name (e.g. "Typename")
+	IsPrivate bool
 	Doc       string
 	DefPos    token.Pos
 }
@@ -61,6 +62,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
 		TypeSpec:  ts,
 		FullName:  tfn,
 		LocalName: tln,
+		IsPrivate: IsPrivate(tln),
 		Doc:       CommentGroupAsString(doc),
 		DefPos:    ts.Name.NamePos,
 	}
@@ -85,11 +87,11 @@ func TypeLookup(e Expr) *TypeInfo {
 	}
 	ti := &TypeInfo{
 		Type:             e,
+		Definition:       typeDefinitionsByFullName[tfn],
 		SimpleIdentifier: simple,
 	}
 	types[e] = ti
 	typesByFullName[tfn] = e
-	ti.Definition = typeDefinitionsByFullName[tfn]
 	return ti
 }
 
