@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+var NumExprHits uint
+var NumAliasHits uint
+var NumFullNameHits uint
+
 type TypeInfo struct {
 	Type             Expr // nil until first reference (not definition) seen
 	Definition       *TypeDefInfo
@@ -61,22 +65,21 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) *TypeDefInfo {
 		DefPos:    ts.Name.NamePos,
 	}
 	typeDefinitionsByFullName[tfn] = tdi
-	if e, ok := typesByFullName[tfn]; ok {
-		types[e].Definition = tdi
-		tdi.TypeInfo = types[e]
-	}
 	return tdi
 }
 
 func TypeLookup(e Expr) *TypeInfo {
 	if ti, ok := types[e]; ok {
+		NumExprHits++
 		return ti
 	}
 	if ta, ok := typeAliases[e]; ok {
+		NumAliasHits++
 		return types[ta]
 	}
 	tfn, _, simple := typeNames(e, true)
 	if te, ok := typesByFullName[tfn]; ok {
+		NumFullNameHits++
 		typeAliases[te] = e
 		return types[te]
 	}
@@ -86,9 +89,7 @@ func TypeLookup(e Expr) *TypeInfo {
 	}
 	types[e] = ti
 	typesByFullName[tfn] = e
-	if tdi, ok := typeDefinitionsByFullName[tfn]; ok {
-		ti.Definition = tdi
-	}
+	ti.Definition = typeDefinitionsByFullName[tfn]
 	return ti
 }
 

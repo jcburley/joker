@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
 	"go/token"
@@ -312,6 +313,7 @@ Totals: functions=%d generated=%d (%s%%)
           non-receivers=%d (%s%%) generated=%d (%s%%)
           receivers=%d (%s%%) generated=%d (%s%%)
         types=%d generated=%d (%s%%)
+          hits expr=%d alias=%d fullname=%d
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
 `,
@@ -319,6 +321,7 @@ Totals: functions=%d generated=%d (%s%%)
 			NumStandalones, pct(NumStandalones, NumFunctions), NumGeneratedStandalones, pct(NumGeneratedStandalones, NumStandalones),
 			NumReceivers, pct(NumReceivers, NumFunctions), NumGeneratedReceivers, pct(NumGeneratedReceivers, NumReceivers),
 			NumTypes, NumGeneratedTypes, pct(NumGeneratedTypes, NumTypes),
+			types.NumExprHits, types.NumAliasHits, types.NumFullNameHits,
 			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
 			NumVariables, NumGeneratedVariables, pct(NumGeneratedVariables, NumVariables))
 	}
