@@ -42,9 +42,17 @@ type TypeDefInfo struct {
 	GoName         string // Base name of type (LocalName without any prefix)
 	underlyingType *TypeDefInfo
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
+	Specificity    uint // UINT_MAX means concrete type, >0 is 1 + # of methods defined for interface{} (abstract) type
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
+
+func specificity(ts *TypeSpec) uint {
+	if iface, ok := ts.Type.(*InterfaceType); ok {
+		return 1 + (uint)(len(iface.Methods.List))
+	}
+	return ^uint(0) // MaxUint
+}
 
 func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 	if len(allTypesSorted) > 0 {
@@ -66,32 +74,37 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 	}
 
 	tdi := &TypeDefInfo{
-		TypeSpec:  ts,
-		FullName:  tfn,
-		LocalName: tln,
-		IsPrivate: IsPrivate(tln),
-		Doc:       CommentGroupAsString(doc),
-		DefPos:    ts.Name.NamePos,
-		GoPrefix:  "",
-		GoPackage: GoPackageForTypeSpec(ts),
-		GoName:    tln,
+		TypeSpec:    ts,
+		FullName:    tfn,
+		LocalName:   tln,
+		IsPrivate:   IsPrivate(tln),
+		Doc:         CommentGroupAsString(doc),
+		DefPos:      ts.Name.NamePos,
+		GoPrefix:    "",
+		GoPackage:   GoPackageForTypeSpec(ts),
+		GoName:      tln,
+		Specificity: specificity(ts),
 	}
 	typeDefinitionsByFullName[tfn] = tdi
 
-	tfnPtr := "*" + tfn
-	tdiPtr := &TypeDefInfo{
-		FullName:       tfnPtr,
-		LocalName:      "*" + tln,
-		IsPrivate:      tdi.IsPrivate,
-		Doc:            "",
-		GoPrefix:       "*",
-		GoPackage:      tdi.GoPackage,
-		GoName:         tln,
-		underlyingType: tdi,
+	if tdi.Specificity == 0 {
+		// Concrete types all get reference-to versions.
+		tfnPtr := "*" + tfn
+		tdiPtr := &TypeDefInfo{
+			FullName:       tfnPtr,
+			LocalName:      "*" + tln,
+			IsPrivate:      tdi.IsPrivate,
+			Doc:            "",
+			GoPrefix:       "*",
+			GoPackage:      tdi.GoPackage,
+			GoName:         tln,
+			underlyingType: tdi,
+		}
+		typeDefinitionsByFullName[tfnPtr] = tdiPtr
+		return []*TypeDefInfo{tdi, tdiPtr}
 	}
-	typeDefinitionsByFullName[tfnPtr] = tdiPtr
 
-	return []*TypeDefInfo{tdi, tdiPtr}
+	return []*TypeDefInfo{tdi}
 }
 
 func TypeLookup(e Expr) *TypeInfo {
@@ -133,6 +146,9 @@ func SortAll() {
 		}
 	}
 	sort.SliceStable(allTypesSorted, func(i, j int) bool {
+		if allTypesSorted[i].Specificity != allTypesSorted[j].Specificity {
+			return allTypesSorted[i].Specificity > allTypesSorted[j].Specificity
+		}
 		return allTypesSorted[i].FullName < allTypesSorted[j].FullName
 	})
 	for ord, t := range allTypesSorted {

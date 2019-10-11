@@ -145,10 +145,10 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 		if t.GoPackage != "" {
 			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, true) + "."
 		}
-		cases += fmt.Sprintf("\tcase %s%s%s:\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Ord)
+		cases += fmt.Sprintf("\tcase %s%s%s:  // Specificity=%d\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Specificity, t.Ord)
 	}
 
-	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(AllSorted()), cases)
+	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
 	// Ignore error if outputting code to stdout:
