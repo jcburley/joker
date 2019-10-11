@@ -101,7 +101,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 
 	const importPrefix = " 'go.std."
 	for _, p := range pkgs {
-		m += "    " + importPrefix + strings.Replace(p, "/", ".", -1) + "\n"
+		m += "    " + importPrefix + strings.ReplaceAll(p, "/", ".") + "\n"
 	}
 	m += `    })
 `
@@ -208,7 +208,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 					return "true"
 				}
 			}(),
-			"go.std."+strings.Replace(pkgDirUnix, "/", ".", -1))
+			"go.std."+strings.ReplaceAll(pkgDirUnix, "/", "."))
 	}
 
 	SortedConstantInfoMap(v.Constants,
