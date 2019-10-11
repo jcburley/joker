@@ -37,7 +37,9 @@ type TypeDefInfo struct {
 	IsPrivate      bool
 	Doc            string
 	DefPos         token.Pos
-	goPackage      string
+	GoPrefix       string // Currently either "" or "*" (for reference types)
+	GoPackage      string // E.g. a/b/c
+	GoName         string // Base name of type (LocalName without any prefix)
 	underlyingType *TypeDefInfo
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 }
@@ -70,7 +72,9 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 		IsPrivate: IsPrivate(tln),
 		Doc:       CommentGroupAsString(doc),
 		DefPos:    ts.Name.NamePos,
-		goPackage: GoPackageForTypeSpec(ts),
+		GoPrefix:  "",
+		GoPackage: GoPackageForTypeSpec(ts),
+		GoName:    tln,
 	}
 	typeDefinitionsByFullName[tfn] = tdi
 
@@ -80,7 +84,9 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 		LocalName:      "*" + tln,
 		IsPrivate:      tdi.IsPrivate,
 		Doc:            "",
-		goPackage:      tdi.goPackage,
+		GoPrefix:       "*",
+		GoPackage:      tdi.GoPackage,
+		GoName:         tln,
 		underlyingType: tdi,
 	}
 	typeDefinitionsByFullName[tfnPtr] = tdiPtr
@@ -225,10 +231,10 @@ func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingType; tdiu != nil {
-		t = "_" + filepath.Base(tdiu.goPackage) + "." + tdiu.LocalName
+		t = "_" + filepath.Base(tdiu.GoPackage) + "." + tdiu.LocalName
 		suffix = ""
 	} else {
-		t = "_" + filepath.Base(tdi.goPackage) + "." + tdi.LocalName
+		t = "_" + filepath.Base(tdi.GoPackage) + "." + tdi.LocalName
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }

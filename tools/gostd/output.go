@@ -139,7 +139,11 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 
 	var cases string
 	for _, t := range types {
-		cases += fmt.Sprintf("\tcase %s:\n\t\treturn GoTypesVec[%d]\n", t.FullName, t.Ord)
+		pkgPlusSeparator := ""
+		if t.GoPackage != "" {
+			pkgPlusSeparator = t.GoPackage + "."
+		}
+		cases += fmt.Sprintf("\tcase %s%s%s:\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Ord)
 	}
 
 	m := fmt.Sprintf(pattern, "", len(AllSorted()), cases)
