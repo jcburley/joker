@@ -3890,79 +3890,132 @@ func initNative() {
 
 Adding 56 types to core/goswitch.go
 Generated file goswitch.go:
-;; Auto-modified by gostd at (omitted for testing)
+// Auto-modified by gostd at (omitted for testing)
 
 package core
 
 import (
-	%s
 )
 
-var GoTypesVec [%d]*GoTypeInfo
+var GoTypesVec [56]*GoTypeInfo
 
 func SwitchGoType(g interface{}) *GoTypeInfo {
 	switch g.(type) {
-%s
+	case *go.std.net.url/Error:
+		return GoTypesVec[0]
+	case *go.std.net.url/EscapeError:
+		return GoTypesVec[1]
+	case *go.std.net.url/InvalidHostError:
+		return GoTypesVec[2]
+	case *go.std.net.url/URL:
+		return GoTypesVec[3]
+	case *go.std.net.url/Userinfo:
+		return GoTypesVec[4]
+	case *go.std.net.url/Values:
+		return GoTypesVec[5]
+	case *go.std.net/Addr:
+		return GoTypesVec[6]
+	case *go.std.net/AddrError:
+		return GoTypesVec[7]
+	case *go.std.net/Buffers:
+		return GoTypesVec[8]
+	case *go.std.net/Conn:
+		return GoTypesVec[9]
+	case *go.std.net/DNSConfigError:
+		return GoTypesVec[10]
+	case *go.std.net/DNSError:
+		return GoTypesVec[11]
+	case *go.std.net/Error:
+		return GoTypesVec[12]
+	case *go.std.net/IP:
+		return GoTypesVec[13]
+	case *go.std.net/IPAddr:
+		return GoTypesVec[14]
+	case *go.std.net/IPConn:
+		return GoTypesVec[15]
+	case *go.std.net/IPMask:
+		return GoTypesVec[16]
+	case *go.std.net/IPNet:
+		return GoTypesVec[17]
+	case *go.std.net/InvalidAddrError:
+		return GoTypesVec[18]
+	case *go.std.net/Listener:
+		return GoTypesVec[19]
+	case *go.std.net/MX:
+		return GoTypesVec[20]
+	case *go.std.net/NS:
+		return GoTypesVec[21]
+	case *go.std.net/OpError:
+		return GoTypesVec[22]
+	case *go.std.net/PacketConn:
+		return GoTypesVec[23]
+	case *go.std.net/ParseError:
+		return GoTypesVec[24]
+	case *go.std.net/Resolver:
+		return GoTypesVec[25]
+	case *go.std.net/SRV:
+		return GoTypesVec[26]
+	case *go.std.net/UnknownNetworkError:
+		return GoTypesVec[27]
+	case go.std.net.url/Error:
+		return GoTypesVec[28]
+	case go.std.net.url/EscapeError:
+		return GoTypesVec[29]
+	case go.std.net.url/InvalidHostError:
+		return GoTypesVec[30]
+	case go.std.net.url/URL:
+		return GoTypesVec[31]
+	case go.std.net.url/Userinfo:
+		return GoTypesVec[32]
+	case go.std.net.url/Values:
+		return GoTypesVec[33]
+	case go.std.net/Addr:
+		return GoTypesVec[34]
+	case go.std.net/AddrError:
+		return GoTypesVec[35]
+	case go.std.net/Buffers:
+		return GoTypesVec[36]
+	case go.std.net/Conn:
+		return GoTypesVec[37]
+	case go.std.net/DNSConfigError:
+		return GoTypesVec[38]
+	case go.std.net/DNSError:
+		return GoTypesVec[39]
+	case go.std.net/Error:
+		return GoTypesVec[40]
+	case go.std.net/IP:
+		return GoTypesVec[41]
+	case go.std.net/IPAddr:
+		return GoTypesVec[42]
+	case go.std.net/IPConn:
+		return GoTypesVec[43]
+	case go.std.net/IPMask:
+		return GoTypesVec[44]
+	case go.std.net/IPNet:
+		return GoTypesVec[45]
+	case go.std.net/InvalidAddrError:
+		return GoTypesVec[46]
+	case go.std.net/Listener:
+		return GoTypesVec[47]
+	case go.std.net/MX:
+		return GoTypesVec[48]
+	case go.std.net/NS:
+		return GoTypesVec[49]
+	case go.std.net/OpError:
+		return GoTypesVec[50]
+	case go.std.net/PacketConn:
+		return GoTypesVec[51]
+	case go.std.net/ParseError:
+		return GoTypesVec[52]
+	case go.std.net/Resolver:
+		return GoTypesVec[53]
+	case go.std.net/SRV:
+		return GoTypesVec[54]
+	case go.std.net/UnknownNetworkError:
+		return GoTypesVec[55]
 	}
 	return nil
 }
-00000 *go.std.net.url/Error
-00001 *go.std.net.url/EscapeError
-00002 *go.std.net.url/InvalidHostError
-00003 *go.std.net.url/URL
-00004 *go.std.net.url/Userinfo
-00005 *go.std.net.url/Values
-00006 *go.std.net/Addr
-00007 *go.std.net/AddrError
-00008 *go.std.net/Buffers
-00009 *go.std.net/Conn
-00010 *go.std.net/DNSConfigError
-00011 *go.std.net/DNSError
-00012 *go.std.net/Error
-00013 *go.std.net/IP
-00014 *go.std.net/IPAddr
-00015 *go.std.net/IPConn
-00016 *go.std.net/IPMask
-00017 *go.std.net/IPNet
-00018 *go.std.net/InvalidAddrError
-00019 *go.std.net/Listener
-00020 *go.std.net/MX
-00021 *go.std.net/NS
-00022 *go.std.net/OpError
-00023 *go.std.net/PacketConn
-00024 *go.std.net/ParseError
-00025 *go.std.net/Resolver
-00026 *go.std.net/SRV
-00027 *go.std.net/UnknownNetworkError
-00028 go.std.net.url/Error
-00029 go.std.net.url/EscapeError
-00030 go.std.net.url/InvalidHostError
-00031 go.std.net.url/URL
-00032 go.std.net.url/Userinfo
-00033 go.std.net.url/Values
-00034 go.std.net/Addr
-00035 go.std.net/AddrError
-00036 go.std.net/Buffers
-00037 go.std.net/Conn
-00038 go.std.net/DNSConfigError
-00039 go.std.net/DNSError
-00040 go.std.net/Error
-00041 go.std.net/IP
-00042 go.std.net/IPAddr
-00043 go.std.net/IPConn
-00044 go.std.net/IPMask
-00045 go.std.net/IPNet
-00046 go.std.net/InvalidAddrError
-00047 go.std.net/Listener
-00048 go.std.net/MX
-00049 go.std.net/NS
-00050 go.std.net/OpError
-00051 go.std.net/PacketConn
-00052 go.std.net/ParseError
-00053 go.std.net/Resolver
-00054 go.std.net/SRV
-00055 go.std.net/UnknownNetworkError
-    })
 ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
 Totals: functions=109 generated=85 (77.98%)
           non-receivers=26 (23.85%) generated=26 (100.00%)

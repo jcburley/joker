@@ -114,36 +114,35 @@ func updateGoTypeSwitch(types []*TypeDefInfo, f string, outputCode bool) {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
 
-	var m string
+	var pattern string
 	if len(types) > 0 {
-		m = ";; Auto-modified by gostd at " + curTimeAndVersion()
+		pattern = "// Auto-modified by gostd at " + curTimeAndVersion()
 	} else {
-		m = ";; Placeholder for Go types. Overwritten by gostd."
+		pattern = "// Placeholder for big Go switch on types. Overwritten by gostd."
 	}
 
-	m += `
+	pattern += `
 
 package core
 
 import (
-	%s
-)
+%s)
 
 var GoTypesVec [%d]*GoTypeInfo
 
 func SwitchGoType(g interface{}) *GoTypeInfo {
 	switch g.(type) {
-%s
-	}
+%s	}
 	return nil
 }
 `
 
+	var cases string
 	for _, t := range types {
-		m += fmt.Sprintf("%05d %s\n", t.Ord, t.FullName)
+		cases += fmt.Sprintf("\tcase %s:\n\t\treturn GoTypesVec[%d]\n", t.FullName, t.Ord)
 	}
-	m += `    })
-`
+
+	m := fmt.Sprintf(pattern, "", len(AllSorted()), cases)
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
 	// Ignore error if outputting code to stdout:
