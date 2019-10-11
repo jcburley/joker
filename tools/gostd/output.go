@@ -30,11 +30,11 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func registerPackages(pkgs []string, jokerSourceDir string) {
+func RegisterPackages(pkgs []string, jokerSourceDir string) {
 	updateCustomLibsGo(pkgs, filepath.Join(jokerSourceDir, "custom.go"))
 }
 
-func registerJokerFiles(jokerFiles []string, jokerSourceDir string) {
+func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
@@ -384,7 +384,7 @@ import (%s
 	}
 }
 
-func outputPackageCode(jokerLibDir string, outputCode, generateEmpty bool) {
+func OutputPackageCode(jokerLibDir string, outputCode, generateEmpty bool) {
 	SortedPackageMap(ClojureCode,
 		func(pkgDirUnix string, v CodeInfo) {
 			outputClojureCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)

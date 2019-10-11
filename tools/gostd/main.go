@@ -218,8 +218,8 @@ func main() {
 		}
 
 		if undo {
-			registerPackages([]string{}, jokerSourceDir)
-			registerJokerFiles([]string{}, jokerSourceDir)
+			RegisterPackages([]string{}, jokerSourceDir)
+			RegisterJokerFiles([]string{}, jokerSourceDir)
 			os.Exit(0)
 		}
 
@@ -256,21 +256,21 @@ func main() {
 
 	SortedConstantInfoMap(GoConstants,
 		func(c string, ci *ConstantInfo) {
-			genConstant(ci)
+			GenConstant(ci)
 		})
 
 	SortedVariableInfoMap(GoVariables,
 		func(c string, ci *VariableInfo) {
-			genVariable(ci)
+			GenVariable(ci)
 		})
 
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {
 			if v.Fd.Recv == nil {
-				genStandalone(v)
+				GenStandalone(v)
 			} else {
-				genReceiver(v)
+				GenReceiver(v)
 			}
 		})
 
@@ -281,11 +281,11 @@ func main() {
 	SortedTypeInfoMap(GoTypes,
 		func(t string, ti *GoTypeInfo) {
 			if ti.Td != nil {
-				genType(t, ti)
+				GenType(t, ti)
 			}
 		})
 
-	outputPackageCode(jokerLibDir, outputCode, generateEmpty)
+	OutputPackageCode(jokerLibDir, outputCode, generateEmpty)
 
 	if jokerSourceDir != "" && jokerSourceDir != "-" {
 		var packagesArray = []string{} // Relative package pathnames in alphabetical order
@@ -301,8 +301,8 @@ func main() {
 				}
 				dotJokeArray = append(dotJokeArray, p)
 			})
-		registerPackages(packagesArray, jokerSourceDir)
-		registerJokerFiles(dotJokeArray, jokerSourceDir)
+		RegisterPackages(packagesArray, jokerSourceDir)
+		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
 	}
 
 	if Verbose || summary {

@@ -212,7 +212,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
-func genReceiver(fn *FuncInfo) {
+func GenReceiver(fn *FuncInfo) {
 	genSymReset()
 	pkgDirUnix := fn.SourceFile.PkgDirUnix
 	pkgBaseName := fn.SourceFile.PkgBaseName
@@ -254,7 +254,7 @@ func %s(o GoObject, args Object) Object {
 	}
 }
 
-func genStandalone(fn *FuncInfo) {
+func GenStandalone(fn *FuncInfo) {
 	genSymReset()
 	d := fn.Fd
 	pkgDirUnix := fn.SourceFile.PkgDirUnix
@@ -322,7 +322,7 @@ func %s(%s) %s {
 	}
 }
 
-func genConstant(ci *ConstantInfo) {
+func GenConstant(ci *ConstantInfo) {
 	genSymReset()
 	pkgDirUnix := ci.SourceFile.PkgDirUnix
 
@@ -333,7 +333,7 @@ func genConstant(ci *ConstantInfo) {
 	AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
-func genVariable(ci *VariableInfo) {
+func GenVariable(ci *VariableInfo) {
 	genSymReset()
 	pkgDirUnix := ci.SourceFile.PkgDirUnix
 
@@ -406,7 +406,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc, reflectLocal)
 }
 
-func genType(t string, ti *GoTypeInfo) {
+func GenType(t string, ti *GoTypeInfo) {
 	td := ti.Td
 	if IsPrivate(td.Name.Name) {
 		return // Do not generate anything for private types
