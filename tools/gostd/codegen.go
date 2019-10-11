@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/abends"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"path"
 	"regexp"
-	"sort"
 	"strings"
 )
 
@@ -122,46 +122,6 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFn
 	return
 }
 
-var abendRegexp *regexp.Regexp
-
-var abends = map[string]int{}
-
-func trackAbends(a string) {
-	subMatches := abendRegexp.FindAllStringSubmatch(a, -1)
-	//	fmt.Printf("trackAbends: %v %s => %#v\n", abendRegexp, a, subMatches)
-	for _, m := range subMatches {
-		if len(m) != 2 {
-			panic(fmt.Sprintf("len(%v) != 2", m))
-		}
-		n := m[1]
-		if _, ok := abends[n]; !ok {
-			abends[n] = 0
-		}
-		abends[n] += 1
-	}
-}
-
-func printAbends(m map[string]int) {
-	type ac struct {
-		abendCode  string
-		abendCount int
-	}
-	a := []ac{}
-	for k, v := range m {
-		a = append(a, ac{abendCode: k, abendCount: v})
-	}
-	sort.Slice(a,
-		func(i, j int) bool {
-			if a[i].abendCount == a[j].abendCount {
-				return a[i].abendCode < a[j].abendCode
-			}
-			return a[i].abendCount > a[j].abendCount
-		})
-	for _, v := range a {
-		fmt.Printf(" %s(%d)", v.abendCode, v.abendCount)
-	}
-}
-
 func genReceiverCode(fn *FuncInfo, goFname string) string {
 	const arityTemplate = `
 	%sCheckGoArity("%s", args, %d, %d)
@@ -231,8 +191,8 @@ func %s(o GoObject, args Object) Object {
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
-		trackAbends(clojureFn)
-		trackAbends(goFn)
+		abends.TrackAbends(clojureFn)
+		abends.TrackAbends(goFn)
 	} else {
 		NumGeneratedFunctions++
 		NumGeneratedReceivers++
@@ -300,8 +260,8 @@ func %s(%s) %s {
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
-		trackAbends(clojureFn)
-		trackAbends(goFn)
+		abends.TrackAbends(clojureFn)
+		abends.TrackAbends(goFn)
 	} else {
 		NumGeneratedFunctions++
 		NumGeneratedStandalones++
@@ -479,8 +439,8 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	if strings.Contains(ti.ClojureCode, "ABEND") || strings.Contains(goConstructor, "ABEND") {
 		ti.ClojureCode = nonEmptyLineRegexp.ReplaceAllString(ti.ClojureCode, `;; $1`)
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
-		trackAbends(ti.ClojureCode)
-		trackAbends(goConstructor)
+		abends.TrackAbends(ti.ClojureCode)
+		abends.TrackAbends(goConstructor)
 	} else {
 		NumGeneratedTypes++
 		promoteImports(ti)

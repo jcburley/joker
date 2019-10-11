@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/abends"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
 	"github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
@@ -307,7 +308,7 @@ func main() {
 
 	if Verbose || summary {
 		fmt.Printf("ABENDs:")
-		printAbends(abends)
+		abends.PrintAbends()
 		fmt.Printf(`
 Totals: functions=%d generated=%d (%s%%)
           non-receivers=%d (%s%%) generated=%d (%s%%)
@@ -338,5 +339,4 @@ func pct(i, j int) string {
 
 func init() {
 	nonEmptyLineRegexp = regexp.MustCompile(`(?m)^(.)`)
-	abendRegexp = regexp.MustCompile(`ABEND([0-9]+)`)
 }
