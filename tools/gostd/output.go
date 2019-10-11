@@ -398,13 +398,11 @@ import (%s
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
-			reflectPackageImport, reflectPattern := tdi.TypeReflected()
 			tmn := tdi.TypeMappingsName()
-			if reflectPattern == "" || tmn == "" || tdi.IsPrivate {
+			if tmn == "" || tdi.IsPrivate {
 				return
 			}
-			reflectLocal := imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "", reflectPackageImport, true)
-			o := fmt.Sprintf("\tGoTypes[%s] = &%s\n", fmt.Sprintf(reflectPattern, reflectLocal), tmn)
+			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", tdi.Ord, tmn)
 			if outputCode {
 				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
 			}

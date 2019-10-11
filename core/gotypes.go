@@ -15,10 +15,6 @@ type GoTypeInfo struct {
 	Members GoMembers
 }
 
-func LookupGoType(g interface{}) *GoTypeInfo {
-	return GoTypes[reflect.TypeOf(g)]
-}
-
 func CheckGoArity(rcvr string, args Object, min, max int) *ArraySeq {
 	n := 0
 	switch s := args.(type) {
@@ -180,5 +176,3 @@ func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added str
 	v.meta = m
 	return v
 }
-
-var GoTypes map[reflect.Type]*GoTypeInfo = map[reflect.Type]*GoTypeInfo{}
