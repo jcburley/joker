@@ -38,8 +38,8 @@ func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []*TypeDefInfo, jokerSourceDir string) {
-	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"))
+func RegisterGoTypeSwitch(types []*TypeDefInfo, jokerSourceDir string, outputCode bool) {
+	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"), outputCode)
 }
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
@@ -109,7 +109,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	Check(err)
 }
 
-func updateGoTypeSwitch(types []*TypeDefInfo, f string) {
+func updateGoTypeSwitch(types []*TypeDefInfo, f string, outputCode bool) {
 	if Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
@@ -140,13 +140,21 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 `
 
 	for _, t := range types {
-		m += fmt.Sprintf("%s\n", t.FullName)
+		m += fmt.Sprintf("%05d %s\n", t.Ord, t.FullName)
 	}
 	m += `    })
 `
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
-	Check(err)
+	// Ignore error if outputting code to stdout:
+	if !outputCode {
+		Check(err)
+	}
+
+	if outputCode {
+		fmt.Println("Generated file goswitch.go:")
+		fmt.Print(m)
+	}
 }
 
 func packageQuotedImportList(pi PackageImports, prefix string) string {

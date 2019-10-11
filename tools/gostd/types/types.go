@@ -39,6 +39,7 @@ type TypeDefInfo struct {
 	DefPos         token.Pos
 	goPackage      string
 	underlyingType *TypeDefInfo
+	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
@@ -128,6 +129,10 @@ func SortAll() {
 	sort.SliceStable(allTypesSorted, func(i, j int) bool {
 		return allTypesSorted[i].FullName < allTypesSorted[j].FullName
 	})
+	for ord, t := range allTypesSorted {
+		t.Ord = (uint)(ord)
+		ord++
+	}
 }
 
 func AllSorted() []*TypeDefInfo {

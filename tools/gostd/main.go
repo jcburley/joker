@@ -221,7 +221,7 @@ func main() {
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
 			RegisterJokerFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]*types.TypeDefInfo{}, jokerSourceDir)
+			RegisterGoTypeSwitch([]*types.TypeDefInfo{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
 
@@ -307,8 +307,9 @@ func main() {
 			})
 		RegisterPackages(packagesArray, jokerSourceDir)
 		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
-		RegisterGoTypeSwitch(types.AllSorted(), jokerSourceDir)
 	}
+
+	RegisterGoTypeSwitch(types.AllSorted(), jokerSourceDir, outputCode)
 
 	if Verbose || summary {
 		fmt.Printf("ABENDs:")
