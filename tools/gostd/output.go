@@ -38,6 +38,10 @@ func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
+func RegisterGoTypeSwitch(types []*TypeDefInfo, jokerSourceDir string) {
+	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"))
+}
+
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
 	if Verbose {
@@ -97,6 +101,46 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	const importPrefix = " 'go.std."
 	for _, p := range pkgs {
 		m += "    " + importPrefix + strings.Replace(p, "/", ".", -1) + "\n"
+	}
+	m += `    })
+`
+
+	err := ioutil.WriteFile(f, []byte(m), 0777)
+	Check(err)
+}
+
+func updateGoTypeSwitch(types []*TypeDefInfo, f string) {
+	if Verbose {
+		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
+	}
+
+	var m string
+	if len(types) > 0 {
+		m = ";; Auto-modified by gostd at " + curTimeAndVersion()
+	} else {
+		m = ";; Placeholder for Go types. Overwritten by gostd."
+	}
+
+	m += `
+
+package core
+
+import (
+	%s
+)
+
+var GoTypesVec [%d]*GoTypeInfo
+
+func SwitchGoType(g interface{}) *GoTypeInfo {
+	switch g.(type) {
+%s
+	}
+	return nil
+}
+`
+
+	for _, t := range types {
+		m += fmt.Sprintf("%s\n", t.FullName)
 	}
 	m += `    })
 `

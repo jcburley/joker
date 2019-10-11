@@ -109,6 +109,18 @@ func TypeLookup(e Expr) *TypeInfo {
 	return ti
 }
 
+func AllTypesSorted() (types []*TypeDefInfo) {
+	for _, t := range typeDefinitionsByFullName {
+		if !t.IsPrivate {
+			types = append(types, t)
+		}
+	}
+	sort.SliceStable(types, func(i, j int) bool {
+		return types[i].FullName < types[j].FullName
+	})
+	return
+}
+
 func (ti *TypeInfo) FullName() string {
 	return ti.Definition.FullName
 }
