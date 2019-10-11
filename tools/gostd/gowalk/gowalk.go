@@ -2,6 +2,7 @@ package gowalk
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -34,8 +35,8 @@ var NumGeneratedConstants int
 var NumGeneratedVariables int
 
 type PackageInfo struct {
-	ImportsNative  *PackageImports
-	ImportsAutoGen *PackageImports
+	ImportsNative  *imports.Imports
+	ImportsAutoGen *imports.Imports
 	Pkg            *Package
 	NonEmpty       bool // Whether any non-comment code has been generated
 	HasGoFiles     bool // Whether any .go files (would) have been generated
@@ -57,7 +58,7 @@ func SortedPackagesInfo(m map[string]*PackageInfo, f func(k string, i *PackageIn
 	}
 }
 
-func SortedPackageImports(pi PackageImports, f func(k, local, full string)) {
+func SortedPackageImports(pi imports.Imports, f func(k, local, full string)) {
 	var keys []string
 	for k, _ := range pi.FullNames {
 		keys = append(keys, k)
@@ -86,18 +87,18 @@ type GoTypeInfo struct {
 	SourceFile                *GoFile // location of the type defintion
 	Td                        *TypeSpec
 	Where                     token.Pos
-	UnderlyingType            *Expr           // nil if not a declared type
-	ArgClojureType            string          // Can convert this type to a Go function arg with my type
-	ArgFromClojureObject      string          // Append this to Clojure object to extract value of my type
-	ArgClojureArgType         string          // Clojure argument type for a Go function arg with my type
-	ArgExtractFunc            string          // Call Extract<this>() for arg with my type
-	ConvertFromClojure        string          // Pattern to convert a (scalar) %s to this type
-	ConvertFromClojureImports []PackageImport // Imports needed to support the above
-	ConvertToClojure          string          // Pattern to convert this type to an appropriate Clojure object
-	PromoteType               string          // Pattern to convert type to next larger Go type that Joker supports
+	UnderlyingType            *Expr            // nil if not a declared type
+	ArgClojureType            string           // Can convert this type to a Go function arg with my type
+	ArgFromClojureObject      string           // Append this to Clojure object to extract value of my type
+	ArgClojureArgType         string           // Clojure argument type for a Go function arg with my type
+	ArgExtractFunc            string           // Call Extract<this>() for arg with my type
+	ConvertFromClojure        string           // Pattern to convert a (scalar) %s to this type
+	ConvertFromClojureImports []imports.Import // Imports needed to support the above
+	ConvertToClojure          string           // Pattern to convert this type to an appropriate Clojure object
+	PromoteType               string           // Pattern to convert type to next larger Go type that Joker supports
 	ClojureCode               string
 	GoCode                    string
-	RequiredImports           *PackageImports
+	RequiredImports           *imports.Imports
 	Uncompleted               bool // Has this type's info been filled in beyond the registration step?
 	Custom                    bool // Is this not a builtin Go type?
 	Private                   bool // Is this a private type?
@@ -317,7 +318,7 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 	gt := RegisterType_func(gf, typename, ts)
 	gt.Td = ts
 	gt.Where = ts.Pos()
-	gt.RequiredImports = &PackageImports{}
+	gt.RequiredImports = &imports.Imports{}
 
 	if !IsPrivate(name) {
 		NumTypes++
@@ -879,62 +880,13 @@ func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *
 	return
 }
 
-/* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
-type PackageImport struct {
-	Local    string // "foo", "_", ".", or empty
-	LocalRef string // local unless empty, in which case final component of full (e.g. "foo")
-	Full     string // "bar/bletch/foo"
-}
-
-/* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
-type PackageImports struct {
-	LocalNames map[string]string         // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
-	FullNames  map[string]*PackageImport // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
-}
-
-/* Given desired local and the full (though relative) name of the
-/* package, make sure the local name agrees with any existing entry
-/* and isn't already used (someday picking an alternate local name if
-/* necessary), add the mapping if necessary, and return the (possibly
-/* alternate) local name. */
-func AddImport(packageImports *PackageImports, local, full string, okToSubstitute bool) string {
-	if e, found := packageImports.FullNames[full]; found {
-		if e.Local == local {
-			return e.LocalRef
-		}
-		if okToSubstitute {
-			return e.LocalRef
-		}
-		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, e.Local, e.Full))
-	}
-	localRef := local
-	if local == "" {
-		components := Split(full, "/")
-		localRef = components[len(components)-1]
-	}
-	if localRef != "." {
-		if curFull, found := packageImports.LocalNames[localRef]; found {
-			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, localRef, curFull))
-		}
-	}
-	if packageImports.LocalNames == nil {
-		packageImports.LocalNames = map[string]string{}
-	}
-	packageImports.LocalNames[localRef] = full
-	if packageImports.FullNames == nil {
-		packageImports.FullNames = map[string]*PackageImport{}
-	}
-	packageImports.FullNames[full] = &PackageImport{local, localRef, full}
-	return localRef
-}
-
 func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{&PackageImports{}, &PackageImports{}, p, false, false}
+		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{}, p, false, false}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
 			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},

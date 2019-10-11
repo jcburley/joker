@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	gotypes "go/types"
@@ -410,7 +411,7 @@ func init() {
 		ArgClojureArgType:         "Error",
 		ArgExtractFunc:            "Error",
 		ConvertFromClojure:        `_errors.New(AssertString(%s, "").S)`,
-		ConvertFromClojureImports: []PackageImport{{Local: "_errors", LocalRef: "_errors", Full: "errors"}},
+		ConvertFromClojureImports: []imports.Import{{Local: "_errors", LocalRef: "_errors", Full: "errors"}},
 		ConvertToClojure:          "Error(%s%s)",
 		Nullable:                  true,
 	}

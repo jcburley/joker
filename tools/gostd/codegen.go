@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -197,9 +198,9 @@ func %s(o GoObject, args Object) Object {
 		NumGeneratedFunctions++
 		NumGeneratedReceivers++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
-		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
-		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
-		AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", false)
+		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
+		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", false)
 		for _, r := range fn.Fd.Recv.List {
 			tdi := TypeLookup(r.Type).Definition
 			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
@@ -267,11 +268,11 @@ func %s(%s) %s {
 		NumGeneratedStandalones++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		if clojureReturnType == "" {
-			AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
-			AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
+			imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+			imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		}
 		if clojureReturnType != "" || fn.RefersToSelf {
-			AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
+			imports.AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 		}
 	}
 
@@ -290,7 +291,7 @@ func GenConstant(ci *ConstantInfo) {
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
+	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
 func GenVariable(ci *VariableInfo) {
@@ -301,7 +302,7 @@ func GenVariable(ci *VariableInfo) {
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
+	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
 func maybeImplicitConvert(src *GoFile, typeName string, ts *TypeSpec) string {
@@ -352,8 +353,8 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	localType := "_" + ti.SourceFile.PkgBaseName + "." + ti.LocalName
 	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
-	fmtLocal := AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "fmt", true)
-	reflectLocal := AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "reflect", true)
+	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "fmt", true)
+	reflectLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "reflect", true)
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -379,8 +380,8 @@ func GenType(t string, ti *GoTypeInfo) {
 		return // no functions generated
 	}
 
-	AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
-	AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
+	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
+	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -453,7 +454,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 
 func promoteImports(ti *GoTypeInfo) {
 	for _, imp := range ti.RequiredImports.FullNames {
-		AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, imp.Local, imp.Full, false)
+		imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, imp.Local, imp.Full, false)
 	}
 }
 
@@ -580,8 +581,8 @@ func elementToType(ti *GoTypeInfo, el string, e *Expr) string {
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(ti *GoTypeInfo, imports []PackageImport) {
-	for _, imp := range imports {
-		AddImport(ti.RequiredImports, imp.Local, imp.Full, false)
+func addRequiredImports(ti *GoTypeInfo, importeds []imports.Import) {
+	for _, imp := range importeds {
+		imports.AddImport(ti.RequiredImports, imp.Local, imp.Full, false)
 	}
 }

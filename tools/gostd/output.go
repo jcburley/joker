@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
@@ -160,7 +161,7 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 	}
 }
 
-func packageQuotedImportList(pi PackageImports, prefix string) string {
+func packageQuotedImportList(pi imports.Imports, prefix string) string {
 	imports := ""
 	SortedPackageImports(pi,
 		func(k, local, full string) {
@@ -414,7 +415,7 @@ import (%s
 			if reflectPattern == "" || tmn == "" || tdi.IsPrivate {
 				return
 			}
-			reflectLocal := AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "", reflectPackageImport, true)
+			reflectLocal := imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "", reflectPackageImport, true)
 			o := fmt.Sprintf("\tGoTypes[%s] = &%s\n", fmt.Sprintf(reflectPattern, reflectLocal), tmn)
 			if outputCode {
 				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
