@@ -2,14 +2,16 @@ package imports
 
 import (
 	"fmt"
+	"sort"
 	. "strings"
 )
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
-	Local    string // "foo", "_", ".", or empty
-	LocalRef string // local unless empty, in which case final component of full (e.g. "foo")
-	Full     string // "bar/bletch/foo"
+	Local       string // "foo", "_", ".", or empty
+	LocalRef    string // local unless empty, in which case final component of full (e.g. "foo")
+	Full        string // "bar/bletch/foo"
+	substituted bool   // Had to substitute a different local name
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
@@ -35,6 +37,7 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 		panic(fmt.Sprintf("addImport(%s,%s) told to to replace (%s,%s)", local, full, e.Local, e.Full))
 	}
 
+	substituted := false
 	localRef := local
 	if local == "" {
 		localRef = components[len(components)-1]
@@ -42,16 +45,18 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 	if localRef != "." {
 		prevComponentIndex := len(components) - 1
 		for {
+			origLocalRef := localRef
 			curFull, found := imports.LocalNames[localRef]
 			if !found {
 				break
 			}
+			substituted = true
 			prevComponentIndex--
 			if prevComponentIndex >= 0 {
 				localRef = components[prevComponentIndex] + "_" + localRef
 				continue
 			} else if prevComponentIndex > -99 /* avoid infinite loop */ {
-				localRef = fmt.Sprintf("%s_%d", localRef, -prevComponentIndex)
+				localRef = fmt.Sprintf("%s_%d", origLocalRef, -prevComponentIndex)
 				continue
 			}
 			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", localRef, full, imports.FullNames[curFull].LocalRef, curFull))
@@ -64,6 +69,31 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, localRef, full}
+	imports.FullNames[full] = &Import{local, localRef, full, substituted}
 	return localRef
+}
+
+func sortedPackageImports(pi *Imports, f func(k string, v *Import)) {
+	var keys []string
+	for k, _ := range pi.FullNames {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		v := pi.FullNames[k]
+		f(k, v)
+	}
+}
+
+func QuotedImportList(pi *Imports, prefix string) string {
+	imports := ""
+	sortedPackageImports(pi,
+		func(k string, v *Import) {
+			if v.Local == "" && !v.substituted {
+				imports += prefix + `"` + k + `"`
+			} else {
+				imports += prefix + v.LocalRef + ` "` + k + `"`
+			}
+		})
+	return imports
 }

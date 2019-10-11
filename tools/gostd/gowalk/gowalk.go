@@ -58,18 +58,6 @@ func SortedPackagesInfo(m map[string]*PackageInfo, f func(k string, i *PackageIn
 	}
 }
 
-func SortedPackageImports(pi imports.Imports, f func(k, local, full string)) {
-	var keys []string
-	for k, _ := range pi.FullNames {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		v := pi.FullNames[k]
-		f(k, v.Local, v.Full)
-	}
-}
-
 type GoFile struct {
 	Name        string
 	RootUnix    string

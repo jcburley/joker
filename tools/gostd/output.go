@@ -126,8 +126,8 @@ func updateGoTypeSwitch(types []*TypeDefInfo, f string, outputCode bool) {
 
 package core
 
-import (
-%s)
+import (%s
+)
 
 var GoTypesVec [%d]*GoTypeInfo
 
@@ -148,7 +148,7 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 		cases += fmt.Sprintf("\tcase %s%s%s:\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Ord)
 	}
 
-	m := fmt.Sprintf(pattern, "", len(AllSorted()), cases)
+	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(AllSorted()), cases)
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
 	// Ignore error if outputting code to stdout:
@@ -160,19 +160,6 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 		fmt.Println("Generated file goswitch.go:")
 		fmt.Print(m)
 	}
-}
-
-func packageQuotedImportList(pi imports.Imports, prefix string) string {
-	imports := ""
-	SortedPackageImports(pi,
-		func(k, local, full string) {
-			if local == "" {
-				imports += prefix + `"` + k + `"`
-			} else {
-				imports += prefix + local + ` "` + k + `"`
-			}
-		})
-	return imports
 }
 
 func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
@@ -212,7 +199,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
     :empty %s}
   %s)
 `,
-			strings.TrimPrefix(packageQuotedImportList(*pi.ImportsAutoGen, " "), " "),
+			strings.TrimPrefix(imports.QuotedImportList(pi.ImportsAutoGen, " "), " "),
 			strconv.Quote(pkgDoc),
 			func() string {
 				if pi.NonEmpty {
@@ -333,7 +320,7 @@ import (%s
 )
 `,
 			pkgBaseName,
-			packageQuotedImportList(*pi.ImportsNative, "\n\t"))
+			imports.QuotedImportList(pi.ImportsNative, "\n\t"))
 	}
 
 	SortedTypeInfoMap(v.Types,
