@@ -15,6 +15,14 @@ type GoTypeInfo struct {
 	Members GoMembers
 }
 
+func LookupGoType(g interface{}) *GoTypeInfo {
+	ix := SwitchGoType(g)
+	if ix < 0 || ix > len(GoTypesVec)-1 || GoTypesVec[ix] == nil {
+		panic(fmt.Sprintf("LookupGoType: %T returned %d\n", g, ix))
+	}
+	return GoTypesVec[ix]
+}
+
 func CheckGoArity(rcvr string, args Object, min, max int) *ArraySeq {
 	n := 0
 	switch s := args.(type) {

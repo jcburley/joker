@@ -133,10 +133,8 @@ var GoTypesVec [%d]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-%s	default:
-		return -1
-	}
-	return nil
+%s	}
+	return -1
 }
 `
 

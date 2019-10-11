@@ -7,8 +7,8 @@ import (
 
 var GoTypesVec [0]*GoTypeInfo
 
-func SwitchGoType(g interface{}) *GoTypeInfo {
+func SwitchGoType(g interface{}) int {
 	switch g.(type) {
 	}
-	return nil
+	return -1
 }

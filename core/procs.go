@@ -722,11 +722,11 @@ var procGoTypeOf Proc = func(args []Object) Object {
 	switch o := x.(type) {
 	case GoObject:
 		x = o.O
-		t = SwitchGoType(x)
+		t = LookupGoType(x)
 	case *GoVar:
 		x = o.Value
 		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
-		t = SwitchGoType(y) // GoVar's are always pointers to variables
+		t = LookupGoType(y) // GoVar's are always pointers to variables
 	default:
 		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
 	}
@@ -779,7 +779,7 @@ var procGo Proc = func(args []Object) Object {
 		reflect.Indirect(d).Set(v)
 		return MakeGoObject(d.Interface())
 	}
-	g := SwitchGoType(o.O)
+	g := LookupGoType(o.O)
 	if g == nil {
 		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
 	}
