@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 )
 
@@ -14,12 +13,8 @@ func paramNameAsGo(p string) string {
 	return p
 }
 
-func replaceAll(string, from, to string) string {
-	return strings.Replace(string, from, to, -1)
-}
-
 func typeToGoExtractFuncName(t string) string {
-	return replaceAll(replaceAll(t, ".", "_"), "/", "__")
+	return strings.ReplaceAll(strings.ReplaceAll(t, ".", "_"), "/", "__")
 }
 
 func funcNameAsGoPrivate(f string) string {
@@ -28,17 +23,6 @@ func funcNameAsGoPrivate(f string) string {
 	// 	s = "_" + s
 	// }
 	return "__" + strings.ToLower(f[0:1]) + f[1:]
-}
-
-func reverseJoin(a []string, infix string) string {
-	j := ""
-	for idx := len(a) - 1; idx >= 0; idx-- {
-		if idx != len(a)-1 {
-			j += infix
-		}
-		j += a[idx]
-	}
-	return j
 }
 
 var genSymIndex = map[string]int{}
@@ -104,15 +88,4 @@ func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 		gol = "Object"
 	}
 	return
-}
-
-func sortedStringMap(m map[string]string, f func(key, value string)) {
-	var keys []string
-	for k, _ := range m {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		f(k, m[k])
-	}
 }
