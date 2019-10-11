@@ -131,9 +131,11 @@ import (%s
 
 var GoTypesVec [%d]*GoTypeInfo
 
-func SwitchGoType(g interface{}) *GoTypeInfo {
+func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-%s	}
+%s	default:
+		return -1
+	}
 	return nil
 }
 `
@@ -145,7 +147,11 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 		if t.GoPackage != "" {
 			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, true) + "."
 		}
-		cases += fmt.Sprintf("\tcase %s%s%s:  // Specificity=%d\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Specificity, t.Ord)
+		specificity := ""
+		if t.Specificity < ^uint(0) { // MaxUint
+			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity)
+		}
+		cases += fmt.Sprintf("\tcase %s%s%s:%s\n\t\treturn %d\n", t.GoPrefix, pkgPlusSeparator, t.GoName, specificity, t.Ord)
 	}
 
 	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)

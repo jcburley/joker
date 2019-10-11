@@ -12942,212 +12942,214 @@ import (
 
 var GoTypesVec [102]*GoTypeInfo
 
-func SwitchGoType(g interface{}) *GoTypeInfo {
+func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case cgi.Handler:  // Specificity=18446744073709551615
-		return GoTypesVec[0]
-	case cookiejar.Jar:  // Specificity=18446744073709551615
-		return GoTypesVec[1]
-	case cookiejar.Options:  // Specificity=18446744073709551615
-		return GoTypesVec[2]
-	case httptest.ResponseRecorder:  // Specificity=18446744073709551615
-		return GoTypesVec[3]
-	case httptest.Server:  // Specificity=18446744073709551615
-		return GoTypesVec[4]
-	case httptrace.ClientTrace:  // Specificity=18446744073709551615
-		return GoTypesVec[5]
-	case httptrace.DNSDoneInfo:  // Specificity=18446744073709551615
-		return GoTypesVec[6]
-	case httptrace.DNSStartInfo:  // Specificity=18446744073709551615
-		return GoTypesVec[7]
-	case httptrace.GotConnInfo:  // Specificity=18446744073709551615
-		return GoTypesVec[8]
-	case httptrace.WroteRequestInfo:  // Specificity=18446744073709551615
-		return GoTypesVec[9]
-	case httputil.ClientConn:  // Specificity=18446744073709551615
-		return GoTypesVec[10]
-	case httputil.ReverseProxy:  // Specificity=18446744073709551615
-		return GoTypesVec[11]
-	case httputil.ServerConn:  // Specificity=18446744073709551615
-		return GoTypesVec[12]
-	case http.Client:  // Specificity=18446744073709551615
-		return GoTypesVec[13]
-	case http.ConnState:  // Specificity=18446744073709551615
-		return GoTypesVec[14]
-	case http.Cookie:  // Specificity=18446744073709551615
-		return GoTypesVec[15]
-	case http.Dir:  // Specificity=18446744073709551615
-		return GoTypesVec[16]
-	case http.HandlerFunc:  // Specificity=18446744073709551615
-		return GoTypesVec[17]
-	case http.Header:  // Specificity=18446744073709551615
-		return GoTypesVec[18]
-	case http.ProtocolError:  // Specificity=18446744073709551615
-		return GoTypesVec[19]
-	case http.PushOptions:  // Specificity=18446744073709551615
-		return GoTypesVec[20]
-	case http.Request:  // Specificity=18446744073709551615
-		return GoTypesVec[21]
-	case http.Response:  // Specificity=18446744073709551615
-		return GoTypesVec[22]
-	case http.SameSite:  // Specificity=18446744073709551615
-		return GoTypesVec[23]
-	case http.ServeMux:  // Specificity=18446744073709551615
-		return GoTypesVec[24]
-	case http.Server:  // Specificity=18446744073709551615
-		return GoTypesVec[25]
-	case http.Transport:  // Specificity=18446744073709551615
-		return GoTypesVec[26]
-	case mail.Address:  // Specificity=18446744073709551615
-		return GoTypesVec[27]
-	case mail.AddressParser:  // Specificity=18446744073709551615
-		return GoTypesVec[28]
-	case mail.Header:  // Specificity=18446744073709551615
-		return GoTypesVec[29]
-	case mail.Message:  // Specificity=18446744073709551615
-		return GoTypesVec[30]
-	case rpc.Call:  // Specificity=18446744073709551615
-		return GoTypesVec[31]
-	case rpc.Client:  // Specificity=18446744073709551615
-		return GoTypesVec[32]
-	case rpc.Request:  // Specificity=18446744073709551615
-		return GoTypesVec[33]
-	case rpc.Response:  // Specificity=18446744073709551615
-		return GoTypesVec[34]
-	case rpc.Server:  // Specificity=18446744073709551615
-		return GoTypesVec[35]
-	case rpc.ServerError:  // Specificity=18446744073709551615
-		return GoTypesVec[36]
-	case smtp.Client:  // Specificity=18446744073709551615
-		return GoTypesVec[37]
-	case smtp.ServerInfo:  // Specificity=18446744073709551615
-		return GoTypesVec[38]
-	case textproto.Conn:  // Specificity=18446744073709551615
-		return GoTypesVec[39]
-	case textproto.Error:  // Specificity=18446744073709551615
-		return GoTypesVec[40]
-	case textproto.MIMEHeader:  // Specificity=18446744073709551615
-		return GoTypesVec[41]
-	case textproto.Pipeline:  // Specificity=18446744073709551615
-		return GoTypesVec[42]
-	case textproto.ProtocolError:  // Specificity=18446744073709551615
-		return GoTypesVec[43]
-	case textproto.Reader:  // Specificity=18446744073709551615
-		return GoTypesVec[44]
-	case textproto.Writer:  // Specificity=18446744073709551615
-		return GoTypesVec[45]
-	case url.Error:  // Specificity=18446744073709551615
-		return GoTypesVec[46]
-	case url.EscapeError:  // Specificity=18446744073709551615
-		return GoTypesVec[47]
-	case url.InvalidHostError:  // Specificity=18446744073709551615
-		return GoTypesVec[48]
-	case url.URL:  // Specificity=18446744073709551615
-		return GoTypesVec[49]
-	case url.Userinfo:  // Specificity=18446744073709551615
-		return GoTypesVec[50]
-	case url.Values:  // Specificity=18446744073709551615
-		return GoTypesVec[51]
-	case net.AddrError:  // Specificity=18446744073709551615
-		return GoTypesVec[52]
-	case net.Buffers:  // Specificity=18446744073709551615
-		return GoTypesVec[53]
-	case net.DNSConfigError:  // Specificity=18446744073709551615
-		return GoTypesVec[54]
-	case net.DNSError:  // Specificity=18446744073709551615
-		return GoTypesVec[55]
-	case net.Dialer:  // Specificity=18446744073709551615
-		return GoTypesVec[56]
-	case net.Flags:  // Specificity=18446744073709551615
-		return GoTypesVec[57]
-	case net.HardwareAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[58]
-	case net.IP:  // Specificity=18446744073709551615
-		return GoTypesVec[59]
-	case net.IPAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[60]
-	case net.IPConn:  // Specificity=18446744073709551615
-		return GoTypesVec[61]
-	case net.IPMask:  // Specificity=18446744073709551615
-		return GoTypesVec[62]
-	case net.IPNet:  // Specificity=18446744073709551615
-		return GoTypesVec[63]
-	case net.Interface:  // Specificity=18446744073709551615
-		return GoTypesVec[64]
-	case net.InvalidAddrError:  // Specificity=18446744073709551615
-		return GoTypesVec[65]
-	case net.ListenConfig:  // Specificity=18446744073709551615
-		return GoTypesVec[66]
-	case net.MX:  // Specificity=18446744073709551615
-		return GoTypesVec[67]
-	case net.NS:  // Specificity=18446744073709551615
-		return GoTypesVec[68]
-	case net.OpError:  // Specificity=18446744073709551615
-		return GoTypesVec[69]
-	case net.ParseError:  // Specificity=18446744073709551615
-		return GoTypesVec[70]
-	case net.Resolver:  // Specificity=18446744073709551615
-		return GoTypesVec[71]
-	case net.SRV:  // Specificity=18446744073709551615
-		return GoTypesVec[72]
-	case net.TCPAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[73]
-	case net.TCPConn:  // Specificity=18446744073709551615
-		return GoTypesVec[74]
-	case net.TCPListener:  // Specificity=18446744073709551615
-		return GoTypesVec[75]
-	case net.UDPAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[76]
-	case net.UDPConn:  // Specificity=18446744073709551615
-		return GoTypesVec[77]
-	case net.UnixAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[78]
-	case net.UnixConn:  // Specificity=18446744073709551615
-		return GoTypesVec[79]
-	case net.UnixListener:  // Specificity=18446744073709551615
-		return GoTypesVec[80]
-	case net.UnknownNetworkError:  // Specificity=18446744073709551615
-		return GoTypesVec[81]
+	case cgi.Handler:
+		return 0
+	case cookiejar.Jar:
+		return 1
+	case cookiejar.Options:
+		return 2
+	case httptest.ResponseRecorder:
+		return 3
+	case httptest.Server:
+		return 4
+	case httptrace.ClientTrace:
+		return 5
+	case httptrace.DNSDoneInfo:
+		return 6
+	case httptrace.DNSStartInfo:
+		return 7
+	case httptrace.GotConnInfo:
+		return 8
+	case httptrace.WroteRequestInfo:
+		return 9
+	case httputil.ClientConn:
+		return 10
+	case httputil.ReverseProxy:
+		return 11
+	case httputil.ServerConn:
+		return 12
+	case http.Client:
+		return 13
+	case http.ConnState:
+		return 14
+	case http.Cookie:
+		return 15
+	case http.Dir:
+		return 16
+	case http.HandlerFunc:
+		return 17
+	case http.Header:
+		return 18
+	case http.ProtocolError:
+		return 19
+	case http.PushOptions:
+		return 20
+	case http.Request:
+		return 21
+	case http.Response:
+		return 22
+	case http.SameSite:
+		return 23
+	case http.ServeMux:
+		return 24
+	case http.Server:
+		return 25
+	case http.Transport:
+		return 26
+	case mail.Address:
+		return 27
+	case mail.AddressParser:
+		return 28
+	case mail.Header:
+		return 29
+	case mail.Message:
+		return 30
+	case rpc.Call:
+		return 31
+	case rpc.Client:
+		return 32
+	case rpc.Request:
+		return 33
+	case rpc.Response:
+		return 34
+	case rpc.Server:
+		return 35
+	case rpc.ServerError:
+		return 36
+	case smtp.Client:
+		return 37
+	case smtp.ServerInfo:
+		return 38
+	case textproto.Conn:
+		return 39
+	case textproto.Error:
+		return 40
+	case textproto.MIMEHeader:
+		return 41
+	case textproto.Pipeline:
+		return 42
+	case textproto.ProtocolError:
+		return 43
+	case textproto.Reader:
+		return 44
+	case textproto.Writer:
+		return 45
+	case url.Error:
+		return 46
+	case url.EscapeError:
+		return 47
+	case url.InvalidHostError:
+		return 48
+	case url.URL:
+		return 49
+	case url.Userinfo:
+		return 50
+	case url.Values:
+		return 51
+	case net.AddrError:
+		return 52
+	case net.Buffers:
+		return 53
+	case net.DNSConfigError:
+		return 54
+	case net.DNSError:
+		return 55
+	case net.Dialer:
+		return 56
+	case net.Flags:
+		return 57
+	case net.HardwareAddr:
+		return 58
+	case net.IP:
+		return 59
+	case net.IPAddr:
+		return 60
+	case net.IPConn:
+		return 61
+	case net.IPMask:
+		return 62
+	case net.IPNet:
+		return 63
+	case net.Interface:
+		return 64
+	case net.InvalidAddrError:
+		return 65
+	case net.ListenConfig:
+		return 66
+	case net.MX:
+		return 67
+	case net.NS:
+		return 68
+	case net.OpError:
+		return 69
+	case net.ParseError:
+		return 70
+	case net.Resolver:
+		return 71
+	case net.SRV:
+		return 72
+	case net.TCPAddr:
+		return 73
+	case net.TCPConn:
+		return 74
+	case net.TCPListener:
+		return 75
+	case net.UDPAddr:
+		return 76
+	case net.UDPConn:
+		return 77
+	case net.UnixAddr:
+		return 78
+	case net.UnixConn:
+		return 79
+	case net.UnixListener:
+		return 80
+	case net.UnknownNetworkError:
+		return 81
 	case net.Conn:  // Specificity=9
-		return GoTypesVec[82]
+		return 82
 	case net.PacketConn:  // Specificity=8
-		return GoTypesVec[83]
+		return 83
 	case http.File:  // Specificity=6
-		return GoTypesVec[84]
+		return 84
 	case rpc.ClientCodec:  // Specificity=5
-		return GoTypesVec[85]
+		return 85
 	case rpc.ServerCodec:  // Specificity=5
-		return GoTypesVec[86]
+		return 86
 	case http.ResponseWriter:  // Specificity=4
-		return GoTypesVec[87]
+		return 87
 	case net.Error:  // Specificity=4
-		return GoTypesVec[88]
+		return 88
 	case net.Listener:  // Specificity=4
-		return GoTypesVec[89]
+		return 89
 	case cookiejar.PublicSuffixList:  // Specificity=3
-		return GoTypesVec[90]
+		return 90
 	case httputil.BufferPool:  // Specificity=3
-		return GoTypesVec[91]
+		return 91
 	case http.CookieJar:  // Specificity=3
-		return GoTypesVec[92]
+		return 92
 	case smtp.Auth:  // Specificity=3
-		return GoTypesVec[93]
+		return 93
 	case net.Addr:  // Specificity=3
-		return GoTypesVec[94]
+		return 94
 	case http.CloseNotifier:  // Specificity=2
-		return GoTypesVec[95]
+		return 95
 	case http.FileSystem:  // Specificity=2
-		return GoTypesVec[96]
+		return 96
 	case http.Flusher:  // Specificity=2
-		return GoTypesVec[97]
+		return 97
 	case http.Handler:  // Specificity=2
-		return GoTypesVec[98]
+		return 98
 	case http.Hijacker:  // Specificity=2
-		return GoTypesVec[99]
+		return 99
 	case http.Pusher:  // Specificity=2
-		return GoTypesVec[100]
+		return 100
 	case http.RoundTripper:  // Specificity=2
-		return GoTypesVec[101]
+		return 101
+	default:
+		return -1
 	}
 	return nil
 }

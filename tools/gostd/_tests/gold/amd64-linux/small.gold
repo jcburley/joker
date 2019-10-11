@@ -3280,64 +3280,66 @@ import (
 
 var GoTypesVec [28]*GoTypeInfo
 
-func SwitchGoType(g interface{}) *GoTypeInfo {
+func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case url.Error:  // Specificity=18446744073709551615
-		return GoTypesVec[0]
-	case url.EscapeError:  // Specificity=18446744073709551615
-		return GoTypesVec[1]
-	case url.InvalidHostError:  // Specificity=18446744073709551615
-		return GoTypesVec[2]
-	case url.URL:  // Specificity=18446744073709551615
-		return GoTypesVec[3]
-	case url.Userinfo:  // Specificity=18446744073709551615
-		return GoTypesVec[4]
-	case url.Values:  // Specificity=18446744073709551615
-		return GoTypesVec[5]
-	case net.AddrError:  // Specificity=18446744073709551615
-		return GoTypesVec[6]
-	case net.Buffers:  // Specificity=18446744073709551615
-		return GoTypesVec[7]
-	case net.DNSConfigError:  // Specificity=18446744073709551615
-		return GoTypesVec[8]
-	case net.DNSError:  // Specificity=18446744073709551615
-		return GoTypesVec[9]
-	case net.IP:  // Specificity=18446744073709551615
-		return GoTypesVec[10]
-	case net.IPAddr:  // Specificity=18446744073709551615
-		return GoTypesVec[11]
-	case net.IPConn:  // Specificity=18446744073709551615
-		return GoTypesVec[12]
-	case net.IPMask:  // Specificity=18446744073709551615
-		return GoTypesVec[13]
-	case net.IPNet:  // Specificity=18446744073709551615
-		return GoTypesVec[14]
-	case net.InvalidAddrError:  // Specificity=18446744073709551615
-		return GoTypesVec[15]
-	case net.MX:  // Specificity=18446744073709551615
-		return GoTypesVec[16]
-	case net.NS:  // Specificity=18446744073709551615
-		return GoTypesVec[17]
-	case net.OpError:  // Specificity=18446744073709551615
-		return GoTypesVec[18]
-	case net.ParseError:  // Specificity=18446744073709551615
-		return GoTypesVec[19]
-	case net.Resolver:  // Specificity=18446744073709551615
-		return GoTypesVec[20]
-	case net.SRV:  // Specificity=18446744073709551615
-		return GoTypesVec[21]
-	case net.UnknownNetworkError:  // Specificity=18446744073709551615
-		return GoTypesVec[22]
+	case url.Error:
+		return 0
+	case url.EscapeError:
+		return 1
+	case url.InvalidHostError:
+		return 2
+	case url.URL:
+		return 3
+	case url.Userinfo:
+		return 4
+	case url.Values:
+		return 5
+	case net.AddrError:
+		return 6
+	case net.Buffers:
+		return 7
+	case net.DNSConfigError:
+		return 8
+	case net.DNSError:
+		return 9
+	case net.IP:
+		return 10
+	case net.IPAddr:
+		return 11
+	case net.IPConn:
+		return 12
+	case net.IPMask:
+		return 13
+	case net.IPNet:
+		return 14
+	case net.InvalidAddrError:
+		return 15
+	case net.MX:
+		return 16
+	case net.NS:
+		return 17
+	case net.OpError:
+		return 18
+	case net.ParseError:
+		return 19
+	case net.Resolver:
+		return 20
+	case net.SRV:
+		return 21
+	case net.UnknownNetworkError:
+		return 22
 	case net.Conn:  // Specificity=9
-		return GoTypesVec[23]
+		return 23
 	case net.PacketConn:  // Specificity=8
-		return GoTypesVec[24]
+		return 24
 	case net.Error:  // Specificity=4
-		return GoTypesVec[25]
+		return 25
 	case net.Listener:  // Specificity=4
-		return GoTypesVec[26]
+		return 26
 	case net.Addr:  // Specificity=3
-		return GoTypesVec[27]
+		return 27
+	default:
+		return -1
 	}
 	return nil
 }
