@@ -139,10 +139,11 @@ func SwitchGoType(g interface{}) *GoTypeInfo {
 `
 
 	var cases string
+	var importeds = &imports.Imports{}
 	for _, t := range types {
 		pkgPlusSeparator := ""
 		if t.GoPackage != "" {
-			pkgPlusSeparator = t.GoPackage + "."
+			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, true) + "."
 		}
 		cases += fmt.Sprintf("\tcase %s%s%s:\n\t\treturn GoTypesVec[%d]\n", t.GoPrefix, pkgPlusSeparator, t.GoName, t.Ord)
 	}

@@ -20,10 +20,11 @@ type Imports struct {
 
 /* Given desired local and the full (though relative) name of the
 /* package, make sure the local name agrees with any existing entry
-/* and isn't already used (someday picking an alternate local name if
+/* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
 func AddImport(imports *Imports, local, full string, okToSubstitute bool) string {
+	components := Split(full, "/")
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
 			return e.LocalRef
@@ -31,22 +32,35 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 		if okToSubstitute {
 			return e.LocalRef
 		}
-		panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, e.Local, e.Full))
+		panic(fmt.Sprintf("addImport(%s,%s) told to to replace (%s,%s)", local, full, e.Local, e.Full))
 	}
+
 	localRef := local
 	if local == "" {
-		components := Split(full, "/")
 		localRef = components[len(components)-1]
 	}
 	if localRef != "." {
-		if curFull, found := imports.LocalNames[localRef]; found {
-			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", local, full, localRef, curFull))
+		prevComponentIndex := len(components) - 1
+		for {
+			curFull, found := imports.LocalNames[localRef]
+			if !found {
+				break
+			}
+			prevComponentIndex--
+			if prevComponentIndex >= 0 {
+				localRef = components[prevComponentIndex] + "_" + localRef
+				continue
+			} else if prevComponentIndex > -99 /* avoid infinite loop */ {
+				localRef = fmt.Sprintf("%s_%d", localRef, -prevComponentIndex)
+				continue
+			}
+			panic(fmt.Sprintf("addImport(%s,%s) trying to replace (%s,%s)", localRef, full, imports.FullNames[curFull].LocalRef, curFull))
 		}
+		if imports.LocalNames == nil {
+			imports.LocalNames = map[string]string{}
+		}
+		imports.LocalNames[localRef] = full
 	}
-	if imports.LocalNames == nil {
-		imports.LocalNames = map[string]string{}
-	}
-	imports.LocalNames[localRef] = full
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
