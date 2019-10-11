@@ -44,6 +44,9 @@ type TypeDefInfo struct {
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
 
 func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
+	if len(allTypesSorted) > 0 {
+		panic("Attempt to define new type after having sorted all types!!")
+	}
 	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
 	tln := ts.Name.Name
 	tfn := prefix + tln
@@ -109,16 +112,26 @@ func TypeLookup(e Expr) *TypeInfo {
 	return ti
 }
 
-func AllTypesSorted() (types []*TypeDefInfo) {
+var allTypesSorted = []*TypeDefInfo{}
+
+// This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
+// new types cannot be discovered/added.
+func SortAll() {
+	if len(allTypesSorted) > 0 {
+		panic("Attempt to sort all types type after having already sorted all types!!")
+	}
 	for _, t := range typeDefinitionsByFullName {
 		if !t.IsPrivate {
-			types = append(types, t)
+			allTypesSorted = append(allTypesSorted, t)
 		}
 	}
-	sort.SliceStable(types, func(i, j int) bool {
-		return types[i].FullName < types[j].FullName
+	sort.SliceStable(allTypesSorted, func(i, j int) bool {
+		return allTypesSorted[i].FullName < allTypesSorted[j].FullName
 	})
-	return
+}
+
+func AllSorted() []*TypeDefInfo {
+	return allTypesSorted
 }
 
 func (ti *TypeInfo) FullName() string {

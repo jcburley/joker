@@ -256,6 +256,8 @@ func main() {
 		panic("Error walking directory " + badDir + ": " + fmt.Sprintf("%v", err))
 	}
 
+	types.SortAll()
+
 	SortedConstantInfoMap(GoConstants,
 		func(c string, ci *ConstantInfo) {
 			GenConstant(ci)
@@ -305,7 +307,7 @@ func main() {
 			})
 		RegisterPackages(packagesArray, jokerSourceDir)
 		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
-		RegisterGoTypeSwitch(types.AllTypesSorted(), jokerSourceDir)
+		RegisterGoTypeSwitch(types.AllSorted(), jokerSourceDir)
 	}
 
 	if Verbose || summary {
