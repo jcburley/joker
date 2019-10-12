@@ -9,7 +9,6 @@ import (
 	"sort"
 	"strconv"
 	. "strings"
-	"unicode"
 )
 
 func Check(e error) {
@@ -129,10 +128,6 @@ func CommentGroupAsString(d *CommentGroup) string {
 		s = d.Text()
 	}
 	return s
-}
-
-func IsPrivate(p string) bool {
-	return !unicode.IsUpper(rune(p[0]))
 }
 
 func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {

@@ -369,7 +369,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 
 func GenType(t string, ti *GoTypeInfo) {
 	td := ti.Td
-	if IsPrivate(td.Name.Name) {
+	if !IsExported(td.Name.Name) {
 		return // Do not generate anything for private types
 	}
 	pkgDirUnix := ti.SourceFile.PkgDirUnix
@@ -550,7 +550,7 @@ func elementsToType(ti *GoTypeInfo, ty *StructType, toType func(ti *GoTypeInfo, 
 	for _, f := range ty.Fields.List {
 		for _, p := range f.Names {
 			fieldName := p.Name
-			if fieldName == "" || IsPrivate(fieldName) {
+			if fieldName == "" || !IsExported(fieldName) {
 				continue
 			}
 			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(ti, i, p.Name, f)))
@@ -570,7 +570,7 @@ func elementToType(ti *GoTypeInfo, el string, e *Expr) string {
 	if v.Unsupported {
 		return v.FullGoName
 	}
-	if v.Private {
+	if !v.Exported {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
 			v.FullGoName, toGoExprString(ti.SourceFile, v.UnderlyingType))
 	}

@@ -34,7 +34,7 @@ type TypeDefInfo struct {
 	TypeSpec       *TypeSpec
 	FullName       string // Clojure name (e.g. "a.b.c/Typename")
 	LocalName      string // Local, or base, name (e.g. "Typename")
-	IsPrivate      bool
+	IsExported     bool
 	Doc            string
 	DefPos         token.Pos
 	GoPrefix       string // Currently either "" or "*" (for reference types)
@@ -77,7 +77,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 		TypeSpec:    ts,
 		FullName:    tfn,
 		LocalName:   tln,
-		IsPrivate:   IsPrivate(tln),
+		IsExported:  IsExported(tln),
 		Doc:         CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
 		GoPrefix:    "",
@@ -93,7 +93,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 		tdiPtr := &TypeDefInfo{
 			FullName:       tfnPtr,
 			LocalName:      "*" + tln,
-			IsPrivate:      tdi.IsPrivate,
+			IsExported:     tdi.IsExported,
 			Doc:            "",
 			GoPrefix:       "*",
 			GoPackage:      tdi.GoPackage,
@@ -141,7 +141,7 @@ func SortAll() {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, t := range typeDefinitionsByFullName {
-		if !t.IsPrivate {
+		if t.IsExported {
 			allTypesSorted = append(allTypesSorted, t)
 		}
 	}
@@ -273,7 +273,7 @@ func (ti *TypeInfo) typeKey() string {
 }
 
 func (tdi *TypeDefInfo) TypeMappingsName() string {
-	if tdi.IsPrivate {
+	if !tdi.IsExported {
 		return ""
 	}
 	if tdi.underlyingType != nil {
@@ -283,7 +283,7 @@ func (tdi *TypeDefInfo) TypeMappingsName() string {
 }
 
 func (ti *TypeInfo) TypeMappingsName() string {
-	if IsPrivate(ti.Definition.LocalName) {
+	if !IsExported(ti.Definition.LocalName) {
 		return ""
 	}
 	res := "info_"

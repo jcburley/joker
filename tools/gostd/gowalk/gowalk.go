@@ -90,7 +90,7 @@ type GoTypeInfo struct {
 	RequiredImports           *imports.Imports
 	Uncompleted               bool // Has this type's info been filled in beyond the registration step?
 	Custom                    bool // Is this not a builtin Go type?
-	Private                   bool // Is this a private type?
+	Exported                  bool // Is this an exported type?
 	Unsupported               bool // Is this unsupported?
 	Constructs                bool // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
 	Nullable                  bool // Can an instance of the type == nil (e.g. 'error' type)?
@@ -309,7 +309,7 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 	gt.Where = ts.Pos()
 	gt.RequiredImports = &imports.Imports{}
 
-	if !IsPrivate(name) {
+	if IsExported(name) {
 		NumTypes++
 	}
 }
@@ -733,7 +733,7 @@ func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGro
 				previousValType = valType
 			}
 
-			if IsPrivate(valName.Name) {
+			if !IsExported(valName.Name) {
 				continue
 			}
 			if constant {
@@ -770,14 +770,14 @@ func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGro
 	}
 }
 
-func IsPrivateType(f *Expr) bool {
+func IsExportedType(f *Expr) bool {
 	switch td := (*f).(type) {
 	case *Ident:
-		return IsPrivate(td.Name)
+		return IsExported(td.Name)
 	case *ArrayType:
-		return IsPrivateType(&td.Elt)
+		return IsExportedType(&td.Elt)
 	case *StarExpr:
-		return IsPrivateType(&td.X)
+		return IsExportedType(&td.X)
 	default:
 		panic(fmt.Sprintf("unsupported expr type %T", f))
 	}
@@ -803,12 +803,12 @@ Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
-			if IsPrivate(v.Name.Name) {
+			if !IsExported(v.Name.Name) {
 				continue // Skipping non-exported functions
 			}
 			if v.Recv != nil {
 				for _, r := range v.Recv.List {
-					if IsPrivateType(&r.Type) {
+					if !IsExportedType(&r.Type) {
 						continue Funcs // Publishable receivers must operate on public types
 					}
 				}
@@ -953,6 +953,8 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 			if found {
 				panic("whaaa??")
 			}
+			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
+			// FilterPackage(v, IsExported)
 			walkedPackages = append(walkedPackages, walkedPackage{rootUnix, pkgDirUnix, nsRoot, v})
 			found = true
 		}

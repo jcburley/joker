@@ -53,7 +53,7 @@ func genGoPostStruct(fn *FuncInfo, indent, captureName string, fl *FieldList, on
 	fields := FlattenFieldList(fl)
 	for _, field := range fields {
 		p := field.Name
-		if IsPrivate(p.Name) {
+		if !IsExported(p.Name) {
 			continue // Skipping non-exported fields
 		}
 		clType, clTypeDoc, golType, more_goc, outNew :=

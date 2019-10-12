@@ -260,7 +260,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.LocalName == "" || tdi.IsPrivate {
+			if tmn == "" || tdi.LocalName == "" || !tdi.IsExported {
 				return
 			}
 			typeDoc := tdi.Doc
@@ -368,7 +368,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.IsPrivate {
+			if tmn == "" || !tdi.IsExported {
 				return
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
@@ -394,7 +394,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.IsPrivate {
+			if tmn == "" || !tdi.IsExported {
 				return
 			}
 			k1 := tdi.FullName
@@ -420,7 +420,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.IsPrivate {
+			if tmn == "" || !tdi.IsExported {
 				return
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", tdi.Ord, tmn)

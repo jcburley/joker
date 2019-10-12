@@ -171,7 +171,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.ArgExtractFunc, fn.DocName, paramName, argNum)
 			}
 		} else {
-			if IsPrivate(v.Name) {
+			if !IsExported(v.Name) {
 				clType = fmt.Sprintf("ABEND044(pre.go: unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
 			} else {
