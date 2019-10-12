@@ -570,6 +570,10 @@ func elementToType(ti *GoTypeInfo, el string, e *Expr) string {
 	if v.Unsupported {
 		return v.FullGoName
 	}
+	if v.Private {
+		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
+			v.FullGoName, toGoExprString(ti.SourceFile, v.UnderlyingType))
+	}
 	if v.ConvertFromClojure != "" {
 		addRequiredImports(ti, v.ConvertFromClojureImports)
 		return fmt.Sprintf(v.ConvertFromClojure, el)
