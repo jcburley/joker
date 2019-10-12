@@ -71,32 +71,52 @@ func AddMapping(dir string, root string) {
 	mappings = append(mappings, mapping{dir, root})
 }
 
-func GoPackageForFilename(dirName string) (pkg, prefix string) {
+func goPackageForDirname(dirName string) (pkg, prefix string) {
 	for _, m := range mappings {
 		if HasPrefix(dirName, m.prefix) {
 			return dirName[len(m.prefix)+1:], m.cljRoot
 		}
 	}
-	panic(fmt.Sprintf("no mapping for %s", dirName))
+	return "", mappings[0].cljRoot
 }
 
 func GoPackageForExpr(e Expr) string {
-	pkg, _ := GoPackageForFilename(filepath.Dir(Fset.Position(e.Pos()).Filename))
+	dirName := filepath.Dir(Fset.Position(e.Pos()).Filename)
+	pkg, _ := goPackageForDirname(dirName)
+	if pkg == "" {
+		panic(fmt.Sprintf("no mapping for %s", dirName))
+	}
 	return pkg
 }
 
 func GoPackageForTypeSpec(ts *TypeSpec) string {
-	pkg, _ := GoPackageForFilename(filepath.Dir(Fset.Position(ts.Pos()).Filename))
+	dirName := filepath.Dir(Fset.Position(ts.Pos()).Filename)
+	pkg, _ := goPackageForDirname(dirName)
+	if pkg == "" {
+		panic(fmt.Sprintf("no mapping for %s", dirName))
+	}
 	return pkg
 }
 
 func ClojureNamespaceForPos(p token.Position) string {
-	pkg, root := GoPackageForFilename(filepath.Dir(p.Filename))
+	dirName := filepath.Dir(p.Filename)
+	pkg, root := goPackageForDirname(dirName)
+	if pkg == "" {
+		panic(fmt.Sprintf("no mapping for %s", dirName))
+	}
 	return root + ReplaceAll(pkg, (string)(filepath.Separator), ".")
 }
 
 func ClojureNamespaceForExpr(e Expr) string {
 	return ClojureNamespaceForPos(Fset.Position(e.Pos()))
+}
+
+func ClojureNamespaceForDirname(d string) string {
+	pkg, root := goPackageForDirname(d)
+	if pkg == "" {
+		pkg = root + d
+	}
+	return ReplaceAll(pkg, (string)(filepath.Separator), ".")
 }
 
 func GoPackageBaseName(e Expr) string {

@@ -109,6 +109,24 @@ func NewEnv(currentNs Symbol, stdin io.Reader, stdout io.Writer, stderr io.Write
 	return res
 }
 
+func EnsureLoaded(name string) {
+	np := MakeSymbol(name).name
+	ns := GLOBAL_ENV.Namespaces[np]
+	if ns == nil {
+		if Verbose {
+			fmt.Fprintf(Stderr, "EnsureLoaded: Cannot lazily load unknown namespace %s\n", *ns.Name.name)
+		}
+		return
+	}
+	if ns != nil && ns.Lazy != nil {
+		ns.Lazy()
+		if Verbose {
+			fmt.Fprintf(Stderr, "EnsureLoaded: Lazily initialized %s\n", *ns.Name.name)
+		}
+		ns.Lazy = nil
+	}
+}
+
 func (env *Env) SetStdIO(stdin io.Reader, stdout io.Writer, stderr io.Writer) {
 	env.stdin.Value = &BufferedReader{bufio.NewReader(stdin)}
 	env.stdout.Value = &IOWriter{stdout}

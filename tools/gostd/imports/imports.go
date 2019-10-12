@@ -2,8 +2,11 @@ package imports
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
+	"go/token"
 	"sort"
+	"strconv"
 	. "strings"
 )
 
@@ -74,20 +77,24 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 	return localRef
 }
 
-func SortedOriginalPackageImports(p *Package, f func(k string)) {
-	imports := map[string]struct{}{}
+func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
+	imports := map[string]token.Pos{}
 	for _, f := range p.Files {
 		for _, impSpec := range f.Imports {
-			imports[impSpec.Path.Value] = struct{}{}
+			imports[impSpec.Path.Value] = impSpec.Path.ValuePos
 		}
 	}
 	var sortedImports []string
 	for k, _ := range imports {
-		sortedImports = append(sortedImports, k)
+		path, err := strconv.Unquote(k)
+		utils.Check(err)
+		if filter(path) {
+			sortedImports = append(sortedImports, path)
+		}
 	}
 	sort.Strings(sortedImports)
 	for _, imp := range sortedImports {
-		f(imp)
+		f(imp, imports[strconv.Quote(imp)])
 	}
 }
 

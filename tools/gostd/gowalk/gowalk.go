@@ -35,11 +35,12 @@ var NumGeneratedConstants int
 var NumGeneratedVariables int
 
 type PackageInfo struct {
-	ImportsNative  *imports.Imports
-	ImportsAutoGen *imports.Imports
-	Pkg            *Package
-	NonEmpty       bool // Whether any non-comment code has been generated
-	HasGoFiles     bool // Whether any .go files (would) have been generated
+	ImportsNative    *imports.Imports
+	ImportsAutoGen   *imports.Imports
+	Pkg              *Package
+	NonEmpty         bool   // Whether any non-comment code has been generated
+	HasGoFiles       bool   // Whether any .go files (would) have been generated
+	ClojureNameSpace string // E.g.: "go.std.net", "x.y.z.whatever"
 }
 
 /* Map (Unix-style) relative path to package info */
@@ -874,7 +875,8 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{}, p, false, false}
+		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{}, p, false, false,
+			ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
 			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
@@ -965,6 +967,19 @@ var excludeDirs = map[string]bool{
 	"internal": true, // look into this later?
 	"testdata": true,
 	"vendor":   true,
+}
+
+func LegitimateImport(p string) bool {
+	if p == "C" {
+		return false
+	}
+	elements := Split(p, "/")
+	for _, e := range elements {
+		if excludeDirs[e] {
+			return false
+		}
+	}
+	return true
 }
 
 func walkDir(fsRoot, nsRoot string) error {
