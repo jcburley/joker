@@ -2,6 +2,7 @@ package imports
 
 import (
 	"fmt"
+	. "go/ast"
 	"sort"
 	. "strings"
 )
@@ -73,7 +74,24 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 	return localRef
 }
 
-func sortedPackageImports(pi *Imports, f func(k string, v *Import)) {
+func SortedOriginalPackageImports(p *Package, f func(k string)) {
+	imports := map[string]struct{}{}
+	for _, f := range p.Files {
+		for _, impSpec := range f.Imports {
+			imports[impSpec.Path.Value] = struct{}{}
+		}
+	}
+	var sortedImports []string
+	for k, _ := range imports {
+		sortedImports = append(sortedImports, k)
+	}
+	sort.Strings(sortedImports)
+	for _, imp := range sortedImports {
+		f(imp)
+	}
+}
+
+func sortedImports(pi *Imports, f func(k string, v *Import)) {
 	var keys []string
 	for k, _ := range pi.FullNames {
 		keys = append(keys, k)
@@ -87,7 +105,7 @@ func sortedPackageImports(pi *Imports, f func(k string, v *Import)) {
 
 func QuotedImportList(pi *Imports, prefix string) string {
 	imports := ""
-	sortedPackageImports(pi,
+	sortedImports(pi,
 		func(k string, v *Import) {
 			if v.Local == "" && !v.substituted {
 				imports += prefix + `"` + k + `"`

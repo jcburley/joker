@@ -292,14 +292,14 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	pkgBaseName := path.Base(pkgDirUnix)
 	pi := PackagesInfo[pkgDirUnix]
-	PackagesInfo[pkgDirUnix].HasGoFiles = true
+	pi.HasGoFiles = true
 	pkgDirNative := filepath.FromSlash(pkgDirUnix)
 
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
 	if jokerLibDir != "" && jokerLibDir != "-" &&
-		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
+		(generateEmpty || pi.NonEmpty) {
 		gf := filepath.Join(jokerLibDir, pkgDirNative,
 			pkgBaseName+"_native.go")
 		var e error
@@ -307,7 +307,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode,
 		Check(e)
 		unbuf_out, e = os.Create(gf)
 		Check(e)
-	} else if generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty {
+	} else if generateEmpty || pi.NonEmpty {
 		unbuf_out = os.Stdout
 	}
 	if unbuf_out != nil {
@@ -412,6 +412,17 @@ import (%s
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
+			}
+		})
+
+	imports.SortedOriginalPackageImports(pi.Pkg,
+		func(imp string) {
+			ensure := fmt.Sprintf("\tEnsureLoaded(\"%s\")\n", imp)
+			if outputCode {
+				fmt.Printf("GO ENSURE-LOADED FOR %s from %s:\n%s\n", pi.Pkg.Name, WhereAt(pi.Pkg.Pos()), ensure)
+			}
+			if out != nil && unbuf_out != os.Stdout {
+				out.WriteString(ensure)
 			}
 		})
 
