@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/godb"
+	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
@@ -49,7 +51,20 @@ var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
 
 func specificity(ts *TypeSpec) uint {
 	if iface, ok := ts.Type.(*InterfaceType); ok {
-		return 1 + (uint)(len(iface.Methods.List))
+		sp := uint(1)
+		for _, m := range iface.Methods.List {
+			if m.Names != nil {
+				sp += (uint)(len(m.Names))
+				continue
+			}
+			ts := godb.Resolve(m.Type)
+			if ts == nil {
+				sp++
+				continue
+			}
+			sp += specificity(ts.(*TypeSpec))
+		}
+		return sp
 	}
 	return ^uint(0) // MaxUint
 }
