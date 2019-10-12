@@ -2940,6 +2940,41 @@ JOKER TYPE go.std.net.http.httptest/Server:
     :go "&info_Server"}
   Server)
 
+JOKER TYPE net/http/httptrace.ClientTrace from net/http/httptrace/trace.go:
+;; (defn ^"GoObject" ClientTrace.
+;;   "Constructor for httptrace.ClientTrace"
+;;   {:added "1.0"
+;;    :go "_ConstructClientTrace(_v)"}
+;;   [^Object _v])
+
+JOKER TYPE net/http/httptrace.DNSDoneInfo from net/http/httptrace/trace.go:
+;; (defn ^"GoObject" DNSDoneInfo.
+;;   "Constructor for httptrace.DNSDoneInfo"
+;;   {:added "1.0"
+;;    :go "_ConstructDNSDoneInfo(_v)"}
+;;   [^Object _v])
+
+JOKER TYPE net/http/httptrace.DNSStartInfo from net/http/httptrace/trace.go:
+(defn ^"GoObject" DNSStartInfo.
+  "Constructor for httptrace.DNSStartInfo"
+  {:added "1.0"
+   :go "_ConstructDNSStartInfo(_v)"}
+  [^Object _v])
+
+JOKER TYPE net/http/httptrace.GotConnInfo from net/http/httptrace/trace.go:
+;; (defn ^"GoObject" GotConnInfo.
+;;   "Constructor for httptrace.GotConnInfo"
+;;   {:added "1.0"
+;;    :go "_ConstructGotConnInfo(_v)"}
+;;   [^Object _v])
+
+JOKER TYPE net/http/httptrace.WroteRequestInfo from net/http/httptrace/trace.go:
+(defn ^"GoObject" WroteRequestInfo.
+  "Constructor for httptrace.WroteRequestInfo"
+  {:added "1.0"
+   :go "_ConstructWroteRequestInfo(_v)"}
+  [^Object _v])
+
 JOKER FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 ;; (defn ContextClientTrace
 ;;   "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo input arguments: (ctx context.Context)\n\nGo return type: *ClientTrace\n\nJoker input arguments: [^go.std.context/Context ctx]\n\nJoker return type: (atom-of go.std.net.http.httptrace/ClientTrace)"
@@ -9816,6 +9851,286 @@ GO VECSET FOR TYPE go.std.net.http.httptest/ResponseRecorder from _tests/big/src
 GO VECSET FOR TYPE go.std.net.http.httptest/Server from _tests/big/src/net/http/httptest/server.go:26:6:
 	GoTypesVec[4] = &info_Server
 
+GO TYPE net/http/httptrace.ClientTrace from net/http/httptrace/trace.go:
+func ExtractGoObjectClientTrace(args []Object, index int) *_httptrace.ClientTrace {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+		case _httptrace.ClientTrace:
+			return &r
+		case *_httptrace.ClientTrace:
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptrace.ClientTrace]"))
+}
+
+// func _mapToClientTrace(o Map) *_httptrace.ClientTrace {
+// 	return &_httptrace.ClientTrace{}
+// }
+
+// func _vectorToClientTrace(o *Vector) *_httptrace.ClientTrace {
+// 	return &_httptrace.ClientTrace{
+// 		GetConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		GotConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		PutIdleConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		GotFirstResponseByte: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Got100Continue: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Got1xxResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DNSStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DNSDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ConnectStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ConnectDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSHandshakeStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSHandshakeDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteHeaderField: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteHeaders: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Wait100Continue: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteRequest: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
+// }
+
+// func _ConstructClientTrace(_v Object) *_httptrace.ClientTrace {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _httptrace.ClientTrace:
+// 			return &_g
+// 		case *_httptrace.ClientTrace:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToClientTrace(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToClientTrace(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.ClientTrace] or: Map or Vector"))
+// }
+
+func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *ArraySeq, n int) (res _httptrace.ClientTrace) {
+	a := CheckGoNth(rcvr, "go.std.net.http.httptrace/ClientTrace", arg, args, n).O
+	res, ok := a.(_httptrace.ClientTrace)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.http.httptrace/ClientTrace], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(reflect.TypeOf(a)))))
+	}
+	return
+}
+
+GO TYPE net/http/httptrace.DNSDoneInfo from net/http/httptrace/trace.go:
+func ExtractGoObjectDNSDoneInfo(args []Object, index int) *_httptrace.DNSDoneInfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+		case _httptrace.DNSDoneInfo:
+			return &r
+		case *_httptrace.DNSDoneInfo:
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptrace.DNSDoneInfo]"))
+}
+
+// func _mapToDNSDoneInfo(o Map) *_httptrace.DNSDoneInfo {
+// 	return &_httptrace.DNSDoneInfo{}
+// }
+
+// func _vectorToDNSDoneInfo(o *Vector) *_httptrace.DNSDoneInfo {
+// 	return &_httptrace.DNSDoneInfo{
+// 		Addrs: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Err: _errors.New(AssertString(o.Nth(1), "").S),
+// 		Coalesced: ToBool(o.Nth(2)),
+// 	}
+// }
+
+// func _ConstructDNSDoneInfo(_v Object) *_httptrace.DNSDoneInfo {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _httptrace.DNSDoneInfo:
+// 			return &_g
+// 		case *_httptrace.DNSDoneInfo:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToDNSDoneInfo(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToDNSDoneInfo(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.DNSDoneInfo] or: Map or Vector"))
+// }
+
+func ExtractGo_go_std_net_http_httptrace__DNSDoneInfo(rcvr, arg string, args *ArraySeq, n int) (res _httptrace.DNSDoneInfo) {
+	a := CheckGoNth(rcvr, "go.std.net.http.httptrace/DNSDoneInfo", arg, args, n).O
+	res, ok := a.(_httptrace.DNSDoneInfo)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.http.httptrace/DNSDoneInfo], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(reflect.TypeOf(a)))))
+	}
+	return
+}
+
+GO TYPE net/http/httptrace.DNSStartInfo from net/http/httptrace/trace.go:
+func ExtractGoObjectDNSStartInfo(args []Object, index int) *_httptrace.DNSStartInfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+		case _httptrace.DNSStartInfo:
+			return &r
+		case *_httptrace.DNSStartInfo:
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptrace.DNSStartInfo]"))
+}
+
+func _mapToDNSStartInfo(o Map) *_httptrace.DNSStartInfo {
+	return &_httptrace.DNSStartInfo{}
+}
+
+func _vectorToDNSStartInfo(o *Vector) *_httptrace.DNSStartInfo {
+	return &_httptrace.DNSStartInfo{
+		Host: AssertString(o.Nth(0), "").S,
+	}
+}
+
+func _ConstructDNSStartInfo(_v Object) *_httptrace.DNSStartInfo {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _httptrace.DNSStartInfo:
+			return &_g
+		case *_httptrace.DNSStartInfo:
+			return _g
+		}
+	case *ArrayMap, *HashMap:
+		return _mapToDNSStartInfo(_o.(Map))
+	case *Vector:
+		return _vectorToDNSStartInfo(_o)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.DNSStartInfo] or: Map or Vector"))
+}
+
+func ExtractGo_go_std_net_http_httptrace__DNSStartInfo(rcvr, arg string, args *ArraySeq, n int) (res _httptrace.DNSStartInfo) {
+	a := CheckGoNth(rcvr, "go.std.net.http.httptrace/DNSStartInfo", arg, args, n).O
+	res, ok := a.(_httptrace.DNSStartInfo)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.http.httptrace/DNSStartInfo], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(reflect.TypeOf(a)))))
+	}
+	return
+}
+
+GO TYPE net/http/httptrace.GotConnInfo from net/http/httptrace/trace.go:
+func ExtractGoObjectGotConnInfo(args []Object, index int) *_httptrace.GotConnInfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+		case _httptrace.GotConnInfo:
+			return &r
+		case *_httptrace.GotConnInfo:
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptrace.GotConnInfo]"))
+}
+
+// func _mapToGotConnInfo(o Map) *_httptrace.GotConnInfo {
+// 	return &_httptrace.GotConnInfo{}
+// }
+
+// func _vectorToGotConnInfo(o *Vector) *_httptrace.GotConnInfo {
+// 	return &_httptrace.GotConnInfo{
+// 		Conn: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Reused: ToBool(o.Nth(1)),
+// 		WasIdle: ToBool(o.Nth(2)),
+// 		IdleTime: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
+// }
+
+// func _ConstructGotConnInfo(_v Object) *_httptrace.GotConnInfo {
+// 	switch _o := _v.(type) {
+// 	case GoObject:
+// 		switch _g := _o.O.(type) {
+// 		case _httptrace.GotConnInfo:
+// 			return &_g
+// 		case *_httptrace.GotConnInfo:
+// 			return _g
+// 		}
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToGotConnInfo(_o.(Map))
+// 	case *Vector:
+// 		return _vectorToGotConnInfo(_o)
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.GotConnInfo] or: Map or Vector"))
+// }
+
+func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *ArraySeq, n int) (res _httptrace.GotConnInfo) {
+	a := CheckGoNth(rcvr, "go.std.net.http.httptrace/GotConnInfo", arg, args, n).O
+	res, ok := a.(_httptrace.GotConnInfo)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.http.httptrace/GotConnInfo], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(reflect.TypeOf(a)))))
+	}
+	return
+}
+
+GO TYPE net/http/httptrace.WroteRequestInfo from net/http/httptrace/trace.go:
+func ExtractGoObjectWroteRequestInfo(args []Object, index int) *_httptrace.WroteRequestInfo {
+	a := args[index]
+	switch o := a.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+		case _httptrace.WroteRequestInfo:
+			return &r
+		case *_httptrace.WroteRequestInfo:
+			return r
+		}
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[net/http/httptrace.WroteRequestInfo]"))
+}
+
+func _mapToWroteRequestInfo(o Map) *_httptrace.WroteRequestInfo {
+	return &_httptrace.WroteRequestInfo{}
+}
+
+func _vectorToWroteRequestInfo(o *Vector) *_httptrace.WroteRequestInfo {
+	return &_httptrace.WroteRequestInfo{
+		Err: _errors.New(AssertString(o.Nth(0), "").S),
+	}
+}
+
+func _ConstructWroteRequestInfo(_v Object) *_httptrace.WroteRequestInfo {
+	switch _o := _v.(type) {
+	case GoObject:
+		switch _g := _o.O.(type) {
+		case _httptrace.WroteRequestInfo:
+			return &_g
+		case *_httptrace.WroteRequestInfo:
+			return _g
+		}
+	case *ArrayMap, *HashMap:
+		return _mapToWroteRequestInfo(_o.(Map))
+	case *Vector:
+		return _vectorToWroteRequestInfo(_o)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.WroteRequestInfo] or: Map or Vector"))
+}
+
+func ExtractGo_go_std_net_http_httptrace__WroteRequestInfo(rcvr, arg string, args *ArraySeq, n int) (res _httptrace.WroteRequestInfo) {
+	a := CheckGoNth(rcvr, "go.std.net.http.httptrace/WroteRequestInfo", arg, args, n).O
+	res, ok := a.(_httptrace.WroteRequestInfo)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.http.httptrace/WroteRequestInfo], but is GoObject[%s]",
+			n, rcvr, GoTypeToString(reflect.TypeOf(a)))))
+	}
+	return
+}
+
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 // func __contextClientTrace(__ctx ABEND987(genutils.go: imports not yet supported: context.Context)) Object {
 // 	_res := _httptrace.ContextClientTrace(__ctx)
@@ -12917,8 +13232,8 @@ GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/big/src/net/url/url.go:37
 GO VECSET FOR TYPE go.std.net.url/Values from _tests/big/src/net/url/url.go:804:6:
 	GoTypesVec[51] = &info_Values
 
-Adding 14 custom imports to _tests/gold/amd64-linux/joker/custom.go
-Adding 14 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
+Adding 15 custom imports to _tests/gold/amd64-linux/joker/custom.go
+Adding 15 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
 Adding 102 types to _tests/gold/amd64-linux/joker/core/goswitch.go
 Generated file goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
@@ -13148,16 +13463,14 @@ func SwitchGoType(g interface{}) int {
 		return 100
 	case http.RoundTripper:  // Specificity=2
 		return 101
-	default:
-		return -1
 	}
-	return nil
+	return -1
 }
-ABENDs: 987(105) 047(76) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 644(4) 906(3) 883(2) 908(1) 909(1)
+ABENDs: 987(105) 047(95) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 644(4) 906(3) 883(2) 908(1) 909(1)
 Totals: functions=421 generated=230 (54.63%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
-        types=102 generated=39 (38.24%)
+        types=102 generated=41 (40.20%)
           hits expr=0 alias=0 fullname=95
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)

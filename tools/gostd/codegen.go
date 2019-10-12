@@ -374,14 +374,15 @@ func GenType(t string, ti *GoTypeInfo) {
 	}
 	pkgDirUnix := ti.SourceFile.PkgDirUnix
 	pkgBaseName := ti.SourceFile.PkgBaseName
-	if pi, found := PackagesInfo[pkgDirUnix]; !found {
+	pi, found := PackagesInfo[pkgDirUnix]
+	if !found {
 		return // no public functions available for package, so don't try to generate type info either
-	} else if !pi.NonEmpty {
-		return // no functions generated
 	}
 
-	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
-	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
+	pi.NonEmpty = true
+
+	imports.AddImport(pi.ImportsNative, ".", "github.com/candid82/joker/core", false)
+	imports.AddImport(pi.ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
