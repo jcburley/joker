@@ -374,10 +374,7 @@ func GenType(t string, ti *GoTypeInfo) {
 	}
 	pkgDirUnix := ti.SourceFile.PkgDirUnix
 	pkgBaseName := ti.SourceFile.PkgBaseName
-	pi, found := PackagesInfo[pkgDirUnix]
-	if !found {
-		return // no public functions available for package, so don't try to generate type info either
-	}
+	pi := PackagesInfo[pkgDirUnix]
 
 	pi.NonEmpty = true
 
