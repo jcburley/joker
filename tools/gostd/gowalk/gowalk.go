@@ -932,7 +932,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 			}
 			return b && e == nil
 		},
-		parser.ParseComments)
+		parser.ParseComments|parser.AllErrors)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return err
