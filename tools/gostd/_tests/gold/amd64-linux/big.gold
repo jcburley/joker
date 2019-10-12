@@ -7274,19 +7274,19 @@ GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/big/src/net/net.go
 	GoTypesVec[81] = &info_UnknownNetworkError
 
 GO ENSURE-LOADED FOR net:
-	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/dial.go:8:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/unixsock_posix.go:11:2
-	EnsureLoaded("go.std.golang_org.x.net.dns.dnsmessage")  // E.g. from: _tests/big/src/net/lookup_unix.go:14:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/pipe.go:8:2
+	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/udpsock_posix.go:10:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/dnsclient_unix.go:20:2
+	EnsureLoaded("go.std.golang_org.x.net.dns.dnsmessage")  // E.g. from: _tests/big/src/net/dnsclient_unix.go:27:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/parse.go:11:2
 	EnsureLoaded("go.std.math.rand")  // E.g. from: _tests/big/src/net/dnsclient_unix.go:22:2
-	EnsureLoaded("go.std.os")  // E.g. from: _tests/big/src/net/sock_cloexec.go:14:2
-	EnsureLoaded("go.std.runtime")  // E.g. from: _tests/big/src/net/sockoptip_linux.go:8:2
+	EnsureLoaded("go.std.os")  // E.g. from: _tests/big/src/net/parse.go:12:2
+	EnsureLoaded("go.std.runtime")  // E.g. from: _tests/big/src/net/sockoptip_posix.go:10:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests/big/src/net/addrselect.go:11:8
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/hosts.go:8:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/dnsclient_unix.go:24:2
 	EnsureLoaded("go.std.sync.atomic")  // E.g. from: _tests/big/src/net/dnsconfig_unix.go:13:2
-	EnsureLoaded("go.std.syscall")  // E.g. from: _tests/big/src/net/sock_cloexec.go:15:2
-	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/hosts.go:9:2
-	EnsureLoaded("go.std.unsafe")  // E.g. from: _tests/big/src/net/cgo_socknew.go:20:2
+	EnsureLoaded("go.std.syscall")  // E.g. from: _tests/big/src/net/sockopt_linux.go:9:2
+	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/parse.go:13:2
+	EnsureLoaded("go.std.unsafe")  // E.g. from: _tests/big/src/net/parse.go:14:4
 
 GO TYPE net/http.Client from net/http/client.go:
 func ExtractGoObjectClient(args []Object, index int) *_http.Client {
@@ -9321,43 +9321,43 @@ GO VECSET FOR TYPE go.std.net.http/Transport from _tests/big/src/net/http/transp
 	GoTypesVec[26] = &info_Transport
 
 GO ENSURE-LOADED FOR http:
-	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/transfer.go:8:2
-	EnsureLoaded("go.std.bytes")  // E.g. from: _tests/big/src/net/http/transfer.go:9:2
+	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/response.go:10:2
+	EnsureLoaded("go.std.bytes")  // E.g. from: _tests/big/src/net/http/response.go:11:2
 	EnsureLoaded("go.std.compress.gzip")  // E.g. from: _tests/big/src/net/http/transport.go:14:2
 	EnsureLoaded("go.std.container.list")  // E.g. from: _tests/big/src/net/http/transport.go:15:2
-	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/http/request.go:12:2
+	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/http/socks_bundle.go:14:2
 	EnsureLoaded("go.std.crypto.rand")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:24:2
-	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests/big/src/net/http/request.go:13:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests/big/src/net/http/response.go:12:2
 	EnsureLoaded("go.std.encoding.base64")  // E.g. from: _tests/big/src/net/http/request.go:14:2
-	EnsureLoaded("go.std.encoding.binary")  // E.g. from: _tests/big/src/net/http/sniff.go:9:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/fs.go:10:2
-	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/fs.go:11:2
-	EnsureLoaded("go.std.golang_org.x.net.http.httpguts")  // E.g. from: _tests/big/src/net/http/transfer.go:24:2
+	EnsureLoaded("go.std.encoding.binary")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:26:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/response.go:13:2
+	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/response.go:14:2
+	EnsureLoaded("go.std.golang_org.x.net.http.httpguts")  // E.g. from: _tests/big/src/net/http/http.go:14:2
 	EnsureLoaded("go.std.golang_org.x.net.http.httpproxy")  // E.g. from: _tests/big/src/net/http/transport.go:34:2
 	EnsureLoaded("go.std.golang_org.x.net.http2.hpack")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:48:2
-	EnsureLoaded("go.std.golang_org.x.net.idna")  // E.g. from: _tests/big/src/net/http/request.go:29:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/fs.go:12:2
-	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/http/transfer.go:13:2
-	EnsureLoaded("go.std.log")  // E.g. from: _tests/big/src/net/http/client.go:19:2
+	EnsureLoaded("go.std.golang_org.x.net.idna")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:49:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/http.go:8:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:30:2
+	EnsureLoaded("go.std.log")  // E.g. from: _tests/big/src/net/http/transport.go:21:2
 	EnsureLoaded("go.std.math")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:32:2
 	EnsureLoaded("go.std.math.rand")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:33:11
 	EnsureLoaded("go.std.mime")  // E.g. from: _tests/big/src/net/http/fs.go:13:2
 	EnsureLoaded("go.std.mime.multipart")  // E.g. from: _tests/big/src/net/http/fs.go:14:2
-	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/request.go:21:2
-	EnsureLoaded("go.std.net.http.httptrace")  // E.g. from: _tests/big/src/net/http/transfer.go:14:2
-	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests/big/src/net/http/fs.go:15:2
-	EnsureLoaded("go.std.net.url")  // E.g. from: _tests/big/src/net/http/fs.go:16:2
-	EnsureLoaded("go.std.os")  // E.g. from: _tests/big/src/net/http/fs.go:17:2
+	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/socks_bundle.go:17:2
+	EnsureLoaded("go.std.net.http.httptrace")  // E.g. from: _tests/big/src/net/http/transport.go:23:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests/big/src/net/http/response.go:16:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests/big/src/net/http/response.go:17:2
+	EnsureLoaded("go.std.os")  // E.g. from: _tests/big/src/net/http/transport.go:26:2
 	EnsureLoaded("go.std.path")  // E.g. from: _tests/big/src/net/http/fs.go:18:2
 	EnsureLoaded("go.std.path.filepath")  // E.g. from: _tests/big/src/net/http/fs.go:19:2
-	EnsureLoaded("go.std.reflect")  // E.g. from: _tests/big/src/net/http/transfer.go:17:2
+	EnsureLoaded("go.std.reflect")  // E.g. from: _tests/big/src/net/http/transport.go:27:2
 	EnsureLoaded("go.std.runtime")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:40:2
-	EnsureLoaded("go.std.sort")  // E.g. from: _tests/big/src/net/http/fs.go:20:2
-	EnsureLoaded("go.std.strconv")  // E.g. from: _tests/big/src/net/http/fs.go:21:2
-	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/fs.go:22:2
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/transfer.go:21:2
+	EnsureLoaded("go.std.sort")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:41:2
+	EnsureLoaded("go.std.strconv")  // E.g. from: _tests/big/src/net/http/http.go:9:2
+	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/http.go:10:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/transport.go:29:2
 	EnsureLoaded("go.std.sync.atomic")  // E.g. from: _tests/big/src/net/http/transport.go:30:2
-	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/fs.go:23:2
+	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/http.go:11:2
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/http.go:12:2
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
@@ -9680,12 +9680,12 @@ GO VECSET FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/sr
 
 GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:9:2
-	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:10:2
+	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:10:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:11:2
 	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:12:2
 	EnsureLoaded("go.std.net.url")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:13:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:14:2
-	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:15:2
+	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:11:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:16:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:17:2
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
@@ -9706,16 +9706,16 @@ GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:18:2
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:10:2
 	EnsureLoaded("go.std.encoding.binary")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:19:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:11:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:20:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:12:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:13:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:21:2
 	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:14:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:15:2
 	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:16:2
 	EnsureLoaded("go.std.net.http.cgi")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:17:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:18:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:19:2
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:20:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:22:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/fcgi/child.go:21:2
 
 GO TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go:
@@ -9960,7 +9960,7 @@ GO ENSURE-LOADED FOR httptest:
 	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests/big/src/net/http/httptest/httptest.go:11:2
 	EnsureLoaded("go.std.crypto.x509")  // E.g. from: _tests/big/src/net/http/httptest/server.go:11:2
 	EnsureLoaded("go.std.flag")  // E.g. from: _tests/big/src/net/http/httptest/server.go:12:2
-	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/httptest/recorder.go:9:2
+	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/httptest/server.go:13:2
 	EnsureLoaded("go.std.golang_org.x.net.http.httpguts")  // E.g. from: _tests/big/src/net/http/httptest/recorder.go:15:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/httptest/httptest.go:12:2
 	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/http/httptest/httptest.go:13:2
@@ -10727,21 +10727,21 @@ GO VECSET FOR TYPE go.std.net.http.httputil/ServerConn from _tests/big/src/net/h
 	GoTypesVec[12] = &info_ServerConn
 
 GO ENSURE-LOADED FOR httputil:
-	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:8:2
+	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:8:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:9:2
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:10:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:9:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:10:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:11:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/httputil/httputil.go:10:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:12:2
 	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:13:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:12:2
-	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:11:2
-	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:12:2
+	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:14:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:15:2
 	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:13:2
-	EnsureLoaded("go.std.net.url")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:15:2
-	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:16:2
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/httputil/persist.go:14:2
-	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:18:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:16:2
+	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:17:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/http/httputil/reverseproxy.go:17:2
+	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:18:2
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 // func __cmdline(__w ABEND987(genutils.go: imports not yet supported: http.ResponseWriter), __r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
@@ -11793,19 +11793,19 @@ GO VECSET FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client
 	GoTypesVec[36] = &info_ServerError
 
 GO ENSURE-LOADED FOR rpc:
-	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/rpc/client.go:8:2
-	EnsureLoaded("go.std.encoding.gob")  // E.g. from: _tests/big/src/net/rpc/client.go:9:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/rpc/client.go:10:2
+	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/rpc/server.go:130:2
+	EnsureLoaded("go.std.encoding.gob")  // E.g. from: _tests/big/src/net/rpc/server.go:131:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/rpc/server.go:132:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/rpc/debug.go:13:2
 	EnsureLoaded("go.std.html.template")  // E.g. from: _tests/big/src/net/rpc/debug.go:14:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/rpc/client.go:11:2
-	EnsureLoaded("go.std.log")  // E.g. from: _tests/big/src/net/rpc/client.go:12:2
-	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/rpc/client.go:13:2
-	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/rpc/debug.go:15:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/rpc/server.go:133:2
+	EnsureLoaded("go.std.log")  // E.g. from: _tests/big/src/net/rpc/server.go:134:2
+	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/rpc/server.go:135:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests/big/src/net/rpc/server.go:136:2
 	EnsureLoaded("go.std.reflect")  // E.g. from: _tests/big/src/net/rpc/server.go:137:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests/big/src/net/rpc/debug.go:16:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/rpc/server.go:138:2
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/rpc/client.go:15:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/rpc/server.go:139:2
 	EnsureLoaded("go.std.unicode")  // E.g. from: _tests/big/src/net/rpc/server.go:140:2
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/rpc/server.go:141:2
 
@@ -11843,13 +11843,13 @@ GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 // }
 
 GO ENSURE-LOADED FOR jsonrpc:
-	EnsureLoaded("go.std.encoding.json")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:11:2
+	EnsureLoaded("go.std.encoding.json")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/server.go:8:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/server.go:9:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:12:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:13:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/server.go:10:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:14:2
-	EnsureLoaded("go.std.net.rpc")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:15:2
-	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/client.go:16:2
+	EnsureLoaded("go.std.net.rpc")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/server.go:11:2
+	EnsureLoaded("go.std.sync")  // E.g. from: _tests/big/src/net/rpc/jsonrpc/server.go:12:2
 
 GO TYPE net/smtp.Auth from net/smtp/auth.go:
 func ExtractGoObjectAuth(args []Object, index int) *_smtp.Auth {
@@ -12168,8 +12168,8 @@ GO ENSURE-LOADED FOR smtp:
 	EnsureLoaded("go.std.crypto.md5")  // E.g. from: _tests/big/src/net/smtp/auth.go:9:2
 	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests/big/src/net/smtp/smtp.go:19:2
 	EnsureLoaded("go.std.encoding.base64")  // E.g. from: _tests/big/src/net/smtp/smtp.go:20:2
-	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/smtp/auth.go:10:2
-	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/smtp/auth.go:11:2
+	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/smtp/smtp.go:21:2
+	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/smtp/smtp.go:22:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/smtp/smtp.go:23:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/smtp/smtp.go:24:2
 	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests/big/src/net/smtp/smtp.go:25:2
@@ -12843,10 +12843,10 @@ GO VECSET FOR TYPE go.std.net.textproto/Writer from _tests/big/src/net/textproto
 	GoTypesVec[45] = &info_Writer
 
 GO ENSURE-LOADED FOR textproto:
-	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/textproto/textproto.go:29:2
+	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/textproto/writer.go:8:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests/big/src/net/textproto/reader.go:9:2
-	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/textproto/textproto.go:30:2
-	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/textproto/textproto.go:31:2
+	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/big/src/net/textproto/writer.go:9:2
+	EnsureLoaded("go.std.io")  // E.g. from: _tests/big/src/net/textproto/writer.go:10:2
 	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests/big/src/net/textproto/reader.go:11:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests/big/src/net/textproto/textproto.go:32:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests/big/src/net/textproto/reader.go:12:2

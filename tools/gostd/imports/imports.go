@@ -81,7 +81,13 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	imports := map[string]token.Pos{}
 	for _, f := range p.Files {
 		for _, impSpec := range f.Imports {
-			imports[impSpec.Path.Value] = impSpec.Path.ValuePos
+			newPos := impSpec.Path.ValuePos
+			if oldPos, found := imports[impSpec.Path.Value]; found {
+				if oldPos < newPos {
+					continue
+				}
+			}
+			imports[impSpec.Path.Value] = newPos
 		}
 	}
 	var sortedImports []string
@@ -94,6 +100,9 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	}
 	sort.Strings(sortedImports)
 	for _, imp := range sortedImports {
+		// Note: re-quoting is a bit of a kludge, in that this
+		// code depends on it reconstituting the original
+		// quoted string, which it presumably always will.
 		f(imp, imports[strconv.Quote(imp)])
 	}
 }
