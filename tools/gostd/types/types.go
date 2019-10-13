@@ -12,6 +12,8 @@ import (
 	"strings"
 )
 
+const Concrete = ^uint(0) /* MaxUint */
+
 var NumExprHits uint
 var NumAliasHits uint
 var NumFullNameHits uint
@@ -69,7 +71,7 @@ func specificity(ts *TypeSpec) uint {
 	if iface, ok := ts.Type.(*InterfaceType); ok {
 		return 1 + specificityOfInterface(iface)
 	}
-	return ^uint(0) // MaxUint
+	return Concrete
 }
 
 func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
@@ -105,7 +107,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 	}
 	typeDefinitionsByFullName[tfn] = tdi
 
-	if tdi.Specificity == 0 {
+	if tdi.Specificity == Concrete {
 		// Concrete types all get reference-to versions.
 		tfnPtr := "*" + tfn
 		tdiPtr := &TypeDefInfo{

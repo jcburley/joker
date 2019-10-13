@@ -148,7 +148,7 @@ func SwitchGoType(g interface{}) int {
 			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, true) + "."
 		}
 		specificity := ""
-		if t.Specificity < ^uint(0) { // MaxUint
+		if t.Specificity != Concrete {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity)
 		}
 		cases += fmt.Sprintf("\tcase %s%s%s:%s\n\t\treturn %d\n", t.GoPrefix, pkgPlusSeparator, t.GoName, specificity, t.Ord)
