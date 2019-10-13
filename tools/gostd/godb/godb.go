@@ -88,7 +88,7 @@ func GoPackageBaseName(e Expr) string {
 }
 
 type PackageDb struct {
-	Pkg        *Package
+	Pkg        *Package // nil means Universal scope
 	RootUnix   string
 	PkgDirUnix string
 	NsRoot     string
@@ -154,7 +154,8 @@ func ResolveInPackage(pkg, name string) Node {
 	if p == nil {
 		return nil
 	}
-	return p.decls[name].node
+	res := p.decls[name].node
+	return res
 }
 
 func ResolveSelector(n Node) string {
@@ -165,11 +166,30 @@ func Resolve(n Node) Node {
 	pkg := GoPackageForExpr(n.(Expr))
 	switch o := n.(type) {
 	case *Ident:
-		return ResolveInPackage(pkg, o.Name)
+		p := ""
+		if IsExported(o.Name) {
+			p = pkg
+		}
+		return ResolveInPackage(p, o.Name)
 	case *SelectorExpr:
 		return ResolveInPackage(ResolveSelector(o.X.(Node)), o.Sel.Name)
 	default:
 		panic(fmt.Sprintf("don't know how to resolve node %v", o))
 	}
 	return nil
+}
+
+func init() {
+	eid := &Ident{Name: "error"}
+	enames := &Ident{Name: "Error"}
+	emethod := &Field{Names: []*Ident{enames}}
+	emethods := &FieldList{List: []*Field{emethod}}
+	etype := &InterfaceType{Methods: emethods}
+	ets := &TypeSpec{Name: eid, Type: etype}
+	decl := DeclInfo{"error", ets, 0}
+	decls := map[string]DeclInfo{}
+	decls["error"] = decl
+
+	pkgDb := &PackageDb{nil, "", "", "", decls}
+	packagesByName[""] = pkgDb
 }

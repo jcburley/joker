@@ -58,7 +58,6 @@ func specificityOfInterface(ts *InterfaceType) uint {
 		}
 		ts := godb.Resolve(m.Type)
 		if ts == nil {
-			sp++
 			continue
 		}
 		sp += specificityOfInterface(ts.(*TypeSpec).Type.(*InterfaceType))

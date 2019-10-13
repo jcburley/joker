@@ -7190,7 +7190,7 @@ GO VECSET FOR TYPE go.std.net/Dialer from _tests/big/src/net/dial.go:20:6:
 	GoTypesVec[56] = &info_Dialer
 
 GO VECSET FOR TYPE go.std.net/Error from _tests/big/src/net/net.go:378:6:
-	GoTypesVec[88] = &info_Error
+	GoTypesVec[87] = &info_Error
 
 GO VECSET FOR TYPE go.std.net/Flags from _tests/big/src/net/interface.go:38:6:
 	GoTypesVec[57] = &info_Flags
@@ -7223,7 +7223,7 @@ GO VECSET FOR TYPE go.std.net/ListenConfig from _tests/big/src/net/dial.go:576:6
 	GoTypesVec[66] = &info_ListenConfig
 
 GO VECSET FOR TYPE go.std.net/Listener from _tests/big/src/net/net.go:365:6:
-	GoTypesVec[89] = &info_Listener
+	GoTypesVec[88] = &info_Listener
 
 GO VECSET FOR TYPE go.std.net/MX from _tests/big/src/net/dnsclient.go:193:6:
 	GoTypesVec[67] = &info_MX
@@ -9261,13 +9261,13 @@ GO VECSET FOR TYPE go.std.net.http/Cookie from _tests/big/src/net/http/cookie.go
 	GoTypesVec[15] = &info_Cookie
 
 GO VECSET FOR TYPE go.std.net.http/CookieJar from _tests/big/src/net/http/jar.go:17:6:
-	GoTypesVec[92] = &info_CookieJar
+	GoTypesVec[91] = &info_CookieJar
 
 GO VECSET FOR TYPE go.std.net.http/Dir from _tests/big/src/net/http/fs.go:40:6:
 	GoTypesVec[16] = &info_Dir
 
 GO VECSET FOR TYPE go.std.net.http/File from _tests/big/src/net/http/fs.go:93:6:
-	GoTypesVec[84] = &info_File
+	GoTypesVec[92] = &info_File
 
 GO VECSET FOR TYPE go.std.net.http/FileSystem from _tests/big/src/net/http/fs.go:85:6:
 	GoTypesVec[96] = &info_FileSystem
@@ -9303,7 +9303,7 @@ GO VECSET FOR TYPE go.std.net.http/Response from _tests/big/src/net/http/respons
 	GoTypesVec[22] = &info_Response
 
 GO VECSET FOR TYPE go.std.net.http/ResponseWriter from _tests/big/src/net/http/server.go:93:6:
-	GoTypesVec[87] = &info_ResponseWriter
+	GoTypesVec[86] = &info_ResponseWriter
 
 GO VECSET FOR TYPE go.std.net.http/RoundTripper from _tests/big/src/net/http/client.go:115:6:
 	GoTypesVec[101] = &info_RoundTripper
@@ -9676,7 +9676,7 @@ GO VECSET FOR TYPE go.std.net.http.cookiejar/Options from _tests/big/src/net/htt
 	GoTypesVec[2] = &info_Options
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/net/http/cookiejar/jar.go:34:6:
-	GoTypesVec[90] = &info_PublicSuffixList
+	GoTypesVec[89] = &info_PublicSuffixList
 
 GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/http/cookiejar/jar.go:9:2
@@ -10715,7 +10715,7 @@ GO INFO FOR TYPE go.std.net.http.httputil/ServerConn from _tests/big/src/net/htt
 
 
 GO VECSET FOR TYPE go.std.net.http.httputil/BufferPool from _tests/big/src/net/http/httputil/reverseproxy.go:79:6:
-	GoTypesVec[91] = &info_BufferPool
+	GoTypesVec[90] = &info_BufferPool
 
 GO VECSET FOR TYPE go.std.net.http.httputil/ClientConn from _tests/big/src/net/http/httputil/persist.go:230:6:
 	GoTypesVec[10] = &info_ClientConn
@@ -11775,7 +11775,7 @@ GO VECSET FOR TYPE go.std.net.rpc/Client from _tests/big/src/net/rpc/client.go:4
 	GoTypesVec[32] = &info_Client
 
 GO VECSET FOR TYPE go.std.net.rpc/ClientCodec from _tests/big/src/net/rpc/client.go:63:6:
-	GoTypesVec[85] = &info_ClientCodec
+	GoTypesVec[84] = &info_ClientCodec
 
 GO VECSET FOR TYPE go.std.net.rpc/Request from _tests/big/src/net/rpc/server.go:172:6:
 	GoTypesVec[33] = &info_Request
@@ -11787,7 +11787,7 @@ GO VECSET FOR TYPE go.std.net.rpc/Server from _tests/big/src/net/rpc/server.go:1
 	GoTypesVec[35] = &info_Server
 
 GO VECSET FOR TYPE go.std.net.rpc/ServerCodec from _tests/big/src/net/rpc/server.go:658:6:
-	GoTypesVec[86] = &info_ServerCodec
+	GoTypesVec[85] = &info_ServerCodec
 
 GO VECSET FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client.go:20:6:
 	GoTypesVec[36] = &info_ServerError
@@ -13659,23 +13659,23 @@ func SwitchGoType(g interface{}) int {
 		return 82
 	case net.PacketConn:  // Specificity=8
 		return 83
-	case http.File:  // Specificity=6
-		return 84
 	case rpc.ClientCodec:  // Specificity=5
-		return 85
+		return 84
 	case rpc.ServerCodec:  // Specificity=5
-		return 86
+		return 85
 	case http.ResponseWriter:  // Specificity=4
-		return 87
+		return 86
 	case net.Error:  // Specificity=4
-		return 88
+		return 87
 	case net.Listener:  // Specificity=4
-		return 89
+		return 88
 	case cookiejar.PublicSuffixList:  // Specificity=3
-		return 90
+		return 89
 	case httputil.BufferPool:  // Specificity=3
-		return 91
+		return 90
 	case http.CookieJar:  // Specificity=3
+		return 91
+	case http.File:  // Specificity=3
 		return 92
 	case smtp.Auth:  // Specificity=3
 		return 93
