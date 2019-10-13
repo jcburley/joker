@@ -158,7 +158,7 @@ func ResolveInPackage(pkg, name string) Node {
 }
 
 func ResolveSelector(n Node) string {
-	return ""
+	return n.(*Ident).Name
 }
 
 func Resolve(n Node) Node {
