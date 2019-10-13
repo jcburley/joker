@@ -187,6 +187,7 @@ func init() {
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
 	decl := DeclInfo{"error", ets, 0}
+
 	decls := map[string]DeclInfo{}
 	decls["error"] = decl
 
