@@ -900,15 +900,6 @@ func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) 
 	}
 }
 
-type walkedPackage struct {
-	rootUnix   string
-	pkgDirUnix string
-	nsRoot     string
-	pkg        *Package
-}
-
-var walkedPackages []walkedPackage
-
 func processDir(root, rootUnix, path, nsRoot string) error {
 	pkgDir := TrimPrefix(path, root+string(filepath.Separator))
 	pkgDirUnix := filepath.ToSlash(pkgDir)
@@ -956,7 +947,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			walkedPackages = append(walkedPackages, walkedPackage{rootUnix, pkgDirUnix, nsRoot, v})
+			RegisterPackage(rootUnix, pkgDirUnix, nsRoot, v)
 			found = true
 		}
 	}
@@ -1047,11 +1038,11 @@ func WalkAllDirs() (error, string) {
 			return err, d.srcDir
 		}
 	}
-	for _, wp := range walkedPackages {
-		processPackageFilesTypes(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
+	for _, wp := range PackagesAsDiscovered {
+		processPackageFilesTypes(wp.RootUnix, wp.PkgDirUnix, wp.NsRoot, wp.Pkg)
 	}
-	for _, wp := range walkedPackages {
-		processPackageFilesOthers(wp.rootUnix, wp.pkgDirUnix, wp.nsRoot, wp.pkg)
+	for _, wp := range PackagesAsDiscovered {
+		processPackageFilesOthers(wp.RootUnix, wp.PkgDirUnix, wp.NsRoot, wp.Pkg)
 	}
 	return nil, ""
 }

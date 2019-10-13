@@ -49,22 +49,26 @@ type TypeDefInfo struct {
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
 
+func specificityOfInterface(ts *InterfaceType) uint {
+	var sp uint
+	for _, m := range ts.Methods.List {
+		if m.Names != nil {
+			sp += (uint)(len(m.Names))
+			continue
+		}
+		ts := godb.Resolve(m.Type)
+		if ts == nil {
+			sp++
+			continue
+		}
+		sp += specificityOfInterface(ts.(*TypeSpec).Type.(*InterfaceType))
+	}
+	return sp
+}
+
 func specificity(ts *TypeSpec) uint {
 	if iface, ok := ts.Type.(*InterfaceType); ok {
-		sp := uint(1)
-		for _, m := range iface.Methods.List {
-			if m.Names != nil {
-				sp += (uint)(len(m.Names))
-				continue
-			}
-			ts := godb.Resolve(m.Type)
-			if ts == nil {
-				sp++
-				continue
-			}
-			sp += specificity(ts.(*TypeSpec))
-		}
-		return sp
+		return 1 + specificityOfInterface(iface)
 	}
 	return ^uint(0) // MaxUint
 }
