@@ -46,7 +46,7 @@ type TypeDefInfo struct {
 	GoName         string // Base name of type (LocalName without any prefix)
 	underlyingType *TypeDefInfo
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
-	Specificity    uint // UINT_MAX means concrete type, >0 is 1 + # of methods defined for interface{} (abstract) type
+	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
 var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
@@ -69,7 +69,7 @@ func specificityOfInterface(ts *InterfaceType) uint {
 
 func specificity(ts *TypeSpec) uint {
 	if iface, ok := ts.Type.(*InterfaceType); ok {
-		return 1 + specificityOfInterface(iface)
+		return specificityOfInterface(iface)
 	}
 	return Concrete
 }

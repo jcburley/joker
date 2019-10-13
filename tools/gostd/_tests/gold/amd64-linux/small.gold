@@ -3909,15 +3909,15 @@ func SwitchGoType(g interface{}) int {
 		return 44
 	case net.UnknownNetworkError:
 		return 45
-	case net.Conn:  // Specificity=9
+	case net.Conn:  // Specificity=8
 		return 46
-	case net.PacketConn:  // Specificity=8
+	case net.PacketConn:  // Specificity=7
 		return 47
-	case net.Error:  // Specificity=4
+	case net.Error:  // Specificity=3
 		return 48
-	case net.Listener:  // Specificity=4
+	case net.Listener:  // Specificity=3
 		return 49
-	case net.Addr:  // Specificity=3
+	case net.Addr:  // Specificity=2
 		return 50
 	}
 	return -1
