@@ -319,6 +319,7 @@ func main() {
 Totals: functions=%d generated=%d (%s%%)
           non-receivers=%d (%s%%) generated=%d (%s%%)
           receivers=%d (%s%%) generated=%d (%s%%)
+          methods=%d (%s%%) generated=%d (%s%%)
         types=%d generated=%d (%s%%)
           hits expr=%d alias=%d fullname=%d
         constants=%d generated=%d (%s%%)
@@ -327,6 +328,7 @@ Totals: functions=%d generated=%d (%s%%)
 			NumFunctions, NumGeneratedFunctions, pct(NumGeneratedFunctions, NumFunctions),
 			NumStandalones, pct(NumStandalones, NumFunctions), NumGeneratedStandalones, pct(NumGeneratedStandalones, NumStandalones),
 			NumReceivers, pct(NumReceivers, NumFunctions), NumGeneratedReceivers, pct(NumGeneratedReceivers, NumReceivers),
+			NumMethods, pct(NumMethods, NumFunctions), NumGeneratedMethods, pct(NumGeneratedMethods, NumMethods),
 			NumTypes, NumGeneratedTypes, pct(NumGeneratedTypes, NumTypes),
 			types.NumExprHits, types.NumAliasHits, types.NumFullNameHits,
 			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
