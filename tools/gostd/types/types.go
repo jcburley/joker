@@ -119,6 +119,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 			GoPackage:      tdi.GoPackage,
 			GoName:         tln,
 			underlyingType: tdi,
+			Specificity:    Concrete,
 		}
 		typeDefinitionsByFullName[tfnPtr] = tdiPtr
 		return []*TypeDefInfo{tdi, tdiPtr}
