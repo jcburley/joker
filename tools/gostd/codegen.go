@@ -203,6 +203,11 @@ func %s(o GoObject, args Object) Object {
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", true)
 		if fn.Fd == nil {
 			godb.NumGeneratedMethods++
+			tdi := TypeLookup(fn.Ft).Definition
+			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
+				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
+			}
+			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
@@ -471,7 +476,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 				fullName := tdi.LocalName + "_" + n.Name
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
-					ReceiverId:   tdi.GoName,
+					ReceiverId:   "_" + tdi.GoFile.Package.BaseName + "." + tdi.GoName,
 					Name:         fullName,
 					DocName:      docString,
 					Fd:           nil,

@@ -6759,28 +6759,28 @@ func __splitHostPort(__hostport string) Object {
 GO FUNC net.__addr_Network from net/net.go:
 func __addr_Network(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Addr).Network()
+	_res := o.O.(_net.Addr).Network()
 	return MakeString(_res)
 }
 
 GO FUNC net.__addr_String from net/net.go:
 func __addr_String(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Addr).String()
+	_res := o.O.(_net.Addr).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__conn_Close from net/net.go:
 func __conn_Close(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Conn).Close()
+	_res := o.O.(_net.Conn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__conn_LocalAddr from net/net.go:
 func __conn_LocalAddr(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Conn).LocalAddr()
+	_res := o.O.(_net.Conn).LocalAddr()
 	return MakeGoObject(_res)
 }
 
@@ -6791,7 +6791,7 @@ GO FUNC net.__conn_Read from net/net.go:
 GO FUNC net.__conn_RemoteAddr from net/net.go:
 func __conn_RemoteAddr(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Conn).RemoteAddr()
+	_res := o.O.(_net.Conn).RemoteAddr()
 	return MakeGoObject(_res)
 }
 
@@ -6814,21 +6814,21 @@ GO FUNC net.__conn_Write from net/net.go:
 GO FUNC net.__error_Error from net/net.go:
 // func __error_Error(o GoObject, args Object) Object {
 // 	CheckGoArity("", args, 0, 0)
-// 	return o.O.(Error).Error()
+// 	return o.O.(_net.Error).Error()
 // 	ABEND124(post.go: no public information returned)
 // }
 
 GO FUNC net.__error_Temporary from net/net.go:
 func __error_Temporary(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Error).Temporary()
+	_res := o.O.(_net.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__error_Timeout from net/net.go:
 func __error_Timeout(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Error).Timeout()
+	_res := o.O.(_net.Error).Timeout()
 	return MakeBoolean(_res)
 }
 
@@ -6994,7 +6994,7 @@ func __invalidAddrError_Timeout(o GoObject, args Object) Object {
 GO FUNC net.__listener_Accept from net/net.go:
 func __listener_Accept(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res1, _res2 := o.O.(Listener).Accept()
+	_res1, _res2 := o.O.(_net.Listener).Accept()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -7004,28 +7004,28 @@ func __listener_Accept(o GoObject, args Object) Object {
 GO FUNC net.__listener_Addr from net/net.go:
 func __listener_Addr(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Listener).Addr()
+	_res := o.O.(_net.Listener).Addr()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.__listener_Close from net/net.go:
 func __listener_Close(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Listener).Close()
+	_res := o.O.(_net.Listener).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__packetConn_Close from net/net.go:
 func __packetConn_Close(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(PacketConn).Close()
+	_res := o.O.(_net.PacketConn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__packetConn_LocalAddr from net/net.go:
 func __packetConn_LocalAddr(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(PacketConn).LocalAddr()
+	_res := o.O.(_net.PacketConn).LocalAddr()
 	return MakeGoObject(_res)
 }
 
@@ -9901,7 +9901,7 @@ func __dir_Open(o GoObject, args Object) Object {
 GO FUNC net/http.__fileSystem_Open from net/http/fs.go:
 func __fileSystem_Open(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res1, _res2 := o.O.(FileSystem).Open(__name)
+	_res1, _res2 := o.O.(_http.FileSystem).Open(__name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -10266,14 +10266,14 @@ GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 GO FUNC net/http.__pusher_Push from net/http/http.go:
 func __pusher_Push(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 2, 2)
-	_res := o.O.(Pusher).Push(__target, __opts)
+	_res := o.O.(_http.Pusher).Push(__target, __opts)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/http.__responseWriter_Header from net/http/server.go:
 func __responseWriter_Header(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(ResponseWriter).Header()
+	_res := o.O.(_http.ResponseWriter).Header()
 	return MakeGoObject(_res)
 }
 
@@ -10289,7 +10289,7 @@ GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
 GO FUNC net/http.__roundTripper_RoundTrip from net/http/client.go:
 func __roundTripper_RoundTrip(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res1, _res2 := o.O.(RoundTripper).RoundTrip(1)
+	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(1)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -11148,14 +11148,14 @@ GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go
 GO FUNC net/http/cookiejar.__publicSuffixList_PublicSuffix from net/http/cookiejar/jar.go:
 func __publicSuffixList_PublicSuffix(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(PublicSuffixList).PublicSuffix(__domain)
+	_res := o.O.(_cookiejar.PublicSuffixList).PublicSuffix(__domain)
 	return MakeString(_res)
 }
 
 GO FUNC net/http/cookiejar.__publicSuffixList_String from net/http/cookiejar/jar.go:
 func __publicSuffixList_String(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(PublicSuffixList).String()
+	_res := o.O.(_cookiejar.PublicSuffixList).String()
 	return MakeString(_res)
 }
 
@@ -12252,7 +12252,7 @@ GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/rever
 GO FUNC net/http/httputil.__bufferPool_Get from net/http/httputil/reverseproxy.go:
 func __bufferPool_Get(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(BufferPool).Get()
+	_res := o.O.(_httputil.BufferPool).Get()
 	_vec1 := EmptyVector()
 	for _, _elem1 := range _res {
 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
@@ -13385,7 +13385,7 @@ GO FUNC net/rpc.ServeConn from net/rpc/server.go:
 GO FUNC net/rpc.__clientCodec_Close from net/rpc/client.go:
 func __clientCodec_Close(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(ClientCodec).Close()
+	_res := o.O.(_rpc.ClientCodec).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -13396,7 +13396,7 @@ GO FUNC net/rpc.__clientCodec_ReadResponseBody from net/rpc/client.go:
 GO FUNC net/rpc.__clientCodec_ReadResponseHeader from net/rpc/client.go:
 func __clientCodec_ReadResponseHeader(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(ClientCodec).ReadResponseHeader(1)
+	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -13460,7 +13460,7 @@ func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
 GO FUNC net/rpc.__serverCodec_Close from net/rpc/server.go:
 func __serverCodec_Close(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(ServerCodec).Close()
+	_res := o.O.(_rpc.ServerCodec).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -13471,7 +13471,7 @@ GO FUNC net/rpc.__serverCodec_ReadRequestBody from net/rpc/server.go:
 GO FUNC net/rpc.__serverCodec_ReadRequestHeader from net/rpc/server.go:
 func __serverCodec_ReadRequestHeader(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(ServerCodec).ReadRequestHeader(1)
+	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
@@ -13919,7 +13919,7 @@ GO FUNC net/smtp.__auth_Next from net/smtp/auth.go:
 GO FUNC net/smtp.__auth_Start from net/smtp/auth.go:
 func __auth_Start(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	proto, toServer, err := o.O.(Auth).Start(__server)
+	proto, toServer, err := o.O.(_smtp.Auth).Start(__server)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(proto))
 	_vec1 := EmptyVector()
@@ -15998,6 +15998,6 @@ Totals: functions=421 generated=254 (60.33%)
           receivers=273 (64.85%) generated=149 (54.58%)
           methods=50 (11.88%) generated=24 (48.00%)
         types=102 generated=41 (40.20%)
-          hits expr=0 alias=0 fullname=95
+          hits expr=0 alias=0 fullname=118
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)
