@@ -454,6 +454,14 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType) {
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
+			if len(m.Names) != 1 {
+				Print(godb.Fset, iface)
+				panic("Names has more than one!")
+			}
+			if m.Type == nil {
+				Print(godb.Fset, iface)
+				panic("Why no Type field??")
+			}
 			for _, n := range m.Names {
 				docString := ""
 				*methods = append(*methods, &FuncInfo{
@@ -461,7 +469,8 @@ func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType)
 					ReceiverId:   tdi.GoName,
 					Name:         "HEY_" + tdi.GoName,
 					DocName:      docString,
-					Ft:           nil,
+					Fd:           nil,
+					Ft:           m.Type.(*FuncType),
 					SourceFile:   nil,
 					RefersToSelf: false})
 			}

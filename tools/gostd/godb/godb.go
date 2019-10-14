@@ -204,7 +204,8 @@ func Resolve(n Node) Node {
 func init() {
 	eid := &Ident{Name: "error"}
 	enames := &Ident{Name: "Error"}
-	emethod := &Field{Names: []*Ident{enames}}
+	emethodft := &FuncType{Params: &FieldList{List: []*Field{}}, Results: &FieldList{List: []*Field{}}}
+	emethod := &Field{Names: []*Ident{enames}, Type: emethodft}
 	emethods := &FieldList{List: []*Field{emethod}}
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
