@@ -200,7 +200,7 @@ func %s(o GoObject, args Object) Object {
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
-		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", false)
+		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", true)
 		for _, r := range fn.Fd.Recv.List {
 			tdi := TypeLookup(r.Type).Definition
 			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
@@ -354,7 +354,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
 	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "fmt", true)
-	reflectLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "reflect", true)
+	reflectLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "_reflect", "reflect", true)
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType

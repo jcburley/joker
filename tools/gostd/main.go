@@ -269,6 +269,14 @@ func main() {
 			GenVariable(ci)
 		})
 
+	/* Generate type-code snippets in sorted order. */
+	SortedTypeInfoMap(GoTypes,
+		func(t string, ti *GoTypeInfo) {
+			if ti.Td != nil {
+				GenType(t, ti)
+			}
+		})
+
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {
@@ -276,17 +284,6 @@ func main() {
 				GenStandalone(v)
 			} else {
 				GenReceiver(v)
-			}
-		})
-
-	/* Generate type-code snippets in sorted order. For each
-	/* package, types are generated only if at least one function
-	/* is generated (above) -- so genFunction() must be called for
-	/* all functions beforehand. */
-	SortedTypeInfoMap(GoTypes,
-		func(t string, ti *GoTypeInfo) {
-			if ti.Td != nil {
-				GenType(t, ti)
 			}
 		})
 
