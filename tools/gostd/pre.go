@@ -188,7 +188,7 @@ func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, ar
 		if goTypeDoc == "" {
 			goTypeDoc = goType
 		}
-		if fn.Fd.Recv != nil {
+		if fn.Fd != nil && fn.Fd.Recv != nil {
 			goPreCode = paramName + " := " + extractParam
 		}
 	case *ArrayType:
@@ -208,7 +208,7 @@ func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, ar
 	case *ChanType:
 		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreChan(fn, indent, v, paramName, argNum)
 	}
-	if fn.Fd.Recv != nil && goPreCode == "" {
+	if fn.Fd != nil && fn.Fd.Recv != nil && goPreCode == "" {
 		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, Unix(WhereAt(e.Pos())))
 	}
 	return

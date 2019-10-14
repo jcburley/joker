@@ -41,6 +41,7 @@ type TypeDefInfo struct {
 	IsExported     bool
 	Doc            string
 	DefPos         token.Pos
+	GoFile         *GoFile
 	GoPrefix       string // Currently either "" or "*" (for reference types)
 	GoPackage      string // E.g. a/b/c
 	GoName         string // Base name of type (LocalName without any prefix)
@@ -74,7 +75,7 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
-func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
+func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeDefInfo {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to define new type after having sorted all types!!")
 	}
@@ -100,6 +101,7 @@ func TypeDefine(ts *TypeSpec, parentDoc *CommentGroup) []*TypeDefInfo {
 		IsExported:  IsExported(tln),
 		Doc:         CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
+		GoFile:      gf,
 		GoPrefix:    "",
 		GoPackage:   GoPackageForTypeSpec(ts),
 		GoName:      tln,

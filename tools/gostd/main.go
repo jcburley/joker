@@ -286,7 +286,7 @@ func main() {
 		func(f string, v *gowalk.FuncInfo) {
 			if v.Fd != nil && v.Fd.Recv == nil {
 				GenStandalone(v)
-			} else if v.Fd != nil { // TODO: Enable methods
+			} else {
 				GenReceiver(v)
 			}
 		})

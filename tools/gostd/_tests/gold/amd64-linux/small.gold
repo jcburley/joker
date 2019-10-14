@@ -2140,6 +2140,35 @@ func __resolveIPAddr(__network string, __address string) Object {
 	return _res
 }
 
+GO FUNC net.__hEY_Addr from net/net.go:
+func __hEY_Addr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Addr).String()
+	return MakeString(_res)
+}
+
+GO FUNC net.__hEY_Conn from net/net.go:
+// func __hEY_Conn(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__hEY_Error from net/net.go:
+func __hEY_Error(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Error).Temporary()
+	return MakeBoolean(_res)
+}
+
+GO FUNC net.__hEY_Listener from net/net.go:
+func __hEY_Listener(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Listener).Addr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__hEY_PacketConn from net/net.go:
+// func __hEY_PacketConn(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
 GO FUNC net.__iPMask_Size from net/ip.go:
 func __iPMask_Size(o GoObject, args Object) Object {
 	CheckGoArity("(_net.IPMask)Size()", args, 0, 0)
@@ -3922,11 +3951,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
-Totals: functions=109 generated=85 (77.98%)
+ABENDs: 987(12) 902(11) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
+Totals: functions=109 generated=88 (80.73%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)
-          methods=22 (20.18%) generated=0 (0.00%)
+          methods=22 (20.18%) generated=3 (13.64%)
         types=28 generated=14 (50.00%)
           hits expr=0 alias=0 fullname=42
         constants=2 generated=2 (100.00%)

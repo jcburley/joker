@@ -291,7 +291,7 @@ func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *Comme
 		Print(godb.Fset, ts)
 	}
 
-	tdiVec := TypeDefine(ts, parentDoc)
+	tdiVec := TypeDefine(ts, gf, parentDoc)
 	for _, tdi := range tdiVec {
 		ClojureCode[pkg].InitTypes[tdi] = struct{}{}
 		GoCode[pkg].InitTypes[tdi] = struct{}{}

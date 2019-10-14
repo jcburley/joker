@@ -6763,6 +6763,35 @@ func __flags_String(o GoObject, args Object) Object {
 	return MakeString(_res)
 }
 
+GO FUNC net.__hEY_Addr from net/net.go:
+func __hEY_Addr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Addr).String()
+	return MakeString(_res)
+}
+
+GO FUNC net.__hEY_Conn from net/net.go:
+// func __hEY_Conn(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__hEY_Error from net/net.go:
+func __hEY_Error(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Error).Temporary()
+	return MakeBoolean(_res)
+}
+
+GO FUNC net.__hEY_Listener from net/net.go:
+func __hEY_Listener(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Listener).Addr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__hEY_PacketConn from net/net.go:
+// func __hEY_PacketConn(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
 GO FUNC net.__hardwareAddr_String from net/mac.go:
 func __hardwareAddr_String(o GoObject, args Object) Object {
 	CheckGoArity("(_net.HardwareAddr)String()", args, 0, 0)
@@ -9752,6 +9781,60 @@ func __dir_Open(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/http.__hEY_CloseNotifier from net/http/server.go:
+// func __hEY_CloseNotifier(o GoObject, args Object) Object {
+// ABEND883(post.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
+
+GO FUNC net/http.__hEY_CookieJar from net/http/jar.go:
+// func __hEY_CookieJar(o GoObject, args Object) Object {
+// __u *ABEND987(genutils.go: imports not yet supported: url.URL)}
+
+GO FUNC net/http.__hEY_FileSystem from net/http/fs.go:
+func __hEY_FileSystem(o GoObject, args Object) Object {
+	_argList := CheckGoArity("", args, 1, 1)
+	_res1, _res2 := o.O.(FileSystem).Open(__name)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net/http.__hEY_Flusher from net/http/server.go:
+// func __hEY_Flusher(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__hEY_Handler from net/http/server.go:
+// func __hEY_Handler(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__hEY_Hijacker from net/http/server.go:
+// func __hEY_Hijacker(o GoObject, args Object) Object {
+// [go.std.net/Conn (atom-of ABEND042(post.go: cannot find typename bufio.ReadWriter)) Error]}
+
+GO FUNC net/http.__hEY_Pusher from net/http/http.go:
+func __hEY_Pusher(o GoObject, args Object) Object {
+	_argList := CheckGoArity("", args, 2, 2)
+	_res := o.O.(Pusher).Push(__target, __opts)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/http.__hEY_ResponseWriter from net/http/server.go:
+// func __hEY_ResponseWriter(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__hEY_RoundTripper from net/http/client.go:
+func __hEY_RoundTripper(o GoObject, args Object) Object {
+	_argList := CheckGoArity("", args, 1, 1)
+	_res1, _res2 := o.O.(RoundTripper).RoundTrip(1)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
 GO FUNC net/http.__handlerFunc_ServeHTTP from net/http/server.go:
 // func __handlerFunc_ServeHTTP(o GoObject, args Object) Object {
 // 	...ABEND275: TODO...
@@ -10934,6 +11017,13 @@ func __new(__o *_cookiejar.Options) Object {
 	return _res
 }
 
+GO FUNC net/http/cookiejar.__hEY_PublicSuffixList from net/http/cookiejar/jar.go:
+func __hEY_PublicSuffixList(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(PublicSuffixList).String()
+	return MakeString(_res)
+}
+
 GO FUNC net/http/cookiejar.__ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
 // func __ptrTo_Jar_Cookies(o GoObject, args Object) Object {
 // __u *ABEND987(genutils.go: imports not yet supported: url.URL)}
@@ -12031,6 +12121,10 @@ GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/rever
 // 	_res := _httputil.NewSingleHostReverseProxy(__target)
 // 	return MakeGoObject(_res)
 // }
+
+GO FUNC net/http/httputil.__hEY_BufferPool from net/http/httputil/reverseproxy.go:
+// func __hEY_BufferPool(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(1)))}
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {
@@ -13150,6 +13244,20 @@ GO FUNC net/rpc.ServeConn from net/rpc/server.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC net/rpc.__hEY_ClientCodec from net/rpc/client.go:
+func __hEY_ClientCodec(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(ClientCodec).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/rpc.__hEY_ServerCodec from net/rpc/server.go:
+func __hEY_ServerCodec(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(ServerCodec).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
 GO FUNC net/rpc.__ptrTo_Client_Call from net/rpc/client.go:
 // func __ptrTo_Client_Call(o GoObject, args Object) Object {
 // (__serviceMethod, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
@@ -13635,6 +13743,10 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // 	_res := _smtp.SendMail(__addr, __a, __from, __to, __msg)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 // }
+
+GO FUNC net/smtp.__hEY_Auth from net/smtp/auth.go:
+// func __hEY_Auth(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__fromServer)), __more)}
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
 func __ptrTo_Client_Auth(o GoObject, args Object) Object {
@@ -15697,11 +15809,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(105) 047(95) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 644(4) 906(3) 883(2) 908(1) 909(1)
-Totals: functions=421 generated=230 (54.63%)
+ABENDs: 987(108) 047(95) 275(34) 902(34) 048(32) 674(29) 042(27) 675(18) 907(10) 644(4) 883(3) 906(3) 908(1) 909(1)
+Totals: functions=421 generated=239 (56.77%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
-          methods=50 (11.88%) generated=0 (0.00%)
+          methods=50 (11.88%) generated=9 (18.00%)
         types=102 generated=41 (40.20%)
           hits expr=0 alias=0 fullname=95
         constants=91 generated=91 (100.00%)

@@ -197,17 +197,21 @@ func %s(o GoObject, args Object) Object {
 		abends.TrackAbends(goFn)
 	} else {
 		NumGeneratedFunctions++
-		NumGeneratedReceivers++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, ".", "github.com/candid82/joker/core", false)
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", true)
-		for _, r := range fn.Fd.Recv.List {
-			tdi := TypeLookup(r.Type).Definition
-			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
-				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
+		if fn.Fd == nil {
+			godb.NumGeneratedMethods++
+		} else {
+			NumGeneratedReceivers++
+			for _, r := range fn.Fd.Recv.List {
+				tdi := TypeLookup(r.Type).Definition
+				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
+					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
+				}
+				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
 			}
-			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
 		}
 	}
 
@@ -472,7 +476,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 					DocName:      docString,
 					Fd:           nil,
 					Ft:           m.Type.(*FuncType),
-					SourceFile:   nil,
+					SourceFile:   tdi.GoFile,
 					RefersToSelf: false}
 			}
 			continue
