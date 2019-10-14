@@ -468,7 +468,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 			}
 			for _, n := range m.Names {
 				docString := ""
-				fullName := "HEY_" + tdi.GoName
+				fullName := tdi.LocalName + "_" + n.Name
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
 					ReceiverId:   tdi.GoName,

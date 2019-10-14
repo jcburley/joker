@@ -2140,34 +2140,81 @@ func __resolveIPAddr(__network string, __address string) Object {
 	return _res
 }
 
-GO FUNC net.__hEY_Addr from net/net.go:
-func __hEY_Addr(o GoObject, args Object) Object {
+GO FUNC net.__addr_Network from net/net.go:
+func __addr_Network(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Addr).Network()
+	return MakeString(_res)
+}
+
+GO FUNC net.__addr_String from net/net.go:
+func __addr_String(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
 	_res := o.O.(Addr).String()
 	return MakeString(_res)
 }
 
-GO FUNC net.__hEY_Conn from net/net.go:
-// func __hEY_Conn(o GoObject, args Object) Object {
+GO FUNC net.__conn_Close from net/net.go:
+func __conn_Close(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Conn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__conn_LocalAddr from net/net.go:
+func __conn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Conn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_Read from net/net.go:
+// func __conn_Read(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__conn_RemoteAddr from net/net.go:
+func __conn_RemoteAddr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Conn).RemoteAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_SetDeadline from net/net.go:
+// func __conn_SetDeadline(o GoObject, args Object) Object {
 // __t ABEND987(genutils.go: imports not yet supported: time.Time)}
 
-GO FUNC net.__hEY_Error from net/net.go:
-func __hEY_Error(o GoObject, args Object) Object {
+GO FUNC net.__conn_SetReadDeadline from net/net.go:
+// func __conn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_SetWriteDeadline from net/net.go:
+// func __conn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_Write from net/net.go:
+// func __conn_Write(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__error_Error from net/net.go:
+// func __error_Error(o GoObject, args Object) Object {
+// 	CheckGoArity("", args, 0, 0)
+// 	return o.O.(Error).Error()
+// 	ABEND124(post.go: no public information returned)
+// }
+
+GO FUNC net.__error_Temporary from net/net.go:
+func __error_Temporary(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
 	_res := o.O.(Error).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net.__hEY_Listener from net/net.go:
-func __hEY_Listener(o GoObject, args Object) Object {
+GO FUNC net.__error_Timeout from net/net.go:
+func __error_Timeout(o GoObject, args Object) Object {
 	CheckGoArity("", args, 0, 0)
-	_res := o.O.(Listener).Addr()
-	return MakeGoObject(_res)
+	_res := o.O.(Error).Timeout()
+	return MakeBoolean(_res)
 }
-
-GO FUNC net.__hEY_PacketConn from net/net.go:
-// func __hEY_PacketConn(o GoObject, args Object) Object {
-// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
 
 GO FUNC net.__iPMask_Size from net/ip.go:
 func __iPMask_Size(o GoObject, args Object) Object {
@@ -2313,6 +2360,64 @@ func __invalidAddrError_Timeout(o GoObject, args Object) Object {
 	_res := o.O.(_net.InvalidAddrError).Timeout()
 	return MakeBoolean(_res)
 }
+
+GO FUNC net.__listener_Accept from net/net.go:
+func __listener_Accept(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res1, _res2 := o.O.(Listener).Accept()
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net.__listener_Addr from net/net.go:
+func __listener_Addr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Listener).Addr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__listener_Close from net/net.go:
+func __listener_Close(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(Listener).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_Close from net/net.go:
+func __packetConn_Close(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(PacketConn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_LocalAddr from net/net.go:
+func __packetConn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("", args, 0, 0)
+	_res := o.O.(PacketConn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__packetConn_ReadFrom from net/net.go:
+// func __packetConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+
+GO FUNC net.__packetConn_SetDeadline from net/net.go:
+// func __packetConn_SetDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetReadDeadline from net/net.go:
+// func __packetConn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetWriteDeadline from net/net.go:
+// func __packetConn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_WriteTo from net/net.go:
+// func __packetConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)), *__addr)}
 
 GO FUNC net.__ptrTo_AddrError_Error from net/net.go:
 func __ptrTo_AddrError_Error(o GoObject, args Object) Object {
@@ -3951,11 +4056,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(12) 902(11) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
-Totals: functions=109 generated=88 (80.73%)
+ABENDs: 987(16) 902(15) 674(9) 048(6) 047(3) 275(3) 042(1) 124(1) 644(1)
+Totals: functions=109 generated=97 (88.99%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)
-          methods=22 (20.18%) generated=3 (13.64%)
+          methods=22 (20.18%) generated=12 (54.55%)
         types=28 generated=14 (50.00%)
           hits expr=0 alias=0 fullname=42
         constants=2 generated=2 (100.00%)
