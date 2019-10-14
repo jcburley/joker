@@ -2,7 +2,7 @@ package gowalk
 
 import (
 	"fmt"
-	. "github.com/candid82/joker/tools/gostd/godb"
+	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
@@ -62,21 +62,10 @@ func SortedPackagesInfo(m map[string]*PackageInfo, f func(k string, i *PackageIn
 	}
 }
 
-type GoFile struct {
-	Name        string
-	RootUnix    string
-	PkgDirUnix  string
-	PkgBaseName string
-	Spaces      *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
-	NsRoot      string             // "go.std." or whatever is desired as the root namespace
-}
-
-var GoFiles = map[string]*GoFile{}
-
 type GoTypeInfo struct {
-	LocalName                 string  // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
-	FullGoName                string  // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
-	SourceFile                *GoFile // location of the type defintion
+	LocalName                 string       // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
+	FullGoName                string       // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
+	SourceFile                *godb.GoFile // location of the type defintion
 	Td                        *TypeSpec
 	Where                     token.Pos
 	UnderlyingType            *Expr            // nil if not a declared type
@@ -105,7 +94,7 @@ type GoTypeMap map[string]*GoTypeInfo
 var GoTypes = GoTypeMap{}
 
 type FnCodeInfo struct {
-	SourceFile *GoFile
+	SourceFile *godb.GoFile
 	FnCode     string
 	FnDecl     *FuncDecl     // Empty for standalone functions; used to get docstring for receivers
 	FnDoc      *CommentGroup // for some reason, fnDecl.Doc disappears by the time we try to use it!!??
@@ -166,7 +155,7 @@ type FuncInfo struct {
 	DocName      string    // Everything, for documentation and diagnostics
 	Fd           *FuncDecl // nil for methods
 	Ft           *FuncType
-	SourceFile   *GoFile
+	SourceFile   *godb.GoFile
 	RefersToSelf bool // whether :go-imports should list itself
 }
 
@@ -197,7 +186,7 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 // conflicts). NOTE: As a side effect, updates imports needed by the
 // function.
 func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.SourceFile.PkgDirUnix
+	curPkgName := fn.SourceFile.Package.DirUnix
 	basePkgName := path.Base(fullPkgName)
 	clType = basePkgName + "/" + baseTypeName
 	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
@@ -221,7 +210,7 @@ func FullTypeNameAsClojure(nsRoot, t string) string {
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
 
-func receiverPrefix(src *GoFile, rl []FieldItem) string {
+func receiverPrefix(src *godb.GoFile, rl []FieldItem) string {
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
@@ -241,7 +230,7 @@ func receiverPrefix(src *GoFile, rl []FieldItem) string {
 	return res + "_"
 }
 
-func receiverId(src *GoFile, pkgName string, rl []FieldItem) string {
+func receiverId(src *godb.GoFile, pkgName string, rl []FieldItem) string {
 	pkg := "_" + pkgName + "."
 	res := ""
 	for i, r := range rl {
@@ -262,19 +251,19 @@ func receiverId(src *GoFile, pkgName string, rl []FieldItem) string {
 	return res
 }
 
-func processFuncDecl(gf *GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
 	if Dump {
-		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, FileAt(fd.Pos()), fd, fd.Doc)
-		Print(Fset, fd)
+		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, fd.Doc)
+		Print(godb.Fset, fd)
 	}
 	fl := FlattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
 	if v, ok := QualifiedFunctions[fullName]; ok {
 		AddSortedOutput(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
-			fullName, v.SourceFile.Name, FileAt(fd.Pos())))
+			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))
 	}
-	rcvrId := receiverId(gf, gf.PkgBaseName, fl)
+	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
 	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, fd.Type, gf, false}
 }
@@ -290,16 +279,16 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 	}
 }
 
-var RegisterType_func func(gf *GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
+var RegisterType_func func(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
+func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
 	name := ts.Name.Name
 	typeName := pkg + "." + name
 
 	if Dump {
-		fmt.Printf("Type %s at %s:\n", typeName, WhereAt(ts.Pos()))
-		Print(Fset, ts)
+		fmt.Printf("Type %s at %s:\n", typeName, godb.WhereAt(ts.Pos()))
+		Print(godb.Fset, ts)
 	}
 
 	tdiVec := TypeDefine(ts, parentDoc)
@@ -318,7 +307,7 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 	}
 }
 
-func processTypeSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+func processTypeSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
 		processTypeSpec(gf, pkg, ts, parentDoc)
@@ -327,7 +316,7 @@ func processTypeSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGrou
 
 type VariableInfo struct {
 	Name       *Ident
-	SourceFile *GoFile
+	SourceFile *godb.GoFile
 	Def        string
 }
 
@@ -348,7 +337,7 @@ func SortedVariableInfoMap(m map[string]*VariableInfo, f func(k string, v *Varia
 
 type ConstantInfo struct {
 	Name       *Ident
-	SourceFile *GoFile
+	SourceFile *godb.GoFile
 	Def        string
 }
 
@@ -599,14 +588,14 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 //
 // There might even be an existing Go package to do some of the heavy lifting in that direction. In any case, the result
 // would be a lot cleaner and clearer than having "constants" wrapped in GoObject's or GoVar's.
-func processConstantSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
-	localName := gf.PkgBaseName + "." + name.Name
+	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
 	if c, ok := GoConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-			localName, WhereAt(c.Name.NamePos), WhereAt(name.NamePos))
+			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
 	switch name.Name {
@@ -616,14 +605,14 @@ func processConstantSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val 
 
 	valTypeString, promoteType := determineType(name.Name, valType, val)
 	if Dump || (Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
-		fmt.Printf("Constant %s at %s:\n", name, WhereAt(name.Pos()))
+		fmt.Printf("Constant %s at %s:\n", name, godb.WhereAt(name.Pos()))
 		if valType != nil {
-			fmt.Printf("  valType at %s:\n", WhereAt(valType.Pos()))
-			Print(Fset, valType)
+			fmt.Printf("  valType at %s:\n", godb.WhereAt(valType.Pos()))
+			Print(godb.Fset, valType)
 		}
 		if val != nil {
-			fmt.Printf("  val at %s:\n", WhereAt(val.Pos()))
-			Print(Fset, val)
+			fmt.Printf("  val at %s:\n", godb.WhereAt(val.Pos()))
+			Print(godb.Fset, val)
 		}
 	}
 	if valTypeString == "" {
@@ -654,14 +643,14 @@ func processConstantSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val 
 // as it isn't needed to determine the type of a variable, since the
 // type isn't needed for code generation for variables -- just for
 // constants.
-func processVariableSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	clName := name.Name
-	localName := gf.PkgBaseName + "." + name.Name
+	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
 	if c, ok := GoVariables[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: variable %s found at %s and now again at %s\n",
-			localName, WhereAt(c.Name.NamePos), WhereAt(name.NamePos))
+			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
 	switch name.Name {
@@ -670,14 +659,14 @@ func processVariableSpec(gf *GoFile, pkg string, name *Ident, valType Expr, val 
 	}
 
 	if Dump {
-		fmt.Printf("Variable %s at %s:\n", name, WhereAt(name.Pos()))
+		fmt.Printf("Variable %s at %s:\n", name, godb.WhereAt(name.Pos()))
 		if valType != nil {
-			fmt.Printf("  valType at %s:\n", WhereAt(valType.Pos()))
-			Print(Fset, valType)
+			fmt.Printf("  valType at %s:\n", godb.WhereAt(valType.Pos()))
+			Print(godb.Fset, valType)
 		}
 		if val != nil {
-			fmt.Printf("  val at %s:\n", WhereAt(val.Pos()))
-			Print(Fset, val)
+			fmt.Printf("  val at %s:\n", godb.WhereAt(val.Pos()))
+			Print(godb.Fset, val)
 		}
 	}
 
@@ -706,7 +695,7 @@ func what(constant bool) string {
 	return "Variable"
 }
 
-func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
+func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
@@ -747,14 +736,14 @@ func processValueSpecs(gf *GoFile, pkg string, tss []Spec, parentDoc *CommentGro
 			}
 
 			if Dump {
-				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, WhereAt(valName.NamePos))
+				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, godb.WhereAt(valName.NamePos))
 				if valType != nil {
 					fmt.Printf("  valType:\n")
-					Print(Fset, valType)
+					Print(godb.Fset, valType)
 				}
 				if val != nil {
 					fmt.Printf("  val:\n")
-					Print(Fset, val)
+					Print(godb.Fset, val)
 				}
 			}
 			doc := ts.Doc // Try block comments for this specific decl
@@ -787,7 +776,7 @@ func IsExportedType(f *Expr) bool {
 	}
 }
 
-func processTypes(gf *GoFile, pkgDirUnix string, f *File) {
+func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -797,12 +786,12 @@ func processTypes(gf *GoFile, pkgDirUnix string, f *File) {
 				processTypeSpecs(gf, pkgDirUnix, v.Specs, v.Doc)
 			}
 		default:
-			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, WhereAt(v.Pos())))
+			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, godb.WhereAt(v.Pos())))
 		}
 	}
 }
 
-func processOthers(gf *GoFile, pkgDirUnix string, f *File) {
+func processOthers(gf *godb.GoFile, pkgDirUnix string, f *File) {
 Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
@@ -832,45 +821,10 @@ Funcs:
 				processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, false)
 			case token.IMPORT: // Ignore these
 			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), WhereAt(v.Pos())))
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
 			}
 		}
 	}
-}
-
-func processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot string, f *File) (gf *GoFile) {
-	if egf, found := GoFiles[goFilePathUnix]; found {
-		panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.PkgDirUnix))
-	}
-	importsMap := map[string]string{}
-	gf = &GoFile{goFilePathUnix, rootUnix, pkgDirUnix, f.Name.Name, &importsMap, nsRoot}
-	GoFiles[goFilePathUnix] = gf
-
-	for _, imp := range f.Imports {
-		if Dump {
-			fmt.Printf("Import for file %s:\n", goFilePathUnix)
-			Print(Fset, imp)
-		}
-		importPath, err := strconv.Unquote(imp.Path.Value)
-		Check(err)
-		var as string
-		if n := imp.Name; n != nil {
-			switch n.Name {
-			case "_":
-				continue // Ignore these
-			case ".":
-				fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", WhereAt(n.NamePos))
-				continue
-			default:
-				as = n.Name
-			}
-		} else {
-			as = filepath.Base(importPath)
-		}
-		importsMap[as] = importPath
-	}
-
-	return
 }
 
 func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
@@ -880,7 +834,7 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
-			p, false, false, ClojureNamespaceForDirname(pkgDirUnix)}
+			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
 			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
@@ -889,16 +843,21 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := processPackageMeta(rootUnix, pkgDirUnix, goFilePathUnix, nsRoot, f)
+		gf := godb.GoFiles[goFilePathUnix]
+		if gf == nil {
+			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
+		}
 		processTypes(gf, pkgDirUnix, f)
 	}
 }
 
 func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	// Now process functions.
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := GoFiles[goFilePathUnix]
+		gf := godb.GoFiles[goFilePathUnix]
+		if gf == nil {
+			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
+		}
 		processOthers(gf, pkgDirUnix, f)
 	}
 }
@@ -910,7 +869,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
 
-	pkgs, err := parser.ParseDir(Fset, path,
+	pkgs, err := parser.ParseDir(godb.Fset, path,
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
@@ -950,7 +909,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			RegisterPackage(rootUnix, pkgDirUnix, nsRoot, v)
+			godb.RegisterPackage(rootUnix, pkgDirUnix, nsRoot, v)
 			found = true
 		}
 	}
@@ -1041,11 +1000,11 @@ func WalkAllDirs() (error, string) {
 			return err, d.srcDir
 		}
 	}
-	for _, wp := range PackagesAsDiscovered {
-		processPackageFilesTypes(wp.RootUnix, wp.PkgDirUnix, wp.NsRoot, wp.Pkg)
+	for _, wp := range godb.PackagesAsDiscovered {
+		processPackageFilesTypes(wp.RootUnix, wp.DirUnix, wp.NsRoot, wp.Pkg)
 	}
-	for _, wp := range PackagesAsDiscovered {
-		processPackageFilesOthers(wp.RootUnix, wp.PkgDirUnix, wp.NsRoot, wp.Pkg)
+	for _, wp := range godb.PackagesAsDiscovered {
+		processPackageFilesOthers(wp.RootUnix, wp.DirUnix, wp.NsRoot, wp.Pkg)
 	}
 	return nil, ""
 }

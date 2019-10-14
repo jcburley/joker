@@ -2,13 +2,17 @@ package godb
 
 import (
 	"fmt"
+	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
+	"os"
 	"path/filepath"
+	"strconv"
 	. "strings"
 )
 
 var Fset *token.FileSet
+var Dump bool
 
 var NumMethods int
 var NumGeneratedMethods int
@@ -91,11 +95,12 @@ func GoPackageBaseName(e Expr) string {
 }
 
 type PackageDb struct {
-	Pkg        *Package // nil means Universal scope
-	RootUnix   string
-	PkgDirUnix string
-	NsRoot     string
-	decls      map[string]DeclInfo
+	Pkg      *Package // nil means Universal scope
+	RootUnix string
+	DirUnix  string
+	BaseName string
+	NsRoot   string
+	decls    map[string]DeclInfo
 }
 
 var packagesByName = map[string]*PackageDb{}
@@ -107,6 +112,15 @@ type DeclInfo struct {
 	node Node
 	pos  token.Pos
 }
+
+type GoFile struct {
+	Package *PackageDb
+	Name    string
+	Spaces  *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+	NsRoot  string             // "go.std." or whatever is desired as the root namespace
+}
+
+var GoFiles = map[string]*GoFile{}
 
 func newDecl(decls *map[string]DeclInfo, pkg string, name *Ident, node Node) {
 	if !IsExported(name.Name) {
@@ -142,7 +156,42 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 	}
 
 	decls := map[string]DeclInfo{}
-	for _, f := range pkg.Files {
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, filepath.Base(pkgDirUnix), nsRoot, decls}
+
+	for path, f := range pkg.Files {
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		if egf, found := GoFiles[goFilePathUnix]; found {
+			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.DirUnix))
+		}
+		importsMap := map[string]string{}
+
+		for _, imp := range f.Imports {
+			if Dump {
+				fmt.Printf("Import for file %s:\n", goFilePathUnix)
+				Print(Fset, imp)
+			}
+			importPath, err := strconv.Unquote(imp.Path.Value)
+			Check(err)
+			var as string
+			if n := imp.Name; n != nil {
+				switch n.Name {
+				case "_":
+					continue // Ignore these
+				case ".":
+					fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", WhereAt(n.NamePos))
+					continue
+				default:
+					as = n.Name
+				}
+			} else {
+				as = filepath.Base(importPath)
+			}
+			importsMap[as] = importPath
+		}
+
+		gf := &GoFile{pkgDb, goFilePathUnix, &importsMap, nsRoot}
+		GoFiles[goFilePathUnix] = gf
+
 		for _, d := range f.Decls {
 			switch o := d.(type) {
 			case *FuncDecl:
@@ -166,7 +215,7 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 		}
 	}
 
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, nsRoot, decls}
+	pkgDb.decls = decls
 	packagesByName[pkgDirUnix] = pkgDb
 	PackagesAsDiscovered = append(PackagesAsDiscovered, pkgDb)
 }
@@ -214,6 +263,6 @@ func init() {
 	decls := map[string]DeclInfo{}
 	decls["error"] = decl
 
-	pkgDb := &PackageDb{nil, "", "", "", decls}
+	pkgDb := &PackageDb{nil, "", "", "", "", decls}
 	packagesByName[""] = pkgDb
 }

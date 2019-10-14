@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/gowalk"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
@@ -47,7 +47,7 @@ func RegisterGoTypeSwitch(types []*TypeDefInfo, jokerSourceDir string, outputCod
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
-	if Verbose {
+	if gowalk.Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -82,7 +82,7 @@ import (
 }
 
 func updateCustomLibsJoker(pkgs []string, f string) {
-	if Verbose {
+	if gowalk.Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -113,7 +113,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 }
 
 func updateGoTypeSwitch(types []*TypeDefInfo, f string, outputCode bool) {
-	if Verbose {
+	if gowalk.Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
 
@@ -168,25 +168,25 @@ func SwitchGoType(g interface{}) int {
 	}
 }
 
-func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
 	if jokerLibDir != "" && jokerLibDir != "-" &&
-		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
+		(generateEmpty || gowalk.PackagesInfo[pkgDirUnix].NonEmpty) {
 		jf := filepath.Join(jokerLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
 		var e error
 		e = os.MkdirAll(filepath.Dir(jf), 0777)
 		unbuf_out, e = os.Create(jf)
 		Check(e)
-	} else if generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty {
+	} else if generateEmpty || gowalk.PackagesInfo[pkgDirUnix].NonEmpty {
 		unbuf_out = os.Stdout
 	}
 	if unbuf_out != nil {
 		out = bufio.NewWriterSize(unbuf_out, 16384)
 	}
 
-	pi := PackagesInfo[pkgDirUnix]
+	pi := gowalk.PackagesInfo[pkgDirUnix]
 
 	if out != nil {
 		importPath, _ := filepath.Abs("/")
@@ -217,8 +217,8 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			"go.std."+strings.ReplaceAll(pkgDirUnix, "/", "."))
 	}
 
-	SortedConstantInfoMap(v.Constants,
-		func(c string, ci *ConstantInfo) {
+	gowalk.SortedConstantInfoMap(v.Constants,
+		func(c string, ci *gowalk.ConstantInfo) {
 			if outputCode {
 				fmt.Printf("JOKER CONSTANT %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
@@ -227,8 +227,8 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			}
 		})
 
-	SortedVariableInfoMap(v.Variables,
-		func(c string, ci *VariableInfo) {
+	gowalk.SortedVariableInfoMap(v.Variables,
+		func(c string, ci *gowalk.VariableInfo) {
 			if outputCode {
 				fmt.Printf("JOKER VARIABLE %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
@@ -237,8 +237,8 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			}
 		})
 
-	SortedTypeInfoMap(v.Types,
-		func(t string, ti *GoTypeInfo) {
+	gowalk.SortedTypeInfoMap(v.Types,
+		func(t string, ti *gowalk.GoTypeInfo) {
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.ClojureCode)
 			}
@@ -247,8 +247,8 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			}
 		})
 
-	SortedCodeMap(v,
-		func(f string, w *FnCodeInfo) {
+	gowalk.SortedCodeMap(v,
+		func(f string, w *gowalk.FnCodeInfo) {
 			if outputCode {
 				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
@@ -291,9 +291,9 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	}
 }
 
-func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputGoCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
 	pkgBaseName := path.Base(pkgDirUnix)
-	pi := PackagesInfo[pkgDirUnix]
+	pi := gowalk.PackagesInfo[pkgDirUnix]
 	pi.HasGoFiles = true
 	pkgDirNative := filepath.FromSlash(pkgDirUnix)
 
@@ -320,7 +320,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode,
 	// before the import statement is generated.
 	ensure := ""
 	imports.SortedOriginalPackageImports(pi.Pkg,
-		LegitimateImport,
+		gowalk.LegitimateImport,
 		func(imp string, pos token.Pos) {
 			ns := ClojureNamespaceForDirname(imp)
 			if ns == pi.ClojureNameSpace {
@@ -345,8 +345,8 @@ import (%s
 			imports.QuotedImportList(pi.ImportsNative, "\n\t"))
 	}
 
-	SortedTypeInfoMap(v.Types,
-		func(t string, ti *GoTypeInfo) {
+	gowalk.SortedTypeInfoMap(v.Types,
+		func(t string, ti *gowalk.GoTypeInfo) {
 			if outputCode {
 				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.GoCode)
 			}
@@ -355,8 +355,8 @@ import (%s
 			}
 		})
 
-	SortedCodeMap(v,
-		func(f string, w *FnCodeInfo) {
+	gowalk.SortedCodeMap(v,
+		func(f string, w *gowalk.FnCodeInfo) {
 			if outputCode {
 				fmt.Printf("GO FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
@@ -400,8 +400,8 @@ import (%s
 			}
 			k1 := tdi.FullName
 			mem := ""
-			SortedFnCodeInfo(v.InitVars[tdi], // Will always be populated
-				func(c string, r *FnCodeInfo) {
+			gowalk.SortedFnCodeInfo(v.InitVars[tdi], // Will always be populated
+				func(c string, r *gowalk.FnCodeInfo) {
 					doc := r.FnDoc
 					g := r.FnCode
 					mem += fmt.Sprintf(`
@@ -458,13 +458,13 @@ import (%s
 }
 
 func OutputPackageCode(jokerLibDir string, outputCode, generateEmpty bool) {
-	SortedPackageMap(ClojureCode,
-		func(pkgDirUnix string, v CodeInfo) {
+	gowalk.SortedPackageMap(gowalk.ClojureCode,
+		func(pkgDirUnix string, v gowalk.CodeInfo) {
 			outputClojureCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
 		})
 
-	SortedPackageMap(GoCode,
-		func(pkgDirUnix string, v CodeInfo) {
+	gowalk.SortedPackageMap(gowalk.GoCode,
+		func(pkgDirUnix string, v gowalk.CodeInfo) {
 			outputGoCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
 		})
 }

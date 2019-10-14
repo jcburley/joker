@@ -176,8 +176,8 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 
 func GenReceiver(fn *FuncInfo) {
 	genSymReset()
-	pkgDirUnix := fn.SourceFile.PkgDirUnix
-	pkgBaseName := fn.SourceFile.PkgBaseName
+	pkgDirUnix := fn.SourceFile.Package.DirUnix
+	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	const goTemplate = `
 func %s(o GoObject, args Object) Object {
@@ -219,8 +219,8 @@ func %s(o GoObject, args Object) Object {
 func GenStandalone(fn *FuncInfo) {
 	genSymReset()
 	d := fn.Fd
-	pkgDirUnix := fn.SourceFile.PkgDirUnix
-	pkgBaseName := fn.SourceFile.PkgBaseName
+	pkgDirUnix := fn.SourceFile.Package.DirUnix
+	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	const clojureTemplate = `
 (defn %s%s
@@ -286,7 +286,7 @@ func %s(%s) %s {
 
 func GenConstant(ci *ConstantInfo) {
 	genSymReset()
-	pkgDirUnix := ci.SourceFile.PkgDirUnix
+	pkgDirUnix := ci.SourceFile.Package.DirUnix
 
 	ClojureCode[pkgDirUnix].Constants[ci.Name.Name] = ci
 
@@ -297,7 +297,7 @@ func GenConstant(ci *ConstantInfo) {
 
 func GenVariable(ci *VariableInfo) {
 	genSymReset()
-	pkgDirUnix := ci.SourceFile.PkgDirUnix
+	pkgDirUnix := ci.SourceFile.Package.DirUnix
 
 	ClojureCode[pkgDirUnix].Variables[ci.Name.Name] = ci
 
@@ -306,7 +306,7 @@ func GenVariable(ci *VariableInfo) {
 	imports.AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, false)
 }
 
-func maybeImplicitConvert(src *GoFile, typeName string, ts *TypeSpec) string {
+func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) string {
 	t := toGoTypeInfo(src, ts)
 	if t == nil || t.Custom {
 		return ""
@@ -351,11 +351,11 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 `
 
 	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType)
-	localType := "_" + ti.SourceFile.PkgBaseName + "." + ti.LocalName
+	localType := "_" + ti.SourceFile.Package.BaseName + "." + ti.LocalName
 	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
-	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "", "fmt", true)
-	reflectLocal := imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, "_reflect", "reflect", true)
+	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, "", "fmt", true)
+	reflectLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, "_reflect", "reflect", true)
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -373,8 +373,8 @@ func GenType(t string, ti *GoTypeInfo) {
 	if !IsExported(td.Name.Name) {
 		return // Do not generate anything for private types
 	}
-	pkgDirUnix := ti.SourceFile.PkgDirUnix
-	pkgBaseName := ti.SourceFile.PkgBaseName
+	pkgDirUnix := ti.SourceFile.Package.DirUnix
+	pkgBaseName := ti.SourceFile.Package.BaseName
 	pi := PackagesInfo[pkgDirUnix]
 
 	pi.NonEmpty = true
@@ -451,7 +451,7 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.GoCode += goTypeExtractor(t, ti)
 }
 
-func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType) {
+func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
 			if len(m.Names) != 1 {
@@ -464,15 +464,16 @@ func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType)
 			}
 			for _, n := range m.Names {
 				docString := ""
-				*methods = append(*methods, &FuncInfo{
+				fullName := "HEY_" + tdi.GoName
+				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
 					ReceiverId:   tdi.GoName,
-					Name:         "HEY_" + tdi.GoName,
+					Name:         fullName,
 					DocName:      docString,
 					Fd:           nil,
 					Ft:           m.Type.(*FuncType),
 					SourceFile:   nil,
-					RefersToSelf: false})
+					RefersToSelf: false}
 			}
 			continue
 		}
@@ -480,7 +481,7 @@ func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType)
 		if ts == nil {
 			return
 		}
-		appendMethods(methods, tdi, ts.(*TypeSpec).Type.(*InterfaceType))
+		appendMethods(tdi, ts.(*TypeSpec).Type.(*InterfaceType))
 	}
 }
 
@@ -492,16 +493,12 @@ func GenTypeFromDb(tdi *TypeDefInfo) {
 		return // The code below currently handles only interface{} types
 	}
 
-	ts := tdi.TypeSpec
-
-	methods := []*FuncInfo{}
-
-	appendMethods(&methods, tdi, ts.Type.(*InterfaceType))
+	appendMethods(tdi, tdi.TypeSpec.Type.(*InterfaceType))
 }
 
 func promoteImports(ti *GoTypeInfo) {
 	for _, imp := range ti.RequiredImports.FullNames {
-		imports.AddImport(PackagesInfo[ti.SourceFile.PkgDirUnix].ImportsNative, imp.Local, imp.Full, false)
+		imports.AddImport(PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, imp.Local, imp.Full, false)
 	}
 }
 
@@ -528,7 +525,7 @@ func nonGoObjectCase(ti *GoTypeInfo, typeName, baseTypeName string) (nonGoObject
 func nonGoObjectTypeFor(ti *GoTypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := ti.Td.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.SourceFile.PkgDirUnix, t.Name, &ti.Td.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.SourceFile.Package.DirUnix, t.Name, &ti.Td.Type)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
