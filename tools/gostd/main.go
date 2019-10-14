@@ -277,6 +277,10 @@ func main() {
 			}
 		})
 
+	for _, tdi := range types.AllSorted() {
+		GenTypeFromDb(tdi)
+	}
+
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {

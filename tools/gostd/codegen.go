@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
+	"github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/types"
@@ -105,13 +106,13 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "_" + pkgBaseName + "." + goFname + "(" + goParams + ")\n"
 }
 
-func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, d *FuncDecl, goFname string) (fc funcCode) {
+func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
-		genGoPre(fn, "\t", d.Type.Params, goFname)
-	goCall := genGoCall(pkgBaseName, d.Name.Name, goParams)
-	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", d)
+		genGoPre(fn, "\t", t.Params, goFname)
+	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\t...ABEND675: TODO...\n"
@@ -128,7 +129,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	%sCheckGoArity("%s", args, %d, %d)
 	`
 
-	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Fd.Type.Params, goFname)
+	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
 	if strings.Contains(paramListDoc, "ABEND") {
 		return paramListDoc
 	}
@@ -145,10 +146,10 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 		return cljGoParams
 	}
 
-	receiverName := fn.Fd.Name.Name
+	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.Fd)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.Ft)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -206,7 +207,7 @@ func %s(o GoObject, args Object) Object {
 			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[tdi][fn.Fd.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
+			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
 		}
 	}
 
@@ -228,7 +229,7 @@ func GenStandalone(fn *FuncInfo) {
   [%s])
 `
 	goFname := funcNameAsGoPrivate(d.Name.Name)
-	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, d, goFname)
+	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Ft, goFname)
 	clojureReturnType, goReturnType := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	var cl2gol string
@@ -236,7 +237,7 @@ func GenStandalone(fn *FuncInfo) {
 		cl2gol = goFname
 	} else {
 		clojureReturnType += " "
-		cl2gol = pkgBaseName + "." + d.Name.Name
+		cl2gol = pkgBaseName + "." + fn.BaseName
 		if _, found := PackagesInfo[pkgDirUnix]; !found {
 			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
 		}
@@ -448,6 +449,45 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.GoCode += goConstructor
 
 	ti.GoCode += goTypeExtractor(t, ti)
+}
+
+func appendMethods(methods *[]*FuncInfo, tdi *TypeDefInfo, iface *InterfaceType) {
+	for _, m := range iface.Methods.List {
+		if m.Names != nil {
+			for _, n := range m.Names {
+				docString := ""
+				*methods = append(*methods, &FuncInfo{
+					BaseName:     n.Name,
+					ReceiverId:   tdi.GoName,
+					Name:         "HEY_" + tdi.GoName,
+					DocName:      docString,
+					Ft:           nil,
+					SourceFile:   nil,
+					RefersToSelf: false})
+			}
+			continue
+		}
+		ts := godb.Resolve(m.Type)
+		if ts == nil {
+			return
+		}
+		appendMethods(methods, tdi, ts.(*TypeSpec).Type.(*InterfaceType))
+	}
+}
+
+func GenTypeFromDb(tdi *TypeDefInfo) {
+	if !tdi.IsExported {
+		return // Do not generate anything for private types
+	}
+	if tdi.Specificity == Concrete {
+		return // The code below currently handles only interface{} types
+	}
+
+	ts := tdi.TypeSpec
+
+	methods := []*FuncInfo{}
+
+	appendMethods(&methods, tdi, ts.Type.(*InterfaceType))
 }
 
 func promoteImports(ti *GoTypeInfo) {

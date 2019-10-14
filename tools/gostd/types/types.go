@@ -37,7 +37,7 @@ var typesByFullName = map[string]Expr{}
 type TypeDefInfo struct {
 	TypeSpec       *TypeSpec
 	FullName       string // Clojure name (e.g. "a.b.c/Typename")
-	LocalName      string // Local, or base, name (e.g. "Typename")
+	LocalName      string // Local, or base, name (e.g. "Typename" or "*Typename")
 	IsExported     bool
 	Doc            string
 	DefPos         token.Pos

@@ -36,6 +36,8 @@ var NumGeneratedConstants int
 var NumGeneratedVariables int
 
 type PackageInfo struct {
+	DirUnix          string
+	BaseName         string
 	ImportsNative    *imports.Imports
 	ImportsAutoGen   *imports.Imports
 	Pkg              *Package
@@ -158,11 +160,12 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName     string // Just the name without receiver-type info
-	ReceiverId   string // Receiver info (only one type supported here and by Golang itself for now)
-	Name         string // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName      string // Everything, for documentation and diagnostics
-	Fd           *FuncDecl
+	BaseName     string    // Just the name without receiver-type info
+	ReceiverId   string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name         string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName      string    // Everything, for documentation and diagnostics
+	Fd           *FuncDecl // nil for methods
+	Ft           *FuncType
 	SourceFile   *GoFile
 	RefersToSelf bool // whether :go-imports should list itself
 }
@@ -273,7 +276,7 @@ func processFuncDecl(gf *GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
 	}
 	rcvrId := receiverId(gf, gf.PkgBaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, gf, false}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, fd.Type, gf, false}
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
@@ -292,10 +295,10 @@ var RegisterType_func func(gf *GoFile, fullGoTypeName string, ts *TypeSpec) *GoT
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
 func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
 	name := ts.Name.Name
-	typename := pkg + "." + name
+	typeName := pkg + "." + name
 
 	if Dump {
-		fmt.Printf("Type %s at %s:\n", typename, WhereAt(ts.Pos()))
+		fmt.Printf("Type %s at %s:\n", typeName, WhereAt(ts.Pos()))
 		Print(Fset, ts)
 	}
 
@@ -305,7 +308,7 @@ func processTypeSpec(gf *GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGro
 		GoCode[pkg].InitTypes[tdi] = struct{}{}
 	}
 
-	gt := RegisterType_func(gf, typename, ts)
+	gt := RegisterType_func(gf, typeName, ts)
 	gt.Td = ts
 	gt.Where = ts.Pos()
 	gt.RequiredImports = &imports.Imports{}
@@ -876,8 +879,8 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{}, p, false, false,
-			ClojureNamespaceForDirname(pkgDirUnix)}
+		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
+			p, false, false, ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
 			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},

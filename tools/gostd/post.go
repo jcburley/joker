@@ -272,8 +272,8 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 	return
 }
 
-func genGoPost(fn *FuncInfo, indent string, d *FuncDecl) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode string) {
-	fl := d.Type.Results
+func genGoPost(fn *FuncInfo, indent string, t *FuncType) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode string) {
+	fl := t.Results
 	if fl == nil || fl.List == nil {
 		return
 	}
