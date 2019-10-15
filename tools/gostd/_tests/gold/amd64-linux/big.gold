@@ -9901,6 +9901,7 @@ func __dir_Open(o GoObject, args Object) Object {
 GO FUNC net/http.__fileSystem_Open from net/http/fs.go:
 func __fileSystem_Open(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
+	__name := ExtractGoString("", "__name", _argList, 0)
 	_res1, _res2 := o.O.(_http.FileSystem).Open(__name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -10266,6 +10267,7 @@ GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 GO FUNC net/http.__pusher_Push from net/http/http.go:
 func __pusher_Push(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 2, 2)
+	__target := ExtractGoString("", "__target", _argList, 0)
 	_res := o.O.(_http.Pusher).Push(__target, __opts)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -11148,6 +11150,7 @@ GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go
 GO FUNC net/http/cookiejar.__publicSuffixList_PublicSuffix from net/http/cookiejar/jar.go:
 func __publicSuffixList_PublicSuffix(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
+	__domain := ExtractGoString("", "__domain", _argList, 0)
 	_res := o.O.(_cookiejar.PublicSuffixList).PublicSuffix(__domain)
 	return MakeString(_res)
 }

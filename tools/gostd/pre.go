@@ -188,7 +188,7 @@ func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, ar
 		if goTypeDoc == "" {
 			goTypeDoc = goType
 		}
-		if fn.Fd != nil && fn.Fd.Recv != nil {
+		if fn.Fd == nil || fn.Fd.Recv != nil {
 			goPreCode = paramName + " := " + extractParam
 		}
 	case *ArrayType:
