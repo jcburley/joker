@@ -224,7 +224,7 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 		p := field.Name
 		resVar := ""
 		if p == nil {
-			resVar = genSym("")
+			resVar = genSym("__arg")
 		} else {
 			resVar = "__" + p.Name
 		}

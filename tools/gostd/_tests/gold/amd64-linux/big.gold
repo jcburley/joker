@@ -10281,7 +10281,7 @@ func __responseWriter_Header(o GoObject, args Object) Object {
 
 GO FUNC net/http.__responseWriter_Write from net/http/server.go:
 // func __responseWriter_Write(o GoObject, args Object) Object {
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(1)))}
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
 
 GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
 // func __responseWriter_WriteHeader(o GoObject, args Object) Object {
@@ -10291,7 +10291,7 @@ GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
 GO FUNC net/http.__roundTripper_RoundTrip from net/http/client.go:
 func __roundTripper_RoundTrip(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(1)
+	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(__arg1)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
@@ -12265,7 +12265,7 @@ func __bufferPool_Get(o GoObject, args Object) Object {
 
 GO FUNC net/http/httputil.__bufferPool_Put from net/http/httputil/reverseproxy.go:
 // func __bufferPool_Put(o GoObject, args Object) Object {
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(1)))}
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {
@@ -13399,13 +13399,13 @@ GO FUNC net/rpc.__clientCodec_ReadResponseBody from net/rpc/client.go:
 GO FUNC net/rpc.__clientCodec_ReadResponseHeader from net/rpc/client.go:
 func __clientCodec_ReadResponseHeader(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(1)
+	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/rpc.__clientCodec_WriteRequest from net/rpc/client.go:
 // func __clientCodec_WriteRequest(o GoObject, args Object) Object {
-// (1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+// (__arg1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
 
 GO FUNC net/rpc.__ptrTo_Client_Call from net/rpc/client.go:
 // func __ptrTo_Client_Call(o GoObject, args Object) Object {
@@ -13474,13 +13474,13 @@ GO FUNC net/rpc.__serverCodec_ReadRequestBody from net/rpc/server.go:
 GO FUNC net/rpc.__serverCodec_ReadRequestHeader from net/rpc/server.go:
 func __serverCodec_ReadRequestHeader(o GoObject, args Object) Object {
 	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(1)
+	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/rpc.__serverCodec_WriteResponse from net/rpc/server.go:
 // func __serverCodec_WriteResponse(o GoObject, args Object) Object {
-// (1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+// (__arg1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
 
 GO FUNC net/rpc.__serverError_Error from net/rpc/client.go:
 func __serverError_Error(o GoObject, args Object) Object {
