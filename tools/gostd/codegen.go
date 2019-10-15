@@ -186,6 +186,10 @@ func %s(o GoObject, args Object) Object {
 
 	goFname := funcNameAsGoPrivate(fn.Name)
 
+	if !IsExported(fn.BaseName) {
+		return
+	}
+
 	clojureFn := ""
 
 	goFn := fmt.Sprintf(goTemplate, goFname, genReceiverCode(fn, goFname))
