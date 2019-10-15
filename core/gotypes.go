@@ -18,7 +18,8 @@ type GoTypeInfo struct {
 func LookupGoType(g interface{}) *GoTypeInfo {
 	ix := SwitchGoType(g)
 	if ix < 0 || ix >= len(GoTypesVec) || GoTypesVec[ix] == nil {
-		panic(fmt.Sprintf("LookupGoType: %T returned %d\n", g, ix))
+		return nil
+		// panic(fmt.Sprintf("LookupGoType: %T returned %d (max=%d)\n", g, ix, len(GoTypesVec)-1))
 	}
 	return GoTypesVec[ix]
 }
