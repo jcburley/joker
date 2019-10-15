@@ -28,9 +28,6 @@ func funcNameAsGoPrivate(f string) string {
 var genSymIndex = map[string]int{}
 
 func genSym(pre string) string {
-	if pre == "" {
-		pre = "__dummy"
-	}
 	var idx int
 	if i, ok := genSymIndex[pre]; ok {
 		idx = i + 1
