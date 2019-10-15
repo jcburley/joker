@@ -2140,6 +2140,82 @@ func __resolveIPAddr(__network string, __address string) Object {
 	return _res
 }
 
+GO FUNC net.__addr_Network from net/net.go:
+func __addr_Network(o GoObject, args Object) Object {
+	CheckGoArity("(net.Addr)Network()", args, 0, 0)
+	_res := o.O.(_net.Addr).Network()
+	return MakeString(_res)
+}
+
+GO FUNC net.__addr_String from net/net.go:
+func __addr_String(o GoObject, args Object) Object {
+	CheckGoArity("(net.Addr)String()", args, 0, 0)
+	_res := o.O.(_net.Addr).String()
+	return MakeString(_res)
+}
+
+GO FUNC net.__conn_Close from net/net.go:
+func __conn_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)Close()", args, 0, 0)
+	_res := o.O.(_net.Conn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__conn_LocalAddr from net/net.go:
+func __conn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)LocalAddr()", args, 0, 0)
+	_res := o.O.(_net.Conn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_Read from net/net.go:
+// func __conn_Read(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__conn_RemoteAddr from net/net.go:
+func __conn_RemoteAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)RemoteAddr()", args, 0, 0)
+	_res := o.O.(_net.Conn).RemoteAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_SetDeadline from net/net.go:
+// func __conn_SetDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_SetReadDeadline from net/net.go:
+// func __conn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_SetWriteDeadline from net/net.go:
+// func __conn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_Write from net/net.go:
+// func __conn_Write(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__error_Error from net/net.go:
+// func __error_Error(o GoObject, args Object) Object {
+// 	CheckGoArity("(net.Error)Error()", args, 0, 0)
+// 	return o.O.(_net.Error).Error()
+// 	ABEND124(post.go: no public information returned)
+// }
+
+GO FUNC net.__error_Temporary from net/net.go:
+func __error_Temporary(o GoObject, args Object) Object {
+	CheckGoArity("(net.Error)Temporary()", args, 0, 0)
+	_res := o.O.(_net.Error).Temporary()
+	return MakeBoolean(_res)
+}
+
+GO FUNC net.__error_Timeout from net/net.go:
+func __error_Timeout(o GoObject, args Object) Object {
+	CheckGoArity("(net.Error)Timeout()", args, 0, 0)
+	_res := o.O.(_net.Error).Timeout()
+	return MakeBoolean(_res)
+}
+
 GO FUNC net.__iPMask_Size from net/ip.go:
 func __iPMask_Size(o GoObject, args Object) Object {
 	CheckGoArity("(_net.IPMask)Size()", args, 0, 0)
@@ -2284,6 +2360,64 @@ func __invalidAddrError_Timeout(o GoObject, args Object) Object {
 	_res := o.O.(_net.InvalidAddrError).Timeout()
 	return MakeBoolean(_res)
 }
+
+GO FUNC net.__listener_Accept from net/net.go:
+func __listener_Accept(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Accept()", args, 0, 0)
+	_res1, _res2 := o.O.(_net.Listener).Accept()
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net.__listener_Addr from net/net.go:
+func __listener_Addr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Addr()", args, 0, 0)
+	_res := o.O.(_net.Listener).Addr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__listener_Close from net/net.go:
+func __listener_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Close()", args, 0, 0)
+	_res := o.O.(_net.Listener).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_Close from net/net.go:
+func __packetConn_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.PacketConn)Close()", args, 0, 0)
+	_res := o.O.(_net.PacketConn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_LocalAddr from net/net.go:
+func __packetConn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.PacketConn)LocalAddr()", args, 0, 0)
+	_res := o.O.(_net.PacketConn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__packetConn_ReadFrom from net/net.go:
+// func __packetConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+
+GO FUNC net.__packetConn_SetDeadline from net/net.go:
+// func __packetConn_SetDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetReadDeadline from net/net.go:
+// func __packetConn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetWriteDeadline from net/net.go:
+// func __packetConn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_WriteTo from net/net.go:
+// func __packetConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)), *__addr)}
 
 GO FUNC net.__ptrTo_AddrError_Error from net/net.go:
 func __ptrTo_AddrError_Error(o GoObject, args Object) Object {
@@ -2630,6 +2764,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", __addr_Network, "name of the network (for example, \"tcp\", \"udp\")\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __addr_String, "string form of address (for example, \"192.0.2.1:25\", \"[2001:db8::1]:80\")\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2668,6 +2804,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2709,6 +2848,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
+			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "Is the error temporary?\n", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "Is the error a timeout?\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2824,6 +2965,9 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
+			"Accept": MakeGoReceiver("Accept", __listener_Accept, "Accept waits for and returns the next connection to the listener.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", __listener_Addr, "Addr returns the listener's network address.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __listener_Close, "Close closes the listener.\nAny blocked Accept operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2876,6 +3020,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -3922,11 +4068,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 902(11) 987(10) 674(9) 048(6) 047(3) 275(3) 042(1) 644(1)
-Totals: functions=109 generated=85 (77.98%)
+ABENDs: 987(16) 902(15) 674(9) 048(6) 047(3) 275(3) 042(1) 124(1) 644(1)
+Totals: functions=109 generated=97 (88.99%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)
-          methods=22 (20.18%) generated=0 (0.00%)
+          methods=22 (20.18%) generated=12 (54.55%)
         types=28 generated=14 (50.00%)
           hits expr=0 alias=0 fullname=42
         constants=2 generated=2 (100.00%)

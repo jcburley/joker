@@ -6756,6 +6756,82 @@ func __splitHostPort(__hostport string) Object {
 	return _res
 }
 
+GO FUNC net.__addr_Network from net/net.go:
+func __addr_Network(o GoObject, args Object) Object {
+	CheckGoArity("(net.Addr)Network()", args, 0, 0)
+	_res := o.O.(_net.Addr).Network()
+	return MakeString(_res)
+}
+
+GO FUNC net.__addr_String from net/net.go:
+func __addr_String(o GoObject, args Object) Object {
+	CheckGoArity("(net.Addr)String()", args, 0, 0)
+	_res := o.O.(_net.Addr).String()
+	return MakeString(_res)
+}
+
+GO FUNC net.__conn_Close from net/net.go:
+func __conn_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)Close()", args, 0, 0)
+	_res := o.O.(_net.Conn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__conn_LocalAddr from net/net.go:
+func __conn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)LocalAddr()", args, 0, 0)
+	_res := o.O.(_net.Conn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_Read from net/net.go:
+// func __conn_Read(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__conn_RemoteAddr from net/net.go:
+func __conn_RemoteAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Conn)RemoteAddr()", args, 0, 0)
+	_res := o.O.(_net.Conn).RemoteAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__conn_SetDeadline from net/net.go:
+// func __conn_SetDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_SetReadDeadline from net/net.go:
+// func __conn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_SetWriteDeadline from net/net.go:
+// func __conn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__conn_Write from net/net.go:
+// func __conn_Write(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+
+GO FUNC net.__error_Error from net/net.go:
+// func __error_Error(o GoObject, args Object) Object {
+// 	CheckGoArity("(net.Error)Error()", args, 0, 0)
+// 	return o.O.(_net.Error).Error()
+// 	ABEND124(post.go: no public information returned)
+// }
+
+GO FUNC net.__error_Temporary from net/net.go:
+func __error_Temporary(o GoObject, args Object) Object {
+	CheckGoArity("(net.Error)Temporary()", args, 0, 0)
+	_res := o.O.(_net.Error).Temporary()
+	return MakeBoolean(_res)
+}
+
+GO FUNC net.__error_Timeout from net/net.go:
+func __error_Timeout(o GoObject, args Object) Object {
+	CheckGoArity("(net.Error)Timeout()", args, 0, 0)
+	_res := o.O.(_net.Error).Timeout()
+	return MakeBoolean(_res)
+}
+
 GO FUNC net.__flags_String from net/interface.go:
 func __flags_String(o GoObject, args Object) Object {
 	CheckGoArity("(_net.Flags)String()", args, 0, 0)
@@ -6914,6 +6990,64 @@ func __invalidAddrError_Timeout(o GoObject, args Object) Object {
 	_res := o.O.(_net.InvalidAddrError).Timeout()
 	return MakeBoolean(_res)
 }
+
+GO FUNC net.__listener_Accept from net/net.go:
+func __listener_Accept(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Accept()", args, 0, 0)
+	_res1, _res2 := o.O.(_net.Listener).Accept()
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net.__listener_Addr from net/net.go:
+func __listener_Addr(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Addr()", args, 0, 0)
+	_res := o.O.(_net.Listener).Addr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__listener_Close from net/net.go:
+func __listener_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.Listener)Close()", args, 0, 0)
+	_res := o.O.(_net.Listener).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_Close from net/net.go:
+func __packetConn_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net.PacketConn)Close()", args, 0, 0)
+	_res := o.O.(_net.PacketConn).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net.__packetConn_LocalAddr from net/net.go:
+func __packetConn_LocalAddr(o GoObject, args Object) Object {
+	CheckGoArity("(net.PacketConn)LocalAddr()", args, 0, 0)
+	_res := o.O.(_net.PacketConn).LocalAddr()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net.__packetConn_ReadFrom from net/net.go:
+// func __packetConn_ReadFrom(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+
+GO FUNC net.__packetConn_SetDeadline from net/net.go:
+// func __packetConn_SetDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetReadDeadline from net/net.go:
+// func __packetConn_SetReadDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_SetWriteDeadline from net/net.go:
+// func __packetConn_SetWriteDeadline(o GoObject, args Object) Object {
+// __t ABEND987(genutils.go: imports not yet supported: time.Time)}
+
+GO FUNC net.__packetConn_WriteTo from net/net.go:
+// func __packetConn_WriteTo(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)), *__addr)}
 
 GO FUNC net.__ptrTo_AddrError_Error from net/net.go:
 func __ptrTo_AddrError_Error(o GoObject, args Object) Object {
@@ -7649,6 +7783,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/big/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", __addr_Network, "name of the network (for example, \"tcp\", \"udp\")\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __addr_String, "string form of address (for example, \"192.0.2.1:25\", \"[2001:db8::1]:80\")\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7687,6 +7823,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/big/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7743,6 +7882,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests/big/src/net/net.go:378:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
+			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "Is the error temporary?\n", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "Is the error a timeout?\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7918,6 +8059,9 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/big/src/net/net.go:365:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
+			"Accept": MakeGoReceiver("Accept", __listener_Accept, "Accept waits for and returns the next connection to the listener.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", __listener_Addr, "Addr returns the listener's network address.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __listener_Close, "Close closes the listener.\nAny blocked Accept operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7970,6 +8114,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/big/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -9735,12 +9881,24 @@ GO FUNC net/http.TimeoutHandler from net/http/server.go:
 // 	return MakeGoObject(_res)
 // }
 
+GO FUNC net/http.__closeNotifier_CloseNotify from net/http/server.go:
+// func __closeNotifier_CloseNotify(o GoObject, args Object) Object {
+// ABEND883(post.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
+
 GO FUNC net/http.__connState_String from net/http/server.go:
 func __connState_String(o GoObject, args Object) Object {
 	CheckGoArity("(_net/http.ConnState)String()", args, 0, 0)
 	_res := o.O.(_http.ConnState).String()
 	return MakeString(_res)
 }
+
+GO FUNC net/http.__cookieJar_Cookies from net/http/jar.go:
+// func __cookieJar_Cookies(o GoObject, args Object) Object {
+// __u *ABEND987(genutils.go: imports not yet supported: url.URL)}
+
+GO FUNC net/http.__cookieJar_SetCookies from net/http/jar.go:
+// func __cookieJar_SetCookies(o GoObject, args Object) Object {
+// __u *ABEND987(genutils.go: imports not yet supported: url.URL), __cookies []*_http.Cookie}
 
 GO FUNC net/http.__dir_Open from net/http/fs.go:
 func __dir_Open(o GoObject, args Object) Object {
@@ -9753,8 +9911,29 @@ func __dir_Open(o GoObject, args Object) Object {
 	return _res
 }
 
+GO FUNC net/http.__fileSystem_Open from net/http/fs.go:
+func __fileSystem_Open(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(net/http.FileSystem)Open()", args, 1, 1)
+	__name := ExtractGoString("(net/http.FileSystem)Open()", "__name", _argList, 0)
+	_res1, _res2 := o.O.(_http.FileSystem).Open(__name)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
+
+GO FUNC net/http.__flusher_Flush from net/http/server.go:
+// func __flusher_Flush(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
 GO FUNC net/http.__handlerFunc_ServeHTTP from net/http/server.go:
 // func __handlerFunc_ServeHTTP(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__handler_ServeHTTP from net/http/server.go:
+// func __handler_ServeHTTP(o GoObject, args Object) Object {
 // 	...ABEND275: TODO...
 // }
 
@@ -9788,6 +9967,10 @@ GO FUNC net/http.__header_Write from net/http/header.go:
 GO FUNC net/http.__header_WriteSubset from net/http/header.go:
 // func __header_WriteSubset(o GoObject, args Object) Object {
 // __w ABEND987(genutils.go: imports not yet supported: io.Writer), __exclude map[]}
+
+GO FUNC net/http.__hijacker_Hijack from net/http/server.go:
+// func __hijacker_Hijack(o GoObject, args Object) Object {
+// [go.std.net/Conn (atom-of ABEND042(post.go: cannot find typename bufio.ReadWriter)) Error]}
 
 GO FUNC net/http.__ptrTo_Client_Do from net/http/client.go:
 // func __ptrTo_Client_Do(o GoObject, args Object) Object {
@@ -10094,6 +10277,42 @@ GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 // 	return _res
 // }
 
+GO FUNC net/http.__pusher_Push from net/http/http.go:
+// func __pusher_Push(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(net/http.Pusher)Push()", args, 2, 2)
+// 	__target := ExtractGoString("(net/http.Pusher)Push()", "__target", _argList, 0)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __opts at: _tests/big/src/net/http/http.go:140:27)
+// 	_res := o.O.(_http.Pusher).Push(__target, __opts)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/http.__responseWriter_Header from net/http/server.go:
+func __responseWriter_Header(o GoObject, args Object) Object {
+	CheckGoArity("(net/http.ResponseWriter)Header()", args, 0, 0)
+	_res := o.O.(_http.ResponseWriter).Header()
+	return MakeGoObject(_res)
+}
+
+GO FUNC net/http.__responseWriter_Write from net/http/server.go:
+// func __responseWriter_Write(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
+
+GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
+// func __responseWriter_WriteHeader(o GoObject, args Object) Object {
+// 	...ABEND275: TODO...
+// }
+
+GO FUNC net/http.__roundTripper_RoundTrip from net/http/client.go:
+// func __roundTripper_RoundTrip(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(net/http.RoundTripper)RoundTrip()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/http/client.go:140:12)
+// 	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(__arg1)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
+
 GO VARDEF FOR TYPE go.std.net.http/Client from _tests/big/src/net/http/client.go:56:6:
 var info_Client GoTypeInfo
 
@@ -10294,6 +10513,7 @@ GO INFO FOR TYPE go.std.net.http/FileSystem from _tests/big/src/net/http/fs.go:8
 	info_FileSystem = GoTypeInfo{Name: "go.std.net.http/FileSystem",
 		GoType: &GoType{T: &info_FileSystem},
 		Members: GoMembers{
+			"Open": MakeGoReceiver("Open", __fileSystem_Open, "", "1.0", NewVectorFrom(MakeSymbol("name"))),
 		}}
 
 
@@ -10428,6 +10648,7 @@ GO INFO FOR TYPE go.std.net.http/ResponseWriter from _tests/big/src/net/http/ser
 	info_ResponseWriter = GoTypeInfo{Name: "go.std.net.http/ResponseWriter",
 		GoType: &GoType{T: &info_ResponseWriter},
 		Members: GoMembers{
+			"Header": MakeGoReceiver("Header", __responseWriter_Header, "Header returns the header map that will be sent by\nWriteHeader. The Header map also is the mechanism with which\nHandlers can set HTTP trailers.\n\nChanging the header map after a call to WriteHeader (or\nWrite) has no effect unless the modified headers are\ntrailers.\n\nThere are two ways to set Trailers. The preferred way is to\npredeclare in the headers which trailers you will later\nsend by setting the \"Trailer\" header to the names of the\ntrailer keys which will come later. In this case, those\nkeys of the Header map are treated as if they were\ntrailers. See the example. The second way, for trailer\nkeys not known to the Handler until after the first Write,\nis to prefix the Header map keys with the TrailerPrefix\nconstant value. See TrailerPrefix.\n\nTo suppress automatic response headers (such as \"Date\"), set\ntheir value to nil.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -10943,6 +11164,21 @@ GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go
 // func __ptrTo_Jar_SetCookies(o GoObject, args Object) Object {
 // __u *ABEND987(genutils.go: imports not yet supported: url.URL), __cookies []*ABEND987(genutils.go: imports not yet supported: http.Cookie)}
 
+GO FUNC net/http/cookiejar.__publicSuffixList_PublicSuffix from net/http/cookiejar/jar.go:
+func __publicSuffixList_PublicSuffix(o GoObject, args Object) Object {
+	_argList := CheckGoArity("(net/http/cookiejar.PublicSuffixList)PublicSuffix()", args, 1, 1)
+	__domain := ExtractGoString("(net/http/cookiejar.PublicSuffixList)PublicSuffix()", "__domain", _argList, 0)
+	_res := o.O.(_cookiejar.PublicSuffixList).PublicSuffix(__domain)
+	return MakeString(_res)
+}
+
+GO FUNC net/http/cookiejar.__publicSuffixList_String from net/http/cookiejar/jar.go:
+func __publicSuffixList_String(o GoObject, args Object) Object {
+	CheckGoArity("(net/http/cookiejar.PublicSuffixList)String()", args, 0, 0)
+	_res := o.O.(_cookiejar.PublicSuffixList).String()
+	return MakeString(_res)
+}
+
 GO VARDEF FOR TYPE go.std.net.http.cookiejar/Jar from _tests/big/src/net/http/cookiejar/jar.go:60:6:
 var info_Jar GoTypeInfo
 
@@ -10990,6 +11226,8 @@ GO INFO FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/
 	info_PublicSuffixList = GoTypeInfo{Name: "go.std.net.http.cookiejar/PublicSuffixList",
 		GoType: &GoType{T: &info_PublicSuffixList},
 		Members: GoMembers{
+			"PublicSuffix": MakeGoReceiver("PublicSuffix", __publicSuffixList_PublicSuffix, "PublicSuffix returns the public suffix of domain.\n\nTODO: specify which of the caller and callee is responsible for IP\naddresses, for leading and trailing dots, for case sensitivity, and\nfor IDN/Punycode.\n", "1.0", NewVectorFrom(MakeSymbol("domain"))),
+			"String": MakeGoReceiver("String", __publicSuffixList_String, "String returns a description of the source of this public suffix\nlist. The description will typically contain something like a time\nstamp or version number.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -12033,6 +12271,21 @@ GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/rever
 // 	return MakeGoObject(_res)
 // }
 
+GO FUNC net/http/httputil.__bufferPool_Get from net/http/httputil/reverseproxy.go:
+func __bufferPool_Get(o GoObject, args Object) Object {
+	CheckGoArity("(net/http/httputil.BufferPool)Get()", args, 0, 0)
+	_res := o.O.(_httputil.BufferPool).Get()
+	_vec1 := EmptyVector()
+	for _, _elem1 := range _res {
+		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+	}
+	return _vec1
+}
+
+GO FUNC net/http/httputil.__bufferPool_Put from net/http/httputil/reverseproxy.go:
+// func __bufferPool_Put(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
+
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {
 	CheckGoArity("(*_net/http/httputil.ClientConn)Close()", args, 0, 0)
@@ -12124,6 +12377,7 @@ GO INFO FOR TYPE go.std.net.http.httputil/BufferPool from _tests/big/src/net/htt
 	info_BufferPool = GoTypeInfo{Name: "go.std.net.http.httputil/BufferPool",
 		GoType: &GoType{T: &info_BufferPool},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", __bufferPool_Get, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -13151,6 +13405,29 @@ GO FUNC net/rpc.ServeConn from net/rpc/server.go:
 // 	...ABEND675: TODO...
 // }
 
+GO FUNC net/rpc.__clientCodec_Close from net/rpc/client.go:
+func __clientCodec_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net/rpc.ClientCodec)Close()", args, 0, 0)
+	_res := o.O.(_rpc.ClientCodec).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/rpc.__clientCodec_ReadResponseBody from net/rpc/client.go:
+// func __clientCodec_ReadResponseBody(o GoObject, args Object) Object {
+// (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
+GO FUNC net/rpc.__clientCodec_ReadResponseHeader from net/rpc/client.go:
+// func __clientCodec_ReadResponseHeader(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(net/rpc.ClientCodec)ReadResponseHeader()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/rpc/client.go:65:21)
+// 	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(__arg1)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/rpc.__clientCodec_WriteRequest from net/rpc/client.go:
+// func __clientCodec_WriteRequest(o GoObject, args Object) Object {
+// (__arg1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
 GO FUNC net/rpc.__ptrTo_Client_Call from net/rpc/client.go:
 // func __ptrTo_Client_Call(o GoObject, args Object) Object {
 // (__serviceMethod, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()), ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
@@ -13203,6 +13480,29 @@ func __ptrTo_Server_ServeRequest(o GoObject, args Object) Object {
 	_res := o.O.(*_rpc.Server).ServeRequest(__codec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
+
+GO FUNC net/rpc.__serverCodec_Close from net/rpc/server.go:
+func __serverCodec_Close(o GoObject, args Object) Object {
+	CheckGoArity("(net/rpc.ServerCodec)Close()", args, 0, 0)
+	_res := o.O.(_rpc.ServerCodec).Close()
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
+
+GO FUNC net/rpc.__serverCodec_ReadRequestBody from net/rpc/server.go:
+// func __serverCodec_ReadRequestBody(o GoObject, args Object) Object {
+// (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
+
+GO FUNC net/rpc.__serverCodec_ReadRequestHeader from net/rpc/server.go:
+// func __serverCodec_ReadRequestHeader(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(net/rpc.ServerCodec)ReadRequestHeader()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/rpc/server.go:659:20)
+// 	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(__arg1)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/rpc.__serverCodec_WriteResponse from net/rpc/server.go:
+// func __serverCodec_WriteResponse(o GoObject, args Object) Object {
+// (__arg1, ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
 
 GO FUNC net/rpc.__serverError_Error from net/rpc/client.go:
 func __serverError_Error(o GoObject, args Object) Object {
@@ -13286,6 +13586,7 @@ GO INFO FOR TYPE go.std.net.rpc/ClientCodec from _tests/big/src/net/rpc/client.g
 	info_ClientCodec = GoTypeInfo{Name: "go.std.net.rpc/ClientCodec",
 		GoType: &GoType{T: &info_ClientCodec},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __clientCodec_Close, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -13336,6 +13637,7 @@ GO INFO FOR TYPE go.std.net.rpc/ServerCodec from _tests/big/src/net/rpc/server.g
 	info_ServerCodec = GoTypeInfo{Name: "go.std.net.rpc/ServerCodec",
 		GoType: &GoType{T: &info_ServerCodec},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __serverCodec_Close, "Close can be called multiple times and must be idempotent.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -13635,6 +13937,26 @@ GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
 // func __sendMail(__addr string, __a _smtp.Auth, __from string, __to []string, __msg []byte)  {
 // 	_res := _smtp.SendMail(__addr, __a, __from, __to, __msg)
 // 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
+
+GO FUNC net/smtp.__auth_Next from net/smtp/auth.go:
+// func __auth_Next(o GoObject, args Object) Object {
+// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__fromServer)), __more)}
+
+GO FUNC net/smtp.__auth_Start from net/smtp/auth.go:
+// func __auth_Start(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("(net/smtp.Auth)Start()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __server at: _tests/big/src/net/smtp/auth.go:23:15)
+// 	proto, toServer, err := o.O.(_smtp.Auth).Start(__server)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeString(proto))
+// 	_vec1 := EmptyVector()
+// 	for _, _elem1 := range toServer {
+// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+// 	}
+// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
 // }
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
@@ -15698,11 +16020,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(105) 047(95) 048(32) 902(32) 275(31) 674(29) 042(26) 675(18) 907(10) 644(4) 906(3) 883(2) 908(1) 909(1)
-Totals: functions=421 generated=230 (54.63%)
+ABENDs: 987(113) 047(95) 902(39) 275(34) 048(32) 674(29) 042(27) 675(18) 907(14) 644(9) 883(3) 906(3) 124(1) 908(1) 909(1)
+Totals: functions=421 generated=249 (59.14%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
-          methods=50 (11.88%) generated=0 (0.00%)
+          methods=50 (11.88%) generated=19 (38.00%)
         types=102 generated=41 (40.20%)
           hits expr=0 alias=0 fullname=95
         constants=91 generated=91 (100.00%)
