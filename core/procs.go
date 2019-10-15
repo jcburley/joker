@@ -767,8 +767,10 @@ var procGo Proc = func(args []Object) Object {
 		member = s.ToString(false)
 	case String:
 		member = s.S
+	case Keyword:
+		member = *s.name
 	default:
-		panic(RT.NewArgTypeError(0, args[1], "Symbol or String"))
+		panic(RT.NewArgTypeError(0, args[1], "Symbol, String, or Keyword"))
 	}
 	if member == "&" {
 		v := reflect.ValueOf(o.O)

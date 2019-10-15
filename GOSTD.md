@@ -32,15 +32,13 @@ $
 
 ## Types
 
-*NOTE:* This is work-in-progress and not yet complete.
-
-Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`. (TODO: CLARIFY THIS.)
+Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`.
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
 
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
 
-* Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}` (TODO: CONFIRM REFERENCE TO OBJECT, not just object.)
-* Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX` (TODO: CONFIRM IT IS A REFERENCE/POINTER; CONFIRM NAMING.)
+* Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}`
+* Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX`
 * Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else)`
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`) in the namespace.
@@ -112,17 +110,17 @@ Akin to Clojure, `(type. ...)` functions are supported for (some) `GoObject` typ
 ```
 user=> (use '[go.std.os])
 nil
-user=> (FileMode. 0321)
+user=> (new FileMode 0321)
 --wx-w---x
 user=> (use '[go.std.html.template])
 nil
-user=> (def h (HTML. "this is an html object"))
+user=> (def h (new HTML "this is an html object"))
 #'user/h
 user=> (type h)
 GoObject
 user=> (GoTypeOf h)
 go.std.html.template/HTML
-user=> (def le (LinkError. ["hey" "there" "you" "silly"]))
+user=> (def le (new LinkError ["hey" "there" "you" "silly"]))
 #'user/le
 user=> le
 hey there you: silly
@@ -137,9 +135,7 @@ false
 user=>
 ```
 
-If a particular constructor is missing, that indicates lack of support for the underlying type.
-
-NOTE: The `(new ...)` special form is now supported, though no corresponding constructors are available at this time; this and the "dot" forms (described above) are likely to change soon.
+If a particular constructor is missing, that indicates lack of support for the underlying type, or that the underlying type is abstract (`interface{}`).
 
 ### Calling a Go API
 
