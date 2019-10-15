@@ -7783,8 +7783,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/big/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
-			"Network": MakeGoReceiver("Network", __addr_Network, "", "1.0", NewVectorFrom()),
-			"String": MakeGoReceiver("String", __addr_String, "", "1.0", NewVectorFrom()),
+			"Network": MakeGoReceiver("Network", __addr_Network, "name of the network (for example, \"tcp\", \"udp\")\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __addr_String, "string form of address (for example, \"192.0.2.1:25\", \"[2001:db8::1]:80\")\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7823,9 +7823,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/big/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
-			"Close": MakeGoReceiver("Close", __conn_Close, "", "1.0", NewVectorFrom()),
-			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "", "1.0", NewVectorFrom()),
-			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -7882,8 +7882,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests/big/src/net/net.go:378:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
-			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "", "1.0", NewVectorFrom()),
-			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "Is the error temporary?\n", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "Is the error a timeout?\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -8059,9 +8059,9 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/big/src/net/net.go:365:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
-			"Accept": MakeGoReceiver("Accept", __listener_Accept, "", "1.0", NewVectorFrom()),
-			"Addr": MakeGoReceiver("Addr", __listener_Addr, "", "1.0", NewVectorFrom()),
-			"Close": MakeGoReceiver("Close", __listener_Close, "", "1.0", NewVectorFrom()),
+			"Accept": MakeGoReceiver("Accept", __listener_Accept, "Accept waits for and returns the next connection to the listener.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", __listener_Addr, "Addr returns the listener's network address.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __listener_Close, "Close closes the listener.\nAny blocked Accept operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -8114,8 +8114,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/big/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
-			"Close": MakeGoReceiver("Close", __packetConn_Close, "", "1.0", NewVectorFrom()),
-			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -10647,7 +10647,7 @@ GO INFO FOR TYPE go.std.net.http/ResponseWriter from _tests/big/src/net/http/ser
 	info_ResponseWriter = GoTypeInfo{Name: "go.std.net.http/ResponseWriter",
 		GoType: &GoType{T: &info_ResponseWriter},
 		Members: GoMembers{
-			"Header": MakeGoReceiver("Header", __responseWriter_Header, "", "1.0", NewVectorFrom()),
+			"Header": MakeGoReceiver("Header", __responseWriter_Header, "Header returns the header map that will be sent by\nWriteHeader. The Header map also is the mechanism with which\nHandlers can set HTTP trailers.\n\nChanging the header map after a call to WriteHeader (or\nWrite) has no effect unless the modified headers are\ntrailers.\n\nThere are two ways to set Trailers. The preferred way is to\npredeclare in the headers which trailers you will later\nsend by setting the \"Trailer\" header to the names of the\ntrailer keys which will come later. In this case, those\nkeys of the Header map are treated as if they were\ntrailers. See the example. The second way, for trailer\nkeys not known to the Handler until after the first Write,\nis to prefix the Header map keys with the TrailerPrefix\nconstant value. See TrailerPrefix.\n\nTo suppress automatic response headers (such as \"Date\"), set\ntheir value to nil.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -11225,8 +11225,8 @@ GO INFO FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/
 	info_PublicSuffixList = GoTypeInfo{Name: "go.std.net.http.cookiejar/PublicSuffixList",
 		GoType: &GoType{T: &info_PublicSuffixList},
 		Members: GoMembers{
-			"PublicSuffix": MakeGoReceiver("PublicSuffix", __publicSuffixList_PublicSuffix, "", "1.0", NewVectorFrom(MakeSymbol("domain"))),
-			"String": MakeGoReceiver("String", __publicSuffixList_String, "", "1.0", NewVectorFrom()),
+			"PublicSuffix": MakeGoReceiver("PublicSuffix", __publicSuffixList_PublicSuffix, "PublicSuffix returns the public suffix of domain.\n\nTODO: specify which of the caller and callee is responsible for IP\naddresses, for leading and trailing dots, for case sensitivity, and\nfor IDN/Punycode.\n", "1.0", NewVectorFrom(MakeSymbol("domain"))),
+			"String": MakeGoReceiver("String", __publicSuffixList_String, "String returns a description of the source of this public suffix\nlist. The description will typically contain something like a time\nstamp or version number.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -13636,7 +13636,7 @@ GO INFO FOR TYPE go.std.net.rpc/ServerCodec from _tests/big/src/net/rpc/server.g
 	info_ServerCodec = GoTypeInfo{Name: "go.std.net.rpc/ServerCodec",
 		GoType: &GoType{T: &info_ServerCodec},
 		Members: GoMembers{
-			"Close": MakeGoReceiver("Close", __serverCodec_Close, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __serverCodec_Close, "Close can be called multiple times and must be idempotent.\n", "1.0", NewVectorFrom()),
 		}}
 
 

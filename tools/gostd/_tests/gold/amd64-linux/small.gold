@@ -2764,8 +2764,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
-			"Network": MakeGoReceiver("Network", __addr_Network, "", "1.0", NewVectorFrom()),
-			"String": MakeGoReceiver("String", __addr_String, "", "1.0", NewVectorFrom()),
+			"Network": MakeGoReceiver("Network", __addr_Network, "name of the network (for example, \"tcp\", \"udp\")\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __addr_String, "string form of address (for example, \"192.0.2.1:25\", \"[2001:db8::1]:80\")\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2804,9 +2804,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
-			"Close": MakeGoReceiver("Close", __conn_Close, "", "1.0", NewVectorFrom()),
-			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "", "1.0", NewVectorFrom()),
-			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2848,8 +2848,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
-			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "", "1.0", NewVectorFrom()),
-			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "Is the error temporary?\n", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "Is the error a timeout?\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2965,9 +2965,9 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
-			"Accept": MakeGoReceiver("Accept", __listener_Accept, "", "1.0", NewVectorFrom()),
-			"Addr": MakeGoReceiver("Addr", __listener_Addr, "", "1.0", NewVectorFrom()),
-			"Close": MakeGoReceiver("Close", __listener_Close, "", "1.0", NewVectorFrom()),
+			"Accept": MakeGoReceiver("Accept", __listener_Accept, "Accept waits for and returns the next connection to the listener.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", __listener_Addr, "Addr returns the listener's network address.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __listener_Close, "Close closes the listener.\nAny blocked Accept operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -3020,8 +3020,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
-			"Close": MakeGoReceiver("Close", __packetConn_Close, "", "1.0", NewVectorFrom()),
-			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
 		}}
 
 

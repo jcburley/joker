@@ -214,7 +214,7 @@ func %s(o GoObject, args Object) Object {
 			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params}
+			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params, FnDoc: fn.Doc}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
