@@ -222,7 +222,7 @@ func %s(o GoObject, args Object) Object {
 				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Fd.Doc}
+				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Doc}
 			}
 		}
 	}
@@ -484,6 +484,10 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 			}
 			for _, n := range m.Names {
 				fullName := tdi.LocalName + "_" + n.Name
+				doc := m.Doc
+				if doc == nil {
+					doc = m.Comment
+				}
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
 					ReceiverId:   "_" + tdi.GoFile.Package.BaseName + "." + tdi.GoName,
@@ -492,6 +496,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 					Fd:           nil,
 					ToM:          tdi,
 					Ft:           m.Type.(*FuncType),
+					Doc:          doc,
 					SourceFile:   tdi.GoFile,
 					RefersToSelf: false}
 			}

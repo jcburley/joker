@@ -157,6 +157,7 @@ type FuncInfo struct {
 	Fd           *FuncDecl    // nil for methods
 	ToM          *TypeDefInfo // Method operates on this type (nil for standalones and receivers)
 	Ft           *FuncType
+	Doc          *CommentGroup
 	SourceFile   *godb.GoFile
 	RefersToSelf bool // whether :go-imports should list itself
 }
@@ -267,7 +268,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, gf, false}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, false}
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
