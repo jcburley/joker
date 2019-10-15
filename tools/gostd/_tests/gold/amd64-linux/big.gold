@@ -10265,12 +10265,13 @@ GO FUNC net/http.__ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 // }
 
 GO FUNC net/http.__pusher_Push from net/http/http.go:
-func __pusher_Push(o GoObject, args Object) Object {
-	_argList := CheckGoArity("", args, 2, 2)
-	__target := ExtractGoString("", "__target", _argList, 0)
-	_res := o.O.(_http.Pusher).Push(__target, __opts)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __pusher_Push(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("", args, 2, 2)
+// 	__target := ExtractGoString("", "__target", _argList, 0)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __opts at: _tests/big/src/net/http/http.go:140:27)
+// 	_res := o.O.(_http.Pusher).Push(__target, __opts)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/http.__responseWriter_Header from net/http/server.go:
 func __responseWriter_Header(o GoObject, args Object) Object {
@@ -10289,14 +10290,15 @@ GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
 // }
 
 GO FUNC net/http.__roundTripper_RoundTrip from net/http/client.go:
-func __roundTripper_RoundTrip(o GoObject, args Object) Object {
-	_argList := CheckGoArity("", args, 1, 1)
-	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(__arg1)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func __roundTripper_RoundTrip(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/http/client.go:140:12)
+// 	_res1, _res2 := o.O.(_http.RoundTripper).RoundTrip(__arg1)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO VARDEF FOR TYPE go.std.net.http/Client from _tests/big/src/net/http/client.go:56:6:
 var info_Client GoTypeInfo
@@ -13397,11 +13399,12 @@ GO FUNC net/rpc.__clientCodec_ReadResponseBody from net/rpc/client.go:
 // (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
 
 GO FUNC net/rpc.__clientCodec_ReadResponseHeader from net/rpc/client.go:
-func __clientCodec_ReadResponseHeader(o GoObject, args Object) Object {
-	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(__arg1)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __clientCodec_ReadResponseHeader(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/rpc/client.go:65:21)
+// 	_res := o.O.(_rpc.ClientCodec).ReadResponseHeader(__arg1)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/rpc.__clientCodec_WriteRequest from net/rpc/client.go:
 // func __clientCodec_WriteRequest(o GoObject, args Object) Object {
@@ -13472,11 +13475,12 @@ GO FUNC net/rpc.__serverCodec_ReadRequestBody from net/rpc/server.go:
 // (ABEND907(pre.go: custom-runtime routine not implemented: ConvertToInterfaceTypeHaHa()))}
 
 GO FUNC net/rpc.__serverCodec_ReadRequestHeader from net/rpc/server.go:
-func __serverCodec_ReadRequestHeader(o GoObject, args Object) Object {
-	_argList := CheckGoArity("", args, 1, 1)
-	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(__arg1)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func __serverCodec_ReadRequestHeader(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __arg1 at: _tests/big/src/net/rpc/server.go:659:20)
+// 	_res := o.O.(_rpc.ServerCodec).ReadRequestHeader(__arg1)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/rpc.__serverCodec_WriteResponse from net/rpc/server.go:
 // func __serverCodec_WriteResponse(o GoObject, args Object) Object {
@@ -13920,19 +13924,20 @@ GO FUNC net/smtp.__auth_Next from net/smtp/auth.go:
 // (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__fromServer)), __more)}
 
 GO FUNC net/smtp.__auth_Start from net/smtp/auth.go:
-func __auth_Start(o GoObject, args Object) Object {
-	_argList := CheckGoArity("", args, 1, 1)
-	proto, toServer, err := o.O.(_smtp.Auth).Start(__server)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeString(proto))
-	_vec1 := EmptyVector()
-	for _, _elem1 := range toServer {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func __auth_Start(o GoObject, args Object) Object {
+// 	_argList := CheckGoArity("", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __server at: _tests/big/src/net/smtp/auth.go:23:15)
+// 	proto, toServer, err := o.O.(_smtp.Auth).Start(__server)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeString(proto))
+// 	_vec1 := EmptyVector()
+// 	for _, _elem1 := range toServer {
+// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+// 	}
+// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net/smtp.__ptrTo_Client_Auth from net/smtp/smtp.go:
 func __ptrTo_Client_Auth(o GoObject, args Object) Object {
@@ -15995,12 +16000,12 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(113) 047(95) 902(39) 275(34) 048(32) 674(29) 042(27) 675(18) 907(14) 644(4) 883(3) 906(3) 124(1) 908(1) 909(1)
-Totals: functions=421 generated=254 (60.33%)
+ABENDs: 987(113) 047(95) 902(39) 275(34) 048(32) 674(29) 042(27) 675(18) 907(14) 644(9) 883(3) 906(3) 124(1) 908(1) 909(1)
+Totals: functions=421 generated=249 (59.14%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
-          methods=50 (11.88%) generated=24 (48.00%)
+          methods=50 (11.88%) generated=19 (38.00%)
         types=102 generated=41 (40.20%)
-          hits expr=0 alias=0 fullname=118
+          hits expr=0 alias=0 fullname=113
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)
