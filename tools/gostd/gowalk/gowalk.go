@@ -96,8 +96,9 @@ var GoTypes = GoTypeMap{}
 type FnCodeInfo struct {
 	SourceFile *godb.GoFile
 	FnCode     string
-	FnDecl     *FuncDecl     // Empty for standalone functions; used to get docstring for receivers
-	FnDoc      *CommentGroup // for some reason, fnDecl.Doc disappears by the time we try to use it!!??
+	FnDecl     *FuncDecl // Empty for standalones and methods; used to get docstring for receivers
+	Params     *FieldList
+	FnDoc      *CommentGroup
 }
 
 type fnCodeMap map[string]*FnCodeInfo
@@ -149,11 +150,12 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName     string    // Just the name without receiver-type info
-	ReceiverId   string    // Receiver info (only one type supported here and by Golang itself for now)
-	Name         string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName      string    // Everything, for documentation and diagnostics
-	Fd           *FuncDecl // nil for methods
+	BaseName     string       // Just the name without receiver-type info
+	ReceiverId   string       // Receiver info (only one type supported here and by Golang itself for now)
+	Name         string       // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName      string       // Everything, for documentation and diagnostics
+	Fd           *FuncDecl    // nil for methods
+	ToM          *TypeDefInfo // Method operates on this type (nil for standalones and receivers)
 	Ft           *FuncType
 	SourceFile   *godb.GoFile
 	RefersToSelf bool // whether :go-imports should list itself
@@ -265,7 +267,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, fd.Type, gf, false}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, gf, false}
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {

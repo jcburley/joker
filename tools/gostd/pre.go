@@ -292,10 +292,16 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 }
 
 func paramsAsSymbolVec(fl *FieldList) string {
+	genSymReset()
 	fields := FlattenFieldList(fl)
 	var syms []string
 	for _, field := range fields {
-		p := field.Name.Name
+		var p string
+		if field.Name == nil {
+			p = genSym("arg")
+		} else {
+			p = field.Name.Name
+		}
 		syms = append(syms, "MakeSymbol("+strconv.Quote(p)+")")
 	}
 	return strings.Join(syms, ", ")

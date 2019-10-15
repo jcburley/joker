@@ -392,6 +392,7 @@ import (%s
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
+
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *TypeDefInfo) {
 			tmn := tdi.TypeMappingsName()
@@ -407,7 +408,7 @@ import (%s
 					mem += fmt.Sprintf(`
 			"%s": MakeGoReceiver("%s", %s, %s, %s, NewVectorFrom(%s)),
 `[1:],
-						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.FnDecl.Type.Params))
+						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
 			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem)
 			if outputCode {

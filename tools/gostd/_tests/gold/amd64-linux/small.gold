@@ -2764,6 +2764,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", __addr_Network, "", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", __addr_String, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2802,6 +2804,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __conn_Close, "", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "", "1.0", NewVectorFrom()),
+			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2843,6 +2848,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
+			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -2958,6 +2965,9 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
+			"Accept": MakeGoReceiver("Accept", __listener_Accept, "", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", __listener_Addr, "", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", __listener_Close, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -3010,6 +3020,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", __packetConn_Close, "", "1.0", NewVectorFrom()),
+			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "", "1.0", NewVectorFrom()),
 		}}
 
 
@@ -4062,6 +4074,6 @@ Totals: functions=109 generated=97 (88.99%)
           receivers=83 (76.15%) generated=59 (71.08%)
           methods=22 (20.18%) generated=12 (54.55%)
         types=28 generated=14 (50.00%)
-          hits expr=0 alias=0 fullname=53
+          hits expr=0 alias=0 fullname=42
         constants=2 generated=2 (100.00%)
         variables=12 generated=12 (100.00%)

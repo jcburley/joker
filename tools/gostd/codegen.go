@@ -207,11 +207,14 @@ func %s(o GoObject, args Object) Object {
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", true)
 		if fn.Fd == nil {
 			godb.NumGeneratedMethods++
-			tdi := TypeLookup(fn.Ft).Definition
+			tdi := fn.ToM
+			if tdi == nil {
+				panic(fmt.Sprintf("Cannot find type for %s", fn.Name))
+			}
 			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd}
+			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
@@ -219,13 +222,17 @@ func %s(o GoObject, args Object) Object {
 				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, FnDoc: fn.Fd.Doc}
+				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Fd.Doc}
 			}
 		}
 	}
 
 	if goFn != "" {
-		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, FnDoc: nil}
+		var params *FieldList
+		if fn.Fd != nil {
+			params = fn.Fd.Type.Params
+		}
+		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
 	}
 }
 
@@ -484,6 +491,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 					Name:         fullName,
 					DocName:      docString,
 					Fd:           nil,
+					ToM:          tdi,
 					Ft:           m.Type.(*FuncType),
 					SourceFile:   tdi.GoFile,
 					RefersToSelf: false}
