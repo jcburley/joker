@@ -28,12 +28,13 @@ var NumReceivers int
 var NumTypes int
 var NumConstants int
 var NumVariables int
+var NumCtableTypes int
 var NumGeneratedFunctions int
 var NumGeneratedStandalones int
 var NumGeneratedReceivers int
-var NumGeneratedTypes int
 var NumGeneratedConstants int
 var NumGeneratedVariables int
+var NumGeneratedCtors int
 
 type PackageInfo struct {
 	DirUnix          string
@@ -67,6 +68,7 @@ type GoTypeInfo struct {
 	FullGoName                string       // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
 	SourceFile                *godb.GoFile // location of the type defintion
 	Td                        *TypeSpec
+	TypeDefInfo               *TypeDefInfo // Primary type in the new package
 	Where                     token.Pos
 	UnderlyingType            *Expr            // nil if not a declared type
 	ArgClojureType            string           // Can convert this type to a Go function arg with my type
@@ -284,6 +286,8 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 
 var RegisterType_func func(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
 
+var TypeDefsToGoTypes = map[*TypeDefInfo]*GoTypeInfo{}
+
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
 func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
 	name := ts.Name.Name
@@ -302,11 +306,17 @@ func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *Comme
 
 	gt := RegisterType_func(gf, typeName, ts)
 	gt.Td = ts
+	gt.TypeDefInfo = tdiVec[0]
 	gt.Where = ts.Pos()
 	gt.RequiredImports = &imports.Imports{}
 
+	TypeDefsToGoTypes[tdiVec[0]] = gt
+
 	if IsExported(name) {
 		NumTypes++
+		if tdiVec[0].Specificity == Concrete {
+			NumCtableTypes++
+		}
 	}
 }
 

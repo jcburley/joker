@@ -347,11 +347,15 @@ import (%s
 
 	gowalk.SortedTypeInfoMap(v.Types,
 		func(t string, ti *gowalk.GoTypeInfo) {
+			ctor := ""
+			if c, found := Ctors[ti.TypeDefInfo]; found && c[0] != '/' {
+				ctor = c
+			}
 			if outputCode {
-				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.GoCode)
+				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.GoCode+ctor)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ti.GoCode)
+				out.WriteString(ti.GoCode + ctor)
 			}
 		})
 
@@ -384,7 +388,7 @@ import (%s
 	const initInfoTemplate = `
 	%s = GoTypeInfo{Name: "%s",
 		GoType: &GoType{T: &%s},
-		Members: GoMembers{
+%s		Members: GoMembers{
 %s		}}
 
 `
@@ -400,6 +404,13 @@ import (%s
 				return
 			}
 			k1 := tdi.FullName
+			ctor := ""
+			if c, found := CtorNames[tdi]; found {
+				ctor = fmt.Sprintf(`
+		Ctor: %s,
+`[1:],
+					c)
+			}
 			mem := ""
 			gowalk.SortedFnCodeInfo(v.InitVars[tdi], // Will always be populated
 				func(c string, r *gowalk.FnCodeInfo) {
@@ -410,7 +421,7 @@ import (%s
 `[1:],
 						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
-			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, mem)
+			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem)
 			if outputCode {
 				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
 			}

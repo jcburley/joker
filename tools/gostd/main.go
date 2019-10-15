@@ -321,7 +321,8 @@ Totals: functions=%d generated=%d (%s%%)
           non-receivers=%d (%s%%) generated=%d (%s%%)
           receivers=%d (%s%%) generated=%d (%s%%)
           methods=%d (%s%%) generated=%d (%s%%)
-        types=%d generated=%d (%s%%)
+        types=%d
+          constructable=%d ctors=%d (%s%%)
           hits expr=%d alias=%d fullname=%d
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
@@ -330,7 +331,8 @@ Totals: functions=%d generated=%d (%s%%)
 			gowalk.NumStandalones, pct(gowalk.NumStandalones, gowalk.NumFunctions), gowalk.NumGeneratedStandalones, pct(gowalk.NumGeneratedStandalones, gowalk.NumStandalones),
 			gowalk.NumReceivers, pct(gowalk.NumReceivers, gowalk.NumFunctions), gowalk.NumGeneratedReceivers, pct(gowalk.NumGeneratedReceivers, gowalk.NumReceivers),
 			godb.NumMethods, pct(godb.NumMethods, gowalk.NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
-			gowalk.NumTypes, gowalk.NumGeneratedTypes, pct(gowalk.NumGeneratedTypes, gowalk.NumTypes),
+			gowalk.NumTypes,
+			gowalk.NumCtableTypes, gowalk.NumGeneratedCtors, pct(gowalk.NumGeneratedCtors, gowalk.NumCtableTypes),
 			types.NumExprHits, types.NumAliasHits, types.NumFullNameHits,
 			gowalk.NumConstants, gowalk.NumGeneratedConstants, pct(gowalk.NumGeneratedConstants, gowalk.NumConstants),
 			gowalk.NumVariables, gowalk.NumGeneratedVariables, pct(gowalk.NumGeneratedVariables, gowalk.NumVariables))
