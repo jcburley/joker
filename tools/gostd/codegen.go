@@ -483,13 +483,12 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 				panic("Why no Type field??")
 			}
 			for _, n := range m.Names {
-				docString := ""
 				fullName := tdi.LocalName + "_" + n.Name
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
 					ReceiverId:   "_" + tdi.GoFile.Package.BaseName + "." + tdi.GoName,
 					Name:         fullName,
-					DocName:      docString,
+					DocName:      "(" + tdi.GoFile.Package.DirUnix + "." + tdi.GoName + ")" + n.Name + "()",
 					Fd:           nil,
 					ToM:          tdi,
 					Ft:           m.Type.(*FuncType),

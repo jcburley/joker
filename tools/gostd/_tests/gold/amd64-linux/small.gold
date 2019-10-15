@@ -2142,28 +2142,28 @@ func __resolveIPAddr(__network string, __address string) Object {
 
 GO FUNC net.__addr_Network from net/net.go:
 func __addr_Network(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Addr)Network()", args, 0, 0)
 	_res := o.O.(_net.Addr).Network()
 	return MakeString(_res)
 }
 
 GO FUNC net.__addr_String from net/net.go:
 func __addr_String(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Addr)String()", args, 0, 0)
 	_res := o.O.(_net.Addr).String()
 	return MakeString(_res)
 }
 
 GO FUNC net.__conn_Close from net/net.go:
 func __conn_Close(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Conn)Close()", args, 0, 0)
 	_res := o.O.(_net.Conn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__conn_LocalAddr from net/net.go:
 func __conn_LocalAddr(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Conn)LocalAddr()", args, 0, 0)
 	_res := o.O.(_net.Conn).LocalAddr()
 	return MakeGoObject(_res)
 }
@@ -2174,7 +2174,7 @@ GO FUNC net.__conn_Read from net/net.go:
 
 GO FUNC net.__conn_RemoteAddr from net/net.go:
 func __conn_RemoteAddr(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Conn)RemoteAddr()", args, 0, 0)
 	_res := o.O.(_net.Conn).RemoteAddr()
 	return MakeGoObject(_res)
 }
@@ -2197,21 +2197,21 @@ GO FUNC net.__conn_Write from net/net.go:
 
 GO FUNC net.__error_Error from net/net.go:
 // func __error_Error(o GoObject, args Object) Object {
-// 	CheckGoArity("", args, 0, 0)
+// 	CheckGoArity("(net.Error)Error()", args, 0, 0)
 // 	return o.O.(_net.Error).Error()
 // 	ABEND124(post.go: no public information returned)
 // }
 
 GO FUNC net.__error_Temporary from net/net.go:
 func __error_Temporary(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Error)Temporary()", args, 0, 0)
 	_res := o.O.(_net.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
 GO FUNC net.__error_Timeout from net/net.go:
 func __error_Timeout(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Error)Timeout()", args, 0, 0)
 	_res := o.O.(_net.Error).Timeout()
 	return MakeBoolean(_res)
 }
@@ -2363,7 +2363,7 @@ func __invalidAddrError_Timeout(o GoObject, args Object) Object {
 
 GO FUNC net.__listener_Accept from net/net.go:
 func __listener_Accept(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Listener)Accept()", args, 0, 0)
 	_res1, _res2 := o.O.(_net.Listener).Accept()
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -2373,28 +2373,28 @@ func __listener_Accept(o GoObject, args Object) Object {
 
 GO FUNC net.__listener_Addr from net/net.go:
 func __listener_Addr(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Listener)Addr()", args, 0, 0)
 	_res := o.O.(_net.Listener).Addr()
 	return MakeGoObject(_res)
 }
 
 GO FUNC net.__listener_Close from net/net.go:
 func __listener_Close(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.Listener)Close()", args, 0, 0)
 	_res := o.O.(_net.Listener).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__packetConn_Close from net/net.go:
 func __packetConn_Close(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.PacketConn)Close()", args, 0, 0)
 	_res := o.O.(_net.PacketConn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net.__packetConn_LocalAddr from net/net.go:
 func __packetConn_LocalAddr(o GoObject, args Object) Object {
-	CheckGoArity("", args, 0, 0)
+	CheckGoArity("(net.PacketConn)LocalAddr()", args, 0, 0)
 	_res := o.O.(_net.PacketConn).LocalAddr()
 	return MakeGoObject(_res)
 }
