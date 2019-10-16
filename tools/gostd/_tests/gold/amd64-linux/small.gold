@@ -806,7 +806,10 @@ func ExtractGo_go_std_net__AddrError(rcvr, arg string, args *ArraySeq, n int) (r
 }
 
 func _mapToAddrError(o Map) *_net.AddrError {
-	return &_net.AddrError{}
+	return &_net.AddrError{
+		Err: FieldAsString(o, "Err"),
+		Addr: FieldAsString(o, "Addr"),
+	}
 }
 
 func _vectorToAddrError(o *Vector) *_net.AddrError {
@@ -918,7 +921,9 @@ func ExtractGo_go_std_net__DNSConfigError(rcvr, arg string, args *ArraySeq, n in
 }
 
 func _mapToDNSConfigError(o Map) *_net.DNSConfigError {
-	return &_net.DNSConfigError{}
+	return &_net.DNSConfigError{
+		Err: FieldAsError(o, "Err"),
+	}
 }
 
 func _vectorToDNSConfigError(o *Vector) *_net.DNSConfigError {
@@ -967,7 +972,13 @@ func ExtractGo_go_std_net__DNSError(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 func _mapToDNSError(o Map) *_net.DNSError {
-	return &_net.DNSError{}
+	return &_net.DNSError{
+		Err: FieldAsString(o, "Err"),
+		Name: FieldAsString(o, "Name"),
+		Server: FieldAsString(o, "Server"),
+		IsTimeout: FieldAsBool(o, "IsTimeout"),
+		IsTemporary: FieldAsBool(o, "IsTemporary"),
+	}
 }
 
 func _vectorToDNSError(o *Vector) *_net.DNSError {
@@ -1082,7 +1093,10 @@ func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res 
 }
 
 // func _mapToIPAddr(o Map) *_net.IPAddr {
-// 	return &_net.IPAddr{}
+// 	return &_net.IPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Zone: FieldAsString(o, "Zone"),
+// 	}
 // }
 
 // func _vectorToIPAddr(o *Vector) *_net.IPAddr {
@@ -1216,7 +1230,10 @@ func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res _
 }
 
 // func _mapToIPNet(o Map) *_net.IPNet {
-// 	return &_net.IPNet{}
+// 	return &_net.IPNet{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
+// 	}
 // }
 
 // func _vectorToIPNet(o *Vector) *_net.IPNet {
@@ -1331,7 +1348,10 @@ func ExtractGo_go_std_net__MX(rcvr, arg string, args *ArraySeq, n int) (res _net
 }
 
 func _mapToMX(o Map) *_net.MX {
-	return &_net.MX{}
+	return &_net.MX{
+		Host: FieldAsString(o, "Host"),
+		Pref: FieldAsUint16(o, "Pref"),
+	}
 }
 
 func _vectorToMX(o *Vector) *_net.MX {
@@ -1381,7 +1401,9 @@ func ExtractGo_go_std_net__NS(rcvr, arg string, args *ArraySeq, n int) (res _net
 }
 
 func _mapToNS(o Map) *_net.NS {
-	return &_net.NS{}
+	return &_net.NS{
+		Host: FieldAsString(o, "Host"),
+	}
 }
 
 func _vectorToNS(o *Vector) *_net.NS {
@@ -1430,7 +1452,13 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToOpError(o Map) *_net.OpError {
-// 	return &_net.OpError{}
+// 	return &_net.OpError{
+// 		Op: FieldAsString(o, "Op"),
+// 		Net: FieldAsString(o, "Net"),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Err: FieldAsError(o, "Err"),
+// 	}
 // }
 
 // func _vectorToOpError(o *Vector) *_net.OpError {
@@ -1508,7 +1536,10 @@ func ExtractGo_go_std_net__ParseError(rcvr, arg string, args *ArraySeq, n int) (
 }
 
 func _mapToParseError(o Map) *_net.ParseError {
-	return &_net.ParseError{}
+	return &_net.ParseError{
+		Type: FieldAsString(o, "Type"),
+		Text: FieldAsString(o, "Text"),
+	}
 }
 
 func _vectorToParseError(o *Vector) *_net.ParseError {
@@ -1558,7 +1589,11 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 // func _mapToResolver(o Map) *_net.Resolver {
-// 	return &_net.Resolver{}
+// 	return &_net.Resolver{
+// 		PreferGo: FieldAsBool(o, "PreferGo"),
+// 		StrictErrors: FieldAsBool(o, "StrictErrors"),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToResolver(o *Vector) *_net.Resolver {
@@ -1609,7 +1644,12 @@ func ExtractGo_go_std_net__SRV(rcvr, arg string, args *ArraySeq, n int) (res _ne
 }
 
 func _mapToSRV(o Map) *_net.SRV {
-	return &_net.SRV{}
+	return &_net.SRV{
+		Target: FieldAsString(o, "Target"),
+		Port: FieldAsUint16(o, "Port"),
+		Priority: FieldAsUint16(o, "Priority"),
+		Weight: FieldAsUint16(o, "Weight"),
+	}
 }
 
 func _vectorToSRV(o *Vector) *_net.SRV {
@@ -2971,7 +3011,11 @@ func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (r
 }
 
 func _mapToError(o Map) *_url.Error {
-	return &_url.Error{}
+	return &_url.Error{
+		Op: FieldAsString(o, "Op"),
+		URL: FieldAsString(o, "URL"),
+		Err: FieldAsError(o, "Err"),
+	}
 }
 
 func _vectorToError(o *Vector) *_url.Error {
@@ -3102,7 +3146,17 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToURL(o Map) *_url.URL {
-// 	return &_url.URL{}
+// 	return &_url.URL{
+// 		Scheme: FieldAsString(o, "Scheme"),
+// 		Opaque: FieldAsString(o, "Opaque"),
+// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
+// 		Host: FieldAsString(o, "Host"),
+// 		Path: FieldAsString(o, "Path"),
+// 		RawPath: FieldAsString(o, "RawPath"),
+// 		ForceQuery: FieldAsBool(o, "ForceQuery"),
+// 		RawQuery: FieldAsString(o, "RawQuery"),
+// 		Fragment: FieldAsString(o, "Fragment"),
+// 	}
 // }
 
 // func _vectorToURL(o *Vector) *_url.URL {
@@ -3770,7 +3824,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(16) 902(15) 048(6) 674(4) 047(3) 275(3) 042(1) 124(1) 644(1)
+ABENDs: 987(16) 902(15) 048(12) 047(6) 674(4) 275(3) 042(1) 124(1) 644(1)
 Totals: functions=109 generated=97 (88.99%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)

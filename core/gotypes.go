@@ -141,6 +141,24 @@ func FieldAsNumber(o Map, k string) Number {
 	return res
 }
 
+func FieldAsInt8(o Map, k string) int8 {
+	v := FieldAsNumber(o, k).BigInt().Int64()
+	if v > math.MaxInt8 || v < math.MinInt8 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int8, but its magnitude is too large",
+			v, k)))
+	}
+	return int8(v)
+}
+
+func FieldAsInt16(o Map, k string) int16 {
+	v := FieldAsNumber(o, k).BigInt().Int64()
+	if v > math.MaxInt16 || v < math.MinInt16 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int16, but its magnitude is too large",
+			v, k)))
+	}
+	return int16(v)
+}
+
 func ExtractGoInt32(rcvr, name string, args *ArraySeq, n int) int32 {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 	if v > math.MaxInt32 || v < math.MinInt32 {
@@ -158,6 +176,24 @@ func FieldAsInt32(o Map, k string) int32 {
 	return int32(v)
 }
 
+func FieldAsUint8(o Map, k string) uint8 {
+	v := FieldAsNumber(o, k).BigInt().Uint64()
+	if v > math.MaxUint8 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint8, but is too large",
+			v, k)))
+	}
+	return uint8(v)
+}
+
+func FieldAsUint16(o Map, k string) uint16 {
+	v := FieldAsNumber(o, k).BigInt().Uint64()
+	if v > math.MaxUint16 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint16, but is too large",
+			v, k)))
+	}
+	return uint16(v)
+}
+
 func ExtractGoUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > math.MaxUint32 {
@@ -169,7 +205,7 @@ func ExtractGoUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
 func FieldAsUint32(o Map, k string) uint32 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint32 {
-		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int32, but is too large",
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint32, but is too large",
 			v, k)))
 	}
 	return uint32(v)
@@ -179,12 +215,37 @@ func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 }
 
+func FieldAsInt64(o Map, k string) int64 {
+	return FieldAsNumber(o, k).BigInt().Int64()
+}
+
 func ExtractGoUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 }
 
 func FieldAsUint64(o Map, k string) uint64 {
 	return FieldAsNumber(o, k).BigInt().Uint64()
+}
+
+func ExtractGoUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
+	return uintptr(ExtractGoUint64(rcvr, name, args, n))
+}
+
+func FieldAsUintPtr(o Map, k string) uintptr {
+	return uintptr(FieldAsUint64(o, k))
+}
+
+func FieldAsDouble(o Map, k string) float64 {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return 0
+	}
+	res, ok := v.(Double)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Double, but is %T",
+			k, v)))
+	}
+	return res.D
 }
 
 func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
@@ -254,14 +315,6 @@ func FieldAsError(o Map, k string) error {
 			k, v)))
 	}
 	return res
-}
-
-func ExtractGoUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
-	return uintptr(ExtractGoUint64(rcvr, name, args, n))
-}
-
-func FieldAsUintPtr(o Map, k string) uintptr {
-	return uintptr(FieldAsUint64(o, k))
 }
 
 func GoObjectGet(o interface{}, key Object) (bool, Object) {

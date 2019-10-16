@@ -77,6 +77,7 @@ type GoTypeInfo struct {
 	ArgExtractFunc            string           // Call Extract<this>() for arg with my type
 	ConvertFromClojure        string           // Pattern to convert a (scalar) %s to this type
 	ConvertFromClojureImports []imports.Import // Imports needed to support the above
+	ConvertFromMap            string           // Pattern to convert a map %s key %s to this type
 	ConvertToClojure          string           // Pattern to convert this type to an appropriate Clojure object
 	PromoteType               string           // Pattern to convert type to next larger Go type that Joker supports
 	ClojureCode               string

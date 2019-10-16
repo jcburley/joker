@@ -4082,7 +4082,10 @@ func ExtractGo_go_std_net__AddrError(rcvr, arg string, args *ArraySeq, n int) (r
 }
 
 func _mapToAddrError(o Map) *_net.AddrError {
-	return &_net.AddrError{}
+	return &_net.AddrError{
+		Err: FieldAsString(o, "Err"),
+		Addr: FieldAsString(o, "Addr"),
+	}
 }
 
 func _vectorToAddrError(o *Vector) *_net.AddrError {
@@ -4194,7 +4197,9 @@ func ExtractGo_go_std_net__DNSConfigError(rcvr, arg string, args *ArraySeq, n in
 }
 
 func _mapToDNSConfigError(o Map) *_net.DNSConfigError {
-	return &_net.DNSConfigError{}
+	return &_net.DNSConfigError{
+		Err: FieldAsError(o, "Err"),
+	}
 }
 
 func _vectorToDNSConfigError(o *Vector) *_net.DNSConfigError {
@@ -4243,7 +4248,13 @@ func ExtractGo_go_std_net__DNSError(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 func _mapToDNSError(o Map) *_net.DNSError {
-	return &_net.DNSError{}
+	return &_net.DNSError{
+		Err: FieldAsString(o, "Err"),
+		Name: FieldAsString(o, "Name"),
+		Server: FieldAsString(o, "Server"),
+		IsTimeout: FieldAsBool(o, "IsTimeout"),
+		IsTemporary: FieldAsBool(o, "IsTemporary"),
+	}
 }
 
 func _vectorToDNSError(o *Vector) *_net.DNSError {
@@ -4296,7 +4307,17 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 }
 
 // func _mapToDialer(o Map) *_net.Dialer {
-// 	return &_net.Dialer{}
+// 	return &_net.Dialer{
+// 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Deadline: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		DualStack: FieldAsBool(o, "DualStack"),
+// 		FallbackDelay: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		KeepAlive: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (net.Resolver)),
+// 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
+// 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToDialer(o *Vector) *_net.Dialer {
@@ -4492,7 +4513,10 @@ func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res 
 }
 
 // func _mapToIPAddr(o Map) *_net.IPAddr {
-// 	return &_net.IPAddr{}
+// 	return &_net.IPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Zone: FieldAsString(o, "Zone"),
+// 	}
 // }
 
 // func _vectorToIPAddr(o *Vector) *_net.IPAddr {
@@ -4626,7 +4650,10 @@ func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res _
 }
 
 // func _mapToIPNet(o Map) *_net.IPNet {
-// 	return &_net.IPNet{}
+// 	return &_net.IPNet{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
+// 	}
 // }
 
 // func _vectorToIPNet(o *Vector) *_net.IPNet {
@@ -4676,7 +4703,13 @@ func ExtractGo_go_std_net__Interface(rcvr, arg string, args *ArraySeq, n int) (r
 }
 
 // func _mapToInterface(o Map) *_net.Interface {
-// 	return &_net.Interface{}
+// 	return &_net.Interface{
+// 		Index: FieldAsInt(o, "Index"),
+// 		MTU: FieldAsInt(o, "MTU"),
+// 		Name: FieldAsString(o, "Name"),
+// 		HardwareAddr: ABEND048(codegen.go: no conversion from Clojure for net.HardwareAddr ([]byte)),
+// 		Flags: ABEND048(codegen.go: no conversion from Clojure for net.Flags (uint)),
+// 	}
 // }
 
 // func _vectorToInterface(o *Vector) *_net.Interface {
@@ -4769,7 +4802,9 @@ func ExtractGo_go_std_net__ListenConfig(rcvr, arg string, args *ArraySeq, n int)
 }
 
 // func _mapToListenConfig(o Map) *_net.ListenConfig {
-// 	return &_net.ListenConfig{}
+// 	return &_net.ListenConfig{
+// 		Control: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToListenConfig(o *Vector) *_net.ListenConfig {
@@ -4843,7 +4878,10 @@ func ExtractGo_go_std_net__MX(rcvr, arg string, args *ArraySeq, n int) (res _net
 }
 
 func _mapToMX(o Map) *_net.MX {
-	return &_net.MX{}
+	return &_net.MX{
+		Host: FieldAsString(o, "Host"),
+		Pref: FieldAsUint16(o, "Pref"),
+	}
 }
 
 func _vectorToMX(o *Vector) *_net.MX {
@@ -4893,7 +4931,9 @@ func ExtractGo_go_std_net__NS(rcvr, arg string, args *ArraySeq, n int) (res _net
 }
 
 func _mapToNS(o Map) *_net.NS {
-	return &_net.NS{}
+	return &_net.NS{
+		Host: FieldAsString(o, "Host"),
+	}
 }
 
 func _vectorToNS(o *Vector) *_net.NS {
@@ -4942,7 +4982,13 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToOpError(o Map) *_net.OpError {
-// 	return &_net.OpError{}
+// 	return &_net.OpError{
+// 		Op: FieldAsString(o, "Op"),
+// 		Net: FieldAsString(o, "Net"),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Err: FieldAsError(o, "Err"),
+// 	}
 // }
 
 // func _vectorToOpError(o *Vector) *_net.OpError {
@@ -5020,7 +5066,10 @@ func ExtractGo_go_std_net__ParseError(rcvr, arg string, args *ArraySeq, n int) (
 }
 
 func _mapToParseError(o Map) *_net.ParseError {
-	return &_net.ParseError{}
+	return &_net.ParseError{
+		Type: FieldAsString(o, "Type"),
+		Text: FieldAsString(o, "Text"),
+	}
 }
 
 func _vectorToParseError(o *Vector) *_net.ParseError {
@@ -5070,7 +5119,11 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 // func _mapToResolver(o Map) *_net.Resolver {
-// 	return &_net.Resolver{}
+// 	return &_net.Resolver{
+// 		PreferGo: FieldAsBool(o, "PreferGo"),
+// 		StrictErrors: FieldAsBool(o, "StrictErrors"),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToResolver(o *Vector) *_net.Resolver {
@@ -5121,7 +5174,12 @@ func ExtractGo_go_std_net__SRV(rcvr, arg string, args *ArraySeq, n int) (res _ne
 }
 
 func _mapToSRV(o Map) *_net.SRV {
-	return &_net.SRV{}
+	return &_net.SRV{
+		Target: FieldAsString(o, "Target"),
+		Port: FieldAsUint16(o, "Port"),
+		Priority: FieldAsUint16(o, "Priority"),
+		Weight: FieldAsUint16(o, "Weight"),
+	}
 }
 
 func _vectorToSRV(o *Vector) *_net.SRV {
@@ -5173,7 +5231,11 @@ func ExtractGo_go_std_net__TCPAddr(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToTCPAddr(o Map) *_net.TCPAddr {
-// 	return &_net.TCPAddr{}
+// 	return &_net.TCPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Port: FieldAsInt(o, "Port"),
+// 		Zone: FieldAsString(o, "Zone"),
+// 	}
 // }
 
 // func _vectorToTCPAddr(o *Vector) *_net.TCPAddr {
@@ -5318,7 +5380,11 @@ func ExtractGo_go_std_net__UDPAddr(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToUDPAddr(o Map) *_net.UDPAddr {
-// 	return &_net.UDPAddr{}
+// 	return &_net.UDPAddr{
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		Port: FieldAsInt(o, "Port"),
+// 		Zone: FieldAsString(o, "Zone"),
+// 	}
 // }
 
 // func _vectorToUDPAddr(o *Vector) *_net.UDPAddr {
@@ -5416,7 +5482,10 @@ func ExtractGo_go_std_net__UnixAddr(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 func _mapToUnixAddr(o Map) *_net.UnixAddr {
-	return &_net.UnixAddr{}
+	return &_net.UnixAddr{
+		Name: FieldAsString(o, "Name"),
+		Net: FieldAsString(o, "Net"),
+	}
 }
 
 func _vectorToUnixAddr(o *Vector) *_net.UnixAddr {
@@ -7788,7 +7857,12 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 }
 
 // func _mapToClient(o Map) *_http.Client {
-// 	return &_http.Client{}
+// 	return &_http.Client{
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToClient(o *Vector) *_http.Client {
@@ -7905,7 +7979,20 @@ func ExtractGo_go_std_net_http__Cookie(rcvr, arg string, args *ArraySeq, n int) 
 }
 
 // func _mapToCookie(o Map) *_http.Cookie {
-// 	return &_http.Cookie{}
+// 	return &_http.Cookie{
+// 		Name: FieldAsString(o, "Name"),
+// 		Value: FieldAsString(o, "Value"),
+// 		Path: FieldAsString(o, "Path"),
+// 		Domain: FieldAsString(o, "Domain"),
+// 		Expires: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		RawExpires: FieldAsString(o, "RawExpires"),
+// 		MaxAge: FieldAsInt(o, "MaxAge"),
+// 		Secure: FieldAsBool(o, "Secure"),
+// 		HttpOnly: FieldAsBool(o, "HttpOnly"),
+// 		SameSite: ABEND048(codegen.go: no conversion from Clojure for net/http.SameSite (int)),
+// 		Raw: FieldAsString(o, "Raw"),
+// 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 	}
 // }
 
 // func _vectorToCookie(o *Vector) *_http.Cookie {
@@ -8229,7 +8316,9 @@ func ExtractGo_go_std_net_http__ProtocolError(rcvr, arg string, args *ArraySeq, 
 }
 
 func _mapToProtocolError(o Map) *_http.ProtocolError {
-	return &_http.ProtocolError{}
+	return &_http.ProtocolError{
+		ErrorString: FieldAsString(o, "ErrorString"),
+	}
 }
 
 func _vectorToProtocolError(o *Vector) *_http.ProtocolError {
@@ -8278,7 +8367,10 @@ func ExtractGo_go_std_net_http__PushOptions(rcvr, arg string, args *ArraySeq, n 
 }
 
 // func _mapToPushOptions(o Map) *_http.PushOptions {
-// 	return &_http.PushOptions{}
+// 	return &_http.PushOptions{
+// 		Method: FieldAsString(o, "Method"),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 	}
 // }
 
 // func _vectorToPushOptions(o *Vector) *_http.PushOptions {
@@ -8353,7 +8445,29 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 }
 
 // func _mapToRequest(o Map) *_http.Request {
-// 	return &_http.Request{}
+// 	return &_http.Request{
+// 		Method: FieldAsString(o, "Method"),
+// 		URL: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Proto: FieldAsString(o, "Proto"),
+// 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
+// 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ContentLength: FieldAsInt64(o, "ContentLength"),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Close: FieldAsBool(o, "Close"),
+// 		Host: FieldAsString(o, "Host"),
+// 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		PostForm: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		MultipartForm: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		RemoteAddr: FieldAsString(o, "RemoteAddr"),
+// 		RequestURI: FieldAsString(o, "RequestURI"),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Cancel: ABEND047(gotypes.go: unsupported type *ast.ChanType),
+// 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (net/http.Response)),
+// 	}
 // }
 
 // func _vectorToRequest(o *Vector) *_http.Request {
@@ -8422,7 +8536,22 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 }
 
 // func _mapToResponse(o Map) *_http.Response {
-// 	return &_http.Response{}
+// 	return &_http.Response{
+// 		Status: FieldAsString(o, "Status"),
+// 		StatusCode: FieldAsInt(o, "StatusCode"),
+// 		Proto: FieldAsString(o, "Proto"),
+// 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
+// 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ContentLength: FieldAsInt64(o, "ContentLength"),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Close: FieldAsBool(o, "Close"),
+// 		Uncompressed: FieldAsBool(o, "Uncompressed"),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (net/http.Request)),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToResponse(o *Vector) *_http.Response {
@@ -8621,7 +8750,19 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 }
 
 // func _mapToServer(o Map) *_http.Server {
-// 	return &_http.Server{}
+// 	return &_http.Server{
+// 		Addr: FieldAsString(o, "Addr"),
+// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		TLSConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ReadTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ReadHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		WriteTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		IdleTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
+// 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		ConnState: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ErrorLog: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToServer(o *Vector) *_http.Server {
@@ -8680,7 +8821,25 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 }
 
 // func _mapToTransport(o Map) *_http.Transport {
-// 	return &_http.Transport{}
+// 	return &_http.Transport{
+// 		Proxy: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DialContext: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DialTLS: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSClientConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLSHandshakeTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		DisableKeepAlives: FieldAsBool(o, "DisableKeepAlives"),
+// 		DisableCompression: FieldAsBool(o, "DisableCompression"),
+// 		MaxIdleConns: FieldAsInt(o, "MaxIdleConns"),
+// 		MaxIdleConnsPerHost: FieldAsInt(o, "MaxIdleConnsPerHost"),
+// 		MaxConnsPerHost: FieldAsInt(o, "MaxConnsPerHost"),
+// 		IdleConnTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ResponseHeaderTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ExpectContinueTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLSNextProto: ABEND047(gotypes.go: unsupported type *ast.MapType),
+// 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		MaxResponseHeaderBytes: FieldAsInt64(o, "MaxResponseHeaderBytes"),
+// 	}
 // }
 
 // func _vectorToTransport(o *Vector) *_http.Transport {
@@ -9950,7 +10109,17 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 }
 
 // func _mapToHandler(o Map) *_cgi.Handler {
-// 	return &_cgi.Handler{}
+// 	return &_cgi.Handler{
+// 		Path: FieldAsString(o, "Path"),
+// 		Root: FieldAsString(o, "Root"),
+// 		Dir: FieldAsString(o, "Dir"),
+// 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Logger: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 		Stderr: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		PathLocationHandler: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToHandler(o *Vector) *_cgi.Handler {
@@ -10127,7 +10296,9 @@ func ExtractGo_go_std_net_http_cookiejar__Options(rcvr, arg string, args *ArrayS
 }
 
 // func _mapToOptions(o Map) *_cookiejar.Options {
-// 	return &_cookiejar.Options{}
+// 	return &_cookiejar.Options{
+// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 	}
 // }
 
 // func _vectorToOptions(o *Vector) *_cookiejar.Options {
@@ -10341,7 +10512,12 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 }
 
 // func _mapToResponseRecorder(o Map) *_httptest.ResponseRecorder {
-// 	return &_httptest.ResponseRecorder{}
+// 	return &_httptest.ResponseRecorder{
+// 		Code: FieldAsInt(o, "Code"),
+// 		HeaderMap: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Body: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Flushed: FieldAsBool(o, "Flushed"),
+// 	}
 // }
 
 // func _vectorToResponseRecorder(o *Vector) *_httptest.ResponseRecorder {
@@ -10393,7 +10569,12 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 }
 
 // func _mapToServer(o Map) *_httptest.Server {
-// 	return &_httptest.Server{}
+// 	return &_httptest.Server{
+// 		URL: FieldAsString(o, "URL"),
+// 		Listener: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Config: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToServer(o *Vector) *_httptest.Server {
@@ -10620,7 +10801,24 @@ func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *Ar
 }
 
 // func _mapToClientTrace(o Map) *_httptrace.ClientTrace {
-// 	return &_httptrace.ClientTrace{}
+// 	return &_httptrace.ClientTrace{
+// 		GetConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		GotConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		PutIdleConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		GotFirstResponseByte: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Got100Continue: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Got1xxResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DNSStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		DNSDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ConnectStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ConnectDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSHandshakeStart: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		TLSHandshakeDone: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteHeaderField: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteHeaders: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Wait100Continue: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		WroteRequest: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToClientTrace(o *Vector) *_httptrace.ClientTrace {
@@ -10684,7 +10882,11 @@ func ExtractGo_go_std_net_http_httptrace__DNSDoneInfo(rcvr, arg string, args *Ar
 }
 
 // func _mapToDNSDoneInfo(o Map) *_httptrace.DNSDoneInfo {
-// 	return &_httptrace.DNSDoneInfo{}
+// 	return &_httptrace.DNSDoneInfo{
+// 		Addrs: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Err: FieldAsError(o, "Err"),
+// 		Coalesced: FieldAsBool(o, "Coalesced"),
+// 	}
 // }
 
 // func _vectorToDNSDoneInfo(o *Vector) *_httptrace.DNSDoneInfo {
@@ -10735,7 +10937,9 @@ func ExtractGo_go_std_net_http_httptrace__DNSStartInfo(rcvr, arg string, args *A
 }
 
 func _mapToDNSStartInfo(o Map) *_httptrace.DNSStartInfo {
-	return &_httptrace.DNSStartInfo{}
+	return &_httptrace.DNSStartInfo{
+		Host: FieldAsString(o, "Host"),
+	}
 }
 
 func _vectorToDNSStartInfo(o *Vector) *_httptrace.DNSStartInfo {
@@ -10784,7 +10988,12 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 }
 
 // func _mapToGotConnInfo(o Map) *_httptrace.GotConnInfo {
-// 	return &_httptrace.GotConnInfo{}
+// 	return &_httptrace.GotConnInfo{
+// 		Conn: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		Reused: FieldAsBool(o, "Reused"),
+// 		WasIdle: FieldAsBool(o, "WasIdle"),
+// 		IdleTime: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToGotConnInfo(o *Vector) *_httptrace.GotConnInfo {
@@ -10836,7 +11045,9 @@ func ExtractGo_go_std_net_http_httptrace__WroteRequestInfo(rcvr, arg string, arg
 }
 
 func _mapToWroteRequestInfo(o Map) *_httptrace.WroteRequestInfo {
-	return &_httptrace.WroteRequestInfo{}
+	return &_httptrace.WroteRequestInfo{
+		Err: FieldAsError(o, "Err"),
+	}
 }
 
 func _vectorToWroteRequestInfo(o *Vector) *_httptrace.WroteRequestInfo {
@@ -11108,7 +11319,15 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 }
 
 // func _mapToReverseProxy(o Map) *_httputil.ReverseProxy {
-// 	return &_httputil.ReverseProxy{}
+// 	return &_httputil.ReverseProxy{
+// 		Director: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Transport: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		FlushInterval: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		ErrorLog: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		ModifyResponse: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		ErrorHandler: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 	}
 // }
 
 // func _vectorToReverseProxy(o *Vector) *_httputil.ReverseProxy {
@@ -11533,7 +11752,10 @@ func ExtractGo_go_std_net_mail__Address(rcvr, arg string, args *ArraySeq, n int)
 }
 
 func _mapToAddress(o Map) *_mail.Address {
-	return &_mail.Address{}
+	return &_mail.Address{
+		Name: FieldAsString(o, "Name"),
+		Address: FieldAsString(o, "Address"),
+	}
 }
 
 func _vectorToAddress(o *Vector) *_mail.Address {
@@ -11583,7 +11805,9 @@ func ExtractGo_go_std_net_mail__AddressParser(rcvr, arg string, args *ArraySeq, 
 }
 
 // func _mapToAddressParser(o Map) *_mail.AddressParser {
-// 	return &_mail.AddressParser{}
+// 	return &_mail.AddressParser{
+// 		WordDecoder: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToAddressParser(o *Vector) *_mail.AddressParser {
@@ -11669,7 +11893,10 @@ func ExtractGo_go_std_net_mail__Message(rcvr, arg string, args *ArraySeq, n int)
 }
 
 // func _mapToMessage(o Map) *_mail.Message {
-// 	return &_mail.Message{}
+// 	return &_mail.Message{
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
+// 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToMessage(o *Vector) *_mail.Message {
@@ -11941,7 +12168,13 @@ func ExtractGo_go_std_net_rpc__Call(rcvr, arg string, args *ArraySeq, n int) (re
 }
 
 // func _mapToCall(o Map) *_rpc.Call {
-// 	return &_rpc.Call{}
+// 	return &_rpc.Call{
+// 		ServiceMethod: FieldAsString(o, "ServiceMethod"),
+// 		Args: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Reply: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
+// 		Error: FieldAsError(o, "Error"),
+// 		Done: ABEND047(gotypes.go: unsupported type *ast.ChanType),
+// 	}
 // }
 
 // func _vectorToCall(o *Vector) *_rpc.Call {
@@ -12066,7 +12299,10 @@ func ExtractGo_go_std_net_rpc__Request(rcvr, arg string, args *ArraySeq, n int) 
 }
 
 func _mapToRequest(o Map) *_rpc.Request {
-	return &_rpc.Request{}
+	return &_rpc.Request{
+		ServiceMethod: FieldAsString(o, "ServiceMethod"),
+		Seq: FieldAsUint64(o, "Seq"),
+	}
 }
 
 func _vectorToRequest(o *Vector) *_rpc.Request {
@@ -12116,7 +12352,11 @@ func ExtractGo_go_std_net_rpc__Response(rcvr, arg string, args *ArraySeq, n int)
 }
 
 func _mapToResponse(o Map) *_rpc.Response {
-	return &_rpc.Response{}
+	return &_rpc.Response{
+		ServiceMethod: FieldAsString(o, "ServiceMethod"),
+		Seq: FieldAsUint64(o, "Seq"),
+		Error: FieldAsString(o, "Error"),
+	}
 }
 
 func _vectorToResponse(o *Vector) *_rpc.Response {
@@ -12742,7 +12982,9 @@ func ExtractGo_go_std_net_smtp__Client(rcvr, arg string, args *ArraySeq, n int) 
 }
 
 // func _mapToClient(o Map) *_smtp.Client {
-// 	return &_smtp.Client{}
+// 	return &_smtp.Client{
+// 		Text: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToClient(o *Vector) *_smtp.Client {
@@ -12791,7 +13033,11 @@ func ExtractGo_go_std_net_smtp__ServerInfo(rcvr, arg string, args *ArraySeq, n i
 }
 
 // func _mapToServerInfo(o Map) *_smtp.ServerInfo {
-// 	return &_smtp.ServerInfo{}
+// 	return &_smtp.ServerInfo{
+// 		Name: FieldAsString(o, "Name"),
+// 		TLS: FieldAsBool(o, "TLS"),
+// 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
+// 	}
 // }
 
 // func _vectorToServerInfo(o *Vector) *_smtp.ServerInfo {
@@ -13123,7 +13369,10 @@ func ExtractGo_go_std_net_textproto__Error(rcvr, arg string, args *ArraySeq, n i
 }
 
 func _mapToError(o Map) *_textproto.Error {
-	return &_textproto.Error{}
+	return &_textproto.Error{
+		Code: FieldAsInt(o, "Code"),
+		Msg: FieldAsString(o, "Msg"),
+	}
 }
 
 func _vectorToError(o *Vector) *_textproto.Error {
@@ -13297,7 +13546,9 @@ func ExtractGo_go_std_net_textproto__Reader(rcvr, arg string, args *ArraySeq, n 
 }
 
 // func _mapToReader(o Map) *_textproto.Reader {
-// 	return &_textproto.Reader{}
+// 	return &_textproto.Reader{
+// 		R: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToReader(o *Vector) *_textproto.Reader {
@@ -13346,7 +13597,9 @@ func ExtractGo_go_std_net_textproto__Writer(rcvr, arg string, args *ArraySeq, n 
 }
 
 // func _mapToWriter(o Map) *_textproto.Writer {
-// 	return &_textproto.Writer{}
+// 	return &_textproto.Writer{
+// 		W: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
+// 	}
 // }
 
 // func _vectorToWriter(o *Vector) *_textproto.Writer {
@@ -13840,7 +14093,11 @@ func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (r
 }
 
 func _mapToError(o Map) *_url.Error {
-	return &_url.Error{}
+	return &_url.Error{
+		Op: FieldAsString(o, "Op"),
+		URL: FieldAsString(o, "URL"),
+		Err: FieldAsError(o, "Err"),
+	}
 }
 
 func _vectorToError(o *Vector) *_url.Error {
@@ -13971,7 +14228,17 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 }
 
 // func _mapToURL(o Map) *_url.URL {
-// 	return &_url.URL{}
+// 	return &_url.URL{
+// 		Scheme: FieldAsString(o, "Scheme"),
+// 		Opaque: FieldAsString(o, "Opaque"),
+// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
+// 		Host: FieldAsString(o, "Host"),
+// 		Path: FieldAsString(o, "Path"),
+// 		RawPath: FieldAsString(o, "RawPath"),
+// 		ForceQuery: FieldAsBool(o, "ForceQuery"),
+// 		RawQuery: FieldAsString(o, "RawQuery"),
+// 		Fragment: FieldAsString(o, "Fragment"),
+// 	}
 // }
 
 // func _vectorToURL(o *Vector) *_url.URL {
@@ -14902,7 +15169,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(113) 047(95) 902(39) 275(34) 048(32) 042(27) 675(18) 907(14) 644(9) 674(9) 883(3) 906(3) 124(1) 908(1) 909(1)
+ABENDs: 047(190) 987(113) 048(66) 902(39) 275(34) 042(27) 675(18) 907(14) 644(9) 674(9) 883(3) 906(3) 124(1) 908(1) 909(1)
 Totals: functions=421 generated=249 (59.14%)
           non-receivers=148 (35.15%) generated=81 (54.73%)
           receivers=273 (64.85%) generated=149 (54.58%)
