@@ -993,7 +993,7 @@ func (v *GoVar) Resolve() interface{} {
 	if v.Value == nil {
 		panic(RT.NewError("Unbound var: " + v.ToString(false)))
 	}
-	return MakeGoObject(v.Value)
+	return MakeGoObjectIfNeeded(v.Value)
 }
 
 func (v *GoVar) Deref() interface{} {
@@ -1220,6 +1220,46 @@ func MakeTime(t time.Time) Time {
 }
 
 func MakeGoObject(o interface{}) GoObject {
+	return GoObject{O: o}
+}
+
+func MakeGoObjectIfNeeded(o interface{}) Object {
+	switch v := o.(type) {
+	case int:
+		return MakeInt(v)
+	case int64:
+		return MakeBigInt(v)
+	case int32:
+		return MakeInt(int(v))
+	case int16:
+		return MakeInt(int(v))
+	case int8:
+		return MakeInt(int(v))
+	case uint:
+		return MakeBigIntU(uint64(v))
+	case uint64:
+		return MakeBigIntU(v)
+	case uint32:
+		return MakeBigIntU(uint64(v))
+	case uint16:
+		return MakeInt(int(v))
+	case uint8:
+		return MakeInt(int(v))
+	case float32:
+		return MakeDouble(float64(v))
+	case float64:
+		return MakeDouble(v)
+	case string:
+		return MakeString(v)
+	case []string:
+		return MakeStringVector(v)
+	case error:
+		return MakeError(v) // TODO: Joker should probably have a concrete Error type instead of converting immediately to String
+	case time.Time:
+		return MakeTime(v)
+	case bool:
+		return MakeBoolean(v)
+	}
 	return GoObject{O: o}
 }
 

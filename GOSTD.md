@@ -43,7 +43,7 @@ For example, the `MX` type defined in the `net` package is wrapped as `go.std.ne
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`) in the namespace.
 
-Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(Go f "Name")`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, in the form of a `GoObject`, of the `GoVar` named `Stdin`).
+Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(Go f :Name)`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
 
 Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Joker, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(Go fi "Modtime")` works on such an object.
 
@@ -53,11 +53,11 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 ## Variables
 
-Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding `GoObject[]` objects that are "snapshots" of the values as of the invocation of `deref`.
+Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
 
 ## GoObject
 
-A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interface{}`) -- currently always an object of a named type. E.g.:
+A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interface{}`). E.g.:
 
 ```
 $ joker
@@ -103,9 +103,13 @@ As a result, pointers to such objects are returned as `atom` references to the v
 
 *NOTE*: For now, `(Go obj "&")` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that, or (more likely) to a copy that is made for this purpose. This might be replaced someday by a proper `(ref ...)` function, which would presumably also work for ordinary Joker objects as it does in Clojure.
 
+### Rules Governing GoObject Creation
+
+When considering whether to wrap a given object in a `GoObject`, Joker normally substitutes a suitable Joker type (such as `Int`, `Number`, or `String`) when one is available and suitable for the underlying type (not just the value). For example, instead of wrapping an `int64` in a `GoObject`, Joker will wrap it in a `Number`, even if the value is small (such as zero).
+
 ### Constructing a GoObject
 
-Akin to Clojure, `(type. ...)` functions are supported for (some) `GoObject` types:
+Akin to Clojure, `(new type ...)` is supported for (some) `GoObject` types:
 
 ```
 user=> (use '[go.std.os])
@@ -145,7 +149,7 @@ Calling a Go wrapper function (for a Go function, receiver, or method) in Joker 
 
 Generally, the types of an input argument (to a Go wrapper function) must be either a built-in type (such as `int`) or a `GoObject` wrapping an object of the same (named) type as the corresponding input argument to the Go API.
 
-Arguments with built-in types must be passed appropriate Clojure objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported.
+Arguments with built-in types must be passed appropriate Clojure objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported. However, GoObject-creation rules take this into account, substituting appropriate Clojure objects when the types are compatible.
 
 Other arguments (with named types) are passed `GoObject` instances that can be:
 * Constructed
@@ -292,7 +296,7 @@ Returned `GoObject` instances can:
 * Be provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
 * Have receivers/methods, defined on them, invoked via the `Go` function
 
-Built-in type instances are converted directly to appropriate Clojure types. For example, a Go API that returns `uint64` will be converted to a `BigInt` so as to ensure the full range of potential values is supported:
+Built-in type instances are converted directly to appropriate Clojure types. For example, a Go API that returns `uint64` will be converted to a `Number` so as to ensure the full range of potential values is supported:
 
 
 ```
@@ -326,7 +330,9 @@ user=>
 
 ### Referencing a Member of a GoObject
 
-`(Go obj receiver [args...])`, where `obj` is a `GoObject`, now works. As `Go` is a function, `receiver` is evaluated; typically it should be a self-evaluating form, and must evaluate to either a symbol or string, which are supported as equivalent:
+`(Go obj receiver [args...])`, where `obj` is a `GoObject`, calls a receiver (or method) for `obj` with the specified arguments.
+
+As `Go` is a function, `receiver` (like `obj` and `args`) is evaluated. Typically it will be a self-evaluating form, as it must evaluate to a symbol, string, or keyword, which are supported as equivalent:
 
 ```
 user=> (use 'go.std.os)
@@ -335,19 +341,19 @@ user=> (def file (get (Create "TEMP.txt") 0))
 #'user/file
 user=> file
 &{0xc000c01b60}
-user=> (Go file "Name")
+user=> (Go file :Name)
 "TEMP.txt"
-user=> (Go file "WriteString" "Hello, world!\n")
+user=> (Go file :WriteString "Hello, world!\n")
 [14 nil]
-user=> (Go file "Close")
+user=> (Go file "Close)
 nil
-user=> (Go file "Name")
+user=> (Go file 'Name)  ;; Same as (Go file "Name") and (Go file :Name)
 "TEMP.txt"
 user=> (Go file "WriteString" "Hello, world again!\n")
 [0 "write TEMP.txt: file already closed"]
 user=> (slurp "TEMP.txt")
 "Hello, world!\n"
-user=> (Go (deref Stdin) 'Name)
+user=> (Go (deref Stdin) :Name)
 "/dev/stdin"
 user=>
 ```

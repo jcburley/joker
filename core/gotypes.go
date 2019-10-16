@@ -323,7 +323,7 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 	case reflect.Struct:
 		f := v.FieldByName(key.(String).S)
 		if f != reflect.ValueOf(nil) {
-			return true, MakeGoObject(f.Interface())
+			return true, MakeGoObjectIfNeeded(f.Interface())
 		}
 	case reflect.Map:
 		// Ignore key, return vector of keys (assuming they're strings)

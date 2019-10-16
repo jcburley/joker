@@ -557,10 +557,10 @@ var procDeref = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case *GoVar:
 		d := reflect.Indirect(reflect.ValueOf(c.Value)).Interface()
-		return MakeGoObject(d)
+		return MakeGoObjectIfNeeded(d)
 	case GoObject:
 		d := reflect.Indirect(reflect.ValueOf(c.O)).Interface()
-		return MakeGoObject(d)
+		return MakeGoObjectIfNeeded(d)
 	default:
 		return EnsureDeref(args, 0).Deref()
 	}
@@ -775,11 +775,11 @@ var procGo Proc = func(args []Object) Object {
 	if member == "&" {
 		v := reflect.ValueOf(o.O)
 		if v.CanAddr() {
-			return MakeGoObject(v.Addr().Interface())
+			return MakeGoObjectIfNeeded(v.Addr().Interface())
 		}
 		d := reflect.New(reflect.TypeOf(o.O))
 		reflect.Indirect(d).Set(v)
-		return MakeGoObject(d.Interface())
+		return MakeGoObjectIfNeeded(d.Interface())
 	}
 	g := LookupGoType(o.O)
 	if g == nil {
