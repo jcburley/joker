@@ -4364,7 +4364,7 @@ func ExtractGoObjectFlags(args []Object, index int) *_net.Flags {
 			return r
 		}
 	case Number:
-		v := _net.Flags(ExtractUInt(args, index))
+		v := _net.Flags(ExtractUint(args, index))
 		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Flags]"))

@@ -147,7 +147,7 @@ func ExtractInt64(args []Object, index int) int64 {
 	return ExtractNumber(args, index).BigInt().Int64()
 }
 
-func ExtractUInt(args []Object, index int) uint {
+func ExtractUint(args []Object, index int) uint {
 	v := EnsureNumber(args, index).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(index, args[index], "uint"))
@@ -155,23 +155,23 @@ func ExtractUInt(args []Object, index int) uint {
 	return uint(v)
 }
 
-func ExtractUInt8(args []Object, index int) uint8 {
-	v := ExtractUInt(args, index)
+func ExtractUint8(args []Object, index int) uint8 {
+	v := ExtractUint(args, index)
 	if v > math.MaxUint8 {
 		panic(RT.NewArgTypeError(index, args[index], "uint8"))
 	}
 	return uint8(v)
 }
 
-func ExtractUInt16(args []Object, index int) uint16 {
-	v := ExtractUInt(args, index)
+func ExtractUint16(args []Object, index int) uint16 {
+	v := ExtractUint(args, index)
 	if v > math.MaxUint16 {
 		panic(RT.NewArgTypeError(index, args[index], "uint16"))
 	}
 	return uint16(v)
 }
 
-func ExtractUInt32(args []Object, index int) uint32 {
+func ExtractUint32(args []Object, index int) uint32 {
 	v := ExtractNumber(args, index).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(index, args[index], "uint32"))
@@ -179,11 +179,11 @@ func ExtractUInt32(args []Object, index int) uint32 {
 	return uint32(v)
 }
 
-func ExtractUInt64(args []Object, index int) uint64 {
+func ExtractUint64(args []Object, index int) uint64 {
 	return ExtractNumber(args, index).BigInt().Uint64()
 }
 
-func ExtractUIntPtr(args []Object, index int) uintptr {
+func ExtractUintPtr(args []Object, index int) uintptr {
 	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
 }
 

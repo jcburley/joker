@@ -93,7 +93,7 @@ func FieldAsInt(o Map, k string) int {
 	return int(v)
 }
 
-func ExtractGoUInt(rcvr, name string, args *ArraySeq, n int) uint {
+func ExtractGoUint(rcvr, name string, args *ArraySeq, n int) uint {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
@@ -158,7 +158,7 @@ func FieldAsInt32(o Map, k string) int32 {
 	return int32(v)
 }
 
-func ExtractGoUInt32(rcvr, name string, args *ArraySeq, n int) uint32 {
+func ExtractGoUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint32"))
@@ -179,7 +179,7 @@ func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 }
 
-func ExtractGoUInt64(rcvr, name string, args *ArraySeq, n int) uint64 {
+func ExtractGoUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 }
 
@@ -256,11 +256,11 @@ func FieldAsError(o Map, k string) error {
 	return res
 }
 
-func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
-	return uintptr(ExtractGoUInt64(rcvr, name, args, n))
+func ExtractGoUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
+	return uintptr(ExtractGoUint64(rcvr, name, args, n))
 }
 
-func FieldAsUIntPtr(o Map, k string) uintptr {
+func FieldAsUintPtr(o Map, k string) uintptr {
 	return uintptr(FieldAsUint64(o, k))
 }
 
