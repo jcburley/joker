@@ -1672,7 +1672,7 @@ func (s String) Compare(other Object) int {
 	return strings.Compare(s.S, s2.S)
 }
 
-// TODO: Return proper Go object (e.g. maybe go.type.error?)
+// TODO: Return proper Go object (e.g. maybe go.std/error?)
 func MakeError(e error) String {
 	if e == nil {
 		return MakeString("")

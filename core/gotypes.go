@@ -61,6 +61,19 @@ func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
 	return res.B
 }
 
+func FieldAsBoolean(o Map, k string) bool {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return false
+	}
+	res, ok := v.(Boolean)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Boolean, but is %T",
+			k, v)))
+	}
+	return res.B
+}
+
 func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
@@ -71,10 +84,28 @@ func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
 	return res.I
 }
 
+func FieldAsInt(o Map, k string) int {
+	v := FieldAsNumber(o, k).BigInt().Int64()
+	if v > int64(MAX_INT) || v < int64(MIN_INT) {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int, but is too large",
+			v, k)))
+	}
+	return int(v)
+}
+
 func ExtractGoUInt(rcvr, name string, args *ArraySeq, n int) uint {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
+	}
+	return uint(v)
+}
+
+func FieldAsUint(o Map, k string) uint {
+	v := FieldAsNumber(o, k).BigInt().Uint64()
+	if v > uint64(MAX_UINT) {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint, but is too large",
+			v, k)))
 	}
 	return uint(v)
 }
@@ -97,10 +128,32 @@ func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
 	return res
 }
 
+func FieldAsNumber(o Map, k string) Number {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return MakeNumber(0)
+	}
+	res, ok := v.(Number)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Number, but is %T",
+			k, v)))
+	}
+	return res
+}
+
 func ExtractGoInt32(rcvr, name string, args *ArraySeq, n int) int32 {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
-	if v > math.MaxInt32 {
+	if v > math.MaxInt32 || v < math.MinInt32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "int32"))
+	}
+	return int32(v)
+}
+
+func FieldAsInt32(o Map, k string) int32 {
+	v := FieldAsNumber(o, k).BigInt().Int64()
+	if v > math.MaxInt32 || v < math.MinInt32 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int32, but its magnitude is too large",
+			v, k)))
 	}
 	return int32(v)
 }
@@ -113,6 +166,15 @@ func ExtractGoUInt32(rcvr, name string, args *ArraySeq, n int) uint32 {
 	return uint32(v)
 }
 
+func FieldAsUint32(o Map, k string) uint32 {
+	v := FieldAsNumber(o, k).BigInt().Uint64()
+	if v > math.MaxUint32 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int32, but is too large",
+			v, k)))
+	}
+	return uint32(v)
+}
+
 func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 }
@@ -121,12 +183,29 @@ func ExtractGoUInt64(rcvr, name string, args *ArraySeq, n int) uint64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 }
 
+func FieldAsUint64(o Map, k string) uint64 {
+	return FieldAsNumber(o, k).BigInt().Uint64()
+}
+
 func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
 	a := SeqNth(args, n)
 	res, ok := a.(Char)
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Char, but is %T",
 			n, name, rcvr, a)))
+	}
+	return res.Ch
+}
+
+func FieldAsChar(o Map, k string) rune {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return 0
+	}
+	res, ok := v.(Char)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Char, but is %T",
+			k, v)))
 	}
 	return res.Ch
 }
@@ -141,6 +220,19 @@ func ExtractGoString(rcvr, name string, args *ArraySeq, n int) string {
 	return res.S
 }
 
+func FieldAsString(o Map, k string) string {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return ""
+	}
+	res, ok := v.(String)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.String, but is %T",
+			k, v)))
+	}
+	return res.S
+}
+
 func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
 	a := SeqNth(args, n)
 	res, ok := a.(Error)
@@ -151,8 +243,25 @@ func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
 	return res
 }
 
+func FieldAsError(o Map, k string) error {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok || v.Equals(NIL) {
+		return nil
+	}
+	res, ok := v.(error)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Error, but is %T",
+			k, v)))
+	}
+	return res
+}
+
 func ExtractGoUIntPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
 	return uintptr(ExtractGoUInt64(rcvr, name, args, n))
+}
+
+func FieldAsUIntPtr(o Map, k string) uintptr {
+	return uintptr(FieldAsUint64(o, k))
 }
 
 func GoObjectGet(o interface{}, key Object) (bool, Object) {
