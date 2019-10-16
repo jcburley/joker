@@ -1223,6 +1223,7 @@ func MakeGoObject(o interface{}) GoObject {
 	return GoObject{O: o}
 }
 
+// The (partial) reverse of this is (Go <obj> :<>).
 func MakeGoObjectIfNeeded(o interface{}) Object {
 	switch v := o.(type) {
 	case int:

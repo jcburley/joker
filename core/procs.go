@@ -760,7 +760,6 @@ var procGo Proc = func(args []Object) Object {
 	if ty, ok := args[0].(*GoType); ok {
 		return goGetTypeInfo(ty, args[1])
 	}
-	o := EnsureGoObject(args, 0)
 	member := ""
 	switch s := args[1].(type) {
 	case Symbol:
@@ -772,6 +771,32 @@ var procGo Proc = func(args []Object) Object {
 	default:
 		panic(RT.NewArgTypeError(0, args[1], "Symbol, String, or Keyword"))
 	}
+	if member == "!" {
+		return MakeGoObject(args[0])
+	}
+	if member == "<>" {
+		// The (partial) reverse of this is MakeGoObjectIfNeeded(<obj>).
+		switch o := args[0].(type) {
+		case Int:
+			return MakeGoObject(o.I)
+		case Double:
+			return MakeGoObject(o.D)
+		case String:
+			return MakeGoObject(o.S)
+		case *BigInt:
+			return MakeGoObject(o.b)
+		case *BigFloat:
+			return MakeGoObject(o.b)
+		case Time:
+			return MakeGoObject(o.T)
+		case Boolean:
+			return MakeGoObject(o.B)
+		case Nil:
+			return MakeGoObject(o.n)
+		}
+		return MakeGoObject(args[0])
+	}
+	o := EnsureGoObject(args, 0)
 	if member == "&" {
 		v := reflect.ValueOf(o.O)
 		if v.CanAddr() {

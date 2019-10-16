@@ -4490,7 +4490,28 @@
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 
 (defn Go
-  "Invokes a receiver (as a symbol, string, or keyword with its name) for a Go object, returning result if applicable, else nil. NOTE: As a special case, & may be specified instead of a receiver name, in which case the arguments are ignored and a GoObject that wraps a pointer (reference) to (usually a copy of) the original wrapped Go object is returned -- although the GoType of the resulting GoObject might be unsupported; this is in lieu of a proper (ref ...) function."
+  "Invokes a receiver (as a symbol, string, or keyword with its name)
+  for a Go object, returning result if applicable, else nil
+
+  SPECIAL FORMS -- these are receiver names that cannot,
+  syntactically, name Go receivers or methods. They ignore any
+  arguments:
+
+  & returns a GoObject that wraps a pointer (reference) to (usually a
+  copy of) the original wrapped Go object. The GoType of the resulting
+  GoObject might not be fully supported. This is in lieu of a
+  proper (ref ...) function. E.g. (Go obj :&).
+
+  ! returns a GoObject that wraps the first argument (which, in this
+  case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
+  returns a GoObject wrapping a String.
+
+  <> returns a GoObject that wraps the underlying object in the first
+  argument (which, in this case, can be any Joker object), regardless
+  of the usual conversion rules. E.g. (Go \"hey\" :<>) returns a
+  GoObject wrapping a string. (Not all underlying types are supported;
+  in such cases, the original Joker argument is wrapped by a
+  GoObject.)"
   {:added "1.0"}
   [^GoObject o m & args]
   (go__ o m args))

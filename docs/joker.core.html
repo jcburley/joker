@@ -1575,7 +1575,28 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(Go o m & args)</code></div>
 </pre>
-  <p class="var-docstr">Invokes a receiver (as a symbol, string, or keyword with its name) for a Go object, returning result if applicable, else nil. NOTE: As a special case, &amp; may be specified instead of a receiver name, in which case the arguments are ignored and a GoObject that wraps a pointer (reference) to (usually a copy of) the original wrapped Go object is returned -- although the GoType of the resulting GoObject might be unsupported; this is in lieu of a proper (ref ...) function.</p>
+  <p class="var-docstr">Invokes a receiver (as a symbol, string, or keyword with its name)<br>
+  for a Go object, returning result if applicable, else nil<br>
+<br>
+  SPECIAL FORMS -- these are receiver names that cannot,<br>
+  syntactically, name Go receivers or methods. They ignore any<br>
+  arguments:<br>
+<br>
+  &amp; returns a GoObject that wraps a pointer (reference) to (usually a<br>
+  copy of) the original wrapped Go object. The GoType of the resulting<br>
+  GoObject might not be fully supported. This is in lieu of a<br>
+  proper (ref ...) function. E.g. (Go obj :&amp;).<br>
+<br>
+  ! returns a GoObject that wraps the first argument (which, in this<br>
+  case, can be any Joker object) in a GoObject. E.g. (Go &#34;hey&#34; :!)<br>
+  returns a GoObject wrapping a String.<br>
+<br>
+  &lt;&gt; returns a GoObject that wraps the underlying object in the first<br>
+  argument (which, in this case, can be any Joker object), regardless<br>
+  of the usual conversion rules. E.g. (Go &#34;hey&#34; :&lt;&gt;) returns a<br>
+  GoObject wrapping a string. (Not all underlying types are supported;<br>
+  in such cases, the original Joker argument is wrapped by a<br>
+  GoObject.)</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4492">source</a>
 </li>
 <li>
@@ -1585,7 +1606,7 @@
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4504">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4525">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -3606,7 +3627,7 @@
   <pre class="var-usage"><div><code>(new t init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4498">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4519">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
