@@ -597,7 +597,18 @@ func mapToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType) s
 }
 
 `
-	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, "")
+	valToType := elementsToType(tdi, ty, mapElementToType)
+	if valToType != "" {
+		valToType = `
+		` + valToType + `
+	`
+	}
+
+	if len(valToType) > 0 {
+		valToType = "" // TODO: temp kludge to keep new code but disabled
+	}
+
+	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, valToType)
 }
 
 func vectorToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType) string {
@@ -634,8 +645,29 @@ func elementsToType(tdi *TypeDefInfo, ty *StructType, toType func(tdi *TypeDefIn
 		`)
 }
 
+func mapElementToType(tdi *TypeDefInfo, i int, name string, f *Field) string {
+	return valueToType(tdi, fmt.Sprintf(`o, "%s"`, name), &f.Type)
+}
+
 func vectorElementToType(tdi *TypeDefInfo, i int, name string, f *Field) string {
 	return elementToType(tdi, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
+}
+
+func valueToType(tdi *TypeDefInfo, value string, e *Expr) string {
+	v := toGoExprInfo(tdi.GoFile, e)
+	if v.Unsupported {
+		return v.FullGoName
+	}
+	if !v.Exported {
+		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
+			v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
+	}
+	if v.ConvertFromClojure != "" {
+		addRequiredImports(tdi, v.ConvertFromClojureImports)
+		return fmt.Sprintf(v.ConvertFromClojure, value)
+	}
+	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
+		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
 }
 
 func elementToType(tdi *TypeDefInfo, el string, e *Expr) string {
