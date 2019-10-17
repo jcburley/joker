@@ -19,7 +19,7 @@ var NumAliasHits uint
 var NumFullNameHits uint
 
 // Info from the definition of the type (if any)
-type TypeDefInfo struct {
+type Type struct {
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
 	FullName       string    // Clojure name (e.g. "a.b.c/Typename")
@@ -31,12 +31,12 @@ type TypeDefInfo struct {
 	GoPrefix       string // Currently either "" or "*" (for reference types)
 	GoPackage      string // E.g. a/b/c
 	GoName         string // Base name of type (LocalName without any prefix)
-	underlyingType *TypeDefInfo
+	underlyingType *Type
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
-var typesByFullName = map[string]*TypeDefInfo{}
+var typesByFullName = map[string]*Type{}
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -61,7 +61,7 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
-func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeDefInfo {
+func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to define new type after having sorted all types!!")
 	}
@@ -80,7 +80,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
 
-	tdi := &TypeDefInfo{
+	tdi := &Type{
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		FullName:    tfn,
@@ -106,7 +106,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 	if tdi.Specificity == Concrete {
 		// Concrete types all get reference-to versions.
 		tfnPtr := "*" + tfn
-		tdiPtr := &TypeDefInfo{
+		tdiPtr := &Type{
 			Type:           &StarExpr{X: ts.Type},
 			FullName:       tfnPtr,
 			LocalName:      "*" + tln,
@@ -124,16 +124,16 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 		}
 		typesByExpr[ts.Type] = tdiPtr
 		typesByFullName[tfnPtr] = tdiPtr
-		return []*TypeDefInfo{tdi, tdiPtr}
+		return []*Type{tdi, tdiPtr}
 	}
 
-	return []*TypeDefInfo{tdi}
+	return []*Type{tdi}
 }
 
 // Maps type-defining Expr to exactly one struct describing that type
-var typesByExpr = map[Expr]*TypeDefInfo{}
+var typesByExpr = map[Expr]*Type{}
 
-func TypeLookup(e Expr) *TypeDefInfo {
+func TypeLookup(e Expr) *Type {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return tdi
@@ -150,7 +150,7 @@ func TypeLookup(e Expr) *TypeDefInfo {
 	return nil
 }
 
-var allTypesSorted = []*TypeDefInfo{}
+var allTypesSorted = []*Type{}
 
 // This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
 // new types cannot be discovered/added.
@@ -175,7 +175,7 @@ func SortAll() {
 	}
 }
 
-func AllSorted() []*TypeDefInfo {
+func AllSorted() []*Type {
 	return allTypesSorted
 }
 
@@ -189,7 +189,7 @@ func typeKeyForSort(k string) string {
 	return k
 }
 
-func SortedTypeDefinitions(m map[*TypeDefInfo]struct{}, f func(ti *TypeDefInfo)) {
+func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	var keys []string
 	for k, _ := range m {
 		if k != nil {
@@ -254,7 +254,7 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
+func (tdi *Type) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingType; tdiu != nil {
@@ -266,7 +266,7 @@ func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (tdi *TypeDefInfo) TypeMappingsName() string {
+func (tdi *Type) TypeMappingsName() string {
 	if !tdi.IsExported {
 		return ""
 	}

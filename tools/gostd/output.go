@@ -41,7 +41,7 @@ func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []*TypeDefInfo, jokerSourceDir string, outputCode bool) {
+func RegisterGoTypeSwitch(types []*Type, jokerSourceDir string, outputCode bool) {
 	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"), outputCode)
 }
 
@@ -112,7 +112,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	Check(err)
 }
 
-func updateGoTypeSwitch(types []*TypeDefInfo, f string, outputCode bool) {
+func updateGoTypeSwitch(types []*Type, f string, outputCode bool) {
 	if gowalk.Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
@@ -263,7 +263,7 @@ func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string,
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *TypeDefInfo) {
+		func(tdi *Type) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || tdi.LocalName == "" || !tdi.IsExported {
 				return
@@ -352,7 +352,7 @@ import (%s
 	gowalk.SortedTypeInfoMap(v.Types,
 		func(t string, ti *gowalk.GoTypeInfo) {
 			ctor := ""
-			if c, found := Ctors[ti.TypeDefInfo]; found && c[0] != '/' {
+			if c, found := Ctors[ti.Type]; found && c[0] != '/' {
 				ctor = c
 			}
 			if outputCode {
@@ -375,7 +375,7 @@ import (%s
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *TypeDefInfo) {
+		func(tdi *Type) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return
@@ -402,7 +402,7 @@ import (%s
 	}
 
 	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *TypeDefInfo) {
+		func(tdi *Type) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return
@@ -435,7 +435,7 @@ import (%s
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *TypeDefInfo) {
+		func(tdi *Type) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return

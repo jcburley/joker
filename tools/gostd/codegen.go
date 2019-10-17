@@ -433,10 +433,10 @@ func ExtractGoObject%s(args []Object, index int) *_%s {
 	ti.GoCode += goTypeExtractor(t, ti)
 }
 
-var Ctors = map[*TypeDefInfo]string{}
-var CtorNames = map[*TypeDefInfo]string{}
+var Ctors = map[*Type]string{}
+var CtorNames = map[*Type]string{}
 
-func genCtor(tdi *TypeDefInfo) {
+func genCtor(tdi *Type) {
 	if tdi.TypeSpec == nil {
 		return
 	}
@@ -475,7 +475,7 @@ func %s(_o Object) Object {
 	Ctors[tdi] = goConstructor
 }
 
-func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
+func appendMethods(tdi *Type, iface *InterfaceType) {
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
 			if len(m.Names) != 1 {
@@ -514,7 +514,7 @@ func appendMethods(tdi *TypeDefInfo, iface *InterfaceType) {
 	}
 }
 
-func GenTypeFromDb(tdi *TypeDefInfo) {
+func GenTypeFromDb(tdi *Type) {
 	if !tdi.IsExported {
 		return // Do not generate anything for private types
 	}
@@ -532,7 +532,7 @@ func promoteImports(ti *GoTypeInfo) {
 	}
 }
 
-func nonGoObjectCase(tdi *TypeDefInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
@@ -552,7 +552,7 @@ func nonGoObjectCase(tdi *TypeDefInfo, typeName, baseTypeName string) (nonGoObje
 		ptrTo
 }
 
-func nonGoObjectTypeFor(tdi *TypeDefInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := tdi.TypeSpec.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.DirUnix, t.Name, &tdi.TypeSpec.Type)
@@ -594,7 +594,7 @@ func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObje
 	return
 }
 
-func mapToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType) string {
+func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
@@ -610,7 +610,7 @@ func mapToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType) s
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, valToType)
 }
 
-func vectorToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType) string {
+func vectorToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o *Vector) *%s {
 	return &%s{%s}
 }
@@ -627,7 +627,7 @@ func vectorToType(tdi *TypeDefInfo, helperFName, typeName string, ty *StructType
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
 }
 
-func elementsToType(tdi *TypeDefInfo, ty *StructType, toType func(tdi *TypeDefInfo, i int, name string, f *Field) string) string {
+func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -644,15 +644,15 @@ func elementsToType(tdi *TypeDefInfo, ty *StructType, toType func(tdi *TypeDefIn
 		`)
 }
 
-func mapElementToType(tdi *TypeDefInfo, i int, name string, f *Field) string {
+func mapElementToType(tdi *Type, i int, name string, f *Field) string {
 	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), &f.Type)
 }
 
-func vectorElementToType(tdi *TypeDefInfo, i int, name string, f *Field) string {
+func vectorElementToType(tdi *Type, i int, name string, f *Field) string {
 	return elementToType(tdi, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
 }
 
-func valueToType(tdi *TypeDefInfo, value string, e *Expr) string {
+func valueToType(tdi *Type, value string, e *Expr) string {
 	v := toGoExprInfo(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName
@@ -668,7 +668,7 @@ func valueToType(tdi *TypeDefInfo, value string, e *Expr) string {
 		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
 }
 
-func elementToType(tdi *TypeDefInfo, el string, e *Expr) string {
+func elementToType(tdi *Type, el string, e *Expr) string {
 	v := toGoExprInfo(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName
@@ -686,7 +686,7 @@ func elementToType(tdi *TypeDefInfo, el string, e *Expr) string {
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(tdi *TypeDefInfo, importeds []imports.Import) {
+func addRequiredImports(tdi *Type, importeds []imports.Import) {
 	ti := TypeDefsToGoTypes[tdi]
 	for _, imp := range importeds {
 		imports.AddImport(ti.RequiredImports, imp.Local, imp.Full, false)

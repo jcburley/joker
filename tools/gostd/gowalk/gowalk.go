@@ -68,7 +68,7 @@ type GoTypeInfo struct {
 	FullGoName                string       // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
 	SourceFile                *godb.GoFile // location of the type defintion
 	Td                        *TypeSpec
-	TypeDefInfo               *TypeDefInfo // Primary type in the new package
+	Type                      *Type // Primary type in the new package
 	Where                     token.Pos
 	UnderlyingType            *Expr            // nil if not a declared type
 	ArgClojureType            string           // Can convert this type to a Go function arg with my type
@@ -111,8 +111,8 @@ type CodeInfo struct {
 	Variables GoVariablesMap
 	Functions fnCodeMap
 	Types     GoTypeMap
-	InitTypes map[*TypeDefInfo]struct{}               // types to be initialized
-	InitVars  map[*TypeDefInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	InitTypes map[*Type]struct{}               // types to be initialized
+	InitVars  map[*Type]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -153,12 +153,12 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName     string       // Just the name without receiver-type info
-	ReceiverId   string       // Receiver info (only one type supported here and by Golang itself for now)
-	Name         string       // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName      string       // Everything, for documentation and diagnostics
-	Fd           *FuncDecl    // nil for methods
-	ToM          *TypeDefInfo // Method operates on this type (nil for standalones and receivers)
+	BaseName     string    // Just the name without receiver-type info
+	ReceiverId   string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name         string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName      string    // Everything, for documentation and diagnostics
+	Fd           *FuncDecl // nil for methods
+	ToM          *Type     // Method operates on this type (nil for standalones and receivers)
 	Ft           *FuncType
 	Doc          *CommentGroup
 	SourceFile   *godb.GoFile
@@ -287,7 +287,7 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 
 var RegisterType_func func(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
 
-var TypeDefsToGoTypes = map[*TypeDefInfo]*GoTypeInfo{}
+var TypeDefsToGoTypes = map[*Type]*GoTypeInfo{}
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
 func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
@@ -307,7 +307,7 @@ func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *Comme
 
 	gt := RegisterType_func(gf, typeName, ts)
 	gt.Td = ts
-	gt.TypeDefInfo = tdiVec[0]
+	gt.Type = tdiVec[0]
 	gt.Where = ts.Pos()
 	gt.RequiredImports = &imports.Imports{}
 
@@ -850,9 +850,9 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
+			map[*Type]struct{}{}, map[*Type]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*TypeDefInfo]struct{}{}, map[*TypeDefInfo]map[string]*FnCodeInfo{}}
+			map[*Type]struct{}{}, map[*Type]map[string]*FnCodeInfo{}}
 	}
 
 	for path, f := range p.Files {
