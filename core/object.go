@@ -1271,6 +1271,11 @@ func (o GoObject) ToString(escape bool) string {
 func (o GoObject) Equals(other interface{}) bool {
 	switch other := other.(type) {
 	case GoObject:
+		defer func() {
+			if r := recover(); r != nil {
+				panic(RT.NewError(fmt.Sprintf("%v", r)))
+			}
+		}()
 		return o.O == other.O
 	default:
 		return false
