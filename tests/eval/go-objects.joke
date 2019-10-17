@@ -1,5 +1,5 @@
 (ns joker.test-joker.go-objects
-  (:use joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math))
+  (:use joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template))
 
 (deftest comparable-types
   (let [res1 ((Stat "run.sh") 0)
@@ -53,4 +53,9 @@
   (is (= (str IPv6zero) "::")))
 
 (deftest ctors-work
-  (is (= (str (new FileMode 0123)) "---x-w--wx")))
+  (is (= (str (new FileMode 0123)) "---x-w--wx"))
+  (is (= (str (new go.std.net/MX {:Host "burleyarch.com" :Pref 10})) "&{burleyarch.com 10}"))
+  (is (= (str (new go.std.net/MX {:Host "burleyarch.com"})) "&{burleyarch.com 0}"))
+  (is (= (str (new go.std.net/MX {:Pref 99})) "&{ 99}"))
+  (is (= (str (new HTML "this is an html object")) "this is an html object"))
+  (is (= (str (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})) "hey there you: silly")))

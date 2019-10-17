@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"reflect"
@@ -118,6 +119,15 @@ func ExtractGoByte(rcvr, name string, args *ArraySeq, n int) byte {
 	return byte(v)
 }
 
+func FieldAsByte(o Map, k string) byte {
+	v := FieldAsInt(o, k)
+	if v < 0 || v > 255 {
+		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type byte, but its magnitude is too large",
+			v, k)))
+	}
+	return byte(v)
+}
+
 func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
 	a := SeqNth(args, n)
 	res, ok := a.(Number)
@@ -131,7 +141,7 @@ func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
 func FieldAsNumber(o Map, k string) Number {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok {
-		return MakeNumber(0)
+		return MakeNumber(uint64(0))
 	}
 	res, ok := v.(Number)
 	if !ok {
@@ -296,6 +306,9 @@ func FieldAsString(o Map, k string) string {
 
 func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
 	a := SeqNth(args, n)
+	if s, ok := a.(String); ok {
+		return errors.New(s.S)
+	}
 	res, ok := a.(Error)
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Error, but is %T",
@@ -308,6 +321,9 @@ func FieldAsError(o Map, k string) error {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok || v.Equals(NIL) {
 		return nil
+	}
+	if s, ok := v.(String); ok {
+		return errors.New(s.S)
 	}
 	res, ok := v.(error)
 	if !ok {

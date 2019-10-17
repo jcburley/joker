@@ -812,19 +812,10 @@ func _mapToAddrError(o Map) *_net.AddrError {
 	}
 }
 
-func _vectorToAddrError(o *Vector) *_net.AddrError {
-	return &_net.AddrError{
-		Err: AssertString(o.Nth(0), "").S,
-		Addr: AssertString(o.Nth(1), "").S,
-	}
-}
-
 func _Ctor_AddrError(_v Object) *_net.AddrError {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToAddrError(_o.(Map))
-	case *Vector:
-		return _vectorToAddrError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or: Map or Vector"))
 }
@@ -926,18 +917,10 @@ func _mapToDNSConfigError(o Map) *_net.DNSConfigError {
 	}
 }
 
-func _vectorToDNSConfigError(o *Vector) *_net.DNSConfigError {
-	return &_net.DNSConfigError{
-		Err: _errors.New(AssertString(o.Nth(0), "").S),
-	}
-}
-
 func _Ctor_DNSConfigError(_v Object) *_net.DNSConfigError {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToDNSConfigError(_o.(Map))
-	case *Vector:
-		return _vectorToDNSConfigError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or: Map or Vector"))
 }
@@ -981,22 +964,10 @@ func _mapToDNSError(o Map) *_net.DNSError {
 	}
 }
 
-func _vectorToDNSError(o *Vector) *_net.DNSError {
-	return &_net.DNSError{
-		Err: AssertString(o.Nth(0), "").S,
-		Name: AssertString(o.Nth(1), "").S,
-		Server: AssertString(o.Nth(2), "").S,
-		IsTimeout: ToBool(o.Nth(3)),
-		IsTemporary: ToBool(o.Nth(4)),
-	}
-}
-
 func _Ctor_DNSError(_v Object) *_net.DNSError {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToDNSError(_o.(Map))
-	case *Vector:
-		return _vectorToDNSError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or: Map or Vector"))
 }
@@ -1099,19 +1070,10 @@ func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res 
 // 	}
 // }
 
-// func _vectorToIPAddr(o *Vector) *_net.IPAddr {
-// 	return &_net.IPAddr{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
-// 		Zone: AssertString(o.Nth(1), "").S,
-// 	}
-// }
-
 // func _Ctor_IPAddr(_v Object) *_net.IPAddr {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToIPAddr(_o.(Map))
-// 	case *Vector:
-// 		return _vectorToIPAddr(_o)
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map or Vector"))
 // }
@@ -1149,16 +1111,10 @@ func _mapToIPConn(o Map) *_net.IPConn {
 	return &_net.IPConn{}
 }
 
-func _vectorToIPConn(o *Vector) *_net.IPConn {
-	return &_net.IPConn{}
-}
-
 func _Ctor_IPConn(_v Object) *_net.IPConn {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToIPConn(_o.(Map))
-	case *Vector:
-		return _vectorToIPConn(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or: Map or Vector"))
 }
@@ -1236,19 +1192,10 @@ func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res _
 // 	}
 // }
 
-// func _vectorToIPNet(o *Vector) *_net.IPNet {
-// 	return &_net.IPNet{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
-// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
-// 	}
-// }
-
 // func _Ctor_IPNet(_v Object) *_net.IPNet {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToIPNet(_o.(Map))
-// 	case *Vector:
-// 		return _vectorToIPNet(_o)
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map or Vector"))
 // }
@@ -1354,19 +1301,10 @@ func _mapToMX(o Map) *_net.MX {
 	}
 }
 
-func _vectorToMX(o *Vector) *_net.MX {
-	return &_net.MX{
-		Host: AssertString(o.Nth(0), "").S,
-		Pref: uint16(AssertInt(o.Nth(1), "").I),
-	}
-}
-
 func _Ctor_MX(_v Object) *_net.MX {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToMX(_o.(Map))
-	case *Vector:
-		return _vectorToMX(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map or Vector"))
 }
@@ -1406,18 +1344,10 @@ func _mapToNS(o Map) *_net.NS {
 	}
 }
 
-func _vectorToNS(o *Vector) *_net.NS {
-	return &_net.NS{
-		Host: AssertString(o.Nth(0), "").S,
-	}
-}
-
 func _Ctor_NS(_v Object) *_net.NS {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToNS(_o.(Map))
-	case *Vector:
-		return _vectorToNS(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map or Vector"))
 }
@@ -1461,22 +1391,10 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	}
 // }
 
-// func _vectorToOpError(o *Vector) *_net.OpError {
-// 	return &_net.OpError{
-// 		Op: AssertString(o.Nth(0), "").S,
-// 		Net: AssertString(o.Nth(1), "").S,
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
-// 		Err: _errors.New(AssertString(o.Nth(4), "").S),
-// 	}
-// }
-
 // func _Ctor_OpError(_v Object) *_net.OpError {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToOpError(_o.(Map))
-// 	case *Vector:
-// 		return _vectorToOpError(_o)
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map or Vector"))
 // }
@@ -1542,19 +1460,10 @@ func _mapToParseError(o Map) *_net.ParseError {
 	}
 }
 
-func _vectorToParseError(o *Vector) *_net.ParseError {
-	return &_net.ParseError{
-		Type: AssertString(o.Nth(0), "").S,
-		Text: AssertString(o.Nth(1), "").S,
-	}
-}
-
 func _Ctor_ParseError(_v Object) *_net.ParseError {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToParseError(_o.(Map))
-	case *Vector:
-		return _vectorToParseError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or: Map or Vector"))
 }
@@ -1596,20 +1505,10 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	}
 // }
 
-// func _vectorToResolver(o *Vector) *_net.Resolver {
-// 	return &_net.Resolver{
-// 		PreferGo: ToBool(o.Nth(0)),
-// 		StrictErrors: ToBool(o.Nth(1)),
-// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
-// 	}
-// }
-
 // func _Ctor_Resolver(_v Object) *_net.Resolver {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToResolver(_o.(Map))
-// 	case *Vector:
-// 		return _vectorToResolver(_o)
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map or Vector"))
 // }
@@ -1652,21 +1551,10 @@ func _mapToSRV(o Map) *_net.SRV {
 	}
 }
 
-func _vectorToSRV(o *Vector) *_net.SRV {
-	return &_net.SRV{
-		Target: AssertString(o.Nth(0), "").S,
-		Port: uint16(AssertInt(o.Nth(1), "").I),
-		Priority: uint16(AssertInt(o.Nth(2), "").I),
-		Weight: uint16(AssertInt(o.Nth(3), "").I),
-	}
-}
-
 func _Ctor_SRV(_v Object) *_net.SRV {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToSRV(_o.(Map))
-	case *Vector:
-		return _vectorToSRV(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map or Vector"))
 }
@@ -2975,7 +2863,6 @@ GO ENSURE-LOADED FOR net:
 package net
 
 import (
-	_errors "errors"
 	"fmt"
 	. "github.com/candid82/joker/core"
 	_net "net"
@@ -3018,20 +2905,10 @@ func _mapToError(o Map) *_url.Error {
 	}
 }
 
-func _vectorToError(o *Vector) *_url.Error {
-	return &_url.Error{
-		Op: AssertString(o.Nth(0), "").S,
-		URL: AssertString(o.Nth(1), "").S,
-		Err: _errors.New(AssertString(o.Nth(2), "").S),
-	}
-}
-
 func _Ctor_Error(_v Object) *_url.Error {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToError(_o.(Map))
-	case *Vector:
-		return _vectorToError(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map or Vector"))
 }
@@ -3159,26 +3036,10 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 	}
 // }
 
-// func _vectorToURL(o *Vector) *_url.URL {
-// 	return &_url.URL{
-// 		Scheme: AssertString(o.Nth(0), "").S,
-// 		Opaque: AssertString(o.Nth(1), "").S,
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
-// 		Host: AssertString(o.Nth(3), "").S,
-// 		Path: AssertString(o.Nth(4), "").S,
-// 		RawPath: AssertString(o.Nth(5), "").S,
-// 		ForceQuery: ToBool(o.Nth(6)),
-// 		RawQuery: AssertString(o.Nth(7), "").S,
-// 		Fragment: AssertString(o.Nth(8), "").S,
-// 	}
-// }
-
 // func _Ctor_URL(_v Object) *_url.URL {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToURL(_o.(Map))
-// 	case *Vector:
-// 		return _vectorToURL(_o)
 // 	}
 // 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map or Vector"))
 // }
@@ -3216,16 +3077,10 @@ func _mapToUserinfo(o Map) *_url.Userinfo {
 	return &_url.Userinfo{}
 }
 
-func _vectorToUserinfo(o *Vector) *_url.Userinfo {
-	return &_url.Userinfo{}
-}
-
 func _Ctor_Userinfo(_v Object) *_url.Userinfo {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToUserinfo(_o.(Map))
-	case *Vector:
-		return _vectorToUserinfo(_o)
 	}
 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map or Vector"))
 }
@@ -3694,7 +3549,6 @@ GO ENSURE-LOADED FOR url:
 package url
 
 import (
-	_errors "errors"
 	"fmt"
 	. "github.com/candid82/joker/core"
 	_url "net/url"
@@ -3824,7 +3678,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 987(16) 902(15) 048(12) 047(6) 674(4) 275(3) 042(1) 124(1) 644(1)
+ABENDs: 987(16) 902(15) 048(6) 674(4) 047(3) 275(3) 042(1) 124(1) 644(1)
 Totals: functions=109 generated=97 (88.99%)
           non-receivers=26 (23.85%) generated=26 (100.00%)
           receivers=83 (76.15%) generated=59 (71.08%)

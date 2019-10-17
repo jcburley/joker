@@ -37,7 +37,7 @@ Named types, defined by the packages wrapped by the `gostd` tool, are themselves
 
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
 
-* Constructing a new instance: `(def mx (new go.std.net/MX ["burleyarch.com" 10]))` => `&{burleyarch.com 10}`
+* Constructing a new instance: `(def mx (new go.std.net/MX {:Host "burleyarch.com" :Pref 10}))` => `&{burleyarch.com 10}`
 * Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX`
 * Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else)`
 
@@ -124,7 +124,7 @@ user=> (type h)
 GoObject
 user=> (GoTypeOf h)
 go.std.html.template/HTML
-user=> (def le (new LinkError ["hey" "there" "you" "silly"]))
+user=> (def le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"]))
 #'user/le
 user=> le
 hey there you: silly

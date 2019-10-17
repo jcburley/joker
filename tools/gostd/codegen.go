@@ -566,12 +566,10 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 	case *StructType:
 		uniqueTypeName := "_" + typeName
 		mapHelperFName := "_mapTo" + baseTypeName
-		vectorHelperFName := "_vectorTo" + baseTypeName
-		return []string{"case *ArrayMap, *HashMap", "case *Vector"},
-			[]string{"Map", "Vector"},
-			[]string{mapHelperFName + "(_o.(Map))", vectorHelperFName + "(_o)"},
-			[]string{mapToType(tdi, mapHelperFName, uniqueTypeName, t),
-				vectorToType(tdi, vectorHelperFName, uniqueTypeName, t)},
+		return []string{"case *ArrayMap, *HashMap"},
+			[]string{"Map"},
+			[]string{mapHelperFName + "(_o.(Map))"},
+			[]string{mapToType(tdi, mapHelperFName, uniqueTypeName, t)},
 			"*"
 	case *ArrayType:
 	}
@@ -610,23 +608,6 @@ func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, valToType)
 }
 
-func vectorToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
-	const hFunc = `func %s(o *Vector) *%s {
-	return &%s{%s}
-}
-
-`
-
-	elToType := elementsToType(tdi, ty, vectorElementToType)
-	if elToType != "" {
-		elToType = `
-		` + elToType + `
-	`
-	}
-
-	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, elToType)
-}
-
 func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
@@ -648,10 +629,6 @@ func mapElementToType(tdi *Type, i int, name string, f *Field) string {
 	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 
-func vectorElementToType(tdi *Type, i int, name string, f *Field) string {
-	return elementToType(tdi, fmt.Sprintf("o.Nth(%d)", i), f.Type)
-}
-
 func valueToType(tdi *Type, value string, e Expr) string {
 	v := toGoExprInfo(tdi.GoFile, e)
 	if v.Unsupported {
@@ -663,23 +640,6 @@ func valueToType(tdi *Type, value string, e Expr) string {
 	}
 	if v.ConvertFromMap != "" {
 		return fmt.Sprintf(v.ConvertFromMap, "o", value)
-	}
-	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
-}
-
-func elementToType(tdi *Type, el string, e Expr) string {
-	v := toGoExprInfo(tdi.GoFile, e)
-	if v.Unsupported {
-		return v.FullGoName
-	}
-	if !v.Exported {
-		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
-			v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
-	}
-	if v.ConvertFromClojure != "" {
-		addRequiredImports(tdi, v.ConvertFromClojureImports)
-		return fmt.Sprintf(v.ConvertFromClojure, el)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
 		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
