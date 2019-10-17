@@ -161,7 +161,7 @@ func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, ar
 	case *Ident:
 		goType = v.Name
 		extractParam := ""
-		ti := toGoExprInfo(fn.SourceFile, &e)
+		ti := toGoExprInfo(fn.SourceFile, e)
 		clType = ti.ArgExtractFunc
 		clTypeDoc = ti.ArgClojureArgType
 		if clTypeDoc == "" {

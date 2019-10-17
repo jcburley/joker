@@ -555,7 +555,7 @@ func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase,
 func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := tdi.TypeSpec.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.DirUnix, t.Name, &tdi.TypeSpec.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.DirUnix, t.Name, tdi.TypeSpec.Type)
 		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -583,7 +583,7 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 		""
 }
 
-func simpleTypeFor(pkgDirUnix, name string, e *Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	v := toGoTypeNameInfo(pkgDirUnix, name, e)
 	nonGoObjectType = "case " + v.ArgClojureType
 	nonGoObjectTypeDoc = v.ArgClojureType
@@ -645,14 +645,14 @@ func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, nam
 }
 
 func mapElementToType(tdi *Type, i int, name string, f *Field) string {
-	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), &f.Type)
+	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 
 func vectorElementToType(tdi *Type, i int, name string, f *Field) string {
-	return elementToType(tdi, fmt.Sprintf("o.Nth(%d)", i), &f.Type)
+	return elementToType(tdi, fmt.Sprintf("o.Nth(%d)", i), f.Type)
 }
 
-func valueToType(tdi *Type, value string, e *Expr) string {
+func valueToType(tdi *Type, value string, e Expr) string {
 	v := toGoExprInfo(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName
@@ -668,7 +668,7 @@ func valueToType(tdi *Type, value string, e *Expr) string {
 		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
 }
 
-func elementToType(tdi *Type, el string, e *Expr) string {
+func elementToType(tdi *Type, el string, e Expr) string {
 	v := toGoExprInfo(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName

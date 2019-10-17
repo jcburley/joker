@@ -70,7 +70,7 @@ type GoTypeInfo struct {
 	Td                        *TypeSpec
 	Type                      *Type // Primary type in the new package
 	Where                     token.Pos
-	UnderlyingType            *Expr            // nil if not a declared type
+	UnderlyingType            Expr             // nil if not a declared type
 	ArgClojureType            string           // Can convert this type to a Go function arg with my type
 	ArgFromClojureObject      string           // Append this to Clojure object to extract value of my type
 	ArgClojureArgType         string           // Clojure argument type for a Go function arg with my type

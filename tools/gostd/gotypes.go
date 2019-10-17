@@ -17,7 +17,7 @@ func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeI
 		LocalName:         ts.Name.Name,
 		FullGoName:        fullGoTypeName,
 		SourceFile:        gf,
-		UnderlyingType:    &ts.Type,
+		UnderlyingType:    ts.Type,
 		ArgClojureArgType: FullTypeNameAsClojure(gf.NsRoot, fullGoTypeName),
 		Exported:          IsExported(ts.Name.Name),
 		Custom:            true,
@@ -29,7 +29,7 @@ func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeI
 	return ti
 }
 
-func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *GoTypeInfo {
+func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 	if ti, found := GoTypes[baseName]; found {
 		return ti
 	}
@@ -68,17 +68,17 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e *Expr) *GoTypeInfo {
 }
 
 func toGoTypeInfo(src *godb.GoFile, ts *TypeSpec) *GoTypeInfo {
-	return toGoExprInfo(src, &ts.Type)
+	return toGoExprInfo(src, ts.Type)
 }
 
-func toGoExprInfo(src *godb.GoFile, e *Expr) *GoTypeInfo {
+func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	localName := ""
 	fullGoName := ""
 	convertFromClojure := ""
 	exported := true
-	var underlyingType *Expr
+	var underlyingType Expr
 	unsupported := false
-	switch td := (*e).(type) {
+	switch td := e.(type) {
 	case *Ident:
 		ti := toGoTypeNameInfo(src.Package.DirUnix, td.Name, e)
 		if ti == nil {
@@ -103,12 +103,12 @@ func toGoExprInfo(src *godb.GoFile, e *Expr) *GoTypeInfo {
 		}
 		return ti
 	case *ArrayType:
-		return goArrayType(src, &td.Len, &td.Elt)
+		return goArrayType(src, td.Len, td.Elt)
 	case *StarExpr:
-		return goStarExpr(src, &td.X)
+		return goStarExpr(src, td.X)
 	}
 	if localName == "" || fullGoName == "" {
-		localName = fmt.Sprintf("%T", *e)
+		localName = fmt.Sprintf("%T", e)
 		fullGoName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", localName)
 		unsupported = true
 	}
@@ -125,7 +125,7 @@ func toGoExprInfo(src *godb.GoFile, e *Expr) *GoTypeInfo {
 	return v
 }
 
-func toGoExprString(src *godb.GoFile, e *Expr) string {
+func toGoExprString(src *godb.GoFile, e Expr) string {
 	if e == nil {
 		return "-"
 	}
@@ -136,7 +136,7 @@ func toGoExprString(src *godb.GoFile, e *Expr) string {
 	return fmt.Sprintf("%T", e)
 }
 
-func toGoExprTypeName(src *godb.GoFile, e *Expr) string {
+func toGoExprTypeName(src *godb.GoFile, e Expr) string {
 	if e == nil {
 		return "-"
 	}
@@ -147,21 +147,20 @@ func toGoExprTypeName(src *godb.GoFile, e *Expr) string {
 	return fmt.Sprintf("%T", e)
 }
 
-func lenString(len *Expr) string {
-	if len == nil || *len == nil {
+func lenString(len Expr) string {
+	if len == nil {
 		return ""
 	}
-	l := *len
-	switch n := l.(type) {
+	switch n := len.(type) {
 	case *Ident:
 		return n.Name
 	case *BasicLit:
 		return n.Value
 	}
-	return fmt.Sprintf("%T", l)
+	return fmt.Sprintf("%T", len)
 }
 
-func goArrayType(src *godb.GoFile, len *Expr, elt *Expr) *GoTypeInfo {
+func goArrayType(src *godb.GoFile, len Expr, elt Expr) *GoTypeInfo {
 	var fullGoName string
 	e := toGoExprInfo(src, elt)
 	fullGoName = "[" + lenString(len) + "]" + e.FullGoName
@@ -189,7 +188,7 @@ func ptrTo(expr string) string {
 	return expr
 }
 
-func goStarExpr(src *godb.GoFile, x *Expr) *GoTypeInfo {
+func goStarExpr(src *godb.GoFile, x Expr) *GoTypeInfo {
 	e := toGoExprInfo(src, x)
 	fullGoName := "*" + e.FullGoName
 	if v, ok := GoTypes[fullGoName]; ok {

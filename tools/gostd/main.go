@@ -259,6 +259,10 @@ func main() {
 
 	types.SortAll()
 
+	for _, tdi := range types.AllSorted() {
+		GenTypeFromDb(tdi)
+	}
+
 	gowalk.SortedConstantInfoMap(gowalk.GoConstants,
 		func(c string, ci *gowalk.ConstantInfo) {
 			GenConstant(ci)
@@ -276,10 +280,6 @@ func main() {
 				GenType(t, ti)
 			}
 		})
-
-	for _, tdi := range types.AllSorted() {
-		GenTypeFromDb(tdi)
-	}
 
 	/* Generate function-code snippets in alphabetical order. */
 	gowalk.SortedFuncInfoMap(gowalk.QualifiedFunctions,
