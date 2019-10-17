@@ -232,14 +232,26 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 		}
 	case *ArrayType:
 		elFull, elLocal, _ := typeNames(x.Elt, false)
-		full = "[]" + prefix + elFull
-		local = "[]" + elLocal
+		len := exprToString(x.Len)
+		full = "[" + len + "]" + prefix + elFull
+		local = "[" + len + "]" + elLocal
 	case *StarExpr:
 		elFull, elLocal, _ := typeNames(x.X, false)
 		full = "*" + prefix + elFull
 		local = "*" + elLocal
 	}
 	return
+}
+
+func exprToString(e Expr) string {
+	if e == nil {
+		return ""
+	}
+	switch v := e.(type) {
+	case *Ellipsis:
+		return "..." + exprToString(v.Elt)
+	}
+	return fmt.Sprintf("%v", e)
 }
 
 func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
