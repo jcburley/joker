@@ -75,6 +75,7 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	localName := ""
 	fullGoName := ""
 	convertFromClojure := ""
+	convertFromMap := ""
 	exported := true
 	var underlyingType Expr
 	unsupported := false
@@ -98,6 +99,13 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 					ti.ConvertFromClojure = fmt.Sprintf("_%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromClojure)
 				}
 			}
+			if ut.ConvertFromMap != "" {
+				if ut.Constructs {
+					ti.ConvertFromMap = "*" + ut.ConvertFromMap
+				} else {
+					ti.ConvertFromMap = fmt.Sprintf("_%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromMap)
+				}
+			}
 			ti.ConvertFromClojureImports = ut.ConvertFromClojureImports
 			ti.Uncompleted = false
 		}
@@ -119,6 +127,7 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 		Exported:           exported,
 		Unsupported:        unsupported,
 		ConvertFromClojure: convertFromClojure,
+		ConvertFromMap:     convertFromMap,
 		ConvertToClojure:   "GoObject(%s%s)",
 	}
 	GoTypes[fullGoName] = v
@@ -203,11 +212,21 @@ func goStarExpr(src *godb.GoFile, x Expr) *GoTypeInfo {
 			convertFromClojure = "&" + e.ConvertFromClojure
 		}
 	}
+	convertFromMap := ""
+	if e.ConvertFromMap != "" {
+		if e.Constructs {
+			convertFromMap = e.ConvertFromMap
+		} else if e.ArgClojureArgType == e.ArgExtractFunc {
+			/* Not a conversion, so can take address of the Clojure object's internals. */
+			convertFromMap = "&" + e.ConvertFromMap
+		}
+	}
 	v := &GoTypeInfo{
 		LocalName:          e.LocalName,
 		FullGoName:         fullGoName,
 		UnderlyingType:     x,
 		ConvertFromClojure: convertFromClojure,
+		ConvertFromMap:     convertFromMap,
 		Custom:             true,
 		Exported:           e.Exported,
 		Unsupported:        e.Unsupported,
