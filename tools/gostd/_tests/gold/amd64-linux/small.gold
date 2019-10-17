@@ -976,8 +976,8 @@ func _mapToDNSError(o Map) *_net.DNSError {
 		Err: FieldAsString(o, "Err"),
 		Name: FieldAsString(o, "Name"),
 		Server: FieldAsString(o, "Server"),
-		IsTimeout: FieldAsBool(o, "IsTimeout"),
-		IsTemporary: FieldAsBool(o, "IsTemporary"),
+		IsTimeout: FieldAsBoolean(o, "IsTimeout"),
+		IsTemporary: FieldAsBoolean(o, "IsTemporary"),
 	}
 }
 
@@ -1590,8 +1590,8 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 
 // func _mapToResolver(o Map) *_net.Resolver {
 // 	return &_net.Resolver{
-// 		PreferGo: FieldAsBool(o, "PreferGo"),
-// 		StrictErrors: FieldAsBool(o, "StrictErrors"),
+// 		PreferGo: FieldAsBoolean(o, "PreferGo"),
+// 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
 // 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
@@ -3153,7 +3153,7 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 		Host: FieldAsString(o, "Host"),
 // 		Path: FieldAsString(o, "Path"),
 // 		RawPath: FieldAsString(o, "RawPath"),
-// 		ForceQuery: FieldAsBool(o, "ForceQuery"),
+// 		ForceQuery: FieldAsBoolean(o, "ForceQuery"),
 // 		RawQuery: FieldAsString(o, "RawQuery"),
 // 		Fragment: FieldAsString(o, "Fragment"),
 // 	}

@@ -4252,8 +4252,8 @@ func _mapToDNSError(o Map) *_net.DNSError {
 		Err: FieldAsString(o, "Err"),
 		Name: FieldAsString(o, "Name"),
 		Server: FieldAsString(o, "Server"),
-		IsTimeout: FieldAsBool(o, "IsTimeout"),
-		IsTemporary: FieldAsBool(o, "IsTemporary"),
+		IsTimeout: FieldAsBoolean(o, "IsTimeout"),
+		IsTemporary: FieldAsBoolean(o, "IsTemporary"),
 	}
 }
 
@@ -4311,7 +4311,7 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 // 		Timeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Deadline: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
-// 		DualStack: FieldAsBool(o, "DualStack"),
+// 		DualStack: FieldAsBoolean(o, "DualStack"),
 // 		FallbackDelay: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		KeepAlive: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (net.Resolver)),
@@ -5120,8 +5120,8 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 
 // func _mapToResolver(o Map) *_net.Resolver {
 // 	return &_net.Resolver{
-// 		PreferGo: FieldAsBool(o, "PreferGo"),
-// 		StrictErrors: FieldAsBool(o, "StrictErrors"),
+// 		PreferGo: FieldAsBoolean(o, "PreferGo"),
+// 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
 // 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 	}
 // }
@@ -7987,8 +7987,8 @@ func ExtractGo_go_std_net_http__Cookie(rcvr, arg string, args *ArraySeq, n int) 
 // 		Expires: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		RawExpires: FieldAsString(o, "RawExpires"),
 // 		MaxAge: FieldAsInt(o, "MaxAge"),
-// 		Secure: FieldAsBool(o, "Secure"),
-// 		HttpOnly: FieldAsBool(o, "HttpOnly"),
+// 		Secure: FieldAsBoolean(o, "Secure"),
+// 		HttpOnly: FieldAsBoolean(o, "HttpOnly"),
 // 		SameSite: ABEND048(codegen.go: no conversion from Clojure for net/http.SameSite (int)),
 // 		Raw: FieldAsString(o, "Raw"),
 // 		Unparsed: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
@@ -8456,7 +8456,7 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		GetBody: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
-// 		Close: FieldAsBool(o, "Close"),
+// 		Close: FieldAsBoolean(o, "Close"),
 // 		Host: FieldAsString(o, "Host"),
 // 		Form: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		PostForm: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -8546,8 +8546,8 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
-// 		Close: FieldAsBool(o, "Close"),
-// 		Uncompressed: FieldAsBool(o, "Uncompressed"),
+// 		Close: FieldAsBoolean(o, "Close"),
+// 		Uncompressed: FieldAsBoolean(o, "Uncompressed"),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
 // 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (net/http.Request)),
 // 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -8828,8 +8828,8 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		DialTLS: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		TLSClientConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		TLSHandshakeTimeout: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		DisableKeepAlives: FieldAsBool(o, "DisableKeepAlives"),
-// 		DisableCompression: FieldAsBool(o, "DisableCompression"),
+// 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
+// 		DisableCompression: FieldAsBoolean(o, "DisableCompression"),
 // 		MaxIdleConns: FieldAsInt(o, "MaxIdleConns"),
 // 		MaxIdleConnsPerHost: FieldAsInt(o, "MaxIdleConnsPerHost"),
 // 		MaxConnsPerHost: FieldAsInt(o, "MaxConnsPerHost"),
@@ -10516,7 +10516,7 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 // 		Code: FieldAsInt(o, "Code"),
 // 		HeaderMap: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Body: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Flushed: FieldAsBool(o, "Flushed"),
+// 		Flushed: FieldAsBoolean(o, "Flushed"),
 // 	}
 // }
 
@@ -10885,7 +10885,7 @@ func ExtractGo_go_std_net_http_httptrace__DNSDoneInfo(rcvr, arg string, args *Ar
 // 	return &_httptrace.DNSDoneInfo{
 // 		Addrs: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Err: FieldAsError(o, "Err"),
-// 		Coalesced: FieldAsBool(o, "Coalesced"),
+// 		Coalesced: FieldAsBoolean(o, "Coalesced"),
 // 	}
 // }
 
@@ -10990,8 +10990,8 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 // func _mapToGotConnInfo(o Map) *_httptrace.GotConnInfo {
 // 	return &_httptrace.GotConnInfo{
 // 		Conn: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
-// 		Reused: FieldAsBool(o, "Reused"),
-// 		WasIdle: FieldAsBool(o, "WasIdle"),
+// 		Reused: FieldAsBoolean(o, "Reused"),
+// 		WasIdle: FieldAsBoolean(o, "WasIdle"),
 // 		IdleTime: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
@@ -13035,7 +13035,7 @@ func ExtractGo_go_std_net_smtp__ServerInfo(rcvr, arg string, args *ArraySeq, n i
 // func _mapToServerInfo(o Map) *_smtp.ServerInfo {
 // 	return &_smtp.ServerInfo{
 // 		Name: FieldAsString(o, "Name"),
-// 		TLS: FieldAsBool(o, "TLS"),
+// 		TLS: FieldAsBoolean(o, "TLS"),
 // 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
@@ -14235,7 +14235,7 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 		Host: FieldAsString(o, "Host"),
 // 		Path: FieldAsString(o, "Path"),
 // 		RawPath: FieldAsString(o, "RawPath"),
-// 		ForceQuery: FieldAsBool(o, "ForceQuery"),
+// 		ForceQuery: FieldAsBoolean(o, "ForceQuery"),
 // 		RawQuery: FieldAsString(o, "RawQuery"),
 // 		Fragment: FieldAsString(o, "Fragment"),
 // 	}
