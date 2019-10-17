@@ -218,7 +218,10 @@ func %s(o GoObject, args Object) Object {
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
-				tdi := TypeLookup(r.Type).Definition
+				tdi := TypeLookup(r.Type)
+				if tdi == nil {
+					panic("nil tdi!!")
+				}
 				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
 				}

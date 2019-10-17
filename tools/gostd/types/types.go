@@ -18,26 +18,12 @@ var NumExprHits uint
 var NumAliasHits uint
 var NumFullNameHits uint
 
-type TypeInfo struct {
-	Type             Expr // nil until first reference (not definition) seen
-	Definition       *TypeDefInfo
-	SimpleIdentifier bool // Just a name, not *name, []name, etc.
-}
-
-// Maps the "definitive" (first-found) referencing Expr for a type to type info
-var types = map[Expr]*TypeInfo{}
-
-// Maps a non-definitive referencing Expr for a type to the definitive referencing Expr for the same type
-var typeAliases = map[Expr]Expr{}
-
-// Maps the full (Clojure) name (e.g. "a.b.c/typename") for a type to the definitive Expr for the same type
-var typesByFullName = map[string]Expr{}
-
 // Info from the definition of the type (if any)
 type TypeDefInfo struct {
-	TypeSpec       *TypeSpec
-	FullName       string // Clojure name (e.g. "a.b.c/Typename")
-	LocalName      string // Local, or base, name (e.g. "Typename" or "*Typename")
+	Type           Expr      // The actual type (if any)
+	TypeSpec       *TypeSpec // The definition of the named type (if any)
+	FullName       string    // Clojure name (e.g. "a.b.c/Typename")
+	LocalName      string    // Local, or base, name (e.g. "Typename" or "*Typename")
 	IsExported     bool
 	Doc            string
 	DefPos         token.Pos
@@ -50,7 +36,7 @@ type TypeDefInfo struct {
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
-var typeDefinitionsByFullName = map[string]*TypeDefInfo{}
+var typesByFullName = map[string]*TypeDefInfo{}
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -82,7 +68,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
 	tln := ts.Name.Name
 	tfn := prefix + tln
-	if tdi, ok := typeDefinitionsByFullName[tfn]; ok {
+	if tdi, ok := typesByFullName[tfn]; ok {
 		panic(fmt.Sprintf("already defined type %s at %s and again at %s", tfn, WhereAt(tdi.DefPos), WhereAt(ts.Name.NamePos)))
 	}
 
@@ -95,6 +81,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 	}
 
 	tdi := &TypeDefInfo{
+		Type:        ts.Type,
 		TypeSpec:    ts,
 		FullName:    tfn,
 		LocalName:   tln,
@@ -107,12 +94,20 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 		GoName:      tln,
 		Specificity: specificity(ts),
 	}
-	typeDefinitionsByFullName[tfn] = tdi
+	if ts.Type != nil {
+		tdiByExpr, found := typesByExpr[ts.Type]
+		if found && tdiByExpr != tdi {
+			panic(fmt.Sprintf("different expr for type %s", tfn))
+		}
+		typesByExpr[ts.Type] = tdi
+	}
+	typesByFullName[tfn] = tdi
 
 	if tdi.Specificity == Concrete {
 		// Concrete types all get reference-to versions.
 		tfnPtr := "*" + tfn
 		tdiPtr := &TypeDefInfo{
+			Type:           &StarExpr{X: ts.Type},
 			FullName:       tfnPtr,
 			LocalName:      "*" + tln,
 			IsExported:     tdi.IsExported,
@@ -123,36 +118,36 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*TypeD
 			underlyingType: tdi,
 			Specificity:    Concrete,
 		}
-		typeDefinitionsByFullName[tfnPtr] = tdiPtr
+		tdiByExpr, found := typesByExpr[tdiPtr.Type]
+		if found && tdiByExpr != tdiPtr {
+			panic(fmt.Sprintf("different expr for type %s", tfn))
+		}
+		typesByExpr[ts.Type] = tdiPtr
+		typesByFullName[tfnPtr] = tdiPtr
 		return []*TypeDefInfo{tdi, tdiPtr}
 	}
 
 	return []*TypeDefInfo{tdi}
 }
 
-func TypeLookup(e Expr) *TypeInfo {
-	if ti, ok := types[e]; ok {
+// Maps type-defining Expr to exactly one struct describing that type
+var typesByExpr = map[Expr]*TypeDefInfo{}
+
+func TypeLookup(e Expr) *TypeDefInfo {
+	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
-		return ti
+		return tdi
 	}
-	if ta, ok := typeAliases[e]; ok {
-		NumAliasHits++
-		return types[ta]
-	}
-	tfn, _, simple := typeNames(e, true)
-	if te, ok := typesByFullName[tfn]; ok {
+	tfn, _, _ := typeNames(e, true)
+	if tdi, ok := typesByFullName[tfn]; ok {
+		if tdi.Type == nil {
+			panic(fmt.Sprintf("nil Type for %s", tfn))
+		}
 		NumFullNameHits++
-		typeAliases[te] = e
-		return types[te]
+		typesByExpr[e] = tdi
+		return tdi
 	}
-	ti := &TypeInfo{
-		Type:             e,
-		Definition:       typeDefinitionsByFullName[tfn],
-		SimpleIdentifier: simple,
-	}
-	types[e] = ti
-	typesByFullName[tfn] = e
-	return ti
+	return nil
 }
 
 var allTypesSorted = []*TypeDefInfo{}
@@ -163,7 +158,7 @@ func SortAll() {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
-	for _, t := range typeDefinitionsByFullName {
+	for _, t := range typesByFullName {
 		if t.IsExported {
 			allTypesSorted = append(allTypesSorted, t)
 		}
@@ -182,10 +177,6 @@ func SortAll() {
 
 func AllSorted() []*TypeDefInfo {
 	return allTypesSorted
-}
-
-func (ti *TypeInfo) FullName() string {
-	return ti.Definition.FullName
 }
 
 func typeKeyForSort(k string) string {
@@ -209,22 +200,7 @@ func SortedTypeDefinitions(m map[*TypeDefInfo]struct{}, f func(ti *TypeDefInfo))
 		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
 	})
 	for _, k := range keys {
-		f(typeDefinitionsByFullName[k])
-	}
-}
-
-func SortedTypes(m map[*TypeInfo]struct{}, f func(ti *TypeInfo)) {
-	var keys []string
-	for k, _ := range m {
-		if k != nil {
-			keys = append(keys, k.FullName())
-		}
-	}
-	sort.SliceStable(keys, func(i, j int) bool {
-		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
-	})
-	for _, k := range keys {
-		f(types[typesByFullName[k]])
+		f(typesByFullName[k])
 	}
 }
 
@@ -240,7 +216,7 @@ func typeNames(e Expr, root bool) (full, local string, simple bool) {
 		simple = true
 		o := x.Obj
 		if o != nil && o.Kind == Typ {
-			tdi := typeDefinitionsByFullName[full]
+			tdi := typesByFullName[full]
 			if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
 				Print(Fset, x)
 				var ts *TypeSpec
@@ -278,23 +254,6 @@ func (tdi *TypeDefInfo) TypeReflected() (packageImport, pattern string) {
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-// currently unused
-func (ti *TypeInfo) typeKey() string {
-	t := ""
-	suffix := ""
-	prefix := GoPackageForExpr(ti.Type)
-	switch x := ti.Type.(type) {
-	case *Ident:
-		t = "*" + prefix + x.Name
-		suffix = ".Elem()"
-	case *StarExpr:
-		t = "*" + prefix + x.X.(*Ident).Name
-	default:
-		panic(fmt.Sprintf("unrecognized expr %T", x))
-	}
-	return fmt.Sprintf("_reflect.TypeOf((%s)(nil))%s", t, suffix)
-}
-
 func (tdi *TypeDefInfo) TypeMappingsName() string {
 	if !tdi.IsExported {
 		return ""
@@ -303,22 +262,4 @@ func (tdi *TypeDefInfo) TypeMappingsName() string {
 		return "info_PtrTo_" + tdi.underlyingType.LocalName
 	}
 	return "info_" + tdi.LocalName
-}
-
-func (ti *TypeInfo) TypeMappingsName() string {
-	if !IsExported(ti.Definition.LocalName) {
-		return ""
-	}
-	res := "info_"
-	switch x := ti.Type.(type) {
-	case *Ident:
-		res += x.Name
-	case *ArrayType:
-		res = ""
-	case *StarExpr:
-		res += "PtrTo_" + x.X.(*Ident).Name
-	default:
-		panic(fmt.Sprintf("unrecognized expr %T", x))
-	}
-	return res
 }
