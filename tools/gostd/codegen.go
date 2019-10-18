@@ -180,7 +180,7 @@ func GenReceiver(fn *FuncInfo) {
 	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	const goTemplate = `
-func %s(o GoObject, args Object) Object {
+func %s(o GoObject, args Object) Object {  // %s
 %s}
 `
 
@@ -192,13 +192,21 @@ func %s(o GoObject, args Object) Object {
 
 	clojureFn := ""
 
-	goFn := fmt.Sprintf(goTemplate, goFname, genReceiverCode(fn, goFname))
+	what := "Receiver"
+	if fn.Fd == nil {
+		what = "Method"
+	}
+	goFn := fmt.Sprintf(goTemplate, goFname, what, genReceiverCode(fn, goFname))
 
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
 		abends.TrackAbends(clojureFn)
 		abends.TrackAbends(goFn)
+		if fn.Fd == nil {
+			NumFunctions++
+			godb.NumMethods++
+		}
 	} else {
 		NumGeneratedFunctions++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
@@ -206,6 +214,8 @@ func %s(o GoObject, args Object) Object {
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_"+pkgBaseName, pkgDirUnix, false)
 		imports.AddImport(PackagesInfo[pkgDirUnix].ImportsNative, "_reflect", "reflect", true)
 		if fn.Fd == nil {
+			NumFunctions++
+			godb.NumMethods++
 			godb.NumGeneratedMethods++
 			tdi := fn.ToM
 			if tdi == nil {

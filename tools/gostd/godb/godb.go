@@ -132,24 +132,6 @@ func newDecl(decls *map[string]DeclInfo, pkg string, name *Ident, node Node) {
 	(*decls)[name.Name] = DeclInfo{name.Name, node, name.NamePos}
 }
 
-func countMethods(ts *TypeSpec) {
-	it, ok := ts.Type.(*InterfaceType)
-	if !ok {
-		return
-	}
-	if !IsExported(ts.Name.Name) {
-		return
-	}
-	methods := 0
-	for _, m := range it.Methods.List {
-		if m.Names == nil {
-			continue // Another type, so count that type only once
-		}
-		methods += len(m.Names)
-	}
-	NumMethods += methods
-}
-
 func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 	if _, found := packagesByName[pkgDirUnix]; found {
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
@@ -205,7 +187,6 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 					case token.CONST:
 					case token.TYPE:
 						newDecl(&decls, pkgDirUnix, s.(*TypeSpec).Name, s)
-						countMethods(s.(*TypeSpec))
 					case token.VAR:
 					default:
 						panic(fmt.Sprintf("unrecognized GenDecl type %d for %v", o.Tok, o))

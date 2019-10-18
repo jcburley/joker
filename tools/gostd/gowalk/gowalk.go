@@ -819,11 +819,11 @@ Funcs:
 						continue Funcs // Publishable receivers must operate on public types
 					}
 				}
-				NumReceivers += 1
+				NumReceivers++
 			} else {
-				NumStandalones += 1
+				NumStandalones++
 			}
-			NumFunctions += 1
+			NumFunctions++
 			processFuncDecl(gf, pkgDirUnix, f, v)
 		case *GenDecl:
 			switch v.Tok {

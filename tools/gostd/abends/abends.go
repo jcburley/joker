@@ -21,7 +21,7 @@ func TrackAbends(a string) {
 		if _, ok := abends[n]; !ok {
 			abends[n] = 0
 		}
-		abends[n] += 1
+		abends[n]++
 	}
 }
 
