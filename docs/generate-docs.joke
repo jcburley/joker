@@ -202,6 +202,10 @@
         (string/replace "{types}" types-doc)
         (string/replace "{index}" index))))
 
+(defn go-version
+  []
+  (string/replace (go.std.runtime/Version) "go" ""))
+
 (defn index-doc
   [namespaces types]
   (let [namespaces-docs (string/join
@@ -221,6 +225,8 @@
                         (->> types
                              (map #(link-item-doc (str %) "Type"))))]
     (-> index-template
+        (string/replace "{JokerVersion}" (joker-version))
+        (string/replace "{GoVersion}" (go-version))
         (string/replace "{index-of-namespaces}" ns-links-doc)
         (string/replace "{namespaces}" namespaces-docs)
         (string/replace "{index-of-types}" type-links-doc)
