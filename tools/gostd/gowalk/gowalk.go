@@ -301,8 +301,10 @@ func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *Comme
 
 	tdiVec := TypeDefine(ts, gf, parentDoc)
 	for _, tdi := range tdiVec {
-		ClojureCode[pkg].InitTypes[tdi] = struct{}{}
-		GoCode[pkg].InitTypes[tdi] = struct{}{}
+		if !Contains(tdi.FullName, "[") { // exclude arrays
+			ClojureCode[pkg].InitTypes[tdi] = struct{}{}
+			GoCode[pkg].InitTypes[tdi] = struct{}{}
+		}
 	}
 
 	gt := RegisterType_func(gf, typeName, ts)

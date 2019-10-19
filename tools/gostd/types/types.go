@@ -7,6 +7,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -61,16 +62,32 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
+func define(tdi *Type) {
+	name := tdi.FullName
+	if existingTdi, ok := typesByFullName[name]; ok {
+		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, WhereAt(existingTdi.DefPos), WhereAt(tdi.DefPos)))
+	}
+	typesByFullName[name] = tdi
+
+	if tdi.Type != nil {
+		tdiByExpr, found := typesByExpr[tdi.Type]
+		if found && tdiByExpr != tdi {
+			panic(fmt.Sprintf("different expr for type %s", name))
+		}
+		typesByExpr[tdi.Type] = tdi
+	}
+
+	//	fmt.Printf("define: %s\n", name)
+}
+
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to define new type after having sorted all types!!")
 	}
+
 	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
 	tln := ts.Name.Name
 	tfn := prefix + tln
-	if tdi, ok := typesByFullName[tfn]; ok {
-		panic(fmt.Sprintf("already defined type %s at %s and again at %s", tfn, WhereAt(tdi.DefPos), WhereAt(ts.Name.NamePos)))
-	}
 
 	doc := ts.Doc // Try block comments for this specific decl
 	if doc == nil {
@@ -79,6 +96,8 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 	if doc == nil {
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
+
+	types := []*Type{}
 
 	tdi := &Type{
 		Type:        ts.Type,
@@ -94,60 +113,209 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		GoName:      tln,
 		Specificity: specificity(ts),
 	}
-	if ts.Type != nil {
-		tdiByExpr, found := typesByExpr[ts.Type]
-		if found && tdiByExpr != tdi {
-			panic(fmt.Sprintf("different expr for type %s", tfn))
-		}
-		typesByExpr[ts.Type] = tdi
+	define(tdi)
+	types = append(types, tdi)
+
+	tdiArrayOf := &Type{
+		Type:           &ArrayType{Elt: tdi.Type},
+		FullName:       "[]" + tdi.FullName,
+		LocalName:      "[]" + tdi.LocalName,
+		IsExported:     tdi.IsExported,
+		Doc:            "",
+		GoPrefix:       "[]" + tdi.GoPrefix,
+		GoPackage:      tdi.GoPackage,
+		GoName:         tdi.GoName,
+		underlyingType: tdi,
+		Specificity:    Concrete,
 	}
-	typesByFullName[tfn] = tdi
+	define(tdiArrayOf)
+	types = append(types, tdiArrayOf)
+
+	tdiArray16Of := &Type{
+		Type:           &ArrayType{Elt: tdi.Type},
+		FullName:       "[16]" + tdi.FullName,
+		LocalName:      "[16]" + tdi.LocalName,
+		IsExported:     tdi.IsExported,
+		Doc:            "",
+		GoPrefix:       "[16]" + tdi.GoPrefix,
+		GoPackage:      tdi.GoPackage,
+		GoName:         tdi.GoName,
+		underlyingType: tdi,
+		Specificity:    Concrete,
+	}
+	define(tdiArray16Of)
+	types = append(types, tdiArray16Of)
+
+	tdiArrayOfArrayOf := &Type{
+		Type:           &ArrayType{Elt: tdiArrayOf.Type},
+		FullName:       "[]" + tdiArrayOf.FullName,
+		LocalName:      "[]" + tdiArrayOf.LocalName,
+		IsExported:     tdiArrayOf.IsExported,
+		Doc:            "",
+		GoPrefix:       "[]" + tdiArrayOf.GoPrefix,
+		GoPackage:      tdiArrayOf.GoPackage,
+		GoName:         tdi.GoName,
+		underlyingType: tdiArrayOf,
+		Specificity:    Concrete,
+	}
+	define(tdiArrayOfArrayOf)
+	types = append(types, tdiArrayOfArrayOf)
 
 	if tdi.Specificity == Concrete {
-		// Concrete types all get reference-to versions.
-		tfnPtr := "*" + tfn
-		tdiPtr := &Type{
-			Type:           &StarExpr{X: ts.Type},
-			FullName:       tfnPtr,
-			LocalName:      "*" + tln,
+		// Concrete types get reference-to and array-of-reference-to versions.
+		tdiPtrTo := &Type{
+			Type:           &StarExpr{X: tdi.Type},
+			FullName:       "*" + tdi.FullName,
+			LocalName:      "*" + tdi.LocalName,
 			IsExported:     tdi.IsExported,
 			Doc:            "",
-			GoPrefix:       "*",
+			GoPrefix:       "*" + tdi.GoPrefix,
 			GoPackage:      tdi.GoPackage,
-			GoName:         tln,
+			GoName:         tdi.GoName,
 			underlyingType: tdi,
 			Specificity:    Concrete,
 		}
-		tdiByExpr, found := typesByExpr[tdiPtr.Type]
-		if found && tdiByExpr != tdiPtr {
-			panic(fmt.Sprintf("different expr for type %s", tfn))
+		define(tdiPtrTo)
+		types = append(types, tdiPtrTo)
+
+		tdiArrayOfPtrTo := &Type{
+			Type:           &ArrayType{Elt: tdiPtrTo.Type},
+			FullName:       "[]" + tdiPtrTo.FullName,
+			LocalName:      "[]" + tdiPtrTo.LocalName,
+			IsExported:     tdiPtrTo.IsExported,
+			Doc:            "",
+			GoPrefix:       "[]" + tdiPtrTo.GoPrefix,
+			GoPackage:      tdiPtrTo.GoPackage,
+			GoName:         tdi.GoName,
+			underlyingType: tdi,
+			Specificity:    Concrete,
 		}
-		typesByExpr[ts.Type] = tdiPtr
-		typesByFullName[tfnPtr] = tdiPtr
-		return []*Type{tdi, tdiPtr}
+		define(tdiArrayOfPtrTo)
+		types = append(types, tdiArrayOfPtrTo)
+
+		tdiArrayOneOfPtrTo := &Type{
+			Type:           &ArrayType{Elt: tdiPtrTo.Type},
+			FullName:       "[1]" + tdiPtrTo.FullName,
+			LocalName:      "[1]" + tdiPtrTo.LocalName,
+			IsExported:     tdiPtrTo.IsExported,
+			Doc:            "",
+			GoPrefix:       "[1]" + tdiPtrTo.GoPrefix,
+			GoPackage:      tdiPtrTo.GoPackage,
+			GoName:         tdi.GoName,
+			underlyingType: tdi,
+			Specificity:    Concrete,
+		}
+		define(tdiArrayOneOfPtrTo)
+		types = append(types, tdiArrayOneOfPtrTo)
 	}
 
-	return []*Type{tdi}
+	return types
 }
 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]*Type{}
 
-func TypeLookup(e Expr) *Type {
+func defineBuiltin(name string, te Expr) *Type {
+	if _, ok := typesByFullName[name]; ok {
+		panic(fmt.Sprintf("already defined builtin type %s", name))
+	}
+
+	if _, ok := typesByExpr[te]; ok {
+		panic(fmt.Sprintf("already defined builtin type %s via expr", name))
+	}
+
+	tdi := &Type{
+		Type:       te,
+		FullName:   name,
+		LocalName:  name,
+		IsExported: true,
+		GoName:     name,
+	}
+
+	typesByFullName[name] = tdi
+	typesByExpr[te] = tdi
+
+	//	fmt.Printf("defineBuiltin: %s\n", name)
+
+	return tdi
+}
+
+func TypeDefineBuiltin(name string) *Type {
+	te := &Ident{Name: name}
+	tdi := defineBuiltin(name, te)
+
+	// TODO: Automate generating these type variants on-demand.
+
+	pte := &StarExpr{X: te}
+	defineBuiltin("*"+name, pte)
+
+	ate := &ArrayType{Elt: te}
+	defineBuiltin("[]"+name, ate)
+
+	a0te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "0"}, Elt: te}
+	defineBuiltin("[0]"+name, a0te)
+
+	a2te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "2"}, Elt: te}
+	defineBuiltin("[2]"+name, a2te)
+
+	a3te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "3"}, Elt: te}
+	defineBuiltin("[3]"+name, a3te)
+
+	a4te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "4"}, Elt: te}
+	defineBuiltin("[4]"+name, a4te)
+
+	a5te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "5"}, Elt: te}
+	defineBuiltin("[5]"+name, a5te)
+
+	a6te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "6"}, Elt: te}
+	defineBuiltin("[6]"+name, a6te)
+
+	a8te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "8"}, Elt: te}
+	defineBuiltin("[8]"+name, a8te)
+
+	a14te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "14"}, Elt: te}
+	defineBuiltin("[14]"+name, a14te)
+
+	a16te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "16"}, Elt: te}
+	defineBuiltin("[16]"+name, a16te)
+
+	a32te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "32"}, Elt: te}
+	defineBuiltin("[32]"+name, a32te)
+
+	a44te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "44"}, Elt: te}
+	defineBuiltin("[44]"+name, a44te)
+
+	a65te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "65"}, Elt: te}
+	defineBuiltin("[65]"+name, a65te)
+
+	a96te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "96"}, Elt: te}
+	defineBuiltin("[96]"+name, a96te)
+
+	a108te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "108"}, Elt: te}
+	defineBuiltin("[108]"+name, a108te)
+
+	a256te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "256"}, Elt: te}
+	defineBuiltin("[256]"+name, a256te)
+
+	aate := &ArrayType{Elt: ate}
+	defineBuiltin("[][]"+name, aate)
+
+	return tdi
+}
+
+func TypeLookup(e Expr) (ty *Type, fullName string) {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
-		return tdi
+		return tdi, tdi.FullName
 	}
-	tfn, _, _ := typeNames(e, true)
+	tfn := typeName(e)
 	if tdi, ok := typesByFullName[tfn]; ok {
-		if tdi.Type == nil {
-			panic(fmt.Sprintf("nil Type for %s", tfn))
-		}
 		NumFullNameHits++
 		typesByExpr[e] = tdi
-		return tdi
+		return tdi, tfn
 	}
-	return nil
+
+	return nil, tfn
 }
 
 var allTypesSorted = []*Type{}
@@ -204,42 +372,66 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	}
 }
 
-func typeNames(e Expr, root bool) (full, local string, simple bool) {
-	prefix := ""
-	if root {
-		prefix = ClojureNamespaceForExpr(e) + "/"
+func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
+	switch v := e.(type) {
+	case *Ident:
+		break
+	case *StarExpr:
+		return dynamicDefine(append(prefixes, "*"), v.X)
+	case *ArrayType:
+		return dynamicDefine(append(prefixes, exprToString(v.Len)), v.Elt)
+	default:
+		return nil, strings.Join(prefixes, "")
 	}
+	// Try defining the type here.
+	return dynamicDefine([]string{}, e)
+
+	if _, yes := e.(*Ident); yes {
+	}
+	return nil, strings.Join(prefixes, "")
+}
+
+func typeName(e Expr) (full string) {
 	switch x := e.(type) {
 	case *Ident:
-		full = prefix + x.Name
-		local = x.Name
-		simple = true
-		o := x.Obj
-		if o != nil && o.Kind == Typ {
-			tdi := typesByFullName[full]
-			if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
-				Print(Fset, x)
-				var ts *TypeSpec
-				if tdi != nil {
-					ts = tdi.TypeSpec
-				}
-				panic(fmt.Sprintf("mismatch name=%s != %s or ts %p != %p!", o.Name, local, o.Decl.(*TypeSpec), ts))
-			}
-		} else {
-			// Strangely, not all *Ident's referring to defined types have x.Obj populated! Can't figure out what's
-			// different about them, though maybe it's just that they're for only those receivers currently being
-			// code-generated?
-		}
+		break
 	case *ArrayType:
-		elFull, elLocal, _ := typeNames(x.Elt, false)
+		elFull := typeName(x.Elt)
 		len := exprToString(x.Len)
-		full = "[" + len + "]" + prefix + elFull
-		local = "[" + len + "]" + elLocal
+		full = "[" + len + "]" + elFull
+		return
 	case *StarExpr:
-		elFull, elLocal, _ := typeNames(x.X, false)
-		full = "*" + prefix + elFull
-		local = "*" + elLocal
+		elFull := typeName(x.X)
+		full = "*" + elFull
+		return
+	default:
+		return
 	}
+
+	x := e.(*Ident)
+	local := x.Name
+	prefix := ""
+	if types.Universe.Lookup(local) == nil {
+		prefix = ClojureNamespaceForExpr(e) + "/"
+	}
+	full = prefix + local
+	o := x.Obj
+	if o != nil && o.Kind == Typ {
+		tdi := typesByFullName[full]
+		if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
+			Print(Fset, x)
+			var ts *TypeSpec
+			if tdi != nil {
+				ts = tdi.TypeSpec
+			}
+			panic(fmt.Sprintf("mismatch name=%s != %s or ts %p != %p!", o.Name, local, o.Decl.(*TypeSpec), ts))
+		}
+	} else {
+		// Strangely, not all *Ident's referring to defined types have x.Obj populated! Can't figure out what's
+		// different about them, though maybe it's just that they're for only those receivers currently being
+		// code-generated?
+	}
+
 	return
 }
 
@@ -250,6 +442,8 @@ func exprToString(e Expr) string {
 	switch v := e.(type) {
 	case *Ellipsis:
 		return "..." + exprToString(v.Elt)
+	case *BasicLit:
+		return v.Value
 	}
 	return fmt.Sprintf("%v", e)
 }

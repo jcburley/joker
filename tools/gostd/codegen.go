@@ -228,9 +228,9 @@ func %s(o GoObject, args Object) Object {  // %s
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
-				tdi := TypeLookup(r.Type)
+				tdi, tdiFullName := TypeLookup(r.Type)
 				if tdi == nil {
-					panic("nil tdi!!")
+					panic(fmt.Sprintf("nil tdi for %s!!", tdiFullName))
 				}
 				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
 					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
@@ -404,8 +404,9 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 func GenType(t string, ti *GoTypeInfo) {
 	td := ti.Td
 	if !IsExported(td.Name.Name) {
-		return // Do not generate anything for private types
+		return // Do not generate anything for private or array types
 	}
+
 	pkgDirUnix := ti.SourceFile.Package.DirUnix
 	pkgBaseName := ti.SourceFile.Package.BaseName
 	pi := PackagesInfo[pkgDirUnix]
@@ -525,15 +526,17 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 }
 
 func GenTypeFromDb(tdi *Type) {
-	if !tdi.IsExported {
-		return // Do not generate anything for private types
+	if !tdi.IsExported || strings.Contains(tdi.FullName, "[") {
+		return // Do not generate anything for private or array types
 	}
 	if tdi.Specificity == Concrete {
 		genCtor(tdi)
 		return // The code below currently handles only interface{} types
 	}
 
-	appendMethods(tdi, tdi.TypeSpec.Type.(*InterfaceType))
+	if tdi.TypeSpec != nil && tdi.TypeSpec.Type != nil {
+		appendMethods(tdi, tdi.TypeSpec.Type.(*InterfaceType))
+	}
 }
 
 func promoteImports(ti *GoTypeInfo) {

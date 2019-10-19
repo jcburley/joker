@@ -5,8 +5,10 @@ import (
 	"github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
 	"github.com/candid82/joker/tools/gostd/imports"
+	"github.com/candid82/joker/tools/gostd/types"
 	. "go/ast"
 	gotypes "go/types"
+	"strings"
 )
 
 func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo {
@@ -77,11 +79,19 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	convertFromClojure := ""
 	convertFromMap := ""
 	exported := true
+	var ti *GoTypeInfo
 	var underlyingType Expr
 	unsupported := false
+	tdi, tdiFullName := types.TypeLookup(e)
+	defer func() {
+		if tdi == nil && !strings.Contains(ti.FullGoName, "ABEND") {
+			Print(godb.Fset, e)
+			panic(fmt.Sprintf("could not TypeLookup(%s) as %s at %s", ti.FullGoName, tdiFullName, godb.WhereAt(e.Pos())))
+		}
+	}()
 	switch td := e.(type) {
 	case *Ident:
-		ti := toGoTypeNameInfo(src.Package.DirUnix, td.Name, e)
+		ti = toGoTypeNameInfo(src.Package.DirUnix, td.Name, e)
 		if ti == nil {
 			return nil
 		}
@@ -111,16 +121,18 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 		}
 		return ti
 	case *ArrayType:
-		return goArrayType(src, td.Len, td.Elt)
+		ti = goArrayType(src, td.Len, td.Elt)
+		return ti
 	case *StarExpr:
-		return goStarExpr(src, td.X)
+		ti = goStarExpr(src, td.X)
+		return ti
 	}
 	if localName == "" || fullGoName == "" {
 		localName = fmt.Sprintf("%T", e)
 		fullGoName = fmt.Sprintf("ABEND047(gotypes.go: unsupported type %s)", localName)
 		unsupported = true
 	}
-	v := &GoTypeInfo{
+	ti = &GoTypeInfo{
 		LocalName:          localName,
 		FullGoName:         fullGoName,
 		UnderlyingType:     underlyingType,
@@ -130,8 +142,8 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 		ConvertFromMap:     convertFromMap,
 		ConvertToClojure:   "GoObject(%s%s)",
 	}
-	GoTypes[fullGoName] = v
-	return v
+	GoTypes[fullGoName] = ti
+	return ti
 }
 
 func toGoExprString(src *godb.GoFile, e Expr) string {
@@ -161,12 +173,10 @@ func lenString(len Expr) string {
 		return ""
 	}
 	switch n := len.(type) {
-	case *Ident:
-		return n.Name
 	case *BasicLit:
 		return n.Value
 	}
-	return fmt.Sprintf("%T", len)
+	return fmt.Sprintf("ABEND911(unsupported array length %T)", len)
 }
 
 func goArrayType(src *godb.GoFile, len Expr, elt Expr) *GoTypeInfo {
@@ -489,6 +499,12 @@ func init() {
 		ConvertToClojure:          "Error(%s%s)",
 		Nullable:                  true,
 		Exported:                  true,
+	}
+
+	for n, _ := range GoTypes {
+		if tdi := types.TypeDefineBuiltin(n); tdi == nil {
+			panic(fmt.Sprintf("failed to define builtin %s", n))
+		}
 	}
 }
 
