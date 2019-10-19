@@ -498,7 +498,7 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 				panic("Why no Type field??")
 			}
 			for _, n := range m.Names {
-				fullName := tdi.LocalName + "_" + n.Name
+				fullName := fmt.Sprintf(tdi.GoPattern, tdi.GoName) + "_" + n.Name
 				doc := m.Doc
 				if doc == nil {
 					doc = m.Comment

@@ -265,7 +265,7 @@ func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string,
 	SortedTypeDefinitions(v.InitTypes,
 		func(tdi *Type) {
 			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.LocalName == "" || !tdi.IsExported {
+			if tmn == "" || tdi.GoName == "" || !tdi.IsExported {
 				return
 			}
 			typeDoc := tdi.Doc
@@ -277,7 +277,7 @@ func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string,
     :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), tmn, tdi.LocalName)
+				strconv.Quote(typeDoc), tmn, fmt.Sprintf(tdi.GoPattern, tdi.GoName))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
 					tdi.FullName, fnCode)

@@ -23,14 +23,13 @@ type Type struct {
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
 	FullName       string    // Clojure name (e.g. "a.b.c/Typename")
-	LocalName      string    // Local, or base, name (e.g. "Typename" or "*Typename")
 	IsExported     bool
 	Doc            string
 	DefPos         token.Pos
 	GoFile         *GoFile
 	GoPackage      string // E.g. a/b/c
 	GoPattern      string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	GoName         string // Base name of type (LocalName without any prefix)
+	GoName         string // Base name of type (without any prefix/pattern applied)
 	underlyingType *Type
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
@@ -85,8 +84,8 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 	}
 
 	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
-	tln := ts.Name.Name
-	tfn := prefix + tln
+	localName := ts.Name.Name
+	name := prefix + localName
 
 	doc := ts.Doc // Try block comments for this specific decl
 	if doc == nil {
@@ -101,15 +100,14 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 	tdi := &Type{
 		Type:        ts.Type,
 		TypeSpec:    ts,
-		FullName:    tfn,
-		LocalName:   tln,
-		IsExported:  IsExported(tln),
+		FullName:    name,
+		IsExported:  IsExported(localName),
 		Doc:         CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
 		GoFile:      gf,
 		GoPattern:   "%s",
 		GoPackage:   GoPackageForTypeSpec(ts),
-		GoName:      tln,
+		GoName:      localName,
 		Specificity: specificity(ts),
 	}
 	define(tdi)
@@ -120,7 +118,6 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		tdiPtrTo := &Type{
 			Type:           &StarExpr{X: tdi.Type},
 			FullName:       "*" + tdi.FullName,
-			LocalName:      "*" + tdi.LocalName,
 			IsExported:     tdi.IsExported,
 			Doc:            "",
 			GoPattern:      fmt.Sprintf(tdi.GoPattern, "*%s"),
@@ -140,21 +137,17 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 var typesByExpr = map[Expr]*Type{}
 
 func defineVariant(name string, innerTdi *Type, te Expr) *Type {
-	localName := name
 	var isExported bool
 	if innerTdi == nil {
-		localName = name
 		isExported = IsExported(name) || types.Universe.Lookup(name) != nil
 
 	} else {
-		localName = innerTdi.LocalName
 		isExported = innerTdi.IsExported
 	}
 
 	tdi := &Type{
 		Type:           te,
 		FullName:       name,
-		LocalName:      localName,
 		IsExported:     isExported,
 		GoName:         name,
 		underlyingType: innerTdi,
@@ -194,28 +187,28 @@ func TypeLookup(e Expr) (ty *Type, fullName string) {
 		NumExprHits++
 		return tdi, tdi.FullName
 	}
-	tfn := typeName(e)
-	if tdi, ok := typesByFullName[tfn]; ok {
+	name := typeName(e)
+	if tdi, ok := typesByFullName[name]; ok {
 		NumFullNameHits++
 		typesByExpr[e] = tdi
-		return tdi, tfn
+		return tdi, name
 	}
 
 	if _, yes := e.(*Ident); yes {
 	}
 
 	var innerTdi *Type
-	var innerTfn string
+	var innerName string
 	switch v := e.(type) {
 	case *StarExpr:
-		innerTdi, innerTfn = TypeLookup(v.X)
-		tfn = "*" + innerTfn
+		innerTdi, innerName = TypeLookup(v.X)
+		name = "*" + innerName
 	case *ArrayType:
-		innerTdi, innerTfn = TypeLookup(v.Elt)
-		tfn = "[" + exprToString(v.Len) + "]" + innerTfn
+		innerTdi, innerName = TypeLookup(v.Elt)
+		name = "[" + exprToString(v.Len) + "]" + innerName
 	}
 
-	return defineVariant(tfn, innerTdi, e), tfn
+	return defineVariant(name, innerTdi, e), name
 }
 
 var allTypesSorted = []*Type{}
@@ -334,10 +327,10 @@ func (tdi *Type) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingType; tdiu != nil {
-		t = "_" + filepath.Base(tdiu.GoPackage) + "." + tdiu.LocalName
+		t = "_" + filepath.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 		suffix = ""
 	} else {
-		t = "_" + filepath.Base(tdi.GoPackage) + "." + tdi.LocalName
+		t = "_" + filepath.Base(tdi.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
@@ -347,7 +340,7 @@ func (tdi *Type) TypeMappingsName() string {
 		return ""
 	}
 	if tdi.underlyingType != nil {
-		return "info_PtrTo_" + tdi.underlyingType.LocalName
+		return "info_PtrTo_" + fmt.Sprintf(tdi.underlyingType.GoPattern, tdi.underlyingType.GoName)
 	}
-	return "info_" + tdi.LocalName
+	return "info_" + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 }
