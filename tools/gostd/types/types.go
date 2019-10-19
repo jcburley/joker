@@ -16,7 +16,6 @@ import (
 const Concrete = ^uint(0) /* MaxUint */
 
 var NumExprHits uint
-var NumAliasHits uint
 var NumFullNameHits uint
 
 // Info from the definition of the type (if any)
@@ -215,7 +214,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]*Type{}
 
-func defineBuiltin(name string, te Expr) *Type {
+func defineVariant(name string, innerTdi *Type, te Expr) *Type {
 	if _, ok := typesByFullName[name]; ok {
 		panic(fmt.Sprintf("already defined builtin type %s", name))
 	}
@@ -235,72 +234,84 @@ func defineBuiltin(name string, te Expr) *Type {
 	typesByFullName[name] = tdi
 	typesByExpr[te] = tdi
 
-	//	fmt.Printf("defineBuiltin: %s\n", name)
+	//	fmt.Printf("defineVariant: %s\n", name)
 
 	return tdi
 }
 
-// TODO: Automate generating all type variants on-demand (dynamically).
-
 func TypeDefineBuiltin(name string) *Type {
 	te := &Ident{Name: name}
-	tdi := defineBuiltin(name, te)
+	tdi := defineVariant(name, nil, te)
 
 	pte := &StarExpr{X: te}
-	defineBuiltin("*"+name, pte)
+	defineVariant("*"+name, tdi, pte)
 
 	ate := &ArrayType{Elt: te}
-	defineBuiltin("[]"+name, ate)
+	aTdi := defineVariant("[]"+name, tdi, ate)
 
 	a0te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "0"}, Elt: te}
-	defineBuiltin("[0]"+name, a0te)
+	defineVariant("[0]"+name, tdi, a0te)
 
 	a2te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "2"}, Elt: te}
-	defineBuiltin("[2]"+name, a2te)
+	defineVariant("[2]"+name, tdi, a2te)
 
 	a3te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "3"}, Elt: te}
-	defineBuiltin("[3]"+name, a3te)
+	defineVariant("[3]"+name, tdi, a3te)
 
 	a4te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "4"}, Elt: te}
-	defineBuiltin("[4]"+name, a4te)
+	defineVariant("[4]"+name, tdi, a4te)
 
 	a5te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "5"}, Elt: te}
-	defineBuiltin("[5]"+name, a5te)
+	defineVariant("[5]"+name, tdi, a5te)
 
 	a6te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "6"}, Elt: te}
-	defineBuiltin("[6]"+name, a6te)
+	defineVariant("[6]"+name, tdi, a6te)
 
 	a8te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "8"}, Elt: te}
-	defineBuiltin("[8]"+name, a8te)
+	defineVariant("[8]"+name, tdi, a8te)
 
 	a14te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "14"}, Elt: te}
-	defineBuiltin("[14]"+name, a14te)
-
-	a16te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "16"}, Elt: te}
-	defineBuiltin("[16]"+name, a16te)
+	defineVariant("[14]"+name, tdi, a14te)
 
 	a32te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "32"}, Elt: te}
-	defineBuiltin("[32]"+name, a32te)
+	defineVariant("[32]"+name, tdi, a32te)
 
 	a44te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "44"}, Elt: te}
-	defineBuiltin("[44]"+name, a44te)
+	defineVariant("[44]"+name, tdi, a44te)
 
 	a65te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "65"}, Elt: te}
-	defineBuiltin("[65]"+name, a65te)
+	defineVariant("[65]"+name, tdi, a65te)
 
 	a96te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "96"}, Elt: te}
-	defineBuiltin("[96]"+name, a96te)
+	defineVariant("[96]"+name, tdi, a96te)
 
 	a108te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "108"}, Elt: te}
-	defineBuiltin("[108]"+name, a108te)
+	defineVariant("[108]"+name, tdi, a108te)
 
 	a256te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "256"}, Elt: te}
-	defineBuiltin("[256]"+name, a256te)
+	defineVariant("[256]"+name, tdi, a256te)
 
 	aate := &ArrayType{Elt: ate}
-	defineBuiltin("[][]"+name, aate)
+	defineVariant("[][]"+name, aTdi, aate)
 
 	return tdi
+}
+
+func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
+	switch v := e.(type) {
+	case *Ident:
+		break
+	case *StarExpr:
+		return dynamicDefine(append(prefixes, "*"), v.X)
+	case *ArrayType:
+		return dynamicDefine(append(prefixes, exprToString(v.Len)), v.Elt)
+	default:
+		return nil, strings.Join(prefixes, "")
+	}
+	// Try defining the type here.
+	return dynamicDefine([]string{}, e)
+
+	return nil, strings.Join(prefixes, "")
 }
 
 func TypeLookup(e Expr) (ty *Type, fullName string) {
@@ -315,7 +326,21 @@ func TypeLookup(e Expr) (ty *Type, fullName string) {
 		return tdi, tfn
 	}
 
-	return nil, tfn
+	if _, yes := e.(*Ident); yes {
+	}
+
+	var innerTdi *Type
+	var innerTfn string
+	switch v := e.(type) {
+	case *StarExpr:
+		innerTdi, innerTfn = TypeLookup(v.X)
+		tfn = "*" + innerTfn
+	case *ArrayType:
+		innerTdi, innerTfn = TypeLookup(v.Elt)
+		tfn = "[" + exprToString(v.Len) + "]" + innerTfn
+	}
+
+	return defineVariant(tfn, innerTdi, e), tfn
 }
 
 var allTypesSorted = []*Type{}
@@ -372,25 +397,6 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	}
 }
 
-func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
-	switch v := e.(type) {
-	case *Ident:
-		break
-	case *StarExpr:
-		return dynamicDefine(append(prefixes, "*"), v.X)
-	case *ArrayType:
-		return dynamicDefine(append(prefixes, exprToString(v.Len)), v.Elt)
-	default:
-		return nil, strings.Join(prefixes, "")
-	}
-	// Try defining the type here.
-	return dynamicDefine([]string{}, e)
-
-	if _, yes := e.(*Ident); yes {
-	}
-	return nil, strings.Join(prefixes, "")
-}
-
 func typeName(e Expr) (full string) {
 	switch x := e.(type) {
 	case *Ident:
@@ -415,6 +421,7 @@ func typeName(e Expr) (full string) {
 		prefix = ClojureNamespaceForExpr(e) + "/"
 	}
 	full = prefix + local
+
 	o := x.Obj
 	if o != nil && o.Kind == Typ {
 		tdi := typesByFullName[full]
