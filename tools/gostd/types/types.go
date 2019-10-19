@@ -28,8 +28,8 @@ type Type struct {
 	Doc            string
 	DefPos         token.Pos
 	GoFile         *GoFile
-	GoPrefix       string // Currently either "" or "*" (for reference types)
 	GoPackage      string // E.g. a/b/c
+	GoPattern      string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	GoName         string // Base name of type (LocalName without any prefix)
 	underlyingType *Type
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
@@ -107,7 +107,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		Doc:         CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
 		GoFile:      gf,
-		GoPrefix:    "",
+		GoPattern:   "%s",
 		GoPackage:   GoPackageForTypeSpec(ts),
 		GoName:      tln,
 		Specificity: specificity(ts),
@@ -123,7 +123,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 			LocalName:      "*" + tdi.LocalName,
 			IsExported:     tdi.IsExported,
 			Doc:            "",
-			GoPrefix:       "*" + tdi.GoPrefix,
+			GoPattern:      fmt.Sprintf(tdi.GoPattern, "*%s"),
 			GoPackage:      tdi.GoPackage,
 			GoName:         tdi.GoName,
 			underlyingType: tdi,
@@ -140,18 +140,12 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 var typesByExpr = map[Expr]*Type{}
 
 func defineVariant(name string, innerTdi *Type, te Expr) *Type {
-	if _, ok := typesByFullName[name]; ok {
-		panic(fmt.Sprintf("already defined builtin type %s", name))
-	}
-
-	if _, ok := typesByExpr[te]; ok {
-		panic(fmt.Sprintf("already defined builtin type %s via expr", name))
-	}
-
 	localName := name
 	var isExported bool
 	if innerTdi == nil {
-		isExported = IsExported(name)
+		localName = name
+		isExported = IsExported(name) || types.Universe.Lookup(name) != nil
+
 	} else {
 		localName = innerTdi.LocalName
 		isExported = innerTdi.IsExported
@@ -166,8 +160,7 @@ func defineVariant(name string, innerTdi *Type, te Expr) *Type {
 		underlyingType: innerTdi,
 	}
 
-	typesByFullName[name] = tdi
-	typesByExpr[te] = tdi
+	define(tdi)
 
 	//	fmt.Printf("defineVariant: %s\n", name)
 

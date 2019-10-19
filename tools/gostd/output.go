@@ -155,7 +155,7 @@ func SwitchGoType(g interface{}) int {
 		if t.Specificity != Concrete {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity)
 		}
-		cases += fmt.Sprintf("\tcase %s%s%s:%s\n\t\treturn %d\n", t.GoPrefix, pkgPlusSeparator, t.GoName, specificity, t.Ord)
+		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern, pkgPlusSeparator+t.GoName), specificity, t.Ord)
 	}
 
 	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
