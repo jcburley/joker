@@ -115,53 +115,8 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 	define(tdi)
 	types = append(types, tdi)
 
-	tdiArrayOf := &Type{
-		Type:           &ArrayType{Elt: tdi.Type},
-		FullName:       "[]" + tdi.FullName,
-		LocalName:      "[]" + tdi.LocalName,
-		IsExported:     tdi.IsExported,
-		Doc:            "",
-		GoPrefix:       "[]" + tdi.GoPrefix,
-		GoPackage:      tdi.GoPackage,
-		GoName:         tdi.GoName,
-		underlyingType: tdi,
-		Specificity:    Concrete,
-	}
-	define(tdiArrayOf)
-	types = append(types, tdiArrayOf)
-
-	tdiArray16Of := &Type{
-		Type:           &ArrayType{Elt: tdi.Type},
-		FullName:       "[16]" + tdi.FullName,
-		LocalName:      "[16]" + tdi.LocalName,
-		IsExported:     tdi.IsExported,
-		Doc:            "",
-		GoPrefix:       "[16]" + tdi.GoPrefix,
-		GoPackage:      tdi.GoPackage,
-		GoName:         tdi.GoName,
-		underlyingType: tdi,
-		Specificity:    Concrete,
-	}
-	define(tdiArray16Of)
-	types = append(types, tdiArray16Of)
-
-	tdiArrayOfArrayOf := &Type{
-		Type:           &ArrayType{Elt: tdiArrayOf.Type},
-		FullName:       "[]" + tdiArrayOf.FullName,
-		LocalName:      "[]" + tdiArrayOf.LocalName,
-		IsExported:     tdiArrayOf.IsExported,
-		Doc:            "",
-		GoPrefix:       "[]" + tdiArrayOf.GoPrefix,
-		GoPackage:      tdiArrayOf.GoPackage,
-		GoName:         tdi.GoName,
-		underlyingType: tdiArrayOf,
-		Specificity:    Concrete,
-	}
-	define(tdiArrayOfArrayOf)
-	types = append(types, tdiArrayOfArrayOf)
-
 	if tdi.Specificity == Concrete {
-		// Concrete types get reference-to and array-of-reference-to versions.
+		// Concrete types get reference-to variants, allowing Joker code to access them.
 		tdiPtrTo := &Type{
 			Type:           &StarExpr{X: tdi.Type},
 			FullName:       "*" + tdi.FullName,
@@ -176,36 +131,6 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		}
 		define(tdiPtrTo)
 		types = append(types, tdiPtrTo)
-
-		tdiArrayOfPtrTo := &Type{
-			Type:           &ArrayType{Elt: tdiPtrTo.Type},
-			FullName:       "[]" + tdiPtrTo.FullName,
-			LocalName:      "[]" + tdiPtrTo.LocalName,
-			IsExported:     tdiPtrTo.IsExported,
-			Doc:            "",
-			GoPrefix:       "[]" + tdiPtrTo.GoPrefix,
-			GoPackage:      tdiPtrTo.GoPackage,
-			GoName:         tdi.GoName,
-			underlyingType: tdi,
-			Specificity:    Concrete,
-		}
-		define(tdiArrayOfPtrTo)
-		types = append(types, tdiArrayOfPtrTo)
-
-		tdiArrayOneOfPtrTo := &Type{
-			Type:           &ArrayType{Elt: tdiPtrTo.Type},
-			FullName:       "[1]" + tdiPtrTo.FullName,
-			LocalName:      "[1]" + tdiPtrTo.LocalName,
-			IsExported:     tdiPtrTo.IsExported,
-			Doc:            "",
-			GoPrefix:       "[1]" + tdiPtrTo.GoPrefix,
-			GoPackage:      tdiPtrTo.GoPackage,
-			GoName:         tdi.GoName,
-			underlyingType: tdi,
-			Specificity:    Concrete,
-		}
-		define(tdiArrayOneOfPtrTo)
-		types = append(types, tdiArrayOneOfPtrTo)
 	}
 
 	return types
