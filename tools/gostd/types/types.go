@@ -240,11 +240,11 @@ func defineBuiltin(name string, te Expr) *Type {
 	return tdi
 }
 
+// TODO: Automate generating all type variants on-demand (dynamically).
+
 func TypeDefineBuiltin(name string) *Type {
 	te := &Ident{Name: name}
 	tdi := defineBuiltin(name, te)
-
-	// TODO: Automate generating these type variants on-demand.
 
 	pte := &StarExpr{X: te}
 	defineBuiltin("*"+name, pte)
