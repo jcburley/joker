@@ -241,60 +241,7 @@ func defineVariant(name string, innerTdi *Type, te Expr) *Type {
 
 func TypeDefineBuiltin(name string) *Type {
 	te := &Ident{Name: name}
-	tdi := defineVariant(name, nil, te)
-
-	pte := &StarExpr{X: te}
-	defineVariant("*"+name, tdi, pte)
-
-	ate := &ArrayType{Elt: te}
-	aTdi := defineVariant("[]"+name, tdi, ate)
-
-	a0te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "0"}, Elt: te}
-	defineVariant("[0]"+name, tdi, a0te)
-
-	a2te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "2"}, Elt: te}
-	defineVariant("[2]"+name, tdi, a2te)
-
-	a3te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "3"}, Elt: te}
-	defineVariant("[3]"+name, tdi, a3te)
-
-	a4te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "4"}, Elt: te}
-	defineVariant("[4]"+name, tdi, a4te)
-
-	a5te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "5"}, Elt: te}
-	defineVariant("[5]"+name, tdi, a5te)
-
-	a6te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "6"}, Elt: te}
-	defineVariant("[6]"+name, tdi, a6te)
-
-	a8te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "8"}, Elt: te}
-	defineVariant("[8]"+name, tdi, a8te)
-
-	a14te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "14"}, Elt: te}
-	defineVariant("[14]"+name, tdi, a14te)
-
-	a32te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "32"}, Elt: te}
-	defineVariant("[32]"+name, tdi, a32te)
-
-	a44te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "44"}, Elt: te}
-	defineVariant("[44]"+name, tdi, a44te)
-
-	a65te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "65"}, Elt: te}
-	defineVariant("[65]"+name, tdi, a65te)
-
-	a96te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "96"}, Elt: te}
-	defineVariant("[96]"+name, tdi, a96te)
-
-	a108te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "108"}, Elt: te}
-	defineVariant("[108]"+name, tdi, a108te)
-
-	a256te := &ArrayType{Len: &BasicLit{Kind: token.INT, Value: "256"}, Elt: te}
-	defineVariant("[256]"+name, tdi, a256te)
-
-	aate := &ArrayType{Elt: ate}
-	defineVariant("[][]"+name, aTdi, aate)
-
-	return tdi
+	return defineVariant(name, nil, te)
 }
 
 func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
