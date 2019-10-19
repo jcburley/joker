@@ -136,19 +136,15 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]*Type{}
 
-func defineVariant(name string, innerTdi *Type, te Expr) *Type {
-	var isExported bool
-	if innerTdi == nil {
-		isExported = IsExported(name) || types.Universe.Lookup(name) != nil
-
-	} else {
-		isExported = innerTdi.IsExported
-	}
+func defineVariant(pattern string, innerTdi *Type, te Expr) *Type {
+	name := innerTdi.GoName
+	isExported := innerTdi.IsExported
 
 	tdi := &Type{
 		Type:           te,
-		FullName:       name,
+		FullName:       fmt.Sprintf(pattern, innerTdi.FullName),
 		IsExported:     isExported,
+		GoPattern:      pattern,
 		GoName:         name,
 		underlyingType: innerTdi,
 	}
@@ -161,8 +157,17 @@ func defineVariant(name string, innerTdi *Type, te Expr) *Type {
 }
 
 func TypeDefineBuiltin(name string) *Type {
-	te := &Ident{Name: name}
-	return defineVariant(name, nil, te)
+	tdi := &Type{
+		Type:       &Ident{Name: name},
+		FullName:   name,
+		IsExported: true,
+		GoPattern:  "%s",
+		GoName:     name,
+	}
+
+	define(tdi)
+
+	return tdi
 }
 
 func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
@@ -195,20 +200,29 @@ func TypeLookup(e Expr) (ty *Type, fullName string) {
 	}
 
 	if _, yes := e.(*Ident); yes {
+		return
 	}
 
 	var innerTdi *Type
-	var innerName string
+	innerName := name
+	pattern := "%s"
+
 	switch v := e.(type) {
 	case *StarExpr:
 		innerTdi, innerName = TypeLookup(v.X)
-		name = "*" + innerName
+		pattern = "*%s"
 	case *ArrayType:
 		innerTdi, innerName = TypeLookup(v.Elt)
-		name = "[" + exprToString(v.Len) + "]" + innerName
+		pattern = "[" + exprToString(v.Len) + "]%s"
 	}
 
-	return defineVariant(name, innerTdi, e), name
+	newName := fmt.Sprintf(pattern, innerName)
+
+	if innerTdi == nil {
+		return nil, newName
+	}
+
+	return defineVariant(pattern, innerTdi, e), newName
 }
 
 var allTypesSorted = []*Type{}
