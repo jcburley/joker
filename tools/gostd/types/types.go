@@ -223,12 +223,22 @@ func defineVariant(name string, innerTdi *Type, te Expr) *Type {
 		panic(fmt.Sprintf("already defined builtin type %s via expr", name))
 	}
 
+	localName := name
+	var isExported bool
+	if innerTdi == nil {
+		isExported = IsExported(name)
+	} else {
+		localName = innerTdi.LocalName
+		isExported = innerTdi.IsExported
+	}
+
 	tdi := &Type{
-		Type:       te,
-		FullName:   name,
-		LocalName:  name,
-		IsExported: true,
-		GoName:     name,
+		Type:           te,
+		FullName:       name,
+		LocalName:      localName,
+		IsExported:     isExported,
+		GoName:         name,
+		underlyingType: innerTdi,
 	}
 
 	typesByFullName[name] = tdi
