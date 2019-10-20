@@ -19,9 +19,16 @@ var JokerSourceDir = "github.com/candid82/joker"
 var JokerCoreDir = path.Join(JokerSourceDir, "core")
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
-// import lines to the given host-syntax path.
-func SetJokerSourceDir(p string) {
-	JokerSourceDir = filepath.ToSlash(p)
+// import lines to the given host-syntax path, with the local path
+// prefix removed.  E.g. if p=="." and r=="/home/me/go/src", and
+// Abs(p)=="/home/me/go/src/github.com/candid82/joker", then the
+// resulting root for import lines would be
+// "github.com/candid82/joker".
+func SetJokerSourceDir(p string, r string) {
+	abs, err := filepath.Abs(p)
+	Check(err)
+	imp := TrimPrefix(abs, r+string(filepath.Separator))
+	JokerSourceDir = filepath.ToSlash(imp)
 	JokerCoreDir = path.Join(JokerSourceDir, "core")
 }
 

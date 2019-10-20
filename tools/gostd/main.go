@@ -35,7 +35,7 @@ const VERSION = "0.1"
 var goSourcePath string
 
 func notOption(arg string) bool {
-	return arg == "-" || !strings.HasPrefix(arg, "-")
+	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
 }
 
 func usage() {
@@ -50,6 +50,7 @@ Options:
   --replace                   # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
   --fresh                     # (Default) Refuse to overwrite existing <joker-std-subdir> directory
   --joker <joker-source-dir>  # Modify pertinent source files to reflect packages being created
+  --import-from <dir>         # Override <joker-source-dir> with <dir> for use in generated import decls; "--" means use default
   --verbose, -v               # Print info on what's going on
   --summary                   # Print summary of #s of types, functions, etc.
   --output-code               # Print generated code to stdout (used by test.sh)
@@ -77,7 +78,9 @@ func listOfOthers(other string) (others []string) {
 	if s.IsDir() {
 		return []string{o}
 	}
-	panic(fmt.Sprintf("files not yet supported: %s", other))
+	fmt.Fprintf(os.Stderr, "files not yet supported: %s\n", other)
+	os.Exit(3)
+	return
 }
 
 func main() {
@@ -90,6 +93,7 @@ func main() {
 	var others []string
 	var otherSourceDirs []string
 	jokerSourceDir := ""
+	jokerImportDir := ""
 	replace := false
 	overwrite := false
 	summary := false
@@ -131,18 +135,21 @@ func main() {
 				undo = true
 			case "--go":
 				if goSourceDir != "" {
-					panic("cannot specify --go <go-source-dir> more than once")
+					fmt.Fprintf(os.Stderr, "cannot specify --go <go-source-dir> more than once\n")
+					os.Exit(1)
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					goSourceDir = os.Args[i]
 					goSourceDirVia = "--go"
 				} else {
-					panic("missing path after --go option")
+					fmt.Fprintf(os.Stderr, "missing path after --go option\n")
+					os.Exit(1)
 				}
 			case "--others":
 				if i >= length-1 || !notOption(os.Args[i+1]) {
-					panic("missing package-spec(s) after --others option")
+					fmt.Fprintf(os.Stderr, "missing package-spec(s) after --others option\n")
+					os.Exit(1)
 				}
 				for i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
@@ -153,24 +160,40 @@ func main() {
 					i += 1 // shift
 					goSourcePath = os.Args[i]
 				} else {
-					panic("missing package-spec(s) after --go-source-path option")
+					fmt.Fprintf(os.Stderr, "missing package-spec(s) after --go-source-path option\n")
+					os.Exit(1)
 				}
 			case "--joker":
 				if jokerSourceDir != "" {
-					panic("cannot specify --joker <joker-source-dir> more than once")
+					fmt.Fprintf(os.Stderr, "cannot specify --joker <joker-source-dir> more than once\n")
+					os.Exit(1)
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					jokerSourceDir = os.Args[i]
-					godb.SetJokerSourceDir(jokerSourceDir)
 				} else {
-					panic("missing path after --joker option")
+					fmt.Fprintf(os.Stderr, "missing path after --joker option\n")
+					os.Exit(1)
+				}
+			case "--import-from":
+				if jokerImportDir != "" {
+					fmt.Fprintf(os.Stderr, "cannot specify --import-from <import-dir> more than once\n")
+					os.Exit(1)
+				}
+				if i < length-1 && notOption(os.Args[i+1]) {
+					i += 1 // shift
+					jokerImportDir = os.Args[i]
+				} else {
+					fmt.Fprintf(os.Stderr, "missing path after --import-from option; got %s, which looks like an option\n", os.Args[i+1])
+					os.Exit(1)
 				}
 			default:
-				panic("unrecognized option " + a)
+				fmt.Fprintf(os.Stderr, "unrecognized option %s\n", a)
+				os.Exit(1)
 			}
 		} else {
-			panic("extraneous argument(s) starting with: " + a)
+			fmt.Fprintf(os.Stderr, "extraneous argument(s) starting with: %s\n", a)
+			os.Exit(1)
 		}
 	}
 
@@ -194,15 +217,23 @@ func main() {
 	}
 
 	if goSourcePath == "" {
-		panic("no Go source path defined via either $GOPATH or --go-source-path")
+		fmt.Fprintf(os.Stderr, "no Go source path defined via either $GOPATH or --go-source-path")
+		os.Exit(1)
 	}
 	if fi, e := os.Stat(goSourcePath); e == nil && fi.IsDir() && filepath.Base(goSourcePath) != "src" {
 		goSourcePath = filepath.Join(goSourcePath, "src")
 	}
 
+	if jokerSourceDir != "" && jokerImportDir == "" {
+		godb.SetJokerSourceDir(jokerSourceDir, goSourcePath)
+	} else if jokerImportDir != "" && jokerImportDir != "--" {
+		godb.SetJokerSourceDir(jokerImportDir, goSourcePath)
+	}
+
 	if gowalk.Verbose {
 		fmt.Printf("goSourceDir: %s\n", goSourceDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
+		fmt.Printf("JokerSourceDir (for import line): %s\n", godb.JokerSourceDir)
 		for _, o := range others {
 			otherSourceDirs = append(otherSourceDirs, listOfOthers(o)...)
 		}
@@ -216,7 +247,8 @@ func main() {
 		jokerLibDir = filepath.Join(jokerSourceDir, "std", "go", "std")
 		if replace || undo {
 			if e := os.RemoveAll(jokerLibDir); e != nil {
-				panic(fmt.Sprintf("Unable to effectively 'rm -fr %s'", jokerLibDir))
+				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", jokerLibDir)
+				os.Exit(1)
 			}
 		}
 
@@ -235,11 +267,13 @@ func main() {
 				if e != nil {
 					msg = e.Error()
 				}
-				panic(fmt.Sprintf("Refusing to populate existing directory %s; please 'rm -fr' first, or specify --overwrite or --replace: %s",
-					jokerLibDir, msg))
+				fmt.Fprintf(os.Stderr, "Refusing to populate existing directory %s; please 'rm -fr' first, or specify --overwrite or --replace: %s\n",
+					jokerLibDir, msg)
+				os.Exit(1)
 			}
 			if e := os.MkdirAll(jokerLibDir, 0777); e != nil {
-				panic(fmt.Sprintf("Cannot 'mkdir -p %s': %s", jokerLibDir, e.Error()))
+				fmt.Fprintf(os.Stderr, "Cannot 'mkdir -p %s': %s\n", jokerLibDir, e.Error())
+				os.Exit(1)
 			}
 		}
 	}
@@ -255,7 +289,8 @@ func main() {
 
 	err, badDir := gowalk.WalkAllDirs()
 	if err != nil {
-		panic("Error walking directory " + badDir + ": " + fmt.Sprintf("%v", err))
+		fmt.Fprintf(os.Stderr, "Error walking directory %s: %v", badDir, err)
+		os.Exit(1)
 	}
 
 	types.SortAll()

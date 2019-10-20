@@ -25,7 +25,7 @@ fi
 ./gostd --no-timestamp --output-code --verbose --go _tests/small 2>&1 | grep -v '^Default context:' > $GOENV/small.gold
 git diff --quiet -u $GOENV/small.gold || { echo >&2 "FAILED: small test"; RC=1; $EXIT; }
 
-./gostd --no-timestamp --output-code --verbose --go _tests/big --replace --joker $GOENV/joker 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
+./gostd --no-timestamp --output-code --verbose --go _tests/big --replace --joker $GOENV/joker --import-from -- 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
 git diff --quiet -u $GOENV/big.gold || { echo >&2 "FAILED: big test"; RC=1; $EXIT; }
 
 ./gostd --no-timestamp --output-code --verbose 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
