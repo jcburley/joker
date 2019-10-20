@@ -10,8 +10,6 @@ build() {
 
 set -e  # Exit on error.
 
-set -v
-
 [ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
 
 build
