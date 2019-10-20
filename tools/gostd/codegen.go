@@ -560,7 +560,11 @@ func GenTypeFromDb(tdi *Type) {
 
 func promoteImports(from, to *imports.Imports, pos token.Pos) {
 	for _, imp := range from.FullNames {
-		imports.AddImport(to, imp.Local, imp.Full, true, pos)
+		local := imp.Local
+		if local == "" {
+			local = path.Base(imp.Full)
+		}
+		imports.AddImport(to, local, imp.Full, false, pos)
 	}
 }
 
@@ -679,8 +683,12 @@ func valueToType(tdi *Type, value string, e Expr) string {
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
 func addRequiredImports(tdi *Type, importeds []imports.Import) {
-	ti := TypeDefsToGoTypes[tdi]
+	to := TypeDefsToGoTypes[tdi].RequiredImports
 	for _, imp := range importeds {
-		imports.AddImport(ti.RequiredImports, imp.Local, imp.Full, true, imp.Pos)
+		local := imp.Local
+		if local == "" {
+			local = path.Base(imp.Full)
+		}
+		imports.AddImport(to, local, imp.Full, false, imp.Pos)
 	}
 }
