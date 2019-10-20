@@ -6,10 +6,24 @@ import (
 	. "go/ast"
 	"go/token"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	. "strings"
 )
+
+// Root of Joker source tree for generated import lines (so, using Unix path syntax).
+var JokerSourceDir = "github.com/candid82/joker"
+
+// Joker source tree's core directory for generated import lines (so, using Unix path syntax).
+var JokerCoreDir = path.Join(JokerSourceDir, "core")
+
+// Set the (Unix-syntax, i.e. slash-delimited) root for generated
+// import lines to the given host-syntax path.
+func SetJokerSourceDir(p string) {
+	JokerSourceDir = filepath.ToSlash(p)
+	JokerCoreDir = path.Join(JokerSourceDir, "core")
+}
 
 var Fset *token.FileSet
 var Dump bool

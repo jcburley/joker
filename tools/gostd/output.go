@@ -331,7 +331,7 @@ func outputGoCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string, outp
 				return // it me
 			}
 
-			imports.AddImport(pi.ImportsNative, ".", "github.com/candid82/joker/core", false, pos)
+			imports.AddImport(pi.ImportsNative, ".", JokerCoreDir, false, pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})

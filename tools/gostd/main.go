@@ -162,6 +162,7 @@ func main() {
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					jokerSourceDir = os.Args[i]
+					godb.SetJokerSourceDir(jokerSourceDir)
 				} else {
 					panic("missing path after --joker option")
 				}

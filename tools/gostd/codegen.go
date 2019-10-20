@@ -213,7 +213,7 @@ func %s(o GoObject, args Object) Object {  // %s
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		im := PackagesInfo[pkgDirUnix].ImportsNative
 		promoteImports(fn.Imports, im, fn.Pos)
-		imports.AddImport(im, ".", "github.com/candid82/joker/core", false, fn.Pos)
+		imports.AddImport(im, ".", godb.JokerCoreDir, false, fn.Pos)
 		myGoImport := imports.AddImport(im, "", pkgDirUnix, true, fn.Pos)
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
@@ -308,7 +308,7 @@ func %s(%s) %s {
 		pi := PackagesInfo[pkgDirUnix]
 		pi.NonEmpty = true
 		if clojureReturnType == "" {
-			imports.AddImport(pi.ImportsNative, ".", "github.com/candid82/joker/core", false, fn.Pos)
+			imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, false, fn.Pos)
 			myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			promoteImports(fn.Imports, pi.ImportsNative, fn.Pos)
@@ -422,7 +422,7 @@ func GenType(t string, ti *GoTypeInfo) {
 
 	pi.NonEmpty = true
 
-	imports.AddImport(pi.ImportsNative, ".", "github.com/candid82/joker/core", false, ti.Where)
+	imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, false, ti.Where)
 	myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, true, ti.Where)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
