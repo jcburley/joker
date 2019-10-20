@@ -797,6 +797,15 @@ var procGo Proc = func(args []Object) Object {
 		return MakeGoObject(args[0])
 	}
 	o := EnsureGoObject(args, 0)
+	if member == "&" {
+		v := reflect.ValueOf(o.O)
+		if v.CanAddr() {
+			return MakeGoObjectIfNeeded(v.Addr().Interface())
+		}
+		d := reflect.New(reflect.TypeOf(o.O))
+		reflect.Indirect(d).Set(v)
+		return MakeGoObjectIfNeeded(d.Interface())
+	}
 	g := LookupGoType(o.O)
 	if g == nil {
 		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
@@ -806,18 +815,6 @@ var procGo Proc = func(args []Object) Object {
 		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
 	}
 	return (f.Value.(*GoReceiver).R)(o, args[2])
-}
-
-var procRef Proc = func(args []Object) Object {
-	CheckArity(args, 1, 1)
-	o := EnsureGoObject(args, 0)
-	v := reflect.ValueOf(o.O)
-	if v.CanAddr() {
-		return MakeGoObjectIfNeeded(v.Addr().Interface())
-	}
-	d := reflect.New(reflect.TypeOf(o.O))
-	reflect.Indirect(d).Set(v)
-	return MakeGoObjectIfNeeded(d.Interface())
 }
 
 var procAssoc Proc = func(args []Object) Object {
@@ -2308,5 +2305,4 @@ func init() {
 	intern("types__", procTypes)
 	intern("new__", procNew)
 	intern("GoTypeOf__", procGoTypeOf)
-	intern("ref__", procRef)
 }
