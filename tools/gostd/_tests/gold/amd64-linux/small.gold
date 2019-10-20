@@ -154,7 +154,7 @@ JOKER FUNC net.CIDRMask from net/ip.go:
 
 JOKER FUNC net.DialIP from net/iprawsock.go:
 (defn DialIP
-  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of go.std.net/IPAddr) laddr, ^(atom-of go.std.net/IPAddr) raddr]\n\nJoker return type: [(atom-of go.std.net/IPConn) Error]"
+  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr, ^(ref-to go.std.net/IPAddr) raddr]\n\nJoker return type: [(ref-to go.std.net/IPConn) Error]"
   {:added "1.0"
    :go "__dialIP(__network, __laddr, __raddr)"}
   [^String __network, ^net/IPAddr __laddr, ^net/IPAddr __raddr])
@@ -175,7 +175,7 @@ JOKER FUNC net.IPv4Mask from net/ip.go:
 
 JOKER FUNC net.ListenIP from net/iprawsock.go:
 (defn ListenIP
-  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(atom-of go.std.net/IPAddr) laddr]\n\nJoker return type: [(atom-of go.std.net/IPConn) Error]"
+  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr]\n\nJoker return type: [(ref-to go.std.net/IPConn) Error]"
   {:added "1.0"
    :go "__listenIP(__network, __laddr)"}
   [^String __network, ^net/IPAddr __laddr])
@@ -210,14 +210,14 @@ JOKER FUNC net.LookupIP from net/lookup.go:
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/MX)) Error]"
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/MX)) Error]"
   {:added "1.0"
    :go "__lookupMX(__name)"}
   [^String __name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (atom-of go.std.net/NS)) Error]"
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/NS)) Error]"
   {:added "1.0"
    :go "__lookupNS(__name)"}
   [^String __name])
@@ -231,7 +231,7 @@ JOKER FUNC net.LookupPort from net/lookup.go:
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (atom-of go.std.net/SRV)) Error]"
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (ref-to go.std.net/SRV)) Error]"
   {:added "1.0"
    :go "__lookupSRV(__service, __proto, __name)"}
   [^String __service, ^String __proto, ^String __name])
@@ -245,7 +245,7 @@ JOKER FUNC net.LookupTXT from net/lookup.go:
 
 JOKER FUNC net.ParseCIDR from net/ip.go:
 (defn ParseCIDR
-  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP (atom-of go.std.net/IPNet) Error]"
+  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP (ref-to go.std.net/IPNet) Error]"
   {:added "1.0"
    :go "__parseCIDR(__s)"}
   [^String __s])
@@ -259,7 +259,7 @@ JOKER FUNC net.ParseIP from net/ip.go:
 
 JOKER FUNC net.ResolveIPAddr from net/iprawsock.go:
 (defn ResolveIPAddr
-  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [(atom-of go.std.net/IPAddr) Error]"
+  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [(ref-to go.std.net/IPAddr) Error]"
   {:added "1.0"
    :go "__resolveIPAddr(__network, __address)"}
   [^String __network, ^String __address])
@@ -591,7 +591,7 @@ JOKER TYPE net/url.Userinfo from net/url/url.go:
 JOKER TYPE net/url.Values from net/url/url.go:
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
-  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
+  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(ref-to go.std.net.url/URL) Error]"
   {:added "1.0"
    :go "__parse(__rawurl)"}
   [^String __rawurl])
@@ -605,7 +605,7 @@ JOKER FUNC net/url.ParseQuery from net/url/url.go:
 
 JOKER FUNC net/url.ParseRequestURI from net/url/url.go:
 (defn ParseRequestURI
-  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(atom-of go.std.net.url/URL) Error]"
+  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [(ref-to go.std.net.url/URL) Error]"
   {:added "1.0"
    :go "__parseRequestURI(__rawurl)"}
   [^String __rawurl])
@@ -640,14 +640,14 @@ JOKER FUNC net/url.QueryUnescape from net/url/url.go:
 
 JOKER FUNC net/url.User from net/url/url.go:
 (defn User
-  "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
+  "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: (ref-to go.std.net.url/Userinfo)"
   {:added "1.0"
    :go "__user(__username)"}
   [^String __username])
 
 JOKER FUNC net/url.UserPassword from net/url/url.go:
 (defn UserPassword
-  "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: (atom-of go.std.net.url/Userinfo)"
+  "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: (ref-to go.std.net.url/Userinfo)"
   {:added "1.0"
    :go "__userPassword(__username, __password)"}
   [^String __username, ^String __password])

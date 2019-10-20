@@ -47,7 +47,7 @@ func genGoPreStar(fn *gowalk.FuncInfo, indent string, e *StarExpr, paramName str
 		}
 		clType = "Object"
 	}
-	clTypeDoc = "(atom-of " + clTypeDoc + ")"
+	clTypeDoc = "(ref-to " + clTypeDoc + ")"
 	goType = "*" + goType
 	goTypeDoc = "*" + goTypeDoc
 	return

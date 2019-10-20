@@ -132,9 +132,9 @@ func genGoPostStar(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
 	out = "MakeGoObject(" + captureName + ")"
 	if cl != "" {
-		cl = "(atom-of " + cl + ")"
+		cl = "(ref-to " + cl + ")"
 	}
-	clDoc = "(atom-of " + clDoc + ")"
+	clDoc = "(ref-to " + clDoc + ")"
 	gol = "*" + gol
 	return
 }
