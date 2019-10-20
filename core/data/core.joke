@@ -4497,11 +4497,6 @@
   syntactically, name Go receivers or methods. They ignore any
   arguments:
 
-  & returns a GoObject that wraps a pointer (reference) to (usually a
-  copy of) the original wrapped Go object. The GoType of the resulting
-  GoObject might not be fully supported. This is in lieu of a
-  proper (ref ...) function. E.g. (Go obj :&).
-
   ! returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
   returns a GoObject wrapping a String.
@@ -4527,3 +4522,15 @@
   {:added "1.0"}
   [^GoType t]
   (GoTypeOf__ t))
+
+(defn ref
+  "Returns a GoObject that has a reference to the object wrapped by the
+  provided GoObject.
+
+  The resulting reference is usually to a copy of the original object,
+  not the object itself, as supported by Go's 'reflect' package.
+
+  Note that (GoTypeOf ...) of the resulting GoObject might not be
+  fully supported."
+  [o]
+  (ref__ o))
