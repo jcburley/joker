@@ -171,7 +171,12 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 			importsMap[as] = importPath
 		}
 
-		gf := &GoFile{pkgDb, goFilePathUnix, &importsMap, nsRoot}
+		gf := &GoFile{
+			Package: pkgDb,
+			Name:    goFilePathUnix,
+			Spaces:  &importsMap,
+			NsRoot:  nsRoot,
+		}
 		GoFiles[goFilePathUnix] = gf
 
 		for _, d := range f.Decls {

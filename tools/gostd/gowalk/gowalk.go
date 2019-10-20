@@ -162,7 +162,9 @@ type FuncInfo struct {
 	Ft           *FuncType
 	Doc          *CommentGroup
 	SourceFile   *godb.GoFile
-	RefersToSelf bool // whether :go-imports should list itself
+	RefersToSelf bool             // whether :go-imports should list itself
+	Imports      *imports.Imports // Add these to package info if function is generated (no ABENDs)
+	Pos          token.Pos
 }
 
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
@@ -201,8 +203,8 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 		doc = baseTypeName
 		return
 	}
-	doc = path.Base(fullPkgName) + "." + baseTypeName
-	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
+	doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, true, fn.Pos) + "." + baseTypeName
+	code = doc
 	return
 }
 
@@ -271,7 +273,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, false}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, false, &imports.Imports{}, fd.Pos()}
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {

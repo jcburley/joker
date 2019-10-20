@@ -2,6 +2,7 @@ package imports
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
@@ -16,6 +17,7 @@ type Import struct {
 	LocalRef    string // local unless empty, in which case final component of full (e.g. "foo")
 	Full        string // "bar/bletch/foo"
 	substituted bool   // Had to substitute a different local name
+	Pos         token.Pos
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
@@ -29,8 +31,11 @@ type Imports struct {
 /* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func AddImport(imports *Imports, local, full string, okToSubstitute bool) string {
+func AddImport(imports *Imports, local, full string, okToSubstitute bool, pos token.Pos) string {
 	components := Split(full, "/")
+	if imports == nil {
+		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
+	}
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
 			return e.LocalRef
@@ -38,7 +43,7 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 		if okToSubstitute {
 			return e.LocalRef
 		}
-		panic(fmt.Sprintf("addImport(%s,%s) told to to replace (%s,%s)", local, full, e.Local, e.Full))
+		panic(fmt.Sprintf("addImport(%s,%s) at %s told to to replace (%s,%s) at %s", local, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
 	}
 
 	substituted := false
@@ -73,7 +78,7 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool) string
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, localRef, full, substituted}
+	imports.FullNames[full] = &Import{local, localRef, full, substituted, pos}
 	return localRef
 }
 
