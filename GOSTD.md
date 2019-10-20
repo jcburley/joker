@@ -95,13 +95,21 @@ user=>
 
 In the above case, multiple `GoObject` objects are returned by a single call to `go.std.net/Interface`: they are returned as a (Clojure) vector, which in turn is wrapped in a vector along with the `error` return value, per the "Go return type" shown by `doc`.
 
+### Copying GoObjects
+
 Generally, Joker avoids ever _copying_ a `GoObject`, in order to permit maximum flexibility of use (such as when one contains active state), to preserve some semblance of performance, and to avoid issues when they have members of type `sync.Mutex` (which cannot always be copied).
 
-As a result, pointers to such objects are returned as `atom` references to the very same objects.
+As a result, references to such objects are generally used.
+
+### Dereferencing a GoObject
 
 `(deref obj)` can be used to dereference a wrapped object, returning another `GoObject[]` with the dereferenced object as of that dereference, or to the original object if it wasn't a pointer to an object.
 
-*NOTE*: For now, `(Go obj "&")` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that, or (more likely) to a copy that is made for this purpose. This might be replaced someday by a proper `(ref ...)` function, which would presumably also work for ordinary Joker objects as it does in Clojure.
+### Obtaining a Reference to a GoObject
+
+Similarly, `(ref obj)` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that; or, more likely, to a copy that is made for this purpose.
+
+The `reflect` package (in Go) is used here; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. `reflect.New()` and `reflect.Indirect().Set()` are otherwise used to create a new, referencable, object that is set to the value of the original.
 
 ### Rules Governing GoObject Creation
 
@@ -357,8 +365,6 @@ user=> (Go (deref Stdin) :Name)
 "/dev/stdin"
 user=>
 ```
-
-*NOTE*: As a special case, a `receiver` of `'&` or `"&"` (with no further arguments) returns a reference (pointer) to the underlying object, wrapped by a `GoObject`. `(ref ...)` should someday replace this, as it's something of a kludge.
 
 ### Converting a GoObject to a Clojure Datatype
 

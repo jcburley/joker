@@ -926,6 +926,9 @@
   <a class="var-type Function" href="#reductions">reductions</a>
 </li>
 <li>
+  <a class="var-type Function" href="#ref">ref</a>
+</li>
+<li>
   <a class="var-type Function" href="#refer">refer</a>
 </li>
 <li>
@@ -4383,6 +4386,22 @@
   <p class="var-docstr">Returns a lazy seq of the intermediate values of the reduction (as<br>
   per reduce) of coll by f, starting with init.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4021">source</a>
+</li>
+<li>
+  <h3 id="ref">ref</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(ref o)</code></div>
+</pre>
+  <p class="var-docstr">Returns a GoObject that has a reference to the object wrapped by the<br>
+  provided GoObject.<br>
+<br>
+  The resulting reference is usually to a copy of the original object,<br>
+  not the object itself, as supported by Go&#39;s &#39;reflect&#39; package.<br>
+<br>
+  Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
+  fully supported.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4531">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
