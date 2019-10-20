@@ -2,7 +2,7 @@
 
 # Undo "side-effects" of running tools/gostd/gostd.
 
-rm -fr docs/go.std.* core/a_*_data.go
+rm -fr docs/index.html docs/go.std.* core/a_*_data.go
 
 (cd tools/gostd && go build .) && ./tools/gostd/gostd --undo --joker .
 
