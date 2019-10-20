@@ -305,17 +305,18 @@ func %s(%s) %s {
 	} else {
 		NumGeneratedFunctions++
 		NumGeneratedStandalones++
-		PackagesInfo[pkgDirUnix].NonEmpty = true
-		im := PackagesInfo[pkgDirUnix].ImportsNative
+		pi := PackagesInfo[pkgDirUnix]
+		pi.NonEmpty = true
 		if clojureReturnType == "" {
-			imports.AddImport(im, ".", "github.com/candid82/joker/core", false, fn.Pos)
-			myGoImport := imports.AddImport(im, "", pkgDirUnix, true, fn.Pos)
+			imports.AddImport(pi.ImportsNative, ".", "github.com/candid82/joker/core", false, fn.Pos)
+			myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
-			promoteImports(fn.Imports, im, fn.Pos)
+			promoteImports(fn.Imports, pi.ImportsNative, fn.Pos)
 		}
 		if clojureReturnType != "" || fn.RefersToSelf {
-			myGoImport := imports.AddImport(PackagesInfo[pkgDirUnix].ImportsAutoGen, "", pkgDirUnix, true, fn.Pos)
+			myGoImport := imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, true, fn.Pos)
 			clojureFn = strings.ReplaceAll(clojureFn, "{{myGoImport}}", myGoImport)
+			promoteImports(fn.Imports, pi.ImportsAutoGen, fn.Pos)
 		}
 	}
 

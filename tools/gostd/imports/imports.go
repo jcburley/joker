@@ -6,6 +6,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
+	"path"
 	"sort"
 	"strconv"
 	. "strings"
@@ -128,7 +129,7 @@ func QuotedImportList(pi *Imports, prefix string) string {
 	imports := ""
 	sortedImports(pi,
 		func(k string, v *Import) {
-			if v.Local == "" && !v.substituted {
+			if (v.Local == "" && !v.substituted) || v.Local == path.Base(k) {
 				imports += prefix + `"` + k + `"`
 			} else {
 				imports += prefix + v.LocalRef + ` "` + k + `"`

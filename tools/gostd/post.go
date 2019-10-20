@@ -181,7 +181,7 @@ const resultName = "_res"
 
 func genGoPostItem(fn *gowalk.FuncInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out string, useful bool) {
 	captureVar = captureName
-	if captureName == "" {
+	if captureName == "" || captureName == "_" {
 		captureVar = genSym(resultName)
 	}
 	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
