@@ -106,14 +106,14 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 				if ut.Constructs {
 					ti.ConvertFromClojure = "*" + ut.ConvertFromClojure
 				} else {
-					ti.ConvertFromClojure = fmt.Sprintf("_%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromClojure)
+					ti.ConvertFromClojure = fmt.Sprintf("%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromClojure)
 				}
 			}
 			if ut.ConvertFromMap != "" {
 				if ut.Constructs {
 					ti.ConvertFromMap = "*" + ut.ConvertFromMap
 				} else {
-					ti.ConvertFromMap = fmt.Sprintf("_%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromMap)
+					ti.ConvertFromMap = fmt.Sprintf("%s.%s(%s)", ti.SourceFile.Package.BaseName, ti.LocalName, ut.ConvertFromMap)
 				}
 			}
 			ti.ConvertFromClojureImports = ut.ConvertFromClojureImports

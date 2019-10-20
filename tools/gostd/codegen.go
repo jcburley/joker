@@ -104,7 +104,7 @@ var customRuntimeImplemented = map[string]struct{}{
 }
 
 func genGoCall(pkgBaseName, goFname, goParams string) string {
-	return "_{{myGoImport}}." + goFname + "(" + goParams + ")\n"
+	return "{{myGoImport}}." + goFname + "(" + goParams + ")\n"
 }
 
 func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFname string) (fc funcCode) {
@@ -201,6 +201,7 @@ func %s(o GoObject, args Object) Object {  // %s
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
+		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", path.Base(pkgDirUnix))
 		abends.TrackAbends(clojureFn)
 		abends.TrackAbends(goFn)
 		if fn.Fd == nil {
@@ -360,7 +361,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) strin
 		return ""
 	}
 	const exTemplate = `case %s:
-		v := _%s(Extract%s(args, index))
+		v := %s(Extract%s(args, index))
 		return &v
 	`
 	return fmt.Sprintf(exTemplate, argType, typeName, declType)
@@ -394,7 +395,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 `
 
 	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType)
-	localType := "_{{myGoImport}}." + ti.LocalName
+	localType := "{{myGoImport}}." + ti.LocalName
 	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
 	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, "", "fmt", true, ti.Where)
@@ -427,14 +428,14 @@ func GenType(t string, ti *GoTypeInfo) {
 	GoCode[pkgDirUnix].Types[t] = ti
 
 	const goExtractTemplate = `
-func ExtractGoObject%s(args []Object, index int) *_%s {
+func ExtractGoObject%s(args []Object, index int) *%s {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
 		switch r := o.O.(type) {
-		case _%s:
+		case %s:
 			return &r
-		case *_%s:
+		case *%s:
 			return r
 		}
 	%s}
@@ -462,7 +463,7 @@ func genCtor(tdi *Type) {
 	}
 
 	const goConstructTemplate = `
-%sfunc _Ctor_%s(_v Object) %s_%s {
+%sfunc _Ctor_%s(_v Object) %s%s {
 	switch _o := _v.(type) {
 	%s
 	}
@@ -474,7 +475,7 @@ func %s(_o Object) Object {
 }
 `
 
-	typeName := path.Base(tdi.GoPackage) + "." + tdi.GoName
+	typeName := "{{myGoImport}}." + tdi.GoName
 	baseTypeName := tdi.GoName
 	ctor := "_Wrapped_Ctor_" + baseTypeName
 	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tdi, typeName, baseTypeName)
@@ -483,11 +484,16 @@ func %s(_o Object) Object {
 
 	ti := TypeDefsToGoTypes[tdi]
 
+	pkgDirUnix := ti.SourceFile.Package.DirUnix
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
+		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
 		abends.TrackAbends(goConstructor)
 	} else {
-		promoteImports(ti.RequiredImports, PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, ti.Where)
+		pi := PackagesInfo[pkgDirUnix]
+		promoteImports(ti.RequiredImports, pi.ImportsNative, tdi.DefPos)
+		myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, true, tdi.DefPos)
+		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tdi] = ctor
 		NumGeneratedCtors++
 	}
@@ -514,7 +520,7 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 				}
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:     n.Name,
-					ReceiverId:   "_{{myGoImport}}." + tdi.GoName,
+					ReceiverId:   "{{myGoImport}}." + tdi.GoName,
 					Name:         fullName,
 					DocName:      "(" + tdi.GoFile.Package.DirUnix + "." + tdi.GoName + ")" + n.Name + "()",
 					Fd:           nil,
@@ -581,7 +587,7 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 	switch t := tdi.TypeSpec.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.DirUnix, t.Name, tdi.TypeSpec.Type)
-		extractClojureObject = "_" + typeName + "(_o" + extractClojureObject + ")"
+		extractClojureObject = typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
 		extractClojureObjects = []string{extractClojureObject}
@@ -589,7 +595,7 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 			return
 		}
 	case *StructType:
-		uniqueTypeName := "_" + typeName
+		uniqueTypeName := typeName
 		mapHelperFName := "_mapTo" + baseTypeName
 		return []string{"case *ArrayMap, *HashMap"},
 			[]string{"Map"},

@@ -199,7 +199,7 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	clType = basePkgName + "/" + baseTypeName
 	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
 	if curPkgName == fullPkgName {
-		code = "_" + basePkgName + "." + baseTypeName
+		code = basePkgName + "." + baseTypeName
 		doc = baseTypeName
 		return
 	}
@@ -239,7 +239,7 @@ func receiverPrefix(src *godb.GoFile, rl []FieldItem) string {
 }
 
 func receiverId(src *godb.GoFile, pkgName string, rl []FieldItem) string {
-	pkg := "_" + pkgName + "."
+	pkg := "{{myGoImport}}."
 	res := ""
 	for i, r := range rl {
 		if i != 0 {

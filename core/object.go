@@ -1290,16 +1290,6 @@ func (o GoObject) WithInfo(info *ObjectInfo) Object {
 	return o
 }
 
-func GoTypeToString(ty reflect.Type) string {
-	switch ty.Kind() {
-	case reflect.Array:
-		return "[]" + GoTypeToString(ty.Elem())
-	case reflect.Ptr:
-		return "*" + GoTypeToString(ty.Elem())
-	}
-	return ty.PkgPath() + "." + ty.Name()
-}
-
 func (o GoObject) GetType() *Type {
 	return TYPE.GoObject
 }
