@@ -8,7 +8,7 @@ import (
 	. "go/ast"
 	"go/token"
 	"go/types"
-	"path/filepath"
+	"path"
 	"sort"
 	"strings"
 )
@@ -27,7 +27,7 @@ type Type struct {
 	Doc            string
 	DefPos         token.Pos
 	GoFile         *GoFile
-	GoPackage      string // E.g. a/b/c
+	GoPackage      string // E.g. a/b/c (always Unix style)
 	GoPattern      string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	GoName         string // Base name of type (without any prefix/pattern applied)
 	underlyingType *Type
@@ -341,10 +341,10 @@ func (tdi *Type) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingType; tdiu != nil {
-		t = "_" + filepath.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+		t = "_" + path.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 		suffix = ""
 	} else {
-		t = "_" + filepath.Base(tdi.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+		t = "_" + path.Base(tdi.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
