@@ -149,7 +149,7 @@ func SwitchGoType(g interface{}) int {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage != "" {
-			pkgPlusSeparator = imports.AddImport(importeds, "", filepath.ToSlash(t.GoPackage), true) + "."
+			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, true) + "."
 		}
 		specificity := ""
 		if t.Specificity != Concrete {
