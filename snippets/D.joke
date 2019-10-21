@@ -1,0 +1,4 @@
+(load-file (joker.filepath/join (joker.filepath/dir *file*) "T.joke"))
+(def nn (ns-publics 'go.std.net))
+(println (= Proc (type (deref (get nn 'MX.)))) "should be true")
+(println (= GoType (type (deref (get nn 'MX)))) "should be true")
