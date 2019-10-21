@@ -248,8 +248,9 @@ func repl(phase Phase) {
 		defer rl.Close()
 		runeReader = NewLineRuneReader(rl)
 		for _, line := range strings.Split(string(dataRead), "\n") {
-			fmt.Println(line)
+			rl.SaveHistory(line)
 		}
+		dataRead = []rune{}
 	}
 
 	reader := NewReader(runeReader, "<repl>")
