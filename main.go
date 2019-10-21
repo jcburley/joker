@@ -34,6 +34,25 @@ import (
 	"github.com/pkg/profile"
 )
 
+var dataRead = []rune{}
+var exitToRepl bool
+
+type replayable struct {
+	reader *Reader
+}
+
+func (r *replayable) ReadRune() (ch rune, size int, err error) {
+	ch = r.reader.Get()
+	if ch == EOF {
+		err = io.EOF
+		size = 0
+	} else {
+		dataRead = append(dataRead, ch)
+		size = 1
+	}
+	return
+}
+
 type (
 	ReplContext struct {
 		first  *Var
@@ -86,6 +105,9 @@ func processFile(filename string, phase Phase) error {
 		f, err := filepath.Abs(filename)
 		PanicOnErr(err)
 		GLOBAL_ENV.MainFile.Value = MakeString(f)
+	}
+	if exitToRepl {
+		reader = NewReader(&replayable{reader}, "<replay>")
 	}
 	return ProcessReader(reader, filename, phase)
 }
@@ -225,6 +247,9 @@ func repl(phase Phase) {
 		}
 		defer rl.Close()
 		runeReader = NewLineRuneReader(rl)
+		for _, line := range strings.Split(string(dataRead), "\n") {
+			fmt.Println(line)
+		}
 	}
 
 	reader := NewReader(runeReader, "<repl>")
@@ -373,7 +398,6 @@ var (
 	cpuProfileRateFlag bool
 	memProfileName     string
 	noReadline         bool
-	exitToRepl         bool
 )
 
 func isNumber(s string) bool {
@@ -702,6 +726,9 @@ func main() {
 			ExitJoker(9)
 		}
 		reader := NewReader(strings.NewReader(eval), "<expr>")
+		if exitToRepl {
+			reader = NewReader(&replayable{reader}, "<replay>")
+		}
 		if err := ProcessReader(reader, "", phase); err != nil {
 			ExitJoker(1)
 		}
