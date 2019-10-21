@@ -7,7 +7,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
-	"path/filepath"
+	"path"
 	"sort"
 	"strings"
 )
@@ -29,7 +29,7 @@ type Type struct {
 	DefPos         token.Pos
 	GoFile         *GoFile
 	GoPrefix       string // Currently either "" or "*" (for reference types)
-	GoPackage      string // E.g. a/b/c
+	GoPackage      string // E.g. a/b/c (always Unix style)
 	GoName         string // Base name of type (LocalName without any prefix)
 	underlyingType *Type
 	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
@@ -258,10 +258,10 @@ func (tdi *Type) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingType; tdiu != nil {
-		t = "_" + filepath.Base(tdiu.GoPackage) + "." + tdiu.LocalName
+		t = "_" + path.Base(tdiu.GoPackage) + "." + tdiu.LocalName
 		suffix = ""
 	} else {
-		t = "_" + filepath.Base(tdi.GoPackage) + "." + tdi.LocalName
+		t = "_" + path.Base(tdi.GoPackage) + "." + tdi.LocalName
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }

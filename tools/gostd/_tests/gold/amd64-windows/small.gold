@@ -2849,9 +2849,9 @@ GO VECSET FOR TYPE *go.std.net/UnknownNetworkError from -:
 GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests\small\src\net\iprawsock.go:8:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\small\src\net\net.go:83:2
-	EnsureLoaded("go.std.golang_org/x/net/dns/dnsmessage")  // E.g. from: _tests\small\src\net\dnsclient.go:11:2
+	EnsureLoaded("go.std.golang_org.x.net.dns.dnsmessage")  // E.g. from: _tests\small\src\net\dnsclient.go:11:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\small\src\net\net.go:85:2
-	EnsureLoaded("go.std.math/rand")  // E.g. from: _tests\small\src\net\dnsclient.go:8:2
+	EnsureLoaded("go.std.math.rand")  // E.g. from: _tests\small\src\net\dnsclient.go:8:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\small\src\net\net.go:86:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\small\src\net\dnsclient.go:9:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\small\src\net\lookup.go:11:2
@@ -2897,20 +2897,20 @@ func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (r
 	return
 }
 
-func _mapToError(o Map) *_net\url.Error {
-	return &_net\url.Error{
+func _mapToError(o Map) *_url.Error {
+	return &_url.Error{
 		Op: FieldAsString(o, "Op"),
 		URL: FieldAsString(o, "URL"),
 		Err: FieldAsError(o, "Err"),
 	}
 }
 
-func _Ctor_Error(_v Object) *_net\url.Error {
+func _Ctor_Error(_v Object) *_url.Error {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToError(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Error] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map"))
 }
 
 func _Wrapped_Ctor_Error(_o Object) Object {
@@ -2945,12 +2945,12 @@ func ExtractGo_go_std_net_url__EscapeError(rcvr, arg string, args *ArraySeq, n i
 	return
 }
 
-func _Ctor_EscapeError(_v Object) _net\url.EscapeError {
+func _Ctor_EscapeError(_v Object) _url.EscapeError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\url.EscapeError(_o.S)
+		return _url.EscapeError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.EscapeError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
 func _Wrapped_Ctor_EscapeError(_o Object) Object {
@@ -2985,12 +2985,12 @@ func ExtractGo_go_std_net_url__InvalidHostError(rcvr, arg string, args *ArraySeq
 	return
 }
 
-func _Ctor_InvalidHostError(_v Object) _net\url.InvalidHostError {
+func _Ctor_InvalidHostError(_v Object) _url.InvalidHostError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\url.InvalidHostError(_o.S)
+		return _url.InvalidHostError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.InvalidHostError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
 }
 
 func _Wrapped_Ctor_InvalidHostError(_o Object) Object {
@@ -3022,8 +3022,8 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 	return
 }
 
-// func _mapToURL(o Map) *_net\url.URL {
-// 	return &_net\url.URL{
+// func _mapToURL(o Map) *_url.URL {
+// 	return &_url.URL{
 // 		Scheme: FieldAsString(o, "Scheme"),
 // 		Opaque: FieldAsString(o, "Opaque"),
 // 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
@@ -3036,12 +3036,12 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 	}
 // }
 
-// func _Ctor_URL(_v Object) *_net\url.URL {
+// func _Ctor_URL(_v Object) *_url.URL {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToURL(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.URL] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map"))
 // }
 
 // func _Wrapped_Ctor_URL(_o Object) Object {
@@ -3073,16 +3073,16 @@ func ExtractGo_go_std_net_url__Userinfo(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-func _mapToUserinfo(o Map) *_net\url.Userinfo {
-	return &_net\url.Userinfo{}
+func _mapToUserinfo(o Map) *_url.Userinfo {
+	return &_url.Userinfo{}
 }
 
-func _Ctor_Userinfo(_v Object) *_net\url.Userinfo {
+func _Ctor_Userinfo(_v Object) *_url.Userinfo {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToUserinfo(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Userinfo] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map"))
 }
 
 func _Wrapped_Ctor_Userinfo(_o Object) Object {
@@ -3114,12 +3114,12 @@ func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (
 	return
 }
 
-// func _Ctor_Values(_v Object) _net\url.Values {
+// func _Ctor_Values(_v Object) _url.Values {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
+// 		return _url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Values] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_Values(_o Object) Object {
@@ -3566,24 +3566,24 @@ package core
 
 import (
 	"net"
-	"net\url"
+	"net/url"
 )
 
 var GoTypesVec [51]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case *net\url.Error:
+	case *url.Error:
 		return 0
-	case *net\url.EscapeError:
+	case *url.EscapeError:
 		return 1
-	case *net\url.InvalidHostError:
+	case *url.InvalidHostError:
 		return 2
-	case *net\url.URL:
+	case *url.URL:
 		return 3
-	case *net\url.Userinfo:
+	case *url.Userinfo:
 		return 4
-	case *net\url.Values:
+	case *url.Values:
 		return 5
 	case *net.AddrError:
 		return 6
@@ -3619,17 +3619,17 @@ func SwitchGoType(g interface{}) int {
 		return 21
 	case *net.UnknownNetworkError:
 		return 22
-	case net\url.Error:
+	case url.Error:
 		return 23
-	case net\url.EscapeError:
+	case url.EscapeError:
 		return 24
-	case net\url.InvalidHostError:
+	case url.InvalidHostError:
 		return 25
-	case net\url.URL:
+	case url.URL:
 		return 26
-	case net\url.Userinfo:
+	case url.Userinfo:
 		return 27
-	case net\url.Values:
+	case url.Values:
 		return 28
 	case net.AddrError:
 		return 29

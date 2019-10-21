@@ -7612,9 +7612,9 @@ GO VECSET FOR TYPE *go.std.net/UnknownNetworkError from -:
 GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests\big\src\net\dial.go:8:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\interface.go:8:2
-	EnsureLoaded("go.std.golang_org/x/net/dns/dnsmessage")  // E.g. from: _tests\big\src\net\dnsclient.go:11:2
+	EnsureLoaded("go.std.golang_org.x.net.dns.dnsmessage")  // E.g. from: _tests\big\src\net\dnsclient.go:11:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\net.go:85:2
-	EnsureLoaded("go.std.math/rand")  // E.g. from: _tests\big\src\net\dnsclient.go:8:2
+	EnsureLoaded("go.std.math.rand")  // E.g. from: _tests\big\src\net\dnsclient.go:8:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\error_posix.go:10:2
 	EnsureLoaded("go.std.runtime")  // E.g. from: _tests\big\src\net\fd_windows.go:11:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\big\src\net\dnsclient.go:9:2
@@ -7648,8 +7648,8 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _mapToClient(o Map) *_net\http.Client {
-// 	return &_net\http.Client{
+// func _mapToClient(o Map) *_http.Client {
+// 	return &_http.Client{
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
 // 		CheckRedirect: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
@@ -7657,12 +7657,12 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 // 	}
 // }
 
-// func _Ctor_Client(_v Object) *_net\http.Client {
+// func _Ctor_Client(_v Object) *_http.Client {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToClient(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Client] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Client] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Client(_o Object) Object {
@@ -7722,12 +7722,12 @@ func ExtractGo_go_std_net_http__ConnState(rcvr, arg string, args *ArraySeq, n in
 	return
 }
 
-func _Ctor_ConnState(_v Object) _net\http.ConnState {
+func _Ctor_ConnState(_v Object) _http.ConnState {
 	switch _o := _v.(type) {
 	case Number:
-		return _net\http.ConnState(_o.Int().I)
+		return _http.ConnState(_o.Int().I)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.ConnState] or: Number"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ConnState] or: Number"))
 }
 
 func _Wrapped_Ctor_ConnState(_o Object) Object {
@@ -7759,8 +7759,8 @@ func ExtractGo_go_std_net_http__Cookie(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _mapToCookie(o Map) *_net\http.Cookie {
-// 	return &_net\http.Cookie{
+// func _mapToCookie(o Map) *_http.Cookie {
+// 	return &_http.Cookie{
 // 		Name: FieldAsString(o, "Name"),
 // 		Value: FieldAsString(o, "Value"),
 // 		Path: FieldAsString(o, "Path"),
@@ -7776,12 +7776,12 @@ func ExtractGo_go_std_net_http__Cookie(rcvr, arg string, args *ArraySeq, n int) 
 // 	}
 // }
 
-// func _Ctor_Cookie(_v Object) *_net\http.Cookie {
+// func _Ctor_Cookie(_v Object) *_http.Cookie {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToCookie(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Cookie] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Cookie] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Cookie(_o Object) Object {
@@ -7841,12 +7841,12 @@ func ExtractGo_go_std_net_http__Dir(rcvr, arg string, args *ArraySeq, n int) (re
 	return
 }
 
-func _Ctor_Dir(_v Object) _net\http.Dir {
+func _Ctor_Dir(_v Object) _http.Dir {
 	switch _o := _v.(type) {
 	case String:
-		return _net\http.Dir(_o.S)
+		return _http.Dir(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Dir] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Dir] or: String"))
 }
 
 func _Wrapped_Ctor_Dir(_o Object) Object {
@@ -7978,12 +7978,12 @@ func ExtractGo_go_std_net_http__HandlerFunc(rcvr, arg string, args *ArraySeq, n 
 	return
 }
 
-// func _Ctor_HandlerFunc(_v Object) _net\http.HandlerFunc {
+// func _Ctor_HandlerFunc(_v Object) _http.HandlerFunc {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\http.HandlerFunc(_o.ABEND674(codegen.go: unknown underlying type *ast.FuncType for HandlerFunc))
+// 		return _http.HandlerFunc(_o.ABEND674(codegen.go: unknown underlying type *ast.FuncType for HandlerFunc))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.HandlerFunc] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.HandlerFunc] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_HandlerFunc(_o Object) Object {
@@ -8015,12 +8015,12 @@ func ExtractGo_go_std_net_http__Header(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _Ctor_Header(_v Object) _net\http.Header {
+// func _Ctor_Header(_v Object) _http.Header {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\http.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
+// 		return _http.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Header] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Header] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_Header(_o Object) Object {
@@ -8077,18 +8077,18 @@ func ExtractGo_go_std_net_http__ProtocolError(rcvr, arg string, args *ArraySeq, 
 	return
 }
 
-func _mapToProtocolError(o Map) *_net\http.ProtocolError {
-	return &_net\http.ProtocolError{
+func _mapToProtocolError(o Map) *_http.ProtocolError {
+	return &_http.ProtocolError{
 		ErrorString: FieldAsString(o, "ErrorString"),
 	}
 }
 
-func _Ctor_ProtocolError(_v Object) *_net\http.ProtocolError {
+func _Ctor_ProtocolError(_v Object) *_http.ProtocolError {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToProtocolError(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.ProtocolError] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ProtocolError] or: Map"))
 }
 
 func _Wrapped_Ctor_ProtocolError(_o Object) Object {
@@ -8120,19 +8120,19 @@ func ExtractGo_go_std_net_http__PushOptions(rcvr, arg string, args *ArraySeq, n 
 	return
 }
 
-// func _mapToPushOptions(o Map) *_net\http.PushOptions {
-// 	return &_net\http.PushOptions{
+// func _mapToPushOptions(o Map) *_http.PushOptions {
+// 	return &_http.PushOptions{
 // 		Method: FieldAsString(o, "Method"),
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
 // 	}
 // }
 
-// func _Ctor_PushOptions(_v Object) *_net\http.PushOptions {
+// func _Ctor_PushOptions(_v Object) *_http.PushOptions {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToPushOptions(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.PushOptions] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.PushOptions] or: Map"))
 // }
 
 // func _Wrapped_Ctor_PushOptions(_o Object) Object {
@@ -8189,8 +8189,8 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-// func _mapToRequest(o Map) *_net\http.Request {
-// 	return &_net\http.Request{
+// func _mapToRequest(o Map) *_http.Request {
+// 	return &_http.Request{
 // 		Method: FieldAsString(o, "Method"),
 // 		URL: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Proto: FieldAsString(o, "Proto"),
@@ -8215,12 +8215,12 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 	}
 // }
 
-// func _Ctor_Request(_v Object) *_net\http.Request {
+// func _Ctor_Request(_v Object) *_http.Request {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToRequest(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Request] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Request] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Request(_o Object) Object {
@@ -8252,8 +8252,8 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 	return
 }
 
-// func _mapToResponse(o Map) *_net\http.Response {
-// 	return &_net\http.Response{
+// func _mapToResponse(o Map) *_http.Response {
+// 	return &_http.Response{
 // 		Status: FieldAsString(o, "Status"),
 // 		StatusCode: FieldAsInt(o, "StatusCode"),
 // 		Proto: FieldAsString(o, "Proto"),
@@ -8271,12 +8271,12 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 // 	}
 // }
 
-// func _Ctor_Response(_v Object) *_net\http.Response {
+// func _Ctor_Response(_v Object) *_http.Response {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToResponse(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Response] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Response] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Response(_o Object) Object {
@@ -8361,12 +8361,12 @@ func ExtractGo_go_std_net_http__SameSite(rcvr, arg string, args *ArraySeq, n int
 	return
 }
 
-func _Ctor_SameSite(_v Object) _net\http.SameSite {
+func _Ctor_SameSite(_v Object) _http.SameSite {
 	switch _o := _v.(type) {
 	case Number:
-		return _net\http.SameSite(_o.Int().I)
+		return _http.SameSite(_o.Int().I)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.SameSite] or: Number"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.SameSite] or: Number"))
 }
 
 func _Wrapped_Ctor_SameSite(_o Object) Object {
@@ -8398,16 +8398,16 @@ func ExtractGo_go_std_net_http__ServeMux(rcvr, arg string, args *ArraySeq, n int
 	return
 }
 
-func _mapToServeMux(o Map) *_net\http.ServeMux {
-	return &_net\http.ServeMux{}
+func _mapToServeMux(o Map) *_http.ServeMux {
+	return &_http.ServeMux{}
 }
 
-func _Ctor_ServeMux(_v Object) *_net\http.ServeMux {
+func _Ctor_ServeMux(_v Object) *_http.ServeMux {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToServeMux(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.ServeMux] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.ServeMux] or: Map"))
 }
 
 func _Wrapped_Ctor_ServeMux(_o Object) Object {
@@ -8439,8 +8439,8 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _mapToServer(o Map) *_net\http.Server {
-// 	return &_net\http.Server{
+// func _mapToServer(o Map) *_http.Server {
+// 	return &_http.Server{
 // 		Addr: FieldAsString(o, "Addr"),
 // 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
 // 		TLSConfig: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -8455,12 +8455,12 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // 	}
 // }
 
-// func _Ctor_Server(_v Object) *_net\http.Server {
+// func _Ctor_Server(_v Object) *_http.Server {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToServer(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Server] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Server] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Server(_o Object) Object {
@@ -8492,8 +8492,8 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 	return
 }
 
-// func _mapToTransport(o Map) *_net\http.Transport {
-// 	return &_net\http.Transport{
+// func _mapToTransport(o Map) *_http.Transport {
+// 	return &_http.Transport{
 // 		Proxy: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		DialContext: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
@@ -8514,12 +8514,12 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 	}
 // }
 
-// func _Ctor_Transport(_v Object) *_net\http.Transport {
+// func _Ctor_Transport(_v Object) *_http.Transport {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToTransport(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http.Transport] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Transport] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Transport(_o Object) Object {
@@ -9694,42 +9694,42 @@ GO VECSET FOR TYPE *go.std.net.http/Transport from -:
 GO ENSURE-LOADED FOR http:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:20:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:21:2
-	EnsureLoaded("go.std.compress/gzip")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:22:2
-	EnsureLoaded("go.std.container/list")  // E.g. from: _tests\big\src\net\http\transport.go:15:2
+	EnsureLoaded("go.std.compress.gzip")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:22:2
+	EnsureLoaded("go.std.container.list")  // E.g. from: _tests\big\src\net\http\transport.go:15:2
 	EnsureLoaded("go.std.context")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:23:2
-	EnsureLoaded("go.std.crypto/rand")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:24:2
-	EnsureLoaded("go.std.crypto/tls")  // E.g. from: _tests\big\src\net\http\client.go:13:2
-	EnsureLoaded("go.std.encoding/base64")  // E.g. from: _tests\big\src\net\http\client.go:14:2
-	EnsureLoaded("go.std.encoding/binary")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:26:2
+	EnsureLoaded("go.std.crypto.rand")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:24:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests\big\src\net\http\client.go:13:2
+	EnsureLoaded("go.std.encoding.base64")  // E.g. from: _tests\big\src\net\http\client.go:14:2
+	EnsureLoaded("go.std.encoding.binary")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:26:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\http\client.go:15:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\client.go:16:2
-	EnsureLoaded("go.std.golang_org/x/net/http/httpguts")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:47:2
-	EnsureLoaded("go.std.golang_org/x/net/http/httpproxy")  // E.g. from: _tests\big\src\net\http\transport.go:34:2
-	EnsureLoaded("go.std.golang_org/x/net/http2/hpack")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:48:2
-	EnsureLoaded("go.std.golang_org/x/net/idna")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:49:2
+	EnsureLoaded("go.std.golang_org.x.net.http.httpguts")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:47:2
+	EnsureLoaded("go.std.golang_org.x.net.http.httpproxy")  // E.g. from: _tests\big\src\net\http\transport.go:34:2
+	EnsureLoaded("go.std.golang_org.x.net.http2.hpack")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:48:2
+	EnsureLoaded("go.std.golang_org.x.net.idna")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:49:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\client.go:17:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\http\client.go:18:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\http\client.go:18:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\http\client.go:19:2
 	EnsureLoaded("go.std.math")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:32:2
-	EnsureLoaded("go.std.math/rand")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:33:11
+	EnsureLoaded("go.std.math.rand")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:33:11
 	EnsureLoaded("go.std.mime")  // E.g. from: _tests\big\src\net\http\fs.go:13:2
-	EnsureLoaded("go.std.mime/multipart")  // E.g. from: _tests\big\src\net\http\fs.go:14:2
+	EnsureLoaded("go.std.mime.multipart")  // E.g. from: _tests\big\src\net\http\fs.go:14:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\cookie.go:9:2
-	EnsureLoaded("go.std.net/http/httptrace")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:35:2
-	EnsureLoaded("go.std.net/textproto")  // E.g. from: _tests\big\src\net\http\fs.go:15:2
-	EnsureLoaded("go.std.net/url")  // E.g. from: _tests\big\src\net\http\client.go:20:2
+	EnsureLoaded("go.std.net.http.httptrace")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:35:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests\big\src\net\http\fs.go:15:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests\big\src\net\http\client.go:20:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\http\fs.go:17:2
 	EnsureLoaded("go.std.path")  // E.g. from: _tests\big\src\net\http\fs.go:18:2
-	EnsureLoaded("go.std.path/filepath")  // E.g. from: _tests\big\src\net\http\fs.go:19:2
+	EnsureLoaded("go.std.path.filepath")  // E.g. from: _tests\big\src\net\http\fs.go:19:2
 	EnsureLoaded("go.std.reflect")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:39:2
 	EnsureLoaded("go.std.runtime")  // E.g. from: _tests\big\src\net\http\h2_bundle.go:40:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\big\src\net\http\client.go:21:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests\big\src\net\http\cookie.go:10:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\client.go:22:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\http\client.go:23:2
-	EnsureLoaded("go.std.sync/atomic")  // E.g. from: _tests\big\src\net\http\server.go:28:2
+	EnsureLoaded("go.std.sync.atomic")  // E.g. from: _tests\big\src\net\http\server.go:28:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests\big\src\net\http\client.go:24:2
-	EnsureLoaded("go.std.unicode/utf8")  // E.g. from: _tests\big\src\net\http\http.go:12:2
+	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests\big\src\net\http\http.go:12:2
 
 GO TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 func ExtractGoObjectHandler(args []Object, index int) *_cgi.Handler {
@@ -9756,8 +9756,8 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 	return
 }
 
-// func _mapToHandler(o Map) *_net\http\cgi.Handler {
-// 	return &_net\http\cgi.Handler{
+// func _mapToHandler(o Map) *_cgi.Handler {
+// 	return &_cgi.Handler{
 // 		Path: FieldAsString(o, "Path"),
 // 		Root: FieldAsString(o, "Root"),
 // 		Dir: FieldAsString(o, "Dir"),
@@ -9770,12 +9770,12 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 	}
 // }
 
-// func _Ctor_Handler(_v Object) *_net\http\cgi.Handler {
+// func _Ctor_Handler(_v Object) *_cgi.Handler {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToHandler(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\cgi.Handler] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[cgi.Handler] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Handler(_o Object) Object {
@@ -9838,18 +9838,18 @@ GO VECSET FOR TYPE *go.std.net.http.cgi/Handler from -:
 
 GO ENSURE-LOADED FOR cgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\http\cgi\child.go:11:2
-	EnsureLoaded("go.std.crypto/tls")  // E.g. from: _tests\big\src\net\http\cgi\child.go:12:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests\big\src\net\http\cgi\child.go:12:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\http\cgi\child.go:13:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\cgi\child.go:14:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\cgi\child.go:15:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\http\cgi\child.go:16:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\http\cgi\child.go:16:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\http\cgi\host.go:21:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\cgi\child.go:17:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\cgi\child.go:18:2
-	EnsureLoaded("go.std.net/url")  // E.g. from: _tests\big\src\net\http\cgi\child.go:19:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\cgi\child.go:18:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests\big\src\net\http\cgi\child.go:19:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\http\cgi\child.go:20:2
-	EnsureLoaded("go.std.os/exec")  // E.g. from: _tests\big\src\net\http\cgi\host.go:25:2
-	EnsureLoaded("go.std.path/filepath")  // E.g. from: _tests\big\src\net\http\cgi\host.go:26:2
+	EnsureLoaded("go.std.os.exec")  // E.g. from: _tests\big\src\net\http\cgi\host.go:25:2
+	EnsureLoaded("go.std.path.filepath")  // E.g. from: _tests\big\src\net\http\cgi\host.go:26:2
 	EnsureLoaded("go.std.regexp")  // E.g. from: _tests\big\src\net\http\cgi\host.go:27:2
 	EnsureLoaded("go.std.runtime")  // E.g. from: _tests\big\src\net\http\cgi\host.go:28:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests\big\src\net\http\cgi\child.go:21:2
@@ -9880,16 +9880,16 @@ func ExtractGo_go_std_net_http_cookiejar__Jar(rcvr, arg string, args *ArraySeq, 
 	return
 }
 
-func _mapToJar(o Map) *_net\http\cookiejar.Jar {
-	return &_net\http\cookiejar.Jar{}
+func _mapToJar(o Map) *_cookiejar.Jar {
+	return &_cookiejar.Jar{}
 }
 
-func _Ctor_Jar(_v Object) *_net\http\cookiejar.Jar {
+func _Ctor_Jar(_v Object) *_cookiejar.Jar {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToJar(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\cookiejar.Jar] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Jar] or: Map"))
 }
 
 func _Wrapped_Ctor_Jar(_o Object) Object {
@@ -9921,18 +9921,18 @@ func ExtractGo_go_std_net_http_cookiejar__Options(rcvr, arg string, args *ArrayS
 	return
 }
 
-// func _mapToOptions(o Map) *_net\http\cookiejar.Options {
-// 	return &_net\http\cookiejar.Options{
+// func _mapToOptions(o Map) *_cookiejar.Options {
+// 	return &_cookiejar.Options{
 // 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
 // 	}
 // }
 
-// func _Ctor_Options(_v Object) *_net\http\cookiejar.Options {
+// func _Ctor_Options(_v Object) *_cookiejar.Options {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToOptions(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\cookiejar.Options] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[cookiejar.Options] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Options(_o Object) Object {
@@ -10068,13 +10068,13 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:9:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:10:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:11:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:12:2
-	EnsureLoaded("go.std.net/url")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:13:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:12:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:13:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:14:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:15:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:16:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests\big\src\net\http\cookiejar\jar.go:17:2
-	EnsureLoaded("go.std.unicode/utf8")  // E.g. from: _tests\big\src\net\http\cookiejar\punycode.go:12:2
+	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests\big\src\net\http\cookiejar\punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 // func __processEnv(__r *ABEND987(genutils.go: imports not yet supported: http.Request)) Object {
@@ -10091,14 +10091,14 @@ GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\http\fcgi\fcgi.go:17:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests\big\src\net\http\fcgi\fcgi.go:18:2
 	EnsureLoaded("go.std.context")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:10:2
-	EnsureLoaded("go.std.encoding/binary")  // E.g. from: _tests\big\src\net\http\fcgi\fcgi.go:19:2
+	EnsureLoaded("go.std.encoding.binary")  // E.g. from: _tests\big\src\net\http\fcgi\fcgi.go:19:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:11:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:12:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:13:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:14:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:14:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:15:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:16:2
-	EnsureLoaded("go.std.net/http/cgi")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:17:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:16:2
+	EnsureLoaded("go.std.net.http.cgi")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:17:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:18:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:19:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\http\fcgi\child.go:20:2
@@ -10129,8 +10129,8 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 	return
 }
 
-// func _mapToResponseRecorder(o Map) *_net\http\httptest.ResponseRecorder {
-// 	return &_net\http\httptest.ResponseRecorder{
+// func _mapToResponseRecorder(o Map) *_httptest.ResponseRecorder {
+// 	return &_httptest.ResponseRecorder{
 // 		Code: FieldAsInt(o, "Code"),
 // 		HeaderMap: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Body: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -10138,12 +10138,12 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 // 	}
 // }
 
-// func _Ctor_ResponseRecorder(_v Object) *_net\http\httptest.ResponseRecorder {
+// func _Ctor_ResponseRecorder(_v Object) *_httptest.ResponseRecorder {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToResponseRecorder(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptest.ResponseRecorder] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.ResponseRecorder] or: Map"))
 // }
 
 // func _Wrapped_Ctor_ResponseRecorder(_o Object) Object {
@@ -10175,8 +10175,8 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 	return
 }
 
-// func _mapToServer(o Map) *_net\http\httptest.Server {
-// 	return &_net\http\httptest.Server{
+// func _mapToServer(o Map) *_httptest.Server {
+// 	return &_httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
 // 		Listener: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		TLS: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -10184,12 +10184,12 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // 	}
 // }
 
-// func _Ctor_Server(_v Object) *_net\http\httptest.Server {
+// func _Ctor_Server(_v Object) *_httptest.Server {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToServer(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptest.Server] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptest.Server] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Server(_o Object) Object {
@@ -10355,16 +10355,16 @@ GO VECSET FOR TYPE *go.std.net.http.httptest/Server from -:
 GO ENSURE-LOADED FOR httptest:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:9:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:10:2
-	EnsureLoaded("go.std.crypto/tls")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:11:2
-	EnsureLoaded("go.std.crypto/x509")  // E.g. from: _tests\big\src\net\http\httptest\server.go:11:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:11:2
+	EnsureLoaded("go.std.crypto.x509")  // E.g. from: _tests\big\src\net\http\httptest\server.go:11:2
 	EnsureLoaded("go.std.flag")  // E.g. from: _tests\big\src\net\http\httptest\server.go:12:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\httptest\recorder.go:9:2
-	EnsureLoaded("go.std.golang_org/x/net/http/httpguts")  // E.g. from: _tests\big\src\net\http\httptest\recorder.go:15:2
+	EnsureLoaded("go.std.golang_org.x.net.http.httpguts")  // E.g. from: _tests\big\src\net\http\httptest\recorder.go:15:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:12:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:13:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:13:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\http\httptest\server.go:14:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\httptest\server.go:15:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:14:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:14:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\http\httptest\server.go:18:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests\big\src\net\http\httptest\recorder.go:12:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\httptest\httptest.go:15:2
@@ -10396,8 +10396,8 @@ func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *Ar
 	return
 }
 
-// func _mapToClientTrace(o Map) *_net\http\httptrace.ClientTrace {
-// 	return &_net\http\httptrace.ClientTrace{
+// func _mapToClientTrace(o Map) *_httptrace.ClientTrace {
+// 	return &_httptrace.ClientTrace{
 // 		GetConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		GotConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		PutIdleConn: ABEND047(gotypes.go: unsupported type *ast.FuncType),
@@ -10417,12 +10417,12 @@ func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *Ar
 // 	}
 // }
 
-// func _Ctor_ClientTrace(_v Object) *_net\http\httptrace.ClientTrace {
+// func _Ctor_ClientTrace(_v Object) *_httptrace.ClientTrace {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToClientTrace(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptrace.ClientTrace] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.ClientTrace] or: Map"))
 // }
 
 // func _Wrapped_Ctor_ClientTrace(_o Object) Object {
@@ -10454,20 +10454,20 @@ func ExtractGo_go_std_net_http_httptrace__DNSDoneInfo(rcvr, arg string, args *Ar
 	return
 }
 
-// func _mapToDNSDoneInfo(o Map) *_net\http\httptrace.DNSDoneInfo {
-// 	return &_net\http\httptrace.DNSDoneInfo{
+// func _mapToDNSDoneInfo(o Map) *_httptrace.DNSDoneInfo {
+// 	return &_httptrace.DNSDoneInfo{
 // 		Addrs: []ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Err: FieldAsError(o, "Err"),
 // 		Coalesced: FieldAsBoolean(o, "Coalesced"),
 // 	}
 // }
 
-// func _Ctor_DNSDoneInfo(_v Object) *_net\http\httptrace.DNSDoneInfo {
+// func _Ctor_DNSDoneInfo(_v Object) *_httptrace.DNSDoneInfo {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToDNSDoneInfo(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptrace.DNSDoneInfo] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.DNSDoneInfo] or: Map"))
 // }
 
 // func _Wrapped_Ctor_DNSDoneInfo(_o Object) Object {
@@ -10499,18 +10499,18 @@ func ExtractGo_go_std_net_http_httptrace__DNSStartInfo(rcvr, arg string, args *A
 	return
 }
 
-func _mapToDNSStartInfo(o Map) *_net\http\httptrace.DNSStartInfo {
-	return &_net\http\httptrace.DNSStartInfo{
+func _mapToDNSStartInfo(o Map) *_httptrace.DNSStartInfo {
+	return &_httptrace.DNSStartInfo{
 		Host: FieldAsString(o, "Host"),
 	}
 }
 
-func _Ctor_DNSStartInfo(_v Object) *_net\http\httptrace.DNSStartInfo {
+func _Ctor_DNSStartInfo(_v Object) *_httptrace.DNSStartInfo {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToDNSStartInfo(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptrace.DNSStartInfo] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.DNSStartInfo] or: Map"))
 }
 
 func _Wrapped_Ctor_DNSStartInfo(_o Object) Object {
@@ -10542,8 +10542,8 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 	return
 }
 
-// func _mapToGotConnInfo(o Map) *_net\http\httptrace.GotConnInfo {
-// 	return &_net\http\httptrace.GotConnInfo{
+// func _mapToGotConnInfo(o Map) *_httptrace.GotConnInfo {
+// 	return &_httptrace.GotConnInfo{
 // 		Conn: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		Reused: FieldAsBoolean(o, "Reused"),
 // 		WasIdle: FieldAsBoolean(o, "WasIdle"),
@@ -10551,12 +10551,12 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 // 	}
 // }
 
-// func _Ctor_GotConnInfo(_v Object) *_net\http\httptrace.GotConnInfo {
+// func _Ctor_GotConnInfo(_v Object) *_httptrace.GotConnInfo {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToGotConnInfo(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptrace.GotConnInfo] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.GotConnInfo] or: Map"))
 // }
 
 // func _Wrapped_Ctor_GotConnInfo(_o Object) Object {
@@ -10588,18 +10588,18 @@ func ExtractGo_go_std_net_http_httptrace__WroteRequestInfo(rcvr, arg string, arg
 	return
 }
 
-func _mapToWroteRequestInfo(o Map) *_net\http\httptrace.WroteRequestInfo {
-	return &_net\http\httptrace.WroteRequestInfo{
+func _mapToWroteRequestInfo(o Map) *_httptrace.WroteRequestInfo {
+	return &_httptrace.WroteRequestInfo{
 		Err: FieldAsError(o, "Err"),
 	}
 }
 
-func _Ctor_WroteRequestInfo(_v Object) *_net\http\httptrace.WroteRequestInfo {
+func _Ctor_WroteRequestInfo(_v Object) *_httptrace.WroteRequestInfo {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToWroteRequestInfo(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httptrace.WroteRequestInfo] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httptrace.WroteRequestInfo] or: Map"))
 }
 
 func _Wrapped_Ctor_WroteRequestInfo(_o Object) Object {
@@ -10751,9 +10751,9 @@ GO VECSET FOR TYPE *go.std.net.http.httptrace/WroteRequestInfo from -:
 
 GO ENSURE-LOADED FOR httptrace:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:10:2
-	EnsureLoaded("go.std.crypto/tls")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:11:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:11:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:13:2
-	EnsureLoaded("go.std.net/textproto")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:14:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:14:2
 	EnsureLoaded("go.std.reflect")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:15:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests\big\src\net\http\httptrace\trace.go:16:2
 
@@ -10807,16 +10807,16 @@ func ExtractGo_go_std_net_http_httputil__ClientConn(rcvr, arg string, args *Arra
 	return
 }
 
-func _mapToClientConn(o Map) *_net\http\httputil.ClientConn {
-	return &_net\http\httputil.ClientConn{}
+func _mapToClientConn(o Map) *_httputil.ClientConn {
+	return &_httputil.ClientConn{}
 }
 
-func _Ctor_ClientConn(_v Object) *_net\http\httputil.ClientConn {
+func _Ctor_ClientConn(_v Object) *_httputil.ClientConn {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToClientConn(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httputil.ClientConn] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httputil.ClientConn] or: Map"))
 }
 
 func _Wrapped_Ctor_ClientConn(_o Object) Object {
@@ -10848,8 +10848,8 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 	return
 }
 
-// func _mapToReverseProxy(o Map) *_net\http\httputil.ReverseProxy {
-// 	return &_net\http\httputil.ReverseProxy{
+// func _mapToReverseProxy(o Map) *_httputil.ReverseProxy {
+// 	return &_httputil.ReverseProxy{
 // 		Director: ABEND047(gotypes.go: unsupported type *ast.FuncType),
 // 		Transport: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 		FlushInterval: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
@@ -10860,12 +10860,12 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 // 	}
 // }
 
-// func _Ctor_ReverseProxy(_v Object) *_net\http\httputil.ReverseProxy {
+// func _Ctor_ReverseProxy(_v Object) *_httputil.ReverseProxy {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToReverseProxy(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httputil.ReverseProxy] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[httputil.ReverseProxy] or: Map"))
 // }
 
 // func _Wrapped_Ctor_ReverseProxy(_o Object) Object {
@@ -10897,16 +10897,16 @@ func ExtractGo_go_std_net_http_httputil__ServerConn(rcvr, arg string, args *Arra
 	return
 }
 
-func _mapToServerConn(o Map) *_net\http\httputil.ServerConn {
-	return &_net\http\httputil.ServerConn{}
+func _mapToServerConn(o Map) *_httputil.ServerConn {
+	return &_httputil.ServerConn{}
 }
 
-func _Ctor_ServerConn(_v Object) *_net\http\httputil.ServerConn {
+func _Ctor_ServerConn(_v Object) *_httputil.ServerConn {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToServerConn(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\http\httputil.ServerConn] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[httputil.ServerConn] or: Map"))
 }
 
 func _Wrapped_Ctor_ServerConn(_o Object) Object {
@@ -11173,12 +11173,12 @@ GO ENSURE-LOADED FOR httputil:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:10:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:11:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:12:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:13:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:13:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\http\httputil\reverseproxy.go:12:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:14:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:15:2
-	EnsureLoaded("go.std.net/textproto")  // E.g. from: _tests\big\src\net\http\httputil\persist.go:13:2
-	EnsureLoaded("go.std.net/url")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:16:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:15:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests\big\src\net\http\httputil\persist.go:13:2
+	EnsureLoaded("go.std.net.url")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:16:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:17:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\http\httputil\persist.go:14:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests\big\src\net\http\httputil\dump.go:18:2
@@ -11223,14 +11223,14 @@ GO ENSURE-LOADED FOR pprof:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:55:2
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:56:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:57:2
-	EnsureLoaded("go.std.html/template")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:58:2
+	EnsureLoaded("go.std.html.template")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:58:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:59:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:60:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:61:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:61:2
 	EnsureLoaded("go.std.os")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:62:2
 	EnsureLoaded("go.std.runtime")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:63:2
-	EnsureLoaded("go.std.runtime/pprof")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:64:2
-	EnsureLoaded("go.std.runtime/trace")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:65:2
+	EnsureLoaded("go.std.runtime.pprof")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:64:2
+	EnsureLoaded("go.std.runtime.trace")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:65:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:66:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:67:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\http\pprof\pprof.go:68:2
@@ -11261,19 +11261,19 @@ func ExtractGo_go_std_net_mail__Address(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-func _mapToAddress(o Map) *_net\mail.Address {
-	return &_net\mail.Address{
+func _mapToAddress(o Map) *_mail.Address {
+	return &_mail.Address{
 		Name: FieldAsString(o, "Name"),
 		Address: FieldAsString(o, "Address"),
 	}
 }
 
-func _Ctor_Address(_v Object) *_net\mail.Address {
+func _Ctor_Address(_v Object) *_mail.Address {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToAddress(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\mail.Address] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Address] or: Map"))
 }
 
 func _Wrapped_Ctor_Address(_o Object) Object {
@@ -11305,18 +11305,18 @@ func ExtractGo_go_std_net_mail__AddressParser(rcvr, arg string, args *ArraySeq, 
 	return
 }
 
-// func _mapToAddressParser(o Map) *_net\mail.AddressParser {
-// 	return &_net\mail.AddressParser{
+// func _mapToAddressParser(o Map) *_mail.AddressParser {
+// 	return &_mail.AddressParser{
 // 		WordDecoder: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
-// func _Ctor_AddressParser(_v Object) *_net\mail.AddressParser {
+// func _Ctor_AddressParser(_v Object) *_mail.AddressParser {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToAddressParser(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\mail.AddressParser] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.AddressParser] or: Map"))
 // }
 
 // func _Wrapped_Ctor_AddressParser(_o Object) Object {
@@ -11348,12 +11348,12 @@ func ExtractGo_go_std_net_mail__Header(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _Ctor_Header(_v Object) _net\mail.Header {
+// func _Ctor_Header(_v Object) _mail.Header {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\mail.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
+// 		return _mail.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\mail.Header] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Header] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_Header(_o Object) Object {
@@ -11385,19 +11385,19 @@ func ExtractGo_go_std_net_mail__Message(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-// func _mapToMessage(o Map) *_net\mail.Message {
-// 	return &_net\mail.Message{
+// func _mapToMessage(o Map) *_mail.Message {
+// 	return &_mail.Message{
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (ABEND047(gotypes.go: unsupported type *ast.MapType))),
 // 		Body: ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
-// func _Ctor_Message(_v Object) *_net\mail.Message {
+// func _Ctor_Message(_v Object) *_mail.Message {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToMessage(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\mail.Message] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Message] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Message(_o Object) Object {
@@ -11621,10 +11621,10 @@ GO ENSURE-LOADED FOR mail:
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\mail\message.go:24:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\mail\message.go:25:2
 	EnsureLoaded("go.std.mime")  // E.g. from: _tests\big\src\net\mail\message.go:26:2
-	EnsureLoaded("go.std.net/textproto")  // E.g. from: _tests\big\src\net\mail\message.go:27:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests\big\src\net\mail\message.go:27:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\mail\message.go:28:2
 	EnsureLoaded("go.std.time")  // E.g. from: _tests\big\src\net\mail\message.go:29:2
-	EnsureLoaded("go.std.unicode/utf8")  // E.g. from: _tests\big\src\net\mail\message.go:30:2
+	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests\big\src\net\mail\message.go:30:2
 
 GO TYPE net/rpc.Call from net/rpc/client.go:
 func ExtractGoObjectCall(args []Object, index int) *_rpc.Call {
@@ -11651,8 +11651,8 @@ func ExtractGo_go_std_net_rpc__Call(rcvr, arg string, args *ArraySeq, n int) (re
 	return
 }
 
-// func _mapToCall(o Map) *_net\rpc.Call {
-// 	return &_net\rpc.Call{
+// func _mapToCall(o Map) *_rpc.Call {
+// 	return &_rpc.Call{
 // 		ServiceMethod: FieldAsString(o, "ServiceMethod"),
 // 		Args: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
 // 		Reply: ABEND047(gotypes.go: unsupported type *ast.InterfaceType),
@@ -11661,12 +11661,12 @@ func ExtractGo_go_std_net_rpc__Call(rcvr, arg string, args *ArraySeq, n int) (re
 // 	}
 // }
 
-// func _Ctor_Call(_v Object) *_net\rpc.Call {
+// func _Ctor_Call(_v Object) *_rpc.Call {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToCall(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.Call] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Call] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Call(_o Object) Object {
@@ -11698,16 +11698,16 @@ func ExtractGo_go_std_net_rpc__Client(rcvr, arg string, args *ArraySeq, n int) (
 	return
 }
 
-func _mapToClient(o Map) *_net\rpc.Client {
-	return &_net\rpc.Client{}
+func _mapToClient(o Map) *_rpc.Client {
+	return &_rpc.Client{}
 }
 
-func _Ctor_Client(_v Object) *_net\rpc.Client {
+func _Ctor_Client(_v Object) *_rpc.Client {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToClient(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.Client] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Client] or: Map"))
 }
 
 func _Wrapped_Ctor_Client(_o Object) Object {
@@ -11764,19 +11764,19 @@ func ExtractGo_go_std_net_rpc__Request(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-func _mapToRequest(o Map) *_net\rpc.Request {
-	return &_net\rpc.Request{
+func _mapToRequest(o Map) *_rpc.Request {
+	return &_rpc.Request{
 		ServiceMethod: FieldAsString(o, "ServiceMethod"),
 		Seq: FieldAsUint64(o, "Seq"),
 	}
 }
 
-func _Ctor_Request(_v Object) *_net\rpc.Request {
+func _Ctor_Request(_v Object) *_rpc.Request {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToRequest(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.Request] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Request] or: Map"))
 }
 
 func _Wrapped_Ctor_Request(_o Object) Object {
@@ -11808,20 +11808,20 @@ func ExtractGo_go_std_net_rpc__Response(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-func _mapToResponse(o Map) *_net\rpc.Response {
-	return &_net\rpc.Response{
+func _mapToResponse(o Map) *_rpc.Response {
+	return &_rpc.Response{
 		ServiceMethod: FieldAsString(o, "ServiceMethod"),
 		Seq: FieldAsUint64(o, "Seq"),
 		Error: FieldAsString(o, "Error"),
 	}
 }
 
-func _Ctor_Response(_v Object) *_net\rpc.Response {
+func _Ctor_Response(_v Object) *_rpc.Response {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToResponse(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.Response] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Response] or: Map"))
 }
 
 func _Wrapped_Ctor_Response(_o Object) Object {
@@ -11853,16 +11853,16 @@ func ExtractGo_go_std_net_rpc__Server(rcvr, arg string, args *ArraySeq, n int) (
 	return
 }
 
-func _mapToServer(o Map) *_net\rpc.Server {
-	return &_net\rpc.Server{}
+func _mapToServer(o Map) *_rpc.Server {
+	return &_rpc.Server{}
 }
 
-func _Ctor_Server(_v Object) *_net\rpc.Server {
+func _Ctor_Server(_v Object) *_rpc.Server {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToServer(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.Server] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.Server] or: Map"))
 }
 
 func _Wrapped_Ctor_Server(_o Object) Object {
@@ -11922,12 +11922,12 @@ func ExtractGo_go_std_net_rpc__ServerError(rcvr, arg string, args *ArraySeq, n i
 	return
 }
 
-func _Ctor_ServerError(_v Object) _net\rpc.ServerError {
+func _Ctor_ServerError(_v Object) _rpc.ServerError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\rpc.ServerError(_o.S)
+		return _rpc.ServerError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\rpc.ServerError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[rpc.ServerError] or: String"))
 }
 
 func _Wrapped_Ctor_ServerError(_o Object) Object {
@@ -12315,20 +12315,20 @@ GO VECSET FOR TYPE *go.std.net.rpc/ServerError from -:
 
 GO ENSURE-LOADED FOR rpc:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests\big\src\net\rpc\client.go:8:2
-	EnsureLoaded("go.std.encoding/gob")  // E.g. from: _tests\big\src\net\rpc\client.go:9:2
+	EnsureLoaded("go.std.encoding.gob")  // E.g. from: _tests\big\src\net\rpc\client.go:9:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\rpc\client.go:10:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\rpc\debug.go:13:2
-	EnsureLoaded("go.std.html/template")  // E.g. from: _tests\big\src\net\rpc\debug.go:14:2
+	EnsureLoaded("go.std.html.template")  // E.g. from: _tests\big\src\net\rpc\debug.go:14:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\rpc\client.go:11:2
 	EnsureLoaded("go.std.log")  // E.g. from: _tests\big\src\net\rpc\client.go:12:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\rpc\client.go:13:2
-	EnsureLoaded("go.std.net/http")  // E.g. from: _tests\big\src\net\rpc\client.go:14:2
+	EnsureLoaded("go.std.net.http")  // E.g. from: _tests\big\src\net\rpc\client.go:14:2
 	EnsureLoaded("go.std.reflect")  // E.g. from: _tests\big\src\net\rpc\server.go:137:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests\big\src\net\rpc\debug.go:16:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\rpc\server.go:138:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\rpc\client.go:15:2
 	EnsureLoaded("go.std.unicode")  // E.g. from: _tests\big\src\net\rpc\server.go:140:2
-	EnsureLoaded("go.std.unicode/utf8")  // E.g. from: _tests\big\src\net\rpc\server.go:141:2
+	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests\big\src\net\rpc\server.go:141:2
 
 GO FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 func __dial(__network string, __address string) Object {
@@ -12364,12 +12364,12 @@ GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
 // }
 
 GO ENSURE-LOADED FOR jsonrpc:
-	EnsureLoaded("go.std.encoding/json")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:11:2
+	EnsureLoaded("go.std.encoding.json")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:11:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\server.go:9:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:12:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:13:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:14:2
-	EnsureLoaded("go.std.net/rpc")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:15:2
+	EnsureLoaded("go.std.net.rpc")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:15:2
 	EnsureLoaded("go.std.sync")  // E.g. from: _tests\big\src\net\rpc\jsonrpc\client.go:16:2
 
 GO TYPE net/smtp.Auth from net/smtp/auth.go:
@@ -12422,18 +12422,18 @@ func ExtractGo_go_std_net_smtp__Client(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
-// func _mapToClient(o Map) *_net\smtp.Client {
-// 	return &_net\smtp.Client{
+// func _mapToClient(o Map) *_smtp.Client {
+// 	return &_smtp.Client{
 // 		Text: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
-// func _Ctor_Client(_v Object) *_net\smtp.Client {
+// func _Ctor_Client(_v Object) *_smtp.Client {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToClient(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\smtp.Client] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.Client] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Client(_o Object) Object {
@@ -12465,20 +12465,20 @@ func ExtractGo_go_std_net_smtp__ServerInfo(rcvr, arg string, args *ArraySeq, n i
 	return
 }
 
-// func _mapToServerInfo(o Map) *_net\smtp.ServerInfo {
-// 	return &_net\smtp.ServerInfo{
+// func _mapToServerInfo(o Map) *_smtp.ServerInfo {
+// 	return &_smtp.ServerInfo{
 // 		Name: FieldAsString(o, "Name"),
 // 		TLS: FieldAsBoolean(o, "TLS"),
 // 		Auth: ABEND048(codegen.go: no conversion from Clojure for []string (string)),
 // 	}
 // }
 
-// func _Ctor_ServerInfo(_v Object) *_net\smtp.ServerInfo {
+// func _Ctor_ServerInfo(_v Object) *_smtp.ServerInfo {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToServerInfo(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\smtp.ServerInfo] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[smtp.ServerInfo] or: Map"))
 // }
 
 // func _Wrapped_Ctor_ServerInfo(_o Object) Object {
@@ -12708,15 +12708,15 @@ GO VECSET FOR TYPE *go.std.net.smtp/ServerInfo from -:
 	GoTypesVec[38] = &info_PtrTo_ServerInfo
 
 GO ENSURE-LOADED FOR smtp:
-	EnsureLoaded("go.std.crypto/hmac")  // E.g. from: _tests\big\src\net\smtp\auth.go:8:2
-	EnsureLoaded("go.std.crypto/md5")  // E.g. from: _tests\big\src\net\smtp\auth.go:9:2
-	EnsureLoaded("go.std.crypto/tls")  // E.g. from: _tests\big\src\net\smtp\smtp.go:19:2
-	EnsureLoaded("go.std.encoding/base64")  // E.g. from: _tests\big\src\net\smtp\smtp.go:20:2
+	EnsureLoaded("go.std.crypto.hmac")  // E.g. from: _tests\big\src\net\smtp\auth.go:8:2
+	EnsureLoaded("go.std.crypto.md5")  // E.g. from: _tests\big\src\net\smtp\auth.go:9:2
+	EnsureLoaded("go.std.crypto.tls")  // E.g. from: _tests\big\src\net\smtp\smtp.go:19:2
+	EnsureLoaded("go.std.encoding.base64")  // E.g. from: _tests\big\src\net\smtp\smtp.go:20:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests\big\src\net\smtp\auth.go:10:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\smtp\auth.go:11:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\smtp\smtp.go:23:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\smtp\smtp.go:24:2
-	EnsureLoaded("go.std.net/textproto")  // E.g. from: _tests\big\src\net\smtp\smtp.go:25:2
+	EnsureLoaded("go.std.net.textproto")  // E.g. from: _tests\big\src\net\smtp\smtp.go:25:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\smtp\smtp.go:26:2
 
 GO TYPE net/textproto.Conn from net/textproto/textproto.go:
@@ -12744,16 +12744,16 @@ func ExtractGo_go_std_net_textproto__Conn(rcvr, arg string, args *ArraySeq, n in
 	return
 }
 
-func _mapToConn(o Map) *_net\textproto.Conn {
-	return &_net\textproto.Conn{}
+func _mapToConn(o Map) *_textproto.Conn {
+	return &_textproto.Conn{}
 }
 
-func _Ctor_Conn(_v Object) *_net\textproto.Conn {
+func _Ctor_Conn(_v Object) *_textproto.Conn {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToConn(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.Conn] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Conn] or: Map"))
 }
 
 func _Wrapped_Ctor_Conn(_o Object) Object {
@@ -12785,19 +12785,19 @@ func ExtractGo_go_std_net_textproto__Error(rcvr, arg string, args *ArraySeq, n i
 	return
 }
 
-func _mapToError(o Map) *_net\textproto.Error {
-	return &_net\textproto.Error{
+func _mapToError(o Map) *_textproto.Error {
+	return &_textproto.Error{
 		Code: FieldAsInt(o, "Code"),
 		Msg: FieldAsString(o, "Msg"),
 	}
 }
 
-func _Ctor_Error(_v Object) *_net\textproto.Error {
+func _Ctor_Error(_v Object) *_textproto.Error {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToError(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.Error] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Error] or: Map"))
 }
 
 func _Wrapped_Ctor_Error(_o Object) Object {
@@ -12829,12 +12829,12 @@ func ExtractGo_go_std_net_textproto__MIMEHeader(rcvr, arg string, args *ArraySeq
 	return
 }
 
-// func _Ctor_MIMEHeader(_v Object) _net\textproto.MIMEHeader {
+// func _Ctor_MIMEHeader(_v Object) _textproto.MIMEHeader {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\textproto.MIMEHeader(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for MIMEHeader))
+// 		return _textproto.MIMEHeader(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for MIMEHeader))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.MIMEHeader] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.MIMEHeader] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_MIMEHeader(_o Object) Object {
@@ -12866,16 +12866,16 @@ func ExtractGo_go_std_net_textproto__Pipeline(rcvr, arg string, args *ArraySeq, 
 	return
 }
 
-func _mapToPipeline(o Map) *_net\textproto.Pipeline {
-	return &_net\textproto.Pipeline{}
+func _mapToPipeline(o Map) *_textproto.Pipeline {
+	return &_textproto.Pipeline{}
 }
 
-func _Ctor_Pipeline(_v Object) *_net\textproto.Pipeline {
+func _Ctor_Pipeline(_v Object) *_textproto.Pipeline {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToPipeline(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.Pipeline] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Pipeline] or: Map"))
 }
 
 func _Wrapped_Ctor_Pipeline(_o Object) Object {
@@ -12910,12 +12910,12 @@ func ExtractGo_go_std_net_textproto__ProtocolError(rcvr, arg string, args *Array
 	return
 }
 
-func _Ctor_ProtocolError(_v Object) _net\textproto.ProtocolError {
+func _Ctor_ProtocolError(_v Object) _textproto.ProtocolError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\textproto.ProtocolError(_o.S)
+		return _textproto.ProtocolError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.ProtocolError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.ProtocolError] or: String"))
 }
 
 func _Wrapped_Ctor_ProtocolError(_o Object) Object {
@@ -12947,18 +12947,18 @@ func ExtractGo_go_std_net_textproto__Reader(rcvr, arg string, args *ArraySeq, n 
 	return
 }
 
-// func _mapToReader(o Map) *_net\textproto.Reader {
-// 	return &_net\textproto.Reader{
+// func _mapToReader(o Map) *_textproto.Reader {
+// 	return &_textproto.Reader{
 // 		R: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
-// func _Ctor_Reader(_v Object) *_net\textproto.Reader {
+// func _Ctor_Reader(_v Object) *_textproto.Reader {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToReader(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.Reader] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Reader] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Reader(_o Object) Object {
@@ -12990,18 +12990,18 @@ func ExtractGo_go_std_net_textproto__Writer(rcvr, arg string, args *ArraySeq, n 
 	return
 }
 
-// func _mapToWriter(o Map) *_net\textproto.Writer {
-// 	return &_net\textproto.Writer{
+// func _mapToWriter(o Map) *_textproto.Writer {
+// 	return &_textproto.Writer{
 // 		W: *ABEND047(gotypes.go: unsupported type *ast.SelectorExpr),
 // 	}
 // }
 
-// func _Ctor_Writer(_v Object) *_net\textproto.Writer {
+// func _Ctor_Writer(_v Object) *_textproto.Writer {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToWriter(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\textproto.Writer] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Writer] or: Map"))
 // }
 
 // func _Wrapped_Ctor_Writer(_o Object) Object {
@@ -13447,7 +13447,7 @@ GO ENSURE-LOADED FOR textproto:
 	EnsureLoaded("go.std.bytes")  // E.g. from: _tests\big\src\net\textproto\reader.go:9:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests\big\src\net\textproto\textproto.go:30:2
 	EnsureLoaded("go.std.io")  // E.g. from: _tests\big\src\net\textproto\reader.go:10:2
-	EnsureLoaded("go.std.io/ioutil")  // E.g. from: _tests\big\src\net\textproto\reader.go:11:2
+	EnsureLoaded("go.std.io.ioutil")  // E.g. from: _tests\big\src\net\textproto\reader.go:11:2
 	EnsureLoaded("go.std.net")  // E.g. from: _tests\big\src\net\textproto\textproto.go:32:2
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests\big\src\net\textproto\reader.go:12:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests\big\src\net\textproto\reader.go:13:2
@@ -13478,20 +13478,20 @@ func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (r
 	return
 }
 
-func _mapToError(o Map) *_net\url.Error {
-	return &_net\url.Error{
+func _mapToError(o Map) *_url.Error {
+	return &_url.Error{
 		Op: FieldAsString(o, "Op"),
 		URL: FieldAsString(o, "URL"),
 		Err: FieldAsError(o, "Err"),
 	}
 }
 
-func _Ctor_Error(_v Object) *_net\url.Error {
+func _Ctor_Error(_v Object) *_url.Error {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToError(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Error] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map"))
 }
 
 func _Wrapped_Ctor_Error(_o Object) Object {
@@ -13526,12 +13526,12 @@ func ExtractGo_go_std_net_url__EscapeError(rcvr, arg string, args *ArraySeq, n i
 	return
 }
 
-func _Ctor_EscapeError(_v Object) _net\url.EscapeError {
+func _Ctor_EscapeError(_v Object) _url.EscapeError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\url.EscapeError(_o.S)
+		return _url.EscapeError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.EscapeError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
 }
 
 func _Wrapped_Ctor_EscapeError(_o Object) Object {
@@ -13566,12 +13566,12 @@ func ExtractGo_go_std_net_url__InvalidHostError(rcvr, arg string, args *ArraySeq
 	return
 }
 
-func _Ctor_InvalidHostError(_v Object) _net\url.InvalidHostError {
+func _Ctor_InvalidHostError(_v Object) _url.InvalidHostError {
 	switch _o := _v.(type) {
 	case String:
-		return _net\url.InvalidHostError(_o.S)
+		return _url.InvalidHostError(_o.S)
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.InvalidHostError] or: String"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
 }
 
 func _Wrapped_Ctor_InvalidHostError(_o Object) Object {
@@ -13603,8 +13603,8 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 	return
 }
 
-// func _mapToURL(o Map) *_net\url.URL {
-// 	return &_net\url.URL{
+// func _mapToURL(o Map) *_url.URL {
+// 	return &_url.URL{
 // 		Scheme: FieldAsString(o, "Scheme"),
 // 		Opaque: FieldAsString(o, "Opaque"),
 // 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
@@ -13617,12 +13617,12 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 	}
 // }
 
-// func _Ctor_URL(_v Object) *_net\url.URL {
+// func _Ctor_URL(_v Object) *_url.URL {
 // 	switch _o := _v.(type) {
 // 	case *ArrayMap, *HashMap:
 // 		return _mapToURL(_o.(Map))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.URL] or: Map"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map"))
 // }
 
 // func _Wrapped_Ctor_URL(_o Object) Object {
@@ -13654,16 +13654,16 @@ func ExtractGo_go_std_net_url__Userinfo(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
-func _mapToUserinfo(o Map) *_net\url.Userinfo {
-	return &_net\url.Userinfo{}
+func _mapToUserinfo(o Map) *_url.Userinfo {
+	return &_url.Userinfo{}
 }
 
-func _Ctor_Userinfo(_v Object) *_net\url.Userinfo {
+func _Ctor_Userinfo(_v Object) *_url.Userinfo {
 	switch _o := _v.(type) {
 	case *ArrayMap, *HashMap:
 		return _mapToUserinfo(_o.(Map))
 	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Userinfo] or: Map"))
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map"))
 }
 
 func _Wrapped_Ctor_Userinfo(_o Object) Object {
@@ -13695,12 +13695,12 @@ func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (
 	return
 }
 
-// func _Ctor_Values(_v Object) _net\url.Values {
+// func _Ctor_Values(_v Object) _url.Values {
 // 	switch _o := _v.(type) {
 // 	default:
-// 		return _net\url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
+// 		return _url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
 // 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net\url.Values] or: whatever"))
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
 // }
 
 // func _Wrapped_Ctor_Values(_o Object) Object {
@@ -14135,126 +14135,126 @@ package core
 
 import (
 	"net"
-	"net\http"
-	"net\http\cgi"
-	"net\http\cookiejar"
-	"net\http\httptest"
-	"net\http\httptrace"
-	"net\http\httputil"
-	"net\mail"
-	"net\rpc"
-	"net\smtp"
-	"net\textproto"
-	"net\url"
+	"net/http"
+	"net/http/cgi"
+	"net/http/cookiejar"
+	"net/http/httptest"
+	"net/http/httptrace"
+	"net/http/httputil"
+	"net/mail"
+	"net/rpc"
+	"net/smtp"
+	"net/textproto"
+	"net/url"
 )
 
 var GoTypesVec [184]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case *net\http\cgi.Handler:
+	case *cgi.Handler:
 		return 0
-	case *net\http\cookiejar.Jar:
+	case *cookiejar.Jar:
 		return 1
-	case *net\http\cookiejar.Options:
+	case *cookiejar.Options:
 		return 2
-	case *net\http\httptest.ResponseRecorder:
+	case *httptest.ResponseRecorder:
 		return 3
-	case *net\http\httptest.Server:
+	case *httptest.Server:
 		return 4
-	case *net\http\httptrace.ClientTrace:
+	case *httptrace.ClientTrace:
 		return 5
-	case *net\http\httptrace.DNSDoneInfo:
+	case *httptrace.DNSDoneInfo:
 		return 6
-	case *net\http\httptrace.DNSStartInfo:
+	case *httptrace.DNSStartInfo:
 		return 7
-	case *net\http\httptrace.GotConnInfo:
+	case *httptrace.GotConnInfo:
 		return 8
-	case *net\http\httptrace.WroteRequestInfo:
+	case *httptrace.WroteRequestInfo:
 		return 9
-	case *net\http\httputil.ClientConn:
+	case *httputil.ClientConn:
 		return 10
-	case *net\http\httputil.ReverseProxy:
+	case *httputil.ReverseProxy:
 		return 11
-	case *net\http\httputil.ServerConn:
+	case *httputil.ServerConn:
 		return 12
-	case *net\http.Client:
+	case *http.Client:
 		return 13
-	case *net\http.ConnState:
+	case *http.ConnState:
 		return 14
-	case *net\http.Cookie:
+	case *http.Cookie:
 		return 15
-	case *net\http.Dir:
+	case *http.Dir:
 		return 16
-	case *net\http.HandlerFunc:
+	case *http.HandlerFunc:
 		return 17
-	case *net\http.Header:
+	case *http.Header:
 		return 18
-	case *net\http.ProtocolError:
+	case *http.ProtocolError:
 		return 19
-	case *net\http.PushOptions:
+	case *http.PushOptions:
 		return 20
-	case *net\http.Request:
+	case *http.Request:
 		return 21
-	case *net\http.Response:
+	case *http.Response:
 		return 22
-	case *net\http.SameSite:
+	case *http.SameSite:
 		return 23
-	case *net\http.ServeMux:
+	case *http.ServeMux:
 		return 24
-	case *net\http.Server:
+	case *http.Server:
 		return 25
-	case *net\http.Transport:
+	case *http.Transport:
 		return 26
-	case *net\mail.Address:
+	case *mail.Address:
 		return 27
-	case *net\mail.AddressParser:
+	case *mail.AddressParser:
 		return 28
-	case *net\mail.Header:
+	case *mail.Header:
 		return 29
-	case *net\mail.Message:
+	case *mail.Message:
 		return 30
-	case *net\rpc.Call:
+	case *rpc.Call:
 		return 31
-	case *net\rpc.Client:
+	case *rpc.Client:
 		return 32
-	case *net\rpc.Request:
+	case *rpc.Request:
 		return 33
-	case *net\rpc.Response:
+	case *rpc.Response:
 		return 34
-	case *net\rpc.Server:
+	case *rpc.Server:
 		return 35
-	case *net\rpc.ServerError:
+	case *rpc.ServerError:
 		return 36
-	case *net\smtp.Client:
+	case *smtp.Client:
 		return 37
-	case *net\smtp.ServerInfo:
+	case *smtp.ServerInfo:
 		return 38
-	case *net\textproto.Conn:
+	case *textproto.Conn:
 		return 39
-	case *net\textproto.Error:
+	case *textproto.Error:
 		return 40
-	case *net\textproto.MIMEHeader:
+	case *textproto.MIMEHeader:
 		return 41
-	case *net\textproto.Pipeline:
+	case *textproto.Pipeline:
 		return 42
-	case *net\textproto.ProtocolError:
+	case *textproto.ProtocolError:
 		return 43
-	case *net\textproto.Reader:
+	case *textproto.Reader:
 		return 44
-	case *net\textproto.Writer:
+	case *textproto.Writer:
 		return 45
-	case *net\url.Error:
+	case *url.Error:
 		return 46
-	case *net\url.EscapeError:
+	case *url.EscapeError:
 		return 47
-	case *net\url.InvalidHostError:
+	case *url.InvalidHostError:
 		return 48
-	case *net\url.URL:
+	case *url.URL:
 		return 49
-	case *net\url.Userinfo:
+	case *url.Userinfo:
 		return 50
-	case *net\url.Values:
+	case *url.Values:
 		return 51
 	case *net.AddrError:
 		return 52
@@ -14316,109 +14316,109 @@ func SwitchGoType(g interface{}) int {
 		return 80
 	case *net.UnknownNetworkError:
 		return 81
-	case net\http\cgi.Handler:
+	case cgi.Handler:
 		return 82
-	case net\http\cookiejar.Jar:
+	case cookiejar.Jar:
 		return 83
-	case net\http\cookiejar.Options:
+	case cookiejar.Options:
 		return 84
-	case net\http\httptest.ResponseRecorder:
+	case httptest.ResponseRecorder:
 		return 85
-	case net\http\httptest.Server:
+	case httptest.Server:
 		return 86
-	case net\http\httptrace.ClientTrace:
+	case httptrace.ClientTrace:
 		return 87
-	case net\http\httptrace.DNSDoneInfo:
+	case httptrace.DNSDoneInfo:
 		return 88
-	case net\http\httptrace.DNSStartInfo:
+	case httptrace.DNSStartInfo:
 		return 89
-	case net\http\httptrace.GotConnInfo:
+	case httptrace.GotConnInfo:
 		return 90
-	case net\http\httptrace.WroteRequestInfo:
+	case httptrace.WroteRequestInfo:
 		return 91
-	case net\http\httputil.ClientConn:
+	case httputil.ClientConn:
 		return 92
-	case net\http\httputil.ReverseProxy:
+	case httputil.ReverseProxy:
 		return 93
-	case net\http\httputil.ServerConn:
+	case httputil.ServerConn:
 		return 94
-	case net\http.Client:
+	case http.Client:
 		return 95
-	case net\http.ConnState:
+	case http.ConnState:
 		return 96
-	case net\http.Cookie:
+	case http.Cookie:
 		return 97
-	case net\http.Dir:
+	case http.Dir:
 		return 98
-	case net\http.HandlerFunc:
+	case http.HandlerFunc:
 		return 99
-	case net\http.Header:
+	case http.Header:
 		return 100
-	case net\http.ProtocolError:
+	case http.ProtocolError:
 		return 101
-	case net\http.PushOptions:
+	case http.PushOptions:
 		return 102
-	case net\http.Request:
+	case http.Request:
 		return 103
-	case net\http.Response:
+	case http.Response:
 		return 104
-	case net\http.SameSite:
+	case http.SameSite:
 		return 105
-	case net\http.ServeMux:
+	case http.ServeMux:
 		return 106
-	case net\http.Server:
+	case http.Server:
 		return 107
-	case net\http.Transport:
+	case http.Transport:
 		return 108
-	case net\mail.Address:
+	case mail.Address:
 		return 109
-	case net\mail.AddressParser:
+	case mail.AddressParser:
 		return 110
-	case net\mail.Header:
+	case mail.Header:
 		return 111
-	case net\mail.Message:
+	case mail.Message:
 		return 112
-	case net\rpc.Call:
+	case rpc.Call:
 		return 113
-	case net\rpc.Client:
+	case rpc.Client:
 		return 114
-	case net\rpc.Request:
+	case rpc.Request:
 		return 115
-	case net\rpc.Response:
+	case rpc.Response:
 		return 116
-	case net\rpc.Server:
+	case rpc.Server:
 		return 117
-	case net\rpc.ServerError:
+	case rpc.ServerError:
 		return 118
-	case net\smtp.Client:
+	case smtp.Client:
 		return 119
-	case net\smtp.ServerInfo:
+	case smtp.ServerInfo:
 		return 120
-	case net\textproto.Conn:
+	case textproto.Conn:
 		return 121
-	case net\textproto.Error:
+	case textproto.Error:
 		return 122
-	case net\textproto.MIMEHeader:
+	case textproto.MIMEHeader:
 		return 123
-	case net\textproto.Pipeline:
+	case textproto.Pipeline:
 		return 124
-	case net\textproto.ProtocolError:
+	case textproto.ProtocolError:
 		return 125
-	case net\textproto.Reader:
+	case textproto.Reader:
 		return 126
-	case net\textproto.Writer:
+	case textproto.Writer:
 		return 127
-	case net\url.Error:
+	case url.Error:
 		return 128
-	case net\url.EscapeError:
+	case url.EscapeError:
 		return 129
-	case net\url.InvalidHostError:
+	case url.InvalidHostError:
 		return 130
-	case net\url.URL:
+	case url.URL:
 		return 131
-	case net\url.Userinfo:
+	case url.Userinfo:
 		return 132
-	case net\url.Values:
+	case url.Values:
 		return 133
 	case net.AddrError:
 		return 134
@@ -14484,41 +14484,41 @@ func SwitchGoType(g interface{}) int {
 		return 164
 	case net.PacketConn:  // Specificity=7
 		return 165
-	case net\rpc.ClientCodec:  // Specificity=4
+	case rpc.ClientCodec:  // Specificity=4
 		return 166
-	case net\rpc.ServerCodec:  // Specificity=4
+	case rpc.ServerCodec:  // Specificity=4
 		return 167
-	case net\http.ResponseWriter:  // Specificity=3
+	case http.ResponseWriter:  // Specificity=3
 		return 168
 	case net.Error:  // Specificity=3
 		return 169
 	case net.Listener:  // Specificity=3
 		return 170
-	case net\http\cookiejar.PublicSuffixList:  // Specificity=2
+	case cookiejar.PublicSuffixList:  // Specificity=2
 		return 171
-	case net\http\httputil.BufferPool:  // Specificity=2
+	case httputil.BufferPool:  // Specificity=2
 		return 172
-	case net\http.CookieJar:  // Specificity=2
+	case http.CookieJar:  // Specificity=2
 		return 173
-	case net\http.File:  // Specificity=2
+	case http.File:  // Specificity=2
 		return 174
-	case net\smtp.Auth:  // Specificity=2
+	case smtp.Auth:  // Specificity=2
 		return 175
 	case net.Addr:  // Specificity=2
 		return 176
-	case net\http.CloseNotifier:  // Specificity=1
+	case http.CloseNotifier:  // Specificity=1
 		return 177
-	case net\http.FileSystem:  // Specificity=1
+	case http.FileSystem:  // Specificity=1
 		return 178
-	case net\http.Flusher:  // Specificity=1
+	case http.Flusher:  // Specificity=1
 		return 179
-	case net\http.Handler:  // Specificity=1
+	case http.Handler:  // Specificity=1
 		return 180
-	case net\http.Hijacker:  // Specificity=1
+	case http.Hijacker:  // Specificity=1
 		return 181
-	case net\http.Pusher:  // Specificity=1
+	case http.Pusher:  // Specificity=1
 		return 182
-	case net\http.RoundTripper:  // Specificity=1
+	case http.RoundTripper:  // Specificity=1
 		return 183
 	}
 	return -1

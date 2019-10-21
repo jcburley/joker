@@ -6,6 +6,7 @@ import (
 	. "go/ast"
 	"go/token"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	. "strings"
@@ -34,6 +35,7 @@ type mapping struct {
 var mappings = []mapping{}
 
 func AddMapping(dir string, root string) {
+	dir = filepath.ToSlash(dir)
 	for _, m := range mappings {
 		if HasPrefix(dir, m.prefix) {
 			panic(fmt.Sprintf("duplicate mapping %s and %s", dir, m.prefix))
@@ -52,7 +54,7 @@ func goPackageForDirname(dirName string) (pkg, prefix string) {
 }
 
 func GoPackageForExpr(e Expr) string {
-	dirName := filepath.Dir(Fset.Position(e.Pos()).Filename)
+	dirName := path.Dir(filepath.ToSlash(Fset.Position(e.Pos()).Filename))
 	pkg, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s", dirName))
@@ -61,7 +63,7 @@ func GoPackageForExpr(e Expr) string {
 }
 
 func GoPackageForTypeSpec(ts *TypeSpec) string {
-	dirName := filepath.Dir(Fset.Position(ts.Pos()).Filename)
+	dirName := path.Dir(filepath.ToSlash(Fset.Position(ts.Pos()).Filename))
 	pkg, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s", dirName))
@@ -70,12 +72,12 @@ func GoPackageForTypeSpec(ts *TypeSpec) string {
 }
 
 func ClojureNamespaceForPos(p token.Position) string {
-	dirName := filepath.Dir(p.Filename)
+	dirName := path.Dir(filepath.ToSlash(p.Filename))
 	pkg, root := goPackageForDirname(dirName)
 	if pkg == "" {
-		panic(fmt.Sprintf("no mapping for %s", dirName))
+		panic(fmt.Sprintf("no mapping for %s given %s", dirName, filepath.ToSlash(p.Filename)))
 	}
-	return root + ReplaceAll(pkg, (string)(filepath.Separator), ".")
+	return root + ReplaceAll(pkg, "/", ".")
 }
 
 func ClojureNamespaceForExpr(e Expr) string {
@@ -87,11 +89,11 @@ func ClojureNamespaceForDirname(d string) string {
 	if pkg == "" {
 		pkg = root + d
 	}
-	return ReplaceAll(pkg, (string)(filepath.Separator), ".")
+	return ReplaceAll(pkg, "/", ".")
 }
 
 func GoPackageBaseName(e Expr) string {
-	return filepath.Base(filepath.Dir(Fset.Position(e.Pos()).Filename))
+	return path.Base(path.Dir(filepath.ToSlash(Fset.Position(e.Pos()).Filename)))
 }
 
 type PackageDb struct {
@@ -138,10 +140,10 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 	}
 
 	decls := map[string]DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, filepath.Base(pkgDirUnix), nsRoot, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, path.Base(pkgDirUnix), nsRoot, decls}
 
-	for path, f := range pkg.Files {
-		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+	for p, f := range pkg.Files {
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(p), rootUnix+"/")
 		if egf, found := GoFiles[goFilePathUnix]; found {
 			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.DirUnix))
 		}
@@ -166,7 +168,7 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 					as = n.Name
 				}
 			} else {
-				as = filepath.Base(importPath)
+				as = path.Base(importPath)
 			}
 			importsMap[as] = importPath
 		}
