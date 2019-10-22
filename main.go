@@ -35,8 +35,7 @@ import (
 )
 
 var dataRead = []rune{}
-var exitToRepl bool
-var errorToRepl bool
+var saveForRepl = true
 
 type replayable struct {
 	reader *Reader
@@ -111,7 +110,7 @@ func processFile(filename string, phase Phase) error {
 		PanicOnErr(err)
 		GLOBAL_ENV.MainFile.Value = MakeString(f)
 	}
-	if exitToRepl || errorToRepl {
+	if saveForRepl {
 		reader = NewReader(&replayable{reader}, "<replay>")
 	}
 	return ProcessReader(reader, filename, phase)
@@ -409,6 +408,8 @@ var (
 	cpuProfileRateFlag bool
 	memProfileName     string
 	noReadline         bool
+	exitToRepl         bool
+	errorToRepl        bool
 )
 
 func isNumber(s string) bool {
@@ -650,6 +651,8 @@ func main() {
 	}
 
 	parseArgs(os.Args)
+	saveForRepl = saveForRepl && (exitToRepl || errorToRepl) // don't bother saving stuff if no repl
+
 	GLOBAL_ENV.SetEnvArgs(remainingArgs)
 	GLOBAL_ENV.SetClassPath(classPath)
 
@@ -671,6 +674,7 @@ func main() {
 		fmt.Fprintf(debugOut, "remainingArgs=%v\n", remainingArgs)
 		fmt.Fprintf(debugOut, "exitToRepl=%v\n", exitToRepl)
 		fmt.Fprintf(debugOut, "errorToRepl=%v\n", errorToRepl)
+		fmt.Fprintf(debugOut, "saveForRepl=%v\n", saveForRepl)
 	}
 
 	if helpFlag {
@@ -744,7 +748,7 @@ func main() {
 			ExitJoker(9)
 		}
 		reader := NewReader(strings.NewReader(eval), "<expr>")
-		if exitToRepl || errorToRepl {
+		if saveForRepl {
 			reader = NewReader(&replayable{reader}, "<replay>")
 		}
 		if err := ProcessReader(reader, "", phase); err != nil {
