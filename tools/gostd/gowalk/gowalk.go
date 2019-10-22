@@ -198,7 +198,7 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	curPkgName := fn.SourceFile.Package.Dir
 	basePkgName := path.Base(fullPkgName)
 	clType = basePkgName + "/" + baseTypeName
-	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
+	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullPkgName+"."+baseTypeName)
 	if curPkgName.String() == fullPkgName {
 		code = basePkgName + "." + baseTypeName
 		doc = baseTypeName

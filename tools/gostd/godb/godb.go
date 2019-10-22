@@ -123,7 +123,7 @@ type PackageDb struct {
 	Root     paths.UnixPath
 	Dir      paths.UnixPath
 	BaseName string
-	NsRoot   string
+	NsRoot   string // "go.std." or whatever is desired as the root namespace
 	decls    map[string]DeclInfo
 }
 
@@ -139,9 +139,8 @@ type DeclInfo struct {
 
 type GoFile struct {
 	Package *PackageDb
-	Name    string
+	Name    paths.UnixPath
 	Spaces  *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
-	NsRoot  string             // "go.std." or whatever is desired as the root namespace
 }
 
 var GoFiles = map[string]*GoFile{}
@@ -197,9 +196,8 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 
 		gf := &GoFile{
 			Package: pkgDb,
-			Name:    goFilePathUnix.String(),
+			Name:    goFilePathUnix,
 			Spaces:  &importsMap,
-			NsRoot:  nsRoot,
 		}
 		GoFiles[goFilePathUnix.String()] = gf
 

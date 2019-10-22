@@ -10,7 +10,7 @@ import (
 )
 
 func genGoPostSelected(fn *gowalk.FuncInfo, indent, captureName, fullTypeName, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	clDoc = gowalk.FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullTypeName)
+	clDoc = gowalk.FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullTypeName)
 	if _, ok := gowalk.GoTypes[fullTypeName]; ok {
 		gol = fullTypeName
 		out = "MakeGoObject(" + captureName + ")"

@@ -20,7 +20,7 @@ func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeI
 		FullGoName:        fullGoTypeName,
 		SourceFile:        gf,
 		UnderlyingType:    ts.Type,
-		ArgClojureArgType: FullTypeNameAsClojure(gf.NsRoot, fullGoTypeName),
+		ArgClojureArgType: FullTypeNameAsClojure(gf.Package.NsRoot, fullGoTypeName),
 		Exported:          IsExported(ts.Name.Name),
 		Custom:            true,
 		Uncompleted:       true,
