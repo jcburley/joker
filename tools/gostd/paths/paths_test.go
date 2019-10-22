@@ -102,3 +102,41 @@ func TestNativeBase(t *testing.T) {
 		t.Error(n.Base(), ntb)
 	}
 }
+
+func TestUnixRelativeTo(t *testing.T) {
+	rel, ok := u.RelativeTo(NewUnixPath("/home/somebody/this"))
+	if !ok {
+		t.Error(rel, ok)
+	}
+	should := "is/a/file.txt"
+	if rel.String() != should {
+		t.Error(rel.String(), should)
+	}
+
+	rel, ok = u.RelativeTo(NewUnixPath("/home/anybody/this"))
+	if ok {
+		t.Error(rel, ok)
+	}
+	if rel != u {
+		t.Error(rel.String(), u)
+	}
+}
+
+func TestNativeRelativeTo(t *testing.T) {
+	rel, ok := n.RelativeTo(NewNativePath(filepath.FromSlash("/home/somebody/this")))
+	if !ok {
+		t.Error(rel, ok)
+	}
+	should := filepath.FromSlash("is/a/file.txt")
+	if rel.String() != should {
+		t.Error(rel.String(), should)
+	}
+
+	rel, ok = n.RelativeTo(NewNativePath(filepath.FromSlash("/home/anybody/this")))
+	if ok {
+		t.Error(rel, ok)
+	}
+	if rel != n {
+		t.Error(rel.String(), n)
+	}
+}

@@ -883,14 +883,17 @@ func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) 
 	}
 }
 
-func processDir(root, rootUnix, path, nsRoot string) error {
-	pkgDir := TrimPrefix(path, root+string(filepath.Separator))
-	pkgDirUnix := filepath.ToSlash(pkgDir)
+func processDir(root, path paths.NativePath, nsRoot string) error {
+	pkgDirNative, ok := path.RelativeTo(root)
+	if !ok {
+		panic(fmt.Sprintf("%s is not relative to %s", path, root))
+	}
+	pkgDirUnix := pkgDirNative.ToUnix()
 	if Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
 
-	pkgs, err := parser.ParseDir(godb.Fset, path,
+	pkgs, err := parser.ParseDir(godb.Fset, path.String(),
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
@@ -899,10 +902,10 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 				}
 				return false
 			}
-			b, e := build.Default.MatchFile(path, info.Name())
+			b, e := build.Default.MatchFile(path.String(), info.Name())
 			if Verbose {
 				AddSortedOutput(fmt.Sprintf("Matchfile(%s) => %v %v\n",
-					filepath.ToSlash(filepath.Join(path, info.Name())),
+					path.Join(info.Name()).ToUnix(),
 					b, e))
 			}
 			return b && e == nil
@@ -915,7 +918,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 
 	found := false
 	for pkgBaseName, v := range pkgs {
-		if pkgBaseName != filepath.Base(path) {
+		if pkgBaseName != path.Base() {
 			if Verbose {
 				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, path))
@@ -930,7 +933,7 @@ func processDir(root, rootUnix, path, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(rootUnix, pkgDirUnix, nsRoot, v)
+			godb.RegisterPackage(root.String(), pkgDirUnix.String(), nsRoot, v)
 			found = true
 		}
 	}
@@ -959,31 +962,31 @@ func LegitimateImport(p string) bool {
 	return true
 }
 
-func walkDir(fsRoot, nsRoot string) error {
-	rootUnix := filepath.ToSlash(fsRoot)
-	target, err := filepath.EvalSymlinks(fsRoot)
+func walkDir(fsRoot paths.NativePath, nsRoot string) error {
+	target, err := fsRoot.EvalSymlinks()
 	Check(err)
 
-	err = filepath.Walk(target,
-		func(path string, info os.FileInfo, err error) error {
-			rel := Replace(path, target, fsRoot, 1)
-			relUnix := filepath.ToSlash(rel)
+	err = target.Walk(
+		func(path paths.NativePath, info os.FileInfo, err error) error {
+			rel := Replace(path.String(), target.String(), fsRoot.String(), 1)
+			relNative := paths.NewNativePath(rel)
+			relUnix := paths.NewUnixPath(rel)
 			if err != nil {
 				EndSortedOutput()
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
 				return err
 			}
-			if rel == fsRoot {
+			if relNative == fsRoot {
 				return nil // skip (implicit) "."
 			}
-			if excludeDirs[filepath.Base(rel)] {
+			if excludeDirs[relUnix.Base()] {
 				if Verbose {
-					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relUnix))
+					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relNative))
 				}
-				return filepath.SkipDir
+				return paths.SkipDir
 			}
 			if info.IsDir() {
-				return processDir(fsRoot, rootUnix, rel, nsRoot)
+				return processDir(fsRoot, relNative, nsRoot)
 			}
 			return nil // not a directory
 		})
@@ -998,15 +1001,15 @@ func walkDir(fsRoot, nsRoot string) error {
 }
 
 type dirToWalk struct {
-	srcDir string
-	fsRoot string
+	srcDir paths.NativePath
+	fsRoot paths.NativePath
 	nsRoot string
 }
 
 var dirsToWalk []dirToWalk
 
 func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
-	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir.String(), fsRoot.String(), nsRoot})
+	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot})
 }
 
 func WalkAllDirs() (error, string) {
@@ -1018,7 +1021,7 @@ func WalkAllDirs() (error, string) {
 	for _, d := range dirsToWalk {
 		err := walkDir(d.fsRoot, d.nsRoot)
 		if err != nil {
-			return err, d.srcDir
+			return err, d.srcDir.String()
 		}
 	}
 	for _, wp := range godb.PackagesAsDiscovered {
