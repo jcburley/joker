@@ -883,17 +883,17 @@ func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) 
 	}
 }
 
-func processDir(root, path paths.NativePath, nsRoot string) error {
-	pkgDirNative, ok := path.RelativeTo(root)
+func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
+	pkgDirNative, ok := pathNative.RelativeTo(rootNative)
 	if !ok {
-		panic(fmt.Sprintf("%s is not relative to %s", path, root))
+		panic(fmt.Sprintf("%s is not relative to %s", pathNative, rootNative))
 	}
 	pkgDirUnix := pkgDirNative.ToUnix()
 	if Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
 
-	pkgs, err := parser.ParseDir(godb.Fset, path.String(),
+	pkgs, err := parser.ParseDir(godb.Fset, pathNative.String(),
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
@@ -902,10 +902,10 @@ func processDir(root, path paths.NativePath, nsRoot string) error {
 				}
 				return false
 			}
-			b, e := build.Default.MatchFile(path.String(), info.Name())
+			b, e := build.Default.MatchFile(pathNative.String(), info.Name())
 			if Verbose {
 				AddSortedOutput(fmt.Sprintf("Matchfile(%s) => %v %v\n",
-					path.Join(info.Name()).ToUnix(),
+					pathNative.Join(info.Name()).ToUnix(),
 					b, e))
 			}
 			return b && e == nil
@@ -918,10 +918,10 @@ func processDir(root, path paths.NativePath, nsRoot string) error {
 
 	found := false
 	for pkgBaseName, v := range pkgs {
-		if pkgBaseName != path.Base() {
+		if pkgBaseName != pathNative.Base() {
 			if Verbose {
 				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
-					pkgBaseName, path))
+					pkgBaseName, pathNative))
 			}
 		} else if pkgBaseName == "unsafe" {
 			if Verbose {
@@ -933,7 +933,7 @@ func processDir(root, path paths.NativePath, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(root.String(), pkgDirUnix.String(), nsRoot, v)
+			godb.RegisterPackage(rootNative.ToUnix().String(), pkgDirUnix.String(), nsRoot, v)
 			found = true
 		}
 	}
@@ -968,7 +968,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 
 	err = target.Walk(
 		func(path paths.NativePath, info os.FileInfo, err error) error {
-			rel := Replace(path.String(), target.String(), fsRoot.String(), 1)
+			rel := ReplaceAll(path.String(), target.String(), fsRoot.String())
 			relNative := paths.NewNativePath(rel)
 			relUnix := paths.NewUnixPath(rel)
 			if err != nil {
