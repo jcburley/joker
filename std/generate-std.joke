@@ -354,6 +354,13 @@
   (when (> (count skipped) 0)
     (println-err "WARNING: skipping publics that are not Go-calling functions or vars:" skipped)))
 
+(defn- generate-imports
+  "The joker.* namespaces supply simple vectors. The gostd tool provides maps: the key of each map is the full name of the namespace; the value is a two-element vector, the first being the local name of the namespace, and the second the full import specification."
+  [m]
+  (if (vector? m)
+    (mapv q m)
+    (mapv #(str ((val %) 0) " " (q ((val %) 1))) m)))
+
 (defn generate-ns
   [ns-sym ns-name ns-name-final]
   (let [ns (find-ns ns-sym)
@@ -373,7 +380,7 @@
                 (rpl "{nsName}" ns-name-final)
                 (rpl "{imports}"
                      (s/join "\n\t" (sort compare-imports (conj
-                                                           (mapv q (:go-imports m))
+                                                           (generate-imports (:go-imports m))
                                                            ". \"github.com/candid82/joker/core\""))))
                 (rpl "{non-fn-decls}" (s/join "\n" (filter #(> (count %) 0) (map first non-fn-decls))))
                 (rpl "{non-fn-inits}" (s/join "\n" (filter #(> (count %) 0) non-fn-inits)))
