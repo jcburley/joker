@@ -970,6 +970,9 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 	err = target.Walk(
 		func(path paths.NativePath, info os.FileInfo, err error) error {
 			rel := ReplaceAll(path.String(), target.String(), fsRoot.String())
+			if rel == path.String() && path != target && target != fsRoot {
+				panic(fmt.Sprintf("failed to replace %s with %s in %s", target.String(), fsRoot.String(), path.String()))
+			}
 			relNative := paths.NewNativePath(rel)
 			relUnix := paths.NewUnixPath(rel)
 			if err != nil {
