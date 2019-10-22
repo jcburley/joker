@@ -890,7 +890,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 	}
 	pkgDirUnix := pkgDirNative.ToUnix()
 	if Verbose {
-		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
+		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirNative.ToUnix()))
 	}
 
 	pkgs, err := parser.ParseDir(godb.Fset, pathNative.String(),
