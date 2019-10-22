@@ -197,14 +197,14 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
 	curPkgName := fn.SourceFile.Package.Dir
 	basePkgName := path.Base(fullPkgName)
-	clType = basePkgName + "/" + baseTypeName
 	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullPkgName+"."+baseTypeName)
+	clType = clTypeDoc
 	if curPkgName.String() == fullPkgName {
 		code = basePkgName + "." + baseTypeName
 		doc = baseTypeName
 		return
 	}
-	doc = path.Base(fullPkgName) + "." + baseTypeName
+	doc = fullPkgName + "." + baseTypeName
 	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
 	// doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, true, fn.Pos) + "." + baseTypeName
 	// code = doc
