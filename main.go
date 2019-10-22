@@ -35,7 +35,7 @@ import (
 )
 
 var dataRead = []rune{}
-var exitToRepl bool
+var saveForRepl bool
 
 type replayable struct {
 	reader *Reader
@@ -106,7 +106,7 @@ func processFile(filename string, phase Phase) error {
 		PanicOnErr(err)
 		GLOBAL_ENV.MainFile.Value = MakeString(f)
 	}
-	if exitToRepl {
+	if saveForRepl {
 		reader = NewReader(&replayable{reader}, "<replay>")
 	}
 	return ProcessReader(reader, filename, phase)
@@ -399,6 +399,7 @@ var (
 	cpuProfileRateFlag bool
 	memProfileName     string
 	noReadline         bool
+	exitToRepl         bool
 )
 
 func isNumber(s string) bool {
@@ -727,13 +728,13 @@ func main() {
 			ExitJoker(9)
 		}
 		reader := NewReader(strings.NewReader(eval), "<expr>")
-		if exitToRepl {
+		if saveForRepl {
 			reader = NewReader(&replayable{reader}, "<replay>")
 		}
 		if err := ProcessReader(reader, "", phase); err != nil {
 			ExitJoker(1)
 		}
-		if !exitToRepl {
+		if !saveForRepl {
 			return
 		}
 	}
