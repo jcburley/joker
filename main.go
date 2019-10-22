@@ -35,7 +35,7 @@ import (
 )
 
 var dataRead = []rune{}
-var saveForRepl bool
+var saveForRepl = true
 
 type replayable struct {
 	reader *Reader
@@ -647,6 +647,8 @@ func main() {
 	}
 
 	parseArgs(os.Args)
+	saveForRepl = saveForRepl && (exitToRepl || errorToRepl) // don't bother saving stuff if no repl
+
 	GLOBAL_ENV.SetEnvArgs(remainingArgs)
 	GLOBAL_ENV.SetClassPath(classPath)
 
@@ -668,6 +670,7 @@ func main() {
 		fmt.Fprintf(debugOut, "remainingArgs=%v\n", remainingArgs)
 		fmt.Fprintf(debugOut, "exitToRepl=%v\n", exitToRepl)
 		fmt.Fprintf(debugOut, "errorToRepl=%v\n", errorToRepl)
+		fmt.Fprintf(debugOut, "saveForRepl=%v\n", saveForRepl)
 	}
 
 	if helpFlag {
