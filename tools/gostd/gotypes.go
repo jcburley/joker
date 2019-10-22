@@ -91,7 +91,7 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	}()
 	switch td := e.(type) {
 	case *Ident:
-		ti = toGoTypeNameInfo(src.Package.DirUnix, td.Name, e)
+		ti = toGoTypeNameInfo(src.Package.Dir.String(), td.Name, e)
 		if ti == nil {
 			return nil
 		}

@@ -195,11 +195,11 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 // conflicts). NOTE: As a side effect, updates imports needed by the
 // function.
 func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.SourceFile.Package.DirUnix
+	curPkgName := fn.SourceFile.Package.Dir
 	basePkgName := path.Base(fullPkgName)
 	clType = basePkgName + "/" + baseTypeName
 	clTypeDoc = FullTypeNameAsClojure(fn.SourceFile.NsRoot, fullPkgName+"."+baseTypeName)
-	if curPkgName == fullPkgName {
+	if curPkgName.String() == fullPkgName {
 		code = basePkgName + "." + baseTypeName
 		doc = baseTypeName
 		return
@@ -933,7 +933,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(rootNative.ToUnix().String(), pkgDirUnix.String(), nsRoot, v)
+			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, v)
 			found = true
 		}
 	}
@@ -1012,7 +1012,7 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
 	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot})
 }
 
-func WalkAllDirs() (error, string) {
+func WalkAllDirs() (error, paths.NativePath) {
 	StartSortedOutput()
 	defer func() {
 		EndSortedOutput()
@@ -1021,14 +1021,14 @@ func WalkAllDirs() (error, string) {
 	for _, d := range dirsToWalk {
 		err := walkDir(d.fsRoot, d.nsRoot)
 		if err != nil {
-			return err, d.srcDir.String()
+			return err, d.srcDir
 		}
 	}
 	for _, wp := range godb.PackagesAsDiscovered {
-		processPackageFilesTypes(wp.RootUnix, wp.DirUnix, wp.NsRoot, wp.Pkg)
+		processPackageFilesTypes(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
 	}
 	for _, wp := range godb.PackagesAsDiscovered {
-		processPackageFilesOthers(wp.RootUnix, wp.DirUnix, wp.NsRoot, wp.Pkg)
+		processPackageFilesOthers(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
 	}
-	return nil, ""
+	return nil, paths.NewNativePath("")
 }

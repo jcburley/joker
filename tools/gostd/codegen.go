@@ -177,7 +177,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 
 func GenReceiver(fn *FuncInfo) {
 	genSymReset()
-	pkgDirUnix := fn.SourceFile.Package.DirUnix
+	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 
 	const goTemplate = `
 func %s(o GoObject, args Object) Object {  // %s
@@ -255,7 +255,7 @@ func %s(o GoObject, args Object) Object {  // %s
 func GenStandalone(fn *FuncInfo) {
 	genSymReset()
 	d := fn.Fd
-	pkgDirUnix := fn.SourceFile.Package.DirUnix
+	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	const clojureTemplate = `
@@ -329,7 +329,7 @@ func %s(%s) %s {
 
 func GenConstant(ci *ConstantInfo) {
 	genSymReset()
-	pkgDirUnix := ci.SourceFile.Package.DirUnix
+	pkgDirUnix := ci.SourceFile.Package.Dir.String()
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
@@ -341,7 +341,7 @@ func GenConstant(ci *ConstantInfo) {
 
 func GenVariable(vi *VariableInfo) {
 	genSymReset()
-	pkgDirUnix := vi.SourceFile.Package.DirUnix
+	pkgDirUnix := vi.SourceFile.Package.Dir.String()
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
@@ -399,7 +399,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	localType := "{{myGoImport}}." + ti.LocalName
 	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
 
-	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.DirUnix].ImportsNative, "", "fmt", true, ti.Where)
+	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.Dir.String()].ImportsNative, "", "fmt", true, ti.Where)
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -417,7 +417,7 @@ func GenType(t string, ti *GoTypeInfo) {
 		return // Do not generate anything for private or array types
 	}
 
-	pkgDirUnix := ti.SourceFile.Package.DirUnix
+	pkgDirUnix := ti.SourceFile.Package.Dir.String()
 	pi := PackagesInfo[pkgDirUnix]
 
 	pi.NonEmpty = true
@@ -485,7 +485,7 @@ func %s(_o Object) Object {
 
 	ti := TypeDefsToGoTypes[tdi]
 
-	pkgDirUnix := ti.SourceFile.Package.DirUnix
+	pkgDirUnix := ti.SourceFile.Package.Dir.String()
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
@@ -523,7 +523,7 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 					BaseName:     n.Name,
 					ReceiverId:   "{{myGoImport}}." + tdi.GoName,
 					Name:         fullName,
-					DocName:      "(" + tdi.GoFile.Package.DirUnix + "." + tdi.GoName + ")" + n.Name + "()",
+					DocName:      "(" + tdi.GoFile.Package.Dir.String() + "." + tdi.GoName + ")" + n.Name + "()",
 					Fd:           nil,
 					ToM:          tdi,
 					Ft:           m.Type.(*FuncType),
@@ -591,7 +591,7 @@ func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase,
 func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := tdi.TypeSpec.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.DirUnix, t.Name, tdi.TypeSpec.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.Dir.String(), t.Name, tdi.TypeSpec.Type)
 		extractClojureObject = typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}

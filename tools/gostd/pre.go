@@ -60,13 +60,13 @@ func genGoPreSelected(fn *gowalk.FuncInfo, indent, fullPkgName, baseTypeName, pa
 }
 
 func genGoPreNamed(fn *gowalk.FuncInfo, indent, typeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	return genGoPreSelected(fn, indent, fn.SourceFile.Package.DirUnix, typeName, paramName, argNum)
+	return genGoPreSelected(fn, indent, fn.SourceFile.Package.Dir.String(), typeName, paramName, argNum)
 }
 
 func genGoPreSelector(fn *gowalk.FuncInfo, indent string, e *SelectorExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	pkgName := e.X.(*Ident).Name
 	fullPathUnix := Unix(FileAt(e.Pos()))
-	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.RootUnix+"/")
+	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.Root.String()+"/")
 	rf, ok := GoFiles[referringFile]
 	if !ok {
 		panic(fmt.Sprintf("genGoPreSelector: could not find referring file %s for file %s at %s",

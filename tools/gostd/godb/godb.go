@@ -120,14 +120,14 @@ func GoPackageBaseName(e Expr) string {
 
 type PackageDb struct {
 	Pkg      *Package // nil means Universal scope
-	RootUnix string
-	DirUnix  string
+	Root     paths.UnixPath
+	Dir      paths.UnixPath
 	BaseName string
 	NsRoot   string
 	decls    map[string]DeclInfo
 }
 
-var packagesByName = map[string]*PackageDb{}
+var packagesByUnixPath = map[string]*PackageDb{}
 
 var PackagesAsDiscovered = []*PackageDb{}
 
@@ -146,7 +146,7 @@ type GoFile struct {
 
 var GoFiles = map[string]*GoFile{}
 
-func newDecl(decls *map[string]DeclInfo, pkg string, name *Ident, node Node) {
+func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
 	if !IsExported(name.Name) {
 		return
 	}
@@ -156,18 +156,18 @@ func newDecl(decls *map[string]DeclInfo, pkg string, name *Ident, node Node) {
 	(*decls)[name.Name] = DeclInfo{name.Name, node, name.NamePos}
 }
 
-func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
-	if _, found := packagesByName[pkgDirUnix]; found {
+func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Package) {
+	if _, found := packagesByUnixPath[pkgDirUnix.String()]; found {
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
 	decls := map[string]DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, path.Base(pkgDirUnix), nsRoot, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, decls}
 
 	for p, f := range pkg.Files {
-		goFilePathUnix := TrimPrefix(filepath.ToSlash(p), rootUnix+"/")
-		if egf, found := GoFiles[goFilePathUnix]; found {
-			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.DirUnix))
+		goFilePathUnix, _ := paths.NewNativePath(p).ToUnix().RelativeTo(rootUnix)
+		if egf, found := GoFiles[goFilePathUnix.String()]; found {
+			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.Dir))
 		}
 		importsMap := map[string]string{}
 
@@ -197,11 +197,11 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 
 		gf := &GoFile{
 			Package: pkgDb,
-			Name:    goFilePathUnix,
+			Name:    goFilePathUnix.String(),
 			Spaces:  &importsMap,
 			NsRoot:  nsRoot,
 		}
-		GoFiles[goFilePathUnix] = gf
+		GoFiles[goFilePathUnix.String()] = gf
 
 		for _, d := range f.Decls {
 			switch o := d.(type) {
@@ -226,12 +226,12 @@ func RegisterPackage(rootUnix, pkgDirUnix, nsRoot string, pkg *Package) {
 	}
 
 	pkgDb.decls = decls
-	packagesByName[pkgDirUnix] = pkgDb
+	packagesByUnixPath[pkgDirUnix.String()] = pkgDb
 	PackagesAsDiscovered = append(PackagesAsDiscovered, pkgDb)
 }
 
 func ResolveInPackage(pkg, name string) Node {
-	p := packagesByName[pkg]
+	p := packagesByUnixPath[pkg]
 	if p == nil {
 		return nil
 	}
@@ -273,6 +273,6 @@ func init() {
 	decls := map[string]DeclInfo{}
 	decls["error"] = decl
 
-	pkgDb := &PackageDb{nil, "", "", "", "", decls}
-	packagesByName[""] = pkgDb
+	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", decls}
+	packagesByUnixPath[""] = pkgDb
 }
