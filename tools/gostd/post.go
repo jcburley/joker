@@ -36,7 +36,7 @@ func genGoPostSelector(fn *gowalk.FuncInfo, indent, captureName string, e *Selec
 			referringFile, fullPathUnix, WhereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
-		return genGoPostSelected(fn, indent, captureName, fullPkgName+"."+e.Sel.Name, onlyIf)
+		return genGoPostSelected(fn, indent, captureName, fullPkgName.String()+"."+e.Sel.Name, onlyIf)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		WhereAt(e.Pos()), WhereAt(fn.Fd.Pos()), pkgName, fn.SourceFile.Name))

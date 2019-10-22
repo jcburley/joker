@@ -73,7 +73,7 @@ func genGoPreSelector(fn *gowalk.FuncInfo, indent string, e *SelectorExpr, param
 			referringFile, fullPathUnix, WhereAt(e.Pos())))
 	}
 	if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
-		return genGoPreSelected(fn, indent, fullPkgName, e.Sel.Name, paramName, argNum)
+		return genGoPreSelected(fn, indent, fullPkgName.String(), e.Sel.Name, paramName, argNum)
 	}
 	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
 		WhereAt(e.Pos()), WhereAt(fn.Fd.Pos()), pkgName, fn.SourceFile.Name))

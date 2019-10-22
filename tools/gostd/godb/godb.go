@@ -140,7 +140,7 @@ type DeclInfo struct {
 type GoFile struct {
 	Package *PackageDb
 	Name    paths.UnixPath
-	Spaces  *map[string]string // maps "foo" (in a reference such as "foo.Bar") to the pkgDirUnix in which it is defined
+	Spaces  *map[string]paths.UnixPath // maps "foo" (in a reference such as "foo.Bar") to the package in which it is defined
 }
 
 var GoFiles = map[string]*GoFile{}
@@ -168,7 +168,7 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 		if egf, found := GoFiles[goFilePathUnix.String()]; found {
 			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.Dir))
 		}
-		importsMap := map[string]string{}
+		importsMap := map[string]paths.UnixPath{}
 
 		for _, imp := range f.Imports {
 			if Dump {
@@ -191,7 +191,7 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 			} else {
 				as = path.Base(importPath)
 			}
-			importsMap[as] = importPath
+			importsMap[as] = paths.NewUnixPath(importPath)
 		}
 
 		gf := &GoFile{
