@@ -942,6 +942,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 }
 
 var excludeDirs = map[string]bool{
+	"badpkg":   true,
 	"builtin":  true,
 	"cmd":      true,
 	"internal": true, // look into this later?
