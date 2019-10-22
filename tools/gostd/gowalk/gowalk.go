@@ -942,7 +942,6 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 }
 
 var excludeDirs = map[string]bool{
-	"badpkg":   true,
 	"builtin":  true,
 	"cmd":      true,
 	"internal": true, // look into this later?
@@ -970,11 +969,8 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 	err = target.Walk(
 		func(path paths.NativePath, info os.FileInfo, err error) error {
 			rel := ReplaceAll(path.String(), target.String(), fsRoot.String())
-			if rel == path.String() && path != target && target != fsRoot {
-				panic(fmt.Sprintf("failed to replace %s with %s in %s", target.String(), fsRoot.String(), path.String()))
-			}
 			relNative := paths.NewNativePath(rel)
-			relUnix := paths.NewUnixPath(rel)
+			relUnix := relNative.ToUnix()
 			if err != nil {
 				EndSortedOutput()
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
@@ -985,7 +981,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 			}
 			if excludeDirs[relUnix.Base()] {
 				if Verbose {
-					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relNative))
+					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relUnix))
 				}
 				return paths.SkipDir
 			}
