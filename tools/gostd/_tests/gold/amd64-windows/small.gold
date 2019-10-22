@@ -158,7 +158,7 @@ JOKER FUNC net.DialIP from net/iprawsock.go:
   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr, ^(ref-to go.std.net/IPAddr) raddr]\n\nJoker return type: [(ref-to go.std.net/IPConn) Error]"
   {:added "1.0"
    :go "__dialIP(__network, __laddr, __raddr)"}
-  [^String __network, ^net/IPAddr __laddr, ^net/IPAddr __raddr])
+  [^String __network, ^go.std.net/IPAddr __laddr, ^go.std.net/IPAddr __raddr])
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
@@ -179,7 +179,7 @@ JOKER FUNC net.ListenIP from net/iprawsock.go:
   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr]\n\nJoker return type: [(ref-to go.std.net/IPConn) Error]"
   {:added "1.0"
    :go "__listenIP(__network, __laddr)"}
-  [^String __network, ^net/IPAddr __laddr])
+  [^String __network, ^go.std.net/IPAddr __laddr])
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
