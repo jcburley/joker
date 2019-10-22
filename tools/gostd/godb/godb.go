@@ -2,6 +2,7 @@ package godb
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
@@ -48,26 +49,26 @@ func FileAt(p token.Pos) string {
 }
 
 type mapping struct {
-	prefix  string // E.g. "/home/user/go/src"
-	cljRoot string // E.g. "go.std."
+	prefix  paths.UnixPath // E.g. "/home/user/go/src"
+	cljRoot string         // E.g. "go.std."
 }
 
 var mappings = []mapping{}
 
-func AddMapping(dir string, root string) {
-	dir = filepath.ToSlash(dir)
+func AddMapping(dirNative string, root string) {
+	dir := filepath.ToSlash(dirNative)
 	for _, m := range mappings {
-		if HasPrefix(dir, m.prefix) {
+		if HasPrefix(dir, m.prefix.String()) {
 			panic(fmt.Sprintf("duplicate mapping %s and %s", dir, m.prefix))
 		}
 	}
-	mappings = append(mappings, mapping{dir, root})
+	mappings = append(mappings, mapping{paths.NewUnixPath(dir), root})
 }
 
 func goPackageForDirname(dirName string) (pkg, prefix string) {
 	for _, m := range mappings {
-		if HasPrefix(dirName, m.prefix) {
-			return dirName[len(m.prefix)+1:], m.cljRoot
+		if HasPrefix(dirName, m.prefix.String()) {
+			return dirName[len(m.prefix.String())+1:], m.cljRoot
 		}
 	}
 	return "", mappings[0].cljRoot
