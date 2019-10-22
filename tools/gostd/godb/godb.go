@@ -55,14 +55,15 @@ type mapping struct {
 
 var mappings = []mapping{}
 
-func AddMapping(dirNative string, root string) {
-	dir := filepath.ToSlash(dirNative)
+func AddMapping(dirNative paths.NativePath, root string) {
+	dir := dirNative.ToUnix()
+	dirString := dir.String()
 	for _, m := range mappings {
-		if HasPrefix(dir, m.prefix.String()) {
-			panic(fmt.Sprintf("duplicate mapping %s and %s", dir, m.prefix))
+		if HasPrefix(dirString, m.prefix.String()) {
+			panic(fmt.Sprintf("duplicate mapping %s and %s", dirString, m.prefix))
 		}
 	}
-	mappings = append(mappings, mapping{paths.NewUnixPath(dir), root})
+	mappings = append(mappings, mapping{dir, root})
 }
 
 func goPackageForDirname(dirName string) (pkg, prefix string) {

@@ -7,26 +7,31 @@ import (
 
 type Path interface {
 	String() string
-	Join(el ...string) Path
-	Split() (Path, string)
-	Dir() Path
+
+	// These always return the same concrete type as upon which they operate:
+	//	Join(el ...string) Path
+	//	Split() (Path, string)
+	//	Dir() Path
+
 	Base() string
 }
 
 type UnixPath struct {
+	Path
 	path string
 }
 
 type NativePath struct {
+	Path
 	path string
 }
 
 func NewUnixPath(p string) UnixPath {
-	return UnixPath{p}
+	return UnixPath{path: p}
 }
 
 func NewNativePath(p string) NativePath {
-	return NativePath{p}
+	return NativePath{path: p}
 }
 
 func (u UnixPath) String() string {
@@ -45,29 +50,29 @@ func (n NativePath) ToUnix() UnixPath {
 	return NewUnixPath(filepath.ToSlash(n.String()))
 }
 
-func (u UnixPath) Join(el ...string) Path {
+func (u UnixPath) Join(el ...string) UnixPath {
 	return NewUnixPath(path.Join(u.String(), path.Join(el...)))
 }
 
-func (n NativePath) Join(el ...string) Path {
+func (n NativePath) Join(el ...string) NativePath {
 	return NewNativePath(filepath.Join(n.String(), filepath.Join(el...)))
 }
 
-func (u UnixPath) Split() (Path, string) {
+func (u UnixPath) Split() (UnixPath, string) {
 	d, b := path.Split(u.String())
 	return NewUnixPath(d), b
 }
 
-func (n NativePath) Split() (Path, string) {
+func (n NativePath) Split() (NativePath, string) {
 	d, b := filepath.Split(n.String())
 	return NewNativePath(d), b
 }
 
-func (u UnixPath) Dir() Path {
+func (u UnixPath) Dir() UnixPath {
 	return NewUnixPath(path.Dir(u.String()))
 }
 
-func (n NativePath) Dir() Path {
+func (n NativePath) Dir() NativePath {
 	return NewNativePath(filepath.Dir(n.String()))
 }
 

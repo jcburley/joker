@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
+	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -1004,8 +1005,8 @@ type dirToWalk struct {
 
 var dirsToWalk []dirToWalk
 
-func AddWalkDir(srcDir, fsRoot, nsRoot string) {
-	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot})
+func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
+	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir.String(), fsRoot.String(), nsRoot})
 }
 
 func WalkAllDirs() (error, string) {

@@ -5,6 +5,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/paths"
 	"github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
@@ -206,12 +207,12 @@ func main() {
 		goSourceDirVia = "build.Default.GOROOT"
 	}
 
-	goSourceDir = filepath.Join(goSourceDir, "src")
+	goSrcDir := paths.NewNativePath(goSourceDir).Join("src")
 
-	if fi, e := os.Stat(filepath.Join(goSourceDir, "go")); e != nil || !fi.IsDir() {
-		if m, e := filepath.Glob(filepath.Join(goSourceDir, "*.go")); e != nil || m == nil || len(m) == 0 {
+	if fi, e := os.Stat(goSrcDir.Join("go").String()); e != nil || !fi.IsDir() {
+		if m, e := filepath.Glob(goSrcDir.Join("*.go").String()); e != nil || m == nil || len(m) == 0 {
 			fmt.Fprintf(os.Stderr, "Does not exist or is not a Go source directory: %s (specified via %s);\n%v",
-				goSourceDir, goSourceDirVia, m)
+				goSrcDir, goSourceDirVia, m)
 			os.Exit(2)
 		}
 	}
@@ -231,7 +232,7 @@ func main() {
 	}
 
 	if gowalk.Verbose {
-		fmt.Printf("goSourceDir: %s\n", goSourceDir)
+		fmt.Printf("goSrcDir: %s\n", goSrcDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
 		fmt.Printf("JokerSourceDir (for import line): %s\n", godb.JokerSourceDir)
 		for _, o := range others {
@@ -278,13 +279,14 @@ func main() {
 		}
 	}
 
-	godb.AddMapping(goSourceDir, "go.std.")
-	root := filepath.Join(goSourceDir, ".")
-	gowalk.AddWalkDir(goSourceDir, root, "go.std.")
+	godb.AddMapping(goSrcDir, "go.std.")
+	root := goSrcDir.Join(".")
+	gowalk.AddWalkDir(goSrcDir, root, "go.std.")
 
 	for _, o := range otherSourceDirs {
-		root := filepath.Join(o, ".")
-		gowalk.AddWalkDir(o, root, "x.y.z.")
+		op := paths.NewNativePath(o)
+		root := op.Join(".")
+		gowalk.AddWalkDir(op, root, "x.y.z.")
 	}
 
 	err, badDir := gowalk.WalkAllDirs()
