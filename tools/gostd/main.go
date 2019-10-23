@@ -125,7 +125,7 @@ func main() {
 				replace = false
 				overwrite = false
 			case "--verbose", "-v":
-				gowalk.Verbose = true
+				godb.Verbose = true
 			case "--summary":
 				summary = true
 			case "--output-code":
@@ -198,7 +198,7 @@ func main() {
 		}
 	}
 
-	if gowalk.Verbose {
+	if godb.Verbose {
 		fmt.Printf("Default context: %v\n", build.Default)
 	}
 
@@ -231,7 +231,7 @@ func main() {
 		godb.SetJokerSourceDir(jokerImportDir, goSourcePath)
 	}
 
-	if gowalk.Verbose {
+	if godb.Verbose {
 		fmt.Printf("goSrcDir: %s\n", goSrcDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
 		fmt.Printf("JokerSourceDir (for import line): %s\n", godb.JokerSourceDir)
@@ -351,7 +351,7 @@ func main() {
 
 	RegisterGoTypeSwitch(types.AllSorted(), jokerSourceDir, outputCode)
 
-	if gowalk.Verbose || summary {
+	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
 		abends.PrintAbends()
 		fmt.Printf(`

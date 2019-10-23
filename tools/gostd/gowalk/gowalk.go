@@ -21,7 +21,6 @@ import (
 )
 
 var Dump bool
-var Verbose bool
 
 var NumFunctions int
 var NumStandalones int
@@ -299,6 +298,13 @@ var TypeDefsToGoTypes = map[*Type]*GoTypeInfo{}
 func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
 	name := ts.Name.Name
 	typeName := pkg + "." + name
+
+	if pkg == "unsafe" && name == "ArbitraryType" {
+		if godb.Verbose {
+			fmt.Printf("Excluding mythical type %s.%s\n", pkg, name)
+		}
+		return
+	}
 
 	if Dump {
 		fmt.Printf("Type %s at %s:\n", typeName, godb.WhereAt(ts.Pos()))
@@ -626,7 +632,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	}
 
 	valTypeString, promoteType := determineType(name.Name, valType, val)
-	if Dump || (Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
+	if Dump || (godb.Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
 		fmt.Printf("Constant %s at %s:\n", name, godb.WhereAt(name.Pos()))
 		if valType != nil {
 			fmt.Printf("  valType at %s:\n", godb.WhereAt(valType.Pos()))
@@ -850,7 +856,7 @@ Funcs:
 }
 
 func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	if Verbose {
+	if godb.Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
@@ -890,7 +896,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 		panic(fmt.Sprintf("%s is not relative to %s", pathNative, rootNative))
 	}
 	pkgDirUnix := pkgDirNative.ToUnix()
-	if Verbose {
+	if godb.Verbose {
 		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirNative.ToUnix()))
 	}
 
@@ -898,13 +904,13 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
-				if Verbose {
+				if godb.Verbose {
 					AddSortedOutput(fmt.Sprintf("Ignoring test code in %s\n", info.Name()))
 				}
 				return false
 			}
 			b, e := build.Default.MatchFile(pathNative.String(), info.Name())
-			if Verbose {
+			if godb.Verbose {
 				AddSortedOutput(fmt.Sprintf("Matchfile(%s) => %v %v\n",
 					pathNative.Join(info.Name()).ToUnix(),
 					b, e))
@@ -920,7 +926,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 	found := false
 	for pkgBaseName, v := range pkgs {
 		if pkgBaseName != pathNative.Base() {
-			if Verbose {
+			if godb.Verbose {
 				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, pathNative))
 			}
@@ -977,7 +983,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 				return nil // skip (implicit) "."
 			}
 			if excludeDirs[relUnix.Base()] {
-				if Verbose {
+				if godb.Verbose {
 					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relUnix))
 				}
 				return paths.SkipDir

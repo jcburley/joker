@@ -47,7 +47,7 @@ func RegisterGoTypeSwitch(types []*Type, jokerSourceDir string, outputCode bool)
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func updateCustomLibsGo(pkgs []string, f string) {
-	if gowalk.Verbose {
+	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -82,7 +82,7 @@ import (
 }
 
 func updateCustomLibsJoker(pkgs []string, f string) {
-	if gowalk.Verbose {
+	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
@@ -113,7 +113,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 }
 
 func updateGoTypeSwitch(types []*Type, f string, outputCode bool) {
-	if gowalk.Verbose {
+	if Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
 

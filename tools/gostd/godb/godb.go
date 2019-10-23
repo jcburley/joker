@@ -35,6 +35,7 @@ func SetJokerSourceDir(p string, r string) {
 
 var Fset *token.FileSet
 var Dump bool
+var Verbose bool
 
 var NumMethods int
 var NumGeneratedMethods int
@@ -146,7 +147,12 @@ type GoFile struct {
 var GoFiles = map[string]*GoFile{}
 
 func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
-	if !IsExported(name.Name) {
+	if !IsExported(name.Name) || (pkg.String() == "unsafe" && name.Name == "ArbitraryType") {
+		if IsExported(name.Name) {
+			if Verbose {
+				fmt.Printf("Excluding mythical type %s.%s\n", pkg.String(), name.Name)
+			}
+		}
 		return
 	}
 	if e, found := (*decls)[name.Name]; found {
