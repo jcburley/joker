@@ -42,7 +42,12 @@
       (:macro m) "Macro"
       (= Fn (type @v)) "Function"
       (= Proc (type @v)) "Function"
-      (:tag m) (str (:tag m))
+      (:tag m) (let [t (str (:tag m))]
+                 (if (= t "GoType")
+                   (str (if (:specificity m)
+                          "Abstract"
+                          "Concrete") t)
+                   (str t)))
       :else (str (type @v)))))
 
 (defn link-item-doc
@@ -66,6 +71,7 @@
   (string/join "_" (rest (string/split (str ns) #"\."))))
 
 (defn type-string
+  "Returns the type name without the qualifying path (which is assumed to be local to the current namespace)."
   [^String t]
   (let [prefix (get (string/split t #"[A-Za-z0-9_]+") 0)
         base (get (string/split t #"/") 1)]
