@@ -924,10 +924,6 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, pathNative))
 			}
-		} else if pkgBaseName == "unsafe" {
-			if Verbose {
-				AddSortedOutput(fmt.Sprintf("NOTICE: Ignoring package %s in %s\n", pkgBaseName, pkgDirUnix))
-			}
 		} else {
 			if found {
 				panic("whaaa??")
