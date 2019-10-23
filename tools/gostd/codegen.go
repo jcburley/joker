@@ -312,9 +312,9 @@ func %s(%s) %s {
 			myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			promoteImports(fn.Imports, pi.ImportsNative, fn.Pos)
+		} else {
+			imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, fn.SourceFile.Package.NsRoot, false, fn.Pos)
 		}
-		myGoImport := imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, fn.SourceFile.Package.NsRoot, true, fn.Pos)
-		clojureFn = strings.ReplaceAll(clojureFn, "{{myGoImport}}", myGoImport)
 		promoteImports(fn.Imports, pi.ImportsAutoGen, fn.Pos)
 	}
 
