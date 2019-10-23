@@ -313,11 +313,9 @@ func %s(%s) %s {
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			promoteImports(fn.Imports, pi.ImportsNative, fn.Pos)
 		}
-		if clojureReturnType != "" || fn.RefersToSelf || true {
-			myGoImport := imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, fn.SourceFile.Package.NsRoot, true, fn.Pos)
-			clojureFn = strings.ReplaceAll(clojureFn, "{{myGoImport}}", myGoImport)
-			promoteImports(fn.Imports, pi.ImportsAutoGen, fn.Pos)
-		}
+		myGoImport := imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, fn.SourceFile.Package.NsRoot, true, fn.Pos)
+		clojureFn = strings.ReplaceAll(clojureFn, "{{myGoImport}}", myGoImport)
+		promoteImports(fn.Imports, pi.ImportsAutoGen, fn.Pos)
 	}
 
 	ClojureCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
@@ -520,18 +518,17 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 					doc = m.Comment
 				}
 				QualifiedFunctions[fullName] = &FuncInfo{
-					BaseName:     n.Name,
-					ReceiverId:   "{{myGoImport}}." + tdi.GoName,
-					Name:         fullName,
-					DocName:      "(" + tdi.GoFile.Package.Dir.String() + "." + tdi.GoName + ")" + n.Name + "()",
-					Fd:           nil,
-					ToM:          tdi,
-					Ft:           m.Type.(*FuncType),
-					Doc:          doc,
-					SourceFile:   tdi.GoFile,
-					RefersToSelf: false,
-					Imports:      &imports.Imports{},
-					Pos:          n.NamePos,
+					BaseName:   n.Name,
+					ReceiverId: "{{myGoImport}}." + tdi.GoName,
+					Name:       fullName,
+					DocName:    "(" + tdi.GoFile.Package.Dir.String() + "." + tdi.GoName + ")" + n.Name + "()",
+					Fd:         nil,
+					ToM:        tdi,
+					Ft:         m.Type.(*FuncType),
+					Doc:        doc,
+					SourceFile: tdi.GoFile,
+					Imports:    &imports.Imports{},
+					Pos:        n.NamePos,
 				}
 			}
 			continue

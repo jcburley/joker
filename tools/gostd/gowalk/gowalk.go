@@ -154,18 +154,17 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName     string    // Just the name without receiver-type info
-	ReceiverId   string    // Receiver info (only one type supported here and by Golang itself for now)
-	Name         string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName      string    // Everything, for documentation and diagnostics
-	Fd           *FuncDecl // nil for methods
-	ToM          *Type     // Method operates on this type (nil for standalones and receivers)
-	Ft           *FuncType
-	Doc          *CommentGroup
-	SourceFile   *godb.GoFile
-	RefersToSelf bool             // whether :go-imports should list itself
-	Imports      *imports.Imports // Add these to package info if function is generated (no ABENDs)
-	Pos          token.Pos
+	BaseName   string    // Just the name without receiver-type info
+	ReceiverId string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name       string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName    string    // Everything, for documentation and diagnostics
+	Fd         *FuncDecl // nil for methods
+	ToM        *Type     // Method operates on this type (nil for standalones and receivers)
+	Ft         *FuncType
+	Doc        *CommentGroup
+	SourceFile *godb.GoFile
+	Imports    *imports.Imports // Add these to package info if function is generated (no ABENDs)
+	Pos        token.Pos
 }
 
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
@@ -276,7 +275,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, false, &imports.Imports{}, fd.Pos()}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, fd.Pos()}
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
