@@ -269,15 +269,19 @@ func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string,
 				return
 			}
 			typeDoc := tdi.Doc
+			specificity := ""
+			if tdi.Specificity != Concrete {
+				specificity = fmt.Sprintf("    :specificity %d\n", tdi.Specificity)
+			}
 			fnCode := fmt.Sprintf(`
 (def
   ^{:doc %s
     :added "1.0"
     :tag "GoType"
-    :go "&%s"}
+%s    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), tmn, fmt.Sprintf(tdi.GoPattern, tdi.GoName))
+				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(tdi.GoPattern, tdi.GoName))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
 					tdi.FullName, fnCode)

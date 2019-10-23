@@ -803,6 +803,7 @@ JOKER TYPE go.std.net/Addr:
   ^{:doc "Addr represents a network end point address.\n\nThe two methods Network and String conventionally return strings\nthat can be passed as the arguments to Dial, but the exact form\nand meaning of the strings is up to the implementation.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_Addr"}
   Addr)
 
@@ -843,6 +844,7 @@ JOKER TYPE go.std.net/Conn:
   ^{:doc "Conn is a generic stream-oriented network connection.\n\nMultiple goroutines may invoke methods on a Conn simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 8
     :go "&info_Conn"}
   Conn)
 
@@ -899,6 +901,7 @@ JOKER TYPE go.std.net/Error:
   ^{:doc "An Error represents a network error.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 3
     :go "&info_Error"}
   Error)
 
@@ -1067,6 +1070,7 @@ JOKER TYPE go.std.net/Listener:
   ^{:doc "A Listener is a generic network listener for stream-oriented protocols.\n\nMultiple goroutines may invoke methods on a Listener simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 3
     :go "&info_Listener"}
   Listener)
 
@@ -1123,6 +1127,7 @@ JOKER TYPE go.std.net/PacketConn:
   ^{:doc "PacketConn is a generic packet-oriented network connection.\n\nMultiple goroutines may invoke methods on a PacketConn simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 7
     :go "&info_PacketConn"}
   PacketConn)
 
@@ -2465,6 +2470,7 @@ JOKER TYPE go.std.net.http/CloseNotifier:
   ^{:doc "The CloseNotifier interface is implemented by ResponseWriters which\nallow detecting when the underlying connection has gone away.\n\nThis mechanism can be used to cancel long operations on the server\nif the client has disconnected before the response is ready.\n\nDeprecated: the CloseNotifier interface predates Go's context package.\nNew code should use Request.Context instead.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_CloseNotifier"}
   CloseNotifier)
 
@@ -2505,6 +2511,7 @@ JOKER TYPE go.std.net.http/CookieJar:
   ^{:doc "A CookieJar manages storage and use of cookies in HTTP requests.\n\nImplementations of CookieJar must be safe for concurrent use by multiple\ngoroutines.\n\nThe net/http/cookiejar package provides a CookieJar implementation.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_CookieJar"}
   CookieJar)
 
@@ -2529,6 +2536,7 @@ JOKER TYPE go.std.net.http/File:
   ^{:doc "A File is returned by a FileSystem's Open method and can be\nserved by the FileServer implementation.\n\nThe methods should behave the same as those on an *os.File.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_File"}
   File)
 
@@ -2537,6 +2545,7 @@ JOKER TYPE go.std.net.http/FileSystem:
   ^{:doc "A FileSystem implements access to a collection of named files.\nThe elements in a file path are separated by slash ('/', U+002F)\ncharacters, regardless of host operating system convention.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_FileSystem"}
   FileSystem)
 
@@ -2545,6 +2554,7 @@ JOKER TYPE go.std.net.http/Flusher:
   ^{:doc "The Flusher interface is implemented by ResponseWriters that allow\nan HTTP handler to flush buffered data to the client.\n\nThe default HTTP/1.x and HTTP/2 ResponseWriter implementations\nsupport Flusher, but ResponseWriter wrappers may not. Handlers\nshould always test for this ability at runtime.\n\nNote that even for ResponseWriters that support Flush,\nif the client is connected through an HTTP proxy,\nthe buffered data may not reach the client until the response\ncompletes.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_Flusher"}
   Flusher)
 
@@ -2553,6 +2563,7 @@ JOKER TYPE go.std.net.http/Handler:
   ^{:doc "A Handler responds to an HTTP request.\n\nServeHTTP should write reply headers and data to the ResponseWriter\nand then return. Returning signals that the request is finished; it\nis not valid to use the ResponseWriter or read from the\nRequest.Body after or concurrently with the completion of the\nServeHTTP call.\n\nDepending on the HTTP client software, HTTP protocol version, and\nany intermediaries between the client and the Go server, it may not\nbe possible to read from the Request.Body after writing to the\nResponseWriter. Cautious handlers should read the Request.Body\nfirst, and then reply.\n\nExcept for reading the body, handlers should not modify the\nprovided Request.\n\nIf ServeHTTP panics, the server (the caller of ServeHTTP) assumes\nthat the effect of the panic was isolated to the active request.\nIt recovers the panic, logs a stack trace to the server error log,\nand either closes the network connection or sends an HTTP/2\nRST_STREAM, depending on the HTTP protocol. To abort a handler so\nthe client sees an interrupted response but the server doesn't log\nan error, panic with the value ErrAbortHandler.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_Handler"}
   Handler)
 
@@ -2593,6 +2604,7 @@ JOKER TYPE go.std.net.http/Hijacker:
   ^{:doc "The Hijacker interface is implemented by ResponseWriters that allow\nan HTTP handler to take over the connection.\n\nThe default ResponseWriter for HTTP/1.x connections supports\nHijacker, but HTTP/2 connections intentionally do not.\nResponseWriter wrappers may also not support Hijacker. Handlers\nshould always test for this ability at runtime.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_Hijacker"}
   Hijacker)
 
@@ -2633,6 +2645,7 @@ JOKER TYPE go.std.net.http/Pusher:
   ^{:doc "Pusher is the interface implemented by ResponseWriters that support\nHTTP/2 server push. For more background, see\nhttps://tools.ietf.org/html/rfc7540#section-8.2.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_Pusher"}
   Pusher)
 
@@ -2673,6 +2686,7 @@ JOKER TYPE go.std.net.http/ResponseWriter:
   ^{:doc "A ResponseWriter interface is used by an HTTP handler to\nconstruct an HTTP response.\n\nA ResponseWriter may not be used after the Handler.ServeHTTP method\nhas returned.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 3
     :go "&info_ResponseWriter"}
   ResponseWriter)
 
@@ -2681,6 +2695,7 @@ JOKER TYPE go.std.net.http/RoundTripper:
   ^{:doc "RoundTripper is an interface representing the ability to execute a\nsingle HTTP transaction, obtaining the Response for a given Request.\n\nA RoundTripper must be safe for concurrent use by multiple\ngoroutines.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 1
     :go "&info_RoundTripper"}
   RoundTripper)
 
@@ -2833,6 +2848,7 @@ JOKER TYPE go.std.net.http.cookiejar/PublicSuffixList:
   ^{:doc "PublicSuffixList provides the public suffix of a domain. For example:\n     - the public suffix of \"example.com\" is \"com\",\n     - the public suffix of \"foo1.foo2.foo3.co.uk\" is \"co.uk\", and\n     - the public suffix of \"bar.pvt.k12.ma.us\" is \"pvt.k12.ma.us\".\n\nImplementations of PublicSuffixList must be safe for concurrent use by\nmultiple goroutines.\n\nAn implementation that always returns \"\" is valid and may be useful for\ntesting but it is not secure: it means that the HTTP server for foo.com can\nset a cookie for bar.com.\n\nA public suffix list implementation is in the package\ngolang.org/x/net/publicsuffix.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_PublicSuffixList"}
   PublicSuffixList)
 
@@ -3146,6 +3162,7 @@ JOKER TYPE go.std.net.http.httputil/BufferPool:
   ^{:doc "A BufferPool is an interface for getting and returning temporary\nbyte slices for use by io.CopyBuffer.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_BufferPool"}
   BufferPool)
 
@@ -3511,6 +3528,7 @@ JOKER TYPE go.std.net.rpc/ClientCodec:
   ^{:doc "A ClientCodec implements writing of RPC requests and\nreading of RPC responses for the client side of an RPC session.\nThe client calls WriteRequest to write a request to the connection\nand calls ReadResponseHeader and ReadResponseBody in pairs\nto read responses. The client calls Close when finished with the\nconnection. ReadResponseBody may be called with a nil\nargument to force the body of the response to be read and then\ndiscarded.\nSee NewClient's comment for information about concurrent access.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 4
     :go "&info_ClientCodec"}
   ClientCodec)
 
@@ -3567,6 +3585,7 @@ JOKER TYPE go.std.net.rpc/ServerCodec:
   ^{:doc "A ServerCodec implements reading of RPC requests and writing of\nRPC responses for the server side of an RPC session.\nThe server calls ReadRequestHeader and ReadRequestBody in pairs\nto read requests from the connection, and it calls WriteResponse to\nwrite a response back. The server calls Close when finished with the\nconnection. ReadRequestBody may be called with a nil\nargument to force the body of the request to be read and discarded.\nSee NewClient's comment for information about concurrent access.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 4
     :go "&info_ServerCodec"}
   ServerCodec)
 
@@ -3664,6 +3683,7 @@ JOKER TYPE go.std.net.smtp/Auth:
   ^{:doc "Auth is implemented by an SMTP authentication mechanism.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_Auth"}
   Auth)
 
