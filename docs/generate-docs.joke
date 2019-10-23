@@ -132,7 +132,7 @@
         (string/replace
          "{receivers}"
          (if (= GoType (type (deref v)))
-           (let [what (if (:specificity (meta v)) "Receiver" "Method")]
+           (let [what (if (:specificity (meta v)) "Method" "Receiver")]
              (receivers-doc k (deref v) what))
            "{blank}")))))
 
