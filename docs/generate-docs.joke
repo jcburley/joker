@@ -45,8 +45,8 @@
       (:tag m) (let [t (str (:tag m))]
                  (if (= t "GoType")
                    (str (if (:specificity m)
-                          "Abstract"
-                          "Concrete") t)
+                          "Abstract "
+                          "Concrete ") t)
                    (str t)))
       :else (str (type @v)))))
 
@@ -78,12 +78,12 @@
     (str prefix base)))
 
 (defn receiver-doc
-  [t r]
+  [t r what]
   (if-let [m (Go t r)]
     (-> receiver-template
         (string/replace "{id}" (str r))
         (string/replace "{name}" (str r))
-        (string/replace "{type}" (str "Receiver for " (type-string (str t))))
+        (string/replace "{type}" (str what " for " (type-string (str t))))
         (string/replace "{usage}" (string/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m)))
@@ -97,14 +97,14 @@
     "{blank}"))
 
 (defn receivers-doc
-  [k v]
+  [k v what]
   (let [go-type-info (deref (Go v nil))
         members (get go-type-info "Members")
         memvec (sort (get members nil))]
     (string/join
      ""
      (for [m memvec]
-       (receiver-doc v m)))))
+       (receiver-doc v m what)))))
 
 (defn var-doc
   [k v]
@@ -132,7 +132,8 @@
         (string/replace
          "{receivers}"
          (if (= GoType (type (deref v)))
-           (receivers-doc k (deref v))
+           (let [what (if (:specificity (meta v)) "Receiver" "Method")]
+             (receivers-doc k (deref v) what))
            "{blank}")))))
 
 (defn- first-line
