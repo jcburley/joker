@@ -205,7 +205,9 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	}
 	// doc = fullPkgName + "." + baseTypeName
 	// code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
-	doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, fn.SourceFile.Package.NsRoot, false, fn.Pos) + "." + baseTypeName
+	jokerStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
+	jokerStdPath := "github.com/candid82/joker/std/go/std/"
+	doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, jokerStdNs, jokerStdPath, false, fn.Pos) + "." + baseTypeName
 	code = doc
 	return
 }

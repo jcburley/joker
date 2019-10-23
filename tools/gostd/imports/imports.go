@@ -18,6 +18,7 @@ type Import struct {
 	LocalRef      string // local unless empty, in which case final component of full (e.g. "foo")
 	Full          string // "bar/bletch/foo"
 	ClojurePrefix string // E.g. "go.std."
+	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/" (for other namespaces)
 	substituted   bool   // Had to substitute a different local name
 	Pos           token.Pos
 }
@@ -33,7 +34,7 @@ type Imports struct {
 /* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func AddImport(imports *Imports, local, full, prefix string, okToSubstitute bool, pos token.Pos) string {
+func AddImport(imports *Imports, local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
 	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
@@ -80,7 +81,7 @@ func AddImport(imports *Imports, local, full, prefix string, okToSubstitute bool
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, localRef, full, prefix, substituted, pos}
+	imports.FullNames[full] = &Import{local, localRef, full, nsPrefix, pathPrefix, substituted, pos}
 	return localRef
 }
 
@@ -143,7 +144,7 @@ func JokerGoImportsMap(pi *Imports) string {
 	imports := []string{}
 	sortedImports(pi,
 		func(k string, v *Import) {
-			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, k))
+			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, v.PathPrefix+k))
 		})
 	return Join(imports, ", ")
 }
