@@ -65,13 +65,19 @@
   [ns]
   (string/join "_" (rest (string/split (str ns) #"\."))))
 
+(defn type-string
+  [^String t]
+  (let [prefix (get (string/split t #"[A-Za-z0-9_]+") 0)
+        base (get (string/split t #"/") 1)]
+    (str prefix base)))
+
 (defn receiver-doc
   [t r]
   (if-let [m (Go t r)]
     (-> receiver-template
         (string/replace "{id}" (str r))
         (string/replace "{name}" (str r))
-        (string/replace "{type}" (str "Receiver for " (get (string/split (str t) #"/") 1)))
+        (string/replace "{type}" (str "Receiver for " (type-string (str t))))
         (string/replace "{usage}" (string/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m)))
