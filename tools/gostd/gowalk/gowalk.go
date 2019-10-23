@@ -204,10 +204,10 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 		doc = baseTypeName
 		return
 	}
-	doc = fullPkgName + "." + baseTypeName
-	code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
-	// doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, true, fn.Pos) + "." + baseTypeName
-	// code = doc
+	// doc = fullPkgName + "." + baseTypeName
+	// code = "ABEND987(genutils.go: imports not yet supported: " + doc + ")"
+	doc = imports.AddImport(fn.Imports, path.Base(fullPkgName), fullPkgName, fn.SourceFile.Package.NsRoot, false, fn.Pos) + "." + baseTypeName
+	code = doc
 	return
 }
 

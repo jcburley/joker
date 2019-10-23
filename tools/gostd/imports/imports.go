@@ -14,11 +14,12 @@ import (
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
-	Local       string // "foo", "_", ".", or empty
-	LocalRef    string // local unless empty, in which case final component of full (e.g. "foo")
-	Full        string // "bar/bletch/foo"
-	substituted bool   // Had to substitute a different local name
-	Pos         token.Pos
+	Local         string // "foo", "_", ".", or empty
+	LocalRef      string // local unless empty, in which case final component of full (e.g. "foo")
+	Full          string // "bar/bletch/foo"
+	ClojurePrefix string // E.g. "go.std."
+	substituted   bool   // Had to substitute a different local name
+	Pos           token.Pos
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
@@ -32,7 +33,7 @@ type Imports struct {
 /* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func AddImport(imports *Imports, local, full string, okToSubstitute bool, pos token.Pos) string {
+func AddImport(imports *Imports, local, full, prefix string, okToSubstitute bool, pos token.Pos) string {
 	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
@@ -79,7 +80,7 @@ func AddImport(imports *Imports, local, full string, okToSubstitute bool, pos to
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, localRef, full, substituted, pos}
+	imports.FullNames[full] = &Import{local, localRef, full, prefix, substituted, pos}
 	return localRef
 }
 
@@ -136,4 +137,13 @@ func QuotedImportList(pi *Imports, prefix string) string {
 			}
 		})
 	return imports
+}
+
+func JokerGoImportsMap(pi *Imports) string {
+	imports := []string{}
+	sortedImports(pi,
+		func(k string, v *Import) {
+			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, k))
+		})
+	return Join(imports, ", ")
 }
