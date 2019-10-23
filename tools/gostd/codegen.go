@@ -313,7 +313,7 @@ func %s(%s) %s {
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			promoteImports(fn.Imports, pi.ImportsNative, fn.Pos)
 		}
-		if clojureReturnType != "" || fn.RefersToSelf {
+		if clojureReturnType != "" || fn.RefersToSelf || true {
 			myGoImport := imports.AddImport(pi.ImportsAutoGen, "", pkgDirUnix, fn.SourceFile.Package.NsRoot, true, fn.Pos)
 			clojureFn = strings.ReplaceAll(clojureFn, "{{myGoImport}}", myGoImport)
 			promoteImports(fn.Imports, pi.ImportsAutoGen, fn.Pos)
