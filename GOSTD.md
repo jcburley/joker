@@ -55,6 +55,8 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
 
+`(Go var := newval)`, where `var` is a GoVar, assigns `newval` to the variable. *Note:* Currently, only strings are supported.
+
 ## GoObject
 
 A `GoObject` is a Clojure (Joker) object that wraps a Go object (of type `interface{}`). E.g.:
@@ -337,6 +339,16 @@ user=>
 ```
 
 ### Referencing a Member of a GoObject
+
+#### Fields
+
+`(Go obj field)` returns a `GoVar` wrapping the field named (typically via a keyword) by `field`.
+
+The resulting `GoVar` can be dereferenced, as in `(deref var)`, yielding a snapshot of the value of that field at that time.
+
+It can also be changed, as if via Go's `:=` statement, via `(Go var := newval)`. *Note:* Currently, only `String` types are supported.
+
+#### Receivers and Methods
 
 `(Go obj receiver [args...])`, where `obj` is a `GoObject`, calls a receiver (or method) for `obj` with the specified arguments.
 

@@ -59,3 +59,12 @@
   (is (= (str (new go.std.net/MX {:Pref 99})) "&{ 99}"))
   (is (= (str (new HTML "this is an html object")) "this is an html object"))
   (is (= (str (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})) "hey there you: silly")))
+
+(deftest fields-work
+  (let [le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})
+        old (Go le :Old)]
+    (is (= (deref (Go le :Op)) "hey"))
+    (is (= (deref old) "there"))
+    (is (= (Go old := "wow") "wow"))
+    (is (= (deref old) "wow"))
+    (is (= (str le) "hey wow you: silly"))))

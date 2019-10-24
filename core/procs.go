@@ -771,10 +771,10 @@ var procGo Proc = func(args []Object) Object {
 	default:
 		panic(RT.NewArgTypeError(0, args[1], "Symbol, String, or Keyword"))
 	}
-	if member == "!" {
+	switch member {
+	case "!":
 		return MakeGoObject(args[0])
-	}
-	if member == "<>" {
+	case "<>":
 		// The (partial) reverse of this is MakeGoObjectIfNeeded(<obj>).
 		switch o := args[0].(type) {
 		case Int:
@@ -795,6 +795,24 @@ var procGo Proc = func(args []Object) Object {
 			return MakeGoObject(o.n)
 		}
 		return MakeGoObject(args[0])
+	case "=":
+		v := EnsureGoVar(args, 0)
+		goVar := reflect.ValueOf(v.Value)
+		k := goVar.Kind()
+		if k != reflect.Ptr {
+			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a Ptr, but rather a %s: %T", k, goVar)))
+		}
+		goVar = reflect.Indirect(goVar)
+		if !goVar.CanSet() {
+			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %T", k, goVar)))
+		}
+		arg := args[2].(*ArraySeq).First()
+		exprVal := reflect.ValueOf(arg.(String).S) // TODO: Support more/arbitrary types
+		if !exprVal.Type().AssignableTo(goVar.Type()) {
+			panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), goVar.Type())))
+		}
+		goVar.Set(exprVal)
+		return arg
 	}
 	o := EnsureGoObject(args, 0)
 	g := LookupGoType(o.O)
