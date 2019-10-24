@@ -757,8 +757,9 @@ func goGetTypeInfo(ty *GoType, arg Object) Object {
 
 var procGo Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
+	var goType *GoType
 	if ty, ok := args[0].(*GoType); ok {
-		return goGetTypeInfo(ty, args[1])
+		goType = ty
 	}
 	member := ""
 	switch s := args[1].(type) {
@@ -768,6 +769,7 @@ var procGo Proc = func(args []Object) Object {
 		member = s.S
 	case Keyword:
 		member = *s.name
+	case Nil:
 	default:
 		panic(RT.NewArgTypeError(0, args[1], "Symbol, String, or Keyword"))
 	}
@@ -778,6 +780,13 @@ var procGo Proc = func(args []Object) Object {
 		arg := args[0]
 		if val, ok := arg.(Native); ok {
 			return MakeGoObject(val.Native())
+		}
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
+	case ".":
+		arg := args[0]
+		if val, ok := arg.(Native); ok {
+			EnsureLoaded("go.std.reflect")
+			return MakeGoObject(reflect.ValueOf(val.Native()))
 		}
 		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
 	case "=":
@@ -805,6 +814,9 @@ var procGo Proc = func(args []Object) Object {
 		}
 		goVar.Set(exprVal)
 		return arg
+	}
+	if goType != nil {
+		return goGetTypeInfo(goType, args[1])
 	}
 	o := EnsureGoObject(args, 0)
 	g := LookupGoType(o.O)
