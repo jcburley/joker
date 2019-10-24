@@ -1582,13 +1582,16 @@
   for a Go object, returning result if applicable, else nil<br>
 <br>
   SPECIAL FORMS -- these are receiver names that cannot,<br>
-  syntactically, name Go receivers or methods. They ignore any<br>
+  syntactically, name Go receivers or methods. They ignore unused<br>
   arguments:<br>
 <br>
   &amp; returns a GoObject that wraps a pointer (reference) to (usually a<br>
   copy of) the original wrapped Go object. The GoType of the resulting<br>
   GoObject might not be fully supported. This is in lieu of a<br>
   proper (ref ...) function. E.g. (Go obj :&amp;).<br>
+<br>
+  = assigns the first value in args to the specified object. (Their<br>
+  types must be compatible.)<br>
 <br>
   ! returns a GoObject that wraps the first argument (which, in this<br>
   case, can be any Joker object) in a GoObject. E.g. (Go &#34;hey&#34; :!)<br>
@@ -1609,7 +1612,7 @@
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4525">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4528">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -3630,7 +3633,7 @@
   <pre class="var-usage"><div><code>(new t init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4519">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4522">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
@@ -4401,7 +4404,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4531">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4534">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
