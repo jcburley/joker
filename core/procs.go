@@ -802,10 +802,27 @@ var procGo Proc = func(args []Object) Object {
 		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
 	}
 	f := g.Members[member]
-	if f == nil {
-		panic(RT.NewError("Unsupported Go member " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
+	if f != nil {
+		// Currently only receivers/methods are listed in Members[].
+		return (f.Value.(*GoReceiver).R)(o, args[2])
 	}
-	return (f.Value.(*GoReceiver).R)(o, args[2])
+	v := reflect.ValueOf(o.O)
+	k := v.Kind()
+	if k == reflect.Ptr {
+		v = reflect.Indirect(v)
+		k = v.Kind()
+	}
+	if k != reflect.Struct {
+		panic(RT.NewError(fmt.Sprintf("Unsupported Kind %s for %s", k, GoTypeToString(reflect.TypeOf(o.O)))))
+	}
+	field := v.FieldByName(member)
+	if field.Kind() == reflect.Invalid {
+		panic(RT.NewError("No such Go member/field " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
+	}
+	if field.CanAddr() {
+		return &GoVar{Value: field.Addr().Interface()}
+	}
+	return &GoVar{Value: field.Interface()}
 }
 
 var procRef Proc = func(args []Object) Object {
