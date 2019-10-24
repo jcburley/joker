@@ -4495,12 +4495,8 @@
 
   SPECIAL FORMS -- these are receiver names that cannot,
   syntactically, name Go receivers or methods. They ignore unused
-  arguments:
-
-  & returns a GoObject that wraps a pointer (reference) to (usually a
-  copy of) the original wrapped Go object. The GoType of the resulting
-  GoObject might not be fully supported. This is in lieu of a
-  proper (ref ...) function. E.g. (Go obj :&).
+  arguments, and are intended primarily for use by developers of Joker
+  itself:
 
   = assigns the first value in args to the specified object. (Their
   types must be compatible; however, the first value will be
@@ -4509,14 +4505,15 @@
 
   ! returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
-  returns a GoObject wrapping a String.
+  returns a GoObject wrapping a String. This can aid Joker developers
+  in examining Joker objects directly.
 
   <> returns a GoObject that wraps the underlying object in the first
   argument (which, in this case, can be any Joker object), regardless
   of the usual conversion rules. E.g. (Go \"hey\" :<>) returns a
   GoObject wrapping a string. (Not all underlying types are supported;
   in such cases, the original Joker argument is wrapped by a
-  GoObject.)"
+  GoObject. Also intended for use primarily by Joker developers.)"
   {:added "1.0"}
   [^GoObject o m & args]
   (go__ o m args))
