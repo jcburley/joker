@@ -261,7 +261,7 @@ Similarly, implicit conversion of `String` expressions to Go types that have `st
 
 For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
 
-For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as an expression that evaluates to a string or symbol) of the receiver, and any arguments:
+For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as an expression that evaluates to a keyword, string, or symbol) of the receiver, and any arguments:
 
 ```
 user=> (use 'go.std.net)
@@ -274,11 +274,11 @@ user=> (def im (IPv4Mask 252 0 0 0))
 #'user/im
 user=> im
 fc000000
-user=> (Go im "Size")
+user=> (Go im :Size)
 [6 32]
-user=> (Go ip "Equal" ip)
+user=> (Go ip :Equal ip)
 true
-user=> (Go ip "Equal" im)
+user=> (Go ip :Equal im)
 <joker.core>:4458:3: Eval error: Argument 0 passed to (_net.IP)Equal() should be type GoObject[go.std.net/IP], but is GoObject[net.IPMask]
 Stacktrace:
   global <repl>:20:1
@@ -340,19 +340,44 @@ user=>
 
 ### Referencing a Member of a GoObject
 
-#### Fields
+#### Fields in Structures
 
-`(Go obj field)` returns a `GoVar` wrapping the field named (typically via a keyword) by `field`.
+`(Go obj field)` returns a `GoVar` wrapping the field named (typically via a keyword) by `field`. `obj` must denote a structure (`struct` type in Go).
 
 The resulting `GoVar` can be dereferenced, as in `(deref var)`, yielding a snapshot of the value of that field at that time.
 
 It can also be changed, as if via Go's `:=` statement, via `(Go var := newval)`. *Note:* Currently, only `String` types are supported.
 
+For example:
+
+```
+user=> (use 'go.std.os)
+nil
+user=> (def le (new LinkError {:Op "hi" :Old "there" :New "you" :Err "silly"}))
+#'user/le
+user=> (str le)
+"hi there you: silly"
+user=> (Go le :Old)
+0xc000f56a10
+user=> (def v (Go le :Old))
+#'user/v
+user=> (Go v := "golly")
+"golly"
+user=> (str le)
+"hi golly you: silly"
+user=> (Go Stdout := "whoa")
+<joker.core>:4517:3: Eval error: Cannot assign a string to a *os.File
+Stacktrace:
+  global <repl>:3:1
+  core/Go <joker.core>:4517:3
+user=>
+```
+
 #### Receivers and Methods
 
 `(Go obj receiver [args...])`, where `obj` is a `GoObject`, calls a receiver (or method) for `obj` with the specified arguments.
 
-As `Go` is a function, `receiver` (like `obj` and `args`) is evaluated. Typically it will be a self-evaluating form, as it must evaluate to a symbol, string, or keyword, which are supported as equivalent:
+As `Go` is a function, `receiver` (like `obj` and `args`) is evaluated. Typically it will be a self-evaluating form, as it must evaluate to a keyword, symbol, or string, which are supported as equivalent:
 
 ```
 user=> (use 'go.std.os)
