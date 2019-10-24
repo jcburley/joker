@@ -47,6 +47,12 @@ type (
 		GetType() *Type
 		Hash() uint32
 	}
+	Valuable interface {
+		Object
+
+		// Similar to reflect.ValueOf(obj.Native()), but (for some types) panics "nicely" if the underlying object is nil
+		ValueOf() reflect.Value
+	}
 	Conjable interface {
 		Object
 		Conj(obj Object) Conjable
@@ -648,6 +654,10 @@ func (a *Atom) Deref() Object {
 	return a.value
 }
 
+func (a *Atom) ValueOf() reflect.Value {
+	return reflect.ValueOf(a.value)
+}
+
 func (d *Delay) ToString(escape bool) string {
 	return "#object[Delay]"
 }
@@ -685,6 +695,10 @@ func (d *Delay) Deref() Object {
 
 func (d *Delay) IsRealized() bool {
 	return d.value != nil
+}
+
+func (d *Delay) ValueOf() reflect.Value {
+	return reflect.ValueOf(d.value)
 }
 
 func (t *Type) ToString(escape bool) string {
@@ -957,6 +971,13 @@ func (v *Var) Deref() Object {
 	return v.Resolve()
 }
 
+func (v *Var) ValueOf() reflect.Value {
+	if v.Value == nil {
+		panic(RT.NewError("Unbound var: " + v.ToString(false)))
+	}
+	return reflect.ValueOf(v.Value)
+}
+
 func (v *GoVar) ToString(escape bool) string {
 	return fmt.Sprintf("%v", reflect.ValueOf(v.Value))
 }
@@ -1002,6 +1023,13 @@ func (v *GoVar) Deref() interface{} {
 
 func (v *GoVar) Get(key Object) (bool, Object) {
 	return GoObjectGet(v.Resolve().(GoObject).O, key)
+}
+
+func (v *GoVar) ValueOf() reflect.Value {
+	if v.Value == nil {
+		panic(RT.NewError("Unbound var: " + v.ToString(false)))
+	}
+	return reflect.ValueOf(v.Value)
 }
 
 func (n Nil) ToString(escape bool) string {
@@ -1089,6 +1117,10 @@ func (n Nil) Vals() Seq {
 	return NIL
 }
 
+func (n Nil) ValueOf() reflect.Value {
+	return reflect.ValueOf(NIL)
+}
+
 func (rat *Ratio) ToString(escape bool) string {
 	return rat.r.String()
 }
@@ -1107,6 +1139,10 @@ func (rat *Ratio) Hash() uint32 {
 
 func (rat *Ratio) Compare(other Object) int {
 	return CompareNumbers(rat, AssertNumber(other, "Cannot compare Ratio and "+other.GetType().ToString(false)))
+}
+
+func (rat *Ratio) ValueOf() reflect.Value {
+	return reflect.ValueOf(&rat.r)
 }
 
 func MakeBigInt(bi int64) *BigInt {
@@ -1146,6 +1182,10 @@ func (bi *BigInt) Compare(other Object) int {
 	return CompareNumbers(bi, AssertNumber(other, "Cannot compare BigInt and "+other.GetType().ToString(false)))
 }
 
+func (bi *BigInt) ValueOf() reflect.Value {
+	return reflect.ValueOf(&bi.b)
+}
+
 func (bf *BigFloat) ToString(escape bool) string {
 	return bf.b.Text('g', -1) + "M"
 }
@@ -1164,6 +1204,10 @@ func (bf *BigFloat) Hash() uint32 {
 
 func (bf *BigFloat) Compare(other Object) int {
 	return CompareNumbers(bf, AssertNumber(other, "Cannot compare BigFloat and "+other.GetType().ToString(false)))
+}
+
+func (bf *BigFloat) ValueOf() reflect.Value {
+	return reflect.ValueOf(&bf.b)
 }
 
 func (c Char) ToString(escape bool) string {
@@ -1188,6 +1232,10 @@ func (c Char) GetType() *Type {
 
 func (c Char) Native() interface{} {
 	return c.Ch
+}
+
+func (c Char) ValueOf() reflect.Value {
+	return reflect.ValueOf(c.Ch)
 }
 
 func (c Char) Hash() uint32 {
@@ -1298,6 +1346,10 @@ func (o GoObject) Native() interface{} {
 	return o.O
 }
 
+func (o GoObject) ValueOf() reflect.Value {
+	return reflect.ValueOf(o.O)
+}
+
 func (o GoObject) Hash() uint32 {
 	h := getHash()
 	b := make([]byte, 8)
@@ -1351,6 +1403,10 @@ func (t *GoType) Native() interface{} {
 	return t.T
 }
 
+func (t *GoType) ValueOf() reflect.Value {
+	return reflect.ValueOf(t.T)
+}
+
 func (t *GoType) Hash() uint32 {
 	h := getHash()
 	b := make([]byte, 8)
@@ -1382,6 +1438,10 @@ func (d Double) GetType() *Type {
 
 func (d Double) Native() interface{} {
 	return d.D
+}
+
+func (d Double) ValueOf() reflect.Value {
+	return reflect.ValueOf(d.D)
 }
 
 func (d Double) Hash() uint32 {
@@ -1416,6 +1476,10 @@ func (i Int) Native() interface{} {
 	return i.I
 }
 
+func (i Int) ValueOf() reflect.Value {
+	return reflect.ValueOf(i.I)
+}
+
 func (i Int) Hash() uint32 {
 	h := getHash()
 	b := make([]byte, 8)
@@ -1447,6 +1511,10 @@ func (b Boolean) GetType() *Type {
 
 func (b Boolean) Native() interface{} {
 	return b.B
+}
+
+func (b Boolean) ValueOf() reflect.Value {
+	return reflect.ValueOf(b.B)
 }
 
 func (b Boolean) Hash() uint32 {
@@ -1491,6 +1559,10 @@ func (t Time) GetType() *Type {
 
 func (t Time) Native() interface{} {
 	return t.T
+}
+
+func (t Time) ValueOf() reflect.Value {
+	return reflect.ValueOf(t.T)
 }
 
 func (t Time) Hash() uint32 {
@@ -1658,6 +1730,10 @@ func (s String) GetType() *Type {
 
 func (s String) Native() interface{} {
 	return s.S
+}
+
+func (s String) ValueOf() reflect.Value {
+	return reflect.ValueOf(s.S)
 }
 
 func (s String) Hash() uint32 {

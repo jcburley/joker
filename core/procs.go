@@ -807,9 +807,16 @@ var procGo Proc = func(args []Object) Object {
 			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %T", k, goVar)))
 		}
 		arg := args[2].(*ArraySeq).First()
-		exprVal := reflect.ValueOf(arg.(String).S) // TODO: Support more/arbitrary types
+		exprValue, ok := arg.(Valuable)
+		if !ok {
+			panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Valuable)", arg)))
+		}
+		exprVal := exprValue.ValueOf()
 		if !exprVal.Type().AssignableTo(goVar.Type()) {
-			panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), goVar.Type())))
+			if !reflect.Indirect(exprVal).Type().AssignableTo(goVar.Type()) {
+				panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), goVar.Type())))
+			}
+			exprVal = reflect.Indirect(exprVal)
 		}
 		goVar.Set(exprVal)
 		return arg

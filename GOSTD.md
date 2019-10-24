@@ -55,7 +55,7 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
 
-`(Go var := newval)`, where `var` is a GoVar, assigns `newval` to the variable. *Note:* Currently, only strings are supported.
+`(Go var := newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
 ## GoObject
 
@@ -346,7 +346,7 @@ user=>
 
 The resulting `GoVar` can be dereferenced, as in `(deref var)`, yielding a snapshot of the value of that field at that time.
 
-It can also be changed, as if via Go's `:=` statement, via `(Go var := newval)`. *Note:* Currently, only `String` types are supported.
+It can also be changed, as if via Go's `:=` statement, via `(Go var := newval)`.
 
 For example:
 

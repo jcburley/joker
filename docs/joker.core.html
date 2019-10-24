@@ -1591,7 +1591,9 @@
   proper (ref ...) function. E.g. (Go obj :&amp;).<br>
 <br>
   = assigns the first value in args to the specified object. (Their<br>
-  types must be compatible.) It returns that first value.<br>
+  types must be compatible; however, the first value will be<br>
+  dereferenced once, for purposes of the assignment, if that enables<br>
+  compatibility.) It returns that first value.<br>
 <br>
   ! returns a GoObject that wraps the first argument (which, in this<br>
   case, can be any Joker object) in a GoObject. E.g. (Go &#34;hey&#34; :!)<br>
@@ -1612,7 +1614,7 @@
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4528">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4530">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -3633,7 +3635,7 @@
   <pre class="var-usage"><div><code>(new t init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4522">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4524">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
@@ -4404,7 +4406,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4534">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4536">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>

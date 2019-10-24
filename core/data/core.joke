@@ -4503,7 +4503,9 @@
   proper (ref ...) function. E.g. (Go obj :&).
 
   = assigns the first value in args to the specified object. (Their
-  types must be compatible.) It returns that first value.
+  types must be compatible; however, the first value will be
+  dereferenced once, for purposes of the assignment, if that enables
+  compatibility.) It returns that first value.
 
   ! returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
