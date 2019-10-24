@@ -1025,6 +1025,13 @@ func (v *GoVar) Get(key Object) (bool, Object) {
 	return GoObjectGet(v.Resolve().(GoObject).O, key)
 }
 
+func (v *GoVar) Native() interface{} {
+	if v.Value == nil {
+		panic(RT.NewError("Unbound var: " + v.ToString(false)))
+	}
+	return v.Value
+}
+
 func (v *GoVar) ValueOf() reflect.Value {
 	if v.Value == nil {
 		panic(RT.NewError("Unbound var: " + v.ToString(false)))

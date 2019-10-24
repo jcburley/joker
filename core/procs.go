@@ -775,26 +775,11 @@ var procGo Proc = func(args []Object) Object {
 	case "!":
 		return MakeGoObject(args[0])
 	case "<>":
-		// The (partial) reverse of this is MakeGoObjectIfNeeded(<obj>).
-		switch o := args[0].(type) {
-		case Int:
-			return MakeGoObject(o.I)
-		case Double:
-			return MakeGoObject(o.D)
-		case String:
-			return MakeGoObject(o.S)
-		case *BigInt:
-			return MakeGoObject(o.b)
-		case *BigFloat:
-			return MakeGoObject(o.b)
-		case Time:
-			return MakeGoObject(o.T)
-		case Boolean:
-			return MakeGoObject(o.B)
-		case Nil:
-			return MakeGoObject(o.n)
+		arg := args[0]
+		if val, ok := arg.(Native); ok {
+			return MakeGoObject(val.Native())
 		}
-		return MakeGoObject(args[0])
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
 	case "=":
 		v := EnsureGoVar(args, 0)
 		goVar := reflect.ValueOf(v.Value)
