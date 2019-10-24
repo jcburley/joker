@@ -68,3 +68,15 @@
     (is (= (Go old := "wow") "wow"))
     (is (= (deref old) "wow"))
     (is (= (str le) "hey wow you: silly"))))
+
+(deftest govars-work
+  (let [dnserr (new DNSError {})
+        temp (Go dnserr :IsTemporary)
+        notfound (Go dnserr :IsNotFound)]
+    (is (not (deref notfound)))
+    (is (not (deref temp)))
+    (is (Go temp := true))
+    (is (deref temp))
+    (is (not (deref notfound)))
+    (Go notfound := temp)
+    (is (deref notfound))))
