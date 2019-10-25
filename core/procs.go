@@ -786,7 +786,10 @@ var procGo Proc = func(args []Object) Object {
 		arg := args[0]
 		if val, ok := arg.(Native); ok {
 			EnsureLoaded("go.std.reflect")
-			return MakeGoObject(reflect.ValueOf(val.Native()))
+			if goType == nil {
+				return MakeGoObject(reflect.ValueOf(val.Native()))
+			}
+			return MakeGoObject(val.Native())
 		}
 		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
 	case "=":

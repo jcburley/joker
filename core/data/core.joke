@@ -4503,6 +4503,10 @@
   dereferenced once, for purposes of the assignment, if that enables
   compatibility.) It returns that first value.
 
+  . returns, wrapped by a GoObject, either (for a GoType argument) the
+  reflect.Type of the underlying type or (for an argument of some
+  other type) a reflect.Value of the underlying value.
+
   ! returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
   returns a GoObject wrapping a String. This can aid Joker developers

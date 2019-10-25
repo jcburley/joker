@@ -14,6 +14,7 @@ type GoTypeInfo struct {
 	GoType  *GoType
 	Ctor    func(Object) Object
 	Members GoMembers
+	Type    reflect.Type
 }
 
 func LookupGoType(g interface{}) *GoTypeInfo {

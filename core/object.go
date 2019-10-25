@@ -1407,11 +1407,11 @@ func (t *GoType) GetType() *Type {
 }
 
 func (t *GoType) Native() interface{} {
-	return t.T
+	return t.T.Type
 }
 
 func (t *GoType) ValueOf() reflect.Value {
-	return reflect.ValueOf(t.T)
+	return reflect.ValueOf(t.T.Type)
 }
 
 func (t *GoType) Hash() uint32 {
