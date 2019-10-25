@@ -655,6 +655,7 @@ func (a *Atom) Deref() Object {
 }
 
 func (a *Atom) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(a.value)
 }
 
@@ -698,6 +699,7 @@ func (d *Delay) IsRealized() bool {
 }
 
 func (d *Delay) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(d.value)
 }
 
@@ -975,6 +977,7 @@ func (v *Var) ValueOf() reflect.Value {
 	if v.Value == nil {
 		panic(RT.NewError("Unbound var: " + v.ToString(false)))
 	}
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(v.Value)
 }
 
@@ -1036,6 +1039,7 @@ func (v *GoVar) ValueOf() reflect.Value {
 	if v.Value == nil {
 		panic(RT.NewError("Unbound var: " + v.ToString(false)))
 	}
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(v.Value)
 }
 
@@ -1125,6 +1129,7 @@ func (n Nil) Vals() Seq {
 }
 
 func (n Nil) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(NIL)
 }
 
@@ -1149,6 +1154,7 @@ func (rat *Ratio) Compare(other Object) int {
 }
 
 func (rat *Ratio) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(&rat.r)
 }
 
@@ -1190,6 +1196,7 @@ func (bi *BigInt) Compare(other Object) int {
 }
 
 func (bi *BigInt) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(&bi.b)
 }
 
@@ -1214,6 +1221,7 @@ func (bf *BigFloat) Compare(other Object) int {
 }
 
 func (bf *BigFloat) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(&bf.b)
 }
 
@@ -1242,6 +1250,7 @@ func (c Char) Native() interface{} {
 }
 
 func (c Char) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(c.Ch)
 }
 
@@ -1354,6 +1363,7 @@ func (o GoObject) Native() interface{} {
 }
 
 func (o GoObject) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(o.O)
 }
 
@@ -1411,6 +1421,7 @@ func (t *GoType) Native() interface{} {
 }
 
 func (t *GoType) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(t.T.Type)
 }
 
@@ -1448,6 +1459,7 @@ func (d Double) Native() interface{} {
 }
 
 func (d Double) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(d.D)
 }
 
@@ -1484,6 +1496,7 @@ func (i Int) Native() interface{} {
 }
 
 func (i Int) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(i.I)
 }
 
@@ -1521,6 +1534,7 @@ func (b Boolean) Native() interface{} {
 }
 
 func (b Boolean) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(b.B)
 }
 
@@ -1569,6 +1583,7 @@ func (t Time) Native() interface{} {
 }
 
 func (t Time) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(t.T)
 }
 
@@ -1740,6 +1755,7 @@ func (s String) Native() interface{} {
 }
 
 func (s String) ValueOf() reflect.Value {
+	EnsureLoaded("go.std.reflect")
 	return reflect.ValueOf(s.S)
 }
 

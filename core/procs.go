@@ -784,14 +784,10 @@ var procGo Proc = func(args []Object) Object {
 		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
 	case ".":
 		arg := args[0]
-		if val, ok := arg.(Native); ok {
-			EnsureLoaded("go.std.reflect")
-			if goType == nil {
-				return MakeGoObject(reflect.ValueOf(val.Native()))
-			}
-			return MakeGoObject(val.Native())
+		if val, ok := arg.(Valuable); ok {
+			return MakeGoObject(val.ValueOf())
 		}
-		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a ValueOf)", arg)))
 	case "=":
 		v := EnsureGoVar(args, 0)
 		goVar := reflect.ValueOf(v.Value)
