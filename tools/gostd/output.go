@@ -397,7 +397,8 @@ import (%s
 	%s = GoTypeInfo{Name: "%s",
 		GoType: &GoType{T: &%s},
 %s		Members: GoMembers{
-%s		}}
+%s		},
+%s	}
 
 `
 
@@ -429,7 +430,7 @@ import (%s
 `[1:],
 						c, c, g, strconv.Quote(CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
-			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem)
+			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem, "" /*"Type:"..., but probably not needed*/)
 			if outputCode {
 				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
 			}
