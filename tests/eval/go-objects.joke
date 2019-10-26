@@ -90,3 +90,9 @@
     (is (= (type (deref one)) Int))
     (is (= (type c) GoObject))
     (is (= (type (deref c)) Int))))
+
+(deftest array-args-work
+  (is (go.std.bytes/Equal "hey" "hey"))
+  (is (not (go.std.bytes/Equal "hey" "there")))
+  (is (go.std.sort/IntsAreSorted [1 2 3 4]))
+  (is (not (go.std.sort/IntsAreSorted [1 2 4 3]))))

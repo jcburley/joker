@@ -17,7 +17,7 @@ import (
 
 */
 
-func ConvertToArrayOfByte(o Object) []byte {
+func ConvertToArrayOfbyte(o Object) []byte {
 	switch obj := o.(type) {
 	case String:
 		return []byte(obj.S)
@@ -42,7 +42,7 @@ func ConvertToArrayOfByte(o Object) []byte {
 	}
 }
 
-func ConvertToArrayOfInt(o Object) []int {
+func ConvertToArrayOfint(o Object) []int {
 	switch obj := o.(type) {
 	case *Vector:
 		vec := make([]int, obj.Count())
@@ -65,7 +65,7 @@ func ConvertToArrayOfInt(o Object) []int {
 	}
 }
 
-func ConvertToArrayOfString(o Object) []string {
+func ConvertToArrayOfstring(o Object) []string {
 	switch obj := o.(type) {
 	case *Vector:
 		vec := make([]string, obj.Count())

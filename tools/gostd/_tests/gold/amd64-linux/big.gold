@@ -2219,11 +2219,11 @@ JOKER FUNC net/http.CanonicalHeaderKey from net/http/header.go:
   [^String __s])
 
 JOKER FUNC net/http.DetectContentType from net/http/sniff.go:
-;; (defn ^"String" DetectContentType
-;;   "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Int) data]\n\nJoker return type: String"
-;;   {:added "1.0"
-;;    :go "http.DetectContentType(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__data)))"}
-;;   [^Object __data])
+(defn ^"String" DetectContentType
+  "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Int) data]\n\nJoker return type: String"
+  {:added "1.0"
+   :go "http.DetectContentType(ConvertToArrayOfbyte(__data))"}
+  [^Object __data])
 
 JOKER FUNC net/http.Error from net/http/server.go:
 ;; (defn Error
@@ -3672,11 +3672,11 @@ JOKER FUNC net/smtp.PlainAuth from net/smtp/auth.go:
   [^String __identity, ^String __username, ^String __password, ^String __host])
 
 JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
-;; (defn ^"Error" SendMail
-;;   "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^(vector-of String) to, ^(vector-of Int) msg]\n\nJoker return type: Error"
-;;   {:added "1.0"
-;;    :go "smtp.SendMail(__addr, *__a, __from, ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfstring(__to)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__msg)))"}
-;;   [^String __addr, ^go.std.net.smtp/Auth __a, ^String __from, ^Object __to, ^Object __msg])
+(defn ^"Error" SendMail
+  "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^(vector-of String) to, ^(vector-of Int) msg]\n\nJoker return type: Error"
+  {:added "1.0"
+   :go "smtp.SendMail(__addr, *__a, __from, ConvertToArrayOfstring(__to), ConvertToArrayOfbyte(__msg))"}
+  [^String __addr, ^go.std.net.smtp/Auth __a, ^String __from, ^Object __to, ^Object __msg])
 
 JOKER TYPE go.std.net.smtp/Auth:
 (def
@@ -3762,11 +3762,11 @@ JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
   [^go.std.bufio/Writer __w])
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
-;; (defn TrimBytes
-;;   "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: (vector-of Int)"
-;;   {:added "1.0"
-;;    :go "__trimBytes(ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))"}
-;;   [^Object __b])
+(defn TrimBytes
+  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: (vector-of Int)"
+  {:added "1.0"
+   :go "__trimBytes(ConvertToArrayOfbyte(__b))"}
+  [^Object __b])
 
 JOKER FUNC net/textproto.TrimString from net/textproto/textproto.go:
 (defn ^"String" TrimString
@@ -5892,7 +5892,14 @@ func __conn_LocalAddr(o GoObject, args Object) Object {  // Method
 
 GO FUNC net.__conn_Read from net/net.go:
 // func __conn_Read(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(net.Conn)Read()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/net.go:117:9)
+// 	n, err := o.O.(net.Conn).Read(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__conn_RemoteAddr from net/net.go:
 func __conn_RemoteAddr(o GoObject, args Object) Object {  // Method
@@ -5927,7 +5934,14 @@ GO FUNC net.__conn_SetWriteDeadline from net/net.go:
 
 GO FUNC net.__conn_Write from net/net.go:
 // func __conn_Write(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(net.Conn)Write()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/net.go:122:10)
+// 	n, err := o.O.(net.Conn).Write(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__error_Error from net/net.go:
 // func __error_Error(o GoObject, args Object) Object {  // Method
@@ -6149,7 +6163,15 @@ func __packetConn_LocalAddr(o GoObject, args Object) Object {  // Method
 
 GO FUNC net.__packetConn_ReadFrom from net/net.go:
 // func __packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+// 	_argList := CheckGoArity("(net.PacketConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/big/src/net/net.go:314:13)
+// 	n, addr, err := o.O.(net.PacketConn).ReadFrom(__p)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__packetConn_SetDeadline from net/net.go:
 // func __packetConn_SetDeadline(o GoObject, args Object) Object {  // Method
@@ -6177,7 +6199,15 @@ GO FUNC net.__packetConn_SetWriteDeadline from net/net.go:
 
 GO FUNC net.__packetConn_WriteTo from net/net.go:
 // func __packetConn_WriteTo(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)), *__addr)}
+// 	_argList := CheckGoArity("(net.PacketConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/big/src/net/net.go:321:12)
+// 	__addr := ExtractGo_go_std_net__Addr("(net.PacketConn)WriteTo()", "__addr", _argList, 1)
+// 	n, err := o.O.(net.PacketConn).WriteTo(__p, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_AddrError_Error from net/net.go:
 func __ptrTo_AddrError_Error(o GoObject, args Object) Object {  // Receiver
@@ -6202,7 +6232,14 @@ func __ptrTo_AddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
 // func __ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+// 	_argList := CheckGoArity("(*net.Buffers)Read()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/big/src/net/net.go:665:26)
+// 	n, err := o.O.(*net.Buffers).Read(__p)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
 // func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {  // Receiver
@@ -6298,15 +6335,42 @@ func __ptrTo_IPAddr_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_IPConn_ReadFrom from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:125:29)
+// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFrom(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:113:31)
+// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFromIP(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:146:35)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/iprawsock.go:146:35)
+// 	n, oobn, flags, addr, err := o.O.(*net.IPConn).ReadMsgIP(__b, __oob)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(MakeInt(flags))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func __ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
@@ -6314,15 +6378,41 @@ GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 
 GO FUNC net.__ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)), __addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/iprawsock.go:191:49)
+// 	n, oobn, err := o.O.(*net.IPConn).WriteMsgIP(__b, __oob, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteTo from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), *__addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:170:28)
+// 	__addr := ExtractGo_go_std_net__Addr("(*net.IPConn)WriteTo()", "__addr", _argList, 1)
+// 	_res1, _res2 := o.O.(*net.IPConn).WriteTo(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), __addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteToIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/iprawsock.go:158:30)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/iprawsock.go:158:43)
+// 	_res1, _res2 := o.O.(*net.IPConn).WriteToIP(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
@@ -6348,7 +6438,11 @@ func __ptrTo_IPNet_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
 // func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__text)))}
+// 	_argList := CheckGoArity("(*net.IP)UnmarshalText()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __text at: _tests/big/src/net/ip.go:390:34)
+// 	_res := o.O.(*net.IP).UnmarshalText(__text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net.__ptrTo_Interface_Addrs from net/interface.go:
 func __ptrTo_Interface_Addrs(o GoObject, args Object) Object {  // Receiver
@@ -6713,15 +6807,42 @@ func __ptrTo_UDPAddr_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_UDPConn_ReadFrom from net/udpsock.go:
 // func __ptrTo_UDPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.UDPConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:117:30)
+// 	_res1, _res2, _res3 := o.O.(*net.UDPConn).ReadFrom(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UDPConn_ReadFromUDP from net/udpsock.go:
 // func __ptrTo_UDPConn_ReadFromUDP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.UDPConn)ReadFromUDP()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:105:33)
+// 	_res1, _res2, _res3 := o.O.(*net.UDPConn).ReadFromUDP(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UDPConn_ReadMsgUDP from net/udpsock.go:
 // func __ptrTo_UDPConn_ReadMsgUDP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)))}
+// 	_argList := CheckGoArity("(*net.UDPConn)ReadMsgUDP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:138:37)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/udpsock.go:138:37)
+// 	n, oobn, flags, addr, err := o.O.(*net.UDPConn).ReadMsgUDP(__b, __oob)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(MakeInt(flags))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 // func __ptrTo_UDPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
@@ -6729,15 +6850,41 @@ GO FUNC net.__ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 
 GO FUNC net.__ptrTo_UDPConn_WriteMsgUDP from net/udpsock.go:
 // func __ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)), __addr)}
+// 	_argList := CheckGoArity("(*net.UDPConn)WriteMsgUDP()", args, 3, 3)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:185:38)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/udpsock.go:185:38)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/udpsock.go:185:51)
+// 	n, oobn, err := o.O.(*net.UDPConn).WriteMsgUDP(__b, __oob, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UDPConn_WriteTo from net/udpsock.go:
 // func __ptrTo_UDPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), *__addr)}
+// 	_argList := CheckGoArity("(*net.UDPConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:162:29)
+// 	__addr := ExtractGo_go_std_net__Addr("(*net.UDPConn)WriteTo()", "__addr", _argList, 1)
+// 	_res1, _res2 := o.O.(*net.UDPConn).WriteTo(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UDPConn_WriteToUDP from net/udpsock.go:
 // func __ptrTo_UDPConn_WriteToUDP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), __addr)}
+// 	_argList := CheckGoArity("(*net.UDPConn)WriteToUDP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/udpsock.go:150:32)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/udpsock.go:150:45)
+// 	_res1, _res2 := o.O.(*net.UDPConn).WriteToUDP(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixAddr_Network from net/unixsock.go:
 func __ptrTo_UnixAddr_Network(o GoObject, args Object) Object {  // Receiver
@@ -6769,15 +6916,42 @@ func __ptrTo_UnixConn_CloseWrite(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_UnixConn_ReadFrom from net/unixsock.go:
 // func __ptrTo_UnixConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.UnixConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:115:31)
+// 	_res1, _res2, _res3 := o.O.(*net.UnixConn).ReadFrom(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixConn_ReadFromUnix from net/unixsock.go:
 // func __ptrTo_UnixConn_ReadFromUnix(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.UnixConn)ReadFromUnix()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:103:35)
+// 	_res1, _res2, _res3 := o.O.(*net.UnixConn).ReadFromUnix(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixConn_ReadMsgUnix from net/unixsock.go:
 // func __ptrTo_UnixConn_ReadMsgUnix(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)))}
+// 	_argList := CheckGoArity("(*net.UnixConn)ReadMsgUnix()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:136:39)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/unixsock.go:136:39)
+// 	n, oobn, flags, addr, err := o.O.(*net.UnixConn).ReadMsgUnix(__b, __oob)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(MakeInt(flags))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 // func __ptrTo_UnixConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
@@ -6785,15 +6959,41 @@ GO FUNC net.__ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 
 GO FUNC net.__ptrTo_UnixConn_WriteMsgUnix from net/unixsock.go:
 // func __ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)), __addr)}
+// 	_argList := CheckGoArity("(*net.UnixConn)WriteMsgUnix()", args, 3, 3)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:181:40)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/big/src/net/unixsock.go:181:40)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/unixsock.go:181:53)
+// 	n, oobn, err := o.O.(*net.UnixConn).WriteMsgUnix(__b, __oob, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixConn_WriteTo from net/unixsock.go:
 // func __ptrTo_UnixConn_WriteTo(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), *__addr)}
+// 	_argList := CheckGoArity("(*net.UnixConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:160:30)
+// 	__addr := ExtractGo_go_std_net__Addr("(*net.UnixConn)WriteTo()", "__addr", _argList, 1)
+// 	_res1, _res2 := o.O.(*net.UnixConn).WriteTo(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixConn_WriteToUnix from net/unixsock.go:
 // func __ptrTo_UnixConn_WriteToUnix(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), __addr)}
+// 	_argList := CheckGoArity("(*net.UnixConn)WriteToUnix()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/big/src/net/unixsock.go:148:34)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/big/src/net/unixsock.go:148:47)
+// 	_res1, _res2 := o.O.(*net.UnixConn).WriteToUnix(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_UnixListener_Accept from net/unixsock.go:
 func __ptrTo_UnixListener_Accept(o GoObject, args Object) Object {  // Receiver
@@ -8794,12 +8994,6 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 	return MakeGoObject(_Ctor_Transport(_o))
 // }
 
-GO FUNC net/http.DetectContentType from net/http/sniff.go:
-// func __detectContentType(__data []byte)  {
-// 	_res := http.DetectContentType(__data)
-// 	return MakeString(_res)
-// }
-
 GO FUNC net/http.Error from net/http/server.go:
 // func __error(__w http.ResponseWriter, __error string, __code int) Object {
 // 	http.Error(__w, __error, __code)
@@ -9464,7 +9658,14 @@ func __responseWriter_Header(o GoObject, args Object) Object {  // Method
 
 GO FUNC net/http.__responseWriter_Write from net/http/server.go:
 // func __responseWriter_Write(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
+// 	_argList := CheckGoArity("(net/http.ResponseWriter)Write()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __arg1 at: _tests/big/src/net/http/server.go:137:8)
+// 	_res1, _res2 := o.O.(http.ResponseWriter).Write(__arg1)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net/http.__responseWriter_WriteHeader from net/http/server.go:
 // func __responseWriter_WriteHeader(o GoObject, args Object) Object {  // Method
@@ -10604,7 +10805,14 @@ func __ptrTo_ResponseRecorder_Result(o GoObject, args Object) Object {  // Recei
 
 GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_Write from net/http/httptest/recorder.go:
 // func __ptrTo_ResponseRecorder_Write(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__buf)))}
+// 	_argList := CheckGoArity("(*httptest.ResponseRecorder)Write()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __buf at: _tests/big/src/net/http/httptest/recorder.go:102:39)
+// 	_res1, _res2 := o.O.(*httptest.ResponseRecorder).Write(__buf)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net/http/httptest.__ptrTo_ResponseRecorder_WriteHeader from net/http/httptest/recorder.go:
 // func __ptrTo_ResponseRecorder_WriteHeader(o GoObject, args Object) Object {  // Receiver
@@ -11370,7 +11578,8 @@ func __bufferPool_Get(o GoObject, args Object) Object {  // Method
 
 GO FUNC net/http/httputil.__bufferPool_Put from net/http/httputil/reverseproxy.go:
 // func __bufferPool_Put(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__arg1)))}
+// 	...ABEND275: TODO...
+// }
 
 GO FUNC net/http/httputil.__ptrTo_ClientConn_Close from net/http/httputil/persist.go:
 func __ptrTo_ClientConn_Close(o GoObject, args Object) Object {  // Receiver
@@ -12942,15 +13151,21 @@ func __plainAuth(__identity string, __username string, __password string, __host
 	return MakeGoObject(_res)
 }
 
-GO FUNC net/smtp.SendMail from net/smtp/smtp.go:
-// func __sendMail(__addr string, __a smtp.Auth, __from string, __to []string, __msg []byte)  {
-// 	_res := smtp.SendMail(__addr, __a, __from, __to, __msg)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
-
 GO FUNC net/smtp.__auth_Next from net/smtp/auth.go:
 // func __auth_Next(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__fromServer)), __more)}
+// 	_argList := CheckGoArity("(net/smtp.Auth)Next()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __fromServer at: _tests/big/src/net/smtp/auth.go:31:18)
+// 	__more := ExtractGoBoolean("(net/smtp.Auth)Next()", "__more", _argList, 1)
+// 	toServer, err := o.O.(smtp.Auth).Next(__fromServer, __more)
+// 	_res := EmptyVector()
+// 	_vec1 := EmptyVector()
+// 	for _, _elem1 := range toServer {
+// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+// 	}
+// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net/smtp.__auth_Start from net/smtp/auth.go:
 // func __auth_Start(o GoObject, args Object) Object {  // Method
@@ -13472,14 +13687,14 @@ func __newWriter(__w *bufio.Writer) Object {
 }
 
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
-// func __trimBytes(__b []byte) Object {
-// 	_res := textproto.TrimBytes(__b)
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-// 	}
-// 	return _vec1
-// }
+func __trimBytes(__b []byte) Object {
+	_res := textproto.TrimBytes(__b)
+	_vec1 := EmptyVector()
+	for _, _elem1 := range _res {
+		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
+	}
+	return _vec1
+}
 
 GO FUNC net/textproto.__mIMEHeader_Add from net/textproto/header.go:
 // func __mIMEHeader_Add(o GoObject, args Object) Object {  // Receiver
@@ -14333,7 +14548,11 @@ func __ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
 // func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__text)))}
+// 	_argList := CheckGoArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __text at: _tests/big/src/net/url/url.go:1079:36)
+// 	_res := o.O.(*url.URL).UnmarshalBinary(__text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {  // Receiver
@@ -14985,13 +15204,13 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 047(95) 644(50) 902(41) 275(39) 048(32) 042(27) 675(18) 907(14) 674(9) 883(3) 906(3) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=284 (60.43%)
-          non-receivers=148 (31.49%) generated=116 (78.38%)
+ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 883(3) 906(3) 902(2) 908(2) 124(1) 909(1)
+Totals: functions=470 generated=287 (61.06%)
+          non-receivers=148 (31.49%) generated=119 (80.41%)
           receivers=273 (58.09%) generated=149 (54.58%)
           methods=49 (10.43%) generated=19 (38.78%)
         types=102
           constructable=82 ctors=41 (50.00%)
-          hits expr=281 fullname=1052
+          hits expr=290 fullname=1116
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)

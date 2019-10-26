@@ -98,9 +98,9 @@ type funcCode struct {
    before hitting undefined-func errors.
 */
 var customRuntimeImplemented = map[string]struct{}{
-	"ConvertToArrayOfByte":   {},
-	"ConvertToArrayOfInt":    {},
-	"ConvertToArrayOfString": {},
+	"ConvertToArrayOfbyte":   {},
+	"ConvertToArrayOfint":    {},
+	"ConvertToArrayOfstring": {},
 }
 
 func genGoCall(pkgBaseName, goFname, goParams string) string {
