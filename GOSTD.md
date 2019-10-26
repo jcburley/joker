@@ -53,9 +53,9 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 ## Variables
 
-Pointers to global variables are wrapped in `GoVar[]` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
+Pointers to global variables are wrapped in `GoVar{}` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
 
-`(Go var := newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
+`(var-set var newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
 ## GoObject
 
@@ -344,9 +344,9 @@ user=>
 
 `(Go obj field)` returns a `GoVar` wrapping the field named (typically via a keyword) by `field`. `obj` must denote a structure (`struct` type in Go).
 
-The resulting `GoVar` can be dereferenced, as in `(deref var)`, yielding a snapshot of the value of that field at that time.
+The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
 
-It can also be changed, as if via Go's `:=` statement, via `(Go var := newval)`.
+It can also be changed, as if via Go's assignment statement, via `(var-set var newval)`.
 
 For example:
 
@@ -361,11 +361,11 @@ user=> (Go le :Old)
 0xc000f56a10
 user=> (def v (Go le :Old))
 #'user/v
-user=> (Go v := "golly")
+user=> (var-set v "golly")
 "golly"
 user=> (str le)
 "hi golly you: silly"
-user=> (Go Stdout := "whoa")
+user=> (var-set Stdout "whoa")
 <joker.core>:4517:3: Eval error: Cannot assign a string to a *os.File
 Stacktrace:
   global <repl>:3:1

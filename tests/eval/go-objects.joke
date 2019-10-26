@@ -65,7 +65,7 @@
         old (Go le :Old)]
     (is (= (deref (Go le :Op)) "hey"))
     (is (= (deref old) "there"))
-    (is (= (Go old := "wow") "wow"))
+    (is (= (var-set old "wow") "wow"))
     (is (= (deref old) "wow"))
     (is (= (str le) "hey wow you: silly"))))
 
@@ -75,10 +75,10 @@
         notfound (Go dnserr :IsNotFound)]
     (is (not (deref notfound)))
     (is (not (deref temp)))
-    (is (Go temp := true))
+    (is (var-set temp true))
     (is (deref temp))
     (is (not (deref notfound)))
-    (Go notfound := temp)
+    (var-set notfound temp)
     (is (deref notfound))))
 
 (deftest native-wrapping-works

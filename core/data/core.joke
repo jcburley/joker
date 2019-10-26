@@ -1384,14 +1384,14 @@
      (throw (ex-info (str "Cannot reduce-kv on " (type coll)) {})))))
 
 (defn var-get
-  "Gets the value in the var object"
+  "Gets the value in the var or GoVar object"
   {:added "1.0"}
-  [^Var x] (var-get__ x))
+  [^"Var|GoVar" x] (var-get__ x))
 
 (defn var-set
-  "Sets the value in the var object to val."
+  "Sets the value in the var or GoVar object to val."
   {:added "1.0"}
-  [^Var x val] (var-set__ x val))
+  [^"Var|GoVar" x val] (var-set__ x val))
 
 (defn ^:private replace-bindings
   [binding-map]
@@ -4497,11 +4497,6 @@
   syntactically, name Go receivers or methods. They ignore unused
   arguments, and are intended primarily for use by developers of Joker
   itself:
-
-  = assigns the first value in args to the specified object. (Their
-  types must be compatible; however, the first value will be
-  dereferenced once, for purposes of the assignment, if that enables
-  compatibility.) It returns that first value.
 
   . returns, wrapped by a GoObject, either (for a GoType argument) the
   reflect.Type of the underlying type or (for an argument of some
