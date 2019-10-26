@@ -37,8 +37,15 @@ func ConvertToArrayOfbyte(o Object) []byte {
 			}
 		}
 		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []byte:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of byte: %T", g)))
+		}
 	default:
-		panic(RT.NewError(fmt.Sprintf("Not convertible to array of Byte: %s", obj.ToString(true))))
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of byte: %s", obj.ToString(true))))
 	}
 }
 
@@ -60,8 +67,15 @@ func ConvertToArrayOfint(o Object) []int {
 			}
 		}
 		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []int:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of int: %T", g)))
+		}
 	default:
-		panic(RT.NewError(fmt.Sprintf("Not convertible to array of Int: %s", obj.ToString(true))))
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of int: %s", obj.ToString(true))))
 	}
 }
 
@@ -79,7 +93,14 @@ func ConvertToArrayOfstring(o Object) []string {
 			}
 		}
 		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []string:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of string: %T", g)))
+		}
 	default:
-		panic(RT.NewError(fmt.Sprintf("Not convertible to array of String: %s", obj.ToString(true))))
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of string: %s", obj.ToString(true))))
 	}
 }
