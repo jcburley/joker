@@ -102,29 +102,20 @@ func genGoPostStruct(fn *gowalk.FuncInfo, indent, captureName string, fl *FieldL
 	return
 }
 
-func genGoPostArray(fn *gowalk.FuncInfo, indent, captureName string, el Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	tmp := genSym("")
-	tmpvec := "_vec" + tmp
-	tmpelem := "_elem" + tmp
-
-	var goc_pre string
-	cl, clDoc, gol, goc_pre, out = genGoPostExpr(fn, indent+"\t", tmpelem, el, "")
-	useful := exprIsUseful(out)
+func genGoPostArray(fn *gowalk.FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
+	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
+	out = "MakeGoObject(" + captureName + ")"
 	if cl != "" {
-		cl = "(vector-of " + cl + ")"
+		s := strings.Split(cl, "/")
+		s[len(s)-1] = "arrayOf" + s[len(s)-1]
+		cl = strings.Join(s, "/")
 	}
-	clDoc = "(vector-of " + clDoc + ")"
+	if clDoc != "" {
+		s := strings.Split(clDoc, "/")
+		s[len(s)-1] = "arrayOf" + s[len(s)-1]
+		clDoc = strings.Join(s, "/")
+	}
 	gol = "[]" + gol
-
-	if useful {
-		goc = indent + "for _, " + tmpelem + " := range " + captureName + " {\n"
-		goc += goc_pre
-		goc += indent + "\t" + tmpvec + " = " + tmpvec + ".Conjoin(" + out + ")\n"
-		goc += indent + "}\n"
-		goc = wrapStmtOnlyIfs(indent, tmpvec, "Vector", "EmptyVector()", onlyIf, goc, &out)
-	} else {
-		goc = ""
-	}
 	return
 }
 

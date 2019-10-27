@@ -8,6 +8,20 @@ Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joke
 
 Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
 
+## Recent Design Changes
+
+### 2009-10-26
+
+Values returned by functions (this includes receivers and methods) are now returned "as-is", rather than (for some types) autoconverted to suitable Joker representations.
+
+For example, calling a Go function returning `[]string` now returns a `GoObject` wrapping that same object (which has a type named `arrayOfstring`, since `[` and `]` are invalid symbol characters), rather than a vector of String objects.
+
+Use `(vec ...)` to perform an explicit conversion, in this example, as `GoObject`s that wrap appropriate types are `Seqable` and thus support `(count ...`), `(rest ...)`, and so on.
+
+This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Joker code, and where the number of returned elements (or their individual elements) is large.
+
+*Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
+
 ## Design Principles
 
 The `go.std.` namespaces being automatically generated, they are not necessarily intended for direct use by business logic:

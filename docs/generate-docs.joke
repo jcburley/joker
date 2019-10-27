@@ -79,7 +79,7 @@
 
 (defn receiver-doc
   [t r what]
-  (if-let [m (Go t r)]
+  (if-let [m (Go t (str r))]
     (-> receiver-template
         (string/replace "{id}" (str r))
         (string/replace "{name}" (str r))
@@ -98,7 +98,7 @@
 
 (defn receivers-doc
   [k v what]
-  (let [go-type-info (deref (Go v nil))
+  (let [go-type-info (deref (Go v ""))
         members (get go-type-info "Members")
         memvec (sort (get members nil))]
     (string/join

@@ -737,17 +737,17 @@ var procGoTypeOf Proc = func(args []Object) Object {
 }
 
 // Mainly for generate-docs.joke, return information on the Go type itself.
-func goGetTypeInfo(ty *GoType, arg Object) Object {
+func goGetTypeInfo(ty *GoType, mem string) Object {
 	t := ty.T
 	if t == nil {
 		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
 	}
-	if arg.Equals(NIL) {
+	if mem == "" {
 		return &GoVar{Value: t.GoType.T}
 	}
-	mi, ok := t.GoType.T.Members[arg.ToString(false)]
+	mi, ok := t.GoType.T.Members[mem]
 	if !ok {
-		panic(RT.NewError("Go member not found: " + arg.ToString(false)))
+		panic(RT.NewError("Go member not found: " + mem))
 	}
 	if mi.meta == nil {
 		return NIL
@@ -762,16 +762,10 @@ var procGo Proc = func(args []Object) Object {
 		goType = ty
 	}
 	member := ""
-	switch s := args[1].(type) {
-	case Symbol:
-		member = s.ToString(false)
-	case String:
-		member = s.S
-	case Keyword:
-		member = *s.name
-	case Nil:
-	default:
-		panic(RT.NewArgTypeError(0, args[1], "Symbol, String, or Keyword"))
+	if fn, ok := args[1].(Fieldable); ok {
+		member = fn.AsFieldName()
+	} else {
+		panic(RT.NewArgTypeError(0, args[1], "Fieldable"))
 	}
 	switch member {
 	case "!":
@@ -790,7 +784,7 @@ var procGo Proc = func(args []Object) Object {
 		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a ValueOf)", arg)))
 	}
 	if goType != nil {
-		return goGetTypeInfo(goType, args[1])
+		return goGetTypeInfo(goType, member)
 	}
 	o := EnsureGoObject(args, 0)
 	g := LookupGoType(o.O)

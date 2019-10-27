@@ -1093,7 +1093,13 @@
   ^Boolean [^Gettable coll key] (contains?__ coll key))
 
 (defn get
-  "Returns the value mapped to key, not-found or nil if key not present."
+  "Returns the value mapped to key, not-found or nil if key not present.
+
+  When the map is a GoObject, an empty-string key returns (for
+  appropriate underlying objects, and for documentation purposes) a
+  vector of strings comprising the map's field or key names; while a
+  non-empty key (specified as a keyword, string, or symbol) returns
+  the value indexed by the key."
   {:added "1.0"}
   ([map key]
    (get__ map key))
@@ -4490,17 +4496,25 @@
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 
 (defn Go
-  "Invokes a receiver (as a symbol, string, or keyword with its name)
-  for a Go object, returning result if applicable, else nil
+  "Invokes a receiver for a GoObject, returning the result.
 
-  SPECIAL FORMS -- these are receiver names that cannot,
-  syntactically, name Go receivers or methods. They ignore unused
+  The receiver is named via a keyword, symbol, or string. E.g.:
+
+    (Go <FileInfoObject> :IsDir)
+
+  Arguments may be specified. E.g.:
+
+    (Go <IPv4Object> :Equal other-goobj)
+
+  SPECIAL SYNTAX: these are receiver names that cannot, syntactically,
+  name Go receivers or methods. They currently ignore unused
   arguments, and are intended primarily for use by developers of Joker
   itself:
 
   . returns, wrapped by a GoObject, either (for a GoType argument) the
-  reflect.Type of the underlying type or (for an argument of some
-  other type) a reflect.Value of the underlying value.
+  reflect.Type of the underlying type (TBI, if needed) or (for an
+  argument of some other type) a reflect.Value of the underlying
+  value.
 
   ! returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
@@ -4512,9 +4526,17 @@
   of the usual conversion rules. E.g. (Go \"hey\" :<>) returns a
   GoObject wrapping a string. (Not all underlying types are supported;
   in such cases, the original Joker argument is wrapped by a
-  GoObject. Also intended for use primarily by Joker developers.)"
+  GoObject. Also intended for use primarily by Joker developers.)
+
+  NOTE: If the first argument is a GoType, the semantics are very
+  different, and are for internal use by Joker (mainly by the
+  documentation generator). Specifically, a nil or non-special-syntax
+  second argument returns internal information on the type: for nil, a
+  GoVar wrapping the internal description of that type; else, the map
+  of meta tags for a receiver/method identified by that second
+  argument."
   {:added "1.0"}
-  [^GoObject o m & args]
+  [^"GoObject|GoType" o m & args]
   (go__ o m args))
 
 (defn new

@@ -53,6 +53,12 @@ type (
 		// Similar to reflect.ValueOf(obj.Native()), but (for some types) panics "nicely" if the underlying object is nil
 		ValueOf() reflect.Value
 	}
+	Fieldable interface {
+		Object
+
+		// Returns (unquoted) string, keyword name without colon, or symbol name
+		AsFieldName() string
+	}
 	Conjable interface {
 		Object
 		Conj(obj Object) Conjable
@@ -1384,6 +1390,14 @@ func (o GoObject) Get(key Object) (bool, Object) {
 	return GoObjectGet(o.O, key)
 }
 
+func (o GoObject) Count() int {
+	return GoObjectCount(o.O)
+}
+
+func (o GoObject) Seq() Seq {
+	return GoObjectSeq(o.O)
+}
+
 func MakeGoType(t *GoTypeInfo) *GoType {
 	return t.GoType
 }
@@ -1609,6 +1623,10 @@ func (k Keyword) ToString(escape bool) string {
 	return ":" + *k.name
 }
 
+func (k Keyword) AsFieldName() string {
+	return *k.name
+}
+
 func (k Keyword) Name() string {
 	return *k.name
 }
@@ -1681,6 +1699,10 @@ func (s Symbol) ToString(escape bool) string {
 	return *s.name
 }
 
+func (s Symbol) AsFieldName() string {
+	return *s.name
+}
+
 func (s Symbol) Name() string {
 	return *s.name
 }
@@ -1722,6 +1744,10 @@ func (s String) ToString(escape bool) string {
 	if escape {
 		return escapeString(s.S)
 	}
+	return s.S
+}
+
+func (s String) AsFieldName() string {
 	return s.S
 }
 

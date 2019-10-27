@@ -71,7 +71,7 @@ func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Boolean, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Boolean, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res.B
@@ -84,7 +84,7 @@ func FieldAsBoolean(o Map, k string) bool {
 	}
 	res, ok := v.(Boolean)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Boolean, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Boolean, but is %T",
 			k, v)))
 	}
 	return res.B
@@ -94,7 +94,7 @@ func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Int, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Int, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res.I
@@ -147,7 +147,7 @@ func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
 	a := SeqNth(args, n)
 	res, ok := a.(Number)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Number, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Number, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res
@@ -160,7 +160,7 @@ func FieldAsNumber(o Map, k string) Number {
 	}
 	res, ok := v.(Number)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Number, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Number, but is %T",
 			k, v)))
 	}
 	return res
@@ -267,7 +267,7 @@ func FieldAsDouble(o Map, k string) float64 {
 	}
 	res, ok := v.(Double)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Double, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Double, but is %T",
 			k, v)))
 	}
 	return res.D
@@ -277,7 +277,7 @@ func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
 	a := SeqNth(args, n)
 	res, ok := a.(Char)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Char, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Char, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res.Ch
@@ -290,7 +290,7 @@ func FieldAsChar(o Map, k string) rune {
 	}
 	res, ok := v.(Char)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Char, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Char, but is %T",
 			k, v)))
 	}
 	return res.Ch
@@ -300,7 +300,7 @@ func ExtractGoString(rcvr, name string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.String, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type String, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res.S
@@ -313,7 +313,7 @@ func FieldAsString(o Map, k string) string {
 	}
 	res, ok := v.(String)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.String, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type String, but is %T",
 			k, v)))
 	}
 	return res.S
@@ -326,7 +326,7 @@ func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
 	}
 	res, ok := a.(Error)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type core.Error, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Error or String, but is %T",
 			n, name, rcvr, a)))
 	}
 	return res
@@ -342,30 +342,77 @@ func FieldAsError(o Map, k string) error {
 	}
 	res, ok := v.(error)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type core.Error, but is %T",
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Error or String, but is %T",
 			k, v)))
 	}
 	return res
 }
 
 func GoObjectGet(o interface{}, key Object) (bool, Object) {
+	defer func() {
+		if r := recover(); r != nil {
+			panic(RT.NewError(fmt.Sprintf("%v", r)))
+		}
+	}()
 	v := reflect.Indirect(reflect.ValueOf(o))
 	switch v.Kind() {
 	case reflect.Struct:
-		f := v.FieldByName(key.(String).S)
-		if f != reflect.ValueOf(nil) {
-			return true, MakeGoObjectIfNeeded(f.Interface())
+		if key.Equals(NIL) {
+			// Special case for nil key: return vector of field names
+			n := v.NumField()
+			ty := reflect.TypeOf(o)
+			objs := make([]Object, n)
+			for i := 0; i < n; i++ {
+				objs[i] = MakeString(ty.Field(i).Name)
+			}
+			return true, NewVectorFrom(objs...) // TODO: Someday: MakeGoObject(v.MapKeys())
 		}
+		f := v.FieldByName(key.(Fieldable).AsFieldName())
+		return true, MakeGoObjectIfNeeded(f.Interface())
 	case reflect.Map:
-		// Ignore key, return vector of keys (assuming they're strings)
-		keys := v.MapKeys()
-		objs := make([]Object, 0, 32)
-		for _, k := range keys {
-			objs = append(objs, MakeString(k.String()))
+		if key.Equals(NIL) {
+			// Special case for nil key (used during doc generation): return vector of keys as reflect.Value's
+			return true, MakeGoObject(v.MapKeys())
 		}
-		return true, NewVectorFrom(objs...)
+		return true, MakeGoObjectIfNeeded(v.MapIndex(key.(Valuable).ValueOf()).Interface())
+	case reflect.Array, reflect.Slice, reflect.String:
+		i := AssertInt(key, "")
+		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
 	}
-	panic(fmt.Sprintf("type=%T kind=%s\n", o, reflect.TypeOf(o).Kind().String()))
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for getting\n", o, reflect.TypeOf(o).Kind().String()))
+}
+
+func GoObjectCount(o interface{}) int {
+	defer func() {
+		if r := recover(); r != nil {
+			panic(RT.NewError(fmt.Sprintf("%v", r)))
+		}
+	}()
+	v := reflect.Indirect(reflect.ValueOf(o))
+	switch v.Kind() {
+	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
+		return v.Len()
+	}
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for counting\n", o, reflect.TypeOf(o).Kind().String()))
+}
+
+func GoObjectSeq(o interface{}) Seq {
+	defer func() {
+		if r := recover(); r != nil {
+			panic(RT.NewError(fmt.Sprintf("%v", r)))
+		}
+	}()
+	v := reflect.Indirect(reflect.ValueOf(o))
+	switch v.Kind() {
+	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
+		n := v.Len()
+		elements := make([]Object, n)
+		for i := 0; i < n; i++ {
+			elements[i] = MakeGoObjectIfNeeded(v.Index(i).Interface())
+		}
+		return &ArraySeq{arr: elements}
+	}
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for sequencing\n", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
