@@ -16,13 +16,13 @@ import (
 const Concrete = ^uint(0) /* MaxUint */
 
 var NumExprHits uint
-var NumFullNameHits uint
+var NumClojureNameHits uint
 
 // Info from the definition of the type (if any)
 type Type struct {
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
-	FullName       string    // Clojure name (e.g. "a.b.c/Typename")
+	ClojureName    string    // Clojure name (e.g. "a.b.c/Typename", "(vector-of int)")
 	IsExported     bool
 	Doc            string
 	DefPos         token.Pos
@@ -35,7 +35,7 @@ type Type struct {
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
-var typesByFullName = map[string]*Type{}
+var typesByClojureName = map[string]*Type{}
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -61,11 +61,11 @@ func specificity(ts *TypeSpec) uint {
 }
 
 func define(tdi *Type) {
-	name := tdi.FullName
-	if existingTdi, ok := typesByFullName[name]; ok {
+	name := tdi.ClojureName
+	if existingTdi, ok := typesByClojureName[name]; ok {
 		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, WhereAt(existingTdi.DefPos), WhereAt(tdi.DefPos)))
 	}
-	typesByFullName[name] = tdi
+	typesByClojureName[name] = tdi
 
 	if tdi.Type != nil {
 		tdiByExpr, found := typesByExpr[tdi.Type]
@@ -100,7 +100,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 	tdi := &Type{
 		Type:        ts.Type,
 		TypeSpec:    ts,
-		FullName:    name,
+		ClojureName: name,
 		IsExported:  IsExported(localName),
 		Doc:         CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
@@ -117,7 +117,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		// Concrete types get reference-to variants, allowing Joker code to access them.
 		tdiPtrTo := &Type{
 			Type:           &StarExpr{X: tdi.Type},
-			FullName:       "*" + tdi.FullName,
+			ClojureName:    "*" + tdi.ClojureName,
 			IsExported:     tdi.IsExported,
 			Doc:            "",
 			GoPattern:      fmt.Sprintf(tdi.GoPattern, "*%s"),
@@ -142,7 +142,7 @@ func defineVariant(pattern string, innerTdi *Type, te Expr) *Type {
 
 	tdi := &Type{
 		Type:           te,
-		FullName:       fmt.Sprintf(pattern, innerTdi.FullName),
+		ClojureName:    fmt.Sprintf(pattern, innerTdi.ClojureName),
 		IsExported:     isExported,
 		GoPattern:      pattern,
 		GoName:         name,
@@ -158,11 +158,11 @@ func defineVariant(pattern string, innerTdi *Type, te Expr) *Type {
 
 func TypeDefineBuiltin(name string) *Type {
 	tdi := &Type{
-		Type:       &Ident{Name: name},
-		FullName:   name,
-		IsExported: true,
-		GoPattern:  "%s",
-		GoName:     name,
+		Type:        &Ident{Name: name},
+		ClojureName: name,
+		IsExported:  true,
+		GoPattern:   "%s",
+		GoName:      name,
 	}
 
 	define(tdi)
@@ -188,11 +188,11 @@ func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
 func TypeLookup(e Expr) (ty *Type, fullName string) {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
-		return tdi, tdi.FullName
+		return tdi, tdi.ClojureName
 	}
 	name := typeName(e)
-	if tdi, ok := typesByFullName[name]; ok {
-		NumFullNameHits++
+	if tdi, ok := typesByClojureName[name]; ok {
+		NumClojureNameHits++
 		typesByExpr[e] = tdi
 		return tdi, name
 	}
@@ -218,10 +218,10 @@ func TypeLookup(e Expr) (ty *Type, fullName string) {
 
 	if innerTdi == nil {
 		tdi := &Type{
-			Type:      e,
-			FullName:  newName,
-			GoPattern: pattern,
-			GoName:    newName,
+			Type:        e,
+			ClojureName: newName,
+			GoPattern:   pattern,
+			GoName:      newName,
 		}
 		define(tdi)
 		return tdi, newName
@@ -238,7 +238,7 @@ func SortAll() {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
-	for _, t := range typesByFullName {
+	for _, t := range typesByClojureName {
 		if t.IsExported {
 			allTypesSorted = append(allTypesSorted, t)
 		}
@@ -247,7 +247,7 @@ func SortAll() {
 		if allTypesSorted[i].Specificity != allTypesSorted[j].Specificity {
 			return allTypesSorted[i].Specificity > allTypesSorted[j].Specificity
 		}
-		return allTypesSorted[i].FullName < allTypesSorted[j].FullName
+		return allTypesSorted[i].ClojureName < allTypesSorted[j].ClojureName
 	})
 	for ord, t := range allTypesSorted {
 		t.Ord = (uint)(ord)
@@ -273,14 +273,14 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	var keys []string
 	for k, _ := range m {
 		if k != nil {
-			keys = append(keys, k.FullName)
+			keys = append(keys, k.ClojureName)
 		}
 	}
 	sort.SliceStable(keys, func(i, j int) bool {
 		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
 	})
 	for _, k := range keys {
-		f(typesByFullName[k])
+		f(typesByClojureName[k])
 	}
 }
 
@@ -360,7 +360,7 @@ func typeName(e Expr) (full string) {
 
 	o := x.Obj
 	if o != nil && o.Kind == Typ {
-		tdi := typesByFullName[full]
+		tdi := typesByClojureName[full]
 		if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
 			Print(Fset, x)
 			var ts *TypeSpec

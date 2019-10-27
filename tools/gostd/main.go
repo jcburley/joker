@@ -371,7 +371,7 @@ Totals: functions=%d generated=%d (%s%%)
 			godb.NumMethods, pct(godb.NumMethods, gowalk.NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
 			gowalk.NumTypes,
 			gowalk.NumCtableTypes, gowalk.NumGeneratedCtors, pct(gowalk.NumGeneratedCtors, gowalk.NumCtableTypes),
-			types.NumExprHits, types.NumFullNameHits,
+			types.NumExprHits, types.NumClojureNameHits,
 			gowalk.NumConstants, gowalk.NumGeneratedConstants, pct(gowalk.NumGeneratedConstants, gowalk.NumConstants),
 			gowalk.NumVariables, gowalk.NumGeneratedVariables, pct(gowalk.NumGeneratedVariables, gowalk.NumVariables))
 	}

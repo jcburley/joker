@@ -544,7 +544,7 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 }
 
 func GenTypeFromDb(tdi *Type) {
-	if !tdi.IsExported || strings.Contains(tdi.FullName, "[") {
+	if !tdi.IsExported || strings.Contains(tdi.ClojureName, "[") {
 		return // Do not generate anything for private or array types
 	}
 	if tdi.Specificity == Concrete {

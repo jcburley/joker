@@ -284,7 +284,7 @@ func outputClojureCode(pkgDirUnix string, v gowalk.CodeInfo, jokerLibDir string,
 				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(tdi.GoPattern, tdi.GoName))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
-					tdi.FullName, fnCode)
+					tdi.ClojureName, fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(fnCode)
@@ -386,7 +386,7 @@ import (%s
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
 			if outputCode && tmn != "" {
-				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), tmn)
+				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), tmn)
 			}
 			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
@@ -412,7 +412,7 @@ import (%s
 			if tmn == "" || !tdi.IsExported {
 				return
 			}
-			k1 := tdi.FullName
+			k1 := tdi.ClojureName
 			ctor := ""
 			if c, found := CtorNames[tdi]; found {
 				ctor = fmt.Sprintf(`
@@ -432,7 +432,7 @@ import (%s
 				})
 			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem, "" /*"Type:"..., but probably not needed*/)
 			if outputCode {
-				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
+				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
@@ -447,7 +447,7 @@ import (%s
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", tdi.Ord, tmn)
 			if outputCode {
-				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.FullName, WhereAt(tdi.DefPos), o)
+				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
