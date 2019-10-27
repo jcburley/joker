@@ -279,8 +279,18 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	}
 }
 
-func methodsToString(methods *FieldList) string {
-	return ""
+func fieldToString(f *Field) string {
+	_, name := TypeLookup(f.Type)
+	// Don't bother implementing this until it's actually needed:
+	return "ABEND041(types.go/fieldToString found something: " + name + "!)"
+}
+
+func methodsToString(methods []*Field) string {
+	mStrings := make([]string, len(methods))
+	for i, m := range methods {
+		mStrings[i] = fieldToString(m)
+	}
+	return strings.Join(mStrings, ", ")
 }
 
 func typeName(e Expr) (full string) {
@@ -297,10 +307,10 @@ func typeName(e Expr) (full string) {
 		full = "*" + elFull
 		return
 	case *InterfaceType:
-		methods := methodsToString(x.Methods)
+		methods := methodsToString(x.Methods.List)
 		full = "interface{" + methods
 		if x.Incomplete {
-			full += "..."
+			full += ", ..."
 		}
 		full += "}"
 		return
