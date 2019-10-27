@@ -279,6 +279,10 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 	}
 }
 
+func methodsToString(methods *FieldList) string {
+	return ""
+}
+
 func typeName(e Expr) (full string) {
 	switch x := e.(type) {
 	case *Ident:
@@ -291,6 +295,14 @@ func typeName(e Expr) (full string) {
 	case *StarExpr:
 		elFull := typeName(x.X)
 		full = "*" + elFull
+		return
+	case *InterfaceType:
+		methods := methodsToString(x.Methods)
+		full = "interface{" + methods
+		if x.Incomplete {
+			full += "..."
+		}
+		full += "}"
 		return
 	default:
 		return
