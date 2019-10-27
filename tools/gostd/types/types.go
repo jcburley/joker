@@ -333,14 +333,17 @@ func typeName(e Expr) (full string) {
 		left := fmt.Sprintf("%s", x.X)
 		return left + "." + x.Sel.Name
 	case *ChanType:
-		full = typeName(x.Value)
+		ty, tyName := TypeLookup(x.Value)
+		if ty != nil {
+			tyName = ty.RelativeGoName(e.Pos())
+		}
 		switch x.Dir & (SEND | RECV) {
 		case SEND:
-			full = "chan<- " + full
+			full = "chan<- " + tyName
 		case RECV:
-			full = "<-chan " + full
+			full = "<-chan " + tyName
 		default:
-			full = "chan " + full
+			full = "chan " + tyName
 		}
 		return
 	default:
