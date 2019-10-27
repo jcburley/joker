@@ -48,60 +48,6 @@ func genGoPostSelector(fn *gowalk.FuncInfo, indent, captureName string, e *Selec
 
 // Joker: { :a ^Int, :b ^String }
 // Go: struct { a int; b string }
-func genGoPostStruct(fn *gowalk.FuncInfo, indent, captureName string, fl *FieldList, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	tmpmap := "_map" + genSym("")
-	useful := false
-	fields := FlattenFieldList(fl)
-	for _, field := range fields {
-		p := field.Name
-		if !IsExported(p.Name) {
-			continue // Skipping non-exported fields
-		}
-		clType, clTypeDoc, golType, more_goc, outNew :=
-			genGoPostExpr(fn, indent, captureName+"."+p.Name, field.Field.Type, "")
-		out = outNew
-		if useful || exprIsUseful(out) {
-			useful = true
-		}
-		goc += more_goc
-		goc += indent + tmpmap +
-			".Add(MakeKeyword(\"" + p.Name + "\"), " + out + ")\n"
-		if cl != "" {
-			cl += ", "
-		}
-		if gol != "" {
-			gol += "; "
-		}
-		if p == nil {
-			cl += "_ "
-		} else {
-			cl += ":" + p.Name + " "
-			gol += p.Name + " "
-		}
-		if clType != "" {
-			cl += "^" + clType
-		}
-		if clTypeDoc != "" {
-			clDoc += "^" + clTypeDoc
-		}
-		if golType != "" {
-			gol += golType
-		}
-	}
-	if cl != "" {
-		cl = "{" + cl + "}"
-	}
-	clDoc = "{" + clDoc + "}"
-	gol = "struct {" + gol + "}"
-	if useful {
-		goc = wrapStmtOnlyIfs(indent, tmpmap, "ArrayMap", "EmptyArrayMap()", onlyIf, goc, &out)
-	} else {
-		goc = ""
-		out = "NIL"
-	}
-	return
-}
-
 func genGoPostArray(fn *gowalk.FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
 	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
 	out = "MakeGoObject(" + captureName + ")"
@@ -155,8 +101,10 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 		cl, clDoc, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
 	case *SelectorExpr:
 		cl, clDoc, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
-	case *StructType:
-		cl, clDoc, gol, goc, out = genGoPostStruct(fn, indent, captureName, v.Fields, onlyIf)
+	case *InterfaceType:
+		out = "MakeGoObjectIfNeeded(" + captureName + ")"
+		cl = "Object"
+		gol = "interface{}"
 	default:
 		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
 		gol = "..."
