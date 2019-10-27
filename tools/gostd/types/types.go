@@ -183,8 +183,6 @@ func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
 	}
 	// Try defining the type here.
 	return dynamicDefine([]string{}, e)
-
-	return nil, strings.Join(prefixes, "")
 }
 
 func TypeLookup(e Expr) (ty *Type, fullName string) {
@@ -219,7 +217,14 @@ func TypeLookup(e Expr) (ty *Type, fullName string) {
 	newName := fmt.Sprintf(pattern, innerName)
 
 	if innerTdi == nil {
-		return nil, newName
+		tdi := &Type{
+			Type:      e,
+			FullName:  newName,
+			GoPattern: pattern,
+			GoName:    newName,
+		}
+		define(tdi)
+		return tdi, newName
 	}
 
 	return defineVariant(pattern, innerTdi, e), newName
@@ -314,6 +319,19 @@ func typeName(e Expr) (full string) {
 		}
 		full += "}"
 		return
+	case *MapType:
+		key, keyName := TypeLookup(x.Key)
+		value, valueName := TypeLookup(x.Value)
+		if key != nil {
+			keyName = key.RelativeGoName(e.Pos())
+		}
+		if value != nil {
+			valueName = value.RelativeGoName(e.Pos())
+		}
+		return "map[" + keyName + "]" + valueName
+	case *SelectorExpr:
+		left := fmt.Sprintf("%s", x.X)
+		return left + "." + x.Sel.Name
 	default:
 		return
 	}
@@ -379,4 +397,9 @@ func (tdi *Type) TypeMappingsName() string {
 		return "info_PtrTo_" + fmt.Sprintf(tdi.underlyingType.GoPattern, tdi.underlyingType.GoName)
 	}
 	return "info_" + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+}
+
+func (tdi *Type) RelativeGoName(pos token.Pos) string {
+	// TODO: Support returning appropriate namespace prefix if Pos is from a different package
+	return fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 }

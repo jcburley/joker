@@ -107,6 +107,15 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 		cl = "Object"
 		_, tyName := types.TypeLookup(v)
 		gol = tyName
+	case *MapType:
+		out = "MakeGoObject(" + captureName + ")"
+		cl = "GoObject"
+		ty, tyName := types.TypeLookup(v)
+		if ty == nil {
+			gol = tyName
+		} else {
+			gol = ty.RelativeGoName(e.Pos())
+		}
 	default:
 		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
 		gol = "..."

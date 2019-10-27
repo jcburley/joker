@@ -2869,11 +2869,11 @@ JOKER VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
   ErrRequestAborted)
 
 JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: ...\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: ABEND883(post.go: unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/fcgi/child.go:358:34)"
-;;   {:added "1.0"
-;;    :go "__processEnv(__r)"}
-;;   [^go.std.net.http/Request __r])
+(defn ProcessEnv
+  "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: GoObject"
+  {:added "1.0"
+   :go "__processEnv(__r)"}
+  [^go.std.net.http/Request __r])
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 (defn ^"Error" Serve
@@ -10549,9 +10549,10 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-// func __processEnv(__r *http.Request) Object {
-// 	return fcgi.ProcessEnv(__r)
-// }
+func __processEnv(__r *http.Request) Object {
+	_res := fcgi.ProcessEnv(__r)
+	return MakeGoObject(_res)
+}
 
 GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:17:2
@@ -15052,13 +15053,13 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 883(3) 906(3) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=287 (61.06%)
-          non-receivers=148 (31.49%) generated=119 (80.41%)
+ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 906(3) 883(2) 902(2) 908(2) 124(1) 909(1)
+Totals: functions=470 generated=288 (61.28%)
+          non-receivers=148 (31.49%) generated=120 (81.08%)
           receivers=273 (58.09%) generated=149 (54.58%)
           methods=49 (10.43%) generated=19 (38.78%)
         types=102
           constructable=82 ctors=41 (50.00%)
-          hits expr=290 fullname=1116
+          hits expr=302 fullname=1181
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)
