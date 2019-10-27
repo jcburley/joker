@@ -332,6 +332,17 @@ func typeName(e Expr) (full string) {
 	case *SelectorExpr:
 		left := fmt.Sprintf("%s", x.X)
 		return left + "." + x.Sel.Name
+	case *ChanType:
+		full = typeName(x.Value)
+		switch x.Dir & (SEND | RECV) {
+		case SEND:
+			full = "chan<- " + full
+		case RECV:
+			full = "<-chan " + full
+		default:
+			full = "chan " + full
+		}
+		return
 	default:
 		return
 	}

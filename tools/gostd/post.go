@@ -107,7 +107,7 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 		cl = "Object"
 		_, tyName := types.TypeLookup(v)
 		gol = tyName
-	case *MapType:
+	case *MapType, *ChanType:
 		out = "MakeGoObject(" + captureName + ")"
 		cl = "GoObject"
 		ty, tyName := types.TypeLookup(v)

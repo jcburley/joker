@@ -9110,8 +9110,11 @@ func __timeoutHandler(__h http.Handler, __dt time.Duration, __msg string) Object
 }
 
 GO FUNC net/http.__closeNotifier_CloseNotify from net/http/server.go:
-// func __closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
-// ABEND883(post.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
+func __closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
+	CheckGoArity("(net/http.CloseNotifier)CloseNotify()", args, 0, 0)
+	_res := o.O.(http.CloseNotifier).CloseNotify()
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.__connState_String from net/http/server.go:
 func __connState_String(o GoObject, args Object) Object {  // Receiver
@@ -9731,6 +9734,7 @@ GO INFO FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/serv
 	info_CloseNotifier = GoTypeInfo{Name: "go.std.net.http/CloseNotifier",
 		GoType: &GoType{T: &info_CloseNotifier},
 		Members: GoMembers{
+			"CloseNotify": MakeGoReceiver("CloseNotify", __closeNotifier_CloseNotify, "CloseNotify returns a channel that receives at most a\nsingle value (true) when the client connection has gone\naway.\n\nCloseNotify may wait to notify until Request.Body has been\nfully read.\n\nAfter the Handler has returned, there is no guarantee\nthat the channel receives a value.\n\nIf the protocol is HTTP/1.1 and CloseNotify is called while\nprocessing an idempotent request (such a GET) while\nHTTP/1.1 pipelining is in use, the arrival of a subsequent\npipelined request may cause a value to be sent on the\nreturned channel. In practice HTTP/1.1 pipelining is not\nenabled in browsers and not seen often in the wild. If this\nis a problem, use HTTP/2 or only use CloseNotify on methods\nsuch as POST.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -15053,13 +15057,13 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 906(3) 883(2) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=288 (61.28%)
+ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 906(3) 902(2) 908(2) 124(1) 883(1) 909(1)
+Totals: functions=470 generated=289 (61.49%)
           non-receivers=148 (31.49%) generated=120 (81.08%)
           receivers=273 (58.09%) generated=149 (54.58%)
-          methods=49 (10.43%) generated=19 (38.78%)
+          methods=49 (10.43%) generated=20 (40.82%)
         types=102
           constructable=82 ctors=41 (50.00%)
-          hits expr=302 fullname=1181
+          hits expr=302 fullname=1179
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)
