@@ -439,6 +439,11 @@ func (tdi *Type) TypeMappingsName() string {
 }
 
 func (tdi *Type) RelativeGoName(pos token.Pos) string {
-	// TODO: Support returning appropriate namespace prefix if Pos is from a different package
-	return fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+	pkgPrefix := tdi.GoPackage
+	if pkgPrefix == GoPackageForPos(pos) {
+		pkgPrefix = ""
+	} else if pkgPrefix != "" {
+		pkgPrefix += "."
+	}
+	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
 }
