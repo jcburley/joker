@@ -136,16 +136,13 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]*Type{}
 
-func defineVariant(pattern string, innerTdi *Type, te Expr) *Type {
-	name := innerTdi.GoName
-	isExported := innerTdi.IsExported
-
+func defineVariant(clojureName, pattern string, innerTdi *Type, te Expr) *Type {
 	tdi := &Type{
 		Type:           te,
-		ClojureName:    fmt.Sprintf(pattern, innerTdi.ClojureName),
-		IsExported:     isExported,
+		ClojureName:    clojureName,
+		IsExported:     innerTdi.IsExported,
 		GoPattern:      pattern,
-		GoName:         name,
+		GoName:         innerTdi.GoName,
 		underlyingType: innerTdi,
 	}
 
@@ -170,64 +167,81 @@ func TypeDefineBuiltin(name string) *Type {
 	return tdi
 }
 
-func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
-	switch v := e.(type) {
-	case *Ident:
-		break
-	case *StarExpr:
-		return dynamicDefine(append(prefixes, "*"), v.X)
-	case *ArrayType:
-		return dynamicDefine(append(prefixes, exprToString(v.Len)), v.Elt)
-	default:
-		return nil, strings.Join(prefixes, "")
-	}
-	// Try defining the type here.
-	return dynamicDefine([]string{}, e)
-}
-
-func TypeLookup(e Expr) (ty *Type, fullName string) {
+func TypeLookup(e Expr) (ty *Type, clojureName string) {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return tdi, tdi.ClojureName
 	}
-	name := typeName(e)
-	if tdi, ok := typesByClojureName[name]; ok {
+	clojureName = typeName(e)
+	if tdi, ok := typesByClojureName[clojureName]; ok {
 		NumClojureNameHits++
 		typesByExpr[e] = tdi
-		return tdi, name
+		return tdi, clojureName
 	}
 
 	if _, yes := e.(*Ident); yes {
+		// No more information to be gleaned.
 		return
 	}
 
 	var innerTdi *Type
-	innerName := name
 	pattern := "%s"
+	goName := ""
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerTdi, innerName = TypeLookup(v.X)
+		innerTdi, _ = TypeLookup(v.X)
 		pattern = "*%s"
+		goName = innerTdi.GoName
 	case *ArrayType:
-		innerTdi, innerName = TypeLookup(v.Elt)
-		pattern = "[" + exprToString(v.Len) + "]%s"
+		innerTdi, _ = TypeLookup(v.Elt)
+		len := exprToString(v.Len)
+		pattern = "[" + len + "]%s"
+		goName = innerTdi.GoName
+	case *InterfaceType:
+		goName = "interface{"
+		methods := methodsToString(v.Methods.List)
+		if v.Incomplete {
+			methods = strings.Join([]string{methods, "..."}, ", ")
+		}
+		goName += methods + "}"
+	case *MapType:
+		key, _ := TypeLookup(v.Key)
+		value, _ := TypeLookup(v.Value)
+		goName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
+	case *SelectorExpr:
+		left := fmt.Sprintf("%s", v.X)
+		goName = left + "." + v.Sel.Name
+	case *ChanType:
+		ty, _ := TypeLookup(v.Value)
+		goName = "chan"
+		switch v.Dir & (SEND | RECV) {
+		case SEND:
+			goName += "<-"
+		case RECV:
+			goName = "<-" + goName
+		default:
+		}
+		goName += " " + ty.RelativeGoName(e.Pos())
+	case *StructType:
+		goName = "struct{}"
 	}
-
-	newName := fmt.Sprintf(pattern, innerName)
 
 	if innerTdi == nil {
+		if goName == "" {
+			goName = fmt.Sprintf("ABEND001(NO GO NAME for %s??!!)", clojureName)
+		}
 		tdi := &Type{
 			Type:        e,
-			ClojureName: newName,
+			ClojureName: clojureName,
 			GoPattern:   pattern,
-			GoName:      newName,
+			GoName:      goName,
 		}
 		define(tdi)
-		return tdi, newName
+		return tdi, clojureName
 	}
 
-	return defineVariant(pattern, innerTdi, e), newName
+	return defineVariant(clojureName, pattern, innerTdi, e), clojureName
 }
 
 var allTypesSorted = []*Type{}
@@ -298,26 +312,32 @@ func methodsToString(methods []*Field) string {
 	return strings.Join(mStrings, ", ")
 }
 
-func typeName(e Expr) (full string) {
+func typeName(e Expr) (clj string) {
 	switch x := e.(type) {
 	case *Ident:
 		break
 	case *ArrayType:
-		elFull := typeName(x.Elt)
+		elClj := typeName(x.Elt)
 		len := exprToString(x.Len)
-		full = "[" + len + "]" + elFull
+		if len != "" {
+			len = ":length " + len + " "
+		}
+		clj = "(vector-of " + len + elClj + ")"
 		return
 	case *StarExpr:
-		elFull := typeName(x.X)
-		full = "*" + elFull
+		elClj := typeName(x.X)
+		clj = "*" + elClj
 		return
 	case *InterfaceType:
+		clj = "(interface-of "
 		methods := methodsToString(x.Methods.List)
-		full = "interface{" + methods
 		if x.Incomplete {
-			full += ", ..."
+			methods = strings.Join([]string{methods, "..."}, ", ")
 		}
-		full += "}"
+		if methods == "" {
+			methods = "nil"
+		}
+		clj += methods + ")"
 		return
 	case *MapType:
 		key, keyName := TypeLookup(x.Key)
@@ -328,23 +348,28 @@ func typeName(e Expr) (full string) {
 		if value != nil {
 			valueName = value.RelativeGoName(e.Pos())
 		}
-		return "map[" + keyName + "]" + valueName
+		return "(hash-map-of " + keyName + " " + valueName + ")"
 	case *SelectorExpr:
 		left := fmt.Sprintf("%s", x.X)
-		return left + "." + x.Sel.Name
+		return left + "/" + x.Sel.Name
 	case *ChanType:
 		ty, tyName := TypeLookup(x.Value)
 		if ty != nil {
 			tyName = ty.RelativeGoName(e.Pos())
 		}
+		clj = "(channel-of "
 		switch x.Dir & (SEND | RECV) {
 		case SEND:
-			full = "chan<- " + tyName
+			clj += ":<- "
 		case RECV:
-			full = "<-chan " + tyName
+			clj += ":-> "
 		default:
-			full = "chan " + tyName
+			clj += ":<> "
 		}
+		clj += tyName + ")"
+		return
+	case *StructType:
+		clj = "(struct-of ...)"
 		return
 	default:
 		return
@@ -356,11 +381,11 @@ func typeName(e Expr) (full string) {
 	if types.Universe.Lookup(local) == nil {
 		prefix = ClojureNamespaceForExpr(e) + "/"
 	}
-	full = prefix + local
+	clj = prefix + local
 
 	o := x.Obj
 	if o != nil && o.Kind == Typ {
-		tdi := typesByClojureName[full]
+		tdi := typesByClojureName[clj]
 		if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
 			Print(Fset, x)
 			var ts *TypeSpec

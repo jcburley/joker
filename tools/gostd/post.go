@@ -105,22 +105,24 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 	case *InterfaceType:
 		out = "MakeGoObjectIfNeeded(" + captureName + ")"
 		cl = "Object"
-		_, tyName := types.TypeLookup(v)
-		gol = tyName
 	case *MapType, *ChanType:
 		out = "MakeGoObject(" + captureName + ")"
 		cl = "GoObject"
-		ty, tyName := types.TypeLookup(v)
-		if ty == nil {
-			gol = tyName
-		} else {
-			gol = ty.RelativeGoName(e.Pos())
-		}
 	default:
 		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
 		gol = "..."
 		out = captureName
 	}
+
+	if gol == "" {
+		ty, tyName := types.TypeLookup(e)
+		if ty == nil {
+			gol = tyName + "ABEND000(post.go: no type info found)"
+		} else {
+			gol = ty.RelativeGoName(e.Pos())
+		}
+	}
+
 	if clDoc == "" {
 		clDoc = cl
 	}
