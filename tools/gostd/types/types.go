@@ -181,7 +181,7 @@ func TypeLookup(e Expr) (ty *Type, clojureName string) {
 
 	if _, yes := e.(*Ident); yes {
 		// No more information to be gleaned.
-		return
+		return nil, e.(*Ident).Name
 	}
 
 	var innerTdi *Type
