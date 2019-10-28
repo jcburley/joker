@@ -72,14 +72,14 @@
 (deftest govars-work
   (let [dnserr (new DNSError {})
         temp (Go dnserr :IsTemporary)
-        notfound (Go dnserr :IsNotFound)]
-    (is (not (deref notfound)))
+        timeout (Go dnserr :IsTimeout)]
+    (is (not (deref timeout)))
     (is (not (deref temp)))
     (is (var-set temp true))
     (is (deref temp))
-    (is (not (deref notfound)))
-    (var-set notfound temp)
-    (is (deref notfound))))
+    (is (not (deref timeout)))
+    (var-set timeout temp)
+    (is (deref timeout))))
 
 (deftest native-wrapping-works
   (let [one (Go 1 :<>)
