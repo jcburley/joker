@@ -270,6 +270,7 @@ JOKER TYPE go.std.net/Addr:
   ^{:doc "Addr represents a network end point address.\n\nThe two methods Network and String conventionally return strings\nthat can be passed as the arguments to Dial, but the exact form\nand meaning of the strings is up to the implementation.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 2
     :go "&info_Addr"}
   Addr)
 
@@ -310,6 +311,7 @@ JOKER TYPE go.std.net/Conn:
   ^{:doc "Conn is a generic stream-oriented network connection.\n\nMultiple goroutines may invoke methods on a Conn simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 8
     :go "&info_Conn"}
   Conn)
 
@@ -350,6 +352,7 @@ JOKER TYPE go.std.net/Error:
   ^{:doc "An Error represents a network error.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 3
     :go "&info_Error"}
   Error)
 
@@ -454,6 +457,7 @@ JOKER TYPE go.std.net/Listener:
   ^{:doc "A Listener is a generic network listener for stream-oriented protocols.\n\nMultiple goroutines may invoke methods on a Listener simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 3
     :go "&info_Listener"}
   Listener)
 
@@ -510,6 +514,7 @@ JOKER TYPE go.std.net/PacketConn:
   ^{:doc "PacketConn is a generic packet-oriented network connection.\n\nMultiple goroutines may invoke methods on a PacketConn simultaneously.\n"
     :added "1.0"
     :tag "GoType"
+    :specificity 7
     :go "&info_PacketConn"}
   PacketConn)
 
@@ -1805,7 +1810,14 @@ func __conn_LocalAddr(o GoObject, args Object) Object {  // Method
 
 GO FUNC net.__conn_Read from net/net.go:
 // func __conn_Read(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(net.Conn)Read()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/net.go:117:9)
+// 	n, err := o.O.(net.Conn).Read(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__conn_RemoteAddr from net/net.go:
 func __conn_RemoteAddr(o GoObject, args Object) Object {  // Method
@@ -1840,7 +1852,14 @@ GO FUNC net.__conn_SetWriteDeadline from net/net.go:
 
 GO FUNC net.__conn_Write from net/net.go:
 // func __conn_Write(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(net.Conn)Write()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/net.go:122:10)
+// 	n, err := o.O.(net.Conn).Write(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__error_Error from net/net.go:
 // func __error_Error(o GoObject, args Object) Object {  // Method
@@ -2048,7 +2067,15 @@ func __packetConn_LocalAddr(o GoObject, args Object) Object {  // Method
 
 GO FUNC net.__packetConn_ReadFrom from net/net.go:
 // func __packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+// 	_argList := CheckGoArity("(net.PacketConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/small/src/net/net.go:314:13)
+// 	n, addr, err := o.O.(net.PacketConn).ReadFrom(__p)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__packetConn_SetDeadline from net/net.go:
 // func __packetConn_SetDeadline(o GoObject, args Object) Object {  // Method
@@ -2076,7 +2103,15 @@ GO FUNC net.__packetConn_SetWriteDeadline from net/net.go:
 
 GO FUNC net.__packetConn_WriteTo from net/net.go:
 // func __packetConn_WriteTo(o GoObject, args Object) Object {  // Method
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)), *__addr)}
+// 	_argList := CheckGoArity("(net.PacketConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/small/src/net/net.go:321:12)
+// 	__addr := ExtractGo_go_std_net__Addr("(net.PacketConn)WriteTo()", "__addr", _argList, 1)
+// 	n, err := o.O.(net.PacketConn).WriteTo(__p, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_AddrError_Error from net/net.go:
 func __ptrTo_AddrError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2101,7 +2136,14 @@ func __ptrTo_AddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_Buffers_Read from net/net.go:
 // func __ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__p)))}
+// 	_argList := CheckGoArity("(*net.Buffers)Read()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __p at: _tests/small/src/net/net.go:674:26)
+// 	n, err := o.O.(*net.Buffers).Read(__p)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_Buffers_WriteTo from net/net.go:
 // func __ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {  // Receiver
@@ -2172,15 +2214,42 @@ func __ptrTo_IPAddr_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_IPConn_ReadFrom from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadFrom()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:125:29)
+// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFrom(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:113:31)
+// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFromIP(__b)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(MakeGoObject(_res2))
+// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 // func __ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)))}
+// 	_argList := CheckGoArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:146:35)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/small/src/net/iprawsock.go:146:35)
+// 	n, oobn, flags, addr, err := o.O.(*net.IPConn).ReadMsgIP(__b, __oob)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(MakeInt(flags))
+// 	_res = _res.Conjoin(MakeGoObject(addr))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func __ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
@@ -2188,15 +2257,41 @@ GO FUNC net.__ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 
 GO FUNC net.__ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__oob)), __addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __oob at: _tests/small/src/net/iprawsock.go:191:36)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/small/src/net/iprawsock.go:191:49)
+// 	n, oobn, err := o.O.(*net.IPConn).WriteMsgIP(__b, __oob, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(n))
+// 	_res = _res.Conjoin(MakeInt(oobn))
+// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteTo from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), *__addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteTo()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:170:28)
+// 	__addr := ExtractGo_go_std_net__Addr("(*net.IPConn)WriteTo()", "__addr", _argList, 1)
+// 	_res1, _res2 := o.O.(*net.IPConn).WriteTo(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 // func __ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__b)), __addr)}
+// 	_argList := CheckGoArity("(*net.IPConn)WriteToIP()", args, 2, 2)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __b at: _tests/small/src/net/iprawsock.go:158:30)
+// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __addr at: _tests/small/src/net/iprawsock.go:158:43)
+// 	_res1, _res2 := o.O.(*net.IPConn).WriteToIP(__b, __addr)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeInt(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net.__ptrTo_IPNet_Contains from net/ip.go:
 func __ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
@@ -2222,7 +2317,11 @@ func __ptrTo_IPNet_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net.__ptrTo_IP_UnmarshalText from net/ip.go:
 // func __ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__text)))}
+// 	_argList := CheckGoArity("(*net.IP)UnmarshalText()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __text at: _tests/small/src/net/ip.go:390:34)
+// 	_res := o.O.(*net.IP).UnmarshalText(__text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net.__ptrTo_OpError_Error from net/net.go:
 func __ptrTo_OpError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2536,7 +2635,8 @@ GO INFO FOR TYPE go.std.net/Addr from _tests\small\src\net\net.go:105:6:
 		Members: GoMembers{
 			"Network": MakeGoReceiver("Network", __addr_Network, "name of the network (for example, \"tcp\", \"udp\")\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __addr_String, "string form of address (for example, \"192.0.2.1:25\", \"[2001:db8::1]:80\")\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/AddrError from _tests\small\src\net\net.go:529:6:
@@ -2544,7 +2644,8 @@ GO INFO FOR TYPE go.std.net/AddrError from _tests\small\src\net\net.go:529:6:
 		GoType: &GoType{T: &info_AddrError},
 		Ctor: _Wrapped_Ctor_AddrError,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/AddrError from -:
@@ -2554,21 +2655,24 @@ GO INFO FOR TYPE *go.std.net/AddrError from -:
 			"Error": MakeGoReceiver("Error", __ptrTo_AddrError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __ptrTo_AddrError_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_AddrError_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/Buffers from _tests\small\src\net\net.go:651:6:
 	info_Buffers = GoTypeInfo{Name: "go.std.net/Buffers",
 		GoType: &GoType{T: &info_Buffers},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/Buffers from -:
 	info_PtrTo_Buffers = GoTypeInfo{Name: "*go.std.net/Buffers",
 		GoType: &GoType{T: &info_PtrTo_Buffers},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/Conn from _tests\small\src\net\net.go:113:6:
@@ -2578,7 +2682,8 @@ GO INFO FOR TYPE go.std.net/Conn from _tests\small\src\net\net.go:113:6:
 			"Close": MakeGoReceiver("Close", __conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 			"LocalAddr": MakeGoReceiver("LocalAddr", __conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
 			"RemoteAddr": MakeGoReceiver("RemoteAddr", __conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/DNSConfigError from _tests\small\src\net\net.go:562:6:
@@ -2586,7 +2691,8 @@ GO INFO FOR TYPE go.std.net/DNSConfigError from _tests\small\src\net\net.go:562:
 		GoType: &GoType{T: &info_DNSConfigError},
 		Ctor: _Wrapped_Ctor_DNSConfigError,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/DNSConfigError from -:
@@ -2596,7 +2702,8 @@ GO INFO FOR TYPE *go.std.net/DNSConfigError from -:
 			"Error": MakeGoReceiver("Error", __ptrTo_DNSConfigError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __ptrTo_DNSConfigError_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_DNSConfigError_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/DNSError from _tests\small\src\net\net.go:576:6:
@@ -2604,7 +2711,8 @@ GO INFO FOR TYPE go.std.net/DNSError from _tests\small\src\net\net.go:576:6:
 		GoType: &GoType{T: &info_DNSError},
 		Ctor: _Wrapped_Ctor_DNSError,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/DNSError from -:
@@ -2614,7 +2722,8 @@ GO INFO FOR TYPE *go.std.net/DNSError from -:
 			"Error": MakeGoReceiver("Error", __ptrTo_DNSError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __ptrTo_DNSError_Temporary, "Temporary reports whether the DNS error is known to be temporary.\nThis is not always known; a DNS lookup may fail due to a temporary\nerror and return a DNSError for which Temporary returns false.\n", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_DNSError_Timeout, "Timeout reports whether the DNS lookup is known to have timed out.\nThis is not always known; a DNS lookup may fail due to a timeout\nand return a DNSError for which Timeout returns false.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/Error from _tests\small\src\net\net.go:387:6:
@@ -2623,7 +2732,8 @@ GO INFO FOR TYPE go.std.net/Error from _tests\small\src\net\net.go:387:6:
 		Members: GoMembers{
 			"Temporary": MakeGoReceiver("Temporary", __error_Temporary, "Is the error temporary?\n", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __error_Timeout, "Is the error a timeout?\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/IP from _tests\small\src\net\ip.go:32:6:
@@ -2644,21 +2754,24 @@ GO INFO FOR TYPE go.std.net/IP from _tests\small\src\net\ip.go:32:6:
 			"String": MakeGoReceiver("String", __iP_String, "String returns the string form of the IP address ip.\nIt returns one of 4 forms:\n  - \"<nil>\", if ip has length 0\n  - dotted decimal (\"192.0.2.1\"), if ip is an IPv4 or IP4-mapped IPv6 address\n  - IPv6 (\"2001:db8::1\"), if ip is a valid IPv6 address\n  - the hexadecimal form of ip, without punctuation, if no other cases apply\n", "1.0", NewVectorFrom()),
 			"To16": MakeGoReceiver("To16", __iP_To16, "To16 converts the IP address ip to a 16-byte representation.\nIf ip is not an IP address (it is the wrong length), To16 returns nil.\n", "1.0", NewVectorFrom()),
 			"To4": MakeGoReceiver("To4", __iP_To4, "To4 converts the IPv4 address ip to a 4-byte representation.\nIf ip is not an IPv4 address, To4 returns nil.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/IP from -:
 	info_PtrTo_IP = GoTypeInfo{Name: "*go.std.net/IP",
 		GoType: &GoType{T: &info_PtrTo_IP},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/IPAddr from _tests\small\src\net\iprawsock.go:31:6:
 	info_IPAddr = GoTypeInfo{Name: "go.std.net/IPAddr",
 		GoType: &GoType{T: &info_IPAddr},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/IPAddr from -:
@@ -2667,7 +2780,8 @@ GO INFO FOR TYPE *go.std.net/IPAddr from -:
 		Members: GoMembers{
 			"Network": MakeGoReceiver("Network", __ptrTo_IPAddr_Network, "Network returns the address's network name, \"ip\".\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __ptrTo_IPAddr_String, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/IPConn from _tests\small\src\net\iprawsock.go:99:6:
@@ -2675,14 +2789,16 @@ GO INFO FOR TYPE go.std.net/IPConn from _tests\small\src\net\iprawsock.go:99:6:
 		GoType: &GoType{T: &info_IPConn},
 		Ctor: _Wrapped_Ctor_IPConn,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/IPConn from -:
 	info_PtrTo_IPConn = GoTypeInfo{Name: "*go.std.net/IPConn",
 		GoType: &GoType{T: &info_PtrTo_IPConn},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/IPMask from _tests\small\src\net\ip.go:35:6:
@@ -2691,21 +2807,24 @@ GO INFO FOR TYPE go.std.net/IPMask from _tests\small\src\net\ip.go:35:6:
 		Members: GoMembers{
 			"Size": MakeGoReceiver("Size", __iPMask_Size, "Size returns the number of leading ones and total bits in the mask.\nIf the mask is not in the canonical form--ones followed by zeros--then\nSize returns 0, 0.\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __iPMask_String, "String returns the hexadecimal form of m, with no punctuation.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/IPMask from -:
 	info_PtrTo_IPMask = GoTypeInfo{Name: "*go.std.net/IPMask",
 		GoType: &GoType{T: &info_PtrTo_IPMask},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/IPNet from _tests\small\src\net\ip.go:38:6:
 	info_IPNet = GoTypeInfo{Name: "go.std.net/IPNet",
 		GoType: &GoType{T: &info_IPNet},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/IPNet from -:
@@ -2715,7 +2834,8 @@ GO INFO FOR TYPE *go.std.net/IPNet from -:
 			"Contains": MakeGoReceiver("Contains", __ptrTo_IPNet_Contains, "Contains reports whether the network includes ip.\n", "1.0", NewVectorFrom(MakeSymbol("ip"))),
 			"Network": MakeGoReceiver("Network", __ptrTo_IPNet_Network, "Network returns the address's network name, \"ip+net\".\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __ptrTo_IPNet_String, "String returns the CIDR notation of n like \"192.0.2.1/24\"\nor \"2001:db8::/48\" as defined in RFC 4632 and RFC 4291.\nIf the mask is not in the canonical form, it returns the\nstring which consists of an IP address, followed by a slash\ncharacter and a mask expressed as hexadecimal form with no\npunctuation like \"198.51.100.1/c000ff00\".\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests\small\src\net\net.go:554:6:
@@ -2726,14 +2846,16 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests\small\src\net\net.go:55
 			"Error": MakeGoReceiver("Error", __invalidAddrError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __invalidAddrError_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __invalidAddrError_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/InvalidAddrError from -:
 	info_PtrTo_InvalidAddrError = GoTypeInfo{Name: "*go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_PtrTo_InvalidAddrError},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/Listener from _tests\small\src\net\net.go:374:6:
@@ -2743,7 +2865,8 @@ GO INFO FOR TYPE go.std.net/Listener from _tests\small\src\net\net.go:374:6:
 			"Accept": MakeGoReceiver("Accept", __listener_Accept, "Accept waits for and returns the next connection to the listener.\n", "1.0", NewVectorFrom()),
 			"Addr": MakeGoReceiver("Addr", __listener_Addr, "Addr returns the listener's network address.\n", "1.0", NewVectorFrom()),
 			"Close": MakeGoReceiver("Close", __listener_Close, "Close closes the listener.\nAny blocked Accept operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/MX from _tests\small\src\net\dnsclient.go:193:6:
@@ -2751,14 +2874,16 @@ GO INFO FOR TYPE go.std.net/MX from _tests\small\src\net\dnsclient.go:193:6:
 		GoType: &GoType{T: &info_MX},
 		Ctor: _Wrapped_Ctor_MX,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/MX from -:
 	info_PtrTo_MX = GoTypeInfo{Name: "*go.std.net/MX",
 		GoType: &GoType{T: &info_PtrTo_MX},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/NS from _tests\small\src\net\dnsclient.go:215:6:
@@ -2766,21 +2891,24 @@ GO INFO FOR TYPE go.std.net/NS from _tests\small\src\net\dnsclient.go:215:6:
 		GoType: &GoType{T: &info_NS},
 		Ctor: _Wrapped_Ctor_NS,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/NS from -:
 	info_PtrTo_NS = GoTypeInfo{Name: "*go.std.net/NS",
 		GoType: &GoType{T: &info_PtrTo_NS},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/OpError from _tests\small\src\net\net.go:425:6:
 	info_OpError = GoTypeInfo{Name: "go.std.net/OpError",
 		GoType: &GoType{T: &info_OpError},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/OpError from -:
@@ -2790,7 +2918,8 @@ GO INFO FOR TYPE *go.std.net/OpError from -:
 			"Error": MakeGoReceiver("Error", __ptrTo_OpError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __ptrTo_OpError_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_OpError_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/PacketConn from _tests\small\src\net\net.go:303:6:
@@ -2799,7 +2928,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests\small\src\net\net.go:303:6:
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", __packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 			"LocalAddr": MakeGoReceiver("LocalAddr", __packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/ParseError from _tests\small\src\net\net.go:518:6:
@@ -2807,7 +2937,8 @@ GO INFO FOR TYPE go.std.net/ParseError from _tests\small\src\net\net.go:518:6:
 		GoType: &GoType{T: &info_ParseError},
 		Ctor: _Wrapped_Ctor_ParseError,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/ParseError from -:
@@ -2815,21 +2946,24 @@ GO INFO FOR TYPE *go.std.net/ParseError from -:
 		GoType: &GoType{T: &info_PtrTo_ParseError},
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __ptrTo_ParseError_Error, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/Resolver from _tests\small\src\net\lookup.go:107:6:
 	info_Resolver = GoTypeInfo{Name: "go.std.net/Resolver",
 		GoType: &GoType{T: &info_Resolver},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/Resolver from -:
 	info_PtrTo_Resolver = GoTypeInfo{Name: "*go.std.net/Resolver",
 		GoType: &GoType{T: &info_PtrTo_Resolver},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/SRV from _tests\small\src\net\dnsclient.go:139:6:
@@ -2837,14 +2971,16 @@ GO INFO FOR TYPE go.std.net/SRV from _tests\small\src\net\dnsclient.go:139:6:
 		GoType: &GoType{T: &info_SRV},
 		Ctor: _Wrapped_Ctor_SRV,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/SRV from -:
 	info_PtrTo_SRV = GoTypeInfo{Name: "*go.std.net/SRV",
 		GoType: &GoType{T: &info_PtrTo_SRV},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests\small\src\net\net.go:548:6:
@@ -2855,14 +2991,16 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests\small\src\net\net.go
 			"Error": MakeGoReceiver("Error", __unknownNetworkError_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __unknownNetworkError_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __unknownNetworkError_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net/UnknownNetworkError from -:
 	info_PtrTo_UnknownNetworkError = GoTypeInfo{Name: "*go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_PtrTo_UnknownNetworkError},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO VECSET FOR TYPE go.std.net/Addr from _tests\small\src\net\net.go:105:6:
@@ -3437,7 +3575,11 @@ func __ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/url.__ptrTo_URL_UnmarshalBinary from net/url/url.go:
 // func __ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
-// (ABEND902(pre.go: custom-runtime routine not implemented: ConvertToArrayOfbyte(__text)))}
+// 	_argList := CheckGoArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
+// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for __text at: _tests/small/src/net/url/url.go:1079:36)
+// 	_res := o.O.(*url.URL).UnmarshalBinary(__text)
+// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+// }
 
 GO FUNC net/url.__ptrTo_Userinfo_Password from net/url/url.go:
 func __ptrTo_Userinfo_Password(o GoObject, args Object) Object {  // Receiver
@@ -3534,7 +3676,8 @@ GO INFO FOR TYPE go.std.net.url/Error from _tests\small\src\net\url\url.go:22:6:
 		GoType: &GoType{T: &info_Error},
 		Ctor: _Wrapped_Ctor_Error,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/Error from -:
@@ -3544,7 +3687,8 @@ GO INFO FOR TYPE *go.std.net.url/Error from -:
 			"Error": MakeGoReceiver("Error", __ptrTo_Error_Error, "", "1.0", NewVectorFrom()),
 			"Temporary": MakeGoReceiver("Temporary", __ptrTo_Error_Temporary, "", "1.0", NewVectorFrom()),
 			"Timeout": MakeGoReceiver("Timeout", __ptrTo_Error_Timeout, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net.url/EscapeError from _tests\small\src\net\url\url.go:84:6:
@@ -3553,14 +3697,16 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests\small\src\net\url\url.go
 		Ctor: _Wrapped_Ctor_EscapeError,
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __escapeError_Error, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/EscapeError from -:
 	info_PtrTo_EscapeError = GoTypeInfo{Name: "*go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_PtrTo_EscapeError},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests\small\src\net\url\url.go:90:6:
@@ -3569,21 +3715,24 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests\small\src\net\url\u
 		Ctor: _Wrapped_Ctor_InvalidHostError,
 		Members: GoMembers{
 			"Error": MakeGoReceiver("Error", __invalidHostError_Error, "", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/InvalidHostError from -:
 	info_PtrTo_InvalidHostError = GoTypeInfo{Name: "*go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_PtrTo_InvalidHostError},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net.url/URL from _tests\small\src\net\url\url.go:344:6:
 	info_URL = GoTypeInfo{Name: "go.std.net.url/URL",
 		GoType: &GoType{T: &info_URL},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/URL from -:
@@ -3599,7 +3748,8 @@ GO INFO FOR TYPE *go.std.net.url/URL from -:
 			"Query": MakeGoReceiver("Query", __ptrTo_URL_Query, "Query parses RawQuery and returns the corresponding values.\nIt silently discards malformed value pairs.\nTo check errors use ParseQuery.\n", "1.0", NewVectorFrom()),
 			"RequestURI": MakeGoReceiver("RequestURI", __ptrTo_URL_RequestURI, "RequestURI returns the encoded path?query or opaque?query\nstring that would be used in an HTTP request for u.\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __ptrTo_URL_String, "String reassembles the URL into a valid URL string.\nThe general form of the result is one of:\n\n\tscheme:opaque?query#fragment\n\tscheme://userinfo@host/path?query#fragment\n\nIf u.Opaque is non-empty, String uses the first form;\notherwise it uses the second form.\nTo obtain the path, String uses u.EscapedPath().\n\nIn the second form, the following rules apply:\n\t- if u.Scheme is empty, scheme: is omitted.\n\t- if u.User is nil, userinfo@ is omitted.\n\t- if u.Host is empty, host/ is omitted.\n\t- if u.Scheme and u.Host are empty and u.User is nil,\n\t   the entire scheme://userinfo@host/ is omitted.\n\t- if u.Host is non-empty and u.Path begins with a /,\n\t   the form host/path does not add its own /.\n\t- if u.RawQuery is empty, ?query is omitted.\n\t- if u.Fragment is empty, #fragment is omitted.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net.url/Userinfo from _tests\small\src\net\url\url.go:378:6:
@@ -3607,7 +3757,8 @@ GO INFO FOR TYPE go.std.net.url/Userinfo from _tests\small\src\net\url\url.go:37
 		GoType: &GoType{T: &info_Userinfo},
 		Ctor: _Wrapped_Ctor_Userinfo,
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/Userinfo from -:
@@ -3617,7 +3768,8 @@ GO INFO FOR TYPE *go.std.net.url/Userinfo from -:
 			"Password": MakeGoReceiver("Password", __ptrTo_Userinfo_Password, "Password returns the password in case it is set, and whether it is set.\n", "1.0", NewVectorFrom()),
 			"String": MakeGoReceiver("String", __ptrTo_Userinfo_String, "String returns the encoded userinfo information in the standard form\nof \"username[:password]\".\n", "1.0", NewVectorFrom()),
 			"Username": MakeGoReceiver("Username", __ptrTo_Userinfo_Username, "Username returns the username.\n", "1.0", NewVectorFrom()),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE go.std.net.url/Values from _tests\small\src\net\url\url.go:804:6:
@@ -3626,14 +3778,16 @@ GO INFO FOR TYPE go.std.net.url/Values from _tests\small\src\net\url\url.go:804:
 		Members: GoMembers{
 			"Encode": MakeGoReceiver("Encode", __values_Encode, "Encode encodes the values into ``URL encoded'' form\n(\"bar=baz&foo=quux\") sorted by key.\n", "1.0", NewVectorFrom()),
 			"Get": MakeGoReceiver("Get", __values_Get, "Get gets the first value associated with the given key.\nIf there are no values associated with the key, Get returns\nthe empty string. To access multiple values, use the map\ndirectly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
-		}}
+		},
+	}
 
 
 GO INFO FOR TYPE *go.std.net.url/Values from -:
 	info_PtrTo_Values = GoTypeInfo{Name: "*go.std.net.url/Values",
 		GoType: &GoType{T: &info_PtrTo_Values},
 		Members: GoMembers{
-		}}
+		},
+	}
 
 
 GO VECSET FOR TYPE go.std.net.url/Error from _tests\small\src\net\url\url.go:22:6:
@@ -3812,13 +3966,13 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 644(17) 902(15) 048(6) 674(4) 047(3) 275(3) 042(1) 124(1)
+ABENDs: 644(34) 048(6) 674(4) 047(3) 275(3) 042(1) 124(1)
 Totals: functions=132 generated=97 (73.48%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
           receivers=83 (62.88%) generated=59 (71.08%)
           methods=23 (17.42%) generated=12 (52.17%)
         types=28
           constructable=23 ctors=14 (60.87%)
-          hits expr=74 fullname=317
+          hits expr=77 fullname=345
         constants=2 generated=2 (100.00%)
         variables=12 generated=12 (100.00%)
