@@ -148,15 +148,16 @@ type (
 	Var struct {
 		InfoHolder
 		MetaHolder
-		ns         *Namespace
-		name       Symbol
-		Value      Object
-		expr       Expr
-		isMacro    bool
-		isPrivate  bool
-		isDynamic  bool
-		isUsed     bool
-		taggedType *Type
+		ns             *Namespace
+		name           Symbol
+		Value          Object
+		expr           Expr
+		isMacro        bool
+		isPrivate      bool
+		isDynamic      bool
+		isUsed         bool
+		isGloballyUsed bool
+		taggedType     *Type
 	}
 	GoVar struct {
 		InfoHolder
@@ -929,8 +930,12 @@ func (sym Symbol) WithMeta(meta Map) Object {
 	return res
 }
 
+func (v *Var) Name() string {
+	return v.ns.Name.ToString(false) + "/" + v.name.ToString(false)
+}
+
 func (v *Var) ToString(escape bool) string {
-	return "#'" + v.ns.Name.ToString(false) + "/" + v.name.ToString(false)
+	return "#'" + v.Name()
 }
 
 func (v *Var) Equals(other interface{}) bool {
