@@ -3,7 +3,7 @@
 build() {
   go clean
   go generate ./...
-  go vet main.go
+  go vet main.go repl.go
   go vet ./core/... ./std/...
   go build
 }
