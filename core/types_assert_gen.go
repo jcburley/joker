@@ -867,3 +867,24 @@ func EnsureGoType(args []Object, index int) *GoType {
 		panic(RT.NewArgTypeError(index, c, "GoType"))
 	}
 }
+
+func AssertFuture(obj Object, msg string) *Future {
+	switch c := obj.(type) {
+	case *Future:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "Future", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureFuture(args []Object, index int) *Future {
+	switch c := args[index].(type) {
+	case *Future:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "Future"))
+	}
+}
