@@ -124,6 +124,23 @@ func __exec_(_args []Object) Object {
 	return NIL
 }
 
+var exec_async_ Proc
+
+func __exec_async_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 2:
+		name := ExtractString(_args, 0)
+		opts := ExtractMap(_args, 1)
+		_res := executeAsync(name, opts)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
 var isexists_ Proc
 
 func __isexists_(_args []Object) Object {
@@ -242,6 +259,24 @@ func __sh_(_args []Object) Object {
 	return NIL
 }
 
+var sh_async_ Proc
+
+func __sh_async_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case true:
+		CheckArity(_args, 1, 999)
+		name := ExtractString(_args, 0)
+		arguments := ExtractStrings(_args, 1)
+		_res := shAsync("", name, arguments)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
 var sh_from_ Proc
 
 func __sh_from_(_args []Object) Object {
@@ -253,6 +288,25 @@ func __sh_from_(_args []Object) Object {
 		name := ExtractString(_args, 1)
 		arguments := ExtractStrings(_args, 2)
 		_res := sh(dir, nil, nil, nil, name, arguments)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var sh_from_async_ Proc
+
+func __sh_from_async_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case true:
+		CheckArity(_args, 2, 999)
+		dir := ExtractString(_args, 0)
+		name := ExtractString(_args, 1)
+		arguments := ExtractStrings(_args, 2)
+		_res := shAsync(dir, name, arguments)
 		return _res
 
 	default:
@@ -286,6 +340,7 @@ func Init() {
 	cwd_ = __cwd_
 	env_ = __env_
 	exec_ = __exec_
+	exec_async_ = __exec_async_
 	isexists_ = __isexists_
 	exit_ = __exit_
 	ls_ = __ls_
@@ -293,7 +348,9 @@ func Init() {
 	open_ = __open_
 	set_env_ = __set_env_
 	sh_ = __sh_
+	sh_async_ = __sh_async_
 	sh_from_ = __sh_from_
+	sh_from_async_ = __sh_from_async_
 	stat_ = __stat_
 
 	initNative()
@@ -351,6 +408,11 @@ func Init() {
   :out - string capturing stdout of the program (unless :stdout option was passed)
   :err - string capturing stderr of the program (unless :stderr option was passed).`, "1.0"))
 
+	osNamespace.InternVar("exec-async", exec_async_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("opts"))),
+			`Same as exec, but executes the program asynchronously and returns a Future.`, "1.0"))
+
 	osNamespace.InternVar("exists?", isexists_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("path"))),
@@ -392,6 +454,11 @@ func Init() {
       :out - string capturing stdout of the program,
       :err - string capturing stderr of the program.`, "1.0"))
 
+	osNamespace.InternVar("sh-async", sh_async_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("name"), MakeSymbol("&"), MakeSymbol("arguments"))),
+			`Same as sh, but executes the program asynchronously and returns a Future.`, "1.0"))
+
 	osNamespace.InternVar("sh-from", sh_from_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("dir"), MakeSymbol("name"), MakeSymbol("&"), MakeSymbol("arguments"))),
@@ -402,6 +469,11 @@ func Init() {
       :exit - exit code of program (or attempt to execute it),
       :out - string capturing stdout of the program,
       :err - string capturing stderr of the program.`, "1.0"))
+
+	osNamespace.InternVar("sh-from-async", sh_from_async_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("dir"), MakeSymbol("name"), MakeSymbol("&"), MakeSymbol("arguments"))),
+			`Same as sh-from, but executes the program asynchronously and returns a Future.`, "1.0"))
 
 	osNamespace.InternVar("stat", stat_,
 		MakeMeta(
