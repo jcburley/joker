@@ -553,27 +553,6 @@ func EnsureVar(args []Object, index int) *Var {
 	}
 }
 
-func AssertGoVar(obj Object, msg string) *GoVar {
-	switch c := obj.(type) {
-	case *GoVar:
-		return c
-	default:
-		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "GoVar", obj.GetType().ToString(false))
-		}
-		panic(RT.NewError(msg))
-	}
-}
-
-func EnsureGoVar(args []Object, index int) *GoVar {
-	switch c := args[index].(type) {
-	case *GoVar:
-		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoVar"))
-	}
-}
-
 func AssertError(obj Object, msg string) Error {
 	switch c := obj.(type) {
 	case Error:
@@ -721,27 +700,6 @@ func EnsurePending(args []Object, index int) Pending {
 	}
 }
 
-func AssertGoObject(obj Object, msg string) GoObject {
-	switch c := obj.(type) {
-	case GoObject:
-		return c
-	default:
-		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "GoObject", obj.GetType().ToString(false))
-		}
-		panic(RT.NewError(msg))
-	}
-}
-
-func EnsureGoObject(args []Object, index int) GoObject {
-	switch c := args[index].(type) {
-	case GoObject:
-		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoObject"))
-	}
-}
-
 func AssertFile(obj Object, msg string) *File {
 	switch c := obj.(type) {
 	case *File:
@@ -847,27 +805,6 @@ func Ensureio_RuneReader(args []Object, index int) io.RuneReader {
 	}
 }
 
-func AssertGoType(obj Object, msg string) *GoType {
-	switch c := obj.(type) {
-	case *GoType:
-		return c
-	default:
-		if msg == "" {
-			msg = fmt.Sprintf("Expected %s, got %s", "GoType", obj.GetType().ToString(false))
-		}
-		panic(RT.NewError(msg))
-	}
-}
-
-func EnsureGoType(args []Object, index int) *GoType {
-	switch c := args[index].(type) {
-	case *GoType:
-		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoType"))
-	}
-}
-
 func AssertFuture(obj Object, msg string) *Future {
 	switch c := obj.(type) {
 	case *Future:
@@ -886,5 +823,68 @@ func EnsureFuture(args []Object, index int) *Future {
 		return c
 	default:
 		panic(RT.NewArgTypeError(index, c, "Future"))
+	}
+}
+
+func AssertGoObject(obj Object, msg string) GoObject {
+	switch c := obj.(type) {
+	case GoObject:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoObject", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoObject(args []Object, index int) GoObject {
+	switch c := args[index].(type) {
+	case GoObject:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoObject"))
+	}
+}
+
+func AssertGoVar(obj Object, msg string) *GoVar {
+	switch c := obj.(type) {
+	case *GoVar:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoVar", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoVar(args []Object, index int) *GoVar {
+	switch c := args[index].(type) {
+	case *GoVar:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoVar"))
+	}
+}
+
+func AssertGoType(obj Object, msg string) *GoType {
+	switch c := obj.(type) {
+	case *GoType:
+		return c
+	default:
+		if msg == "" {
+			msg = fmt.Sprintf("Expected %s, got %s", "GoType", obj.GetType().ToString(false))
+		}
+		panic(RT.NewError(msg))
+	}
+}
+
+func EnsureGoType(args []Object, index int) *GoType {
+	switch c := args[index].(type) {
+	case *GoType:
+		return c
+	default:
+		panic(RT.NewArgTypeError(index, c, "GoType"))
 	}
 }

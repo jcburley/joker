@@ -37,11 +37,6 @@ func (x *Var) WithInfo(info *ObjectInfo) Object {
 	return x
 }
 
-func (x *GoVar) WithInfo(info *ObjectInfo) Object {
-	x.info = info
-	return x
-}
-
 func (x Nil) WithInfo(info *ObjectInfo) Object {
 	x.info = info
 	return x
@@ -153,6 +148,11 @@ func (x *VectorSeq) WithInfo(info *ObjectInfo) Object {
 }
 
 func (x *VectorRSeq) WithInfo(info *ObjectInfo) Object {
+	x.info = info
+	return x
+}
+
+func (x *GoVar) WithInfo(info *ObjectInfo) Object {
 	x.info = info
 	return x
 }
