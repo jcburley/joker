@@ -2248,7 +2248,6 @@ func init() {
 	intern("conj__", procConj)
 	intern("seq__", procSeq)
 	intern("instance?__", procIsInstance)
-	intern("goobject?__", procGoObject)
 	intern("assoc__", procAssoc)
 	intern("meta__", procMeta)
 	intern("with-meta__", procWithMeta)
@@ -2400,11 +2399,12 @@ func init() {
 	intern("intern-fake-var__", procInternFakeVar)
 	intern("parse__", procParse)
 	intern("inc-problem-count__", procIncProblemCount)
-
-	intern("Go__", proc_Go)
 	intern("types__", procTypes)
+	intern("go__", procGo)
+
+	intern("goobject?__", procGoObject)
+	intern("Go__", proc_Go)
 	intern("new__", procNew)
 	intern("GoTypeOf__", procGoTypeOf)
 	intern("ref__", procRef)
-	intern("go__", procGo)
 }
