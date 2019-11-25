@@ -494,6 +494,9 @@
   <a class="var-type Function" href="#get-method">get-method</a>
 </li>
 <li>
+  <a class="var-type Macro" href="#go">go</a>
+</li>
+<li>
   <a class="var-type Function" href="#goobject?">goobject?</a>
 </li>
 <li>
@@ -1617,7 +1620,7 @@
   GoVar wrapping the internal description of that type; else, the map<br>
   of meta tags for a receiver/method identified by that second<br>
   argument.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4500">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4520">source</a>
 </li>
 <li>
   <h3 id="GoTypeOf">GoTypeOf</h3>
@@ -1626,7 +1629,7 @@
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4550">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4570">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -2934,6 +2937,26 @@
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4474">source</a>
 </li>
 <li>
+  <h3 id="go">go</h3>
+  <span class="var-type Macro">Macro</span>
+  <span class="var-added">v</span>
+  <pre class="var-usage"><div><code>(go & body)</code></div>
+</pre>
+  <p class="var-docstr">Schedules a block to run inside a goroutine.<br>
+  Immediately returns a Future that will deref to whatever the block returns.<br>
+  If exception is thrown inside the block, it will be caught and re-thrown upon<br>
+  derefing the returned Future.<br>
+<br>
+  Joker is single threaded and uses the GIL (Global Interpreter Lock) to make sure<br>
+  only one goroutine (including the root one) executes at the same time.<br>
+  However, Future&#39;s deref and some I/O functions (joker.http/send, joker.os/sh*, joker.os/exec,<br>
+  and joker.time/sleep) release the GIL and allow other goroutines to run.<br>
+  So using goroutines only makes sense if you do I/O (specifically, calling the above functions)<br>
+  inside them. Also, note that a goroutine may never have a chance to run if the root goroutine<br>
+  (or another goroutine) doesn&#39;t deref a Future or do any I/O.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4504">source</a>
+</li>
+<li>
   <h3 id="goobject?">goobject?</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -3653,7 +3676,7 @@
   <pre class="var-usage"><div><code>(new t init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4544">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4564">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
@@ -4424,7 +4447,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4556">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4576">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
