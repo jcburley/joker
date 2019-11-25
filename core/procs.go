@@ -757,7 +757,7 @@ func goGetTypeInfo(ty *GoType, arg Object) Object {
 	return mi.meta
 }
 
-var procGo Proc = func(args []Object) Object {
+var proc_Go Proc = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	var goType *GoType
 	if ty, ok := args[0].(*GoType); ok {
@@ -1813,6 +1813,32 @@ var procTypes Proc = func(args []Object) Object {
 	return res
 }
 
+var procGo Proc = func(args []Object) Object {
+	CheckArity(args, 1, 1)
+	f := EnsureCallable(args, 0)
+	ch := make(chan FutureResult, 1)
+	go func() {
+
+		defer func() {
+			if r := recover(); r != nil {
+				switch r := r.(type) {
+				case Error:
+					ch <- MakeFutureResult(NIL, r)
+				default:
+					RT.GIL.Unlock()
+					panic(r)
+				}
+			}
+			RT.GIL.Unlock()
+		}()
+
+		RT.GIL.Lock()
+		res := f.Call([]Object{})
+		ch <- MakeFutureResult(res, nil)
+	}()
+	return MakeFuture(ch)
+}
+
 func PackReader(reader *Reader, filename string) ([]byte, error) {
 	var p []byte
 	packEnv := NewPackEnv()
@@ -2381,9 +2407,10 @@ func init() {
 	intern("parse__", procParse)
 	intern("inc-problem-count__", procIncProblemCount)
 
-	intern("go__", procGo)
+	intern("Go__", proc_Go)
 	intern("types__", procTypes)
 	intern("new__", procNew)
 	intern("GoTypeOf__", procGoTypeOf)
 	intern("ref__", procRef)
+	intern("go__", procGo)
 }
