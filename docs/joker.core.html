@@ -113,6 +113,9 @@
   <a class="var-type Function" href="#<"><</a>
 </li>
 <li>
+  <a class="var-type Function" href="#<!"><!</a>
+</li>
+<li>
   <a class="var-type Function" href="#<="><=</a>
 </li>
 <li>
@@ -123,6 +126,9 @@
 </li>
 <li>
   <a class="var-type Function" href="#>">></a>
+</li>
+<li>
+  <a class="var-type Function" href="#>!">>!</a>
 </li>
 <li>
   <a class="var-type Function" href="#>=">>=</a>
@@ -242,6 +248,9 @@
   <a class="var-type Function" href="#cast">cast</a>
 </li>
 <li>
+  <a class="var-type Function" href="#chan">chan</a>
+</li>
+<li>
   <a class="var-type Function" href="#char">char</a>
 </li>
 <li>
@@ -252,6 +261,9 @@
 </li>
 <li>
   <a class="var-type Function" href="#class">class</a>
+</li>
+<li>
+  <a class="var-type Function" href="#close!">close!</a>
 </li>
 <li>
   <a class="var-type Function" href="#coll?">coll?</a>
@@ -1514,6 +1526,17 @@
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L703">source</a>
 </li>
 <li>
+  <h3 id="<!"><!</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(<! ch)</code></div>
+</pre>
+  <p class="var-docstr">Takes a value from ch.<br>
+  Returns nil if ch is closed and nothing is available on ch.<br>
+  Blocks if nothing is available on ch and ch is not closed.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4528">source</a>
+</li>
+<li>
   <h3 id="<="><=</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -1562,6 +1585,18 @@
   <p class="var-docstr">Returns non-nil if nums are in monotonically decreasing order,<br>
   otherwise false.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L838">source</a>
+</li>
+<li>
+  <h3 id=">!">>!</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(>! ch val)</code></div>
+</pre>
+  <p class="var-docstr">Puts val into ch.<br>
+  Throws an exception if val is nil.<br>
+  Blocks if ch is full (no buffer space is available).<br>
+  Returns true unless ch is already closed.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4536">source</a>
 </li>
 <li>
   <h3 id=">=">>=</h3>
@@ -1620,7 +1655,7 @@
   GoVar wrapping the internal description of that type; else, the map<br>
   of meta tags for a receiver/method identified by that second<br>
   argument.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4521">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4558">source</a>
 </li>
 <li>
   <h3 id="GoTypeOf">GoTypeOf</h3>
@@ -1629,7 +1664,7 @@
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4571">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4608">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -2014,6 +2049,16 @@
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L301">source</a>
 </li>
 <li>
+  <h3 id="chan">chan</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(chan)</code></div>
+<div><code>(chan n)</code></div>
+</pre>
+  <p class="var-docstr">Returns a new channel with an optional buffer of size n.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4522">source</a>
+</li>
+<li>
   <h3 id="char">char</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -2048,6 +2093,22 @@
 </pre>
   <p class="var-docstr">Returns the Type of x.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L1362">source</a>
+</li>
+<li>
+  <h3 id="close!">close!</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(close! ch)</code></div>
+</pre>
+  <p class="var-docstr">Closes a channel. The channel will no longer accept any puts (they<br>
+  will be ignored). Data in the channel remains available for taking, until<br>
+  exhausted, after which takes will return nil. If there are any<br>
+  pending takes, they will be dispatched with nil. Closing a closed<br>
+  channel is a no-op. Returns nil.<br>
+<br>
+  Logically closing happens after all puts have been delivered. Therefore, any<br>
+  blocked puts will remain blocked until a taker releases them.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4545">source</a>
 </li>
 <li>
   <h3 id="coll?">coll?</h3>
@@ -2942,18 +3003,19 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(go & body)</code></div>
 </pre>
-  <p class="var-docstr">Schedules a block to run inside a goroutine.<br>
-  Immediately returns a Future that will deref to whatever the block returns.<br>
-  If exception is thrown inside the block, it will be caught and re-thrown upon<br>
-  derefing the returned Future.<br>
+  <p class="var-docstr">Schedules the body to run inside a goroutine.<br>
+  Immediately returns a channel which will receive the result of the body when<br>
+  completed.<br>
+  If exception is thrown inside the body, it will be caught and re-thrown upon<br>
+  reading from the returned channel.<br>
 <br>
   Joker is single threaded and uses the GIL (Global Interpreter Lock) to make sure<br>
   only one goroutine (including the root one) executes at the same time.<br>
-  However, Future&#39;s deref and some I/O functions (joker.http/send, joker.os/sh*, joker.os/exec,<br>
+  However, channel operations and some I/O functions (joker.http/send, joker.os/sh*, joker.os/exec,<br>
   and joker.time/sleep) release the GIL and allow other goroutines to run.<br>
   So using goroutines only makes sense if you do I/O (specifically, calling the above functions)<br>
   inside them. Also, note that a goroutine may never have a chance to run if the root goroutine<br>
-  (or another goroutine) doesn&#39;t deref a Future or do any I/O.</p>
+  (or another goroutine) doesn&#39;t do any I/O or channel operations (&lt;! or &gt;!).</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4504">source</a>
 </li>
 <li>
@@ -3676,7 +3738,7 @@
   <pre class="var-usage"><div><code>(new t init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4565">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4602">source</a>
 </li>
 <li>
   <h3 id="newline">newline</h3>
@@ -4447,7 +4509,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4577">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4614">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
