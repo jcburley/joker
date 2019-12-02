@@ -4,7 +4,7 @@
 </head>
 <body>
   <div class="main">
-    <h1>Namespace: joker.http</h1>
+    <h1>Namespace: joker.hiccup</h1>
     <span class="var-added">v1.0</span>
     <h2>Contents</h2>
     <ul>
@@ -28,17 +28,16 @@
       </li>
     </ul>
     <h2 id="_summary">Summary</h2>
-    <p class="var-docstr">Provides HTTP client and server implementations.</p>
+    <p class="var-docstr">Renders HTML, XML, or XHTML markup to a string, based on prior work in Hiccup.<br>
+<br>
+  https://github.com/weavejester/hiccup</p>
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
-  <a class="var-type Function" href="#send">send</a>
+  <a class="var-type Function" href="#html">html</a>
 </li>
 <li>
-  <a class="var-type Function" href="#start-file-server">start-file-server</a>
-</li>
-<li>
-  <a class="var-type Function" href="#start-server">start-server</a>
+  <a class="var-type Function" href="#raw-string">raw-string</a>
 </li>
 
     </ul>
@@ -64,41 +63,28 @@
     <h2 id="_functions">Functions and Macros</h2>
     <ul>
       <li>
-  <h3 id="send">send</h3>
+  <h3 id="html">html</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(send request)</code></div>
+  <pre class="var-usage"><div><code>(html & content)</code></div>
 </pre>
-  <p class="var-docstr">Sends an HTTP request and returns an HTTP response.<br>
-  request is a map with the following keys:<br>
-  - url (string)<br>
-  - method (string, keyword or symbol, defaults to :get)<br>
-  - body (string)<br>
-  - host (string, overrides Host header if provided)<br>
-  - headers (map).<br>
-  All keys except for url are optional.<br>
-  response is a map with the following keys:<br>
-  - status (int)<br>
-  - body (string)<br>
-  - headers (map)<br>
-  - content-length (int)</p>
+  <p class="var-docstr">Renders the Hiccup-style content as HTML markup, returning a string of<br>
+  the markup.<br>
+<br>
+  The first parameter may be a map, which is options for the entire render.<br>
+<br>
+  The :mode option defaults to :xhtml but can also be :html, :xml, or :sgml.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/hiccup.joke#L152">source</a>
 </li>
 <li>
-  <h3 id="start-file-server">start-file-server</h3>
+  <h3 id="raw-string">raw-string</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(start-file-server addr root)</code></div>
+  <pre class="var-usage"><div><code>(raw-string content)</code></div>
 </pre>
-  <p class="var-docstr">Starts HTTP server on the TCP network address addr that<br>
-  serves HTTP requests with the contents of the file system rooted at root.</p>
-</li>
-<li>
-  <h3 id="start-server">start-server</h3>
-  <span class="var-type Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(start-server addr handler)</code></div>
-</pre>
-  <p class="var-docstr">Starts HTTP server on the TCP network address addr.</p>
+  <p class="var-docstr">A raw string is pre-rendered content that is added directly to the output markup<br>
+   without any interpretation or escaping.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/hiccup.joke#L145">source</a>
 </li>
 
     </ul>
