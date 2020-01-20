@@ -21,6 +21,8 @@ import (
 	"unicode/utf8"
 )
 
+var coreNamespaces []string
+
 var (
 	customlibsData   []byte
 	coreData         []byte
@@ -2030,9 +2032,31 @@ func processData(data []byte) {
 	}
 }
 
+func setCoreNamespaces() {
+	ns := GLOBAL_ENV.CoreNamespace
+
+	vr := ns.Resolve("*core-namespaces*")
+	set := vr.Value.(*MapSet)
+	for _, ns := range coreNamespaces {
+		set = set.Conj(MakeSymbol(ns)).(*MapSet)
+	}
+	vr.Value = set
+
+	// Add 'joker.core to *loaded-libs*, now that it's loaded.
+	vr = ns.Resolve("*loaded-libs*")
+	set = vr.Value.(*MapSet).Conj(ns.Name).(*MapSet)
+	vr.Value = set
+}
+
+var haveSetCoreNamespaces bool
+
 func ProcessCoreData() {
 	processData(customlibsData)
 	processData(coreData)
+	if !haveSetCoreNamespaces {
+		setCoreNamespaces()
+		haveSetCoreNamespaces = true
+	}
 }
 
 func ProcessReplData() {
@@ -2468,6 +2492,8 @@ func init() {
 	intern(">!__", procSend)
 	intern("chan__", procCreateChan)
 	intern("close!__", procCloseChan)
+
+	intern("go-spew__", procGoSpew)
 
 	intern("goobject?__", procGoObject)
 	intern("Go__", proc_Go)

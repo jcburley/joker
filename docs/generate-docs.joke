@@ -1,13 +1,9 @@
+(doseq [ns (remove #(= % 'user) joker.core/*core-namespaces*)] (require ns))
+
 (alias 'string 'joker.string)
-(require 'joker.better-cond)
-(require 'joker.hiccup)
-(require 'joker.html)
-(require 'joker.repl)
-(require 'joker.set)
-(require 'joker.template)
-(require 'joker.test)
-(require 'joker.tools.cli)
-(require 'joker.walk)
+(alias 'cli 'joker.tools.cli)
+(alias 'os 'joker.os)
+(alias 'str 'joker.string)
 
 (def rpl joker.string/replace)
 
@@ -113,16 +109,16 @@
   (let [m (meta v)
         ns (get m :ns "<internal>")
         full-name (str ns "/" (str k))]
-    (when-not (:added m)
+    (when-not (or (:added m) (:private m))
       (println "WARNING: public var without added meta key: " full-name))
-    (when-not (:doc m)
+    (when-not (or (:doc m) (:private m))
       (println "WARNING: public var without doc meta key: " full-name))
     (-> var-template
         (string/replace "{id}" (str k))
         (string/replace "{name}" (str k))
         (string/replace "{type}" (type-name v))
         (string/replace "{usage}" (usage k m))
-        (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
+        (string/replace "{docstring}" (string/replace (joker.html/escape (or (:doc m) "<<<MISSING DOCUMENTATION>>>")) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m)))
         (string/replace
          "{source}"
@@ -189,24 +185,24 @@
   (into {} (filter #(-> % val f) m)))
 
 (defn section-doc
-  [ns-sym match]
+  [ns-sym ns-vars-fn match]
   (string/join
    ""
-   (for [[k v] (sort (filter-vals match (ns-publics ns-sym)))]
+   (for [[k v] (sort (filter-vals match (ns-vars-fn ns-sym)))]
      (var-doc k v))))
 
 (defn ns-doc
-  [ns-sym]
+  [ns-sym ns-vars-fn]
   (let [ns (find-ns ns-sym)
         m (meta ns)
         index (string/join
                        ""
-                       (for [[k v] (sort #(compare (key %1) (key %2)) (ns-publics ns-sym))]
+                       (for [[k v] (sort #(compare (key %1) (key %2)) (ns-vars-fn ns-sym))]
                          (link-item-doc (str k) (type-name v))))
-        functions-doc (section-doc ns-sym #(or (sym-is % Proc) (sym-is % Fn)))
-        constants-doc (section-doc ns-sym #(sym-is-constant %))
-        variables-doc (section-doc ns-sym #(sym-is % GoVar))
-        types-doc (section-doc ns-sym #(sym-is % GoType))]
+        functions-doc (section-doc ns-sym ns-vars-fn #(or (sym-is % Proc) (sym-is % Fn)))
+        constants-doc (section-doc ns-sym ns-vars-fn #(sym-is-constant %))
+        variables-doc (section-doc ns-sym ns-vars-fn #(sym-is % GoVar))
+        types-doc (section-doc ns-sym ns-vars-fn #(sym-is % GoType))]
     (-> ns-template
         (string/replace "{name}" (name ns-sym))
         (string/replace "{added}" (str (:added m)))
@@ -253,7 +249,7 @@
       (rpl #"[[:space:]]*{blank}" "")))
 
 (defn full-doc
-  [ns-fn]
+  [ns-fn ns-vars-fn]
   (let [namespaces (->> (ns-fn)
                         (map ns-name)
                         (remove #(= 'user %))
@@ -263,7 +259,7 @@
                    (sort))]
     (spit "index.html" (index-doc namespaces types))
     (doseq [ns namespaces]
-      (spit (str ns ".html") (remove-blanky-lines (ns-doc ns))))))
+      (spit (str ns ".html") (remove-blanky-lines (ns-doc ns ns-vars-fn))))))
 
 (defn is-go
   [ns]
@@ -272,17 +268,27 @@
 (defn no-go-ns
   []
   (->> (all-ns)
-      (remove #(is-go %))))
-
-(defn have-option
-  "Quick and dirty options parser."
-  [opt]
-  (some #(= opt %) *command-line-args*))
+       (remove #(is-go %))))
 
 ;;; Bind the REPL stuff so (deref ...) of them doesn't fail.
 (doseq [s ['*1 '*2 '*3 '*e]]
   (intern 'joker.core s "empty"))
 
-(if (have-option "--no-go")
-  (full-doc no-go-ns)
-  (full-doc all-ns))
+(let [opts (cli/parse-opts *command-line-args*
+                           [
+                            [nil "--all" "Include private as well as public members in documentation"]
+                            [nil "--no-go" "Do not include the go.std.* namespaces"]
+                            ["-h" "--help"]
+                            ])]
+  (when-let [err (or (when (:help (:options opts)) "") (:errors opts))]
+    (println (str/join "\n" err))
+    (println "Usage:")
+    (println (:summary opts))
+    (os/exit 1))
+  (let [ns-fn (if (:no-go (:options opts))
+                no-go-ns
+                all-ns)
+        ns-vars-fn (if (:all (:options opts))
+                     ns-interns
+                     ns-publics)]
+    (full-doc ns-fn ns-vars-fn)))
