@@ -174,13 +174,20 @@
         (string/replace "{added}" (str (:added m))))))
 
 (defn ^Keyword sym-kind
-  [^Var s]
-  (condp = (type (deref s))
+  [^Var v]
+  (condp = (type (deref v))
     Fn :function
     Proc :function
     GoType :type
     GoVar :variable
-    :other))
+    GoObject :variable
+    (let [m (meta v)]
+      (cond
+        (not (bound? v)) :others
+        (:special-form m) :others
+        (:macro m) :function
+        (:const m) :constant
+        :else :variable))))
 
 (defn ^Boolean sym-kind-is
   [^Var s ^Keyword x]
