@@ -26,6 +26,9 @@
       <li>
         <a href="#_types">Types</a>
       </li>
+      <li>
+        <a href="#_others">Others</a>
+      </li>
     </ul>
     <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Core library of Joker.</p>
@@ -138,6 +141,9 @@
 </li>
 <li>
   <a class="var-type Function" href="#GoTypeOf">GoTypeOf</a>
+</li>
+<li>
+  <a class="var-type Function" href="#GoTypeOfAsString">GoTypeOfAsString</a>
 </li>
 <li>
   <a class="var-type Function" href="#alias">alias</a>
@@ -1239,159 +1245,9 @@
       <span class="var-type Receiver">Receiver</span>
     </ul>
     <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
     <ul>
-      <li>
-  <h3 id="*1">*1</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">bound in a repl to the most recent value printed</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3686">source</a>
-</li>
-<li>
-  <h3 id="*2">*2</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">bound in a repl to the second most recent value printed</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3691">source</a>
-</li>
-<li>
-  <h3 id="*3">*3</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">bound in a repl to the third most recent value printed</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3696">source</a>
-</li>
-<li>
-  <h3 id="*assert*">*assert*</h3>
-  <span class="var-type Boolean">Boolean</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">When set to logical false, assert is a noop. Defaults to true.</p>
-</li>
-<li>
-  <h3 id="*command-line-args*">*command-line-args*</h3>
-  <span class="var-type Seq">Seq</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">A sequence of the supplied command line arguments, or nil if<br>
-  none were supplied</p>
-</li>
-<li>
-  <h3 id="*e">*e</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">bound in a repl to the most recent exception caught by the repl</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3701">source</a>
-</li>
-<li>
-  <h3 id="*err*">*err*</h3>
-  <span class="var-type IOWriter">IOWriter</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">A IOWriter object representing standard error for print operations.<br>
-<br>
-  Defaults to stderr.</p>
-</li>
-<li>
-  <h3 id="*file*">*file*</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">The path of the file being evaluated, as a String.<br>
-<br>
-  When there is no file, e.g. in the REPL, the value is not defined.</p>
-</li>
-<li>
-  <h3 id="*flush-on-newline*">*flush-on-newline*</h3>
-  <span class="var-type Boolean">Boolean</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">When set to true, output will be flushed whenever a newline is printed.<br>
-<br>
-    Defaults to true.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L2159">source</a>
-</li>
-<li>
-  <h3 id="*in*">*in*</h3>
-  <span class="var-type BufferedReader">BufferedReader</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">A BufferedReader object representing standard input for read operations.<br>
-<br>
-  Defaults to stdin.</p>
-</li>
-<li>
-  <h3 id="*joker-version*">*joker-version*</h3>
-  <span class="var-type ArrayMap">ArrayMap</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">The version info for Clojure core, as a map containing :major :minor<br>
-			:incremental and :qualifier keys. Feature releases may increment<br>
-			:minor and/or :major, bugfix releases will increment :incremental.</p>
-</li>
-<li>
-  <h3 id="*linter-config*">*linter-config*</h3>
-  <span class="var-type ArrayMap">ArrayMap</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Map of configuration key/value pairs for linter mode</p>
-</li>
-<li>
-  <h3 id="*linter-mode*">*linter-mode*</h3>
-  <span class="var-type Boolean">Boolean</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">true if Joker is running in linter mode</p>
-</li>
-<li>
-  <h3 id="*main-file*">*main-file*</h3>
-  <span class="var-type String">String</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">The absolute path of &lt;filename&gt; on the command line, as a String.<br>
-<br>
-  When there is no file, e.g. in the REPL, the value is not defined.</p>
-</li>
-<li>
-  <h3 id="*ns*">*ns*</h3>
-  <span class="var-type Namespace">Namespace</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">A Namespace object representing the current namespace.</p>
-</li>
-<li>
-  <h3 id="*out*">*out*</h3>
-  <span class="var-type IOWriter">IOWriter</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">A IOWriter object representing standard output for print operations.<br>
-<br>
-  Defaults to stdout.</p>
-</li>
-<li>
-  <h3 id="*print-readably*">*print-readably*</h3>
-  <span class="var-type Boolean">Boolean</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">When set to logical false, strings and characters will be printed with<br>
-  non-alphanumeric characters converted to the appropriate escape sequences.<br>
-<br>
-  Defaults to true</p>
-</li>
-<li>
-  <h3 id="default-data-readers">default-data-readers</h3>
-  <span class="var-type ArrayMap">ArrayMap</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>
-  overridden by binding *data-readers*.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4347">source</a>
-</li>
-
+      
     </ul>
     <h2 id="_variables">Variables</h2>
     <ul>
@@ -1647,8 +1503,17 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(GoTypeOf t)</code></div>
 </pre>
-  <p class="var-docstr">Returns the GoType of a GoObject or GoVar.</p>
+  <p class="var-docstr">Returns the GoType of a GoObject or GoVar. Panics if it&#39;s not a GoType.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4624">source</a>
+</li>
+<li>
+  <h3 id="GoTypeOfAsString">GoTypeOfAsString</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(GoTypeOfAsString t)</code></div>
+</pre>
+  <p class="var-docstr">Returns the GoType of a GoObject or GoVar as a documentation string.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4630">source</a>
 </li>
 <li>
   <h3 id="alias">alias</h3>
@@ -4496,7 +4361,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4630">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4636">source</a>
 </li>
 <li>
   <h3 id="refer">refer</h3>
@@ -5523,6 +5388,161 @@
     <h2 id="_types">Types</h2>
     <ul>
       
+    </ul>
+    <h2 id="_others">Others</h2>
+    <ul>
+      <li>
+  <h3 id="*1">*1</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">bound in a repl to the most recent value printed</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3686">source</a>
+</li>
+<li>
+  <h3 id="*2">*2</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">bound in a repl to the second most recent value printed</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3691">source</a>
+</li>
+<li>
+  <h3 id="*3">*3</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">bound in a repl to the third most recent value printed</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3696">source</a>
+</li>
+<li>
+  <h3 id="*assert*">*assert*</h3>
+  <span class="var-type Boolean">Boolean</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">When set to logical false, assert is a noop. Defaults to true.</p>
+</li>
+<li>
+  <h3 id="*command-line-args*">*command-line-args*</h3>
+  <span class="var-type Seq">Seq</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">A sequence of the supplied command line arguments, or nil if<br>
+  none were supplied</p>
+</li>
+<li>
+  <h3 id="*e">*e</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">bound in a repl to the most recent exception caught by the repl</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3701">source</a>
+</li>
+<li>
+  <h3 id="*err*">*err*</h3>
+  <span class="var-type IOWriter">IOWriter</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">A IOWriter object representing standard error for print operations.<br>
+<br>
+  Defaults to stderr.</p>
+</li>
+<li>
+  <h3 id="*file*">*file*</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The path of the file being evaluated, as a String.<br>
+<br>
+  When there is no file, e.g. in the REPL, the value is not defined.</p>
+</li>
+<li>
+  <h3 id="*flush-on-newline*">*flush-on-newline*</h3>
+  <span class="var-type Boolean">Boolean</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">When set to true, output will be flushed whenever a newline is printed.<br>
+<br>
+    Defaults to true.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L2159">source</a>
+</li>
+<li>
+  <h3 id="*in*">*in*</h3>
+  <span class="var-type BufferedReader">BufferedReader</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">A BufferedReader object representing standard input for read operations.<br>
+<br>
+  Defaults to stdin.</p>
+</li>
+<li>
+  <h3 id="*joker-version*">*joker-version*</h3>
+  <span class="var-type ArrayMap">ArrayMap</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The version info for Clojure core, as a map containing :major :minor<br>
+			:incremental and :qualifier keys. Feature releases may increment<br>
+			:minor and/or :major, bugfix releases will increment :incremental.</p>
+</li>
+<li>
+  <h3 id="*linter-config*">*linter-config*</h3>
+  <span class="var-type ArrayMap">ArrayMap</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Map of configuration key/value pairs for linter mode</p>
+</li>
+<li>
+  <h3 id="*linter-mode*">*linter-mode*</h3>
+  <span class="var-type Boolean">Boolean</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">true if Joker is running in linter mode</p>
+</li>
+<li>
+  <h3 id="*main-file*">*main-file*</h3>
+  <span class="var-type String">String</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The absolute path of &lt;filename&gt; on the command line, as a String.<br>
+<br>
+  When there is no file, e.g. in the REPL, the value is not defined.</p>
+</li>
+<li>
+  <h3 id="*ns*">*ns*</h3>
+  <span class="var-type Namespace">Namespace</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">A Namespace object representing the current namespace.</p>
+</li>
+<li>
+  <h3 id="*out*">*out*</h3>
+  <span class="var-type IOWriter">IOWriter</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">A IOWriter object representing standard output for print operations.<br>
+<br>
+  Defaults to stdout.</p>
+</li>
+<li>
+  <h3 id="*print-readably*">*print-readably*</h3>
+  <span class="var-type Boolean">Boolean</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">When set to logical false, strings and characters will be printed with<br>
+  non-alphanumeric characters converted to the appropriate escape sequences.<br>
+<br>
+  Defaults to true</p>
+</li>
+<li>
+  <h3 id="default-data-readers">default-data-readers</h3>
+  <span class="var-type ArrayMap">ArrayMap</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Default map of data reader functions provided by Joker. May be<br>
+  overridden by binding *data-readers*.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4347">source</a>
+</li>
+
     </ul>
   </div>
 </body>

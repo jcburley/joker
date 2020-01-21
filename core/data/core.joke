@@ -4621,11 +4621,17 @@
   [^GoType t ^"Vector|Map" init]
   (new__ t init))
 
-(defn GoTypeOf
-  "Returns the GoType of a GoObject or GoVar."
+(defn ^GoType GoTypeOf
+  "Returns the GoType of a GoObject or GoVar. Panics if it's not a GoType."
   {:added "1.0"}
   [^GoType t]
   (GoTypeOf__ t))
+
+(defn ^String GoTypeOfAsString
+  "Returns the GoType of a GoObject or GoVar as a documentation string."
+  {:added "1.0"}
+  [^GoType t]
+  (GoTypeOfAsString__ t))
 
 (defn ref
   "Returns a GoObject that has a reference to the object wrapped by the

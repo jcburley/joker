@@ -26,6 +26,9 @@
       <li>
         <a href="#_types">Types</a>
       </li>
+      <li>
+        <a href="#_others">Others</a>
+      </li>
     </ul>
     <h2 id="_summary">Summary</h2>
     <p class="var-docstr">A unit testing framework.<br>
@@ -245,7 +248,7 @@
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
-  <a class="var-type ArrayMap" href="#*initial-report-counters*">*initial-report-counters*</a>
+  <a class="var-type Constant ArrayMap" href="#*initial-report-counters*">*initial-report-counters*</a>
 </li>
 <li>
   <a class="var-type Boolean" href="#*load-tests*">*load-tests*</a>
@@ -366,68 +369,9 @@
       <span class="var-type Receiver">Receiver</span>
     </ul>
     <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
     <ul>
-      <li>
-  <h3 id="*initial-report-counters*">*initial-report-counters*</h3>
-  <span class="var-type ArrayMap">ArrayMap</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Used to initialize *report-counters*</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L263">source</a>
-</li>
-<li>
-  <h3 id="*load-tests*">*load-tests*</h3>
-  <span class="var-type Boolean">Boolean</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">True by default.  If set to false, no test functions will<br>
-   be created by deftest, set-test, or with-test.  Use this to omit<br>
-   tests when compiling or loading production code.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L239">source</a>
-</li>
-<li>
-  <h3 id="*report-counters*">*report-counters*</h3>
-  <span class="var-type Atom">Atom</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Bound to an atom of a map in test-ns</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L257">source</a>
-</li>
-<li>
-  <h3 id="*stack-trace-depth*">*stack-trace-depth*</h3>
-  <span class="var-type Int">Int</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">The maximum depth of stack traces to print when an Exception<br>
-  is thrown during a test.  Defaults to nil, which means print the<br>
-  complete stack trace.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L246">source</a>
-</li>
-<li>
-  <h3 id="*test-out*">*test-out*</h3>
-  <span class="var-type IOWriter">IOWriter</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">PrintWriter for test reporting output</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L278">source</a>
-</li>
-<li>
-  <h3 id="*testing-contexts*">*testing-contexts*</h3>
-  <span class="var-type List">List</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Bound to hierarchy of &#34;testing&#34; strings</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L273">source</a>
-</li>
-<li>
-  <h3 id="*testing-vars*">*testing-vars*</h3>
-  <span class="var-type List">List</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"></pre>
-  <p class="var-docstr">Bound to hierarchy of vars being tested</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L268">source</a>
-</li>
-
+      
     </ul>
     <h2 id="_variables">Variables</h2>
     <ul>
@@ -778,6 +722,70 @@
     <h2 id="_types">Types</h2>
     <ul>
       
+    </ul>
+    <h2 id="_others">Others</h2>
+    <ul>
+      <li>
+  <h3 id="*initial-report-counters*">*initial-report-counters*</h3>
+  <span class="var-type Constant ArrayMap">Constant ArrayMap</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Used to initialize *report-counters*</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L263">source</a>
+</li>
+<li>
+  <h3 id="*load-tests*">*load-tests*</h3>
+  <span class="var-type Boolean">Boolean</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">True by default.  If set to false, no test functions will<br>
+   be created by deftest, set-test, or with-test.  Use this to omit<br>
+   tests when compiling or loading production code.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L239">source</a>
+</li>
+<li>
+  <h3 id="*report-counters*">*report-counters*</h3>
+  <span class="var-type Atom">Atom</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Bound to an atom of a map in test-ns</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L257">source</a>
+</li>
+<li>
+  <h3 id="*stack-trace-depth*">*stack-trace-depth*</h3>
+  <span class="var-type Int">Int</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">The maximum depth of stack traces to print when an Exception<br>
+  is thrown during a test.  Defaults to nil, which means print the<br>
+  complete stack trace.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L246">source</a>
+</li>
+<li>
+  <h3 id="*test-out*">*test-out*</h3>
+  <span class="var-type IOWriter">IOWriter</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">PrintWriter for test reporting output</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L278">source</a>
+</li>
+<li>
+  <h3 id="*testing-contexts*">*testing-contexts*</h3>
+  <span class="var-type List">List</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Bound to hierarchy of &#34;testing&#34; strings</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L273">source</a>
+</li>
+<li>
+  <h3 id="*testing-vars*">*testing-vars*</h3>
+  <span class="var-type List">List</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"></pre>
+  <p class="var-docstr">Bound to hierarchy of vars being tested</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/test.joke#L268">source</a>
+</li>
+
     </ul>
   </div>
 </body>

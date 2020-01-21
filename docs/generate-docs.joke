@@ -31,8 +31,13 @@
 (def usage-template
   (slurp "templates/usage.html"))
 
+(defn go-type-of
+  [^Namespace ns ^GoVar v]
+  (let [ty (GoTypeOfAsString v)]
+    (str/replace-first ty (str ns "/") "")))
+
 (defn type-name
-  [v]
+  [^Namespace ns ^Object v]
   (let [m (meta v)]
     (cond
       (not (bound? v)) "Object"
@@ -40,12 +45,14 @@
       (:macro m) "Macro"
       (= Fn (type @v)) "Function"
       (= Proc (type @v)) "Function"
+      (= GoVar (type @v)) (str "GoVar of " (go-type-of ns (deref v)))
       (:tag m) (let [t (str (:tag m))]
                  (if (= t "GoType")
                    (str (if (:specificity m)
                           "Abstract "
                           "Concrete ") t)
                    (str t)))
+      (:const m) (str "Constant " (type @v))
       :else (str (type @v)))))
 
 (defn link-item-doc
@@ -116,7 +123,7 @@
     (-> var-template
         (string/replace "{id}" (str k))
         (string/replace "{name}" (str k))
-        (string/replace "{type}" (type-name v))
+        (string/replace "{type}" (type-name ns v))
         (string/replace "{usage}" (usage k m))
         (string/replace "{docstring}" (string/replace (joker.html/escape (or (:doc m) "<<<MISSING DOCUMENTATION>>>")) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m)))
@@ -166,18 +173,18 @@
         (string/replace "{docstring}" (string/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (string/replace "{added}" (str (:added m))))))
 
-(defn sym-is
-  [s x]
-  (= x (type (deref s))))
-
-(defn sym-is-constant
-  [s]
+(defn ^Keyword sym-kind
+  [^Var s]
   (condp = (type (deref s))
-    Fn false
-    GoType false
-    GoVar false
-    Proc false
-    true))
+    Fn :function
+    Proc :function
+    GoType :type
+    GoVar :variable
+    :other))
+
+(defn ^Boolean sym-kind-is
+  [^Var s ^Keyword x]
+  (= x (sym-kind s)))
 
 (defn filter-vals
   "Filters on values in a map using supplied function, returning map with only matching key/value pairs."
@@ -198,11 +205,12 @@
         index (string/join
                        ""
                        (for [[k v] (sort #(compare (key %1) (key %2)) (ns-vars-fn ns-sym))]
-                         (link-item-doc (str k) (type-name v))))
-        functions-doc (section-doc ns-sym ns-vars-fn #(or (sym-is % Proc) (sym-is % Fn)))
-        constants-doc (section-doc ns-sym ns-vars-fn #(sym-is-constant %))
-        variables-doc (section-doc ns-sym ns-vars-fn #(sym-is % GoVar))
-        types-doc (section-doc ns-sym ns-vars-fn #(sym-is % GoType))]
+                         (link-item-doc (str k) (type-name ns v))))
+        functions-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :function))
+        constants-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :constant))
+        variables-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :variable))
+        types-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :type))
+        others-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :other))]
     (-> ns-template
         (string/replace "{name}" (name ns-sym))
         (string/replace "{added}" (str (:added m)))
@@ -211,6 +219,7 @@
         (string/replace "{variables}" variables-doc)
         (string/replace "{functions}" functions-doc)
         (string/replace "{types}" types-doc)
+        (string/replace "{others}" others-doc)
         (string/replace "{index}" index))))
 
 (defn go-version
@@ -262,7 +271,7 @@
       (spit (str ns ".html") (remove-blanky-lines (ns-doc ns ns-vars-fn))))))
 
 (defn is-go
-  [ns]
+  [^Namespace ns]
   (string/starts-with? (str ns) "go.std."))
 
 (defn no-go-ns
