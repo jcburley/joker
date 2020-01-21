@@ -653,6 +653,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
   ^{:doc %s
     :added "1.0"
     :tag "%s"
+    :const true
     :go "%s"}
   %s)
 `,

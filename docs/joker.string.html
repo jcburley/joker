@@ -26,6 +26,9 @@
       <li>
         <a href="#_types">Types</a>
       </li>
+      <li>
+        <a href="#_others">Others</a>
+      </li>
     </ul>
     <h2 id="_summary">Summary</h2>
     <p class="var-docstr">Implements simple functions to manipulate strings.</p>
@@ -63,6 +66,9 @@
 </li>
 <li>
   <a class="var-type Function" href="#pad-right">pad-right</a>
+</li>
+<li>
+  <a class="var-type Function" href="#re-quote">re-quote</a>
 </li>
 <li>
   <a class="var-type Function" href="#replace">replace</a>
@@ -117,6 +123,7 @@
       <span class="var-type Receiver">Receiver</span>
     </ul>
     <h2 id="_constants">Constants</h2>
+    Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
     <ul>
       
     </ul>
@@ -225,6 +232,14 @@
   <p class="var-docstr">Returns s padded with pad at the end to length n.</p>
 </li>
 <li>
+  <h3 id="re-quote">re-quote</h3>
+  <span class="var-type Function">Function</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(re-quote s)</code></div>
+</pre>
+  <p class="var-docstr">Returns an instance of Regex that matches the string exactly</p>
+</li>
+<li>
   <h3 id="replace">replace</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
@@ -262,10 +277,10 @@
   <h3 id="split">split</h3>
   <span class="var-type Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(split s re)</code></div>
-<div><code>(split s re n)</code></div>
+  <pre class="var-usage"><div><code>(split s sep)</code></div>
+<div><code>(split s sep n)</code></div>
 </pre>
-  <p class="var-docstr">Splits string on a regular expression. Returns vector of the splits.</p>
+  <p class="var-docstr">Splits string on a string or regular expression. Returns vector of the splits.</p>
 </li>
 <li>
   <h3 id="split-lines">split-lines</h3>
@@ -342,6 +357,10 @@
 
     </ul>
     <h2 id="_types">Types</h2>
+    <ul>
+      
+    </ul>
+    <h2 id="_others">Others</h2>
     <ul>
       
     </ul>

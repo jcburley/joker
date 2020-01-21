@@ -4,6 +4,7 @@ package string
 
 import (
 	. "github.com/candid82/joker/core"
+	"regexp"
 	"strings"
 	"unicode"
 )
@@ -217,6 +218,22 @@ func __pad_right_(_args []Object) Object {
 	return NIL
 }
 
+var re_quote_ Proc
+
+func __re_quote_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		s := ExtractString(_args, 0)
+		_res := regexp.MustCompile(regexp.QuoteMeta(s))
+		return MakeRegex(_res)
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
 var replace_ Proc
 
 func __replace_(_args []Object) Object {
@@ -276,15 +293,15 @@ func __split_(_args []Object) Object {
 	switch {
 	case _c == 2:
 		s := ExtractString(_args, 0)
-		re := ExtractRegex(_args, 1)
-		_res := split(s, re, 0)
+		sep := ExtractObject(_args, 1)
+		_res := splitOnStringOrRegex(s, sep, 0)
 		return _res
 
 	case _c == 3:
 		s := ExtractString(_args, 0)
-		re := ExtractRegex(_args, 1)
+		sep := ExtractObject(_args, 1)
 		n := ExtractInt(_args, 2)
-		_res := split(s, re, n)
+		_res := splitOnStringOrRegex(s, sep, n)
 		return _res
 
 	default:
@@ -451,6 +468,7 @@ func Init() {
 	lower_case_ = __lower_case_
 	pad_left_ = __pad_left_
 	pad_right_ = __pad_right_
+	re_quote_ = __re_quote_
 	replace_ = __replace_
 	replace_first_ = __replace_first_
 	reverse_ = __reverse_
@@ -532,6 +550,11 @@ func Init() {
 			NewListFrom(NewVectorFrom(MakeSymbol("s"), MakeSymbol("pad"), MakeSymbol("n"))),
 			`Returns s padded with pad at the end to length n.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
 
+	stringNamespace.InternVar("re-quote", re_quote_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
+			`Returns an instance of Regex that matches the string exactly`, "1.0").Plus(MakeKeyword("tag"), String{S: "Regex"}))
+
 	stringNamespace.InternVar("replace", replace_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("s"), MakeSymbol("match"), MakeSymbol("repl"))),
@@ -559,8 +582,8 @@ func Init() {
 
 	stringNamespace.InternVar("split", split_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"), MakeSymbol("re")), NewVectorFrom(MakeSymbol("s"), MakeSymbol("re"), MakeSymbol("n"))),
-			`Splits string on a regular expression. Returns vector of the splits.`, "1.0"))
+			NewListFrom(NewVectorFrom(MakeSymbol("s"), MakeSymbol("sep")), NewVectorFrom(MakeSymbol("s"), MakeSymbol("sep"), MakeSymbol("n"))),
+			`Splits string on a string or regular expression. Returns vector of the splits.`, "1.0"))
 
 	stringNamespace.InternVar("split-lines", split_lines_,
 		MakeMeta(
