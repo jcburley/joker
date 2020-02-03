@@ -38,6 +38,7 @@ var (
 	linter_cljData   []byte
 	linter_cljsData  []byte
 	hiccupData       []byte
+	pprintData       []byte
 	better_condData  []byte
 )
 
@@ -77,6 +78,7 @@ func InitInternalLibs() {
 		"joker.set":         setData,
 		"joker.tools.cli":   tools_cliData,
 		"joker.hiccup":      hiccupData,
+		"joker.pprint":      pprintData,
 		"joker.better-cond": better_condData,
 	}
 }
@@ -457,7 +459,7 @@ var procRegex Proc = func(args []Object) Object {
 	if err != nil {
 		panic(RT.NewError("Invalid regex: " + err.Error()))
 	}
-	return Regex{R: r}
+	return &Regex{R: r}
 }
 
 func reGroups(s string, indexes []int) Object {
@@ -1913,6 +1915,11 @@ var procGo Proc = func(args []Object) Object {
 	return ch
 }
 
+var procVerbosityLevel Proc = func(args []Object) Object {
+	CheckArity(args, 0, 0)
+	return MakeInt(VerbosityLevel)
+}
+
 func PackReader(reader *Reader, filename string) ([]byte, error) {
 	var p []byte
 	packEnv := NewPackEnv()
@@ -2192,7 +2199,7 @@ func ReadConfig(filename string, workingDir string) {
 		if ok1 {
 			s := seq.Seq()
 			for !s.IsEmpty() {
-				regex, ok2 := s.First().(Regex)
+				regex, ok2 := s.First().(*Regex)
 				if !ok2 {
 					printConfigError(configFileName, ":ignored-file-regexes elements must be regexes, got "+s.First().GetType().ToString(false))
 					return
@@ -2509,6 +2516,7 @@ func init() {
 	intern("close!__", procCloseChan)
 
 	intern("go-spew__", procGoSpew)
+	intern("verbosity-level__", procVerbosityLevel)
 
 	intern("goobject?__", procGoObject)
 	intern("Go__", proc_Go)
