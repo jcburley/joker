@@ -12,10 +12,6 @@ type FileInfo struct {
 var CoreSourceFiles []FileInfo = []FileInfo{
 	{
 		Name:     "<joker.core>",
-		Filename: "customlibs.joke",
-	},
-	{
-		Name:     "<joker.core>",
 		Filename: "core.joke",
 	},
 	{
