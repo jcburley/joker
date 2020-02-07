@@ -15,6 +15,10 @@ var CoreSourceFiles []FileInfo = []FileInfo{
 		Filename: "core.joke",
 	},
 	{
+		Name:     "<joker.core>",
+		Filename: "customlibs.joke",
+	},
+	{
 		Name:     "<joker.repl>",
 		Filename: "repl.joke",
 	},
