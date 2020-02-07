@@ -7,11 +7,9 @@ import (
 	"net/url"
 )
 
-var urlNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.url"))
 
-
-
-var path_escape_ Proc
+var __path_escape__P ProcFn = __path_escape_
+var path_escape_ Proc = Proc{Fn: __path_escape__P, Name: "path_escape_", Package: "std/joker.url"}
 
 func __path_escape_(_args []Object) Object {
 	_c := len(_args)
@@ -27,7 +25,8 @@ func __path_escape_(_args []Object) Object {
 	return NIL
 }
 
-var path_unescape_ Proc
+var __path_unescape__P ProcFn = __path_unescape_
+var path_unescape_ Proc = Proc{Fn: __path_unescape__P, Name: "path_unescape_", Package: "std/joker.url"}
 
 func __path_unescape_(_args []Object) Object {
 	_c := len(_args)
@@ -43,7 +42,8 @@ func __path_unescape_(_args []Object) Object {
 	return NIL
 }
 
-var query_escape_ Proc
+var __query_escape__P ProcFn = __query_escape_
+var query_escape_ Proc = Proc{Fn: __query_escape__P, Name: "query_escape_", Package: "std/joker.url"}
 
 func __query_escape_(_args []Object) Object {
 	_c := len(_args)
@@ -59,7 +59,8 @@ func __query_escape_(_args []Object) Object {
 	return NIL
 }
 
-var query_unescape_ Proc
+var __query_unescape__P ProcFn = __query_unescape_
+var query_unescape_ Proc = Proc{Fn: __query_unescape__P, Name: "query_unescape_", Package: "std/joker.url"}
 
 func __query_unescape_(_args []Object) Object {
 	_c := len(_args)
@@ -77,43 +78,12 @@ func __query_unescape_(_args []Object) Object {
 
 func Init() {
 
-	path_escape_ = __path_escape_
-	path_unescape_ = __path_unescape_
-	query_escape_ = __query_escape_
-	query_unescape_ = __query_unescape_
-
 	initNative()
 
-	urlNamespace.ResetMeta(MakeMeta(nil, `Parses URLs and implements query escaping.`, "1.0"))
-
-	
-	urlNamespace.InternVar("path-escape", path_escape_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Escapes the string so it can be safely placed inside a URL path segment.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	urlNamespace.InternVar("path-unescape", path_unescape_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Does the inverse transformation of path-escape, converting each 3-byte encoded
-  substring of the form "%AB" into the hex-decoded byte 0xAB. It also converts
-  '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.
-
-  PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	urlNamespace.InternVar("query-escape", query_escape_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Escapes the string so it can be safely placed inside a URL query.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	urlNamespace.InternVar("query-unescape", query_unescape_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Does the inverse transformation of query-escape, converting each 3-byte encoded
-  substring of the form "%AB" into the hex-decoded byte 0xAB. It also converts
-  '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
+	InternsOrThunks()
 }
+
+var urlNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.url"))
 
 func init() {
 	urlNamespace.Lazy = Init

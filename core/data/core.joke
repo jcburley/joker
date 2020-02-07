@@ -3253,12 +3253,11 @@
 (defonce ^:dynamic
   ^{:private true
     :doc "A set of symbols representing currently loaded libs"}
-  *loaded-libs*  (reduce conj
-                         *custom-libs*
-                         #{'joker.base64 'joker.html 'joker.http 'joker.json 'joker.io
-                           'joker.math 'joker.os 'joker.string 'joker.time 'joker.url
-                           'joker.yaml 'joker.strconv 'joker.crypto 'joker.hex 'joker.filepath
-                           'joker.csv}))
+  *loaded-libs* #{'joker.base64 'joker.html 'joker.http 'joker.json 'joker.io
+                  'joker.math 'joker.os 'joker.string 'joker.time 'joker.url
+                  'joker.yaml 'joker.strconv 'joker.crypto 'joker.hex 'joker.filepath
+                  'joker.csv})
+(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 
 (defonce ^:dynamic
   ^{:private true
@@ -3572,7 +3571,8 @@
                   *ns* *ns*]
           (if *linter-mode*
             (in-ns lib)
-            (load-lib-from-path__ lib path)))))))
+            (when (not (joker.core/*core-namespaces* lib))
+              (load-lib-from-path__ lib path))))))))
 
 (defn get-in
   "Returns the value in a nested associative structure,
@@ -4512,8 +4512,6 @@
        :tag Map}
   types__ types__)
 
-(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
-
 (defn ^:private go*
   [f]
   (go__ f))
@@ -4595,6 +4593,12 @@
   {:added "1.0"}
   []
   (verbosity-level__))
+
+(defn- ns-initialized?
+  "Returns whether the namespace, denoted by the symbol, has been initialized."
+  {:added "1.0"}
+  ^Boolean [^Symbol s]
+  (ns-initialized?__ s))
 
 (defn Go
   "Invokes a receiver (as a symbol, string, or keyword with its name)

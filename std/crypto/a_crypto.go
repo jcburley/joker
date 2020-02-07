@@ -10,11 +10,9 @@ import (
 	"crypto/sha512"
 )
 
-var cryptoNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.crypto"))
 
-
-
-var hmac_ Proc
+var __hmac__P ProcFn = __hmac_
+var hmac_ Proc = Proc{Fn: __hmac__P, Name: "hmac_", Package: "std/joker.crypto"}
 
 func __hmac_(_args []Object) Object {
 	_c := len(_args)
@@ -32,7 +30,8 @@ func __hmac_(_args []Object) Object {
 	return NIL
 }
 
-var md5_ Proc
+var __md5__P ProcFn = __md5_
+var md5_ Proc = Proc{Fn: __md5__P, Name: "md5_", Package: "std/joker.crypto"}
 
 func __md5_(_args []Object) Object {
 	_c := len(_args)
@@ -49,7 +48,8 @@ func __md5_(_args []Object) Object {
 	return NIL
 }
 
-var sha1_ Proc
+var __sha1__P ProcFn = __sha1_
+var sha1_ Proc = Proc{Fn: __sha1__P, Name: "sha1_", Package: "std/joker.crypto"}
 
 func __sha1_(_args []Object) Object {
 	_c := len(_args)
@@ -66,7 +66,8 @@ func __sha1_(_args []Object) Object {
 	return NIL
 }
 
-var sha224_ Proc
+var __sha224__P ProcFn = __sha224_
+var sha224_ Proc = Proc{Fn: __sha224__P, Name: "sha224_", Package: "std/joker.crypto"}
 
 func __sha224_(_args []Object) Object {
 	_c := len(_args)
@@ -83,7 +84,8 @@ func __sha224_(_args []Object) Object {
 	return NIL
 }
 
-var sha256_ Proc
+var __sha256__P ProcFn = __sha256_
+var sha256_ Proc = Proc{Fn: __sha256__P, Name: "sha256_", Package: "std/joker.crypto"}
 
 func __sha256_(_args []Object) Object {
 	_c := len(_args)
@@ -100,7 +102,8 @@ func __sha256_(_args []Object) Object {
 	return NIL
 }
 
-var sha384_ Proc
+var __sha384__P ProcFn = __sha384_
+var sha384_ Proc = Proc{Fn: __sha384__P, Name: "sha384_", Package: "std/joker.crypto"}
 
 func __sha384_(_args []Object) Object {
 	_c := len(_args)
@@ -117,7 +120,8 @@ func __sha384_(_args []Object) Object {
 	return NIL
 }
 
-var sha512_ Proc
+var __sha512__P ProcFn = __sha512_
+var sha512_ Proc = Proc{Fn: __sha512__P, Name: "sha512_", Package: "std/joker.crypto"}
 
 func __sha512_(_args []Object) Object {
 	_c := len(_args)
@@ -134,7 +138,8 @@ func __sha512_(_args []Object) Object {
 	return NIL
 }
 
-var sha512_224_ Proc
+var __sha512_224__P ProcFn = __sha512_224_
+var sha512_224_ Proc = Proc{Fn: __sha512_224__P, Name: "sha512_224_", Package: "std/joker.crypto"}
 
 func __sha512_224_(_args []Object) Object {
 	_c := len(_args)
@@ -151,7 +156,8 @@ func __sha512_224_(_args []Object) Object {
 	return NIL
 }
 
-var sha512_256_ Proc
+var __sha512_256__P ProcFn = __sha512_256_
+var sha512_256_ Proc = Proc{Fn: __sha512_256__P, Name: "sha512_256_", Package: "std/joker.crypto"}
 
 func __sha512_256_(_args []Object) Object {
 	_c := len(_args)
@@ -170,68 +176,12 @@ func __sha512_256_(_args []Object) Object {
 
 func Init() {
 
-	hmac_ = __hmac_
-	md5_ = __md5_
-	sha1_ = __sha1_
-	sha224_ = __sha224_
-	sha256_ = __sha256_
-	sha384_ = __sha384_
-	sha512_ = __sha512_
-	sha512_224_ = __sha512_224_
-	sha512_256_ = __sha512_256_
-
 	initNative()
 
-	cryptoNamespace.ResetMeta(MakeMeta(nil, `Implements common cryptographic and hash functions.`, "1.0"))
-
-	
-	cryptoNamespace.InternVar("hmac", hmac_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("algorithm"), MakeSymbol("message"), MakeSymbol("key"))),
-			`Returns HMAC signature for message and key using specified algorithm.
-  Algorithm is one of the following: :sha1, :sha224, :sha256, :sha384, :sha512.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("md5", md5_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the MD5 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha1", sha1_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA1 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha224", sha224_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha256", sha256_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha384", sha384_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA384 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha512", sha512_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha512-224", sha512_224_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512/224 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	cryptoNamespace.InternVar("sha512-256", sha512_256_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("data"))),
-			`Returns the SHA512/256 checksum of the data.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
+	InternsOrThunks()
 }
+
+var cryptoNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.crypto"))
 
 func init() {
 	cryptoNamespace.Lazy = Init

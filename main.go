@@ -107,7 +107,7 @@ func processFile(filename string, phase Phase) error {
 	if filename != "" {
 		f, err := filepath.Abs(filename)
 		PanicOnErr(err)
-		GLOBAL_ENV.MainFile.Value = MakeString(f)
+		GLOBAL_ENV.SetMainFilename(f)
 	}
 	if saveForRepl {
 		reader = NewReader(&replayable{reader}, "<replay>")
@@ -684,12 +684,13 @@ func main() {
 		os.Exit(code)
 	})
 
+	GLOBAL_ENV.InitEnv(Stdin, Stdout, Stderr, os.Args[1:])
+
 	parseArgs(os.Args) // Do this early enough so --verbose can show joker.core being processed.
 
 	saveForRepl = saveForRepl && (exitToRepl || errorToRepl) // don't bother saving stuff if no repl
 
 	RT.GIL.Lock()
-	InitInternalLibs()
 	ProcessCoreData()
 
 	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.CoreNamespace)
