@@ -42,3 +42,6 @@ func new() string {
 	uuid[8] = (uuid[8] & 0x3f) | 0x80 // Variant is 10
 	return uuid.String()
 }
+
+func initNative() {
+}
