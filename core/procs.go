@@ -1759,6 +1759,9 @@ var procLibPath = func(args []Object) Object {
 			PanicOnErr(err)
 		} else {
 			file = AssertString(GLOBAL_ENV.file.Value, "").S
+			if linkDest, err := os.Readlink(file); err == nil {
+				file = linkDest
+			}
 		}
 		ns := GLOBAL_ENV.CurrentNamespace().Name
 
