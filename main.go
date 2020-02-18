@@ -694,8 +694,7 @@ func main() {
 	RT.GIL.Lock()
 	ProcessCoreData()
 
-	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.CoreNamespace)
-
+	GLOBAL_ENV.ReferCoreToUser()
 	GLOBAL_ENV.SetEnvArgs(remainingArgs)
 	GLOBAL_ENV.SetClassPath(classPath)
 
