@@ -10,16 +10,18 @@
 (require '[joker.string :as s]
          '[joker.os :as os])
 
+(def rpl s/replace)
+
 (defn debug
   [& args]
   (when ((os/env) "JOKER_DEBUG_STD")
     (apply println args)))
 
+(debug "Preloaded:" preloaded)
+
 (def libroot
   "Namespace prefix denoting where the gostd-generated implementations live. gostd generates the imports with this prefix."
   "joker.std.")
-
-(def rpl s/replace)
 
 ;;; Discover namespaces dynamically by finding *.joke files.
 (def namespaces
@@ -187,7 +189,7 @@
         arities (s/join "\n\t" (map #(generate-arity % imports (:go m) (:tag m) ns-name) arglists))
         fn-str (-> fn-template
                    (rpl "{goName}" go-fn-name)
-                   (rpl "{pkg}" ns-name)
+                   (rpl "{pkg}" ns-name-final)
                    (rpl "{fnName}" (str k))
                    (rpl "{arities}" arities))
         intern-str (-> intern-template
@@ -383,7 +385,7 @@
 (defn generate-thunk
   [ns-name ns-name-final k v]
   (let [fn (go-name (str k))]
-    (format "STD_thunk_%s_%s_var = __%s" ns-name fn fn)))
+    (format "STD_thunk_%s_%s_var = __%s" ns-name-final fn fn)))
 
 (defn generate-ns-fast-init
   [ns-sym ns-name ns-name-final]
@@ -426,12 +428,15 @@
   (let [ns-name (str "joker." ns-sym)
         dir (rpl (str ns-sym) "." "/")
         ns-name-final (rpl ns-name #".*[.]" "")
-        pre false]
+        pre (preloaded (joker-ize ns-sym))]
     (debug "Processing namespace" ns-name "in" dir "final name" ns-name-final)
     (spit (ns-file-name dir ns-name-final)
           (remove-blanky-lines (generate-ns ns-sym ns-name ns-name-final)))
     (spit (ns-file-name-slow-init dir ns-name-final)
-          (remove-blanky-lines (generate-ns-slow-init ns-sym ns-name ns-name-final pre)))))
+          (remove-blanky-lines (generate-ns-slow-init ns-sym ns-name ns-name-final pre)))
+    (when pre
+      (spit (ns-file-name-fast-init dir ns-name-final)
+           (remove-blanky-lines (generate-ns-fast-init ns-sym ns-name ns-name-final))))))
 
 ;;; Handle "custom" (gostd-generated) namespaces.
 

@@ -8,7 +8,7 @@ import (
 )
 
 var __close__P ProcFn = __close_
-var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/joker.io"}
+var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/io"}
 
 func __close_(_args []Object) Object {
 	_c := len(_args)
@@ -25,7 +25,7 @@ func __close_(_args []Object) Object {
 }
 
 var __copy__P ProcFn = __copy_
-var copy_ Proc = Proc{Fn: __copy__P, Name: "copy_", Package: "std/joker.io"}
+var copy_ Proc = Proc{Fn: __copy__P, Name: "copy_", Package: "std/io"}
 
 func __copy_(_args []Object) Object {
 	_c := len(_args)
@@ -45,7 +45,7 @@ func __copy_(_args []Object) Object {
 }
 
 var __pipe__P ProcFn = __pipe_
-var pipe_ Proc = Proc{Fn: __pipe__P, Name: "pipe_", Package: "std/joker.io"}
+var pipe_ Proc = Proc{Fn: __pipe__P, Name: "pipe_", Package: "std/io"}
 
 func __pipe_(_args []Object) Object {
 	_c := len(_args)

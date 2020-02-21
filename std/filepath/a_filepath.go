@@ -10,7 +10,7 @@ import (
 var list_separator_ String
 var separator_ String
 var __abs__P ProcFn = __abs_
-var abs_ Proc = Proc{Fn: __abs__P, Name: "abs_", Package: "std/joker.filepath"}
+var abs_ Proc = Proc{Fn: __abs__P, Name: "abs_", Package: "std/filepath"}
 
 func __abs_(_args []Object) Object {
 	_c := len(_args)
@@ -28,7 +28,7 @@ func __abs_(_args []Object) Object {
 }
 
 var __isabs__P ProcFn = __isabs_
-var isabs_ Proc = Proc{Fn: __isabs__P, Name: "isabs_", Package: "std/joker.filepath"}
+var isabs_ Proc = Proc{Fn: __isabs__P, Name: "isabs_", Package: "std/filepath"}
 
 func __isabs_(_args []Object) Object {
 	_c := len(_args)
@@ -45,7 +45,7 @@ func __isabs_(_args []Object) Object {
 }
 
 var __base__P ProcFn = __base_
-var base_ Proc = Proc{Fn: __base__P, Name: "base_", Package: "std/joker.filepath"}
+var base_ Proc = Proc{Fn: __base__P, Name: "base_", Package: "std/filepath"}
 
 func __base_(_args []Object) Object {
 	_c := len(_args)
@@ -62,7 +62,7 @@ func __base_(_args []Object) Object {
 }
 
 var __clean__P ProcFn = __clean_
-var clean_ Proc = Proc{Fn: __clean__P, Name: "clean_", Package: "std/joker.filepath"}
+var clean_ Proc = Proc{Fn: __clean__P, Name: "clean_", Package: "std/filepath"}
 
 func __clean_(_args []Object) Object {
 	_c := len(_args)
@@ -79,7 +79,7 @@ func __clean_(_args []Object) Object {
 }
 
 var __dir__P ProcFn = __dir_
-var dir_ Proc = Proc{Fn: __dir__P, Name: "dir_", Package: "std/joker.filepath"}
+var dir_ Proc = Proc{Fn: __dir__P, Name: "dir_", Package: "std/filepath"}
 
 func __dir_(_args []Object) Object {
 	_c := len(_args)
@@ -96,7 +96,7 @@ func __dir_(_args []Object) Object {
 }
 
 var __eval_symlinks__P ProcFn = __eval_symlinks_
-var eval_symlinks_ Proc = Proc{Fn: __eval_symlinks__P, Name: "eval_symlinks_", Package: "std/joker.filepath"}
+var eval_symlinks_ Proc = Proc{Fn: __eval_symlinks__P, Name: "eval_symlinks_", Package: "std/filepath"}
 
 func __eval_symlinks_(_args []Object) Object {
 	_c := len(_args)
@@ -114,7 +114,7 @@ func __eval_symlinks_(_args []Object) Object {
 }
 
 var __ext__P ProcFn = __ext_
-var ext_ Proc = Proc{Fn: __ext__P, Name: "ext_", Package: "std/joker.filepath"}
+var ext_ Proc = Proc{Fn: __ext__P, Name: "ext_", Package: "std/filepath"}
 
 func __ext_(_args []Object) Object {
 	_c := len(_args)
@@ -131,7 +131,7 @@ func __ext_(_args []Object) Object {
 }
 
 var __file_seq__P ProcFn = __file_seq_
-var file_seq_ Proc = Proc{Fn: __file_seq__P, Name: "file_seq_", Package: "std/joker.filepath"}
+var file_seq_ Proc = Proc{Fn: __file_seq__P, Name: "file_seq_", Package: "std/filepath"}
 
 func __file_seq_(_args []Object) Object {
 	_c := len(_args)
@@ -148,7 +148,7 @@ func __file_seq_(_args []Object) Object {
 }
 
 var __from_slash__P ProcFn = __from_slash_
-var from_slash_ Proc = Proc{Fn: __from_slash__P, Name: "from_slash_", Package: "std/joker.filepath"}
+var from_slash_ Proc = Proc{Fn: __from_slash__P, Name: "from_slash_", Package: "std/filepath"}
 
 func __from_slash_(_args []Object) Object {
 	_c := len(_args)
@@ -165,7 +165,7 @@ func __from_slash_(_args []Object) Object {
 }
 
 var __glob__P ProcFn = __glob_
-var glob_ Proc = Proc{Fn: __glob__P, Name: "glob_", Package: "std/joker.filepath"}
+var glob_ Proc = Proc{Fn: __glob__P, Name: "glob_", Package: "std/filepath"}
 
 func __glob_(_args []Object) Object {
 	_c := len(_args)
@@ -183,7 +183,7 @@ func __glob_(_args []Object) Object {
 }
 
 var __join__P ProcFn = __join_
-var join_ Proc = Proc{Fn: __join__P, Name: "join_", Package: "std/joker.filepath"}
+var join_ Proc = Proc{Fn: __join__P, Name: "join_", Package: "std/filepath"}
 
 func __join_(_args []Object) Object {
 	_c := len(_args)
@@ -201,7 +201,7 @@ func __join_(_args []Object) Object {
 }
 
 var __ismatches__P ProcFn = __ismatches_
-var ismatches_ Proc = Proc{Fn: __ismatches__P, Name: "ismatches_", Package: "std/joker.filepath"}
+var ismatches_ Proc = Proc{Fn: __ismatches__P, Name: "ismatches_", Package: "std/filepath"}
 
 func __ismatches_(_args []Object) Object {
 	_c := len(_args)
@@ -220,7 +220,7 @@ func __ismatches_(_args []Object) Object {
 }
 
 var __rel__P ProcFn = __rel_
-var rel_ Proc = Proc{Fn: __rel__P, Name: "rel_", Package: "std/joker.filepath"}
+var rel_ Proc = Proc{Fn: __rel__P, Name: "rel_", Package: "std/filepath"}
 
 func __rel_(_args []Object) Object {
 	_c := len(_args)
@@ -239,7 +239,7 @@ func __rel_(_args []Object) Object {
 }
 
 var __split__P ProcFn = __split_
-var split_ Proc = Proc{Fn: __split__P, Name: "split_", Package: "std/joker.filepath"}
+var split_ Proc = Proc{Fn: __split__P, Name: "split_", Package: "std/filepath"}
 
 func __split_(_args []Object) Object {
 	_c := len(_args)
@@ -257,7 +257,7 @@ func __split_(_args []Object) Object {
 }
 
 var __split_list__P ProcFn = __split_list_
-var split_list_ Proc = Proc{Fn: __split_list__P, Name: "split_list_", Package: "std/joker.filepath"}
+var split_list_ Proc = Proc{Fn: __split_list__P, Name: "split_list_", Package: "std/filepath"}
 
 func __split_list_(_args []Object) Object {
 	_c := len(_args)
@@ -274,7 +274,7 @@ func __split_list_(_args []Object) Object {
 }
 
 var __to_slash__P ProcFn = __to_slash_
-var to_slash_ Proc = Proc{Fn: __to_slash__P, Name: "to_slash_", Package: "std/joker.filepath"}
+var to_slash_ Proc = Proc{Fn: __to_slash__P, Name: "to_slash_", Package: "std/filepath"}
 
 func __to_slash_(_args []Object) Object {
 	_c := len(_args)
@@ -291,7 +291,7 @@ func __to_slash_(_args []Object) Object {
 }
 
 var __volume_name__P ProcFn = __volume_name_
-var volume_name_ Proc = Proc{Fn: __volume_name__P, Name: "volume_name_", Package: "std/joker.filepath"}
+var volume_name_ Proc = Proc{Fn: __volume_name__P, Name: "volume_name_", Package: "std/filepath"}
 
 func __volume_name_(_args []Object) Object {
 	_c := len(_args)

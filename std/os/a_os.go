@@ -8,7 +8,7 @@ import (
 )
 
 var __args__P ProcFn = __args_
-var args_ Proc = Proc{Fn: __args__P, Name: "args_", Package: "std/joker.os"}
+var args_ Proc = Proc{Fn: __args__P, Name: "args_", Package: "std/os"}
 
 func __args_(_args []Object) Object {
 	_c := len(_args)
@@ -24,7 +24,7 @@ func __args_(_args []Object) Object {
 }
 
 var __chdir__P ProcFn = __chdir_
-var chdir_ Proc = Proc{Fn: __chdir__P, Name: "chdir_", Package: "std/joker.os"}
+var chdir_ Proc = Proc{Fn: __chdir__P, Name: "chdir_", Package: "std/os"}
 
 func __chdir_(_args []Object) Object {
 	_c := len(_args)
@@ -41,7 +41,7 @@ func __chdir_(_args []Object) Object {
 }
 
 var __close__P ProcFn = __close_
-var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/joker.os"}
+var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/os"}
 
 func __close_(_args []Object) Object {
 	_c := len(_args)
@@ -60,7 +60,7 @@ func __close_(_args []Object) Object {
 }
 
 var __create__P ProcFn = __create_
-var create_ Proc = Proc{Fn: __create__P, Name: "create_", Package: "std/joker.os"}
+var create_ Proc = Proc{Fn: __create__P, Name: "create_", Package: "std/os"}
 
 func __create_(_args []Object) Object {
 	_c := len(_args)
@@ -78,7 +78,7 @@ func __create_(_args []Object) Object {
 }
 
 var __cwd__P ProcFn = __cwd_
-var cwd_ Proc = Proc{Fn: __cwd__P, Name: "cwd_", Package: "std/joker.os"}
+var cwd_ Proc = Proc{Fn: __cwd__P, Name: "cwd_", Package: "std/os"}
 
 func __cwd_(_args []Object) Object {
 	_c := len(_args)
@@ -94,7 +94,7 @@ func __cwd_(_args []Object) Object {
 }
 
 var __env__P ProcFn = __env_
-var env_ Proc = Proc{Fn: __env__P, Name: "env_", Package: "std/joker.os"}
+var env_ Proc = Proc{Fn: __env__P, Name: "env_", Package: "std/os"}
 
 func __env_(_args []Object) Object {
 	_c := len(_args)
@@ -110,7 +110,7 @@ func __env_(_args []Object) Object {
 }
 
 var __exec__P ProcFn = __exec_
-var exec_ Proc = Proc{Fn: __exec__P, Name: "exec_", Package: "std/joker.os"}
+var exec_ Proc = Proc{Fn: __exec__P, Name: "exec_", Package: "std/os"}
 
 func __exec_(_args []Object) Object {
 	_c := len(_args)
@@ -128,7 +128,7 @@ func __exec_(_args []Object) Object {
 }
 
 var __isexists__P ProcFn = __isexists_
-var isexists_ Proc = Proc{Fn: __isexists__P, Name: "isexists_", Package: "std/joker.os"}
+var isexists_ Proc = Proc{Fn: __isexists__P, Name: "isexists_", Package: "std/os"}
 
 func __isexists_(_args []Object) Object {
 	_c := len(_args)
@@ -145,7 +145,7 @@ func __isexists_(_args []Object) Object {
 }
 
 var __exit__P ProcFn = __exit_
-var exit_ Proc = Proc{Fn: __exit__P, Name: "exit_", Package: "std/joker.os"}
+var exit_ Proc = Proc{Fn: __exit__P, Name: "exit_", Package: "std/os"}
 
 func __exit_(_args []Object) Object {
 	_c := len(_args)
@@ -163,7 +163,7 @@ func __exit_(_args []Object) Object {
 }
 
 var __get_env__P ProcFn = __get_env_
-var get_env_ Proc = Proc{Fn: __get_env__P, Name: "get_env_", Package: "std/joker.os"}
+var get_env_ Proc = Proc{Fn: __get_env__P, Name: "get_env_", Package: "std/os"}
 
 func __get_env_(_args []Object) Object {
 	_c := len(_args)
@@ -180,7 +180,7 @@ func __get_env_(_args []Object) Object {
 }
 
 var __ls__P ProcFn = __ls_
-var ls_ Proc = Proc{Fn: __ls__P, Name: "ls_", Package: "std/joker.os"}
+var ls_ Proc = Proc{Fn: __ls__P, Name: "ls_", Package: "std/os"}
 
 func __ls_(_args []Object) Object {
 	_c := len(_args)
@@ -197,7 +197,7 @@ func __ls_(_args []Object) Object {
 }
 
 var __mkdir__P ProcFn = __mkdir_
-var mkdir_ Proc = Proc{Fn: __mkdir__P, Name: "mkdir_", Package: "std/joker.os"}
+var mkdir_ Proc = Proc{Fn: __mkdir__P, Name: "mkdir_", Package: "std/os"}
 
 func __mkdir_(_args []Object) Object {
 	_c := len(_args)
@@ -215,7 +215,7 @@ func __mkdir_(_args []Object) Object {
 }
 
 var __open__P ProcFn = __open_
-var open_ Proc = Proc{Fn: __open__P, Name: "open_", Package: "std/joker.os"}
+var open_ Proc = Proc{Fn: __open__P, Name: "open_", Package: "std/os"}
 
 func __open_(_args []Object) Object {
 	_c := len(_args)
@@ -233,7 +233,7 @@ func __open_(_args []Object) Object {
 }
 
 var __remove__P ProcFn = __remove_
-var remove_ Proc = Proc{Fn: __remove__P, Name: "remove_", Package: "std/joker.os"}
+var remove_ Proc = Proc{Fn: __remove__P, Name: "remove_", Package: "std/os"}
 
 func __remove_(_args []Object) Object {
 	_c := len(_args)
@@ -252,7 +252,7 @@ func __remove_(_args []Object) Object {
 }
 
 var __remove_all__P ProcFn = __remove_all_
-var remove_all_ Proc = Proc{Fn: __remove_all__P, Name: "remove_all_", Package: "std/joker.os"}
+var remove_all_ Proc = Proc{Fn: __remove_all__P, Name: "remove_all_", Package: "std/os"}
 
 func __remove_all_(_args []Object) Object {
 	_c := len(_args)
@@ -271,7 +271,7 @@ func __remove_all_(_args []Object) Object {
 }
 
 var __set_env__P ProcFn = __set_env_
-var set_env_ Proc = Proc{Fn: __set_env__P, Name: "set_env_", Package: "std/joker.os"}
+var set_env_ Proc = Proc{Fn: __set_env__P, Name: "set_env_", Package: "std/os"}
 
 func __set_env_(_args []Object) Object {
 	_c := len(_args)
@@ -289,7 +289,7 @@ func __set_env_(_args []Object) Object {
 }
 
 var __sh__P ProcFn = __sh_
-var sh_ Proc = Proc{Fn: __sh__P, Name: "sh_", Package: "std/joker.os"}
+var sh_ Proc = Proc{Fn: __sh__P, Name: "sh_", Package: "std/os"}
 
 func __sh_(_args []Object) Object {
 	_c := len(_args)
@@ -308,7 +308,7 @@ func __sh_(_args []Object) Object {
 }
 
 var __sh_from__P ProcFn = __sh_from_
-var sh_from_ Proc = Proc{Fn: __sh_from__P, Name: "sh_from_", Package: "std/joker.os"}
+var sh_from_ Proc = Proc{Fn: __sh_from__P, Name: "sh_from_", Package: "std/os"}
 
 func __sh_from_(_args []Object) Object {
 	_c := len(_args)
@@ -328,7 +328,7 @@ func __sh_from_(_args []Object) Object {
 }
 
 var __stat__P ProcFn = __stat_
-var stat_ Proc = Proc{Fn: __stat__P, Name: "stat_", Package: "std/joker.os"}
+var stat_ Proc = Proc{Fn: __stat__P, Name: "stat_", Package: "std/os"}
 
 func __stat_(_args []Object) Object {
 	_c := len(_args)

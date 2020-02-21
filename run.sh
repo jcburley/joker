@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 
+[ -z "$OPTIMIZE_STARTUP" ] && OPTIMIZE_STARTUP=$([ -f NO-OPTIMIZE-STARTUP.flag ] && echo false || echo true)
+
 build() {
   go clean
   rm -f core/a_*.go  # In case switching from a gen-code branch or similar (any existing files might break the build here)
   go generate ./...
-  go vet main.go repl.go
-  go vet ./core/... ./std/...
+  go vet -tags gen_code main.go repl.go
+  go vet -tags gen_code ./core/... ./std/...
+  (cd core; go fmt a_*.go > /dev/null)
   go build
+  if $OPTIMIZE_STARTUP; then
+      mv -f joker joker.slow
+      go build -tags fast_init
+      ln -f joker joker.fast
+      echo "...built both joker.slow and joker.fast (aka joker)."
+  else
+      ln -f joker joker.slow
+  fi
 }
 
 set -e  # Exit on error.

@@ -7,7 +7,7 @@ import (
 )
 
 var __new__P ProcFn = __new_
-var new_ Proc = Proc{Fn: __new__P, Name: "new_", Package: "std/joker.uuid"}
+var new_ Proc = Proc{Fn: __new__P, Name: "new_", Package: "std/uuid"}
 
 func __new_(_args []Object) Object {
 	_c := len(_args)
