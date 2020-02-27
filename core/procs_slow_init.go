@@ -1,4 +1,4 @@
-// +build !fast_init
+// +build slow_init
 
 package core
 
@@ -194,5 +194,5 @@ func init() {
 }
 
 func lateInitializations() {
-	// none needed for !fast_init
+	// none needed for slow_init
 }

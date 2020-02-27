@@ -9,10 +9,10 @@ build() {
   go vet -tags gen_code main.go repl.go
   go vet -tags gen_code ./core/... ./std/...
   (cd core; go fmt a_*.go > /dev/null)
-  go build
+  go build -tags slow_init
   if $OPTIMIZE_STARTUP; then
       mv -f joker joker.slow
-      go build -tags fast_init
+      go build
       ln -f joker joker.fast
       echo "...built both joker.slow and joker.fast (aka joker)."
   else
