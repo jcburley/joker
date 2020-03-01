@@ -32,6 +32,7 @@ type (
 		NS_VAR        *Var
 		IN_NS_VAR     *Var
 		version       *Var
+		libs          *Var
 		Features      Set
 	}
 )
@@ -142,6 +143,12 @@ func (env *Env) EnsureNamespace(sym Symbol) *Namespace {
 		env.Namespaces[sym.name] = NewNamespace(sym)
 	}
 	return env.Namespaces[sym.name]
+}
+
+func (env *Env) EnsureLib(sym Symbol) *Namespace {
+	ns := env.EnsureNamespace(sym)
+	env.libs.Value.(*MapSet).Add(sym)
+	return ns
 }
 
 func (env *Env) NamespaceFor(ns *Namespace, s Symbol) *Namespace {
