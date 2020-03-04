@@ -106,6 +106,8 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 		m += "    " + importPrefix + strings.ReplaceAll(p, "/", ".") + "\n"
 	}
 	m += `    })
+
+(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 `
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)

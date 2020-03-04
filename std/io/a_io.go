@@ -7,11 +7,25 @@ import (
 	"io"
 )
 
-var ioNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.io"))
+var __close__P ProcFn = __close_
+var close_ Proc = Proc{Fn: __close__P, Name: "close_", Package: "std/io"}
 
+func __close_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		f := ExtractObject(_args, 0)
+		_res := close(f)
+		return _res
 
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
 
-var copy_ Proc
+var __copy__P ProcFn = __copy_
+var copy_ Proc = Proc{Fn: __copy__P, Name: "copy_", Package: "std/io"}
 
 func __copy_(_args []Object) Object {
 	_c := len(_args)
@@ -19,7 +33,7 @@ func __copy_(_args []Object) Object {
 	case _c == 2:
 		dst := ExtractIOWriter(_args, 0)
 		src := ExtractIOReader(_args, 1)
-		 n, err := io.Copy(dst, src)
+		n, err := io.Copy(dst, src)
 		PanicOnErr(err)
 		_res := int(n)
 		return MakeInt(_res)
@@ -30,24 +44,30 @@ func __copy_(_args []Object) Object {
 	return NIL
 }
 
-func Init() {
+var __pipe__P ProcFn = __pipe_
+var pipe_ Proc = Proc{Fn: __pipe__P, Name: "pipe_", Package: "std/io"}
 
-	copy_ = __copy_
+func __pipe_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 0:
+		_res := pipe()
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+func Init() {
 
 	initNative()
 
-	ioNamespace.ResetMeta(MakeMeta(nil, `Provides basic interfaces to I/O primitives.`, "1.0"))
-
-	
-	ioNamespace.InternVar("copy", copy_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("dst"), MakeSymbol("src"))),
-			`Copies from src to dst until either EOF is reached on src or an error occurs.
-  Returns the number of bytes copied or throws an error.
-  src must be IOReader, e.g. as returned by joker.os/open.
-  dst must be IOWriter, e.g. as returned by joker.os/create.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
+	InternsOrThunks()
 }
+
+var ioNamespace = GLOBAL_ENV.EnsureLib(MakeSymbol("joker.io"))
 
 func init() {
 	ioNamespace.Lazy = Init

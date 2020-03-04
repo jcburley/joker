@@ -15,6 +15,7 @@ import (
 
 	. "github.com/candid82/joker/core"
 	_ "github.com/candid82/joker/std/base64"
+	_ "github.com/candid82/joker/std/bolt"
 	_ "github.com/candid82/joker/std/crypto"
 	_ "github.com/candid82/joker/std/csv"
 	_ "github.com/candid82/joker/std/filepath"
@@ -29,6 +30,7 @@ import (
 	_ "github.com/candid82/joker/std/string"
 	_ "github.com/candid82/joker/std/time"
 	_ "github.com/candid82/joker/std/url"
+	_ "github.com/candid82/joker/std/uuid"
 	_ "github.com/candid82/joker/std/yaml"
 	"github.com/pkg/profile"
 )
@@ -107,7 +109,7 @@ func processFile(filename string, phase Phase) error {
 	if filename != "" {
 		f, err := filepath.Abs(filename)
 		PanicOnErr(err)
-		GLOBAL_ENV.MainFile.Value = MakeString(f)
+		GLOBAL_ENV.SetMainFilename(f)
 	}
 	if saveForRepl {
 		reader = NewReader(&replayable{reader}, "<replay>")
@@ -684,16 +686,16 @@ func main() {
 		os.Exit(code)
 	})
 
+	GLOBAL_ENV.InitEnv(Stdin, Stdout, Stderr, os.Args[1:])
+
 	parseArgs(os.Args) // Do this early enough so --verbose can show joker.core being processed.
 
 	saveForRepl = saveForRepl && (exitToRepl || errorToRepl) // don't bother saving stuff if no repl
 
 	RT.GIL.Lock()
-	InitInternalLibs()
 	ProcessCoreData()
 
-	GLOBAL_ENV.FindNamespace(MakeSymbol("user")).ReferAll(GLOBAL_ENV.CoreNamespace)
-
+	GLOBAL_ENV.ReferCoreToUser()
 	GLOBAL_ENV.SetEnvArgs(remainingArgs)
 	GLOBAL_ENV.SetClassPath(classPath)
 

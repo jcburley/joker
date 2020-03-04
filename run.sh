@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
+[ -z "$OPTIMIZE_STARTUP" ] && OPTIMIZE_STARTUP=$([ -f NO-OPTIMIZE-STARTUP.flag ] && echo false || echo true)
+
 build() {
   go clean
   rm -f core/a_*.go  # In case switching from a gen-code branch or similar (any existing files might break the build here)
   go generate ./...
-  go vet main.go repl.go
-  go vet ./core/... ./std/...
-  go build
+  go vet -tags gen_code main.go repl.go
+  go vet -tags gen_code ./core/... ./std/...
+  (cd core; go fmt a_*.go > /dev/null)
+  if $OPTIMIZE_STARTUP; then
+      go build
+      ln -f joker joker.fast
+  else
+      go build -tags slow_init
+      ln -f joker joker.slow
+  fi
 }
 
 set -e  # Exit on error.
@@ -29,7 +38,7 @@ if [ ! -f NO-GEN.flag ]; then
         exit 2
     fi
 fi
-
+(cd std; go fmt ./... > /dev/null)
 NEW_SUM256="$(go run tools/sum256dir/main.go std)"
 
 if [ "$SUM256" != "$NEW_SUM256" ]; then

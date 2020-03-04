@@ -23,25 +23,6 @@ import (
 
 var coreNamespaces []string
 
-var (
-	customlibsData   []byte
-	coreData         []byte
-	replData         []byte
-	walkData         []byte
-	templateData     []byte
-	testData         []byte
-	setData          []byte
-	tools_cliData    []byte
-	linter_allData   []byte
-	linter_jokerData []byte
-	linter_cljxData  []byte
-	linter_cljData   []byte
-	linter_cljsData  []byte
-	hiccupData       []byte
-	pprintData       []byte
-	better_condData  []byte
-)
-
 type (
 	Phase        int
 	Dialect      int
@@ -57,9 +38,7 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.14.1"
-
-var internalLibs map[string][]byte
+const VERSION = "v0.14.2"
 
 const (
 	CLJ Dialect = iota
@@ -68,20 +47,6 @@ const (
 	EDN
 	UNKNOWN
 )
-
-func InitInternalLibs() {
-	internalLibs = map[string][]byte{
-		"joker.walk":        walkData,
-		"joker.template":    templateData,
-		"joker.repl":        replData,
-		"joker.test":        testData,
-		"joker.set":         setData,
-		"joker.tools.cli":   tools_cliData,
-		"joker.hiccup":      hiccupData,
-		"joker.pprint":      pprintData,
-		"joker.better-cond": better_condData,
-	}
-}
 
 func ExtractCallable(args []Object, index int) Callable {
 	return EnsureCallable(args, index)
@@ -239,7 +204,7 @@ func ExtractError(args []Object, index int) error {
 	return EnsureError(args, index)
 }
 
-var procMeta Proc = func(args []Object) Object {
+var procMeta = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case Meta:
 		meta := obj.GetMeta()
@@ -255,7 +220,7 @@ var procMeta Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procWithMeta Proc = func(args []Object) Object {
+var procWithMeta = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	m := EnsureMeta(args, 0)
 	if args[1].Equals(NIL) {
@@ -264,53 +229,53 @@ var procWithMeta Proc = func(args []Object) Object {
 	return m.WithMeta(EnsureMap(args, 1))
 }
 
-var procIsZero Proc = func(args []Object) Object {
+var procIsZero = func(args []Object) Object {
 	n := EnsureNumber(args, 0)
 	ops := GetOps(n)
 	return Boolean{B: ops.IsZero(n)}
 }
 
-var procIsPos Proc = func(args []Object) Object {
+var procIsPos = func(args []Object) Object {
 	n := EnsureNumber(args, 0)
 	ops := GetOps(n)
 	return Boolean{B: ops.Gt(n, Int{I: 0})}
 }
 
-var procIsNeg Proc = func(args []Object) Object {
+var procIsNeg = func(args []Object) Object {
 	n := EnsureNumber(args, 0)
 	ops := GetOps(n)
 	return Boolean{B: ops.Lt(n, Int{I: 0})}
 }
 
-var procAdd Proc = func(args []Object) Object {
+var procAdd = func(args []Object) Object {
 	x := AssertNumber(args[0], "")
 	y := AssertNumber(args[1], "")
 	ops := GetOps(x).Combine(GetOps(y))
 	return ops.Add(x, y)
 }
 
-var procAddEx Proc = func(args []Object) Object {
+var procAddEx = func(args []Object) Object {
 	x := AssertNumber(args[0], "")
 	y := AssertNumber(args[1], "")
 	ops := GetOps(x).Combine(GetOps(y)).Combine(BIGINT_OPS)
 	return ops.Add(x, y)
 }
 
-var procMultiply Proc = func(args []Object) Object {
+var procMultiply = func(args []Object) Object {
 	x := AssertNumber(args[0], "")
 	y := AssertNumber(args[1], "")
 	ops := GetOps(x).Combine(GetOps(y))
 	return ops.Multiply(x, y)
 }
 
-var procMultiplyEx Proc = func(args []Object) Object {
+var procMultiplyEx = func(args []Object) Object {
 	x := AssertNumber(args[0], "")
 	y := AssertNumber(args[1], "")
 	ops := GetOps(x).Combine(GetOps(y)).Combine(BIGINT_OPS)
 	return ops.Multiply(x, y)
 }
 
-var procSubtract Proc = func(args []Object) Object {
+var procSubtract = func(args []Object) Object {
 	var a, b Object
 	if len(args) == 1 {
 		a = Int{I: 0}
@@ -323,7 +288,7 @@ var procSubtract Proc = func(args []Object) Object {
 	return ops.Subtract(AssertNumber(a, ""), AssertNumber(b, ""))
 }
 
-var procSubtractEx Proc = func(args []Object) Object {
+var procSubtractEx = func(args []Object) Object {
 	var a, b Object
 	if len(args) == 1 {
 		a = Int{I: 0}
@@ -336,28 +301,28 @@ var procSubtractEx Proc = func(args []Object) Object {
 	return ops.Subtract(AssertNumber(a, ""), AssertNumber(b, ""))
 }
 
-var procDivide Proc = func(args []Object) Object {
+var procDivide = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	y := EnsureNumber(args, 1)
 	ops := GetOps(x).Combine(GetOps(y))
 	return ops.Divide(x, y)
 }
 
-var procQuot Proc = func(args []Object) Object {
+var procQuot = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	y := EnsureNumber(args, 1)
 	ops := GetOps(x).Combine(GetOps(y))
 	return ops.Quotient(x, y)
 }
 
-var procRem Proc = func(args []Object) Object {
+var procRem = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	y := EnsureNumber(args, 1)
 	ops := GetOps(x).Combine(GetOps(y))
 	return ops.Rem(x, y)
 }
 
-var procBitNot Proc = func(args []Object) Object {
+var procBitNot = func(args []Object) Object {
 	x := AssertInt(args[0], "Bit operation not supported for "+args[0].GetType().ToString(false))
 	return Int{I: ^x.I}
 }
@@ -368,62 +333,62 @@ func AssertInts(args []Object) (Int, Int) {
 	return x, y
 }
 
-var procBitAnd Proc = func(args []Object) Object {
+var procBitAnd = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I & y.I}
 }
 
-var procBitOr Proc = func(args []Object) Object {
+var procBitOr = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I | y.I}
 }
 
-var procBitXor Proc = func(args []Object) Object {
+var procBitXor = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I ^ y.I}
 }
 
-var procBitAndNot Proc = func(args []Object) Object {
+var procBitAndNot = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I &^ y.I}
 }
 
-var procBitClear Proc = func(args []Object) Object {
+var procBitClear = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I &^ (1 << uint(y.I))}
 }
 
-var procBitSet Proc = func(args []Object) Object {
+var procBitSet = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I | (1 << uint(y.I))}
 }
 
-var procBitFlip Proc = func(args []Object) Object {
+var procBitFlip = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I ^ (1 << uint(y.I))}
 }
 
-var procBitTest Proc = func(args []Object) Object {
+var procBitTest = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Boolean{B: x.I&(1<<uint(y.I)) != 0}
 }
 
-var procBitShiftLeft Proc = func(args []Object) Object {
+var procBitShiftLeft = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I << uint(y.I)}
 }
 
-var procBitShiftRight Proc = func(args []Object) Object {
+var procBitShiftRight = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: x.I >> uint(y.I)}
 }
 
-var procUnsignedBitShiftRight Proc = func(args []Object) Object {
+var procUnsignedBitShiftRight = func(args []Object) Object {
 	x, y := AssertInts(args)
 	return Int{I: int(uint(x.I) >> uint(y.I))}
 }
 
-var procExInfo Proc = func(args []Object) Object {
+var procExInfo = func(args []Object) Object {
 	CheckArity(args, 2, 3)
 	res := &ExInfo{
 		rt: RT.clone(),
@@ -436,25 +401,25 @@ var procExInfo Proc = func(args []Object) Object {
 	return res
 }
 
-var procExData Proc = func(args []Object) Object {
+var procExData = func(args []Object) Object {
 	if ok, res := args[0].(*ExInfo).Get(KEYWORDS.data); ok {
 		return res
 	}
 	return NIL
 }
 
-var procExCause Proc = func(args []Object) Object {
+var procExCause = func(args []Object) Object {
 	if ok, res := args[0].(*ExInfo).Get(KEYWORDS.cause); ok {
 		return res
 	}
 	return NIL
 }
 
-var procExMessage Proc = func(args []Object) Object {
+var procExMessage = func(args []Object) Object {
 	return args[0].(Error).Message()
 }
 
-var procRegex Proc = func(args []Object) Object {
+var procRegex = func(args []Object) Object {
 	r, err := regexp.Compile(EnsureString(args, 0).S)
 	if err != nil {
 		panic(RT.NewError("Invalid regex: " + err.Error()))
@@ -484,7 +449,7 @@ func reGroups(s string, indexes []int) Object {
 	}
 }
 
-var procReSeq Proc = func(args []Object) Object {
+var procReSeq = func(args []Object) Object {
 	re := EnsureRegex(args, 0)
 	s := EnsureString(args, 1)
 	matches := re.R.FindAllStringSubmatchIndex(s.S, -1)
@@ -498,23 +463,23 @@ var procReSeq Proc = func(args []Object) Object {
 	return &ArraySeq{arr: res}
 }
 
-var procReFind Proc = func(args []Object) Object {
+var procReFind = func(args []Object) Object {
 	re := EnsureRegex(args, 0)
 	s := EnsureString(args, 1)
 	match := re.R.FindStringSubmatchIndex(s.S)
 	return reGroups(s.S, match)
 }
 
-var procRand Proc = func(args []Object) Object {
+var procRand = func(args []Object) Object {
 	r := rand.Float64()
 	return Double{D: r}
 }
 
-var procIsSpecialSymbol Proc = func(args []Object) Object {
+var procIsSpecialSymbol = func(args []Object) Object {
 	return Boolean{B: IsSpecialSymbol(args[0])}
 }
 
-var procSubs Proc = func(args []Object) Object {
+var procSubs = func(args []Object) Object {
 	s := EnsureString(args, 0).S
 	start := EnsureInt(args, 1).I
 	slen := utf8.RuneCountInString(s)
@@ -650,23 +615,23 @@ var procFormat = func(args []Object) Object {
 	return String{S: res}
 }
 
-var procList Proc = func(args []Object) Object {
+var procList = func(args []Object) Object {
 	return NewListFrom(args...)
 }
 
-var procCons Proc = func(args []Object) Object {
+var procCons = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	s := EnsureSeqable(args, 1).Seq()
 	return s.Cons(args[0])
 }
 
-var procFirst Proc = func(args []Object) Object {
+var procFirst = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	s := EnsureSeqable(args, 0).Seq()
 	return s.First()
 }
 
-var procNext Proc = func(args []Object) Object {
+var procNext = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	s := EnsureSeqable(args, 0).Seq()
 	res := s.Rest()
@@ -676,13 +641,13 @@ var procNext Proc = func(args []Object) Object {
 	return res
 }
 
-var procRest Proc = func(args []Object) Object {
+var procRest = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	s := EnsureSeqable(args, 0).Seq()
 	return s.Rest()
 }
 
-var procConj Proc = func(args []Object) Object {
+var procConj = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case Conjable:
 		return c.Conj(args[1])
@@ -693,7 +658,7 @@ var procConj Proc = func(args []Object) Object {
 	}
 }
 
-var procSeq Proc = func(args []Object) Object {
+var procSeq = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	s := EnsureSeqable(args, 0).Seq()
 	if s.IsEmpty() {
@@ -702,18 +667,18 @@ var procSeq Proc = func(args []Object) Object {
 	return s
 }
 
-var procIsInstance Proc = func(args []Object) Object {
+var procIsInstance = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	t := EnsureType(args, 0)
 	return Boolean{B: IsInstance(t, args[1])}
 }
 
-var procGoObject Proc = func(args []Object) Object {
+var procGoObject = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	return Boolean{B: IsGoObject(args[0])}
 }
 
-var procNew Proc = func(args []Object) Object {
+var procNew = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	t := EnsureGoType(args, 0)
 	f := t.T.Ctor
@@ -723,7 +688,7 @@ var procNew Proc = func(args []Object) Object {
 	return f(args[1])
 }
 
-var procGoTypeOf Proc = func(args []Object) Object {
+var procGoTypeOf = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	var t *GoTypeInfo
 	var x interface{} = args[0]
@@ -744,7 +709,7 @@ var procGoTypeOf Proc = func(args []Object) Object {
 	return t.GoType
 }
 
-var procGoTypeOfAsString Proc = func(args []Object) Object {
+var procGoTypeOfAsString = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	var t *GoTypeInfo
 	var x interface{} = args[0]
@@ -784,7 +749,7 @@ func goGetTypeInfo(ty *GoType, mem string) Object {
 	return mi.meta
 }
 
-var proc_Go Proc = func(args []Object) Object {
+var proc_Go = func(args []Object) Object {
 	CheckArity(args, 3, 3)
 	var goType *GoType
 	if ty, ok := args[0].(*GoType); ok {
@@ -844,7 +809,7 @@ var proc_Go Proc = func(args []Object) Object {
 	return &GoVar{Value: field.Interface()}
 }
 
-var procRef Proc = func(args []Object) Object {
+var procRef = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	o := EnsureGoObject(args, 0)
 	v := reflect.ValueOf(o.O)
@@ -856,15 +821,15 @@ var procRef Proc = func(args []Object) Object {
 	return MakeGoObjectIfNeeded(d.Interface())
 }
 
-var procAssoc Proc = func(args []Object) Object {
+var procAssoc = func(args []Object) Object {
 	return EnsureAssociative(args, 0).Assoc(args[1], args[2])
 }
 
-var procEquals Proc = func(args []Object) Object {
+var procEquals = func(args []Object) Object {
 	return Boolean{B: args[0].Equals(args[1])}
 }
 
-var procCount Proc = func(args []Object) Object {
+var procCount = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case Counted:
 		return Int{I: obj.Count()}
@@ -874,7 +839,7 @@ var procCount Proc = func(args []Object) Object {
 	}
 }
 
-var procSubvec Proc = func(args []Object) Object {
+var procSubvec = func(args []Object) Object {
 	// TODO: implement proper Subvector structure
 	v := EnsureVector(args, 0)
 	start := EnsureInt(args, 1).I
@@ -889,7 +854,7 @@ var procSubvec Proc = func(args []Object) Object {
 	return NewVectorFrom(subv...)
 }
 
-var procCast Proc = func(args []Object) Object {
+var procCast = func(args []Object) Object {
 	t := EnsureType(args, 0)
 	if t.reflectType.Kind() == reflect.Interface &&
 		args[1].GetType().reflectType.Implements(t.reflectType) ||
@@ -899,18 +864,18 @@ var procCast Proc = func(args []Object) Object {
 	panic(RT.NewError("Cannot cast " + args[1].GetType().ToString(false) + " to " + t.ToString(false)))
 }
 
-var procVec Proc = func(args []Object) Object {
+var procVec = func(args []Object) Object {
 	return NewVectorFromSeq(EnsureSeqable(args, 0).Seq())
 }
 
-var procHashMap Proc = func(args []Object) Object {
+var procHashMap = func(args []Object) Object {
 	if len(args)%2 != 0 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
 	return NewHashMap(args...)
 }
 
-var procHashSet Proc = func(args []Object) Object {
+var procHashSet = func(args []Object) Object {
 	res := EmptySet()
 	for i := 0; i < len(args); i++ {
 		res.Add(args[i])
@@ -918,7 +883,7 @@ var procHashSet Proc = func(args []Object) Object {
 	return res
 }
 
-var procStr Proc = func(args []Object) Object {
+var procStr = func(args []Object) Object {
 	var buffer bytes.Buffer
 	for _, obj := range args {
 		if !obj.Equals(NIL) {
@@ -931,7 +896,7 @@ var procStr Proc = func(args []Object) Object {
 	return String{S: buffer.String()}
 }
 
-var procSymbol Proc = func(args []Object) Object {
+var procSymbol = func(args []Object) Object {
 	if len(args) == 1 {
 		return MakeSymbol(EnsureString(args, 0).S)
 	}
@@ -945,7 +910,7 @@ var procSymbol Proc = func(args []Object) Object {
 	}
 }
 
-var procKeyword Proc = func(args []Object) Object {
+var procKeyword = func(args []Object) Object {
 	if len(args) == 1 {
 		switch obj := args[0].(type) {
 		case String:
@@ -972,11 +937,11 @@ var procKeyword Proc = func(args []Object) Object {
 	}
 }
 
-var procGensym Proc = func(args []Object) Object {
+var procGensym = func(args []Object) Object {
 	return genSym(EnsureString(args, 0).S, "")
 }
 
-var procApply Proc = func(args []Object) Object {
+var procApply = func(args []Object) Object {
 	// TODO:
 	// Stacktrace is broken. Need to somehow know
 	// the name of the function passed ...
@@ -984,19 +949,19 @@ var procApply Proc = func(args []Object) Object {
 	return f.Call(ToSlice(EnsureSeqable(args, 1).Seq()))
 }
 
-var procLazySeq Proc = func(args []Object) Object {
+var procLazySeq = func(args []Object) Object {
 	return &LazySeq{
 		fn: args[0].(*Fn),
 	}
 }
 
-var procDelay Proc = func(args []Object) Object {
+var procDelay = func(args []Object) Object {
 	return &Delay{
 		fn: args[0].(*Fn),
 	}
 }
 
-var procForce Proc = func(args []Object) Object {
+var procForce = func(args []Object) Object {
 	switch d := args[0].(type) {
 	case *Delay:
 		return d.Force()
@@ -1005,11 +970,11 @@ var procForce Proc = func(args []Object) Object {
 	}
 }
 
-var procIdentical Proc = func(args []Object) Object {
+var procIdentical = func(args []Object) Object {
 	return Boolean{B: args[0] == args[1]}
 }
 
-var procCompare Proc = func(args []Object) Object {
+var procCompare = func(args []Object) Object {
 	k1, k2 := args[0], args[1]
 	if k1.Equals(k2) {
 		return Int{I: 0}
@@ -1027,7 +992,7 @@ var procCompare Proc = func(args []Object) Object {
 	panic(RT.NewError(fmt.Sprintf("%s (type: %s) is not a Comparable", k1.ToString(true), k1.GetType().ToString(false))))
 }
 
-var procInt Proc = func(args []Object) Object {
+var procInt = func(args []Object) Object {
 	switch obj := args[0].(type) {
 	case Char:
 		return Int{I: int(obj.Ch)}
@@ -1038,16 +1003,16 @@ var procInt Proc = func(args []Object) Object {
 	}
 }
 
-var procNumber Proc = func(args []Object) Object {
+var procNumber = func(args []Object) Object {
 	return AssertNumber(args[0], fmt.Sprintf("Cannot cast %s (type: %s) to Number", args[0].ToString(true), args[0].GetType().ToString(false)))
 }
 
-var procDouble Proc = func(args []Object) Object {
+var procDouble = func(args []Object) Object {
 	n := AssertNumber(args[0], fmt.Sprintf("Cannot cast %s (type: %s) to Double", args[0].ToString(true), args[0].GetType().ToString(false)))
 	return n.Double()
 }
 
-var procChar Proc = func(args []Object) Object {
+var procChar = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case Char:
 		return c
@@ -1062,21 +1027,21 @@ var procChar Proc = func(args []Object) Object {
 	}
 }
 
-var procBoolean Proc = func(args []Object) Object {
+var procBoolean = func(args []Object) Object {
 	return Boolean{B: ToBool(args[0])}
 }
 
-var procNumerator Proc = func(args []Object) Object {
+var procNumerator = func(args []Object) Object {
 	bi := EnsureRatio(args, 0).r.Num()
 	return &BigInt{b: *bi}
 }
 
-var procDenominator Proc = func(args []Object) Object {
+var procDenominator = func(args []Object) Object {
 	bi := EnsureRatio(args, 0).r.Denom()
 	return &BigInt{b: *bi}
 }
 
-var procBigInt Proc = func(args []Object) Object {
+var procBigInt = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case Number:
 		return &BigInt{b: *n.BigInt()}
@@ -1091,7 +1056,7 @@ var procBigInt Proc = func(args []Object) Object {
 	}
 }
 
-var procBigFloat Proc = func(args []Object) Object {
+var procBigFloat = func(args []Object) Object {
 	switch n := args[0].(type) {
 	case Number:
 		return &BigFloat{b: *n.BigFloat()}
@@ -1106,7 +1071,7 @@ var procBigFloat Proc = func(args []Object) Object {
 	}
 }
 
-var procNth Proc = func(args []Object) Object {
+var procNth = func(args []Object) Object {
 	n := EnsureNumber(args, 1).Int().I
 	switch coll := args[0].(type) {
 	case Indexed:
@@ -1128,83 +1093,83 @@ var procNth Proc = func(args []Object) Object {
 	panic(RT.NewError("nth not supported on this type: " + args[0].GetType().ToString(false)))
 }
 
-var procLt Proc = func(args []Object) Object {
+var procLt = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Boolean{B: GetOps(a).Combine(GetOps(b)).Lt(a, b)}
 }
 
-var procLte Proc = func(args []Object) Object {
+var procLte = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Boolean{B: GetOps(a).Combine(GetOps(b)).Lte(a, b)}
 }
 
-var procGt Proc = func(args []Object) Object {
+var procGt = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Boolean{B: GetOps(a).Combine(GetOps(b)).Gt(a, b)}
 }
 
-var procGte Proc = func(args []Object) Object {
+var procGte = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Boolean{B: GetOps(a).Combine(GetOps(b)).Gte(a, b)}
 }
 
-var procEq Proc = func(args []Object) Object {
+var procEq = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return MakeBoolean(numbersEq(a, b))
 }
 
-var procMax Proc = func(args []Object) Object {
+var procMax = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Max(a, b)
 }
 
-var procMin Proc = func(args []Object) Object {
+var procMin = func(args []Object) Object {
 	a := AssertNumber(args[0], "")
 	b := AssertNumber(args[1], "")
 	return Min(a, b)
 }
 
-var procIncEx Proc = func(args []Object) Object {
+var procIncEx = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	ops := GetOps(x).Combine(BIGINT_OPS)
 	return ops.Add(x, Int{I: 1})
 }
 
-var procDecEx Proc = func(args []Object) Object {
+var procDecEx = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	ops := GetOps(x).Combine(BIGINT_OPS)
 	return ops.Subtract(x, Int{I: 1})
 }
 
-var procInc Proc = func(args []Object) Object {
+var procInc = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	ops := GetOps(x).Combine(INT_OPS)
 	return ops.Add(x, Int{I: 1})
 }
 
-var procDec Proc = func(args []Object) Object {
+var procDec = func(args []Object) Object {
 	x := EnsureNumber(args, 0)
 	ops := GetOps(x).Combine(INT_OPS)
 	return ops.Subtract(x, Int{I: 1})
 }
 
-var procPeek Proc = func(args []Object) Object {
+var procPeek = func(args []Object) Object {
 	s := AssertStack(args[0], "")
 	return s.Peek()
 }
 
-var procPop Proc = func(args []Object) Object {
+var procPop = func(args []Object) Object {
 	s := AssertStack(args[0], "")
 	return s.Pop().(Object)
 }
 
-var procContains Proc = func(args []Object) Object {
+var procContains = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case Gettable:
 		ok, _ := c.Get(args[1])
@@ -1216,7 +1181,7 @@ var procContains Proc = func(args []Object) Object {
 	panic(RT.NewError("contains? not supported on type " + args[0].GetType().ToString(false)))
 }
 
-var procGet Proc = func(args []Object) Object {
+var procGet = func(args []Object) Object {
 	switch c := args[0].(type) {
 	case Gettable:
 		ok, v := c.Get(args[1])
@@ -1230,15 +1195,15 @@ var procGet Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procDissoc Proc = func(args []Object) Object {
+var procDissoc = func(args []Object) Object {
 	return EnsureMap(args, 0).Without(args[1])
 }
 
-var procDisj Proc = func(args []Object) Object {
+var procDisj = func(args []Object) Object {
 	return EnsureSet(args, 0).Disjoin(args[1])
 }
 
-var procFind Proc = func(args []Object) Object {
+var procFind = func(args []Object) Object {
 	res := EnsureAssociative(args, 0).EntryAt(args[1])
 	if res == nil {
 		return NIL
@@ -1246,23 +1211,23 @@ var procFind Proc = func(args []Object) Object {
 	return res
 }
 
-var procKeys Proc = func(args []Object) Object {
+var procKeys = func(args []Object) Object {
 	return EnsureMap(args, 0).Keys()
 }
 
-var procVals Proc = func(args []Object) Object {
+var procVals = func(args []Object) Object {
 	return EnsureMap(args, 0).Vals()
 }
 
-var procRseq Proc = func(args []Object) Object {
+var procRseq = func(args []Object) Object {
 	return EnsureReversible(args, 0).Rseq()
 }
 
-var procName Proc = func(args []Object) Object {
+var procName = func(args []Object) Object {
 	return String{S: EnsureNamed(args, 0).Name()}
 }
 
-var procNamespace Proc = func(args []Object) Object {
+var procNamespace = func(args []Object) Object {
 	ns := EnsureNamed(args, 0).Namespace()
 	if ns == "" {
 		return NIL
@@ -1270,7 +1235,7 @@ var procNamespace Proc = func(args []Object) Object {
 	return String{S: ns}
 }
 
-var procFindVar Proc = func(args []Object) Object {
+var procFindVar = func(args []Object) Object {
 	sym := EnsureSymbol(args, 0)
 	if sym.ns == nil {
 		panic(RT.NewError("find-var argument must be namespace-qualified symbol"))
@@ -1281,7 +1246,7 @@ var procFindVar Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procSort Proc = func(args []Object) Object {
+var procSort = func(args []Object) Object {
 	cmp := EnsureComparator(args, 0)
 	coll := EnsureSeqable(args, 1)
 	s := SortableSlice{
@@ -1292,17 +1257,17 @@ var procSort Proc = func(args []Object) Object {
 	return &ArraySeq{arr: s.s}
 }
 
-var procEval Proc = func(args []Object) Object {
+var procEval = func(args []Object) Object {
 	parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
 	expr := Parse(args[0], parseContext)
 	return Eval(expr, nil)
 }
 
-var procType Proc = func(args []Object) Object {
+var procType = func(args []Object) Object {
 	return args[0].GetType()
 }
 
-var procPprint Proc = func(args []Object) Object {
+var procPprint = func(args []Object) Object {
 	obj := args[0]
 	w := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
 	pprintObject(obj, 0, w)
@@ -1320,7 +1285,7 @@ func PrintObject(obj Object, w io.Writer) {
 	}
 }
 
-var procPr Proc = func(args []Object) Object {
+var procPr = func(args []Object) Object {
 	n := len(args)
 	if n > 0 {
 		f := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
@@ -1333,13 +1298,13 @@ var procPr Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procNewline Proc = func(args []Object) Object {
+var procNewline = func(args []Object) Object {
 	f := Assertio_Writer(GLOBAL_ENV.stdout.Value, "")
 	fmt.Fprintln(f)
 	return NIL
 }
 
-var procFlush Proc = func(args []Object) Object {
+var procFlush = func(args []Object) Object {
 	switch f := args[0].(type) {
 	case *File:
 		f.Sync()
@@ -1354,12 +1319,12 @@ func readFromReader(reader io.RuneReader) Object {
 	return obj
 }
 
-var procRead Proc = func(args []Object) Object {
+var procRead = func(args []Object) Object {
 	f := Ensureio_RuneReader(args, 0)
 	return readFromReader(f)
 }
 
-var procReadString Proc = func(args []Object) Object {
+var procReadString = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	return readFromReader(strings.NewReader(EnsureString(args, 0).S))
 }
@@ -1381,7 +1346,7 @@ func readLine(r StringReader) (s string, e error) {
 	return
 }
 
-var procReadLine Proc = func(args []Object) Object {
+var procReadLine = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	f := AssertStringReader(GLOBAL_ENV.stdin.Value, "")
 	line, err := readLine(f)
@@ -1391,7 +1356,7 @@ var procReadLine Proc = func(args []Object) Object {
 	return String{S: line}
 }
 
-var procReaderReadLine Proc = func(args []Object) Object {
+var procReaderReadLine = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	rdr := EnsureStringReader(args, 0)
 	line, err := readLine(rdr)
@@ -1401,11 +1366,11 @@ var procReaderReadLine Proc = func(args []Object) Object {
 	return String{S: line}
 }
 
-var procNanoTime Proc = func(args []Object) Object {
+var procNanoTime = func(args []Object) Object {
 	return &BigInt{b: *big.NewInt(time.Now().UnixNano())}
 }
 
-var procMacroexpand1 Proc = func(args []Object) Object {
+var procMacroexpand1 = func(args []Object) Object {
 	switch s := args[0].(type) {
 	case Seq:
 		parseContext := &ParseContext{GlobalEnv: GLOBAL_ENV}
@@ -1437,7 +1402,7 @@ func loadReader(reader *Reader) (Object, error) {
 	}
 }
 
-var procLoadString Proc = func(args []Object) Object {
+var procLoadString = func(args []Object) Object {
 	s := EnsureString(args, 0)
 	obj, err := loadReader(NewReader(strings.NewReader(s.S), "<string>"))
 	if err != nil {
@@ -1446,7 +1411,7 @@ var procLoadString Proc = func(args []Object) Object {
 	return obj
 }
 
-var procFindNamespace Proc = func(args []Object) Object {
+var procFindNamespace = func(args []Object) Object {
 	ns := GLOBAL_ENV.FindNamespace(EnsureSymbol(args, 0))
 	if ns == nil {
 		return NIL
@@ -1454,7 +1419,7 @@ var procFindNamespace Proc = func(args []Object) Object {
 	return ns
 }
 
-var procCreateNamespace Proc = func(args []Object) Object {
+var procCreateNamespace = func(args []Object) Object {
 	sym := EnsureSymbol(args, 0)
 	res := GLOBAL_ENV.EnsureNamespace(sym)
 	// In linter mode the latest create-ns call overrides position info.
@@ -1467,7 +1432,7 @@ var procCreateNamespace Proc = func(args []Object) Object {
 	return res
 }
 
-var procInjectNamespace Proc = func(args []Object) Object {
+var procInjectNamespace = func(args []Object) Object {
 	sym := EnsureSymbol(args, 0)
 	ns := GLOBAL_ENV.EnsureNamespace(sym)
 	ns.isUsed = true
@@ -1475,7 +1440,7 @@ var procInjectNamespace Proc = func(args []Object) Object {
 	return ns
 }
 
-var procRemoveNamespace Proc = func(args []Object) Object {
+var procRemoveNamespace = func(args []Object) Object {
 	ns := GLOBAL_ENV.RemoveNamespace(EnsureSymbol(args, 0))
 	if ns == nil {
 		return NIL
@@ -1483,7 +1448,7 @@ var procRemoveNamespace Proc = func(args []Object) Object {
 	return ns
 }
 
-var procAllNamespaces Proc = func(args []Object) Object {
+var procAllNamespaces = func(args []Object) Object {
 	s := make([]Object, 0, len(GLOBAL_ENV.Namespaces))
 	for _, ns := range GLOBAL_ENV.Namespaces {
 		s = append(s, ns)
@@ -1491,11 +1456,11 @@ var procAllNamespaces Proc = func(args []Object) Object {
 	return &ArraySeq{arr: s}
 }
 
-var procNamespaceName Proc = func(args []Object) Object {
+var procNamespaceName = func(args []Object) Object {
 	return EnsureNamespace(args, 0).Name
 }
 
-var procNamespaceMap Proc = func(args []Object) Object {
+var procNamespaceMap = func(args []Object) Object {
 	r := &ArrayMap{}
 	for k, v := range EnsureNamespace(args, 0).mappings {
 		r.Add(MakeSymbol(*k), v)
@@ -1503,7 +1468,7 @@ var procNamespaceMap Proc = func(args []Object) Object {
 	return r
 }
 
-var procNamespaceUnmap Proc = func(args []Object) Object {
+var procNamespaceUnmap = func(args []Object) Object {
 	ns := EnsureNamespace(args, 0)
 	sym := EnsureSymbol(args, 1)
 	if sym.ns != nil {
@@ -1513,24 +1478,24 @@ var procNamespaceUnmap Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procVarNamespace Proc = func(args []Object) Object {
+var procVarNamespace = func(args []Object) Object {
 	v := EnsureVar(args, 0)
 	return v.ns
 }
 
-var procRefer Proc = func(args []Object) Object {
+var procRefer = func(args []Object) Object {
 	ns := EnsureNamespace(args, 0)
 	sym := EnsureSymbol(args, 1)
 	v := EnsureVar(args, 2)
 	return ns.Refer(sym, v)
 }
 
-var procAlias Proc = func(args []Object) Object {
+var procAlias = func(args []Object) Object {
 	EnsureNamespace(args, 0).AddAlias(EnsureSymbol(args, 1), EnsureNamespace(args, 2))
 	return NIL
 }
 
-var procNamespaceAliases Proc = func(args []Object) Object {
+var procNamespaceAliases = func(args []Object) Object {
 	r := &ArrayMap{}
 	for k, v := range EnsureNamespace(args, 0).aliases {
 		r.Add(MakeSymbol(*k), v)
@@ -1538,7 +1503,7 @@ var procNamespaceAliases Proc = func(args []Object) Object {
 	return r
 }
 
-var procNamespaceUnalias Proc = func(args []Object) Object {
+var procNamespaceUnalias = func(args []Object) Object {
 	ns := EnsureNamespace(args, 0)
 	sym := EnsureSymbol(args, 1)
 	if sym.ns != nil {
@@ -1548,14 +1513,14 @@ var procNamespaceUnalias Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procVarGet Proc = func(args []Object) Object {
+var procVarGet = func(args []Object) Object {
 	if g, ok := args[0].(*GoVar); ok {
 		return MakeGoObjectIfNeeded(reflect.Indirect(reflect.ValueOf(g.Value)).Interface())
 	}
 	return EnsureVar(args, 0).Resolve()
 }
 
-var procVarSet Proc = func(args []Object) Object {
+var procVarSet = func(args []Object) Object {
 	if g, ok := args[0].(*GoVar); ok {
 		goVar := reflect.ValueOf(g.Value)
 		k := goVar.Kind()
@@ -1585,7 +1550,7 @@ var procVarSet Proc = func(args []Object) Object {
 	return args[1]
 }
 
-var procNsResolve Proc = func(args []Object) Object {
+var procNsResolve = func(args []Object) Object {
 	ns := EnsureNamespace(args, 0)
 	sym := EnsureSymbol(args, 1)
 	if sym.ns == nil && TYPES[sym.name] != nil {
@@ -1597,7 +1562,7 @@ var procNsResolve Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procArrayMap Proc = func(args []Object) Object {
+var procArrayMap = func(args []Object) Object {
 	if len(args)%2 == 1 {
 		panic(RT.NewError("No value supplied for key " + args[len(args)-1].ToString(false)))
 	}
@@ -1610,7 +1575,7 @@ var procArrayMap Proc = func(args []Object) Object {
 
 const bufferHashMask uint32 = 0x5ed19e84
 
-var procBuffer Proc = func(args []Object) Object {
+var procBuffer = func(args []Object) Object {
 	if len(args) > 0 {
 		s := EnsureString(args, 0)
 		return MakeBuffer(bytes.NewBufferString(s.S))
@@ -1618,7 +1583,7 @@ var procBuffer Proc = func(args []Object) Object {
 	return MakeBuffer(&bytes.Buffer{})
 }
 
-var procBufferedReader Proc = func(args []Object) Object {
+var procBufferedReader = func(args []Object) Object {
 	switch rdr := args[0].(type) {
 	case io.Reader:
 		return MakeBufferedReader(rdr)
@@ -1627,13 +1592,13 @@ var procBufferedReader Proc = func(args []Object) Object {
 	}
 }
 
-var procSlurp Proc = func(args []Object) Object {
+var procSlurp = func(args []Object) Object {
 	b, err := ioutil.ReadFile(EnsureString(args, 0).S)
 	PanicOnErr(err)
 	return String{S: string(b)}
 }
 
-var procSpit Proc = func(args []Object) Object {
+var procSpit = func(args []Object) Object {
 	filename := EnsureString(args, 0)
 	content := EnsureString(args, 1)
 	opts := EnsureMap(args, 2)
@@ -1655,7 +1620,7 @@ var procSpit Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procShuffle Proc = func(args []Object) Object {
+var procShuffle = func(args []Object) Object {
 	s := ToSlice(EnsureSeqable(args, 0).Seq())
 	for i := range s {
 		j := rand.Intn(i + 1)
@@ -1664,21 +1629,21 @@ var procShuffle Proc = func(args []Object) Object {
 	return NewVectorFrom(s...)
 }
 
-var procIsRealized Proc = func(args []Object) Object {
+var procIsRealized = func(args []Object) Object {
 	return Boolean{B: EnsurePending(args, 0).IsRealized()}
 }
 
-var procDeriveInfo Proc = func(args []Object) Object {
+var procDeriveInfo = func(args []Object) Object {
 	dest := args[0]
 	src := args[1]
 	return dest.WithInfo(src.GetInfo())
 }
 
-var procJokerVersion Proc = func(args []Object) Object {
+var procJokerVersion = func(args []Object) Object {
 	return String{S: VERSION[1:]}
 }
 
-var procHash Proc = func(args []Object) Object {
+var procHash = func(args []Object) Object {
 	return Int{I: int(args[0].Hash())}
 }
 
@@ -1691,18 +1656,14 @@ func loadFile(filename string) Object {
 	return NIL
 }
 
-var procLoadFile Proc = func(args []Object) Object {
+var procLoadFile = func(args []Object) Object {
 	filename := EnsureString(args, 0)
 	return loadFile(filename.S)
 }
 
-var procLoadLibFromPath Proc = func(args []Object) Object {
+var procLoadLibFromPath = func(args []Object) Object {
 	libname := EnsureSymbol(args, 0).Name()
 	pathname := EnsureString(args, 1).S
-	if d := internalLibs[libname]; d != nil {
-		processData(d)
-		return NIL
-	}
 	cp := GLOBAL_ENV.classPath.Value
 	cpvec := AssertVector(cp, "*classpath* must be a Vector, not a "+cp.GetType().ToString(false))
 	count := cpvec.Count()
@@ -1735,14 +1696,14 @@ var procLoadLibFromPath Proc = func(args []Object) Object {
 	return NIL
 }
 
-var procReduceKv Proc = func(args []Object) Object {
+var procReduceKv = func(args []Object) Object {
 	f := EnsureCallable(args, 0)
 	init := args[1]
 	coll := EnsureKVReduce(args, 2)
 	return coll.kvreduce(f, init)
 }
 
-var procIndexOf Proc = func(args []Object) Object {
+var procIndexOf = func(args []Object) Object {
 	s := EnsureString(args, 0)
 	ch := EnsureChar(args, 1)
 	for i, r := range s.S {
@@ -1778,7 +1739,7 @@ func libExternalPath(sym Symbol) (path string, ok bool) {
 	return
 }
 
-var procLibPath Proc = func(args []Object) Object {
+var procLibPath = func(args []Object) Object {
 	sym := EnsureSymbol(args, 0)
 	var path string
 
@@ -1792,12 +1753,18 @@ var procLibPath Proc = func(args []Object) Object {
 			PanicOnErr(err)
 		} else {
 			file = AssertString(GLOBAL_ENV.file.Value, "").S
+			if linkDest, err := os.Readlink(file); err == nil {
+				file = linkDest
+			}
 		}
 		ns := GLOBAL_ENV.CurrentNamespace().Name
 
 		parts := strings.Split(ns.Name(), ".")
 		for _ = range parts {
 			file, _ = filepath.Split(file)
+			if len(file) == 0 {
+				break
+			}
 			file = file[:len(file)-1]
 		}
 		path = filepath.Join(append([]string{file}, strings.Split(sym.Name(), ".")...)...) + ".joke"
@@ -1805,7 +1772,7 @@ var procLibPath Proc = func(args []Object) Object {
 	return String{S: path}
 }
 
-var procInternFakeVar Proc = func(args []Object) Object {
+var procInternFakeVar = func(args []Object) Object {
 	nsSym := EnsureSymbol(args, 0)
 	sym := EnsureSymbol(args, 1)
 	isMacro := ToBool(args[2])
@@ -1814,7 +1781,7 @@ var procInternFakeVar Proc = func(args []Object) Object {
 	return res
 }
 
-var procParse Proc = func(args []Object) Object {
+var procParse = func(args []Object) Object {
 	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
 	lm.Value = Boolean{B: true}
 	LINTER_MODE = true
@@ -1827,7 +1794,7 @@ var procParse Proc = func(args []Object) Object {
 	return res.Dump(false)
 }
 
-var procTypes Proc = func(args []Object) Object {
+var procTypes = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	res := EmptyArrayMap()
 	for k, v := range TYPES {
@@ -1836,20 +1803,20 @@ var procTypes Proc = func(args []Object) Object {
 	return res
 }
 
-var procCreateChan Proc = func(args []Object) Object {
+var procCreateChan = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	n := EnsureInt(args, 0)
 	ch := make(chan FutureResult, n.I)
 	return MakeChannel(ch)
 }
 
-var procCloseChan Proc = func(args []Object) Object {
+var procCloseChan = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	EnsureChannel(args, 0).Close()
 	return NIL
 }
 
-var procSend Proc = func(args []Object) (obj Object) {
+var procSend = func(args []Object) (obj Object) {
 	CheckArity(args, 2, 2)
 	ch := EnsureChannel(args, 0)
 	v := args[1]
@@ -1872,7 +1839,7 @@ var procSend Proc = func(args []Object) (obj Object) {
 	return
 }
 
-var procReceive Proc = func(args []Object) Object {
+var procReceive = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	ch := EnsureChannel(args, 0)
 	RT.GIL.Unlock()
@@ -1887,7 +1854,7 @@ var procReceive Proc = func(args []Object) Object {
 	return res.value
 }
 
-var procGo Proc = func(args []Object) Object {
+var procGo = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	f := EnsureCallable(args, 0)
 	ch := MakeChannel(make(chan FutureResult, 1))
@@ -1915,7 +1882,7 @@ var procGo Proc = func(args []Object) Object {
 	return ch
 }
 
-var procVerbosityLevel Proc = func(args []Object) Object {
+var procVerbosityLevel = func(args []Object) Object {
 	CheckArity(args, 0, 0)
 	return MakeInt(VerbosityLevel)
 }
@@ -1927,11 +1894,11 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 	if filename != "" {
 		currentFilename := parseContext.GlobalEnv.file.Value
 		defer func() {
-			parseContext.GlobalEnv.file.Value = currentFilename
+			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := filepath.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.file.Value = String{S: s}
+		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
 	for {
 		obj, err := TryRead(reader)
@@ -1958,7 +1925,7 @@ func PackReader(reader *Reader, filename string) ([]byte, error) {
 	}
 }
 
-var procIncProblemCount Proc = func(args []Object) Object {
+var procIncProblemCount = func(args []Object) Object {
 	PROBLEM_COUNT++
 	return NIL
 }
@@ -1968,11 +1935,11 @@ func ProcessReader(reader *Reader, filename string, phase Phase) error {
 	if filename != "" {
 		currentFilename := parseContext.GlobalEnv.file.Value
 		defer func() {
-			parseContext.GlobalEnv.file.Value = currentFilename
+			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := filepath.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.file.Value = String{S: s}
+		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
 	for {
 		obj, err := TryRead(reader)
@@ -2013,11 +1980,11 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 	if filename != "" {
 		currentFilename := parseContext.GlobalEnv.file.Value
 		defer func() {
-			parseContext.GlobalEnv.file.Value = currentFilename
+			parseContext.GlobalEnv.SetFilename(currentFilename)
 		}()
 		s, err := filepath.Abs(filename)
 		PanicOnErr(err)
-		parseContext.GlobalEnv.file.Value = String{S: s}
+		parseContext.GlobalEnv.SetFilename(MakeString(s))
 	}
 	for {
 		obj, err := TryRead(reader)
@@ -2032,15 +1999,6 @@ func ProcessReaderFromEval(reader *Reader, filename string) {
 	}
 }
 
-var privateMeta Map = EmptyArrayMap().Assoc(KEYWORDS.private, Boolean{B: true}).(Map)
-
-func intern(name string, proc Proc) {
-	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol(name))
-	vr.Value = proc
-	vr.isPrivate = true
-	vr.meta = privateMeta
-}
-
 func processData(data []byte) {
 	ns := GLOBAL_ENV.CurrentNamespace()
 	GLOBAL_ENV.SetCurrentNamespace(GLOBAL_ENV.CoreNamespace)
@@ -2052,10 +2010,14 @@ func processData(data []byte) {
 		_, err := TryEval(expr)
 		PanicOnErr(err)
 	}
+	if VerbosityLevel > 0 {
+		fmt.Fprintf(Stderr, "processData: Evaluated code for %s\n", GLOBAL_ENV.CurrentNamespace().ToString(false))
+	}
 }
 
 func setCoreNamespaces() {
 	ns := GLOBAL_ENV.CoreNamespace
+	ns.MaybeLazy("joker.core")
 
 	vr := ns.Resolve("*core-namespaces*")
 	set := vr.Value.(*MapSet)
@@ -2070,19 +2032,14 @@ func setCoreNamespaces() {
 	vr.Value = set
 }
 
-var haveSetCoreNamespaces bool
-
-func ProcessCoreData() {
-	processData(customlibsData)
-	processData(coreData)
-	if !haveSetCoreNamespaces {
-		setCoreNamespaces()
-		haveSetCoreNamespaces = true
+var procIsNamespaceInitialized = func(args []Object) Object {
+	sym := EnsureSymbol(args, 0)
+	if sym.ns != nil {
+		panic(RT.NewError("Can't ask for namespace info on namespace-qualified symbol"))
 	}
-}
-
-func ProcessReplData() {
-	processData(replData)
+	// First look for registered (e.g. std) libs
+	ns, found := GLOBAL_ENV.Namespaces[sym.name]
+	return MakeBoolean(found && ns.Lazy == nil)
 }
 
 func findConfigFile(filename string, workingDir string, findDir bool) string {
@@ -2287,28 +2244,6 @@ func markJokerNamespacesAsUsed() {
 	}
 }
 
-func ProcessLinterData(dialect Dialect) {
-	if dialect == EDN {
-		markJokerNamespacesAsUsed()
-		return
-	}
-	processData(linter_allData)
-	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
-	if dialect == JOKER {
-		markJokerNamespacesAsUsed()
-		processData(linter_jokerData)
-		return
-	}
-	processData(linter_cljxData)
-	switch dialect {
-	case CLJ:
-		processData(linter_cljData)
-	case CLJS:
-		processData(linter_cljsData)
-	}
-	removeJokerNamespaces()
-}
-
 func NewReaderFromFile(filename string) (*Reader, error) {
 	f, err := os.Open(filename)
 	if err != nil {
@@ -2346,182 +2281,4 @@ func ProcessLinterFiles(dialect Dialect, filename string, workingDir string) {
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
-	GLOBAL_ENV.CoreNamespace.InternVar("*assert*", Boolean{B: true},
-		MakeMeta(nil, "When set to logical false, assert is a noop. Defaults to true.", "1.0"))
-
-	intern("list__", procList)
-	intern("cons__", procCons)
-	intern("first__", procFirst)
-	intern("next__", procNext)
-	intern("rest__", procRest)
-	intern("conj__", procConj)
-	intern("seq__", procSeq)
-	intern("instance?__", procIsInstance)
-	intern("assoc__", procAssoc)
-	intern("meta__", procMeta)
-	intern("with-meta__", procWithMeta)
-	intern("=__", procEquals)
-	intern("count__", procCount)
-	intern("subvec__", procSubvec)
-	intern("cast__", procCast)
-	intern("vec__", procVec)
-	intern("hash-map__", procHashMap)
-	intern("hash-set__", procHashSet)
-	intern("str__", procStr)
-	intern("symbol__", procSymbol)
-	intern("gensym__", procGensym)
-	intern("keyword__", procKeyword)
-	intern("apply__", procApply)
-	intern("lazy-seq__", procLazySeq)
-	intern("delay__", procDelay)
-	intern("force__", procForce)
-	intern("identical__", procIdentical)
-	intern("compare__", procCompare)
-	intern("zero?__", procIsZero)
-	intern("int__", procInt)
-	intern("nth__", procNth)
-	intern("<__", procLt)
-	intern("<=__", procLte)
-	intern(">__", procGt)
-	intern(">=__", procGte)
-	intern("==__", procEq)
-	intern("inc'__", procIncEx)
-	intern("inc__", procInc)
-	intern("dec'__", procDecEx)
-	intern("dec__", procDec)
-	intern("add'__", procAddEx)
-	intern("add__", procAdd)
-	intern("multiply'__", procMultiplyEx)
-	intern("multiply__", procMultiply)
-	intern("divide__", procDivide)
-	intern("subtract'__", procSubtractEx)
-	intern("subtract__", procSubtract)
-	intern("max__", procMax)
-	intern("min__", procMin)
-	intern("pos__", procIsPos)
-	intern("neg__", procIsNeg)
-	intern("quot__", procQuot)
-	intern("rem__", procRem)
-	intern("bit-not__", procBitNot)
-	intern("bit-and__", procBitAnd)
-	intern("bit-or__", procBitOr)
-	intern("bit-xor_", procBitXor)
-	intern("bit-and-not__", procBitAndNot)
-	intern("bit-clear__", procBitClear)
-	intern("bit-set__", procBitSet)
-	intern("bit-flip__", procBitFlip)
-	intern("bit-test__", procBitTest)
-	intern("bit-shift-left__", procBitShiftLeft)
-	intern("bit-shift-right__", procBitShiftRight)
-	intern("unsigned-bit-shift-right__", procUnsignedBitShiftRight)
-	intern("peek__", procPeek)
-	intern("pop__", procPop)
-	intern("contains?__", procContains)
-	intern("get__", procGet)
-	intern("dissoc__", procDissoc)
-	intern("disj__", procDisj)
-	intern("find__", procFind)
-	intern("keys__", procKeys)
-	intern("vals__", procVals)
-	intern("rseq__", procRseq)
-	intern("name__", procName)
-	intern("namespace__", procNamespace)
-	intern("find-var__", procFindVar)
-	intern("sort__", procSort)
-	intern("eval__", procEval)
-	intern("type__", procType)
-	intern("num__", procNumber)
-	intern("double__", procDouble)
-	intern("char__", procChar)
-	intern("boolean__", procBoolean)
-	intern("numerator__", procNumerator)
-	intern("denominator__", procDenominator)
-	intern("bigint__", procBigInt)
-	intern("bigfloat__", procBigFloat)
-	intern("pr__", procPr)
-	intern("pprint__", procPprint)
-	intern("newline__", procNewline)
-	intern("flush__", procFlush)
-	intern("read__", procRead)
-	intern("read-line__", procReadLine)
-	intern("reader-read-line__", procReaderReadLine)
-	intern("read-string__", procReadString)
-	intern("nano-time__", procNanoTime)
-	intern("macroexpand-1__", procMacroexpand1)
-	intern("load-string__", procLoadString)
-	intern("find-ns__", procFindNamespace)
-	intern("create-ns__", procCreateNamespace)
-	intern("inject-ns__", procInjectNamespace)
-	intern("remove-ns__", procRemoveNamespace)
-	intern("all-ns__", procAllNamespaces)
-	intern("ns-name__", procNamespaceName)
-	intern("ns-map__", procNamespaceMap)
-	intern("ns-unmap__", procNamespaceUnmap)
-	intern("var-ns__", procVarNamespace)
-	intern("refer__", procRefer)
-	intern("alias__", procAlias)
-	intern("ns-aliases__", procNamespaceAliases)
-	intern("ns-unalias__", procNamespaceUnalias)
-	intern("var-get__", procVarGet)
-	intern("var-set__", procVarSet)
-	intern("ns-resolve__", procNsResolve)
-	intern("array-map__", procArrayMap)
-	intern("buffer__", procBuffer)
-	intern("buffered-reader__", procBufferedReader)
-	intern("ex-info__", procExInfo)
-	intern("ex-data__", procExData)
-	intern("ex-cause__", procExCause)
-	intern("ex-message__", procExMessage)
-	intern("regex__", procRegex)
-	intern("re-seq__", procReSeq)
-	intern("re-find__", procReFind)
-	intern("rand__", procRand)
-	intern("special-symbol?__", procIsSpecialSymbol)
-	intern("subs__", procSubs)
-	intern("intern__", procIntern)
-	intern("set-meta__", procSetMeta)
-	intern("atom__", procAtom)
-	intern("deref__", procDeref)
-	intern("swap__", procSwap)
-	intern("swap-vals__", procSwapVals)
-	intern("reset__", procReset)
-	intern("reset-vals__", procResetVals)
-	intern("alter-meta__", procAlterMeta)
-	intern("reset-meta__", procResetMeta)
-	intern("empty__", procEmpty)
-	intern("bound?__", procIsBound)
-	intern("format__", procFormat)
-	intern("load-file__", procLoadFile)
-	intern("load-lib-from-path__", procLoadLibFromPath)
-	intern("reduce-kv__", procReduceKv)
-	intern("slurp__", procSlurp)
-	intern("spit__", procSpit)
-	intern("shuffle__", procShuffle)
-	intern("realized?__", procIsRealized)
-	intern("derive-info__", procDeriveInfo)
-	intern("joker-version__", procJokerVersion)
-
-	intern("hash__", procHash)
-
-	intern("index-of__", procIndexOf)
-	intern("lib-path__", procLibPath)
-	intern("intern-fake-var__", procInternFakeVar)
-	intern("parse__", procParse)
-	intern("inc-problem-count__", procIncProblemCount)
-	intern("types__", procTypes)
-	intern("go__", procGo)
-	intern("<!__", procReceive)
-	intern(">!__", procSend)
-	intern("chan__", procCreateChan)
-	intern("close!__", procCloseChan)
-
-	intern("go-spew__", procGoSpew)
-	intern("verbosity-level__", procVerbosityLevel)
-
-	intern("goobject?__", procGoObject)
-	intern("Go__", proc_Go)
-	intern("new__", procNew)
-	intern("GoTypeOf__", procGoTypeOf)
-	intern("GoTypeOfAsString__", procGoTypeOfAsString)
-	intern("ref__", procRef)
 }

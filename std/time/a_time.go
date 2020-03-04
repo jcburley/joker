@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-var timeNamespace = GLOBAL_ENV.EnsureNamespace(MakeSymbol("joker.time"))
-
 var ansi_c_ String
 var hour_ *BigInt
 var kitchen_ String
@@ -30,8 +28,8 @@ var stamp_micro_ String
 var stamp_milli_ String
 var stamp_nano_ String
 var unix_date_ String
-
-var add_ Proc
+var __add__P ProcFn = __add_
+var add_ Proc = Proc{Fn: __add__P, Name: "add_", Package: "std/time"}
 
 func __add_(_args []Object) Object {
 	_c := len(_args)
@@ -48,7 +46,8 @@ func __add_(_args []Object) Object {
 	return NIL
 }
 
-var add_date_ Proc
+var __add_date__P ProcFn = __add_date_
+var add_date_ Proc = Proc{Fn: __add_date__P, Name: "add_date_", Package: "std/time"}
 
 func __add_date_(_args []Object) Object {
 	_c := len(_args)
@@ -67,7 +66,8 @@ func __add_date_(_args []Object) Object {
 	return NIL
 }
 
-var format_ Proc
+var __format__P ProcFn = __format_
+var format_ Proc = Proc{Fn: __format__P, Name: "format_", Package: "std/time"}
 
 func __format_(_args []Object) Object {
 	_c := len(_args)
@@ -84,7 +84,8 @@ func __format_(_args []Object) Object {
 	return NIL
 }
 
-var from_unix_ Proc
+var __from_unix__P ProcFn = __from_unix_
+var from_unix_ Proc = Proc{Fn: __from_unix__P, Name: "from_unix_", Package: "std/time"}
 
 func __from_unix_(_args []Object) Object {
 	_c := len(_args)
@@ -101,7 +102,8 @@ func __from_unix_(_args []Object) Object {
 	return NIL
 }
 
-var hours_ Proc
+var __hours__P ProcFn = __hours_
+var hours_ Proc = Proc{Fn: __hours__P, Name: "hours_", Package: "std/time"}
 
 func __hours_(_args []Object) Object {
 	_c := len(_args)
@@ -117,7 +119,8 @@ func __hours_(_args []Object) Object {
 	return NIL
 }
 
-var minutes_ Proc
+var __minutes__P ProcFn = __minutes_
+var minutes_ Proc = Proc{Fn: __minutes__P, Name: "minutes_", Package: "std/time"}
 
 func __minutes_(_args []Object) Object {
 	_c := len(_args)
@@ -133,7 +136,8 @@ func __minutes_(_args []Object) Object {
 	return NIL
 }
 
-var now_ Proc
+var __now__P ProcFn = __now_
+var now_ Proc = Proc{Fn: __now__P, Name: "now_", Package: "std/time"}
 
 func __now_(_args []Object) Object {
 	_c := len(_args)
@@ -148,7 +152,8 @@ func __now_(_args []Object) Object {
 	return NIL
 }
 
-var parse_ Proc
+var __parse__P ProcFn = __parse_
+var parse_ Proc = Proc{Fn: __parse__P, Name: "parse_", Package: "std/time"}
 
 func __parse_(_args []Object) Object {
 	_c := len(_args)
@@ -166,7 +171,8 @@ func __parse_(_args []Object) Object {
 	return NIL
 }
 
-var parse_duration_ Proc
+var __parse_duration__P ProcFn = __parse_duration_
+var parse_duration_ Proc = Proc{Fn: __parse_duration__P, Name: "parse_duration_", Package: "std/time"}
 
 func __parse_duration_(_args []Object) Object {
 	_c := len(_args)
@@ -184,7 +190,8 @@ func __parse_duration_(_args []Object) Object {
 	return NIL
 }
 
-var round_ Proc
+var __round__P ProcFn = __round_
+var round_ Proc = Proc{Fn: __round__P, Name: "round_", Package: "std/time"}
 
 func __round_(_args []Object) Object {
 	_c := len(_args)
@@ -201,7 +208,8 @@ func __round_(_args []Object) Object {
 	return NIL
 }
 
-var seconds_ Proc
+var __seconds__P ProcFn = __seconds_
+var seconds_ Proc = Proc{Fn: __seconds__P, Name: "seconds_", Package: "std/time"}
 
 func __seconds_(_args []Object) Object {
 	_c := len(_args)
@@ -217,7 +225,8 @@ func __seconds_(_args []Object) Object {
 	return NIL
 }
 
-var since_ Proc
+var __since__P ProcFn = __since_
+var since_ Proc = Proc{Fn: __since__P, Name: "since_", Package: "std/time"}
 
 func __since_(_args []Object) Object {
 	_c := len(_args)
@@ -233,14 +242,15 @@ func __since_(_args []Object) Object {
 	return NIL
 }
 
-var sleep_ Proc
+var __sleep__P ProcFn = __sleep_
+var sleep_ Proc = Proc{Fn: __sleep__P, Name: "sleep_", Package: "std/time"}
 
 func __sleep_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 1:
 		d := ExtractInt(_args, 0)
-		 RT.GIL.Unlock()
+		RT.GIL.Unlock()
 		time.Sleep(time.Duration(d))
 		RT.GIL.Lock()
 		_res := NIL
@@ -252,7 +262,8 @@ func __sleep_(_args []Object) Object {
 	return NIL
 }
 
-var string_ Proc
+var __string__P ProcFn = __string_
+var string_ Proc = Proc{Fn: __string__P, Name: "string_", Package: "std/time"}
 
 func __string_(_args []Object) Object {
 	_c := len(_args)
@@ -268,7 +279,8 @@ func __string_(_args []Object) Object {
 	return NIL
 }
 
-var sub_ Proc
+var __sub__P ProcFn = __sub_
+var sub_ Proc = Proc{Fn: __sub__P, Name: "sub_", Package: "std/time"}
 
 func __sub_(_args []Object) Object {
 	_c := len(_args)
@@ -285,7 +297,8 @@ func __sub_(_args []Object) Object {
 	return NIL
 }
 
-var truncate_ Proc
+var __truncate__P ProcFn = __truncate_
+var truncate_ Proc = Proc{Fn: __truncate__P, Name: "truncate_", Package: "std/time"}
 
 func __truncate_(_args []Object) Object {
 	_c := len(_args)
@@ -302,7 +315,8 @@ func __truncate_(_args []Object) Object {
 	return NIL
 }
 
-var unix_ Proc
+var __unix__P ProcFn = __unix_
+var unix_ Proc = Proc{Fn: __unix__P, Name: "unix_", Package: "std/time"}
 
 func __unix_(_args []Object) Object {
 	_c := len(_args)
@@ -318,7 +332,8 @@ func __unix_(_args []Object) Object {
 	return NIL
 }
 
-var until_ Proc
+var __until__P ProcFn = __until_
+var until_ Proc = Proc{Fn: __until__P, Name: "until_", Package: "std/time"}
 
 func __until_(_args []Object) Object {
 	_c := len(_args)
@@ -356,234 +371,12 @@ func Init() {
 	stamp_milli_ = MakeString(time.StampMilli)
 	stamp_nano_ = MakeString(time.StampNano)
 	unix_date_ = MakeString(time.UnixDate)
-	add_ = __add_
-	add_date_ = __add_date_
-	format_ = __format_
-	from_unix_ = __from_unix_
-	hours_ = __hours_
-	minutes_ = __minutes_
-	now_ = __now_
-	parse_ = __parse_
-	parse_duration_ = __parse_duration_
-	round_ = __round_
-	seconds_ = __seconds_
-	since_ = __since_
-	sleep_ = __sleep_
-	string_ = __string_
-	sub_ = __sub_
-	truncate_ = __truncate_
-	unix_ = __unix_
-	until_ = __until_
-
 	initNative()
 
-	timeNamespace.ResetMeta(MakeMeta(nil, `Provides functionality for measuring and displaying time.`, "1.0"))
-
-	timeNamespace.InternVar("ansi-c", ansi_c_,
-		MakeMeta(
-			nil,
-			`Mon Jan _2 15:04:05 2006`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("hour", hour_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 hour`, "1.0").Plus(MakeKeyword("tag"), String{S: "BigInt"}))
-
-	timeNamespace.InternVar("kitchen", kitchen_,
-		MakeMeta(
-			nil,
-			`3:04PM`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("microsecond", microsecond_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 microsecond`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("millisecond", millisecond_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 millisecond`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("minute", minute_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 minute`, "1.0").Plus(MakeKeyword("tag"), String{S: "BigInt"}))
-
-	timeNamespace.InternVar("nanosecond", nanosecond_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 nanosecond`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("rfc1123", rfc1123_,
-		MakeMeta(
-			nil,
-			`Mon, 02 Jan 2006 15:04:05 MST`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc1123-z", rfc1123_z_,
-		MakeMeta(
-			nil,
-			`Mon, 02 Jan 2006 15:04:05 -0700`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc3339", rfc3339_,
-		MakeMeta(
-			nil,
-			`2006-01-02T15:04:05Z07:00`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc3339-nano", rfc3339_nano_,
-		MakeMeta(
-			nil,
-			`2006-01-02T15:04:05.999999999Z07:00`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc822", rfc822_,
-		MakeMeta(
-			nil,
-			`02 Jan 06 15:04 MST`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc822-z", rfc822_z_,
-		MakeMeta(
-			nil,
-			`02 Jan 06 15:04 -0700`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("rfc850", rfc850_,
-		MakeMeta(
-			nil,
-			`Monday, 02-Jan-06 15:04:05 MST`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("ruby-date", ruby_date_,
-		MakeMeta(
-			nil,
-			`Mon Jan 02 15:04:05 -0700 2006`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("second", second_,
-		MakeMeta(
-			nil,
-			`Number of nanoseconds in 1 second`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("stamp", stamp_,
-		MakeMeta(
-			nil,
-			`Jan _2 15:04:05`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("stamp-micro", stamp_micro_,
-		MakeMeta(
-			nil,
-			`Jan _2 15:04:05.000000`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("stamp-milli", stamp_milli_,
-		MakeMeta(
-			nil,
-			`Jan _2 15:04:05.000`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("stamp-nano", stamp_nano_,
-		MakeMeta(
-			nil,
-			`Jan _2 15:04:05.000000000`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("unix-date", unix_date_,
-		MakeMeta(
-			nil,
-			`Mon Jan _2 15:04:05 MST 2006`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("add", add_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("d"))),
-			`Returns the time t+d.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Time"}))
-
-	timeNamespace.InternVar("add-date", add_date_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("years"), MakeSymbol("months"), MakeSymbol("days"))),
-			`Returns the time t + (years, months, days).`, "1.0").Plus(MakeKeyword("tag"), String{S: "Time"}))
-
-	timeNamespace.InternVar("format", format_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("layout"))),
-			`Returns a textual representation of the time value formatted according to layout,
-  which defines the format by showing how the reference time, defined to be
-  Mon Jan 2 15:04:05 -0700 MST 2006
-  would be displayed if it were the value; it serves as an example of the desired output.
-  The same display rules will then be applied to the time value..`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("from-unix", from_unix_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("sec"), MakeSymbol("nsec"))),
-			`Returns the local Time corresponding to the given Unix time, sec seconds and
-  nsec nanoseconds since January 1, 1970 UTC. It is valid to pass nsec outside the range [0, 999999999].`, "1.0").Plus(MakeKeyword("tag"), String{S: "Time"}))
-
-	timeNamespace.InternVar("hours", hours_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of hours.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Double"}))
-
-	timeNamespace.InternVar("minutes", minutes_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of minutes.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Double"}))
-
-	timeNamespace.InternVar("now", now_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom()),
-			`Returns the current local time.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Time"}))
-
-	timeNamespace.InternVar("parse", parse_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("layout"), MakeSymbol("value"))),
-			`Parses a time string.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Time"}))
-
-	timeNamespace.InternVar("parse-duration", parse_duration_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("s"))),
-			`Parses a duration string. A duration string is a possibly signed sequence of decimal numbers,
-  each with optional fraction and a unit suffix, such as 300ms, -1.5h or 2h45m. Valid time units are
-  ns, us (or µs), ms, s, m, h.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("round", round_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
-			`Returns the result of rounding d to the nearest multiple of m. d and m represent time durations in nanoseconds.
-  The rounding behavior for halfway values is to round away from zero. If m <= 0, returns d unchanged.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("seconds", seconds_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns the duration (passed as a number of nanoseconds) as a floating point number of seconds.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Double"}))
-
-	timeNamespace.InternVar("since", since_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns the time in nanoseconds elapsed since t.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("sleep", sleep_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Pauses the execution thread for at least the duration d (expressed in nanoseconds).
-  A negative or zero duration causes sleep to return immediately.`, "1.0"))
-
-	timeNamespace.InternVar("string", string_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"))),
-			`Returns a string representing the duration in the form 72h3m0.5s.`, "1.0").Plus(MakeKeyword("tag"), String{S: "String"}))
-
-	timeNamespace.InternVar("sub", sub_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"), MakeSymbol("u"))),
-			`Returns the duration t-u in nanoseconds.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("truncate", truncate_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("d"), MakeSymbol("m"))),
-			`Returns the result of rounding d toward zero to a multiple of m. If m <= 0, returns d unchanged.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("unix", unix_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns t as a Unix time, the number of seconds elapsed since January 1, 1970 UTC.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
-	timeNamespace.InternVar("until", until_,
-		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("t"))),
-			`Returns the duration in nanoseconds until t.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
-
+	InternsOrThunks()
 }
+
+var timeNamespace = GLOBAL_ENV.EnsureLib(MakeSymbol("joker.time"))
 
 func init() {
 	timeNamespace.Lazy = Init
