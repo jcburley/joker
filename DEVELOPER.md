@@ -154,13 +154,13 @@ The first line builds and runs `core/gen_data/gen_data.go`, which finds, in the 
 
 As explained in the block comment just above the `var CoreSourceFiles []...` definition in `core/gen_common/gen_common.go`, the files must be ordered so any given file depends solely on files (namespaces) defined above it (earlier in the array).
 
-Processing a `.joke` file consists of reading the file via Joker's (Clojure-like) Reader, "packing" the results into a portable binary format, and encoding the resulting binary data as a Go source file named `core/a_*_data.go`, where `*` is the same as in `core/data/*.joke`.
+Processing a `.joke` file consists of reading and evaluating forms in the file via Joker's (Clojure-like) Reader, "packing" the forms into a portable binary format, and encoding the resulting binary data as a `[]byte` array in a Go source file named `core/a_*_data.go`, where `*` is the same as in `core/data/*.joke`.
 
 As this all occurs before the `go build` step performed by `run.sh`, the result is that that step includes some of those `core/a_*_data.go` source files. (`go build -tags slow_init` includes all of them.) The binary data contained therein is, when needed, unpacked and the results used to construct the data structures into which Joker (Clojure) expressions are converted when read (aka the Abstract Syntax Tree, or "AST").
 
-(Note that "when needed", as used above, is immediately upon startup for `joker.core`; it also applies to `joker.repl` when the REPL is to be immediately entered; otherwise, it applies when the namespace is referenced such as via a `require` or `use` invocation.)
+(Note that "when needed", as used above, is immediately upon startup for `joker.core` and, in linter mode, immediately thereafter for two `core/a_linter_*data.go` files; it also applies to `joker.repl` when the REPL is to be immediately entered; otherwise, it applies when the namespace is referenced such as via a `require` or `use` invocation.)
 
-As this approach does *not* involve the normal Read phase at Joker startup time, the overhead involved in parsing certain Clojure forms is avoided, in lieu of using (what one assumes would be) faster code paths that convert binary blobs directly to AST forms. But most of Joker's object types (corresponding generally to Clojure forms) are stringized into the binary-data stream, and parsed back out at load time; so not all parsing overhead is avoided.
+As this approach does *not* involve the normal Read phase at Joker startup time (though the Evaluation phase remains largely the same), the overhead involved in parsing certain Clojure forms is avoided, in lieu of using (what one assumes would be) faster code paths that convert binary blobs directly to AST forms. But most of Joker's object types (corresponding generally to Clojure forms) are stringized into the binary-data stream, and parsed back out at load time; so not all parsing overhead is avoided.
 
 A disadvantage of this approach is that it requires changes to `core/pack.go` when changes are made to certain aspects of the AST.
 
@@ -175,6 +175,8 @@ The final `go:generate` line in `core/object.go` builds and runs `core/gen_code/
 Then, these data structures are compiled into Go code that, when (in turn) compiled into a Joker executable, creates them _in toto_, mostly via static initialization of numerous package-scope variables. This is where `gen_code` differs from `gen_data`.
 
 The resulting Joker executable (built via `go build`, i.e. without `-tags slow_init`) thus starts up with all the core-namespace-related data structures already nearly-fully populated, with remaining work done via a combination of initialization functions (`func init()`), dynamic-variable initialization (of `*out*`, `*command-line-args*`, etc.), and lazy initialization (such as compiled regular expressions in `joker.hiccup`) when the respective namespaces are actually referenced for the first time during that invocation.
+
+When in linter mode, the forms encoded (as a `[]byte` array) in the pertinent `core/a_linter_*_data.go` files are unpacked and evaluated upon startup, after `joker.core` has been fully loaded.
 
 ##### Avoid Copying Dynamic Variables
 
@@ -225,7 +227,7 @@ Then, besides putting that source code in `core/data/*.joke`, one must:
 Further, if the new namespace depends on any standard-library-wrapping namespaces:
 
 * Edit the **core/gen\_common/gen\_common.go** `import` statement to include each such library's Go code
-* Ensure that code has already been generated (that library's `std/*/a_*.go` files have already been created), perhaps by using an older version of Joker to run `generate-std.joke` from within the `std` subdirectory
+* Ensure that code has already been generated (that library's `std/*/a_*.go` files have already been created), perhaps using an older version of Joker to run `generate-std.joke` from within the `std` subdirectory
 
 Create suitable tests, e.g. in `tests/eval/`.
 
@@ -418,6 +420,10 @@ arguments in `...`.
 
 ### Beware Circular Dependencies
 
+Joker currently has circular dependencies between the _core_ and _std_ namespaces, as well as within the _std_ namespace itself.
+
+#### Circular Dependencies Between Core and STD Namespaces
+
 There's actually a circular dependency between the two sets of namespaces:
 
 * `core/gen_common/gen_common.go` imports `std/string` (so `core/gen_data/gen_data.go` and `core/gen_code/gen_code.go` do as well), so the initialization code that adds the namespace is run
@@ -431,10 +437,28 @@ However, a `std/*.joke` file therefore cannot depend on any `core/data/*.joke`-d
 
 So, while `joker.repl` and `joker.tools.cli` currently depend on `joker.string`, `std/string.joke` does not depend on them, and preexisted their being added to the core namespaces.
 
+One approach to avoid this problem without (any longer) including generated artifacts (`a_*.go` files) in the repository, nor requiring an old version of Joker for bootstrapping, would be for the build process (in `run.sh`) to start by building a Joker executable that includes only `joker.core`.
+
+Then, that interim Joker executable could be used to run `std/generate-std.joke` to generate the `a_*.go` files in `std/`, after which a "complete" version of Joker would then be built.
+
+However, as explained below, that wouldn't solve the problem entirely, since `std/generate-std.joke` currently requires more than just `joker.core` to work.
+
+#### Circular Dependencies Within STD
+
+The `std/*/a_*.go` files are needed to build Joker, but are generated by `std/generate-std.joke`, which needs Joker to run.
+
+Further, `std/generate-std.joke` requires both `joker.os` and `joker.string`.
+
+Those dependencies mean that even if the Joker build process was changed to start by building a Joker executable supporting only `joker.core`, the resulting executable would be unable to run `std/generate-std.joke`.
+
+Again, the presence of `std/*/a_*.go` (at least for `joker.os` and `joker.string`) in the repository avoids this being a problem. (Another solution would be to use an older version of Joker to be used to run `std/generate-std.joke` and thus build a "fresh" one.)
+
+Converting `joker.os` and `joker.string` into _core_ libraries (so, the underlying support code would be in `package core`), and adding them to the list of libraries built into an "interim" Joker executable (as described above), is one approach to solving this issue.
+
 ## Faster Startup
 
 **run.sh** builds (via the `go generate ./...` step) an extra set of Go source files that, unless disabled via a build tag, statically initialize most of the core namespace info. (Some runtime initialization must still be performed, due mainly to limitations in the Go compiler.)
- 
+
 Unless the file **NO-OPTIMIZE-STARTUP.flag** exists in the top-level Joker directory, or **OPTIMIZE_STARTUP=false** is set in its environment, **run.sh** builds `joker.fast`, which uses static initialization rather than relying extensively on runtime initialization (including parsing of Joker forms); otherwise, it builds `joker.slow`, which is the "original" (slow-starting) version of Joker. Whichever it builds, it hardlinks to `joker`.
 
 The newly built `joker` executable is then used to generate the **std** libraries, as usual. It can also be used to regenerate the documentation, and (ideally) for any other purpose. The fast-startup version should run about as fast as the slow-startup version after starting up; very little is overtly added to the runtime cost (a few "thunks" are introduced for some routines, but that should end up in the noise, performance-wise).
