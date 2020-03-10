@@ -48,13 +48,12 @@
 
 (defn usage
   [k m]
-  (if (:special-form m)
-    (let [examples (for [form (:forms m)]
-                     (s/replace usage-template "{usage}" (str form)))]
-      (s/join "" examples))
-    (let [examples (for [arglist (:arglists m)]
-                     (s/replace usage-template "{usage}" (str (apply list k arglist))))]
-      (s/join "" examples))))
+  (let [usages (if (:special-form m)
+                 (for [form (:forms m)]
+                   (str form))
+                 (for [arglist (:arglists m)]
+                   (str (apply list k arglist))))]
+    (s/join "" (map #(s/replace usage-template "{usage}" %) usages))))
 
 (defn- source-file
   [ns]
