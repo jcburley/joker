@@ -260,7 +260,6 @@ func Resolve(n Node) Node {
 	default:
 		panic(fmt.Sprintf("don't know how to resolve node %v", o))
 	}
-	return nil
 }
 
 func init() {
