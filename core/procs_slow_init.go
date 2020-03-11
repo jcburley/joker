@@ -1,4 +1,4 @@
-// +build slow_init
+// +build gen_code gen_data
 
 package core
 
@@ -191,8 +191,4 @@ func init() {
 	intern("GoTypeOf__", procGoTypeOf, "procGoTypeOf")
 	intern("GoTypeOfAsString__", procGoTypeOfAsString, "procGoTypeOfAsString")
 	intern("ref__", procRef, "procRef")
-}
-
-func lateInitializations() {
-	// none needed for slow_init
 }

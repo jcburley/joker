@@ -3,6 +3,7 @@
 (alias 'cli 'joker.tools.cli)
 (alias 'os 'joker.os)
 (alias 's 'joker.string)
+(alias 'h 'joker.html)
 
 (def index-template
   (slurp "templates/index.html"))
@@ -55,10 +56,39 @@
       (:const m) (str "Constant " (type @v))
       :else (str (type @v)))))
 
+(defn ^Keyword sym-kind
+  [^Var v]
+  (let [m (meta v)]
+    (condp = (type (deref v))
+      Fn (cond
+           (:special-form m) :special
+           (:macro m) :macro
+           :else :function)
+      Proc :function
+      GoType :type
+      GoVar :variable
+      GoObject :variable
+      (cond
+        (not (bound? v)) :variable  ; E.g. joker.core/*1
+        (:special-form m) :special
+        (:const m) :constant
+        :else :variable))))
+
+(defn ^String sym-kind-name
+  [^Var v]
+  (condp = (sym-kind v)
+    :function "Function"
+    :special "Special form"
+    :macro "Macro"
+    :type "GoType"
+    :constant "Constant"
+    :variable "Variable"))
+
 (defn link-item-doc
   [n k]
   (-> link-item-template
       (s/replace "{name}" n)
+      (s/replace "{escaped-name}" (h/escape n))
       (s/replace "{kind}" k)))
 
 (defn usage
@@ -68,7 +98,7 @@
                      (s/replace usage-template "{usage}" (str form)))]
       (s/join "" examples))
     (let [examples (for [arglist (:arglists m)]
-                     (s/replace usage-template "{usage}" (str (apply list k arglist))))]
+                     (s/replace usage-template "{usage}" (h/escape (str (apply list k arglist)))))]
       (s/join "" examples))))
 
 (defn- source-file
@@ -89,6 +119,7 @@
         (s/replace "{id}" (str r))
         (s/replace "{name}" (str r))
         (s/replace "{type}" (str what " for " (type-string (str t))))
+        (s/replace "{kind}" what)
         (s/replace "{usage}" (s/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
         (s/replace "{docstring}" (s/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (s/replace "{added}" (str (:added m)))
@@ -122,8 +153,9 @@
       (println "WARNING: public var without doc meta key: " full-name))
     (-> var-template
         (s/replace "{id}" (str k))
-        (s/replace "{name}" (str k))
+        (s/replace "{name}" (h/escape (str k)))
         (s/replace "{type}" (type-name ns v))
+        (s/replace "{kind}" (sym-kind-name v))
         (s/replace "{usage}" (usage k m))
         (s/replace "{docstring}" (s/replace (joker.html/escape (or (:doc m) "<<<MISSING DOCUMENTATION>>>")) "\n" "<br>\n"))
         (s/replace "{added}" (str (:added m)))
@@ -184,22 +216,6 @@
         (s/replace "{docstring}" (s/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
         (s/replace "{added}" (str (:added m))))))
 
-(defn ^Keyword sym-kind
-  [^Var v]
-  (condp = (type (deref v))
-    Fn :function
-    Proc :function
-    GoType :type
-    GoVar :variable
-    GoObject :variable
-    (let [m (meta v)]
-      (cond
-        (not (bound? v)) :others
-        (:special-form m) :others
-        (:macro m) :function
-        (:const m) :constant
-        :else :variable))))
-
 (defn ^Boolean sym-kind-is
   [^Var s ^Keyword x]
   (= x (sym-kind s)))
@@ -211,10 +227,10 @@
 
 (defn section-doc
   [ns-sym ns-vars-fn match]
-  (s/join
-   ""
-   (for [[k v] (sort (filter-vals match (ns-vars-fn ns-sym)))]
-     (var-doc k v))))
+  (s/replace (s/join
+    ""
+    (for [[k v] (sort (filter-vals match (ns-vars-fn ns-sym)))]
+      (var-doc k v))) #"^$" "(None.)"))
 
 (defn ns-doc
   [ns-sym ns-vars-fn]
@@ -223,12 +239,13 @@
         index (s/join
                        ""
                        (for [[k v] (sort #(compare (key %1) (key %2)) (ns-vars-fn ns-sym))]
-                         (link-item-doc (str k) (type-name ns v))))
-        functions-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :function))
+                         (link-item-doc (str k) (sym-kind-name v))))
+        functions-doc (section-doc ns-sym ns-vars-fn #(or (sym-kind-is % :function) (sym-kind-is % :macro) (sym-kind-is % :special)))
         constants-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :constant))
         variables-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :variable))
         types-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :type))
-        others-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :other))]
+        others-doc (section-doc ns-sym ns-vars-fn #(sym-kind-is % :other))
+        _ (when (not= "(None.)" others-doc) (throw (ex-info (str "non-null others: " others-doc) {})))]
     (-> ns-template
         (s/replace "{name}" (name ns-sym))
         (s/replace "{added}" (str (:added m)))

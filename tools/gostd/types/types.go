@@ -183,8 +183,6 @@ func dynamicDefine(prefixes []string, e Expr) (ty *Type, fullName string) {
 	}
 	// Try defining the type here.
 	return dynamicDefine([]string{}, e)
-
-	return nil, strings.Join(prefixes, "")
 }
 
 func TypeLookup(e Expr) (ty *Type, fullName string) {
