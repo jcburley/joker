@@ -17,6 +17,7 @@ JOKER CONSTANT IPv4len from net/ip.go:
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "net.IPv4len"}
   IPv4len)
 
@@ -25,6 +26,7 @@ JOKER CONSTANT IPv6len from net/ip.go:
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "net.IPv6len"}
   IPv6len)
 
@@ -183,7 +185,7 @@ JOKER FUNC net.ListenIP from net/iprawsock.go:
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupAddr(__addr)"}
   [^String __addr])
@@ -197,28 +199,28 @@ JOKER FUNC net.LookupCNAME from net/lookup.go:
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupHost(__host)"}
   [^String __host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
   {:added "1.0"
    :go "__lookupIP(__host)"}
   [^String __host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/MX)) Error]"
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
   {:added "1.0"
    :go "__lookupMX(__name)"}
   [^String __name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/NS)) Error]"
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
   {:added "1.0"
    :go "__lookupNS(__name)"}
   [^String __name])
@@ -232,14 +234,14 @@ JOKER FUNC net.LookupPort from net/lookup.go:
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (ref-to go.std.net/SRV)) Error]"
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
   {:added "1.0"
    :go "__lookupSRV(__service, __proto, __name)"}
   [^String __service, ^String __proto, ^String __name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupTXT(__name)"}
   [^String __name])
@@ -1649,11 +1651,7 @@ GO FUNC net.LookupAddr from net/lookup.go:
 func __lookupAddr(__addr string) Object {
 	names, err := net.LookupAddr(__addr)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range names {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(names))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -1671,11 +1669,7 @@ GO FUNC net.LookupHost from net/lookup.go:
 func __lookupHost(__host string) Object {
 	addrs, err := net.LookupHost(__host)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(addrs))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -1684,11 +1678,7 @@ GO FUNC net.LookupIP from net/lookup.go:
 func __lookupIP(__host string) Object {
 	_res1, _res2 := net.LookupIP(__host)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1697,11 +1687,7 @@ GO FUNC net.LookupMX from net/lookup.go:
 func __lookupMX(__name string) Object {
 	_res1, _res2 := net.LookupMX(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1710,11 +1696,7 @@ GO FUNC net.LookupNS from net/lookup.go:
 func __lookupNS(__name string) Object {
 	_res1, _res2 := net.LookupNS(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1733,11 +1715,7 @@ func __lookupSRV(__service string, __proto string, __name string) Object {
 	cname, addrs, err := net.LookupSRV(__service, __proto, __name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(addrs))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -1746,11 +1724,7 @@ GO FUNC net.LookupTXT from net/lookup.go:
 func __lookupTXT(__name string) Object {
 	_res1, _res2 := net.LookupTXT(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -1968,11 +1942,7 @@ func __iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(net.IP)MarshalText()", args, 0, 0)
 	_res1, _res2 := o.O.(net.IP).MarshalText()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -2358,11 +2328,7 @@ GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
 // 	__addr := ExtractGoString("(*net.Resolver)LookupAddr()", "__addr", _argList, 1)
 // 	names, err := o.O.(*net.Resolver).LookupAddr(__ctx, __addr)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range names {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(names))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2386,11 +2352,7 @@ GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
 // 	__host := ExtractGoString("(*net.Resolver)LookupHost()", "__host", _argList, 1)
 // 	addrs, err := o.O.(*net.Resolver).LookupHost(__ctx, __host)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range addrs {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(addrs))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2402,11 +2364,7 @@ GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // 	__host := ExtractGoString("(*net.Resolver)LookupIPAddr()", "__host", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupIPAddr(__ctx, __host)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2418,11 +2376,7 @@ GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupMX()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupMX(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2434,11 +2388,7 @@ GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupNS()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupNS(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -2466,11 +2416,7 @@ GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
 // 	cname, addrs, err := o.O.(*net.Resolver).LookupSRV(__ctx, __service, __proto, __name)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeString(cname))
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range addrs {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(addrs))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -2482,11 +2428,7 @@ GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupTXT()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupTXT(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -3517,11 +3459,7 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*url.URL)MarshalBinary()", args, 0, 0)
 	text, err := o.O.(*url.URL).MarshalBinary()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range text {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(text))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }

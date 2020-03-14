@@ -315,6 +315,7 @@ JOKER CONSTANT FlagBroadcast from net/interface.go:
   ^{:doc "interface supports broadcast access capability\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "uint64(uint(net.FlagBroadcast))"}
   FlagBroadcast)
 
@@ -323,6 +324,7 @@ JOKER CONSTANT FlagLoopback from net/interface.go:
   ^{:doc "interface is a loopback interface\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "uint64(uint(net.FlagLoopback))"}
   FlagLoopback)
 
@@ -331,6 +333,7 @@ JOKER CONSTANT FlagMulticast from net/interface.go:
   ^{:doc "interface supports multicast access capability\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "uint64(uint(net.FlagMulticast))"}
   FlagMulticast)
 
@@ -339,6 +342,7 @@ JOKER CONSTANT FlagPointToPoint from net/interface.go:
   ^{:doc "interface belongs to a point-to-point link\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "uint64(uint(net.FlagPointToPoint))"}
   FlagPointToPoint)
 
@@ -347,6 +351,7 @@ JOKER CONSTANT FlagUp from net/interface.go:
   ^{:doc "interface is up\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "uint64(uint(net.FlagUp))"}
   FlagUp)
 
@@ -355,6 +360,7 @@ JOKER CONSTANT IPv4len from net/ip.go:
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "net.IPv4len"}
   IPv4len)
 
@@ -363,6 +369,7 @@ JOKER CONSTANT IPv6len from net/ip.go:
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "net.IPv6len"}
   IPv6len)
 
@@ -583,7 +590,7 @@ JOKER FUNC net.IPv4Mask from net/ip.go:
 
 JOKER FUNC net.InterfaceAddrs from net/interface.go:
 (defn InterfaceAddrs
-  "InterfaceAddrs returns a list of the system's unicast interface\naddresses.\n\nThe returned list does not identify the associated interface; use\nInterfaces and Interface.Addrs for more detail.\n\nGo return type: ([]Addr, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Addr) Error]"
+  "InterfaceAddrs returns a list of the system's unicast interface\naddresses.\n\nThe returned list does not identify the associated interface; use\nInterfaces and Interface.Addrs for more detail.\n\nGo return type: ([]Addr, error)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net/arrayOfAddr Error]"
   {:added "1.0"
    :go "__interfaceAddrs()"}
   [])
@@ -604,7 +611,7 @@ JOKER FUNC net.InterfaceByName from net/interface.go:
 
 JOKER FUNC net.Interfaces from net/interface.go:
 (defn Interfaces
-  "Interfaces returns a list of the system's network interfaces.\n\nGo return type: ([]Interface, error)\n\nJoker input arguments: []\n\nJoker return type: [(vector-of go.std.net/Interface) Error]"
+  "Interfaces returns a list of the system's network interfaces.\n\nGo return type: ([]Interface, error)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net/arrayOfInterface Error]"
   {:added "1.0"
    :go "__interfaces()"}
   [])
@@ -674,7 +681,7 @@ JOKER FUNC net.ListenUnixgram from net/unixsock.go:
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupAddr(__addr)"}
   [^String __addr])
@@ -688,28 +695,28 @@ JOKER FUNC net.LookupCNAME from net/lookup.go:
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupHost(__host)"}
   [^String __host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
   {:added "1.0"
    :go "__lookupIP(__host)"}
   [^String __host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/MX)) Error]"
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
   {:added "1.0"
    :go "__lookupMX(__name)"}
   [^String __name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of (ref-to go.std.net/NS)) Error]"
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
   {:added "1.0"
    :go "__lookupNS(__name)"}
   [^String __name])
@@ -723,14 +730,14 @@ JOKER FUNC net.LookupPort from net/lookup.go:
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (vector-of (ref-to go.std.net/SRV)) Error]"
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
   {:added "1.0"
    :go "__lookupSRV(__service, __proto, __name)"}
   [^String __service, ^String __proto, ^String __name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(vector-of String) Error]"
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "__lookupTXT(__name)"}
   [^String __name])
@@ -1328,6 +1335,7 @@ JOKER CONSTANT DefaultMaxHeaderBytes from net/http/server.go:
   ^{:doc "1 MB\n"
     :added "1.0"
     :tag "Number"
+    :const true
     :go "int64(http.DefaultMaxHeaderBytes)"}
   DefaultMaxHeaderBytes)
 
@@ -1336,6 +1344,7 @@ JOKER CONSTANT DefaultMaxIdleConnsPerHost from net/http/transport.go:
   ^{:doc "DefaultMaxIdleConnsPerHost is the default value of Transport's\nMaxIdleConnsPerHost.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.DefaultMaxIdleConnsPerHost"}
   DefaultMaxIdleConnsPerHost)
 
@@ -1344,6 +1353,7 @@ JOKER CONSTANT MethodConnect from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodConnect"}
   MethodConnect)
 
@@ -1352,6 +1362,7 @@ JOKER CONSTANT MethodDelete from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodDelete"}
   MethodDelete)
 
@@ -1360,6 +1371,7 @@ JOKER CONSTANT MethodGet from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodGet"}
   MethodGet)
 
@@ -1368,6 +1380,7 @@ JOKER CONSTANT MethodHead from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodHead"}
   MethodHead)
 
@@ -1376,6 +1389,7 @@ JOKER CONSTANT MethodOptions from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodOptions"}
   MethodOptions)
 
@@ -1384,6 +1398,7 @@ JOKER CONSTANT MethodPatch from net/http/method.go:
   ^{:doc "RFC 5789\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodPatch"}
   MethodPatch)
 
@@ -1392,6 +1407,7 @@ JOKER CONSTANT MethodPost from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodPost"}
   MethodPost)
 
@@ -1400,6 +1416,7 @@ JOKER CONSTANT MethodPut from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodPut"}
   MethodPut)
 
@@ -1408,6 +1425,7 @@ JOKER CONSTANT MethodTrace from net/http/method.go:
   ^{:doc "Common HTTP methods.\n\nUnless otherwise noted, these are defined in RFC 7231 section 4.3.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.MethodTrace"}
   MethodTrace)
 
@@ -1416,6 +1434,7 @@ JOKER CONSTANT SameSiteDefaultMode from net/http/cookie.go:
   ^{:doc ""
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.SameSiteDefaultMode)"}
   SameSiteDefaultMode)
 
@@ -1424,6 +1443,7 @@ JOKER CONSTANT SameSiteLaxMode from net/http/cookie.go:
   ^{:doc ""
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.SameSiteLaxMode)"}
   SameSiteLaxMode)
 
@@ -1432,6 +1452,7 @@ JOKER CONSTANT SameSiteStrictMode from net/http/cookie.go:
   ^{:doc ""
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.SameSiteStrictMode)"}
   SameSiteStrictMode)
 
@@ -1440,6 +1461,7 @@ JOKER CONSTANT StateActive from net/http/server.go:
   ^{:doc "StateActive represents a connection that has read 1 or more\nbytes of a request. The Server.ConnState hook for\nStateActive fires before the request has entered a handler\nand doesn't fire again until the request has been\nhandled. After the request is handled, the state\ntransitions to StateClosed, StateHijacked, or StateIdle.\nFor HTTP/2, StateActive fires on the transition from zero\nto one active request, and only transitions away once all\nactive requests are complete. That means that ConnState\ncannot be used to do per-request work; ConnState only notes\nthe overall state of the connection.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.StateActive)"}
   StateActive)
 
@@ -1448,6 +1470,7 @@ JOKER CONSTANT StateClosed from net/http/server.go:
   ^{:doc "StateClosed represents a closed connection.\nThis is a terminal state. Hijacked connections do not\ntransition to StateClosed.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.StateClosed)"}
   StateClosed)
 
@@ -1456,6 +1479,7 @@ JOKER CONSTANT StateHijacked from net/http/server.go:
   ^{:doc "StateHijacked represents a hijacked connection.\nThis is a terminal state. It does not transition to StateClosed.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.StateHijacked)"}
   StateHijacked)
 
@@ -1464,6 +1488,7 @@ JOKER CONSTANT StateIdle from net/http/server.go:
   ^{:doc "StateIdle represents a connection that has finished\nhandling a request and is in the keep-alive state, waiting\nfor a new request. Connections transition from StateIdle\nto either StateActive or StateClosed.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.StateIdle)"}
   StateIdle)
 
@@ -1472,6 +1497,7 @@ JOKER CONSTANT StateNew from net/http/server.go:
   ^{:doc "StateNew represents a new connection that is expected to\nsend a request immediately. Connections begin at this\nstate and then transition to either StateActive or\nStateClosed.\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "int(http.StateNew)"}
   StateNew)
 
@@ -1480,6 +1506,7 @@ JOKER CONSTANT StatusAccepted from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusAccepted"}
   StatusAccepted)
 
@@ -1488,6 +1515,7 @@ JOKER CONSTANT StatusAlreadyReported from net/http/status.go:
   ^{:doc "RFC 5842, 7.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusAlreadyReported"}
   StatusAlreadyReported)
 
@@ -1496,6 +1524,7 @@ JOKER CONSTANT StatusBadGateway from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusBadGateway"}
   StatusBadGateway)
 
@@ -1504,6 +1533,7 @@ JOKER CONSTANT StatusBadRequest from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusBadRequest"}
   StatusBadRequest)
 
@@ -1512,6 +1542,7 @@ JOKER CONSTANT StatusConflict from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.8\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusConflict"}
   StatusConflict)
 
@@ -1520,6 +1551,7 @@ JOKER CONSTANT StatusContinue from net/http/status.go:
   ^{:doc "RFC 7231, 6.2.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusContinue"}
   StatusContinue)
 
@@ -1528,6 +1560,7 @@ JOKER CONSTANT StatusCreated from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusCreated"}
   StatusCreated)
 
@@ -1536,6 +1569,7 @@ JOKER CONSTANT StatusExpectationFailed from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.14\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusExpectationFailed"}
   StatusExpectationFailed)
 
@@ -1544,6 +1578,7 @@ JOKER CONSTANT StatusFailedDependency from net/http/status.go:
   ^{:doc "RFC 4918, 11.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusFailedDependency"}
   StatusFailedDependency)
 
@@ -1552,6 +1587,7 @@ JOKER CONSTANT StatusForbidden from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusForbidden"}
   StatusForbidden)
 
@@ -1560,6 +1596,7 @@ JOKER CONSTANT StatusFound from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusFound"}
   StatusFound)
 
@@ -1568,6 +1605,7 @@ JOKER CONSTANT StatusGatewayTimeout from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusGatewayTimeout"}
   StatusGatewayTimeout)
 
@@ -1576,6 +1614,7 @@ JOKER CONSTANT StatusGone from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.9\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusGone"}
   StatusGone)
 
@@ -1584,6 +1623,7 @@ JOKER CONSTANT StatusHTTPVersionNotSupported from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.6\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusHTTPVersionNotSupported"}
   StatusHTTPVersionNotSupported)
 
@@ -1592,6 +1632,7 @@ JOKER CONSTANT StatusIMUsed from net/http/status.go:
   ^{:doc "RFC 3229, 10.4.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusIMUsed"}
   StatusIMUsed)
 
@@ -1600,6 +1641,7 @@ JOKER CONSTANT StatusInsufficientStorage from net/http/status.go:
   ^{:doc "RFC 4918, 11.5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusInsufficientStorage"}
   StatusInsufficientStorage)
 
@@ -1608,6 +1650,7 @@ JOKER CONSTANT StatusInternalServerError from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusInternalServerError"}
   StatusInternalServerError)
 
@@ -1616,6 +1659,7 @@ JOKER CONSTANT StatusLengthRequired from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.10\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusLengthRequired"}
   StatusLengthRequired)
 
@@ -1624,6 +1668,7 @@ JOKER CONSTANT StatusLocked from net/http/status.go:
   ^{:doc "RFC 4918, 11.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusLocked"}
   StatusLocked)
 
@@ -1632,6 +1677,7 @@ JOKER CONSTANT StatusLoopDetected from net/http/status.go:
   ^{:doc "RFC 5842, 7.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusLoopDetected"}
   StatusLoopDetected)
 
@@ -1640,6 +1686,7 @@ JOKER CONSTANT StatusMethodNotAllowed from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusMethodNotAllowed"}
   StatusMethodNotAllowed)
 
@@ -1648,6 +1695,7 @@ JOKER CONSTANT StatusMisdirectedRequest from net/http/status.go:
   ^{:doc "RFC 7540, 9.1.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusMisdirectedRequest"}
   StatusMisdirectedRequest)
 
@@ -1656,6 +1704,7 @@ JOKER CONSTANT StatusMovedPermanently from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusMovedPermanently"}
   StatusMovedPermanently)
 
@@ -1664,6 +1713,7 @@ JOKER CONSTANT StatusMultiStatus from net/http/status.go:
   ^{:doc "RFC 4918, 11.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusMultiStatus"}
   StatusMultiStatus)
 
@@ -1672,6 +1722,7 @@ JOKER CONSTANT StatusMultipleChoices from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusMultipleChoices"}
   StatusMultipleChoices)
 
@@ -1680,6 +1731,7 @@ JOKER CONSTANT StatusNetworkAuthenticationRequired from net/http/status.go:
   ^{:doc "RFC 6585, 6\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNetworkAuthenticationRequired"}
   StatusNetworkAuthenticationRequired)
 
@@ -1688,6 +1740,7 @@ JOKER CONSTANT StatusNoContent from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNoContent"}
   StatusNoContent)
 
@@ -1696,6 +1749,7 @@ JOKER CONSTANT StatusNonAuthoritativeInfo from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNonAuthoritativeInfo"}
   StatusNonAuthoritativeInfo)
 
@@ -1704,6 +1758,7 @@ JOKER CONSTANT StatusNotAcceptable from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.6\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNotAcceptable"}
   StatusNotAcceptable)
 
@@ -1712,6 +1767,7 @@ JOKER CONSTANT StatusNotExtended from net/http/status.go:
   ^{:doc "RFC 2774, 7\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNotExtended"}
   StatusNotExtended)
 
@@ -1720,6 +1776,7 @@ JOKER CONSTANT StatusNotFound from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNotFound"}
   StatusNotFound)
 
@@ -1728,6 +1785,7 @@ JOKER CONSTANT StatusNotImplemented from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNotImplemented"}
   StatusNotImplemented)
 
@@ -1736,6 +1794,7 @@ JOKER CONSTANT StatusNotModified from net/http/status.go:
   ^{:doc "RFC 7232, 4.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusNotModified"}
   StatusNotModified)
 
@@ -1744,6 +1803,7 @@ JOKER CONSTANT StatusOK from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusOK"}
   StatusOK)
 
@@ -1752,6 +1812,7 @@ JOKER CONSTANT StatusPartialContent from net/http/status.go:
   ^{:doc "RFC 7233, 4.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusPartialContent"}
   StatusPartialContent)
 
@@ -1760,6 +1821,7 @@ JOKER CONSTANT StatusPaymentRequired from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusPaymentRequired"}
   StatusPaymentRequired)
 
@@ -1768,6 +1830,7 @@ JOKER CONSTANT StatusPermanentRedirect from net/http/status.go:
   ^{:doc "RFC 7538, 3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusPermanentRedirect"}
   StatusPermanentRedirect)
 
@@ -1776,6 +1839,7 @@ JOKER CONSTANT StatusPreconditionFailed from net/http/status.go:
   ^{:doc "RFC 7232, 4.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusPreconditionFailed"}
   StatusPreconditionFailed)
 
@@ -1784,6 +1848,7 @@ JOKER CONSTANT StatusPreconditionRequired from net/http/status.go:
   ^{:doc "RFC 6585, 3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusPreconditionRequired"}
   StatusPreconditionRequired)
 
@@ -1792,6 +1857,7 @@ JOKER CONSTANT StatusProcessing from net/http/status.go:
   ^{:doc "RFC 2518, 10.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusProcessing"}
   StatusProcessing)
 
@@ -1800,6 +1866,7 @@ JOKER CONSTANT StatusProxyAuthRequired from net/http/status.go:
   ^{:doc "RFC 7235, 3.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusProxyAuthRequired"}
   StatusProxyAuthRequired)
 
@@ -1808,6 +1875,7 @@ JOKER CONSTANT StatusRequestEntityTooLarge from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.11\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusRequestEntityTooLarge"}
   StatusRequestEntityTooLarge)
 
@@ -1816,6 +1884,7 @@ JOKER CONSTANT StatusRequestHeaderFieldsTooLarge from net/http/status.go:
   ^{:doc "RFC 6585, 5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusRequestHeaderFieldsTooLarge"}
   StatusRequestHeaderFieldsTooLarge)
 
@@ -1824,6 +1893,7 @@ JOKER CONSTANT StatusRequestTimeout from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.7\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusRequestTimeout"}
   StatusRequestTimeout)
 
@@ -1832,6 +1902,7 @@ JOKER CONSTANT StatusRequestURITooLong from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.12\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusRequestURITooLong"}
   StatusRequestURITooLong)
 
@@ -1840,6 +1911,7 @@ JOKER CONSTANT StatusRequestedRangeNotSatisfiable from net/http/status.go:
   ^{:doc "RFC 7233, 4.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusRequestedRangeNotSatisfiable"}
   StatusRequestedRangeNotSatisfiable)
 
@@ -1848,6 +1920,7 @@ JOKER CONSTANT StatusResetContent from net/http/status.go:
   ^{:doc "RFC 7231, 6.3.6\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusResetContent"}
   StatusResetContent)
 
@@ -1856,6 +1929,7 @@ JOKER CONSTANT StatusSeeOther from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusSeeOther"}
   StatusSeeOther)
 
@@ -1864,6 +1938,7 @@ JOKER CONSTANT StatusServiceUnavailable from net/http/status.go:
   ^{:doc "RFC 7231, 6.6.4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusServiceUnavailable"}
   StatusServiceUnavailable)
 
@@ -1872,6 +1947,7 @@ JOKER CONSTANT StatusSwitchingProtocols from net/http/status.go:
   ^{:doc "RFC 7231, 6.2.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusSwitchingProtocols"}
   StatusSwitchingProtocols)
 
@@ -1880,6 +1956,7 @@ JOKER CONSTANT StatusTeapot from net/http/status.go:
   ^{:doc "RFC 7168, 2.3.3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusTeapot"}
   StatusTeapot)
 
@@ -1888,6 +1965,7 @@ JOKER CONSTANT StatusTemporaryRedirect from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.7\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusTemporaryRedirect"}
   StatusTemporaryRedirect)
 
@@ -1896,6 +1974,7 @@ JOKER CONSTANT StatusTooManyRequests from net/http/status.go:
   ^{:doc "RFC 6585, 4\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusTooManyRequests"}
   StatusTooManyRequests)
 
@@ -1904,6 +1983,7 @@ JOKER CONSTANT StatusUnauthorized from net/http/status.go:
   ^{:doc "RFC 7235, 3.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUnauthorized"}
   StatusUnauthorized)
 
@@ -1912,6 +1992,7 @@ JOKER CONSTANT StatusUnavailableForLegalReasons from net/http/status.go:
   ^{:doc "RFC 7725, 3\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUnavailableForLegalReasons"}
   StatusUnavailableForLegalReasons)
 
@@ -1920,6 +2001,7 @@ JOKER CONSTANT StatusUnprocessableEntity from net/http/status.go:
   ^{:doc "RFC 4918, 11.2\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUnprocessableEntity"}
   StatusUnprocessableEntity)
 
@@ -1928,6 +2010,7 @@ JOKER CONSTANT StatusUnsupportedMediaType from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.13\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUnsupportedMediaType"}
   StatusUnsupportedMediaType)
 
@@ -1936,6 +2019,7 @@ JOKER CONSTANT StatusUpgradeRequired from net/http/status.go:
   ^{:doc "RFC 7231, 6.5.15\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUpgradeRequired"}
   StatusUpgradeRequired)
 
@@ -1944,6 +2028,7 @@ JOKER CONSTANT StatusUseProxy from net/http/status.go:
   ^{:doc "RFC 7231, 6.4.5\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusUseProxy"}
   StatusUseProxy)
 
@@ -1952,6 +2037,7 @@ JOKER CONSTANT StatusVariantAlsoNegotiates from net/http/status.go:
   ^{:doc "RFC 2295, 8.1\n"
     :added "1.0"
     :tag "Int"
+    :const true
     :go "http.StatusVariantAlsoNegotiates"}
   StatusVariantAlsoNegotiates)
 
@@ -1960,6 +2046,7 @@ JOKER CONSTANT TimeFormat from net/http/server.go:
   ^{:doc "TimeFormat is the time format to use when generating times in HTTP\nheaders. It is like time.RFC1123 but hard-codes GMT as the time\nzone. The time being formatted must be in UTC for Format to\ngenerate the correct format.\n\nFor parsing this time format, see ParseTime.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.TimeFormat"}
   TimeFormat)
 
@@ -1968,6 +2055,7 @@ JOKER CONSTANT TrailerPrefix from net/http/server.go:
   ^{:doc "TrailerPrefix is a magic prefix for ResponseWriter.Header map keys\nthat, if present, signals that the map entry is actually for\nthe response trailers, and not the response headers. The prefix\nis stripped after the ServeHTTP call finishes and the values are\nsent in the trailers.\n\nThis mechanism is intended only for trailers that are not known\nprior to the headers being written. If the set of trailers is fixed\nor known before the header is written, the normal Go trailers mechanism\nis preferred:\n   https://golang.org/pkg/net/http/#ResponseWriter\n   https://golang.org/pkg/net/http/#example_ResponseWriter_trailers\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "http.TrailerPrefix"}
   TrailerPrefix)
 
@@ -2869,11 +2957,11 @@ JOKER VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
   ErrRequestAborted)
 
 JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: ...\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: ABEND883(post.go: unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/fcgi/child.go:358:34)"
-;;   {:added "1.0"
-;;    :go "__processEnv(__r)"}
-;;   [^go.std.net.http/Request __r])
+(defn ProcessEnv
+  "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: GoObject"
+  {:added "1.0"
+   :go "__processEnv(__r)"}
+  [^go.std.net.http/Request __r])
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 (defn ^"Error" Serve
@@ -2887,6 +2975,7 @@ JOKER CONSTANT DefaultRemoteAddr from net/http/httptest/recorder.go:
   ^{:doc "DefaultRemoteAddr is the default remote address to return in RemoteAddr if\nan explicit DefaultRemoteAddr isn't set on ResponseRecorder.\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "httptest.DefaultRemoteAddr"}
   DefaultRemoteAddr)
 
@@ -3096,21 +3185,21 @@ JOKER TYPE net/http/httputil.ReverseProxy from net/http/httputil/reverseproxy.go
 JOKER TYPE net/http/httputil.ServerConn from net/http/httputil/persist.go:
 JOKER FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 (defn DumpRequest
-  "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
+  "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "__dumpRequest(__req, __body)"}
   [^go.std.net.http/Request __req, ^Boolean __body])
 
 JOKER FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 (defn DumpRequestOut
-  "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
+  "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "__dumpRequestOut(__req, __body)"}
   [^go.std.net.http/Request __req, ^Boolean __body])
 
 JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 (defn DumpResponse
-  "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Response) resp, ^Boolean body]\n\nJoker return type: [(vector-of Int) Error]"
+  "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Response) resp, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "__dumpResponse(__resp, __body)"}
   [^go.std.net.http/Response __resp, ^Boolean __body])
@@ -3277,7 +3366,7 @@ JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
 
 JOKER FUNC net/mail.ParseAddressList from net/mail/message.go:
 (defn ParseAddressList
-  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String list]\n\nJoker return type: [(vector-of (ref-to go.std.net.mail/Address)) Error]"
+  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String list]\n\nJoker return type: [(ref-to go.std.net.mail/arrayOfAddress) Error]"
   {:added "1.0"
    :go "__parseAddressList(__list)"}
   [^String __list])
@@ -3365,6 +3454,7 @@ JOKER CONSTANT DefaultDebugPath from net/rpc/server.go:
   ^{:doc ""
     :added "1.0"
     :tag "String"
+    :const true
     :go "rpc.DefaultDebugPath"}
   DefaultDebugPath)
 
@@ -3373,6 +3463,7 @@ JOKER CONSTANT DefaultRPCPath from net/rpc/server.go:
   ^{:doc "Defaults used by HandleHTTP\n"
     :added "1.0"
     :tag "String"
+    :const true
     :go "rpc.DefaultRPCPath"}
   DefaultRPCPath)
 
@@ -3763,7 +3854,7 @@ JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 (defn TrimBytes
-  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: (vector-of Int)"
+  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: arrayOfInt"
   {:added "1.0"
    :go "__trimBytes(ConvertToArrayOfbyte(__b))"}
   [^Object __b])
@@ -5560,11 +5651,7 @@ GO FUNC net.InterfaceAddrs from net/interface.go:
 func __interfaceAddrs() Object {
 	_res1, _res2 := net.InterfaceAddrs()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -5591,11 +5678,7 @@ GO FUNC net.Interfaces from net/interface.go:
 func __interfaces() Object {
 	_res1, _res2 := net.Interfaces()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -5676,11 +5759,7 @@ GO FUNC net.LookupAddr from net/lookup.go:
 func __lookupAddr(__addr string) Object {
 	names, err := net.LookupAddr(__addr)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range names {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(names))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -5698,11 +5777,7 @@ GO FUNC net.LookupHost from net/lookup.go:
 func __lookupHost(__host string) Object {
 	addrs, err := net.LookupHost(__host)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(addrs))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -5711,11 +5786,7 @@ GO FUNC net.LookupIP from net/lookup.go:
 func __lookupIP(__host string) Object {
 	_res1, _res2 := net.LookupIP(__host)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -5724,11 +5795,7 @@ GO FUNC net.LookupMX from net/lookup.go:
 func __lookupMX(__name string) Object {
 	_res1, _res2 := net.LookupMX(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -5737,11 +5804,7 @@ GO FUNC net.LookupNS from net/lookup.go:
 func __lookupNS(__name string) Object {
 	_res1, _res2 := net.LookupNS(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -5760,11 +5823,7 @@ func __lookupSRV(__service string, __proto string, __name string) Object {
 	cname, addrs, err := net.LookupSRV(__service, __proto, __name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(cname))
-	_vec1 := EmptyVector()
-	for _, _elem1 := range addrs {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(addrs))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -5773,11 +5832,7 @@ GO FUNC net.LookupTXT from net/lookup.go:
 func __lookupTXT(__name string) Object {
 	_res1, _res2 := net.LookupTXT(__name)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -6064,11 +6119,7 @@ func __iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(net.IP)MarshalText()", args, 0, 0)
 	_res1, _res2 := o.O.(net.IP).MarshalText()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -6449,11 +6500,7 @@ func __ptrTo_Interface_Addrs(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*net.Interface)Addrs()", args, 0, 0)
 	_res1, _res2 := o.O.(*net.Interface).Addrs()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -6463,11 +6510,7 @@ func __ptrTo_Interface_MulticastAddrs(o GoObject, args Object) Object {  // Rece
 	CheckGoArity("(*net.Interface)MulticastAddrs()", args, 0, 0)
 	_res1, _res2 := o.O.(*net.Interface).MulticastAddrs()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -6533,11 +6576,7 @@ GO FUNC net.__ptrTo_Resolver_LookupAddr from net/lookup.go:
 // 	__addr := ExtractGoString("(*net.Resolver)LookupAddr()", "__addr", _argList, 1)
 // 	names, err := o.O.(*net.Resolver).LookupAddr(__ctx, __addr)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range names {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(names))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -6561,11 +6600,7 @@ GO FUNC net.__ptrTo_Resolver_LookupHost from net/lookup.go:
 // 	__host := ExtractGoString("(*net.Resolver)LookupHost()", "__host", _argList, 1)
 // 	addrs, err := o.O.(*net.Resolver).LookupHost(__ctx, __host)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range addrs {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(addrs))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -6577,11 +6612,7 @@ GO FUNC net.__ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // 	__host := ExtractGoString("(*net.Resolver)LookupIPAddr()", "__host", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupIPAddr(__ctx, __host)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -6593,11 +6624,7 @@ GO FUNC net.__ptrTo_Resolver_LookupMX from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupMX()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupMX(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -6609,11 +6636,7 @@ GO FUNC net.__ptrTo_Resolver_LookupNS from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupNS()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupNS(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -6641,11 +6664,7 @@ GO FUNC net.__ptrTo_Resolver_LookupSRV from net/lookup.go:
 // 	cname, addrs, err := o.O.(*net.Resolver).LookupSRV(__ctx, __service, __proto, __name)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeString(cname))
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range addrs {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(addrs))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -6657,11 +6676,7 @@ GO FUNC net.__ptrTo_Resolver_LookupTXT from net/lookup.go:
 // 	__name := ExtractGoString("(*net.Resolver)LookupTXT()", "__name", _argList, 1)
 // 	_res1, _res2 := o.O.(*net.Resolver).LookupTXT(__ctx, __name)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res1 {
-// 		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
 // 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 // 	return _res
 // }
@@ -9187,8 +9202,11 @@ func __timeoutHandler(__h http.Handler, __dt time.Duration, __msg string) Object
 }
 
 GO FUNC net/http.__closeNotifier_CloseNotify from net/http/server.go:
-// func __closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
-// ABEND883(post.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
+func __closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
+	CheckGoArity("(net/http.CloseNotifier)CloseNotify()", args, 0, 0)
+	_res := o.O.(http.CloseNotifier).CloseNotify()
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http.__connState_String from net/http/server.go:
 func __connState_String(o GoObject, args Object) Object {  // Receiver
@@ -9202,11 +9220,7 @@ GO FUNC net/http.__cookieJar_Cookies from net/http/jar.go:
 // 	_argList := CheckGoArity("(net/http.CookieJar)Cookies()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __u at: _tests/big/src/net/http/jar.go:26:12)
 // 	_res := o.O.(http.CookieJar).Cookies(__u)
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	return _vec1
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http.__cookieJar_SetCookies from net/http/jar.go:
@@ -9396,11 +9410,7 @@ GO FUNC net/http.__ptrTo_Request_Cookies from net/http/request.go:
 func __ptrTo_Request_Cookies(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*http.Request)Cookies()", args, 0, 0)
 	_res := o.O.(*http.Request).Cookies()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	return _vec1
+	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.__ptrTo_Request_FormFile from net/http/request.go:
@@ -9498,11 +9508,7 @@ GO FUNC net/http.__ptrTo_Response_Cookies from net/http/response.go:
 func __ptrTo_Response_Cookies(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*http.Response)Cookies()", args, 0, 0)
 	_res := o.O.(*http.Response).Cookies()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	return _vec1
+	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.__ptrTo_Response_Location from net/http/response.go:
@@ -9820,6 +9826,7 @@ GO INFO FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/serv
 	info_CloseNotifier = GoTypeInfo{Name: "go.std.net.http/CloseNotifier",
 		GoType: &GoType{T: &info_CloseNotifier},
 		Members: GoMembers{
+			"CloseNotify": MakeGoReceiver("CloseNotify", __closeNotifier_CloseNotify, "CloseNotify returns a channel that receives at most a\nsingle value (true) when the client connection has gone\naway.\n\nCloseNotify may wait to notify until Request.Body has been\nfully read.\n\nAfter the Handler has returned, there is no guarantee\nthat the channel receives a value.\n\nIf the protocol is HTTP/1.1 and CloseNotify is called while\nprocessing an idempotent request (such a GET) while\nHTTP/1.1 pipelining is in use, the arrival of a subsequent\npipelined request may cause a value to be sent on the\nreturned channel. In practice HTTP/1.1 pipelining is not\nenabled in browsers and not seen often in the wild. If this\nis a problem, use HTTP/2 or only use CloseNotify on methods\nsuch as POST.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10530,11 +10537,7 @@ GO FUNC net/http/cookiejar.__ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
 // 	_argList := CheckGoArity("(*cookiejar.Jar)Cookies()", args, 1, 1)
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __u at: _tests/big/src/net/http/cookiejar/jar.go:154:25)
 // 	_res := o.O.(*cookiejar.Jar).Cookies(__u)
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	return _vec1
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/cookiejar.__ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go:
@@ -10642,9 +10645,10 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-// func __processEnv(__r *http.Request) Object {
-// 	return fcgi.ProcessEnv(__r)
-// }
+func __processEnv(__r *http.Request) Object {
+	_res := fcgi.ProcessEnv(__r)
+	return MakeGoObject(_res)
+}
 
 GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:17:2
@@ -11497,11 +11501,7 @@ GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 func __dumpRequest(__req *http.Request, __body bool) Object {
 	_res1, _res2 := httputil.DumpRequest(__req, __body)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -11510,11 +11510,7 @@ GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 func __dumpRequestOut(__req *http.Request, __body bool) Object {
 	_res1, _res2 := httputil.DumpRequestOut(__req, __body)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -11523,11 +11519,7 @@ GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 func __dumpResponse(__resp *http.Response, __body bool) Object {
 	_res1, _res2 := httputil.DumpResponse(__resp, __body)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -11570,11 +11562,7 @@ GO FUNC net/http/httputil.__bufferPool_Get from net/http/httputil/reverseproxy.g
 func __bufferPool_Get(o GoObject, args Object) Object {  // Method
 	CheckGoArity("(net/http/httputil.BufferPool)Get()", args, 0, 0)
 	_res := o.O.(httputil.BufferPool).Get()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	return _vec1
+	return MakeGoObject(_res)
 }
 
 GO FUNC net/http/httputil.__bufferPool_Put from net/http/httputil/reverseproxy.go:
@@ -12029,11 +12017,7 @@ GO FUNC net/mail.ParseAddressList from net/mail/message.go:
 func __parseAddressList(__list string) Object {
 	_res1, _res2 := mail.ParseAddressList(__list)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -12062,11 +12046,7 @@ func __header_AddressList(o GoObject, args Object) Object {  // Receiver
 	__key := ExtractGoString("(mail.Header)AddressList()", "__key", _argList, 0)
 	_res1, _res2 := o.O.(mail.Header).AddressList(__key)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -12100,11 +12080,7 @@ func __ptrTo_AddressParser_ParseList(o GoObject, args Object) Object {  // Recei
 	__list := ExtractGoString("(*mail.AddressParser)ParseList()", "__list", _argList, 0)
 	_res1, _res2 := o.O.(*mail.AddressParser).ParseList(__list)
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -13159,11 +13135,7 @@ GO FUNC net/smtp.__auth_Next from net/smtp/auth.go:
 // 	__more := ExtractGoBoolean("(net/smtp.Auth)Next()", "__more", _argList, 1)
 // 	toServer, err := o.O.(smtp.Auth).Next(__fromServer, __more)
 // 	_res := EmptyVector()
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range toServer {
-// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(toServer))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -13175,11 +13147,7 @@ GO FUNC net/smtp.__auth_Start from net/smtp/auth.go:
 // 	proto, toServer, err := o.O.(smtp.Auth).Start(__server)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeString(proto))
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range toServer {
-// 		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-// 	}
-// 	_res = _res.Conjoin(_vec1)
+// 	_res = _res.Conjoin(MakeGoObject(toServer))
 // 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 // 	return _res
 // }
@@ -13690,11 +13658,7 @@ func __newWriter(__w *bufio.Writer) Object {
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 func __trimBytes(__b []byte) Object {
 	_res := textproto.TrimBytes(__b)
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	return _vec1
+	return MakeGoObject(_res)
 }
 
 GO FUNC net/textproto.__mIMEHeader_Add from net/textproto/header.go:
@@ -13803,11 +13767,7 @@ func __ptrTo_Reader_ReadContinuedLineBytes(o GoObject, args Object) Object {  //
 	CheckGoArity("(*textproto.Reader)ReadContinuedLineBytes()", args, 0, 0)
 	_res1, _res2 := o.O.(*textproto.Reader).ReadContinuedLineBytes()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -13817,11 +13777,7 @@ func __ptrTo_Reader_ReadDotBytes(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*textproto.Reader)ReadDotBytes()", args, 0, 0)
 	_res1, _res2 := o.O.(*textproto.Reader).ReadDotBytes()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -13831,11 +13787,7 @@ func __ptrTo_Reader_ReadDotLines(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*textproto.Reader)ReadDotLines()", args, 0, 0)
 	_res1, _res2 := o.O.(*textproto.Reader).ReadDotLines()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeString(_elem1))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -13855,11 +13807,7 @@ func __ptrTo_Reader_ReadLineBytes(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*textproto.Reader)ReadLineBytes()", args, 0, 0)
 	_res1, _res2 := o.O.(*textproto.Reader).ReadLineBytes()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res1 {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(_res1))
 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
 	return _res
 }
@@ -14491,11 +14439,7 @@ func __ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 	CheckGoArity("(*url.URL)MarshalBinary()", args, 0, 0)
 	text, err := o.O.(*url.URL).MarshalBinary()
 	_res := EmptyVector()
-	_vec1 := EmptyVector()
-	for _, _elem1 := range text {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	_res = _res.Conjoin(_vec1)
+	_res = _res.Conjoin(MakeGoObject(text))
 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
 	return _res
 }
@@ -15205,13 +15149,13 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 883(3) 906(3) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=287 (61.06%)
-          non-receivers=148 (31.49%) generated=119 (80.41%)
+ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 906(3) 902(2) 908(2) 124(1) 883(1) 909(1)
+Totals: functions=470 generated=289 (61.49%)
+          non-receivers=148 (31.49%) generated=120 (81.08%)
           receivers=273 (58.09%) generated=149 (54.58%)
-          methods=49 (10.43%) generated=19 (38.78%)
+          methods=49 (10.43%) generated=20 (40.82%)
         types=102
           constructable=82 ctors=41 (50.00%)
-          hits expr=290 fullname=1116
+          hits expr=309 fullname=1182
         constants=91 generated=91 (100.00%)
         variables=48 generated=48 (100.00%)
