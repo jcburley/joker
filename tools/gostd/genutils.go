@@ -22,7 +22,7 @@ func funcNameAsGoPrivate(f string) string {
 	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
 	// 	s = "_" + s
 	// }
-	return "__" + strings.ToLower(f[0:1]) + f[1:]
+	return "_f_" + strings.ToLower(f[0:1]) + f[1:]
 }
 
 var genSymIndex = map[string]int{}

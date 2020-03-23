@@ -226,7 +226,7 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 		if p == nil {
 			resVar = genSym("__arg")
 		} else {
-			resVar = "__" + p.Name
+			resVar = "_v_" + p.Name
 		}
 		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
 
