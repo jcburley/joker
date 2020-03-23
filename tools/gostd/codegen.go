@@ -116,7 +116,7 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
-		goPostCode = "\t...ABEND675: TODO...\n"
+		goPostCode = "\treturn NIL\n"
 	}
 
 	fc.goCode = goPreCode + // Optional block of pre-code
