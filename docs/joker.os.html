@@ -236,7 +236,13 @@
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(ls dirname)</code></div>
 </pre>
-  <p class="var-docstr">Reads the directory named by dirname and returns a list of directory entries sorted by filename.</p>
+  <p class="var-docstr">Reads the directory named by dirname and returns a list of directory entries sorted by filename.<br>
+  Each entry is a map with the following keys:<br>
+  :name - name (String)<br>
+  :size - size in bytes (Int)<br>
+  :mode - mode (Int)<br>
+  :dir? - true if the file is a directory (Boolean)<br>
+  :modtime - modification time (unix timestamp) (Int)</p>
 </li>
 <li>
   <h3 id="mkdir">mkdir</h3>
