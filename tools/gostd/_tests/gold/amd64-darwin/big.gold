@@ -681,11 +681,7 @@ JOKER FUNC net.ListenUnixgram from net/unixsock.go:
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
-<<<<<<< HEAD
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (_v_addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String _v_addr]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (_v_addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String _v_addr]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupAddr(_v_addr)"}
   [^String _v_addr])
@@ -699,44 +695,28 @@ JOKER FUNC net.LookupCNAME from net/lookup.go:
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
-<<<<<<< HEAD
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupHost(_v_host)"}
   [^String _v_host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
-<<<<<<< HEAD
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
-=======
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
->>>>>>> gostd-origin
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
   {:added "1.0"
    :go "_f_lookupIP(_v_host)"}
   [^String _v_host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
-<<<<<<< HEAD
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
-=======
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of (ref-to go.std.net/MX)) Error]"
->>>>>>> gostd-origin
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
   {:added "1.0"
    :go "_f_lookupMX(_v_name)"}
   [^String _v_name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
-<<<<<<< HEAD
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
-=======
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of (ref-to go.std.net/NS)) Error]"
->>>>>>> gostd-origin
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
   {:added "1.0"
    :go "_f_lookupNS(_v_name)"}
   [^String _v_name])
@@ -750,22 +730,14 @@ JOKER FUNC net.LookupPort from net/lookup.go:
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
-<<<<<<< HEAD
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
-=======
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (_v_service string, _v_proto string, _v_name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String _v_service, ^String _v_proto, ^String _v_name]\n\nJoker return type: [String (vector-of (ref-to go.std.net/SRV)) Error]"
->>>>>>> gostd-origin
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (_v_service string, _v_proto string, _v_name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String _v_service, ^String _v_proto, ^String _v_name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
   {:added "1.0"
    :go "_f_lookupSRV(_v_service, _v_proto, _v_name)"}
   [^String _v_service, ^String _v_proto, ^String _v_name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
-<<<<<<< HEAD
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupTXT(_v_name)"}
   [^String _v_name])
@@ -2985,19 +2957,11 @@ JOKER VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
   ErrRequestAborted)
 
 JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-<<<<<<< HEAD
 (defn ProcessEnv
-  "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: GoObject"
+  "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (_v_r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_r]\n\nJoker return type: GoObject"
   {:added "1.0"
-   :go "__processEnv(__r)"}
-  [^go.std.net.http/Request __r])
-=======
-;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (_v_r *http.Request)\n\nGo return type: ...\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_r]\n\nJoker return type: ABEND883(post.go: unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/fcgi/child.go:358:34)"
-;;   {:added "1.0"
-;;    :go "_f_processEnv(_v_r)"}
-;;   [^go.std.net.http/Request _v_r])
->>>>>>> gostd-origin
+   :go "_f_processEnv(_v_r)"}
+  [^go.std.net.http/Request _v_r])
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 (defn ^"Error" Serve
@@ -3221,33 +3185,21 @@ JOKER TYPE net/http/httputil.ReverseProxy from net/http/httputil/reverseproxy.go
 JOKER TYPE net/http/httputil.ServerConn from net/http/httputil/persist.go:
 JOKER FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
 (defn DumpRequest
-<<<<<<< HEAD
-  "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
-=======
-  "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (_v_req *http.Request, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_req, ^Boolean _v_body]\n\nJoker return type: [(vector-of Int) Error]"
->>>>>>> gostd-origin
+  "DumpRequest returns the given request in its HTTP/1.x wire\nrepresentation. It should only be used by servers to debug client\nrequests. The returned representation is an approximation only;\nsome details of the initial request are lost while parsing it into\nan http.Request. In particular, the order and case of header field\nnames are lost. The order of values in multi-valued headers is kept\nintact. HTTP/2 requests are dumped in HTTP/1.x form, not in their\noriginal binary representations.\n\nIf body is true, DumpRequest also returns the body. To do so, it\nconsumes req.Body and then replaces it with a new io.ReadCloser\nthat yields the same bytes. If DumpRequest returns an error,\nthe state of req is undefined.\n\nThe documentation for http.Request.Write details which fields\nof req are included in the dump.\n\nGo input arguments: (_v_req *http.Request, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_req, ^Boolean _v_body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "_f_dumpRequest(_v_req, _v_body)"}
   [^go.std.net.http/Request _v_req, ^Boolean _v_body])
 
 JOKER FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
 (defn DumpRequestOut
-<<<<<<< HEAD
-  "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (req *http.Request, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
-=======
-  "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (_v_req *http.Request, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_req, ^Boolean _v_body]\n\nJoker return type: [(vector-of Int) Error]"
->>>>>>> gostd-origin
+  "DumpRequestOut is like DumpRequest but for outgoing client requests. It\nincludes any headers that the standard http.Transport adds, such as\nUser-Agent.\n\nGo input arguments: (_v_req *http.Request, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) _v_req, ^Boolean _v_body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "_f_dumpRequestOut(_v_req, _v_body)"}
   [^go.std.net.http/Request _v_req, ^Boolean _v_body])
 
 JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 (defn DumpResponse
-<<<<<<< HEAD
-  "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (resp *http.Response, body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Response) resp, ^Boolean body]\n\nJoker return type: [arrayOfInt Error]"
-=======
-  "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (_v_resp *http.Response, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Response) _v_resp, ^Boolean _v_body]\n\nJoker return type: [(vector-of Int) Error]"
->>>>>>> gostd-origin
+  "DumpResponse is like DumpRequest but dumps a response.\n\nGo input arguments: (_v_resp *http.Response, _v_body bool)\n\nGo return type: ([]byte, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Response) _v_resp, ^Boolean _v_body]\n\nJoker return type: [arrayOfInt Error]"
   {:added "1.0"
    :go "_f_dumpResponse(_v_resp, _v_body)"}
   [^go.std.net.http/Response _v_resp, ^Boolean _v_body])
@@ -3414,11 +3366,7 @@ JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
 
 JOKER FUNC net/mail.ParseAddressList from net/mail/message.go:
 (defn ParseAddressList
-<<<<<<< HEAD
-  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String list]\n\nJoker return type: [(ref-to go.std.net.mail/arrayOfAddress) Error]"
-=======
-  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (_v_list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String _v_list]\n\nJoker return type: [(vector-of (ref-to go.std.net.mail/Address)) Error]"
->>>>>>> gostd-origin
+  "ParseAddressList parses the given string as a list of addresses.\n\nGo input arguments: (_v_list string)\n\nGo return type: ([]*Address, error)\n\nJoker input arguments: [^String _v_list]\n\nJoker return type: [(ref-to go.std.net.mail/arrayOfAddress) Error]"
   {:added "1.0"
    :go "_f_parseAddressList(_v_list)"}
   [^String _v_list])
@@ -3906,11 +3854,7 @@ JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 (defn TrimBytes
-<<<<<<< HEAD
-  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: arrayOfInt"
-=======
-  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (_v_b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) _v_b]\n\nJoker return type: (vector-of Int)"
->>>>>>> gostd-origin
+  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (_v_b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) _v_b]\n\nJoker return type: arrayOfInt"
   {:added "1.0"
    :go "_f_trimBytes(ConvertToArrayOfbyte(_v_b))"}
   [^Object _v_b])
@@ -9257,18 +9201,12 @@ func _f_timeoutHandler(_v_h http.Handler, _v_dt time.Duration, _v_msg string) Ob
 	return MakeGoObject(_res)
 }
 
-<<<<<<< HEAD
-GO FUNC net/http.__closeNotifier_CloseNotify from net/http/server.go:
-func __closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
+GO FUNC net/http._f_closeNotifier_CloseNotify from net/http/server.go:
+func _f_closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
 	CheckGoArity("(net/http.CloseNotifier)CloseNotify()", args, 0, 0)
 	_res := o.O.(http.CloseNotifier).CloseNotify()
 	return MakeGoObject(_res)
 }
-=======
-GO FUNC net/http._f_closeNotifier_CloseNotify from net/http/server.go:
-// func _f_closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
-// ABEND883(post.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
->>>>>>> gostd-origin
 
 GO FUNC net/http._f_connState_String from net/http/server.go:
 func _f_connState_String(o GoObject, args Object) Object {  // Receiver
@@ -9280,19 +9218,9 @@ func _f_connState_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_cookieJar_Cookies from net/http/jar.go:
 // func _f_cookieJar_Cookies(o GoObject, args Object) Object {  // Method
 // 	_argList := CheckGoArity("(net/http.CookieJar)Cookies()", args, 1, 1)
-<<<<<<< HEAD
-// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __u at: _tests/big/src/net/http/jar.go:26:12)
-// 	_res := o.O.(http.CookieJar).Cookies(__u)
-// 	return MakeGoObject(_res)
-=======
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for _v_u at: _tests/big/src/net/http/jar.go:26:12)
 // 	_res := o.O.(http.CookieJar).Cookies(_v_u)
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	return _vec1
->>>>>>> gostd-origin
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http._f_cookieJar_SetCookies from net/http/jar.go:
@@ -9898,7 +9826,7 @@ GO INFO FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/serv
 	info_CloseNotifier = GoTypeInfo{Name: "go.std.net.http/CloseNotifier",
 		GoType: &GoType{T: &info_CloseNotifier},
 		Members: GoMembers{
-			"CloseNotify": MakeGoReceiver("CloseNotify", __closeNotifier_CloseNotify, "CloseNotify returns a channel that receives at most a\nsingle value (true) when the client connection has gone\naway.\n\nCloseNotify may wait to notify until Request.Body has been\nfully read.\n\nAfter the Handler has returned, there is no guarantee\nthat the channel receives a value.\n\nIf the protocol is HTTP/1.1 and CloseNotify is called while\nprocessing an idempotent request (such a GET) while\nHTTP/1.1 pipelining is in use, the arrival of a subsequent\npipelined request may cause a value to be sent on the\nreturned channel. In practice HTTP/1.1 pipelining is not\nenabled in browsers and not seen often in the wild. If this\nis a problem, use HTTP/2 or only use CloseNotify on methods\nsuch as POST.\n", "1.0", NewVectorFrom()),
+			"CloseNotify": MakeGoReceiver("CloseNotify", _f_closeNotifier_CloseNotify, "CloseNotify returns a channel that receives at most a\nsingle value (true) when the client connection has gone\naway.\n\nCloseNotify may wait to notify until Request.Body has been\nfully read.\n\nAfter the Handler has returned, there is no guarantee\nthat the channel receives a value.\n\nIf the protocol is HTTP/1.1 and CloseNotify is called while\nprocessing an idempotent request (such a GET) while\nHTTP/1.1 pipelining is in use, the arrival of a subsequent\npipelined request may cause a value to be sent on the\nreturned channel. In practice HTTP/1.1 pipelining is not\nenabled in browsers and not seen often in the wild. If this\nis a problem, use HTTP/2 or only use CloseNotify on methods\nsuch as POST.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10607,19 +10535,9 @@ func _f_new(_v_o *cookiejar.Options) Object {
 GO FUNC net/http/cookiejar._f_ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
 // func _f_ptrTo_Jar_Cookies(o GoObject, args Object) Object {  // Receiver
 // 	_argList := CheckGoArity("(*cookiejar.Jar)Cookies()", args, 1, 1)
-<<<<<<< HEAD
-// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for __u at: _tests/big/src/net/http/cookiejar/jar.go:154:25)
-// 	_res := o.O.(*cookiejar.Jar).Cookies(__u)
-// 	return MakeGoObject(_res)
-=======
 // 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for _v_u at: _tests/big/src/net/http/cookiejar/jar.go:154:25)
 // 	_res := o.O.(*cookiejar.Jar).Cookies(_v_u)
-// 	_vec1 := EmptyVector()
-// 	for _, _elem1 := range _res {
-// 		_vec1 = _vec1.Conjoin(MakeGoObject(_elem1))
-// 	}
-// 	return _vec1
->>>>>>> gostd-origin
+// 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/cookiejar._f_ptrTo_Jar_SetCookies from net/http/cookiejar/jar.go:
@@ -10727,16 +10645,10 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-<<<<<<< HEAD
-func __processEnv(__r *http.Request) Object {
-	_res := fcgi.ProcessEnv(__r)
+func _f_processEnv(_v_r *http.Request) Object {
+	_res := fcgi.ProcessEnv(_v_r)
 	return MakeGoObject(_res)
 }
-=======
-// func _f_processEnv(_v_r *http.Request) Object {
-// 	return fcgi.ProcessEnv(_v_r)
-// }
->>>>>>> gostd-origin
 
 GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:17:2
@@ -13744,19 +13656,9 @@ func _f_newWriter(_v_w *bufio.Writer) Object {
 }
 
 GO FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
-<<<<<<< HEAD
-func __trimBytes(__b []byte) Object {
-	_res := textproto.TrimBytes(__b)
-	return MakeGoObject(_res)
-=======
 func _f_trimBytes(_v_b []byte) Object {
 	_res := textproto.TrimBytes(_v_b)
-	_vec1 := EmptyVector()
-	for _, _elem1 := range _res {
-		_vec1 = _vec1.Conjoin(MakeInt(int(_elem1)))
-	}
-	return _vec1
->>>>>>> gostd-origin
+	return MakeGoObject(_res)
 }
 
 GO FUNC net/textproto._f_mIMEHeader_Add from net/textproto/header.go:
@@ -15247,15 +15149,9 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-<<<<<<< HEAD
-ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 675(18) 907(14) 674(9) 906(3) 902(2) 908(2) 124(1) 883(1) 909(1)
-Totals: functions=470 generated=289 (61.49%)
-          non-receivers=148 (31.49%) generated=120 (81.08%)
-=======
-ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 907(14) 674(9) 883(3) 906(3) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=304 (64.68%)
-          non-receivers=148 (31.49%) generated=136 (91.89%)
->>>>>>> gostd-origin
+ABENDs: 047(95) 644(90) 275(40) 048(32) 042(27) 907(14) 674(9) 906(3) 902(2) 908(2) 124(1) 883(1) 909(1)
+Totals: functions=470 generated=306 (65.11%)
+          non-receivers=148 (31.49%) generated=137 (92.57%)
           receivers=273 (58.09%) generated=149 (54.58%)
           methods=49 (10.43%) generated=20 (40.82%)
         types=102

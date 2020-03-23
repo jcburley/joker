@@ -185,11 +185,7 @@ JOKER FUNC net.ListenIP from net/iprawsock.go:
 
 JOKER FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
-<<<<<<< HEAD
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (_v_addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String _v_addr]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (_v_addr string)\n\nGo return type: (names []string, err error)\n\nJoker input arguments: [^String _v_addr]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupAddr(_v_addr)"}
   [^String _v_addr])
@@ -203,44 +199,28 @@ JOKER FUNC net.LookupCNAME from net/lookup.go:
 
 JOKER FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
-<<<<<<< HEAD
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: (addrs []string, err error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupHost(_v_host)"}
   [^String _v_host])
 
 JOKER FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
-<<<<<<< HEAD
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
-=======
-  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [(vector-of go.std.net/IP) Error]"
->>>>>>> gostd-origin
+  "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (_v_host string)\n\nGo return type: ([]IP, error)\n\nJoker input arguments: [^String _v_host]\n\nJoker return type: [go.std.net/arrayOfIP Error]"
   {:added "1.0"
    :go "_f_lookupIP(_v_host)"}
   [^String _v_host])
 
 JOKER FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
-<<<<<<< HEAD
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
-=======
-  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of (ref-to go.std.net/MX)) Error]"
->>>>>>> gostd-origin
+  "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*MX, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(ref-to go.std.net/arrayOfMX) Error]"
   {:added "1.0"
    :go "_f_lookupMX(_v_name)"}
   [^String _v_name])
 
 JOKER FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
-<<<<<<< HEAD
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
-=======
-  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of (ref-to go.std.net/NS)) Error]"
->>>>>>> gostd-origin
+  "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]*NS, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(ref-to go.std.net/arrayOfNS) Error]"
   {:added "1.0"
    :go "_f_lookupNS(_v_name)"}
   [^String _v_name])
@@ -254,22 +234,14 @@ JOKER FUNC net.LookupPort from net/lookup.go:
 
 JOKER FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
-<<<<<<< HEAD
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
-=======
-  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (_v_service string, _v_proto string, _v_name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String _v_service, ^String _v_proto, ^String _v_name]\n\nJoker return type: [String (vector-of (ref-to go.std.net/SRV)) Error]"
->>>>>>> gostd-origin
+  "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (_v_service string, _v_proto string, _v_name string)\n\nGo return type: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String _v_service, ^String _v_proto, ^String _v_name]\n\nJoker return type: [String (ref-to go.std.net/arrayOfSRV) Error]"
   {:added "1.0"
    :go "_f_lookupSRV(_v_service, _v_proto, _v_name)"}
   [^String _v_service, ^String _v_proto, ^String _v_name])
 
 JOKER FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
-<<<<<<< HEAD
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [arrayOfString Error]"
-=======
-  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [(vector-of String) Error]"
->>>>>>> gostd-origin
+  "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (_v_name string)\n\nGo return type: ([]string, error)\n\nJoker input arguments: [^String _v_name]\n\nJoker return type: [arrayOfString Error]"
   {:added "1.0"
    :go "_f_lookupTXT(_v_name)"}
   [^String _v_name])
