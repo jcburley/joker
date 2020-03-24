@@ -184,6 +184,7 @@ func init() {
 
 	intern("go-spew__", procGoSpew, "procGoSpew")
 	intern("verbosity-level__", procVerbosityLevel, "procVerbosityLevel")
+	intern("exit__", procExit, "procExit")
 
 	intern("goobject?__", procGoObject, "procGoObject")
 	intern("Go__", proc_Go, "proc_Go")
