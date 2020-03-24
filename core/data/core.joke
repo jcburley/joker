@@ -4603,6 +4603,13 @@
   ^Boolean [^Symbol s]
   (ns-initialized?__ s))
 
+(defn exit
+  "Causes the current program to exit with the given status code (defaults to 0)."
+  {:added "1.0"}
+  ([] (exit 0))
+  ([^Int code]
+   (exit__ code)))
+
 (defn Go
   "Invokes a receiver for a GoObject, returning the result.
 
