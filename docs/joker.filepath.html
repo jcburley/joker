@@ -105,14 +105,14 @@
     Constants are variables with <tt>:const true</tt> in their metadata. Joker currently does not recognize them as special; as such, it allows redefining them or their values.
     <ul>
       <li>
-  <h3 id="list-separator">list-separator</h3>
+  <h3 class="Constant" id="list-separator">list-separator</h3>
   <span class="var-kind Constant">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
   <p class="var-docstr">OS-specific path list separator.</p>
 </li>
 <li>
-  <h3 id="separator">separator</h3>
+  <h3 class="Constant" id="separator">separator</h3>
   <span class="var-kind Constant">String</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"></pre>
@@ -127,7 +127,7 @@
     <h2 id="_functions">Functions, Macros, and Special Forms</h2>
     <ul>
       <li>
-  <h3 id="abs">abs</h3>
+  <h3 class="Function" id="abs">abs</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(abs path)</code></div>
@@ -138,7 +138,7 @@
   Calls clean on the result.</p>
 </li>
 <li>
-  <h3 id="abs?">abs?</h3>
+  <h3 class="Function" id="abs?">abs?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(abs? path)</code></div>
@@ -146,7 +146,7 @@
   <p class="var-docstr">Reports whether the path is absolute.</p>
 </li>
 <li>
-  <h3 id="base">base</h3>
+  <h3 class="Function" id="base">base</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(base path)</code></div>
@@ -156,7 +156,7 @@
   entirely of separators, returns a single separator.</p>
 </li>
 <li>
-  <h3 id="clean">clean</h3>
+  <h3 class="Function" id="clean">clean</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(clean path)</code></div>
@@ -178,7 +178,7 @@ Finally, any occurrences of slash are replaced by separator.<br>
 If the result of this process is an empty string, returns the string &#34;.&#34;.</p>
 </li>
 <li>
-  <h3 id="dir">dir</h3>
+  <h3 class="Function" id="dir">dir</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(dir path)</code></div>
@@ -189,7 +189,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   returns a single separator. The returned path does not end in a separator unless it is the root directory.</p>
 </li>
 <li>
-  <h3 id="eval-symlinks">eval-symlinks</h3>
+  <h3 class="Function" id="eval-symlinks">eval-symlinks</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(eval-symlinks path)</code></div>
@@ -199,7 +199,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Calls clean on the result.</p>
 </li>
 <li>
-  <h3 id="ext">ext</h3>
+  <h3 class="Function" id="ext">ext</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(ext path)</code></div>
@@ -208,7 +208,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   in the final element of path; it is empty if there is no dot.</p>
 </li>
 <li>
-  <h3 id="file-seq">file-seq</h3>
+  <h3 class="Function" id="file-seq">file-seq</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(file-seq root)</code></div>
@@ -216,7 +216,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   <p class="var-docstr">Returns a seq of maps with info about files or directories under root.</p>
 </li>
 <li>
-  <h3 id="from-slash">from-slash</h3>
+  <h3 class="Function" id="from-slash">from-slash</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(from-slash path)</code></div>
@@ -225,7 +225,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Multiple slashes are replaced by multiple separators.</p>
 </li>
 <li>
-  <h3 id="glob">glob</h3>
+  <h3 class="Function" id="glob">glob</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(glob pattern)</code></div>
@@ -238,7 +238,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Throws exception when pattern is malformed.</p>
 </li>
 <li>
-  <h3 id="join">join</h3>
+  <h3 class="Function" id="join">join</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(join &amp; elems)</code></div>
@@ -248,7 +248,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   the result is a UNC path if and only if the first path element is a UNC path.</p>
 </li>
 <li>
-  <h3 id="matches?">matches?</h3>
+  <h3 class="Function" id="matches?">matches?</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(matches? pattern name)</code></div>
@@ -259,7 +259,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   On Windows, escaping is disabled. Instead, &#39;\&#39; is treated as path separator.</p>
 </li>
 <li>
-  <h3 id="rel">rel</h3>
+  <h3 class="Function" id="rel">rel</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(rel basepath targpath)</code></div>
@@ -271,7 +271,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Calls clean on the result.</p>
 </li>
 <li>
-  <h3 id="split">split</h3>
+  <h3 class="Function" id="split">split</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(split path)</code></div>
@@ -281,7 +281,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   the property that path = dir+file.</p>
 </li>
 <li>
-  <h3 id="split-list">split-list</h3>
+  <h3 class="Function" id="split-list">split-list</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(split-list path)</code></div>
@@ -290,7 +290,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Returns an empty slice when passed an empty string.</p>
 </li>
 <li>
-  <h3 id="to-slash">to-slash</h3>
+  <h3 class="Function" id="to-slash">to-slash</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(to-slash path)</code></div>
@@ -299,7 +299,7 @@ If the result of this process is an empty string, returns the string &#34;.&#34;
   Multiple separators are replaced by multiple slashes.</p>
 </li>
 <li>
-  <h3 id="volume-name">volume-name</h3>
+  <h3 class="Function" id="volume-name">volume-name</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(volume-name path)</code></div>
