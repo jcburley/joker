@@ -23,7 +23,6 @@ func ProcessLinterData(dialect Dialect) {
 		return
 	}
 	processData(linter_allData)
-	GLOBAL_ENV.CoreNamespace.Resolve("*loaded-libs*").Value = EmptySet()
 	if dialect == JOKER {
 		markJokerNamespacesAsUsed()
 		processData(linter_jokerData)
