@@ -301,6 +301,13 @@
   []
   (s/replace (go.std.runtime/Version) "go" ""))
 
+(defn joker-commit
+  []
+  (let [r (os/sh "git" "rev-parse" "--short" "master")]
+    (if (:success r)
+      (s/trim (:out r))
+      (str "error obtaining commit: " (s/trim (:err r))))))
+
 (defn index-doc
   [special-forms namespaces types]
   (let [special-forms-docs (s/join
@@ -330,6 +337,7 @@
                              (map #(link-item-doc (str %) "Type"))))]
     (-> index-template
         (s/replace "{JokerVersion}" (joker-version))
+        (s/replace "{commit}" (joker-commit))
         (s/replace "{GoVersion}" (go-version))
         (s/replace "{index-of-special-forms}" special-form-links-doc)
         (s/replace "{special-forms}" special-forms-docs)
