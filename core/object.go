@@ -151,6 +151,7 @@ type (
 		isDynamic      bool
 		isUsed         bool
 		isGloballyUsed bool
+		isFake         bool
 		taggedType     *Type
 	}
 	GoVar struct {
