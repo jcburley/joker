@@ -165,6 +165,10 @@ user=>
 
 If a particular constructor is missing, that indicates lack of support for the underlying type, or that the underlying type is abstract (`interface{}`).
 
+### Converting a GoObject to a Clojure Datatype
+
+TBD.
+
 ### Calling a Go API
 
 Calling a Go wrapper function (for a Go function, receiver, or method) in Joker requires ensuring the input arguments (if any) are of the proper types and then handling the returned results (if any) properly.
@@ -416,10 +420,6 @@ user=> (Go (deref Stdin) :Name)
 "/dev/stdin"
 user=>
 ```
-
-### Converting a GoObject to a Clojure Datatype
-
-TBD.
 
 ## Developer Notes
 
