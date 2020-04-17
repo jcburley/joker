@@ -10,7 +10,7 @@ Note that `gostd` is still very much a "work in progress". It does not convert t
 
 ## Recent Design Changes
 
-### 2009-10-26
+### 2020-04-17
 
 Values returned by functions (this includes receivers and methods) are now returned "as-is", rather than (for some types) autoconverted to suitable Joker representations.
 
