@@ -223,10 +223,13 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 	for argNum, field := range fields {
 		p := field.Name
 		resVar := ""
+		resVarDoc := ""
 		if p == nil {
 			resVar = genSym("__arg")
+			resVarDoc = resVar
 		} else {
 			resVar = "_v_" + p.Name
+			resVarDoc = p.Name
 		}
 		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
 
@@ -244,7 +247,7 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 		if clTypeDoc != "" {
 			clojureParamListDoc += "^" + clTypeDoc + " "
 		}
-		clojureParamListDoc += paramNameAsClojure(resVar)
+		clojureParamListDoc += paramNameAsClojure(resVarDoc)
 
 		if preCode != "" {
 			if goPreCode != "" {
@@ -269,7 +272,7 @@ func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string)
 		if goParamListDoc != "" {
 			goParamListDoc += ", "
 		}
-		goParamListDoc += paramNameAsGo(resVar)
+		goParamListDoc += paramNameAsGo(resVarDoc)
 		if goTypeDoc != "" {
 			goParamListDoc += " " + goTypeDoc
 		}
