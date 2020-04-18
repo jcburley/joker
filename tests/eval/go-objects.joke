@@ -83,13 +83,19 @@
 
 (deftest native-wrapping-works
   (let [one (Go 1 :<>)
-        c (Go (nth "hey" 1) :<>)]
+        un (deref one)
+        f (Go false :<>)
+        ff (deref f)
+        c (Go (nth "hey" 1) :<>)
+        si (deref c)]
     (is (= (str one) "1"))
-    (is (= (deref one) 1))
+    (is (= un 1))
     (is (= (str (type one)) "GoObject"))
-    (is (= (type (deref one)) Int))
+    (is (= (type un) Int))
+    (is (not ff))
+    (is (= (type ff) Boolean))
     (is (= (type c) GoObject))
-    (is (= (type (deref c)) Int))))
+    (is (= (type si) Int))))
 
 (deftest array-args-work
   (is (go.std.bytes/Equal "hey" "hey"))
