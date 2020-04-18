@@ -1466,14 +1466,16 @@
 (defn deref
   "Also reader macro: @var/@atom/@delay. When applied to a var or atom,
   returns its current state. When applied to a delay, forces it if not
-  already forced. When applied to a GoVar or GoObject, returns a
-  GoObject with the value itself (dereferenced if the input was
-  already a GoObject); an attempt to dereference a GoObject wrapping a
-  non-pointer concrete object returns a GoObject wrapping the original
-  value, while an attempt to dereference a GoObject of abstract type
-  returns a GoObject wrapping the underlying concrete type, which
-  might not be supported (via e.g. \"(Go ...)\" due to being private
-  in the underlying Go package."
+  already forced.
+
+  When applied to a GoVar or GoObject, returns a Joker or GoObject
+  with the value itself (dereferenced if the input was already a
+  GoObject). An attempt to dereference a GoObject wrapping a
+  non-pointer concrete object returns a Joker or GoObject wrapping the
+  original value, while an attempt to dereference a GoObject of
+  abstract type returns a GoObject wrapping the underlying concrete
+  type, which might not be supported (via e.g. \"(Go ...)\") due to
+  being private in the underlying Go package."
   {:added "1.0"}
   [^Deref ref]
   (deref__ ref))
