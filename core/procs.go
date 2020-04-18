@@ -532,7 +532,13 @@ var procDeref = func(args []Object) Object {
 		d := reflect.Indirect(reflect.ValueOf(c.Value)).Interface()
 		return MakeGoObjectIfNeeded(d)
 	case GoObject:
-		d := reflect.Indirect(reflect.ValueOf(c.O)).Interface()
+		var d interface{}
+		v := reflect.ValueOf(c.O)
+		if v.Kind() == reflect.Ptr {
+			d = reflect.Indirect(v).Interface()
+		} else {
+			d = c.O
+		}
 		return MakeGoObjectIfNeeded(d)
 	default:
 		return EnsureDeref(args, 0).Deref()
