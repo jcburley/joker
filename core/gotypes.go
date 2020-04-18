@@ -379,7 +379,7 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		i := AssertInt(key, "")
 		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for getting\n", o, reflect.TypeOf(o).Kind().String()))
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for getting", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func GoObjectCount(o interface{}) int {
@@ -393,7 +393,7 @@ func GoObjectCount(o interface{}) int {
 	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
 		return v.Len()
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for counting\n", o, reflect.TypeOf(o).Kind().String()))
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for counting", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func GoObjectSeq(o interface{}) Seq {
@@ -412,7 +412,7 @@ func GoObjectSeq(o interface{}) Seq {
 		}
 		return &ArraySeq{arr: elements}
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for sequencing\n", o, reflect.TypeOf(o).Kind().String()))
+	panic(fmt.Sprintf("Unsupported type=%T kind=%s for sequencing", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
