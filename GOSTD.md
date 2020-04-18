@@ -172,9 +172,24 @@ Given a `GoObject`, one may convert (to a native Joker type) and/or examine it v
 * `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Joker object or (if one isn't suitable) a `GoObject`; or, if the `GoObject` does not wrap a pointer, the underlying object is converted to a Joker object if possible, else wrapped by a newly constructed `GoObject`
 * `get`, which returns the value corresponding to the given key for structs (the key can named via a string, keyword, or symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Joker object is not suitable
 * `if`, `and`, `or`, and similar, which convert to `bool` (and all `GoObject`'s evaluate as `true`)
-* `seq`, which works on arrays, channels, maps, slices, and strings, but is (currently) not lazily evaluated
+* `seq`, which works on arrays, channels, maps, slices, strings, and structs, but is (currently) not lazily evaluated
 * `vec`, like `seq` but returns a vector instead of a sequence
 * `=`, `not=`, `compare`, and similar, which compare via Go's `==` operator (though with no autoconversion to `Number` or similar types) and return a `bool` or `int` result
+
+#### Converting a Struct to a Joker (Clojure) Datatype
+
+As touched on above, `count`, `seq`, and `vec` operate on Go `struct` types (dereferencing them once if necessary). Explaining further:
+* `count` returns the number of fields (which will therefore be the same value for a given struct's type, regardless of the values in the struct itself)
+* `seq` returns `([key-1 value-1] [key-2 value-2] ... [key-N value-N])`, where `N` equals `(count ...)` for the same object, where `key-n` is a keyword named after the Go field name (typically capitalized, due to being public)
+* `vec` is like `seq`, but returns a vector of key-value pairs
+
+Though it might be faster to retrieve individual fields as needed, a Joker (Clojure) map of field names (as keywords) to values can be constructed via e.g.:
+
+```
+(apply hash-map (flatten (seq goobject-wrapping-a-struct)))
+```
+
+NOTE: `seq` returns vectors of key/value pairs for Go `struct` objects to be consistent with how `seq` converts arguments of `Map` type.
 
 ### Calling a Go API
 

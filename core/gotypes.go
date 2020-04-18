@@ -392,6 +392,8 @@ func GoObjectCount(o interface{}) int {
 	switch v.Kind() {
 	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
 		return v.Len()
+	case reflect.Struct:
+		return v.NumField()
 	}
 	panic(fmt.Sprintf("Unsupported type=%T kind=%s for counting", o, reflect.TypeOf(o).Kind().String()))
 }
@@ -409,6 +411,14 @@ func GoObjectSeq(o interface{}) Seq {
 		elements := make([]Object, n)
 		for i := 0; i < n; i++ {
 			elements[i] = MakeGoObjectIfNeeded(v.Index(i).Interface())
+		}
+		return &ArraySeq{arr: elements}
+	case reflect.Struct:
+		n := v.NumField()
+		ty := v.Type()
+		elements := make([]Object, n)
+		for i := 0; i < n; i++ {
+			elements[i] = NewVectorFrom(MakeKeyword(ty.Field(i).Name), MakeGoObjectIfNeeded(v.Field(i).Interface()))
 		}
 		return &ArraySeq{arr: elements}
 	}
