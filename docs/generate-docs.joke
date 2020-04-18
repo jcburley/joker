@@ -107,7 +107,7 @@
 
 (defn tagged-arg
   [a]
-  (str (maybe-tag-prefix a) a))
+  (str (maybe-tag-prefix a) (s/replace (str a) "_v_" "")))
 
 (defn tagged-vector
   [v]
@@ -136,7 +136,7 @@
                  (for [form (:forms m)]
                    (str form))
                  (for [arglist (:arglists m)]
-                   (str (apply list k arglist))))]
+                   (s/replace (str (apply list k arglist)) "_v_" "")))]
     (s/join "" (map maybe-typed-usage usages usages-with-types))))
 
 (defn- source-file
