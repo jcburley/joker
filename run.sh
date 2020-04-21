@@ -11,13 +11,9 @@ build() {
 
 set -e  # Exit on error.
 
-[ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
-
 build
 
-if [ "$1" == "-v" ]; then
-  ./joker -e '(print "\nLibraries available in this build:\n  ") (loaded-libs) (println)'
-fi
+[ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
 
 # Check for changes in std, and run just-built Joker, only when building for host os/architecture.
 SUM256="$(go run tools/sum256dir/main.go std)"
@@ -36,6 +32,10 @@ if [ "$SUM256" != "$NEW_SUM256" ]; then
     echo 'std has changed, rebuilding...'
     build
     (cd docs; ../joker generate-docs.joke)
+fi
+
+if [ "$1" == "-v" ]; then
+  ./joker -e '(print "\nLibraries available in this build:\n  ") (loaded-libs) (println)'
 fi
 
 ./joker "$@"
