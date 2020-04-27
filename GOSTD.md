@@ -22,6 +22,20 @@ This change improves performance in cases where the returned value will be used 
 
 *Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
 
+## Sample Usage
+
+This sends a completely empty (and thus technically invalid SMTP) message, as the conversion of a `string` to `[]int` is TBD:
+
+```
+user=> (use 'go.std.net.smtp)
+nil
+user=> (def au (PlainAuth "" "james@burleyarch.com" "NOTMYPASSWORD" "p25.llamail.com"))
+#'user/au
+user=> (SendMail "p25.llamail.com:smtp" au "james@burleyarch.com" ["james-recipient@burleyarch.com"] [])
+""
+user=>
+```
+
 ## Design Principles
 
 The `go.std.` namespaces being automatically generated, they are not necessarily intended for direct use by business logic:
