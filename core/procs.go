@@ -84,6 +84,15 @@ func ExtractInt(args []Object, index int) int {
 	return EnsureInt(args, index).I
 }
 
+func ExtractInteger(args []Object, index int) int {
+	switch c := args[index].(type) {
+	case Number:
+		return c.Int().I
+	default:
+		panic(RT.NewArgTypeError(index, c, "Number"))
+	}
+}
+
 func ExtractByte(args []Object, index int) byte {
 	v := ExtractInt(args, index)
 	if v < 0 || v > 255 {
