@@ -50,7 +50,7 @@ in which case drops into the REPL after the expression is (successfully) execute
 
 [Standard library reference](https://candid82.github.io/joker/)
 
-Dash docset: `dash-feed://https%3A%2F%2Fraw.githubusercontent.com%2Fcandid82%2Fjoker%2Fmaster%2Fdocs%2Fjoker.xml`
+Dash docset: `dash-feed://https%3A%2F%2Fburleyarch.com%2Fjoker%2Fdocs%2Fjoker.xml`
 
 (either copy and paste this link to your browser's url bar or open it in a terminal with `open` command)
 
