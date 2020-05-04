@@ -1608,9 +1608,18 @@ var procBufferedReader = func(args []Object) Object {
 }
 
 var procSlurp = func(args []Object) Object {
-	b, err := ioutil.ReadFile(EnsureString(args, 0).S)
-	PanicOnErr(err)
-	return String{S: string(b)}
+	switch f := args[0].(type) {
+	case String:
+		b, err := ioutil.ReadFile(f.S)
+		PanicOnErr(err)
+		return String{S: string(b)}
+	case io.Reader:
+		b, err := ioutil.ReadAll(f)
+		PanicOnErr(err)
+		return String{S: string(b)}
+	default:
+		panic(RT.NewArgTypeError(0, args[0], "String or IOReader"))
+	}
 }
 
 var procSpit = func(args []Object) Object {
@@ -2280,11 +2289,15 @@ func ProcessLinterFile(configDir string, filename string) {
 }
 
 func ProcessLinterFiles(dialect Dialect, filename string, workingDir string) {
-	if dialect == EDN || dialect == JOKER {
+	if dialect == EDN {
 		return
 	}
 	configDir := findConfigFile(filename, workingDir, true)
 	if configDir == "" {
+		return
+	}
+	if dialect == JOKER {
+		ProcessLinterFile(configDir, "linter.joke")
 		return
 	}
 	ProcessLinterFile(configDir, "linter.cljc")
