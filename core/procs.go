@@ -898,7 +898,7 @@ var procHashSet = func(args []Object) Object {
 	return res
 }
 
-var procStr = func(args []Object) Object {
+func str(args ...Object) string {
 	var buffer bytes.Buffer
 	for _, obj := range args {
 		if !obj.Equals(NIL) {
@@ -908,7 +908,11 @@ var procStr = func(args []Object) Object {
 			buffer.WriteString(obj.ToString(!escaped))
 		}
 	}
-	return String{S: buffer.String()}
+	return buffer.String()
+}
+
+var procStr = func(args []Object) Object {
+	return String{S: str(args...)}
 }
 
 var procSymbol = func(args []Object) Object {
@@ -1623,8 +1627,8 @@ var procSlurp = func(args []Object) Object {
 }
 
 var procSpit = func(args []Object) Object {
-	filename := EnsureString(args, 0)
-	content := EnsureString(args, 1)
+	f := args[0]
+	content := args[1]
 	opts := EnsureMap(args, 2)
 	appendFile := false
 	if ok, append := opts.Get(MakeKeyword("append")); ok {
@@ -1636,11 +1640,19 @@ var procSpit = func(args []Object) Object {
 	} else {
 		flags |= os.O_TRUNC
 	}
-	f, err := os.OpenFile(filename.S, flags, 0644)
-	PanicOnErr(err)
-	defer f.Close()
-	_, err = f.WriteString(content.S)
-	PanicOnErr(err)
+	switch f := f.(type) {
+	case String:
+		file, err := os.OpenFile(f.S, flags, 0644)
+		PanicOnErr(err)
+		defer file.Close()
+		_, err = file.WriteString(str(content))
+		PanicOnErr(err)
+	case io.Writer:
+		_, err := io.WriteString(f, str(content))
+		PanicOnErr(err)
+	default:
+		panic(RT.NewArgTypeError(0, args[0], "String or IOWriter"))
+	}
 	return NIL
 }
 
