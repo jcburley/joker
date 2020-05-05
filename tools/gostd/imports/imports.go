@@ -90,8 +90,9 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	for _, f := range p.Files {
 		for _, impSpec := range f.Imports {
 			newPos := impSpec.Path.ValuePos
+			newPosStr := godb.WhereAt(newPos)
 			if oldPos, found := imports[impSpec.Path.Value]; found {
-				if oldPos < newPos {
+				if godb.WhereAt(oldPos) < newPosStr {
 					continue
 				}
 			}
