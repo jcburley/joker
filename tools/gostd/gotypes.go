@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo {
+func registerTypeGOT(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo {
 	if ti, found := GoTypes[fullGoTypeName]; found {
 		return ti
 	}
@@ -31,7 +31,7 @@ func registerType(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeI
 	return ti
 }
 
-func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
+func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 	if ti, found := GoTypes[baseName]; found {
 		return ti
 	}
@@ -69,11 +69,11 @@ func toGoTypeNameInfo(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 	return ti
 }
 
-func toGoTypeInfo(src *godb.GoFile, ts *TypeSpec) *GoTypeInfo {
-	return toGoExprInfo(src, ts.Type)
+func toGoTypeInfoGOT(src *godb.GoFile, ts *TypeSpec) *GoTypeInfo {
+	return toGoExprInfoGOT(src, ts.Type)
 }
 
-func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
+func toGoExprInfoGOT(src *godb.GoFile, e Expr) *GoTypeInfo {
 	localName := ""
 	fullGoName := ""
 	convertFromClojure := ""
@@ -91,13 +91,13 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	}()
 	switch td := e.(type) {
 	case *Ident:
-		ti = toGoTypeNameInfo(src.Package.Dir.String(), td.Name, e)
+		ti = toGoTypeNameInfoGOT(src.Package.Dir.String(), td.Name, e)
 		if ti == nil {
 			return nil
 		}
 		if ti.Uncompleted {
 			// Fill in other info now that all types are registered.
-			ut := toGoExprInfo(src, ti.UnderlyingType)
+			ut := toGoExprInfoGOT(src, ti.UnderlyingType)
 			/*			if ut.unsupported {
 						ti.fullGoName = ut.fullGoName
 						ti.unsupported = true
@@ -121,10 +121,10 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 		}
 		return ti
 	case *ArrayType:
-		ti = goArrayType(src, td.Len, td.Elt)
+		ti = goArrayTypeGOT(src, td.Len, td.Elt)
 		return ti
 	case *StarExpr:
-		ti = goStarExpr(src, td.X)
+		ti = goStarExprGOT(src, td.X)
 		return ti
 	}
 	if localName == "" || fullGoName == "" {
@@ -146,29 +146,29 @@ func toGoExprInfo(src *godb.GoFile, e Expr) *GoTypeInfo {
 	return ti
 }
 
-func toGoExprString(src *godb.GoFile, e Expr) string {
+func toGoExprStringGOT(src *godb.GoFile, e Expr) string {
 	if e == nil {
 		return "-"
 	}
-	t := toGoExprInfo(src, e)
+	t := toGoExprInfoGOT(src, e)
 	if t != nil {
 		return t.FullGoName
 	}
 	return fmt.Sprintf("%T", e)
 }
 
-func toGoExprTypeName(src *godb.GoFile, e Expr) string {
+func toGoExprTypeNameGOT(src *godb.GoFile, e Expr) string {
 	if e == nil {
 		return "-"
 	}
-	t := toGoExprInfo(src, e)
+	t := toGoExprInfoGOT(src, e)
 	if t != nil {
 		return t.LocalName
 	}
 	return fmt.Sprintf("%T", e)
 }
 
-func lenString(len Expr) string {
+func lenStringGOT(len Expr) string {
 	if len == nil {
 		return ""
 	}
@@ -179,10 +179,10 @@ func lenString(len Expr) string {
 	return fmt.Sprintf("ABEND911(unsupported array length %T)", len)
 }
 
-func goArrayType(src *godb.GoFile, len Expr, elt Expr) *GoTypeInfo {
+func goArrayTypeGOT(src *godb.GoFile, len Expr, elt Expr) *GoTypeInfo {
 	var fullGoName string
-	e := toGoExprInfo(src, elt)
-	fullGoName = "[" + lenString(len) + "]" + e.FullGoName
+	e := toGoExprInfoGOT(src, elt)
+	fullGoName = "[" + lenStringGOT(len) + "]" + e.FullGoName
 	if v, ok := GoTypes[fullGoName]; ok {
 		return v
 	}
@@ -200,15 +200,15 @@ func goArrayType(src *godb.GoFile, len Expr, elt Expr) *GoTypeInfo {
 	return v
 }
 
-func ptrTo(expr string) string {
+func ptrToGOT(expr string) string {
 	if expr[0] == '*' {
 		return expr[1:]
 	}
 	return expr
 }
 
-func goStarExpr(src *godb.GoFile, x Expr) *GoTypeInfo {
-	e := toGoExprInfo(src, x)
+func goStarExprGOT(src *godb.GoFile, x Expr) *GoTypeInfo {
+	e := toGoExprInfoGOT(src, x)
 	fullGoName := "*" + e.FullGoName
 	if v, ok := GoTypes[fullGoName]; ok {
 		return v
@@ -506,8 +506,6 @@ func init() {
 			panic(fmt.Sprintf("failed to define builtin %s", n))
 		}
 	}
-}
 
-func init() {
-	RegisterType_func = registerType // TODO: Remove this kludge (allowing gowalk to call this fn) when able
+	RegisterType_func = registerTypeGOT // TODO: Remove this kludge (allowing gowalk to call this fn) when able
 }

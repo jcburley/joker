@@ -352,7 +352,7 @@ func GenVariable(vi *VariableInfo) {
 }
 
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) string {
-	t := toGoTypeInfo(src, ts)
+	t := toGoTypeInfoGOT(src, ts)
 	if t == nil || t.Custom {
 		return ""
 	}
@@ -617,7 +617,7 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v := toGoTypeNameInfo(pkgDirUnix, name, e)
+	v := toGoTypeNameInfoGOT(pkgDirUnix, name, e)
 	nonGoObjectType = "case " + v.ArgClojureType
 	nonGoObjectTypeDoc = v.ArgClojureType
 	extractClojureObject = v.ArgFromClojureObject
@@ -665,19 +665,19 @@ func mapElementToType(tdi *Type, i int, name string, f *Field) string {
 }
 
 func valueToType(tdi *Type, value string, e Expr) string {
-	v := toGoExprInfo(tdi.GoFile, e)
+	v := toGoExprInfoGOT(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName
 	}
 	if !v.Exported {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
-			v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
+			v.FullGoName, toGoExprStringGOT(tdi.GoFile, v.UnderlyingType))
 	}
 	if v.ConvertFromMap != "" {
 		return fmt.Sprintf(v.ConvertFromMap, "o", value)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
+		v.FullGoName, toGoExprStringGOT(tdi.GoFile, v.UnderlyingType))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
