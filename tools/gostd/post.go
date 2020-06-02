@@ -85,7 +85,7 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 	switch v := e.(type) {
 	case *Ident:
 		gol = v.Name
-		ti := toGoExprInfo(fn.SourceFile, e)
+		ti := toGoExprInfoGOT(fn.SourceFile, e)
 		cl = ti.ArgExtractFunc
 		if ti.ConvertToClojure == "" {
 			out = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
