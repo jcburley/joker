@@ -214,6 +214,7 @@ func ExtractError(args []Object, index int) error {
 }
 
 var procMeta = func(args []Object) Object {
+	CheckArity(args, 1, 1)
 	switch obj := args[0].(type) {
 	case Meta:
 		meta := obj.GetMeta()
