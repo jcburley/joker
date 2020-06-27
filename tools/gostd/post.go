@@ -4,6 +4,7 @@ import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gowalk"
+	. "github.com/candid82/joker/tools/gostd/jtypes"
 	"github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -85,17 +86,17 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 	switch v := e.(type) {
 	case *Ident:
 		gol = v.Name
-		ti := toGoExprInfoGOT(fn.SourceFile, e)
-		cl = ti.ArgExtractFunc
-		if ti.ConvertToClojure == "" {
+		jti := JokerTypeInfo(e)
+		if jti == nil || jti.ConvertToClojure == "" {
 			out = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
 		} else {
-			out = "Make" + fmt.Sprintf(ti.ConvertToClojure, captureName, "")
+			out = "Make" + fmt.Sprintf(jti.ConvertToClojure, captureName, "")
 		}
-		if ti.Nullable {
+		if jti.Nullable {
 			out = maybeNil(captureName, out)
 		}
-		clDoc = ti.ArgClojureArgType
+		cl = jti.ArgExtractFunc
+		clDoc = jti.ArgClojureArgType
 	case *ArrayType:
 		cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
 	case *StarExpr:
