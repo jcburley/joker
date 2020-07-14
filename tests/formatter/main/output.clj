@@ -75,6 +75,9 @@
   1
   2)
 
+(do 1
+    2)
+
 (try 1 (catch Exception e 2) (finally 3))
 
 (try
@@ -107,7 +110,8 @@
   3.14)
 
 (ns my.test
-  (:require my.test1
+  (:require my.test0
+            my.test1
             [my.test2]
             [my.test3 :as test3 :refer [f1]])
   (:import (java.time LocalDateTime ZonedDateTime ZoneId)
