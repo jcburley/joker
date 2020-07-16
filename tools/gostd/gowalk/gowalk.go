@@ -3,9 +3,9 @@ package gowalk
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
+	. "github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
-	. "github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/build"

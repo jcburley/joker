@@ -1,4 +1,4 @@
-package types
+package gtypes
 
 import (
 	"fmt"
@@ -301,7 +301,7 @@ func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
 func fieldToString(f *Field) string {
 	_, name := TypeLookup(f.Type)
 	// Don't bother implementing this until it's actually needed:
-	return "ABEND041(types.go/fieldToString found something: " + name + "!)"
+	return "ABEND041(gtypes.go/fieldToString found something: " + name + "!)"
 }
 
 func methodsToString(methods []*Field) string {

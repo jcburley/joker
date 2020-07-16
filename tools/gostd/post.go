@@ -4,7 +4,7 @@ import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gowalk"
-	"github.com/candid82/joker/tools/gostd/types"
+	"github.com/candid82/joker/tools/gostd/gtypes"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"strings"
@@ -115,7 +115,7 @@ func genGoPostExpr(fn *gowalk.FuncInfo, indent, captureName string, e Expr, only
 	}
 
 	if gol == "" {
-		ty, tyName := types.TypeLookup(e)
+		ty, tyName := gtypes.TypeLookup(e)
 		if ty == nil {
 			gol = tyName + "ABEND000(post.go: no type info found)"
 		} else {
