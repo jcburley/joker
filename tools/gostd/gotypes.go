@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
-	"github.com/candid82/joker/tools/gostd/types"
 	. "go/ast"
 	gotypes "go/types"
 	"strings"
@@ -82,7 +82,7 @@ func toGoExprInfoGOT(src *godb.GoFile, e Expr) *GoTypeInfo {
 	var ti *GoTypeInfo
 	var underlyingType Expr
 	unsupported := false
-	tdi, tdiFullName := types.TypeLookup(e)
+	tdi, tdiFullName := gtypes.TypeLookup(e)
 	defer func() {
 		if tdi == nil && !strings.Contains(ti.FullGoName, "ABEND") {
 			Print(godb.Fset, e)
@@ -502,7 +502,7 @@ func init() {
 	}
 
 	for n, _ := range GoTypes {
-		if tdi := types.TypeDefineBuiltin(n); tdi == nil {
+		if tdi := gtypes.TypeDefineBuiltin(n); tdi == nil {
 			panic(fmt.Sprintf("failed to define builtin %s", n))
 		}
 	}

@@ -5,8 +5,8 @@ import (
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gowalk"
+	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/paths"
-	"github.com/candid82/joker/tools/gostd/types"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
 	"go/token"
@@ -256,7 +256,7 @@ func main() {
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
 			RegisterJokerFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]*types.Type{}, jokerSourceDir, false)
+			RegisterGoTypeSwitch([]*gtypes.Type{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
 
@@ -295,9 +295,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	types.SortAll()
+	gtypes.SortAll()
 
-	for _, tdi := range types.AllSorted() {
+	for _, tdi := range gtypes.AllSorted() {
 		GenTypeFromDb(tdi)
 	}
 
@@ -349,7 +349,7 @@ func main() {
 		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
 	}
 
-	RegisterGoTypeSwitch(types.AllSorted(), jokerSourceDir, outputCode)
+	RegisterGoTypeSwitch(gtypes.AllSorted(), jokerSourceDir, outputCode)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
@@ -371,7 +371,7 @@ Totals: functions=%d generated=%d (%s%%)
 			godb.NumMethods, pct(godb.NumMethods, gowalk.NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
 			gowalk.NumTypes,
 			gowalk.NumCtableTypes, gowalk.NumGeneratedCtors, pct(gowalk.NumGeneratedCtors, gowalk.NumCtableTypes),
-			types.NumExprHits, types.NumClojureNameHits,
+			gtypes.NumExprHits, gtypes.NumClojureNameHits,
 			gowalk.NumConstants, gowalk.NumGeneratedConstants, pct(gowalk.NumGeneratedConstants, gowalk.NumConstants),
 			gowalk.NumVariables, gowalk.NumGeneratedVariables, pct(gowalk.NumGeneratedVariables, gowalk.NumVariables))
 	}
