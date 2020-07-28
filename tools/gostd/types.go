@@ -20,5 +20,6 @@ func JokerTypeInfoForExpr(e Expr) jtypes.Info {
 }
 
 func init() {
+	typeMap["error"] = jtypes.Error
 	typeMap["string"] = jtypes.String
 }

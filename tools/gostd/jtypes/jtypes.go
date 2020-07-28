@@ -18,6 +18,13 @@ type info struct {
 
 var Nil = info{}
 
+var Error = info{
+	argExtractFunc:    "Error",
+	argClojureArgType: "Error",
+	convertToClojure:  "Error(%s%s)",
+	nullable:          true,
+}
+
 var String = info{
 	argExtractFunc:    "String",
 	argClojureArgType: "String",
