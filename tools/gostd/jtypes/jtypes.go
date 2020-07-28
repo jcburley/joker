@@ -18,6 +18,12 @@ type info struct {
 
 var Nil = info{}
 
+var String = info{
+	argExtractFunc:    "String",
+	argClojureArgType: "String",
+	convertToClojure:  "String(%s%s)",
+}
+
 func (jti info) ArgExtractFunc() string {
 	return jti.argExtractFunc
 }
