@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/gowalk"
 	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
@@ -506,6 +505,4 @@ func init() {
 			panic(fmt.Sprintf("failed to define builtin %s", n))
 		}
 	}
-
-	RegisterType_func = registerTypeGOT // TODO: Remove this kludge (allowing gowalk to call this fn) when able
 }

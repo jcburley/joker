@@ -3,14 +3,13 @@ package main
 import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gowalk"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"strconv"
 	"strings"
 )
 
-func genGoPreArray(fn *gowalk.FuncInfo, indent string, e *ArrayType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreArray(fn *FuncInfo, indent string, e *ArrayType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.Elt
 	len := e.Len
 	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
@@ -32,7 +31,7 @@ func genGoPreArray(fn *gowalk.FuncInfo, indent string, e *ArrayType, paramName s
 	return
 }
 
-func genGoPreStar(fn *gowalk.FuncInfo, indent string, e *StarExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreStar(fn *FuncInfo, indent string, e *StarExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.X
 	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
 	if cl2golParam[0] == '*' {
@@ -53,17 +52,17 @@ func genGoPreStar(fn *gowalk.FuncInfo, indent string, e *StarExpr, paramName str
 	return
 }
 
-func genGoPreSelected(fn *gowalk.FuncInfo, indent, fullPkgName, baseTypeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
-	clType, clTypeDoc, goType, goTypeDoc = gowalk.FullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
+func genGoPreSelected(fn *FuncInfo, indent, fullPkgName, baseTypeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+	clType, clTypeDoc, goType, goTypeDoc = FullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
 	cl2golParam = "*" + paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
 	return
 }
 
-func genGoPreNamed(fn *gowalk.FuncInfo, indent, typeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreNamed(fn *FuncInfo, indent, typeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	return genGoPreSelected(fn, indent, fn.SourceFile.Package.Dir.String(), typeName, paramName, argNum)
 }
 
-func genGoPreSelector(fn *gowalk.FuncInfo, indent string, e *SelectorExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreSelector(fn *FuncInfo, indent string, e *SelectorExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	pkgName := e.X.(*Ident).Name
 	fullPathUnix := Unix(FileAt(e.Pos()))
 	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.Root.String()+"/")
@@ -79,7 +78,7 @@ func genGoPreSelector(fn *gowalk.FuncInfo, indent string, e *SelectorExpr, param
 		WhereAt(e.Pos()), WhereAt(fn.Fd.Pos()), pkgName, fn.SourceFile.Name))
 }
 
-func genGoPreEllipsis(fn *gowalk.FuncInfo, indent string, e *Ellipsis, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreEllipsis(fn *FuncInfo, indent string, e *Ellipsis, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.Elt
 	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
 	runtime := "ConvertToEllipsisHaHa" + goType
@@ -95,7 +94,7 @@ func genGoPreEllipsis(fn *gowalk.FuncInfo, indent string, e *Ellipsis, paramName
 	return
 }
 
-func genGoPreFunc(fn *gowalk.FuncInfo, indent string, e *FuncType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreFunc(fn *FuncInfo, indent string, e *FuncType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType = "fn"
 	goType = "func"
 	runtime := "ConvertToFuncTypeHaHa" + goType
@@ -110,7 +109,7 @@ func genGoPreFunc(fn *gowalk.FuncInfo, indent string, e *FuncType, paramName str
 	return
 }
 
-func genGoPreInterface(fn *gowalk.FuncInfo, indent string, e *InterfaceType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreInterface(fn *FuncInfo, indent string, e *InterfaceType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType = "<protocol-or-something>"
 	goType = "interface {}"
 	runtime := "ConvertToInterfaceTypeHaHa"
@@ -125,7 +124,7 @@ func genGoPreInterface(fn *gowalk.FuncInfo, indent string, e *InterfaceType, par
 	return
 }
 
-func genGoPreMap(fn *gowalk.FuncInfo, indent string, e *MapType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreMap(fn *FuncInfo, indent string, e *MapType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType = "{}"
 	goType = "map[]"
 	runtime := "ConvertToMapTypeHaHa"
@@ -140,7 +139,7 @@ func genGoPreMap(fn *gowalk.FuncInfo, indent string, e *MapType, paramName strin
 	return
 }
 
-func genGoPreChan(fn *gowalk.FuncInfo, indent string, e *ChanType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
+func genGoPreChan(fn *FuncInfo, indent string, e *ChanType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType = "<no-idea-about-chan-yet>"
 	goType = "<-chan"
 	runtime := "ConvertToChanTypeHaHa"
@@ -155,7 +154,7 @@ func genGoPreChan(fn *gowalk.FuncInfo, indent string, e *ChanType, paramName str
 	return
 }
 
-func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
+func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
 	cl2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
@@ -214,7 +213,7 @@ func genTypePre(fn *gowalk.FuncInfo, indent string, e Expr, paramName string, ar
 	return
 }
 
-func genGoPre(fn *gowalk.FuncInfo, indent string, fl *FieldList, goFname string) (clojureParamList, clojureParamListDoc,
+func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (clojureParamList, clojureParamListDoc,
 	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string, min, max int) {
 	if fl == nil {
 		return
