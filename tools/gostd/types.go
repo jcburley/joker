@@ -89,6 +89,13 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 		}
 	}
 
+	typeMap[name] = jtypes.NewInfo(
+		gt.ArgExtractFunc,
+		gt.ArgClojureArgType,
+		gt.ConvertFromClojure,
+		gt.ConvertToClojure,
+		gt.Nullable)
+
 	return true
 }
 
@@ -115,6 +122,7 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 
 func init() {
 	typeMap["error"] = jtypes.Error
+	typeMap["int"] = jtypes.Int
 	typeMap["string"] = jtypes.String
 	MaybeRegisterType_func = registerType // TODO: Remove this kludge (allowing gowalk to call this fn) when able
 }

@@ -16,12 +16,30 @@ type info struct {
 	nullable           bool   // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
+func NewInfo(argExtractFunc, argClojureArgType, convertFromClojure, convertToClojure string, nullable bool) Info {
+	return &info{
+		argExtractFunc:     argExtractFunc,
+		argClojureArgType:  argClojureArgType,
+		convertFromClojure: convertFromClojure,
+		convertToClojure:   convertToClojure,
+		nullable:           nullable,
+	}
+
+}
+
 var Nil = info{}
 
 var Error = info{
 	argExtractFunc:    "Error",
 	argClojureArgType: "Error",
 	convertToClojure:  "Error(%s%s)",
+	nullable:          true,
+}
+
+var Int = info{
+	argExtractFunc:    "Int",
+	argClojureArgType: "Int",
+	convertToClojure:  "Int(%s%s)",
 	nullable:          true,
 }
 
