@@ -9,6 +9,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"sort"
 	"strings"
 )
@@ -89,7 +90,7 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 		}
 	}
 
-	typeMap[name] = jtypes.NewInfo(
+	typeMap[typeName] = jtypes.NewInfo(
 		gt.ArgExtractFunc,
 		gt.ArgClojureArgType,
 		gt.ConvertFromClojure,
@@ -100,9 +101,9 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 }
 
 func JokerTypeInfoForExpr(e Expr) jtypes.Info {
-	switch td := e.(type) {
+	switch e.(type) {
 	case *Ident:
-		if jti, found := typeMap[td.Name]; found {
+		if jti, found := typeMap[typeName(e)]; found {
 			return jti
 		}
 	}
@@ -118,6 +119,45 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 	for _, k := range keys {
 		f(k, m[k])
 	}
+}
+
+func typeName(e Expr) string {
+	switch x := e.(type) {
+	case *Ident:
+		break
+	case *ArrayType:
+		return "[" + exprToString(x.Len) + "]" + typeName(x.Elt)
+	case *StarExpr:
+		return "*" + typeName(x.X)
+	case *MapType:
+		return "map[" + typeName(x.Key) + "]" + typeName(x.Value)
+	case *SelectorExpr:
+		return fmt.Sprintf("%s", x.X) + "." + x.Sel.Name
+	default:
+		return fmt.Sprintf("ABEND699(types.go:typeName: unrecognized node %T)", e)
+	}
+
+	x := e.(*Ident)
+	local := x.Name
+	prefix := ""
+	if types.Universe.Lookup(local) == nil {
+		prefix = godb.GoPackageForExpr(e) + "."
+	}
+
+	return prefix + local
+}
+
+func exprToString(e Expr) string {
+	if e == nil {
+		return ""
+	}
+	switch v := e.(type) {
+	case *Ellipsis:
+		return "..." + exprToString(v.Elt)
+	case *BasicLit:
+		return v.Value
+	}
+	return fmt.Sprintf("%v", e)
 }
 
 func init() {
