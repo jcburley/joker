@@ -74,8 +74,6 @@ func define(tdi *Type) {
 		}
 		typesByExpr[tdi.Type] = tdi
 	}
-
-	//	fmt.Printf("define: %s\n", name)
 }
 
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type {

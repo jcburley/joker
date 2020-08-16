@@ -100,14 +100,29 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 	return true
 }
 
+// Maps type-defining Expr to exactly one struct describing that type
+var typesByExpr = map[Expr]jtypes.Info{}
+var NumGoExprHits uint
+var NumGoNameHits uint
+
 func JokerTypeInfoForExpr(e Expr) jtypes.Info {
+	if jti, ok := typesByExpr[e]; ok {
+		NumGoExprHits++
+		return jti
+	}
+	goName := typeName(e)
+	if jti, ok := typeMap[goName]; ok {
+		NumGoNameHits++
+		typesByExpr[e] = jti
+		return jti
+	}
+
 	switch e.(type) {
 	case *Ident:
-		name := typeName(e)
-		if jti, found := typeMap[name]; found {
+		if jti, found := typeMap[goName]; found {
 			return jti
 		}
-		return jtypes.BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", name))
+		return jtypes.BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", goName))
 	}
 	return jtypes.BadInfo(fmt.Sprintf("ABEND621(types.go:JokerTypeInfoForExpr: unsupported expr type %T)", e))
 }

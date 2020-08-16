@@ -360,7 +360,8 @@ Totals: functions=%d generated=%d (%s%%)
           methods=%d (%s%%) generated=%d (%s%%)
         types=%d
           constructable=%d ctors=%d (%s%%)
-          hits expr=%d fullname=%d
+          Go hits expr=%d fullname=%d
+          Clojure hits expr=%d fullname=%d
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
 `,
@@ -370,6 +371,7 @@ Totals: functions=%d generated=%d (%s%%)
 			godb.NumMethods, pct(godb.NumMethods, NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
 			NumTypes,
 			NumCtableTypes, NumGeneratedCtors, pct(NumGeneratedCtors, NumCtableTypes),
+			NumGoExprHits, NumGoNameHits,
 			gtypes.NumExprHits, gtypes.NumClojureNameHits,
 			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
 			NumVariables, NumGeneratedVariables, pct(NumGeneratedVariables, NumVariables))
