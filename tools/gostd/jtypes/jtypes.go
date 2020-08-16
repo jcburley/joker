@@ -24,7 +24,15 @@ func NewInfo(argExtractFunc, argClojureArgType, convertFromClojure, convertToClo
 		convertToClojure:   convertToClojure,
 		nullable:           nullable,
 	}
+}
 
+func BadInfo(err string) Info {
+	return &info{
+		argExtractFunc:     err,
+		argClojureArgType:  err,
+		convertFromClojure: err,
+		convertToClojure:   err,
+	}
 }
 
 var Nil = info{}

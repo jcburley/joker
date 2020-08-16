@@ -103,11 +103,13 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 func JokerTypeInfoForExpr(e Expr) jtypes.Info {
 	switch e.(type) {
 	case *Ident:
-		if jti, found := typeMap[typeName(e)]; found {
+		name := typeName(e)
+		if jti, found := typeMap[name]; found {
 			return jti
 		}
+		return jtypes.BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", name))
 	}
-	return jtypes.Nil
+	return jtypes.BadInfo(fmt.Sprintf("ABEND621(types.go:JokerTypeInfoForExpr: unsupported expr type %T)", e))
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
