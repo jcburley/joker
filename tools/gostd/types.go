@@ -163,8 +163,22 @@ func exprToString(e Expr) string {
 }
 
 func init() {
+	typeMap["bool"] = jtypes.Bool
+	typeMap["byte"] = jtypes.Byte
+	typeMap["complex128"] = jtypes.Complex128
 	typeMap["error"] = jtypes.Error
+	typeMap["float32"] = jtypes.Float32
+	typeMap["float64"] = jtypes.Float64
 	typeMap["int"] = jtypes.Int
+	typeMap["int32"] = jtypes.Int32
+	typeMap["int64"] = jtypes.Int64
+	typeMap["rune"] = jtypes.Rune
 	typeMap["string"] = jtypes.String
+	typeMap["uint"] = jtypes.UInt
+	typeMap["uint16"] = jtypes.UInt16
+	typeMap["uint32"] = jtypes.UInt32
+	typeMap["uint64"] = jtypes.UInt64
+	typeMap["uint8"] = jtypes.UInt8
+	typeMap["uintptr"] = jtypes.UIntPtr
 	MaybeRegisterType_func = registerType // TODO: Remove this kludge (allowing gowalk to call this fn) when able
 }

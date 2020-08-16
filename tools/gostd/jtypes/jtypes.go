@@ -44,17 +44,96 @@ var Error = info{
 	nullable:          true,
 }
 
-var Int = info{
-	argExtractFunc:    "Int",
+var Bool = info{
+	argExtractFunc:    "Boolean",
+	argClojureArgType: "Boolean",
+	convertToClojure:  "Boolean(%s%s)",
+}
+
+var Byte = info{
+	argExtractFunc:    "Byte",
 	argClojureArgType: "Int",
-	convertToClojure:  "Int(%s%s)",
-	nullable:          true,
+	convertToClojure:  "Int(int(%s)%s)",
+}
+
+var Rune = info{
+	argExtractFunc:    "Char",
+	argClojureArgType: "Char",
+	convertToClojure:  "Char(%s%s)",
 }
 
 var String = info{
 	argExtractFunc:    "String",
 	argClojureArgType: "String",
 	convertToClojure:  "String(%s%s)",
+}
+
+var Int = info{
+	argExtractFunc:    "Int",
+	argClojureArgType: "Int",
+	convertToClojure:  "Int(%s%s)",
+}
+
+var Int32 = info{
+	argExtractFunc:    "Int32",
+	argClojureArgType: "Int",
+	convertToClojure:  "Int(int(%s)%s)",
+}
+
+var Int64 = info{
+	argExtractFunc:    "Int64",
+	argClojureArgType: "Number",
+	convertToClojure:  "BigInt(%s%s)",
+}
+
+var UInt = info{
+	argExtractFunc:    "Uint",
+	argClojureArgType: "Number",
+	convertToClojure:  "BigIntU(uint64(%s)%s)",
+}
+
+var UInt8 = info{
+	argExtractFunc:    "Uint8",
+	argClojureArgType: "Int",
+	convertToClojure:  "Int(int(%s)%s)",
+}
+
+var UInt16 = info{
+	argExtractFunc:    "Uint16",
+	argClojureArgType: "Int",
+	convertToClojure:  "Int(int(%s)%s)",
+}
+
+var UInt32 = info{
+	argExtractFunc:    "Uint32",
+	argClojureArgType: "Number",
+	convertToClojure:  "BigIntU(uint64(%s)%s)",
+}
+
+var UInt64 = info{
+	argExtractFunc:    "Uint64",
+	argClojureArgType: "Number",
+	convertToClojure:  "BigIntU(%s%s)",
+}
+
+var UIntPtr = info{
+	argExtractFunc:    "UintPtr",
+	argClojureArgType: "Number",
+}
+
+var Float32 = info{
+	argExtractFunc:    "ABEND007(find these)",
+	argClojureArgType: "Double",
+}
+
+var Float64 = info{
+	argExtractFunc:    "ABEND007(find these)",
+	argClojureArgType: "Double",
+}
+
+var Complex128 = info{
+	argExtractFunc:    "ABEND007(find these)",
+	argClojureArgType: "ABEND007(find these)",
 }
 
 func (jti info) ArgExtractFunc() string {
