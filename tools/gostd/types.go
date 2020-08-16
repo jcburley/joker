@@ -180,5 +180,4 @@ func init() {
 	typeMap["uint64"] = jtypes.UInt64
 	typeMap["uint8"] = jtypes.UInt8
 	typeMap["uintptr"] = jtypes.UIntPtr
-	MaybeRegisterType_func = registerType // TODO: Remove this kludge (allowing gowalk to call this fn) when able
 }

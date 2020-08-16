@@ -245,11 +245,10 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 }
 
 var RegisterType_func func(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
-var MaybeRegisterType_func func(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
 func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
-	if !MaybeRegisterType_func(ts, gf, pkg, parentDoc) {
+	if !registerType(ts, gf, pkg, parentDoc) {
 		return
 	}
 }
