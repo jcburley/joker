@@ -95,6 +95,7 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 		gt.ArgClojureArgType,
 		gt.ConvertFromClojure,
 		gt.ConvertToClojure,
+		gt.ConvertToClojure,
 		gt.Nullable)
 
 	return true

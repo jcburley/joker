@@ -85,16 +85,17 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 	case *Ident:
 		gol = v.Name
 		jti := JokerTypeInfoForExpr(e)
-		if jti.ConvertToClojure() == "" {
-			out = fmt.Sprintf("ABEND043(post.go: unsupported built-in type %s)", v.Name)
+		if jti.AsJokerObject() == "" {
+			out = fmt.Sprintf("MakeGoObject(%s)", captureName)
+			cl = "GoObject"
 		} else {
-			out = "Make" + fmt.Sprintf(jti.ConvertToClojure(), captureName, "")
+			out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
+			cl = jti.ArgExtractFunc()
+			clDoc = jti.ArgClojureArgType()
 		}
 		if jti.Nullable() {
 			out = maybeNil(captureName, out)
 		}
-		cl = jti.ArgExtractFunc()
-		clDoc = jti.ArgClojureArgType()
 	case *ArrayType:
 		cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
 	case *StarExpr:
