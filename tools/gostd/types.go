@@ -55,12 +55,12 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 	name := ts.Name.Name
 	typeName := pkg + "." + name
 
-	if pkg == "unsafe" && name == "ArbitraryType" {
-		if godb.Verbose {
-			fmt.Printf("Excluding mythical type %s.%s\n", pkg, name)
-		}
-		return false
-	}
+	// if pkg == "unsafe" && name == "ArbitraryType" {
+	// 	if godb.Verbose {
+	// 		fmt.Printf("Excluding mythical type %s.%s\n", pkg, name)
+	// 	}
+	// 	return false
+	// }
 
 	if WalkDump {
 		fmt.Printf("Type %s at %s:\n", typeName, godb.WhereAt(ts.Pos()))

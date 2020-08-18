@@ -54,7 +54,11 @@ func genGoPreStar(fn *FuncInfo, indent string, e *StarExpr, paramName string, ar
 
 func genGoPreSelected(fn *FuncInfo, indent, fullPkgName, baseTypeName, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	clType, clTypeDoc, goType, goTypeDoc = FullPkgNameAsGoType(fn, fullPkgName, baseTypeName)
-	cl2golParam = "*" + paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
+	if goType == "unsafe.ArbitraryType" {
+		cl2golParam = paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
+	} else {
+		cl2golParam = "*" + paramName // genType generates functions that return pointers to objects, to avoid copying-sync.Mutex issues
+	}
 	return
 }
 
@@ -231,6 +235,11 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 			resVarDoc = p.Name
 		}
 		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
+		if goType == "unsafe.ArbitraryType" {
+			goType = "interface{}"
+			clType = "GoObject"
+			clTypeDoc = "GoObject"
+		}
 
 		if clojureParamList != "" {
 			clojureParamList += ", "

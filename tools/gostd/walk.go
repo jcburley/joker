@@ -235,6 +235,9 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	fl := FlattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
+	if fullName == "unsafe._Offsetof" {
+		return // unsafe.Offsetof is a syntactic operation in Go.
+	}
 	if v, ok := QualifiedFunctions[fullName]; ok {
 		AddSortedOutput(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))

@@ -251,7 +251,7 @@ func SortAll() {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, t := range typesByClojureName {
-		if t.IsExported {
+		if t.IsExported && (t.GoPackage != "unsafe" || t.GoName != "ArbitraryType") {
 			allTypesSorted = append(allTypesSorted, t)
 		}
 	}

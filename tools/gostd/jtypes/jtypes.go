@@ -141,7 +141,7 @@ var UIntPtr = info{
 var Float32 = info{
 	argExtractFunc:    "ABEND007(find these)",
 	argClojureArgType: "Double",
-	asJokerObject:     "Double(%s%s)",
+	asJokerObject:     "Double(float64(%s)%s)",
 }
 
 var Float64 = info{
