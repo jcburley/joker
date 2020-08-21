@@ -19,7 +19,7 @@ type GoTypeInfo struct {
 	FullGoName                string       // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
 	SourceFile                *godb.GoFile // location of the type defintion
 	Td                        *TypeSpec
-	Type                      *gtypes.Type // Primary type in the new package
+	Type                      *gtypes.GoType // Primary type in the new package
 	Where                     token.Pos
 	UnderlyingType            Expr             // nil if not a declared type
 	ArgClojureType            string           // Can convert this type to a Go function arg with my type
@@ -49,7 +49,7 @@ var GoTypes = GoTypeMap{}
 
 var typeMap = map[string]jtypes.Info{}
 
-var TypeDefsToGoTypes = map[*gtypes.Type]*GoTypeInfo{}
+var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
 
 func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name

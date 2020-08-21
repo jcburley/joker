@@ -255,7 +255,7 @@ func main() {
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
 			RegisterJokerFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]*gtypes.Type{}, jokerSourceDir, false)
+			RegisterGoTypeSwitch([]*gtypes.GoType{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
 

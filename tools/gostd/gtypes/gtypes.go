@@ -19,23 +19,23 @@ var NumExprHits uint
 var NumClojureNameHits uint
 
 // Info from the definition of the type (if any)
-type Type struct {
-	Type           Expr      // The actual type (if any)
-	TypeSpec       *TypeSpec // The definition of the named type (if any)
-	ClojureName    string    // Clojure name (e.g. "a.b.c/Typename", "(vector-of int)")
-	IsExported     bool
-	Doc            string
-	DefPos         token.Pos
-	GoFile         *GoFile
-	GoPackage      string // E.g. a/b/c (always Unix style)
-	GoPattern      string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	GoName         string // Base name of type (without any prefix/pattern applied)
-	underlyingType *Type
-	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
-	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+type GoType struct {
+	Type             Expr      // The actual type (if any)
+	TypeSpec         *TypeSpec // The definition of the named type (if any)
+	ClojureName      string    // Clojure name (e.g. "a.b.c/Typename", "(vector-of int)")
+	IsExported       bool
+	Doc              string
+	DefPos           token.Pos
+	GoFile           *GoFile
+	GoPackage        string // E.g. a/b/c (always Unix style)
+	GoPattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	GoName           string // Base name of type (without any prefix/pattern applied)
+	underlyingGoType *GoType
+	Ord              uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
+	Specificity      uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
-var typesByClojureName = map[string]*Type{}
+var typesByClojureName = map[string]*GoType{}
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -60,7 +60,7 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
-func define(tdi *Type) {
+func define(tdi *GoType) {
 	name := tdi.ClojureName
 	if existingTdi, ok := typesByClojureName[name]; ok {
 		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, WhereAt(existingTdi.DefPos), WhereAt(tdi.DefPos)))
@@ -76,7 +76,7 @@ func define(tdi *Type) {
 	}
 }
 
-func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type {
+func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*GoType {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to define new type after having sorted all types!!")
 	}
@@ -93,9 +93,9 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
 
-	types := []*Type{}
+	types := []*GoType{}
 
-	tdi := &Type{
+	tdi := &GoType{
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		ClojureName: name,
@@ -113,16 +113,16 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 
 	if tdi.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
-		tdiPtrTo := &Type{
-			Type:           &StarExpr{X: tdi.Type},
-			ClojureName:    "*" + tdi.ClojureName,
-			IsExported:     tdi.IsExported,
-			Doc:            "",
-			GoPattern:      fmt.Sprintf(tdi.GoPattern, "*%s"),
-			GoPackage:      tdi.GoPackage,
-			GoName:         tdi.GoName,
-			underlyingType: tdi,
-			Specificity:    Concrete,
+		tdiPtrTo := &GoType{
+			Type:             &StarExpr{X: tdi.Type},
+			ClojureName:      "*" + tdi.ClojureName,
+			IsExported:       tdi.IsExported,
+			Doc:              "",
+			GoPattern:        fmt.Sprintf(tdi.GoPattern, "*%s"),
+			GoPackage:        tdi.GoPackage,
+			GoName:           tdi.GoName,
+			underlyingGoType: tdi,
+			Specificity:      Concrete,
 		}
 		define(tdiPtrTo)
 		types = append(types, tdiPtrTo)
@@ -132,16 +132,16 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 }
 
 // Maps type-defining Expr to exactly one struct describing that type
-var typesByExpr = map[Expr]*Type{}
+var typesByExpr = map[Expr]*GoType{}
 
-func defineVariant(clojureName, pattern string, innerTdi *Type, te Expr) *Type {
-	tdi := &Type{
-		Type:           te,
-		ClojureName:    clojureName,
-		IsExported:     innerTdi.IsExported,
-		GoPattern:      pattern,
-		GoName:         innerTdi.GoName,
-		underlyingType: innerTdi,
+func defineVariant(clojureName, pattern string, innerTdi *GoType, te Expr) *GoType {
+	tdi := &GoType{
+		Type:             te,
+		ClojureName:      clojureName,
+		IsExported:       innerTdi.IsExported,
+		GoPattern:        pattern,
+		GoName:           innerTdi.GoName,
+		underlyingGoType: innerTdi,
 	}
 
 	define(tdi)
@@ -151,8 +151,8 @@ func defineVariant(clojureName, pattern string, innerTdi *Type, te Expr) *Type {
 	return tdi
 }
 
-func TypeDefineBuiltin(name string) *Type {
-	tdi := &Type{
+func TypeDefineBuiltin(name string) *GoType {
+	tdi := &GoType{
 		Type:        &Ident{Name: name},
 		ClojureName: name,
 		IsExported:  true,
@@ -165,7 +165,7 @@ func TypeDefineBuiltin(name string) *Type {
 	return tdi
 }
 
-func TypeLookup(e Expr) (ty *Type, clojureName string) {
+func TypeLookup(e Expr) (ty *GoType, clojureName string) {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return tdi, tdi.ClojureName
@@ -182,7 +182,7 @@ func TypeLookup(e Expr) (ty *Type, clojureName string) {
 		return nil, e.(*Ident).Name
 	}
 
-	var innerTdi *Type
+	var innerTdi *GoType
 	pattern := "%s"
 	goName := ""
 
@@ -229,7 +229,7 @@ func TypeLookup(e Expr) (ty *Type, clojureName string) {
 		if goName == "" {
 			goName = fmt.Sprintf("ABEND001(NO GO NAME for %s??!!)", clojureName)
 		}
-		tdi := &Type{
+		tdi := &GoType{
 			Type:        e,
 			ClojureName: clojureName,
 			GoPattern:   pattern,
@@ -242,7 +242,7 @@ func TypeLookup(e Expr) (ty *Type, clojureName string) {
 	return defineVariant(clojureName, pattern, innerTdi, e), clojureName
 }
 
-var allTypesSorted = []*Type{}
+var allTypesSorted = []*GoType{}
 
 // This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
 // new types cannot be discovered/added.
@@ -267,7 +267,7 @@ func SortAll() {
 	}
 }
 
-func AllSorted() []*Type {
+func AllSorted() []*GoType {
 	return allTypesSorted
 }
 
@@ -281,7 +281,7 @@ func typeKeyForSort(k string) string {
 	return k
 }
 
-func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
+func SortedTypeDefinitions(m map[*GoType]struct{}, f func(ti *GoType)) {
 	var keys []string
 	for k, _ := range m {
 		if k != nil {
@@ -414,10 +414,10 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (tdi *Type) TypeReflected() (packageImport, pattern string) {
+func (tdi *GoType) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
-	if tdiu := tdi.underlyingType; tdiu != nil {
+	if tdiu := tdi.underlyingGoType; tdiu != nil {
 		t = "_" + path.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 		suffix = ""
 	} else {
@@ -426,17 +426,17 @@ func (tdi *Type) TypeReflected() (packageImport, pattern string) {
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (tdi *Type) TypeMappingsName() string {
+func (tdi *GoType) TypeMappingsName() string {
 	if !tdi.IsExported {
 		return ""
 	}
-	if tdi.underlyingType != nil {
-		return "info_PtrTo_" + fmt.Sprintf(tdi.underlyingType.GoPattern, tdi.underlyingType.GoName)
+	if tdi.underlyingGoType != nil {
+		return "info_PtrTo_" + fmt.Sprintf(tdi.underlyingGoType.GoPattern, tdi.underlyingGoType.GoName)
 	}
 	return "info_" + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 }
 
-func (tdi *Type) RelativeGoName(pos token.Pos) string {
+func (tdi *GoType) RelativeGoName(pos token.Pos) string {
 	pkgPrefix := tdi.GoPackage
 	if pkgPrefix == GoPackageForPos(pos) {
 		pkgPrefix = ""

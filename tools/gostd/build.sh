@@ -8,4 +8,5 @@
 ONERROR=":"
 [ -r ONERROR.txt ] && ONERROR="$(cat ONERROR.txt)"
 
-go vet -all *.go && go build && ./test.sh --on-error "$ONERROR"
+go vet -all *.go
+go build && ./test.sh --on-error "$ONERROR"

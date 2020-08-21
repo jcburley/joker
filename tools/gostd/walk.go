@@ -78,8 +78,8 @@ type CodeInfo struct {
 	Variables GoVariablesMap
 	Functions fnCodeMap
 	Types     GoTypeMap
-	InitTypes map[*Type]struct{}               // types to be initialized
-	InitVars  map[*Type]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	InitTypes map[*GoType]struct{}               // types to be initialized
+	InitVars  map[*GoType]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -125,7 +125,7 @@ type FuncInfo struct {
 	Name       string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
 	DocName    string    // Everything, for documentation and diagnostics
 	Fd         *FuncDecl // nil for methods
-	ToM        *Type     // Method operates on this type (nil for standalones and receivers)
+	ToM        *GoType   // Method operates on this type (nil for standalones and receivers)
 	Ft         *FuncType
 	Doc        *CommentGroup
 	SourceFile *godb.GoFile
@@ -786,9 +786,9 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*Type]struct{}{}, map[*Type]map[string]*FnCodeInfo{}}
+			map[*GoType]struct{}{}, map[*GoType]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*Type]struct{}{}, map[*Type]map[string]*FnCodeInfo{}}
+			map[*GoType]struct{}{}, map[*GoType]map[string]*FnCodeInfo{}}
 	}
 
 	for path, f := range p.Files {

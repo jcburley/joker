@@ -454,10 +454,10 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 	ti.GoCode = strings.ReplaceAll(ti.GoCode, "{{myGoImport}}", myGoImport)
 }
 
-var Ctors = map[*Type]string{}
-var CtorNames = map[*Type]string{}
+var Ctors = map[*GoType]string{}
+var CtorNames = map[*GoType]string{}
 
-func genCtor(tdi *Type) {
+func genCtor(tdi *GoType) {
 	if tdi.TypeSpec == nil {
 		return
 	}
@@ -501,7 +501,7 @@ func %s(_o Object) Object {
 	Ctors[tdi] = goConstructor
 }
 
-func appendMethods(tdi *Type, iface *InterfaceType) {
+func appendMethods(tdi *GoType, iface *InterfaceType) {
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
 			if len(m.Names) != 1 {
@@ -542,7 +542,7 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 	}
 }
 
-func GenTypeFromDb(tdi *Type) {
+func GenTypeFromDb(tdi *GoType) {
 	if !tdi.IsExported || strings.Contains(tdi.ClojureName, "[") {
 		return // Do not generate anything for private or array types
 	}
@@ -566,7 +566,7 @@ func promoteImports(from, to *imports.Imports, pos token.Pos) {
 	}
 }
 
-func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(tdi *GoType, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
@@ -586,7 +586,7 @@ func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase,
 		ptrTo
 }
 
-func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+func nonGoObjectTypeFor(tdi *GoType, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
 	switch t := tdi.TypeSpec.Type.(type) {
 	case *Ident:
 		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.Dir.String(), t.Name, tdi.TypeSpec.Type)
@@ -626,7 +626,7 @@ func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjec
 	return
 }
 
-func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
+func mapToType(tdi *GoType, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
@@ -642,7 +642,7 @@ func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, valToType)
 }
 
-func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, name string, f *Field) string) string {
+func elementsToType(tdi *GoType, ty *StructType, toType func(tdi *GoType, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -659,11 +659,11 @@ func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, nam
 		`)
 }
 
-func mapElementToType(tdi *Type, i int, name string, f *Field) string {
+func mapElementToType(tdi *GoType, i int, name string, f *Field) string {
 	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 
-func valueToType(tdi *Type, value string, e Expr) string {
+func valueToType(tdi *GoType, value string, e Expr) string {
 	v := toGoExprInfoGOT(tdi.GoFile, e)
 	if v.Unsupported {
 		return v.FullGoName
@@ -680,7 +680,7 @@ func valueToType(tdi *Type, value string, e Expr) string {
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(tdi *Type, importeds []imports.Import) {
+func addRequiredImports(tdi *GoType, importeds []imports.Import) {
 	to := TypeDefsToGoTypes[tdi].RequiredImports
 	for _, imp := range importeds {
 		local := imp.Local
