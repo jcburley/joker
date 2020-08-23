@@ -3,7 +3,6 @@ package gtypes
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
@@ -26,7 +25,7 @@ type GoType struct {
 	IsExported       bool
 	Doc              string
 	DefPos           token.Pos
-	GoFile           *GoFile
+	GoFile           *godb.GoFile
 	GoPackage        string // E.g. a/b/c (always Unix style)
 	GoPattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	GoName           string // Base name of type (without any prefix/pattern applied)
@@ -111,7 +110,7 @@ func specificity(ts *TypeSpec) uint {
 func define(tdi *GoType) {
 	name := tdi.ClojureName
 	if existingTdi, ok := typesByClojureName[name]; ok {
-		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, WhereAt(existingTdi.DefPos), WhereAt(tdi.DefPos)))
+		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, godb.WhereAt(existingTdi.DefPos), godb.WhereAt(tdi.DefPos)))
 	}
 	typesByClojureName[name] = tdi
 
@@ -129,7 +128,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*GoTyp
 		panic("Attempt to define new type after having sorted all types!!")
 	}
 
-	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
+	prefix := godb.ClojureNamespaceForPos(godb.Fset.Position(ts.Name.NamePos)) + "/"
 	localName := ts.Name.Name
 	name := prefix + localName
 
@@ -152,7 +151,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*GoTyp
 		DefPos:      ts.Name.NamePos,
 		GoFile:      gf,
 		GoPattern:   "%s",
-		GoPackage:   GoPackageForTypeSpec(ts),
+		GoPackage:   godb.GoPackageForTypeSpec(ts),
 		GoName:      localName,
 		Specificity: specificity(ts),
 	}
@@ -425,7 +424,7 @@ func clojureTypeName(e Expr) (clj string) {
 	local := x.Name
 	prefix := ""
 	if types.Universe.Lookup(local) == nil {
-		prefix = ClojureNamespaceForExpr(e) + "/"
+		prefix = godb.ClojureNamespaceForExpr(e) + "/"
 	}
 	clj = prefix + local
 
@@ -433,7 +432,7 @@ func clojureTypeName(e Expr) (clj string) {
 	if o != nil && o.Kind == Typ {
 		tdi := typesByClojureName[clj]
 		if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
-			Print(Fset, x)
+			Print(godb.Fset, x)
 			var ts *TypeSpec
 			if tdi != nil {
 				ts = tdi.TypeSpec
@@ -486,7 +485,7 @@ func (tdi *GoType) TypeMappingsName() string {
 
 func (tdi *GoType) RelativeGoName(pos token.Pos) string {
 	pkgPrefix := tdi.GoPackage
-	if pkgPrefix == GoPackageForPos(pos) {
+	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
 	} else if pkgPrefix != "" {
 		pkgPrefix += "."
