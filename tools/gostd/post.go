@@ -81,51 +81,69 @@ func maybeNil(expr, captureName string) string {
 }
 
 func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	switch v := e.(type) {
-	case *Ident:
-		gol = v.Name
-		jti := JokerTypeInfoForExpr(e)
-		if jti.AsJokerObject() == "" {
-			out = fmt.Sprintf("MakeGoObject(%s)", captureName)
-			cl = "GoObject"
-		} else {
-			out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
-			cl = jti.ArgExtractFunc()
-			clDoc = jti.ArgClojureArgType()
-		}
-		if jti.Nullable() {
-			out = maybeNil(captureName, out)
-		}
-	case *ArrayType:
-		cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
-	case *StarExpr:
-		cl, clDoc, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
-	case *SelectorExpr:
-		cl, clDoc, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
-	case *InterfaceType:
-		out = "MakeGoObjectIfNeeded(" + captureName + ")"
-		cl = "Object"
-	case *MapType, *ChanType:
-		out = "MakeGoObject(" + captureName + ")"
+	jti := JokerTypeInfoForExpr(e)
+	if jti.AsJokerObject() == "" {
+		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
 		cl = "GoObject"
-	default:
-		cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
-		gol = "..."
-		out = captureName
+	} else {
+		out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
+		cl = jti.ArgExtractFunc()
+		clDoc = jti.ArgClojureArgType()
 	}
+	if jti.Nullable() {
+		out = maybeNil(captureName, out)
+	}
+	cl = jti.ClojureDecl()
+	clDoc = jti.ClojureDeclDoc()
+	gol = jti.GoDecl()
+	goc = jti.GoCode()
 
-	if gol == "" {
-		ty, tyName := gtypes.TypeLookup(e)
-		if ty == nil {
-			gol = tyName + "ABEND000(post.go: no type info found)"
-		} else {
-			gol = ty.RelativeGoName(e.Pos())
-		}
-	}
+	// switch v := e.(type) {
+	// case *Ident:
+	// 	gol = v.Name
+	// 	jti := JokerTypeInfoForExpr(e)
+	// 	if jti.AsJokerObject() == "" {
+	// 		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
+	// 		cl = "GoObject"
+	// 	} else {
+	// 		out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
+	// 		cl = jti.ArgExtractFunc()
+	// 		clDoc = jti.ArgClojureArgType()
+	// 	}
+	// 	if jti.Nullable() {
+	// 		out = maybeNil(captureName, out)
+	// 	}
+	// case *ArrayType:
+	// 	cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
+	// case *StarExpr:
+	// 	cl, clDoc, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
+	// case *SelectorExpr:
+	// 	cl, clDoc, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
+	// case *InterfaceType:
+	// 	out = "MakeGoObjectIfNeeded(" + captureName + ")"
+	// 	cl = "Object"
+	// case *MapType, *ChanType:
+	// 	out = "MakeGoObject(" + captureName + ")"
+	// 	cl = "GoObject"
+	// default:
+	// 	cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
+	// 	gol = "..."
+	// 	out = captureName
+	// }
 
-	if clDoc == "" {
-		clDoc = cl
-	}
+	// if gol == "" {
+	// 	ty, tyName := gtypes.TypeLookup(e)
+	// 	if ty == nil {
+	// 		gol = tyName + "ABEND000(post.go: no type info found)"
+	// 	} else {
+	// 		gol = ty.RelativeGoName(e.Pos())
+	// 	}
+	// }
+
+	// if clDoc == "" {
+	// 	clDoc = cl
+	// }
+
 	return
 }
 
