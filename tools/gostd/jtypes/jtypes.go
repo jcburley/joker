@@ -1,11 +1,16 @@
 package jtypes
 
+// Info on Joker types, including map of Joker type names to said type
+// info.  A Joker type name is either unqualified (built-in, not
+// namespace-rooted) or fully qualified by a namespace name
+// (e.g. "go.std.example/SomeType").
+
 type Info struct {
 	ArgExtractFunc     string
 	ArgClojureArgType  string // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure string // Pattern to convert a (scalar) %s to this type
 	ConvertToClojure   string // Pattern to convert this type to an appropriate Clojure object
-	AsJokerObject      string // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
+	AsJokerObject      string // Pattern to convert this type to a normal Joker type; empty string means wrap in a GoObject
 }
 
 var Nil = Info{}
@@ -122,4 +127,25 @@ var Float64 = Info{
 var Complex128 = Info{
 	ArgExtractFunc:    "ABEND007(find these)",
 	ArgClojureArgType: "ABEND007(find these)",
+}
+
+var TypeMap = map[string]*Info{
+	"Nil":        &Nil,
+	"Error":      &Error,
+	"Bool":       &Bool,
+	"Byte":       &Byte,
+	"Rune":       &Rune,
+	"String":     &String,
+	"Int":        &Int,
+	"Int32":      &Int32,
+	"Int64":      &Int64,
+	"UInt":       &UInt,
+	"UInt8":      &UInt8,
+	"UInt16":     &UInt16,
+	"UInt32":     &UInt32,
+	"UInt64":     &UInt64,
+	"UIntPtr":    &UIntPtr,
+	"Float32":    &Float32,
+	"Float64":    &Float64,
+	"Complex128": &Complex128,
 }
