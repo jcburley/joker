@@ -1,180 +1,125 @@
 package jtypes
 
-type Info interface {
-	ArgExtractFunc() string     // Call Extract<this>() for arg with my type
-	ArgClojureArgType() string  // Clojure argument type for a Go function arg with my type
-	ConvertFromClojure() string // Pattern to convert a (scalar) %s to this type
-	ConvertToClojure() string   // Pattern to convert this type to an appropriate Clojure object
-	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	Nullable() bool             // Can an instance of the type == nil (e.g. 'error' type)?
+type Info struct {
+	ArgExtractFunc     string
+	ArgClojureArgType  string // Clojure argument type for a Go function arg with my type
+	ConvertFromClojure string // Pattern to convert a (scalar) %s to this type
+	ConvertToClojure   string // Pattern to convert this type to an appropriate Clojure object
+	AsJokerObject      string // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
 }
 
-type info struct {
-	argExtractFunc     string // Call Extract<this>() for arg with my type
-	argClojureArgType  string // Clojure argument type for a Go function arg with my type
-	convertFromClojure string // Pattern to convert a (scalar) %s to this type
-	convertToClojure   string // Pattern to convert this type to an appropriate Clojure object
-	asJokerObject      string // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	nullable           bool   // Can an instance of the type == nil (e.g. 'error' type)?
+var Nil = Info{}
+
+var Error = Info{
+	ArgExtractFunc:    "Error",
+	ArgClojureArgType: "Error",
+	ConvertToClojure:  "Error(%s%s)",
+	AsJokerObject:     "Error(%s%s)",
 }
 
-func NewInfo(argExtractFunc, argClojureArgType, convertFromClojure, convertToClojure, asJokerObject string, nullable bool) Info {
-	return &info{
-		argExtractFunc:     argExtractFunc,
-		argClojureArgType:  argClojureArgType,
-		convertFromClojure: convertFromClojure,
-		convertToClojure:   convertToClojure,
-		asJokerObject:      asJokerObject,
-		nullable:           nullable,
-	}
+var Bool = Info{
+	ArgExtractFunc:    "Boolean",
+	ArgClojureArgType: "Boolean",
+	ConvertToClojure:  "Boolean(%s%s)",
+	AsJokerObject:     "Boolean(%s%s)",
 }
 
-func BadInfo(err string) Info {
-	return &info{
-		argExtractFunc:     err,
-		argClojureArgType:  err,
-		convertFromClojure: err,
-		convertToClojure:   err,
-	}
+var Byte = Info{
+	ArgExtractFunc:    "Byte",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	AsJokerObject:     "Int(int(%s)%s)",
 }
 
-var Nil = info{}
-
-var Error = info{
-	argExtractFunc:    "Error",
-	argClojureArgType: "Error",
-	convertToClojure:  "Error(%s%s)",
-	asJokerObject:     "Error(%s%s)",
-	nullable:          true,
+var Rune = Info{
+	ArgExtractFunc:    "Char",
+	ArgClojureArgType: "Char",
+	ConvertToClojure:  "Char(%s%s)",
+	AsJokerObject:     "Char(%s%s)",
 }
 
-var Bool = info{
-	argExtractFunc:    "Boolean",
-	argClojureArgType: "Boolean",
-	convertToClojure:  "Boolean(%s%s)",
-	asJokerObject:     "Boolean(%s%s)",
+var String = Info{
+	ArgExtractFunc:    "String",
+	ArgClojureArgType: "String",
+	ConvertToClojure:  "String(%s%s)",
+	AsJokerObject:     "String(%s%s)",
 }
 
-var Byte = info{
-	argExtractFunc:    "Byte",
-	argClojureArgType: "Int",
-	convertToClojure:  "Int(int(%s)%s)",
-	asJokerObject:     "Int(int(%s)%s)",
+var Int = Info{
+	ArgExtractFunc:    "Int",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(%s%s)",
+	AsJokerObject:     "Int(%s%s)",
 }
 
-var Rune = info{
-	argExtractFunc:    "Char",
-	argClojureArgType: "Char",
-	convertToClojure:  "Char(%s%s)",
-	asJokerObject:     "Char(%s%s)",
+var Int32 = Info{
+	ArgExtractFunc:    "Int32",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	AsJokerObject:     "Int(int(%s)%s)",
 }
 
-var String = info{
-	argExtractFunc:    "String",
-	argClojureArgType: "String",
-	convertToClojure:  "String(%s%s)",
-	asJokerObject:     "String(%s%s)",
+var Int64 = Info{
+	ArgExtractFunc:    "Int64",
+	ArgClojureArgType: "Number",
+	ConvertToClojure:  "BigInt(%s%s)",
+	AsJokerObject:     "BigInt(%s%s)",
 }
 
-var Int = info{
-	argExtractFunc:    "Int",
-	argClojureArgType: "Int",
-	convertToClojure:  "Int(%s%s)",
-	asJokerObject:     "Int(%s%s)",
+var UInt = Info{
+	ArgExtractFunc:    "Uint",
+	ArgClojureArgType: "Number",
+	ConvertToClojure:  "BigIntU(uint64(%s)%s)",
+	AsJokerObject:     "BigIntU(uint64(%s)%s)",
 }
 
-var Int32 = info{
-	argExtractFunc:    "Int32",
-	argClojureArgType: "Int",
-	convertToClojure:  "Int(int(%s)%s)",
-	asJokerObject:     "Int(int(%s)%s)",
+var UInt8 = Info{
+	ArgExtractFunc:    "Uint8",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	AsJokerObject:     "Int(int(%s)%s)",
 }
 
-var Int64 = info{
-	argExtractFunc:    "Int64",
-	argClojureArgType: "Number",
-	convertToClojure:  "BigInt(%s%s)",
-	asJokerObject:     "BigInt(%s%s)",
+var UInt16 = Info{
+	ArgExtractFunc:    "Uint16",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	AsJokerObject:     "Int(int(%s)%s)",
 }
 
-var UInt = info{
-	argExtractFunc:    "Uint",
-	argClojureArgType: "Number",
-	convertToClojure:  "BigIntU(uint64(%s)%s)",
-	asJokerObject:     "BigIntU(uint64(%s)%s)",
+var UInt32 = Info{
+	ArgExtractFunc:    "Uint32",
+	ArgClojureArgType: "Number",
+	ConvertToClojure:  "BigIntU(uint64(%s)%s)",
+	AsJokerObject:     "BigIntU(uint64(%s)%s)",
 }
 
-var UInt8 = info{
-	argExtractFunc:    "Uint8",
-	argClojureArgType: "Int",
-	convertToClojure:  "Int(int(%s)%s)",
-	asJokerObject:     "Int(int(%s)%s)",
+var UInt64 = Info{
+	ArgExtractFunc:    "Uint64",
+	ArgClojureArgType: "Number",
+	ConvertToClojure:  "BigIntU(%s%s)",
+	AsJokerObject:     "BigIntU(%s%s)",
 }
 
-var UInt16 = info{
-	argExtractFunc:    "Uint16",
-	argClojureArgType: "Int",
-	convertToClojure:  "Int(int(%s)%s)",
-	asJokerObject:     "Int(int(%s)%s)",
+var UIntPtr = Info{
+	ArgExtractFunc:    "UintPtr",
+	ArgClojureArgType: "Number",
+	AsJokerObject:     "Number(%s%s)",
 }
 
-var UInt32 = info{
-	argExtractFunc:    "Uint32",
-	argClojureArgType: "Number",
-	convertToClojure:  "BigIntU(uint64(%s)%s)",
-	asJokerObject:     "BigIntU(uint64(%s)%s)",
+var Float32 = Info{
+	ArgExtractFunc:    "ABEND007(find these)",
+	ArgClojureArgType: "Double",
+	AsJokerObject:     "Double(float64(%s)%s)",
 }
 
-var UInt64 = info{
-	argExtractFunc:    "Uint64",
-	argClojureArgType: "Number",
-	convertToClojure:  "BigIntU(%s%s)",
-	asJokerObject:     "BigIntU(%s%s)",
+var Float64 = Info{
+	ArgExtractFunc:    "ABEND007(find these)",
+	ArgClojureArgType: "Double",
+	AsJokerObject:     "Double(%s%s)",
 }
 
-var UIntPtr = info{
-	argExtractFunc:    "UintPtr",
-	argClojureArgType: "Number",
-	asJokerObject:     "Number(%s%s)",
-}
-
-var Float32 = info{
-	argExtractFunc:    "ABEND007(find these)",
-	argClojureArgType: "Double",
-	asJokerObject:     "Double(float64(%s)%s)",
-}
-
-var Float64 = info{
-	argExtractFunc:    "ABEND007(find these)",
-	argClojureArgType: "Double",
-	asJokerObject:     "Double(%s%s)",
-}
-
-var Complex128 = info{
-	argExtractFunc:    "ABEND007(find these)",
-	argClojureArgType: "ABEND007(find these)",
-}
-
-func (jti info) ArgExtractFunc() string {
-	return jti.argExtractFunc
-}
-
-func (jti info) ArgClojureArgType() string {
-	return jti.argClojureArgType
-}
-
-func (jti info) ConvertFromClojure() string {
-	return jti.convertFromClojure
-}
-
-func (jti info) ConvertToClojure() string {
-	return jti.convertToClojure
-}
-
-func (jti info) AsJokerObject() string {
-	return jti.asJokerObject
-}
-
-func (jti info) Nullable() bool {
-	return jti.nullable
+var Complex128 = Info{
+	ArgExtractFunc:    "ABEND007(find these)",
+	ArgClojureArgType: "ABEND007(find these)",
 }

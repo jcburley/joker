@@ -35,6 +35,54 @@ type GoType struct {
 	Specificity      uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 }
 
+type Info struct {
+	Nullable bool // Can an instance of the type == nil (e.g. 'error' type)?
+}
+
+func NewInfo(nullable bool) Info {
+	return Info{
+		Nullable: nullable,
+	}
+}
+
+var Nil = Info{}
+
+var Error = Info{
+	Nullable: true,
+}
+
+var Bool = Info{}
+
+var Byte = Info{}
+
+var Rune = Info{}
+
+var String = Info{}
+
+var Int = Info{}
+
+var Int32 = Info{}
+
+var Int64 = Info{}
+
+var UInt = Info{}
+
+var UInt8 = Info{}
+
+var UInt16 = Info{}
+
+var UInt32 = Info{}
+
+var UInt64 = Info{}
+
+var UIntPtr = Info{}
+
+var Float32 = Info{}
+
+var Float64 = Info{}
+
+var Complex128 = Info{}
+
 var typesByClojureName = map[string]*GoType{}
 
 func specificityOfInterface(ts *InterfaceType) uint {
@@ -170,7 +218,7 @@ func TypeLookup(e Expr) (ty *GoType, clojureName string) {
 		NumExprHits++
 		return tdi, tdi.ClojureName
 	}
-	clojureName = typeName(e)
+	clojureName = clojureTypeName(e)
 	if tdi, ok := typesByClojureName[clojureName]; ok {
 		NumClojureNameHits++
 		typesByExpr[e] = tdi
@@ -310,12 +358,12 @@ func methodsToString(methods []*Field) string {
 	return strings.Join(mStrings, ", ")
 }
 
-func typeName(e Expr) (clj string) {
+func clojureTypeName(e Expr) (clj string) {
 	switch x := e.(type) {
 	case *Ident:
 		break
 	case *ArrayType:
-		elClj := typeName(x.Elt)
+		elClj := clojureTypeName(x.Elt)
 		len := exprToString(x.Len)
 		if len != "" {
 			len = ":length " + len + " "
@@ -323,7 +371,7 @@ func typeName(e Expr) (clj string) {
 		clj = "(vector-of " + len + elClj + ")"
 		return
 	case *StarExpr:
-		elClj := typeName(x.X)
+		elClj := clojureTypeName(x.X)
 		clj = "*" + elClj
 		return
 	case *InterfaceType:
@@ -444,4 +492,43 @@ func (tdi *GoType) RelativeGoName(pos token.Pos) string {
 		pkgPrefix += "."
 	}
 	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
+}
+
+func TypeName(e Expr) string {
+	switch x := e.(type) {
+	case *Ident:
+		break
+	case *ArrayType:
+		return "[" + goExprToString(x.Len) + "]" + TypeName(x.Elt)
+	case *StarExpr:
+		return "*" + TypeName(x.X)
+	case *MapType:
+		return "map[" + TypeName(x.Key) + "]" + TypeName(x.Value)
+	case *SelectorExpr:
+		return fmt.Sprintf("%s", x.X) + "." + x.Sel.Name
+	default:
+		return fmt.Sprintf("ABEND699(types.go:TypeName: unrecognized node %T)", e)
+	}
+
+	x := e.(*Ident)
+	local := x.Name
+	prefix := ""
+	if types.Universe.Lookup(local) == nil {
+		prefix = godb.GoPackageForExpr(e) + "."
+	}
+
+	return prefix + local
+}
+
+func goExprToString(e Expr) string {
+	if e == nil {
+		return ""
+	}
+	switch v := e.(type) {
+	case *Ellipsis:
+		return "..." + goExprToString(v.Elt)
+	case *BasicLit:
+		return v.Value
+	}
+	return fmt.Sprintf("%v", e)
 }

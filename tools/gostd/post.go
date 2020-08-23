@@ -84,16 +84,16 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 	switch v := e.(type) {
 	case *Ident:
 		gol = v.Name
-		jti := JokerTypeInfoForExpr(e)
-		if jti.AsJokerObject() == "" {
+		ti := TypeInfoForExpr(e)
+		if ti.AsJokerObject() == "" {
 			out = fmt.Sprintf("MakeGoObject(%s)", captureName)
 			cl = "GoObject"
 		} else {
-			out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
-			cl = jti.ArgExtractFunc()
-			clDoc = jti.ArgClojureArgType()
+			out = "Make" + fmt.Sprintf(ti.AsJokerObject(), captureName, "")
+			cl = ti.ArgExtractFunc()
+			clDoc = ti.ArgClojureArgType()
 		}
-		if jti.Nullable() {
+		if ti.Nullable() {
 			out = maybeNil(captureName, out)
 		}
 	case *ArrayType:

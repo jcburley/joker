@@ -9,10 +9,23 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
-	"go/types"
 	"sort"
 	"strings"
 )
+
+type TypeInfo interface {
+	ArgExtractFunc() string     // Call Extract<this>() for arg with my type
+	ArgClojureArgType() string  // Clojure argument type for a Go function arg with my type
+	ConvertFromClojure() string // Pattern to convert a (scalar) %s to this type
+	ConvertToClojure() string   // Pattern to convert this type to an appropriate Clojure object
+	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
+	Nullable() bool             // Can an instance of the type == nil (e.g. 'error' type)?
+}
+
+type typeInfo struct {
+	jti jtypes.Info
+	gti gtypes.Info
+}
 
 type GoTypeInfo struct {
 	LocalName                 string       // empty (not a declared type) or the basic type name ("foo" for "x/y.foo")
@@ -47,13 +60,13 @@ type GoTypeMap map[string]*GoTypeInfo
 /* These map fullGoNames to type info. */
 var GoTypes = GoTypeMap{}
 
-var typeMap = map[string]jtypes.Info{}
+var typeMap = map[string]TypeInfo{}
 
 var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
 
 func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name
-	typeName := pkg + "." + name
+	goTypeName := pkg + "." + name
 
 	// if pkg == "unsafe" && name == "ArbitraryType" {
 	// 	if godb.Verbose {
@@ -63,7 +76,7 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 	// }
 
 	if WalkDump {
-		fmt.Printf("Type %s at %s:\n", typeName, godb.WhereAt(ts.Pos()))
+		fmt.Printf("Type %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
 		Print(godb.Fset, ts)
 	}
 
@@ -75,7 +88,7 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 		}
 	}
 
-	gt := registerTypeGOT(gf, typeName, ts)
+	gt := registerTypeGOT(gf, goTypeName, ts)
 	gt.Td = ts
 	gt.Type = tdiVec[0]
 	gt.Where = ts.Pos()
@@ -90,42 +103,59 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 		}
 	}
 
-	typeMap[typeName] = jtypes.NewInfo(
-		gt.ArgExtractFunc,
-		gt.ArgClojureArgType,
-		gt.ConvertFromClojure,
-		gt.ConvertToClojure,
-		gt.ConvertToClojure,
-		gt.Nullable)
+	ti := &typeInfo{
+		jti: jtypes.Info{
+			ArgClojureArgType:  gt.ArgClojureArgType,
+			ConvertFromClojure: gt.ConvertFromClojure,
+			ConvertToClojure:   gt.ConvertToClojure,
+			AsJokerObject:      gt.ConvertToClojure,
+		},
+		gti: gtypes.NewInfo(
+			gt.Nullable,
+		)}
+
+	typeMap[goTypeName] = ti
 
 	return true
 }
 
 // Maps type-defining Expr to exactly one struct describing that type
-var typesByExpr = map[Expr]jtypes.Info{}
+var typesByExpr = map[Expr]TypeInfo{}
 var NumGoExprHits uint
 var NumGoNameHits uint
 
-func JokerTypeInfoForExpr(e Expr) jtypes.Info {
-	if jti, ok := typesByExpr[e]; ok {
-		NumGoExprHits++
-		return jti
+func BadInfo(err string) typeInfo {
+	return typeInfo{
+		jti: jtypes.Info{
+			ArgExtractFunc:     err,
+			ArgClojureArgType:  err,
+			ConvertFromClojure: err,
+			ConvertToClojure:   err,
+			AsJokerObject:      err,
+		},
 	}
-	goName := typeName(e)
-	if jti, ok := typeMap[goName]; ok {
+}
+
+func TypeInfoForExpr(e Expr) TypeInfo {
+	if ti, ok := typesByExpr[e]; ok {
+		NumGoExprHits++
+		return ti
+	}
+	goName := gtypes.TypeName(e)
+	if ti, ok := typeMap[goName]; ok {
 		NumGoNameHits++
-		typesByExpr[e] = jti
-		return jti
+		typesByExpr[e] = ti
+		return ti
 	}
 
 	switch e.(type) {
 	case *Ident:
-		if jti, found := typeMap[goName]; found {
-			return jti
+		if ti, found := typeMap[goName]; found {
+			return ti
 		}
-		return jtypes.BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", goName))
+		return BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", goName))
 	}
-	return jtypes.BadInfo(fmt.Sprintf("ABEND621(types.go:JokerTypeInfoForExpr: unsupported expr type %T)", e))
+	return BadInfo(fmt.Sprintf("ABEND621(types.go:JokerTypeInfoForExpr: unsupported expr type %T)", e))
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
@@ -139,61 +169,97 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 	}
 }
 
-func typeName(e Expr) string {
-	switch x := e.(type) {
-	case *Ident:
-		break
-	case *ArrayType:
-		return "[" + exprToString(x.Len) + "]" + typeName(x.Elt)
-	case *StarExpr:
-		return "*" + typeName(x.X)
-	case *MapType:
-		return "map[" + typeName(x.Key) + "]" + typeName(x.Value)
-	case *SelectorExpr:
-		return fmt.Sprintf("%s", x.X) + "." + x.Sel.Name
-	default:
-		return fmt.Sprintf("ABEND699(types.go:typeName: unrecognized node %T)", e)
-	}
-
-	x := e.(*Ident)
-	local := x.Name
-	prefix := ""
-	if types.Universe.Lookup(local) == nil {
-		prefix = godb.GoPackageForExpr(e) + "."
-	}
-
-	return prefix + local
+func (ti typeInfo) ArgExtractFunc() string {
+	return ti.jti.ArgExtractFunc
 }
 
-func exprToString(e Expr) string {
-	if e == nil {
-		return ""
-	}
-	switch v := e.(type) {
-	case *Ellipsis:
-		return "..." + exprToString(v.Elt)
-	case *BasicLit:
-		return v.Value
-	}
-	return fmt.Sprintf("%v", e)
+func (ti typeInfo) ArgClojureArgType() string {
+	return ti.jti.ArgClojureArgType
+}
+
+func (ti typeInfo) ConvertFromClojure() string {
+	return ti.jti.ConvertFromClojure
+}
+
+func (ti typeInfo) ConvertToClojure() string {
+	return ti.jti.ConvertToClojure
+}
+
+func (ti typeInfo) AsJokerObject() string {
+	return ti.jti.AsJokerObject
+}
+
+func (ti typeInfo) Nullable() bool {
+	return ti.gti.Nullable
 }
 
 func init() {
-	typeMap["bool"] = jtypes.Bool
-	typeMap["byte"] = jtypes.Byte
-	typeMap["complex128"] = jtypes.Complex128
-	typeMap["error"] = jtypes.Error
-	typeMap["float32"] = jtypes.Float32
-	typeMap["float64"] = jtypes.Float64
-	typeMap["int"] = jtypes.Int
-	typeMap["int32"] = jtypes.Int32
-	typeMap["int64"] = jtypes.Int64
-	typeMap["rune"] = jtypes.Rune
-	typeMap["string"] = jtypes.String
-	typeMap["uint"] = jtypes.UInt
-	typeMap["uint16"] = jtypes.UInt16
-	typeMap["uint32"] = jtypes.UInt32
-	typeMap["uint64"] = jtypes.UInt64
-	typeMap["uint8"] = jtypes.UInt8
-	typeMap["uintptr"] = jtypes.UIntPtr
+	typeMap["bool"] = typeInfo{
+		jti: jtypes.Bool,
+		gti: gtypes.Bool,
+	}
+	typeMap["byte"] = typeInfo{
+		jti: jtypes.Byte,
+		gti: gtypes.Byte,
+	}
+	typeMap["complex128"] = typeInfo{
+		jti: jtypes.Complex128,
+		gti: gtypes.Complex128,
+	}
+	typeMap["error"] = typeInfo{
+		jti: jtypes.Error,
+		gti: gtypes.Error,
+	}
+	typeMap["float32"] = typeInfo{
+		jti: jtypes.Float32,
+		gti: gtypes.Float32,
+	}
+	typeMap["float64"] = typeInfo{
+		jti: jtypes.Float64,
+		gti: gtypes.Float64,
+	}
+	typeMap["int"] = typeInfo{
+		jti: jtypes.Int,
+		gti: gtypes.Int,
+	}
+	typeMap["int32"] = typeInfo{
+		jti: jtypes.Int32,
+		gti: gtypes.Int32,
+	}
+	typeMap["int64"] = typeInfo{
+		jti: jtypes.Int64,
+		gti: gtypes.Int64,
+	}
+	typeMap["rune"] = typeInfo{
+		jti: jtypes.Rune,
+		gti: gtypes.Rune,
+	}
+	typeMap["string"] = typeInfo{
+		jti: jtypes.String,
+		gti: gtypes.String,
+	}
+	typeMap["uint"] = typeInfo{
+		jti: jtypes.UInt,
+		gti: gtypes.UInt,
+	}
+	typeMap["uint16"] = typeInfo{
+		jti: jtypes.UInt16,
+		gti: gtypes.UInt16,
+	}
+	typeMap["uint32"] = typeInfo{
+		jti: jtypes.UInt32,
+		gti: gtypes.UInt32,
+	}
+	typeMap["uint64"] = typeInfo{
+		jti: jtypes.UInt64,
+		gti: gtypes.UInt64,
+	}
+	typeMap["uint8"] = typeInfo{
+		jti: jtypes.UInt8,
+		gti: gtypes.UInt8,
+	}
+	typeMap["uintptr"] = typeInfo{
+		jti: jtypes.UIntPtr,
+		gti: gtypes.UIntPtr,
+	}
 }
