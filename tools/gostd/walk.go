@@ -250,16 +250,16 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 var RegisterType_func func(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo
 
 // Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeSpec(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
-	if !registerType(ts, gf, pkg, parentDoc) {
+func processTypeDecl(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
+	if !RegisterTypeDecl(ts, gf, pkg, parentDoc) {
 		return
 	}
 }
 
-func processTypeSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		processTypeSpec(gf, pkg, ts, parentDoc)
+		processTypeDecl(gf, pkg, ts, parentDoc)
 	}
 }
 
@@ -733,7 +733,7 @@ func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
 		case *GenDecl:
 			switch v.Tok {
 			case token.TYPE:
-				processTypeSpecs(gf, pkgDirUnix, v.Specs, v.Doc)
+				processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, godb.WhereAt(v.Pos())))

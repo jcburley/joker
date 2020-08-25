@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"strings"
@@ -81,22 +80,22 @@ func maybeNil(expr, captureName string) string {
 }
 
 func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	jti := JokerTypeInfoForExpr(e)
-	if jti.AsJokerObject() == "" {
+	ti := TypeInfoForExpr(e)
+	if ti.AsJokerObject() == "" {
 		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
 		cl = "GoObject"
 	} else {
-		out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
-		cl = jti.ArgExtractFunc()
-		clDoc = jti.ArgClojureArgType()
+		out = "Make" + fmt.Sprintf(ti.AsJokerObject(), captureName, "")
+		cl = ti.ArgExtractFunc()
+		clDoc = ti.ArgClojureArgType()
 	}
-	if jti.Nullable() {
+	if ti.Nullable() {
 		out = maybeNil(captureName, out)
 	}
-	cl = jti.ClojureDecl()
-	clDoc = jti.ClojureDeclDoc()
-	gol = jti.GoDecl()
-	goc = jti.GoCode()
+	cl = ti.ClojureDecl()
+	clDoc = ti.ClojureDeclDoc()
+	gol = ti.GoDeclDoc()
+	goc = ti.GoCode()
 
 	// switch v := e.(type) {
 	// case *Ident:

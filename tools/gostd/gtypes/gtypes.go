@@ -35,11 +35,13 @@ type GoType struct {
 }
 
 type Info struct {
-	Nullable bool // Can an instance of the type == nil (e.g. 'error' type)?
+	Name     string // E.g. "bool", "net.Listener", "net/http.Connection"
+	Nullable bool   // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
-func NewInfo(nullable bool) Info {
+func NewInfo(name string, nullable bool) Info {
 	return Info{
+		Name:     name,
 		Nullable: nullable,
 	}
 }
@@ -47,40 +49,73 @@ func NewInfo(nullable bool) Info {
 var Nil = Info{}
 
 var Error = Info{
+	Name:     "error",
 	Nullable: true,
 }
 
-var Bool = Info{}
+var Bool = Info{
+	Name: "bool",
+}
 
-var Byte = Info{}
+var Byte = Info{
+	Name: "byte",
+}
 
-var Rune = Info{}
+var Rune = Info{
+	Name: "rune",
+}
 
-var String = Info{}
+var String = Info{
+	Name: "string",
+}
 
-var Int = Info{}
+var Int = Info{
+	Name: "int",
+}
 
-var Int32 = Info{}
+var Int32 = Info{
+	Name: "int32",
+}
 
-var Int64 = Info{}
+var Int64 = Info{
+	Name: "int64",
+}
 
-var UInt = Info{}
+var UInt = Info{
+	Name: "uint",
+}
 
-var UInt8 = Info{}
+var UInt8 = Info{
+	Name: "uint8",
+}
 
-var UInt16 = Info{}
+var UInt16 = Info{
+	Name: "uint16",
+}
 
-var UInt32 = Info{}
+var UInt32 = Info{
+	Name: "uint32",
+}
 
-var UInt64 = Info{}
+var UInt64 = Info{
+	Name: "uint64",
+}
 
-var UIntPtr = Info{}
+var UIntPtr = Info{
+	Name: "uintptr",
+}
 
-var Float32 = Info{}
+var Float32 = Info{
+	Name: "float32",
+}
 
-var Float64 = Info{}
+var Float64 = Info{
+	Name: "float64",
+}
 
-var Complex128 = Info{}
+var Complex128 = Info{
+	Name: "complex128",
+}
 
 var typesByClojureName = map[string]*GoType{}
 

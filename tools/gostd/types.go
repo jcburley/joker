@@ -19,7 +19,12 @@ type TypeInfo interface {
 	ConvertFromClojure() string // Pattern to convert a (scalar) %s to this type
 	ConvertToClojure() string   // Pattern to convert this type to an appropriate Clojure object
 	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	Nullable() bool             // Can an instance of the type == nil (e.g. 'error' type)?
+	ClojureDecl() string
+	ClojureDeclDoc() string
+	GoDecl() string
+	GoDeclDoc() string
+	GoCode() string
+	Nullable() bool // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
 type typeInfo struct {
@@ -64,7 +69,7 @@ var typeMap = map[string]TypeInfo{}
 
 var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
 
-func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
+func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
@@ -111,6 +116,7 @@ func registerType(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentG
 			AsJokerObject:      gt.ConvertToClojure,
 		},
 		gti: gtypes.NewInfo(
+			goTypeName,
 			gt.Nullable,
 		)}
 
@@ -129,9 +135,9 @@ func BadInfo(err string) typeInfo {
 		jti: jtypes.Info{
 			ArgExtractFunc:     err,
 			ArgClojureArgType:  err,
-			ConvertFromClojure: err,
-			ConvertToClojure:   err,
-			AsJokerObject:      err,
+			ConvertFromClojure: err + "%0s%0s",
+			ConvertToClojure:   err + "%0s%0s",
+			AsJokerObject:      err + "%0s%0s",
 		},
 	}
 }
@@ -148,14 +154,10 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		return ti
 	}
 
-	switch e.(type) {
-	case *Ident:
-		if ti, found := typeMap[goName]; found {
-			return ti
-		}
-		return BadInfo(fmt.Sprintf("ABEND620(types.go:JokerTypeInfoForExpr: unrecognized identifier %s)", goName))
+	if ti, found := typeMap[goName]; found {
+		return ti
 	}
-	return BadInfo(fmt.Sprintf("ABEND621(types.go:JokerTypeInfoForExpr: unsupported expr type %T)", e))
+	return BadInfo(fmt.Sprintf("ABEND621(types.go:TypeInfoForExpr: unsupported expr type %T aka %s)", e, goName))
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
@@ -187,6 +189,27 @@ func (ti typeInfo) ConvertToClojure() string {
 
 func (ti typeInfo) AsJokerObject() string {
 	return ti.jti.AsJokerObject
+}
+
+func (ti typeInfo) ClojureDecl() string {
+	return ti.jti.ArgClojureArgType // TODO: can this just be renamed "ClojureType" at some point?
+}
+
+func (ti typeInfo) ClojureDeclDoc() string {
+	return ti.ClojureDecl() // TODO: Probably need difference soon.
+}
+
+func (ti typeInfo) GoDecl() string {
+	return ti.gti.Name
+}
+
+func (ti typeInfo) GoDeclDoc() string {
+	s := strings.Split(ti.GoDecl(), ".")
+	return s[len(s)-1]
+}
+
+func (ti typeInfo) GoCode() string {
+	return "" // TODO: Probably need something here in some cases? Seems to generic of a name though.
 }
 
 func (ti typeInfo) Nullable() bool {
