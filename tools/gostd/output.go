@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/gtypes"
+	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
@@ -40,7 +40,7 @@ func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []*GoType, jokerSourceDir string, outputCode bool) {
+func RegisterGoTypeSwitch(types []*gtypes.GoType, jokerSourceDir string, outputCode bool) {
 	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"), outputCode)
 }
 
@@ -113,7 +113,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	Check(err)
 }
 
-func updateGoTypeSwitch(types []*GoType, f string, outputCode bool) {
+func updateGoTypeSwitch(types []*gtypes.GoType, f string, outputCode bool) {
 	if Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
@@ -153,7 +153,7 @@ func SwitchGoType(g interface{}) int {
 			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, "", "", true, token.NoPos) + "."
 		}
 		specificity := ""
-		if t.Specificity != Concrete {
+		if t.Specificity != gtypes.Concrete {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity)
 		}
 		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern, pkgPlusSeparator+t.GoName), specificity, t.Ord)
@@ -263,15 +263,15 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			}
 		})
 
-	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *GoType) {
+	gtypes.SortedTypeDefinitions(v.InitTypes,
+		func(tdi *gtypes.GoType) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || tdi.GoName == "" || !tdi.IsExported {
 				return
 			}
 			typeDoc := tdi.Doc
 			specificity := ""
-			if tdi.Specificity != Concrete {
+			if tdi.Specificity != gtypes.Concrete {
 				specificity = fmt.Sprintf("    :specificity %d\n", tdi.Specificity)
 			}
 			fnCode := fmt.Sprintf(`
@@ -379,8 +379,8 @@ import (%s
 			}
 		})
 
-	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *GoType) {
+	gtypes.SortedTypeDefinitions(v.InitTypes,
+		func(tdi *gtypes.GoType) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return
@@ -407,8 +407,8 @@ import (%s
 		out.WriteString("\nfunc initNative() {\n")
 	}
 
-	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *GoType) {
+	gtypes.SortedTypeDefinitions(v.InitTypes,
+		func(tdi *gtypes.GoType) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return
@@ -440,8 +440,8 @@ import (%s
 			}
 		})
 
-	SortedTypeDefinitions(v.InitTypes,
-		func(tdi *GoType) {
+	gtypes.SortedTypeDefinitions(v.InitTypes,
+		func(tdi *gtypes.GoType) {
 			tmn := tdi.TypeMappingsName()
 			if tmn == "" || !tdi.IsExported {
 				return
