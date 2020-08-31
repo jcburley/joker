@@ -126,8 +126,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]TypeInfo{}
-var NumGoExprHits uint
-var NumGoNameHits uint
 
 func BadInfo(err string) typeInfo {
 	return typeInfo{

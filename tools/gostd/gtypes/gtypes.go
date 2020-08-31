@@ -37,7 +37,7 @@ type GoType struct {
 }
 
 type Info struct {
-	Name     string // E.g. "bool", "net.Listener", "net/http.Connection"
+	Name     string // E.g. "bool", "*net.Listener", "[]net/http.Connection"
 	Nullable bool   // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
