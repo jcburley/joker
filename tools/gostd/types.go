@@ -1,7 +1,6 @@
 package main
 
 import (
-	//	"github.com/candid82/joker/tools/gostd/gtypes"
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gtypes"
@@ -65,7 +64,7 @@ type GoTypeMap map[string]*GoTypeInfo
 /* These map fullGoNames to type info. */
 var GoTypes = GoTypeMap{}
 
-var typeMap = map[string]TypeInfo{}
+var typeMap = map[gtypes.Info]TypeInfo{}
 
 var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
 
@@ -120,7 +119,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			gt.Nullable,
 		)}
 
-	typeMap[goTypeName] = ti
+	typeMap[ti.gti] = ti
 
 	return true
 }
@@ -143,21 +142,19 @@ func BadInfo(err string) typeInfo {
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
-	if ti, ok := typesByExpr[e]; ok {
-		NumGoExprHits++
-		return ti
-	}
-	goName := gtypes.TypeName(e)
-	if ti, ok := typeMap[goName]; ok {
-		NumGoNameHits++
-		typesByExpr[e] = ti
+	gti := gtypes.TypeInfoForExpr(e)
+
+	if ti, found := typeMap[gti]; found {
 		return ti
 	}
 
-	if ti, found := typeMap[goName]; found {
-		return ti
+	ti := &typeInfo{
+		gti: gti,
 	}
-	return BadInfo(fmt.Sprintf("ABEND621(types.go:TypeInfoForExpr: unsupported expr type %T aka %s)", e, goName))
+
+	typeMap[gti] = ti
+
+	return ti
 }
 
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
@@ -217,71 +214,71 @@ func (ti typeInfo) Nullable() bool {
 }
 
 func init() {
-	typeMap["bool"] = typeInfo{
+	typeMap[gtypes.Bool] = typeInfo{
 		jti: jtypes.Bool,
 		gti: gtypes.Bool,
 	}
-	typeMap["byte"] = typeInfo{
+	typeMap[gtypes.Byte] = typeInfo{
 		jti: jtypes.Byte,
 		gti: gtypes.Byte,
 	}
-	typeMap["complex128"] = typeInfo{
+	typeMap[gtypes.Complex128] = typeInfo{
 		jti: jtypes.Complex128,
 		gti: gtypes.Complex128,
 	}
-	typeMap["error"] = typeInfo{
+	typeMap[gtypes.Error] = typeInfo{
 		jti: jtypes.Error,
 		gti: gtypes.Error,
 	}
-	typeMap["float32"] = typeInfo{
+	typeMap[gtypes.Float32] = typeInfo{
 		jti: jtypes.Float32,
 		gti: gtypes.Float32,
 	}
-	typeMap["float64"] = typeInfo{
+	typeMap[gtypes.Float64] = typeInfo{
 		jti: jtypes.Float64,
 		gti: gtypes.Float64,
 	}
-	typeMap["int"] = typeInfo{
+	typeMap[gtypes.Int] = typeInfo{
 		jti: jtypes.Int,
 		gti: gtypes.Int,
 	}
-	typeMap["int32"] = typeInfo{
+	typeMap[gtypes.Int32] = typeInfo{
 		jti: jtypes.Int32,
 		gti: gtypes.Int32,
 	}
-	typeMap["int64"] = typeInfo{
+	typeMap[gtypes.Int64] = typeInfo{
 		jti: jtypes.Int64,
 		gti: gtypes.Int64,
 	}
-	typeMap["rune"] = typeInfo{
+	typeMap[gtypes.Rune] = typeInfo{
 		jti: jtypes.Rune,
 		gti: gtypes.Rune,
 	}
-	typeMap["string"] = typeInfo{
+	typeMap[gtypes.String] = typeInfo{
 		jti: jtypes.String,
 		gti: gtypes.String,
 	}
-	typeMap["uint"] = typeInfo{
+	typeMap[gtypes.UInt] = typeInfo{
 		jti: jtypes.UInt,
 		gti: gtypes.UInt,
 	}
-	typeMap["uint16"] = typeInfo{
+	typeMap[gtypes.UInt16] = typeInfo{
 		jti: jtypes.UInt16,
 		gti: gtypes.UInt16,
 	}
-	typeMap["uint32"] = typeInfo{
+	typeMap[gtypes.UInt32] = typeInfo{
 		jti: jtypes.UInt32,
 		gti: gtypes.UInt32,
 	}
-	typeMap["uint64"] = typeInfo{
+	typeMap[gtypes.UInt64] = typeInfo{
 		jti: jtypes.UInt64,
 		gti: gtypes.UInt64,
 	}
-	typeMap["uint8"] = typeInfo{
+	typeMap[gtypes.UInt8] = typeInfo{
 		jti: jtypes.UInt8,
 		gti: gtypes.UInt8,
 	}
-	typeMap["uintptr"] = typeInfo{
+	typeMap[gtypes.UIntPtr] = typeInfo{
 		jti: jtypes.UIntPtr,
 		gti: gtypes.UIntPtr,
 	}

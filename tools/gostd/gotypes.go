@@ -500,8 +500,8 @@ func init() {
 		Exported:                  true,
 	}
 
-	for n, _ := range GoTypes {
-		if tdi := gtypes.TypeDefineBuiltin(n); tdi == nil {
+	for n, ti := range GoTypes {
+		if tdi := gtypes.TypeDefineBuiltin(n, ti.Nullable); tdi == nil {
 			panic(fmt.Sprintf("failed to define builtin %s", n))
 		}
 	}

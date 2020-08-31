@@ -7,6 +7,7 @@ import (
 	. "go/ast"
 	"go/token"
 	"go/types"
+	"os"
 	"path"
 	"sort"
 	"strings"
@@ -32,6 +33,7 @@ type GoType struct {
 	underlyingGoType *GoType
 	Ord              uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	Specificity      uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+	Nullable         bool
 }
 
 type Info struct {
@@ -115,6 +117,26 @@ var Float64 = Info{
 
 var Complex128 = Info{
 	Name: "complex128",
+}
+
+var gtToInfo = map[*GoType]Info{}
+
+func TypeInfoForExpr(e Expr) Info {
+	gt, _ := TypeLookup(e)
+	if gt == nil {
+		panic("nil")
+	}
+
+	if gti, found := gtToInfo[gt]; found {
+		return gti
+	}
+
+	name := gt.AbsoluteGoName()
+	fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, name)
+
+	gti := NewInfo(name, gt.Nullable)
+	gtToInfo[gt] = gti
+	return gti
 }
 
 var typesByClojureName = map[string]*GoType{}
@@ -205,6 +227,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*GoTyp
 			GoName:           tdi.GoName,
 			underlyingGoType: tdi,
 			Specificity:      Concrete,
+			//			Nullable:         true,
 		}
 		define(tdiPtrTo)
 		types = append(types, tdiPtrTo)
@@ -222,24 +245,25 @@ func defineVariant(clojureName, pattern string, innerTdi *GoType, te Expr) *GoTy
 		ClojureName:      clojureName,
 		IsExported:       innerTdi.IsExported,
 		GoPattern:        pattern,
+		GoPackage:        innerTdi.GoPackage,
 		GoName:           innerTdi.GoName,
 		underlyingGoType: innerTdi,
+		//		Nullable:         innerTdi.Nullable,
 	}
 
 	define(tdi)
 
-	//	fmt.Printf("defineVariant: %s\n", name)
-
 	return tdi
 }
 
-func TypeDefineBuiltin(name string) *GoType {
+func TypeDefineBuiltin(name string, nullable bool) *GoType {
 	tdi := &GoType{
 		Type:        &Ident{Name: name},
 		ClojureName: name,
 		IsExported:  true,
 		GoPattern:   "%s",
 		GoName:      name,
+		Nullable:    nullable,
 	}
 
 	define(tdi)
@@ -523,6 +547,14 @@ func (tdi *GoType) RelativeGoName(pos token.Pos) string {
 	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
 	} else if pkgPrefix != "" {
+		pkgPrefix += "."
+	}
+	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
+}
+
+func (tdi *GoType) AbsoluteGoName() string {
+	pkgPrefix := tdi.GoPackage
+	if pkgPrefix != "" {
 		pkgPrefix += "."
 	}
 	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
