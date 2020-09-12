@@ -27,8 +27,8 @@ type GoType struct {
 	Doc              string
 	DefPos           token.Pos
 	GoFile           *godb.GoFile
-	GoPackage        string // E.g. a/b/c (always Unix style)
 	GoPattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	GoPackage        string // E.g. a/b/c (always Unix style)
 	GoName           string // Base name of type (without any prefix/pattern applied)
 	underlyingGoType *GoType
 	Ord              uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
@@ -37,87 +37,67 @@ type GoType struct {
 }
 
 type Info struct {
-	Name     string // E.g. "bool", "*net.Listener", "[]net/http.Connection"
-	Nullable bool   // Can an instance of the type == nil (e.g. 'error' type)?
+	FullName  string // E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	GoPattern string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	GoPackage string // E.g. "net/url", "" (always Unix style)
+	BaseName  string // Base name of most-underlying type (without any prefix/pattern applied)
+	Nullable  bool   // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
-func NewInfo(name string, nullable bool) Info {
+func NewInfo(pattern, pkg, name string, nullable bool) Info {
+	var fullName string
+	if pattern == "" {
+		pattern = "%s"
+	}
+	if pkg == "" {
+		fullName = fmt.Sprintf(pattern, name)
+	} else {
+		fullName = fmt.Sprintf(pattern, pkg+"."+name)
+	}
 	return Info{
-		Name:     name,
-		Nullable: nullable,
+		FullName:  fullName,
+		GoPattern: pattern,
+		GoPackage: pkg,
+		BaseName:  name,
+		Nullable:  nullable,
 	}
 }
 
 var Nil = Info{}
 
-var Error = Info{
-	Name:     "error",
-	Nullable: true,
-}
+var Error = NewInfo("", "", "error", true)
 
-var Bool = Info{
-	Name: "bool",
-}
+var Bool = NewInfo("", "", "bool", false)
 
-var Byte = Info{
-	Name: "byte",
-}
+var Byte = NewInfo("", "", "byte", false)
 
-var Rune = Info{
-	Name: "rune",
-}
+var Rune = NewInfo("", "", "rune", false)
 
-var String = Info{
-	Name: "string",
-}
+var String = NewInfo("", "", "string", false)
 
-var Int = Info{
-	Name: "int",
-}
+var Int = NewInfo("", "", "int", false)
 
-var Int32 = Info{
-	Name: "int32",
-}
+var Int32 = NewInfo("", "", "int32", false)
 
-var Int64 = Info{
-	Name: "int64",
-}
+var Int64 = NewInfo("", "", "int64", false)
 
-var UInt = Info{
-	Name: "uint",
-}
+var UInt = NewInfo("", "", "uint", false)
 
-var UInt8 = Info{
-	Name: "uint8",
-}
+var UInt8 = NewInfo("", "", "uint8", false)
 
-var UInt16 = Info{
-	Name: "uint16",
-}
+var UInt16 = NewInfo("", "", "uint16", false)
 
-var UInt32 = Info{
-	Name: "uint32",
-}
+var UInt32 = NewInfo("", "", "uint32", false)
 
-var UInt64 = Info{
-	Name: "uint64",
-}
+var UInt64 = NewInfo("", "", "uint64", false)
 
-var UIntPtr = Info{
-	Name: "uintptr",
-}
+var UIntPtr = NewInfo("", "", "uintptr", false)
 
-var Float32 = Info{
-	Name: "float32",
-}
+var Float32 = NewInfo("", "", "float32", false)
 
-var Float64 = Info{
-	Name: "float64",
-}
+var Float64 = NewInfo("", "", "float64", false)
 
-var Complex128 = Info{
-	Name: "complex128",
-}
+var Complex128 = NewInfo("", "", "complex128", false)
 
 var gtToInfo = map[*GoType]Info{}
 
@@ -131,11 +111,11 @@ func TypeInfoForExpr(e Expr) Info {
 		return gti
 	}
 
-	name := gt.AbsoluteGoName()
-	fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, name)
-
-	gti := NewInfo(name, gt.Nullable)
+	gti := NewInfo(gt.GoPattern, gt.GoPackage, gt.GoName, gt.Nullable)
 	gtToInfo[gt] = gti
+
+	fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, gti.FullName)
+
 	return gti
 }
 

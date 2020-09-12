@@ -114,10 +114,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			ConvertToClojure:   gt.ConvertToClojure,
 			AsJokerObject:      gt.ConvertToClojure,
 		},
-		gti: gtypes.NewInfo(
-			goTypeName,
-			gt.Nullable,
-		)}
+		gti: gtypes.NewInfo("", pkg, name, gt.Nullable),
+	}
 
 	typeMap[ti.gti] = ti
 
@@ -195,12 +193,11 @@ func (ti typeInfo) ClojureDeclDoc() string {
 }
 
 func (ti typeInfo) GoDecl() string {
-	return ti.gti.Name
+	return ti.gti.FullName
 }
 
 func (ti typeInfo) GoDeclDoc() string {
-	s := strings.Split(ti.GoDecl(), ".")
-	return s[len(s)-1]
+	return fmt.Sprintf(ti.gti.GoPattern, ti.gti.BaseName)
 }
 
 func (ti typeInfo) GoCode() string {
