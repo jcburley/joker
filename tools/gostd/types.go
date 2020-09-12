@@ -18,8 +18,8 @@ type TypeInfo interface {
 	ConvertFromClojure() string // Pattern to convert a (scalar) %s to this type
 	ConvertToClojure() string   // Pattern to convert this type to an appropriate Clojure object
 	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	ClojureDecl() string
-	ClojureDeclDoc() string
+	JokerName() string
+	JokerNameDoc() string
 	GoDecl() string
 	GoDeclDoc() string
 	GoCode() string
@@ -190,15 +190,18 @@ func (ti typeInfo) AsJokerObject() string {
 	return ti.jti.AsJokerObject
 }
 
-func (ti typeInfo) ClojureDecl() string {
+func (ti typeInfo) JokerName() string {
 	if ti.jti == nil {
 		return ""
 	}
 	return ti.jti.ArgClojureArgType // TODO: can this just be renamed "ClojureType" at some point?
 }
 
-func (ti typeInfo) ClojureDeclDoc() string {
-	return ti.ClojureDecl() // TODO: Probably need difference soon.
+func (ti typeInfo) JokerNameDoc() string {
+	if ti.jti == nil {
+		return ""
+	}
+	return ti.jti.JokerNameDoc
 }
 
 func (ti typeInfo) GoDecl() string {

@@ -92,8 +92,8 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 	if ti.Nullable() {
 		out = maybeNil(captureName, out)
 	}
-	cl = ti.ClojureDecl()
-	clDoc = ti.ClojureDeclDoc()
+	cl = ti.JokerName()
+	clDoc = ti.JokerNameDoc()
 	gol = ti.GoDeclDoc()
 	goc = ti.GoCode()
 
