@@ -61,9 +61,9 @@ Dash docset: `dash-feed://https%3A%2F%2Fburleyarch.com%2Fjoker%2Fdocs%2Fjoker.xm
 
 [Joker slack channel](https://clojurians.slack.com/messages/C9VURUUNL/)
 
-[Organizing libraries (namespaces)](https://github.com/candid82/joker/blob/master/LIBRARIES.md)
+[Organizing libraries (namespaces)](LIBRARIES.md)
 
-[Developer notes](https://github.com/candid82/joker/blob/master/DEVELOPER.md)
+[Developer notes](DEVELOPER.md)
 
 ## Project goals
 
@@ -362,7 +362,7 @@ See [GOSTD Usage](GOSTD.md) for more information.
 
 ## Developer Notes
 
-See [`DEVELOPER.md`](https://github.com/candid82/joker/blob/master/DEVELOPER.md) for information on Joker internals, such as adding new namespaces to the Joker executable.
+See [`DEVELOPER.md`](DEVELOPER.md) for information on Joker internals, such as adding new namespaces to the Joker executable.
 
 # Formalities
 
