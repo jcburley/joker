@@ -44,7 +44,9 @@ type Info struct {
 	Nullable  bool   // Can an instance of the type == nil (e.g. 'error' type)?
 }
 
-func NewInfo(pattern, pkg, name string, nullable bool) Info {
+var nameToInfo = map[string]*Info{}
+
+func GetInfo(pattern, pkg, name string, nullable bool) *Info {
 	var fullName string
 	if pattern == "" {
 		pattern = "%s"
@@ -54,54 +56,62 @@ func NewInfo(pattern, pkg, name string, nullable bool) Info {
 	} else {
 		fullName = fmt.Sprintf(pattern, pkg+"."+name)
 	}
-	return Info{
+
+	if info, found := nameToInfo[fullName]; found {
+		return info
+	}
+
+	info := &Info{
 		FullName:  fullName,
 		GoPattern: pattern,
 		GoPackage: pkg,
 		BaseName:  name,
 		Nullable:  nullable,
 	}
+	nameToInfo[fullName] = info
+
+	return info
 }
 
 var Nil = Info{}
 
-var Error = NewInfo("", "", "error", true)
+var Error = GetInfo("", "", "error", true)
 
-var Bool = NewInfo("", "", "bool", false)
+var Bool = GetInfo("", "", "bool", false)
 
-var Byte = NewInfo("", "", "byte", false)
+var Byte = GetInfo("", "", "byte", false)
 
-var Rune = NewInfo("", "", "rune", false)
+var Rune = GetInfo("", "", "rune", false)
 
-var String = NewInfo("", "", "string", false)
+var String = GetInfo("", "", "string", false)
 
-var Int = NewInfo("", "", "int", false)
+var Int = GetInfo("", "", "int", false)
 
-var Int32 = NewInfo("", "", "int32", false)
+var Int32 = GetInfo("", "", "int32", false)
 
-var Int64 = NewInfo("", "", "int64", false)
+var Int64 = GetInfo("", "", "int64", false)
 
-var UInt = NewInfo("", "", "uint", false)
+var UInt = GetInfo("", "", "uint", false)
 
-var UInt8 = NewInfo("", "", "uint8", false)
+var UInt8 = GetInfo("", "", "uint8", false)
 
-var UInt16 = NewInfo("", "", "uint16", false)
+var UInt16 = GetInfo("", "", "uint16", false)
 
-var UInt32 = NewInfo("", "", "uint32", false)
+var UInt32 = GetInfo("", "", "uint32", false)
 
-var UInt64 = NewInfo("", "", "uint64", false)
+var UInt64 = GetInfo("", "", "uint64", false)
 
-var UIntPtr = NewInfo("", "", "uintptr", false)
+var UIntPtr = GetInfo("", "", "uintptr", false)
 
-var Float32 = NewInfo("", "", "float32", false)
+var Float32 = GetInfo("", "", "float32", false)
 
-var Float64 = NewInfo("", "", "float64", false)
+var Float64 = GetInfo("", "", "float64", false)
 
-var Complex128 = NewInfo("", "", "complex128", false)
+var Complex128 = GetInfo("", "", "complex128", false)
 
-var gtToInfo = map[*GoType]Info{}
+var gtToInfo = map[*GoType]*Info{}
 
-func TypeInfoForExpr(e Expr) Info {
+func TypeInfoForExpr(e Expr) *Info {
 	gt, _ := TypeLookup(e)
 	if gt == nil {
 		panic("nil")
@@ -111,7 +121,7 @@ func TypeInfoForExpr(e Expr) Info {
 		return gti
 	}
 
-	gti := NewInfo(gt.GoPattern, gt.GoPackage, gt.GoName, gt.Nullable)
+	gti := GetInfo(gt.GoPattern, gt.GoPackage, gt.GoName, gt.Nullable)
 	gtToInfo[gt] = gti
 
 	fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, gti.FullName)

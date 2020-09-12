@@ -27,8 +27,8 @@ type TypeInfo interface {
 }
 
 type typeInfo struct {
-	jti jtypes.Info
-	gti gtypes.Info
+	jti *jtypes.Info
+	gti *gtypes.Info
 }
 
 type GoTypeInfo struct {
@@ -64,7 +64,7 @@ type GoTypeMap map[string]*GoTypeInfo
 /* These map fullGoNames to type info. */
 var GoTypes = GoTypeMap{}
 
-var typeMap = map[gtypes.Info]TypeInfo{}
+var typeMap = map[*gtypes.Info]TypeInfo{}
 
 var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
 
@@ -108,13 +108,13 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	}
 
 	ti := &typeInfo{
-		jti: jtypes.Info{
+		jti: &jtypes.Info{
 			ArgClojureArgType:  gt.ArgClojureArgType,
 			ConvertFromClojure: gt.ConvertFromClojure,
 			ConvertToClojure:   gt.ConvertToClojure,
 			AsJokerObject:      gt.ConvertToClojure,
 		},
-		gti: gtypes.NewInfo("", pkg, name, gt.Nullable),
+		gti: gtypes.GetInfo("", pkg, name, gt.Nullable),
 	}
 
 	typeMap[ti.gti] = ti
@@ -127,7 +127,7 @@ var typesByExpr = map[Expr]TypeInfo{}
 
 func BadInfo(err string) typeInfo {
 	return typeInfo{
-		jti: jtypes.Info{
+		jti: &jtypes.Info{
 			ArgExtractFunc:     err,
 			ArgClojureArgType:  err,
 			ConvertFromClojure: err + "%0s%0s",
@@ -140,12 +140,15 @@ func BadInfo(err string) typeInfo {
 func TypeInfoForExpr(e Expr) TypeInfo {
 	gti := gtypes.TypeInfoForExpr(e)
 
-	if ti, found := typeMap[gti]; found {
+	if ti, found := typeMap[gti]; found { // TODO: map from expr to ti? Then move this up, etc.
 		return ti
 	}
 
+	jti := jtypes.TypeInfoForExpr(e)
+
 	ti := &typeInfo{
 		gti: gti,
+		jti: jti,
 	}
 
 	typeMap[gti] = ti
@@ -181,10 +184,16 @@ func (ti typeInfo) ConvertToClojure() string {
 }
 
 func (ti typeInfo) AsJokerObject() string {
+	if ti.jti == nil {
+		return ""
+	}
 	return ti.jti.AsJokerObject
 }
 
 func (ti typeInfo) ClojureDecl() string {
+	if ti.jti == nil {
+		return ""
+	}
 	return ti.jti.ArgClojureArgType // TODO: can this just be renamed "ClojureType" at some point?
 }
 
