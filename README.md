@@ -358,7 +358,7 @@ $
 
 ## Further Reading
 
-See [GOSTD Usage](https://github.com/jcburley/joker/blob/gostd/GOSTD.md) for more information.
+See [GOSTD Usage](GOSTD.md) for more information.
 
 ## Developer Notes
 

@@ -1,6 +1,6 @@
 # GOSTD Usage
 
-Build the version of Joker on the `gostd` branch as described in the [Joker README](https://github.com/jcburley/joker/blob/gostd/README.md) under "The go.std.* Namespaces".
+Build the version of Joker on the `gostd` branch as described in the [Joker README](README.md) under "The go.std.* Namespaces".
 
 After building, HTML documentation is available in the `docs` directory. For example, I use a URL to [my local docs tree](file:///home/craig/go/src/github.com/candid82/joker/docs/index.html) to get the latest info.
 
