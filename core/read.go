@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"math"
 	"math/big"
 	"math/rand"
 	"regexp"
@@ -184,6 +185,10 @@ func readComment(reader *Reader) Object {
 func eatWhitespace(reader *Reader) {
 	r := reader.Get()
 	for r != EOF {
+		if FORMAT_MODE && r == ',' {
+			reader.Unget()
+			break
+		}
 		if isWhitespace(r) {
 			r = reader.Get()
 			continue
@@ -1056,6 +1061,25 @@ func readNamespacedMap(reader *Reader) Object {
 	return readMapWithNamespace(reader, nsname)
 }
 
+var specials = map[string]float64{
+	"Inf":  math.Inf(1),
+	"-Inf": math.Inf(-1),
+	"NaN":  math.NaN(),
+}
+
+func readSymbolicValue(reader *Reader) Object {
+	obj := readFirst(reader)
+	switch o := obj.(type) {
+	case Symbol:
+		if v, found := specials[o.ToString(false)]; found {
+			return Double{D: v}
+		}
+		panic(MakeReadError(reader, "Unknown symbolic value: ##"+o.ToString(false)))
+	default:
+		panic(MakeReadError(reader, "Invalid token: ##"+o.ToString(false)))
+	}
+}
+
 func readDispatch(reader *Reader) (Object, bool) {
 	r := reader.Get()
 	switch r {
@@ -1103,6 +1127,8 @@ func readDispatch(reader *Reader) (Object, bool) {
 		return readConditional(reader)
 	case ':':
 		return readNamespacedMap(reader), false
+	case '#':
+		return readSymbolicValue(reader), false
 	}
 	popPos()
 	reader.Unget()
@@ -1142,10 +1168,14 @@ func Read(reader *Reader) (Object, bool) {
 	pushPos(reader)
 	// This is only possible in format mode, otherwise
 	// eatWhitespace eats comments.
+	if r == ',' {
+		return MakeReadObject(reader, Comment{C: ","}), false
+	}
 	if r == ';' || (r == '#' && reader.Peek() == '!') {
 		reader.Unget()
 		return readComment(reader), false
 	}
+
 	switch {
 	case r == '\\':
 		return readCharacter(reader), false
