@@ -140,9 +140,9 @@ func BadInfo(err string) typeInfo {
 func TypeInfoForExpr(e Expr) TypeInfo {
 	gti := gtypes.TypeInfoForExpr(e)
 
-	if ti, found := typeMap[gti]; found { // TODO: map from expr to ti? Then move this up, etc.
-		return ti
-	}
+	// if ti, found := typeMap[gti]; found { // TODO: map from expr to ti? Then move this up, etc.
+	// 	return ti
+	// }
 
 	jti := jtypes.TypeInfoForExpr(e)
 

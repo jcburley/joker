@@ -5,6 +5,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
+	"go/types"
 )
 
 // Info on Joker types, including map of Joker type names to said type
@@ -21,23 +22,38 @@ type Info struct {
 	AsJokerObject      string // Pattern to convert this type to a normal Joker type; empty string means wrap in a GoObject
 }
 
-func typeNameForExpr(e Expr) string {
+func combine(ns, name string) string {
+	if ns == "" {
+		return name
+	}
+	return ns + "/" + name
+}
+
+func typeNameForExpr(e Expr) (ns, name string) {
 	switch v := e.(type) {
 	case *Ident:
-		return ClojureNamespaceForExpr(e) + "/" + v.Name
+		if types.Universe.Lookup(v.Name) == nil {
+			return ClojureNamespaceForExpr(e), v.Name
+		}
+		return "", goTypeMap[v.Name].JokerNameDoc
 	case *ArrayType:
-		return "(array-of " + typeNameForExpr(v.Elt) + ")"
+		ns, name = typeNameForExpr(v.Elt)
+		if name[0:1] == "(" {
+			return "", "(array-of " + combine(ns, name) + ")"
+		}
+		return ns, "arrayOf" + name
 	case *StarExpr:
-		return "(ref-to " + typeNameForExpr(v.X) + ")"
+		ns, name = typeNameForExpr(v.X)
+		return "", "(ref-to " + combine(ns, name) + ")"
 	}
-	return fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
+	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
 }
 
 func TypeInfoForExpr(e Expr) *Info {
-	name := typeNameForExpr(e)
+	ns, name := typeNameForExpr(e)
 
 	return &Info{
-		JokerNameDoc: name,
+		JokerNameDoc: combine(ns, name),
 	}
 }
 
@@ -173,23 +189,44 @@ var Complex128 = &Info{
 	ArgClojureArgType: "ABEND007(find these)",
 }
 
-var TypeMap = map[string]*Info{
-	"Nil":        Nil,
-	"Error":      Error,
-	"Bool":       Bool,
-	"Byte":       Byte,
-	"Rune":       Rune,
-	"String":     String,
-	"Int":        Int,
-	"Int32":      Int32,
-	"Int64":      Int64,
-	"UInt":       UInt,
-	"UInt8":      UInt8,
-	"UInt16":     UInt16,
-	"UInt32":     UInt32,
-	"UInt64":     UInt64,
-	"UIntPtr":    UIntPtr,
-	"Float32":    Float32,
-	"Float64":    Float64,
-	"Complex128": Complex128,
+// var typeMap = map[string]*Info{
+// 	"Nil":        Nil,
+// 	"Error":      Error,
+// 	"Bool":       Bool,
+// 	"Byte":       Byte,
+// 	"Rune":       Rune,
+// 	"String":     String,
+// 	"Int":        Int,
+// 	"Int32":      Int32,
+// 	"Int64":      Int64,
+// 	"UInt":       UInt,
+// 	"UInt8":      UInt8,
+// 	"UInt16":     UInt16,
+// 	"UInt32":     UInt32,
+// 	"UInt64":     UInt64,
+// 	"UIntPtr":    UIntPtr,
+// 	"Float32":    Float32,
+// 	"Float64":    Float64,
+// 	"Complex128": Complex128,
+// }
+
+var goTypeMap = map[string]*Info{
+	"nil":        Nil,
+	"error":      Error,
+	"bool":       Bool,
+	"byte":       Byte,
+	"rune":       Rune,
+	"string":     String,
+	"int":        Int,
+	"int32":      Int32,
+	"int64":      Int64,
+	"uint":       UInt,
+	"uint8":      UInt8,
+	"uint16":     UInt16,
+	"uint32":     UInt32,
+	"uint64":     UInt64,
+	"uintptr":    UIntPtr,
+	"float32":    Float32,
+	"float64":    Float64,
+	"complex128": Complex128,
 }
