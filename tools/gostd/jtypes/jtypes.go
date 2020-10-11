@@ -18,6 +18,7 @@ type Info struct {
 	ArgClojureArgType  string // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure string // Pattern to convert a (scalar) %s to this type
 	ConvertToClojure   string // Pattern to convert this type to an appropriate Clojure object
+	JokerName          string // Full name of type as a Joker expression
 	JokerNameDoc       string // Full name of type as a Joker expression (for documentation)
 	AsJokerObject      string // Pattern to convert this type to a normal Joker type; empty string means wrap in a GoObject
 }
@@ -52,8 +53,10 @@ func typeNameForExpr(e Expr) (ns, name string) {
 func TypeInfoForExpr(e Expr) *Info {
 	ns, name := typeNameForExpr(e)
 
+	fullName := combine(ns, name)
 	return &Info{
-		JokerNameDoc: combine(ns, name),
+		JokerName:    fullName,
+		JokerNameDoc: fullName,
 	}
 }
 

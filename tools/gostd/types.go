@@ -194,7 +194,7 @@ func (ti typeInfo) JokerName() string {
 	if ti.jti == nil {
 		return ""
 	}
-	return ti.jti.ArgClojureArgType // TODO: can this just be renamed "ClojureType" at some point?
+	return ti.jti.JokerName
 }
 
 func (ti typeInfo) JokerNameDoc() string {
@@ -213,7 +213,7 @@ func (ti typeInfo) GoDeclDoc() string {
 }
 
 func (ti typeInfo) GoCode() string {
-	return "" // TODO: Probably need something here in some cases? Seems to generic of a name though.
+	return "" // TODO: Probably need something here in some cases? Seems too generic of a name though.
 }
 
 func (ti typeInfo) Nullable() bool {
