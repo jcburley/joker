@@ -89,7 +89,7 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 		cl = ti.ArgExtractFunc()
 		clDoc = ti.ArgClojureArgType()
 	}
-	if ti.Nullable() {
+	if ti.IsNullable() {
 		out = maybeNil(captureName, out)
 	}
 	cl = ti.JokerName()

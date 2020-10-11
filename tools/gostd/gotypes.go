@@ -81,11 +81,12 @@ func toGoExprInfoGOT(src *godb.GoFile, e Expr) *GoTypeInfo {
 	var ti *GoTypeInfo
 	var underlyingType Expr
 	unsupported := false
-	tdi, tdiFullName := gtypes.TypeLookup(e)
+	typeInfo := TypeInfoForExpr(e)
+	tdi := typeInfo.GoTypeInfo()
 	defer func() {
 		if tdi == nil && !strings.Contains(ti.FullGoName, "ABEND") {
 			Print(godb.Fset, e)
-			panic(fmt.Sprintf("could not TypeLookup(%s) as %s at %s", ti.FullGoName, tdiFullName, godb.WhereAt(e.Pos())))
+			panic(fmt.Sprintf("could not TypeLookup(%s) as %s at %s", ti.FullGoName, typeInfo.GoDecl(), godb.WhereAt(e.Pos())))
 		}
 	}()
 	switch td := e.(type) {

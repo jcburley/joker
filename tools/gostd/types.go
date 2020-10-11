@@ -22,9 +22,24 @@ type TypeInfo interface {
 	JokerNameDoc() string
 	GoDecl() string
 	GoDeclDoc() string
+	GoPackage() string
+	GoPattern() string
+	GoName() string
 	GoCode() string
-	Nullable() bool // Can an instance of the type == nil (e.g. 'error' type)?
+	GoTypeInfo() *gtypes.Info
+	TypeSpec() *TypeSpec // Definition, if any, of named type
+	GoFile() *godb.GoFile
+	DefPos() token.Pos
+	Specificity() uint // ConcreteType, else # of methods defined for interface{} (abstract) type
+	Ord() uint         // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
+	SetOrd(uint)
+	TypeMappingsName() string
+	Doc() string
+	IsNullable() bool // Can an instance of the type == nil (e.g. 'error' type)?
+	IsExported() bool
 }
+
+const ConcreteType = gtypes.Concrete
 
 type typeInfo struct {
 	jti *jtypes.Info
@@ -36,7 +51,7 @@ type GoTypeInfo struct {
 	FullGoName                string       // empty ("struct {...}" etc.), localName (built-in), path/to/pkg.LocalName, or ABEND if unsupported
 	SourceFile                *godb.GoFile // location of the type defintion
 	Td                        *TypeSpec
-	Type                      *gtypes.GoType // Primary type in the new package
+	Type                      TypeInfo // Primary type in the new package
 	Where                     token.Pos
 	UnderlyingType            Expr             // nil if not a declared type
 	ArgClojureType            string           // Can convert this type to a Go function arg with my type
@@ -66,7 +81,7 @@ var GoTypes = GoTypeMap{}
 
 var typeMap = map[*gtypes.Info]TypeInfo{}
 
-var TypeDefsToGoTypes = map[*gtypes.GoType]*GoTypeInfo{}
+var TypeDefsToGoTypes = map[TypeInfo]*GoTypeInfo{}
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name
@@ -84,40 +99,48 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		Print(godb.Fset, ts)
 	}
 
-	tdiVec := gtypes.TypeDefine(ts, gf, parentDoc)
-	for _, tdi := range tdiVec {
-		if !strings.Contains(tdi.ClojureName, "[") { // exclude arrays
-			ClojureCode[pkg].InitTypes[tdi] = struct{}{}
-			GoCode[pkg].InitTypes[tdi] = struct{}{}
+	gtiVec := gtypes.TypeDefine(ts, gf, parentDoc)
+
+	for ix, gti := range gtiVec {
+
+		var gt *GoTypeInfo
+
+		if ix == 0 {
+			gt = registerTypeGOT(gf, goTypeName, ts)
+			gt.Td = ts
+			gt.Where = ts.Pos()
+			gt.RequiredImports = &imports.Imports{}
+		}
+
+		ti := &typeInfo{
+			jti: &jtypes.Info{
+				ArgClojureArgType:  gt.ArgClojureArgType,
+				ConvertFromClojure: gt.ConvertFromClojure,
+				ConvertToClojure:   gt.ConvertToClojure,
+				AsJokerObject:      gt.ConvertToClojure,
+			},
+			gti: gti,
+		}
+
+		typeMap[gti] = ti
+
+		if ix == 0 {
+			gt.Type = ti
+			TypeDefsToGoTypes[ti] = gt
+
+			if IsExported(name) {
+				NumTypes++
+				if ti.Specificity() == ConcreteType {
+					NumCtableTypes++
+				}
+			}
+		}
+
+		if !strings.Contains(gti.FullName, "[") { // exclude arrays
+			ClojureCode[pkg].InitTypes[ti] = struct{}{}
+			GoCode[pkg].InitTypes[ti] = struct{}{}
 		}
 	}
-
-	gt := registerTypeGOT(gf, goTypeName, ts)
-	gt.Td = ts
-	gt.Type = tdiVec[0]
-	gt.Where = ts.Pos()
-	gt.RequiredImports = &imports.Imports{}
-
-	TypeDefsToGoTypes[tdiVec[0]] = gt
-
-	if IsExported(name) {
-		NumTypes++
-		if tdiVec[0].Specificity == gtypes.Concrete {
-			NumCtableTypes++
-		}
-	}
-
-	ti := &typeInfo{
-		jti: &jtypes.Info{
-			ArgClojureArgType:  gt.ArgClojureArgType,
-			ConvertFromClojure: gt.ConvertFromClojure,
-			ConvertToClojure:   gt.ConvertToClojure,
-			AsJokerObject:      gt.ConvertToClojure,
-		},
-		gti: gtypes.GetInfo("", pkg, name, gt.Nullable),
-	}
-
-	typeMap[ti.gti] = ti
 
 	return true
 }
@@ -139,11 +162,6 @@ func BadInfo(err string) typeInfo {
 
 func TypeInfoForExpr(e Expr) TypeInfo {
 	gti := gtypes.TypeInfoForExpr(e)
-
-	// if ti, found := typeMap[gti]; found { // TODO: map from expr to ti? Then move this up, etc.
-	// 	return ti
-	// }
-
 	jti := jtypes.TypeInfoForExpr(e)
 
 	ti := &typeInfo{
@@ -209,15 +227,133 @@ func (ti typeInfo) GoDecl() string {
 }
 
 func (ti typeInfo) GoDeclDoc() string {
-	return fmt.Sprintf(ti.gti.GoPattern, ti.gti.BaseName)
+	return ti.gti.FullName
+}
+
+func (ti typeInfo) GoPackage() string {
+	return ti.gti.Package
+}
+
+func (ti typeInfo) GoPattern() string {
+	return ti.gti.Pattern
+}
+
+func (ti typeInfo) GoName() string {
+	return ti.gti.FullName
 }
 
 func (ti typeInfo) GoCode() string {
 	return "" // TODO: Probably need something here in some cases? Seems too generic of a name though.
 }
 
-func (ti typeInfo) Nullable() bool {
-	return ti.gti.Nullable
+func (ti typeInfo) GoTypeInfo() *gtypes.Info { // TODO: Remove when gotypes.go is gone?
+	return ti.gti
+}
+
+func (ti typeInfo) TypeSpec() *TypeSpec {
+	return ti.gti.TypeSpec
+}
+
+func (ti typeInfo) GoFile() *godb.GoFile {
+	return ti.gti.GoFile
+}
+
+func (ti typeInfo) DefPos() token.Pos {
+	return ti.gti.DefPos
+}
+
+func (ti typeInfo) Specificity() uint {
+	return ti.gti.Specificity
+}
+
+func (ti typeInfo) Ord() uint {
+	return ti.gti.Ord
+}
+
+func (ti typeInfo) SetOrd(o uint) {
+	ti.gti.Ord = o
+}
+
+func (ti typeInfo) Doc() string {
+	return ti.gti.Doc
+}
+
+func (ti typeInfo) IsNullable() bool {
+	return ti.gti.IsNullable
+}
+
+func (ti typeInfo) IsExported() bool {
+	return ti.gti.IsExported
+}
+
+var allTypesSorted = []TypeInfo{}
+
+// This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
+// new types cannot be discovered/added.
+func SortAllTypes() {
+	if len(allTypesSorted) > 0 {
+		panic("Attempt to sort all types type after having already sorted all types!!")
+	}
+	for _, ti := range typesByExpr {
+		t := ti.GoTypeInfo()
+		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
+			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
+		}
+	}
+	sort.SliceStable(allTypesSorted, func(i, j int) bool {
+		i_gti := allTypesSorted[i].GoTypeInfo()
+		j_gti := allTypesSorted[j].GoTypeInfo()
+		if i_gti.Specificity != j_gti.Specificity {
+			return i_gti.Specificity > j_gti.Specificity
+		}
+		return i_gti.FullName < j_gti.FullName
+	})
+	for ord, t := range allTypesSorted {
+		t.SetOrd((uint)(ord))
+		ord++
+	}
+}
+
+func AllTypesSorted() []TypeInfo {
+	return allTypesSorted
+}
+
+func typeKeyForSort(k string) string {
+	if strings.HasPrefix(k, "*") {
+		return k[1:] + "*"
+	}
+	if strings.HasPrefix(k, "[]") {
+		return k[2:] + "[]"
+	}
+	return k
+}
+
+func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
+	var keys []string
+	var vals map[string]TypeInfo
+	for k, _ := range m {
+		if k != nil {
+			key := k.GoTypeInfo().FullName
+			keys = append(keys, key)
+			vals[key] = k
+		}
+	}
+	sort.SliceStable(keys, func(i, j int) bool {
+		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
+	})
+	for _, k := range keys {
+		f(vals[k])
+	}
+}
+
+func (ti typeInfo) TypeMappingsName() string {
+	if !ti.IsExported() {
+		return ""
+	}
+	if ugt := ti.gti.UnderlyingGoType; ugt != nil {
+		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+	}
+	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
 }
 
 func init() {

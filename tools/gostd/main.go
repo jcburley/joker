@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
@@ -255,7 +254,7 @@ func main() {
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
 			RegisterJokerFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]*gtypes.GoType{}, jokerSourceDir, false)
+			RegisterGoTypeSwitch([]TypeInfo{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
 
@@ -294,10 +293,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	gtypes.SortAll()
+	SortAllTypes()
 
-	for _, tdi := range gtypes.AllSorted() {
-		GenTypeFromDb(tdi)
+	for _, ti := range AllTypesSorted() {
+		GenTypeFromDb(ti)
 	}
 
 	SortedConstantInfoMap(GoConstants,
@@ -348,7 +347,7 @@ func main() {
 		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
 	}
 
-	RegisterGoTypeSwitch(gtypes.AllSorted(), jokerSourceDir, outputCode)
+	RegisterGoTypeSwitch(AllTypesSorted(), jokerSourceDir, outputCode)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
@@ -360,7 +359,6 @@ Totals: functions=%d generated=%d (%s%%)
           methods=%d (%s%%) generated=%d (%s%%)
         types=%d
           constructable=%d ctors=%d (%s%%)
-          hits expr=%d fullname=%d
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
 `,
@@ -370,7 +368,6 @@ Totals: functions=%d generated=%d (%s%%)
 			godb.NumMethods, pct(godb.NumMethods, NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
 			NumTypes,
 			NumCtableTypes, NumGeneratedCtors, pct(NumGeneratedCtors, NumCtableTypes),
-			gtypes.NumExprHits, gtypes.NumClojureNameHits,
 			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
 			NumVariables, NumGeneratedVariables, pct(NumGeneratedVariables, NumVariables))
 	}

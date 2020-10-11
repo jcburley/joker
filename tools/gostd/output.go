@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
@@ -40,7 +39,7 @@ func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
 	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []*gtypes.GoType, jokerSourceDir string, outputCode bool) {
+func RegisterGoTypeSwitch(types []TypeInfo, jokerSourceDir string, outputCode bool) {
 	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"), outputCode)
 }
 
@@ -113,7 +112,7 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	Check(err)
 }
 
-func updateGoTypeSwitch(types []*gtypes.GoType, f string, outputCode bool) {
+func updateGoTypeSwitch(types []TypeInfo, f string, outputCode bool) {
 	if Verbose {
 		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
@@ -144,19 +143,19 @@ func SwitchGoType(g interface{}) int {
 	var cases string
 	var importeds = &imports.Imports{}
 	for _, t := range types {
-		if t.Specificity == 0 {
+		if t.Specificity() == 0 {
 			// These are empty interface{} types, and so really can't be specifically matched to anything.
 			continue
 		}
 		pkgPlusSeparator := ""
-		if t.GoPackage != "" {
-			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage, "", "", true, token.NoPos) + "."
+		if t.GoPackage() != "" {
+			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
 		specificity := ""
-		if t.Specificity != gtypes.Concrete {
-			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity)
+		if t.Specificity() != ConcreteType {
+			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity())
 		}
-		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern, pkgPlusSeparator+t.GoName), specificity, t.Ord)
+		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoName()), specificity, t.Ord())
 	}
 
 	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
@@ -263,16 +262,16 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 			}
 		})
 
-	gtypes.SortedTypeDefinitions(v.InitTypes,
-		func(tdi *gtypes.GoType) {
-			tmn := tdi.TypeMappingsName()
-			if tmn == "" || tdi.GoName == "" || !tdi.IsExported {
+	SortedTypeDefinitions(v.InitTypes,
+		func(ti TypeInfo) {
+			tmn := ti.TypeMappingsName()
+			if tmn == "" || ti.GoName() == "" || !ti.IsExported() {
 				return
 			}
-			typeDoc := tdi.Doc
+			typeDoc := ti.Doc()
 			specificity := ""
-			if tdi.Specificity != gtypes.Concrete {
-				specificity = fmt.Sprintf("    :specificity %d\n", tdi.Specificity)
+			if ti.Specificity() != ConcreteType {
+				specificity = fmt.Sprintf("    :specificity %d\n", ti.Specificity())
 			}
 			fnCode := fmt.Sprintf(`
 (def
@@ -282,10 +281,10 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 %s    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(tdi.GoPattern, tdi.GoName))
+				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.GoPattern(), ti.GoName()))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
-					tdi.ClojureName, fnCode)
+					ti.JokerName(), fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(fnCode)
@@ -379,15 +378,15 @@ import (%s
 			}
 		})
 
-	gtypes.SortedTypeDefinitions(v.InitTypes,
-		func(tdi *gtypes.GoType) {
-			tmn := tdi.TypeMappingsName()
-			if tmn == "" || !tdi.IsExported {
+	SortedTypeDefinitions(v.InitTypes,
+		func(ti TypeInfo) {
+			tmn := ti.TypeMappingsName()
+			if tmn == "" || !ti.IsExported() {
 				return
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
 			if outputCode && tmn != "" {
-				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), tmn)
+				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), tmn)
 			}
 			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
@@ -407,22 +406,22 @@ import (%s
 		out.WriteString("\nfunc initNative() {\n")
 	}
 
-	gtypes.SortedTypeDefinitions(v.InitTypes,
-		func(tdi *gtypes.GoType) {
-			tmn := tdi.TypeMappingsName()
-			if tmn == "" || !tdi.IsExported {
+	SortedTypeDefinitions(v.InitTypes,
+		func(ti TypeInfo) {
+			tmn := ti.TypeMappingsName()
+			if tmn == "" || !ti.IsExported() {
 				return
 			}
-			k1 := tdi.ClojureName
+			k1 := ti.JokerName()
 			ctor := ""
-			if c, found := CtorNames[tdi]; found {
+			if c, found := CtorNames[ti]; found {
 				ctor = fmt.Sprintf(`
 		Ctor: %s,
 `[1:],
 					c)
 			}
 			mem := ""
-			SortedFnCodeInfo(v.InitVars[tdi], // Will always be populated
+			SortedFnCodeInfo(v.InitVars[ti], // Will always be populated
 				func(c string, r *FnCodeInfo) {
 					doc := r.FnDoc
 					g := r.FnCode
@@ -433,22 +432,22 @@ import (%s
 				})
 			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem, "" /*"Type:"..., but probably not needed*/)
 			if outputCode {
-				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), o)
+				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
 			}
 		})
 
-	gtypes.SortedTypeDefinitions(v.InitTypes,
-		func(tdi *gtypes.GoType) {
-			tmn := tdi.TypeMappingsName()
-			if tmn == "" || !tdi.IsExported {
+	SortedTypeDefinitions(v.InitTypes,
+		func(ti TypeInfo) {
+			tmn := ti.TypeMappingsName()
+			if tmn == "" || !ti.IsExported() {
 				return
 			}
-			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", tdi.Ord, tmn)
+			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", ti.Ord(), tmn)
 			if outputCode {
-				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", tdi.ClojureName, WhereAt(tdi.DefPos), o)
+				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)

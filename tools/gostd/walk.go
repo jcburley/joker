@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/utils"
@@ -78,8 +77,8 @@ type CodeInfo struct {
 	Variables GoVariablesMap
 	Functions fnCodeMap
 	Types     GoTypeMap
-	InitTypes map[*gtypes.GoType]struct{}               // types to be initialized
-	InitVars  map[*gtypes.GoType]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
+	InitTypes map[TypeInfo]struct{}               // types to be initialized
+	InitVars  map[TypeInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
@@ -120,12 +119,12 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName   string         // Just the name without receiver-type info
-	ReceiverId string         // Receiver info (only one type supported here and by Golang itself for now)
-	Name       string         // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName    string         // Everything, for documentation and diagnostics
-	Fd         *FuncDecl      // nil for methods
-	ToM        *gtypes.GoType // Method operates on this type (nil for standalones and receivers)
+	BaseName   string    // Just the name without receiver-type info
+	ReceiverId string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name       string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName    string    // Everything, for documentation and diagnostics
+	Fd         *FuncDecl // nil for methods
+	ToM        TypeInfo  // Method operates on this type (nil for standalones and receivers)
 	Ft         *FuncType
 	Doc        *CommentGroup
 	SourceFile *godb.GoFile
@@ -786,9 +785,9 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*gtypes.GoType]struct{}{}, map[*gtypes.GoType]map[string]*FnCodeInfo{}}
+			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
-			map[*gtypes.GoType]struct{}{}, map[*gtypes.GoType]map[string]*FnCodeInfo{}}
+			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 	}
 
 	for path, f := range p.Files {
