@@ -56,7 +56,7 @@ func combine(pkg, name string) string {
 	return pkg + "." + name
 }
 
-var nameToInfo = map[string]*Info{}
+var fullNameToInfo = map[string]*Info{}
 
 func GetInfo(pattern, pkg, name string, nullable bool) *Info {
 	if pattern == "" {
@@ -64,7 +64,7 @@ func GetInfo(pattern, pkg, name string, nullable bool) *Info {
 	}
 	fullName := fmt.Sprintf(pattern, combine(pkg, name))
 
-	if info, found := nameToInfo[fullName]; found {
+	if info, found := fullNameToInfo[fullName]; found {
 		return info
 	}
 
@@ -77,7 +77,7 @@ func GetInfo(pattern, pkg, name string, nullable bool) *Info {
 		IsExported: pkg == "" || IsExported(name),
 	}
 
-	nameToInfo[fullName] = info
+	fullNameToInfo[fullName] = info
 
 	return info
 }
@@ -163,14 +163,14 @@ func specificity(ts *TypeSpec) uint {
 
 // Maps type-defining Expr or string to exactly one struct describing that type
 var typesByExpr = map[Expr]*GoType{}
-var typesByGoName = map[string]*GoType{}
+var typesByFullName = map[string]*GoType{}
 
 func define(tdi *GoType) *Info {
-	name := tdi.GoName
-	if existingTdi, ok := typesByGoName[name]; ok {
+	name := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
+	if existingTdi, ok := typesByFullName[name]; ok {
 		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, godb.WhereAt(existingTdi.DefPos), godb.WhereAt(tdi.DefPos)))
 	}
-	typesByGoName[name] = tdi
+	typesByFullName[name] = tdi
 
 	if tdi.Type != nil {
 		tdiByExpr, found := typesByExpr[tdi.Type]
@@ -180,14 +180,13 @@ func define(tdi *GoType) *Info {
 		typesByExpr[tdi.Type] = tdi
 	}
 
-	fullName := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
 	localName := fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 	var ugt *Info = nil
 	if tdi.underlyingGoType != nil {
 		ugt = gtToInfo[tdi.underlyingGoType]
 	}
 	gti := &Info{
-		FullName:         fullName,
+		FullName:         name,
 		Pattern:          tdi.GoPattern,
 		Package:          tdi.GoPackage,
 		LocalName:        localName,
@@ -201,7 +200,7 @@ func define(tdi *GoType) *Info {
 		IsNullable:       tdi.Nullable,
 		IsExported:       tdi.IsExported,
 	}
-	nameToInfo[fullName] = gti
+	fullNameToInfo[name] = gti
 	gtToInfo[tdi] = gti
 
 	return gti
