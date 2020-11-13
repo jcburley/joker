@@ -101,16 +101,14 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	gtiVec := gtypes.TypeDefine(ts, gf, parentDoc)
 
-	for ix, gti := range gtiVec {
+	for _, gti := range gtiVec {
 
 		var gt *GoTypeInfo
 
-		if ix == 0 {
-			gt = registerTypeGOT(gf, goTypeName, ts)
-			gt.Td = ts
-			gt.Where = ts.Pos()
-			gt.RequiredImports = &imports.Imports{}
-		}
+		gt = registerTypeGOT(gf, goTypeName, ts)
+		gt.Td = ts
+		gt.Where = ts.Pos()
+		gt.RequiredImports = &imports.Imports{}
 
 		ti := &typeInfo{
 			jti: &jtypes.Info{
@@ -124,15 +122,13 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		typeMap[gti] = ti
 
-		if ix == 0 {
-			gt.Type = ti
-			TypeDefsToGoTypes[ti] = gt
+		gt.Type = ti
+		TypeDefsToGoTypes[ti] = gt
 
-			if IsExported(name) {
-				NumTypes++
-				if ti.Specificity() == ConcreteType {
-					NumCtableTypes++
-				}
+		if IsExported(name) {
+			NumTypes++
+			if ti.Specificity() == ConcreteType {
+				NumCtableTypes++
 			}
 		}
 
