@@ -270,6 +270,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 			Type:             &StarExpr{X: tdi.Type},
 			IsExported:       tdi.IsExported,
 			Doc:              "",
+			DefPos:           tdi.DefPos,
 			GoPattern:        fmt.Sprintf(tdi.GoPattern, "*%s"),
 			GoPackage:        tdi.GoPackage,
 			GoName:           tdi.GoName,
