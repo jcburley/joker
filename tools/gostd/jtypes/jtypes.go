@@ -37,7 +37,11 @@ func typeNameForExpr(e Expr) (ns, name string) {
 		if types.Universe.Lookup(v.Name) == nil {
 			return ClojureNamespaceForExpr(e), v.Name
 		}
-		return "", goTypeMap[v.Name].JokerNameDoc
+		info, found := goTypeMap[v.Name]
+		if !found {
+			panic(fmt.Sprintf("no type info for universal symbol `%s'", v.Name))
+		}
+		return "", info.JokerNameDoc
 	case *ArrayType:
 		ns, name = typeNameForExpr(v.Elt)
 		if name[0:1] == "(" {
@@ -125,6 +129,24 @@ var Int = &Info{
 	JokerName:         "Int",
 	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(%s%s)",
+}
+
+var Int8 = &Info{
+	ArgExtractFunc:    "Int8",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	JokerName:         "Int8",
+	JokerNameDoc:      "Int8",
+	AsJokerObject:     "Int(int(%s)%s)",
+}
+
+var Int16 = &Info{
+	ArgExtractFunc:    "Int16",
+	ArgClojureArgType: "Int",
+	ConvertToClojure:  "Int(int(%s)%s)",
+	JokerName:         "Int16",
+	JokerNameDoc:      "Int16",
+	AsJokerObject:     "Int(int(%s)%s)",
 }
 
 var Int32 = &Info{
@@ -251,6 +273,8 @@ var goTypeMap = map[string]*Info{
 	"rune":       Rune,
 	"string":     String,
 	"int":        Int,
+	"int8":       Int8,
+	"int16":      Int16,
 	"int32":      Int32,
 	"int64":      Int64,
 	"uint":       UInt,
