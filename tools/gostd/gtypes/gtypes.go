@@ -123,7 +123,8 @@ var gtToInfo = map[*GoType]*Info{}
 func TypeInfoForExpr(e Expr) *Info {
 	gt := TypeLookup(e)
 	if gt == nil {
-		panic(fmt.Sprintf("cannot find type for %v", e))
+		return nil
+		//		panic(fmt.Sprintf("cannot find type for %v", e))
 	}
 
 	if gti, found := gtToInfo[gt]; found {
@@ -168,9 +169,11 @@ var typesByFullName = map[string]*GoType{}
 func define(tdi *GoType) *Info {
 	name := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
 	if existingTdi, ok := typesByFullName[name]; ok {
-		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, godb.WhereAt(existingTdi.DefPos), godb.WhereAt(tdi.DefPos)))
+		fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", name, godb.WhereAt(existingTdi.DefPos), existingTdi, godb.WhereAt(tdi.DefPos), tdi)
+		tdi = existingTdi
+	} else {
+		typesByFullName[name] = tdi
 	}
-	typesByFullName[name] = tdi
 
 	if tdi.Type != nil {
 		tdiByExpr, found := typesByExpr[tdi.Type]
@@ -289,14 +292,28 @@ func TypeLookup(e Expr) (ty *GoType) {
 		return tdi
 	}
 
-	if _, yes := e.(*Ident); yes {
-		// No more information to be gleaned.
-		return nil
+	goName := ""
+
+	if id, yes := e.(*Ident); yes {
+		goName = id.Name
+		if tdi, ok := typesByFullName[goName]; ok {
+			typesByExpr[e] = tdi
+			return tdi
+		}
+		tdi := &GoType{
+			Type:       e,
+			IsExported: true,
+			DefPos:     id.Pos(),
+			GoPattern:  "%s",
+			GoName:     goName,
+		}
+		typesByExpr[e] = tdi
+		typesByFullName[goName] = tdi
+		return tdi
 	}
 
 	var innerTdi *GoType
 	pattern := "%s"
-	goName := ""
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -307,7 +324,11 @@ func TypeLookup(e Expr) (ty *GoType) {
 		innerTdi = TypeLookup(v.Elt)
 		len := exprToString(v.Len)
 		pattern = "[" + len + "]%s"
-		goName = innerTdi.GoName
+		if innerTdi == nil {
+			goName = fmt.Sprintf("%v", v.Elt)
+		} else {
+			goName = innerTdi.GoName
+		}
 	case *InterfaceType:
 		goName = "interface{"
 		methods := methodsToString(v.Methods.List)
