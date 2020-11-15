@@ -326,7 +326,7 @@ func typeKeyForSort(k string) string {
 
 func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
 	var keys []string
-	var vals map[string]TypeInfo
+	vals := map[string]TypeInfo{}
 	for k, _ := range m {
 		if k != nil {
 			key := k.GoTypeInfo().FullName
