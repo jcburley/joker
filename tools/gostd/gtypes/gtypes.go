@@ -7,7 +7,6 @@ import (
 	. "go/ast"
 	"go/token"
 	"go/types"
-	"os"
 	"path"
 	"strings"
 )
@@ -123,8 +122,7 @@ var gtToInfo = map[*GoType]*Info{}
 func TypeInfoForExpr(e Expr) *Info {
 	gt := TypeLookup(e)
 	if gt == nil {
-		return nil
-		//		panic(fmt.Sprintf("cannot find type for %v", e))
+		panic(fmt.Sprintf("cannot find type for %v", e))
 	}
 
 	if gti, found := gtToInfo[gt]; found {
@@ -134,7 +132,7 @@ func TypeInfoForExpr(e Expr) *Info {
 	gti := GetInfo(gt.GoPattern, gt.GoPackage, gt.GoName, gt.Nullable)
 	gtToInfo[gt] = gti
 
-	fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, gti.FullName)
+	// fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, gti.FullName)
 
 	return gti
 }
@@ -169,7 +167,7 @@ var typesByFullName = map[string]*GoType{}
 func define(tdi *GoType) *Info {
 	name := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
 	if existingTdi, ok := typesByFullName[name]; ok {
-		fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", name, godb.WhereAt(existingTdi.DefPos), existingTdi, godb.WhereAt(tdi.DefPos), tdi)
+		// fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", name, godb.WhereAt(existingTdi.DefPos), existingTdi, godb.WhereAt(tdi.DefPos), tdi)
 		tdi = existingTdi
 	} else {
 		typesByFullName[name] = tdi
@@ -216,6 +214,7 @@ func defineVariant(pattern string, innerTdi *GoType, te Expr) *GoType {
 		GoPattern:        pattern,
 		GoPackage:        innerTdi.GoPackage,
 		GoName:           innerTdi.GoName,
+		DefPos:           innerTdi.DefPos,
 		underlyingGoType: innerTdi,
 	}
 
@@ -366,6 +365,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 			Type:      e,
 			GoPattern: pattern,
 			GoName:    goName,
+			DefPos:    e.Pos(),
 		}
 		define(tdi)
 		return tdi
