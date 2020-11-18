@@ -215,6 +215,7 @@ func defineVariant(pattern string, innerTdi *GoType, te Expr) *GoType {
 		GoName:           innerTdi.GoName,
 		DefPos:           innerTdi.DefPos,
 		underlyingGoType: innerTdi,
+		Specificity:      Concrete,
 	}
 
 	define(tdi)

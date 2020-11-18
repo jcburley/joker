@@ -94,6 +94,10 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	// 	return false
 	// }
 
+	if ti, found := typesByExpr[ts.Type]; found {
+		panic(fmt.Sprintf("defined type %s.%s first at %v, now at %v!", pkg, name, ti.DefPos(), ts.Name.Pos()))
+	}
+
 	if WalkDump {
 		fmt.Printf("Type %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
 		Print(godb.Fset, ts)
@@ -103,7 +107,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	prefix := godb.ClojureNamespaceForPos(godb.Fset.Position(ts.Name.NamePos)) + "/"
 
-	for _, gti := range gtiVec {
+	for ix, gti := range gtiVec {
 
 		var gt *GoTypeInfo
 
@@ -124,6 +128,10 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 				AsJokerObject:      gt.ConvertToClojure,
 			},
 			gti: gti,
+		}
+
+		if ix == 0 {
+			typesByExpr[ts.Type] = ti
 		}
 
 		typeMap[gti] = ti
@@ -163,6 +171,10 @@ func BadInfo(err string) typeInfo {
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
+	if ti, found := typesByExpr[e]; found {
+		return ti
+	}
+
 	gti := gtypes.TypeInfoForExpr(e)
 	jti := jtypes.TypeInfoForExpr(e)
 
@@ -172,6 +184,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	}
 
 	typeMap[gti] = ti
+	typesByExpr[e] = ti
 
 	return ti
 }
