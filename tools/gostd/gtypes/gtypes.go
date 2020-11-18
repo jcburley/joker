@@ -316,7 +316,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 	switch v := e.(type) {
 	case *StarExpr:
 		innerTdi = TypeLookup(v.X)
-		pattern = "*%s"
+		pattern = fmt.Sprintf("*%s", innerTdi.GoPattern)
 		goName = innerTdi.GoName
 	case *ArrayType:
 		innerTdi = TypeLookup(v.Elt)
@@ -326,6 +326,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 			goName = fmt.Sprintf("%v", v.Elt)
 		} else {
 			goName = innerTdi.GoName
+			pattern = fmt.Sprintf(pattern, innerTdi.GoPattern)
 		}
 	case *InterfaceType:
 		goName = "interface{"
