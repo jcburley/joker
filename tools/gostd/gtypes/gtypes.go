@@ -181,7 +181,6 @@ func define(tdi *GoType) *Info {
 		typesByExpr[tdi.Type] = tdi
 	}
 
-	localName := fmt.Sprintf(tdi.GoPattern, tdi.GoName)
 	var ugt *Info = nil
 	if tdi.underlyingGoType != nil {
 		ugt = gtToInfo[tdi.underlyingGoType]
@@ -190,7 +189,7 @@ func define(tdi *GoType) *Info {
 		FullName:         name,
 		Pattern:          tdi.GoPattern,
 		Package:          tdi.GoPackage,
-		LocalName:        localName,
+		LocalName:        tdi.GoName,
 		UnderlyingGoType: ugt,
 		Doc:              tdi.Doc,
 		DefPos:           tdi.DefPos,
