@@ -44,13 +44,10 @@ func typeNameForExpr(e Expr) (ns, name string) {
 		return "", info.JokerNameDoc
 	case *ArrayType:
 		ns, name = typeNameForExpr(v.Elt)
-		if name[0:1] == "(" {
-			return "", "(array-of " + combine(ns, name) + ")"
-		}
 		return ns, "arrayOf" + name
 	case *StarExpr:
 		ns, name = typeNameForExpr(v.X)
-		return "", "(ref-to " + combine(ns, name) + ")"
+		return ns, "refTo" + name
 	}
 	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
 }
