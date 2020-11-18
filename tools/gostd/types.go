@@ -241,7 +241,7 @@ func (ti typeInfo) GoPattern() string {
 }
 
 func (ti typeInfo) GoName() string {
-	return ti.gti.FullName
+	return ti.gti.LocalName
 }
 
 func (ti typeInfo) GoCode() string {
