@@ -195,7 +195,6 @@ func define(tdi *GoType) *Info {
 		DefPos:           tdi.DefPos,
 		GoFile:           tdi.GoFile,
 		TypeSpec:         tdi.TypeSpec,
-		Ord:              tdi.Ord,
 		Specificity:      tdi.Specificity,
 		IsNullable:       tdi.Nullable,
 		IsExported:       tdi.IsExported,
@@ -210,6 +209,7 @@ func defineVariant(pattern string, innerTdi *GoType, te Expr) *GoType {
 	tdi := &GoType{
 		Type:             te,
 		IsExported:       innerTdi.IsExported,
+		GoFile:           innerTdi.GoFile,
 		GoPattern:        pattern,
 		GoPackage:        innerTdi.GoPackage,
 		GoName:           innerTdi.GoName,
@@ -269,9 +269,11 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 		// Concrete types get reference-to variants, allowing Joker code to access them.
 		tdiPtrTo := &GoType{
 			Type:             &StarExpr{X: tdi.Type},
+			TypeSpec:         ts,
 			IsExported:       tdi.IsExported,
 			Doc:              "",
 			DefPos:           tdi.DefPos,
+			GoFile:           gf,
 			GoPattern:        fmt.Sprintf(tdi.GoPattern, "*%s"),
 			GoPackage:        tdi.GoPackage,
 			GoName:           tdi.GoName,

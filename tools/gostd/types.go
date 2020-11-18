@@ -132,6 +132,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			typesByExpr[ts.Type] = ti
 		}
 
+		typesByJokerName[ti.jti.JokerName] = ti
+
 		gt.Type = ti
 		TypeDefsToGoTypes[ti] = gt
 
@@ -153,6 +155,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 // Maps type-defining Expr to exactly one struct describing that type
 var typesByExpr = map[Expr]TypeInfo{}
+
+var typesByJokerName = map[string]TypeInfo{}
 
 func BadInfo(err string) typeInfo {
 	return typeInfo{
@@ -304,7 +308,7 @@ func SortAllTypes() {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
-	for _, ti := range typesByExpr {
+	for _, ti := range typesByJokerName {
 		t := ti.GoTypeInfo()
 		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
