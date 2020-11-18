@@ -79,8 +79,6 @@ type GoTypeMap map[string]*GoTypeInfo
 /* These map fullGoNames to type info. */
 var GoTypes = GoTypeMap{}
 
-var typeMap = map[*gtypes.Info]TypeInfo{}
-
 var TypeDefsToGoTypes = map[TypeInfo]*GoTypeInfo{}
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
@@ -134,8 +132,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			typesByExpr[ts.Type] = ti
 		}
 
-		typeMap[gti] = ti
-
 		gt.Type = ti
 		TypeDefsToGoTypes[ti] = gt
 
@@ -183,7 +179,6 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		jti: jti,
 	}
 
-	typeMap[gti] = ti
 	typesByExpr[e] = ti
 
 	return ti
@@ -369,75 +364,4 @@ func (ti typeInfo) TypeMappingsName() string {
 		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
-}
-
-func init() {
-	typeMap[gtypes.Bool] = typeInfo{
-		jti: jtypes.Bool,
-		gti: gtypes.Bool,
-	}
-	typeMap[gtypes.Byte] = typeInfo{
-		jti: jtypes.Byte,
-		gti: gtypes.Byte,
-	}
-	typeMap[gtypes.Complex128] = typeInfo{
-		jti: jtypes.Complex128,
-		gti: gtypes.Complex128,
-	}
-	typeMap[gtypes.Error] = typeInfo{
-		jti: jtypes.Error,
-		gti: gtypes.Error,
-	}
-	typeMap[gtypes.Float32] = typeInfo{
-		jti: jtypes.Float32,
-		gti: gtypes.Float32,
-	}
-	typeMap[gtypes.Float64] = typeInfo{
-		jti: jtypes.Float64,
-		gti: gtypes.Float64,
-	}
-	typeMap[gtypes.Int] = typeInfo{
-		jti: jtypes.Int,
-		gti: gtypes.Int,
-	}
-	typeMap[gtypes.Int32] = typeInfo{
-		jti: jtypes.Int32,
-		gti: gtypes.Int32,
-	}
-	typeMap[gtypes.Int64] = typeInfo{
-		jti: jtypes.Int64,
-		gti: gtypes.Int64,
-	}
-	typeMap[gtypes.Rune] = typeInfo{
-		jti: jtypes.Rune,
-		gti: gtypes.Rune,
-	}
-	typeMap[gtypes.String] = typeInfo{
-		jti: jtypes.String,
-		gti: gtypes.String,
-	}
-	typeMap[gtypes.UInt] = typeInfo{
-		jti: jtypes.UInt,
-		gti: gtypes.UInt,
-	}
-	typeMap[gtypes.UInt16] = typeInfo{
-		jti: jtypes.UInt16,
-		gti: gtypes.UInt16,
-	}
-	typeMap[gtypes.UInt32] = typeInfo{
-		jti: jtypes.UInt32,
-		gti: gtypes.UInt32,
-	}
-	typeMap[gtypes.UInt64] = typeInfo{
-		jti: jtypes.UInt64,
-		gti: gtypes.UInt64,
-	}
-	typeMap[gtypes.UInt8] = typeInfo{
-		jti: jtypes.UInt8,
-		gti: gtypes.UInt8,
-	}
-	typeMap[gtypes.UIntPtr] = typeInfo{
-		jti: jtypes.UIntPtr,
-		gti: gtypes.UIntPtr,
-	}
 }
