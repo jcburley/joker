@@ -12,7 +12,6 @@ import (
 // info.  A Joker type name is either unqualified (built-in, not
 // namespace-rooted) or fully qualified by a namespace name
 // (e.g. "go.std.example/SomeType").
-
 type Info struct {
 	ArgExtractFunc     string
 	ArgClojureArgType  string // Clojure argument type for a Go function arg with my type
@@ -83,7 +82,7 @@ var Error = &Info{
 	AsJokerObject:     "Error(%s%s)",
 }
 
-var Bool = &Info{
+var Boolean = &Info{
 	ArgExtractFunc:    "Boolean",
 	ArgClojureArgType: "Boolean",
 	ConvertToClojure:  "Boolean(%s%s)",
@@ -128,12 +127,27 @@ var Int = &Info{
 	AsJokerObject:     "Int(%s%s)",
 }
 
+var BigInt = &Info{
+	JokerName:    "BigInt",
+	JokerNameDoc: "BigInt",
+}
+
+var Number = &Info{
+	JokerName:    "Number",
+	JokerNameDoc: "Number",
+}
+
+var Double = &Info{
+	JokerName:    "Double",
+	JokerNameDoc: "Double",
+}
+
 var Int8 = &Info{
 	ArgExtractFunc:    "Int8",
 	ArgClojureArgType: "Int",
 	ConvertToClojure:  "Int(int(%s)%s)",
-	JokerName:         "Int8",
-	JokerNameDoc:      "Int8",
+	JokerName:         "Int",
+	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(int(%s)%s)",
 }
 
@@ -141,8 +155,8 @@ var Int16 = &Info{
 	ArgExtractFunc:    "Int16",
 	ArgClojureArgType: "Int",
 	ConvertToClojure:  "Int(int(%s)%s)",
-	JokerName:         "Int16",
-	JokerNameDoc:      "Int16",
+	JokerName:         "Int",
+	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(int(%s)%s)",
 }
 
@@ -150,8 +164,8 @@ var Int32 = &Info{
 	ArgExtractFunc:    "Int32",
 	ArgClojureArgType: "Int",
 	ConvertToClojure:  "Int(int(%s)%s)",
-	JokerName:         "Int32",
-	JokerNameDoc:      "Int32",
+	JokerName:         "Int",
+	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(int(%s)%s)",
 }
 
@@ -159,8 +173,8 @@ var Int64 = &Info{
 	ArgExtractFunc:    "Int64",
 	ArgClojureArgType: "Number",
 	ConvertToClojure:  "BigInt(%s%s)",
-	JokerName:         "Int64",
-	JokerNameDoc:      "Int64",
+	JokerName:         "Number",
+	JokerNameDoc:      "Number",
 	AsJokerObject:     "BigInt(%s%s)",
 }
 
@@ -168,8 +182,8 @@ var UInt = &Info{
 	ArgExtractFunc:    "Uint",
 	ArgClojureArgType: "Number",
 	ConvertToClojure:  "BigIntU(uint64(%s)%s)",
-	JokerName:         "Uint",
-	JokerNameDoc:      "Uint",
+	JokerName:         "Number",
+	JokerNameDoc:      "Number",
 	AsJokerObject:     "BigIntU(uint64(%s)%s)",
 }
 
@@ -177,8 +191,8 @@ var UInt8 = &Info{
 	ArgExtractFunc:    "Uint8",
 	ArgClojureArgType: "Int",
 	ConvertToClojure:  "Int(int(%s)%s)",
-	JokerName:         "Uint8",
-	JokerNameDoc:      "Uint8",
+	JokerName:         "Int",
+	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(int(%s)%s)",
 }
 
@@ -186,8 +200,8 @@ var UInt16 = &Info{
 	ArgExtractFunc:    "Uint16",
 	ArgClojureArgType: "Int",
 	ConvertToClojure:  "Int(int(%s)%s)",
-	JokerName:         "Uint16",
-	JokerNameDoc:      "Uint16",
+	JokerName:         "Int",
+	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(int(%s)%s)",
 }
 
@@ -195,8 +209,8 @@ var UInt32 = &Info{
 	ArgExtractFunc:    "Uint32",
 	ArgClojureArgType: "Number",
 	ConvertToClojure:  "BigIntU(uint64(%s)%s)",
-	JokerName:         "Uint32",
-	JokerNameDoc:      "Uint32",
+	JokerName:         "Number",
+	JokerNameDoc:      "Number",
 	AsJokerObject:     "BigIntU(uint64(%s)%s)",
 }
 
@@ -204,32 +218,32 @@ var UInt64 = &Info{
 	ArgExtractFunc:    "Uint64",
 	ArgClojureArgType: "Number",
 	ConvertToClojure:  "BigIntU(%s%s)",
-	JokerName:         "Uint64",
-	JokerNameDoc:      "Uint64",
+	JokerName:         "Number",
+	JokerNameDoc:      "Number",
 	AsJokerObject:     "BigIntU(%s%s)",
 }
 
 var UIntPtr = &Info{
 	ArgExtractFunc:    "UintPtr",
 	ArgClojureArgType: "Number",
-	JokerName:         "UintPtr",
-	JokerNameDoc:      "UintPtr",
-	AsJokerObject:     "Number(%s%s)",
+	JokerName:         "Number",
+	JokerNameDoc:      "Number",
+	AsJokerObject:     "BigIntU(%s%s)",
 }
 
 var Float32 = &Info{
 	ArgExtractFunc:    "ABEND007(find these)",
 	ArgClojureArgType: "Double",
-	JokerName:         "ABEND007(find these)",
-	JokerNameDoc:      "ABEND007(find these)",
+	JokerName:         "Double",
+	JokerNameDoc:      "Double",
 	AsJokerObject:     "Double(float64(%s)%s)",
 }
 
 var Float64 = &Info{
 	ArgExtractFunc:    "ABEND007(find these)",
 	ArgClojureArgType: "Double",
-	JokerName:         "ABEND007(find these)",
-	JokerNameDoc:      "ABEND007(find these)",
+	JokerName:         "Double",
+	JokerNameDoc:      "Double",
 	AsJokerObject:     "Double(%s%s)",
 }
 
@@ -242,30 +256,22 @@ var Complex128 = &Info{
 }
 
 var typeMap = map[string]*Info{
-	"Nil":        Nil,
-	"Error":      Error,
-	"Bool":       Bool,
-	"Byte":       Byte,
-	"Rune":       Rune,
-	"String":     String,
-	"Int":        Int,
-	"Int32":      Int32,
-	"Int64":      Int64,
-	"UInt":       UInt,
-	"UInt8":      UInt8,
-	"UInt16":     UInt16,
-	"UInt32":     UInt32,
-	"UInt64":     UInt64,
-	"UIntPtr":    UIntPtr,
-	"Float32":    Float32,
-	"Float64":    Float64,
-	"Complex128": Complex128,
+	"Nil":     Nil,
+	"Error":   Error,
+	"Boolean": Boolean,
+	"Byte":    Byte,
+	"Char":    Rune,
+	"String":  String,
+	"Int":     Int,
+	"BigInt":  BigInt,
+	"Number":  Number,
+	"Double":  Double,
 }
 
 var goTypeMap = map[string]*Info{
 	"nil":        Nil,
 	"error":      Error,
-	"bool":       Bool,
+	"bool":       Boolean,
 	"byte":       Byte,
 	"rune":       Rune,
 	"string":     String,

@@ -216,23 +216,14 @@ func (ti typeInfo) ConvertToClojure() string {
 }
 
 func (ti typeInfo) AsJokerObject() string {
-	if ti.jti == nil {
-		return ""
-	}
 	return ti.jti.AsJokerObject
 }
 
 func (ti typeInfo) JokerName() string {
-	if ti.jti == nil {
-		return ""
-	}
 	return ti.jti.JokerName
 }
 
 func (ti typeInfo) JokerNameDoc() string {
-	if ti.jti == nil {
-		return ""
-	}
 	return ti.jti.JokerNameDoc
 }
 
