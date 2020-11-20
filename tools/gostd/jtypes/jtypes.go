@@ -30,29 +30,33 @@ func combine(ns, name string) string {
 	return ns + "/" + name
 }
 
-func typeNameForExpr(e Expr) (ns, name string) {
+func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	switch v := e.(type) {
 	case *Ident:
 		if types.Universe.Lookup(v.Name) == nil {
-			return ClojureNamespaceForExpr(e), v.Name
+			return ClojureNamespaceForExpr(e), v.Name, nil
 		}
 		info, found := goTypeMap[v.Name]
 		if !found {
 			panic(fmt.Sprintf("no type info for universal symbol `%s'", v.Name))
 		}
-		return "", info.JokerNameDoc
+		return "", info.JokerNameDoc, info
 	case *ArrayType:
-		ns, name = typeNameForExpr(v.Elt)
-		return ns, "arrayOf" + name
+		ns, name, _ = typeNameForExpr(v.Elt)
+		return ns, "arrayOf" + name, nil
 	case *StarExpr:
-		ns, name = typeNameForExpr(v.X)
-		return ns, "refTo" + name
+		ns, name, _ = typeNameForExpr(v.X)
+		return ns, "refTo" + name, nil
 	}
-	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
+	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos()))), nil
 }
 
 func TypeInfoForExpr(e Expr) *Info {
-	ns, name := typeNameForExpr(e)
+	ns, name, info := typeNameForExpr(e)
+
+	if info != nil {
+		return info
+	}
 
 	fullName := combine(ns, name)
 
@@ -60,7 +64,7 @@ func TypeInfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	info := &Info{
+	info = &Info{
 		JokerName:    fullName,
 		JokerNameDoc: fullName,
 		Namespace:    ns,
@@ -171,10 +175,10 @@ var Int32 = &Info{
 
 var Int64 = &Info{
 	ArgExtractFunc:    "Int64",
-	ArgClojureArgType: "Number",
+	ArgClojureArgType: "BigInt",
 	ConvertToClojure:  "BigInt(%s%s)",
-	JokerName:         "Number",
-	JokerNameDoc:      "Number",
+	JokerName:         "BigInt",
+	JokerNameDoc:      "BigInt",
 	AsJokerObject:     "BigInt(%s%s)",
 }
 
