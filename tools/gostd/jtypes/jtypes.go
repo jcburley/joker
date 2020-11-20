@@ -51,6 +51,8 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos()))), nil
 }
 
+var typeMap = map[string]*Info{}
+
 func TypeInfoForExpr(e Expr) *Info {
 	ns, name, info := typeNameForExpr(e)
 
@@ -129,21 +131,6 @@ var Int = &Info{
 	JokerName:         "Int",
 	JokerNameDoc:      "Int",
 	AsJokerObject:     "Int(%s%s)",
-}
-
-var BigInt = &Info{
-	JokerName:    "BigInt",
-	JokerNameDoc: "BigInt",
-}
-
-var Number = &Info{
-	JokerName:    "Number",
-	JokerNameDoc: "Number",
-}
-
-var Double = &Info{
-	JokerName:    "Double",
-	JokerNameDoc: "Double",
 }
 
 var Int8 = &Info{
@@ -257,19 +244,6 @@ var Complex128 = &Info{
 	JokerName:         "ABEND007(find these)",
 	JokerNameDoc:      "ABEND007(find these)",
 	AsJokerObject:     "Complex(%s%s)",
-}
-
-var typeMap = map[string]*Info{
-	"Nil":     Nil,
-	"Error":   Error,
-	"Boolean": Boolean,
-	"Byte":    Byte,
-	"Char":    Rune,
-	"String":  String,
-	"Int":     Int,
-	"BigInt":  BigInt,
-	"Number":  Number,
-	"Double":  Double,
 }
 
 var goTypeMap = map[string]*Info{
