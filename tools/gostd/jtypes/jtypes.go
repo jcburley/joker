@@ -23,9 +23,11 @@ type Info struct {
 	Namespace          string // In which this type resides (empty string means a global Joker namespace)
 }
 
-// Map of Joker type names (with or without "<ns>/" prefixes,
-// depending on globality) to Joker info.
-var typeMap = map[string]*Info{}
+// Maps type-defining Expr or Joker type names (with or without
+// "<ns>/" prefixes, depending on globality) to exactly one struct
+// describing that type.
+var typesByExpr = map[Expr]*Info{}
+var typesByFullname = map[string]*Info{}
 
 func combine(ns, name string) string {
 	if ns == "" {
@@ -65,16 +67,22 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 }
 
 func TypeInfoForExpr(e Expr) *Info {
+	if info, ok := typesByExpr[e]; ok {
+		return info
+	}
+
 	ns, name, info := typeNameForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
+		typesByExpr[e] = info
 		return info
 	}
 
 	fullName := combine(ns, name)
 
-	if info, found := typeMap[fullName]; found {
+	if info, found := typesByFullname[fullName]; found {
+		typesByExpr[e] = info
 		return info
 	}
 
@@ -84,7 +92,8 @@ func TypeInfoForExpr(e Expr) *Info {
 		Namespace:    ns,
 	}
 
-	typeMap[fullName] = info
+	typesByExpr[e] = info
+	typesByFullname[fullName] = info
 
 	return info
 }
