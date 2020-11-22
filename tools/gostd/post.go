@@ -2,74 +2,10 @@ package main
 
 import (
 	"fmt"
-	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"strings"
 )
-
-func genGoPostSelected(fn *FuncInfo, indent, captureName, fullTypeName, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	clDoc = FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullTypeName)
-	if _, ok := GoTypes[fullTypeName]; ok {
-		gol = fullTypeName
-		out = "MakeGoObject(" + captureName + ")"
-	} else {
-		clDoc = fmt.Sprintf("ABEND042(post.go: cannot find typename %s)", fullTypeName)
-		gol = "..."
-		out = captureName
-	}
-	return
-}
-
-func genGoPostSelector(fn *FuncInfo, indent, captureName string, e *SelectorExpr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	pkgName := e.X.(*Ident).Name
-	fullPathUnix := Unix(FileAt(e.Pos()))
-	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.Root.String()+"/")
-	rf, ok := GoFilesRelative[referringFile]
-	if !ok {
-		panic(fmt.Sprintf("genGoPostSelector: could not find referring file %s for file %s at %s",
-			referringFile, fullPathUnix, WhereAt(e.Pos())))
-	}
-	if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
-		return genGoPostSelected(fn, indent, captureName, fullPkgName.String()+"."+e.Sel.Name, onlyIf)
-	}
-	panic(fmt.Sprintf("processing %s for %s: could not find %s in %s",
-		WhereAt(e.Pos()), WhereAt(fn.Fd.Pos()), pkgName, fn.SourceFile.Name))
-}
-
-// func tryThis(s string) struct { a int; b string } {
-//	return struct { a int; b string }{ 5, "hey" }
-// }
-
-// Joker: { :a ^Int, :b ^String }
-// Go: struct { a int; b string }
-func genGoPostArray(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
-	out = "MakeGoObject(" + captureName + ")"
-	if cl != "" {
-		s := strings.Split(cl, "/")
-		s[len(s)-1] = "arrayOf" + s[len(s)-1]
-		cl = strings.Join(s, "/")
-	}
-	if clDoc != "" {
-		s := strings.Split(clDoc, "/")
-		s[len(s)-1] = "arrayOf" + s[len(s)-1]
-		clDoc = strings.Join(s, "/")
-	}
-	gol = "[]" + gol
-	return
-}
-
-func genGoPostStar(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out string) {
-	cl, clDoc, gol, goc, out = genGoPostExpr(fn, indent, fmt.Sprintf("ABEND333(post.go: should not show up: %s)", captureName), e, onlyIf)
-	out = "MakeGoObject(" + captureName + ")"
-	if cl != "" {
-		cl = "(ref-to " + cl + ")"
-	}
-	clDoc = "(ref-to " + clDoc + ")"
-	gol = "*" + gol
-	return
-}
 
 func maybeNil(expr, captureName string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
@@ -92,52 +28,6 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 	clDoc = ti.JokerNameDoc()
 	gol = ti.GoDeclDoc()
 	goc = ti.GoCode()
-
-	// switch v := e.(type) {
-	// case *Ident:
-	// 	gol = v.Name
-	// 	jti := JokerTypeInfoForExpr(e)
-	// 	if jti.AsJokerObject() == "" {
-	// 		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
-	// 		cl = "GoObject"
-	// 	} else {
-	// 		out = "Make" + fmt.Sprintf(jti.AsJokerObject(), captureName, "")
-	// 		cl = jti.ArgExtractFunc()
-	// 		clDoc = jti.ArgClojureArgType()
-	// 	}
-	// 	if jti.Nullable() {
-	// 		out = maybeNil(captureName, out)
-	// 	}
-	// case *ArrayType:
-	// 	cl, clDoc, gol, goc, out = genGoPostArray(fn, indent, captureName, v.Elt, onlyIf)
-	// case *StarExpr:
-	// 	cl, clDoc, gol, goc, out = genGoPostStar(fn, indent, captureName, v.X, onlyIf)
-	// case *SelectorExpr:
-	// 	cl, clDoc, gol, goc, out = genGoPostSelector(fn, indent, captureName, v, onlyIf)
-	// case *InterfaceType:
-	// 	out = "MakeGoObjectIfNeeded(" + captureName + ")"
-	// 	cl = "Object"
-	// case *MapType, *ChanType:
-	// 	out = "MakeGoObject(" + captureName + ")"
-	// 	cl = "GoObject"
-	// default:
-	// 	cl = fmt.Sprintf("ABEND883(post.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos())))
-	// 	gol = "..."
-	// 	out = captureName
-	// }
-
-	// if gol == "" {
-	// 	ty, tyName := gtypes.TypeLookup(e)
-	// 	if ty == nil {
-	// 		gol = tyName + "ABEND000(post.go: no type info found)"
-	// 	} else {
-	// 		gol = ty.RelativeGoName(e.Pos())
-	// 	}
-	// }
-
-	// if clDoc == "" {
-	// 	clDoc = cl
-	// }
 
 	return
 }
