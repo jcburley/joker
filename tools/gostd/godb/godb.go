@@ -143,7 +143,28 @@ type GoFile struct {
 	Spaces  *map[string]paths.UnixPath // maps "foo" (in a reference such as "foo.Bar") to the package in which it is defined
 }
 
-var GoFiles = map[string]*GoFile{}
+// Map relative (Unix-style) filenames to objects with info on them.
+var GoFilesRelative = map[string]*GoFile{}
+
+// Map absolute (Unix-style) filenames to objects with info on them.
+var GoFilesAbsolute = map[string]*GoFile{}
+
+func GoFileForPos(p token.Pos) *GoFile {
+	fullPathUnix := Unix(Fset.Position(p).Filename)
+
+	gf, ok := GoFilesAbsolute[fullPathUnix]
+
+	if !ok {
+		panic(fmt.Sprintf("could not find referring file %s for file %s at %s",
+			"???", fullPathUnix, WhereAt(p)))
+	}
+
+	return gf
+}
+
+func GoFileForExpr(e Expr) *GoFile {
+	return GoFileForPos(e.Pos())
+}
 
 func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
 	if !IsExported(name.Name) /* || (pkg.String() == "unsafe" && name.Name == "ArbitraryType") */ {
@@ -169,8 +190,9 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, decls}
 
 	for p, f := range pkg.Files {
-		goFilePathUnix, _ := paths.NewNativePath(p).ToUnix().RelativeTo(rootUnix)
-		if egf, found := GoFiles[goFilePathUnix.String()]; found {
+		absFilePathUnix := paths.NewNativePath(p).ToUnix()
+		goFilePathUnix, _ := absFilePathUnix.RelativeTo(rootUnix)
+		if egf, found := GoFilesRelative[goFilePathUnix.String()]; found {
 			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.Dir))
 		}
 		importsMap := map[string]paths.UnixPath{}
@@ -204,7 +226,8 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 			Name:    goFilePathUnix,
 			Spaces:  &importsMap,
 		}
-		GoFiles[goFilePathUnix.String()] = gf
+		GoFilesRelative[goFilePathUnix.String()] = gf
+		GoFilesAbsolute[absFilePathUnix.String()] = gf
 
 		for _, d := range f.Decls {
 			switch o := d.(type) {

@@ -792,7 +792,7 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := godb.GoFiles[goFilePathUnix]
+		gf := godb.GoFilesRelative[goFilePathUnix]
 		if gf == nil {
 			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
 		}
@@ -803,7 +803,7 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := godb.GoFiles[goFilePathUnix]
+		gf := godb.GoFilesRelative[goFilePathUnix]
 		if gf == nil {
 			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
 		}

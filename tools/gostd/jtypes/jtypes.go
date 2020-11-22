@@ -51,6 +51,15 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	case *StarExpr:
 		ns, name, _ = typeNameForExpr(v.X)
 		return ns, "refTo" + name, nil
+	case *SelectorExpr:
+		pkgName := v.X.(*Ident).Name
+		fullPathUnix := Unix(FileAt(v.Pos()))
+		rf := GoFileForExpr(v)
+		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+			return fullPkgName.String(), v.Sel.Name, nil
+		}
+		panic(fmt.Sprintf("processing %s: could not find %s in %s",
+			WhereAt(v.Pos()), pkgName, fullPathUnix))
 	}
 	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos()))), nil
 }

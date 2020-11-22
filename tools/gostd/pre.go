@@ -70,7 +70,7 @@ func genGoPreSelector(fn *FuncInfo, indent string, e *SelectorExpr, paramName st
 	pkgName := e.X.(*Ident).Name
 	fullPathUnix := Unix(FileAt(e.Pos()))
 	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.Root.String()+"/")
-	rf, ok := GoFiles[referringFile]
+	rf, ok := GoFilesRelative[referringFile]
 	if !ok {
 		panic(fmt.Sprintf("genGoPreSelector: could not find referring file %s for file %s at %s",
 			referringFile, fullPathUnix, WhereAt(e.Pos())))

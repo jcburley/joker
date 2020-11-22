@@ -54,6 +54,7 @@ receiver item for PtrTo_DNSError_Temporary: go.std.net/refToDNSError
 receiver item for PtrTo_DNSError_Timeout: go.std.net/refToDNSError
 receiver item for PtrTo_IPAddr_Network: go.std.net/refToIPAddr
 receiver item for PtrTo_IPAddr_String: go.std.net/refToIPAddr
+receiver item for PtrTo_IPConn_SyscallConn: go.std.net/refToIPConn
 receiver item for PtrTo_IPNet_Contains: go.std.net/refToIPNet
 receiver item for PtrTo_IPNet_Network: go.std.net/refToIPNet
 receiver item for PtrTo_IPNet_String: go.std.net/refToIPNet
@@ -2293,8 +2294,14 @@ GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 // }
 
 GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
-// func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// [ABEND883(jtypes.go: unrecognized Expr type *ast.SelectorExpr at: _tests/small/src/net/iprawsock.go:105:33) Error]}
+func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
+	CheckGoArity("(*net.IPConn)SyscallConn()", args, 0, 0)
+	_res1, _res2 := o.O.(*net.IPConn).SyscallConn()
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeGoObject(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
@@ -3930,10 +3937,10 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 644(34) 048(12) 674(8) 047(6) 275(3) 124(1) 883(1)
-Totals: functions=132 generated=97 (73.48%)
+ABENDs: 644(34) 048(12) 674(8) 047(6) 275(3) 124(1)
+Totals: functions=132 generated=98 (74.24%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
-          receivers=83 (62.88%) generated=59 (71.08%)
+          receivers=83 (62.88%) generated=60 (72.29%)
           methods=23 (17.42%) generated=12 (52.17%)
         types=51
           constructable=46 ctors=28 (60.87%)
