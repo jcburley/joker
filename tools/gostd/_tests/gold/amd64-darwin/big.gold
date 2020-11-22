@@ -314,6 +314,7 @@ method item for Addr_Network: go.std.net/Addr
 method item for Addr_String: go.std.net/Addr
 method item for BufferPool_Get: go.std.net.http.httputil/BufferPool
 method item for ClientCodec_Close: go.std.net.rpc/ClientCodec
+method item for CloseNotifier_CloseNotify: go.std.net.http/CloseNotifier
 method item for Conn_Close: go.std.net/Conn
 method item for Conn_LocalAddr: go.std.net/Conn
 method item for Conn_RemoteAddr: go.std.net/Conn
@@ -2636,7 +2637,7 @@ JOKER FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 
 JOKER FUNC net/http.ProxyURL from net/http/transport.go:
 ;; (defn ProxyURL
-;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *url.URL)\n\nGo return type: ABEND001(NO GO NAME??!!)\n\nJoker input arguments: [^(ref-to go.std.net.url/URL) fixedURL]\n\nJoker return type: ABEND883(jtypes.go: unrecognized Expr type *ast.FuncType at: _tests/big/src/net/http/transport.go:351:34)"
+;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *url.URL)\n\nGo return type: ABEND001(NO GO NAME??!!)\n\nJoker input arguments: [^(ref-to go.std.net.url/URL) fixedURL]\n\nJoker return type: GoObject"
 ;;   {:added "1.0"
 ;;    :go "_f_proxyURL(_v_fixedURL)"}
 ;;   [^go.std.net.url/URL _v_fixedURL])
@@ -3145,11 +3146,11 @@ JOKER VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
   ErrRequestAborted)
 
 JOKER FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: ABEND883(jtypes.go: unrecognized Expr type *ast.MapType at: _tests/big/src/net/http/fcgi/child.go:358:34)"
-;;   {:added "1.0"
-;;    :go "_f_processEnv(_v_r)"}
-;;   [^go.std.net.http/Request _v_r])
+(defn ProcessEnv
+  "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *http.Request)\n\nGo return type: map[string]string\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) r]\n\nJoker return type: GoObject"
+  {:added "1.0"
+   :go "_f_processEnv(_v_r)"}
+  [^go.std.net.http/Request _v_r])
 
 JOKER FUNC net/http/fcgi.Serve from net/http/fcgi/child.go:
 (defn ^"Error" Serve
@@ -9391,8 +9392,11 @@ func _f_timeoutHandler(_v_h http.Handler, _v_dt time.Duration, _v_msg string) Ob
 }
 
 GO FUNC net/http._f_closeNotifier_CloseNotify from net/http/server.go:
-// func _f_closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
-// ABEND883(jtypes.go: unrecognized Expr type *ast.ChanType at: _tests/big/src/net/http/server.go:228:16)}
+func _f_closeNotifier_CloseNotify(o GoObject, args Object) Object {  // Method
+	CheckGoArity("(net/http.CloseNotifier)CloseNotify()", args, 0, 0)
+	_res := o.O.(http.CloseNotifier).CloseNotify()
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/http._f_connState_String from net/http/server.go:
 func _f_connState_String(o GoObject, args Object) Object {  // Receiver
@@ -10034,6 +10038,7 @@ GO INFO FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/serv
 	info_CloseNotifier = GoTypeInfo{Name: "go.std.net.http/CloseNotifier",
 		GoType: &GoType{T: &info_CloseNotifier},
 		Members: GoMembers{
+			"CloseNotify": MakeGoReceiver("CloseNotify", _f_closeNotifier_CloseNotify, "CloseNotify returns a channel that receives at most a\nsingle value (true) when the client connection has gone\naway.\n\nCloseNotify may wait to notify until Request.Body has been\nfully read.\n\nAfter the Handler has returned, there is no guarantee\nthat the channel receives a value.\n\nIf the protocol is HTTP/1.1 and CloseNotify is called while\nprocessing an idempotent request (such a GET) while\nHTTP/1.1 pipelining is in use, the arrival of a subsequent\npipelined request may cause a value to be sent on the\nreturned channel. In practice HTTP/1.1 pipelining is not\nenabled in browsers and not seen often in the wild. If this\nis a problem, use HTTP/2 or only use CloseNotify on methods\nsuch as POST.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10838,10 +10843,10 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-// func _f_processEnv(_v_r *http.Request) Object {
-// 	_res := fcgi.ProcessEnv(_v_r)
-// 	return MakeGoObject(_res)
-// }
+func _f_processEnv(_v_r *http.Request) Object {
+	_res := fcgi.ProcessEnv(_v_r)
+	return MakeGoObject(_res)
+}
 
 GO ENSURE-LOADED FOR fcgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/fcgi/fcgi.go:17:2
@@ -15342,11 +15347,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 047(190) 644(90) 048(64) 275(40) 674(18) 907(14) 883(3) 906(3) 902(2) 908(2) 001(1) 124(1) 909(1)
-Totals: functions=470 generated=330 (70.21%)
-          non-receivers=148 (31.49%) generated=142 (95.95%)
+ABENDs: 047(190) 644(90) 048(64) 275(40) 674(18) 907(14) 906(3) 902(2) 908(2) 001(1) 124(1) 909(1)
+Totals: functions=470 generated=332 (70.64%)
+          non-receivers=148 (31.49%) generated=143 (96.62%)
           receivers=273 (58.09%) generated=168 (61.54%)
-          methods=49 (10.43%) generated=20 (40.82%)
+          methods=49 (10.43%) generated=21 (42.86%)
         types=184
           constructable=164 ctors=82 (50.00%)
         constants=91 generated=91 (100.00%)

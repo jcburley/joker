@@ -62,8 +62,9 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 		}
 		panic(fmt.Sprintf("processing %s: could not find %s in %s",
 			WhereAt(v.Pos()), pkgName, fullPathUnix))
+	default:
+		return "", "GoObject", nil
 	}
-	return "", fmt.Sprintf("ABEND883(jtypes.go: unrecognized Expr type %T at: %s)", e, Unix(WhereAt(e.Pos()))), nil
 }
 
 func TypeInfoForExpr(e Expr) *Info {
