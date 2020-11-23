@@ -265,11 +265,7 @@ func TypeLookup(e Expr) *Info {
 	if id, yes := e.(*Ident); yes {
 		pkg := godb.GoPackageForExpr(e)
 		fullName = combine(pkg, id.Name)
-		diagnose := id.Name == "error" || fullName == "error"
 		if ti, ok := typesByFullName[fullName]; ok {
-			if diagnose {
-				fmt.Fprintf(os.Stderr, "gtypes.go/TypeLookup: %s == @%p %+v\n", fullName, ti, *ti)
-			}
 			typesByExpr[e] = ti
 			return ti
 		}
@@ -282,9 +278,6 @@ func TypeLookup(e Expr) *Info {
 			LocalName:  id.Name,
 		}
 
-		if diagnose {
-			fmt.Fprintf(os.Stderr, "gtypes.go/TypeLookup: %s => @%p %+v\n", fullName, ti, *ti)
-		}
 		typesByExpr[e] = ti
 		finish(ti)
 
