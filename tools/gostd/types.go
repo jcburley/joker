@@ -21,7 +21,7 @@ type TypeInfo interface {
 	JokerName() string
 	JokerNameDoc() string
 	GoDecl() string
-	GoDeclDoc() string
+	GoDeclDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
 	GoName() string
@@ -231,8 +231,8 @@ func (ti typeInfo) GoDecl() string {
 	return ti.gti.FullName
 }
 
-func (ti typeInfo) GoDeclDoc() string {
-	return ti.gti.FullName
+func (ti typeInfo) GoDeclDoc(e Expr) string {
+	return ti.gti.DeclDoc(e)
 }
 
 func (ti typeInfo) GoPackage() string {

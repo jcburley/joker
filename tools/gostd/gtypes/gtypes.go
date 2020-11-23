@@ -6,7 +6,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
-	"go/types"
+	"os"
 	"path"
 	"strings"
 )
@@ -133,21 +133,28 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
+func (ti *Info) computeFullName() string {
+	n := ti.FullName
+	if n == "" {
+		n = fmt.Sprintf(ti.Pattern, combine(ti.Package, ti.LocalName))
+		ti.FullName = n
+	}
+	return n
+}
+
 // Maps type-defining Expr or string to exactly one struct describing that type
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
 
-func define(ti *Info) {
-	fullName := fmt.Sprintf(ti.Pattern, combine(ti.Package, ti.LocalName))
+func finish(ti *Info) {
+	fullName := ti.computeFullName()
 
-	if /*existingTi*/ _, ok := typesByFullName[fullName]; ok {
-		//		fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
+	if existingTi, ok := typesByFullName[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
 		return
 	}
 
 	typesByFullName[fullName] = ti
-
-	ti.FullName = fullName
 
 	if ti.Type != nil {
 		tiByExpr, found := typesByExpr[ti.Type]
@@ -156,6 +163,11 @@ func define(ti *Info) {
 		}
 		typesByExpr[ti.Type] = ti
 	}
+}
+
+func define(ti *Info) {
+	// Might be more to do here at some point.
+	finish(ti)
 }
 
 func defineVariant(pattern string, innerInfo *Info, te Expr) *Info {
@@ -171,12 +183,13 @@ func defineVariant(pattern string, innerInfo *Info, te Expr) *Info {
 		Specificity:    Concrete,
 	}
 
-	define(ti)
+	finish(ti)
 
 	return ti
 }
 
-func TypeDefineBuiltin(name string, nullable bool) *Info {
+// This goes away once gotypes.go goes away.
+func TypeDefineBuiltin(name string, nullable bool) {
 	ti := &Info{
 		Type:       &Ident{Name: name},
 		IsExported: true,
@@ -187,7 +200,7 @@ func TypeDefineBuiltin(name string, nullable bool) *Info {
 
 	define(ti)
 
-	return ti
+	fmt.Fprintf(os.Stderr, "gtypes.go/TypeDefineBuiltin: %s => @%p %+v\n", name, ti, *ti)
 }
 
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
@@ -233,7 +246,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 			UnderlyingType: ti,
 			Specificity:    Concrete,
 		}
-		define(tiPtrTo)
+		finish(tiPtrTo)
 		types = append(types, ti)
 	}
 
@@ -252,7 +265,11 @@ func TypeLookup(e Expr) *Info {
 	if id, yes := e.(*Ident); yes {
 		pkg := godb.GoPackageForExpr(e)
 		fullName = combine(pkg, id.Name)
+		diagnose := id.Name == "error" || fullName == "error"
 		if ti, ok := typesByFullName[fullName]; ok {
+			if diagnose {
+				fmt.Fprintf(os.Stderr, "gtypes.go/TypeLookup: %s == @%p %+v\n", fullName, ti, *ti)
+			}
 			typesByExpr[e] = ti
 			return ti
 		}
@@ -264,8 +281,13 @@ func TypeLookup(e Expr) *Info {
 			Package:    pkg,
 			LocalName:  id.Name,
 		}
+
+		if diagnose {
+			fmt.Fprintf(os.Stderr, "gtypes.go/TypeLookup: %s => @%p %+v\n", fullName, ti, *ti)
+		}
 		typesByExpr[e] = ti
-		typesByFullName[fullName] = ti
+		finish(ti)
+
 		return ti
 	}
 
@@ -326,7 +348,7 @@ func TypeLookup(e Expr) *Info {
 			LocalName: localName,
 			DefPos:    e.Pos(),
 		}
-		define(ti)
+		finish(ti)
 		return ti
 	}
 
@@ -390,6 +412,13 @@ func (ti *Info) AbsoluteGoName() string {
 	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
+func (ti *Info) DeclDoc(e Expr) string {
+	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
+		return ti.FullName
+	}
+	return fmt.Sprintf(ti.Pattern, ti.LocalName)
+}
+
 func TypeName(e Expr) string {
 	switch x := e.(type) {
 	case *Ident:
@@ -409,7 +438,7 @@ func TypeName(e Expr) string {
 	x := e.(*Ident)
 	local := x.Name
 	prefix := ""
-	if types.Universe.Lookup(local) == nil {
+	if !godb.IsBuiltin(local) {
 		prefix = godb.GoPackageForExpr(e) + "."
 	}
 

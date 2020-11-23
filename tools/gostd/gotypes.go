@@ -502,8 +502,6 @@ func init() {
 	}
 
 	for n, ti := range GoTypes {
-		if tdi := gtypes.TypeDefineBuiltin(n, ti.Nullable); tdi == nil {
-			panic(fmt.Sprintf("failed to define builtin %s", n))
-		}
+		gtypes.TypeDefineBuiltin(n, ti.Nullable)
 	}
 }
