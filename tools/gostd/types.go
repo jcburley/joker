@@ -260,7 +260,7 @@ func (ti typeInfo) TypeSpec() *TypeSpec {
 }
 
 func (ti typeInfo) GoFile() *godb.GoFile {
-	return ti.gti.GoFile
+	return ti.gti.File
 }
 
 func (ti typeInfo) DefPos() token.Pos {
@@ -355,7 +355,7 @@ func (ti typeInfo) TypeMappingsName() string {
 	if !ti.IsExported() {
 		return ""
 	}
-	if ugt := ti.gti.UnderlyingGoType; ugt != nil {
+	if ugt := ti.gti.UnderlyingType; ugt != nil {
 		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())

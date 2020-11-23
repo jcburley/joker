@@ -15,37 +15,21 @@ const Concrete = ^uint(0) /* MaxUint */
 
 var NumExprHits uint
 
-// Info from the definition of the type (if any)
-type goTypeOLD struct {
-	Type             Expr      // The actual type (if any)
-	TypeSpec         *TypeSpec // The definition of the named type (if any)
-	IsExported       bool
-	Doc              string
-	DefPos           token.Pos
-	GoFile           *godb.GoFile
-	GoPattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	GoPackage        string // E.g. a/b/c (always Unix style)
-	GoName           string // Base name of type (without any prefix/pattern applied)
-	underlyingGoType *goTypeOLD
-	Ord              uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
-	Specificity      uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
-	Nullable         bool
-}
-
 type Info struct {
-	FullName         string // E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
-	Pattern          string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	Package          string // E.g. "net/url", "" (always Unix style)
-	LocalName        string // E.g. "*Listener"
-	UnderlyingGoType *Info
-	Doc              string
-	DefPos           token.Pos
-	GoFile           *godb.GoFile
-	TypeSpec         *TypeSpec // The definition of the named type (if any)
-	Ord              uint      // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
-	Specificity      uint      // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
-	IsNullable       bool      // Can an instance of the type == nil (e.g. 'error' type)?
-	IsExported       bool
+	Type           Expr      // The actual type (if any)
+	TypeSpec       *TypeSpec // The definition of the named type (if any)
+	UnderlyingType *Info
+	FullName       string // E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	Package        string // E.g. "net/url", "" (always Unix style)
+	LocalName      string // E.g. "*Listener"
+	Doc            string
+	DefPos         token.Pos
+	File           *godb.GoFile
+	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
+	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
+	IsExported     bool
 }
 
 func combine(pkg, name string) string {
@@ -57,7 +41,7 @@ func combine(pkg, name string) string {
 
 var fullNameToInfo = map[string]*Info{}
 
-func GetInfo(pattern, pkg, name string, nullable bool) *Info {
+func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	if pattern == "" {
 		pattern = "%s"
 	}
@@ -83,41 +67,39 @@ func GetInfo(pattern, pkg, name string, nullable bool) *Info {
 
 var Nil = Info{}
 
-var Error = GetInfo("", "", "error", true)
+var Error = getInfo("", "", "error", true)
 
-var Bool = GetInfo("", "", "bool", false)
+var Bool = getInfo("", "", "bool", false)
 
-var Byte = GetInfo("", "", "byte", false)
+var Byte = getInfo("", "", "byte", false)
 
-var Rune = GetInfo("", "", "rune", false)
+var Rune = getInfo("", "", "rune", false)
 
-var String = GetInfo("", "", "string", false)
+var String = getInfo("", "", "string", false)
 
-var Int = GetInfo("", "", "int", false)
+var Int = getInfo("", "", "int", false)
 
-var Int32 = GetInfo("", "", "int32", false)
+var Int32 = getInfo("", "", "int32", false)
 
-var Int64 = GetInfo("", "", "int64", false)
+var Int64 = getInfo("", "", "int64", false)
 
-var UInt = GetInfo("", "", "uint", false)
+var UInt = getInfo("", "", "uint", false)
 
-var UInt8 = GetInfo("", "", "uint8", false)
+var UInt8 = getInfo("", "", "uint8", false)
 
-var UInt16 = GetInfo("", "", "uint16", false)
+var UInt16 = getInfo("", "", "uint16", false)
 
-var UInt32 = GetInfo("", "", "uint32", false)
+var UInt32 = getInfo("", "", "uint32", false)
 
-var UInt64 = GetInfo("", "", "uint64", false)
+var UInt64 = getInfo("", "", "uint64", false)
 
-var UIntPtr = GetInfo("", "", "uintptr", false)
+var UIntPtr = getInfo("", "", "uintptr", false)
 
-var Float32 = GetInfo("", "", "float32", false)
+var Float32 = getInfo("", "", "float32", false)
 
-var Float64 = GetInfo("", "", "float64", false)
+var Float64 = getInfo("", "", "float64", false)
 
-var Complex128 = GetInfo("", "", "complex128", false)
-
-var gtToInfo = map[*goTypeOLD]*Info{}
+var Complex128 = getInfo("", "", "complex128", false)
 
 func TypeInfoForExpr(e Expr) *Info {
 	gt := TypeLookup(e)
@@ -125,16 +107,7 @@ func TypeInfoForExpr(e Expr) *Info {
 		panic(fmt.Sprintf("cannot find type for %v", e))
 	}
 
-	if gti, found := gtToInfo[gt]; found {
-		return gti
-	}
-
-	gti := GetInfo(gt.GoPattern, gt.GoPackage, gt.GoName, gt.Nullable)
-	gtToInfo[gt] = gti
-
-	// fmt.Fprintf(os.Stderr, "gtypes.TypeInfoForExpr(%T) => \"%s\"\n", e, gti.FullName)
-
-	return gti
+	return gt
 }
 
 func specificityOfInterface(ts *InterfaceType) uint {
@@ -161,80 +134,60 @@ func specificity(ts *TypeSpec) uint {
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
-var typesByExpr = map[Expr]*goTypeOLD{}
-var typesByFullName = map[string]*goTypeOLD{}
+var typesByExpr = map[Expr]*Info{}
+var typesByFullName = map[string]*Info{}
 
-func define(tdi *goTypeOLD) *Info {
-	name := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
-	if existingTdi, ok := typesByFullName[name]; ok {
-		// fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", name, godb.WhereAt(existingTdi.DefPos), existingTdi, godb.WhereAt(tdi.DefPos), tdi)
-		tdi = existingTdi
-	} else {
-		typesByFullName[name] = tdi
+func define(ti *Info) {
+	fullName := fmt.Sprintf(ti.Pattern, combine(ti.Package, ti.LocalName))
+
+	if /*existingTi*/ _, ok := typesByFullName[fullName]; ok {
+		//		fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
+		return
 	}
 
-	if tdi.Type != nil {
-		tdiByExpr, found := typesByExpr[tdi.Type]
-		if found && tdiByExpr != tdi {
-			panic(fmt.Sprintf("different expr for type %s", name))
+	typesByFullName[fullName] = ti
+
+	ti.FullName = fullName
+
+	if ti.Type != nil {
+		tiByExpr, found := typesByExpr[ti.Type]
+		if found && tiByExpr != ti {
+			panic(fmt.Sprintf("different expr for type %s", fullName))
 		}
-		typesByExpr[tdi.Type] = tdi
+		typesByExpr[ti.Type] = ti
 	}
-
-	var ugt *Info = nil
-	if tdi.underlyingGoType != nil {
-		ugt = gtToInfo[tdi.underlyingGoType]
-	}
-	gti := &Info{
-		FullName:         name,
-		Pattern:          tdi.GoPattern,
-		Package:          tdi.GoPackage,
-		LocalName:        tdi.GoName,
-		UnderlyingGoType: ugt,
-		Doc:              tdi.Doc,
-		DefPos:           tdi.DefPos,
-		GoFile:           tdi.GoFile,
-		TypeSpec:         tdi.TypeSpec,
-		Specificity:      tdi.Specificity,
-		IsNullable:       tdi.Nullable,
-		IsExported:       tdi.IsExported,
-	}
-	fullNameToInfo[name] = gti
-	gtToInfo[tdi] = gti
-
-	return gti
 }
 
-func defineVariant(pattern string, innerTdi *goTypeOLD, te Expr) *goTypeOLD {
-	tdi := &goTypeOLD{
-		Type:             te,
-		IsExported:       innerTdi.IsExported,
-		GoFile:           innerTdi.GoFile,
-		GoPattern:        pattern,
-		GoPackage:        innerTdi.GoPackage,
-		GoName:           innerTdi.GoName,
-		DefPos:           innerTdi.DefPos,
-		underlyingGoType: innerTdi,
-		Specificity:      Concrete,
+func defineVariant(pattern string, innerInfo *Info, te Expr) *Info {
+	ti := &Info{
+		Type:           te,
+		IsExported:     innerInfo.IsExported,
+		File:           innerInfo.File,
+		Pattern:        pattern,
+		Package:        innerInfo.Package,
+		LocalName:      innerInfo.LocalName,
+		DefPos:         innerInfo.DefPos,
+		UnderlyingType: innerInfo,
+		Specificity:    Concrete,
 	}
 
-	define(tdi)
+	define(ti)
 
-	return tdi
+	return ti
 }
 
-func TypeDefineBuiltin(name string, nullable bool) *goTypeOLD {
-	tdi := &goTypeOLD{
+func TypeDefineBuiltin(name string, nullable bool) *Info {
+	ti := &Info{
 		Type:       &Ident{Name: name},
 		IsExported: true,
-		GoPattern:  "%s",
-		GoName:     name,
-		Nullable:   nullable,
+		Pattern:    "%s",
+		LocalName:  name,
+		IsNullable: nullable,
 	}
 
-	define(tdi)
+	define(ti)
 
-	return tdi
+	return ti
 }
 
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
@@ -250,137 +203,140 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 
 	types := []*Info{}
 
-	tdi := &goTypeOLD{
+	ti := &Info{
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		IsExported:  IsExported(localName),
 		Doc:         utils.CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
-		GoFile:      gf,
-		GoPattern:   "%s",
-		GoPackage:   godb.GoPackageForTypeSpec(ts),
-		GoName:      localName,
+		File:        gf,
+		Pattern:     "%s",
+		Package:     godb.GoPackageForTypeSpec(ts),
+		LocalName:   localName,
 		Specificity: specificity(ts),
 	}
-	ti := define(tdi)
+	define(ti)
 	types = append(types, ti)
 
-	if tdi.Specificity == Concrete {
+	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
-		tdiPtrTo := &goTypeOLD{
-			Type:             &StarExpr{X: tdi.Type},
-			TypeSpec:         ts,
-			IsExported:       tdi.IsExported,
-			Doc:              "",
-			DefPos:           tdi.DefPos,
-			GoFile:           gf,
-			GoPattern:        fmt.Sprintf(tdi.GoPattern, "*%s"),
-			GoPackage:        tdi.GoPackage,
-			GoName:           tdi.GoName,
-			underlyingGoType: tdi,
-			Specificity:      Concrete,
+		tiPtrTo := &Info{
+			Type:           &StarExpr{X: ti.Type},
+			TypeSpec:       ts,
+			IsExported:     ti.IsExported,
+			Doc:            "",
+			DefPos:         ti.DefPos,
+			File:           gf,
+			Pattern:        fmt.Sprintf(ti.Pattern, "*%s"),
+			Package:        ti.Package,
+			LocalName:      ti.LocalName,
+			UnderlyingType: ti,
+			Specificity:    Concrete,
 		}
-		ti = define(tdiPtrTo)
+		define(tiPtrTo)
 		types = append(types, ti)
 	}
 
 	return types
 }
 
-func TypeLookup(e Expr) (ty *goTypeOLD) {
-	if tdi, ok := typesByExpr[e]; ok {
+func TypeLookup(e Expr) *Info {
+	if ti, ok := typesByExpr[e]; ok {
 		NumExprHits++
-		return tdi
+		return ti
 	}
 
-	goName := ""
+	localName := ""
+	fullName := ""
 
 	if id, yes := e.(*Ident); yes {
-		goName = id.Name
-		if tdi, ok := typesByFullName[goName]; ok {
-			typesByExpr[e] = tdi
-			return tdi
+		pkg := godb.GoPackageForExpr(e)
+		fullName = combine(pkg, id.Name)
+		if ti, ok := typesByFullName[fullName]; ok {
+			typesByExpr[e] = ti
+			return ti
 		}
-		tdi := &goTypeOLD{
+		ti := &Info{
 			Type:       e,
 			IsExported: true,
 			DefPos:     id.Pos(),
-			GoPattern:  "%s",
-			GoName:     goName,
+			Pattern:    "%s",
+			Package:    pkg,
+			LocalName:  id.Name,
 		}
-		typesByExpr[e] = tdi
-		typesByFullName[goName] = tdi
-		return tdi
+		typesByExpr[e] = ti
+		typesByFullName[fullName] = ti
+		return ti
 	}
 
-	var innerTdi *goTypeOLD
+	var innerInfo *Info
 	pattern := "%s"
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerTdi = TypeLookup(v.X)
-		pattern = fmt.Sprintf("*%s", innerTdi.GoPattern)
-		goName = innerTdi.GoName
+		innerInfo = TypeLookup(v.X)
+		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
+		localName = innerInfo.LocalName
 	case *ArrayType:
-		innerTdi = TypeLookup(v.Elt)
+		innerInfo = TypeLookup(v.Elt)
 		len := exprToString(v.Len)
 		pattern = "[" + len + "]%s"
-		if innerTdi == nil {
-			goName = fmt.Sprintf("%v", v.Elt)
+		if innerInfo == nil {
+			localName = fmt.Sprintf("%v", v.Elt)
 		} else {
-			goName = innerTdi.GoName
-			pattern = fmt.Sprintf(pattern, innerTdi.GoPattern)
+			localName = innerInfo.LocalName
+			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
 		}
 	case *InterfaceType:
-		goName = "interface{"
+		localName = "interface{"
 		methods := methodsToString(v.Methods.List)
 		if v.Incomplete {
 			methods = strings.Join([]string{methods, "..."}, ", ")
 		}
-		goName += methods + "}"
+		localName += methods + "}"
 	case *MapType:
 		key := TypeLookup(v.Key)
 		value := TypeLookup(v.Value)
-		goName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
+		localName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
 	case *SelectorExpr:
 		left := fmt.Sprintf("%s", v.X)
-		goName = left + "." + v.Sel.Name
+		localName = left + "." + v.Sel.Name
 	case *ChanType:
 		ty := TypeLookup(v.Value)
-		goName = "chan"
+		localName = "chan"
 		switch v.Dir & (SEND | RECV) {
 		case SEND:
-			goName += "<-"
+			localName += "<-"
 		case RECV:
-			goName = "<-" + goName
+			localName = "<-" + localName
 		default:
 		}
-		goName += " " + ty.RelativeGoName(e.Pos())
+		localName += " " + ty.RelativeGoName(e.Pos())
 	case *StructType:
-		goName = "struct{}"
+		localName = "struct{}"
 	}
 
-	if innerTdi == nil {
-		if goName == "" {
-			goName = fmt.Sprintf("ABEND001(NO GO NAME??!!)")
+	if innerInfo == nil {
+		if localName == "" {
+			localName = fmt.Sprintf("ABEND001(NO GO NAME due to %v??!!)", e)
 		}
-		tdi := &goTypeOLD{
+		ti := &Info{
 			Type:      e,
-			GoPattern: pattern,
-			GoName:    goName,
+			Pattern:   pattern,
+			LocalName: localName,
 			DefPos:    e.Pos(),
 		}
-		define(tdi)
-		return tdi
+		define(ti)
+		return ti
 	}
 
-	return defineVariant(pattern, innerTdi, e)
+	return defineVariant(pattern, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {
 	ti := TypeLookup(f.Type)
 	// Don't bother implementing this until it's actually needed:
-	return "ABEND041(gtypes.go/fieldToString found something: " + ti.GoName + "!)"
+	return "ABEND041(gtypes.go/fieldToString found something: " + ti.LocalName + "!)"
 }
 
 func methodsToString(methods []*Field) string {
@@ -404,34 +360,34 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (tdi *goTypeOLD) TypeReflected() (packageImport, pattern string) {
+func (ti *Info) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
-	if tdiu := tdi.underlyingGoType; tdiu != nil {
-		t = "_" + path.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+	if tiu := ti.UnderlyingType; tiu != nil {
+		t = "_" + path.Base(tiu.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
 		suffix = ""
 	} else {
-		t = "_" + path.Base(tdi.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+		t = "_" + path.Base(ti.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (tdi *goTypeOLD) RelativeGoName(pos token.Pos) string {
-	pkgPrefix := tdi.GoPackage
+func (ti *Info) RelativeGoName(pos token.Pos) string {
+	pkgPrefix := ti.Package
 	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
 	} else if pkgPrefix != "" {
 		pkgPrefix += "."
 	}
-	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
+	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
-func (tdi *goTypeOLD) AbsoluteGoName() string {
-	pkgPrefix := tdi.GoPackage
+func (ti *Info) AbsoluteGoName() string {
+	pkgPrefix := ti.Package
 	if pkgPrefix != "" {
 		pkgPrefix += "."
 	}
-	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
+	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
 func TypeName(e Expr) string {
