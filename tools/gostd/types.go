@@ -20,6 +20,7 @@ type TypeInfo interface {
 	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
 	JokerName() string
 	JokerNameDoc() string
+	JokerTypeInfo() *jtypes.Info
 	GoDecl() string
 	GoDeclDoc(e Expr) string
 	GoPackage() string
@@ -128,6 +129,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			gti: gti,
 		}
 
+		ti.jti.Register() // Since we built the object here, register it there.
+
 		if ix == 0 {
 			typesByExpr[ts.Type] = ti
 		}
@@ -225,6 +228,10 @@ func (ti typeInfo) JokerName() string {
 
 func (ti typeInfo) JokerNameDoc() string {
 	return ti.jti.JokerNameDoc
+}
+
+func (ti typeInfo) JokerTypeInfo() *jtypes.Info { // TODO: Remove when gotypes.go is gone?
+	return ti.jti
 }
 
 func (ti typeInfo) GoDecl() string {

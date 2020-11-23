@@ -99,6 +99,12 @@ func TypeInfoForExpr(e Expr) *Info {
 	return info
 }
 
+func (ti *Info) Register() {
+	if _, found := typesByFullname[ti.JokerName]; !found {
+		typesByFullname[ti.JokerName] = ti
+	}
+}
+
 var Nil = &Info{}
 
 var Error = &Info{
