@@ -5,6 +5,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -164,15 +165,16 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	case *Ident:
 		goType = v.Name
 		extractParam := ""
-		ti := toGoExprInfoGOT(fn.SourceFile, e)
-		clType = ti.ArgExtractFunc
-		clTypeDoc = ti.ArgClojureArgType
+		ti := TypeInfoForExpr(e)
+		clType = ti.ArgExtractFunc()
+		clTypeDoc = ti.ArgClojureArgType()
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
-		if ti.SourceFile == nil { // a builtin
-			if ti.ArgExtractFunc != "" {
-				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.ArgExtractFunc, fn.DocName, paramName, argNum)
+		fmt.Fprintf(os.Stderr, "%s @%p: %+v\n", v.Name, ti.GoTypeInfo(), *ti.GoTypeInfo())
+		if !ti.DefPos().IsValid() { // a builtin
+			if ti.ArgExtractFunc() != "" {
+				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.ArgExtractFunc(), fn.DocName, paramName, argNum)
 			}
 		} else {
 			if !IsExported(v.Name) {
@@ -181,8 +183,8 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			} else {
 				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
-			if ti.ArgClojureArgType != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.ArgClojureArgType), fn.DocName, paramName, argNum)
+			if ti.ArgClojureArgType() != "" {
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.ArgClojureArgType()), fn.DocName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {
@@ -192,6 +194,9 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			goTypeDoc = goType
 		}
 		if fn.Fd == nil || fn.Fd.Recv != nil {
+			if extractParam == "" {
+				panic(fmt.Sprintf("no arg-extraction code for %+v type @%p %+v", v, ti, *ti.JokerTypeInfo()))
+			}
 			goPreCode = paramName + " := " + extractParam
 		}
 	case *ArrayType:
