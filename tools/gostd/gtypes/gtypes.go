@@ -16,7 +16,7 @@ const Concrete = ^uint(0) /* MaxUint */
 var NumExprHits uint
 
 // Info from the definition of the type (if any)
-type GoType struct {
+type goTypeOLD struct {
 	Type             Expr      // The actual type (if any)
 	TypeSpec         *TypeSpec // The definition of the named type (if any)
 	IsExported       bool
@@ -26,7 +26,7 @@ type GoType struct {
 	GoPattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	GoPackage        string // E.g. a/b/c (always Unix style)
 	GoName           string // Base name of type (without any prefix/pattern applied)
-	underlyingGoType *GoType
+	underlyingGoType *goTypeOLD
 	Ord              uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	Specificity      uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	Nullable         bool
@@ -117,7 +117,7 @@ var Float64 = GetInfo("", "", "float64", false)
 
 var Complex128 = GetInfo("", "", "complex128", false)
 
-var gtToInfo = map[*GoType]*Info{}
+var gtToInfo = map[*goTypeOLD]*Info{}
 
 func TypeInfoForExpr(e Expr) *Info {
 	gt := TypeLookup(e)
@@ -161,10 +161,10 @@ func specificity(ts *TypeSpec) uint {
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
-var typesByExpr = map[Expr]*GoType{}
-var typesByFullName = map[string]*GoType{}
+var typesByExpr = map[Expr]*goTypeOLD{}
+var typesByFullName = map[string]*goTypeOLD{}
 
-func define(tdi *GoType) *Info {
+func define(tdi *goTypeOLD) *Info {
 	name := fmt.Sprintf(tdi.GoPattern, combine(tdi.GoPackage, tdi.GoName))
 	if existingTdi, ok := typesByFullName[name]; ok {
 		// fmt.Fprintf(os.Stderr, "gtypes.define(): already defined type %s at %s (%p) and again at %s (%p)\n", name, godb.WhereAt(existingTdi.DefPos), existingTdi, godb.WhereAt(tdi.DefPos), tdi)
@@ -205,8 +205,8 @@ func define(tdi *GoType) *Info {
 	return gti
 }
 
-func defineVariant(pattern string, innerTdi *GoType, te Expr) *GoType {
-	tdi := &GoType{
+func defineVariant(pattern string, innerTdi *goTypeOLD, te Expr) *goTypeOLD {
+	tdi := &goTypeOLD{
 		Type:             te,
 		IsExported:       innerTdi.IsExported,
 		GoFile:           innerTdi.GoFile,
@@ -223,8 +223,8 @@ func defineVariant(pattern string, innerTdi *GoType, te Expr) *GoType {
 	return tdi
 }
 
-func TypeDefineBuiltin(name string, nullable bool) *GoType {
-	tdi := &GoType{
+func TypeDefineBuiltin(name string, nullable bool) *goTypeOLD {
+	tdi := &goTypeOLD{
 		Type:       &Ident{Name: name},
 		IsExported: true,
 		GoPattern:  "%s",
@@ -250,7 +250,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 
 	types := []*Info{}
 
-	tdi := &GoType{
+	tdi := &goTypeOLD{
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		IsExported:  IsExported(localName),
@@ -267,7 +267,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 
 	if tdi.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
-		tdiPtrTo := &GoType{
+		tdiPtrTo := &goTypeOLD{
 			Type:             &StarExpr{X: tdi.Type},
 			TypeSpec:         ts,
 			IsExported:       tdi.IsExported,
@@ -287,7 +287,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	return types
 }
 
-func TypeLookup(e Expr) (ty *GoType) {
+func TypeLookup(e Expr) (ty *goTypeOLD) {
 	if tdi, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return tdi
@@ -301,7 +301,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 			typesByExpr[e] = tdi
 			return tdi
 		}
-		tdi := &GoType{
+		tdi := &goTypeOLD{
 			Type:       e,
 			IsExported: true,
 			DefPos:     id.Pos(),
@@ -313,7 +313,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 		return tdi
 	}
 
-	var innerTdi *GoType
+	var innerTdi *goTypeOLD
 	pattern := "%s"
 
 	switch v := e.(type) {
@@ -364,7 +364,7 @@ func TypeLookup(e Expr) (ty *GoType) {
 		if goName == "" {
 			goName = fmt.Sprintf("ABEND001(NO GO NAME??!!)")
 		}
-		tdi := &GoType{
+		tdi := &goTypeOLD{
 			Type:      e,
 			GoPattern: pattern,
 			GoName:    goName,
@@ -404,7 +404,7 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (tdi *GoType) TypeReflected() (packageImport, pattern string) {
+func (tdi *goTypeOLD) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tdiu := tdi.underlyingGoType; tdiu != nil {
@@ -416,7 +416,7 @@ func (tdi *GoType) TypeReflected() (packageImport, pattern string) {
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (tdi *GoType) RelativeGoName(pos token.Pos) string {
+func (tdi *goTypeOLD) RelativeGoName(pos token.Pos) string {
 	pkgPrefix := tdi.GoPackage
 	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
@@ -426,7 +426,7 @@ func (tdi *GoType) RelativeGoName(pos token.Pos) string {
 	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
 }
 
-func (tdi *GoType) AbsoluteGoName() string {
+func (tdi *goTypeOLD) AbsoluteGoName() string {
 	pkgPrefix := tdi.GoPackage
 	if pkgPrefix != "" {
 		pkgPrefix += "."
