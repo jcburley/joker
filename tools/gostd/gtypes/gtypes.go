@@ -273,6 +273,7 @@ func TypeLookup(e Expr) *Info {
 			Type:       e,
 			IsExported: true,
 			DefPos:     id.Pos(),
+			FullName:   fullName,
 			Pattern:    "%s",
 			Package:    pkg,
 			LocalName:  id.Name,
@@ -333,7 +334,7 @@ func TypeLookup(e Expr) *Info {
 
 	if innerInfo == nil {
 		if localName == "" {
-			localName = fmt.Sprintf("ABEND001(NO GO NAME due to %v??!!)", e)
+			localName = fmt.Sprintf("ABEND001(NO GO NAME due to %+v @%p??!!)", e, e)
 		}
 		ti := &Info{
 			Type:      e,
