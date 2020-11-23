@@ -170,7 +170,7 @@ func define(ti *Info) {
 	finish(ti)
 }
 
-func defineVariant(pattern string, innerInfo *Info, te Expr) *Info {
+func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Type:           te,
 		IsExported:     innerInfo.IsExported,
@@ -247,7 +247,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 			Specificity:    Concrete,
 		}
 		finish(tiPtrTo)
-		types = append(types, ti)
+		types = append(types, tiPtrTo)
 	}
 
 	return types
@@ -346,7 +346,7 @@ func TypeLookup(e Expr) *Info {
 		return ti
 	}
 
-	return defineVariant(pattern, innerInfo, e)
+	return finishVariant(pattern, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {
