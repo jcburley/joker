@@ -189,20 +189,6 @@ func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 	return ti
 }
 
-// This goes away once gotypes.go goes away.
-func TypeDefineBuiltin(name string, nullable bool) {
-	ti := &Info{
-		Type:       &Ident{Name: name},
-		IsExported: true,
-		Pattern:    "%s",
-		LocalName:  name,
-		IsNullable: nullable,
-		IsBuiltin:  true,
-	}
-
-	define(ti)
-}
-
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
 
