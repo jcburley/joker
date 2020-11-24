@@ -29,11 +29,15 @@ func registerTypeGOT(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTy
 	return ti
 }
 
-func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
-	if ti, found := GoTypes[baseName]; found {
-		return ti
+func combineGoName(pkg, name string) string {
+	if pkg == "" || godb.IsBuiltin(name) {
+		return name
 	}
-	fullGoName := pkgDirUnix + "." + baseName
+	return pkg + "." + name
+}
+
+func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
+	fullGoName := combineGoName(pkgDirUnix, baseName)
 	if ti, found := GoTypes[fullGoName]; found {
 		return ti
 	}
@@ -42,7 +46,7 @@ func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 	if gotypes.Universe.Lookup(baseName) != nil {
 		ti = &GoTypeInfo{
 			LocalName:          baseName,
-			FullGoName:         fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", baseName, pkgDirUnix),
+			FullGoName:         fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", fullGoName, pkgDirUnix),
 			ArgClojureType:     baseName,
 			ArgClojureArgType:  baseName,
 			ConvertFromClojure: baseName + "(%s)",
@@ -54,7 +58,7 @@ func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 	} else {
 		ti = &GoTypeInfo{
 			LocalName:          baseName,
-			FullGoName:         fmt.Sprintf("ABEND051(gotypes.go: unsupported underlying type %s for %s)", baseName, pkgDirUnix),
+			FullGoName:         fmt.Sprintf("ABEND051(gotypes.go: unsupported underlying type %s for %s)", fullGoName, pkgDirUnix),
 			ArgClojureType:     baseName,
 			ArgClojureArgType:  baseName,
 			ConvertFromClojure: baseName + "(%s)",
@@ -63,7 +67,7 @@ func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
 			Unsupported:        true,
 		}
 	}
-	GoTypes[baseName] = ti
+	GoTypes[fullGoName] = ti
 	return ti
 }
 
