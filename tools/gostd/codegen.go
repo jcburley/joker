@@ -8,6 +8,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
+	"os"
 	"path"
 	"regexp"
 	"strings"
@@ -350,13 +351,29 @@ func GenVariable(vi *VariableInfo) {
 }
 
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) string {
-	t := toGoTypeInfoGOT(src, ts)
-	if t == nil || t.Custom {
+	t := TypeInfoForExpr(ts.Type)
+	if strings.Contains(ts.Name.Name, "InvalidAddrError") {
+		fmt.Fprintf(os.Stderr, "codegen.go/maybeImplicitConvert: %s .Type => %s @%p %+v\n", ts.Name.Name, t.JokerName(), t, ts.Type)
+	}
+	debug := false
+	if t != nil && strings.Contains(typeName, "InvalidAddrError") {
+		debug = true
+		jti := t.JokerTypeInfo()
+		gti := t.GoTypeInfo()
+		fmt.Fprintf(os.Stderr, "codegen.go/maybeImplicitConvert: %s @%p jti@%p == %+v; gti@%p == %+v\n", typeName, t, jti, *jti, gti, *gti)
+	}
+	if t == nil || !t.IsBuiltin() {
+		if debug {
+			fmt.Fprintf(os.Stderr, "...is not a builtin!!\n")
+		}
 		return ""
 	}
-	argType := t.ArgClojureArgType
-	declType := t.ArgExtractFunc
+	argType := t.ArgClojureArgType()
+	declType := t.ArgExtractFunc()
 	if declType == "" {
+		if debug {
+			fmt.Fprintf(os.Stderr, "...has no declType!!\n")
+		}
 		return ""
 	}
 	const exTemplate = `case %s:

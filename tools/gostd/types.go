@@ -8,6 +8,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
+	"os"
 	"sort"
 	"strings"
 )
@@ -38,6 +39,7 @@ type TypeInfo interface {
 	Doc() string
 	IsNullable() bool // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
+	IsBuiltin() bool
 }
 
 const ConcreteType = gtypes.Concrete
@@ -86,17 +88,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
-	// if pkg == "unsafe" && name == "ArbitraryType" {
-	// 	if godb.Verbose {
-	// 		fmt.Printf("Excluding mythical type %s.%s\n", pkg, name)
-	// 	}
-	// 	return false
-	// }
-
-	if ti, found := typesByExpr[ts.Type]; found {
-		panic(fmt.Sprintf("defined type %s.%s first at %v, now at %v!", pkg, name, ti.DefPos(), ts.Name.Pos()))
-	}
-
 	if WalkDump {
 		fmt.Printf("Type %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
 		Print(godb.Fset, ts)
@@ -106,7 +97,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	prefix := godb.ClojureNamespaceForPos(godb.Fset.Position(ts.Name.NamePos)) + "/"
 
-	for ix, gti := range gtiVec {
+	for _, gti := range gtiVec {
 
 		var gt *GoTypeInfo
 
@@ -119,10 +110,11 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		ti := &typeInfo{
 			jti: &jtypes.Info{
+				FullName:           jokerName,
+				ArgExtractFunc:     gt.ArgExtractFunc,
 				ArgClojureArgType:  gt.ArgClojureArgType,
 				ConvertFromClojure: gt.ConvertFromClojure,
 				ConvertToClojure:   gt.ConvertToClojure,
-				JokerName:          jokerName,
 				JokerNameDoc:       jokerName,
 				AsJokerObject:      gt.ConvertToClojure,
 			},
@@ -131,11 +123,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		ti.jti.Register() // Since we built the object here, register it there.
 
-		if ix == 0 {
-			typesByExpr[ts.Type] = ti
-		}
-
-		typesByJokerName[ti.jti.JokerName] = ti
+		typesByJokerName[ti.jti.FullName] = ti
 
 		gt.Type = ti
 		TypeDefsToGoTypes[ti] = gt
@@ -175,6 +163,9 @@ func BadInfo(err string) typeInfo {
 
 func TypeInfoForExpr(e Expr) TypeInfo {
 	if ti, found := typesByExpr[e]; found {
+		if strings.Contains(ti.JokerName(), "InvalidAddrError") {
+			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+		}
 		return ti
 	}
 
@@ -223,7 +214,7 @@ func (ti typeInfo) AsJokerObject() string {
 }
 
 func (ti typeInfo) JokerName() string {
-	return ti.jti.JokerName
+	return ti.jti.FullName
 }
 
 func (ti typeInfo) JokerNameDoc() string {
@@ -296,6 +287,10 @@ func (ti typeInfo) IsNullable() bool {
 
 func (ti typeInfo) IsExported() bool {
 	return ti.gti.IsExported
+}
+
+func (ti typeInfo) IsBuiltin() bool {
+	return ti.gti.IsBuiltin
 }
 
 var allTypesSorted = []TypeInfo{}

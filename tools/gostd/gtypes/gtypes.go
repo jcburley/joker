@@ -16,10 +16,11 @@ const Concrete = ^uint(0) /* MaxUint */
 var NumExprHits uint
 
 type Info struct {
+	Expr           Expr      // [key] The canonical referencing expression (if any)
+	FullName       string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
 	UnderlyingType *Info
-	FullName       string // E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
 	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	Package        string // E.g. "net/url", "" (always Unix style)
 	LocalName      string // E.g. "*Listener"
@@ -30,6 +31,7 @@ type Info struct {
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported     bool
+	IsBuiltin      bool
 }
 
 func combine(pkg, name string) string {
@@ -58,6 +60,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 		LocalName:  fmt.Sprintf(pattern, name),
 		IsNullable: nullable,
 		IsExported: pkg == "" || IsExported(name),
+		IsBuiltin:  true,
 	}
 
 	fullNameToInfo[fullName] = info
@@ -156,12 +159,12 @@ func finish(ti *Info) {
 
 	typesByFullName[fullName] = ti
 
-	if ti.Type != nil {
-		tiByExpr, found := typesByExpr[ti.Type]
+	if e := ti.Expr; e != nil {
+		tiByExpr, found := typesByExpr[e]
 		if found && tiByExpr != ti {
 			panic(fmt.Sprintf("different expr for type %s", fullName))
 		}
-		typesByExpr[ti.Type] = ti
+		typesByExpr[e] = ti
 	}
 }
 
@@ -172,7 +175,7 @@ func define(ti *Info) {
 
 func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
-		Type:           te,
+		Expr:           te,
 		IsExported:     innerInfo.IsExported,
 		File:           innerInfo.File,
 		Pattern:        pattern,
@@ -196,6 +199,7 @@ func TypeDefineBuiltin(name string, nullable bool) {
 		Pattern:    "%s",
 		LocalName:  name,
 		IsNullable: nullable,
+		IsBuiltin:  true,
 	}
 
 	define(ti)
@@ -270,7 +274,7 @@ func TypeLookup(e Expr) *Info {
 			return ti
 		}
 		ti := &Info{
-			Type:       e,
+			Expr:       e,
 			IsExported: true,
 			DefPos:     id.Pos(),
 			FullName:   fullName,
@@ -337,7 +341,7 @@ func TypeLookup(e Expr) *Info {
 			localName = fmt.Sprintf("ABEND001(NO GO NAME due to %+v @%p??!!)", e, e)
 		}
 		ti := &Info{
-			Type:      e,
+			Expr:      e,
 			Pattern:   pattern,
 			LocalName: localName,
 			DefPos:    e.Pos(),
