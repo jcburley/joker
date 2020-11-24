@@ -669,6 +669,8 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	var uty Expr
 	if v.TypeSpec() != nil {
 		uty = v.TypeSpec().Type
+	} else if v.UnderlyingType() != nil {
+		uty = v.UnderlyingType()
 	}
 	if !v.IsExported() {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
