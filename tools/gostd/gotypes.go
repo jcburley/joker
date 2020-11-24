@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
 	gotypes "go/types"
@@ -499,9 +498,5 @@ func init() {
 		ConvertToClojure:          "Error(%s%s)",
 		Nullable:                  true,
 		Exported:                  true,
-	}
-
-	for n, ti := range GoTypes {
-		gtypes.TypeDefineBuiltin(n, ti.Nullable)
 	}
 }
