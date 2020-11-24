@@ -666,15 +666,19 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.IsUnsupported() {
 		return v.GoDecl()
 	}
+	var uty Expr
+	if v.TypeSpec() != nil {
+		uty = v.TypeSpec().Type
+	}
 	if !v.IsExported() {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
-			v.GoDecl(), toGoExprStringGOT(ti.GoFile(), v.UnderlyingType()))
+			v.GoDecl(), StringForExpr(uty))
 	}
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.GoDecl(), toGoExprStringGOT(ti.GoFile(), v.UnderlyingType()))
+		v.GoDecl(), StringForExpr(uty))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).

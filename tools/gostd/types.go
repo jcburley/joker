@@ -219,6 +219,17 @@ func TypeInfoForGoName(goName string) TypeInfo {
 	return ti
 }
 
+func StringForExpr(e Expr) string {
+	if e == nil {
+		return "-"
+	}
+	t := TypeInfoForExpr(e)
+	if t != nil {
+		return t.GoDecl()
+	}
+	return fmt.Sprintf("%T", e)
+}
+
 func conversions(e Expr) (fromClojure, fromMap string) {
 	switch v := e.(type) {
 	case *Ident:
