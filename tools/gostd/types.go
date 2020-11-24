@@ -8,6 +8,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
+	"os"
 	"sort"
 	"strings"
 )
@@ -17,20 +18,22 @@ type TypeInfo interface {
 	ArgFromClojureObject() string /// Append this to Clojure object to extract value of my type
 	ArgExtractFunc() string       // Call Extract<this>() for arg with my type
 	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
-	ConvertFromClojure() string   // Pattern to convert a (scalar) %s to this type
+	ConvertFromClojure() string   // TODO: REMOVE, UNUSED?? Pattern to convert a (scalar) %s to this type
+	ConvertFromMap() string       // Pattern to convert a map %s key %s to this type
 	ConvertToClojure() string     // Pattern to convert this type to an appropriate Clojure object
 	AsJokerObject() string        // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	JokerName() string
+	JokerName() string            // TODO: Rename to JokerFullName
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
-	GoDecl() string
+	GoDecl() string // TODO: Rename to GoFullName
 	GoDeclDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
-	GoName() string
+	GoName() string // TODO: Rename to GoLocalName
 	GoCode() string
 	GoTypeInfo() *gtypes.Info
-	TypeSpec() *TypeSpec // Definition, if any, of named type
+	TypeSpec() *TypeSpec  // Definition, if any, of named type
+	UnderlyingType() Expr // nil if not a declared type
 	GoFile() *godb.GoFile
 	DefPos() token.Pos
 	Specificity() uint // ConcreteType, else # of methods defined for interface{} (abstract) type
@@ -216,6 +219,38 @@ func TypeInfoForGoName(goName string) TypeInfo {
 	return ti
 }
 
+func conversions(e Expr) (fromClojure, fromMap string) {
+	switch v := e.(type) {
+	case *Ident:
+		fmt.Fprintf(os.Stderr, "conversions(Ident:%+v)\n", v)
+		if ti := TypeInfoForGoName(v.Name); ti != nil {
+			if ts := ti.TypeSpec(); ts != nil {
+				uti := TypeInfoForExpr(ts.Type)
+				if uti.ConvertFromClojure() != "" {
+					fromClojure = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoName(), uti.ConvertFromClojure())
+				}
+				if uti.ConvertFromMap() != "" {
+					fromMap = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoName(), uti.ConvertFromMap())
+				}
+			}
+		}
+	case *ArrayType:
+		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
+	case *StarExpr:
+		fmt.Fprintf(os.Stderr, "conversions(StarExpr:%+v)\n", v)
+		ti := TypeInfoForExpr(v.X)
+		if ti.ConvertFromClojure() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
+			fromClojure = "&" + ti.ConvertFromClojure()
+		}
+		if ti.ConvertFromMap() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
+			fromMap = "&" + ti.ConvertFromMap()
+		}
+	default:
+		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
+	}
+	return
+}
+
 func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
 	var keys []string
 	for k, _ := range m {
@@ -245,6 +280,10 @@ func (ti typeInfo) ArgClojureArgType() string {
 
 func (ti typeInfo) ConvertFromClojure() string {
 	return ti.jti.ConvertFromClojure
+}
+
+func (ti typeInfo) ConvertFromMap() string {
+	return ti.jti.ConvertFromMap
 }
 
 func (ti typeInfo) ConvertToClojure() string {
@@ -301,6 +340,13 @@ func (ti typeInfo) GoTypeInfo() *gtypes.Info { // TODO: Remove when gotypes.go i
 
 func (ti typeInfo) TypeSpec() *TypeSpec {
 	return ti.gti.TypeSpec
+}
+
+func (ti typeInfo) UnderlyingType() Expr {
+	if ut := ti.gti.UnderlyingType; ut != nil {
+		return ut.Expr
+	}
+	return nil
 }
 
 func (ti typeInfo) GoFile() *godb.GoFile {
@@ -410,4 +456,5 @@ func (ti typeInfo) TypeMappingsName() string {
 }
 
 func init() {
+	jtypes.ConversionsFn = conversions
 }

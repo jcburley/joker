@@ -662,19 +662,19 @@ func mapElementToType(ti TypeInfo, i int, name string, f *Field) string {
 }
 
 func valueToType(ti TypeInfo, value string, e Expr) string {
-	v := toGoExprInfoGOT(ti.GoFile(), e)
-	if v.Unsupported {
-		return v.FullGoName
+	v := TypeInfoForExpr(e)
+	if v.IsUnsupported() {
+		return v.GoDecl()
 	}
-	if !v.Exported {
+	if !v.IsExported() {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
-			v.FullGoName, toGoExprStringGOT(ti.GoFile(), v.UnderlyingType))
+			v.GoDecl(), toGoExprStringGOT(ti.GoFile(), v.UnderlyingType()))
 	}
-	if v.ConvertFromMap != "" {
-		return fmt.Sprintf(v.ConvertFromMap, "o", value)
+	if v.ConvertFromMap() != "" {
+		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.FullGoName, toGoExprStringGOT(ti.GoFile(), v.UnderlyingType))
+		v.GoDecl(), toGoExprStringGOT(ti.GoFile(), v.UnderlyingType()))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).

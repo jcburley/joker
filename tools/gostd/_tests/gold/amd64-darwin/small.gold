@@ -12,6 +12,27 @@ Processing net/url:
 Processing net:
 Processing package=net/url:
 Processing package=net:
+conversions(default:&{Func:33949 Params:0xc00017f290 Results:0xc00017f2c0})
+conversions(StarExpr:&{Star:74032 X:Userinfo})
+conversions(ArrayType:&{Lbrack:63701 Len:<nil> Elt:0xc0001ef320})
+conversions(ArrayType:&{Lbrack:6422 Len:<nil> Elt:byte})
+conversions(StarExpr:&{Star:60051 X:AddrError})
+conversions(StarExpr:&{Star:60946 X:DNSConfigError})
+conversions(StarExpr:&{Star:61593 X:DNSError})
+conversions(StarExpr:&{Star:23508 X:IPAddr})
+conversions(default:&{X:syscall Sel:RawConn})
+conversions(StarExpr:&{Star:25214 X:IPConn})
+conversions(StarExpr:&{Star:17329 X:IPNet})
+conversions(StarExpr:&{Star:58352 X:OpError})
+conversions(StarExpr:&{Star:59914 X:ParseError})
+conversions(ArrayType:&{Lbrack:43539 Len:<nil> Elt:string})
+conversions(ArrayType:&{Lbrack:35940 Len:<nil> Elt:IPAddr})
+conversions(ArrayType:&{Lbrack:42204 Len:<nil> Elt:0xc0001a2340})
+conversions(ArrayType:&{Lbrack:42556 Len:<nil> Elt:0xc0001a28a0})
+conversions(ArrayType:&{Lbrack:41788 Len:<nil> Elt:0xc00019bd80})
+conversions(ArrayType:&{Lbrack:35531 Len:<nil> Elt:IP})
+conversions(StarExpr:&{Star:65142 X:Error})
+conversions(StarExpr:&{Star:84009 X:URL})
 JOKER CONSTANT IPv4len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
@@ -1073,7 +1094,7 @@ func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res 
 
 // func _mapToIPAddr(o Map) *net.IPAddr {
 // 	return &net.IPAddr{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP (-)),
 // 		Zone: FieldAsString(o, "Zone"),
 // 	}
 // }
@@ -1195,8 +1216,8 @@ func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res n
 
 // func _mapToIPNet(o Map) *net.IPNet {
 // 	return &net.IPNet{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
-// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
+// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP (-)),
+// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask (-)),
 // 	}
 // }
 
@@ -1393,8 +1414,8 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &net.OpError{
 // 		Op: FieldAsString(o, "Op"),
 // 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND047(gotypes.go: unsupported type *ast.InterfaceType))),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (-)),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (-)),
 // 		Err: FieldAsError(o, "Err"),
 // 	}
 // }
@@ -1509,7 +1530,7 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	return &net.Resolver{
 // 		PreferGo: FieldAsBoolean(o, "PreferGo"),
 // 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND047(gotypes.go: unsupported type *ast.FuncType),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME due to &{Func:33949 Params:0xc00017f290 Results:0xc00017f2c0} @0xc00018e520??!!) (-)),
 // 	}
 // }
 
@@ -3217,7 +3238,7 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &url.URL{
 // 		Scheme: FieldAsString(o, "Scheme"),
 // 		Opaque: FieldAsString(o, "Opaque"),
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
+// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (-)),
 // 		Host: FieldAsString(o, "Host"),
 // 		Path: FieldAsString(o, "Path"),
 // 		RawPath: FieldAsString(o, "RawPath"),
@@ -3865,7 +3886,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 644(34) 048(12) 674(8) 047(6) 275(3) 124(1)
+ABENDs: 644(34) 048(12) 674(8) 275(3) 001(2) 049(2) 124(1)
 Totals: functions=132 generated=98 (74.24%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
           receivers=83 (62.88%) generated=60 (72.29%)
