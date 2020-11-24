@@ -8,7 +8,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
-	"os"
 	"sort"
 	"strings"
 )
@@ -163,9 +162,6 @@ func BadInfo(err string) typeInfo {
 
 func TypeInfoForExpr(e Expr) TypeInfo {
 	if ti, found := typesByExpr[e]; found {
-		if strings.Contains(ti.JokerName(), "InvalidAddrError") {
-			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
-		}
 		return ti
 	}
 

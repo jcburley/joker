@@ -5,7 +5,6 @@ import (
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -171,7 +170,6 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
-		fmt.Fprintf(os.Stderr, "%s @%p: %+v\n", v.Name, ti.GoTypeInfo(), *ti.GoTypeInfo())
 		if !ti.DefPos().IsValid() { // a builtin
 			if ti.ArgExtractFunc() != "" {
 				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.ArgExtractFunc(), fn.DocName, paramName, argNum)

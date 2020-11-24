@@ -203,8 +203,6 @@ func TypeDefineBuiltin(name string, nullable bool) {
 	}
 
 	define(ti)
-
-	fmt.Fprintf(os.Stderr, "gtypes.go/TypeDefineBuiltin: %s => @%p %+v\n", name, ti, *ti)
 }
 
 func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
