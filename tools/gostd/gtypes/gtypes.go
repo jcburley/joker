@@ -84,6 +84,10 @@ var String = getInfo("", "", "string", false)
 
 var Int = getInfo("", "", "int", false)
 
+var Int8 = getInfo("", "", "int8", false)
+
+var Int16 = getInfo("", "", "int16", false)
+
 var Int32 = getInfo("", "", "int32", false)
 
 var Int64 = getInfo("", "", "int64", false)
@@ -105,15 +109,6 @@ var Float32 = getInfo("", "", "float32", false)
 var Float64 = getInfo("", "", "float64", false)
 
 var Complex128 = getInfo("", "", "complex128", false)
-
-func TypeInfoForExpr(e Expr) *Info {
-	gt := TypeLookup(e)
-	if gt == nil {
-		panic(fmt.Sprintf("cannot find type for %v", e))
-	}
-
-	return gt
-}
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -239,7 +234,14 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	return types
 }
 
-func TypeLookup(e Expr) *Info {
+func TypeForName(fullName string) *Info {
+	if ti, ok := typesByFullName[fullName]; ok {
+		return ti
+	}
+	return nil
+}
+
+func TypeForExpr(e Expr) *Info {
 	if ti, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return ti
@@ -276,11 +278,11 @@ func TypeLookup(e Expr) *Info {
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerInfo = TypeLookup(v.X)
+		innerInfo = TypeForExpr(v.X)
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		localName = innerInfo.LocalName
 	case *ArrayType:
-		innerInfo = TypeLookup(v.Elt)
+		innerInfo = TypeForExpr(v.Elt)
 		len := exprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		if innerInfo == nil {
@@ -297,14 +299,14 @@ func TypeLookup(e Expr) *Info {
 		}
 		localName += methods + "}"
 	case *MapType:
-		key := TypeLookup(v.Key)
-		value := TypeLookup(v.Value)
+		key := TypeForExpr(v.Key)
+		value := TypeForExpr(v.Value)
 		localName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
 	case *SelectorExpr:
 		left := fmt.Sprintf("%s", v.X)
 		localName = left + "." + v.Sel.Name
 	case *ChanType:
-		ty := TypeLookup(v.Value)
+		ty := TypeForExpr(v.Value)
 		localName = "chan"
 		switch v.Dir & (SEND | RECV) {
 		case SEND:
@@ -336,7 +338,7 @@ func TypeLookup(e Expr) *Info {
 }
 
 func fieldToString(f *Field) string {
-	ti := TypeLookup(f.Type)
+	ti := TypeForExpr(f.Type)
 	// Don't bother implementing this until it's actually needed:
 	return "ABEND041(gtypes.go/fieldToString found something: " + ti.LocalName + "!)"
 }

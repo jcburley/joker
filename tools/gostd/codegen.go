@@ -614,12 +614,12 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v := toGoTypeNameInfoGOT(pkgDirUnix, name, e)
-	nonGoObjectType = "case " + v.ArgClojureType
-	nonGoObjectTypeDoc = v.ArgClojureType
-	extractClojureObject = v.ArgFromClojureObject
-	if v.Unsupported || v.ArgClojureType == "" || extractClojureObject == "" {
-		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.FullGoName)
+	v := TypeInfoForGoName(combineGoName(pkgDirUnix, name))
+	nonGoObjectType = "case " + v.ArgClojureType()
+	nonGoObjectTypeDoc = v.ArgClojureType()
+	extractClojureObject = v.ArgFromClojureObject()
+	if v.IsUnsupported() || v.ArgClojureType() == "" || extractClojureObject == "" {
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(`%s': IsUnsupported=%v ArgClojureType=%v ArgFromClojureObject=%v) */", v.GoDecl(), v.IsUnsupported(), v.ArgClojureType(), extractClojureObject)
 	}
 	return
 }

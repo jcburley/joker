@@ -5,7 +5,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
-	gotypes "go/types"
 	"strings"
 )
 
@@ -29,21 +28,14 @@ func registerTypeGOT(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTy
 	return ti
 }
 
-func combineGoName(pkg, name string) string {
-	if pkg == "" || godb.IsBuiltin(name) {
-		return name
-	}
-	return pkg + "." + name
-}
-
-func toGoTypeNameInfoGOT(pkgDirUnix, baseName string, e Expr) *GoTypeInfo {
+func toGoTypeNameInfoGOT(pkgDirUnix, baseName string) *GoTypeInfo {
 	fullGoName := combineGoName(pkgDirUnix, baseName)
 	if ti, found := GoTypes[fullGoName]; found {
 		return ti
 	}
 
 	var ti *GoTypeInfo
-	if gotypes.Universe.Lookup(baseName) != nil {
+	if godb.IsBuiltin(baseName) {
 		ti = &GoTypeInfo{
 			LocalName:          baseName,
 			FullGoName:         fmt.Sprintf("ABEND046(gotypes.go: unsupported builtin type %s for %s)", fullGoName, pkgDirUnix),
@@ -94,7 +86,7 @@ func toGoExprInfoGOT(src *godb.GoFile, e Expr) *GoTypeInfo {
 	}()
 	switch td := e.(type) {
 	case *Ident:
-		ti = toGoTypeNameInfoGOT(src.Package.Dir.String(), td.Name, e)
+		ti = toGoTypeNameInfoGOT(src.Package.Dir.String(), td.Name)
 		if ti == nil {
 			return nil
 		}

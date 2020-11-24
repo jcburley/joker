@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/godb"
 	"strings"
 )
 
@@ -88,4 +89,11 @@ func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 		gol = "Object"
 	}
 	return
+}
+
+func combineGoName(pkg, name string) string {
+	if pkg == "" || godb.IsBuiltin(name) {
+		return name
+	}
+	return pkg + "." + name
 }

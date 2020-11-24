@@ -13,11 +13,13 @@ import (
 )
 
 type TypeInfo interface {
-	ArgExtractFunc() string     // Call Extract<this>() for arg with my type
-	ArgClojureArgType() string  // Clojure argument type for a Go function arg with my type
-	ConvertFromClojure() string // Pattern to convert a (scalar) %s to this type
-	ConvertToClojure() string   // Pattern to convert this type to an appropriate Clojure object
-	AsJokerObject() string      // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
+	ArgClojureType() string       // Can convert this type to a Go function arg with my type
+	ArgFromClojureObject() string /// Append this to Clojure object to extract value of my type
+	ArgExtractFunc() string       // Call Extract<this>() for arg with my type
+	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
+	ConvertFromClojure() string   // Pattern to convert a (scalar) %s to this type
+	ConvertToClojure() string     // Pattern to convert this type to an appropriate Clojure object
+	AsJokerObject() string        // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
 	JokerName() string
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
@@ -36,10 +38,16 @@ type TypeInfo interface {
 	SetOrd(uint)
 	TypeMappingsName() string
 	Doc() string
-	IsNullable() bool // Can an instance of the type == nil (e.g. 'error' type)?
+	IsUnsupported() bool // Is this unsupported?
+	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
 	IsBuiltin() bool
 }
+
+// Maps type-defining Expr or full names to exactly one struct describing that type.
+var typesByExpr = map[Expr]TypeInfo{}
+var typesByGoName = map[string]TypeInfo{}
+var typesByJokerName = map[string]TypeInfo{}
 
 const ConcreteType = gtypes.Concrete
 
@@ -109,19 +117,23 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		ti := &typeInfo{
 			jti: &jtypes.Info{
-				FullName:           jokerName,
-				ArgExtractFunc:     gt.ArgExtractFunc,
-				ArgClojureArgType:  gt.ArgClojureArgType,
-				ConvertFromClojure: gt.ConvertFromClojure,
-				ConvertToClojure:   gt.ConvertToClojure,
-				JokerNameDoc:       jokerName,
-				AsJokerObject:      gt.ConvertToClojure,
+				FullName:             jokerName,
+				ArgExtractFunc:       gt.ArgExtractFunc,
+				ArgClojureType:       gt.ArgClojureType,
+				ArgFromClojureObject: gt.ArgFromClojureObject,
+				ArgClojureArgType:    gt.ArgClojureArgType,
+				ConvertFromClojure:   gt.ConvertFromClojure,
+				ConvertToClojure:     gt.ConvertToClojure,
+				JokerNameDoc:         jokerName,
+				AsJokerObject:        gt.ConvertToClojure,
+				IsUnsupported:        gt.Unsupported,
 			},
 			gti: gti,
 		}
 
 		ti.jti.Register() // Since we built the object here, register it there.
 
+		typesByGoName[ti.gti.FullName] = ti
 		typesByJokerName[ti.jti.FullName] = ti
 
 		gt.Type = ti
@@ -143,19 +155,17 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	return true
 }
 
-// Maps type-defining Expr to exactly one struct describing that type
-var typesByExpr = map[Expr]TypeInfo{}
-
-var typesByJokerName = map[string]TypeInfo{}
-
 func BadInfo(err string) typeInfo {
 	return typeInfo{
 		jti: &jtypes.Info{
-			ArgExtractFunc:     err,
-			ArgClojureArgType:  err,
-			ConvertFromClojure: err + "%0s%0s",
-			ConvertToClojure:   err + "%0s%0s",
-			AsJokerObject:      err + "%0s%0s",
+			ArgClojureType:       err,
+			ArgFromClojureObject: err,
+			ArgExtractFunc:       err,
+			ArgClojureArgType:    err,
+			ConvertFromClojure:   err + "%0s%0s",
+			ConvertToClojure:     err + "%0s%0s",
+			AsJokerObject:        err + "%0s%0s",
+			IsUnsupported:        true,
 		},
 	}
 }
@@ -165,8 +175,8 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		return ti
 	}
 
-	gti := gtypes.TypeInfoForExpr(e)
-	jti := jtypes.TypeInfoForExpr(e)
+	gti := gtypes.TypeForExpr(e)
+	jti := jtypes.TypeForExpr(e)
 
 	ti := &typeInfo{
 		gti: gti,
@@ -174,6 +184,34 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	}
 
 	typesByExpr[e] = ti
+	typesByGoName[gti.FullName] = ti
+	typesByJokerName[jti.FullName] = ti
+
+	return ti
+}
+
+func TypeInfoForGoName(goName string) TypeInfo {
+	if ti, found := typesByGoName[goName]; found {
+		return ti
+	}
+
+	gti := gtypes.TypeForName(goName)
+	if gti == nil {
+		panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
+	}
+
+	jti := jtypes.TypeForGoName(goName)
+	if jti == nil {
+		panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
+	}
+
+	ti := &typeInfo{
+		gti: gti,
+		jti: jti,
+	}
+
+	typesByGoName[gti.FullName] = ti
+	typesByJokerName[jti.FullName] = ti
 
 	return ti
 }
@@ -187,6 +225,14 @@ func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)
 	for _, k := range keys {
 		f(k, m[k])
 	}
+}
+
+func (ti typeInfo) ArgClojureType() string {
+	return ti.jti.ArgClojureType
+}
+
+func (ti typeInfo) ArgFromClojureObject() string {
+	return ti.jti.ArgFromClojureObject
 }
 
 func (ti typeInfo) ArgExtractFunc() string {
@@ -215,6 +261,10 @@ func (ti typeInfo) JokerName() string {
 
 func (ti typeInfo) JokerNameDoc() string {
 	return ti.jti.JokerNameDoc
+}
+
+func (ti typeInfo) IsUnsupported() bool {
+	return ti.jti.IsUnsupported
 }
 
 func (ti typeInfo) JokerTypeInfo() *jtypes.Info { // TODO: Remove when gotypes.go is gone?
@@ -357,4 +407,7 @@ func (ti typeInfo) TypeMappingsName() string {
 		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
+}
+
+func init() {
 }
