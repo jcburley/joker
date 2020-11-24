@@ -41,7 +41,9 @@ func combine(pkg, name string) string {
 	return pkg + "." + name
 }
 
-var fullNameToInfo = map[string]*Info{}
+// Maps type-defining Expr or string to exactly one struct describing that type
+var typesByExpr = map[Expr]*Info{}
+var typesByFullName = map[string]*Info{}
 
 func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	if pattern == "" {
@@ -49,7 +51,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	}
 	fullName := fmt.Sprintf(pattern, combine(pkg, name))
 
-	if info, found := fullNameToInfo[fullName]; found {
+	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
 
@@ -63,7 +65,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 		IsBuiltin:  true,
 	}
 
-	fullNameToInfo[fullName] = info
+	typesByFullName[fullName] = info
 
 	return info
 }
@@ -144,10 +146,6 @@ func (ti *Info) computeFullName() string {
 	}
 	return n
 }
-
-// Maps type-defining Expr or string to exactly one struct describing that type
-var typesByExpr = map[Expr]*Info{}
-var typesByFullName = map[string]*Info{}
 
 func finish(ti *Info) {
 	fullName := ti.computeFullName()
