@@ -377,7 +377,7 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
-func goTypeExtractor(t string, ti *GoTypeInfo) string {
+func goTypeExtractor(t string, ti TypeInfo) string {
 	const template = `
 func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	a := CheckGoNth(rcvr, "%s", arg, args, n).O
@@ -390,11 +390,11 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 }
 `
 
-	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType)
-	localType := "{{myGoImport}}." + ti.LocalName
-	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
+	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType())
+	localType := "{{myGoImport}}." + ti.GoName()
+	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
 
-	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.Dir.String()].ImportsNative, "", "fmt", "", "", true, ti.Where)
+	fmtLocal := imports.AddImport(PackagesInfo[godb.GoPackageForTypeSpec(ti.TypeSpec())].ImportsNative, "", "fmt", "", "", true, ti.TypeSpec().Pos())
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -406,19 +406,20 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc)
 }
 
-func GenType(t string, ti *GoTypeInfo) {
-	td := ti.Td
-	if !IsExported(td.Name.Name) || ti.FullGoName == "unsafe.ArbitraryType" {
+func GenType(t string, ti TypeInfo) {
+	ts := ti.TypeSpec()
+	if !IsExported(ts.Name.Name) || ti.GoDecl() == "unsafe.ArbitraryType" {
 		return // Do not generate anything for private or array types
 	}
 
-	pkgDirUnix := ti.SourceFile.Package.Dir.String()
+	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	pi := PackagesInfo[pkgDirUnix]
 
 	pi.NonEmpty = true
+	where := ts.Pos()
 
-	imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, ti.Where)
-	myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, ti.Where)
+	imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, where)
+	myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, where)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -439,15 +440,18 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 }
 `
 
-	baseTypeName := td.Name.Name
+	baseTypeName := ts.Name.Name
 	typeName := myGoImport + "." + baseTypeName
 
-	others := maybeImplicitConvert(ti.SourceFile, typeName, td)
-	ti.GoCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ti.TypeSpec()), typeName, ts)
+	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
-	ti.GoCode += goTypeExtractor(t, ti)
+	goc += goTypeExtractor(t, ti)
 
-	ti.GoCode = strings.ReplaceAll(ti.GoCode, "{{myGoImport}}", myGoImport)
+	goc = strings.ReplaceAll(goc, "{{myGoImport}}", myGoImport)
+
+	GoCodeForType[ti] = goc
+	ClojureCodeForType[ti] = ""
 }
 
 var Ctors = map[TypeInfo]string{}

@@ -81,6 +81,27 @@ func goPackageForDirname(dirName string) (pkg, prefix string) {
 	return "", mappings[0].cljRoot
 }
 
+func GoFilenameForPos(p token.Pos) string {
+	fileName := filepath.ToSlash(Fset.Position(p).Filename)
+	dirName := filepath.Dir(fileName)
+	pkg, _ := goPackageForDirname(dirName)
+	if pkg == "" {
+		panic(fmt.Sprintf("no mapping for %s", dirName))
+	}
+	return filepath.Join(pkg, filepath.Base(fileName))
+}
+
+func GoFilenameForExpr(e Expr) string {
+	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+		return "" // A builtin, so not package-qualified.
+	}
+	return GoFilenameForPos(e.Pos())
+}
+
+func GoFilenameForTypeSpec(ts *TypeSpec) string {
+	return GoFilenameForPos(ts.Pos())
+}
+
 func GoPackageForPos(p token.Pos) string {
 	dirName := path.Dir(filepath.ToSlash(Fset.Position(p).Filename))
 	pkg, _ := goPackageForDirname(dirName)
@@ -175,6 +196,10 @@ func GoFileForPos(p token.Pos) *GoFile {
 
 func GoFileForExpr(e Expr) *GoFile {
 	return GoFileForPos(e.Pos())
+}
+
+func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
+	return GoFileForPos(ts.Pos())
 }
 
 func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {

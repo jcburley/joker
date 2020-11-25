@@ -310,9 +310,12 @@ func main() {
 		})
 
 	/* Generate type-code snippets in sorted order. */
-	SortedTypeInfoMap(GoTypes,
-		func(t string, ti *GoTypeInfo) {
-			if ti.Td != nil {
+	SortedTypeInfoMap(TypesByGoName(),
+		func(t string, ti TypeInfo) {
+			if ti == nil {
+				panic(fmt.Sprintf("nil ti for `%s'", t))
+			}
+			if ti.TypeSpec() != nil {
 				GenType(t, ti)
 			}
 		})

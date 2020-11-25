@@ -18,6 +18,7 @@ var NumExprHits uint
 type Info struct {
 	Expr           Expr      // [key] The canonical referencing expression (if any)
 	FullName       string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	who            string    // who made me
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
 	UnderlyingType *Info
@@ -56,6 +57,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	}
 
 	info := &Info{
+		who:        "getInfo",
 		FullName:   fullName,
 		Pattern:    pattern,
 		Package:    pkg,
@@ -145,6 +147,10 @@ func (ti *Info) computeFullName() string {
 func finish(ti *Info) {
 	fullName := ti.computeFullName()
 
+	if ti.LocalName == "Listener" {
+		fmt.Fprintf(os.Stderr, "LISTENER `%s' is @%p %+v!!\n", ti.FullName, ti, ti)
+	}
+
 	if _, ok := typesByFullName[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
 		return
@@ -169,6 +175,7 @@ func define(ti *Info) {
 func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Expr:           te,
+		who:            "finishVariant",
 		IsExported:     innerInfo.IsExported,
 		File:           innerInfo.File,
 		Pattern:        pattern,
@@ -198,6 +205,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	types := []*Info{}
 
 	ti := &Info{
+		who:         "TypeDefine",
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		IsExported:  IsExported(localName),
@@ -215,10 +223,11 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
 		tiPtrTo := &Info{
+			who:            "*TypeDefine*",
 			Type:           &StarExpr{X: ti.Type},
 			TypeSpec:       ts,
 			IsExported:     ti.IsExported,
-			Doc:            "",
+			Doc:            ti.Doc,
 			DefPos:         ti.DefPos,
 			File:           gf,
 			Pattern:        fmt.Sprintf(ti.Pattern, "*%s"),
@@ -259,6 +268,7 @@ func TypeForExpr(e Expr) *Info {
 		}
 		ti := &Info{
 			Expr:       e,
+			who:        "TypeForExpr",
 			IsExported: true,
 			DefPos:     id.Pos(),
 			FullName:   fullName,
@@ -303,8 +313,16 @@ func TypeForExpr(e Expr) *Info {
 		value := TypeForExpr(v.Value)
 		localName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
 	case *SelectorExpr:
-		left := fmt.Sprintf("%s", v.X)
-		localName = left + "." + v.Sel.Name
+		pkgName := v.X.(*Ident).Name
+		localName := v.Sel.Name
+		fullPathUnix := utils.Unix(godb.FileAt(v.Pos()))
+		rf := godb.GoFileForExpr(v)
+		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+			fullName = fullPkgName.String() + "." + localName
+		} else {
+			panic(fmt.Sprintf("processing %s: could not find %s in %s",
+				godb.WhereAt(v.Pos()), pkgName, fullPathUnix))
+		}
 	case *ChanType:
 		ty := TypeForExpr(v.Value)
 		localName = "chan"
@@ -321,14 +339,22 @@ func TypeForExpr(e Expr) *Info {
 	}
 
 	if innerInfo == nil {
-		if localName == "" {
+		if localName == "" && fullName == "" {
 			localName = fmt.Sprintf("ABEND001(NO GO NAME for %T)", e)
 		}
+		if fullName != "" {
+			if ti, ok := typesByFullName[fullName]; ok {
+				return ti
+			}
+		}
 		ti := &Info{
-			Expr:      e,
-			Pattern:   pattern,
-			LocalName: localName,
-			DefPos:    e.Pos(),
+			Expr:           e,
+			who:            fmt.Sprintf("[TypeForExpr %T]", e),
+			Pattern:        pattern,
+			FullName:       fullName,
+			LocalName:      localName,
+			DefPos:         e.Pos(),
+			UnderlyingType: innerInfo,
 		}
 		finish(ti)
 		return ti
@@ -399,32 +425,6 @@ func (ti *Info) DeclDoc(e Expr) string {
 		return ti.FullName
 	}
 	return fmt.Sprintf(ti.Pattern, ti.LocalName)
-}
-
-func TypeName(e Expr) string {
-	switch x := e.(type) {
-	case *Ident:
-		break
-	case *ArrayType:
-		return "[" + goExprToString(x.Len) + "]" + TypeName(x.Elt)
-	case *StarExpr:
-		return "*" + TypeName(x.X)
-	case *MapType:
-		return "map[" + TypeName(x.Key) + "]" + TypeName(x.Value)
-	case *SelectorExpr:
-		return fmt.Sprintf("%s", x.X) + "." + x.Sel.Name
-	default:
-		return fmt.Sprintf("ABEND699(types.go:TypeName: unrecognized node %T)", e)
-	}
-
-	x := e.(*Ident)
-	local := x.Name
-	prefix := ""
-	if !godb.IsBuiltin(local) {
-		prefix = godb.GoPackageForExpr(e) + "."
-	}
-
-	return prefix + local
 }
 
 func goExprToString(e Expr) string {

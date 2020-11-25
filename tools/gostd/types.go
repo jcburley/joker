@@ -31,7 +31,6 @@ type TypeInfo interface {
 	GoPackage() string
 	GoPattern() string
 	GoName() string // TODO: Rename to GoLocalName
-	GoCode() string
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec  // Definition, if any, of named type
 	UnderlyingType() Expr // nil if not a declared type
@@ -48,10 +47,12 @@ type TypeInfo interface {
 	IsBuiltin() bool
 }
 
+type TypesMap map[string]TypeInfo
+
 // Maps type-defining Expr or full names to exactly one struct describing that type.
 var typesByExpr = map[Expr]TypeInfo{}
-var typesByGoName = map[string]TypeInfo{}
-var typesByJokerName = map[string]TypeInfo{}
+var typesByGoName = TypesMap{}
+var typesByJokerName = TypesMap{}
 
 const ConcreteType = gtypes.Concrete
 
@@ -78,20 +79,13 @@ type GoTypeInfo struct {
 	ConvertFromMap            string           // Pattern to convert a map %s key %s to this type
 	ConvertToClojure          string           // Pattern to convert this type to an appropriate Clojure object
 	PromoteType               string           // Pattern to convert type to next larger Go type that Joker supports
-	ClojureCode               string
-	GoCode                    string
-	Uncompleted               bool // Has this type's info been filled in beyond the registration step?
-	Custom                    bool // Is this not a builtin Go type?
-	Exported                  bool // Is this an exported type?
-	Unsupported               bool // Is this unsupported?
-	Constructs                bool // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
-	Nullable                  bool // Can an instance of the type == nil (e.g. 'error' type)?
+	Uncompleted               bool             // Has this type's info been filled in beyond the registration step?
+	Custom                    bool             // Is this not a builtin Go type?
+	Exported                  bool             // Is this an exported type?
+	Unsupported               bool             // Is this unsupported?
+	Constructs                bool             // Does the convertion from Clojure actually construct (via &sometype{}), returning ptr?
+	Nullable                  bool             // Can an instance of the type == nil (e.g. 'error' type)?
 }
-
-type GoTypeMap map[string]*GoTypeInfo
-
-/* These map fullGoNames to type info. */
-var GoTypes = GoTypeMap{}
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name
@@ -131,8 +125,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		ti.jti.Register() // Since we built the object here, register it there.
 
-		typesByGoName[ti.gti.FullName] = ti
-		typesByJokerName[ti.jti.FullName] = ti
+		typesByGoName[ti.GoDecl()] = ti
+		typesByJokerName[ti.JokerName()] = ti
 
 		gt.Type = ti
 
@@ -256,13 +250,20 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 	return
 }
 
-func SortedTypeInfoMap(m map[string]*GoTypeInfo, f func(k string, v *GoTypeInfo)) {
+func SortedTypeInfoMap(m TypesMap, f func(k string, v TypeInfo)) {
 	var keys []string
 	for k, _ := range m {
-		keys = append(keys, k)
+		if k[0] == '*' {
+			keys = append(keys, k[1:]+"*")
+		} else {
+			keys = append(keys, k)
+		}
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
+		if k[len(k)-1] == '*' {
+			k = "*" + k[0:len(k)-1]
+		}
 		f(k, m[k])
 	}
 }
@@ -337,10 +338,6 @@ func (ti typeInfo) GoPattern() string {
 
 func (ti typeInfo) GoName() string {
 	return ti.gti.LocalName
-}
-
-func (ti typeInfo) GoCode() string {
-	return "" // TODO: Probably need something here in some cases? Seems too generic of a name though.
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info { // TODO: Remove when gotypes.go is gone?
@@ -438,7 +435,7 @@ func typeKeyForSort(k string) string {
 
 func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
 	var keys []string
-	vals := map[string]TypeInfo{}
+	vals := TypesMap{}
 	for k, _ := range m {
 		if k != nil {
 			key := k.GoTypeInfo().FullName
@@ -462,6 +459,10 @@ func (ti typeInfo) TypeMappingsName() string {
 		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
+}
+
+func TypesByGoName() TypesMap {
+	return typesByGoName
 }
 
 func init() {

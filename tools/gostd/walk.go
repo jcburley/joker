@@ -76,14 +76,16 @@ type CodeInfo struct {
 	Constants GoConstantsMap
 	Variables GoVariablesMap
 	Functions fnCodeMap
-	Types     GoTypeMap
+	Types     TypesMap
 	InitTypes map[TypeInfo]struct{}               // types to be initialized
 	InitVars  map[TypeInfo]map[string]*FnCodeInfo // func initNative()'s "info_key1 = ... { key2: value, ... }"
 }
 
 /* Map relative (Unix-style) package names to maps of function names to code info and strings. */
 var ClojureCode = map[string]CodeInfo{}
+var ClojureCodeForType = map[TypeInfo]string{}
 var GoCode = map[string]CodeInfo{}
+var GoCodeForType = map[TypeInfo]string{}
 
 func SortedPackageMap(m map[string]CodeInfo, f func(k string, v CodeInfo)) {
 	var keys []string
@@ -784,9 +786,9 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
-		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
+		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
-		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, GoTypeMap{},
+		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 	}
 

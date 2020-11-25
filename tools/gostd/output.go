@@ -242,12 +242,15 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 		})
 
 	SortedTypeInfoMap(v.Types,
-		func(t string, ti *GoTypeInfo) {
+		func(t string, ti TypeInfo) {
+			if ti.TypeSpec() == nil {
+				return
+			}
 			if outputCode {
-				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.ClojureCode)
+				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), ClojureCodeForType[ti])
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ti.ClojureCode)
+				out.WriteString(ClojureCodeForType[ti])
 			}
 		})
 
@@ -264,6 +267,9 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
+			if ti.TypeSpec() == nil {
+				return
+			}
 			tmn := ti.TypeMappingsName()
 			if tmn == "" || ti.GoName() == "" || !ti.IsExported() {
 				return
@@ -354,16 +360,20 @@ import (%s
 	}
 
 	SortedTypeInfoMap(v.Types,
-		func(t string, ti *GoTypeInfo) {
+		func(t string, ti TypeInfo) {
+			if ti.TypeSpec() == nil {
+				return
+			}
 			ctor := ""
-			if c, found := Ctors[ti.Type]; found && c[0] != '/' {
+			if c, found := Ctors[ti]; found && c[0] != '/' {
 				ctor = c
 			}
 			if outputCode {
-				fmt.Printf("GO TYPE %s from %s:%s\n", t, ti.SourceFile.Name, ti.GoCode+ctor)
+				fmt.Printf("GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), GoCodeForType[ti], ctor)
 			}
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ti.GoCode + ctor)
+				out.WriteString(GoCodeForType[ti])
+				out.WriteString(ctor)
 			}
 		})
 

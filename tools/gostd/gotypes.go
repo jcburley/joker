@@ -8,6 +8,9 @@ import (
 	"strings"
 )
 
+/* These map fullGoNames to type info. */
+var GoTypes = map[string]*GoTypeInfo{}
+
 func registerTypeGOT(gf *godb.GoFile, fullGoTypeName string, ts *TypeSpec) *GoTypeInfo {
 	if ti, found := GoTypes[fullGoTypeName]; found {
 		return ti
