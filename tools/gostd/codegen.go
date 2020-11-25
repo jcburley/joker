@@ -478,9 +478,7 @@ func %s(_o Object) Object {
 	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, nonGoObject, expectedObjectDoc,
 		ctor, baseTypeName)
 
-	ti := TypeDefsToGoTypes[tyi]
-
-	pkgDirUnix := ti.SourceFile.Package.Dir.String()
+	pkgDirUnix := godb.GoPackageForTypeSpec(tyi.TypeSpec())
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))

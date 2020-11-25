@@ -93,8 +93,6 @@ type GoTypeMap map[string]*GoTypeInfo
 /* These map fullGoNames to type info. */
 var GoTypes = GoTypeMap{}
 
-var TypeDefsToGoTypes = map[TypeInfo]*GoTypeInfo{}
-
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
@@ -137,7 +135,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		typesByJokerName[ti.jti.FullName] = ti
 
 		gt.Type = ti
-		TypeDefsToGoTypes[ti] = gt
 
 		if IsExported(name) {
 			NumTypes++
