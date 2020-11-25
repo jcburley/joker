@@ -39,6 +39,7 @@ type TypeInfo interface {
 	Specificity() uint // ConcreteType, else # of methods defined for interface{} (abstract) type
 	Ord() uint         // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	SetOrd(uint)
+	PromoteType() string
 	TypeMappingsName() string
 	Doc() string
 	IsUnsupported() bool // Is this unsupported?
@@ -188,7 +189,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 
 	gti := gtypes.TypeForName(goName)
 	if gti == nil {
-		panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
+		return nil // panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
 	}
 
 	jti := jtypes.TypeForGoName(goName)
@@ -391,6 +392,20 @@ func (ti typeInfo) IsBuiltin() bool {
 	return ti.gti.IsBuiltin
 }
 
+func (ti typeInfo) TypeMappingsName() string {
+	if !ti.IsExported() {
+		return ""
+	}
+	if ugt := ti.gti.UnderlyingType; ugt != nil {
+		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+	}
+	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
+}
+
+func (ti typeInfo) PromoteType() string {
+	return ti.jti.PromoteType
+}
+
 var allTypesSorted = []TypeInfo{}
 
 // This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
@@ -449,16 +464,6 @@ func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
 	for _, k := range keys {
 		f(vals[k])
 	}
-}
-
-func (ti typeInfo) TypeMappingsName() string {
-	if !ti.IsExported() {
-		return ""
-	}
-	if ugt := ti.gti.UnderlyingType; ugt != nil {
-		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
-	}
-	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
 }
 
 func TypesByGoName() TypesMap {

@@ -324,8 +324,9 @@ func fitInt(value string) string {
 
 func evalConstType(ty *TypeSpec) (typeName string) {
 	typeName = ty.Name.Name
-	_, ok := GoTypes[typeName]
-	if !ok {
+	ti := TypeInfoForGoName(typeName)
+	if ti == nil {
+		// Not a known type; use the underlying type.
 		typeName = ty.Type.(*Ident).Name
 	}
 
@@ -463,11 +464,12 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 	if typeName == "" {
 		return
 	}
-	gt, ok := GoTypes[typeName]
-	if !ok || gt.ArgClojureArgType == "" || gt.PromoteType == "" {
+	ti := TypeInfoForGoName(typeName)
+	if ti == nil || ti.ArgClojureArgType() == "" || ti.PromoteType() == "" {
+		fmt.Fprintf(os.Stderr, "walk.go/determineType: bad type `%s'\n", typeName)
 		return "", ""
 	}
-	return gt.ArgClojureArgType, ReplaceAll(gt.PromoteType, "%s", innerPromotion)
+	return ti.ArgClojureArgType(), fmt.Sprintf(ti.PromoteType(), innerPromotion)
 }
 
 // Constants are currently emitted while walking the packages. Unlike with variables, where the types are not needed,

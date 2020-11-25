@@ -1,10 +1,6 @@
 goSrcDir: _tests/big/src
 goSourcePath: /home/craig/go/src
 JokerSourceDir (for import line): github.com/candid82/joker
-LISTENER `net.Listener' is @0xc001306600 &{Expr:<nil> FullName:net.Listener who:TypeDefine Type:0xc00071d160 TypeSpec:0xc0007163f0 UnderlyingType:<nil> Pattern:%s Package:net LocalName:Listener Doc:A Listener is a generic network listener for stream-oriented protocols.
-
-Multiple goroutines may invoke methods on a Listener simultaneously.
- DefPos:194358 File:0xc0003d94a0 Ord:0 Specificity:3 IsNullable:false IsExported:true IsBuiltin:false}!!
 Excluding _tests/big/src/net/http/cgi/testdata
 Excluding _tests/big/src/net/http/internal
 Excluding _tests/big/src/net/http/testdata
@@ -1367,7 +1363,7 @@ JOKER CONSTANT DefaultMaxHeaderBytes from net/http/server.go:
 (def
   ^{:doc "1 MB\n"
     :added "1.0"
-    :tag "Number"
+    :tag "BigInt"
     :const true
     :go "int64(http.DefaultMaxHeaderBytes)"}
   DefaultMaxHeaderBytes)
@@ -17802,7 +17798,7 @@ GO ENSURE-LOADED FOR url:
 
 Adding 15 custom imports to _tests/gold/amd64-linux/joker/custom.go
 Adding 15 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/customlibs.joke
-Adding 184 types to _tests/gold/amd64-linux/joker/core/goswitch.go
+Adding 188 types to _tests/gold/amd64-linux/joker/core/goswitch.go
 Generated file goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
 
@@ -17823,7 +17819,7 @@ import (
 	"net/url"
 )
 
-var GoTypesVec [184]*GoTypeInfo
+var GoTypesVec [188]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
