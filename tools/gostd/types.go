@@ -105,10 +105,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		imports := &imports.Imports{}
 
-		gt := registerTypeGOT(gf, goTypeName, ts)
-		gt.Td = ts
-		gt.Where = ts.Pos()
-
 		jokerName := fmt.Sprintf(gti.Pattern, prefix+name)
 
 		ti := &typeInfo{
@@ -128,8 +124,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		typesByGoName[ti.GoDecl()] = ti
 		typesByJokerName[ti.JokerName()] = ti
-
-		gt.Type = ti
 
 		if IsExported(name) {
 			NumTypes++

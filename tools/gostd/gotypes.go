@@ -1,3 +1,5 @@
+// +build NEVER
+
 package main
 
 import (

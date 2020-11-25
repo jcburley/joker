@@ -1,4 +1,4 @@
-// +build NO
+// +build NEVER
 
 package gtypes
 
