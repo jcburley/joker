@@ -120,16 +120,12 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		ti := &typeInfo{
 			jti: &jtypes.Info{
-				FullName:             jokerName,
-				ArgExtractFunc:       gt.ArgExtractFunc,
-				ArgClojureType:       gt.ArgClojureType,
-				ArgFromClojureObject: gt.ArgFromClojureObject,
-				ArgClojureArgType:    gt.ArgClojureArgType,
-				ConvertFromClojure:   gt.ConvertFromClojure,
-				ConvertToClojure:     gt.ConvertToClojure,
-				JokerNameDoc:         jokerName,
-				AsJokerObject:        gt.ConvertToClojure,
-				IsUnsupported:        gt.Unsupported,
+				FullName:          jokerName,
+				ArgExtractFunc:    "Object",
+				ArgClojureArgType: FullTypeNameAsClojure(gf.Package.NsRoot, goTypeName),
+				ConvertToClojure:  "GoObject(%s%s)",
+				JokerNameDoc:      jokerName,
+				AsJokerObject:     "GoObject(%s%s)",
 			},
 			gti: gti,
 		}
