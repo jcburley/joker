@@ -147,10 +147,6 @@ func (ti *Info) computeFullName() string {
 func finish(ti *Info) {
 	fullName := ti.computeFullName()
 
-	if ti.LocalName == "Listener" {
-		fmt.Fprintf(os.Stderr, "LISTENER `%s' is @%p %+v!!\n", ti.FullName, ti, ti)
-	}
-
 	if _, ok := typesByFullName[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
 		return
