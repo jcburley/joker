@@ -487,7 +487,7 @@ func %s(_o Object) Object {
 		abends.TrackAbends(goConstructor)
 	} else {
 		pi := PackagesInfo[pkgDirUnix]
-		promoteImports(ti.RequiredImports, pi.ImportsNative, tyi.DefPos())
+		promoteImports(tyi.RequiredImports(), pi.ImportsNative, tyi.DefPos())
 		myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, tyi.DefPos())
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = ctor
@@ -685,7 +685,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
 func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
-	to := TypeDefsToGoTypes[ti].RequiredImports
+	to := ti.RequiredImports()
 	for _, imp := range importeds {
 		local := imp.Local
 		if local == "" {

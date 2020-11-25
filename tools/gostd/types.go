@@ -25,6 +25,7 @@ type TypeInfo interface {
 	JokerName() string            // TODO: Rename to JokerFullName
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
+	RequiredImports() *imports.Imports
 	GoDecl() string // TODO: Rename to GoFullName
 	GoDeclDoc(e Expr) string
 	GoPackage() string
@@ -55,8 +56,9 @@ var typesByJokerName = map[string]TypeInfo{}
 const ConcreteType = gtypes.Concrete
 
 type typeInfo struct {
-	jti *jtypes.Info
-	gti *gtypes.Info
+	jti             *jtypes.Info
+	gti             *gtypes.Info
+	requiredImports *imports.Imports
 }
 
 type GoTypeInfo struct {
@@ -78,7 +80,6 @@ type GoTypeInfo struct {
 	PromoteType               string           // Pattern to convert type to next larger Go type that Joker supports
 	ClojureCode               string
 	GoCode                    string
-	RequiredImports           *imports.Imports
 	Uncompleted               bool // Has this type's info been filled in beyond the registration step?
 	Custom                    bool // Is this not a builtin Go type?
 	Exported                  bool // Is this an exported type?
@@ -109,12 +110,11 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	for _, gti := range gtiVec {
 
-		var gt *GoTypeInfo
+		imports := &imports.Imports{}
 
-		gt = registerTypeGOT(gf, goTypeName, ts)
+		gt := registerTypeGOT(gf, goTypeName, ts)
 		gt.Td = ts
 		gt.Where = ts.Pos()
-		gt.RequiredImports = &imports.Imports{}
 
 		jokerName := fmt.Sprintf(gti.Pattern, prefix+name)
 
@@ -127,7 +127,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 				JokerNameDoc:      jokerName,
 				AsJokerObject:     "GoObject(%s%s)",
 			},
-			gti: gti,
+			gti:             gti,
+			requiredImports: imports,
 		}
 
 		ti.jti.Register() // Since we built the object here, register it there.
@@ -315,6 +316,10 @@ func (ti typeInfo) IsUnsupported() bool {
 
 func (ti typeInfo) JokerTypeInfo() *jtypes.Info { // TODO: Remove when gotypes.go is gone?
 	return ti.jti
+}
+
+func (ti typeInfo) RequiredImports() *imports.Imports {
+	return ti.requiredImports
 }
 
 func (ti typeInfo) GoDecl() string {
