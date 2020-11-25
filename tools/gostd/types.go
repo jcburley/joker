@@ -8,7 +8,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
-	"os"
+	//	"os"
 	"sort"
 	"strings"
 )
@@ -233,7 +233,7 @@ func StringForExpr(e Expr) string {
 func conversions(e Expr) (fromClojure, fromMap string) {
 	switch v := e.(type) {
 	case *Ident:
-		fmt.Fprintf(os.Stderr, "conversions(Ident:%+v)\n", v)
+		//		fmt.Fprintf(os.Stderr, "conversions(Ident:%+v)\n", v)
 		if ti := TypeInfoForGoName(v.Name); ti != nil {
 			if ts := ti.TypeSpec(); ts != nil {
 				uti := TypeInfoForExpr(ts.Type)
@@ -246,9 +246,9 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 			}
 		}
 	case *ArrayType:
-		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
+		//		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
 	case *StarExpr:
-		fmt.Fprintf(os.Stderr, "conversions(StarExpr:%+v)\n", v)
+		//		fmt.Fprintf(os.Stderr, "conversions(StarExpr:%+v)\n", v)
 		ti := TypeInfoForExpr(v.X)
 		if ti.ConvertFromClojure() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
 			fromClojure = "&" + ti.ConvertFromClojure()
@@ -257,7 +257,7 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 			fromMap = "&" + ti.ConvertFromMap()
 		}
 	default:
-		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
+		//		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
 	}
 	return
 }
