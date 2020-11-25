@@ -322,7 +322,7 @@ func TypeForExpr(e Expr) *Info {
 
 	if innerInfo == nil {
 		if localName == "" {
-			localName = fmt.Sprintf("ABEND001(NO GO NAME due to %+v @%p??!!)", e, e)
+			localName = fmt.Sprintf("ABEND001(NO GO NAME for %T)", e)
 		}
 		ti := &Info{
 			Expr:      e,
