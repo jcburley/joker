@@ -112,9 +112,17 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 	Check(err)
 }
 
-func updateGoTypeSwitch(types []TypeInfo, f string, outputCode bool) {
+var Ordinal = map[TypeInfo]uint{}
+
+func updateGoTypeSwitch(allTypes []TypeInfo, f string, outputCode bool) {
+	types := make([]TypeInfo, len(allTypes))
+
+	for ix, t := range allTypesSorted {
+		types[ix] = t
+	}
+
 	if Verbose {
-		fmt.Printf("Adding %d types to %s\n", len(types), filepath.ToSlash(f))
+		fmt.Printf("Adding only %d types to %s\n", len(types), filepath.ToSlash(f))
 	}
 
 	var pattern string
@@ -155,7 +163,7 @@ func SwitchGoType(g interface{}) int {
 		if t.Specificity() != ConcreteType {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity())
 		}
-		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoName()), specificity, t.Ord())
+		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoName()), specificity, Ordinal[t])
 	}
 
 	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
@@ -455,7 +463,7 @@ import (%s
 			if tmn == "" || !ti.IsExported() {
 				return
 			}
-			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", ti.Ord(), tmn)
+			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
 			if outputCode {
 				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), o)
 			}

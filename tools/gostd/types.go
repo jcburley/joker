@@ -37,8 +37,6 @@ type TypeInfo interface {
 	GoFile() *godb.GoFile
 	DefPos() token.Pos
 	Specificity() uint // ConcreteType, else # of methods defined for interface{} (abstract) type
-	Ord() uint         // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
-	SetOrd(uint)
 	PromoteType() string
 	TypeMappingsName() string
 	Doc() string
@@ -362,14 +360,6 @@ func (ti typeInfo) Specificity() uint {
 	return ti.gti.Specificity
 }
 
-func (ti typeInfo) Ord() uint {
-	return ti.gti.Ord
-}
-
-func (ti typeInfo) SetOrd(o uint) {
-	ti.gti.Ord = o
-}
-
 func (ti typeInfo) Doc() string {
 	return ti.gti.Doc
 }
@@ -422,8 +412,10 @@ func SortAllTypes() {
 		}
 		return i_gti.FullName < j_gti.FullName
 	})
-	for ord, t := range allTypesSorted {
-		t.SetOrd((uint)(ord))
+
+	ord := (uint)(0)
+	for _, t := range allTypesSorted {
+		Ordinal[t] = ord
 		ord++
 	}
 }
