@@ -128,43 +128,26 @@ JOKER VARIABLE IPv6zero from net/ip.go:
 
 JOKER TYPE net.Addr from net/net.go:
 JOKER TYPE net.AddrError from net/net.go:
-JOKER TYPE *net.AddrError from net/net.go:
 JOKER TYPE net.Buffers from net/net.go:
-JOKER TYPE *net.Buffers from net/net.go:
 JOKER TYPE net.Conn from net/net.go:
 JOKER TYPE net.DNSConfigError from net/net.go:
-JOKER TYPE *net.DNSConfigError from net/net.go:
 JOKER TYPE net.DNSError from net/net.go:
-JOKER TYPE *net.DNSError from net/net.go:
 JOKER TYPE net.Error from net/net.go:
 JOKER TYPE net.IP from net/ip.go:
-JOKER TYPE *net.IP from net/ip.go:
 JOKER TYPE net.IPAddr from net/iprawsock.go:
-JOKER TYPE *net.IPAddr from net/iprawsock.go:
 JOKER TYPE net.IPConn from net/iprawsock.go:
-JOKER TYPE *net.IPConn from net/iprawsock.go:
 JOKER TYPE net.IPMask from net/ip.go:
-JOKER TYPE *net.IPMask from net/ip.go:
 JOKER TYPE net.IPNet from net/ip.go:
-JOKER TYPE *net.IPNet from net/ip.go:
 JOKER TYPE net.InvalidAddrError from net/net.go:
-JOKER TYPE *net.InvalidAddrError from net/net.go:
 JOKER TYPE net.Listener from net/net.go:
 JOKER TYPE net.MX from net/dnsclient.go:
-JOKER TYPE *net.MX from net/dnsclient.go:
 JOKER TYPE net.NS from net/dnsclient.go:
-JOKER TYPE *net.NS from net/dnsclient.go:
 JOKER TYPE net.OpError from net/net.go:
-JOKER TYPE *net.OpError from net/net.go:
 JOKER TYPE net.PacketConn from net/net.go:
 JOKER TYPE net.ParseError from net/net.go:
-JOKER TYPE *net.ParseError from net/net.go:
 JOKER TYPE net.Resolver from net/lookup.go:
-JOKER TYPE *net.Resolver from net/lookup.go:
 JOKER TYPE net.SRV from net/dnsclient.go:
-JOKER TYPE *net.SRV from net/dnsclient.go:
 JOKER TYPE net.UnknownNetworkError from net/net.go:
-JOKER TYPE *net.UnknownNetworkError from net/net.go:
 JOKER FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo return type: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker return type: go.std.net/IPMask"
@@ -301,14 +284,6 @@ JOKER TYPE go.std.net/AddrError:
     :go "&info_AddrError"}
   AddrError)
 
-JOKER TYPE *go.std.net/AddrError:
-(def
-  ^{:doc ""
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_AddrError"}
-  *AddrError)
-
 JOKER TYPE go.std.net/Buffers:
 (def
   ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
@@ -316,14 +291,6 @@ JOKER TYPE go.std.net/Buffers:
     :tag "GoType"
     :go "&info_Buffers"}
   Buffers)
-
-JOKER TYPE *go.std.net/Buffers:
-(def
-  ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_Buffers"}
-  *Buffers)
 
 JOKER TYPE go.std.net/Conn:
 (def
@@ -342,14 +309,6 @@ JOKER TYPE go.std.net/DNSConfigError:
     :go "&info_DNSConfigError"}
   DNSConfigError)
 
-JOKER TYPE *go.std.net/DNSConfigError:
-(def
-  ^{:doc "DNSConfigError represents an error reading the machine's DNS configuration.\n(No longer used; kept for compatibility.)\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_DNSConfigError"}
-  *DNSConfigError)
-
 JOKER TYPE go.std.net/DNSError:
 (def
   ^{:doc "DNSError represents a DNS lookup error.\n"
@@ -357,14 +316,6 @@ JOKER TYPE go.std.net/DNSError:
     :tag "GoType"
     :go "&info_DNSError"}
   DNSError)
-
-JOKER TYPE *go.std.net/DNSError:
-(def
-  ^{:doc "DNSError represents a DNS lookup error.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_DNSError"}
-  *DNSError)
 
 JOKER TYPE go.std.net/Error:
 (def
@@ -383,14 +334,6 @@ JOKER TYPE go.std.net/IP:
     :go "&info_IP"}
   IP)
 
-JOKER TYPE *go.std.net/IP:
-(def
-  ^{:doc "An IP is a single IP address, a slice of bytes.\nFunctions in this package accept either 4-byte (IPv4)\nor 16-byte (IPv6) slices as input.\n\nNote that in this documentation, referring to an\nIP address as an IPv4 address or an IPv6 address\nis a semantic property of the address, not just the\nlength of the byte slice: a 16-byte slice can still\nbe an IPv4 address.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_IP"}
-  *IP)
-
 JOKER TYPE go.std.net/IPAddr:
 (def
   ^{:doc "IPAddr represents the address of an IP end point.\n"
@@ -398,14 +341,6 @@ JOKER TYPE go.std.net/IPAddr:
     :tag "GoType"
     :go "&info_IPAddr"}
   IPAddr)
-
-JOKER TYPE *go.std.net/IPAddr:
-(def
-  ^{:doc "IPAddr represents the address of an IP end point.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_IPAddr"}
-  *IPAddr)
 
 JOKER TYPE go.std.net/IPConn:
 (def
@@ -415,14 +350,6 @@ JOKER TYPE go.std.net/IPConn:
     :go "&info_IPConn"}
   IPConn)
 
-JOKER TYPE *go.std.net/IPConn:
-(def
-  ^{:doc "IPConn is the implementation of the Conn and PacketConn interfaces\nfor IP network connections.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_IPConn"}
-  *IPConn)
-
 JOKER TYPE go.std.net/IPMask:
 (def
   ^{:doc "An IP mask is an IP address.\n"
@@ -430,14 +357,6 @@ JOKER TYPE go.std.net/IPMask:
     :tag "GoType"
     :go "&info_IPMask"}
   IPMask)
-
-JOKER TYPE *go.std.net/IPMask:
-(def
-  ^{:doc "An IP mask is an IP address.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_IPMask"}
-  *IPMask)
 
 JOKER TYPE go.std.net/IPNet:
 (def
@@ -447,14 +366,6 @@ JOKER TYPE go.std.net/IPNet:
     :go "&info_IPNet"}
   IPNet)
 
-JOKER TYPE *go.std.net/IPNet:
-(def
-  ^{:doc "An IPNet represents an IP network.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_IPNet"}
-  *IPNet)
-
 JOKER TYPE go.std.net/InvalidAddrError:
 (def
   ^{:doc ""
@@ -462,14 +373,6 @@ JOKER TYPE go.std.net/InvalidAddrError:
     :tag "GoType"
     :go "&info_InvalidAddrError"}
   InvalidAddrError)
-
-JOKER TYPE *go.std.net/InvalidAddrError:
-(def
-  ^{:doc ""
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_InvalidAddrError"}
-  *InvalidAddrError)
 
 JOKER TYPE go.std.net/Listener:
 (def
@@ -488,14 +391,6 @@ JOKER TYPE go.std.net/MX:
     :go "&info_MX"}
   MX)
 
-JOKER TYPE *go.std.net/MX:
-(def
-  ^{:doc "An MX represents a single DNS MX record.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_MX"}
-  *MX)
-
 JOKER TYPE go.std.net/NS:
 (def
   ^{:doc "An NS represents a single DNS NS record.\n"
@@ -504,14 +399,6 @@ JOKER TYPE go.std.net/NS:
     :go "&info_NS"}
   NS)
 
-JOKER TYPE *go.std.net/NS:
-(def
-  ^{:doc "An NS represents a single DNS NS record.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_NS"}
-  *NS)
-
 JOKER TYPE go.std.net/OpError:
 (def
   ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
@@ -519,14 +406,6 @@ JOKER TYPE go.std.net/OpError:
     :tag "GoType"
     :go "&info_OpError"}
   OpError)
-
-JOKER TYPE *go.std.net/OpError:
-(def
-  ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_OpError"}
-  *OpError)
 
 JOKER TYPE go.std.net/PacketConn:
 (def
@@ -545,14 +424,6 @@ JOKER TYPE go.std.net/ParseError:
     :go "&info_ParseError"}
   ParseError)
 
-JOKER TYPE *go.std.net/ParseError:
-(def
-  ^{:doc "A ParseError is the error type of literal network address parsers.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_ParseError"}
-  *ParseError)
-
 JOKER TYPE go.std.net/Resolver:
 (def
   ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
@@ -560,14 +431,6 @@ JOKER TYPE go.std.net/Resolver:
     :tag "GoType"
     :go "&info_Resolver"}
   Resolver)
-
-JOKER TYPE *go.std.net/Resolver:
-(def
-  ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_Resolver"}
-  *Resolver)
 
 JOKER TYPE go.std.net/SRV:
 (def
@@ -577,14 +440,6 @@ JOKER TYPE go.std.net/SRV:
     :go "&info_SRV"}
   SRV)
 
-JOKER TYPE *go.std.net/SRV:
-(def
-  ^{:doc "An SRV represents a single DNS SRV record.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_SRV"}
-  *SRV)
-
 JOKER TYPE go.std.net/UnknownNetworkError:
 (def
   ^{:doc ""
@@ -592,14 +447,6 @@ JOKER TYPE go.std.net/UnknownNetworkError:
     :tag "GoType"
     :go "&info_UnknownNetworkError"}
   UnknownNetworkError)
-
-JOKER TYPE *go.std.net/UnknownNetworkError:
-(def
-  ^{:doc ""
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_UnknownNetworkError"}
-  *UnknownNetworkError)
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -609,16 +456,11 @@ JOKER TYPE *go.std.net/UnknownNetworkError:
     :empty false}
   go.std.net)
 JOKER TYPE net/url.Error from net/url/url.go:
-JOKER TYPE *net/url.Error from net/url/url.go:
 JOKER TYPE net/url.EscapeError from net/url/url.go:
-JOKER TYPE *net/url.EscapeError from net/url/url.go:
 JOKER TYPE net/url.InvalidHostError from net/url/url.go:
-JOKER TYPE *net/url.InvalidHostError from net/url/url.go:
 JOKER TYPE net/url.URL from net/url/url.go:
-JOKER TYPE *net/url.URL from net/url/url.go:
 JOKER TYPE net/url.Userinfo from net/url/url.go:
 JOKER TYPE net/url.Values from net/url/url.go:
-JOKER TYPE *net/url.Values from net/url/url.go:
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/refToURL Error]"
@@ -690,14 +532,6 @@ JOKER TYPE go.std.net.url/Error:
     :go "&info_Error"}
   Error)
 
-JOKER TYPE *go.std.net.url/Error:
-(def
-  ^{:doc "Error reports an error and the operation and URL that caused it.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_Error"}
-  *Error)
-
 JOKER TYPE go.std.net.url/EscapeError:
 (def
   ^{:doc ""
@@ -705,14 +539,6 @@ JOKER TYPE go.std.net.url/EscapeError:
     :tag "GoType"
     :go "&info_EscapeError"}
   EscapeError)
-
-JOKER TYPE *go.std.net.url/EscapeError:
-(def
-  ^{:doc ""
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_EscapeError"}
-  *EscapeError)
 
 JOKER TYPE go.std.net.url/InvalidHostError:
 (def
@@ -722,14 +548,6 @@ JOKER TYPE go.std.net.url/InvalidHostError:
     :go "&info_InvalidHostError"}
   InvalidHostError)
 
-JOKER TYPE *go.std.net.url/InvalidHostError:
-(def
-  ^{:doc ""
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_InvalidHostError"}
-  *InvalidHostError)
-
 JOKER TYPE go.std.net.url/URL:
 (def
   ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
@@ -737,14 +555,6 @@ JOKER TYPE go.std.net.url/URL:
     :tag "GoType"
     :go "&info_URL"}
   URL)
-
-JOKER TYPE *go.std.net.url/URL:
-(def
-  ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_URL"}
-  *URL)
 
 JOKER TYPE go.std.net.url/Userinfo:
 (def
@@ -754,14 +564,6 @@ JOKER TYPE go.std.net.url/Userinfo:
     :go "&info_Userinfo"}
   Userinfo)
 
-JOKER TYPE *go.std.net.url/Userinfo:
-(def
-  ^{:doc "The Userinfo type is an immutable encapsulation of username and\npassword details for a URL. An existing Userinfo value is guaranteed\nto have a username set (potentially empty, as allowed by RFC 2396),\nand optionally a password.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_Userinfo"}
-  *Userinfo)
-
 JOKER TYPE go.std.net.url/Values:
 (def
   ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
@@ -769,14 +571,6 @@ JOKER TYPE go.std.net.url/Values:
     :tag "GoType"
     :go "&info_Values"}
   Values)
-
-JOKER TYPE *go.std.net.url/Values:
-(def
-  ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
-    :added "1.0"
-    :tag "GoType"
-    :go "&info_PtrTo_Values"}
-  *Values)
 
 ;;;; Auto-generated by gostd at (omitted for testing), do not edit!!
 
@@ -854,50 +648,6 @@ func _Wrapped_Ctor_AddrError(_o Object) Object {
 	return MakeGoObject(_Ctor_AddrError(_o))
 }
 
-GO TYPE *net.AddrError from net/net.go:
-func ExtractGoObjectAddrError(args []Object, index int) *net.AddrError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.AddrError:
-			return &r
-		case *net.AddrError:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.AddrError]"))
-}
-
-func ExtractGo_go_std_net__AddrError(rcvr, arg string, args *ArraySeq, n int) (res net.AddrError) {
-	a := CheckGoNth(rcvr, "go.std.net/AddrError", arg, args, n).O
-	res, ok := a.(net.AddrError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/AddrError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToAddrError(o Map) *net.AddrError {
-	return &net.AddrError{
-		Err: FieldAsString(o, "Err"),
-		Addr: FieldAsString(o, "Addr"),
-	}
-}
-
-func _Ctor_AddrError(_v Object) *net.AddrError {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToAddrError(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.AddrError] or: Map"))
-}
-
-func _Wrapped_Ctor_AddrError(_o Object) Object {
-	return MakeGoObject(_Ctor_AddrError(_o))
-}
-
 GO TYPE net.Buffers from net/net.go:
 func ExtractGoObjectBuffers(args []Object, index int) *net.Buffers {
 	a := args[index]
@@ -911,43 +661,6 @@ func ExtractGoObjectBuffers(args []Object, index int) *net.Buffers {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Buffers]"))
-}
-
-func ExtractGo_go_std_net__Buffers(rcvr, arg string, args *ArraySeq, n int) (res net.Buffers) {
-	a := CheckGoNth(rcvr, "go.std.net/Buffers", arg, args, n).O
-	res, ok := a.(net.Buffers)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Buffers], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _Ctor_Buffers(_v Object) net.Buffers {
-// 	switch _o := _v.(type) {
-// 	default:
-// 		return _net.Buffers(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for Buffers))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Buffers] or: whatever"))
-// }
-
-// func _Wrapped_Ctor_Buffers(_o Object) Object {
-// 	return MakeGoObject(_Ctor_Buffers(_o))
-// }
-
-GO TYPE *net.Buffers from net/net.go:
-func ExtractGoObjectBuffers(args []Object, index int) *net.Buffers {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.Buffers:
-			return &r
-		case *net.Buffers:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.Buffers]"))
 }
 
 func ExtractGo_go_std_net__Buffers(rcvr, arg string, args *ArraySeq, n int) (res net.Buffers) {
@@ -1040,49 +753,6 @@ func _Wrapped_Ctor_DNSConfigError(_o Object) Object {
 	return MakeGoObject(_Ctor_DNSConfigError(_o))
 }
 
-GO TYPE *net.DNSConfigError from net/net.go:
-func ExtractGoObjectDNSConfigError(args []Object, index int) *net.DNSConfigError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.DNSConfigError:
-			return &r
-		case *net.DNSConfigError:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.DNSConfigError]"))
-}
-
-func ExtractGo_go_std_net__DNSConfigError(rcvr, arg string, args *ArraySeq, n int) (res net.DNSConfigError) {
-	a := CheckGoNth(rcvr, "go.std.net/DNSConfigError", arg, args, n).O
-	res, ok := a.(net.DNSConfigError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/DNSConfigError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToDNSConfigError(o Map) *net.DNSConfigError {
-	return &net.DNSConfigError{
-		Err: FieldAsError(o, "Err"),
-	}
-}
-
-func _Ctor_DNSConfigError(_v Object) *net.DNSConfigError {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToDNSConfigError(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSConfigError] or: Map"))
-}
-
-func _Wrapped_Ctor_DNSConfigError(_o Object) Object {
-	return MakeGoObject(_Ctor_DNSConfigError(_o))
-}
-
 GO TYPE net.DNSError from net/net.go:
 func ExtractGoObjectDNSError(args []Object, index int) *net.DNSError {
 	a := args[index]
@@ -1096,53 +766,6 @@ func ExtractGoObjectDNSError(args []Object, index int) *net.DNSError {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.DNSError]"))
-}
-
-func ExtractGo_go_std_net__DNSError(rcvr, arg string, args *ArraySeq, n int) (res net.DNSError) {
-	a := CheckGoNth(rcvr, "go.std.net/DNSError", arg, args, n).O
-	res, ok := a.(net.DNSError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/DNSError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToDNSError(o Map) *net.DNSError {
-	return &net.DNSError{
-		Err: FieldAsString(o, "Err"),
-		Name: FieldAsString(o, "Name"),
-		Server: FieldAsString(o, "Server"),
-		IsTimeout: FieldAsBoolean(o, "IsTimeout"),
-		IsTemporary: FieldAsBoolean(o, "IsTemporary"),
-	}
-}
-
-func _Ctor_DNSError(_v Object) *net.DNSError {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToDNSError(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.DNSError] or: Map"))
-}
-
-func _Wrapped_Ctor_DNSError(_o Object) Object {
-	return MakeGoObject(_Ctor_DNSError(_o))
-}
-
-GO TYPE *net.DNSError from net/net.go:
-func ExtractGoObjectDNSError(args []Object, index int) *net.DNSError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.DNSError:
-			return &r
-		case *net.DNSError:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.DNSError]"))
 }
 
 func ExtractGo_go_std_net__DNSError(rcvr, arg string, args *ArraySeq, n int) (res net.DNSError) {
@@ -1227,43 +850,6 @@ func ExtractGo_go_std_net__IP(rcvr, arg string, args *ArraySeq, n int) (res net.
 	return
 }
 
-GO TYPE *net.IP from net/ip.go:
-func ExtractGoObjectIP(args []Object, index int) *net.IP {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.IP:
-			return &r
-		case *net.IP:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IP]"))
-}
-
-func ExtractGo_go_std_net__IP(rcvr, arg string, args *ArraySeq, n int) (res net.IP) {
-	a := CheckGoNth(rcvr, "go.std.net/IP", arg, args, n).O
-	res, ok := a.(net.IP)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IP], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _Ctor_IP(_v Object) net.IP {
-// 	switch _o := _v.(type) {
-// 	default:
-// 		return _net.IP(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for IP))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IP] or: whatever"))
-// }
-
-// func _Wrapped_Ctor_IP(_o Object) Object {
-// 	return MakeGoObject(_Ctor_IP(_o))
-// }
-
 GO TYPE net.IPAddr from net/iprawsock.go:
 func ExtractGoObjectIPAddr(args []Object, index int) *net.IPAddr {
 	a := args[index]
@@ -1277,50 +863,6 @@ func ExtractGoObjectIPAddr(args []Object, index int) *net.IPAddr {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPAddr]"))
-}
-
-func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res net.IPAddr) {
-	a := CheckGoNth(rcvr, "go.std.net/IPAddr", arg, args, n).O
-	res, ok := a.(net.IPAddr)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPAddr], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _mapToIPAddr(o Map) *net.IPAddr {
-// 	return &net.IPAddr{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
-// 		Zone: FieldAsString(o, "Zone"),
-// 	}
-// }
-
-// func _Ctor_IPAddr(_v Object) *net.IPAddr {
-// 	switch _o := _v.(type) {
-// 	case *ArrayMap, *HashMap:
-// 		return _mapToIPAddr(_o.(Map))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPAddr] or: Map"))
-// }
-
-// func _Wrapped_Ctor_IPAddr(_o Object) Object {
-// 	return MakeGoObject(_Ctor_IPAddr(_o))
-// }
-
-GO TYPE *net.IPAddr from net/iprawsock.go:
-func ExtractGoObjectIPAddr(args []Object, index int) *net.IPAddr {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.IPAddr:
-			return &r
-		case *net.IPAddr:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPAddr]"))
 }
 
 func ExtractGo_go_std_net__IPAddr(rcvr, arg string, args *ArraySeq, n int) (res net.IPAddr) {
@@ -1393,47 +935,6 @@ func _Wrapped_Ctor_IPConn(_o Object) Object {
 	return MakeGoObject(_Ctor_IPConn(_o))
 }
 
-GO TYPE *net.IPConn from net/iprawsock.go:
-func ExtractGoObjectIPConn(args []Object, index int) *net.IPConn {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.IPConn:
-			return &r
-		case *net.IPConn:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPConn]"))
-}
-
-func ExtractGo_go_std_net__IPConn(rcvr, arg string, args *ArraySeq, n int) (res net.IPConn) {
-	a := CheckGoNth(rcvr, "go.std.net/IPConn", arg, args, n).O
-	res, ok := a.(net.IPConn)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPConn], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToIPConn(o Map) *net.IPConn {
-	return &net.IPConn{}
-}
-
-func _Ctor_IPConn(_v Object) *net.IPConn {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToIPConn(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPConn] or: Map"))
-}
-
-func _Wrapped_Ctor_IPConn(_o Object) Object {
-	return MakeGoObject(_Ctor_IPConn(_o))
-}
-
 GO TYPE net.IPMask from net/ip.go:
 func ExtractGoObjectIPMask(args []Object, index int) *net.IPMask {
 	a := args[index]
@@ -1459,43 +960,6 @@ func ExtractGo_go_std_net__IPMask(rcvr, arg string, args *ArraySeq, n int) (res 
 	return
 }
 
-GO TYPE *net.IPMask from net/ip.go:
-func ExtractGoObjectIPMask(args []Object, index int) *net.IPMask {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.IPMask:
-			return &r
-		case *net.IPMask:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPMask]"))
-}
-
-func ExtractGo_go_std_net__IPMask(rcvr, arg string, args *ArraySeq, n int) (res net.IPMask) {
-	a := CheckGoNth(rcvr, "go.std.net/IPMask", arg, args, n).O
-	res, ok := a.(net.IPMask)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPMask], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _Ctor_IPMask(_v Object) net.IPMask {
-// 	switch _o := _v.(type) {
-// 	default:
-// 		return _net.IPMask(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for IPMask))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPMask] or: whatever"))
-// }
-
-// func _Wrapped_Ctor_IPMask(_o Object) Object {
-// 	return MakeGoObject(_Ctor_IPMask(_o))
-// }
-
 GO TYPE net.IPNet from net/ip.go:
 func ExtractGoObjectIPNet(args []Object, index int) *net.IPNet {
 	a := args[index]
@@ -1509,50 +973,6 @@ func ExtractGoObjectIPNet(args []Object, index int) *net.IPNet {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.IPNet]"))
-}
-
-func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res net.IPNet) {
-	a := CheckGoNth(rcvr, "go.std.net/IPNet", arg, args, n).O
-	res, ok := a.(net.IPNet)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/IPNet], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _mapToIPNet(o Map) *net.IPNet {
-// 	return &net.IPNet{
-// 		IP: ABEND048(codegen.go: no conversion from Clojure for net.IP ([]byte)),
-// 		Mask: ABEND048(codegen.go: no conversion from Clojure for net.IPMask ([]byte)),
-// 	}
-// }
-
-// func _Ctor_IPNet(_v Object) *net.IPNet {
-// 	switch _o := _v.(type) {
-// 	case *ArrayMap, *HashMap:
-// 		return _mapToIPNet(_o.(Map))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPNet] or: Map"))
-// }
-
-// func _Wrapped_Ctor_IPNet(_o Object) Object {
-// 	return MakeGoObject(_Ctor_IPNet(_o))
-// }
-
-GO TYPE *net.IPNet from net/ip.go:
-func ExtractGoObjectIPNet(args []Object, index int) *net.IPNet {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.IPNet:
-			return &r
-		case *net.IPNet:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPNet]"))
 }
 
 func ExtractGo_go_std_net__IPNet(rcvr, arg string, args *ArraySeq, n int) (res net.IPNet) {
@@ -1600,46 +1020,6 @@ func ExtractGoObjectInvalidAddrError(args []Object, index int) *net.InvalidAddrE
 		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.InvalidAddrError]"))
-}
-
-func ExtractGo_go_std_net__InvalidAddrError(rcvr, arg string, args *ArraySeq, n int) (res net.InvalidAddrError) {
-	a := CheckGoNth(rcvr, "go.std.net/InvalidAddrError", arg, args, n).O
-	res, ok := a.(net.InvalidAddrError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/InvalidAddrError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _Ctor_InvalidAddrError(_v Object) net.InvalidAddrError {
-	switch _o := _v.(type) {
-	case String:
-		return net.InvalidAddrError(_o.S)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.InvalidAddrError] or: String"))
-}
-
-func _Wrapped_Ctor_InvalidAddrError(_o Object) Object {
-	return MakeGoObject(_Ctor_InvalidAddrError(_o))
-}
-
-GO TYPE *net.InvalidAddrError from net/net.go:
-func ExtractGoObjectInvalidAddrError(args []Object, index int) *net.InvalidAddrError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.InvalidAddrError:
-			return &r
-		case *net.InvalidAddrError:
-			return r
-		}
-	case String:
-		v := net.InvalidAddrError(ExtractString(args, index))
-		return &v
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.InvalidAddrError]"))
 }
 
 func ExtractGo_go_std_net__InvalidAddrError(rcvr, arg string, args *ArraySeq, n int) (res net.InvalidAddrError) {
@@ -1733,50 +1113,6 @@ func _Wrapped_Ctor_MX(_o Object) Object {
 	return MakeGoObject(_Ctor_MX(_o))
 }
 
-GO TYPE *net.MX from net/dnsclient.go:
-func ExtractGoObjectMX(args []Object, index int) *net.MX {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.MX:
-			return &r
-		case *net.MX:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.MX]"))
-}
-
-func ExtractGo_go_std_net__MX(rcvr, arg string, args *ArraySeq, n int) (res net.MX) {
-	a := CheckGoNth(rcvr, "go.std.net/MX", arg, args, n).O
-	res, ok := a.(net.MX)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/MX], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToMX(o Map) *net.MX {
-	return &net.MX{
-		Host: FieldAsString(o, "Host"),
-		Pref: FieldAsUint16(o, "Pref"),
-	}
-}
-
-func _Ctor_MX(_v Object) *net.MX {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToMX(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.MX] or: Map"))
-}
-
-func _Wrapped_Ctor_MX(_o Object) Object {
-	return MakeGoObject(_Ctor_MX(_o))
-}
-
 GO TYPE net.NS from net/dnsclient.go:
 func ExtractGoObjectNS(args []Object, index int) *net.NS {
 	a := args[index]
@@ -1820,49 +1156,6 @@ func _Wrapped_Ctor_NS(_o Object) Object {
 	return MakeGoObject(_Ctor_NS(_o))
 }
 
-GO TYPE *net.NS from net/dnsclient.go:
-func ExtractGoObjectNS(args []Object, index int) *net.NS {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.NS:
-			return &r
-		case *net.NS:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.NS]"))
-}
-
-func ExtractGo_go_std_net__NS(rcvr, arg string, args *ArraySeq, n int) (res net.NS) {
-	a := CheckGoNth(rcvr, "go.std.net/NS", arg, args, n).O
-	res, ok := a.(net.NS)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/NS], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToNS(o Map) *net.NS {
-	return &net.NS{
-		Host: FieldAsString(o, "Host"),
-	}
-}
-
-func _Ctor_NS(_v Object) *net.NS {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToNS(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.NS] or: Map"))
-}
-
-func _Wrapped_Ctor_NS(_o Object) Object {
-	return MakeGoObject(_Ctor_NS(_o))
-}
-
 GO TYPE net.OpError from net/net.go:
 func ExtractGoObjectOpError(args []Object, index int) *net.OpError {
 	a := args[index]
@@ -1876,53 +1169,6 @@ func ExtractGoObjectOpError(args []Object, index int) *net.OpError {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.OpError]"))
-}
-
-func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res net.OpError) {
-	a := CheckGoNth(rcvr, "go.std.net/OpError", arg, args, n).O
-	res, ok := a.(net.OpError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/OpError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _mapToOpError(o Map) *net.OpError {
-// 	return &net.OpError{
-// 		Op: FieldAsString(o, "Op"),
-// 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		Err: FieldAsError(o, "Err"),
-// 	}
-// }
-
-// func _Ctor_OpError(_v Object) *net.OpError {
-// 	switch _o := _v.(type) {
-// 	case *ArrayMap, *HashMap:
-// 		return _mapToOpError(_o.(Map))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.OpError] or: Map"))
-// }
-
-// func _Wrapped_Ctor_OpError(_o Object) Object {
-// 	return MakeGoObject(_Ctor_OpError(_o))
-// }
-
-GO TYPE *net.OpError from net/net.go:
-func ExtractGoObjectOpError(args []Object, index int) *net.OpError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.OpError:
-			return &r
-		case *net.OpError:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.OpError]"))
 }
 
 func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res net.OpError) {
@@ -2026,50 +1272,6 @@ func _Wrapped_Ctor_ParseError(_o Object) Object {
 	return MakeGoObject(_Ctor_ParseError(_o))
 }
 
-GO TYPE *net.ParseError from net/net.go:
-func ExtractGoObjectParseError(args []Object, index int) *net.ParseError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.ParseError:
-			return &r
-		case *net.ParseError:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.ParseError]"))
-}
-
-func ExtractGo_go_std_net__ParseError(rcvr, arg string, args *ArraySeq, n int) (res net.ParseError) {
-	a := CheckGoNth(rcvr, "go.std.net/ParseError", arg, args, n).O
-	res, ok := a.(net.ParseError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/ParseError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToParseError(o Map) *net.ParseError {
-	return &net.ParseError{
-		Type: FieldAsString(o, "Type"),
-		Text: FieldAsString(o, "Text"),
-	}
-}
-
-func _Ctor_ParseError(_v Object) *net.ParseError {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToParseError(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.ParseError] or: Map"))
-}
-
-func _Wrapped_Ctor_ParseError(_o Object) Object {
-	return MakeGoObject(_Ctor_ParseError(_o))
-}
-
 GO TYPE net.Resolver from net/lookup.go:
 func ExtractGoObjectResolver(args []Object, index int) *net.Resolver {
 	a := args[index]
@@ -2083,51 +1285,6 @@ func ExtractGoObjectResolver(args []Object, index int) *net.Resolver {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Resolver]"))
-}
-
-func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (res net.Resolver) {
-	a := CheckGoNth(rcvr, "go.std.net/Resolver", arg, args, n).O
-	res, ok := a.(net.Resolver)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/Resolver], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _mapToResolver(o Map) *net.Resolver {
-// 	return &net.Resolver{
-// 		PreferGo: FieldAsBoolean(o, "PreferGo"),
-// 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 	}
-// }
-
-// func _Ctor_Resolver(_v Object) *net.Resolver {
-// 	switch _o := _v.(type) {
-// 	case *ArrayMap, *HashMap:
-// 		return _mapToResolver(_o.(Map))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map"))
-// }
-
-// func _Wrapped_Ctor_Resolver(_o Object) Object {
-// 	return MakeGoObject(_Ctor_Resolver(_o))
-// }
-
-GO TYPE *net.Resolver from net/lookup.go:
-func ExtractGoObjectResolver(args []Object, index int) *net.Resolver {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.Resolver:
-			return &r
-		case *net.Resolver:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.Resolver]"))
 }
 
 func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (res net.Resolver) {
@@ -2206,52 +1363,6 @@ func _Wrapped_Ctor_SRV(_o Object) Object {
 	return MakeGoObject(_Ctor_SRV(_o))
 }
 
-GO TYPE *net.SRV from net/dnsclient.go:
-func ExtractGoObjectSRV(args []Object, index int) *net.SRV {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.SRV:
-			return &r
-		case *net.SRV:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.SRV]"))
-}
-
-func ExtractGo_go_std_net__SRV(rcvr, arg string, args *ArraySeq, n int) (res net.SRV) {
-	a := CheckGoNth(rcvr, "go.std.net/SRV", arg, args, n).O
-	res, ok := a.(net.SRV)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/SRV], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToSRV(o Map) *net.SRV {
-	return &net.SRV{
-		Target: FieldAsString(o, "Target"),
-		Port: FieldAsUint16(o, "Port"),
-		Priority: FieldAsUint16(o, "Priority"),
-		Weight: FieldAsUint16(o, "Weight"),
-	}
-}
-
-func _Ctor_SRV(_v Object) *net.SRV {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToSRV(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.SRV] or: Map"))
-}
-
-func _Wrapped_Ctor_SRV(_o Object) Object {
-	return MakeGoObject(_Ctor_SRV(_o))
-}
-
 GO TYPE net.UnknownNetworkError from net/net.go:
 func ExtractGoObjectUnknownNetworkError(args []Object, index int) *net.UnknownNetworkError {
 	a := args[index]
@@ -2268,46 +1379,6 @@ func ExtractGoObjectUnknownNetworkError(args []Object, index int) *net.UnknownNe
 		return &v
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.UnknownNetworkError]"))
-}
-
-func ExtractGo_go_std_net__UnknownNetworkError(rcvr, arg string, args *ArraySeq, n int) (res net.UnknownNetworkError) {
-	a := CheckGoNth(rcvr, "go.std.net/UnknownNetworkError", arg, args, n).O
-	res, ok := a.(net.UnknownNetworkError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net/UnknownNetworkError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _Ctor_UnknownNetworkError(_v Object) net.UnknownNetworkError {
-	switch _o := _v.(type) {
-	case String:
-		return net.UnknownNetworkError(_o.S)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[net.UnknownNetworkError] or: String"))
-}
-
-func _Wrapped_Ctor_UnknownNetworkError(_o Object) Object {
-	return MakeGoObject(_Ctor_UnknownNetworkError(_o))
-}
-
-GO TYPE *net.UnknownNetworkError from net/net.go:
-func ExtractGoObjectUnknownNetworkError(args []Object, index int) *net.UnknownNetworkError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case net.UnknownNetworkError:
-			return &r
-		case *net.UnknownNetworkError:
-			return r
-		}
-	case String:
-		v := net.UnknownNetworkError(ExtractString(args, index))
-		return &v
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net.UnknownNetworkError]"))
 }
 
 func ExtractGo_go_std_net__UnknownNetworkError(rcvr, arg string, args *ArraySeq, n int) (res net.UnknownNetworkError) {
@@ -3320,7 +2391,6 @@ GO INFO FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 GO INFO FOR TYPE *go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 	info_PtrTo_AddrError = GoTypeInfo{Name: "*go.std.net/AddrError",
 		GoType: &GoType{T: &info_PtrTo_AddrError},
-		Ctor: _Wrapped_Ctor_AddrError,
 		Members: GoMembers{
 		},
 	}
@@ -3365,7 +2435,6 @@ GO INFO FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:
 GO INFO FOR TYPE *go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
 	info_PtrTo_DNSConfigError = GoTypeInfo{Name: "*go.std.net/DNSConfigError",
 		GoType: &GoType{T: &info_PtrTo_DNSConfigError},
-		Ctor: _Wrapped_Ctor_DNSConfigError,
 		Members: GoMembers{
 		},
 	}
@@ -3383,7 +2452,6 @@ GO INFO FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 GO INFO FOR TYPE *go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 	info_PtrTo_DNSError = GoTypeInfo{Name: "*go.std.net/DNSError",
 		GoType: &GoType{T: &info_PtrTo_DNSError},
-		Ctor: _Wrapped_Ctor_DNSError,
 		Members: GoMembers{
 		},
 	}
@@ -3443,7 +2511,6 @@ GO INFO FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 GO INFO FOR TYPE *go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 	info_PtrTo_IPConn = GoTypeInfo{Name: "*go.std.net/IPConn",
 		GoType: &GoType{T: &info_PtrTo_IPConn},
-		Ctor: _Wrapped_Ctor_IPConn,
 		Members: GoMembers{
 		},
 	}
@@ -3493,7 +2560,6 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:55
 GO INFO FOR TYPE *go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	info_PtrTo_InvalidAddrError = GoTypeInfo{Name: "*go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_PtrTo_InvalidAddrError},
-		Ctor: _Wrapped_Ctor_InvalidAddrError,
 		Members: GoMembers{
 		},
 	}
@@ -3522,7 +2588,6 @@ GO INFO FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 GO INFO FOR TYPE *go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 	info_PtrTo_MX = GoTypeInfo{Name: "*go.std.net/MX",
 		GoType: &GoType{T: &info_PtrTo_MX},
-		Ctor: _Wrapped_Ctor_MX,
 		Members: GoMembers{
 		},
 	}
@@ -3540,7 +2605,6 @@ GO INFO FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 GO INFO FOR TYPE *go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 	info_PtrTo_NS = GoTypeInfo{Name: "*go.std.net/NS",
 		GoType: &GoType{T: &info_PtrTo_NS},
-		Ctor: _Wrapped_Ctor_NS,
 		Members: GoMembers{
 		},
 	}
@@ -3584,7 +2648,6 @@ GO INFO FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 GO INFO FOR TYPE *go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 	info_PtrTo_ParseError = GoTypeInfo{Name: "*go.std.net/ParseError",
 		GoType: &GoType{T: &info_PtrTo_ParseError},
-		Ctor: _Wrapped_Ctor_ParseError,
 		Members: GoMembers{
 		},
 	}
@@ -3618,7 +2681,6 @@ GO INFO FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 GO INFO FOR TYPE *go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 	info_PtrTo_SRV = GoTypeInfo{Name: "*go.std.net/SRV",
 		GoType: &GoType{T: &info_PtrTo_SRV},
-		Ctor: _Wrapped_Ctor_SRV,
 		Members: GoMembers{
 		},
 	}
@@ -3636,128 +2698,127 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go
 GO INFO FOR TYPE *go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	info_PtrTo_UnknownNetworkError = GoTypeInfo{Name: "*go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_PtrTo_UnknownNetworkError},
-		Ctor: _Wrapped_Ctor_UnknownNetworkError,
 		Members: GoMembers{
 		},
 	}
 
 
 GO VECSET FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
-	GoTypesVec[50] = &info_Addr
+	GoTypesVec[27] = &info_Addr
 
 GO VECSET FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
-	GoTypesVec[23] = &info_AddrError
+	GoTypesVec[0] = &info_AddrError
 
 GO VECSET FOR TYPE *go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 	GoTypesVec[0] = &info_PtrTo_AddrError
 
 GO VECSET FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
-	GoTypesVec[24] = &info_Buffers
+	GoTypesVec[1] = &info_Buffers
 
 GO VECSET FOR TYPE *go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
-	GoTypesVec[1] = &info_PtrTo_Buffers
+	GoTypesVec[0] = &info_PtrTo_Buffers
 
 GO VECSET FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
-	GoTypesVec[46] = &info_Conn
+	GoTypesVec[23] = &info_Conn
 
 GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
-	GoTypesVec[25] = &info_DNSConfigError
+	GoTypesVec[2] = &info_DNSConfigError
 
 GO VECSET FOR TYPE *go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
-	GoTypesVec[2] = &info_PtrTo_DNSConfigError
+	GoTypesVec[0] = &info_PtrTo_DNSConfigError
 
 GO VECSET FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
-	GoTypesVec[26] = &info_DNSError
+	GoTypesVec[3] = &info_DNSError
 
 GO VECSET FOR TYPE *go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
-	GoTypesVec[3] = &info_PtrTo_DNSError
+	GoTypesVec[0] = &info_PtrTo_DNSError
 
 GO VECSET FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
-	GoTypesVec[48] = &info_Error
+	GoTypesVec[25] = &info_Error
 
 GO VECSET FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
-	GoTypesVec[27] = &info_IP
+	GoTypesVec[4] = &info_IP
 
 GO VECSET FOR TYPE *go.std.net/IP from _tests/small/src/net/ip.go:32:6:
-	GoTypesVec[4] = &info_PtrTo_IP
+	GoTypesVec[0] = &info_PtrTo_IP
 
 GO VECSET FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
-	GoTypesVec[28] = &info_IPAddr
+	GoTypesVec[5] = &info_IPAddr
 
 GO VECSET FOR TYPE *go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
-	GoTypesVec[5] = &info_PtrTo_IPAddr
+	GoTypesVec[0] = &info_PtrTo_IPAddr
 
 GO VECSET FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
-	GoTypesVec[29] = &info_IPConn
+	GoTypesVec[6] = &info_IPConn
 
 GO VECSET FOR TYPE *go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
-	GoTypesVec[6] = &info_PtrTo_IPConn
+	GoTypesVec[0] = &info_PtrTo_IPConn
 
 GO VECSET FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
-	GoTypesVec[30] = &info_IPMask
+	GoTypesVec[7] = &info_IPMask
 
 GO VECSET FOR TYPE *go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
-	GoTypesVec[7] = &info_PtrTo_IPMask
+	GoTypesVec[0] = &info_PtrTo_IPMask
 
 GO VECSET FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
-	GoTypesVec[31] = &info_IPNet
+	GoTypesVec[8] = &info_IPNet
 
 GO VECSET FOR TYPE *go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
-	GoTypesVec[8] = &info_PtrTo_IPNet
+	GoTypesVec[0] = &info_PtrTo_IPNet
 
 GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
-	GoTypesVec[32] = &info_InvalidAddrError
+	GoTypesVec[9] = &info_InvalidAddrError
 
 GO VECSET FOR TYPE *go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
-	GoTypesVec[9] = &info_PtrTo_InvalidAddrError
+	GoTypesVec[0] = &info_PtrTo_InvalidAddrError
 
 GO VECSET FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
-	GoTypesVec[49] = &info_Listener
+	GoTypesVec[26] = &info_Listener
 
 GO VECSET FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
-	GoTypesVec[33] = &info_MX
+	GoTypesVec[10] = &info_MX
 
 GO VECSET FOR TYPE *go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
-	GoTypesVec[10] = &info_PtrTo_MX
+	GoTypesVec[0] = &info_PtrTo_MX
 
 GO VECSET FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
-	GoTypesVec[34] = &info_NS
+	GoTypesVec[11] = &info_NS
 
 GO VECSET FOR TYPE *go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
-	GoTypesVec[11] = &info_PtrTo_NS
+	GoTypesVec[0] = &info_PtrTo_NS
 
 GO VECSET FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
-	GoTypesVec[35] = &info_OpError
+	GoTypesVec[12] = &info_OpError
 
 GO VECSET FOR TYPE *go.std.net/OpError from _tests/small/src/net/net.go:425:6:
-	GoTypesVec[12] = &info_PtrTo_OpError
+	GoTypesVec[0] = &info_PtrTo_OpError
 
 GO VECSET FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
-	GoTypesVec[47] = &info_PacketConn
+	GoTypesVec[24] = &info_PacketConn
 
 GO VECSET FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
-	GoTypesVec[36] = &info_ParseError
+	GoTypesVec[13] = &info_ParseError
 
 GO VECSET FOR TYPE *go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
-	GoTypesVec[13] = &info_PtrTo_ParseError
+	GoTypesVec[0] = &info_PtrTo_ParseError
 
 GO VECSET FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
-	GoTypesVec[37] = &info_Resolver
+	GoTypesVec[14] = &info_Resolver
 
 GO VECSET FOR TYPE *go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
-	GoTypesVec[14] = &info_PtrTo_Resolver
+	GoTypesVec[0] = &info_PtrTo_Resolver
 
 GO VECSET FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
-	GoTypesVec[38] = &info_SRV
+	GoTypesVec[15] = &info_SRV
 
 GO VECSET FOR TYPE *go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
-	GoTypesVec[15] = &info_PtrTo_SRV
+	GoTypesVec[0] = &info_PtrTo_SRV
 
 GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
-	GoTypesVec[39] = &info_UnknownNetworkError
+	GoTypesVec[16] = &info_UnknownNetworkError
 
 GO VECSET FOR TYPE *go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
-	GoTypesVec[16] = &info_PtrTo_UnknownNetworkError
+	GoTypesVec[0] = &info_PtrTo_UnknownNetworkError
 
 GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/small/src/net/iprawsock.go:8:2
@@ -3797,51 +2858,6 @@ func ExtractGoObjectError(args []Object, index int) *url.Error {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Error]"))
-}
-
-func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (res url.Error) {
-	a := CheckGoNth(rcvr, "go.std.net.url/Error", arg, args, n).O
-	res, ok := a.(url.Error)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/Error], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _mapToError(o Map) *url.Error {
-	return &url.Error{
-		Op: FieldAsString(o, "Op"),
-		URL: FieldAsString(o, "URL"),
-		Err: FieldAsError(o, "Err"),
-	}
-}
-
-func _Ctor_Error(_v Object) *url.Error {
-	switch _o := _v.(type) {
-	case *ArrayMap, *HashMap:
-		return _mapToError(_o.(Map))
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Error] or: Map"))
-}
-
-func _Wrapped_Ctor_Error(_o Object) Object {
-	return MakeGoObject(_Ctor_Error(_o))
-}
-
-GO TYPE *net/url.Error from net/url/url.go:
-func ExtractGoObjectError(args []Object, index int) *url.Error {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case url.Error:
-			return &r
-		case *url.Error:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.Error]"))
 }
 
 func ExtractGo_go_std_net_url__Error(rcvr, arg string, args *ArraySeq, n int) (res url.Error) {
@@ -3914,46 +2930,6 @@ func _Wrapped_Ctor_EscapeError(_o Object) Object {
 	return MakeGoObject(_Ctor_EscapeError(_o))
 }
 
-GO TYPE *net/url.EscapeError from net/url/url.go:
-func ExtractGoObjectEscapeError(args []Object, index int) *url.EscapeError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case url.EscapeError:
-			return &r
-		case *url.EscapeError:
-			return r
-		}
-	case String:
-		v := url.EscapeError(ExtractString(args, index))
-		return &v
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.EscapeError]"))
-}
-
-func ExtractGo_go_std_net_url__EscapeError(rcvr, arg string, args *ArraySeq, n int) (res url.EscapeError) {
-	a := CheckGoNth(rcvr, "go.std.net.url/EscapeError", arg, args, n).O
-	res, ok := a.(url.EscapeError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/EscapeError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _Ctor_EscapeError(_v Object) url.EscapeError {
-	switch _o := _v.(type) {
-	case String:
-		return url.EscapeError(_o.S)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.EscapeError] or: String"))
-}
-
-func _Wrapped_Ctor_EscapeError(_o Object) Object {
-	return MakeGoObject(_Ctor_EscapeError(_o))
-}
-
 GO TYPE net/url.InvalidHostError from net/url/url.go:
 func ExtractGoObjectInvalidHostError(args []Object, index int) *url.InvalidHostError {
 	a := args[index]
@@ -3994,46 +2970,6 @@ func _Wrapped_Ctor_InvalidHostError(_o Object) Object {
 	return MakeGoObject(_Ctor_InvalidHostError(_o))
 }
 
-GO TYPE *net/url.InvalidHostError from net/url/url.go:
-func ExtractGoObjectInvalidHostError(args []Object, index int) *url.InvalidHostError {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case url.InvalidHostError:
-			return &r
-		case *url.InvalidHostError:
-			return r
-		}
-	case String:
-		v := url.InvalidHostError(ExtractString(args, index))
-		return &v
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.InvalidHostError]"))
-}
-
-func ExtractGo_go_std_net_url__InvalidHostError(rcvr, arg string, args *ArraySeq, n int) (res url.InvalidHostError) {
-	a := CheckGoNth(rcvr, "go.std.net.url/InvalidHostError", arg, args, n).O
-	res, ok := a.(url.InvalidHostError)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/InvalidHostError], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-func _Ctor_InvalidHostError(_v Object) url.InvalidHostError {
-	switch _o := _v.(type) {
-	case String:
-		return url.InvalidHostError(_o.S)
-	}
-	panic(RT.NewArgTypeError(0, _v, "GoObject[url.InvalidHostError] or: String"))
-}
-
-func _Wrapped_Ctor_InvalidHostError(_o Object) Object {
-	return MakeGoObject(_Ctor_InvalidHostError(_o))
-}
-
 GO TYPE net/url.URL from net/url/url.go:
 func ExtractGoObjectURL(args []Object, index int) *url.URL {
 	a := args[index]
@@ -4047,57 +2983,6 @@ func ExtractGoObjectURL(args []Object, index int) *url.URL {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
-}
-
-func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res url.URL) {
-	a := CheckGoNth(rcvr, "go.std.net.url/URL", arg, args, n).O
-	res, ok := a.(url.URL)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/URL], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _mapToURL(o Map) *url.URL {
-// 	return &url.URL{
-// 		Scheme: FieldAsString(o, "Scheme"),
-// 		Opaque: FieldAsString(o, "Opaque"),
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (-)),
-// 		Host: FieldAsString(o, "Host"),
-// 		Path: FieldAsString(o, "Path"),
-// 		RawPath: FieldAsString(o, "RawPath"),
-// 		ForceQuery: FieldAsBoolean(o, "ForceQuery"),
-// 		RawQuery: FieldAsString(o, "RawQuery"),
-// 		Fragment: FieldAsString(o, "Fragment"),
-// 	}
-// }
-
-// func _Ctor_URL(_v Object) *url.URL {
-// 	switch _o := _v.(type) {
-// 	case *ArrayMap, *HashMap:
-// 		return _mapToURL(_o.(Map))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map"))
-// }
-
-// func _Wrapped_Ctor_URL(_o Object) Object {
-// 	return MakeGoObject(_Ctor_URL(_o))
-// }
-
-GO TYPE *net/url.URL from net/url/url.go:
-func ExtractGoObjectURL(args []Object, index int) *url.URL {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case url.URL:
-			return &r
-		case *url.URL:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.URL]"))
 }
 
 func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res url.URL) {
@@ -4174,43 +3059,6 @@ func ExtractGoObjectValues(args []Object, index int) *url.Values {
 		}
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Values]"))
-}
-
-func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (res url.Values) {
-	a := CheckGoNth(rcvr, "go.std.net.url/Values", arg, args, n).O
-	res, ok := a.(url.Values)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[go.std.net.url/Values], but is GoObject[%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-
-// func _Ctor_Values(_v Object) url.Values {
-// 	switch _o := _v.(type) {
-// 	default:
-// 		return _url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
-// 	}
-// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
-// }
-
-// func _Wrapped_Ctor_Values(_o Object) Object {
-// 	return MakeGoObject(_Ctor_Values(_o))
-// }
-
-GO TYPE *net/url.Values from net/url/url.go:
-func ExtractGoObjectValues(args []Object, index int) *url.Values {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-		case url.Values:
-			return &r
-		case *url.Values:
-			return r
-		}
-	}
-	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.Values]"))
 }
 
 func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (res url.Values) {
@@ -4515,7 +3363,6 @@ GO INFO FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 GO INFO FOR TYPE *go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net.url/Error",
 		GoType: &GoType{T: &info_PtrTo_Error},
-		Ctor: _Wrapped_Ctor_Error,
 		Members: GoMembers{
 		},
 	}
@@ -4533,7 +3380,6 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go
 GO INFO FOR TYPE *go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	info_PtrTo_EscapeError = GoTypeInfo{Name: "*go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_PtrTo_EscapeError},
-		Ctor: _Wrapped_Ctor_EscapeError,
 		Members: GoMembers{
 		},
 	}
@@ -4551,7 +3397,6 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/u
 GO INFO FOR TYPE *go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	info_PtrTo_InvalidHostError = GoTypeInfo{Name: "*go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_PtrTo_InvalidHostError},
-		Ctor: _Wrapped_Ctor_InvalidHostError,
 		Members: GoMembers{
 		},
 	}
@@ -4585,7 +3430,6 @@ GO INFO FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:37
 GO INFO FOR TYPE *go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
 	info_PtrTo_Userinfo = GoTypeInfo{Name: "*go.std.net.url/Userinfo",
 		GoType: &GoType{T: &info_PtrTo_Userinfo},
-		Ctor: _Wrapped_Ctor_Userinfo,
 		Members: GoMembers{
 		},
 	}
@@ -4608,40 +3452,40 @@ GO INFO FOR TYPE *go.std.net.url/Values from _tests/small/src/net/url/url.go:804
 
 
 GO VECSET FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
-	GoTypesVec[40] = &info_Error
+	GoTypesVec[17] = &info_Error
 
 GO VECSET FOR TYPE *go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
-	GoTypesVec[17] = &info_PtrTo_Error
+	GoTypesVec[0] = &info_PtrTo_Error
 
 GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
-	GoTypesVec[41] = &info_EscapeError
+	GoTypesVec[18] = &info_EscapeError
 
 GO VECSET FOR TYPE *go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
-	GoTypesVec[18] = &info_PtrTo_EscapeError
+	GoTypesVec[0] = &info_PtrTo_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
-	GoTypesVec[42] = &info_InvalidHostError
+	GoTypesVec[19] = &info_InvalidHostError
 
 GO VECSET FOR TYPE *go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
-	GoTypesVec[19] = &info_PtrTo_InvalidHostError
+	GoTypesVec[0] = &info_PtrTo_InvalidHostError
 
 GO VECSET FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
-	GoTypesVec[43] = &info_URL
+	GoTypesVec[20] = &info_URL
 
 GO VECSET FOR TYPE *go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
-	GoTypesVec[20] = &info_PtrTo_URL
+	GoTypesVec[0] = &info_PtrTo_URL
 
 GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
-	GoTypesVec[44] = &info_Userinfo
+	GoTypesVec[21] = &info_Userinfo
 
 GO VECSET FOR TYPE *go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
-	GoTypesVec[21] = &info_PtrTo_Userinfo
+	GoTypesVec[0] = &info_PtrTo_Userinfo
 
 GO VECSET FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
-	GoTypesVec[45] = &info_Values
+	GoTypesVec[22] = &info_Values
 
 GO VECSET FOR TYPE *go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
-	GoTypesVec[22] = &info_PtrTo_Values
+	GoTypesVec[0] = &info_PtrTo_Values
 
 GO ENSURE-LOADED FOR url:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/small/src/net/url/url.go:14:2
@@ -4663,7 +3507,7 @@ import (
 func initNative() {
 }
 
-Adding only 51 types (out of 52) to core/goswitch.go
+Adding only 28 types (out of 52) to core/goswitch.go
 Generated file goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
 
@@ -4674,121 +3518,75 @@ import (
 	"net/url"
 )
 
-var GoTypesVec [51]*GoTypeInfo
+var GoTypesVec [28]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case *net.AddrError:
-		return 0
-	case *net.Buffers:
-		return 1
-	case *net.DNSConfigError:
-		return 2
-	case *net.DNSError:
-		return 3
-	case *net.IP:
-		return 4
-	case *net.IPAddr:
-		return 5
-	case *net.IPConn:
-		return 6
-	case *net.IPMask:
-		return 7
-	case *net.IPNet:
-		return 8
-	case *net.InvalidAddrError:
-		return 9
-	case *net.MX:
-		return 10
-	case *net.NS:
-		return 11
-	case *net.OpError:
-		return 12
-	case *net.ParseError:
-		return 13
-	case *net.Resolver:
-		return 14
-	case *net.SRV:
-		return 15
-	case *net.UnknownNetworkError:
-		return 16
-	case *url.Error:
-		return 17
-	case *url.EscapeError:
-		return 18
-	case *url.InvalidHostError:
-		return 19
-	case *url.URL:
-		return 20
-	case *url.Userinfo:
-		return 21
-	case *url.Values:
-		return 22
 	case net.AddrError:
-		return 23
+		return 0
 	case net.Buffers:
-		return 24
+		return 1
 	case net.DNSConfigError:
-		return 25
+		return 2
 	case net.DNSError:
-		return 26
+		return 3
 	case net.IP:
-		return 27
+		return 4
 	case net.IPAddr:
-		return 28
+		return 5
 	case net.IPConn:
-		return 29
+		return 6
 	case net.IPMask:
-		return 30
+		return 7
 	case net.IPNet:
-		return 31
+		return 8
 	case net.InvalidAddrError:
-		return 32
+		return 9
 	case net.MX:
-		return 33
+		return 10
 	case net.NS:
-		return 34
+		return 11
 	case net.OpError:
-		return 35
+		return 12
 	case net.ParseError:
-		return 36
+		return 13
 	case net.Resolver:
-		return 37
+		return 14
 	case net.SRV:
-		return 38
+		return 15
 	case net.UnknownNetworkError:
-		return 39
+		return 16
 	case url.Error:
-		return 40
+		return 17
 	case url.EscapeError:
-		return 41
+		return 18
 	case url.InvalidHostError:
-		return 42
+		return 19
 	case url.URL:
-		return 43
+		return 20
 	case url.Userinfo:
-		return 44
+		return 21
 	case url.Values:
-		return 45
+		return 22
 	case net.Conn:  // Specificity=8
-		return 46
+		return 23
 	case net.PacketConn:  // Specificity=7
-		return 47
+		return 24
 	case net.Error:  // Specificity=3
-		return 48
+		return 25
 	case net.Listener:  // Specificity=3
-		return 49
+		return 26
 	case net.Addr:  // Specificity=2
-		return 50
+		return 27
 	}
 	return -1
 }
-ABENDs: 644(34) 048(12) 001(10) 041(8) 674(8) 275(3) 049(2) 124(1)
+ABENDs: 644(34) 048(6) 001(5) 041(4) 674(4) 275(3) 049(1) 124(1)
 Totals: functions=132 generated=98 (74.24%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
           receivers=83 (62.88%) generated=60 (72.29%)
           methods=23 (17.42%) generated=12 (52.17%)
         types=51
-          constructable=46 ctors=28 (60.87%)
+          constructable=46 ctors=14 (30.43%)
         constants=2 generated=2 (100.00%)
         variables=12 generated=12 (100.00%)

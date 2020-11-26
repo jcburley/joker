@@ -33,7 +33,8 @@ type TypeInfo interface {
 	GoPattern() string
 	GoName() string // TODO: Rename to GoLocalName
 	GoTypeInfo() *gtypes.Info
-	TypeSpec() *TypeSpec  // Definition, if any, of named type
+	TypeSpec() *TypeSpec // Definition, if any, of named type
+	UnderlyingTypeInfo() TypeInfo
 	UnderlyingType() Expr // nil if not a declared type
 	GoFile() *godb.GoFile
 	DefPos() token.Pos
@@ -291,7 +292,7 @@ func (ti typeInfo) ConvertToClojure() string {
 }
 
 func (ti typeInfo) Custom() bool {
-	return ti.TypeSpec() != nil
+	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
 }
 
 func (ti typeInfo) AsJokerObject() string {
@@ -344,6 +345,14 @@ func (ti typeInfo) GoTypeInfo() *gtypes.Info { // TODO: Remove when gotypes.go i
 
 func (ti typeInfo) TypeSpec() *TypeSpec {
 	return ti.gti.TypeSpec
+}
+
+func (ti typeInfo) UnderlyingTypeInfo() TypeInfo {
+	ut := ti.gti.UnderlyingType
+	if ut == nil {
+		return nil
+	}
+	return typesByExpr[ut.Expr]
 }
 
 func (ti typeInfo) UnderlyingType() Expr {

@@ -221,7 +221,6 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 		tiPtrTo := &Info{
 			who:            "*TypeDefine*",
 			Type:           &StarExpr{X: ti.Type},
-			TypeSpec:       ts,
 			IsExported:     ti.IsExported,
 			Doc:            ti.Doc,
 			DefPos:         ti.DefPos,
