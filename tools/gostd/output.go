@@ -113,16 +113,13 @@ func updateCustomLibsJoker(pkgs []string, f string) {
 }
 
 var Ordinal = map[TypeInfo]uint{}
+var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
 func updateGoTypeSwitch(allTypes []TypeInfo, f string, outputCode bool) {
-	types := make([]TypeInfo, len(allTypes))
-
-	for ix, t := range allTypesSorted {
-		types[ix] = t
-	}
+	types := SwitchableTypes
 
 	if Verbose {
-		fmt.Printf("Adding only %d types to %s\n", len(types), filepath.ToSlash(f))
+		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
 	}
 
 	var pattern string

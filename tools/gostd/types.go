@@ -412,12 +412,6 @@ func SortAllTypes() {
 		}
 		return i_gti.FullName < j_gti.FullName
 	})
-
-	ord := (uint)(0)
-	for _, t := range allTypesSorted {
-		Ordinal[t] = ord
-		ord++
-	}
 }
 
 func AllTypesSorted() []TypeInfo {

@@ -295,9 +295,7 @@ func main() {
 
 	SortAllTypes()
 
-	for _, ti := range AllTypesSorted() {
-		GenTypeFromDb(ti)
-	}
+	GenTypeInfo()
 
 	SortedConstantInfoMap(GoConstants,
 		func(c string, ci *ConstantInfo) {

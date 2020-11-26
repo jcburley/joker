@@ -540,6 +540,25 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 	}
 }
 
+func GenTypeInfo() {
+	allTypes := AllTypesSorted()
+
+	for _, ti := range allTypes {
+		GenTypeFromDb(ti)
+	}
+
+	types := make([]TypeInfo, len(allTypes))
+	ord := (uint)(0)
+
+	for ix, t := range allTypesSorted {
+		types[ix] = t
+		Ordinal[t] = ord
+		ord++
+	}
+
+	SwitchableTypes = types
+}
+
 func GenTypeFromDb(ti TypeInfo) {
 	if !ti.IsExported() || strings.Contains(ti.JokerName(), "[") {
 		return // Do not generate anything for private or array types
