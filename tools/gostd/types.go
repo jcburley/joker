@@ -217,8 +217,8 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 	case *Ident:
 		//		fmt.Fprintf(os.Stderr, "conversions(Ident:%+v)\n", v)
 		if ti := TypeInfoForGoName(v.Name); ti != nil {
-			if ts := ti.TypeSpec(); ts != nil {
-				uti := TypeInfoForExpr(ts.Type)
+			if ti.Custom() {
+				uti := TypeInfoForExpr(ti.TypeSpec().Type)
 				if uti.ConvertFromClojure() != "" {
 					fromClojure = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoName(), uti.ConvertFromClojure())
 				}

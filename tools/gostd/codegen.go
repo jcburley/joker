@@ -554,7 +554,7 @@ func GenTypeInfo() {
 	ord := (uint)(0)
 
 	for _, t := range allTypesSorted {
-		if t.UnderlyingType() != nil || t.TypeSpec() == nil {
+		if t.UnderlyingType() != nil || !t.Custom() {
 			continue
 		}
 		types = append(types, t)

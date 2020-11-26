@@ -248,7 +248,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 
 	SortedTypeInfoMap(v.Types,
 		func(t string, ti TypeInfo) {
-			if ti.TypeSpec() == nil {
+			if !ti.Custom() {
 				return
 			}
 			if outputCode {
@@ -272,7 +272,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
-			if ti.TypeSpec() == nil {
+			if !ti.Custom() {
 				return
 			}
 			tmn := ti.TypeMappingsName()
@@ -366,7 +366,7 @@ import (%s
 
 	SortedTypeInfoMap(v.Types,
 		func(t string, ti TypeInfo) {
-			if ti.TypeSpec() == nil {
+			if !ti.Custom() {
 				return
 			}
 			ctor := ""
