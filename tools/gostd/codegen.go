@@ -351,6 +351,9 @@ func GenVariable(vi *VariableInfo) {
 
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) string {
 	t := TypeInfoForExpr(ts.Type)
+	if t.Custom() {
+		return ""
+	}
 	argType := t.ArgClojureArgType()
 	declType := t.ArgExtractFunc()
 	if declType == "" {
@@ -547,11 +550,14 @@ func GenTypeInfo() {
 		GenTypeFromDb(ti)
 	}
 
-	types := make([]TypeInfo, len(allTypes))
+	var types []TypeInfo
 	ord := (uint)(0)
 
-	for ix, t := range allTypesSorted {
-		types[ix] = t
+	for _, t := range allTypesSorted {
+		if t.UnderlyingType() != nil || t.TypeSpec() == nil {
+			continue
+		}
+		types = append(types, t)
 		Ordinal[t] = ord
 		ord++
 	}
