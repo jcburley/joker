@@ -353,7 +353,7 @@ var Float32 = &Info{
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	JokerNameDoc:         "Double",
 	AsJokerObject:        "Double(float64(%s)%s)",
-	PromoteType:          "double(%s)",
+	PromoteType:          "float64(%s)",
 }
 
 var Float64 = &Info{

@@ -85,6 +85,7 @@ type funcCode struct {
 	clojureReturnType       string
 	clojureReturnTypeForDoc string
 	goReturnTypeForDoc      string
+	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
 
 /* IMPORTANT: The public functions listed herein should be only those
@@ -111,7 +112,7 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
 		genGoPre(fn, "\t", t.Params, goFname)
 	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
-	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", t)
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\treturn NIL\n"
@@ -148,7 +149,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.Ft)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Ft)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -278,6 +279,9 @@ func GenStandalone(fn *FuncInfo) {
 		}
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
+	if fc.conversion != "" {
+		cl2golCall = fmt.Sprintf(fc.conversion, cl2golCall)
+	}
 
 	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
 		"  "+CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
