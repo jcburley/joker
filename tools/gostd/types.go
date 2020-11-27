@@ -20,7 +20,6 @@ type TypeInfo interface {
 	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure() string   // TODO: REMOVE, UNUSED?? Pattern to convert a (scalar) %s to this type
 	ConvertFromMap() string       // Pattern to convert a map %s key %s to this type
-	ConvertToClojure() string     // Pattern to convert this type to an appropriate Clojure object
 	Custom() bool                 // Whether this is defined by the codebase vs either builtin or derived
 	AsJokerObject() string        // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
 	JokerName() string            // TODO: Rename to JokerFullName
@@ -239,10 +238,6 @@ func (ti typeInfo) ConvertFromClojure() string {
 
 func (ti typeInfo) ConvertFromMap() string {
 	return ti.jti.ConvertFromMap
-}
-
-func (ti typeInfo) ConvertToClojure() string {
-	return ti.jti.ConvertToClojure
 }
 
 func (ti typeInfo) Custom() bool {

@@ -21,7 +21,6 @@ type Info struct {
 	ArgClojureArgType    string // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure   string // Pattern to convert a (scalar) %s to this type
 	ConvertFromMap       string // Pattern to convert a map %s key %s to this type
-	ConvertToClojure     string // Pattern to convert this type to an appropriate Clojure object
 	JokerNameDoc         string // Full name of type as a Joker expression (for documentation)
 	AsJokerObject        string // Pattern to convert this type to a normal Joker type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
@@ -48,7 +47,6 @@ func TypeDefine(jokerName, fullJokerName, goTypeName string) *Info {
 		Who:               "TypeDefine",
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: fullJokerName,
-		ConvertToClojure:  "GoObject(%s%s)",
 		JokerNameDoc:      jokerName,
 		AsJokerObject:     "GoObject(%s%s)",
 	}
@@ -109,7 +107,6 @@ func TypeForExpr(e Expr) *Info {
 	}
 
 	convertFromClojure, convertFromMap := ConversionsFn(e)
-	convertToClojure := "GoObject(%s%s)"
 
 	info = &Info{
 		Expr:               e,
@@ -120,7 +117,6 @@ func TypeForExpr(e Expr) *Info {
 		Namespace:          ns,
 		ConvertFromClojure: convertFromClojure,
 		ConvertFromMap:     convertFromMap,
-		ConvertToClojure:   convertToClojure,
 	}
 
 	typesByExpr[e] = info
@@ -144,7 +140,6 @@ var Error = &Info{
 	ArgExtractFunc:       "Error",
 	ArgClojureArgType:    "Error",
 	ConvertFromMap:       `FieldAsError(%s, %s)`,
-	ConvertToClojure:     "Error(%s%s)",
 	JokerNameDoc:         "Error",
 	AsJokerObject:        "Error(%s%s)",
 	PromoteType:          "%s",
@@ -157,7 +152,6 @@ var Boolean = &Info{
 	ArgExtractFunc:       "Boolean",
 	ArgClojureArgType:    "Boolean",
 	ConvertFromMap:       "FieldAsBoolean(%s, %s)",
-	ConvertToClojure:     "Boolean(%s%s)",
 	JokerNameDoc:         "Boolean",
 	AsJokerObject:        "Boolean(%s%s)",
 	PromoteType:          "%s",
@@ -170,7 +164,6 @@ var Byte = &Info{
 	ArgExtractFunc:       "Byte",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsByte(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Byte",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -183,7 +176,6 @@ var Rune = &Info{
 	ArgExtractFunc:       "Char",
 	ArgClojureArgType:    "Char",
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
-	ConvertToClojure:     "Char(%s%s)",
 	JokerNameDoc:         "Char",
 	AsJokerObject:        "Char(%s%s)",
 	PromoteType:          "%s",
@@ -196,7 +188,6 @@ var String = &Info{
 	ArgExtractFunc:       "String",
 	ArgClojureArgType:    "String",
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
-	ConvertToClojure:     "String(%s%s)",
 	JokerNameDoc:         "String",
 	AsJokerObject:        "String(%s%s)",
 	PromoteType:          "%s",
@@ -209,7 +200,6 @@ var Int = &Info{
 	ArgExtractFunc:       "Int",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
-	ConvertToClojure:     "Int(%s%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(%s%s)",
 	PromoteType:          "%s",
@@ -222,7 +212,6 @@ var Int8 = &Info{
 	ArgExtractFunc:       "Int8",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -235,7 +224,6 @@ var Int16 = &Info{
 	ArgExtractFunc:       "Int16",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -248,7 +236,6 @@ var Int32 = &Info{
 	ArgExtractFunc:       "Int32",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt32(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -261,7 +248,6 @@ var Int64 = &Info{
 	ArgExtractFunc:       "Int64",
 	ArgClojureArgType:    "BigInt",
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
-	ConvertToClojure:     "BigInt(%s%s)",
 	JokerNameDoc:         "BigInt",
 	AsJokerObject:        "BigInt(%s%s)",
 	PromoteType:          "int64(%s)",
@@ -274,7 +260,6 @@ var UInt = &Info{
 	ArgExtractFunc:       "Uint",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
-	ConvertToClojure:     "BigIntU(uint64(%s)%s)",
 	JokerNameDoc:         "Number",
 	AsJokerObject:        "BigIntU(uint64(%s)%s)",
 	PromoteType:          "uint64(%s)",
@@ -287,7 +272,6 @@ var UInt8 = &Info{
 	ArgExtractFunc:       "Uint8",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -300,7 +284,6 @@ var UInt16 = &Info{
 	ArgExtractFunc:       "Uint16",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint16(%s, %s)`,
-	ConvertToClojure:     "Int(int(%s)%s)",
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
@@ -313,7 +296,6 @@ var UInt32 = &Info{
 	ArgExtractFunc:       "Uint32",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
-	ConvertToClojure:     "BigIntU(uint64(%s)%s)",
 	JokerNameDoc:         "Number",
 	AsJokerObject:        "BigIntU(uint64(%s)%s)",
 	PromoteType:          "int64(%s)",
@@ -326,7 +308,6 @@ var UInt64 = &Info{
 	ArgExtractFunc:       "Uint64",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
-	ConvertToClojure:     "BigIntU(%s%s)",
 	JokerNameDoc:         "Number",
 	AsJokerObject:        "BigIntU(%s%s)",
 	PromoteType:          "uint64(%s)",
@@ -341,7 +322,7 @@ var UIntPtr = &Info{
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	JokerNameDoc:         "Number",
 	AsJokerObject:        "BigIntU(%s%s)",
-	PromoteType:          "int64(%s)",
+	PromoteType:          "uint64(%s)",
 }
 
 var Float32 = &Info{
