@@ -82,20 +82,13 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		jokerName := fmt.Sprintf(gti.Pattern, prefix+name)
 
+		jti := jtypes.TypeDefine(jokerName, FullTypeNameAsClojure(gf.Package.NsRoot, goTypeName), goTypeName)
+
 		ti := &typeInfo{
-			jti: &jtypes.Info{
-				FullName:          jokerName,
-				ArgExtractFunc:    "Object",
-				ArgClojureArgType: FullTypeNameAsClojure(gf.Package.NsRoot, goTypeName),
-				ConvertToClojure:  "GoObject(%s%s)",
-				JokerNameDoc:      jokerName,
-				AsJokerObject:     "GoObject(%s%s)",
-			},
+			jti:             jti,
 			gti:             gti,
 			requiredImports: imports,
 		}
-
-		ti.jti.Register() // Since we built the object here, register it there.
 
 		typesByGoName[ti.GoDecl()] = ti
 		typesByJokerName[ti.JokerName()] = ti
@@ -114,21 +107,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	}
 
 	return true
-}
-
-func BadInfo(err string) typeInfo {
-	return typeInfo{
-		jti: &jtypes.Info{
-			ArgClojureType:       err,
-			ArgFromClojureObject: err,
-			ArgExtractFunc:       err,
-			ArgClojureArgType:    err,
-			ConvertFromClojure:   err + "%0s%0s",
-			ConvertToClojure:     err + "%0s%0s",
-			AsJokerObject:        err + "%0s%0s",
-			IsUnsupported:        true,
-		},
-	}
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {

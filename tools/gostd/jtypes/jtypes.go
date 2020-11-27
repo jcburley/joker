@@ -42,6 +42,22 @@ func combine(ns, name string) string {
 	return ns + "/" + name
 }
 
+func TypeDefine(jokerName, fullJokerName, goTypeName string) *Info {
+	jti := &Info{
+		FullName:          jokerName,
+		ArgExtractFunc:    "Object",
+		ArgClojureArgType: fullJokerName,
+		ConvertToClojure:  "GoObject(%s%s)",
+		JokerNameDoc:      jokerName,
+		AsJokerObject:     "GoObject(%s%s)",
+	}
+
+	jti.Register()
+
+	return jti
+
+}
+
 func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	switch v := e.(type) {
 	case *Ident:
