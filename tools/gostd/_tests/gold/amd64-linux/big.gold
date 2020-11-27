@@ -7446,7 +7446,7 @@ func ExtractGoObjectConnState(args []Object, index int) *http.ConnState {
 		case *http.ConnState:
 			return r
 		}
-	case Int:
+	case Number:
 		v := http.ConnState(ExtractInt(args, index))
 		return &v
 	}
@@ -8004,7 +8004,7 @@ func ExtractGoObjectSameSite(args []Object, index int) *http.SameSite {
 		case *http.SameSite:
 			return r
 		}
-	case Int:
+	case Number:
 		v := http.SameSite(ExtractInt(args, index))
 		return &v
 	}

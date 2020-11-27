@@ -359,7 +359,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) strin
 	if t.Custom() {
 		return ""
 	}
-	argType := t.ArgClojureArgType()
+	argType := t.ArgClojureType()
 	declType := t.ArgExtractFunc()
 	if declType == "" {
 		return ""
