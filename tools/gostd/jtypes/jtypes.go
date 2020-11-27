@@ -321,7 +321,7 @@ var UIntPtr = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	JokerNameDoc:         "Number",
-	AsJokerObject:        "BigIntU(%s%s)",
+	AsJokerObject:        "BigIntU(uint64(%s)%s)",
 	PromoteType:          "uint64(%s)",
 }
 
