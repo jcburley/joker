@@ -146,6 +146,14 @@ func ClojureNamespaceForDirname(d string) string {
 	return ReplaceAll(pkg, "/", ".")
 }
 
+func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
+	if fullPkgName, found := (*g.Spaces)[pkg]; found {
+		return ReplaceAll(fullPkgName.String(), "/", ".")
+	}
+	panic(fmt.Sprintf("could not find %s in %s",
+		pkg, g.Name))
+}
+
 func GoPackageBaseName(e Expr) string {
 	return path.Base(path.Dir(filepath.ToSlash(Fset.Position(e.Pos()).Filename)))
 }
@@ -187,8 +195,8 @@ func GoFileForPos(p token.Pos) *GoFile {
 	gf, ok := GoFilesAbsolute[fullPathUnix]
 
 	if !ok {
-		panic(fmt.Sprintf("could not find referring file %s for file %s at %s",
-			"???", fullPathUnix, WhereAt(p)))
+		panic(fmt.Sprintf("could not find referring file %s at %s",
+			fullPathUnix, WhereAt(p)))
 	}
 
 	return gf

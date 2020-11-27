@@ -3,7 +3,6 @@ package jtypes
 import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/types"
 )
@@ -77,13 +76,7 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 		return ns, "refTo" + name, nil
 	case *SelectorExpr:
 		pkgName := v.X.(*Ident).Name
-		fullPathUnix := Unix(FileAt(v.Pos()))
-		rf := GoFileForExpr(v)
-		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
-			return fullPkgName.String(), v.Sel.Name, nil
-		}
-		panic(fmt.Sprintf("processing %s: could not find %s in %s",
-			WhereAt(v.Pos()), pkgName, fullPathUnix))
+		return ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v)), v.Sel.Name, nil
 	default:
 		return "", "GoObject", nil
 	}
@@ -120,6 +113,7 @@ func TypeForExpr(e Expr) *Info {
 		Expr:               e,
 		FullName:           fullName,
 		JokerNameDoc:       fullName,
+		ArgClojureArgType:  fullName,
 		Namespace:          ns,
 		ConvertFromClojure: convertFromClojure,
 		ConvertFromMap:     convertFromMap,

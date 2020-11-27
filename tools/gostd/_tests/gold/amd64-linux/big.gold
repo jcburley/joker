@@ -2201,7 +2201,7 @@ JOKER FUNC net/http.PostForm from net/http/client.go:
 
 JOKER FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 (defn ProxyFromEnvironment
-  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo return type: (*net/url.URL, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [net/url/refToURL Error]"
+  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo return type: (*net/url.URL, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [net.url/refToURL Error]"
   {:added "1.0"
    :go "_f_proxyFromEnvironment(_v_req)"}
   [^go.std.net.http/Request _v_req])
@@ -2502,14 +2502,14 @@ JOKER TYPE go.std.net.http/Transport:
 JOKER TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 JOKER FUNC net/http/cgi.Request from net/http/cgi/child.go:
 (defn Request
-  "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [net/http/refToRequest Error]"
+  "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [net.http/refToRequest Error]"
   {:added "1.0"
    :go "_f_request()"}
   [])
 
 JOKER FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 ;; (defn RequestFromMap
-;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [net/http/refToRequest Error]"
+;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [net.http/refToRequest Error]"
 ;;   {:added "1.0"
 ;;    :go "_f_requestFromMap(ABEND908(pre.go: custom-runtime routine not implemented: ConvertToMapTypeHaHa()))"}
 ;;   [^{} _v_params])
@@ -2614,7 +2614,7 @@ JOKER FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 
 JOKER FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
 (defn NewRequest
-  "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body io.Reader)\n\nGo return type: *net/http.Request\n\nJoker input arguments: [^String method, ^String target, ^go.std.io/Reader body]\n\nJoker return type: net/http/refToRequest"
+  "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body io.Reader)\n\nGo return type: *net/http.Request\n\nJoker input arguments: [^String method, ^String target, ^go.std.io/Reader body]\n\nJoker return type: net.http/refToRequest"
   {:added "1.0"
    :go "_f_newRequest(_v_method, _v_target, *_v_body)"}
   [^String _v_method, ^String _v_target, ^go.std.io/Reader _v_body])
@@ -2856,7 +2856,7 @@ JOKER FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
 
 JOKER FUNC net/http/pprof.Handler from net/http/pprof/pprof.go:
 (defn Handler
-  "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: net/http.Handler\n\nJoker input arguments: [^String name]\n\nJoker return type: net/http/Handler"
+  "Handler returns an HTTP handler that serves the named profile.\n\nGo input arguments: (name string)\n\nGo return type: net/http.Handler\n\nJoker input arguments: [^String name]\n\nJoker return type: net.http/Handler"
   {:added "1.0"
    :go "_f_handler(_v_name)"}
   [^String _v_name])
@@ -3162,28 +3162,28 @@ JOKER TYPE go.std.net.rpc/ServerError:
 
 JOKER FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 (defn Dial
-  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [net/rpc/refToClient Error]"
+  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [net.rpc/refToClient Error]"
   {:added "1.0"
    :go "_f_dial(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
 (defn NewClient
-  "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *net/rpc.Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net/rpc/refToClient"
+  "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *net/rpc.Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net.rpc/refToClient"
   {:added "1.0"
    :go "_f_newClient(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
 
 JOKER FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
 (defn NewClientCodec
-  "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: net/rpc.ClientCodec\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net/rpc/ClientCodec"
+  "NewClientCodec returns a new rpc.ClientCodec using JSON-RPC on conn.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: net/rpc.ClientCodec\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net.rpc/ClientCodec"
   {:added "1.0"
    :go "_f_newClientCodec(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
 
 JOKER FUNC net/rpc/jsonrpc.NewServerCodec from net/rpc/jsonrpc/server.go:
 (defn NewServerCodec
-  "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: net/rpc.ServerCodec\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net/rpc/ServerCodec"
+  "NewServerCodec returns a new rpc.ServerCodec using JSON-RPC on conn.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: net/rpc.ServerCodec\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: net.rpc/ServerCodec"
   {:added "1.0"
    :go "_f_newServerCodec(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
@@ -3608,11 +3608,11 @@ func ExtractGoObjectConn(args []Object, index int) *net.Conn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Conn]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res net.Conn) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net__Conn(rcvr, arg string, args *ArraySeq, n int) (res net.Conn) {
+	a := CheckGoNth(rcvr, "net/Conn", arg, args, n).O
 	res, ok := a.(net.Conn)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net/Conn], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -4161,11 +4161,11 @@ func ExtractGoObjectListener(args []Object, index int) *net.Listener {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Listener]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res net.Listener) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net__Listener(rcvr, arg string, args *ArraySeq, n int) (res net.Listener) {
+	a := CheckGoNth(rcvr, "net/Listener", arg, args, n).O
 	res, ok := a.(net.Listener)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net/Listener], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -7684,11 +7684,11 @@ func ExtractGoObjectHandler(args []Object, index int) *http.Handler {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Handler]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res http.Handler) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_http__Handler(rcvr, arg string, args *ArraySeq, n int) (res http.Handler) {
+	a := CheckGoNth(rcvr, "net.http/Handler", arg, args, n).O
 	res, ok := a.(http.Handler)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.http/Handler], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -7746,11 +7746,11 @@ func ExtractGoObjectHeader(args []Object, index int) *http.Header {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Header]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res http.Header) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_http__Header(rcvr, arg string, args *ArraySeq, n int) (res http.Header) {
+	a := CheckGoNth(rcvr, "net.http/Header", arg, args, n).O
 	res, ok := a.(http.Header)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.http/Header], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -7983,11 +7983,11 @@ func ExtractGoObjectRoundTripper(args []Object, index int) *http.RoundTripper {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.RoundTripper]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res http.RoundTripper) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_http__RoundTripper(rcvr, arg string, args *ArraySeq, n int) (res http.RoundTripper) {
+	a := CheckGoNth(rcvr, "net.http/RoundTripper", arg, args, n).O
 	res, ok := a.(http.RoundTripper)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.http/RoundTripper], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -8077,11 +8077,11 @@ func ExtractGoObjectServer(args []Object, index int) *http.Server {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/http.Server]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res http.Server) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_http__Server(rcvr, arg string, args *ArraySeq, n int) (res http.Server) {
+	a := CheckGoNth(rcvr, "net.http/Server", arg, args, n).O
 	res, ok := a.(http.Server)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.http/Server], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -12491,11 +12491,11 @@ func ExtractGoObjectConn(args []Object, index int) *textproto.Conn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/textproto.Conn]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res textproto.Conn) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_textproto__Conn(rcvr, arg string, args *ArraySeq, n int) (res textproto.Conn) {
+	a := CheckGoNth(rcvr, "net.textproto/Conn", arg, args, n).O
 	res, ok := a.(textproto.Conn)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.textproto/Conn], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -13320,11 +13320,11 @@ func ExtractGoObjectURL(args []Object, index int) *url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.URL]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res url.URL) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res url.URL) {
+	a := CheckGoNth(rcvr, "net.url/URL", arg, args, n).O
 	res, ok := a.(url.URL)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.url/URL], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
@@ -13370,11 +13370,11 @@ func ExtractGoObjectValues(args []Object, index int) *url.Values {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net/url.Values]"))
 }
 
-func ExtractGo_(rcvr, arg string, args *ArraySeq, n int) (res url.Values) {
-	a := CheckGoNth(rcvr, "", arg, args, n).O
+func ExtractGo_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (res url.Values) {
+	a := CheckGoNth(rcvr, "net.url/Values", arg, args, n).O
 	res, ok := a.(url.Values)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[], but is GoObject[%s]",
+		panic(RT.NewError(fmt.Sprintf("Argument %d passed to %s should be type GoObject[net.url/Values], but is GoObject[%s]",
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
