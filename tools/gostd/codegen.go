@@ -270,6 +270,7 @@ func GenStandalone(fn *FuncInfo) {
 	var cl2gol string
 	if clojureReturnType == "" {
 		cl2gol = goFname
+		fc.conversion = ""
 	} else {
 		// No Go code needs to be generated when a return type is explicitly specified.
 		clojureReturnType += " "
