@@ -148,7 +148,12 @@ func ClojureNamespaceForDirname(d string) string {
 
 func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
 	if fullPkgName, found := (*g.Spaces)[pkg]; found {
-		return ReplaceAll(fullPkgName.String(), "/", ".")
+		f := fullPkgName.String()
+		p, root := goPackageForDirname(f)
+		if p == "" {
+			p = root + f
+		}
+		return ReplaceAll(p, "/", ".")
 	}
 	panic(fmt.Sprintf("could not find %s in %s",
 		pkg, g.Name))

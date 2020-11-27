@@ -382,7 +382,7 @@ func maybeDeref(ptrTo string) string {
 
 func goTypeExtractor(t string, ti TypeInfo) string {
 	const template = `
-func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
+func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {  // %s
 	a := CheckGoNth(rcvr, "%s", arg, args, n).O
 	res, ok := a.(%s)
 	if !ok {
@@ -406,7 +406,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	fmtLocal += ""        //
 	resTypeDoc += ""      // repeated here
 
-	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc)
+	return fmt.Sprintf(template, fnName, resType, ti.JokerWho(), resTypeDoc, resType, fmtLocal, resTypeDoc)
 }
 
 func GenType(t string, ti TypeInfo) {

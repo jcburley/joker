@@ -14,6 +14,7 @@ import (
 type Info struct {
 	Expr                 Expr   // [key] The canonical referencing expression (if any)
 	FullName             string // [key] Full name of type as a Joker expression
+	Who                  string // who made me
 	ArgClojureType       string // Can convert this type to a Go function arg with my type
 	ArgFromClojureObject string // Append this to Clojure object to extract value of my type
 	ArgExtractFunc       string
@@ -44,6 +45,7 @@ func combine(ns, name string) string {
 func TypeDefine(jokerName, fullJokerName, goTypeName string) *Info {
 	jti := &Info{
 		FullName:          jokerName,
+		Who:               "TypeDefine",
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: fullJokerName,
 		ConvertToClojure:  "GoObject(%s%s)",
@@ -112,6 +114,7 @@ func TypeForExpr(e Expr) *Info {
 	info = &Info{
 		Expr:               e,
 		FullName:           fullName,
+		Who:                fmt.Sprintf("TypeForExpr %T", e),
 		JokerNameDoc:       fullName,
 		ArgClojureArgType:  fullName,
 		Namespace:          ns,

@@ -26,6 +26,7 @@ type TypeInfo interface {
 	JokerName() string            // TODO: Rename to JokerFullName
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
+	JokerWho() string
 	RequiredImports() *imports.Imports
 	GoDecl() string // TODO: Rename to GoFullName
 	GoDeclDoc(e Expr) string
@@ -266,6 +267,10 @@ func (ti typeInfo) IsUnsupported() bool {
 
 func (ti typeInfo) JokerTypeInfo() *jtypes.Info { // TODO: Remove when gotypes.go is gone?
 	return ti.jti
+}
+
+func (ti typeInfo) JokerWho() string {
+	return ti.jti.Who
 }
 
 func (ti typeInfo) RequiredImports() *imports.Imports {
