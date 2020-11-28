@@ -27,7 +27,6 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 	cl = ti.JokerName()
 	clDoc = ti.JokerNameDoc()
 	gol = ti.GoDeclDoc(e)
-	goc = GoCodeForType[ti]
 	conversion = ti.PromoteType()
 
 	return
