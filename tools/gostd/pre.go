@@ -172,7 +172,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		}
 		if !ti.DefPos().IsValid() { // a builtin
 			if clType != "" {
-				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", ti.ArgExtractFunc(), fn.DocName, paramName, argNum)
+				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", clType, fn.DocName, paramName, argNum)
 			}
 		} else {
 			if !IsExported(v.Name) {
@@ -182,7 +182,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
 			if clTypeDoc != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.ArgClojureArgType()), fn.DocName, paramName, argNum)
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(clTypeDoc), fn.DocName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {
