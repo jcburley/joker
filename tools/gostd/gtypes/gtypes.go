@@ -219,6 +219,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
 		tiPtrTo := &Info{
+			Expr:           &StarExpr{X: nil},
 			who:            "*TypeDefine*",
 			Type:           &StarExpr{X: ti.Type},
 			IsExported:     ti.IsExported,
