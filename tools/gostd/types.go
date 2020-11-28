@@ -61,6 +61,7 @@ type typeInfo struct {
 	jti             *jtypes.Info
 	gti             *gtypes.Info
 	requiredImports *imports.Imports
+	who             string // who made me
 }
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
@@ -88,6 +89,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			jti:             jti,
 			gti:             gti,
 			requiredImports: imports,
+			who:             "RegisterTypeDecl",
 		}
 
 		typesByGoName[ti.GoDecl()] = ti
@@ -117,10 +119,23 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	gti := gtypes.TypeForExpr(e)
 	jti := jtypes.TypeForExpr(e)
 
+	if ti, found := typesByGoName[gti.FullName]; found {
+		if _, ok := typesByJokerName[jti.FullName]; !ok {
+			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
+		}
+		return ti
+	}
+	if _, ok := typesByJokerName[jti.FullName]; ok {
+		fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+	}
+
 	ti := &typeInfo{
 		gti: gti,
 		jti: jti,
+		who: "TypeInfoForExpr",
 	}
+
+	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
 
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
@@ -147,6 +162,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 	ti := &typeInfo{
 		gti: gti,
 		jti: jti,
+		who: "TypeInfoForGoName",
 	}
 
 	typesByGoName[gti.FullName] = ti
@@ -366,6 +382,8 @@ func SortAllTypes() {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, ti := range typesByJokerName {
+
+		fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.JokerName(), ti, ti)
 		t := ti.GoTypeInfo()
 		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
