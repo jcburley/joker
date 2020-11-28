@@ -121,12 +121,12 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 
 	if ti, found := typesByGoName[gti.FullName]; found {
 		if _, ok := typesByJokerName[jti.FullName]; !ok {
-			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
+			// fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
 		}
 		return ti
 	}
 	if _, ok := typesByJokerName[jti.FullName]; ok {
-		fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+		// fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
 	}
 
 	ti := &typeInfo{
@@ -135,7 +135,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		who: "TypeInfoForExpr",
 	}
 
-	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+	// fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
 
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
@@ -383,7 +383,7 @@ func SortAllTypes() {
 	}
 	for _, ti := range typesByJokerName {
 
-		fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+		// fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.JokerName(), ti, ti)
 		t := ti.GoTypeInfo()
 		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))

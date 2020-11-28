@@ -520,14 +520,14 @@ JOKER FUNC net.Dial from net/dial.go:
 
 JOKER FUNC net.DialIP from net/iprawsock.go:
 (defn DialIP
-  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr, ^(ref-to go.std.net/IPAddr) raddr]\n\nJoker return type: [go.std.net/refToIPConn Error]"
+  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr, ^(ref-to go.std.net/IPAddr) raddr]\n\nJoker return type: [*go.std.net/IPConn Error]"
   {:added "1.0"
    :go "_f_dialIP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr, ^go.std.net/IPAddr _v_raddr])
 
 JOKER FUNC net.DialTCP from net/tcpsock.go:
 (defn DialTCP
-  "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *TCPAddr, raddr *TCPAddr)\n\nGo return type: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/TCPAddr) laddr, ^(ref-to go.std.net/TCPAddr) raddr]\n\nJoker return type: [go.std.net/refToTCPConn Error]"
+  "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *TCPAddr, raddr *TCPAddr)\n\nGo return type: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/TCPAddr) laddr, ^(ref-to go.std.net/TCPAddr) raddr]\n\nJoker return type: [*go.std.net/TCPConn Error]"
   {:added "1.0"
    :go "_f_dialTCP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/TCPAddr _v_laddr, ^go.std.net/TCPAddr _v_raddr])
@@ -541,14 +541,14 @@ JOKER FUNC net.DialTimeout from net/dial.go:
 
 JOKER FUNC net.DialUDP from net/udpsock.go:
 (defn DialUDP
-  "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *UDPAddr, raddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UDPAddr) laddr, ^(ref-to go.std.net/UDPAddr) raddr]\n\nJoker return type: [go.std.net/refToUDPConn Error]"
+  "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *UDPAddr, raddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UDPAddr) laddr, ^(ref-to go.std.net/UDPAddr) raddr]\n\nJoker return type: [*go.std.net/UDPConn Error]"
   {:added "1.0"
    :go "_f_dialUDP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/UDPAddr _v_laddr, ^go.std.net/UDPAddr _v_raddr])
 
 JOKER FUNC net.DialUnix from net/unixsock.go:
 (defn DialUnix
-  "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *UnixAddr, raddr *UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr, ^(ref-to go.std.net/UnixAddr) raddr]\n\nJoker return type: [go.std.net/refToUnixConn Error]"
+  "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *UnixAddr, raddr *UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr, ^(ref-to go.std.net/UnixAddr) raddr]\n\nJoker return type: [*go.std.net/UnixConn Error]"
   {:added "1.0"
    :go "_f_dialUnix(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr, ^go.std.net/UnixAddr _v_raddr])
@@ -597,14 +597,14 @@ JOKER FUNC net.InterfaceAddrs from net/interface.go:
 
 JOKER FUNC net.InterfaceByIndex from net/interface.go:
 (defn InterfaceByIndex
-  "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo input arguments: (index int)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^Int index]\n\nJoker return type: [go.std.net/refToInterface Error]"
+  "InterfaceByIndex returns the interface specified by index.\n\nOn Solaris, it returns one of the logical network interfaces\nsharing the logical data link; for more precision use\nInterfaceByName.\n\nGo input arguments: (index int)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^Int index]\n\nJoker return type: [*go.std.net/Interface Error]"
   {:added "1.0"
    :go "_f_interfaceByIndex(_v_index)"}
   [^Int _v_index])
 
 JOKER FUNC net.InterfaceByName from net/interface.go:
 (defn InterfaceByName
-  "InterfaceByName returns the interface specified by name.\n\nGo input arguments: (name string)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [go.std.net/refToInterface Error]"
+  "InterfaceByName returns the interface specified by name.\n\nGo input arguments: (name string)\n\nGo return type: (*Interface, error)\n\nJoker input arguments: [^String name]\n\nJoker return type: [*go.std.net/Interface Error]"
   {:added "1.0"
    :go "_f_interfaceByName(_v_name)"}
   [^String _v_name])
@@ -632,14 +632,14 @@ JOKER FUNC net.Listen from net/dial.go:
 
 JOKER FUNC net.ListenIP from net/iprawsock.go:
 (defn ListenIP
-  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr]\n\nJoker return type: [go.std.net/refToIPConn Error]"
+  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo return type: (*IPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/IPAddr) laddr]\n\nJoker return type: [*go.std.net/IPConn Error]"
   {:added "1.0"
    :go "_f_listenIP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr])
 
 JOKER FUNC net.ListenMulticastUDP from net/udpsock.go:
 (defn ListenMulticastUDP
-  "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *Interface, gaddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/Interface) ifi, ^(ref-to go.std.net/UDPAddr) gaddr]\n\nJoker return type: [go.std.net/refToUDPConn Error]"
+  "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *Interface, gaddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/Interface) ifi, ^(ref-to go.std.net/UDPAddr) gaddr]\n\nJoker return type: [*go.std.net/UDPConn Error]"
   {:added "1.0"
    :go "_f_listenMulticastUDP(_v_network, _v_ifi, _v_gaddr)"}
   [^String _v_network, ^go.std.net/Interface _v_ifi, ^go.std.net/UDPAddr _v_gaddr])
@@ -653,28 +653,28 @@ JOKER FUNC net.ListenPacket from net/dial.go:
 
 JOKER FUNC net.ListenTCP from net/tcpsock.go:
 (defn ListenTCP
-  "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *TCPAddr)\n\nGo return type: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/TCPAddr) laddr]\n\nJoker return type: [go.std.net/refToTCPListener Error]"
+  "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *TCPAddr)\n\nGo return type: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/TCPAddr) laddr]\n\nJoker return type: [*go.std.net/TCPListener Error]"
   {:added "1.0"
    :go "_f_listenTCP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/TCPAddr _v_laddr])
 
 JOKER FUNC net.ListenUDP from net/udpsock.go:
 (defn ListenUDP
-  "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UDPAddr) laddr]\n\nJoker return type: [go.std.net/refToUDPConn Error]"
+  "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *UDPAddr)\n\nGo return type: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UDPAddr) laddr]\n\nJoker return type: [*go.std.net/UDPConn Error]"
   {:added "1.0"
    :go "_f_listenUDP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UDPAddr _v_laddr])
 
 JOKER FUNC net.ListenUnix from net/unixsock.go:
 (defn ListenUnix
-  "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo return type: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr]\n\nJoker return type: [go.std.net/refToUnixListener Error]"
+  "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo return type: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr]\n\nJoker return type: [*go.std.net/UnixListener Error]"
   {:added "1.0"
    :go "_f_listenUnix(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr])
 
 JOKER FUNC net.ListenUnixgram from net/unixsock.go:
 (defn ListenUnixgram
-  "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr]\n\nJoker return type: [go.std.net/refToUnixConn Error]"
+  "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo return type: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^(ref-to go.std.net/UnixAddr) laddr]\n\nJoker return type: [*go.std.net/UnixConn Error]"
   {:added "1.0"
    :go "_f_listenUnixgram(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr])
@@ -744,7 +744,7 @@ JOKER FUNC net.LookupTXT from net/lookup.go:
 
 JOKER FUNC net.ParseCIDR from net/ip.go:
 (defn ParseCIDR
-  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP go.std.net/refToIPNet Error]"
+  "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo return type: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker return type: [go.std.net/IP *go.std.net/IPNet Error]"
   {:added "1.0"
    :go "_f_parseCIDR(_v_s)"}
   [^String _v_s])
@@ -772,28 +772,28 @@ JOKER FUNC net.Pipe from net/pipe.go:
 
 JOKER FUNC net.ResolveIPAddr from net/iprawsock.go:
 (defn ResolveIPAddr
-  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/refToIPAddr Error]"
+  "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net/IPAddr Error]"
   {:added "1.0"
    :go "_f_resolveIPAddr(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net.ResolveTCPAddr from net/tcpsock.go:
 (defn ResolveTCPAddr
-  "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*TCPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/refToTCPAddr Error]"
+  "ResolveTCPAddr returns an address of TCP end point.\n\nThe network must be a TCP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveTCPAddr resolves the\naddress to an address of TCP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*TCPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net/TCPAddr Error]"
   {:added "1.0"
    :go "_f_resolveTCPAddr(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net.ResolveUDPAddr from net/udpsock.go:
 (defn ResolveUDPAddr
-  "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UDPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/refToUDPAddr Error]"
+  "ResolveUDPAddr returns an address of UDP end point.\n\nThe network must be a UDP network name.\n\nIf the host in the address parameter is not a literal IP address or\nthe port is not a literal port number, ResolveUDPAddr resolves the\naddress to an address of UDP end point.\nOtherwise, it parses the address as a pair of literal IP address\nand port number.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UDPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net/UDPAddr Error]"
   {:added "1.0"
    :go "_f_resolveUDPAddr(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net.ResolveUnixAddr from net/unixsock.go:
 (defn ResolveUnixAddr
-  "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UnixAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net/refToUnixAddr Error]"
+  "ResolveUnixAddr returns an address of Unix domain socket end point.\n\nThe network must be a Unix network name.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*UnixAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net/UnixAddr Error]"
   {:added "1.0"
    :go "_f_resolveUnixAddr(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
@@ -2089,7 +2089,7 @@ JOKER FUNC net/http.FileServer from net/http/fs.go:
 
 JOKER FUNC net/http.Get from net/http/client.go:
 (defn Get
-  "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/refToResponse Error]"
+  "Get issues a GET to the specified URL. If the response is one of\nthe following redirect codes, Get follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if there were too many redirects or if there\nwas an HTTP protocol error. A non-2xx response doesn't cause an\nerror. Any returned error will be of type *url.Error. The url.Error\nvalue's Timeout method will report true if request timed out or was\ncanceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nGet is a wrapper around DefaultClient.Get.\n\nTo make a request with custom headers, use NewRequest and\nDefaultClient.Do.\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [*go.std.net.http/Response Error]"
   {:added "1.0"
    :go "_f_get(_v_url)"}
   [^String _v_url])
@@ -2110,7 +2110,7 @@ JOKER FUNC net/http.HandleFunc from net/http/server.go:
 
 JOKER FUNC net/http.Head from net/http/client.go:
 (defn Head
-  "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [go.std.net.http/refToResponse Error]"
+  "Head issues a HEAD to the specified URL. If the response is one of\nthe following redirect codes, Head follows the redirect, up to a\nmaximum of 10 redirects:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nHead is a wrapper around DefaultClient.Head\n\nGo input arguments: (url string)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url]\n\nJoker return type: [*go.std.net.http/Response Error]"
   {:added "1.0"
    :go "_f_head(_v_url)"}
   [^String _v_url])
@@ -2145,14 +2145,14 @@ JOKER FUNC net/http.NewFileTransport from net/http/filetransport.go:
 
 JOKER FUNC net/http.NewRequest from net/http/request.go:
 (defn NewRequest
-  "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo input arguments: (method string, url string, body io.Reader)\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^String method, ^String url, ^go.std.io/Reader body]\n\nJoker return type: [go.std.net.http/refToRequest Error]"
+  "NewRequest returns a new Request given a method, URL, and optional body.\n\nIf the provided body is also an io.Closer, the returned\nRequest.Body is set to body and will be closed by the Client\nmethods Do, Post, and PostForm, and Transport.RoundTrip.\n\nNewRequest returns a Request suitable for use with Client.Do or\nTransport.RoundTrip. To create a request for use with testing a\nServer Handler, either use the NewRequest function in the\nnet/http/httptest package, use ReadRequest, or manually update the\nRequest fields. See the Request type's documentation for the\ndifference between inbound and outbound request fields.\n\nIf body is of type *bytes.Buffer, *bytes.Reader, or\n*strings.Reader, the returned request's ContentLength is set to its\nexact value (instead of -1), GetBody is populated (so 307 and 308\nredirects can replay the body), and Body is set to NoBody if the\nContentLength is 0.\n\nGo input arguments: (method string, url string, body io.Reader)\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^String method, ^String url, ^go.std.io/Reader body]\n\nJoker return type: [*go.std.net.http/Request Error]"
   {:added "1.0"
    :go "_f_newRequest(_v_method, _v_url, *_v_body)"}
   [^String _v_method, ^String _v_url, ^go.std.io/Reader _v_body])
 
 JOKER FUNC net/http.NewServeMux from net/http/server.go:
 (defn NewServeMux
-  "NewServeMux allocates and returns a new ServeMux.\n\nGo return type: *ServeMux\n\nJoker input arguments: []\n\nJoker return type: go.std.net.http/refToServeMux"
+  "NewServeMux allocates and returns a new ServeMux.\n\nGo return type: *ServeMux\n\nJoker input arguments: []\n\nJoker return type: *go.std.net.http/ServeMux"
   {:added "1.0"
    :go "_f_newServeMux()"}
   [])
@@ -2187,21 +2187,21 @@ JOKER FUNC net/http.ParseTime from net/http/header.go:
 
 JOKER FUNC net/http.Post from net/http/client.go:
 (defn Post
-  "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, contentType string, body io.Reader)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^String contentType, ^go.std.io/Reader body]\n\nJoker return type: [go.std.net.http/refToResponse Error]"
+  "Post issues a POST to the specified URL.\n\nCaller should close resp.Body when done reading from it.\n\nIf the provided body is an io.Closer, it is closed after the\nrequest.\n\nPost is a wrapper around DefaultClient.Post.\n\nTo set custom headers, use NewRequest and DefaultClient.Do.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, contentType string, body io.Reader)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^String contentType, ^go.std.io/Reader body]\n\nJoker return type: [*go.std.net.http/Response Error]"
   {:added "1.0"
    :go "_f_post(_v_url, _v_contentType, *_v_body)"}
   [^String _v_url, ^String _v_contentType, ^go.std.io/Reader _v_body])
 
 JOKER FUNC net/http.PostForm from net/http/client.go:
 (defn PostForm
-  "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, data url.Values)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^go.std.net.url/Values data]\n\nJoker return type: [go.std.net.http/refToResponse Error]"
+  "PostForm issues a POST to the specified URL, with data's keys and\nvalues URL-encoded as the request body.\n\nThe Content-Type header is set to application/x-www-form-urlencoded.\nTo set other headers, use NewRequest and DefaultClient.Do.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nPostForm is a wrapper around DefaultClient.PostForm.\n\nSee the Client.Do method documentation for details on how redirects\nare handled.\n\nGo input arguments: (url string, data url.Values)\n\nGo return type: (resp *Response, err error)\n\nJoker input arguments: [^String url, ^go.std.net.url/Values data]\n\nJoker return type: [*go.std.net.http/Response Error]"
   {:added "1.0"
    :go "_f_postForm(_v_url, *_v_data)"}
   [^String _v_url, ^go.std.net.url/Values _v_data])
 
 JOKER FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 (defn ProxyFromEnvironment
-  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo return type: (*net/url.URL, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [go.std.net.url/refToURL Error]"
+  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo return type: (*net/url.URL, error)\n\nJoker input arguments: [^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [*go.std.net.url/URL Error]"
   {:added "1.0"
    :go "_f_proxyFromEnvironment(_v_req)"}
   [^go.std.net.http/Request _v_req])
@@ -2215,14 +2215,14 @@ JOKER FUNC net/http.ProxyURL from net/http/transport.go:
 
 JOKER FUNC net/http.ReadRequest from net/http/request.go:
 (defn ReadRequest
-  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) b]\n\nJoker return type: [go.std.net.http/refToRequest Error]"
+  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo return type: (*Request, error)\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) b]\n\nJoker return type: [*go.std.net.http/Request Error]"
   {:added "1.0"
    :go "_f_readRequest(_v_b)"}
   [^go.std.bufio/Reader _v_b])
 
 JOKER FUNC net/http.ReadResponse from net/http/response.go:
 (defn ReadResponse
-  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) r, ^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [go.std.net.http/refToResponse Error]"
+  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo return type: (*Response, error)\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) r, ^(ref-to go.std.net.http/Request) req]\n\nJoker return type: [*go.std.net.http/Response Error]"
   {:added "1.0"
    :go "_f_readResponse(_v_r, _v_req)"}
   [^go.std.bufio/Reader _v_r, ^go.std.net.http/Request _v_req])
@@ -2502,14 +2502,14 @@ JOKER TYPE go.std.net.http/Transport:
 JOKER TYPE net/http/cgi.Handler from net/http/cgi/host.go:
 JOKER FUNC net/http/cgi.Request from net/http/cgi/child.go:
 (defn Request
-  "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [go.std.net.http/refToRequest Error]"
+  "Request returns the HTTP request as represented in the current\nenvironment. This assumes the current program is being run\nby a web server in a CGI environment.\nThe returned Request's Body is populated, if applicable.\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: []\n\nJoker return type: [*go.std.net.http/Request Error]"
   {:added "1.0"
    :go "_f_request()"}
   [])
 
 JOKER FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
 ;; (defn RequestFromMap
-;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [go.std.net.http/refToRequest Error]"
+;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[])\n\nGo return type: (*net/http.Request, error)\n\nJoker input arguments: [^{} params]\n\nJoker return type: [*go.std.net.http/Request Error]"
 ;;   {:added "1.0"
 ;;    :go "_f_requestFromMap(ABEND908(pre.go: custom-runtime routine not implemented: ConvertToMapTypeHaHa()))"}
 ;;   [^{} _v_params])
@@ -2534,7 +2534,7 @@ JOKER TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
 JOKER TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 JOKER FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 (defn New
-  "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(ref-to go.std.net.http.cookiejar/Options) o]\n\nJoker return type: [go.std.net.http.cookiejar/refToJar Error]"
+  "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo return type: (*Jar, error)\n\nJoker input arguments: [^(ref-to go.std.net.http.cookiejar/Options) o]\n\nJoker return type: [*go.std.net.http.cookiejar/Jar Error]"
   {:added "1.0"
    :go "_f_new(_v_o)"}
   [^go.std.net.http.cookiejar/Options _v_o])
@@ -2607,35 +2607,35 @@ JOKER TYPE net/http/httptest.ResponseRecorder from net/http/httptest/recorder.go
 JOKER TYPE net/http/httptest.Server from net/http/httptest/server.go:
 JOKER FUNC net/http/httptest.NewRecorder from net/http/httptest/recorder.go:
 (defn NewRecorder
-  "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: go.std.net.http.httptest/refToResponseRecorder"
+  "NewRecorder returns an initialized ResponseRecorder.\n\nGo return type: *ResponseRecorder\n\nJoker input arguments: []\n\nJoker return type: *go.std.net.http.httptest/ResponseRecorder"
   {:added "1.0"
    :go "_f_newRecorder()"}
   [])
 
 JOKER FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
 (defn NewRequest
-  "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body io.Reader)\n\nGo return type: *net/http.Request\n\nJoker input arguments: [^String method, ^String target, ^go.std.io/Reader body]\n\nJoker return type: go.std.net.http/refToRequest"
+  "NewRequest returns a new incoming server Request, suitable\nfor passing to an http.Handler for testing.\n\nThe target is the RFC 7230 \"request-target\": it may be either a\npath or an absolute URL. If target is an absolute URL, the host name\nfrom the URL is used. Otherwise, \"example.com\" is used.\n\nThe TLS field is set to a non-nil dummy value if target has scheme\n\"https\".\n\nThe Request.Proto is always HTTP/1.1.\n\nAn empty method means \"GET\".\n\nThe provided body may be nil. If the body is of type *bytes.Reader,\n*strings.Reader, or *bytes.Buffer, the Request.ContentLength is\nset.\n\nNewRequest panics on error for ease of use in testing, where a\npanic is acceptable.\n\nTo generate a client HTTP request instead of a server request, see\nthe NewRequest function in the net/http package.\n\nGo input arguments: (method string, target string, body io.Reader)\n\nGo return type: *net/http.Request\n\nJoker input arguments: [^String method, ^String target, ^go.std.io/Reader body]\n\nJoker return type: *go.std.net.http/Request"
   {:added "1.0"
    :go "_f_newRequest(_v_method, _v_target, *_v_body)"}
   [^String _v_method, ^String _v_target, ^go.std.io/Reader _v_body])
 
 JOKER FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
 (defn NewServer
-  "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: go.std.net.http.httptest/refToServer"
+  "NewServer starts and returns a new Server.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: *go.std.net.http.httptest/Server"
   {:added "1.0"
    :go "_f_newServer(*_v_handler)"}
   [^go.std.net.http/Handler _v_handler])
 
 JOKER FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
 (defn NewTLSServer
-  "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: go.std.net.http.httptest/refToServer"
+  "NewTLSServer starts and returns a new Server using TLS.\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: *go.std.net.http.httptest/Server"
   {:added "1.0"
    :go "_f_newTLSServer(*_v_handler)"}
   [^go.std.net.http/Handler _v_handler])
 
 JOKER FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
 (defn NewUnstartedServer
-  "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: go.std.net.http.httptest/refToServer"
+  "NewUnstartedServer returns a new Server but doesn't start it.\n\nAfter changing its configuration, the caller should call Start or\nStartTLS.\n\nThe caller should call Close when finished, to shut it down.\n\nGo input arguments: (handler http.Handler)\n\nGo return type: *Server\n\nJoker input arguments: [^go.std.net.http/Handler handler]\n\nJoker return type: *go.std.net.http.httptest/Server"
   {:added "1.0"
    :go "_f_newUnstartedServer(*_v_handler)"}
   [^go.std.net.http/Handler _v_handler])
@@ -2663,7 +2663,7 @@ JOKER TYPE net/http/httptrace.GotConnInfo from net/http/httptrace/trace.go:
 JOKER TYPE net/http/httptrace.WroteRequestInfo from net/http/httptrace/trace.go:
 JOKER FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
 (defn ContextClientTrace
-  "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo input arguments: (ctx context.Context)\n\nGo return type: *ClientTrace\n\nJoker input arguments: [^go.std.context/Context ctx]\n\nJoker return type: go.std.net.http.httptrace/refToClientTrace"
+  "ContextClientTrace returns the ClientTrace associated with the\nprovided context. If none, it returns nil.\n\nGo input arguments: (ctx context.Context)\n\nGo return type: *ClientTrace\n\nJoker input arguments: [^go.std.context/Context ctx]\n\nJoker return type: *go.std.net.http.httptrace/ClientTrace"
   {:added "1.0"
    :go "_f_contextClientTrace(*_v_ctx)"}
   [^go.std.context/Context _v_ctx])
@@ -2788,28 +2788,28 @@ JOKER FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go
 
 JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 (defn NewClientConn
-  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/refToClientConn"
+  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: *go.std.net.http.httputil/ClientConn"
   {:added "1.0"
    :go "_f_newClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 (defn NewProxyClientConn
-  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/refToClientConn"
+  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: *go.std.net.http.httputil/ClientConn"
   {:added "1.0"
    :go "_f_newProxyClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 (defn NewServerConn
-  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.http.httputil/refToServerConn"
+  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo return type: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: *go.std.net.http.httputil/ServerConn"
   {:added "1.0"
    :go "_f_newServerConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
 (defn NewSingleHostReverseProxy
-  "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: (target *url.URL)\n\nGo return type: *ReverseProxy\n\nJoker input arguments: [^(ref-to go.std.net.url/URL) target]\n\nJoker return type: go.std.net.http.httputil/refToReverseProxy"
+  "NewSingleHostReverseProxy returns a new ReverseProxy that routes\nURLs to the scheme, host, and base path provided in target. If the\ntarget's path is \"/base\" and the incoming request was for \"/dir\",\nthe target request will be for /base/dir.\nNewSingleHostReverseProxy does not rewrite the Host header.\nTo rewrite Host headers, use ReverseProxy directly with a custom\nDirector policy.\n\nGo input arguments: (target *url.URL)\n\nGo return type: *ReverseProxy\n\nJoker input arguments: [^(ref-to go.std.net.url/URL) target]\n\nJoker return type: *go.std.net.http.httputil/ReverseProxy"
   {:added "1.0"
    :go "_f_newSingleHostReverseProxy(_v_target)"}
   [^go.std.net.url/URL _v_target])
@@ -2903,7 +2903,7 @@ JOKER TYPE net/mail.Header from net/mail/message.go:
 JOKER TYPE net/mail.Message from net/mail/message.go:
 JOKER FUNC net/mail.ParseAddress from net/mail/message.go:
 (defn ParseAddress
-  "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [go.std.net.mail/refToAddress Error]"
+  "Parses a single RFC 5322 address, e.g. \"Barry Gibbs <bg@example.com>\"\n\nGo input arguments: (address string)\n\nGo return type: (*Address, error)\n\nJoker input arguments: [^String address]\n\nJoker return type: [*go.std.net.mail/Address Error]"
   {:added "1.0"
    :go "_f_parseAddress(_v_address)"}
   [^String _v_address])
@@ -2924,7 +2924,7 @@ JOKER FUNC net/mail.ParseDate from net/mail/message.go:
 
 JOKER FUNC net/mail.ReadMessage from net/mail/message.go:
 (defn ReadMessage
-  "ReadMessage reads a message from r.\nThe headers are parsed, and the body of the message will be available\nfor reading from msg.Body.\n\nGo input arguments: (r io.Reader)\n\nGo return type: (msg *Message, err error)\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker return type: [go.std.net.mail/refToMessage Error]"
+  "ReadMessage reads a message from r.\nThe headers are parsed, and the body of the message will be available\nfor reading from msg.Body.\n\nGo input arguments: (r io.Reader)\n\nGo return type: (msg *Message, err error)\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker return type: [*go.std.net.mail/Message Error]"
   {:added "1.0"
    :go "_f_readMessage(*_v_r)"}
   [^go.std.io/Reader _v_r])
@@ -3012,21 +3012,21 @@ JOKER FUNC net/rpc.Accept from net/rpc/server.go:
 
 JOKER FUNC net/rpc.Dial from net/rpc/client.go:
 (defn Dial
-  "Dial connects to an RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/refToClient Error]"
+  "Dial connects to an RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net.rpc/Client Error]"
   {:added "1.0"
    :go "_f_dial(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net/rpc.DialHTTP from net/rpc/client.go:
 (defn DialHTTP
-  "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/refToClient Error]"
+  "DialHTTP connects to an HTTP RPC server at the specified network address\nlistening on the default HTTP RPC path.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net.rpc/Client Error]"
   {:added "1.0"
    :go "_f_dialHTTP(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net/rpc.DialHTTPPath from net/rpc/client.go:
 (defn DialHTTPPath
-  "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo input arguments: (network string, address string, path string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address, ^String path]\n\nJoker return type: [go.std.net.rpc/refToClient Error]"
+  "DialHTTPPath connects to an HTTP RPC server\nat the specified network address and path.\n\nGo input arguments: (network string, address string, path string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String network, ^String address, ^String path]\n\nJoker return type: [*go.std.net.rpc/Client Error]"
   {:added "1.0"
    :go "_f_dialHTTPPath(_v_network, _v_address, _v_path)"}
   [^String _v_network, ^String _v_address, ^String _v_path])
@@ -3040,21 +3040,21 @@ JOKER FUNC net/rpc.HandleHTTP from net/rpc/server.go:
 
 JOKER FUNC net/rpc.NewClient from net/rpc/client.go:
 (defn NewClient
-  "NewClient returns a new Client to handle requests to the\nset of services at the other end of the connection.\nIt adds a buffer to the write side of the connection so\nthe header and payload are sent as a unit.\n\nThe read and write halves of the connection are serialized independently,\nso no interlocking is required. However each half may be accessed\nconcurrently so the implementation of conn should protect against\nconcurrent reads or concurrent writes.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: go.std.net.rpc/refToClient"
+  "NewClient returns a new Client to handle requests to the\nset of services at the other end of the connection.\nIt adds a buffer to the write side of the connection so\nthe header and payload are sent as a unit.\n\nThe read and write halves of the connection are serialized independently,\nso no interlocking is required. However each half may be accessed\nconcurrently so the implementation of conn should protect against\nconcurrent reads or concurrent writes.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: *go.std.net.rpc/Client"
   {:added "1.0"
    :go "_f_newClient(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
 
 JOKER FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
 (defn NewClientWithCodec
-  "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo input arguments: (codec ClientCodec)\n\nGo return type: *Client\n\nJoker input arguments: [^go.std.net.rpc/ClientCodec codec]\n\nJoker return type: go.std.net.rpc/refToClient"
+  "NewClientWithCodec is like NewClient but uses the specified\ncodec to encode requests and decode responses.\n\nGo input arguments: (codec ClientCodec)\n\nGo return type: *Client\n\nJoker input arguments: [^go.std.net.rpc/ClientCodec codec]\n\nJoker return type: *go.std.net.rpc/Client"
   {:added "1.0"
    :go "_f_newClientWithCodec(*_v_codec)"}
   [^go.std.net.rpc/ClientCodec _v_codec])
 
 JOKER FUNC net/rpc.NewServer from net/rpc/server.go:
 (defn NewServer
-  "NewServer returns a new Server.\n\nGo return type: *Server\n\nJoker input arguments: []\n\nJoker return type: go.std.net.rpc/refToServer"
+  "NewServer returns a new Server.\n\nGo return type: *Server\n\nJoker input arguments: []\n\nJoker return type: *go.std.net.rpc/Server"
   {:added "1.0"
    :go "_f_newServer()"}
   [])
@@ -3162,14 +3162,14 @@ JOKER TYPE go.std.net.rpc/ServerError:
 
 JOKER FUNC net/rpc/jsonrpc.Dial from net/rpc/jsonrpc/client.go:
 (defn Dial
-  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [go.std.net.rpc/refToClient Error]"
+  "Dial connects to a JSON-RPC server at the specified network address.\n\nGo input arguments: (network string, address string)\n\nGo return type: (*net/rpc.Client, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker return type: [*go.std.net.rpc/Client Error]"
   {:added "1.0"
    :go "_f_dial(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
 
 JOKER FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
 (defn NewClient
-  "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *net/rpc.Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: go.std.net.rpc/refToClient"
+  "NewClient returns a new rpc.Client to handle requests to the\nset of services at the other end of the connection.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *net/rpc.Client\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: *go.std.net.rpc/Client"
   {:added "1.0"
    :go "_f_newClient(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
@@ -3207,14 +3207,14 @@ JOKER FUNC net/smtp.CRAMMD5Auth from net/smtp/auth.go:
 
 JOKER FUNC net/smtp.Dial from net/smtp/smtp.go:
 (defn Dial
-  "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [go.std.net.smtp/refToClient Error]"
+  "Dial returns a new Client connected to an SMTP server at addr.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nGo input arguments: (addr string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^String addr]\n\nJoker return type: [*go.std.net.smtp/Client Error]"
   {:added "1.0"
    :go "_f_dial(_v_addr)"}
   [^String _v_addr])
 
 JOKER FUNC net/smtp.NewClient from net/smtp/smtp.go:
 (defn NewClient
-  "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn net.Conn, host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^go.std.net/Conn conn, ^String host]\n\nJoker return type: [go.std.net.smtp/refToClient Error]"
+  "NewClient returns a new Client using an existing connection and host as a\nserver name to be used when authenticating.\n\nGo input arguments: (conn net.Conn, host string)\n\nGo return type: (*Client, error)\n\nJoker input arguments: [^go.std.net/Conn conn, ^String host]\n\nJoker return type: [*go.std.net.smtp/Client Error]"
   {:added "1.0"
    :go "_f_newClient(*_v_conn, _v_host)"}
   [^go.std.net/Conn _v_conn, ^String _v_host])
@@ -3274,28 +3274,28 @@ JOKER FUNC net/textproto.CanonicalMIMEHeaderKey from net/textproto/reader.go:
 
 JOKER FUNC net/textproto.Dial from net/textproto/textproto.go:
 (defn Dial
-  "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo input arguments: (network string, addr string)\n\nGo return type: (*Conn, error)\n\nJoker input arguments: [^String network, ^String addr]\n\nJoker return type: [go.std.net.textproto/refToConn Error]"
+  "Dial connects to the given address on the given network using net.Dial\nand then returns a new Conn for the connection.\n\nGo input arguments: (network string, addr string)\n\nGo return type: (*Conn, error)\n\nJoker input arguments: [^String network, ^String addr]\n\nJoker return type: [*go.std.net.textproto/Conn Error]"
   {:added "1.0"
    :go "_f_dial(_v_network, _v_addr)"}
   [^String _v_network, ^String _v_addr])
 
 JOKER FUNC net/textproto.NewConn from net/textproto/textproto.go:
 (defn NewConn
-  "NewConn returns a new Conn using conn for I/O.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *Conn\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: go.std.net.textproto/refToConn"
+  "NewConn returns a new Conn using conn for I/O.\n\nGo input arguments: (conn io.ReadWriteCloser)\n\nGo return type: *Conn\n\nJoker input arguments: [^go.std.io/ReadWriteCloser conn]\n\nJoker return type: *go.std.net.textproto/Conn"
   {:added "1.0"
    :go "_f_newConn(*_v_conn)"}
   [^go.std.io/ReadWriteCloser _v_conn])
 
 JOKER FUNC net/textproto.NewReader from net/textproto/reader.go:
 (defn NewReader
-  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo return type: *Reader\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: go.std.net.textproto/refToReader"
+  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo return type: *Reader\n\nJoker input arguments: [^(ref-to go.std.bufio/Reader) r]\n\nJoker return type: *go.std.net.textproto/Reader"
   {:added "1.0"
    :go "_f_newReader(_v_r)"}
   [^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 (defn NewWriter
-  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo return type: *Writer\n\nJoker input arguments: [^(ref-to go.std.bufio/Writer) w]\n\nJoker return type: go.std.net.textproto/refToWriter"
+  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo return type: *Writer\n\nJoker input arguments: [^(ref-to go.std.bufio/Writer) w]\n\nJoker return type: *go.std.net.textproto/Writer"
   {:added "1.0"
    :go "_f_newWriter(_v_w)"}
   [^go.std.bufio/Writer _v_w])
@@ -3378,7 +3378,7 @@ JOKER TYPE net/url.Userinfo from net/url/url.go:
 JOKER TYPE net/url.Values from net/url/url.go:
 JOKER FUNC net/url.Parse from net/url/url.go:
 (defn Parse
-  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/refToURL Error]"
+  "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [*go.std.net.url/URL Error]"
   {:added "1.0"
    :go "_f_parse(_v_rawurl)"}
   [^String _v_rawurl])
@@ -3392,7 +3392,7 @@ JOKER FUNC net/url.ParseQuery from net/url/url.go:
 
 JOKER FUNC net/url.ParseRequestURI from net/url/url.go:
 (defn ParseRequestURI
-  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [go.std.net.url/refToURL Error]"
+  "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo return type: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker return type: [*go.std.net.url/URL Error]"
   {:added "1.0"
    :go "_f_parseRequestURI(_v_rawurl)"}
   [^String _v_rawurl])
@@ -3427,14 +3427,14 @@ JOKER FUNC net/url.QueryUnescape from net/url/url.go:
 
 JOKER FUNC net/url.User from net/url/url.go:
 (defn User
-  "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: go.std.net.url/refToUserinfo"
+  "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker return type: *go.std.net.url/Userinfo"
   {:added "1.0"
    :go "_f_user(_v_username)"}
   [^String _v_username])
 
 JOKER FUNC net/url.UserPassword from net/url/url.go:
 (defn UserPassword
-  "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: go.std.net.url/refToUserinfo"
+  "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo return type: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker return type: *go.std.net.url/Userinfo"
   {:added "1.0"
    :go "_f_userPassword(_v_username, _v_password)"}
   [^String _v_username, ^String _v_password])
@@ -3812,6 +3812,18 @@ func ExtractGo_go_std_net__Flags(rcvr, arg string, args *ArraySeq, n int) (res n
 	return
 }
 
+func _Ctor_Flags(_v Object) net.Flags {
+	switch _o := _v.(type) {
+	case Number:
+		return net.Flags(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Flags] or: Number"))
+}
+
+func _Wrapped_Ctor_Flags(_o Object) Object {
+	return MakeGoObject(_Ctor_Flags(_o))
+}
+
 GO TYPE net.HardwareAddr from net/mac.go:
 func ExtractGoObjectHardwareAddr(args []Object, index int) *net.HardwareAddr {
 	a := args[index]
@@ -3837,6 +3849,18 @@ func ExtractGo_go_std_net__HardwareAddr(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
+// func _Ctor_HardwareAddr(_v Object) net.HardwareAddr {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _net.HardwareAddr(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for HardwareAddr))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.HardwareAddr] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_HardwareAddr(_o Object) Object {
+// 	return MakeGoObject(_Ctor_HardwareAddr(_o))
+// }
+
 GO TYPE net.IP from net/ip.go:
 func ExtractGoObjectIP(args []Object, index int) *net.IP {
 	a := args[index]
@@ -3861,6 +3885,18 @@ func ExtractGo_go_std_net__IP(rcvr, arg string, args *ArraySeq, n int) (res net.
 	}
 	return
 }
+
+// func _Ctor_IP(_v Object) net.IP {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _net.IP(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for IP))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IP] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_IP(_o Object) Object {
+// 	return MakeGoObject(_Ctor_IP(_o))
+// }
 
 GO TYPE net.IPAddr from net/iprawsock.go:
 func ExtractGoObjectIPAddr(args []Object, index int) *net.IPAddr {
@@ -3971,6 +4007,18 @@ func ExtractGo_go_std_net__IPMask(rcvr, arg string, args *ArraySeq, n int) (res 
 	}
 	return
 }
+
+// func _Ctor_IPMask(_v Object) net.IPMask {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _net.IPMask(_o.ABEND674(codegen.go: unknown underlying type *ast.ArrayType for IPMask))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.IPMask] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_IPMask(_o Object) Object {
+// 	return MakeGoObject(_Ctor_IPMask(_o))
+// }
 
 GO TYPE net.IPNet from net/ip.go:
 func ExtractGoObjectIPNet(args []Object, index int) *net.IPNet {
@@ -4398,6 +4446,26 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 	}
 	return
 }
+
+// func _mapToResolver(o Map) *net.Resolver {
+// 	return &net.Resolver{
+// 		PreferGo: FieldAsBoolean(o, "PreferGo"),
+// 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
+// 	}
+// }
+
+// func _Ctor_Resolver(_v Object) *net.Resolver {
+// 	switch _o := _v.(type) {
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToResolver(_o.(Map))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[net.Resolver] or: Map"))
+// }
+
+// func _Wrapped_Ctor_Resolver(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Resolver(_o))
+// }
 
 GO TYPE net.SRV from net/dnsclient.go:
 func ExtractGoObjectSRV(args []Object, index int) *net.SRV {
@@ -6628,6 +6696,9 @@ GO INFO FOR TYPE *go.std.net/AddrError from _tests/big/src/net/net.go:520:6:
 	info_PtrTo_AddrError = GoTypeInfo{Name: "*go.std.net/AddrError",
 		GoType: &GoType{T: &info_PtrTo_AddrError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_AddrError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_ptrTo_AddrError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_ptrTo_AddrError_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6672,6 +6743,9 @@ GO INFO FOR TYPE *go.std.net/DNSConfigError from _tests/big/src/net/net.go:553:6
 	info_PtrTo_DNSConfigError = GoTypeInfo{Name: "*go.std.net/DNSConfigError",
 		GoType: &GoType{T: &info_PtrTo_DNSConfigError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_DNSConfigError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_ptrTo_DNSConfigError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_ptrTo_DNSConfigError_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6689,6 +6763,9 @@ GO INFO FOR TYPE *go.std.net/DNSError from _tests/big/src/net/net.go:567:6:
 	info_PtrTo_DNSError = GoTypeInfo{Name: "*go.std.net/DNSError",
 		GoType: &GoType{T: &info_PtrTo_DNSError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_DNSError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_ptrTo_DNSError_Temporary, "Temporary reports whether the DNS error is known to be temporary.\nThis is not always known; a DNS lookup may fail due to a temporary\nerror and return a DNSError for which Temporary returns false.\n", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_ptrTo_DNSError_Timeout, "Timeout reports whether the DNS lookup is known to have timed out.\nThis is not always known; a DNS lookup may fail due to a timeout\nand return a DNSError for which Timeout returns false.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6705,6 +6782,7 @@ GO INFO FOR TYPE *go.std.net/Dialer from _tests/big/src/net/dial.go:20:6:
 	info_PtrTo_Dialer = GoTypeInfo{Name: "*go.std.net/Dialer",
 		GoType: &GoType{T: &info_PtrTo_Dialer},
 		Members: GoMembers{
+			"Dial": MakeGoReceiver("Dial", _f_ptrTo_Dialer_Dial, "Dial connects to the address on the named network.\n\nSee func Dial for a description of the network and address\nparameters.\n", "1.0", NewVectorFrom(MakeSymbol("network"), MakeSymbol("address"))),
 		},
 	}
 
@@ -6724,6 +6802,7 @@ GO INFO FOR TYPE go.std.net/Flags from _tests/big/src/net/interface.go:38:6:
 		GoType: &GoType{T: &info_Flags},
 		Ctor: _Wrapped_Ctor_Flags,
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", _f_flags_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6740,6 +6819,7 @@ GO INFO FOR TYPE go.std.net/HardwareAddr from _tests/big/src/net/mac.go:10:6:
 	info_HardwareAddr = GoTypeInfo{Name: "go.std.net/HardwareAddr",
 		GoType: &GoType{T: &info_HardwareAddr},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", _f_hardwareAddr_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6756,6 +6836,20 @@ GO INFO FOR TYPE go.std.net/IP from _tests/big/src/net/ip.go:32:6:
 	info_IP = GoTypeInfo{Name: "go.std.net/IP",
 		GoType: &GoType{T: &info_IP},
 		Members: GoMembers{
+			"DefaultMask": MakeGoReceiver("DefaultMask", _f_iP_DefaultMask, "DefaultMask returns the default IP mask for the IP address ip.\nOnly IPv4 addresses have default masks; DefaultMask returns\nnil if ip is not a valid IPv4 address.\n", "1.0", NewVectorFrom()),
+			"Equal": MakeGoReceiver("Equal", _f_iP_Equal, "Equal reports whether ip and x are the same IP address.\nAn IPv4 address and that same address in IPv6 form are\nconsidered to be equal.\n", "1.0", NewVectorFrom(MakeSymbol("x"))),
+			"IsGlobalUnicast": MakeGoReceiver("IsGlobalUnicast", _f_iP_IsGlobalUnicast, "IsGlobalUnicast reports whether ip is a global unicast\naddress.\n\nThe identification of global unicast addresses uses address type\nidentification as defined in RFC 1122, RFC 4632 and RFC 4291 with\nthe exception of IPv4 directed broadcast addresses.\nIt returns true even if ip is in IPv4 private address space or\nlocal IPv6 unicast address space.\n", "1.0", NewVectorFrom()),
+			"IsInterfaceLocalMulticast": MakeGoReceiver("IsInterfaceLocalMulticast", _f_iP_IsInterfaceLocalMulticast, "IsInterfaceLocalMulticast reports whether ip is\nan interface-local multicast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalMulticast": MakeGoReceiver("IsLinkLocalMulticast", _f_iP_IsLinkLocalMulticast, "IsLinkLocalMulticast reports whether ip is a link-local\nmulticast address.\n", "1.0", NewVectorFrom()),
+			"IsLinkLocalUnicast": MakeGoReceiver("IsLinkLocalUnicast", _f_iP_IsLinkLocalUnicast, "IsLinkLocalUnicast reports whether ip is a link-local\nunicast address.\n", "1.0", NewVectorFrom()),
+			"IsLoopback": MakeGoReceiver("IsLoopback", _f_iP_IsLoopback, "IsLoopback reports whether ip is a loopback address.\n", "1.0", NewVectorFrom()),
+			"IsMulticast": MakeGoReceiver("IsMulticast", _f_iP_IsMulticast, "IsMulticast reports whether ip is a multicast address.\n", "1.0", NewVectorFrom()),
+			"IsUnspecified": MakeGoReceiver("IsUnspecified", _f_iP_IsUnspecified, "IsUnspecified reports whether ip is an unspecified address, either\nthe IPv4 address \"0.0.0.0\" or the IPv6 address \"::\".\n", "1.0", NewVectorFrom()),
+			"MarshalText": MakeGoReceiver("MarshalText", _f_iP_MarshalText, "MarshalText implements the encoding.TextMarshaler interface.\nThe encoding is the same as returned by String, with one exception:\nWhen len(ip) is zero, it returns an empty slice.\n", "1.0", NewVectorFrom()),
+			"Mask": MakeGoReceiver("Mask", _f_iP_Mask, "Mask returns the result of masking the IP address ip with mask.\n", "1.0", NewVectorFrom(MakeSymbol("mask"))),
+			"String": MakeGoReceiver("String", _f_iP_String, "String returns the string form of the IP address ip.\nIt returns one of 4 forms:\n  - \"<nil>\", if ip has length 0\n  - dotted decimal (\"192.0.2.1\"), if ip is an IPv4 or IP4-mapped IPv6 address\n  - IPv6 (\"2001:db8::1\"), if ip is a valid IPv6 address\n  - the hexadecimal form of ip, without punctuation, if no other cases apply\n", "1.0", NewVectorFrom()),
+			"To16": MakeGoReceiver("To16", _f_iP_To16, "To16 converts the IP address ip to a 16-byte representation.\nIf ip is not an IP address (it is the wrong length), To16 returns nil.\n", "1.0", NewVectorFrom()),
+			"To4": MakeGoReceiver("To4", _f_iP_To4, "To4 converts the IPv4 address ip to a 4-byte representation.\nIf ip is not an IPv4 address, To4 returns nil.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6780,6 +6874,8 @@ GO INFO FOR TYPE *go.std.net/IPAddr from _tests/big/src/net/iprawsock.go:31:6:
 	info_PtrTo_IPAddr = GoTypeInfo{Name: "*go.std.net/IPAddr",
 		GoType: &GoType{T: &info_PtrTo_IPAddr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", _f_ptrTo_IPAddr_Network, "Network returns the address's network name, \"ip\".\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_IPAddr_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6797,6 +6893,7 @@ GO INFO FOR TYPE *go.std.net/IPConn from _tests/big/src/net/iprawsock.go:99:6:
 	info_PtrTo_IPConn = GoTypeInfo{Name: "*go.std.net/IPConn",
 		GoType: &GoType{T: &info_PtrTo_IPConn},
 		Members: GoMembers{
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_IPConn_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6805,6 +6902,8 @@ GO INFO FOR TYPE go.std.net/IPMask from _tests/big/src/net/ip.go:35:6:
 	info_IPMask = GoTypeInfo{Name: "go.std.net/IPMask",
 		GoType: &GoType{T: &info_IPMask},
 		Members: GoMembers{
+			"Size": MakeGoReceiver("Size", _f_iPMask_Size, "Size returns the number of leading ones and total bits in the mask.\nIf the mask is not in the canonical form--ones followed by zeros--then\nSize returns 0, 0.\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_iPMask_String, "String returns the hexadecimal form of m, with no punctuation.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6829,6 +6928,9 @@ GO INFO FOR TYPE *go.std.net/IPNet from _tests/big/src/net/ip.go:38:6:
 	info_PtrTo_IPNet = GoTypeInfo{Name: "*go.std.net/IPNet",
 		GoType: &GoType{T: &info_PtrTo_IPNet},
 		Members: GoMembers{
+			"Contains": MakeGoReceiver("Contains", _f_ptrTo_IPNet_Contains, "Contains reports whether the network includes ip.\n", "1.0", NewVectorFrom(MakeSymbol("ip"))),
+			"Network": MakeGoReceiver("Network", _f_ptrTo_IPNet_Network, "Network returns the address's network name, \"ip+net\".\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_IPNet_String, "String returns the CIDR notation of n like \"192.0.2.1/24\"\nor \"2001:db8::/48\" as defined in RFC 4632 and RFC 4291.\nIf the mask is not in the canonical form, it returns the\nstring which consists of an IP address, followed by a slash\ncharacter and a mask expressed as hexadecimal form with no\npunctuation like \"198.51.100.1/c000ff00\".\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6845,6 +6947,8 @@ GO INFO FOR TYPE *go.std.net/Interface from _tests/big/src/net/interface.go:30:6
 	info_PtrTo_Interface = GoTypeInfo{Name: "*go.std.net/Interface",
 		GoType: &GoType{T: &info_PtrTo_Interface},
 		Members: GoMembers{
+			"Addrs": MakeGoReceiver("Addrs", _f_ptrTo_Interface_Addrs, "Addrs returns a list of unicast interface addresses for a specific\ninterface.\n", "1.0", NewVectorFrom()),
+			"MulticastAddrs": MakeGoReceiver("MulticastAddrs", _f_ptrTo_Interface_MulticastAddrs, "MulticastAddrs returns a list of multicast, joined group addresses\nfor a specific interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6854,6 +6958,9 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/big/src/net/net.go:545:
 		GoType: &GoType{T: &info_InvalidAddrError},
 		Ctor: _Wrapped_Ctor_InvalidAddrError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_invalidAddrError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_invalidAddrError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_invalidAddrError_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6939,6 +7046,9 @@ GO INFO FOR TYPE *go.std.net/OpError from _tests/big/src/net/net.go:416:6:
 	info_PtrTo_OpError = GoTypeInfo{Name: "*go.std.net/OpError",
 		GoType: &GoType{T: &info_PtrTo_OpError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_OpError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_ptrTo_OpError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_ptrTo_OpError_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -6966,6 +7076,7 @@ GO INFO FOR TYPE *go.std.net/ParseError from _tests/big/src/net/net.go:509:6:
 	info_PtrTo_ParseError = GoTypeInfo{Name: "*go.std.net/ParseError",
 		GoType: &GoType{T: &info_PtrTo_ParseError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_ParseError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7015,6 +7126,8 @@ GO INFO FOR TYPE *go.std.net/TCPAddr from _tests/big/src/net/tcpsock.go:19:6:
 	info_PtrTo_TCPAddr = GoTypeInfo{Name: "*go.std.net/TCPAddr",
 		GoType: &GoType{T: &info_PtrTo_TCPAddr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", _f_ptrTo_TCPAddr_Network, "Network returns the address's network name, \"tcp\".\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_TCPAddr_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7032,6 +7145,12 @@ GO INFO FOR TYPE *go.std.net/TCPConn from _tests/big/src/net/tcpsock.go:85:6:
 	info_PtrTo_TCPConn = GoTypeInfo{Name: "*go.std.net/TCPConn",
 		GoType: &GoType{T: &info_PtrTo_TCPConn},
 		Members: GoMembers{
+			"CloseRead": MakeGoReceiver("CloseRead", _f_ptrTo_TCPConn_CloseRead, "CloseRead shuts down the reading side of the TCP connection.\nMost callers should just use Close.\n", "1.0", NewVectorFrom()),
+			"CloseWrite": MakeGoReceiver("CloseWrite", _f_ptrTo_TCPConn_CloseWrite, "CloseWrite shuts down the writing side of the TCP connection.\nMost callers should just use Close.\n", "1.0", NewVectorFrom()),
+			"SetKeepAlive": MakeGoReceiver("SetKeepAlive", _f_ptrTo_TCPConn_SetKeepAlive, "SetKeepAlive sets whether the operating system should send\nkeepalive messages on the connection.\n", "1.0", NewVectorFrom(MakeSymbol("keepalive"))),
+			"SetLinger": MakeGoReceiver("SetLinger", _f_ptrTo_TCPConn_SetLinger, "SetLinger sets the behavior of Close on a connection which still\nhas data waiting to be sent or to be acknowledged.\n\nIf sec < 0 (the default), the operating system finishes sending the\ndata in the background.\n\nIf sec == 0, the operating system discards any unsent or\nunacknowledged data.\n\nIf sec > 0, the data is sent in the background as with sec < 0. On\nsome operating systems after sec seconds have elapsed any remaining\nunsent data may be discarded.\n", "1.0", NewVectorFrom(MakeSymbol("sec"))),
+			"SetNoDelay": MakeGoReceiver("SetNoDelay", _f_ptrTo_TCPConn_SetNoDelay, "SetNoDelay controls whether the operating system should delay\npacket transmission in hopes of sending fewer packets (Nagle's\nalgorithm).  The default is true (no delay), meaning that data is\nsent as soon as possible after a Write.\n", "1.0", NewVectorFrom(MakeSymbol("noDelay"))),
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_TCPConn_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7049,6 +7168,12 @@ GO INFO FOR TYPE *go.std.net/TCPListener from _tests/big/src/net/tcpsock.go:225:
 	info_PtrTo_TCPListener = GoTypeInfo{Name: "*go.std.net/TCPListener",
 		GoType: &GoType{T: &info_PtrTo_TCPListener},
 		Members: GoMembers{
+			"Accept": MakeGoReceiver("Accept", _f_ptrTo_TCPListener_Accept, "Accept implements the Accept method in the Listener interface; it\nwaits for the next call and returns a generic Conn.\n", "1.0", NewVectorFrom()),
+			"AcceptTCP": MakeGoReceiver("AcceptTCP", _f_ptrTo_TCPListener_AcceptTCP, "AcceptTCP accepts the next incoming call and returns the new\nconnection.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", _f_ptrTo_TCPListener_Addr, "Addr returns the listener's network address, a *TCPAddr.\nThe Addr returned is shared by all invocations of Addr, so\ndo not modify it.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", _f_ptrTo_TCPListener_Close, "Close stops listening on the TCP address.\nAlready Accepted connections are not closed.\n", "1.0", NewVectorFrom()),
+			"File": MakeGoReceiver("File", _f_ptrTo_TCPListener_File, "File returns a copy of the underlying os.File.\nIt is the caller's responsibility to close f when finished.\nClosing l does not affect f, and closing f does not affect l.\n\nThe returned os.File's file descriptor is different from the\nconnection's. Attempting to change properties of the original\nusing this duplicate may or may not have the desired effect.\n", "1.0", NewVectorFrom()),
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_TCPListener_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n\nThe returned RawConn only supports calling Control. Read and\nWrite return an error.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7065,6 +7190,8 @@ GO INFO FOR TYPE *go.std.net/UDPAddr from _tests/big/src/net/udpsock.go:25:6:
 	info_PtrTo_UDPAddr = GoTypeInfo{Name: "*go.std.net/UDPAddr",
 		GoType: &GoType{T: &info_PtrTo_UDPAddr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", _f_ptrTo_UDPAddr_Network, "Network returns the address's network name, \"udp\".\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_UDPAddr_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7082,6 +7209,7 @@ GO INFO FOR TYPE *go.std.net/UDPConn from _tests/big/src/net/udpsock.go:91:6:
 	info_PtrTo_UDPConn = GoTypeInfo{Name: "*go.std.net/UDPConn",
 		GoType: &GoType{T: &info_PtrTo_UDPConn},
 		Members: GoMembers{
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_UDPConn_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7099,6 +7227,8 @@ GO INFO FOR TYPE *go.std.net/UnixAddr from _tests/big/src/net/unixsock.go:19:6:
 	info_PtrTo_UnixAddr = GoTypeInfo{Name: "*go.std.net/UnixAddr",
 		GoType: &GoType{T: &info_PtrTo_UnixAddr},
 		Members: GoMembers{
+			"Network": MakeGoReceiver("Network", _f_ptrTo_UnixAddr_Network, "Network returns the address's network name, \"unix\", \"unixgram\" or\n\"unixpacket\".\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_UnixAddr_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7116,6 +7246,9 @@ GO INFO FOR TYPE *go.std.net/UnixConn from _tests/big/src/net/unixsock.go:65:6:
 	info_PtrTo_UnixConn = GoTypeInfo{Name: "*go.std.net/UnixConn",
 		GoType: &GoType{T: &info_PtrTo_UnixConn},
 		Members: GoMembers{
+			"CloseRead": MakeGoReceiver("CloseRead", _f_ptrTo_UnixConn_CloseRead, "CloseRead shuts down the reading side of the Unix domain connection.\nMost callers should just use Close.\n", "1.0", NewVectorFrom()),
+			"CloseWrite": MakeGoReceiver("CloseWrite", _f_ptrTo_UnixConn_CloseWrite, "CloseWrite shuts down the writing side of the Unix domain connection.\nMost callers should just use Close.\n", "1.0", NewVectorFrom()),
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_UnixConn_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7133,6 +7266,12 @@ GO INFO FOR TYPE *go.std.net/UnixListener from _tests/big/src/net/unixsock.go:21
 	info_PtrTo_UnixListener = GoTypeInfo{Name: "*go.std.net/UnixListener",
 		GoType: &GoType{T: &info_PtrTo_UnixListener},
 		Members: GoMembers{
+			"Accept": MakeGoReceiver("Accept", _f_ptrTo_UnixListener_Accept, "Accept implements the Accept method in the Listener interface.\nReturned connections will be of type *UnixConn.\n", "1.0", NewVectorFrom()),
+			"AcceptUnix": MakeGoReceiver("AcceptUnix", _f_ptrTo_UnixListener_AcceptUnix, "AcceptUnix accepts the next incoming call and returns the new\nconnection.\n", "1.0", NewVectorFrom()),
+			"Addr": MakeGoReceiver("Addr", _f_ptrTo_UnixListener_Addr, "Addr returns the listener's network address.\nThe Addr returned is shared by all invocations of Addr, so\ndo not modify it.\n", "1.0", NewVectorFrom()),
+			"Close": MakeGoReceiver("Close", _f_ptrTo_UnixListener_Close, "Close stops listening on the Unix address. Already accepted\nconnections are not closed.\n", "1.0", NewVectorFrom()),
+			"File": MakeGoReceiver("File", _f_ptrTo_UnixListener_File, "File returns a copy of the underlying os.File.\nIt is the caller's responsibility to close f when finished.\nClosing l does not affect f, and closing f does not affect l.\n\nThe returned os.File's file descriptor is different from the\nconnection's. Attempting to change properties of the original\nusing this duplicate may or may not have the desired effect.\n", "1.0", NewVectorFrom()),
+			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_UnixListener_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n\nThe returned RawConn only supports calling Control. Read and\nWrite return an error.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7142,6 +7281,9 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/big/src/net/net.go:5
 		GoType: &GoType{T: &info_UnknownNetworkError},
 		Ctor: _Wrapped_Ctor_UnknownNetworkError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_unknownNetworkError_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_unknownNetworkError_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_unknownNetworkError_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7756,6 +7898,18 @@ func ExtractGo_go_std_net_http__Header(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
+// func _Ctor_Header(_v Object) http.Header {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _http.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Header] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_Header(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Header(_o))
+// }
+
 GO TYPE net/http.Hijacker from net/http/server.go:
 func ExtractGoObjectHijacker(args []Object, index int) *http.Hijacker {
 	a := args[index]
@@ -7918,6 +8072,44 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 	return
 }
 
+// func _mapToRequest(o Map) *http.Request {
+// 	return &http.Request{
+// 		Method: FieldAsString(o, "Method"),
+// 		URL: ABEND048(codegen.go: no conversion from Clojure for *net/url.URL (-)),
+// 		Proto: FieldAsString(o, "Proto"),
+// 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
+// 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Body: ABEND049(codegen.go: no conversion to private type io.ReadCloser (-)),
+// 		GetBody: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
+// 		ContentLength: FieldAsInt64(o, "ContentLength"),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
+// 		Close: FieldAsBoolean(o, "Close"),
+// 		Host: FieldAsString(o, "Host"),
+// 		Form: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
+// 		PostForm: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
+// 		MultipartForm: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		RemoteAddr: FieldAsString(o, "RemoteAddr"),
+// 		RequestURI: FieldAsString(o, "RequestURI"),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
+// 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
+// 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (-)),
+// 	}
+// }
+
+// func _Ctor_Request(_v Object) *http.Request {
+// 	switch _o := _v.(type) {
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToRequest(_o.(Map))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Request] or: Map"))
+// }
+
+// func _Wrapped_Ctor_Request(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Request(_o))
+// }
+
 GO TYPE net/http.Response from net/http/response.go:
 func ExtractGoObjectResponse(args []Object, index int) *http.Response {
 	a := args[index]
@@ -7942,6 +8134,37 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 	}
 	return
 }
+
+// func _mapToResponse(o Map) *http.Response {
+// 	return &http.Response{
+// 		Status: FieldAsString(o, "Status"),
+// 		StatusCode: FieldAsInt(o, "StatusCode"),
+// 		Proto: FieldAsString(o, "Proto"),
+// 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
+// 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
+// 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Body: ABEND049(codegen.go: no conversion to private type io.ReadCloser (-)),
+// 		ContentLength: FieldAsInt64(o, "ContentLength"),
+// 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
+// 		Close: FieldAsBoolean(o, "Close"),
+// 		Uncompressed: FieldAsBoolean(o, "Uncompressed"),
+// 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
+// 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (-)),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
+// 	}
+// }
+
+// func _Ctor_Response(_v Object) *http.Response {
+// 	switch _o := _v.(type) {
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToResponse(_o.(Map))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Response] or: Map"))
+// }
+
+// func _Wrapped_Ctor_Response(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Response(_o))
+// }
 
 GO TYPE net/http.ResponseWriter from net/http/server.go:
 func ExtractGoObjectResponseWriter(args []Object, index int) *http.ResponseWriter {
@@ -8021,6 +8244,18 @@ func ExtractGo_go_std_net_http__SameSite(rcvr, arg string, args *ArraySeq, n int
 	return
 }
 
+func _Ctor_SameSite(_v Object) http.SameSite {
+	switch _o := _v.(type) {
+	case Number:
+		return http.SameSite(_o.Int().I)
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[http.SameSite] or: Number"))
+}
+
+func _Wrapped_Ctor_SameSite(_o Object) Object {
+	return MakeGoObject(_Ctor_SameSite(_o))
+}
+
 GO TYPE net/http.ServeMux from net/http/server.go:
 func ExtractGoObjectServeMux(args []Object, index int) *http.ServeMux {
 	a := args[index]
@@ -8087,6 +8322,34 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 	return
 }
 
+// func _mapToServer(o Map) *http.Server {
+// 	return &http.Server{
+// 		Addr: FieldAsString(o, "Addr"),
+// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
+// 		TLSConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
+// 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
+// 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
+// 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
+// 		IdleTimeout: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
+// 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
+// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND001(NO GO NAME for *ast.FuncType) (-)),
+// 		ConnState: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
+// 	}
+// }
+
+// func _Ctor_Server(_v Object) *http.Server {
+// 	switch _o := _v.(type) {
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToServer(_o.(Map))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[http.Server] or: Map"))
+// }
+
+// func _Wrapped_Ctor_Server(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Server(_o))
+// }
+
 GO TYPE net/http.Transport from net/http/transport.go:
 func ExtractGoObjectTransport(args []Object, index int) *http.Transport {
 	a := args[index]
@@ -8118,7 +8381,7 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		DialContext: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		DialTLS: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type * (crypto/tls.Config)),
+// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
 // 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
 // 		DisableCompression: FieldAsBoolean(o, "DisableCompression"),
@@ -8978,6 +9241,8 @@ GO INFO FOR TYPE *go.std.net.http/Client from _tests/big/src/net/http/client.go:
 	info_PtrTo_Client = GoTypeInfo{Name: "*go.std.net.http/Client",
 		GoType: &GoType{T: &info_PtrTo_Client},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", _f_ptrTo_Client_Get, "Get issues a GET to the specified URL. If the response is one of the\nfollowing redirect codes, Get follows the redirect after calling the\nClient's CheckRedirect function:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n\nAn error is returned if the Client's CheckRedirect function fails\nor if there was an HTTP protocol error. A non-2xx response doesn't\ncause an error. Any returned error will be of type *url.Error. The\nurl.Error value's Timeout method will report true if request timed\nout or was canceled.\n\nWhen err is nil, resp always contains a non-nil resp.Body.\nCaller should close resp.Body when done reading from it.\n\nTo make a request with custom headers, use NewRequest and Client.Do.\n", "1.0", NewVectorFrom(MakeSymbol("url"))),
+			"Head": MakeGoReceiver("Head", _f_ptrTo_Client_Head, "Head issues a HEAD to the specified URL. If the response is one of the\nfollowing redirect codes, Head follows the redirect after calling the\nClient's CheckRedirect function:\n\n   301 (Moved Permanently)\n   302 (Found)\n   303 (See Other)\n   307 (Temporary Redirect)\n   308 (Permanent Redirect)\n", "1.0", NewVectorFrom(MakeSymbol("url"))),
 		},
 	}
 
@@ -8996,6 +9261,7 @@ GO INFO FOR TYPE go.std.net.http/ConnState from _tests/big/src/net/http/server.g
 		GoType: &GoType{T: &info_ConnState},
 		Ctor: _Wrapped_Ctor_ConnState,
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", _f_connState_String, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -9020,6 +9286,7 @@ GO INFO FOR TYPE *go.std.net.http/Cookie from _tests/big/src/net/http/cookie.go:
 	info_PtrTo_Cookie = GoTypeInfo{Name: "*go.std.net.http/Cookie",
 		GoType: &GoType{T: &info_PtrTo_Cookie},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", _f_ptrTo_Cookie_String, "String returns the serialization of the cookie for use in a Cookie\nheader (if only Name and Value are set) or a Set-Cookie response\nheader (if other fields are set).\nIf c is nil or c.Name is invalid, the empty string is returned.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -9037,6 +9304,7 @@ GO INFO FOR TYPE go.std.net.http/Dir from _tests/big/src/net/http/fs.go:40:6:
 		GoType: &GoType{T: &info_Dir},
 		Ctor: _Wrapped_Ctor_Dir,
 		Members: GoMembers{
+			"Open": MakeGoReceiver("Open", _f_dir_Open, "", "1.0", NewVectorFrom(MakeSymbol("name"))),
 		},
 	}
 
@@ -9102,6 +9370,7 @@ GO INFO FOR TYPE go.std.net.http/Header from _tests/big/src/net/http/header.go:2
 	info_Header = GoTypeInfo{Name: "go.std.net.http/Header",
 		GoType: &GoType{T: &info_Header},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", _f_header_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; textproto.CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		},
 	}
 
@@ -9136,6 +9405,7 @@ GO INFO FOR TYPE *go.std.net.http/ProtocolError from _tests/big/src/net/http/req
 	info_PtrTo_ProtocolError = GoTypeInfo{Name: "*go.std.net.http/ProtocolError",
 		GoType: &GoType{T: &info_PtrTo_ProtocolError},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_ProtocolError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -9176,6 +9446,19 @@ GO INFO FOR TYPE *go.std.net.http/Request from _tests/big/src/net/http/request.g
 	info_PtrTo_Request = GoTypeInfo{Name: "*go.std.net.http/Request",
 		GoType: &GoType{T: &info_PtrTo_Request},
 		Members: GoMembers{
+			"BasicAuth": MakeGoReceiver("BasicAuth", _f_ptrTo_Request_BasicAuth, "BasicAuth returns the username and password provided in the request's\nAuthorization header, if the request uses HTTP Basic Authentication.\nSee RFC 2617, Section 2.\n", "1.0", NewVectorFrom()),
+			"Context": MakeGoReceiver("Context", _f_ptrTo_Request_Context, "Context returns the request's context. To change the context, use\nWithContext.\n\nThe returned context is always non-nil; it defaults to the\nbackground context.\n\nFor outgoing client requests, the context controls cancelation.\n\nFor incoming server requests, the context is canceled when the\nclient's connection closes, the request is canceled (with HTTP/2),\nor when the ServeHTTP method returns.\n", "1.0", NewVectorFrom()),
+			"Cookie": MakeGoReceiver("Cookie", _f_ptrTo_Request_Cookie, "Cookie returns the named cookie provided in the request or\nErrNoCookie if not found.\nIf multiple cookies match the given name, only one cookie will\nbe returned.\n", "1.0", NewVectorFrom(MakeSymbol("name"))),
+			"Cookies": MakeGoReceiver("Cookies", _f_ptrTo_Request_Cookies, "Cookies parses and returns the HTTP cookies sent with the request.\n", "1.0", NewVectorFrom()),
+			"FormFile": MakeGoReceiver("FormFile", _f_ptrTo_Request_FormFile, "FormFile returns the first file for the provided form key.\nFormFile calls ParseMultipartForm and ParseForm if necessary.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
+			"FormValue": MakeGoReceiver("FormValue", _f_ptrTo_Request_FormValue, "FormValue returns the first value for the named component of the query.\nPOST and PUT body parameters take precedence over URL query string values.\nFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, FormValue returns the empty string.\nTo access multiple values of the same key, call ParseForm and\nthen inspect Request.Form directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
+			"MultipartReader": MakeGoReceiver("MultipartReader", _f_ptrTo_Request_MultipartReader, "MultipartReader returns a MIME multipart reader if this is a\nmultipart/form-data or a multipart/mixed POST request, else returns nil and an error.\nUse this function instead of ParseMultipartForm to\nprocess the request body as a stream.\n", "1.0", NewVectorFrom()),
+			"ParseForm": MakeGoReceiver("ParseForm", _f_ptrTo_Request_ParseForm, "ParseForm populates r.Form and r.PostForm.\n\nFor all requests, ParseForm parses the raw query from the URL and updates\nr.Form.\n\nFor POST, PUT, and PATCH requests, it also parses the request body as a form\nand puts the results into both r.PostForm and r.Form. Request body parameters\ntake precedence over URL query string values in r.Form.\n\nFor other HTTP methods, or when the Content-Type is not\napplication/x-www-form-urlencoded, the request Body is not read, and\nr.PostForm is initialized to a non-nil, empty value.\n\nIf the request Body's size has not already been limited by MaxBytesReader,\nthe size is capped at 10MB.\n\nParseMultipartForm calls ParseForm automatically.\nParseForm is idempotent.\n", "1.0", NewVectorFrom()),
+			"ParseMultipartForm": MakeGoReceiver("ParseMultipartForm", _f_ptrTo_Request_ParseMultipartForm, "ParseMultipartForm parses a request body as multipart/form-data.\nThe whole request body is parsed and up to a total of maxMemory bytes of\nits file parts are stored in memory, with the remainder stored on\ndisk in temporary files.\nParseMultipartForm calls ParseForm if necessary.\nAfter one call to ParseMultipartForm, subsequent calls have no effect.\n", "1.0", NewVectorFrom(MakeSymbol("maxMemory"))),
+			"PostFormValue": MakeGoReceiver("PostFormValue", _f_ptrTo_Request_PostFormValue, "PostFormValue returns the first value for the named component of the POST,\nPATCH, or PUT request body. URL query parameters are ignored.\nPostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, PostFormValue returns the empty string.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
+			"ProtoAtLeast": MakeGoReceiver("ProtoAtLeast", _f_ptrTo_Request_ProtoAtLeast, "ProtoAtLeast reports whether the HTTP protocol used\nin the request is at least major.minor.\n", "1.0", NewVectorFrom(MakeSymbol("major"), MakeSymbol("minor"))),
+			"Referer": MakeGoReceiver("Referer", _f_ptrTo_Request_Referer, "Referer returns the referring URL, if sent in the request.\n\nReferer is misspelled as in the request itself, a mistake from the\nearliest days of HTTP.  This value can also be fetched from the\nHeader map as Header[\"Referer\"]; the benefit of making it available\nas a method is that the compiler can diagnose programs that use the\nalternate (correct English) spelling req.Referrer() but cannot\ndiagnose programs that use Header[\"Referrer\"].\n", "1.0", NewVectorFrom()),
+			"UserAgent": MakeGoReceiver("UserAgent", _f_ptrTo_Request_UserAgent, "UserAgent returns the client's User-Agent, if sent in the request.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -9192,6 +9475,9 @@ GO INFO FOR TYPE *go.std.net.http/Response from _tests/big/src/net/http/response
 	info_PtrTo_Response = GoTypeInfo{Name: "*go.std.net.http/Response",
 		GoType: &GoType{T: &info_PtrTo_Response},
 		Members: GoMembers{
+			"Cookies": MakeGoReceiver("Cookies", _f_ptrTo_Response_Cookies, "Cookies parses and returns the cookies set in the Set-Cookie headers.\n", "1.0", NewVectorFrom()),
+			"Location": MakeGoReceiver("Location", _f_ptrTo_Response_Location, "Location returns the URL of the response's \"Location\" header,\nif present. Relative redirects are resolved relative to\nthe Response's Request. ErrNoLocation is returned if no\nLocation header is present.\n", "1.0", NewVectorFrom()),
+			"ProtoAtLeast": MakeGoReceiver("ProtoAtLeast", _f_ptrTo_Response_ProtoAtLeast, "ProtoAtLeast reports whether the HTTP protocol used\nin the response is at least major.minor.\n", "1.0", NewVectorFrom(MakeSymbol("major"), MakeSymbol("minor"))),
 		},
 	}
 
@@ -9259,6 +9545,9 @@ GO INFO FOR TYPE *go.std.net.http/Server from _tests/big/src/net/http/server.go:
 	info_PtrTo_Server = GoTypeInfo{Name: "*go.std.net.http/Server",
 		GoType: &GoType{T: &info_PtrTo_Server},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", _f_ptrTo_Server_Close, "Close immediately closes all active net.Listeners and any\nconnections in state StateNew, StateActive, or StateIdle. For a\ngraceful shutdown, use Shutdown.\n\nClose does not attempt to close (and does not even know about)\nany hijacked connections, such as WebSockets.\n\nClose returns any error returned from closing the Server's\nunderlying Listener(s).\n", "1.0", NewVectorFrom()),
+			"ListenAndServe": MakeGoReceiver("ListenAndServe", _f_ptrTo_Server_ListenAndServe, "ListenAndServe listens on the TCP network address srv.Addr and then\ncalls Serve to handle requests on incoming connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nIf srv.Addr is blank, \":http\" is used.\n\nListenAndServe always returns a non-nil error. After Shutdown or Close,\nthe returned error is ErrServerClosed.\n", "1.0", NewVectorFrom()),
+			"ListenAndServeTLS": MakeGoReceiver("ListenAndServeTLS", _f_ptrTo_Server_ListenAndServeTLS, "ListenAndServeTLS listens on the TCP network address srv.Addr and\nthen calls ServeTLS to handle requests on incoming TLS connections.\nAccepted connections are configured to enable TCP keep-alives.\n\nFilenames containing a certificate and matching private key for the\nserver must be provided if neither the Server's TLSConfig.Certificates\nnor TLSConfig.GetCertificate are populated. If the certificate is\nsigned by a certificate authority, the certFile should be the\nconcatenation of the server's certificate, any intermediates, and\nthe CA's certificate.\n\nIf srv.Addr is blank, \":https\" is used.\n\nListenAndServeTLS always returns a non-nil error. After Shutdown or\nClose, the returned error is ErrServerClosed.\n", "1.0", NewVectorFrom(MakeSymbol("certFile"), MakeSymbol("keyFile"))),
 		},
 	}
 
@@ -9465,7 +9754,7 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 		Dir: FieldAsString(o, "Dir"),
 // 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
-// 		Logger: ABEND049(codegen.go: no conversion to private type * (log.Logger)),
+// 		Logger: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Stderr: ABEND049(codegen.go: no conversion to private type io.Writer (-)),
 // 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
@@ -9836,7 +10125,7 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 // 	return &httptest.ResponseRecorder{
 // 		Code: FieldAsInt(o, "Code"),
 // 		HeaderMap: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type * (bytes.Buffer)),
+// 		Body: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 		Flushed: FieldAsBoolean(o, "Flushed"),
 // 	}
 // }
@@ -9882,7 +10171,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // 	return &httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
 // 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (crypto/tls.Config)),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
 // 	}
 // }
@@ -10033,6 +10322,9 @@ GO INFO FOR TYPE *go.std.net.http.httptest/ResponseRecorder from _tests/big/src/
 	info_PtrTo_ResponseRecorder = GoTypeInfo{Name: "*go.std.net.http.httptest/ResponseRecorder",
 		GoType: &GoType{T: &info_PtrTo_ResponseRecorder},
 		Members: GoMembers{
+			"Header": MakeGoReceiver("Header", _f_ptrTo_ResponseRecorder_Header, "Header returns the response headers.\n", "1.0", NewVectorFrom()),
+			"Result": MakeGoReceiver("Result", _f_ptrTo_ResponseRecorder_Result, "Result returns the response generated by the handler.\n\nThe returned Response will have at least its StatusCode,\nHeader, Body, and optionally Trailer populated.\nMore fields may be populated in the future, so callers should\nnot DeepEqual the result in tests.\n\nThe Response.Header is a snapshot of the headers at the time of the\nfirst write call, or at the time of this call, if the handler never\ndid a write.\n\nThe Response.Body is guaranteed to be non-nil and Body.Read call is\nguaranteed to not return any error other than io.EOF.\n\nResult must only be called after the handler has finished running.\n", "1.0", NewVectorFrom()),
+			"WriteString": MakeGoReceiver("WriteString", _f_ptrTo_ResponseRecorder_WriteString, "WriteString always succeeds and writes to rw.Body, if not nil.\n", "1.0", NewVectorFrom(MakeSymbol("str"))),
 		},
 	}
 
@@ -10049,6 +10341,8 @@ GO INFO FOR TYPE *go.std.net.http.httptest/Server from _tests/big/src/net/http/h
 	info_PtrTo_Server = GoTypeInfo{Name: "*go.std.net.http.httptest/Server",
 		GoType: &GoType{T: &info_PtrTo_Server},
 		Members: GoMembers{
+			"Certificate": MakeGoReceiver("Certificate", _f_ptrTo_Server_Certificate, "Certificate returns the certificate used by the server, or nil if\nthe server doesn't use TLS.\n", "1.0", NewVectorFrom()),
+			"Client": MakeGoReceiver("Client", _f_ptrTo_Server_Client, "Client returns an HTTP client configured for making requests to the server.\nIt is configured to trust the server's TLS test certificate and will\nclose its idle connections on Server.Close.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10577,7 +10871,7 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 // 		Director: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.Duration (-)),
-// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (log.Logger)),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		ModifyResponse: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ErrorHandler: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
@@ -10857,6 +11151,9 @@ GO INFO FOR TYPE *go.std.net.http.httputil/ClientConn from _tests/big/src/net/ht
 	info_PtrTo_ClientConn = GoTypeInfo{Name: "*go.std.net.http.httputil/ClientConn",
 		GoType: &GoType{T: &info_PtrTo_ClientConn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", _f_ptrTo_ClientConn_Close, "Close calls Hijack and then also closes the underlying connection.\n", "1.0", NewVectorFrom()),
+			"Hijack": MakeGoReceiver("Hijack", _f_ptrTo_ClientConn_Hijack, "Hijack detaches the ClientConn and returns the underlying connection as well\nas the read-side bufio which may have some left over data. Hijack may be\ncalled before the user or Read have signaled the end of the keep-alive\nlogic. The user should not call Hijack while Read or Write is in progress.\n", "1.0", NewVectorFrom()),
+			"Pending": MakeGoReceiver("Pending", _f_ptrTo_ClientConn_Pending, "Pending returns the number of unanswered requests\nthat have been sent on the connection.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10890,6 +11187,10 @@ GO INFO FOR TYPE *go.std.net.http.httputil/ServerConn from _tests/big/src/net/ht
 	info_PtrTo_ServerConn = GoTypeInfo{Name: "*go.std.net.http.httputil/ServerConn",
 		GoType: &GoType{T: &info_PtrTo_ServerConn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", _f_ptrTo_ServerConn_Close, "Close calls Hijack and then also closes the underlying connection.\n", "1.0", NewVectorFrom()),
+			"Hijack": MakeGoReceiver("Hijack", _f_ptrTo_ServerConn_Hijack, "Hijack detaches the ServerConn and returns the underlying connection as well\nas the read-side bufio which may have some left over data. Hijack may be\ncalled before Read has signaled the end of the keep-alive logic. The user\nshould not call Hijack while Read or Write is in progress.\n", "1.0", NewVectorFrom()),
+			"Pending": MakeGoReceiver("Pending", _f_ptrTo_ServerConn_Pending, "Pending returns the number of unanswered requests\nthat have been received on the connection.\n", "1.0", NewVectorFrom()),
+			"Read": MakeGoReceiver("Read", _f_ptrTo_ServerConn_Read, "Read returns the next request on the wire. An ErrPersistEOF is returned if\nit is gracefully determined that there are no more requests (e.g. after the\nfirst request on an HTTP/1.0 connection, or after a Connection:close on a\nHTTP/1.1 connection).\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -11056,7 +11357,7 @@ func ExtractGo_go_std_net_mail__AddressParser(rcvr, arg string, args *ArraySeq, 
 
 // func _mapToAddressParser(o Map) *mail.AddressParser {
 // 	return &mail.AddressParser{
-// 		WordDecoder: ABEND049(codegen.go: no conversion to private type * (mime.WordDecoder)),
+// 		WordDecoder: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 	}
 // }
 
@@ -11096,6 +11397,18 @@ func ExtractGo_go_std_net_mail__Header(rcvr, arg string, args *ArraySeq, n int) 
 	}
 	return
 }
+
+// func _Ctor_Header(_v Object) mail.Header {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _mail.Header(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Header))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[mail.Header] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_Header(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Header(_o))
+// }
 
 GO TYPE net/mail.Message from net/mail/message.go:
 func ExtractGoObjectMessage(args []Object, index int) *mail.Message {
@@ -11272,6 +11585,7 @@ GO INFO FOR TYPE *go.std.net.mail/Address from _tests/big/src/net/mail/message.g
 	info_PtrTo_Address = GoTypeInfo{Name: "*go.std.net.mail/Address",
 		GoType: &GoType{T: &info_PtrTo_Address},
 		Members: GoMembers{
+			"String": MakeGoReceiver("String", _f_ptrTo_Address_String, "String formats the address as a valid RFC 5322 address.\nIf the address's name contains non-ASCII characters\nthe name will be rendered according to RFC 2047.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -11288,6 +11602,8 @@ GO INFO FOR TYPE *go.std.net.mail/AddressParser from _tests/big/src/net/mail/mes
 	info_PtrTo_AddressParser = GoTypeInfo{Name: "*go.std.net.mail/AddressParser",
 		GoType: &GoType{T: &info_PtrTo_AddressParser},
 		Members: GoMembers{
+			"Parse": MakeGoReceiver("Parse", _f_ptrTo_AddressParser_Parse, "Parse parses a single RFC 5322 address of the\nform \"Gogh Fir <gf@example.com>\" or \"foo@example.com\".\n", "1.0", NewVectorFrom(MakeSymbol("address"))),
+			"ParseList": MakeGoReceiver("ParseList", _f_ptrTo_AddressParser_ParseList, "ParseList parses the given string as a list of comma-separated addresses\nof the form \"Gogh Fir <gf@example.com>\" or \"foo@example.com\".\n", "1.0", NewVectorFrom(MakeSymbol("list"))),
 		},
 	}
 
@@ -11296,6 +11612,9 @@ GO INFO FOR TYPE go.std.net.mail/Header from _tests/big/src/net/mail/message.go:
 	info_Header = GoTypeInfo{Name: "go.std.net.mail/Header",
 		GoType: &GoType{T: &info_Header},
 		Members: GoMembers{
+			"AddressList": MakeGoReceiver("AddressList", _f_header_AddressList, "AddressList parses the named header field as a list of addresses.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
+			"Date": MakeGoReceiver("Date", _f_header_Date, "Date parses the Date header field.\n", "1.0", NewVectorFrom()),
+			"Get": MakeGoReceiver("Get", _f_header_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		},
 	}
 
@@ -11929,6 +12248,7 @@ GO INFO FOR TYPE *go.std.net.rpc/Client from _tests/big/src/net/rpc/client.go:41
 	info_PtrTo_Client = GoTypeInfo{Name: "*go.std.net.rpc/Client",
 		GoType: &GoType{T: &info_PtrTo_Client},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", _f_ptrTo_Client_Close, "Close calls the underlying codec's Close method. If the connection is already\nshutting down, ErrShutdown is returned.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -11989,6 +12309,7 @@ GO INFO FOR TYPE *go.std.net.rpc/Server from _tests/big/src/net/rpc/server.go:18
 	info_PtrTo_Server = GoTypeInfo{Name: "*go.std.net.rpc/Server",
 		GoType: &GoType{T: &info_PtrTo_Server},
 		Members: GoMembers{
+			"ServeRequest": MakeGoReceiver("ServeRequest", _f_ptrTo_Server_ServeRequest, "ServeRequest is like ServeCodec but synchronously serves a single request.\nIt does not close the codec upon completion.\n", "1.0", NewVectorFrom(MakeSymbol("codec"))),
 		},
 	}
 
@@ -12007,6 +12328,7 @@ GO INFO FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client.g
 		GoType: &GoType{T: &info_ServerError},
 		Ctor: _Wrapped_Ctor_ServerError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_serverError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -12429,6 +12751,18 @@ GO INFO FOR TYPE *go.std.net.smtp/Client from _tests/big/src/net/smtp/smtp.go:30
 	info_PtrTo_Client = GoTypeInfo{Name: "*go.std.net.smtp/Client",
 		GoType: &GoType{T: &info_PtrTo_Client},
 		Members: GoMembers{
+			"Auth": MakeGoReceiver("Auth", _f_ptrTo_Client_Auth, "Auth authenticates a client using the provided authentication mechanism.\nA failed authentication closes the connection.\nOnly servers that advertise the AUTH extension support this function.\n", "1.0", NewVectorFrom(MakeSymbol("a"))),
+			"Close": MakeGoReceiver("Close", _f_ptrTo_Client_Close, "Close closes the connection.\n", "1.0", NewVectorFrom()),
+			"Data": MakeGoReceiver("Data", _f_ptrTo_Client_Data, "Data issues a DATA command to the server and returns a writer that\ncan be used to write the mail headers and body. The caller should\nclose the writer before calling any more methods on c. A call to\nData must be preceded by one or more calls to Rcpt.\n", "1.0", NewVectorFrom()),
+			"Extension": MakeGoReceiver("Extension", _f_ptrTo_Client_Extension, "Extension reports whether an extension is support by the server.\nThe extension name is case-insensitive. If the extension is supported,\nExtension also returns a string that contains any parameters the\nserver specifies for the extension.\n", "1.0", NewVectorFrom(MakeSymbol("ext"))),
+			"Hello": MakeGoReceiver("Hello", _f_ptrTo_Client_Hello, "Hello sends a HELO or EHLO to the server as the given host name.\nCalling this method is only necessary if the client needs control\nover the host name used. The client will introduce itself as \"localhost\"\nautomatically otherwise. If Hello is called, it must be called before\nany of the other methods.\n", "1.0", NewVectorFrom(MakeSymbol("localName"))),
+			"Mail": MakeGoReceiver("Mail", _f_ptrTo_Client_Mail, "Mail issues a MAIL command to the server using the provided email address.\nIf the server supports the 8BITMIME extension, Mail adds the BODY=8BITMIME\nparameter.\nThis initiates a mail transaction and is followed by one or more Rcpt calls.\n", "1.0", NewVectorFrom(MakeSymbol("from"))),
+			"Noop": MakeGoReceiver("Noop", _f_ptrTo_Client_Noop, "Noop sends the NOOP command to the server. It does nothing but check\nthat the connection to the server is okay.\n", "1.0", NewVectorFrom()),
+			"Quit": MakeGoReceiver("Quit", _f_ptrTo_Client_Quit, "Quit sends the QUIT command and closes the connection to the server.\n", "1.0", NewVectorFrom()),
+			"Rcpt": MakeGoReceiver("Rcpt", _f_ptrTo_Client_Rcpt, "Rcpt issues a RCPT command to the server using the provided email address.\nA call to Rcpt must be preceded by a call to Mail and may be followed by\na Data call or another Rcpt call.\n", "1.0", NewVectorFrom(MakeSymbol("to"))),
+			"Reset": MakeGoReceiver("Reset", _f_ptrTo_Client_Reset, "Reset sends the RSET command to the server, aborting the current mail\ntransaction.\n", "1.0", NewVectorFrom()),
+			"TLSConnectionState": MakeGoReceiver("TLSConnectionState", _f_ptrTo_Client_TLSConnectionState, "TLSConnectionState returns the client's TLS connection state.\nThe return values are their zero values if StartTLS did\nnot succeed.\n", "1.0", NewVectorFrom()),
+			"Verify": MakeGoReceiver("Verify", _f_ptrTo_Client_Verify, "Verify checks the validity of an email address on the server.\nIf Verify returns nil, the address is valid. A non-nil return\ndoes not necessarily indicate an invalid address. Many servers\nwill not verify addresses for security reasons.\n", "1.0", NewVectorFrom(MakeSymbol("addr"))),
 		},
 	}
 
@@ -12499,6 +12833,22 @@ func ExtractGo_go_std_net_textproto__Conn(rcvr, arg string, args *ArraySeq, n in
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
+}
+
+func _mapToConn(o Map) *textproto.Conn {
+	return &textproto.Conn{}
+}
+
+func _Ctor_Conn(_v Object) *textproto.Conn {
+	switch _o := _v.(type) {
+	case *ArrayMap, *HashMap:
+		return _mapToConn(_o.(Map))
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[textproto.Conn] or: Map"))
+}
+
+func _Wrapped_Ctor_Conn(_o Object) Object {
+	return MakeGoObject(_Ctor_Conn(_o))
 }
 
 GO TYPE net/textproto.Error from net/textproto/textproto.go:
@@ -12690,7 +13040,7 @@ func ExtractGo_go_std_net_textproto__Reader(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToReader(o Map) *textproto.Reader {
 // 	return &textproto.Reader{
-// 		R: ABEND049(codegen.go: no conversion to private type * (bufio.Reader)),
+// 		R: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 	}
 // }
 
@@ -12733,7 +13083,7 @@ func ExtractGo_go_std_net_textproto__Writer(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToWriter(o Map) *textproto.Writer {
 // 	return &textproto.Writer{
-// 		W: ABEND049(codegen.go: no conversion to private type * (bufio.Writer)),
+// 		W: ABEND049(codegen.go: no conversion to private type * (mime/multipart.Form)),
 // 	}
 // }
 
@@ -13024,6 +13374,7 @@ GO INFO FOR TYPE *go.std.net.textproto/Conn from _tests/big/src/net/textproto/te
 	info_PtrTo_Conn = GoTypeInfo{Name: "*go.std.net.textproto/Conn",
 		GoType: &GoType{T: &info_PtrTo_Conn},
 		Members: GoMembers{
+			"Close": MakeGoReceiver("Close", _f_ptrTo_Conn_Close, "Close closes the connection.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13041,6 +13392,7 @@ GO INFO FOR TYPE *go.std.net.textproto/Error from _tests/big/src/net/textproto/t
 	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net.textproto/Error",
 		GoType: &GoType{T: &info_PtrTo_Error},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_Error_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13049,6 +13401,7 @@ GO INFO FOR TYPE go.std.net.textproto/MIMEHeader from _tests/big/src/net/textpro
 	info_MIMEHeader = GoTypeInfo{Name: "go.std.net.textproto/MIMEHeader",
 		GoType: &GoType{T: &info_MIMEHeader},
 		Members: GoMembers{
+			"Get": MakeGoReceiver("Get", _f_mIMEHeader_Get, "Get gets the first value associated with the given key.\nIt is case insensitive; CanonicalMIMEHeaderKey is used\nto canonicalize the provided key.\nIf there are no values associated with the key, Get returns \"\".\nTo access multiple values of a key, or to use non-canonical keys,\naccess the map directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		},
 	}
 
@@ -13074,6 +13427,7 @@ GO INFO FOR TYPE *go.std.net.textproto/Pipeline from _tests/big/src/net/textprot
 	info_PtrTo_Pipeline = GoTypeInfo{Name: "*go.std.net.textproto/Pipeline",
 		GoType: &GoType{T: &info_PtrTo_Pipeline},
 		Members: GoMembers{
+			"Next": MakeGoReceiver("Next", _f_ptrTo_Pipeline_Next, "Next returns the next id for a request/response pair.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13083,6 +13437,7 @@ GO INFO FOR TYPE go.std.net.textproto/ProtocolError from _tests/big/src/net/text
 		GoType: &GoType{T: &info_ProtocolError},
 		Ctor: _Wrapped_Ctor_ProtocolError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_protocolError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13107,6 +13462,16 @@ GO INFO FOR TYPE *go.std.net.textproto/Reader from _tests/big/src/net/textproto/
 	info_PtrTo_Reader = GoTypeInfo{Name: "*go.std.net.textproto/Reader",
 		GoType: &GoType{T: &info_PtrTo_Reader},
 		Members: GoMembers{
+			"DotReader": MakeGoReceiver("DotReader", _f_ptrTo_Reader_DotReader, "DotReader returns a new Reader that satisfies Reads using the\ndecoded text of a dot-encoded block read from r.\nThe returned Reader is only valid until the next call\nto a method on r.\n\nDot encoding is a common framing used for data blocks\nin text protocols such as SMTP.  The data consists of a sequence\nof lines, each of which ends in \"\\r\\n\".  The sequence itself\nends at a line containing just a dot: \".\\r\\n\".  Lines beginning\nwith a dot are escaped with an additional dot to avoid\nlooking like the end of the sequence.\n\nThe decoded form returned by the Reader's Read method\nrewrites the \"\\r\\n\" line endings into the simpler \"\\n\",\nremoves leading dot escapes if present, and stops with error io.EOF\nafter consuming (and discarding) the end-of-sequence line.\n", "1.0", NewVectorFrom()),
+			"ReadCodeLine": MakeGoReceiver("ReadCodeLine", _f_ptrTo_Reader_ReadCodeLine, "ReadCodeLine reads a response code line of the form\n\tcode message\nwhere code is a three-digit status code and the message\nextends to the rest of the line. An example of such a line is:\n\t220 plan9.bell-labs.com ESMTP\n\nIf the prefix of the status does not match the digits in expectCode,\nReadCodeLine returns with err set to &Error{code, message}.\nFor example, if expectCode is 31, an error will be returned if\nthe status is not in the range [310,319].\n\nIf the response is multi-line, ReadCodeLine returns an error.\n\nAn expectCode <= 0 disables the check of the status code.\n", "1.0", NewVectorFrom(MakeSymbol("expectCode"))),
+			"ReadContinuedLine": MakeGoReceiver("ReadContinuedLine", _f_ptrTo_Reader_ReadContinuedLine, "ReadContinuedLine reads a possibly continued line from r,\neliding the final trailing ASCII white space.\nLines after the first are considered continuations if they\nbegin with a space or tab character. In the returned data,\ncontinuation lines are separated from the previous line\nonly by a single space: the newline and leading white space\nare removed.\n\nFor example, consider this input:\n\n\tLine 1\n\t  continued...\n\tLine 2\n\nThe first call to ReadContinuedLine will return \"Line 1 continued...\"\nand the second will return \"Line 2\".\n\nA line consisting of only white space is never continued.\n", "1.0", NewVectorFrom()),
+			"ReadContinuedLineBytes": MakeGoReceiver("ReadContinuedLineBytes", _f_ptrTo_Reader_ReadContinuedLineBytes, "ReadContinuedLineBytes is like ReadContinuedLine but\nreturns a []byte instead of a string.\n", "1.0", NewVectorFrom()),
+			"ReadDotBytes": MakeGoReceiver("ReadDotBytes", _f_ptrTo_Reader_ReadDotBytes, "ReadDotBytes reads a dot-encoding and returns the decoded data.\n\nSee the documentation for the DotReader method for details about dot-encoding.\n", "1.0", NewVectorFrom()),
+			"ReadDotLines": MakeGoReceiver("ReadDotLines", _f_ptrTo_Reader_ReadDotLines, "ReadDotLines reads a dot-encoding and returns a slice\ncontaining the decoded lines, with the final \\r\\n or \\n elided from each.\n\nSee the documentation for the DotReader method for details about dot-encoding.\n", "1.0", NewVectorFrom()),
+			"ReadLine": MakeGoReceiver("ReadLine", _f_ptrTo_Reader_ReadLine, "ReadLine reads a single line from r,\neliding the final \\n or \\r\\n from the returned string.\n", "1.0", NewVectorFrom()),
+			"ReadLineBytes": MakeGoReceiver("ReadLineBytes", _f_ptrTo_Reader_ReadLineBytes, "ReadLineBytes is like ReadLine but returns a []byte instead of a string.\n", "1.0", NewVectorFrom()),
+			"ReadMIMEHeader": MakeGoReceiver("ReadMIMEHeader", _f_ptrTo_Reader_ReadMIMEHeader, "ReadMIMEHeader reads a MIME-style header from r.\nThe header is a sequence of possibly continued Key: Value lines\nending in a blank line.\nThe returned map m maps CanonicalMIMEHeaderKey(key) to a\nsequence of values in the same order encountered in the input.\n\nFor example, consider this input:\n\n\tMy-Key: Value 1\n\tLong-Key: Even\n\t       Longer Value\n\tMy-Key: Value 2\n\nGiven that input, ReadMIMEHeader returns the map:\n\n\tmap[string][]string{\n\t\t\"My-Key\": {\"Value 1\", \"Value 2\"},\n\t\t\"Long-Key\": {\"Even Longer Value\"},\n\t}\n", "1.0", NewVectorFrom()),
+			"ReadResponse": MakeGoReceiver("ReadResponse", _f_ptrTo_Reader_ReadResponse, "ReadResponse reads a multi-line response of the form:\n\n\tcode-message line 1\n\tcode-message line 2\n\t...\n\tcode message line n\n\nwhere code is a three-digit status code. The first line starts with the\ncode and a hyphen. The response is terminated by a line that starts\nwith the same code followed by a space. Each line in message is\nseparated by a newline (\\n).\n\nSee page 36 of RFC 959 (https://www.ietf.org/rfc/rfc959.txt) for\ndetails of another form of response accepted:\n\n code-message line 1\n message line 2\n ...\n code message line n\n\nIf the prefix of the status does not match the digits in expectCode,\nReadResponse returns with err set to &Error{code, message}.\nFor example, if expectCode is 31, an error will be returned if\nthe status is not in the range [310,319].\n\nAn expectCode <= 0 disables the check of the status code.\n", "1.0", NewVectorFrom(MakeSymbol("expectCode"))),
 		},
 	}
 
@@ -13123,6 +13488,7 @@ GO INFO FOR TYPE *go.std.net.textproto/Writer from _tests/big/src/net/textproto/
 	info_PtrTo_Writer = GoTypeInfo{Name: "*go.std.net.textproto/Writer",
 		GoType: &GoType{T: &info_PtrTo_Writer},
 		Members: GoMembers{
+			"DotWriter": MakeGoReceiver("DotWriter", _f_ptrTo_Writer_DotWriter, "DotWriter returns a writer that can be used to write a dot-encoding to w.\nIt takes care of inserting leading dots when necessary,\ntranslating line-ending \\n into \\r\\n, and adding the final .\\r\\n line\nwhen the DotWriter is closed. The caller should close the\nDotWriter before the next call to a method on w.\n\nSee the documentation for Reader's DotReader method for details about dot-encoding.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13330,6 +13696,32 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 	return
 }
 
+// func _mapToURL(o Map) *url.URL {
+// 	return &url.URL{
+// 		Scheme: FieldAsString(o, "Scheme"),
+// 		Opaque: FieldAsString(o, "Opaque"),
+// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (-)),
+// 		Host: FieldAsString(o, "Host"),
+// 		Path: FieldAsString(o, "Path"),
+// 		RawPath: FieldAsString(o, "RawPath"),
+// 		ForceQuery: FieldAsBoolean(o, "ForceQuery"),
+// 		RawQuery: FieldAsString(o, "RawQuery"),
+// 		Fragment: FieldAsString(o, "Fragment"),
+// 	}
+// }
+
+// func _Ctor_URL(_v Object) *url.URL {
+// 	switch _o := _v.(type) {
+// 	case *ArrayMap, *HashMap:
+// 		return _mapToURL(_o.(Map))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.URL] or: Map"))
+// }
+
+// func _Wrapped_Ctor_URL(_o Object) Object {
+// 	return MakeGoObject(_Ctor_URL(_o))
+// }
+
 GO TYPE net/url.Userinfo from net/url/url.go:
 func ExtractGoObjectUserinfo(args []Object, index int) *url.Userinfo {
 	a := args[index]
@@ -13353,6 +13745,22 @@ func ExtractGo_go_std_net_url__Userinfo(rcvr, arg string, args *ArraySeq, n int)
 			n, rcvr, GoObjectTypeToString(a))))
 	}
 	return
+}
+
+func _mapToUserinfo(o Map) *url.Userinfo {
+	return &url.Userinfo{}
+}
+
+func _Ctor_Userinfo(_v Object) *url.Userinfo {
+	switch _o := _v.(type) {
+	case *ArrayMap, *HashMap:
+		return _mapToUserinfo(_o.(Map))
+	}
+	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Userinfo] or: Map"))
+}
+
+func _Wrapped_Ctor_Userinfo(_o Object) Object {
+	return MakeGoObject(_Ctor_Userinfo(_o))
 }
 
 GO TYPE net/url.Values from net/url/url.go:
@@ -13379,6 +13787,18 @@ func ExtractGo_go_std_net_url__Values(rcvr, arg string, args *ArraySeq, n int) (
 	}
 	return
 }
+
+// func _Ctor_Values(_v Object) url.Values {
+// 	switch _o := _v.(type) {
+// 	default:
+// 		return _url.Values(_o.ABEND674(codegen.go: unknown underlying type *ast.MapType for Values))
+// 	}
+// 	panic(RT.NewArgTypeError(0, _v, "GoObject[url.Values] or: whatever"))
+// }
+
+// func _Wrapped_Ctor_Values(_o Object) Object {
+// 	return MakeGoObject(_Ctor_Values(_o))
+// }
 
 GO FUNC net/url.Parse from net/url/url.go:
 func _f_parse(_v_rawurl string) Object {
@@ -13661,6 +14081,9 @@ GO INFO FOR TYPE *go.std.net.url/Error from _tests/big/src/net/url/url.go:22:6:
 	info_PtrTo_Error = GoTypeInfo{Name: "*go.std.net.url/Error",
 		GoType: &GoType{T: &info_PtrTo_Error},
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_ptrTo_Error_Error, "", "1.0", NewVectorFrom()),
+			"Temporary": MakeGoReceiver("Temporary", _f_ptrTo_Error_Temporary, "", "1.0", NewVectorFrom()),
+			"Timeout": MakeGoReceiver("Timeout", _f_ptrTo_Error_Timeout, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13670,6 +14093,7 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/big/src/net/url/url.go:8
 		GoType: &GoType{T: &info_EscapeError},
 		Ctor: _Wrapped_Ctor_EscapeError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_escapeError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13687,6 +14111,7 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/big/src/net/url/url
 		GoType: &GoType{T: &info_InvalidHostError},
 		Ctor: _Wrapped_Ctor_InvalidHostError,
 		Members: GoMembers{
+			"Error": MakeGoReceiver("Error", _f_invalidHostError_Error, "", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13711,6 +14136,15 @@ GO INFO FOR TYPE *go.std.net.url/URL from _tests/big/src/net/url/url.go:344:6:
 	info_PtrTo_URL = GoTypeInfo{Name: "*go.std.net.url/URL",
 		GoType: &GoType{T: &info_PtrTo_URL},
 		Members: GoMembers{
+			"EscapedPath": MakeGoReceiver("EscapedPath", _f_ptrTo_URL_EscapedPath, "EscapedPath returns the escaped form of u.Path.\nIn general there are multiple possible escaped forms of any path.\nEscapedPath returns u.RawPath when it is a valid escaping of u.Path.\nOtherwise EscapedPath ignores u.RawPath and computes an escaped\nform on its own.\nThe String and RequestURI methods use EscapedPath to construct\ntheir results.\nIn general, code should call EscapedPath instead of\nreading u.RawPath directly.\n", "1.0", NewVectorFrom()),
+			"Hostname": MakeGoReceiver("Hostname", _f_ptrTo_URL_Hostname, "Hostname returns u.Host, without any port number.\n\nIf Host is an IPv6 literal with a port number, Hostname returns the\nIPv6 literal without the square brackets. IPv6 literals may include\na zone identifier.\n", "1.0", NewVectorFrom()),
+			"IsAbs": MakeGoReceiver("IsAbs", _f_ptrTo_URL_IsAbs, "IsAbs reports whether the URL is absolute.\nAbsolute means that it has a non-empty scheme.\n", "1.0", NewVectorFrom()),
+			"MarshalBinary": MakeGoReceiver("MarshalBinary", _f_ptrTo_URL_MarshalBinary, "", "1.0", NewVectorFrom()),
+			"Parse": MakeGoReceiver("Parse", _f_ptrTo_URL_Parse, "Parse parses a URL in the context of the receiver. The provided URL\nmay be relative or absolute. Parse returns nil, err on parse\nfailure, otherwise its return value is the same as ResolveReference.\n", "1.0", NewVectorFrom(MakeSymbol("ref"))),
+			"Port": MakeGoReceiver("Port", _f_ptrTo_URL_Port, "Port returns the port part of u.Host, without the leading colon.\nIf u.Host doesn't contain a port, Port returns an empty string.\n", "1.0", NewVectorFrom()),
+			"Query": MakeGoReceiver("Query", _f_ptrTo_URL_Query, "Query parses RawQuery and returns the corresponding values.\nIt silently discards malformed value pairs.\nTo check errors use ParseQuery.\n", "1.0", NewVectorFrom()),
+			"RequestURI": MakeGoReceiver("RequestURI", _f_ptrTo_URL_RequestURI, "RequestURI returns the encoded path?query or opaque?query\nstring that would be used in an HTTP request for u.\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_URL_String, "String reassembles the URL into a valid URL string.\nThe general form of the result is one of:\n\n\tscheme:opaque?query#fragment\n\tscheme://userinfo@host/path?query#fragment\n\nIf u.Opaque is non-empty, String uses the first form;\notherwise it uses the second form.\nTo obtain the path, String uses u.EscapedPath().\n\nIn the second form, the following rules apply:\n\t- if u.Scheme is empty, scheme: is omitted.\n\t- if u.User is nil, userinfo@ is omitted.\n\t- if u.Host is empty, host/ is omitted.\n\t- if u.Scheme and u.Host are empty and u.User is nil,\n\t   the entire scheme://userinfo@host/ is omitted.\n\t- if u.Host is non-empty and u.Path begins with a /,\n\t   the form host/path does not add its own /.\n\t- if u.RawQuery is empty, ?query is omitted.\n\t- if u.Fragment is empty, #fragment is omitted.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13728,6 +14162,9 @@ GO INFO FOR TYPE *go.std.net.url/Userinfo from _tests/big/src/net/url/url.go:378
 	info_PtrTo_Userinfo = GoTypeInfo{Name: "*go.std.net.url/Userinfo",
 		GoType: &GoType{T: &info_PtrTo_Userinfo},
 		Members: GoMembers{
+			"Password": MakeGoReceiver("Password", _f_ptrTo_Userinfo_Password, "Password returns the password in case it is set, and whether it is set.\n", "1.0", NewVectorFrom()),
+			"String": MakeGoReceiver("String", _f_ptrTo_Userinfo_String, "String returns the encoded userinfo information in the standard form\nof \"username[:password]\".\n", "1.0", NewVectorFrom()),
+			"Username": MakeGoReceiver("Username", _f_ptrTo_Userinfo_Username, "Username returns the username.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -13736,6 +14173,8 @@ GO INFO FOR TYPE go.std.net.url/Values from _tests/big/src/net/url/url.go:804:6:
 	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
+			"Encode": MakeGoReceiver("Encode", _f_values_Encode, "Encode encodes the values into ``URL encoded'' form\n(\"bar=baz&foo=quux\") sorted by key.\n", "1.0", NewVectorFrom()),
+			"Get": MakeGoReceiver("Get", _f_values_Get, "Get gets the first value associated with the given key.\nIf there are no values associated with the key, Get returns\nthe empty string. To access multiple values, use the map\ndirectly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 		},
 	}
 

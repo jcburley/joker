@@ -376,6 +376,9 @@ import (%s
 			if outputCode {
 				fmt.Printf("GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), GoCodeForType[ti], ctor)
 			}
+			if t == "crypto.Hash" {
+				// fmt.Printf("output.go: %s aka %s @%p: %+v\n", t, ti.JokerName(), ti, ti)
+			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(GoCodeForType[ti])
 				out.WriteString(ctor)

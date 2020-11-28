@@ -361,7 +361,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) strin
 	}
 	argType := t.ArgClojureType()
 	declType := t.ArgExtractFunc()
-	if declType == "" {
+	if argType == "" || declType == "" {
 		return ""
 	}
 	const exTemplate = `case %s:
@@ -466,7 +466,7 @@ var Ctors = map[TypeInfo]string{}
 var CtorNames = map[TypeInfo]string{}
 
 func genCtor(tyi TypeInfo) {
-	if tyi.TypeSpec() == nil {
+	if !tyi.Custom() {
 		return
 	}
 
@@ -571,6 +571,10 @@ func GenTypeInfo() {
 }
 
 func GenTypeFromDb(ti TypeInfo) {
+	if ti.JokerName() == "crypto/Hash" {
+		// fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+	}
+
 	if !ti.IsExported() || strings.Contains(ti.JokerName(), "[") {
 		return // Do not generate anything for private or array types
 	}

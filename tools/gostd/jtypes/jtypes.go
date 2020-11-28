@@ -223,7 +223,7 @@ var Int16 = &Info{
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int16",
 	ArgClojureArgType:    "Int",
-	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
+	ConvertFromMap:       `FieldAsInt16(%s, %s)`,
 	JokerNameDoc:         "Int",
 	AsJokerObject:        "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
