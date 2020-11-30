@@ -170,7 +170,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
-		if !ti.DefPos().IsValid() { // a builtin
+		if !ti.Custom() { // a builtin
 			if clType != "" {
 				extractParam = fmt.Sprintf("ExtractGo%s(\"%s\", \"%s\", _argList, %d)", clType, fn.DocName, paramName, argNum)
 			}
