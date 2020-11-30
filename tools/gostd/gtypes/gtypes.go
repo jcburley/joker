@@ -28,7 +28,6 @@ type Info struct {
 	Doc            string
 	DefPos         token.Pos
 	File           *godb.GoFile
-	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported     bool
