@@ -82,7 +82,7 @@ func newTypeNameForExpr(e Expr) (ns, name string, info *Info) {
 
 	name = fmt.Sprintf(pattern, name)
 
-	fmt.Printf("jtypes.go/typeNameForExpr: %s %+v => `%s' %T at:%s\n", combine(ns, name), e, pattern, ue, WhereAt(e.Pos()))
+	//	fmt.Printf("jtypes.go/typeNameForExpr: %s %+v => `%s' %T at:%s\n", combine(ns, name), e, pattern, ue, WhereAt(e.Pos()))
 
 	return ns, name, info
 }
