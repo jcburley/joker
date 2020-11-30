@@ -321,6 +321,9 @@ func (ti typeInfo) UnderlyingTypeInfo() TypeInfo {
 	if ut == nil {
 		return nil
 	}
+	if ut.Expr == nil {
+		return typesByGoName[ut.FullName]
+	}
 	return typesByExpr[ut.Expr]
 }
 
