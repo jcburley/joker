@@ -4,7 +4,6 @@ import (
 	"fmt"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
-	"go/types"
 )
 
 // Info on Joker types, including map of Joker type names to said type
@@ -60,7 +59,7 @@ func newTypeNameForExpr(e Expr) (ns, name string, info *Info) {
 
 	switch v := ue.(type) {
 	case *Ident:
-		if types.Universe.Lookup(v.Name) == nil {
+		if !IsBuiltin(v.Name) {
 			ns = ClojureNamespaceForExpr(ue)
 			name = v.Name
 		} else {
@@ -86,31 +85,6 @@ func newTypeNameForExpr(e Expr) (ns, name string, info *Info) {
 	fmt.Printf("jtypes.go/typeNameForExpr: %s %+v => `%s' %T at:%s\n", combine(ns, name), e, pattern, ue, WhereAt(e.Pos()))
 
 	return ns, name, info
-}
-
-func typeNameForExpr(e Expr) (ns, name string, info *Info) {
-	switch v := e.(type) {
-	case *Ident:
-		if types.Universe.Lookup(v.Name) == nil {
-			return ClojureNamespaceForExpr(e), v.Name, nil
-		}
-		info, found := goTypeMap[v.Name]
-		if !found {
-			panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
-		}
-		return "", info.JokerNameDoc, info
-	case *ArrayType:
-		ns, name, _ = typeNameForExpr(v.Elt)
-		return ns, "arrayOf" + name, nil
-	case *StarExpr:
-		ns, name, _ = typeNameForExpr(v.X)
-		return ns, "refTo" + name, nil
-	case *SelectorExpr:
-		pkgName := v.X.(*Ident).Name
-		return ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v)), v.Sel.Name, nil
-	default:
-		return "", "GoObject", nil
-	}
 }
 
 func TypeDefine(jokerName, fullJokerName, goTypeName string) *Info {
