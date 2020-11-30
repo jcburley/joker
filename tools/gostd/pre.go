@@ -12,7 +12,7 @@ import (
 func genGoPreArray(fn *FuncInfo, indent string, e *ArrayType, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.Elt
 	len := e.Len
-	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
+	_, _, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
 	runtime := "ConvertToArrayOf" + goType
 	cl2golParam = runtime + "(" + cl2golParam + ")"
 	if len != nil {
@@ -24,8 +24,6 @@ func genGoPreArray(fn *FuncInfo, indent string, e *ArrayType, paramName string, 
 	} else if _, ok := el.(*Ident); !ok {
 		cl2golParam = "ABEND910(pre.go: arrays of things other than identifiers not supported: " + cl2golParam + ")"
 	}
-	clType = "Object"
-	clTypeDoc = "(vector-of " + clTypeDoc + ")"
 	goType = "[]" + goType
 	goTypeDoc = "[]" + goTypeDoc
 	return
@@ -217,6 +215,19 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	if (fn.Fd == nil || fn.Fd.Recv != nil) && goPreCode == "" {
 		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, Unix(WhereAt(e.Pos())))
 	}
+
+	if clType == "" && clTypeDoc == "" {
+		ti := TypeInfoForExpr(e)
+		clType = ti.ArgExtractFunc()
+		if clType == "" {
+			clType = "Object"
+		}
+		clTypeDoc = ti.ArgClojureArgType()
+		if clTypeDoc == "" {
+			clTypeDoc = clType
+		}
+	}
+
 	return
 }
 

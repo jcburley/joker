@@ -2308,7 +2308,7 @@ JOKER FUNC net/http.CanonicalHeaderKey from net/http/header.go:
 
 JOKER FUNC net/http.DetectContentType from net/http/sniff.go:
 (defn ^"String" DetectContentType
-  "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^(vector-of Int) data]\n\nJoker return type: String"
+  "DetectContentType implements the algorithm described\nat https://mimesniff.spec.whatwg.org/ to determine the\nContent-Type of the given data. It considers at most the\nfirst 512 bytes of data. DetectContentType always returns\na valid MIME type: if it cannot determine a more specific one, it\nreturns \"application/octet-stream\".\n\nGo input arguments: (data []byte)\n\nGo return type: string\n\nJoker input arguments: [^arrayOfByte data]\n\nJoker return type: String"
   {:added "1.0"
    :go "http.DetectContentType(ConvertToArrayOfbyte(_v_data))"}
   [^Object _v_data])
@@ -3764,7 +3764,7 @@ JOKER FUNC net/smtp.PlainAuth from net/smtp/auth.go:
 
 JOKER FUNC net/smtp.SendMail from net/smtp/smtp.go:
 (defn ^"Error" SendMail
-  "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^(vector-of String) to, ^(vector-of Int) msg]\n\nJoker return type: Error"
+  "SendMail connects to the server at addr, switches to TLS if\npossible, authenticates with the optional mechanism a if possible,\nand then sends an email from address from, to addresses to, with\nmessage msg.\nThe addr must include a port, as in \"mail.example.com:smtp\".\n\nThe addresses in the to parameter are the SMTP RCPT addresses.\n\nThe msg parameter should be an RFC 822-style email with headers\nfirst, a blank line, and then the message body. The lines of msg\nshould be CRLF terminated. The msg headers should usually include\nfields such as \"From\", \"To\", \"Subject\", and \"Cc\".  Sending \"Bcc\"\nmessages is accomplished by including an email address in the to\nparameter but not including it in the msg headers.\n\nThe SendMail function and the net/smtp package are low-level\nmechanisms and provide no support for DKIM signing, MIME\nattachments (see the mime/multipart package), or other mail\nfunctionality. Higher-level packages exist outside of the standard\nlibrary.\n\nGo input arguments: (addr string, a Auth, from string, to []string, msg []byte)\n\nGo return type: error\n\nJoker input arguments: [^String addr, ^go.std.net.smtp/Auth a, ^String from, ^arrayOfString to, ^arrayOfByte msg]\n\nJoker return type: Error"
   {:added "1.0"
    :go "smtp.SendMail(_v_addr, *_v_a, _v_from, ConvertToArrayOfstring(_v_to), ConvertToArrayOfbyte(_v_msg))"}
   [^String _v_addr, ^go.std.net.smtp/Auth _v_a, ^String _v_from, ^Object _v_to, ^Object _v_msg])
@@ -3854,7 +3854,7 @@ JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 
 JOKER FUNC net/textproto.TrimBytes from net/textproto/textproto.go:
 (defn TrimBytes
-  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^(vector-of Int) b]\n\nJoker return type: arrayOfByte"
+  "TrimBytes returns b without leading and trailing ASCII space.\n\nGo input arguments: (b []byte)\n\nGo return type: []byte\n\nJoker input arguments: [^arrayOfByte b]\n\nJoker return type: arrayOfByte"
   {:added "1.0"
    :go "_f_trimBytes(ConvertToArrayOfbyte(_v_b))"}
   [^Object _v_b])
