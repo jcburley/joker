@@ -386,6 +386,11 @@ func maybeDeref(ptrTo string) string {
 }
 
 func goTypeExtractor(t string, ti TypeInfo) string {
+	ts := ti.TypeSpec()
+	if ts == nil {
+		ts = ti.UnderlyingTypeInfo().TypeSpec()
+	}
+
 	const template = `
 func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	a := CheckGoNth(rcvr, "%s", arg, args, n).O
@@ -402,7 +407,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	localType := "{{myGoImport}}." + ti.GoName()
 	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
 
-	fmtLocal := imports.AddImport(PackagesInfo[godb.GoPackageForTypeSpec(ti.TypeSpec())].ImportsNative, "", "fmt", "", "", true, ti.TypeSpec().Pos())
+	fmtLocal := imports.AddImport(PackagesInfo[godb.GoPackageForTypeSpec(ts)].ImportsNative, "", "fmt", "", "", true, ts.Pos())
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -451,7 +456,7 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 	baseTypeName := ts.Name.Name
 	typeName := myGoImport + "." + baseTypeName
 
-	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ti.TypeSpec()), typeName, ts)
+	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ts)
 	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
 	goc += goTypeExtractor(t, ti)
@@ -468,6 +473,11 @@ var CtorNames = map[TypeInfo]string{}
 func genCtor(tyi TypeInfo) {
 	if !tyi.Custom() {
 		return
+	}
+
+	ts := tyi.TypeSpec()
+	if ts == nil {
+		ts = tyi.UnderlyingTypeInfo().TypeSpec()
 	}
 
 	const goConstructTemplate = `
@@ -490,7 +500,7 @@ func %s(_o Object) Object {
 	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, nonGoObject, expectedObjectDoc,
 		ctor, baseTypeName)
 
-	pkgDirUnix := godb.GoPackageForTypeSpec(tyi.TypeSpec())
+	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
@@ -505,6 +515,8 @@ func %s(_o Object) Object {
 	}
 
 	Ctors[tyi] = goConstructor
+
+	//	fmt.Printf("codegen.go/genCtor: %s %+v\n", tyi, tyi.JokerTypeInfo())
 }
 
 func appendMethods(ti TypeInfo, iface *InterfaceType) {
@@ -558,12 +570,15 @@ func GenTypeInfo() {
 	var types []TypeInfo
 	ord := (uint)(0)
 
-	for _, t := range allTypesSorted {
-		if t.UnderlyingType() != nil || !t.Custom() {
-			continue
+	for _, ti := range allTypesSorted {
+		if !ti.Custom() {
+			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
+				//				fmt.Printf("codegen.go/GenTypeInfo: no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+				continue
+			}
 		}
-		types = append(types, t)
-		Ordinal[t] = ord
+		types = append(types, ti)
+		Ordinal[ti] = ord
 		ord++
 	}
 
@@ -571,19 +586,31 @@ func GenTypeInfo() {
 }
 
 func GenTypeFromDb(ti TypeInfo) {
-	if ti.JokerName() == "crypto/Hash" {
-		// fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+	if ti.JokerName() == "crypto/Hash" || true {
+		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 	}
 
 	if !ti.IsExported() || strings.Contains(ti.JokerName(), "[") {
+		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
 		return // Do not generate anything for private or array types
 	}
 	if ti.Specificity() == ConcreteType {
 		genCtor(ti)
 		return // The code below currently handles only interface{} types
 	}
+	//	fmt.Printf("codegen.go/GenTypeFromDb: not a concrete type\n")
 
-	if ts := ti.TypeSpec(); ts != nil {
+	ts := ti.TypeSpec()
+	if ts == nil {
+		if uti := ti.UnderlyingTypeInfo(); uti != nil {
+			ts = uti.TypeSpec()
+		} else {
+			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.JokerName())
+			return
+		}
+	}
+
+	if ts != nil {
 		if ts.Type != nil {
 			appendMethods(ti, ts.Type.(*InterfaceType))
 		}
@@ -621,9 +648,13 @@ func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCas
 }
 
 func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
-	switch t := ti.TypeSpec().Type.(type) {
+	ts := ti.TypeSpec()
+	if ts == nil {
+		ts = ti.UnderlyingTypeInfo().TypeSpec()
+	}
+	switch t := ts.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name, ti.TypeSpec().Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name, ts.Type)
 		extractClojureObject = typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -644,7 +675,7 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 	return []string{"default"},
 		[]string{"whatever"},
 		[]string{fmt.Sprintf("_%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-			typeName, ti.TypeSpec().Type, baseTypeName)},
+			typeName, ts.Type, baseTypeName)},
 		[]string{""},
 		""
 }
