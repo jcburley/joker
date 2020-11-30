@@ -53,7 +53,7 @@ func typePatternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func newTypeNameForExpr(e Expr) (ns, name string, info *Info) {
+func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 
 	pattern, ue := typePatternForExpr(e)
 
@@ -112,7 +112,7 @@ func TypeForExpr(e Expr) *Info {
 		return info
 	}
 
-	ns, name, info := newTypeNameForExpr(e)
+	ns, name, info := typeNameForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
