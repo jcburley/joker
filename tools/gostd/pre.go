@@ -193,7 +193,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		}
 		if fn.Fd == nil || fn.Fd.Recv != nil {
 			if extractParam == "" {
-				panic(fmt.Sprintf("no arg-extraction code for %+v type @%p %+v", v, ti, *ti.JokerTypeInfo()))
+				panic(fmt.Sprintf("no arg-extraction code for %+v type (%s, %s, %s, %s) at %s @%p %+v", v, goType, goTypeDoc, clType, clTypeDoc, WhereAt(v.Pos()), ti, *ti.JokerTypeInfo()))
 			}
 			goPreCode = paramName + " := " + extractParam
 		}

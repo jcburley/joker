@@ -41,6 +41,53 @@ func combine(ns, name string) string {
 	return ns + "/" + name
 }
 
+func typePatternForExpr(e Expr) (pattern string, ue Expr) {
+	switch v := e.(type) {
+	case *ArrayType:
+		pattern, e = typePatternForExpr(v.Elt)
+		return "arrayOf" + pattern, e
+	case *StarExpr:
+		pattern, e = typePatternForExpr(v.X)
+		return "refTo" + pattern, e
+	default:
+		return "%s", e
+	}
+}
+
+func newTypeNameForExpr(e Expr) (ns, name string, info *Info) {
+
+	pattern, ue := typePatternForExpr(e)
+
+	switch v := ue.(type) {
+	case *Ident:
+		if types.Universe.Lookup(v.Name) == nil {
+			ns = ClojureNamespaceForExpr(ue)
+			name = v.Name
+		} else {
+			uInfo, found := goTypeMap[v.Name]
+			if !found {
+				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
+			}
+			name = uInfo.JokerNameDoc
+			if e == ue {
+				info = uInfo
+			}
+		}
+	case *SelectorExpr:
+		pkgName := v.X.(*Ident).Name
+		ns = ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v))
+		name = v.Sel.Name
+	default:
+		name = "GoObject"
+	}
+
+	name = fmt.Sprintf(pattern, name)
+
+	fmt.Printf("jtypes.go/typeNameForExpr: %s %+v => `%s' %T at:%s\n", combine(ns, name), e, pattern, ue, WhereAt(e.Pos()))
+
+	return ns, name, info
+}
+
 func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	switch v := e.(type) {
 	case *Ident:
@@ -91,7 +138,7 @@ func TypeForExpr(e Expr) *Info {
 		return info
 	}
 
-	ns, name, info := typeNameForExpr(e)
+	ns, name, info := newTypeNameForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
