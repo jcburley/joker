@@ -75,15 +75,11 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	gtiVec := gtypes.TypeDefine(ts, gf, parentDoc)
 
-	prefix := godb.ClojureNamespaceForPos(godb.Fset.Position(ts.Name.NamePos)) + "/"
-
 	for _, gti := range gtiVec {
 
 		imports := &imports.Imports{}
 
-		jokerName := fmt.Sprintf(gti.Pattern, prefix+name)
-
-		jti := jtypes.TypeDefine(jokerName, FullTypeNameAsClojure(gf.Package.NsRoot, goTypeName), goTypeName)
+		jti := jtypes.TypeDefine(ts, gti.Expr)
 
 		ti := &typeInfo{
 			jti:             jti,

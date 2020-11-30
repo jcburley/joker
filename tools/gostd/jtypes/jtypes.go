@@ -87,13 +87,20 @@ func typeNameForExpr(e Expr) (ns, name string, info *Info) {
 	return ns, name, info
 }
 
-func TypeDefine(jokerName, fullJokerName, goTypeName string) *Info {
+func TypeDefine(ts *TypeSpec, varExpr Expr) *Info {
+
+	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos))
+
+	pattern, _ := typePatternForExpr(varExpr)
+
+	name := combine(prefix, fmt.Sprintf(pattern, ts.Name.Name))
+
 	jti := &Info{
-		FullName:          jokerName,
+		FullName:          name,
 		Who:               "TypeDefine",
 		ArgExtractFunc:    "Object",
-		ArgClojureArgType: fullJokerName,
-		JokerNameDoc:      jokerName,
+		ArgClojureArgType: name,
+		JokerNameDoc:      name,
 		AsJokerObject:     "GoObject(%s%s)",
 	}
 
