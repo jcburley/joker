@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/gowalk"
-	. "github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -87,6 +85,7 @@ type funcCode struct {
 	clojureReturnType       string
 	clojureReturnTypeForDoc string
 	goReturnTypeForDoc      string
+	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
 
 /* IMPORTANT: The public functions listed herein should be only those
@@ -113,7 +112,7 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
 		genGoPre(fn, "\t", t.Params, goFname)
 	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
-	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode = genGoPost(fn, "\t", t)
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\treturn NIL\n"
@@ -150,7 +149,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode := genGoPost(fn, "\t", fn.Ft)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Ft)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -220,25 +219,25 @@ func %s(o GoObject, args Object) Object {  // %s
 			NumFunctions++
 			godb.NumMethods++
 			godb.NumGeneratedMethods++
-			tdi := fn.ToM
-			if tdi == nil {
+			ti := fn.ToM
+			if ti == nil {
 				panic(fmt.Sprintf("Cannot find type for %s", fn.Name))
 			}
-			if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
-				GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
+			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
+				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params, FnDoc: fn.Doc}
+			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params, FnDoc: fn.Doc}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
-				tdi, tdiFullName := TypeLookup(r.Type)
-				if tdi == nil {
-					panic(fmt.Sprintf("nil tdi for %s!!", tdiFullName))
+				ti := TypeInfoForExpr(r.Type)
+				if ti == nil {
+					panic(fmt.Sprintf("nil ti for %v!!", r.Type))
 				}
-				if _, ok := GoCode[pkgDirUnix].InitVars[tdi]; !ok {
-					GoCode[pkgDirUnix].InitVars[tdi] = map[string]*FnCodeInfo{}
+				if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
+					GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[tdi][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Doc}
+				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Doc}
 			}
 		}
 	}
@@ -271,6 +270,7 @@ func GenStandalone(fn *FuncInfo) {
 	var cl2gol string
 	if clojureReturnType == "" {
 		cl2gol = goFname
+		fc.conversion = ""
 	} else {
 		// No Go code needs to be generated when a return type is explicitly specified.
 		clojureReturnType += " "
@@ -280,6 +280,9 @@ func GenStandalone(fn *FuncInfo) {
 		}
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
+	if fc.conversion != "" {
+		cl2golCall = fmt.Sprintf(fc.conversion, cl2golCall)
+	}
 
 	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
 		"  "+CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
@@ -352,13 +355,13 @@ func GenVariable(vi *VariableInfo) {
 }
 
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ts *TypeSpec) string {
-	t := toGoTypeInfo(src, ts)
-	if t == nil || t.Custom {
+	t := TypeInfoForExpr(ts.Type)
+	if t.Custom() {
 		return ""
 	}
-	argType := t.ArgClojureArgType
-	declType := t.ArgExtractFunc
-	if declType == "" {
+	argType := t.ArgClojureType()
+	declType := t.ArgExtractFunc()
+	if argType == "" || declType == "" {
 		return ""
 	}
 	const exTemplate = `case %s:
@@ -382,7 +385,12 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
-func goTypeExtractor(t string, ti *GoTypeInfo) string {
+func goTypeExtractor(t string, ti TypeInfo) string {
+	ts := ti.TypeSpec()
+	if ts == nil {
+		ts = ti.UnderlyingTypeInfo().TypeSpec()
+	}
+
 	const template = `
 func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	a := CheckGoNth(rcvr, "%s", arg, args, n).O
@@ -395,11 +403,11 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 }
 `
 
-	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType)
-	localType := "{{myGoImport}}." + ti.LocalName
-	typeDoc := ti.ArgClojureArgType // "path.filepath.Mode"
+	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType())
+	localType := "{{myGoImport}}." + ti.GoBaseName()
+	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
 
-	fmtLocal := imports.AddImport(PackagesInfo[ti.SourceFile.Package.Dir.String()].ImportsNative, "", "fmt", "", "", true, ti.Where)
+	fmtLocal := imports.AddImport(PackagesInfo[godb.GoPackageForTypeSpec(ts)].ImportsNative, "", "fmt", "", "", true, ts.Pos())
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType
@@ -411,19 +419,20 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc)
 }
 
-func GenType(t string, ti *GoTypeInfo) {
-	td := ti.Td
-	if !IsExported(td.Name.Name) {
+func GenType(t string, ti TypeInfo) {
+	ts := ti.TypeSpec()
+	if !ti.IsExported() || ti.GoName() == "unsafe.ArbitraryType" {
 		return // Do not generate anything for private or array types
 	}
 
-	pkgDirUnix := ti.SourceFile.Package.Dir.String()
+	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	pi := PackagesInfo[pkgDirUnix]
 
 	pi.NonEmpty = true
+	where := ts.Pos()
 
-	imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, ti.Where)
-	myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, ti.Where)
+	imports.AddImport(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, where)
+	myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, where)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -444,23 +453,31 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 }
 `
 
-	baseTypeName := td.Name.Name
+	baseTypeName := ts.Name.Name
 	typeName := myGoImport + "." + baseTypeName
 
-	others := maybeImplicitConvert(ti.SourceFile, typeName, td)
-	ti.GoCode = fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ts)
+	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
 
-	ti.GoCode += goTypeExtractor(t, ti)
+	goc += goTypeExtractor(t, ti)
 
-	ti.GoCode = strings.ReplaceAll(ti.GoCode, "{{myGoImport}}", myGoImport)
+	goc = strings.ReplaceAll(goc, "{{myGoImport}}", myGoImport)
+
+	GoCodeForType[ti] = goc
+	ClojureCodeForType[ti] = ""
 }
 
-var Ctors = map[*Type]string{}
-var CtorNames = map[*Type]string{}
+var Ctors = map[TypeInfo]string{}
+var CtorNames = map[TypeInfo]string{}
 
-func genCtor(tdi *Type) {
-	if tdi.TypeSpec == nil {
+func genCtor(tyi TypeInfo) {
+	if !tyi.Custom() {
 		return
+	}
+
+	ts := tyi.TypeSpec()
+	if ts == nil {
+		ts = tyi.UnderlyingTypeInfo().TypeSpec()
 	}
 
 	const goConstructTemplate = `
@@ -476,33 +493,33 @@ func %s(_o Object) Object {
 }
 `
 
-	typeName := "{{myGoImport}}." + tdi.GoName
-	baseTypeName := tdi.GoName
+	typeName := "{{myGoImport}}." + tyi.GoBaseName()
+	baseTypeName := tyi.GoBaseName()
 	ctor := "_Wrapped_Ctor_" + baseTypeName
-	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tdi, typeName, baseTypeName)
+	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tyi, typeName, baseTypeName)
 	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, baseTypeName, ptrTo, typeName, nonGoObject, expectedObjectDoc,
 		ctor, baseTypeName)
 
-	ti := TypeDefsToGoTypes[tdi]
-
-	pkgDirUnix := ti.SourceFile.Package.Dir.String()
+	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
 		abends.TrackAbends(goConstructor)
 	} else {
 		pi := PackagesInfo[pkgDirUnix]
-		promoteImports(ti.RequiredImports, pi.ImportsNative, tdi.DefPos)
-		myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, tdi.DefPos)
+		promoteImports(tyi.RequiredImports(), pi.ImportsNative, tyi.DefPos())
+		myGoImport := imports.AddImport(pi.ImportsNative, "", pkgDirUnix, "", "", true, tyi.DefPos())
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
-		CtorNames[tdi] = ctor
+		CtorNames[tyi] = ctor
 		NumGeneratedCtors++
 	}
 
-	Ctors[tdi] = goConstructor
+	Ctors[tyi] = goConstructor
+
+	//	fmt.Printf("codegen.go/genCtor: %s %+v\n", tyi, tyi.JokerTypeInfo())
 }
 
-func appendMethods(tdi *Type, iface *InterfaceType) {
+func appendMethods(ti TypeInfo, iface *InterfaceType) {
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
 			if len(m.Names) != 1 {
@@ -514,21 +531,21 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 				panic("Why no Type field??")
 			}
 			for _, n := range m.Names {
-				fullName := fmt.Sprintf(tdi.GoPattern, tdi.GoName) + "_" + n.Name
+				fullName := ti.GoBaseName() + "_" + n.Name
 				doc := m.Doc
 				if doc == nil {
 					doc = m.Comment
 				}
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:   n.Name,
-					ReceiverId: "{{myGoImport}}." + tdi.GoName,
+					ReceiverId: "{{myGoImport}}." + ti.GoBaseName(),
 					Name:       fullName,
-					DocName:    "(" + tdi.GoFile.Package.Dir.String() + "." + tdi.GoName + ")" + n.Name + "()",
+					DocName:    "(" + ti.GoFile().Package.Dir.String() + "." + ti.GoBaseName() + ")" + n.Name + "()",
 					Fd:         nil,
-					ToM:        tdi,
+					ToM:        ti,
 					Ft:         m.Type.(*FuncType),
 					Doc:        doc,
-					SourceFile: tdi.GoFile,
+					SourceFile: ti.GoFile(),
 					Imports:    &imports.Imports{},
 					Pos:        n.NamePos,
 				}
@@ -539,21 +556,64 @@ func appendMethods(tdi *Type, iface *InterfaceType) {
 		if ts == nil {
 			return
 		}
-		appendMethods(tdi, ts.(*TypeSpec).Type.(*InterfaceType))
+		appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType))
 	}
 }
 
-func GenTypeFromDb(tdi *Type) {
-	if !tdi.IsExported || strings.Contains(tdi.ClojureName, "[") {
-		return // Do not generate anything for private or array types
-	}
-	if tdi.Specificity == Concrete {
-		genCtor(tdi)
-		return // The code below currently handles only interface{} types
+func GenTypeInfo() {
+	allTypes := AllTypesSorted()
+
+	for _, ti := range allTypes {
+		GenTypeFromDb(ti)
 	}
 
-	if tdi.TypeSpec != nil && tdi.TypeSpec.Type != nil {
-		appendMethods(tdi, tdi.TypeSpec.Type.(*InterfaceType))
+	var types []TypeInfo
+	ord := (uint)(0)
+
+	for _, ti := range allTypesSorted {
+		if !ti.Custom() {
+			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
+				//				fmt.Printf("codegen.go/GenTypeInfo: no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+				continue
+			}
+		}
+		types = append(types, ti)
+		Ordinal[ti] = ord
+		ord++
+	}
+
+	SwitchableTypes = types
+}
+
+func GenTypeFromDb(ti TypeInfo) {
+	if ti.JokerName() == "crypto/Hash" || true {
+		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+	}
+
+	if !ti.IsExported() || strings.Contains(ti.JokerName(), "[") {
+		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
+		return // Do not generate anything for private or array types
+	}
+	if ti.Specificity() == ConcreteType {
+		genCtor(ti)
+		return // The code below currently handles only interface{} types
+	}
+	//	fmt.Printf("codegen.go/GenTypeFromDb: not a concrete type\n")
+
+	ts := ti.TypeSpec()
+	if ts == nil {
+		if uti := ti.UnderlyingTypeInfo(); uti != nil {
+			ts = uti.TypeSpec()
+		} else {
+			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.JokerName())
+			return
+		}
+	}
+
+	if ts != nil {
+		if ts.Type != nil {
+			appendMethods(ti, ts.Type.(*InterfaceType))
+		}
 	}
 }
 
@@ -567,11 +627,11 @@ func promoteImports(from, to *imports.Imports, pos token.Pos) {
 	}
 }
 
-func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
+func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	const nonGoObjectCaseTemplate = `%s:
 		return %s`
 
-	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(tdi, typeName, baseTypeName)
+	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(ti, typeName, baseTypeName)
 
 	nonGoObjectCasePrefix := ""
 	nonGoObjectCase = ""
@@ -587,10 +647,14 @@ func nonGoObjectCase(tdi *Type, typeName, baseTypeName string) (nonGoObjectCase,
 		ptrTo
 }
 
-func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
-	switch t := tdi.TypeSpec.Type.(type) {
+func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+	ts := ti.TypeSpec()
+	if ts == nil {
+		ts = ti.UnderlyingTypeInfo().TypeSpec()
+	}
+	switch t := ts.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(tdi.GoFile.Package.Dir.String(), t.Name, tdi.TypeSpec.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name, ts.Type)
 		extractClojureObject = typeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -604,36 +668,36 @@ func nonGoObjectTypeFor(tdi *Type, typeName, baseTypeName string) (nonGoObjectTy
 		return []string{"case *ArrayMap, *HashMap"},
 			[]string{"Map"},
 			[]string{mapHelperFName + "(_o.(Map))"},
-			[]string{mapToType(tdi, mapHelperFName, uniqueTypeName, t)},
+			[]string{mapToType(ti, mapHelperFName, uniqueTypeName, t)},
 			"*"
 	case *ArrayType:
 	}
 	return []string{"default"},
 		[]string{"whatever"},
 		[]string{fmt.Sprintf("_%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-			typeName, tdi.TypeSpec.Type, baseTypeName)},
+			typeName, ts.Type, baseTypeName)},
 		[]string{""},
 		""
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v := toGoTypeNameInfo(pkgDirUnix, name, e)
-	nonGoObjectType = "case " + v.ArgClojureType
-	nonGoObjectTypeDoc = v.ArgClojureType
-	extractClojureObject = v.ArgFromClojureObject
-	if v.Unsupported || v.ArgClojureType == "" || extractClojureObject == "" {
-		nonGoObjectType += fmt.Sprintf(" /* ABEND171(missing go object type or clojure-object extraction for %s) */", v.FullGoName)
+	v := TypeInfoForGoName(combineGoName(pkgDirUnix, name))
+	nonGoObjectType = "case " + v.ArgClojureType()
+	nonGoObjectTypeDoc = v.ArgClojureType()
+	extractClojureObject = v.ArgFromClojureObject()
+	if v.IsUnsupported() || v.ArgClojureType() == "" || extractClojureObject == "" {
+		nonGoObjectType += fmt.Sprintf(" /* ABEND171(`%s': IsUnsupported=%v ArgClojureType=%v ArgFromClojureObject=%v) */", v.GoName(), v.IsUnsupported(), v.ArgClojureType(), extractClojureObject)
 	}
 	return
 }
 
-func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
+func mapToType(ti TypeInfo, helperFName, typeName string, ty *StructType) string {
 	const hFunc = `func %s(o Map) *%s {
 	return &%s{%s}
 }
 
 `
-	valToType := elementsToType(tdi, ty, mapElementToType)
+	valToType := elementsToType(ti, ty, mapElementToType)
 	if valToType != "" {
 		valToType = `
 		` + valToType + `
@@ -643,7 +707,7 @@ func mapToType(tdi *Type, helperFName, typeName string, ty *StructType) string {
 	return fmt.Sprintf(hFunc, helperFName, typeName, typeName, valToType)
 }
 
-func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, name string, f *Field) string) string {
+func elementsToType(ti TypeInfo, ty *StructType, toType func(ti TypeInfo, i int, name string, f *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -652,7 +716,7 @@ func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, nam
 			if fieldName == "" || !IsExported(fieldName) {
 				continue
 			}
-			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(tdi, i, p.Name, f)))
+			els = append(els, fmt.Sprintf("%s: %s,", fieldName, toType(ti, i, p.Name, f)))
 			i++
 		}
 	}
@@ -660,29 +724,35 @@ func elementsToType(tdi *Type, ty *StructType, toType func(tdi *Type, i int, nam
 		`)
 }
 
-func mapElementToType(tdi *Type, i int, name string, f *Field) string {
-	return valueToType(tdi, fmt.Sprintf(`"%s"`, name), f.Type)
+func mapElementToType(ti TypeInfo, i int, name string, f *Field) string {
+	return valueToType(ti, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 
-func valueToType(tdi *Type, value string, e Expr) string {
-	v := toGoExprInfo(tdi.GoFile, e)
-	if v.Unsupported {
-		return v.FullGoName
+func valueToType(ti TypeInfo, value string, e Expr) string {
+	v := TypeInfoForExpr(e)
+	if v.IsUnsupported() {
+		return v.GoName()
 	}
-	if !v.Exported {
+	var uty Expr
+	if v.TypeSpec() != nil {
+		uty = v.TypeSpec().Type
+	} else if v.UnderlyingType() != nil {
+		uty = v.UnderlyingType()
+	}
+	if !v.IsExported() {
 		return fmt.Sprintf("ABEND049(codegen.go: no conversion to private type %s (%s))",
-			v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
+			v.GoName(), StringForExpr(uty))
 	}
-	if v.ConvertFromMap != "" {
-		return fmt.Sprintf(v.ConvertFromMap, "o", value)
+	if v.ConvertFromMap() != "" {
+		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
 	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.FullGoName, toGoExprString(tdi.GoFile, v.UnderlyingType))
+		v.GoName(), StringForExpr(uty))
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(tdi *Type, importeds []imports.Import) {
-	to := TypeDefsToGoTypes[tdi].RequiredImports
+func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
+	to := ti.RequiredImports()
 	for _, imp := range importeds {
 		local := imp.Local
 		if local == "" {

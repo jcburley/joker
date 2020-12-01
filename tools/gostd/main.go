@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/gowalk"
-	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
@@ -114,7 +112,7 @@ func main() {
 				noTimeAndVersion = true
 			case "--dump":
 				godb.Dump = true
-				gowalk.Dump = true
+				WalkDump = true
 			case "--overwrite":
 				overwrite = true
 				replace = false
@@ -256,7 +254,7 @@ func main() {
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
 			RegisterJokerFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]*gtypes.Type{}, jokerSourceDir, false)
+			RegisterGoTypeSwitch([]TypeInfo{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
 
@@ -281,47 +279,48 @@ func main() {
 
 	godb.AddMapping(goSrcDir, "go.std.")
 	root := goSrcDir.Join(".")
-	gowalk.AddWalkDir(goSrcDir, root, "go.std.")
+	AddWalkDir(goSrcDir, root, "go.std.")
 
 	for _, o := range otherSourceDirs {
 		op := paths.NewNativePath(o)
 		root := op.Join(".")
-		gowalk.AddWalkDir(op, root, "x.y.z.")
+		AddWalkDir(op, root, "x.y.z.")
 	}
 
-	err, badDir := gowalk.WalkAllDirs()
+	err, badDir := WalkAllDirs()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error walking directory %s: %v", badDir, err)
 		os.Exit(1)
 	}
 
-	gtypes.SortAll()
+	SortAllTypes()
 
-	for _, tdi := range gtypes.AllSorted() {
-		GenTypeFromDb(tdi)
-	}
+	GenTypeInfo()
 
-	gowalk.SortedConstantInfoMap(gowalk.GoConstants,
-		func(c string, ci *gowalk.ConstantInfo) {
+	SortedConstantInfoMap(GoConstants,
+		func(c string, ci *ConstantInfo) {
 			GenConstant(ci)
 		})
 
-	gowalk.SortedVariableInfoMap(gowalk.GoVariables,
-		func(c string, ci *gowalk.VariableInfo) {
+	SortedVariableInfoMap(GoVariables,
+		func(c string, ci *VariableInfo) {
 			GenVariable(ci)
 		})
 
 	/* Generate type-code snippets in sorted order. */
-	gowalk.SortedTypeInfoMap(gowalk.GoTypes,
-		func(t string, ti *gowalk.GoTypeInfo) {
-			if ti.Td != nil {
+	SortedTypeInfoMap(TypesByGoName(),
+		func(t string, ti TypeInfo) {
+			if ti == nil {
+				panic(fmt.Sprintf("nil ti for `%s'", t))
+			}
+			if ti.TypeSpec() != nil {
 				GenType(t, ti)
 			}
 		})
 
 	/* Generate function-code snippets in alphabetical order. */
-	gowalk.SortedFuncInfoMap(gowalk.QualifiedFunctions,
-		func(f string, v *gowalk.FuncInfo) {
+	SortedFuncInfoMap(QualifiedFunctions,
+		func(f string, v *FuncInfo) {
 			if v.Fd != nil && v.Fd.Recv == nil {
 				GenStandalone(v)
 			} else {
@@ -335,8 +334,8 @@ func main() {
 		var packagesArray = []string{} // Relative package pathnames in alphabetical order
 		var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
 
-		gowalk.SortedPackagesInfo(gowalk.PackagesInfo,
-			func(p string, i *gowalk.PackageInfo) {
+		SortedPackagesInfo(PackagesInfo,
+			func(p string, i *PackageInfo) {
 				if !generateEmpty && !i.NonEmpty {
 					return
 				}
@@ -349,7 +348,7 @@ func main() {
 		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
 	}
 
-	RegisterGoTypeSwitch(gtypes.AllSorted(), jokerSourceDir, outputCode)
+	RegisterGoTypeSwitch(AllTypesSorted(), jokerSourceDir, outputCode)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
@@ -361,19 +360,17 @@ Totals: functions=%d generated=%d (%s%%)
           methods=%d (%s%%) generated=%d (%s%%)
         types=%d
           constructable=%d ctors=%d (%s%%)
-          hits expr=%d fullname=%d
         constants=%d generated=%d (%s%%)
         variables=%d generated=%d (%s%%)
 `,
-			gowalk.NumFunctions, gowalk.NumGeneratedFunctions, pct(gowalk.NumGeneratedFunctions, gowalk.NumFunctions),
-			gowalk.NumStandalones, pct(gowalk.NumStandalones, gowalk.NumFunctions), gowalk.NumGeneratedStandalones, pct(gowalk.NumGeneratedStandalones, gowalk.NumStandalones),
-			gowalk.NumReceivers, pct(gowalk.NumReceivers, gowalk.NumFunctions), gowalk.NumGeneratedReceivers, pct(gowalk.NumGeneratedReceivers, gowalk.NumReceivers),
-			godb.NumMethods, pct(godb.NumMethods, gowalk.NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
-			gowalk.NumTypes,
-			gowalk.NumCtableTypes, gowalk.NumGeneratedCtors, pct(gowalk.NumGeneratedCtors, gowalk.NumCtableTypes),
-			gtypes.NumExprHits, gtypes.NumClojureNameHits,
-			gowalk.NumConstants, gowalk.NumGeneratedConstants, pct(gowalk.NumGeneratedConstants, gowalk.NumConstants),
-			gowalk.NumVariables, gowalk.NumGeneratedVariables, pct(gowalk.NumGeneratedVariables, gowalk.NumVariables))
+			NumFunctions, NumGeneratedFunctions, pct(NumGeneratedFunctions, NumFunctions),
+			NumStandalones, pct(NumStandalones, NumFunctions), NumGeneratedStandalones, pct(NumGeneratedStandalones, NumStandalones),
+			NumReceivers, pct(NumReceivers, NumFunctions), NumGeneratedReceivers, pct(NumGeneratedReceivers, NumReceivers),
+			godb.NumMethods, pct(godb.NumMethods, NumFunctions), godb.NumGeneratedMethods, pct(godb.NumGeneratedMethods, godb.NumMethods),
+			NumTypes,
+			NumCtableTypes, NumGeneratedCtors, pct(NumGeneratedCtors, NumCtableTypes),
+			NumConstants, NumGeneratedConstants, pct(NumGeneratedConstants, NumConstants),
+			NumVariables, NumGeneratedVariables, pct(NumGeneratedVariables, NumVariables))
 	}
 
 	os.Exit(0)

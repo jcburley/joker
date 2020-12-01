@@ -64,7 +64,7 @@ func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) 
 		if d != "" {
 			d = Trim(d, " \t\n") + "\n\n"
 		}
-		d += "Go return type: " + goOut
+		d += "Go returns: " + goOut
 	}
 	if jokIn != "" {
 		if d != "" {
@@ -76,7 +76,7 @@ func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) 
 		if d != "" {
 			d = Trim(d, " \t\n") + "\n\n"
 		}
-		d += "Joker return type: " + jokOut
+		d += "Joker returns: " + jokOut
 	}
 	return Trim(strconv.Quote(d), " \t\n")
 }

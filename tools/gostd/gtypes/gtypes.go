@@ -3,39 +3,113 @@ package gtypes
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/utils"
+	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
-	"go/types"
+	"os"
 	"path"
-	"sort"
 	"strings"
 )
 
 const Concrete = ^uint(0) /* MaxUint */
 
 var NumExprHits uint
-var NumClojureNameHits uint
 
-// Info from the definition of the type (if any)
-type Type struct {
+type Info struct {
+	Expr           Expr      // [key] The canonical referencing expression (if any)
+	FullName       string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	who            string    // who made me
 	Type           Expr      // The actual type (if any)
 	TypeSpec       *TypeSpec // The definition of the named type (if any)
-	ClojureName    string    // Clojure name (e.g. "a.b.c/Typename", "(vector-of int)")
-	IsExported     bool
+	UnderlyingType *Info
+	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	Package        string // E.g. "net/url", "" (always Unix style)
+	LocalName      string // E.g. "Listener"
 	Doc            string
 	DefPos         token.Pos
-	GoFile         *GoFile
-	GoPackage      string // E.g. a/b/c (always Unix style)
-	GoPattern      string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	GoName         string // Base name of type (without any prefix/pattern applied)
-	underlyingType *Type
-	Ord            uint // Slot in []*GoTypeInfo and position of case statement in big switch in goswitch.go
+	File           *godb.GoFile
 	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
+	IsExported     bool
+	IsBuiltin      bool
 }
 
-var typesByClojureName = map[string]*Type{}
+func combine(pkg, name string) string {
+	if pkg == "" {
+		return name
+	}
+	return pkg + "." + name
+}
+
+// Maps type-defining Expr or string to exactly one struct describing that type
+var typesByExpr = map[Expr]*Info{}
+var typesByFullName = map[string]*Info{}
+
+func getInfo(pattern, pkg, name string, nullable bool) *Info {
+	if pattern == "" {
+		pattern = "%s"
+	}
+	fullName := fmt.Sprintf(pattern, combine(pkg, name))
+
+	if info, found := typesByFullName[fullName]; found {
+		return info
+	}
+
+	info := &Info{
+		who:        "getInfo",
+		FullName:   fullName,
+		Pattern:    pattern,
+		Package:    pkg,
+		LocalName:  fmt.Sprintf(pattern, name),
+		IsNullable: nullable,
+		IsExported: pkg == "" || IsExported(name),
+		IsBuiltin:  true,
+	}
+
+	typesByFullName[fullName] = info
+
+	return info
+}
+
+var Nil = Info{}
+
+var Error = getInfo("", "", "error", true)
+
+var Bool = getInfo("", "", "bool", false)
+
+var Byte = getInfo("", "", "byte", false)
+
+var Rune = getInfo("", "", "rune", false)
+
+var String = getInfo("", "", "string", false)
+
+var Int = getInfo("", "", "int", false)
+
+var Int8 = getInfo("", "", "int8", false)
+
+var Int16 = getInfo("", "", "int16", false)
+
+var Int32 = getInfo("", "", "int32", false)
+
+var Int64 = getInfo("", "", "int64", false)
+
+var UInt = getInfo("", "", "uint", false)
+
+var UInt8 = getInfo("", "", "uint8", false)
+
+var UInt16 = getInfo("", "", "uint16", false)
+
+var UInt32 = getInfo("", "", "uint32", false)
+
+var UInt64 = getInfo("", "", "uint64", false)
+
+var UIntPtr = getInfo("", "", "uintptr", false)
+
+var Float32 = getInfo("", "", "float32", false)
+
+var Float64 = getInfo("", "", "float64", false)
+
+var Complex128 = getInfo("", "", "complex128", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -60,32 +134,60 @@ func specificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
-func define(tdi *Type) {
-	name := tdi.ClojureName
-	if existingTdi, ok := typesByClojureName[name]; ok {
-		panic(fmt.Sprintf("already defined type %s at %s and again at %s", name, WhereAt(existingTdi.DefPos), WhereAt(tdi.DefPos)))
+func (ti *Info) computeFullName() string {
+	n := ti.FullName
+	if n == "" {
+		n = fmt.Sprintf(ti.Pattern, combine(ti.Package, ti.LocalName))
+		ti.FullName = n
 	}
-	typesByClojureName[name] = tdi
-
-	if tdi.Type != nil {
-		tdiByExpr, found := typesByExpr[tdi.Type]
-		if found && tdiByExpr != tdi {
-			panic(fmt.Sprintf("different expr for type %s", name))
-		}
-		typesByExpr[tdi.Type] = tdi
-	}
-
-	//	fmt.Printf("define: %s\n", name)
+	return n
 }
 
-func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type {
-	if len(allTypesSorted) > 0 {
-		panic("Attempt to define new type after having sorted all types!!")
+func finish(ti *Info) {
+	fullName := ti.computeFullName()
+
+	if _, ok := typesByFullName[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
+		return
 	}
 
-	prefix := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos)) + "/"
+	typesByFullName[fullName] = ti
+
+	if e := ti.Expr; e != nil {
+		tiByExpr, found := typesByExpr[e]
+		if found && tiByExpr != ti {
+			panic(fmt.Sprintf("different expr for type %s", fullName))
+		}
+		typesByExpr[e] = ti
+	}
+}
+
+func define(ti *Info) {
+	// Might be more to do here at some point.
+	finish(ti)
+}
+
+func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
+	ti := &Info{
+		Expr:           te,
+		who:            "finishVariant",
+		IsExported:     innerInfo.IsExported,
+		File:           innerInfo.File,
+		Pattern:        pattern,
+		Package:        innerInfo.Package,
+		LocalName:      innerInfo.LocalName,
+		DefPos:         innerInfo.DefPos,
+		UnderlyingType: innerInfo,
+		Specificity:    Concrete,
+	}
+
+	finish(ti)
+
+	return ti
+}
+
+func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
-	name := prefix + localName
 
 	doc := ts.Doc // Try block comments for this specific decl
 	if doc == nil {
@@ -95,213 +197,171 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Type 
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
 
-	types := []*Type{}
+	types := []*Info{}
 
-	tdi := &Type{
+	ti := &Info{
+		who:         "TypeDefine",
 		Type:        ts.Type,
 		TypeSpec:    ts,
-		ClojureName: name,
 		IsExported:  IsExported(localName),
-		Doc:         CommentGroupAsString(doc),
+		Doc:         utils.CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
-		GoFile:      gf,
-		GoPattern:   "%s",
-		GoPackage:   GoPackageForTypeSpec(ts),
-		GoName:      localName,
+		File:        gf,
+		Pattern:     "%s",
+		Package:     godb.GoPackageForTypeSpec(ts),
+		LocalName:   localName,
 		Specificity: specificity(ts),
 	}
-	define(tdi)
-	types = append(types, tdi)
+	define(ti)
+	types = append(types, ti)
 
-	if tdi.Specificity == Concrete {
+	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Joker code to access them.
-		tdiPtrTo := &Type{
-			Type:           &StarExpr{X: tdi.Type},
-			ClojureName:    "*" + tdi.ClojureName,
-			IsExported:     tdi.IsExported,
-			Doc:            "",
-			GoPattern:      fmt.Sprintf(tdi.GoPattern, "*%s"),
-			GoPackage:      tdi.GoPackage,
-			GoName:         tdi.GoName,
-			underlyingType: tdi,
+		tiPtrTo := &Info{
+			Expr:           &StarExpr{X: nil},
+			who:            "*TypeDefine*",
+			Type:           &StarExpr{X: ti.Type},
+			IsExported:     ti.IsExported,
+			Doc:            ti.Doc,
+			DefPos:         ti.DefPos,
+			File:           gf,
+			Pattern:        fmt.Sprintf(ti.Pattern, "*%s"),
+			Package:        ti.Package,
+			LocalName:      ti.LocalName,
+			UnderlyingType: ti,
 			Specificity:    Concrete,
 		}
-		define(tdiPtrTo)
-		types = append(types, tdiPtrTo)
+		finish(tiPtrTo)
+		types = append(types, tiPtrTo)
 	}
 
 	return types
 }
 
-// Maps type-defining Expr to exactly one struct describing that type
-var typesByExpr = map[Expr]*Type{}
-
-func defineVariant(clojureName, pattern string, innerTdi *Type, te Expr) *Type {
-	tdi := &Type{
-		Type:           te,
-		ClojureName:    clojureName,
-		IsExported:     innerTdi.IsExported,
-		GoPattern:      pattern,
-		GoName:         innerTdi.GoName,
-		underlyingType: innerTdi,
+func TypeForName(fullName string) *Info {
+	if ti, ok := typesByFullName[fullName]; ok {
+		return ti
 	}
-
-	define(tdi)
-
-	//	fmt.Printf("defineVariant: %s\n", name)
-
-	return tdi
+	return nil
 }
 
-func TypeDefineBuiltin(name string) *Type {
-	tdi := &Type{
-		Type:        &Ident{Name: name},
-		ClojureName: name,
-		IsExported:  true,
-		GoPattern:   "%s",
-		GoName:      name,
-	}
-
-	define(tdi)
-
-	return tdi
-}
-
-func TypeLookup(e Expr) (ty *Type, clojureName string) {
-	if tdi, ok := typesByExpr[e]; ok {
+func TypeForExpr(e Expr) *Info {
+	if ti, ok := typesByExpr[e]; ok {
 		NumExprHits++
-		return tdi, tdi.ClojureName
-	}
-	clojureName = typeName(e)
-	if tdi, ok := typesByClojureName[clojureName]; ok {
-		NumClojureNameHits++
-		typesByExpr[e] = tdi
-		return tdi, clojureName
+		return ti
 	}
 
-	if _, yes := e.(*Ident); yes {
-		// No more information to be gleaned.
-		return nil, e.(*Ident).Name
+	localName := ""
+	fullName := ""
+
+	if id, yes := e.(*Ident); yes {
+		pkg := godb.GoPackageForExpr(e)
+		fullName = combine(pkg, id.Name)
+		if ti, ok := typesByFullName[fullName]; ok {
+			typesByExpr[e] = ti
+			return ti
+		}
+		ti := &Info{
+			Expr:       e,
+			who:        "TypeForExpr",
+			IsExported: true,
+			DefPos:     id.Pos(),
+			FullName:   fullName,
+			Pattern:    "%s",
+			Package:    pkg,
+			LocalName:  id.Name,
+		}
+
+		typesByExpr[e] = ti
+		finish(ti)
+
+		return ti
 	}
 
-	var innerTdi *Type
+	var innerInfo *Info
 	pattern := "%s"
-	goName := ""
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerTdi, _ = TypeLookup(v.X)
-		pattern = "*%s"
-		goName = innerTdi.GoName
+		innerInfo = TypeForExpr(v.X)
+		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
+		localName = innerInfo.LocalName
 	case *ArrayType:
-		innerTdi, _ = TypeLookup(v.Elt)
+		innerInfo = TypeForExpr(v.Elt)
 		len := exprToString(v.Len)
 		pattern = "[" + len + "]%s"
-		goName = innerTdi.GoName
+		if innerInfo == nil {
+			localName = fmt.Sprintf("%v", v.Elt)
+		} else {
+			localName = innerInfo.LocalName
+			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
+		}
 	case *InterfaceType:
-		goName = "interface{"
+		localName = "interface{"
 		methods := methodsToString(v.Methods.List)
 		if v.Incomplete {
 			methods = strings.Join([]string{methods, "..."}, ", ")
 		}
-		goName += methods + "}"
+		localName += methods + "}"
 	case *MapType:
-		key, _ := TypeLookup(v.Key)
-		value, _ := TypeLookup(v.Value)
-		goName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
+		key := TypeForExpr(v.Key)
+		value := TypeForExpr(v.Value)
+		localName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
 	case *SelectorExpr:
-		left := fmt.Sprintf("%s", v.X)
-		goName = left + "." + v.Sel.Name
+		pkgName := v.X.(*Ident).Name
+		localName := v.Sel.Name
+		fullPathUnix := utils.Unix(godb.FileAt(v.Pos()))
+		rf := godb.GoFileForExpr(v)
+		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+			fullName = fullPkgName.String() + "." + localName
+		} else {
+			panic(fmt.Sprintf("processing %s: could not find %s in %s",
+				godb.WhereAt(v.Pos()), pkgName, fullPathUnix))
+		}
 	case *ChanType:
-		ty, _ := TypeLookup(v.Value)
-		goName = "chan"
+		ty := TypeForExpr(v.Value)
+		localName = "chan"
 		switch v.Dir & (SEND | RECV) {
 		case SEND:
-			goName += "<-"
+			localName += "<-"
 		case RECV:
-			goName = "<-" + goName
+			localName = "<-" + localName
 		default:
 		}
-		goName += " " + ty.RelativeGoName(e.Pos())
+		localName += " " + ty.RelativeGoName(e.Pos())
 	case *StructType:
-		goName = "struct{}"
+		localName = "struct{}"
 	}
 
-	if innerTdi == nil {
-		if goName == "" {
-			goName = fmt.Sprintf("ABEND001(NO GO NAME for %s??!!)", clojureName)
+	if innerInfo == nil {
+		if localName == "" && fullName == "" {
+			localName = fmt.Sprintf("ABEND001(NO GO NAME for %T)", e)
 		}
-		tdi := &Type{
-			Type:        e,
-			ClojureName: clojureName,
-			GoPattern:   pattern,
-			GoName:      goName,
+		if fullName != "" {
+			if ti, ok := typesByFullName[fullName]; ok {
+				return ti
+			}
 		}
-		define(tdi)
-		return tdi, clojureName
-	}
-
-	return defineVariant(clojureName, pattern, innerTdi, e), clojureName
-}
-
-var allTypesSorted = []*Type{}
-
-// This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
-// new types cannot be discovered/added.
-func SortAll() {
-	if len(allTypesSorted) > 0 {
-		panic("Attempt to sort all types type after having already sorted all types!!")
-	}
-	for _, t := range typesByClojureName {
-		if t.IsExported {
-			allTypesSorted = append(allTypesSorted, t)
+		ti := &Info{
+			Expr:           e,
+			who:            fmt.Sprintf("[TypeForExpr %T]", e),
+			Pattern:        pattern,
+			FullName:       fullName,
+			LocalName:      localName,
+			DefPos:         e.Pos(),
+			UnderlyingType: innerInfo,
 		}
+		finish(ti)
+		return ti
 	}
-	sort.SliceStable(allTypesSorted, func(i, j int) bool {
-		if allTypesSorted[i].Specificity != allTypesSorted[j].Specificity {
-			return allTypesSorted[i].Specificity > allTypesSorted[j].Specificity
-		}
-		return allTypesSorted[i].ClojureName < allTypesSorted[j].ClojureName
-	})
-	for ord, t := range allTypesSorted {
-		t.Ord = (uint)(ord)
-		ord++
-	}
-}
 
-func AllSorted() []*Type {
-	return allTypesSorted
-}
-
-func typeKeyForSort(k string) string {
-	if strings.HasPrefix(k, "*") {
-		return k[1:] + "*"
-	}
-	if strings.HasPrefix(k, "[]") {
-		return k[2:] + "[]"
-	}
-	return k
-}
-
-func SortedTypeDefinitions(m map[*Type]struct{}, f func(ti *Type)) {
-	var keys []string
-	for k, _ := range m {
-		if k != nil {
-			keys = append(keys, k.ClojureName)
-		}
-	}
-	sort.SliceStable(keys, func(i, j int) bool {
-		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
-	})
-	for _, k := range keys {
-		f(typesByClojureName[k])
-	}
+	return finishVariant(pattern, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {
-	_, name := TypeLookup(f.Type)
+	ti := TypeForExpr(f.Type)
 	// Don't bother implementing this until it's actually needed:
-	return "ABEND041(gtypes.go/fieldToString found something: " + name + "!)"
+	return "ABEND041(gtypes.go/fieldToString found something: " + ti.LocalName + "!)"
 }
 
 func methodsToString(methods []*Field) string {
@@ -310,97 +370,6 @@ func methodsToString(methods []*Field) string {
 		mStrings[i] = fieldToString(m)
 	}
 	return strings.Join(mStrings, ", ")
-}
-
-func typeName(e Expr) (clj string) {
-	switch x := e.(type) {
-	case *Ident:
-		break
-	case *ArrayType:
-		elClj := typeName(x.Elt)
-		len := exprToString(x.Len)
-		if len != "" {
-			len = ":length " + len + " "
-		}
-		clj = "(vector-of " + len + elClj + ")"
-		return
-	case *StarExpr:
-		elClj := typeName(x.X)
-		clj = "*" + elClj
-		return
-	case *InterfaceType:
-		clj = "(interface-of "
-		methods := methodsToString(x.Methods.List)
-		if x.Incomplete {
-			methods = strings.Join([]string{methods, "..."}, ", ")
-		}
-		if methods == "" {
-			methods = "nil"
-		}
-		clj += methods + ")"
-		return
-	case *MapType:
-		key, keyName := TypeLookup(x.Key)
-		value, valueName := TypeLookup(x.Value)
-		if key != nil {
-			keyName = key.RelativeGoName(e.Pos())
-		}
-		if value != nil {
-			valueName = value.RelativeGoName(e.Pos())
-		}
-		return "(hash-map-of " + keyName + " " + valueName + ")"
-	case *SelectorExpr:
-		left := fmt.Sprintf("%s", x.X)
-		return left + "/" + x.Sel.Name
-	case *ChanType:
-		ty, tyName := TypeLookup(x.Value)
-		if ty != nil {
-			tyName = ty.RelativeGoName(e.Pos())
-		}
-		clj = "(channel-of "
-		switch x.Dir & (SEND | RECV) {
-		case SEND:
-			clj += ":<- "
-		case RECV:
-			clj += ":-> "
-		default:
-			clj += ":<> "
-		}
-		clj += tyName + ")"
-		return
-	case *StructType:
-		clj = "(struct-of ...)"
-		return
-	default:
-		return
-	}
-
-	x := e.(*Ident)
-	local := x.Name
-	prefix := ""
-	if types.Universe.Lookup(local) == nil {
-		prefix = ClojureNamespaceForExpr(e) + "/"
-	}
-	clj = prefix + local
-
-	o := x.Obj
-	if o != nil && o.Kind == Typ {
-		tdi := typesByClojureName[clj]
-		if o.Name != local || (tdi != nil && o.Decl.(*TypeSpec) != tdi.TypeSpec) {
-			Print(Fset, x)
-			var ts *TypeSpec
-			if tdi != nil {
-				ts = tdi.TypeSpec
-			}
-			panic(fmt.Sprintf("mismatch name=%s != %s or ts %p != %p!", o.Name, local, o.Decl.(*TypeSpec), ts))
-		}
-	} else {
-		// Strangely, not all *Ident's referring to defined types have x.Obj populated! Can't figure out what's
-		// different about them, though maybe it's just that they're for only those receivers currently being
-		// code-generated?
-	}
-
-	return
 }
 
 func exprToString(e Expr) string {
@@ -416,34 +385,52 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (tdi *Type) TypeReflected() (packageImport, pattern string) {
+func (ti *Info) TypeReflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
-	if tdiu := tdi.underlyingType; tdiu != nil {
-		t = "_" + path.Base(tdiu.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+	if tiu := ti.UnderlyingType; tiu != nil {
+		t = "_" + path.Base(tiu.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
 		suffix = ""
 	} else {
-		t = "_" + path.Base(tdi.GoPackage) + "." + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
+		t = "_" + path.Base(ti.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
 	}
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (tdi *Type) TypeMappingsName() string {
-	if !tdi.IsExported {
-		return ""
-	}
-	if tdi.underlyingType != nil {
-		return "info_PtrTo_" + fmt.Sprintf(tdi.underlyingType.GoPattern, tdi.underlyingType.GoName)
-	}
-	return "info_" + fmt.Sprintf(tdi.GoPattern, tdi.GoName)
-}
-
-func (tdi *Type) RelativeGoName(pos token.Pos) string {
-	pkgPrefix := tdi.GoPackage
-	if pkgPrefix == GoPackageForPos(pos) {
+func (ti *Info) RelativeGoName(pos token.Pos) string {
+	pkgPrefix := ti.Package
+	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
 	} else if pkgPrefix != "" {
 		pkgPrefix += "."
 	}
-	return fmt.Sprintf(tdi.GoPattern, pkgPrefix+tdi.GoName)
+	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
+}
+
+func (ti *Info) AbsoluteGoName() string {
+	pkgPrefix := ti.Package
+	if pkgPrefix != "" {
+		pkgPrefix += "."
+	}
+	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
+}
+
+func (ti *Info) NameDoc(e Expr) string {
+	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
+		return ti.FullName
+	}
+	return fmt.Sprintf(ti.Pattern, ti.LocalName)
+}
+
+func goExprToString(e Expr) string {
+	if e == nil {
+		return ""
+	}
+	switch v := e.(type) {
+	case *Ellipsis:
+		return "..." + goExprToString(v.Elt)
+	case *BasicLit:
+		return v.Value
+	}
+	return fmt.Sprintf("%v", e)
 }

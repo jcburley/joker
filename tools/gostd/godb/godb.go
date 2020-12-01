@@ -6,6 +6,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path"
 	"path/filepath"
@@ -49,6 +50,10 @@ func FileAt(p token.Pos) string {
 		Offset: 0, Line: 0, Column: 0}.String()
 }
 
+func IsBuiltin(name string) bool {
+	return types.Universe.Lookup(name) != nil
+}
+
 type mapping struct {
 	prefix  paths.UnixPath // E.g. "/home/user/go/src"
 	cljRoot string         // E.g. "go.std."
@@ -76,6 +81,27 @@ func goPackageForDirname(dirName string) (pkg, prefix string) {
 	return "", mappings[0].cljRoot
 }
 
+func GoFilenameForPos(p token.Pos) string {
+	fileName := filepath.ToSlash(Fset.Position(p).Filename)
+	dirName := filepath.Dir(fileName)
+	pkg, _ := goPackageForDirname(dirName)
+	if pkg == "" {
+		panic(fmt.Sprintf("no mapping for %s", dirName))
+	}
+	return filepath.Join(pkg, filepath.Base(fileName))
+}
+
+func GoFilenameForExpr(e Expr) string {
+	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+		return "" // A builtin, so not package-qualified.
+	}
+	return GoFilenameForPos(e.Pos())
+}
+
+func GoFilenameForTypeSpec(ts *TypeSpec) string {
+	return GoFilenameForPos(ts.Pos())
+}
+
 func GoPackageForPos(p token.Pos) string {
 	dirName := path.Dir(filepath.ToSlash(Fset.Position(p).Filename))
 	pkg, _ := goPackageForDirname(dirName)
@@ -86,6 +112,9 @@ func GoPackageForPos(p token.Pos) string {
 }
 
 func GoPackageForExpr(e Expr) string {
+	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+		return "" // A builtin, so not package-qualified.
+	}
 	return GoPackageForPos(e.Pos())
 }
 
@@ -103,6 +132,9 @@ func ClojureNamespaceForPos(p token.Position) string {
 }
 
 func ClojureNamespaceForExpr(e Expr) string {
+	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+		panic(fmt.Sprintf("no Clojure namespace for builtin `%s'", id.Name))
+	}
 	return ClojureNamespaceForPos(Fset.Position(e.Pos()))
 }
 
@@ -112,6 +144,19 @@ func ClojureNamespaceForDirname(d string) string {
 		pkg = root + d
 	}
 	return ReplaceAll(pkg, "/", ".")
+}
+
+func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
+	if fullPkgName, found := (*g.Spaces)[pkg]; found {
+		f := fullPkgName.String()
+		p, root := goPackageForDirname(f)
+		if p == "" {
+			p = root + f
+		}
+		return ReplaceAll(p, "/", ".")
+	}
+	panic(fmt.Sprintf("could not find %s in %s",
+		pkg, g.Name))
 }
 
 func GoPackageBaseName(e Expr) string {
@@ -143,10 +188,35 @@ type GoFile struct {
 	Spaces  *map[string]paths.UnixPath // maps "foo" (in a reference such as "foo.Bar") to the package in which it is defined
 }
 
-var GoFiles = map[string]*GoFile{}
+// Map relative (Unix-style) filenames to objects with info on them.
+var GoFilesRelative = map[string]*GoFile{}
+
+// Map absolute (Unix-style) filenames to objects with info on them.
+var GoFilesAbsolute = map[string]*GoFile{}
+
+func GoFileForPos(p token.Pos) *GoFile {
+	fullPathUnix := Unix(Fset.Position(p).Filename)
+
+	gf, ok := GoFilesAbsolute[fullPathUnix]
+
+	if !ok {
+		panic(fmt.Sprintf("could not find referring file %s at %s",
+			fullPathUnix, WhereAt(p)))
+	}
+
+	return gf
+}
+
+func GoFileForExpr(e Expr) *GoFile {
+	return GoFileForPos(e.Pos())
+}
+
+func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
+	return GoFileForPos(ts.Pos())
+}
 
 func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
-	if !IsExported(name.Name) || (pkg.String() == "unsafe" && name.Name == "ArbitraryType") {
+	if !IsExported(name.Name) /* || (pkg.String() == "unsafe" && name.Name == "ArbitraryType") */ {
 		if IsExported(name.Name) {
 			if Verbose {
 				fmt.Printf("Excluding mythical type %s.%s\n", pkg.String(), name.Name)
@@ -169,8 +239,9 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, decls}
 
 	for p, f := range pkg.Files {
-		goFilePathUnix, _ := paths.NewNativePath(p).ToUnix().RelativeTo(rootUnix)
-		if egf, found := GoFiles[goFilePathUnix.String()]; found {
+		absFilePathUnix := paths.NewNativePath(p).ToUnix()
+		goFilePathUnix, _ := absFilePathUnix.RelativeTo(rootUnix)
+		if egf, found := GoFilesRelative[goFilePathUnix.String()]; found {
 			panic(fmt.Sprintf("Found %s twice -- now in %s, previously in %s!", goFilePathUnix, pkgDirUnix, egf.Package.Dir))
 		}
 		importsMap := map[string]paths.UnixPath{}
@@ -204,7 +275,8 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 			Name:    goFilePathUnix,
 			Spaces:  &importsMap,
 		}
-		GoFiles[goFilePathUnix.String()] = gf
+		GoFilesRelative[goFilePathUnix.String()] = gf
+		GoFilesAbsolute[absFilePathUnix.String()] = gf
 
 		for _, d := range f.Decls {
 			switch o := d.(type) {
