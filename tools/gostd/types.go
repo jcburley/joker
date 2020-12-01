@@ -23,11 +23,11 @@ type TypeInfo interface {
 	Custom() bool           // Whether this is defined by the codebase vs either builtin or derived
 	AsJokerObject() string  // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
 	JokerName() string
-	JokerNameDoc() string
+	JokerNameDoc(e Expr) string
 	JokerTypeInfo() *jtypes.Info
 	JokerWho() string
 	RequiredImports() *imports.Imports
-	GoName() string // TODO: Rename to GoFullName
+	GoName() string
 	GoNameDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
@@ -264,8 +264,8 @@ func (ti typeInfo) JokerName() string {
 	return ti.jti.FullName
 }
 
-func (ti typeInfo) JokerNameDoc() string {
-	return ti.jti.NameDoc
+func (ti typeInfo) JokerNameDoc(e Expr) string {
+	return ti.jti.NameDoc(e)
 }
 
 func (ti typeInfo) IsUnsupported() bool {
@@ -289,7 +289,7 @@ func (ti typeInfo) GoName() string {
 }
 
 func (ti typeInfo) GoNameDoc(e Expr) string {
-	return ti.gti.DeclDoc(e)
+	return ti.gti.NameDoc(e)
 }
 
 func (ti typeInfo) GoPackage() string {

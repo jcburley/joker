@@ -24,7 +24,7 @@ type Info struct {
 	UnderlyingType *Info
 	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	Package        string // E.g. "net/url", "" (always Unix style)
-	LocalName      string // E.g. "*Listener"
+	LocalName      string // E.g. "Listener"
 	Doc            string
 	DefPos         token.Pos
 	File           *godb.GoFile
@@ -415,7 +415,7 @@ func (ti *Info) AbsoluteGoName() string {
 	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
-func (ti *Info) DeclDoc(e Expr) string {
+func (ti *Info) NameDoc(e Expr) string {
 	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
 		return ti.FullName
 	}
