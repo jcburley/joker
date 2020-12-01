@@ -18,11 +18,11 @@ type TypeInfo interface {
 	ArgFromClojureObject() string /// Append this to Clojure object to extract value of my type
 	ArgExtractFunc() string       // Call Extract<this>() for arg with my type
 	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
-	ConvertFromClojure() string   // TODO: REMOVE, UNUSED?? Pattern to convert a (scalar) %s to this type
-	ConvertFromMap() string       // Pattern to convert a map %s key %s to this type
-	Custom() bool                 // Whether this is defined by the codebase vs either builtin or derived
-	AsJokerObject() string        // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	JokerName() string            // TODO: Rename to JokerFullName
+	ConvertFromClojure() string
+	ConvertFromMap() string // Pattern to convert a map %s key %s to this type
+	Custom() bool           // Whether this is defined by the codebase vs either builtin or derived
+	AsJokerObject() string  // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
+	JokerName() string      // TODO: Rename to JokerFullName
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
 	JokerWho() string
@@ -272,7 +272,7 @@ func (ti typeInfo) IsUnsupported() bool {
 	return ti.jti.IsUnsupported
 }
 
-func (ti typeInfo) JokerTypeInfo() *jtypes.Info { // TODO: Remove when gotypes.go is gone?
+func (ti typeInfo) JokerTypeInfo() *jtypes.Info {
 	return ti.jti
 }
 
@@ -304,7 +304,7 @@ func (ti typeInfo) GoName() string {
 	return ti.gti.LocalName
 }
 
-func (ti typeInfo) GoTypeInfo() *gtypes.Info { // TODO: Remove when gotypes.go is gone?
+func (ti typeInfo) GoTypeInfo() *gtypes.Info {
 	return ti.gti
 }
 
