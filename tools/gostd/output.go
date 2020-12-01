@@ -160,7 +160,7 @@ func SwitchGoType(g interface{}) int {
 		if t.Specificity() != ConcreteType {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity())
 		}
-		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoName()), specificity, Ordinal[t])
+		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t])
 	}
 
 	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
@@ -276,7 +276,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 				return
 			}
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || ti.GoName() == "" || !ti.IsExported() {
+			if tmn == "" || ti.GoBaseName() == "" || !ti.IsExported() {
 				return
 			}
 			typeDoc := ti.Doc()
@@ -292,7 +292,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 %s    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.GoPattern(), ti.GoName()))
+				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.GoPattern(), ti.GoBaseName()))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
 					ti.JokerName(), fnCode)

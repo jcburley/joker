@@ -22,16 +22,16 @@ type TypeInfo interface {
 	ConvertFromMap() string // Pattern to convert a map %s key %s to this type
 	Custom() bool           // Whether this is defined by the codebase vs either builtin or derived
 	AsJokerObject() string  // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	JokerName() string      // TODO: Rename to JokerFullName
+	JokerName() string
 	JokerNameDoc() string
 	JokerTypeInfo() *jtypes.Info
 	JokerWho() string
 	RequiredImports() *imports.Imports
-	GoDecl() string // TODO: Rename to GoFullName
-	GoDeclDoc(e Expr) string
+	GoName() string // TODO: Rename to GoFullName
+	GoNameDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
-	GoName() string // TODO: Rename to GoLocalName
+	GoBaseName() string
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -88,7 +88,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			who:             "RegisterTypeDecl",
 		}
 
-		typesByGoName[ti.GoDecl()] = ti
+		typesByGoName[ti.GoName()] = ti
 		typesByJokerName[ti.JokerName()] = ti
 
 		if IsExported(name) {
@@ -173,7 +173,7 @@ func StringForExpr(e Expr) string {
 	}
 	t := TypeInfoForExpr(e)
 	if t != nil {
-		return t.GoDecl()
+		return t.GoName()
 	}
 	return fmt.Sprintf("%T", e)
 }
@@ -186,10 +186,10 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 			if ti.Custom() {
 				uti := TypeInfoForExpr(ti.TypeSpec().Type)
 				if uti.ConvertFromClojure() != "" {
-					fromClojure = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoName(), uti.ConvertFromClojure())
+					fromClojure = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoBaseName(), uti.ConvertFromClojure())
 				}
 				if uti.ConvertFromMap() != "" {
-					fromMap = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoName(), uti.ConvertFromMap())
+					fromMap = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoBaseName(), uti.ConvertFromMap())
 				}
 			}
 		}
@@ -284,11 +284,11 @@ func (ti typeInfo) RequiredImports() *imports.Imports {
 	return ti.requiredImports
 }
 
-func (ti typeInfo) GoDecl() string {
+func (ti typeInfo) GoName() string {
 	return ti.gti.FullName
 }
 
-func (ti typeInfo) GoDeclDoc(e Expr) string {
+func (ti typeInfo) GoNameDoc(e Expr) string {
 	return ti.gti.DeclDoc(e)
 }
 
@@ -300,7 +300,7 @@ func (ti typeInfo) GoPattern() string {
 	return ti.gti.Pattern
 }
 
-func (ti typeInfo) GoName() string {
+func (ti typeInfo) GoBaseName() string {
 	return ti.gti.LocalName
 }
 
@@ -365,7 +365,7 @@ func (ti typeInfo) TypeMappingsName() string {
 	if ugt := ti.gti.UnderlyingType; ugt != nil {
 		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
 	}
-	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoName())
+	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
 }
 
 func (ti typeInfo) PromoteType() string {
