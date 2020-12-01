@@ -78,9 +78,12 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 		} else {
 			result = outNew
 		}
+		if n != "" {
+			clDocNew += " " + n
+		}
 		captureVars = append(captureVars, captureVar)
 		clType = append(clType, clNew)
-		clTypeDoc = append(clTypeDoc, clDocNew)
+		clTypeDoc = append(clTypeDoc, "^"+clDocNew)
 		golType = append(golType, golNew)
 		goCode = append(goCode, gocNew)
 		if conversion == "" {
@@ -98,7 +101,7 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 		cl = "[" + cl + "]"
 	}
 
-	clDoc = strings.Join(clTypeDoc, " ")
+	clDoc = strings.Join(clTypeDoc, ", ")
 	if len(clTypeDoc) > 1 && clDoc != "" {
 		clDoc = "[" + clDoc + "]"
 	}
