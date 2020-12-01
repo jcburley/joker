@@ -31,7 +31,7 @@ func genGoPreArray(fn *FuncInfo, indent string, e *ArrayType, paramName string, 
 
 func genGoPreStar(fn *FuncInfo, indent string, e *StarExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	el := e.X
-	clType, clTypeDoc, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
+	clType, _, goType, goTypeDoc, _, cl2golParam = genTypePre(fn, indent, el, paramName, argNum)
 	if cl2golParam[0] == '*' {
 		cl2golParam = cl2golParam[1:]
 	} else {
@@ -44,7 +44,7 @@ func genGoPreStar(fn *FuncInfo, indent string, e *StarExpr, paramName string, ar
 		}
 		clType = "Object"
 	}
-	clTypeDoc = "(ref-to " + clTypeDoc + ")"
+	//	clTypeDoc = "(ref-to " + clTypeDoc + ")"
 	goType = "*" + goType
 	goTypeDoc = "*" + goTypeDoc
 	return
@@ -216,13 +216,17 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, Unix(WhereAt(e.Pos())))
 	}
 
-	if clType == "" && clTypeDoc == "" {
+	if clType == "" || clTypeDoc == "" {
 		ti := TypeInfoForExpr(e)
-		clType = ti.ArgExtractFunc()
+		if clType == "" {
+			clType = ti.ArgExtractFunc()
+		}
 		if clType == "" {
 			clType = "Object"
 		}
-		clTypeDoc = ti.ArgClojureArgType()
+		if clTypeDoc == "" {
+			clTypeDoc = ti.ArgClojureArgType()
+		}
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
