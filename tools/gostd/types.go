@@ -265,7 +265,7 @@ func (ti typeInfo) JokerName() string {
 }
 
 func (ti typeInfo) JokerNameDoc() string {
-	return ti.jti.JokerNameDoc
+	return ti.jti.NameDoc
 }
 
 func (ti typeInfo) IsUnsupported() bool {
