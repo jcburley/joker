@@ -555,21 +555,21 @@ JOKER FUNC net.DialUnix from net/unixsock.go:
 
 JOKER FUNC net.FileConn from net/file.go:
 (defn FileConn
-  "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c Conn, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^Conn c, ^Error err]"
+  "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c Conn, err error)\n\nJoker input arguments: [^go.std.os/refToFile f]\n\nJoker returns: [^Conn c, ^Error err]"
   {:added "1.0"
    :go "_f_fileConn(_v_f)"}
   [^go.std.os/File _v_f])
 
 JOKER FUNC net.FileListener from net/file.go:
 (defn FileListener
-  "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: (f *os.File)\n\nGo returns: (ln Listener, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^Listener ln, ^Error err]"
+  "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: (f *os.File)\n\nGo returns: (ln Listener, err error)\n\nJoker input arguments: [^go.std.os/refToFile f]\n\nJoker returns: [^Listener ln, ^Error err]"
   {:added "1.0"
    :go "_f_fileListener(_v_f)"}
   [^go.std.os/File _v_f])
 
 JOKER FUNC net.FilePacketConn from net/file.go:
 (defn FilePacketConn
-  "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c PacketConn, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^PacketConn c, ^Error err]"
+  "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c PacketConn, err error)\n\nJoker input arguments: [^go.std.os/refToFile f]\n\nJoker returns: [^PacketConn c, ^Error err]"
   {:added "1.0"
    :go "_f_filePacketConn(_v_f)"}
   [^go.std.os/File _v_f])
@@ -2371,7 +2371,7 @@ JOKER FUNC net/http.ListenAndServeTLS from net/http/server.go:
 
 JOKER FUNC net/http.MaxBytesReader from net/http/request.go:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo returns: io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/request.go:1056:65)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.io/ReadCloser r, ^BigInt n]\n\nJoker returns: ^go.std.io/ReadCloser"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser')\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.io/ReadCloser r, ^BigInt n]\n\nJoker returns: ^go.std.io/ReadCloser"
 ;;   {:added "1.0"
 ;;    :go "_f_maxBytesReader(*_v_w, *_v_r, _v_n)"}
 ;;   [^go.std.net.http/ResponseWriter _v_w, ^go.std.io/ReadCloser _v_r, ^Int64 _v_n])
@@ -2420,7 +2420,7 @@ JOKER FUNC net/http.ParseHTTPVersion from net/http/request.go:
 
 JOKER FUNC net/http.ParseTime from net/http/header.go:
 ;; (defn ParseTime
-;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo input arguments: (text string)\n\nGo returns: (t time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/header.go:86:32), err error)\n\nJoker input arguments: [^String text]\n\nJoker returns: [^go.std.time/Time t, ^Error err]"
+;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo input arguments: (text string)\n\nGo returns: (t time.ABEND002(reference to unavailable package `time' looking for type `Time'), err error)\n\nJoker input arguments: [^String text]\n\nJoker returns: [^go.std.time/Time t, ^Error err]"
 ;;   {:added "1.0"
 ;;    :go "_f_parseTime(_v_text)"}
 ;;   [^String _v_text])
@@ -2455,14 +2455,14 @@ JOKER FUNC net/http.ProxyURL from net/http/transport.go:
 
 JOKER FUNC net/http.ReadRequest from net/http/request.go:
 (defn ReadRequest
-  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo returns: (*Request, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm b]\n\nJoker returns: [^refToRequest, ^Error]"
+  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo returns: (*Request, error)\n\nJoker input arguments: [^go.std.bufio/refToReader b]\n\nJoker returns: [^refToRequest, ^Error]"
   {:added "1.0"
    :go "_f_readRequest(_v_b)"}
   [^go.std.bufio/Reader _v_b])
 
 JOKER FUNC net/http.ReadResponse from net/http/response.go:
 (defn ReadResponse
-  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r, ^refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
+  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.bufio/refToReader r, ^refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
   {:added "1.0"
    :go "_f_readResponse(_v_r, _v_req)"}
   [^go.std.bufio/Reader _v_r, ^go.std.net.http/Request _v_req])
@@ -3062,7 +3062,7 @@ JOKER FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.g
 
 JOKER FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 ;; (defn WithClientTrace
-;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: context.ABEND002(reference to unavailable package context at _tests/big/src/net/http/httptrace/trace.go:34:63)\n\nJoker input arguments: [^go.std.context/Context ctx, ^refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
+;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: context.ABEND002(reference to unavailable package `context' looking for type `Context')\n\nJoker input arguments: [^go.std.context/Context ctx, ^refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
 ;;   {:added "1.0"
 ;;    :go "_f_withClientTrace(*_v_ctx, _v_trace)"}
 ;;   [^go.std.context/Context _v_ctx, ^go.std.net.http.httptrace/ClientTrace _v_trace])
@@ -3206,35 +3206,35 @@ JOKER FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 
 JOKER FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
 ;; (defn NewChunkedReader
-;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo input arguments: (r io.Reader)\n\nGo returns: io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/httputil/httputil.go:20:36)\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker returns: ^go.std.io/Reader"
+;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo input arguments: (r io.Reader)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `Reader')\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker returns: ^go.std.io/Reader"
 ;;   {:added "1.0"
 ;;    :go "_f_newChunkedReader(*_v_r)"}
 ;;   [^go.std.io/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
 ;; (defn NewChunkedWriter
-;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo input arguments: (w io.Writer)\n\nGo returns: io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/httputil/httputil.go:35:36)\n\nJoker input arguments: [^go.std.io/Writer w]\n\nJoker returns: ^go.std.io/WriteCloser"
+;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo input arguments: (w io.Writer)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser')\n\nJoker input arguments: [^go.std.io/Writer w]\n\nJoker returns: ^go.std.io/WriteCloser"
 ;;   {:added "1.0"
 ;;    :go "_f_newChunkedWriter(*_v_w)"}
 ;;   [^go.std.io/Writer _v_w])
 
 JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 (defn NewClientConn
-  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToClientConn"
+  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.bufio/refToReader r]\n\nJoker returns: ^refToClientConn"
   {:added "1.0"
    :go "_f_newClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 (defn NewProxyClientConn
-  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToClientConn"
+  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.bufio/refToReader r]\n\nJoker returns: ^refToClientConn"
   {:added "1.0"
    :go "_f_newProxyClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 (defn NewServerConn
-  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToServerConn"
+  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.bufio/refToReader r]\n\nJoker returns: ^refToServerConn"
   {:added "1.0"
    :go "_f_newServerConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
@@ -3373,7 +3373,7 @@ JOKER FUNC net/mail.ParseAddressList from net/mail/message.go:
 
 JOKER FUNC net/mail.ParseDate from net/mail/message.go:
 ;; (defn ParseDate
-;;   "ParseDate parses an RFC 5322 date string.\n\nGo input arguments: (date string)\n\nGo returns: (time.ABEND002(reference to unavailable package time at _tests/big/src/net/mail/message.go:95:30), error)\n\nJoker input arguments: [^String date]\n\nJoker returns: [^go.std.time/Time, ^Error]"
+;;   "ParseDate parses an RFC 5322 date string.\n\nGo input arguments: (date string)\n\nGo returns: (time.ABEND002(reference to unavailable package `time' looking for type `Time'), error)\n\nJoker input arguments: [^String date]\n\nJoker returns: [^go.std.time/Time, ^Error]"
 ;;   {:added "1.0"
 ;;    :go "_f_parseDate(_v_date)"}
 ;;   [^String _v_date])
@@ -3840,14 +3840,14 @@ JOKER FUNC net/textproto.NewConn from net/textproto/textproto.go:
 
 JOKER FUNC net/textproto.NewReader from net/textproto/reader.go:
 (defn NewReader
-  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo returns: *Reader\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToReader"
+  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo returns: *Reader\n\nJoker input arguments: [^go.std.bufio/refToReader r]\n\nJoker returns: ^refToReader"
   {:added "1.0"
    :go "_f_newReader(_v_r)"}
   [^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 (defn NewWriter
-  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo returns: *Writer\n\nJoker input arguments: [^go.std.mime.multipart/refToForm w]\n\nJoker returns: ^refToWriter"
+  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo returns: *Writer\n\nJoker input arguments: [^go.std.bufio/refToWriter w]\n\nJoker returns: ^refToWriter"
   {:added "1.0"
    :go "_f_newWriter(_v_w)"}
   [^go.std.bufio/Writer _v_w])
@@ -4391,12 +4391,12 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 
 // func _mapToDialer(o Map) *net.Dialer {
 // 	return &net.Dialer{
-// 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/dial.go:33:10) (-)),
-// 		Deadline: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/dial.go:39:11) (-)),
+// 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		Deadline: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Time') (-)),
 // 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		DualStack: FieldAsBoolean(o, "DualStack"),
-// 		FallbackDelay: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/dial.go:57:16) (-)),
-// 		KeepAlive: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/dial.go:63:12) (-)),
+// 		FallbackDelay: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		KeepAlive: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (-)),
 // 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
 // 		Control: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
@@ -6425,7 +6425,7 @@ GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 
 GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/iprawsock.go:105:33), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
@@ -6754,7 +6754,7 @@ func _f_ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net._f_ptrTo_TCPConn_SyscallConn from net/tcpsock.go:
 // func _f_ptrTo_TCPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/tcpsock.go:91:34), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_TCPListener_Accept from net/tcpsock.go:
 func _f_ptrTo_TCPListener_Accept(o GoObject, args Object) Object {  // Receiver
@@ -6791,14 +6791,8 @@ func _f_ptrTo_TCPListener_Close(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net._f_ptrTo_TCPListener_File from net/tcpsock.go:
-func _f_ptrTo_TCPListener_File(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*net.TCPListener)File()", args, 0, 0)
-	f, err := o.O.(*net.TCPListener).File()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(f))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func _f_ptrTo_TCPListener_File(o GoObject, args Object) Object {  // Receiver
+// (f *ABEND002(reference to unavailable package `os' looking for type `File'), err error)}
 
 GO FUNC net._f_ptrTo_TCPListener_SetDeadline from net/tcpsock.go:
 // func _f_ptrTo_TCPListener_SetDeadline(o GoObject, args Object) Object {  // Receiver
@@ -6810,7 +6804,7 @@ GO FUNC net._f_ptrTo_TCPListener_SetDeadline from net/tcpsock.go:
 
 GO FUNC net._f_ptrTo_TCPListener_SyscallConn from net/tcpsock.go:
 // func _f_ptrTo_TCPListener_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/tcpsock.go:234:38), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UDPAddr_Network from net/udpsock.go:
 func _f_ptrTo_UDPAddr_Network(o GoObject, args Object) Object {  // Receiver
@@ -6867,7 +6861,7 @@ GO FUNC net._f_ptrTo_UDPConn_ReadMsgUDP from net/udpsock.go:
 
 GO FUNC net._f_ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 // func _f_ptrTo_UDPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/udpsock.go:97:34), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UDPConn_WriteMsgUDP from net/udpsock.go:
 // func _f_ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {  // Receiver
@@ -6976,7 +6970,7 @@ GO FUNC net._f_ptrTo_UnixConn_ReadMsgUnix from net/unixsock.go:
 
 GO FUNC net._f_ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 // func _f_ptrTo_UnixConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/unixsock.go:71:35), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UnixConn_WriteMsgUnix from net/unixsock.go:
 // func _f_ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {  // Receiver
@@ -7051,14 +7045,8 @@ func _f_ptrTo_UnixListener_Close(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net._f_ptrTo_UnixListener_File from net/unixsock.go:
-func _f_ptrTo_UnixListener_File(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*net.UnixListener)File()", args, 0, 0)
-	f, err := o.O.(*net.UnixListener).File()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(f))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func _f_ptrTo_UnixListener_File(o GoObject, args Object) Object {  // Receiver
+// (f *ABEND002(reference to unavailable package `os' looking for type `File'), err error)}
 
 GO FUNC net._f_ptrTo_UnixListener_SetDeadline from net/unixsock.go:
 // func _f_ptrTo_UnixListener_SetDeadline(o GoObject, args Object) Object {  // Receiver
@@ -7075,7 +7063,7 @@ GO FUNC net._f_ptrTo_UnixListener_SetUnlinkOnClose from net/unixsock_posix.go:
 
 GO FUNC net._f_ptrTo_UnixListener_SyscallConn from net/unixsock.go:
 // func _f_ptrTo_UnixListener_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package syscall at _tests/big/src/net/unixsock.go:231:39), error)}
+// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_unknownNetworkError_Error from net/net.go:
 func _f_unknownNetworkError_Error(o GoObject, args Object) Object {  // Receiver
@@ -7802,7 +7790,6 @@ GO INFO FOR TYPE go.std.net/refToTCPListener from _tests/big/src/net/tcpsock.go:
 			"AcceptTCP": MakeGoReceiver("AcceptTCP", _f_ptrTo_TCPListener_AcceptTCP, "AcceptTCP accepts the next incoming call and returns the new\nconnection.\n", "1.0", NewVectorFrom()),
 			"Addr": MakeGoReceiver("Addr", _f_ptrTo_TCPListener_Addr, "Addr returns the listener's network address, a *TCPAddr.\nThe Addr returned is shared by all invocations of Addr, so\ndo not modify it.\n", "1.0", NewVectorFrom()),
 			"Close": MakeGoReceiver("Close", _f_ptrTo_TCPListener_Close, "Close stops listening on the TCP address.\nAlready Accepted connections are not closed.\n", "1.0", NewVectorFrom()),
-			"File": MakeGoReceiver("File", _f_ptrTo_TCPListener_File, "File returns a copy of the underlying os.File.\nIt is the caller's responsibility to close f when finished.\nClosing l does not affect f, and closing f does not affect l.\n\nThe returned os.File's file descriptor is different from the\nconnection's. Attempting to change properties of the original\nusing this duplicate may or may not have the desired effect.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -7901,7 +7888,6 @@ GO INFO FOR TYPE go.std.net/refToUnixListener from _tests/big/src/net/unixsock.g
 			"AcceptUnix": MakeGoReceiver("AcceptUnix", _f_ptrTo_UnixListener_AcceptUnix, "AcceptUnix accepts the next incoming call and returns the new\nconnection.\n", "1.0", NewVectorFrom()),
 			"Addr": MakeGoReceiver("Addr", _f_ptrTo_UnixListener_Addr, "Addr returns the listener's network address.\nThe Addr returned is shared by all invocations of Addr, so\ndo not modify it.\n", "1.0", NewVectorFrom()),
 			"Close": MakeGoReceiver("Close", _f_ptrTo_UnixListener_Close, "Close stops listening on the Unix address. Already accepted\nconnections are not closed.\n", "1.0", NewVectorFrom()),
-			"File": MakeGoReceiver("File", _f_ptrTo_UnixListener_File, "File returns a copy of the underlying os.File.\nIt is the caller's responsibility to close f when finished.\nClosing l does not affect f, and closing f does not affect l.\n\nThe returned os.File's file descriptor is different from the\nconnection's. Attempting to change properties of the original\nusing this duplicate may or may not have the desired effect.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -8168,7 +8154,7 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		CheckRedirect: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/client.go:104:10) (-)),
+// 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 	}
 // }
 
@@ -8280,7 +8266,7 @@ func ExtractGo_go_std_net_http__Cookie(rcvr, arg string, args *ArraySeq, n int) 
 // 		Value: FieldAsString(o, "Value"),
 // 		Path: FieldAsString(o, "Path"),
 // 		Domain: FieldAsString(o, "Domain"),
-// 		Expires: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/cookie.go:25:13) (-)),
+// 		Expires: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Time') (-)),
 // 		RawExpires: FieldAsString(o, "RawExpires"),
 // 		MaxAge: FieldAsInt(o, "MaxAge"),
 // 		Secure: FieldAsBoolean(o, "Secure"),
@@ -8712,7 +8698,7 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
 // 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/request.go:181:7) (-)),
+// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser') (-)),
 // 		GetBody: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
@@ -8720,11 +8706,11 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		Host: FieldAsString(o, "Host"),
 // 		Form: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
 // 		PostForm: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
-// 		MultipartForm: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		MultipartForm: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `mime/multipart' looking for type `Form') (mime/multipart.ABEND002(reference to unavailable package `mime/multipart' looking for type `Form'))),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		RemoteAddr: FieldAsString(o, "RemoteAddr"),
 // 		RequestURI: FieldAsString(o, "RequestURI"),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'))),
 // 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
 // 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (-)),
 // 	}
@@ -8775,14 +8761,14 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 // 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
 // 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/response.go:66:7) (-)),
+// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser') (-)),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Close: FieldAsBoolean(o, "Close"),
 // 		Uncompressed: FieldAsBoolean(o, "Uncompressed"),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (-)),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'))),
 // 	}
 // }
 
@@ -8958,15 +8944,15 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // 	return &http.Server{
 // 		Addr: FieldAsString(o, "Addr"),
 // 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		TLSConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
-// 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2465:14) (-)),
-// 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2471:20) (-)),
-// 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2477:15) (-)),
-// 		IdleTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2483:14) (-)),
+// 		TLSConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
+// 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		IdleTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
 // 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ConnState: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 	}
 // }
 
@@ -9013,16 +8999,16 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		DialContext: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		DialTLS: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
-// 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/transport.go:172:22) (-)),
+// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
+// 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
 // 		DisableCompression: FieldAsBoolean(o, "DisableCompression"),
 // 		MaxIdleConns: FieldAsInt(o, "MaxIdleConns"),
 // 		MaxIdleConnsPerHost: FieldAsInt(o, "MaxIdleConnsPerHost"),
 // 		MaxConnsPerHost: FieldAsInt(o, "MaxConnsPerHost"),
-// 		IdleConnTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/transport.go:216:18) (-)),
-// 		ResponseHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/transport.go:222:24) (-)),
-// 		ExpectContinueTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/transport.go:231:24) (-)),
+// 		IdleConnTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		ResponseHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		ExpectContinueTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		MaxResponseHeaderBytes: FieldAsInt64(o, "MaxResponseHeaderBytes"),
@@ -9333,15 +9319,8 @@ GO FUNC net/http._f_header_WriteSubset from net/http/header.go:
 // (*_v_w, ABEND908(pre.go: custom-runtime routine not implemented: ConvertToMapTypeHaHa()))}
 
 GO FUNC net/http._f_hijacker_Hijack from net/http/server.go:
-func _f_hijacker_Hijack(o GoObject, args Object) Object {  // Method
-	CheckGoArity("(net/http.Hijacker)Hijack()", args, 0, 0)
-	_res1, _res2, _res3 := o.O.(http.Hijacker).Hijack()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(MakeGoObject(_res2))
-	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-	return _res
-}
+// func _f_hijacker_Hijack(o GoObject, args Object) Object {  // Method
+// (net.Conn, *ABEND002(reference to unavailable package `bufio' looking for type `ReadWriter'), error)}
 
 GO FUNC net/http._f_ptrTo_Client_Do from net/http/client.go:
 // func _f_ptrTo_Client_Do(o GoObject, args Object) Object {  // Receiver
@@ -9433,7 +9412,7 @@ func _f_ptrTo_Request_BasicAuth(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/http._f_ptrTo_Request_Context from net/http/request.go:
 // func _f_ptrTo_Request_Context(o GoObject, args Object) Object {  // Receiver
-// context.ABEND002(reference to unavailable package context at _tests/big/src/net/http/request.go:333:29)}
+// context.ABEND002(reference to unavailable package `context' looking for type `Context')}
 
 GO FUNC net/http._f_ptrTo_Request_Cookie from net/http/request.go:
 func _f_ptrTo_Request_Cookie(o GoObject, args Object) Object {  // Receiver
@@ -9455,7 +9434,7 @@ func _f_ptrTo_Request_Cookies(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/http._f_ptrTo_Request_FormFile from net/http/request.go:
 // func _f_ptrTo_Request_FormFile(o GoObject, args Object) Object {  // Receiver
-// (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:1297:41), *, error)}
+// (mime/multipart.ABEND002(reference to unavailable package `mime/multipart' looking for type `File'), *ABEND002(reference to unavailable package `mime/multipart' looking for type `FileHeader'), error)}
 
 GO FUNC net/http._f_ptrTo_Request_FormValue from net/http/request.go:
 func _f_ptrTo_Request_FormValue(o GoObject, args Object) Object {  // Receiver
@@ -9466,14 +9445,8 @@ func _f_ptrTo_Request_FormValue(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/http._f_ptrTo_Request_MultipartReader from net/http/request.go:
-func _f_ptrTo_Request_MultipartReader(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*http.Request)MultipartReader()", args, 0, 0)
-	_res1, _res2 := o.O.(*http.Request).MultipartReader()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func _f_ptrTo_Request_MultipartReader(o GoObject, args Object) Object {  // Receiver
+// (*ABEND002(reference to unavailable package `mime/multipart' looking for type `Reader'), error)}
 
 GO FUNC net/http._f_ptrTo_Request_ParseForm from net/http/request.go:
 func _f_ptrTo_Request_ParseForm(o GoObject, args Object) Object {  // Receiver
@@ -10010,7 +9983,6 @@ GO INFO FOR TYPE go.std.net.http/Hijacker from _tests/big/src/net/http/server.go
 	info_Hijacker = GoTypeInfo{Name: "go.std.net.http/Hijacker",
 		GoType: &GoType{T: &info_Hijacker},
 		Members: GoMembers{
-			"Hijack": MakeGoReceiver("Hijack", _f_hijacker_Hijack, "Hijack lets the caller take over the connection.\nAfter a call to Hijack the HTTP server library\nwill not do anything else with the connection.\n\nIt becomes the caller's responsibility to manage\nand close the connection.\n\nThe returned net.Conn may have read or write deadlines\nalready set, depending on the configuration of the\nServer. It is the caller's responsibility to set\nor clear those deadlines as needed.\n\nThe returned bufio.Reader may contain unprocessed buffered\ndata from the client.\n\nAfter a call to Hijack, the original Request.Body must not\nbe used. The original Request's Context remains valid and\nis not canceled until the Request's ServeHTTP method\nreturns.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -10074,7 +10046,6 @@ GO INFO FOR TYPE go.std.net.http/refToRequest from _tests/big/src/net/http/reque
 			"Cookie": MakeGoReceiver("Cookie", _f_ptrTo_Request_Cookie, "Cookie returns the named cookie provided in the request or\nErrNoCookie if not found.\nIf multiple cookies match the given name, only one cookie will\nbe returned.\n", "1.0", NewVectorFrom(MakeSymbol("name"))),
 			"Cookies": MakeGoReceiver("Cookies", _f_ptrTo_Request_Cookies, "Cookies parses and returns the HTTP cookies sent with the request.\n", "1.0", NewVectorFrom()),
 			"FormValue": MakeGoReceiver("FormValue", _f_ptrTo_Request_FormValue, "FormValue returns the first value for the named component of the query.\nPOST and PUT body parameters take precedence over URL query string values.\nFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, FormValue returns the empty string.\nTo access multiple values of the same key, call ParseForm and\nthen inspect Request.Form directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
-			"MultipartReader": MakeGoReceiver("MultipartReader", _f_ptrTo_Request_MultipartReader, "MultipartReader returns a MIME multipart reader if this is a\nmultipart/form-data or a multipart/mixed POST request, else returns nil and an error.\nUse this function instead of ParseMultipartForm to\nprocess the request body as a stream.\n", "1.0", NewVectorFrom()),
 			"ParseForm": MakeGoReceiver("ParseForm", _f_ptrTo_Request_ParseForm, "ParseForm populates r.Form and r.PostForm.\n\nFor all requests, ParseForm parses the raw query from the URL and updates\nr.Form.\n\nFor POST, PUT, and PATCH requests, it also parses the request body as a form\nand puts the results into both r.PostForm and r.Form. Request body parameters\ntake precedence over URL query string values in r.Form.\n\nFor other HTTP methods, or when the Content-Type is not\napplication/x-www-form-urlencoded, the request Body is not read, and\nr.PostForm is initialized to a non-nil, empty value.\n\nIf the request Body's size has not already been limited by MaxBytesReader,\nthe size is capped at 10MB.\n\nParseMultipartForm calls ParseForm automatically.\nParseForm is idempotent.\n", "1.0", NewVectorFrom()),
 			"ParseMultipartForm": MakeGoReceiver("ParseMultipartForm", _f_ptrTo_Request_ParseMultipartForm, "ParseMultipartForm parses a request body as multipart/form-data.\nThe whole request body is parsed and up to a total of maxMemory bytes of\nits file parts are stored in memory, with the remainder stored on\ndisk in temporary files.\nParseMultipartForm calls ParseForm if necessary.\nAfter one call to ParseMultipartForm, subsequent calls have no effect.\n", "1.0", NewVectorFrom(MakeSymbol("maxMemory"))),
 			"PostFormValue": MakeGoReceiver("PostFormValue", _f_ptrTo_Request_PostFormValue, "PostFormValue returns the first value for the named component of the POST,\nPATCH, or PUT request body. URL query parameters are ignored.\nPostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, PostFormValue returns the empty string.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
@@ -10378,9 +10349,9 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 		Dir: FieldAsString(o, "Dir"),
 // 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
-// 		Logger: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		Logger: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
-// 		Stderr: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/cgi/host.go:61:13) (-)),
+// 		Stderr: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `Writer') (-)),
 // 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 	}
 // }
@@ -10750,7 +10721,7 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 // 	return &httptest.ResponseRecorder{
 // 		Code: FieldAsInt(o, "Code"),
 // 		HeaderMap: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		Body: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `bytes' looking for type `Buffer') (bytes.ABEND002(reference to unavailable package `bytes' looking for type `Buffer'))),
 // 		Flushed: FieldAsBoolean(o, "Flushed"),
 // 	}
 // }
@@ -10796,7 +10767,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // 	return &httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
 // 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
 // 	}
 // }
@@ -10890,11 +10861,8 @@ func _f_ptrTo_ResponseRecorder_WriteString(o GoObject, args Object) Object {  //
 }
 
 GO FUNC net/http/httptest._f_ptrTo_Server_Certificate from net/http/httptest/server.go:
-func _f_ptrTo_Server_Certificate(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*httptest.Server)Certificate()", args, 0, 0)
-	_res := o.O.(*httptest.Server).Certificate()
-	return MakeGoObject(_res)
-}
+// func _f_ptrTo_Server_Certificate(o GoObject, args Object) Object {  // Receiver
+// *ABEND002(reference to unavailable package `crypto/x509' looking for type `Certificate')}
 
 GO FUNC net/http/httptest._f_ptrTo_Server_Client from net/http/httptest/server.go:
 func _f_ptrTo_Server_Client(o GoObject, args Object) Object {  // Receiver
@@ -10966,7 +10934,6 @@ GO INFO FOR TYPE go.std.net.http.httptest/refToServer from _tests/big/src/net/ht
 	info_PtrTo_Server = GoTypeInfo{Name: "go.std.net.http.httptest/refToServer",
 		GoType: &GoType{T: &info_PtrTo_Server},
 		Members: GoMembers{
-			"Certificate": MakeGoReceiver("Certificate", _f_ptrTo_Server_Certificate, "Certificate returns the certificate used by the server, or nil if\nthe server doesn't use TLS.\n", "1.0", NewVectorFrom()),
 			"Client": MakeGoReceiver("Client", _f_ptrTo_Server_Client, "Client returns an HTTP client configured for making requests to the server.\nIt is configured to trust the server's TLS test certificate and will\nclose its idle connections on Server.Close.\n", "1.0", NewVectorFrom()),
 		},
 	}
@@ -11179,7 +11146,7 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 // 		Conn: ABEND048(codegen.go: no conversion from Clojure for net.Conn (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		Reused: FieldAsBoolean(o, "Reused"),
 // 		WasIdle: FieldAsBoolean(o, "WasIdle"),
-// 		IdleTime: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/httptrace/trace.go:254:11) (-)),
+// 		IdleTime: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 	}
 // }
 
@@ -11497,8 +11464,8 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 // 	return &httputil.ReverseProxy{
 // 		Director: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/httputil/reverseproxy.go:45:16) (-)),
-// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		ModifyResponse: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ErrorHandler: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
@@ -11652,14 +11619,8 @@ GO FUNC net/http/httputil._f_ptrTo_ClientConn_Do from net/http/httputil/persist.
 // }
 
 GO FUNC net/http/httputil._f_ptrTo_ClientConn_Hijack from net/http/httputil/persist.go:
-func _f_ptrTo_ClientConn_Hijack(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*httputil.ClientConn)Hijack()", args, 0, 0)
-	c, r := o.O.(*httputil.ClientConn).Hijack()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(c))
-	_res = _res.Conjoin(MakeGoObject(r))
-	return _res
-}
+// func _f_ptrTo_ClientConn_Hijack(o GoObject, args Object) Object {  // Receiver
+// (c net.Conn, r *ABEND002(reference to unavailable package `bufio' looking for type `Reader'))}
 
 GO FUNC net/http/httputil._f_ptrTo_ClientConn_Pending from net/http/httputil/persist.go:
 func _f_ptrTo_ClientConn_Pending(o GoObject, args Object) Object {  // Receiver
@@ -11700,14 +11661,8 @@ func _f_ptrTo_ServerConn_Close(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/http/httputil._f_ptrTo_ServerConn_Hijack from net/http/httputil/persist.go:
-func _f_ptrTo_ServerConn_Hijack(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*httputil.ServerConn)Hijack()", args, 0, 0)
-	_res1, _res2 := o.O.(*httputil.ServerConn).Hijack()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(MakeGoObject(_res2))
-	return _res
-}
+// func _f_ptrTo_ServerConn_Hijack(o GoObject, args Object) Object {  // Receiver
+// (net.Conn, *ABEND002(reference to unavailable package `bufio' looking for type `Reader'))}
 
 GO FUNC net/http/httputil._f_ptrTo_ServerConn_Pending from net/http/httputil/persist.go:
 func _f_ptrTo_ServerConn_Pending(o GoObject, args Object) Object {  // Receiver
@@ -11780,7 +11735,6 @@ GO INFO FOR TYPE go.std.net.http.httputil/refToClientConn from _tests/big/src/ne
 		Ctor: _Wrapped_Ctor_ClientConn,
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", _f_ptrTo_ClientConn_Close, "Close calls Hijack and then also closes the underlying connection.\n", "1.0", NewVectorFrom()),
-			"Hijack": MakeGoReceiver("Hijack", _f_ptrTo_ClientConn_Hijack, "Hijack detaches the ClientConn and returns the underlying connection as well\nas the read-side bufio which may have some left over data. Hijack may be\ncalled before the user or Read have signaled the end of the keep-alive\nlogic. The user should not call Hijack while Read or Write is in progress.\n", "1.0", NewVectorFrom()),
 			"Pending": MakeGoReceiver("Pending", _f_ptrTo_ClientConn_Pending, "Pending returns the number of unanswered requests\nthat have been sent on the connection.\n", "1.0", NewVectorFrom()),
 		},
 	}
@@ -11817,7 +11771,6 @@ GO INFO FOR TYPE go.std.net.http.httputil/refToServerConn from _tests/big/src/ne
 		Ctor: _Wrapped_Ctor_ServerConn,
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", _f_ptrTo_ServerConn_Close, "Close calls Hijack and then also closes the underlying connection.\n", "1.0", NewVectorFrom()),
-			"Hijack": MakeGoReceiver("Hijack", _f_ptrTo_ServerConn_Hijack, "Hijack detaches the ServerConn and returns the underlying connection as well\nas the read-side bufio which may have some left over data. Hijack may be\ncalled before Read has signaled the end of the keep-alive logic. The user\nshould not call Hijack while Read or Write is in progress.\n", "1.0", NewVectorFrom()),
 			"Pending": MakeGoReceiver("Pending", _f_ptrTo_ServerConn_Pending, "Pending returns the number of unanswered requests\nthat have been received on the connection.\n", "1.0", NewVectorFrom()),
 			"Read": MakeGoReceiver("Read", _f_ptrTo_ServerConn_Read, "Read returns the next request on the wire. An ErrPersistEOF is returned if\nit is gracefully determined that there are no more requests (e.g. after the\nfirst request on an HTTP/1.0 connection, or after a Connection:close on a\nHTTP/1.1 connection).\n", "1.0", NewVectorFrom()),
 		},
@@ -11986,7 +11939,7 @@ func ExtractGo_go_std_net_mail__AddressParser(rcvr, arg string, args *ArraySeq, 
 
 // func _mapToAddressParser(o Map) *mail.AddressParser {
 // 	return &mail.AddressParser{
-// 		WordDecoder: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		WordDecoder: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `mime' looking for type `WordDecoder') (mime.ABEND002(reference to unavailable package `mime' looking for type `WordDecoder'))),
 // 	}
 // }
 
@@ -12067,7 +12020,7 @@ func ExtractGo_go_std_net_mail__Message(rcvr, arg string, args *ArraySeq, n int)
 // func _mapToMessage(o Map) *mail.Message {
 // 	return &mail.Message{
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/mail.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package io at _tests/big/src/net/mail/message.go:46:9) (-)),
+// 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `Reader') (-)),
 // 	}
 // }
 
@@ -12132,7 +12085,7 @@ func _f_header_AddressList(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/mail._f_header_Date from net/mail/message.go:
 // func _f_header_Date(o GoObject, args Object) Object {  // Receiver
-// (time.ABEND002(reference to unavailable package time at _tests/big/src/net/mail/message.go:121:25), error)}
+// (time.ABEND002(reference to unavailable package `time' looking for type `Time'), error)}
 
 GO FUNC net/mail._f_header_Get from net/mail/message.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
@@ -13254,7 +13207,7 @@ func _f_ptrTo_Client_Close(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/smtp._f_ptrTo_Client_Data from net/smtp/smtp.go:
 // func _f_ptrTo_Client_Data(o GoObject, args Object) Object {  // Receiver
-// (io.ABEND002(reference to unavailable package io at _tests/big/src/net/smtp/smtp.go:289:26), error)}
+// (io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser'), error)}
 
 GO FUNC net/smtp._f_ptrTo_Client_Extension from net/smtp/smtp.go:
 func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
@@ -13322,7 +13275,7 @@ GO FUNC net/smtp._f_ptrTo_Client_StartTLS from net/smtp/smtp.go:
 
 GO FUNC net/smtp._f_ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 // func _f_ptrTo_Client_TLSConnectionState(o GoObject, args Object) Object {  // Receiver
-// (state crypto/tls.ABEND002(reference to unavailable package crypto/tls at _tests/big/src/net/smtp/smtp.go:173:46), ok bool)}
+// (state crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), ok bool)}
 
 GO FUNC net/smtp._f_ptrTo_Client_Verify from net/smtp/smtp.go:
 func _f_ptrTo_Client_Verify(o GoObject, args Object) Object {  // Receiver
@@ -13654,7 +13607,7 @@ func ExtractGo_go_std_net_textproto__Reader(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToReader(o Map) *textproto.Reader {
 // 	return &textproto.Reader{
-// 		R: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		R: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `bufio' looking for type `Reader') (bufio.ABEND002(reference to unavailable package `bufio' looking for type `Reader'))),
 // 	}
 // }
 
@@ -13697,7 +13650,7 @@ func ExtractGo_go_std_net_textproto__Writer(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToWriter(o Map) *textproto.Writer {
 // 	return &textproto.Writer{
-// 		W: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
+// 		W: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `bufio' looking for type `Writer') (bufio.ABEND002(reference to unavailable package `bufio' looking for type `Writer'))),
 // 	}
 // }
 
@@ -13823,7 +13776,7 @@ GO FUNC net/textproto._f_ptrTo_Pipeline_StartResponse from net/textproto/pipelin
 
 GO FUNC net/textproto._f_ptrTo_Reader_DotReader from net/textproto/reader.go:
 // func _f_ptrTo_Reader_DotReader(o GoObject, args Object) Object {  // Receiver
-// io.ABEND002(reference to unavailable package io at _tests/big/src/net/textproto/reader.go:296:30)}
+// io.ABEND002(reference to unavailable package `io' looking for type `Reader')}
 
 GO FUNC net/textproto._f_ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {  // Receiver
@@ -13921,7 +13874,7 @@ func _f_ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/textproto._f_ptrTo_Writer_DotWriter from net/textproto/writer.go:
 // func _f_ptrTo_Writer_DotWriter(o GoObject, args Object) Object {  // Receiver
-// io.ABEND002(reference to unavailable package io at _tests/big/src/net/textproto/writer.go:43:30)}
+// io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser')}
 
 GO FUNC net/textproto._f_ptrTo_Writer_PrintfLine from net/textproto/writer.go:
 // func _f_ptrTo_Writer_PrintfLine(o GoObject, args Object) Object {  // Receiver
@@ -15242,11 +15195,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 049(138) 001(117) 048(90) 644(90) 002(85) 041(54) 275(40) 674(18) 907(14) 906(3) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=313 (66.60%)
+ABENDs: 049(138) 002(119) 001(117) 048(90) 644(90) 041(54) 275(40) 674(18) 907(14) 906(3) 902(2) 908(2) 124(1) 909(1)
+Totals: functions=470 generated=306 (65.11%)
           non-receivers=148 (31.49%) generated=137 (92.57%)
-          receivers=273 (58.09%) generated=155 (56.78%)
-          methods=49 (10.43%) generated=21 (42.86%)
+          receivers=273 (58.09%) generated=149 (54.58%)
+          methods=49 (10.43%) generated=20 (40.82%)
         types=184
           constructable=164 ctors=82 (50.00%)
         constants=91 generated=91 (100.00%)
