@@ -5,8 +5,11 @@ go 1.14
 require (
 	github.com/candid82/liner v1.4.0
 	github.com/jcburley/go-spew v1.3.0
-	github.com/pkg/profile v1.2.1
-	go.etcd.io/bbolt v1.3.3
-	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527 // indirect
-	gopkg.in/yaml.v2 v2.2.2
+	github.com/kr/text v0.2.0 // indirect
+	github.com/mattn/go-runewidth v0.0.9 // indirect
+	github.com/pkg/profile v1.5.0
+	go.etcd.io/bbolt v1.3.5
+	golang.org/x/sys v0.0.0-20201201145000-ef89a241ccb3 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	gopkg.in/yaml.v2 v2.4.0
 )
