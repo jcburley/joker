@@ -133,9 +133,9 @@ func InfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	if info, found := typesByFullname[fullName]; found {
-		typesByExpr[e] = info
-		return info
+	if inf, found := typesByFullname[fullName]; found {
+		typesByExpr[e] = inf
+		return inf
 	}
 
 	convertFromClojure, convertFromMap := ConversionsFn(e)
