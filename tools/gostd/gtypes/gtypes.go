@@ -309,12 +309,12 @@ func InfoForExpr(e Expr) *Info {
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 	case *SelectorExpr:
 		pkgName := v.X.(*Ident).Name
-		localName := v.Sel.Name
+		localName = v.Sel.Name
 		fullPathUnix := utils.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
 		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
 			if !godb.IsAvailable(fullPkgName) {
-				localName = fmt.Sprintf("ABEND002(reference to unavailable package %s at %s)", fullPkgName, godb.WhereAt(v.Pos()))
+				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
 			}
 			fullName = fullPkgName.String() + "." + localName
 		} else {

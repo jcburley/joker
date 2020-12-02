@@ -230,6 +230,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
+		//		fmt.Printf("pre.go/genTypePre: e @%p == %+v ti@%p == %+v clType=%s clTypeDoc=%s\n", e, e, ti, ti, clType, clTypeDoc)
 	}
 
 	return

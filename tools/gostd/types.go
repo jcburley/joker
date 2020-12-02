@@ -117,12 +117,15 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 
 	if ti, found := typesByGoName[gti.FullName]; found {
 		if _, ok := typesByJokerName[jti.FullName]; !ok {
-			// fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
+			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
+			typesByJokerName[jti.FullName] = ti
 		}
 		return ti
 	}
-	if _, ok := typesByJokerName[jti.FullName]; ok {
-		// fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+	if _, ok := typesByJokerName[jti.FullName]; ok && jti.FullName != "GoObject" {
+		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
+			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+		}
 	}
 
 	ti := &typeInfo{
@@ -131,7 +134,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		who: "TypeInfoForExpr",
 	}
 
-	// fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+	//	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v at %s\n", ti.JokerName(), ti, ti, godb.WhereAt(e.Pos()))
 
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
