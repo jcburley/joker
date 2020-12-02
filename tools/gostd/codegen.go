@@ -583,6 +583,7 @@ func GenTypeInfo() {
 		}
 		types = append(types, ti)
 		Ordinal[ti] = ord
+		//		fmt.Printf("codegen.go/GenTypeInfo: assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.(*typeInfo).gti.FullName, ti.Specificity())
 		ord++
 	}
 

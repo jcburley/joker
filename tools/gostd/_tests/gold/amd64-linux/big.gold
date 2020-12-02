@@ -555,21 +555,21 @@ JOKER FUNC net.DialUnix from net/unixsock.go:
 
 JOKER FUNC net.FileConn from net/file.go:
 (defn FileConn
-  "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c Conn, err error)\n\nJoker input arguments: [^go.std.log/refToLogger f]\n\nJoker returns: [^Conn c, ^Error err]"
+  "FileConn returns a copy of the network connection corresponding to\nthe open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c Conn, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^Conn c, ^Error err]"
   {:added "1.0"
    :go "_f_fileConn(_v_f)"}
   [^go.std.os/File _v_f])
 
 JOKER FUNC net.FileListener from net/file.go:
 (defn FileListener
-  "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: (f *os.File)\n\nGo returns: (ln Listener, err error)\n\nJoker input arguments: [^go.std.log/refToLogger f]\n\nJoker returns: [^Listener ln, ^Error err]"
+  "FileListener returns a copy of the network listener corresponding\nto the open file f.\nIt is the caller's responsibility to close ln when finished.\nClosing ln does not affect f, and closing f does not affect ln.\n\nGo input arguments: (f *os.File)\n\nGo returns: (ln Listener, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^Listener ln, ^Error err]"
   {:added "1.0"
    :go "_f_fileListener(_v_f)"}
   [^go.std.os/File _v_f])
 
 JOKER FUNC net.FilePacketConn from net/file.go:
 (defn FilePacketConn
-  "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c PacketConn, err error)\n\nJoker input arguments: [^go.std.log/refToLogger f]\n\nJoker returns: [^PacketConn c, ^Error err]"
+  "FilePacketConn returns a copy of the packet network connection\ncorresponding to the open file f.\nIt is the caller's responsibility to close f when finished.\nClosing c does not affect f, and closing f does not affect c.\n\nGo input arguments: (f *os.File)\n\nGo returns: (c PacketConn, err error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm f]\n\nJoker returns: [^PacketConn c, ^Error err]"
   {:added "1.0"
    :go "_f_filePacketConn(_v_f)"}
   [^go.std.os/File _v_f])
@@ -2455,14 +2455,14 @@ JOKER FUNC net/http.ProxyURL from net/http/transport.go:
 
 JOKER FUNC net/http.ReadRequest from net/http/request.go:
 (defn ReadRequest
-  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo returns: (*Request, error)\n\nJoker input arguments: [^go.std.log/refToLogger b]\n\nJoker returns: [^refToRequest, ^Error]"
+  "ReadRequest reads and parses an incoming request from b.\n\nReadRequest is a low-level function and should only be used for\nspecialized applications; most code should use the Server to read\nrequests and handle them via the Handler interface. ReadRequest\nonly supports HTTP/1.x requests. For HTTP/2, use golang.org/x/net/http2.\n\nGo input arguments: (b *bufio.Reader)\n\nGo returns: (*Request, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm b]\n\nJoker returns: [^refToRequest, ^Error]"
   {:added "1.0"
    :go "_f_readRequest(_v_b)"}
   [^go.std.bufio/Reader _v_b])
 
 JOKER FUNC net/http.ReadResponse from net/http/response.go:
 (defn ReadResponse
-  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.log/refToLogger r, ^go.std.net.http/refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
+  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r, ^go.std.net.http/refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
   {:added "1.0"
    :go "_f_readResponse(_v_r, _v_req)"}
   [^go.std.bufio/Reader _v_r, ^go.std.net.http/Request _v_req])
@@ -3220,21 +3220,21 @@ JOKER FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go
 
 JOKER FUNC net/http/httputil.NewClientConn from net/http/httputil/persist.go:
 (defn NewClientConn
-  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.log/refToLogger r]\n\nJoker returns: ^refToClientConn"
+  "NewClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToClientConn"
   {:added "1.0"
    :go "_f_newClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewProxyClientConn from net/http/httputil/persist.go:
 (defn NewProxyClientConn
-  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.log/refToLogger r]\n\nJoker returns: ^refToClientConn"
+  "NewProxyClientConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Client or Transport in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ClientConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToClientConn"
   {:added "1.0"
    :go "_f_newProxyClientConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 (defn NewServerConn
-  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.log/refToLogger r]\n\nJoker returns: ^refToServerConn"
+  "NewServerConn is an artifact of Go's early HTTP implementation.\nIt is low-level, old, and unused by Go's current HTTP stack.\nWe should have deleted it before Go 1.\n\nDeprecated: Use the Server in package net/http instead.\n\nGo input arguments: (c net.Conn, r *bufio.Reader)\n\nGo returns: *ServerConn\n\nJoker input arguments: [^go.std.net/Conn c, ^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToServerConn"
   {:added "1.0"
    :go "_f_newServerConn(*_v_c, _v_r)"}
   [^go.std.net/Conn _v_c, ^go.std.bufio/Reader _v_r])
@@ -3840,14 +3840,14 @@ JOKER FUNC net/textproto.NewConn from net/textproto/textproto.go:
 
 JOKER FUNC net/textproto.NewReader from net/textproto/reader.go:
 (defn NewReader
-  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo returns: *Reader\n\nJoker input arguments: [^go.std.log/refToLogger r]\n\nJoker returns: ^refToReader"
+  "NewReader returns a new Reader reading from r.\n\nTo avoid denial of service attacks, the provided bufio.Reader\nshould be reading from an io.LimitReader or similar Reader to bound\nthe size of responses.\n\nGo input arguments: (r *bufio.Reader)\n\nGo returns: *Reader\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r]\n\nJoker returns: ^refToReader"
   {:added "1.0"
    :go "_f_newReader(_v_r)"}
   [^go.std.bufio/Reader _v_r])
 
 JOKER FUNC net/textproto.NewWriter from net/textproto/writer.go:
 (defn NewWriter
-  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo returns: *Writer\n\nJoker input arguments: [^go.std.log/refToLogger w]\n\nJoker returns: ^refToWriter"
+  "NewWriter returns a new Writer writing to w.\n\nGo input arguments: (w *bufio.Writer)\n\nGo returns: *Writer\n\nJoker input arguments: [^go.std.mime.multipart/refToForm w]\n\nJoker returns: ^refToWriter"
   {:added "1.0"
    :go "_f_newWriter(_v_w)"}
   [^go.std.bufio/Writer _v_w])
@@ -7928,199 +7928,199 @@ GO INFO FOR TYPE go.std.net/refToUnknownNetworkError from _tests/big/src/net/net
 
 
 GO VECSET FOR TYPE go.std.net/Addr from _tests/big/src/net/net.go:105:6:
-	GoTypesVec[172] = &info_Addr
+	GoTypesVec[171] = &info_Addr
 
 GO VECSET FOR TYPE go.std.net/AddrError from _tests/big/src/net/net.go:520:6:
-	GoTypesVec[5] = &info_AddrError
+	GoTypesVec[82] = &info_AddrError
 
 GO VECSET FOR TYPE go.std.net/refToAddrError from _tests/big/src/net/net.go:520:6:
-	GoTypesVec[134] = &info_PtrTo_AddrError
+	GoTypesVec[0] = &info_PtrTo_AddrError
 
 GO VECSET FOR TYPE go.std.net/Buffers from _tests/big/src/net/net.go:642:6:
-	GoTypesVec[130] = &info_Buffers
+	GoTypesVec[83] = &info_Buffers
 
 GO VECSET FOR TYPE go.std.net/refToBuffers from _tests/big/src/net/net.go:642:6:
-	GoTypesVec[41] = &info_PtrTo_Buffers
+	GoTypesVec[1] = &info_PtrTo_Buffers
 
 GO VECSET FOR TYPE go.std.net/Conn from _tests/big/src/net/net.go:113:6:
 	GoTypesVec[164] = &info_Conn
 
 GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/big/src/net/net.go:553:6:
-	GoTypesVec[9] = &info_DNSConfigError
+	GoTypesVec[84] = &info_DNSConfigError
 
 GO VECSET FOR TYPE go.std.net/refToDNSConfigError from _tests/big/src/net/net.go:553:6:
-	GoTypesVec[78] = &info_PtrTo_DNSConfigError
+	GoTypesVec[2] = &info_PtrTo_DNSConfigError
 
 GO VECSET FOR TYPE go.std.net/DNSError from _tests/big/src/net/net.go:567:6:
-	GoTypesVec[123] = &info_DNSError
+	GoTypesVec[85] = &info_DNSError
 
 GO VECSET FOR TYPE go.std.net/refToDNSError from _tests/big/src/net/net.go:567:6:
-	GoTypesVec[148] = &info_PtrTo_DNSError
+	GoTypesVec[3] = &info_PtrTo_DNSError
 
 GO VECSET FOR TYPE go.std.net/Dialer from _tests/big/src/net/dial.go:20:6:
-	GoTypesVec[44] = &info_Dialer
+	GoTypesVec[86] = &info_Dialer
 
 GO VECSET FOR TYPE go.std.net/refToDialer from _tests/big/src/net/dial.go:20:6:
-	GoTypesVec[21] = &info_PtrTo_Dialer
+	GoTypesVec[4] = &info_PtrTo_Dialer
 
 GO VECSET FOR TYPE go.std.net/Error from _tests/big/src/net/net.go:378:6:
-	GoTypesVec[169] = &info_Error
+	GoTypesVec[168] = &info_Error
 
 GO VECSET FOR TYPE go.std.net/Flags from _tests/big/src/net/interface.go:38:6:
-	GoTypesVec[23] = &info_Flags
+	GoTypesVec[87] = &info_Flags
 
 GO VECSET FOR TYPE go.std.net/refToFlags from _tests/big/src/net/interface.go:38:6:
-	GoTypesVec[75] = &info_PtrTo_Flags
+	GoTypesVec[5] = &info_PtrTo_Flags
 
 GO VECSET FOR TYPE go.std.net/HardwareAddr from _tests/big/src/net/mac.go:10:6:
-	GoTypesVec[153] = &info_HardwareAddr
+	GoTypesVec[88] = &info_HardwareAddr
 
 GO VECSET FOR TYPE go.std.net/refToHardwareAddr from _tests/big/src/net/mac.go:10:6:
-	GoTypesVec[85] = &info_PtrTo_HardwareAddr
+	GoTypesVec[6] = &info_PtrTo_HardwareAddr
 
 GO VECSET FOR TYPE go.std.net/IP from _tests/big/src/net/ip.go:32:6:
-	GoTypesVec[27] = &info_IP
+	GoTypesVec[89] = &info_IP
 
 GO VECSET FOR TYPE go.std.net/refToIP from _tests/big/src/net/ip.go:32:6:
-	GoTypesVec[114] = &info_PtrTo_IP
+	GoTypesVec[7] = &info_PtrTo_IP
 
 GO VECSET FOR TYPE go.std.net/IPAddr from _tests/big/src/net/iprawsock.go:31:6:
-	GoTypesVec[7] = &info_IPAddr
+	GoTypesVec[90] = &info_IPAddr
 
 GO VECSET FOR TYPE go.std.net/refToIPAddr from _tests/big/src/net/iprawsock.go:31:6:
-	GoTypesVec[122] = &info_PtrTo_IPAddr
+	GoTypesVec[8] = &info_PtrTo_IPAddr
 
 GO VECSET FOR TYPE go.std.net/IPConn from _tests/big/src/net/iprawsock.go:99:6:
-	GoTypesVec[0] = &info_IPConn
+	GoTypesVec[91] = &info_IPConn
 
 GO VECSET FOR TYPE go.std.net/refToIPConn from _tests/big/src/net/iprawsock.go:99:6:
-	GoTypesVec[93] = &info_PtrTo_IPConn
+	GoTypesVec[9] = &info_PtrTo_IPConn
 
 GO VECSET FOR TYPE go.std.net/IPMask from _tests/big/src/net/ip.go:35:6:
-	GoTypesVec[48] = &info_IPMask
+	GoTypesVec[92] = &info_IPMask
 
 GO VECSET FOR TYPE go.std.net/refToIPMask from _tests/big/src/net/ip.go:35:6:
-	GoTypesVec[151] = &info_PtrTo_IPMask
+	GoTypesVec[10] = &info_PtrTo_IPMask
 
 GO VECSET FOR TYPE go.std.net/IPNet from _tests/big/src/net/ip.go:38:6:
-	GoTypesVec[61] = &info_IPNet
+	GoTypesVec[93] = &info_IPNet
 
 GO VECSET FOR TYPE go.std.net/refToIPNet from _tests/big/src/net/ip.go:38:6:
-	GoTypesVec[53] = &info_PtrTo_IPNet
+	GoTypesVec[11] = &info_PtrTo_IPNet
 
 GO VECSET FOR TYPE go.std.net/Interface from _tests/big/src/net/interface.go:30:6:
-	GoTypesVec[159] = &info_Interface
+	GoTypesVec[94] = &info_Interface
 
 GO VECSET FOR TYPE go.std.net/refToInterface from _tests/big/src/net/interface.go:30:6:
-	GoTypesVec[100] = &info_PtrTo_Interface
+	GoTypesVec[12] = &info_PtrTo_Interface
 
 GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/big/src/net/net.go:545:6:
-	GoTypesVec[35] = &info_InvalidAddrError
+	GoTypesVec[95] = &info_InvalidAddrError
 
 GO VECSET FOR TYPE go.std.net/refToInvalidAddrError from _tests/big/src/net/net.go:545:6:
-	GoTypesVec[91] = &info_PtrTo_InvalidAddrError
+	GoTypesVec[13] = &info_PtrTo_InvalidAddrError
 
 GO VECSET FOR TYPE go.std.net/ListenConfig from _tests/big/src/net/dial.go:576:6:
-	GoTypesVec[22] = &info_ListenConfig
+	GoTypesVec[96] = &info_ListenConfig
 
 GO VECSET FOR TYPE go.std.net/refToListenConfig from _tests/big/src/net/dial.go:576:6:
-	GoTypesVec[92] = &info_PtrTo_ListenConfig
+	GoTypesVec[14] = &info_PtrTo_ListenConfig
 
 GO VECSET FOR TYPE go.std.net/Listener from _tests/big/src/net/net.go:365:6:
-	GoTypesVec[170] = &info_Listener
+	GoTypesVec[169] = &info_Listener
 
 GO VECSET FOR TYPE go.std.net/MX from _tests/big/src/net/dnsclient.go:193:6:
-	GoTypesVec[154] = &info_MX
+	GoTypesVec[97] = &info_MX
 
 GO VECSET FOR TYPE go.std.net/refToMX from _tests/big/src/net/dnsclient.go:193:6:
-	GoTypesVec[142] = &info_PtrTo_MX
+	GoTypesVec[15] = &info_PtrTo_MX
 
 GO VECSET FOR TYPE go.std.net/NS from _tests/big/src/net/dnsclient.go:215:6:
-	GoTypesVec[15] = &info_NS
+	GoTypesVec[98] = &info_NS
 
 GO VECSET FOR TYPE go.std.net/refToNS from _tests/big/src/net/dnsclient.go:215:6:
-	GoTypesVec[46] = &info_PtrTo_NS
+	GoTypesVec[16] = &info_PtrTo_NS
 
 GO VECSET FOR TYPE go.std.net/OpError from _tests/big/src/net/net.go:416:6:
-	GoTypesVec[47] = &info_OpError
+	GoTypesVec[99] = &info_OpError
 
 GO VECSET FOR TYPE go.std.net/refToOpError from _tests/big/src/net/net.go:416:6:
-	GoTypesVec[34] = &info_PtrTo_OpError
+	GoTypesVec[17] = &info_PtrTo_OpError
 
 GO VECSET FOR TYPE go.std.net/PacketConn from _tests/big/src/net/net.go:303:6:
 	GoTypesVec[165] = &info_PacketConn
 
 GO VECSET FOR TYPE go.std.net/ParseError from _tests/big/src/net/net.go:509:6:
-	GoTypesVec[143] = &info_ParseError
+	GoTypesVec[100] = &info_ParseError
 
 GO VECSET FOR TYPE go.std.net/refToParseError from _tests/big/src/net/net.go:509:6:
-	GoTypesVec[14] = &info_PtrTo_ParseError
+	GoTypesVec[18] = &info_PtrTo_ParseError
 
 GO VECSET FOR TYPE go.std.net/Resolver from _tests/big/src/net/lookup.go:107:6:
-	GoTypesVec[117] = &info_Resolver
+	GoTypesVec[101] = &info_Resolver
 
 GO VECSET FOR TYPE go.std.net/refToResolver from _tests/big/src/net/lookup.go:107:6:
-	GoTypesVec[89] = &info_PtrTo_Resolver
+	GoTypesVec[19] = &info_PtrTo_Resolver
 
 GO VECSET FOR TYPE go.std.net/SRV from _tests/big/src/net/dnsclient.go:139:6:
-	GoTypesVec[104] = &info_SRV
+	GoTypesVec[102] = &info_SRV
 
 GO VECSET FOR TYPE go.std.net/refToSRV from _tests/big/src/net/dnsclient.go:139:6:
-	GoTypesVec[72] = &info_PtrTo_SRV
+	GoTypesVec[20] = &info_PtrTo_SRV
 
 GO VECSET FOR TYPE go.std.net/TCPAddr from _tests/big/src/net/tcpsock.go:19:6:
-	GoTypesVec[62] = &info_TCPAddr
+	GoTypesVec[103] = &info_TCPAddr
 
 GO VECSET FOR TYPE go.std.net/refToTCPAddr from _tests/big/src/net/tcpsock.go:19:6:
-	GoTypesVec[33] = &info_PtrTo_TCPAddr
+	GoTypesVec[21] = &info_PtrTo_TCPAddr
 
 GO VECSET FOR TYPE go.std.net/TCPConn from _tests/big/src/net/tcpsock.go:85:6:
-	GoTypesVec[31] = &info_TCPConn
+	GoTypesVec[104] = &info_TCPConn
 
 GO VECSET FOR TYPE go.std.net/refToTCPConn from _tests/big/src/net/tcpsock.go:85:6:
-	GoTypesVec[160] = &info_PtrTo_TCPConn
+	GoTypesVec[22] = &info_PtrTo_TCPConn
 
 GO VECSET FOR TYPE go.std.net/TCPListener from _tests/big/src/net/tcpsock.go:225:6:
-	GoTypesVec[63] = &info_TCPListener
+	GoTypesVec[105] = &info_TCPListener
 
 GO VECSET FOR TYPE go.std.net/refToTCPListener from _tests/big/src/net/tcpsock.go:225:6:
-	GoTypesVec[87] = &info_PtrTo_TCPListener
+	GoTypesVec[23] = &info_PtrTo_TCPListener
 
 GO VECSET FOR TYPE go.std.net/UDPAddr from _tests/big/src/net/udpsock.go:25:6:
-	GoTypesVec[20] = &info_UDPAddr
+	GoTypesVec[106] = &info_UDPAddr
 
 GO VECSET FOR TYPE go.std.net/refToUDPAddr from _tests/big/src/net/udpsock.go:25:6:
-	GoTypesVec[12] = &info_PtrTo_UDPAddr
+	GoTypesVec[24] = &info_PtrTo_UDPAddr
 
 GO VECSET FOR TYPE go.std.net/UDPConn from _tests/big/src/net/udpsock.go:91:6:
-	GoTypesVec[95] = &info_UDPConn
+	GoTypesVec[107] = &info_UDPConn
 
 GO VECSET FOR TYPE go.std.net/refToUDPConn from _tests/big/src/net/udpsock.go:91:6:
-	GoTypesVec[97] = &info_PtrTo_UDPConn
+	GoTypesVec[25] = &info_PtrTo_UDPConn
 
 GO VECSET FOR TYPE go.std.net/UnixAddr from _tests/big/src/net/unixsock.go:19:6:
-	GoTypesVec[139] = &info_UnixAddr
+	GoTypesVec[108] = &info_UnixAddr
 
 GO VECSET FOR TYPE go.std.net/refToUnixAddr from _tests/big/src/net/unixsock.go:19:6:
-	GoTypesVec[113] = &info_PtrTo_UnixAddr
+	GoTypesVec[26] = &info_PtrTo_UnixAddr
 
 GO VECSET FOR TYPE go.std.net/UnixConn from _tests/big/src/net/unixsock.go:65:6:
-	GoTypesVec[40] = &info_UnixConn
+	GoTypesVec[109] = &info_UnixConn
 
 GO VECSET FOR TYPE go.std.net/refToUnixConn from _tests/big/src/net/unixsock.go:65:6:
-	GoTypesVec[96] = &info_PtrTo_UnixConn
+	GoTypesVec[27] = &info_PtrTo_UnixConn
 
 GO VECSET FOR TYPE go.std.net/UnixListener from _tests/big/src/net/unixsock.go:217:6:
-	GoTypesVec[28] = &info_UnixListener
+	GoTypesVec[110] = &info_UnixListener
 
 GO VECSET FOR TYPE go.std.net/refToUnixListener from _tests/big/src/net/unixsock.go:217:6:
-	GoTypesVec[88] = &info_PtrTo_UnixListener
+	GoTypesVec[28] = &info_PtrTo_UnixListener
 
 GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/big/src/net/net.go:539:6:
-	GoTypesVec[77] = &info_UnknownNetworkError
+	GoTypesVec[111] = &info_UnknownNetworkError
 
 GO VECSET FOR TYPE go.std.net/refToUnknownNetworkError from _tests/big/src/net/net.go:539:6:
-	GoTypesVec[137] = &info_PtrTo_UnknownNetworkError
+	GoTypesVec[29] = &info_PtrTo_UnknownNetworkError
 
 GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/cgo_unix.go:21:2
@@ -8719,11 +8719,11 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		Host: FieldAsString(o, "Host"),
 // 		Form: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
 // 		PostForm: ABEND048(codegen.go: no conversion from Clojure for net/url.Values (map[string][]string)),
-// 		MultipartForm: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		MultipartForm: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		RemoteAddr: FieldAsString(o, "RemoteAddr"),
 // 		RequestURI: FieldAsString(o, "RequestURI"),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
 // 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (-)),
 // 	}
@@ -8781,7 +8781,7 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 // 		Uncompressed: FieldAsBoolean(o, "Uncompressed"),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (-)),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 	}
 // }
 
@@ -8957,7 +8957,7 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // 	return &http.Server{
 // 		Addr: FieldAsString(o, "Addr"),
 // 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		TLSConfig: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		TLSConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2465:14) (-)),
 // 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2471:20) (-)),
 // 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/server.go:2477:15) (-)),
@@ -8965,7 +8965,7 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
 // 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ConnState: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 	}
 // }
 
@@ -9012,7 +9012,7 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		DialContext: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Dial: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		DialTLS: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
-// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/transport.go:172:22) (-)),
 // 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
 // 		DisableCompression: FieldAsBoolean(o, "DisableCompression"),
@@ -10192,118 +10192,118 @@ GO INFO FOR TYPE go.std.net.http/refToTransport from _tests/big/src/net/http/tra
 
 
 GO VECSET FOR TYPE go.std.net.http/Client from _tests/big/src/net/http/client.go:56:6:
-	GoTypesVec[152] = &info_Client
+	GoTypesVec[112] = &info_Client
 
 GO VECSET FOR TYPE go.std.net.http/refToClient from _tests/big/src/net/http/client.go:56:6:
-	GoTypesVec[163] = &info_PtrTo_Client
+	GoTypesVec[30] = &info_PtrTo_Client
 
 GO VECSET FOR TYPE go.std.net.http/CloseNotifier from _tests/big/src/net/http/server.go:209:6:
-	GoTypesVec[179] = &info_CloseNotifier
+	GoTypesVec[177] = &info_CloseNotifier
 
 GO VECSET FOR TYPE go.std.net.http/ConnState from _tests/big/src/net/http/server.go:2677:6:
-	GoTypesVec[25] = &info_ConnState
+	GoTypesVec[113] = &info_ConnState
 
 GO VECSET FOR TYPE go.std.net.http/refToConnState from _tests/big/src/net/http/server.go:2677:6:
-	GoTypesVec[64] = &info_PtrTo_ConnState
+	GoTypesVec[31] = &info_PtrTo_ConnState
 
 GO VECSET FOR TYPE go.std.net.http/Cookie from _tests/big/src/net/http/cookie.go:19:6:
-	GoTypesVec[66] = &info_Cookie
+	GoTypesVec[114] = &info_Cookie
 
 GO VECSET FOR TYPE go.std.net.http/refToCookie from _tests/big/src/net/http/cookie.go:19:6:
-	GoTypesVec[128] = &info_PtrTo_Cookie
+	GoTypesVec[32] = &info_PtrTo_Cookie
 
 GO VECSET FOR TYPE go.std.net.http/CookieJar from _tests/big/src/net/http/jar.go:17:6:
-	GoTypesVec[173] = &info_CookieJar
+	GoTypesVec[172] = &info_CookieJar
 
 GO VECSET FOR TYPE go.std.net.http/Dir from _tests/big/src/net/http/fs.go:40:6:
-	GoTypesVec[126] = &info_Dir
+	GoTypesVec[115] = &info_Dir
 
 GO VECSET FOR TYPE go.std.net.http/refToDir from _tests/big/src/net/http/fs.go:40:6:
-	GoTypesVec[129] = &info_PtrTo_Dir
+	GoTypesVec[33] = &info_PtrTo_Dir
 
 GO VECSET FOR TYPE go.std.net.http/File from _tests/big/src/net/http/fs.go:93:6:
-	GoTypesVec[176] = &info_File
+	GoTypesVec[173] = &info_File
 
 GO VECSET FOR TYPE go.std.net.http/FileSystem from _tests/big/src/net/http/fs.go:85:6:
-	GoTypesVec[177] = &info_FileSystem
+	GoTypesVec[178] = &info_FileSystem
 
 GO VECSET FOR TYPE go.std.net.http/Flusher from _tests/big/src/net/http/server.go:166:6:
-	GoTypesVec[178] = &info_Flusher
+	GoTypesVec[179] = &info_Flusher
 
 GO VECSET FOR TYPE go.std.net.http/Handler from _tests/big/src/net/http/server.go:84:6:
-	GoTypesVec[183] = &info_Handler
+	GoTypesVec[180] = &info_Handler
 
 GO VECSET FOR TYPE go.std.net.http/HandlerFunc from _tests/big/src/net/http/server.go:1960:6:
-	GoTypesVec[94] = &info_HandlerFunc
+	GoTypesVec[116] = &info_HandlerFunc
 
 GO VECSET FOR TYPE go.std.net.http/refToHandlerFunc from _tests/big/src/net/http/server.go:1960:6:
-	GoTypesVec[67] = &info_PtrTo_HandlerFunc
+	GoTypesVec[34] = &info_PtrTo_HandlerFunc
 
 GO VECSET FOR TYPE go.std.net.http/Header from _tests/big/src/net/http/header.go:20:6:
-	GoTypesVec[86] = &info_Header
+	GoTypesVec[117] = &info_Header
 
 GO VECSET FOR TYPE go.std.net.http/refToHeader from _tests/big/src/net/http/header.go:20:6:
-	GoTypesVec[162] = &info_PtrTo_Header
+	GoTypesVec[35] = &info_PtrTo_Header
 
 GO VECSET FOR TYPE go.std.net.http/Hijacker from _tests/big/src/net/http/server.go:178:6:
-	GoTypesVec[182] = &info_Hijacker
+	GoTypesVec[181] = &info_Hijacker
 
 GO VECSET FOR TYPE go.std.net.http/ProtocolError from _tests/big/src/net/http/request.go:44:6:
-	GoTypesVec[155] = &info_ProtocolError
+	GoTypesVec[118] = &info_ProtocolError
 
 GO VECSET FOR TYPE go.std.net.http/refToProtocolError from _tests/big/src/net/http/request.go:44:6:
-	GoTypesVec[82] = &info_PtrTo_ProtocolError
+	GoTypesVec[36] = &info_PtrTo_ProtocolError
 
 GO VECSET FOR TYPE go.std.net.http/PushOptions from _tests/big/src/net/http/http.go:105:6:
-	GoTypesVec[131] = &info_PushOptions
+	GoTypesVec[119] = &info_PushOptions
 
 GO VECSET FOR TYPE go.std.net.http/refToPushOptions from _tests/big/src/net/http/http.go:105:6:
-	GoTypesVec[36] = &info_PtrTo_PushOptions
+	GoTypesVec[37] = &info_PtrTo_PushOptions
 
 GO VECSET FOR TYPE go.std.net.http/Pusher from _tests/big/src/net/http/http.go:119:6:
-	GoTypesVec[180] = &info_Pusher
+	GoTypesVec[182] = &info_Pusher
 
 GO VECSET FOR TYPE go.std.net.http/Request from _tests/big/src/net/http/request.go:106:6:
-	GoTypesVec[127] = &info_Request
+	GoTypesVec[120] = &info_Request
 
 GO VECSET FOR TYPE go.std.net.http/refToRequest from _tests/big/src/net/http/request.go:106:6:
-	GoTypesVec[56] = &info_PtrTo_Request
+	GoTypesVec[38] = &info_PtrTo_Request
 
 GO VECSET FOR TYPE go.std.net.http/Response from _tests/big/src/net/http/response.go:33:6:
-	GoTypesVec[120] = &info_Response
+	GoTypesVec[121] = &info_Response
 
 GO VECSET FOR TYPE go.std.net.http/refToResponse from _tests/big/src/net/http/response.go:33:6:
-	GoTypesVec[115] = &info_PtrTo_Response
+	GoTypesVec[39] = &info_PtrTo_Response
 
 GO VECSET FOR TYPE go.std.net.http/ResponseWriter from _tests/big/src/net/http/server.go:93:6:
-	GoTypesVec[168] = &info_ResponseWriter
+	GoTypesVec[170] = &info_ResponseWriter
 
 GO VECSET FOR TYPE go.std.net.http/RoundTripper from _tests/big/src/net/http/client.go:115:6:
-	GoTypesVec[181] = &info_RoundTripper
+	GoTypesVec[183] = &info_RoundTripper
 
 GO VECSET FOR TYPE go.std.net.http/SameSite from _tests/big/src/net/http/cookie.go:45:6:
-	GoTypesVec[17] = &info_SameSite
+	GoTypesVec[122] = &info_SameSite
 
 GO VECSET FOR TYPE go.std.net.http/refToSameSite from _tests/big/src/net/http/cookie.go:45:6:
-	GoTypesVec[32] = &info_PtrTo_SameSite
+	GoTypesVec[40] = &info_PtrTo_SameSite
 
 GO VECSET FOR TYPE go.std.net.http/ServeMux from _tests/big/src/net/http/server.go:2149:6:
-	GoTypesVec[42] = &info_ServeMux
+	GoTypesVec[123] = &info_ServeMux
 
 GO VECSET FOR TYPE go.std.net.http/refToServeMux from _tests/big/src/net/http/server.go:2149:6:
-	GoTypesVec[16] = &info_PtrTo_ServeMux
+	GoTypesVec[41] = &info_PtrTo_ServeMux
 
 GO VECSET FOR TYPE go.std.net.http/Server from _tests/big/src/net/http/server.go:2445:6:
-	GoTypesVec[57] = &info_Server
+	GoTypesVec[124] = &info_Server
 
 GO VECSET FOR TYPE go.std.net.http/refToServer from _tests/big/src/net/http/server.go:2445:6:
-	GoTypesVec[8] = &info_PtrTo_Server
+	GoTypesVec[42] = &info_PtrTo_Server
 
 GO VECSET FOR TYPE go.std.net.http/Transport from _tests/big/src/net/http/transport.go:103:6:
-	GoTypesVec[74] = &info_Transport
+	GoTypesVec[125] = &info_Transport
 
 GO VECSET FOR TYPE go.std.net.http/refToTransport from _tests/big/src/net/http/transport.go:103:6:
-	GoTypesVec[116] = &info_PtrTo_Transport
+	GoTypesVec[43] = &info_PtrTo_Transport
 
 GO ENSURE-LOADED FOR http:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/h2_bundle.go:20:2
@@ -10377,7 +10377,7 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 		Dir: FieldAsString(o, "Dir"),
 // 		Env: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		InheritEnv: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
-// 		Logger: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		Logger: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Stderr: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package io at _tests/big/src/net/http/cgi/host.go:61:13) (-)),
 // 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
@@ -10442,10 +10442,10 @@ GO INFO FOR TYPE go.std.net.http.cgi/refToHandler from _tests/big/src/net/http/c
 
 
 GO VECSET FOR TYPE go.std.net.http.cgi/Handler from _tests/big/src/net/http/cgi/host.go:47:6:
-	GoTypesVec[73] = &info_Handler
+	GoTypesVec[126] = &info_Handler
 
 GO VECSET FOR TYPE go.std.net.http.cgi/refToHandler from _tests/big/src/net/http/cgi/host.go:47:6:
-	GoTypesVec[156] = &info_PtrTo_Handler
+	GoTypesVec[44] = &info_PtrTo_Handler
 
 GO ENSURE-LOADED FOR cgi:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/cgi/child.go:11:2
@@ -10671,16 +10671,16 @@ GO INFO FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/
 
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/Jar from _tests/big/src/net/http/cookiejar/jar.go:60:6:
-	GoTypesVec[10] = &info_Jar
+	GoTypesVec[127] = &info_Jar
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/refToJar from _tests/big/src/net/http/cookiejar/jar.go:60:6:
-	GoTypesVec[55] = &info_PtrTo_Jar
+	GoTypesVec[45] = &info_PtrTo_Jar
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/Options from _tests/big/src/net/http/cookiejar/jar.go:49:6:
-	GoTypesVec[150] = &info_Options
+	GoTypesVec[128] = &info_Options
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/refToOptions from _tests/big/src/net/http/cookiejar/jar.go:49:6:
-	GoTypesVec[81] = &info_PtrTo_Options
+	GoTypesVec[46] = &info_PtrTo_Options
 
 GO VECSET FOR TYPE go.std.net.http.cookiejar/PublicSuffixList from _tests/big/src/net/http/cookiejar/jar.go:34:6:
 	GoTypesVec[174] = &info_PublicSuffixList
@@ -10749,7 +10749,7 @@ func ExtractGo_go_std_net_http_httptest__ResponseRecorder(rcvr, arg string, args
 // 	return &httptest.ResponseRecorder{
 // 		Code: FieldAsInt(o, "Code"),
 // 		HeaderMap: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Body: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		Body: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		Flushed: FieldAsBoolean(o, "Flushed"),
 // 	}
 // }
@@ -10795,7 +10795,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // 	return &httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
 // 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
-// 		TLS: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		TLS: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
 // 	}
 // }
@@ -10972,16 +10972,16 @@ GO INFO FOR TYPE go.std.net.http.httptest/refToServer from _tests/big/src/net/ht
 
 
 GO VECSET FOR TYPE go.std.net.http.httptest/ResponseRecorder from _tests/big/src/net/http/httptest/recorder.go:20:6:
-	GoTypesVec[59] = &info_ResponseRecorder
+	GoTypesVec[129] = &info_ResponseRecorder
 
 GO VECSET FOR TYPE go.std.net.http.httptest/refToResponseRecorder from _tests/big/src/net/http/httptest/recorder.go:20:6:
-	GoTypesVec[145] = &info_PtrTo_ResponseRecorder
+	GoTypesVec[47] = &info_PtrTo_ResponseRecorder
 
 GO VECSET FOR TYPE go.std.net.http.httptest/Server from _tests/big/src/net/http/httptest/server.go:26:6:
-	GoTypesVec[18] = &info_Server
+	GoTypesVec[130] = &info_Server
 
 GO VECSET FOR TYPE go.std.net.http.httptest/refToServer from _tests/big/src/net/http/httptest/server.go:26:6:
-	GoTypesVec[98] = &info_PtrTo_Server
+	GoTypesVec[48] = &info_PtrTo_Server
 
 GO ENSURE-LOADED FOR httptest:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/httptest/httptest.go:9:2
@@ -11364,34 +11364,34 @@ GO INFO FOR TYPE go.std.net.http.httptrace/refToWroteRequestInfo from _tests/big
 
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/ClientTrace from _tests/big/src/net/http/httptrace/trace.go:80:6:
-	GoTypesVec[52] = &info_ClientTrace
+	GoTypesVec[131] = &info_ClientTrace
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/refToClientTrace from _tests/big/src/net/http/httptrace/trace.go:80:6:
-	GoTypesVec[157] = &info_PtrTo_ClientTrace
+	GoTypesVec[49] = &info_PtrTo_ClientTrace
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/DNSDoneInfo from _tests/big/src/net/http/httptrace/trace.go:216:6:
-	GoTypesVec[54] = &info_DNSDoneInfo
+	GoTypesVec[132] = &info_DNSDoneInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/refToDNSDoneInfo from _tests/big/src/net/http/httptrace/trace.go:216:6:
-	GoTypesVec[140] = &info_PtrTo_DNSDoneInfo
+	GoTypesVec[50] = &info_PtrTo_DNSDoneInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/DNSStartInfo from _tests/big/src/net/http/httptrace/trace.go:211:6:
-	GoTypesVec[6] = &info_DNSStartInfo
+	GoTypesVec[133] = &info_DNSStartInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/refToDNSStartInfo from _tests/big/src/net/http/httptrace/trace.go:211:6:
-	GoTypesVec[158] = &info_PtrTo_DNSStartInfo
+	GoTypesVec[51] = &info_PtrTo_DNSStartInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/GotConnInfo from _tests/big/src/net/http/httptrace/trace.go:238:6:
-	GoTypesVec[119] = &info_GotConnInfo
+	GoTypesVec[134] = &info_GotConnInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/refToGotConnInfo from _tests/big/src/net/http/httptrace/trace.go:238:6:
-	GoTypesVec[45] = &info_PtrTo_GotConnInfo
+	GoTypesVec[52] = &info_PtrTo_GotConnInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/WroteRequestInfo from _tests/big/src/net/http/httptrace/trace.go:168:6:
-	GoTypesVec[39] = &info_WroteRequestInfo
+	GoTypesVec[135] = &info_WroteRequestInfo
 
 GO VECSET FOR TYPE go.std.net.http.httptrace/refToWroteRequestInfo from _tests/big/src/net/http/httptrace/trace.go:168:6:
-	GoTypesVec[29] = &info_PtrTo_WroteRequestInfo
+	GoTypesVec[53] = &info_PtrTo_WroteRequestInfo
 
 GO ENSURE-LOADED FOR httptrace:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/big/src/net/http/httptrace/trace.go:10:2
@@ -11497,7 +11497,7 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 // 		Director: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package time at _tests/big/src/net/http/httputil/reverseproxy.go:45:16) (-)),
-// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		ErrorLog: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!), ABEND041(gtypes.go/fieldToString found something: ABEND001(NO GO NAME for *ast.FuncType)!)})),
 // 		ModifyResponse: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
 // 		ErrorHandler: ABEND049(codegen.go: no conversion to private type ABEND001(NO GO NAME for *ast.FuncType) (-)),
@@ -11824,25 +11824,25 @@ GO INFO FOR TYPE go.std.net.http.httputil/refToServerConn from _tests/big/src/ne
 
 
 GO VECSET FOR TYPE go.std.net.http.httputil/BufferPool from _tests/big/src/net/http/httputil/reverseproxy.go:79:6:
-	GoTypesVec[171] = &info_BufferPool
+	GoTypesVec[175] = &info_BufferPool
 
 GO VECSET FOR TYPE go.std.net.http.httputil/ClientConn from _tests/big/src/net/http/httputil/persist.go:230:6:
-	GoTypesVec[83] = &info_ClientConn
+	GoTypesVec[136] = &info_ClientConn
 
 GO VECSET FOR TYPE go.std.net.http.httputil/refToClientConn from _tests/big/src/net/http/httputil/persist.go:230:6:
-	GoTypesVec[133] = &info_PtrTo_ClientConn
+	GoTypesVec[54] = &info_PtrTo_ClientConn
 
 GO VECSET FOR TYPE go.std.net.http.httputil/ReverseProxy from _tests/big/src/net/http/httputil/reverseproxy.go:28:6:
-	GoTypesVec[13] = &info_ReverseProxy
+	GoTypesVec[137] = &info_ReverseProxy
 
 GO VECSET FOR TYPE go.std.net.http.httputil/refToReverseProxy from _tests/big/src/net/http/httputil/reverseproxy.go:28:6:
-	GoTypesVec[1] = &info_PtrTo_ReverseProxy
+	GoTypesVec[55] = &info_PtrTo_ReverseProxy
 
 GO VECSET FOR TYPE go.std.net.http.httputil/ServerConn from _tests/big/src/net/http/httputil/persist.go:37:6:
-	GoTypesVec[101] = &info_ServerConn
+	GoTypesVec[138] = &info_ServerConn
 
 GO VECSET FOR TYPE go.std.net.http.httputil/refToServerConn from _tests/big/src/net/http/httputil/persist.go:37:6:
-	GoTypesVec[106] = &info_PtrTo_ServerConn
+	GoTypesVec[56] = &info_PtrTo_ServerConn
 
 GO ENSURE-LOADED FOR httputil:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:8:2
@@ -11985,7 +11985,7 @@ func ExtractGo_go_std_net_mail__AddressParser(rcvr, arg string, args *ArraySeq, 
 
 // func _mapToAddressParser(o Map) *mail.AddressParser {
 // 	return &mail.AddressParser{
-// 		WordDecoder: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		WordDecoder: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 	}
 // }
 
@@ -12266,28 +12266,28 @@ GO INFO FOR TYPE go.std.net.mail/refToMessage from _tests/big/src/net/mail/messa
 
 
 GO VECSET FOR TYPE go.std.net.mail/Address from _tests/big/src/net/mail/message.go:141:6:
-	GoTypesVec[37] = &info_Address
+	GoTypesVec[139] = &info_Address
 
 GO VECSET FOR TYPE go.std.net.mail/refToAddress from _tests/big/src/net/mail/message.go:141:6:
-	GoTypesVec[30] = &info_PtrTo_Address
+	GoTypesVec[57] = &info_PtrTo_Address
 
 GO VECSET FOR TYPE go.std.net.mail/AddressParser from _tests/big/src/net/mail/message.go:157:6:
-	GoTypesVec[71] = &info_AddressParser
+	GoTypesVec[140] = &info_AddressParser
 
 GO VECSET FOR TYPE go.std.net.mail/refToAddressParser from _tests/big/src/net/mail/message.go:157:6:
-	GoTypesVec[144] = &info_PtrTo_AddressParser
+	GoTypesVec[58] = &info_PtrTo_AddressParser
 
 GO VECSET FOR TYPE go.std.net.mail/Header from _tests/big/src/net/mail/message.go:106:6:
-	GoTypesVec[51] = &info_Header
+	GoTypesVec[141] = &info_Header
 
 GO VECSET FOR TYPE go.std.net.mail/refToHeader from _tests/big/src/net/mail/message.go:106:6:
-	GoTypesVec[125] = &info_PtrTo_Header
+	GoTypesVec[59] = &info_PtrTo_Header
 
 GO VECSET FOR TYPE go.std.net.mail/Message from _tests/big/src/net/mail/message.go:44:6:
-	GoTypesVec[103] = &info_Message
+	GoTypesVec[142] = &info_Message
 
 GO VECSET FOR TYPE go.std.net.mail/refToMessage from _tests/big/src/net/mail/message.go:44:6:
-	GoTypesVec[141] = &info_PtrTo_Message
+	GoTypesVec[60] = &info_PtrTo_Message
 
 GO ENSURE-LOADED FOR mail:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/mail/message.go:21:2
@@ -12969,46 +12969,46 @@ GO INFO FOR TYPE go.std.net.rpc/refToServerError from _tests/big/src/net/rpc/cli
 
 
 GO VECSET FOR TYPE go.std.net.rpc/Call from _tests/big/src/net/rpc/client.go:29:6:
-	GoTypesVec[109] = &info_Call
+	GoTypesVec[143] = &info_Call
 
 GO VECSET FOR TYPE go.std.net.rpc/refToCall from _tests/big/src/net/rpc/client.go:29:6:
-	GoTypesVec[99] = &info_PtrTo_Call
+	GoTypesVec[61] = &info_PtrTo_Call
 
 GO VECSET FOR TYPE go.std.net.rpc/Client from _tests/big/src/net/rpc/client.go:41:6:
-	GoTypesVec[2] = &info_Client
+	GoTypesVec[144] = &info_Client
 
 GO VECSET FOR TYPE go.std.net.rpc/refToClient from _tests/big/src/net/rpc/client.go:41:6:
-	GoTypesVec[68] = &info_PtrTo_Client
+	GoTypesVec[62] = &info_PtrTo_Client
 
 GO VECSET FOR TYPE go.std.net.rpc/ClientCodec from _tests/big/src/net/rpc/client.go:63:6:
-	GoTypesVec[167] = &info_ClientCodec
+	GoTypesVec[166] = &info_ClientCodec
 
 GO VECSET FOR TYPE go.std.net.rpc/Request from _tests/big/src/net/rpc/server.go:172:6:
-	GoTypesVec[161] = &info_Request
+	GoTypesVec[145] = &info_Request
 
 GO VECSET FOR TYPE go.std.net.rpc/refToRequest from _tests/big/src/net/rpc/server.go:172:6:
-	GoTypesVec[11] = &info_PtrTo_Request
+	GoTypesVec[63] = &info_PtrTo_Request
 
 GO VECSET FOR TYPE go.std.net.rpc/Response from _tests/big/src/net/rpc/server.go:181:6:
-	GoTypesVec[84] = &info_Response
+	GoTypesVec[146] = &info_Response
 
 GO VECSET FOR TYPE go.std.net.rpc/refToResponse from _tests/big/src/net/rpc/server.go:181:6:
-	GoTypesVec[121] = &info_PtrTo_Response
+	GoTypesVec[64] = &info_PtrTo_Response
 
 GO VECSET FOR TYPE go.std.net.rpc/Server from _tests/big/src/net/rpc/server.go:189:6:
-	GoTypesVec[138] = &info_Server
+	GoTypesVec[147] = &info_Server
 
 GO VECSET FOR TYPE go.std.net.rpc/refToServer from _tests/big/src/net/rpc/server.go:189:6:
-	GoTypesVec[90] = &info_PtrTo_Server
+	GoTypesVec[65] = &info_PtrTo_Server
 
 GO VECSET FOR TYPE go.std.net.rpc/ServerCodec from _tests/big/src/net/rpc/server.go:658:6:
-	GoTypesVec[166] = &info_ServerCodec
+	GoTypesVec[167] = &info_ServerCodec
 
 GO VECSET FOR TYPE go.std.net.rpc/ServerError from _tests/big/src/net/rpc/client.go:20:6:
-	GoTypesVec[49] = &info_ServerError
+	GoTypesVec[148] = &info_ServerError
 
 GO VECSET FOR TYPE go.std.net.rpc/refToServerError from _tests/big/src/net/rpc/client.go:20:6:
-	GoTypesVec[65] = &info_PtrTo_ServerError
+	GoTypesVec[66] = &info_PtrTo_ServerError
 
 GO ENSURE-LOADED FOR rpc:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/rpc/client.go:8:2
@@ -13397,19 +13397,19 @@ GO INFO FOR TYPE go.std.net.smtp/refToServerInfo from _tests/big/src/net/smtp/au
 
 
 GO VECSET FOR TYPE go.std.net.smtp/Auth from _tests/big/src/net/smtp/auth.go:15:6:
-	GoTypesVec[175] = &info_Auth
+	GoTypesVec[176] = &info_Auth
 
 GO VECSET FOR TYPE go.std.net.smtp/Client from _tests/big/src/net/smtp/smtp.go:30:6:
-	GoTypesVec[50] = &info_Client
+	GoTypesVec[149] = &info_Client
 
 GO VECSET FOR TYPE go.std.net.smtp/refToClient from _tests/big/src/net/smtp/smtp.go:30:6:
-	GoTypesVec[60] = &info_PtrTo_Client
+	GoTypesVec[67] = &info_PtrTo_Client
 
 GO VECSET FOR TYPE go.std.net.smtp/ServerInfo from _tests/big/src/net/smtp/auth.go:35:6:
-	GoTypesVec[102] = &info_ServerInfo
+	GoTypesVec[150] = &info_ServerInfo
 
 GO VECSET FOR TYPE go.std.net.smtp/refToServerInfo from _tests/big/src/net/smtp/auth.go:35:6:
-	GoTypesVec[149] = &info_PtrTo_ServerInfo
+	GoTypesVec[68] = &info_PtrTo_ServerInfo
 
 GO ENSURE-LOADED FOR smtp:
 	EnsureLoaded("go.std.crypto.hmac")  // E.g. from: _tests/big/src/net/smtp/auth.go:8:2
@@ -13653,7 +13653,7 @@ func ExtractGo_go_std_net_textproto__Reader(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToReader(o Map) *textproto.Reader {
 // 	return &textproto.Reader{
-// 		R: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		R: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 	}
 // }
 
@@ -13696,7 +13696,7 @@ func ExtractGo_go_std_net_textproto__Writer(rcvr, arg string, args *ArraySeq, n 
 
 // func _mapToWriter(o Map) *textproto.Writer {
 // 	return &textproto.Writer{
-// 		W: ABEND049(codegen.go: no conversion to private type * (log.ABEND002(reference to unavailable package log at _tests/big/src/net/http/httputil/reverseproxy.go:51:12))),
+// 		W: ABEND049(codegen.go: no conversion to private type * (mime/multipart.ABEND002(reference to unavailable package mime/multipart at _tests/big/src/net/http/request.go:253:17))),
 // 	}
 // }
 
@@ -14103,46 +14103,46 @@ GO INFO FOR TYPE go.std.net.textproto/refToWriter from _tests/big/src/net/textpr
 
 
 GO VECSET FOR TYPE go.std.net.textproto/Conn from _tests/big/src/net/textproto/textproto.go:58:6:
-	GoTypesVec[58] = &info_Conn
+	GoTypesVec[151] = &info_Conn
 
 GO VECSET FOR TYPE go.std.net.textproto/refToConn from _tests/big/src/net/textproto/textproto.go:58:6:
-	GoTypesVec[135] = &info_PtrTo_Conn
+	GoTypesVec[69] = &info_PtrTo_Conn
 
 GO VECSET FOR TYPE go.std.net.textproto/Error from _tests/big/src/net/textproto/textproto.go:36:6:
-	GoTypesVec[80] = &info_Error
+	GoTypesVec[152] = &info_Error
 
 GO VECSET FOR TYPE go.std.net.textproto/refToError from _tests/big/src/net/textproto/textproto.go:36:6:
-	GoTypesVec[3] = &info_PtrTo_Error
+	GoTypesVec[70] = &info_PtrTo_Error
 
 GO VECSET FOR TYPE go.std.net.textproto/MIMEHeader from _tests/big/src/net/textproto/header.go:9:6:
-	GoTypesVec[76] = &info_MIMEHeader
+	GoTypesVec[153] = &info_MIMEHeader
 
 GO VECSET FOR TYPE go.std.net.textproto/refToMIMEHeader from _tests/big/src/net/textproto/header.go:9:6:
-	GoTypesVec[38] = &info_PtrTo_MIMEHeader
+	GoTypesVec[71] = &info_PtrTo_MIMEHeader
 
 GO VECSET FOR TYPE go.std.net.textproto/Pipeline from _tests/big/src/net/textproto/pipeline.go:28:6:
-	GoTypesVec[147] = &info_Pipeline
+	GoTypesVec[154] = &info_Pipeline
 
 GO VECSET FOR TYPE go.std.net.textproto/refToPipeline from _tests/big/src/net/textproto/pipeline.go:28:6:
-	GoTypesVec[69] = &info_PtrTo_Pipeline
+	GoTypesVec[72] = &info_PtrTo_Pipeline
 
 GO VECSET FOR TYPE go.std.net.textproto/ProtocolError from _tests/big/src/net/textproto/textproto.go:47:6:
-	GoTypesVec[70] = &info_ProtocolError
+	GoTypesVec[155] = &info_ProtocolError
 
 GO VECSET FOR TYPE go.std.net.textproto/refToProtocolError from _tests/big/src/net/textproto/textproto.go:47:6:
-	GoTypesVec[107] = &info_PtrTo_ProtocolError
+	GoTypesVec[73] = &info_PtrTo_ProtocolError
 
 GO VECSET FOR TYPE go.std.net.textproto/Reader from _tests/big/src/net/textproto/reader.go:18:6:
-	GoTypesVec[132] = &info_Reader
+	GoTypesVec[156] = &info_Reader
 
 GO VECSET FOR TYPE go.std.net.textproto/refToReader from _tests/big/src/net/textproto/reader.go:18:6:
-	GoTypesVec[4] = &info_PtrTo_Reader
+	GoTypesVec[74] = &info_PtrTo_Reader
 
 GO VECSET FOR TYPE go.std.net.textproto/Writer from _tests/big/src/net/textproto/writer.go:15:6:
-	GoTypesVec[24] = &info_Writer
+	GoTypesVec[157] = &info_Writer
 
 GO VECSET FOR TYPE go.std.net.textproto/refToWriter from _tests/big/src/net/textproto/writer.go:15:6:
-	GoTypesVec[146] = &info_PtrTo_Writer
+	GoTypesVec[75] = &info_PtrTo_Writer
 
 GO ENSURE-LOADED FOR textproto:
 	EnsureLoaded("go.std.bufio")  // E.g. from: _tests/big/src/net/textproto/reader.go:8:2
@@ -14801,40 +14801,40 @@ GO INFO FOR TYPE go.std.net.url/refToValues from _tests/big/src/net/url/url.go:8
 
 
 GO VECSET FOR TYPE go.std.net.url/Error from _tests/big/src/net/url/url.go:22:6:
-	GoTypesVec[124] = &info_Error
+	GoTypesVec[158] = &info_Error
 
 GO VECSET FOR TYPE go.std.net.url/refToError from _tests/big/src/net/url/url.go:22:6:
-	GoTypesVec[110] = &info_PtrTo_Error
+	GoTypesVec[76] = &info_PtrTo_Error
 
 GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/big/src/net/url/url.go:84:6:
-	GoTypesVec[79] = &info_EscapeError
+	GoTypesVec[159] = &info_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/refToEscapeError from _tests/big/src/net/url/url.go:84:6:
-	GoTypesVec[108] = &info_PtrTo_EscapeError
+	GoTypesVec[77] = &info_PtrTo_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/big/src/net/url/url.go:90:6:
-	GoTypesVec[43] = &info_InvalidHostError
+	GoTypesVec[160] = &info_InvalidHostError
 
 GO VECSET FOR TYPE go.std.net.url/refToInvalidHostError from _tests/big/src/net/url/url.go:90:6:
-	GoTypesVec[105] = &info_PtrTo_InvalidHostError
+	GoTypesVec[78] = &info_PtrTo_InvalidHostError
 
 GO VECSET FOR TYPE go.std.net.url/URL from _tests/big/src/net/url/url.go:344:6:
-	GoTypesVec[111] = &info_URL
+	GoTypesVec[161] = &info_URL
 
 GO VECSET FOR TYPE go.std.net.url/refToURL from _tests/big/src/net/url/url.go:344:6:
-	GoTypesVec[26] = &info_PtrTo_URL
+	GoTypesVec[79] = &info_PtrTo_URL
 
 GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/big/src/net/url/url.go:378:6:
-	GoTypesVec[118] = &info_Userinfo
+	GoTypesVec[162] = &info_Userinfo
 
 GO VECSET FOR TYPE go.std.net.url/refToUserinfo from _tests/big/src/net/url/url.go:378:6:
-	GoTypesVec[112] = &info_PtrTo_Userinfo
+	GoTypesVec[80] = &info_PtrTo_Userinfo
 
 GO VECSET FOR TYPE go.std.net.url/Values from _tests/big/src/net/url/url.go:804:6:
-	GoTypesVec[19] = &info_Values
+	GoTypesVec[163] = &info_Values
 
 GO VECSET FOR TYPE go.std.net.url/refToValues from _tests/big/src/net/url/url.go:804:6:
-	GoTypesVec[136] = &info_PtrTo_Values
+	GoTypesVec[81] = &info_PtrTo_Values
 
 GO ENSURE-LOADED FOR url:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/big/src/net/url/url.go:14:2
@@ -14870,373 +14870,373 @@ var GoTypesVec [184]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case net.IPConn:
-		return 0
-	case *httputil.ReverseProxy:
-		return 1
-	case rpc.Client:
-		return 2
-	case *textproto.Error:
-		return 3
-	case *textproto.Reader:
-		return 4
-	case net.AddrError:
-		return 5
-	case httptrace.DNSStartInfo:
-		return 6
-	case net.IPAddr:
-		return 7
-	case *http.Server:
-		return 8
-	case net.DNSConfigError:
-		return 9
-	case cookiejar.Jar:
-		return 10
-	case *rpc.Request:
-		return 11
-	case *net.UDPAddr:
-		return 12
-	case httputil.ReverseProxy:
-		return 13
-	case *net.ParseError:
-		return 14
-	case net.NS:
-		return 15
-	case *http.ServeMux:
-		return 16
-	case http.SameSite:
-		return 17
-	case httptest.Server:
-		return 18
-	case url.Values:
-		return 19
-	case net.UDPAddr:
-		return 20
-	case *net.Dialer:
-		return 21
-	case net.ListenConfig:
-		return 22
-	case net.Flags:
-		return 23
-	case textproto.Writer:
-		return 24
-	case http.ConnState:
-		return 25
-	case *url.URL:
-		return 26
-	case net.IP:
-		return 27
-	case net.UnixListener:
-		return 28
-	case *httptrace.WroteRequestInfo:
-		return 29
-	case *mail.Address:
-		return 30
-	case net.TCPConn:
-		return 31
-	case *http.SameSite:
-		return 32
-	case *net.TCPAddr:
-		return 33
-	case *net.OpError:
-		return 34
-	case net.InvalidAddrError:
-		return 35
-	case *http.PushOptions:
-		return 36
-	case mail.Address:
-		return 37
-	case *textproto.MIMEHeader:
-		return 38
-	case httptrace.WroteRequestInfo:
-		return 39
-	case net.UnixConn:
-		return 40
-	case *net.Buffers:
-		return 41
-	case http.ServeMux:
-		return 42
-	case url.InvalidHostError:
-		return 43
-	case net.Dialer:
-		return 44
-	case *httptrace.GotConnInfo:
-		return 45
-	case *net.NS:
-		return 46
-	case net.OpError:
-		return 47
-	case net.IPMask:
-		return 48
-	case rpc.ServerError:
-		return 49
-	case smtp.Client:
-		return 50
-	case mail.Header:
-		return 51
-	case httptrace.ClientTrace:
-		return 52
-	case *net.IPNet:
-		return 53
-	case httptrace.DNSDoneInfo:
-		return 54
-	case *cookiejar.Jar:
-		return 55
-	case *http.Request:
-		return 56
-	case http.Server:
-		return 57
-	case textproto.Conn:
-		return 58
-	case httptest.ResponseRecorder:
-		return 59
-	case *smtp.Client:
-		return 60
-	case net.IPNet:
-		return 61
-	case net.TCPAddr:
-		return 62
-	case net.TCPListener:
-		return 63
-	case *http.ConnState:
-		return 64
-	case *rpc.ServerError:
-		return 65
-	case http.Cookie:
-		return 66
-	case *http.HandlerFunc:
-		return 67
-	case *rpc.Client:
-		return 68
-	case *textproto.Pipeline:
-		return 69
-	case textproto.ProtocolError:
-		return 70
-	case mail.AddressParser:
-		return 71
-	case *net.SRV:
-		return 72
-	case cgi.Handler:
-		return 73
-	case http.Transport:
-		return 74
-	case *net.Flags:
-		return 75
-	case textproto.MIMEHeader:
-		return 76
-	case net.UnknownNetworkError:
-		return 77
-	case *net.DNSConfigError:
-		return 78
-	case url.EscapeError:
-		return 79
-	case textproto.Error:
-		return 80
-	case *cookiejar.Options:
-		return 81
-	case *http.ProtocolError:
-		return 82
-	case httputil.ClientConn:
-		return 83
-	case rpc.Response:
-		return 84
-	case *net.HardwareAddr:
-		return 85
-	case http.Header:
-		return 86
-	case *net.TCPListener:
-		return 87
-	case *net.UnixListener:
-		return 88
-	case *net.Resolver:
-		return 89
-	case *rpc.Server:
-		return 90
-	case *net.InvalidAddrError:
-		return 91
-	case *net.ListenConfig:
-		return 92
-	case *net.IPConn:
-		return 93
-	case http.HandlerFunc:
-		return 94
-	case net.UDPConn:
-		return 95
-	case *net.UnixConn:
-		return 96
-	case *net.UDPConn:
-		return 97
-	case *httptest.Server:
-		return 98
-	case *rpc.Call:
-		return 99
-	case *net.Interface:
-		return 100
-	case httputil.ServerConn:
-		return 101
-	case smtp.ServerInfo:
-		return 102
-	case mail.Message:
-		return 103
-	case net.SRV:
-		return 104
-	case *url.InvalidHostError:
-		return 105
-	case *httputil.ServerConn:
-		return 106
-	case *textproto.ProtocolError:
-		return 107
-	case *url.EscapeError:
-		return 108
-	case rpc.Call:
-		return 109
-	case *url.Error:
-		return 110
-	case url.URL:
-		return 111
-	case *url.Userinfo:
-		return 112
-	case *net.UnixAddr:
-		return 113
-	case *net.IP:
-		return 114
-	case *http.Response:
-		return 115
-	case *http.Transport:
-		return 116
-	case net.Resolver:
-		return 117
-	case url.Userinfo:
-		return 118
-	case httptrace.GotConnInfo:
-		return 119
-	case http.Response:
-		return 120
-	case *rpc.Response:
-		return 121
-	case *net.IPAddr:
-		return 122
-	case net.DNSError:
-		return 123
-	case url.Error:
-		return 124
-	case *mail.Header:
-		return 125
-	case http.Dir:
-		return 126
-	case http.Request:
-		return 127
-	case *http.Cookie:
-		return 128
-	case *http.Dir:
-		return 129
-	case net.Buffers:
-		return 130
-	case http.PushOptions:
-		return 131
-	case textproto.Reader:
-		return 132
-	case *httputil.ClientConn:
-		return 133
 	case *net.AddrError:
-		return 134
-	case *textproto.Conn:
-		return 135
-	case *url.Values:
-		return 136
-	case *net.UnknownNetworkError:
-		return 137
-	case rpc.Server:
-		return 138
-	case net.UnixAddr:
-		return 139
-	case *httptrace.DNSDoneInfo:
-		return 140
-	case *mail.Message:
-		return 141
-	case *net.MX:
-		return 142
-	case net.ParseError:
-		return 143
-	case *mail.AddressParser:
-		return 144
-	case *httptest.ResponseRecorder:
-		return 145
-	case *textproto.Writer:
-		return 146
-	case textproto.Pipeline:
-		return 147
+		return 0
+	case *net.Buffers:
+		return 1
+	case *net.DNSConfigError:
+		return 2
 	case *net.DNSError:
-		return 148
-	case *smtp.ServerInfo:
-		return 149
-	case cookiejar.Options:
-		return 150
+		return 3
+	case *net.Dialer:
+		return 4
+	case *net.Flags:
+		return 5
+	case *net.HardwareAddr:
+		return 6
+	case *net.IP:
+		return 7
+	case *net.IPAddr:
+		return 8
+	case *net.IPConn:
+		return 9
 	case *net.IPMask:
-		return 151
-	case http.Client:
-		return 152
-	case net.HardwareAddr:
-		return 153
-	case net.MX:
-		return 154
-	case http.ProtocolError:
-		return 155
-	case *cgi.Handler:
-		return 156
-	case *httptrace.ClientTrace:
-		return 157
-	case *httptrace.DNSStartInfo:
-		return 158
-	case net.Interface:
-		return 159
+		return 10
+	case *net.IPNet:
+		return 11
+	case *net.Interface:
+		return 12
+	case *net.InvalidAddrError:
+		return 13
+	case *net.ListenConfig:
+		return 14
+	case *net.MX:
+		return 15
+	case *net.NS:
+		return 16
+	case *net.OpError:
+		return 17
+	case *net.ParseError:
+		return 18
+	case *net.Resolver:
+		return 19
+	case *net.SRV:
+		return 20
+	case *net.TCPAddr:
+		return 21
 	case *net.TCPConn:
-		return 160
-	case rpc.Request:
-		return 161
-	case *http.Header:
-		return 162
+		return 22
+	case *net.TCPListener:
+		return 23
+	case *net.UDPAddr:
+		return 24
+	case *net.UDPConn:
+		return 25
+	case *net.UnixAddr:
+		return 26
+	case *net.UnixConn:
+		return 27
+	case *net.UnixListener:
+		return 28
+	case *net.UnknownNetworkError:
+		return 29
 	case *http.Client:
+		return 30
+	case *http.ConnState:
+		return 31
+	case *http.Cookie:
+		return 32
+	case *http.Dir:
+		return 33
+	case *http.HandlerFunc:
+		return 34
+	case *http.Header:
+		return 35
+	case *http.ProtocolError:
+		return 36
+	case *http.PushOptions:
+		return 37
+	case *http.Request:
+		return 38
+	case *http.Response:
+		return 39
+	case *http.SameSite:
+		return 40
+	case *http.ServeMux:
+		return 41
+	case *http.Server:
+		return 42
+	case *http.Transport:
+		return 43
+	case *cgi.Handler:
+		return 44
+	case *cookiejar.Jar:
+		return 45
+	case *cookiejar.Options:
+		return 46
+	case *httptest.ResponseRecorder:
+		return 47
+	case *httptest.Server:
+		return 48
+	case *httptrace.ClientTrace:
+		return 49
+	case *httptrace.DNSDoneInfo:
+		return 50
+	case *httptrace.DNSStartInfo:
+		return 51
+	case *httptrace.GotConnInfo:
+		return 52
+	case *httptrace.WroteRequestInfo:
+		return 53
+	case *httputil.ClientConn:
+		return 54
+	case *httputil.ReverseProxy:
+		return 55
+	case *httputil.ServerConn:
+		return 56
+	case *mail.Address:
+		return 57
+	case *mail.AddressParser:
+		return 58
+	case *mail.Header:
+		return 59
+	case *mail.Message:
+		return 60
+	case *rpc.Call:
+		return 61
+	case *rpc.Client:
+		return 62
+	case *rpc.Request:
+		return 63
+	case *rpc.Response:
+		return 64
+	case *rpc.Server:
+		return 65
+	case *rpc.ServerError:
+		return 66
+	case *smtp.Client:
+		return 67
+	case *smtp.ServerInfo:
+		return 68
+	case *textproto.Conn:
+		return 69
+	case *textproto.Error:
+		return 70
+	case *textproto.MIMEHeader:
+		return 71
+	case *textproto.Pipeline:
+		return 72
+	case *textproto.ProtocolError:
+		return 73
+	case *textproto.Reader:
+		return 74
+	case *textproto.Writer:
+		return 75
+	case *url.Error:
+		return 76
+	case *url.EscapeError:
+		return 77
+	case *url.InvalidHostError:
+		return 78
+	case *url.URL:
+		return 79
+	case *url.Userinfo:
+		return 80
+	case *url.Values:
+		return 81
+	case net.AddrError:
+		return 82
+	case net.Buffers:
+		return 83
+	case net.DNSConfigError:
+		return 84
+	case net.DNSError:
+		return 85
+	case net.Dialer:
+		return 86
+	case net.Flags:
+		return 87
+	case net.HardwareAddr:
+		return 88
+	case net.IP:
+		return 89
+	case net.IPAddr:
+		return 90
+	case net.IPConn:
+		return 91
+	case net.IPMask:
+		return 92
+	case net.IPNet:
+		return 93
+	case net.Interface:
+		return 94
+	case net.InvalidAddrError:
+		return 95
+	case net.ListenConfig:
+		return 96
+	case net.MX:
+		return 97
+	case net.NS:
+		return 98
+	case net.OpError:
+		return 99
+	case net.ParseError:
+		return 100
+	case net.Resolver:
+		return 101
+	case net.SRV:
+		return 102
+	case net.TCPAddr:
+		return 103
+	case net.TCPConn:
+		return 104
+	case net.TCPListener:
+		return 105
+	case net.UDPAddr:
+		return 106
+	case net.UDPConn:
+		return 107
+	case net.UnixAddr:
+		return 108
+	case net.UnixConn:
+		return 109
+	case net.UnixListener:
+		return 110
+	case net.UnknownNetworkError:
+		return 111
+	case http.Client:
+		return 112
+	case http.ConnState:
+		return 113
+	case http.Cookie:
+		return 114
+	case http.Dir:
+		return 115
+	case http.HandlerFunc:
+		return 116
+	case http.Header:
+		return 117
+	case http.ProtocolError:
+		return 118
+	case http.PushOptions:
+		return 119
+	case http.Request:
+		return 120
+	case http.Response:
+		return 121
+	case http.SameSite:
+		return 122
+	case http.ServeMux:
+		return 123
+	case http.Server:
+		return 124
+	case http.Transport:
+		return 125
+	case cgi.Handler:
+		return 126
+	case cookiejar.Jar:
+		return 127
+	case cookiejar.Options:
+		return 128
+	case httptest.ResponseRecorder:
+		return 129
+	case httptest.Server:
+		return 130
+	case httptrace.ClientTrace:
+		return 131
+	case httptrace.DNSDoneInfo:
+		return 132
+	case httptrace.DNSStartInfo:
+		return 133
+	case httptrace.GotConnInfo:
+		return 134
+	case httptrace.WroteRequestInfo:
+		return 135
+	case httputil.ClientConn:
+		return 136
+	case httputil.ReverseProxy:
+		return 137
+	case httputil.ServerConn:
+		return 138
+	case mail.Address:
+		return 139
+	case mail.AddressParser:
+		return 140
+	case mail.Header:
+		return 141
+	case mail.Message:
+		return 142
+	case rpc.Call:
+		return 143
+	case rpc.Client:
+		return 144
+	case rpc.Request:
+		return 145
+	case rpc.Response:
+		return 146
+	case rpc.Server:
+		return 147
+	case rpc.ServerError:
+		return 148
+	case smtp.Client:
+		return 149
+	case smtp.ServerInfo:
+		return 150
+	case textproto.Conn:
+		return 151
+	case textproto.Error:
+		return 152
+	case textproto.MIMEHeader:
+		return 153
+	case textproto.Pipeline:
+		return 154
+	case textproto.ProtocolError:
+		return 155
+	case textproto.Reader:
+		return 156
+	case textproto.Writer:
+		return 157
+	case url.Error:
+		return 158
+	case url.EscapeError:
+		return 159
+	case url.InvalidHostError:
+		return 160
+	case url.URL:
+		return 161
+	case url.Userinfo:
+		return 162
+	case url.Values:
 		return 163
 	case net.Conn:  // Specificity=8
 		return 164
 	case net.PacketConn:  // Specificity=7
 		return 165
-	case rpc.ServerCodec:  // Specificity=4
-		return 166
 	case rpc.ClientCodec:  // Specificity=4
+		return 166
+	case rpc.ServerCodec:  // Specificity=4
 		return 167
-	case http.ResponseWriter:  // Specificity=3
-		return 168
 	case net.Error:  // Specificity=3
-		return 169
+		return 168
 	case net.Listener:  // Specificity=3
+		return 169
+	case http.ResponseWriter:  // Specificity=3
 		return 170
-	case httputil.BufferPool:  // Specificity=2
-		return 171
 	case net.Addr:  // Specificity=2
-		return 172
+		return 171
 	case http.CookieJar:  // Specificity=2
+		return 172
+	case http.File:  // Specificity=2
 		return 173
 	case cookiejar.PublicSuffixList:  // Specificity=2
 		return 174
-	case smtp.Auth:  // Specificity=2
+	case httputil.BufferPool:  // Specificity=2
 		return 175
-	case http.File:  // Specificity=2
+	case smtp.Auth:  // Specificity=2
 		return 176
-	case http.FileSystem:  // Specificity=1
-		return 177
-	case http.Flusher:  // Specificity=1
-		return 178
 	case http.CloseNotifier:  // Specificity=1
+		return 177
+	case http.FileSystem:  // Specificity=1
+		return 178
+	case http.Flusher:  // Specificity=1
 		return 179
-	case http.Pusher:  // Specificity=1
-		return 180
-	case http.RoundTripper:  // Specificity=1
-		return 181
-	case http.Hijacker:  // Specificity=1
-		return 182
 	case http.Handler:  // Specificity=1
+		return 180
+	case http.Hijacker:  // Specificity=1
+		return 181
+	case http.Pusher:  // Specificity=1
+		return 182
+	case http.RoundTripper:  // Specificity=1
 		return 183
 	}
 	return -1
