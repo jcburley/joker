@@ -73,13 +73,13 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		Print(godb.Fset, ts)
 	}
 
-	gtiVec := gtypes.TypeDefine(ts, gf, parentDoc)
+	gtiVec := gtypes.Define(ts, gf, parentDoc)
 
 	for _, gti := range gtiVec {
 
 		imports := &imports.Imports{}
 
-		jti := jtypes.TypeDefine(ts, gti.Expr)
+		jti := jtypes.Define(ts, gti.Expr)
 
 		ti := &typeInfo{
 			jti:             jti,
@@ -112,8 +112,8 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		return ti
 	}
 
-	gti := gtypes.TypeForExpr(e)
-	jti := jtypes.TypeForExpr(e)
+	gti := gtypes.InfoForExpr(e)
+	jti := jtypes.InfoForExpr(e)
 
 	if ti, found := typesByGoName[gti.FullName]; found {
 		if _, ok := typesByJokerName[jti.FullName]; !ok {
@@ -145,12 +145,12 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		return ti
 	}
 
-	gti := gtypes.TypeForName(goName)
+	gti := gtypes.InfoForName(goName)
 	if gti == nil {
 		return nil // panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
 	}
 
-	jti := jtypes.TypeForGoName(goName)
+	jti := jtypes.InfoForGoName(goName)
 	if jti == nil {
 		panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
 	}

@@ -162,7 +162,7 @@ func finish(ti *Info) {
 	}
 }
 
-func define(ti *Info) {
+func defineAndFinish(ti *Info) {
 	// Might be more to do here at some point.
 	finish(ti)
 }
@@ -186,7 +186,7 @@ func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 	return ti
 }
 
-func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
+func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
 
 	doc := ts.Doc // Try block comments for this specific decl
@@ -212,7 +212,7 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 		LocalName:   localName,
 		Specificity: specificity(ts),
 	}
-	define(ti)
+	defineAndFinish(ti)
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
@@ -238,14 +238,14 @@ func TypeDefine(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info 
 	return types
 }
 
-func TypeForName(fullName string) *Info {
+func InfoForName(fullName string) *Info {
 	if ti, ok := typesByFullName[fullName]; ok {
 		return ti
 	}
 	return nil
 }
 
-func TypeForExpr(e Expr) *Info {
+func InfoForExpr(e Expr) *Info {
 	if ti, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return ti
@@ -283,11 +283,11 @@ func TypeForExpr(e Expr) *Info {
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerInfo = TypeForExpr(v.X)
+		innerInfo = InfoForExpr(v.X)
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		localName = innerInfo.LocalName
 	case *ArrayType:
-		innerInfo = TypeForExpr(v.Elt)
+		innerInfo = InfoForExpr(v.Elt)
 		len := exprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		if innerInfo == nil {
@@ -304,9 +304,9 @@ func TypeForExpr(e Expr) *Info {
 		}
 		localName += methods + "}"
 	case *MapType:
-		key := TypeForExpr(v.Key)
-		value := TypeForExpr(v.Value)
-		localName = "map[" + key.RelativeGoName(e.Pos()) + "]" + value.RelativeGoName(e.Pos())
+		key := InfoForExpr(v.Key)
+		value := InfoForExpr(v.Value)
+		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 	case *SelectorExpr:
 		pkgName := v.X.(*Ident).Name
 		localName := v.Sel.Name
@@ -319,7 +319,7 @@ func TypeForExpr(e Expr) *Info {
 				godb.WhereAt(v.Pos()), pkgName, fullPathUnix))
 		}
 	case *ChanType:
-		ty := TypeForExpr(v.Value)
+		ty := InfoForExpr(v.Value)
 		localName = "chan"
 		switch v.Dir & (SEND | RECV) {
 		case SEND:
@@ -328,7 +328,7 @@ func TypeForExpr(e Expr) *Info {
 			localName = "<-" + localName
 		default:
 		}
-		localName += " " + ty.RelativeGoName(e.Pos())
+		localName += " " + ty.RelativeName(e.Pos())
 	case *StructType:
 		localName = "struct{}"
 	}
@@ -344,7 +344,7 @@ func TypeForExpr(e Expr) *Info {
 		}
 		ti := &Info{
 			Expr:           e,
-			who:            fmt.Sprintf("[TypeForExpr %T]", e),
+			who:            fmt.Sprintf("[InfoForExpr %T]", e),
 			Pattern:        pattern,
 			FullName:       fullName,
 			LocalName:      localName,
@@ -359,7 +359,7 @@ func TypeForExpr(e Expr) *Info {
 }
 
 func fieldToString(f *Field) string {
-	ti := TypeForExpr(f.Type)
+	ti := InfoForExpr(f.Type)
 	// Don't bother implementing this until it's actually needed:
 	return "ABEND041(gtypes.go/fieldToString found something: " + ti.LocalName + "!)"
 }
@@ -385,7 +385,7 @@ func exprToString(e Expr) string {
 	return fmt.Sprintf("%v", e)
 }
 
-func (ti *Info) TypeReflected() (packageImport, pattern string) {
+func (ti *Info) Reflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
 	if tiu := ti.UnderlyingType; tiu != nil {
@@ -397,7 +397,7 @@ func (ti *Info) TypeReflected() (packageImport, pattern string) {
 	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
 }
 
-func (ti *Info) RelativeGoName(pos token.Pos) string {
+func (ti *Info) RelativeName(pos token.Pos) string {
 	pkgPrefix := ti.Package
 	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
@@ -407,7 +407,7 @@ func (ti *Info) RelativeGoName(pos token.Pos) string {
 	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
-func (ti *Info) AbsoluteGoName() string {
+func (ti *Info) AbsoluteName() string {
 	pkgPrefix := ti.Package
 	if pkgPrefix != "" {
 		pkgPrefix += "."

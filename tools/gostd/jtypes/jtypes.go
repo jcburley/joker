@@ -42,23 +42,23 @@ func combine(ns, name string) string {
 	return ns + "/" + name
 }
 
-func typePatternForExpr(e Expr) (pattern string, ue Expr) {
+func patternForExpr(e Expr) (pattern string, ue Expr) {
 	switch v := e.(type) {
 	case *ArrayType:
-		pattern, e = typePatternForExpr(v.Elt)
+		pattern, e = patternForExpr(v.Elt)
 		return "arrayOf" + pattern, e
 	case *StarExpr:
-		pattern, e = typePatternForExpr(v.X)
+		pattern, e = patternForExpr(v.X)
 		return "refTo" + pattern, e
 	default:
 		return "%s", e
 	}
 }
 
-func typeNameForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
+func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 
 	var ue Expr
-	pattern, ue = typePatternForExpr(e)
+	pattern, ue = patternForExpr(e)
 
 	switch v := ue.(type) {
 	case *Ident:
@@ -90,11 +90,11 @@ func typeNameForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 	return
 }
 
-func TypeDefine(ts *TypeSpec, varExpr Expr) *Info {
+func Define(ts *TypeSpec, varExpr Expr) *Info {
 
 	ns := ClojureNamespaceForPos(Fset.Position(ts.Name.NamePos))
 
-	pattern, _ := typePatternForExpr(varExpr)
+	pattern, _ := patternForExpr(varExpr)
 
 	name := combine(ns, fmt.Sprintf(pattern, ts.Name.Name))
 
@@ -110,22 +110,22 @@ func TypeDefine(ts *TypeSpec, varExpr Expr) *Info {
 		AsJokerObject:     "GoObject(%s%s)",
 	}
 
-	jti.Register()
+	jti.register()
 
 	return jti
 
 }
 
-func TypeForGoName(fullName string) *Info {
+func InfoForGoName(fullName string) *Info {
 	return goTypeMap[fullName]
 }
 
-func TypeForExpr(e Expr) *Info {
+func InfoForExpr(e Expr) *Info {
 	if info, ok := typesByExpr[e]; ok {
 		return info
 	}
 
-	pattern, ns, baseName, fullName, info := typeNameForExpr(e)
+	pattern, ns, baseName, fullName, info := namingForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
@@ -169,7 +169,7 @@ func (ti *Info) NameDoc(e Expr) string {
 	return fmt.Sprintf(ti.Pattern, ti.BaseName)
 }
 
-func (ti *Info) Register() {
+func (ti *Info) register() {
 	if _, found := typesByFullname[ti.FullName]; !found {
 		typesByFullname[ti.FullName] = ti
 	}
