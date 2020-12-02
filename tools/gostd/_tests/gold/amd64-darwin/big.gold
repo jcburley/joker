@@ -520,14 +520,14 @@ JOKER FUNC net.Dial from net/dial.go:
 
 JOKER FUNC net.DialIP from net/iprawsock.go:
 (defn DialIP
-  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToIPAddr laddr, ^go.std.net/refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
+  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr, ^refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialIP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr, ^go.std.net/IPAddr _v_raddr])
 
 JOKER FUNC net.DialTCP from net/tcpsock.go:
 (defn DialTCP
-  "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *TCPAddr, raddr *TCPAddr)\n\nGo returns: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToTCPAddr laddr, ^go.std.net/refToTCPAddr raddr]\n\nJoker returns: [^refToTCPConn, ^Error]"
+  "DialTCP acts like Dial for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *TCPAddr, raddr *TCPAddr)\n\nGo returns: (*TCPConn, error)\n\nJoker input arguments: [^String network, ^refToTCPAddr laddr, ^refToTCPAddr raddr]\n\nJoker returns: [^refToTCPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialTCP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/TCPAddr _v_laddr, ^go.std.net/TCPAddr _v_raddr])
@@ -541,14 +541,14 @@ JOKER FUNC net.DialTimeout from net/dial.go:
 
 JOKER FUNC net.DialUDP from net/udpsock.go:
 (defn DialUDP
-  "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *UDPAddr, raddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToUDPAddr laddr, ^go.std.net/refToUDPAddr raddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
+  "DialUDP acts like Dial for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *UDPAddr, raddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^refToUDPAddr laddr, ^refToUDPAddr raddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialUDP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/UDPAddr _v_laddr, ^go.std.net/UDPAddr _v_raddr])
 
 JOKER FUNC net.DialUnix from net/unixsock.go:
 (defn DialUnix
-  "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *UnixAddr, raddr *UnixAddr)\n\nGo returns: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToUnixAddr laddr, ^go.std.net/refToUnixAddr raddr]\n\nJoker returns: [^refToUnixConn, ^Error]"
+  "DialUnix acts like Dial for Unix networks.\n\nThe network must be a Unix network name; see func Dial for details.\n\nIf laddr is non-nil, it is used as the local address for the\nconnection.\n\nGo input arguments: (network string, laddr *UnixAddr, raddr *UnixAddr)\n\nGo returns: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^refToUnixAddr laddr, ^refToUnixAddr raddr]\n\nJoker returns: [^refToUnixConn, ^Error]"
   {:added "1.0"
    :go "_f_dialUnix(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr, ^go.std.net/UnixAddr _v_raddr])
@@ -576,14 +576,14 @@ JOKER FUNC net.FilePacketConn from net/file.go:
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
-  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker returns: ^IP"
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IP"
   {:added "1.0"
    :go "_f_iPv4(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
-  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker returns: ^IPMask"
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IPMask"
   {:added "1.0"
    :go "_f_iPv4Mask(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
@@ -632,14 +632,14 @@ JOKER FUNC net.Listen from net/dial.go:
 
 JOKER FUNC net.ListenIP from net/iprawsock.go:
 (defn ListenIP
-  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
+  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenIP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr])
 
 JOKER FUNC net.ListenMulticastUDP from net/udpsock.go:
 (defn ListenMulticastUDP
-  "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *Interface, gaddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToInterface ifi, ^go.std.net/refToUDPAddr gaddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
+  "ListenMulticastUDP acts like ListenPacket for UDP networks but\ntakes a group address on a specific network interface.\n\nThe network must be a UDP network name; see func Dial for details.\n\nListenMulticastUDP listens on all available IP addresses of the\nlocal system including the group, multicast IP address.\nIf ifi is nil, ListenMulticastUDP uses the system-assigned\nmulticast interface, although this is not recommended because the\nassignment depends on platforms and sometimes it might require\nrouting configuration.\nIf the Port field of gaddr is 0, a port number is automatically\nchosen.\n\nListenMulticastUDP is just for convenience of simple, small\napplications. There are golang.org/x/net/ipv4 and\ngolang.org/x/net/ipv6 packages for general purpose uses.\n\nGo input arguments: (network string, ifi *Interface, gaddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^refToInterface ifi, ^refToUDPAddr gaddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenMulticastUDP(_v_network, _v_ifi, _v_gaddr)"}
   [^String _v_network, ^go.std.net/Interface _v_ifi, ^go.std.net/UDPAddr _v_gaddr])
@@ -653,28 +653,28 @@ JOKER FUNC net.ListenPacket from net/dial.go:
 
 JOKER FUNC net.ListenTCP from net/tcpsock.go:
 (defn ListenTCP
-  "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *TCPAddr)\n\nGo returns: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToTCPAddr laddr]\n\nJoker returns: [^refToTCPListener, ^Error]"
+  "ListenTCP acts like Listen for TCP networks.\n\nThe network must be a TCP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenTCP listens on all available unicast and anycast IP addresses\nof the local system.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *TCPAddr)\n\nGo returns: (*TCPListener, error)\n\nJoker input arguments: [^String network, ^refToTCPAddr laddr]\n\nJoker returns: [^refToTCPListener, ^Error]"
   {:added "1.0"
    :go "_f_listenTCP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/TCPAddr _v_laddr])
 
 JOKER FUNC net.ListenUDP from net/udpsock.go:
 (defn ListenUDP
-  "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToUDPAddr laddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
+  "ListenUDP acts like ListenPacket for UDP networks.\n\nThe network must be a UDP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenUDP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\nIf the Port field of laddr is 0, a port number is automatically\nchosen.\n\nGo input arguments: (network string, laddr *UDPAddr)\n\nGo returns: (*UDPConn, error)\n\nJoker input arguments: [^String network, ^refToUDPAddr laddr]\n\nJoker returns: [^refToUDPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenUDP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UDPAddr _v_laddr])
 
 JOKER FUNC net.ListenUnix from net/unixsock.go:
 (defn ListenUnix
-  "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo returns: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToUnixAddr laddr]\n\nJoker returns: [^refToUnixListener, ^Error]"
+  "ListenUnix acts like Listen for Unix networks.\n\nThe network must be \"unix\" or \"unixpacket\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo returns: (*UnixListener, error)\n\nJoker input arguments: [^String network, ^refToUnixAddr laddr]\n\nJoker returns: [^refToUnixListener, ^Error]"
   {:added "1.0"
    :go "_f_listenUnix(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr])
 
 JOKER FUNC net.ListenUnixgram from net/unixsock.go:
 (defn ListenUnixgram
-  "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo returns: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToUnixAddr laddr]\n\nJoker returns: [^refToUnixConn, ^Error]"
+  "ListenUnixgram acts like ListenPacket for Unix networks.\n\nThe network must be \"unixgram\".\n\nGo input arguments: (network string, laddr *UnixAddr)\n\nGo returns: (*UnixConn, error)\n\nJoker input arguments: [^String network, ^refToUnixAddr laddr]\n\nJoker returns: [^refToUnixConn, ^Error]"
   {:added "1.0"
    :go "_f_listenUnixgram(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/UnixAddr _v_laddr])
@@ -2399,7 +2399,7 @@ JOKER FUNC net/http.NewServeMux from net/http/server.go:
 
 JOKER FUNC net/http.NotFound from net/http/server.go:
 (defn NotFound
-  "NotFound replies to the request with an HTTP 404 not found error.\n\nGo input arguments: (w ResponseWriter, r *Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.net.http/refToRequest r]"
+  "NotFound replies to the request with an HTTP 404 not found error.\n\nGo input arguments: (w ResponseWriter, r *Request)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^refToRequest r]"
   {:added "1.0"
    :go "_f_notFound(*_v_w, _v_r)"}
   [^go.std.net.http/ResponseWriter _v_w, ^go.std.net.http/Request _v_r])
@@ -2441,7 +2441,7 @@ JOKER FUNC net/http.PostForm from net/http/client.go:
 
 JOKER FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 (defn ProxyFromEnvironment
-  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo returns: (*net/url.URL, error)\n\nJoker input arguments: [^go.std.net.http/refToRequest req]\n\nJoker returns: [^go.std.net.url/refToURL, ^Error]"
+  "ProxyFromEnvironment returns the URL of the proxy to use for a\ngiven request, as indicated by the environment variables\nHTTP_PROXY, HTTPS_PROXY and NO_PROXY (or the lowercase versions\nthereof). HTTPS_PROXY takes precedence over HTTP_PROXY for https\nrequests.\n\nThe environment values may be either a complete URL or a\n\"host[:port]\", in which case the \"http\" scheme is assumed.\nAn error is returned if the value is a different form.\n\nA nil URL and nil error are returned if no proxy is defined in the\nenvironment, or a proxy should not be used for the given request,\nas defined by NO_PROXY.\n\nAs a special case, if req.URL.Host is \"localhost\" (with or without\na port number), then a nil URL and nil error will be returned.\n\nGo input arguments: (req *Request)\n\nGo returns: (*net/url.URL, error)\n\nJoker input arguments: [^refToRequest req]\n\nJoker returns: [^go.std.net.url/refToURL, ^Error]"
   {:added "1.0"
    :go "_f_proxyFromEnvironment(_v_req)"}
   [^go.std.net.http/Request _v_req])
@@ -2462,14 +2462,14 @@ JOKER FUNC net/http.ReadRequest from net/http/request.go:
 
 JOKER FUNC net/http.ReadResponse from net/http/response.go:
 (defn ReadResponse
-  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r, ^go.std.net.http/refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
+  "ReadResponse reads and returns an HTTP response from r.\nThe req parameter optionally specifies the Request that corresponds\nto this Response. If nil, a GET request is assumed.\nClients must call resp.Body.Close when finished reading resp.Body.\nAfter that call, clients can inspect resp.Trailer to find key/value\npairs included in the response trailer.\n\nGo input arguments: (r *bufio.Reader, req *Request)\n\nGo returns: (*Response, error)\n\nJoker input arguments: [^go.std.mime.multipart/refToForm r, ^refToRequest req]\n\nJoker returns: [^refToResponse, ^Error]"
   {:added "1.0"
    :go "_f_readResponse(_v_r, _v_req)"}
   [^go.std.bufio/Reader _v_r, ^go.std.net.http/Request _v_req])
 
 JOKER FUNC net/http.Redirect from net/http/server.go:
 (defn Redirect
-  "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n\nGo input arguments: (w ResponseWriter, r *Request, url string, code int)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.net.http/refToRequest r, ^String url, ^Int code]"
+  "Redirect replies to the request with a redirect to url,\nwhich may be a path relative to the request path.\n\nThe provided code should be in the 3xx range and is usually\nStatusMovedPermanently, StatusFound or StatusSeeOther.\n\nIf the Content-Type header has not been set, Redirect sets it\nto \"text/html; charset=utf-8\" and writes a small HTML body.\nSetting the Content-Type header to any value, including nil,\ndisables that behavior.\n\nGo input arguments: (w ResponseWriter, r *Request, url string, code int)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^refToRequest r, ^String url, ^Int code]"
   {:added "1.0"
    :go "_f_redirect(*_v_w, _v_r, _v_url, _v_code)"}
   [^go.std.net.http/ResponseWriter _v_w, ^go.std.net.http/Request _v_r, ^String _v_url, ^Int _v_code])
@@ -2490,14 +2490,14 @@ JOKER FUNC net/http.Serve from net/http/server.go:
 
 JOKER FUNC net/http.ServeContent from net/http/fs.go:
 (defn ServeContent
-  "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n\nGo input arguments: (w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.net.http/refToRequest req, ^String name, ^go.std.time/Time modtime, ^go.std.io/ReadSeeker content]"
+  "ServeContent replies to the request using the content in the\nprovided ReadSeeker. The main benefit of ServeContent over io.Copy\nis that it handles Range requests properly, sets the MIME type, and\nhandles If-Match, If-Unmodified-Since, If-None-Match, If-Modified-Since,\nand If-Range requests.\n\nIf the response's Content-Type header is not set, ServeContent\nfirst tries to deduce the type from name's file extension and,\nif that fails, falls back to reading the first block of the content\nand passing it to DetectContentType.\nThe name is otherwise unused; in particular it can be empty and is\nnever sent in the response.\n\nIf modtime is not the zero time or Unix epoch, ServeContent\nincludes it in a Last-Modified header in the response. If the\nrequest includes an If-Modified-Since header, ServeContent uses\nmodtime to decide whether the content needs to be sent at all.\n\nThe content's Seek method must work: ServeContent uses\na seek to the end of the content to determine its size.\n\nIf the caller has set w's ETag header formatted per RFC 7232, section 2.3,\nServeContent uses it to handle requests using If-Match, If-None-Match, or If-Range.\n\nNote that *os.File implements the io.ReadSeeker interface.\n\nGo input arguments: (w ResponseWriter, req *Request, name string, modtime time.Time, content io.ReadSeeker)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^refToRequest req, ^String name, ^go.std.time/Time modtime, ^go.std.io/ReadSeeker content]"
   {:added "1.0"
    :go "_f_serveContent(*_v_w, _v_req, _v_name, *_v_modtime, *_v_content)"}
   [^go.std.net.http/ResponseWriter _v_w, ^go.std.net.http/Request _v_req, ^String _v_name, ^go.std.time/Time _v_modtime, ^go.std.io/ReadSeeker _v_content])
 
 JOKER FUNC net/http.ServeFile from net/http/fs.go:
 (defn ServeFile
-  "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n\nGo input arguments: (w ResponseWriter, r *Request, name string)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.net.http/refToRequest r, ^String name]"
+  "ServeFile replies to the request with the contents of the named\nfile or directory.\n\nIf the provided file or directory name is a relative path, it is\ninterpreted relative to the current directory and may ascend to\nparent directories. If the provided name is constructed from user\ninput, it should be sanitized before calling ServeFile.\n\nAs a precaution, ServeFile will reject requests where r.URL.Path\ncontains a \"..\" path element; this protects against callers who\nmight unsafely use filepath.Join on r.URL.Path without sanitizing\nit and then use that filepath.Join result as the name argument.\n\nAs another special case, ServeFile redirects any request where r.URL.Path\nends in \"/index.html\" to the same path, without the final\n\"index.html\". To avoid such redirects either modify the path or\nuse ServeContent.\n\nOutside of those two special cases, ServeFile does not use\nr.URL.Path for selecting the file or directory to serve; only the\nfile or directory provided in the name argument is used.\n\nGo input arguments: (w ResponseWriter, r *Request, name string)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^refToRequest r, ^String name]"
   {:added "1.0"
    :go "_f_serveFile(*_v_w, _v_r, _v_name)"}
   [^go.std.net.http/ResponseWriter _v_w, ^go.std.net.http/Request _v_r, ^String _v_name])
@@ -2511,7 +2511,7 @@ JOKER FUNC net/http.ServeTLS from net/http/server.go:
 
 JOKER FUNC net/http.SetCookie from net/http/cookie.go:
 (defn SetCookie
-  "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n\nGo input arguments: (w ResponseWriter, cookie *Cookie)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^go.std.net.http/refToCookie cookie]"
+  "SetCookie adds a Set-Cookie header to the provided ResponseWriter's headers.\nThe provided cookie must have a valid Name. Invalid cookies may be\nsilently dropped.\n\nGo input arguments: (w ResponseWriter, cookie *Cookie)\n\nJoker input arguments: [^go.std.net.http/ResponseWriter w, ^refToCookie cookie]"
   {:added "1.0"
    :go "_f_setCookie(*_v_w, _v_cookie)"}
   [^go.std.net.http/ResponseWriter _v_w, ^go.std.net.http/Cookie _v_cookie])
@@ -2894,7 +2894,7 @@ JOKER TYPE net/http/cookiejar.Options from net/http/cookiejar/jar.go:
 JOKER TYPE net/http/cookiejar.PublicSuffixList from net/http/cookiejar/jar.go:
 JOKER FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
 (defn New
-  "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo returns: (*Jar, error)\n\nJoker input arguments: [^go.std.net.http.cookiejar/refToOptions o]\n\nJoker returns: [^refToJar, ^Error]"
+  "New returns a new cookie jar. A nil *Options is equivalent to a zero\nOptions.\n\nGo input arguments: (o *Options)\n\nGo returns: (*Jar, error)\n\nJoker input arguments: [^refToOptions o]\n\nJoker returns: [^refToJar, ^Error]"
   {:added "1.0"
    :go "_f_new(_v_o)"}
   [^go.std.net.http.cookiejar/Options _v_o])
@@ -3062,7 +3062,7 @@ JOKER FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.g
 
 JOKER FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 ;; (defn WithClientTrace
-;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: context.ABEND002(reference to unavailable package context at _tests/big/src/net/http/httptrace/trace.go:34:63)\n\nJoker input arguments: [^go.std.context/Context ctx, ^go.std.net.http.httptrace/refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
+;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: context.ABEND002(reference to unavailable package context at _tests/big/src/net/http/httptrace/trace.go:34:63)\n\nJoker input arguments: [^go.std.context/Context ctx, ^refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
 ;;   {:added "1.0"
 ;;    :go "_f_withClientTrace(*_v_ctx, _v_trace)"}
 ;;   [^go.std.context/Context _v_ctx, ^go.std.net.http.httptrace/ClientTrace _v_trace])

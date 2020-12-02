@@ -157,28 +157,28 @@ JOKER FUNC net.CIDRMask from net/ip.go:
 
 JOKER FUNC net.DialIP from net/iprawsock.go:
 (defn DialIP
-  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToIPAddr laddr, ^go.std.net/refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
+  "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr, ^refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialIP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr, ^go.std.net/IPAddr _v_raddr])
 
 JOKER FUNC net.IPv4 from net/ip.go:
 (defn IPv4
-  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IP\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker returns: ^IP"
+  "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IP"
   {:added "1.0"
    :go "_f_iPv4(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
 
 JOKER FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
-  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IPMask\n\nJoker input arguments: [^Int a, ^Int b, ^Int c, ^Int d]\n\nJoker returns: ^IPMask"
+  "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IPMask"
   {:added "1.0"
    :go "_f_iPv4Mask(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
 
 JOKER FUNC net.ListenIP from net/iprawsock.go:
 (defn ListenIP
-  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^go.std.net/refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
+  "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenIP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/IPAddr _v_laddr])
