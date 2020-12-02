@@ -164,7 +164,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		extractParam := ""
 		ti := TypeInfoForExpr(e)
 		clType = ti.ArgExtractFunc()
-		clTypeDoc = ti.ArgClojureArgType()
+		clTypeDoc = ti.JokerNameDoc(e)
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
@@ -225,7 +225,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			clType = "Object"
 		}
 		if clTypeDoc == "" {
-			clTypeDoc = ti.ArgClojureArgType()
+			clTypeDoc = ti.JokerNameDoc(e)
 		}
 		if clTypeDoc == "" {
 			clTypeDoc = clType
