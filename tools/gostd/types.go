@@ -391,8 +391,8 @@ func SortAllTypes() {
 	sort.SliceStable(allTypesSorted, func(i, j int) bool {
 		i_gti := allTypesSorted[i].GoTypeInfo()
 		j_gti := allTypesSorted[j].GoTypeInfo()
-		if i_gti.Specificity != j_gti.Specificity {
-			return i_gti.Specificity > j_gti.Specificity
+		if iSpecificity, jSpecificity := i_gti.Specificity, j_gti.Specificity; i != j {
+			return iSpecificity > jSpecificity
 		}
 		return i_gti.FullName < j_gti.FullName
 	})
