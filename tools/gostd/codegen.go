@@ -248,6 +248,7 @@ func %s(o GoObject, args Object) Object {  // %s
 			params = fn.Fd.Type.Params
 		}
 		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
+		//		fmt.Printf("codegen.go/GenReceiver: Added %s to %s\n", goFname, pkgDirUnix)
 	}
 }
 
@@ -531,16 +532,19 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 				panic("Why no Type field??")
 			}
 			for _, n := range m.Names {
-				fullName := ti.GoBaseName() + "_" + n.Name
+				typeFullName := ti.GoName()
+				fullName := typeFullName + "_" + n.Name
+				typeBaseName := ti.GoBaseName()
+				baseName := typeBaseName + "_" + n.Name
 				doc := m.Doc
 				if doc == nil {
 					doc = m.Comment
 				}
 				QualifiedFunctions[fullName] = &FuncInfo{
 					BaseName:   n.Name,
-					ReceiverId: "{{myGoImport}}." + ti.GoBaseName(),
-					Name:       fullName,
-					DocName:    "(" + ti.GoFile().Package.Dir.String() + "." + ti.GoBaseName() + ")" + n.Name + "()",
+					ReceiverId: "{{myGoImport}}." + typeBaseName,
+					Name:       baseName,
+					DocName:    "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + n.Name + "()",
 					Fd:         nil,
 					ToM:        ti,
 					Ft:         m.Type.(*FuncType),

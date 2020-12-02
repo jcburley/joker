@@ -321,6 +321,7 @@ func main() {
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {
+			//			fmt.Printf("main.go: Qualifiedfunctions[%s]\n", f)
 			if v.Fd != nil && v.Fd.Recv == nil {
 				GenStandalone(v)
 			} else {

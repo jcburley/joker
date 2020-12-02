@@ -164,6 +164,7 @@ func (ti *Info) NameDoc(e Expr) string {
 		return ti.FullName
 	}
 	if e != nil && ClojureNamespaceForExpr(e) != ti.Namespace {
+		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s\n", e, WhereAt(e.Pos()), ti.FullName)
 		return ti.FullName
 	}
 	return fmt.Sprintf(ti.Pattern, ti.BaseName)
