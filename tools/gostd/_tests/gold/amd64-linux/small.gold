@@ -2222,14 +2222,8 @@ GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 // }
 
 GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
-func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-	CheckGoArity("(*net.IPConn)SyscallConn()", args, 0, 0)
-	_res1, _res2 := o.O.(*net.IPConn).SyscallConn()
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
+// (syscall.ABEND002(reference to unavailable package syscall at _tests/small/src/net/iprawsock.go:105:33), error)}
 
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
@@ -2749,7 +2743,6 @@ GO INFO FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:9
 		GoType: &GoType{T: &info_PtrTo_IPConn},
 		Ctor: _Wrapped_Ctor_IPConn,
 		Members: GoMembers{
-			"SyscallConn": MakeGoReceiver("SyscallConn", _f_ptrTo_IPConn_SyscallConn, "SyscallConn returns a raw network connection.\nThis implements the syscall.Conn interface.\n", "1.0", NewVectorFrom()),
 		},
 	}
 
@@ -2966,118 +2959,118 @@ GO VECSET FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	GoTypesVec[50] = &info_Addr
 
 GO VECSET FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
-	GoTypesVec[24] = &info_AddrError
+	GoTypesVec[21] = &info_AddrError
 
 GO VECSET FOR TYPE go.std.net/refToAddrError from _tests/small/src/net/net.go:529:6:
-	GoTypesVec[8] = &info_PtrTo_AddrError
+	GoTypesVec[18] = &info_PtrTo_AddrError
 
 GO VECSET FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
-	GoTypesVec[40] = &info_Buffers
+	GoTypesVec[36] = &info_Buffers
 
 GO VECSET FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
-	GoTypesVec[44] = &info_PtrTo_Buffers
+	GoTypesVec[37] = &info_PtrTo_Buffers
 
 GO VECSET FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	GoTypesVec[46] = &info_Conn
 
 GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
-	GoTypesVec[35] = &info_DNSConfigError
+	GoTypesVec[26] = &info_DNSConfigError
 
 GO VECSET FOR TYPE go.std.net/refToDNSConfigError from _tests/small/src/net/net.go:562:6:
-	GoTypesVec[16] = &info_PtrTo_DNSConfigError
+	GoTypesVec[15] = &info_PtrTo_DNSConfigError
 
 GO VECSET FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
-	GoTypesVec[13] = &info_DNSError
+	GoTypesVec[41] = &info_DNSError
 
 GO VECSET FOR TYPE go.std.net/refToDNSError from _tests/small/src/net/net.go:576:6:
-	GoTypesVec[17] = &info_PtrTo_DNSError
+	GoTypesVec[27] = &info_PtrTo_DNSError
 
 GO VECSET FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	GoTypesVec[48] = &info_Error
 
 GO VECSET FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
-	GoTypesVec[7] = &info_IP
+	GoTypesVec[29] = &info_IP
 
 GO VECSET FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
-	GoTypesVec[33] = &info_PtrTo_IP
+	GoTypesVec[19] = &info_PtrTo_IP
 
 GO VECSET FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
-	GoTypesVec[27] = &info_IPAddr
+	GoTypesVec[0] = &info_IPAddr
 
 GO VECSET FOR TYPE go.std.net/refToIPAddr from _tests/small/src/net/iprawsock.go:31:6:
-	GoTypesVec[21] = &info_PtrTo_IPAddr
+	GoTypesVec[30] = &info_PtrTo_IPAddr
 
 GO VECSET FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
-	GoTypesVec[34] = &info_IPConn
+	GoTypesVec[35] = &info_IPConn
 
 GO VECSET FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:99:6:
-	GoTypesVec[45] = &info_PtrTo_IPConn
+	GoTypesVec[1] = &info_PtrTo_IPConn
 
 GO VECSET FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
-	GoTypesVec[1] = &info_IPMask
+	GoTypesVec[13] = &info_IPMask
 
 GO VECSET FOR TYPE go.std.net/refToIPMask from _tests/small/src/net/ip.go:35:6:
-	GoTypesVec[25] = &info_PtrTo_IPMask
+	GoTypesVec[33] = &info_PtrTo_IPMask
 
 GO VECSET FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
-	GoTypesVec[26] = &info_IPNet
+	GoTypesVec[23] = &info_IPNet
 
 GO VECSET FOR TYPE go.std.net/refToIPNet from _tests/small/src/net/ip.go:38:6:
-	GoTypesVec[30] = &info_PtrTo_IPNet
+	GoTypesVec[34] = &info_PtrTo_IPNet
 
 GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
-	GoTypesVec[43] = &info_InvalidAddrError
+	GoTypesVec[25] = &info_InvalidAddrError
 
 GO VECSET FOR TYPE go.std.net/refToInvalidAddrError from _tests/small/src/net/net.go:554:6:
-	GoTypesVec[19] = &info_PtrTo_InvalidAddrError
+	GoTypesVec[40] = &info_PtrTo_InvalidAddrError
 
 GO VECSET FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	GoTypesVec[49] = &info_Listener
 
 GO VECSET FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
-	GoTypesVec[0] = &info_MX
+	GoTypesVec[5] = &info_MX
 
 GO VECSET FOR TYPE go.std.net/refToMX from _tests/small/src/net/dnsclient.go:193:6:
-	GoTypesVec[14] = &info_PtrTo_MX
+	GoTypesVec[2] = &info_PtrTo_MX
 
 GO VECSET FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
-	GoTypesVec[10] = &info_NS
+	GoTypesVec[43] = &info_NS
 
 GO VECSET FOR TYPE go.std.net/refToNS from _tests/small/src/net/dnsclient.go:215:6:
-	GoTypesVec[37] = &info_PtrTo_NS
+	GoTypesVec[38] = &info_PtrTo_NS
 
 GO VECSET FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
-	GoTypesVec[23] = &info_OpError
+	GoTypesVec[14] = &info_OpError
 
 GO VECSET FOR TYPE go.std.net/refToOpError from _tests/small/src/net/net.go:425:6:
-	GoTypesVec[12] = &info_PtrTo_OpError
+	GoTypesVec[9] = &info_PtrTo_OpError
 
 GO VECSET FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	GoTypesVec[47] = &info_PacketConn
 
 GO VECSET FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
-	GoTypesVec[32] = &info_ParseError
+	GoTypesVec[31] = &info_ParseError
 
 GO VECSET FOR TYPE go.std.net/refToParseError from _tests/small/src/net/net.go:518:6:
-	GoTypesVec[3] = &info_PtrTo_ParseError
+	GoTypesVec[42] = &info_PtrTo_ParseError
 
 GO VECSET FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
-	GoTypesVec[2] = &info_Resolver
+	GoTypesVec[8] = &info_Resolver
 
 GO VECSET FOR TYPE go.std.net/refToResolver from _tests/small/src/net/lookup.go:107:6:
-	GoTypesVec[38] = &info_PtrTo_Resolver
+	GoTypesVec[24] = &info_PtrTo_Resolver
 
 GO VECSET FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
-	GoTypesVec[20] = &info_SRV
+	GoTypesVec[4] = &info_SRV
 
 GO VECSET FOR TYPE go.std.net/refToSRV from _tests/small/src/net/dnsclient.go:139:6:
-	GoTypesVec[18] = &info_PtrTo_SRV
+	GoTypesVec[10] = &info_PtrTo_SRV
 
 GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
-	GoTypesVec[36] = &info_UnknownNetworkError
+	GoTypesVec[7] = &info_UnknownNetworkError
 
 GO VECSET FOR TYPE go.std.net/refToUnknownNetworkError from _tests/small/src/net/net.go:548:6:
-	GoTypesVec[42] = &info_PtrTo_UnknownNetworkError
+	GoTypesVec[20] = &info_PtrTo_UnknownNetworkError
 
 GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/small/src/net/iprawsock.go:8:2
@@ -3750,40 +3743,40 @@ GO INFO FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go
 
 
 GO VECSET FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
-	GoTypesVec[28] = &info_Error
+	GoTypesVec[44] = &info_Error
 
 GO VECSET FOR TYPE go.std.net.url/refToError from _tests/small/src/net/url/url.go:22:6:
-	GoTypesVec[4] = &info_PtrTo_Error
+	GoTypesVec[16] = &info_PtrTo_Error
 
 GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
-	GoTypesVec[6] = &info_EscapeError
+	GoTypesVec[11] = &info_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/refToEscapeError from _tests/small/src/net/url/url.go:84:6:
-	GoTypesVec[29] = &info_PtrTo_EscapeError
+	GoTypesVec[32] = &info_PtrTo_EscapeError
 
 GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
-	GoTypesVec[15] = &info_InvalidHostError
+	GoTypesVec[17] = &info_InvalidHostError
 
 GO VECSET FOR TYPE go.std.net.url/refToInvalidHostError from _tests/small/src/net/url/url.go:90:6:
-	GoTypesVec[5] = &info_PtrTo_InvalidHostError
+	GoTypesVec[39] = &info_PtrTo_InvalidHostError
 
 GO VECSET FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
-	GoTypesVec[31] = &info_URL
+	GoTypesVec[3] = &info_URL
 
 GO VECSET FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:344:6:
-	GoTypesVec[39] = &info_PtrTo_URL
+	GoTypesVec[28] = &info_PtrTo_URL
 
 GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
-	GoTypesVec[41] = &info_Userinfo
+	GoTypesVec[45] = &info_Userinfo
 
 GO VECSET FOR TYPE go.std.net.url/refToUserinfo from _tests/small/src/net/url/url.go:378:6:
-	GoTypesVec[11] = &info_PtrTo_Userinfo
+	GoTypesVec[6] = &info_PtrTo_Userinfo
 
 GO VECSET FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 	GoTypesVec[22] = &info_Values
 
 GO VECSET FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go:804:6:
-	GoTypesVec[9] = &info_PtrTo_Values
+	GoTypesVec[12] = &info_PtrTo_Values
 
 GO ENSURE-LOADED FOR url:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/small/src/net/url/url.go:14:2
@@ -3820,97 +3813,97 @@ var GoTypesVec [51]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-	case net.MX:
+	case net.IPAddr:
 		return 0
-	case net.IPMask:
+	case *net.IPConn:
 		return 1
-	case net.Resolver:
-		return 2
-	case *net.ParseError:
-		return 3
-	case *url.Error:
-		return 4
-	case *url.InvalidHostError:
-		return 5
-	case url.EscapeError:
-		return 6
-	case net.IP:
-		return 7
-	case *net.AddrError:
-		return 8
-	case *url.Values:
-		return 9
-	case net.NS:
-		return 10
-	case *url.Userinfo:
-		return 11
-	case *net.OpError:
-		return 12
-	case net.DNSError:
-		return 13
 	case *net.MX:
-		return 14
-	case url.InvalidHostError:
-		return 15
-	case *net.DNSConfigError:
-		return 16
-	case *net.DNSError:
-		return 17
-	case *net.SRV:
-		return 18
-	case *net.InvalidAddrError:
-		return 19
+		return 2
+	case url.URL:
+		return 3
 	case net.SRV:
+		return 4
+	case net.MX:
+		return 5
+	case *url.Userinfo:
+		return 6
+	case net.UnknownNetworkError:
+		return 7
+	case net.Resolver:
+		return 8
+	case *net.OpError:
+		return 9
+	case *net.SRV:
+		return 10
+	case url.EscapeError:
+		return 11
+	case *url.Values:
+		return 12
+	case net.IPMask:
+		return 13
+	case net.OpError:
+		return 14
+	case *net.DNSConfigError:
+		return 15
+	case *url.Error:
+		return 16
+	case url.InvalidHostError:
+		return 17
+	case *net.AddrError:
+		return 18
+	case *net.IP:
+		return 19
+	case *net.UnknownNetworkError:
 		return 20
-	case *net.IPAddr:
+	case net.AddrError:
 		return 21
 	case url.Values:
 		return 22
-	case net.OpError:
-		return 23
-	case net.AddrError:
-		return 24
-	case *net.IPMask:
-		return 25
 	case net.IPNet:
-		return 26
-	case net.IPAddr:
-		return 27
-	case url.Error:
-		return 28
-	case *url.EscapeError:
-		return 29
-	case *net.IPNet:
-		return 30
-	case url.URL:
-		return 31
-	case net.ParseError:
-		return 32
-	case *net.IP:
-		return 33
-	case net.IPConn:
-		return 34
-	case net.DNSConfigError:
-		return 35
-	case net.UnknownNetworkError:
-		return 36
-	case *net.NS:
-		return 37
+		return 23
 	case *net.Resolver:
-		return 38
-	case *url.URL:
-		return 39
-	case net.Buffers:
-		return 40
-	case url.Userinfo:
-		return 41
-	case *net.UnknownNetworkError:
-		return 42
+		return 24
 	case net.InvalidAddrError:
-		return 43
+		return 25
+	case net.DNSConfigError:
+		return 26
+	case *net.DNSError:
+		return 27
+	case *url.URL:
+		return 28
+	case net.IP:
+		return 29
+	case *net.IPAddr:
+		return 30
+	case net.ParseError:
+		return 31
+	case *url.EscapeError:
+		return 32
+	case *net.IPMask:
+		return 33
+	case *net.IPNet:
+		return 34
+	case net.IPConn:
+		return 35
+	case net.Buffers:
+		return 36
 	case *net.Buffers:
+		return 37
+	case *net.NS:
+		return 38
+	case *url.InvalidHostError:
+		return 39
+	case *net.InvalidAddrError:
+		return 40
+	case net.DNSError:
+		return 41
+	case *net.ParseError:
+		return 42
+	case net.NS:
+		return 43
+	case url.Error:
 		return 44
-	case *net.IPConn:
+	case url.Userinfo:
 		return 45
 	case net.Conn:  // Specificity=8
 		return 46
@@ -3925,10 +3918,10 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 644(34) 048(12) 001(10) 041(8) 674(8) 275(3) 049(2) 124(1)
-Totals: functions=132 generated=98 (74.24%)
+ABENDs: 644(34) 048(12) 001(10) 041(8) 674(8) 275(3) 049(2) 002(1) 124(1)
+Totals: functions=132 generated=97 (73.48%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
-          receivers=83 (62.88%) generated=60 (72.29%)
+          receivers=83 (62.88%) generated=59 (71.08%)
           methods=23 (17.42%) generated=12 (52.17%)
         types=51
           constructable=46 ctors=28 (60.87%)

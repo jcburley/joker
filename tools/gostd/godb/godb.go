@@ -194,6 +194,11 @@ var GoFilesRelative = map[string]*GoFile{}
 // Map absolute (Unix-style) filenames to objects with info on them.
 var GoFilesAbsolute = map[string]*GoFile{}
 
+func IsAvailable(p paths.UnixPath) (available bool) {
+	_, available = packagesByUnixPath[p.String()]
+	return
+}
+
 func GoFileForPos(p token.Pos) *GoFile {
 	fullPathUnix := Unix(Fset.Position(p).Filename)
 

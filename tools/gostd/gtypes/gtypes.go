@@ -313,6 +313,9 @@ func InfoForExpr(e Expr) *Info {
 		fullPathUnix := utils.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
 		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+			if !godb.IsAvailable(fullPkgName) {
+				localName = fmt.Sprintf("ABEND002(reference to unavailable package %s at %s)", fullPkgName, godb.WhereAt(v.Pos()))
+			}
 			fullName = fullPkgName.String() + "." + localName
 		} else {
 			panic(fmt.Sprintf("processing %s: could not find %s in %s",
