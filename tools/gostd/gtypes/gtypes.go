@@ -34,7 +34,7 @@ type Info struct {
 	IsBuiltin      bool
 }
 
-func combine(pkg, name string) string {
+func Combine(pkg, name string) string {
 	if pkg == "" {
 		return name
 	}
@@ -49,7 +49,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	if pattern == "" {
 		pattern = "%s"
 	}
-	fullName := fmt.Sprintf(pattern, combine(pkg, name))
+	fullName := fmt.Sprintf(pattern, Combine(pkg, name))
 
 	if info, found := typesByFullName[fullName]; found {
 		return info
@@ -137,7 +137,7 @@ func specificity(ts *TypeSpec) uint {
 func (ti *Info) computeFullName() string {
 	n := ti.FullName
 	if n == "" {
-		n = fmt.Sprintf(ti.Pattern, combine(ti.Package, ti.LocalName))
+		n = fmt.Sprintf(ti.Pattern, Combine(ti.Package, ti.LocalName))
 		ti.FullName = n
 	}
 	return n
@@ -256,7 +256,7 @@ func InfoForExpr(e Expr) *Info {
 
 	if id, yes := e.(*Ident); yes {
 		pkg := godb.GoPackageForExpr(e)
-		fullName = combine(pkg, id.Name)
+		fullName = Combine(pkg, id.Name)
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti

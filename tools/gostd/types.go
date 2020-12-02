@@ -402,14 +402,8 @@ func AllTypesSorted() []TypeInfo {
 	return allTypesSorted
 }
 
-func typeKeyForSort(k string) string {
-	if strings.HasPrefix(k, "*") {
-		return k[1:] + "*"
-	}
-	if strings.HasPrefix(k, "[]") {
-		return k[2:] + "[]"
-	}
-	return k
+func typeKeyForSort(ti TypeInfo) string {
+	return gtypes.Combine(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
 }
 
 func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
@@ -423,7 +417,7 @@ func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
 		}
 	}
 	sort.SliceStable(keys, func(i, j int) bool {
-		return typeKeyForSort(keys[i]) < typeKeyForSort(keys[j])
+		return typeKeyForSort(vals[keys[i]]) < typeKeyForSort(vals[keys[j]])
 	})
 	for _, k := range keys {
 		f(vals[k])
