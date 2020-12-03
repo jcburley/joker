@@ -292,7 +292,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 %s    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.GoPattern(), ti.GoBaseName()))
+				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.JokerPattern(), ti.JokerBaseName()))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
 					ti.JokerName(), fnCode)
