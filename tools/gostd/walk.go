@@ -464,7 +464,10 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 	}
 	ti := TypeInfoForGoName(typeName)
 	if ti == nil || ti.ArgClojureArgType() == "" || ti.PromoteType() == "" {
-		fmt.Fprintf(os.Stderr, "walk.go/determineType: bad type `%s'\n", typeName)
+		if typeName == "Errno" { // Special-case syscall/zerrors_*.go
+			return "Number", "uint64(%s)"
+		}
+		fmt.Fprintf(os.Stderr, "walk.go/determineType: bad type `%s' at %s\n", typeName, godb.WhereAt(val.Pos()))
 		return "", ""
 	}
 	return ti.ArgClojureArgType(), fmt.Sprintf(ti.PromoteType(), innerPromotion)
