@@ -324,7 +324,7 @@
 
 (defn gostd-commit-info
   []
-  (commit-with-tag "HEAD" (os/get-env "GOSTD_TAG")))
+  (commit-with-tag "HEAD" (or (os/get-env "GOSTD_TAG") "")))
 
 (defn joker-commit-info
   []
