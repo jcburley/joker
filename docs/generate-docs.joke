@@ -312,9 +312,11 @@
       (sub-fn r))))
 
 (defn commit-with-tag
-  ([branch] (commit-with-tag branch (fn [r] "")))
-  ([branch sub-fn]
-   (let [t (shell-or-substitute sub-fn "git" "describe" "--exact-match" "--tags" "--abbrev=0" branch)
+  ([branch] (commit-with-tag branch ""))
+  ([branch tag]
+   (let [t (if (= tag "")
+             (shell-or-substitute (fn [r] "") "git" "describe" "--exact-match" "--tags" "--abbrev=0" branch)
+             tag)
          c (shell-or-substitute (fn [r] (s/trim (:err r))) "git" "rev-parse" "--short" branch)]
      (if (= t "")
        c
@@ -322,7 +324,7 @@
 
 (defn gostd-commit-info
   []
-  (commit-with-tag "HEAD" (fn [r] (os/get-env "GOSTD_TAG"))))
+  (commit-with-tag "HEAD" (os/get-env "GOSTD_TAG")))
 
 (defn joker-commit-info
   []
