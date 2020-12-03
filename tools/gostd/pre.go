@@ -177,10 +177,10 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 				clType = fmt.Sprintf("ABEND044(pre.go: unsupported built-in type %s)", v.Name)
 				clTypeDoc = v.Name
 			} else {
-				clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
+				clType, _, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
-			if clTypeDoc != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(clTypeDoc), fn.DocName, paramName, argNum)
+			if ti.JokerName() != "" {
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.JokerName()), fn.DocName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {

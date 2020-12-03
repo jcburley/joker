@@ -164,10 +164,12 @@ func (ti *Info) NameDoc(e Expr) string {
 		return ti.FullName
 	}
 	if e != nil && ClojureNamespaceForExpr(e) != ti.Namespace {
-		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s\n", e, WhereAt(e.Pos()), ti.FullName)
+		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), ti.FullName, ti.Namespace, ClojureNamespaceForExpr(e))
 		return ti.FullName
 	}
-	return fmt.Sprintf(ti.Pattern, ti.BaseName)
+	res := fmt.Sprintf(ti.Pattern, ti.BaseName)
+	//	fmt.Printf("jtypes.NameDoc(%+v at %s) => just %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), res, ti.Namespace, ClojureNamespaceForExpr(e))
+	return res
 }
 
 func (ti *Info) register() {
