@@ -322,7 +322,7 @@
 
 (defn gostd-commit-info
   []
-  (commit-with-tag "HEAD" (fn [r] (get (os/env) "GOSTD_TAG"))))
+  (commit-with-tag "HEAD" (fn [r] (os/get-env "GOSTD_TAG"))))
 
 (defn joker-commit-info
   []
