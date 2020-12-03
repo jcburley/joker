@@ -82,13 +82,13 @@ func goPackageForDirname(dirName string) (pkg, prefix string) {
 }
 
 func GoFilenameForPos(p token.Pos) string {
-	fileName := filepath.ToSlash(Fset.Position(p).Filename)
-	dirName := filepath.Dir(fileName)
+	fn := Fset.Position(p).Filename
+	dirName := filepath.ToSlash(filepath.Dir(fn))
 	pkg, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s", dirName))
 	}
-	return filepath.Join(pkg, filepath.Base(fileName))
+	return filepath.ToSlash(filepath.Join(pkg, filepath.Base(fn)))
 }
 
 func GoFilenameForExpr(e Expr) string {
