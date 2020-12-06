@@ -333,12 +333,14 @@ func InfoForExpr(e Expr) *Info {
 		}
 		localName += " " + ty.RelativeName(e.Pos())
 	case *StructType:
-		localName = "struct{}"
+		localName = "struct{}" // TODO: add more info here
+	case *FuncType:
+		localName = "func{}" // TODO: add more info here
 	}
 
 	if innerInfo == nil {
 		if localName == "" && fullName == "" {
-			localName = fmt.Sprintf("ABEND001(NO GO NAME for %T)", e)
+			localName = fmt.Sprintf("ABEND001(gtypes.go:NO GO NAME for %T)", e)
 		}
 		if fullName != "" {
 			if ti, ok := typesByFullName[fullName]; ok {
