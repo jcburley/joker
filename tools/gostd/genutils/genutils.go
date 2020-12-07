@@ -111,7 +111,7 @@ func CombineGoName(pkg, name string) string {
 	return pkg + "." + name
 }
 
-func CombineJokerName(ns, name string) string {
+func CombineClojureName(ns, name string) string {
 	if ns == "" {
 		return name
 	}

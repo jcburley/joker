@@ -210,7 +210,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
-		// Concrete types get reference-to variants, allowing Joker code to access them.
+		// Concrete types get reference-to variants, allowing Clojure code to access them.
 		tiPtrTo := &Info{
 			Expr:           &StarExpr{X: nil},
 			who:            "*TypeDefine*",

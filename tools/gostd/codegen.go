@@ -211,7 +211,7 @@ func %s(o GoObject, args Object) Object {  // %s
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		im := PackagesInfo[pkgDirUnix].ImportsNative
 		imports.Promote(fn.Imports, im, fn.Pos)
-		imports.Add(im, ".", godb.JokerCoreDir, "", "", false, fn.Pos)
+		imports.Add(im, ".", godb.ClojureCoreDir, "", "", false, fn.Pos)
 		myGoImport := imports.Add(im, "", pkgDirUnix, "", "", true, fn.Pos)
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
@@ -312,7 +312,7 @@ func %s(%s) %s {
 		pi := PackagesInfo[pkgDirUnix]
 		pi.NonEmpty = true
 		if clojureReturnType == "" {
-			imports.Add(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, fn.Pos)
+			imports.Add(pi.ImportsNative, ".", godb.ClojureCoreDir, "", "", false, fn.Pos)
 			myGoImport := imports.Add(pi.ImportsNative, "", pkgDirUnix, "", "", true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			imports.Promote(fn.Imports, pi.ImportsNative, fn.Pos)
@@ -431,7 +431,7 @@ func GenType(t string, ti TypeInfo) {
 	pi.NonEmpty = true
 	where := ts.Pos()
 
-	imports.Add(pi.ImportsNative, ".", godb.JokerCoreDir, "", "", false, where)
+	imports.Add(pi.ImportsNative, ".", godb.ClojureCoreDir, "", "", false, where)
 	myGoImport := imports.Add(pi.ImportsNative, "", pkgDirUnix, "", "", true, where)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
@@ -516,7 +516,7 @@ func %s(_o Object) Object {
 
 	Ctors[tyi] = goConstructor
 
-	//	fmt.Printf("codegen.go/genCtor: %s %+v\n", tyi, tyi.JokerTypeInfo())
+	//	fmt.Printf("codegen.go/genCtor: %s %+v\n", tyi, tyi.ClojureTypeInfo())
 }
 
 func appendMethods(ti TypeInfo, iface *InterfaceType) {
@@ -576,7 +576,7 @@ func GenTypeInfo() {
 	for _, ti := range allTypesSorted {
 		if !ti.Custom() {
 			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
-				//				fmt.Printf("codegen.go/GenTypeInfo: no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+				//				fmt.Printf("codegen.go/GenTypeInfo: no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 				continue
 			}
 		}
@@ -590,11 +590,11 @@ func GenTypeInfo() {
 }
 
 func GenTypeFromDb(ti TypeInfo) {
-	if ti.JokerName() == "crypto/Hash" || true {
-		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.JokerName(), ti, ti, ti.JokerTypeInfo(), ti.JokerTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+	if ti.ClojureName() == "crypto/Hash" || true {
+		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 	}
 
-	if !ti.IsExported() || strings.Contains(ti.JokerName(), "[") {
+	if !ti.IsExported() || strings.Contains(ti.ClojureName(), "[") {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
 		return // Do not generate anything for private or array types
 	}
@@ -609,7 +609,7 @@ func GenTypeFromDb(ti TypeInfo) {
 		if uti := ti.UnderlyingTypeInfo(); uti != nil {
 			ts = uti.TypeSpec()
 		} else {
-			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.JokerName())
+			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.ClojureName())
 			return
 		}
 	}

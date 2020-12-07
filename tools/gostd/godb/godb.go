@@ -14,11 +14,11 @@ import (
 	. "strings"
 )
 
-// Root of Joker source tree for generated import lines (so, using Unix path syntax).
-var JokerSourceDir = "github.com/candid82/joker"
+// Root of Clojure source tree for generated import lines (so, using Unix path syntax).
+var ClojureSourceDir = "github.com/candid82/joker"
 
-// Joker source tree's core directory for generated import lines (so, using Unix path syntax).
-var JokerCoreDir = path.Join(JokerSourceDir, "core")
+// Clojure source tree's core directory for generated import lines (so, using Unix path syntax).
+var ClojureCoreDir = path.Join(ClojureSourceDir, "core")
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
 // import lines to the given host-syntax path, with the local path
@@ -26,12 +26,12 @@ var JokerCoreDir = path.Join(JokerSourceDir, "core")
 // Abs(p)=="/home/me/go/src/github.com/candid82/joker", then the
 // resulting root for import lines would be
 // "github.com/candid82/joker".
-func SetJokerSourceDir(p string, r string) {
+func SetClojureSourceDir(p string, r string) {
 	abs, err := filepath.Abs(p)
 	Check(err)
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
-	JokerSourceDir = filepath.ToSlash(imp)
-	JokerCoreDir = path.Join(JokerSourceDir, "core")
+	ClojureSourceDir = filepath.ToSlash(imp)
+	ClojureCoreDir = path.Join(ClojureSourceDir, "core")
 }
 
 var Fset *token.FileSet

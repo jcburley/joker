@@ -14,19 +14,19 @@ func maybeNil(expr, captureName string) string {
 
 func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
 	ti := TypeInfoForExpr(e)
-	if ti.AsJokerObject() == "" {
+	if ti.AsClojureObject() == "" {
 		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
 		cl = "GoObject"
 	} else {
-		out = "Make" + fmt.Sprintf(ti.AsJokerObject(), captureName, "")
+		out = "Make" + fmt.Sprintf(ti.AsClojureObject(), captureName, "")
 		cl = ti.ArgExtractFunc()
 		clDoc = ti.ArgClojureArgType()
 	}
 	if ti.IsNullable() {
 		out = maybeNil(captureName, out)
 	}
-	cl = ti.JokerName()
-	clDoc = ti.JokerNameDoc(e)
+	cl = ti.ClojureName()
+	clDoc = ti.ClojureNameDoc(e)
 	gol = ti.GoNameDoc(e)
 	conversion = ti.PromoteType()
 

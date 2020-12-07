@@ -141,7 +141,7 @@ func QuotedImportList(pi *Imports, prefix string) string {
 	return imports
 }
 
-func JokerGoImportsMap(pi *Imports) string {
+func ClojureGoImportsMap(pi *Imports) string {
 	imports := []string{}
 	sortedImports(pi,
 		func(k string, v *Import) {

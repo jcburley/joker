@@ -53,7 +53,7 @@ Options:
   --verbose, -v               # Print info on what's going on
   --summary                   # Print summary of #s of types, functions, etc.
   --output-code               # Print generated code to stdout (used by test.sh)
-  --empty                     # Generate empty packages (those with no Joker code)
+  --empty                     # Generate empty packages (those with no Clojure code)
   --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp              # Don't put the time (and version) info in generated/modified files
   --undo                      # Undo effects of --joker ...
@@ -224,15 +224,15 @@ func main() {
 	}
 
 	if jokerSourceDir != "" && jokerImportDir == "" {
-		godb.SetJokerSourceDir(jokerSourceDir, goSourcePath)
+		godb.SetClojureSourceDir(jokerSourceDir, goSourcePath)
 	} else if jokerImportDir != "" && jokerImportDir != "--" {
-		godb.SetJokerSourceDir(jokerImportDir, goSourcePath)
+		godb.SetClojureSourceDir(jokerImportDir, goSourcePath)
 	}
 
 	if godb.Verbose {
 		fmt.Printf("goSrcDir: %s\n", goSrcDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
-		fmt.Printf("JokerSourceDir (for import line): %s\n", godb.JokerSourceDir)
+		fmt.Printf("ClojureSourceDir (for import line): %s\n", godb.ClojureSourceDir)
 		for _, o := range others {
 			otherSourceDirs = append(otherSourceDirs, listOfOthers(o)...)
 		}
@@ -253,7 +253,7 @@ func main() {
 
 		if undo {
 			RegisterPackages([]string{}, jokerSourceDir)
-			RegisterJokerFiles([]string{}, jokerSourceDir)
+			RegisterClojureFiles([]string{}, jokerSourceDir)
 			RegisterGoTypeSwitch([]TypeInfo{}, jokerSourceDir, false)
 			os.Exit(0)
 		}
@@ -346,7 +346,7 @@ func main() {
 				dotJokeArray = append(dotJokeArray, p)
 			})
 		RegisterPackages(packagesArray, jokerSourceDir)
-		RegisterJokerFiles(dotJokeArray, jokerSourceDir)
+		RegisterClojureFiles(dotJokeArray, jokerSourceDir)
 	}
 
 	RegisterGoTypeSwitch(AllTypesSorted(), jokerSourceDir, outputCode)

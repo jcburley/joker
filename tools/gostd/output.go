@@ -36,8 +36,8 @@ func RegisterPackages(pkgs []string, jokerSourceDir string) {
 	updateCustomLibsGo(pkgs, filepath.Join(jokerSourceDir, "custom.go"))
 }
 
-func RegisterJokerFiles(jokerFiles []string, jokerSourceDir string) {
-	updateCustomLibsJoker(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
+func RegisterClojureFiles(jokerFiles []string, jokerSourceDir string) {
+	updateCustomLibsClojure(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
 }
 
 func RegisterGoTypeSwitch(types []TypeInfo, jokerSourceDir string, outputCode bool) {
@@ -80,7 +80,7 @@ import (
 	Check(err)
 }
 
-func updateCustomLibsJoker(pkgs []string, f string) {
+func updateCustomLibsClojure(pkgs []string, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
@@ -215,7 +215,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
     :empty %s}
   %s)
 `,
-			imports.JokerGoImportsMap(pi.ImportsAutoGen),
+			imports.ClojureGoImportsMap(pi.ImportsAutoGen),
 			strconv.Quote(pkgDoc),
 			func() string {
 				if pi.NonEmpty {
@@ -293,10 +293,10 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 %s    :go "&%s"}
   %s)
 `,
-				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.JokerPattern(), ti.JokerBaseName()))
+				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName()))
 			if outputCode {
 				fmt.Printf("JOKER TYPE %s:%s\n",
-					ti.JokerName(), fnCode)
+					ti.ClojureName(), fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(fnCode)
@@ -347,7 +347,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode,
 				return // it me
 			}
 
-			imports.Add(pi.ImportsNative, ".", JokerCoreDir, "", "", false, pos)
+			imports.Add(pi.ImportsNative, ".", ClojureCoreDir, "", "", false, pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})
@@ -378,7 +378,7 @@ import (%s
 				fmt.Printf("GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), GoCodeForType[ti], ctor)
 			}
 			if t == "crypto.Hash" {
-				// fmt.Printf("output.go: %s aka %s @%p: %+v\n", t, ti.JokerName(), ti, ti)
+				// fmt.Printf("output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(GoCodeForType[ti])
@@ -405,7 +405,7 @@ import (%s
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
 			if outputCode && tmn != "" {
-				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), tmn)
+				fmt.Printf("GO VARDEF FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), tmn)
 			}
 			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
@@ -431,7 +431,7 @@ import (%s
 			if tmn == "" || !ti.IsExported() {
 				return
 			}
-			k1 := ti.JokerName()
+			k1 := ti.ClojureName()
 			ctor := ""
 			if c, found := CtorNames[ti]; found {
 				ctor = fmt.Sprintf(`
@@ -451,7 +451,7 @@ import (%s
 				})
 			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem, "" /*"Type:"..., but probably not needed*/)
 			if outputCode {
-				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), o)
+				fmt.Printf("GO INFO FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
@@ -466,7 +466,7 @@ import (%s
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
 			if outputCode {
-				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", ti.JokerName(), WhereAt(ti.DefPos()), o)
+				fmt.Printf("GO VECSET FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)

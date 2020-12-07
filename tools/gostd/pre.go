@@ -166,7 +166,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		extractParam := ""
 		ti := TypeInfoForExpr(e)
 		clType = ti.ArgExtractFunc()
-		clTypeDoc = ti.JokerNameDoc(e)
+		clTypeDoc = ti.ClojureNameDoc(e)
 		if clTypeDoc == "" {
 			clTypeDoc = clType
 		}
@@ -181,8 +181,8 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			} else {
 				clType, _, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
-			if ti.JokerName() != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", genutils.TypeToGoExtractFuncName(ti.JokerName()), fn.DocName, paramName, argNum)
+			if ti.ClojureName() != "" {
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", genutils.TypeToGoExtractFuncName(ti.ClojureName()), fn.DocName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {
@@ -193,7 +193,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		}
 		if fn.Fd == nil || fn.Fd.Recv != nil {
 			if extractParam == "" {
-				panic(fmt.Sprintf("no arg-extraction code for %+v type (%s, %s, %s, %s) at %s @%p %+v", v, goType, goTypeDoc, clType, clTypeDoc, WhereAt(v.Pos()), ti, *ti.JokerTypeInfo()))
+				panic(fmt.Sprintf("no arg-extraction code for %+v type (%s, %s, %s, %s) at %s @%p %+v", v, goType, goTypeDoc, clType, clTypeDoc, WhereAt(v.Pos()), ti, *ti.ClojureTypeInfo()))
 			}
 			goPreCode = paramName + " := " + extractParam
 		}
@@ -227,7 +227,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			clType = "Object"
 		}
 		if clTypeDoc == "" {
-			clTypeDoc = ti.JokerNameDoc(e)
+			clTypeDoc = ti.ClojureNameDoc(e)
 		}
 		if clTypeDoc == "" {
 			clTypeDoc = clType

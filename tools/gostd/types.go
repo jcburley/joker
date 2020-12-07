@@ -22,13 +22,13 @@ type TypeInfo interface {
 	ConvertFromClojure() string
 	ConvertFromMap() string // Pattern to convert a map %s key %s to this type
 	Custom() bool           // Whether this is defined by the codebase vs either builtin or derived
-	AsJokerObject() string  // Pattern to convert this type to a normal Joker type, or empty string to simply wrap in a GoObject
-	JokerName() string
-	JokerNameDoc(e Expr) string
-	JokerPattern() string
-	JokerBaseName() string
-	JokerTypeInfo() *jtypes.Info
-	JokerWho() string
+	AsClojureObject() string  // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
+	ClojureName() string
+	ClojureNameDoc(e Expr) string
+	ClojurePattern() string
+	ClojureBaseName() string
+	ClojureTypeInfo() *jtypes.Info
+	ClojureWho() string
 	RequiredImports() *imports.Imports
 	GoName() string
 	GoNameDoc(e Expr) string
@@ -56,7 +56,7 @@ type TypesMap map[string]TypeInfo
 // Maps type-defining Expr or full names to exactly one struct describing that type.
 var typesByExpr = map[Expr]TypeInfo{}
 var typesByGoName = TypesMap{}
-var typesByJokerName = TypesMap{}
+var typesByClojureName = TypesMap{}
 
 const ConcreteType = gtypes.Concrete
 
@@ -92,7 +92,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		}
 
 		typesByGoName[ti.GoName()] = ti
-		typesByJokerName[ti.JokerName()] = ti
+		typesByClojureName[ti.ClojureName()] = ti
 
 		if IsExported(name) {
 			NumTypes++
@@ -119,15 +119,15 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	jti := jtypes.InfoForExpr(e)
 
 	if ti, found := typesByGoName[gti.FullName]; found {
-		if _, ok := typesByJokerName[jti.FullName]; !ok {
-			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByJokerName[%s]\n", gti.FullName, jti.FullName)
-			typesByJokerName[jti.FullName] = ti
+		if _, ok := typesByClojureName[jti.FullName]; !ok {
+			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s]\n", gti.FullName, jti.FullName)
+			typesByClojureName[jti.FullName] = ti
 		}
 		return ti
 	}
-	if _, ok := typesByJokerName[jti.FullName]; ok && jti.FullName != "GoObject" {
+	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
-			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByJokerName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
 		}
 	}
 
@@ -137,11 +137,11 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		who: "TypeInfoForExpr",
 	}
 
-	//	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v at %s\n", ti.JokerName(), ti, ti, godb.WhereAt(e.Pos()))
+	//	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v at %s\n", ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
 
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
-	typesByJokerName[jti.FullName] = ti
+	typesByClojureName[jti.FullName] = ti
 
 	return ti
 }
@@ -168,7 +168,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 	}
 
 	typesByGoName[gti.FullName] = ti
-	typesByJokerName[jti.FullName] = ti
+	typesByClojureName[jti.FullName] = ti
 
 	return ti
 }
@@ -262,23 +262,23 @@ func (ti typeInfo) Custom() bool {
 	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
 }
 
-func (ti typeInfo) AsJokerObject() string {
-	return ti.jti.AsJokerObject
+func (ti typeInfo) AsClojureObject() string {
+	return ti.jti.AsClojureObject
 }
 
-func (ti typeInfo) JokerName() string {
+func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
 }
 
-func (ti typeInfo) JokerNameDoc(e Expr) string {
+func (ti typeInfo) ClojureNameDoc(e Expr) string {
 	return ti.jti.NameDoc(e)
 }
 
-func (ti typeInfo) JokerPattern() string {
+func (ti typeInfo) ClojurePattern() string {
 	return ti.jti.Pattern
 }
 
-func (ti typeInfo) JokerBaseName() string {
+func (ti typeInfo) ClojureBaseName() string {
 	return ti.jti.BaseName
 }
 
@@ -286,11 +286,11 @@ func (ti typeInfo) IsUnsupported() bool {
 	return ti.jti.IsUnsupported
 }
 
-func (ti typeInfo) JokerTypeInfo() *jtypes.Info {
+func (ti typeInfo) ClojureTypeInfo() *jtypes.Info {
 	return ti.jti
 }
 
-func (ti typeInfo) JokerWho() string {
+func (ti typeInfo) ClojureWho() string {
 	return ti.jti.Who
 }
 
@@ -394,9 +394,9 @@ func SortAllTypes() {
 	if len(allTypesSorted) > 0 {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
-	for _, ti := range typesByJokerName {
+	for _, ti := range typesByClojureName {
 
-		// fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.JokerName(), ti, ti)
+		// fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.ClojureName(), ti, ti)
 		t := ti.GoTypeInfo()
 		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))

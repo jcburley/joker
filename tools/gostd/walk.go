@@ -526,7 +526,7 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 //    var E = math.E
 //    var E_ *GoVar = &GoVar{Value: E}
 //
-// It's possible (and perhaps desirable anyway?) that Joker could automatically cast (convert) all GoVar and GoObject
+// It's possible (and perhaps desirable anyway?) that Clojure could automatically cast (convert) all GoVar and GoObject
 // values to their builtin equivalents, which might allow this all to make more sense.
 //
 // But it might actually be less work to move the determination of a constant's type to the code-generation phase (so it
