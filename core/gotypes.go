@@ -348,6 +348,19 @@ func FieldAsError(o Map, k string) error {
 	return res
 }
 
+func FieldAsGoObject(o Map, k string) interface{} {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return ""
+	}
+	res, ok := v.(GoObject)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject, but is %T",
+			k, v)))
+	}
+	return res.O
+}
+
 func GoObjectGet(o interface{}, key Object) (bool, Object) {
 	defer func() {
 		if r := recover(); r != nil {
