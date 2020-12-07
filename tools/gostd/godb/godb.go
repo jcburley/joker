@@ -216,12 +216,7 @@ func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
 }
 
 func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
-	if !IsExported(name.Name) /* || (pkg.String() == "unsafe" && name.Name == "ArbitraryType") */ {
-		if IsExported(name.Name) {
-			if Verbose {
-				fmt.Printf("Excluding mythical type %s.%s\n", pkg.String(), name.Name)
-			}
-		}
+	if !IsExported(name.Name) {
 		return
 	}
 	if e, found := (*decls)[name.Name]; found {
