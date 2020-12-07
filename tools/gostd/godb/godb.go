@@ -46,8 +46,7 @@ func WhereAt(p token.Pos) string {
 }
 
 func FileAt(p token.Pos) string {
-	return token.Position{Filename: Fset.Position(p).Filename,
-		Offset: 0, Line: 0, Column: 0}.String()
+	return Fset.Position(p).Filename
 }
 
 type mapping struct {
