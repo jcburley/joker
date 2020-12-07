@@ -111,6 +111,13 @@ func CombineGoName(pkg, name string) string {
 	return pkg + "." + name
 }
 
+func CombineJokerName(ns, name string) string {
+	if ns == "" {
+		return name
+	}
+	return ns + "/" + name
+}
+
 func CommentGroupAsString(d *CommentGroup) string {
 	s := ""
 	if d != nil {

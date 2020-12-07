@@ -35,13 +35,6 @@ type Info struct {
 	IsBuiltin      bool
 }
 
-func Combine(pkg, name string) string {
-	if pkg == "" {
-		return name
-	}
-	return pkg + "." + name
-}
-
 // Maps type-defining Expr or string to exactly one struct describing that type
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
@@ -50,7 +43,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	if pattern == "" {
 		pattern = "%s"
 	}
-	fullName := fmt.Sprintf(pattern, Combine(pkg, name))
+	fullName := fmt.Sprintf(pattern, genutils.CombineGoName(pkg, name))
 
 	if info, found := typesByFullName[fullName]; found {
 		return info
@@ -138,7 +131,7 @@ func specificity(ts *TypeSpec) uint {
 func (ti *Info) computeFullName() string {
 	n := ti.FullName
 	if n == "" {
-		n = fmt.Sprintf(ti.Pattern, Combine(ti.Package, ti.LocalName))
+		n = fmt.Sprintf(ti.Pattern, genutils.CombineGoName(ti.Package, ti.LocalName))
 		ti.FullName = n
 	}
 	return n
@@ -257,7 +250,7 @@ func InfoForExpr(e Expr) *Info {
 
 	if id, yes := e.(*Ident); yes {
 		pkg := godb.GoPackageForExpr(e)
-		fullName = Combine(pkg, id.Name)
+		fullName = genutils.CombineGoName(pkg, id.Name)
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti

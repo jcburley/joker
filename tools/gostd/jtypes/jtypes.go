@@ -2,6 +2,7 @@ package jtypes
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
 )
@@ -34,13 +35,6 @@ type Info struct {
 // describing that type.
 var typesByExpr = map[Expr]*Info{}
 var typesByFullname = map[string]*Info{}
-
-func combine(ns, name string) string {
-	if ns == "" {
-		return name
-	}
-	return ns + "/" + name
-}
 
 func patternForExpr(e Expr) (pattern string, ue Expr) {
 	switch v := e.(type) {
@@ -83,7 +77,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 		baseName = "GoObject"
 	}
 
-	name = combine(ns, fmt.Sprintf(pattern, baseName))
+	name = genutils.CombineJokerName(ns, fmt.Sprintf(pattern, baseName))
 
 	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
 
@@ -96,7 +90,7 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 
 	pattern, _ := patternForExpr(varExpr)
 
-	name := combine(ns, fmt.Sprintf(pattern, ts.Name.Name))
+	name := genutils.CombineJokerName(ns, fmt.Sprintf(pattern, ts.Name.Name))
 
 	jti := &Info{
 		FullName:          name,

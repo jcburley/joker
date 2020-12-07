@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gtypes"
 	"github.com/candid82/joker/tools/gostd/imports"
@@ -416,7 +417,7 @@ func AllTypesSorted() []TypeInfo {
 }
 
 func typeKeyForSort(ti TypeInfo) string {
-	return gtypes.Combine(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
+	return genutils.CombineGoName(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
 }
 
 func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
