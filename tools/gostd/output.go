@@ -32,16 +32,16 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, jokerSourceDir string) {
-	updateCustomLibsGo(pkgs, filepath.Join(jokerSourceDir, "custom.go"))
+func RegisterPackages(pkgs []string, clojureSourceDir string) {
+	updateCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "custom.go"))
 }
 
-func RegisterClojureFiles(jokerFiles []string, jokerSourceDir string) {
-	updateCustomLibsClojure(jokerFiles, filepath.Join(jokerSourceDir, "core", "data", "customlibs.joke"))
+func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
+	updateCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []TypeInfo, jokerSourceDir string, outputCode bool) {
-	updateGoTypeSwitch(types, filepath.Join(jokerSourceDir, "core", "goswitch.go"), outputCode)
+func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode bool) {
+	updateGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "goswitch.go"), outputCode)
 }
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
@@ -178,13 +178,13 @@ func SwitchGoType(g interface{}) int {
 	}
 }
 
-func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCode, generateEmpty bool) {
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if jokerLibDir != "" && jokerLibDir != "-" &&
+	if clojureLibDir != "" && clojureLibDir != "-" &&
 		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
-		jf := filepath.Join(jokerLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
+		jf := filepath.Join(clojureLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
 		var e error
 		e = os.MkdirAll(filepath.Dir(jf), 0777)
 		unbuf_out, e = os.Create(jf)
@@ -230,7 +230,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedConstantInfoMap(v.Constants,
 		func(c string, ci *ConstantInfo) {
 			if outputCode {
-				fmt.Printf("JOKER CONSTANT %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
+				fmt.Printf("CLOJURE CONSTANT %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
@@ -240,7 +240,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedVariableInfoMap(v.Variables,
 		func(c string, ci *VariableInfo) {
 			if outputCode {
-				fmt.Printf("JOKER VARIABLE %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
+				fmt.Printf("CLOJURE VARIABLE %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
@@ -253,7 +253,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 				return
 			}
 			if outputCode {
-				fmt.Printf("JOKER TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), ClojureCodeForType[ti])
+				fmt.Printf("CLOJURE TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), ClojureCodeForType[ti])
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ClojureCodeForType[ti])
@@ -263,7 +263,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
 			if outputCode {
-				fmt.Printf("JOKER FUNC %s.%s from %s:%s\n",
+				fmt.Printf("CLOJURE FUNC %s.%s from %s:%s\n",
 					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
@@ -295,7 +295,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 `,
 				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName()))
 			if outputCode {
-				fmt.Printf("JOKER TYPE %s:%s\n",
+				fmt.Printf("CLOJURE TYPE %s:%s\n",
 					ti.ClojureName(), fnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
@@ -311,7 +311,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, output
 	}
 }
 
-func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode, generateEmpty bool) {
+func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCode, generateEmpty bool) {
 	pkgBaseName := path.Base(pkgDirUnix)
 	pi := PackagesInfo[pkgDirUnix]
 	pi.HasGoFiles = true
@@ -320,9 +320,9 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode,
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if jokerLibDir != "" && jokerLibDir != "-" &&
+	if clojureLibDir != "" && clojureLibDir != "-" &&
 		(generateEmpty || pi.NonEmpty) {
-		gf := filepath.Join(jokerLibDir, pkgDirNative,
+		gf := filepath.Join(clojureLibDir, pkgDirNative,
 			pkgBaseName+"_native.go")
 		var e error
 		e = os.MkdirAll(filepath.Dir(gf), 0777)
@@ -497,14 +497,14 @@ import (%s
 	}
 }
 
-func OutputPackageCode(jokerLibDir string, outputCode, generateEmpty bool) {
+func OutputPackageCode(clojureLibDir string, outputCode, generateEmpty bool) {
 	SortedPackageMap(ClojureCode,
 		func(pkgDirUnix string, v CodeInfo) {
-			outputClojureCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
+			outputClojureCode(pkgDirUnix, v, clojureLibDir, outputCode, generateEmpty)
 		})
 
 	SortedPackageMap(GoCode,
 		func(pkgDirUnix string, v CodeInfo) {
-			outputGoCode(pkgDirUnix, v, jokerLibDir, outputCode, generateEmpty)
+			outputGoCode(pkgDirUnix, v, clojureLibDir, outputCode, generateEmpty)
 		})
 }

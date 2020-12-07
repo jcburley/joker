@@ -45,21 +45,21 @@ Options:
   --go <go-source-dir>        # Location of Golang's src/ subdirectory (defaults to build.Default.GOROOT)
   --others <package-spec>...  # Location of another package directory, or a file with one <package-spec> per line
   --go-source-path <path>     # Overrides $GOPATH/src/ as "root" of <package-spec> specifications
-  --overwrite                 # Overwrite any existing <joker-std-subdir> files, leaving existing files intact
-  --replace                   # 'rm -fr <joker-std-subdir>' before creating <joker-std-subdir>
-  --fresh                     # (Default) Refuse to overwrite existing <joker-std-subdir> directory
-  --joker <joker-source-dir>  # Modify pertinent source files to reflect packages being created
-  --import-from <dir>         # Override <joker-source-dir> with <dir> for use in generated import decls; "--" means use default
+  --overwrite                 # Overwrite any existing <clojure-std-subdir> files, leaving existing files intact
+  --replace                   # 'rm -fr <clojure-std-subdir>' before creating <clojure-std-subdir>
+  --fresh                     # (Default) Refuse to overwrite existing <clojure-std-subdir> directory
+  --clojure <clojure-source-dir>  # Modify pertinent source files to reflect packages being created
+  --import-from <dir>         # Override <clojure-source-dir> with <dir> for use in generated import decls; "--" means use default
   --verbose, -v               # Print info on what's going on
   --summary                   # Print summary of #s of types, functions, etc.
   --output-code               # Print generated code to stdout (used by test.sh)
   --empty                     # Generate empty packages (those with no Clojure code)
   --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp              # Don't put the time (and version) info in generated/modified files
-  --undo                      # Undo effects of --joker ...
+  --undo                      # Undo effects of --clojure ...
   --help, -h                  # Print this information
 
-If <joker-std-subdir> is not specified, no Go nor Clojure source files
+If <clojure-std-subdir> is not specified, no Go nor Clojure source files
 (nor any other files nor directories) are created, effecting a sort of
 "dry run".
 `)
@@ -91,8 +91,8 @@ func main() {
 	goSourcePath = os.Getenv("GOPATH")
 	var others []string
 	var otherSourceDirs []string
-	jokerSourceDir := ""
-	jokerImportDir := ""
+	clojureSourceDir := ""
+	clojureImportDir := ""
 	replace := false
 	overwrite := false
 	summary := false
@@ -162,26 +162,26 @@ func main() {
 					fmt.Fprintf(os.Stderr, "missing package-spec(s) after --go-source-path option\n")
 					os.Exit(1)
 				}
-			case "--joker":
-				if jokerSourceDir != "" {
-					fmt.Fprintf(os.Stderr, "cannot specify --joker <joker-source-dir> more than once\n")
+			case "--clojure":
+				if clojureSourceDir != "" {
+					fmt.Fprintf(os.Stderr, "cannot specify --clojure <clojure-source-dir> more than once\n")
 					os.Exit(1)
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					jokerSourceDir = os.Args[i]
+					clojureSourceDir = os.Args[i]
 				} else {
-					fmt.Fprintf(os.Stderr, "missing path after --joker option\n")
+					fmt.Fprintf(os.Stderr, "missing path after --clojure option\n")
 					os.Exit(1)
 				}
 			case "--import-from":
-				if jokerImportDir != "" {
+				if clojureImportDir != "" {
 					fmt.Fprintf(os.Stderr, "cannot specify --import-from <import-dir> more than once\n")
 					os.Exit(1)
 				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					jokerImportDir = os.Args[i]
+					clojureImportDir = os.Args[i]
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --import-from option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
@@ -223,10 +223,10 @@ func main() {
 		goSourcePath = filepath.Join(goSourcePath, "src")
 	}
 
-	if jokerSourceDir != "" && jokerImportDir == "" {
-		godb.SetClojureSourceDir(jokerSourceDir, goSourcePath)
-	} else if jokerImportDir != "" && jokerImportDir != "--" {
-		godb.SetClojureSourceDir(jokerImportDir, goSourcePath)
+	if clojureSourceDir != "" && clojureImportDir == "" {
+		godb.SetClojureSourceDir(clojureSourceDir, goSourcePath)
+	} else if clojureImportDir != "" && clojureImportDir != "--" {
+		godb.SetClojureSourceDir(clojureImportDir, goSourcePath)
 	}
 
 	if godb.Verbose {
@@ -241,25 +241,25 @@ func main() {
 		}
 	}
 
-	jokerLibDir := ""
-	if jokerSourceDir != "" && jokerSourceDir != "-" {
-		jokerLibDir = filepath.Join(jokerSourceDir, "std", "go", "std")
+	clojureLibDir := ""
+	if clojureSourceDir != "" && clojureSourceDir != "-" {
+		clojureLibDir = filepath.Join(clojureSourceDir, "std", "go", "std")
 		if replace || undo {
-			if e := os.RemoveAll(jokerLibDir); e != nil {
-				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", jokerLibDir)
+			if e := os.RemoveAll(clojureLibDir); e != nil {
+				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", clojureLibDir)
 				os.Exit(1)
 			}
 		}
 
 		if undo {
-			RegisterPackages([]string{}, jokerSourceDir)
-			RegisterClojureFiles([]string{}, jokerSourceDir)
-			RegisterGoTypeSwitch([]TypeInfo{}, jokerSourceDir, false)
+			RegisterPackages([]string{}, clojureSourceDir)
+			RegisterClojureFiles([]string{}, clojureSourceDir)
+			RegisterGoTypeSwitch([]TypeInfo{}, clojureSourceDir, false)
 			os.Exit(0)
 		}
 
 		if !overwrite {
-			if _, e := os.Stat(jokerLibDir); e == nil ||
+			if _, e := os.Stat(clojureLibDir); e == nil ||
 				(!strings.Contains(e.Error(), "no such file or directory") &&
 					!strings.Contains(e.Error(), "The system cannot find the")) { // Sometimes "...file specified"; other times "...path specified"!
 				msg := "already exists"
@@ -267,11 +267,11 @@ func main() {
 					msg = e.Error()
 				}
 				fmt.Fprintf(os.Stderr, "Refusing to populate existing directory %s; please 'rm -fr' first, or specify --overwrite or --replace: %s\n",
-					jokerLibDir, msg)
+					clojureLibDir, msg)
 				os.Exit(1)
 			}
-			if e := os.MkdirAll(jokerLibDir, 0777); e != nil {
-				fmt.Fprintf(os.Stderr, "Cannot 'mkdir -p %s': %s\n", jokerLibDir, e.Error())
+			if e := os.MkdirAll(clojureLibDir, 0777); e != nil {
+				fmt.Fprintf(os.Stderr, "Cannot 'mkdir -p %s': %s\n", clojureLibDir, e.Error())
 				os.Exit(1)
 			}
 		}
@@ -329,9 +329,9 @@ func main() {
 			}
 		})
 
-	OutputPackageCode(jokerLibDir, outputCode, generateEmpty)
+	OutputPackageCode(clojureLibDir, outputCode, generateEmpty)
 
-	if jokerSourceDir != "" && jokerSourceDir != "-" {
+	if clojureSourceDir != "" && clojureSourceDir != "-" {
 		var packagesArray = []string{} // Relative package pathnames in alphabetical order
 		var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
 
@@ -345,11 +345,11 @@ func main() {
 				}
 				dotJokeArray = append(dotJokeArray, p)
 			})
-		RegisterPackages(packagesArray, jokerSourceDir)
-		RegisterClojureFiles(dotJokeArray, jokerSourceDir)
+		RegisterPackages(packagesArray, clojureSourceDir)
+		RegisterClojureFiles(dotJokeArray, clojureSourceDir)
 	}
 
-	RegisterGoTypeSwitch(AllTypesSorted(), jokerSourceDir, outputCode)
+	RegisterGoTypeSwitch(AllTypesSorted(), clojureSourceDir, outputCode)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
