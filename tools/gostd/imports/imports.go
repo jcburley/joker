@@ -34,7 +34,7 @@ type Imports struct {
 /* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func Add(imports *Imports, local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
+func (imports *Imports) Add(local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
 	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
@@ -116,7 +116,7 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	}
 }
 
-func sortedImports(pi *Imports, f func(k string, v *Import)) {
+func (pi *Imports) sort(f func(k string, v *Import)) {
 	var keys []string
 	for k, _ := range pi.FullNames {
 		keys = append(keys, k)
@@ -128,34 +128,32 @@ func sortedImports(pi *Imports, f func(k string, v *Import)) {
 	}
 }
 
-func QuotedImportList(pi *Imports, prefix string) string {
+func (pi *Imports) QuotedList(prefix string) string {
 	imports := ""
-	sortedImports(pi,
-		func(k string, v *Import) {
-			if (v.Local == "" && !v.substituted) || v.Local == path.Base(k) {
-				imports += prefix + `"` + k + `"`
-			} else {
-				imports += prefix + v.LocalRef + ` "` + k + `"`
-			}
-		})
+	pi.sort(func(k string, v *Import) {
+		if (v.Local == "" && !v.substituted) || v.Local == path.Base(k) {
+			imports += prefix + `"` + k + `"`
+		} else {
+			imports += prefix + v.LocalRef + ` "` + k + `"`
+		}
+	})
 	return imports
 }
 
-func ClojureGoImportsMap(pi *Imports) string {
+func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
-	sortedImports(pi,
-		func(k string, v *Import) {
-			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, v.PathPrefix+k))
-		})
+	pi.sort(func(k string, v *Import) {
+		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, v.PathPrefix+k))
+	})
 	return Join(imports, ", ")
 }
 
-func Promote(from, to *Imports, pos token.Pos) {
+func (to *Imports) Promote(from *Imports, pos token.Pos) {
 	for _, imp := range from.FullNames {
 		local := imp.Local
 		if local == "" {
 			local = path.Base(imp.Full)
 		}
-		Add(to, local, imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, pos)
+		to.Add(local, imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, pos)
 	}
 }

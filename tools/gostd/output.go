@@ -155,7 +155,7 @@ func SwitchGoType(g interface{}) int {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = imports.Add(importeds, "", t.GoPackage(), "", "", true, token.NoPos) + "."
+			pkgPlusSeparator = importeds.Add("", t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
 		specificity := ""
 		if t.Specificity() != ConcreteType {
@@ -164,7 +164,7 @@ func SwitchGoType(g interface{}) int {
 		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t])
 	}
 
-	m := fmt.Sprintf(pattern, imports.QuotedImportList(importeds, "\n\t"), len(types), cases)
+	m := fmt.Sprintf(pattern, importeds.QuotedList("\n\t"), len(types), cases)
 
 	err := ioutil.WriteFile(f, []byte(m), 0777)
 	// Ignore error if outputting code to stdout:
@@ -215,7 +215,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
     :empty %s}
   %s)
 `,
-			imports.ClojureGoImportsMap(pi.ImportsAutoGen),
+			pi.ImportsAutoGen.AsClojureMap(),
 			strconv.Quote(pkgDoc),
 			func() string {
 				if pi.NonEmpty {
@@ -347,7 +347,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 				return // it me
 			}
 
-			imports.Add(pi.ImportsNative, ".", ClojureCoreDir, "", "", false, pos)
+			pi.ImportsNative.Add(".", ClojureCoreDir, "", "", false, pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})
@@ -362,7 +362,7 @@ import (%s
 )
 `,
 			pkgBaseName,
-			imports.QuotedImportList(pi.ImportsNative, "\n\t"))
+			pi.ImportsNative.QuotedList("\n\t"))
 	}
 
 	SortedTypeInfoMap(v.Types,
