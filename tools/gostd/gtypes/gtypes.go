@@ -420,16 +420,3 @@ func (ti *Info) NameDoc(e Expr) string {
 	}
 	return fmt.Sprintf(ti.Pattern, ti.LocalName)
 }
-
-func goExprToString(e Expr) string {
-	if e == nil {
-		return ""
-	}
-	switch v := e.(type) {
-	case *Ellipsis:
-		return "..." + goExprToString(v.Elt)
-	case *BasicLit:
-		return v.Value
-	}
-	return fmt.Sprintf("%v", e)
-}
