@@ -1,12 +1,9 @@
 package utils
 
 import (
-	. "go/ast"
 	"os"
 	"path/filepath"
 	"sort"
-	"strconv"
-	. "strings"
 )
 
 func Check(e error) {
@@ -39,46 +36,6 @@ func Check(e error) {
 
 func Unix(p string) string {
 	return filepath.ToSlash(p)
-}
-
-func CommentGroupAsString(d *CommentGroup) string {
-	s := ""
-	if d != nil {
-		s = d.Text()
-	}
-	return s
-}
-
-func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {
-	var d string
-	if doc != nil {
-		d = doc.Text()
-	}
-	if goIn != "" {
-		if d != "" {
-			d = Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Go input arguments: " + goIn
-	}
-	if goOut != "" {
-		if d != "" {
-			d = Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Go returns: " + goOut
-	}
-	if jokIn != "" {
-		if d != "" {
-			d = Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Joker input arguments: " + jokIn
-	}
-	if jokOut != "" {
-		if d != "" {
-			d = Trim(d, " \t\n") + "\n\n"
-		}
-		d += "Joker returns: " + jokOut
-	}
-	return Trim(strconv.Quote(d), " \t\n")
 }
 
 var outs map[string]struct{}

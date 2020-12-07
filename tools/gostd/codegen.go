@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
-	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
 	"path"
@@ -175,7 +175,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 }
 
 func GenReceiver(fn *FuncInfo) {
-	genSymReset()
+	genutils.GenSymReset()
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 
 	const goTemplate = `
@@ -183,7 +183,7 @@ func %s(o GoObject, args Object) Object {  // %s
 %s}
 `
 
-	goFname := funcNameAsGoPrivate(fn.Name)
+	goFname := genutils.FuncNameAsGoPrivate(fn.Name)
 
 	if !IsExported(fn.BaseName) {
 		return
@@ -253,7 +253,7 @@ func %s(o GoObject, args Object) Object {  // %s
 }
 
 func GenStandalone(fn *FuncInfo) {
-	genSymReset()
+	genutils.GenSymReset()
 	d := fn.Fd
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 	pkgBaseName := fn.SourceFile.Package.BaseName
@@ -264,9 +264,9 @@ func GenStandalone(fn *FuncInfo) {
    :go "%s"}
   [%s])
 `
-	goFname := funcNameAsGoPrivate(d.Name.Name)
+	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Ft, goFname)
-	clojureReturnType, goReturnType := clojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
+	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	var cl2gol string
 	if clojureReturnType == "" {
@@ -286,7 +286,7 @@ func GenStandalone(fn *FuncInfo) {
 	}
 
 	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
-		"  "+CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+		"  "+genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc)+"\n",
 		cl2golCall, fc.clojureParamList)
 
@@ -332,7 +332,7 @@ func %s(%s) %s {
 }
 
 func GenConstant(ci *ConstantInfo) {
-	genSymReset()
+	genutils.GenSymReset()
 	pkgDirUnix := ci.SourceFile.Package.Dir.String()
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
@@ -344,7 +344,7 @@ func GenConstant(ci *ConstantInfo) {
 }
 
 func GenVariable(vi *VariableInfo) {
-	genSymReset()
+	genutils.GenSymReset()
 	pkgDirUnix := vi.SourceFile.Package.Dir.String()
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
@@ -404,7 +404,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 }
 `
 
-	mangled := typeToGoExtractFuncName(ti.ArgClojureArgType())
+	mangled := genutils.TypeToGoExtractFuncName(ti.ArgClojureArgType())
 	localType := "{{myGoImport}}." + ti.GoBaseName()
 	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
 
@@ -686,7 +686,7 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
-	v := TypeInfoForGoName(combineGoName(pkgDirUnix, name))
+	v := TypeInfoForGoName(genutils.CombineGoName(pkgDirUnix, name))
 	nonGoObjectType = "case " + v.ArgClojureType()
 	nonGoObjectTypeDoc = v.ArgClojureType()
 	extractClojureObject = v.ArgFromClojureObject()

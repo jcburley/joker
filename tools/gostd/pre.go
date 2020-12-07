@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -181,7 +182,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 				clType, _, goType, goTypeDoc, cl2golParam = genGoPreNamed(fn, indent, v.Name, paramName, argNum)
 			}
 			if ti.JokerName() != "" {
-				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", typeToGoExtractFuncName(ti.JokerName()), fn.DocName, paramName, argNum)
+				extractParam = fmt.Sprintf("ExtractGo_%s(\"%s\", \"%s\", _argList, %d)", genutils.TypeToGoExtractFuncName(ti.JokerName()), fn.DocName, paramName, argNum)
 			}
 		}
 		if clTypeDoc == "" {
@@ -248,7 +249,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		resVar := ""
 		resVarDoc := ""
 		if p == nil {
-			resVar = genSym("__arg")
+			resVar = genutils.GenSym("__arg")
 			resVarDoc = resVar
 		} else {
 			resVar = "_v_" + p.Name
@@ -267,7 +268,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if clType != "" {
 			clojureParamList += "^" + clType + " "
 		}
-		clojureParamList += paramNameAsClojure(resVar)
+		clojureParamList += genutils.ParamNameAsClojure(resVar)
 
 		if clojureParamListDoc != "" {
 			clojureParamListDoc += ", "
@@ -275,7 +276,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if clTypeDoc != "" {
 			clojureParamListDoc += "^" + clTypeDoc + " "
 		}
-		clojureParamListDoc += paramNameAsClojure(resVarDoc)
+		clojureParamListDoc += genutils.ParamNameAsClojure(resVarDoc)
 
 		if preCode != "" {
 			if goPreCode != "" {
@@ -292,7 +293,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParamList != "" {
 			goParamList += ", "
 		}
-		goParamList += paramNameAsGo(resVar)
+		goParamList += genutils.ParamNameAsGo(resVar)
 		if goType != "" {
 			goParamList += " " + goType
 		}
@@ -300,7 +301,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParamListDoc != "" {
 			goParamListDoc += ", "
 		}
-		goParamListDoc += paramNameAsGo(resVarDoc)
+		goParamListDoc += genutils.ParamNameAsGo(resVarDoc)
 		if goTypeDoc != "" {
 			goParamListDoc += " " + goTypeDoc
 		}
@@ -308,7 +309,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParams != "" {
 			goParams += ", "
 		}
-		goParams += paramNameAsGo(resVar)
+		goParams += genutils.ParamNameAsGo(resVar)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"
@@ -323,13 +324,13 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 }
 
 func paramsAsSymbolVec(fl *FieldList) string {
-	genSymReset()
+	genutils.GenSymReset()
 	fields := astutils.FlattenFieldList(fl)
 	var syms []string
 	for _, field := range fields {
 		var p string
 		if field.Name == nil {
-			p = genSym("arg")
+			p = genutils.GenSym("arg")
 		} else {
 			p = field.Name.Name
 		}

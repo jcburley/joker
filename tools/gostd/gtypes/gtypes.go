@@ -2,6 +2,7 @@ package gtypes
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -204,7 +205,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Type:        ts.Type,
 		TypeSpec:    ts,
 		IsExported:  IsExported(localName),
-		Doc:         utils.CommentGroupAsString(doc),
+		Doc:         genutils.CommentGroupAsString(doc),
 		DefPos:      ts.Name.NamePos,
 		File:        gf,
 		Pattern:     "%s",

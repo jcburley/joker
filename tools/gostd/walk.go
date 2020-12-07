@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
@@ -708,7 +709,7 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 			if doc == nil {
 				doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 			}
-			docString := CommentGroupInQuotes(doc, "", "", "", "")
+			docString := genutils.CommentGroupInQuotes(doc, "", "", "", "")
 			if constant {
 				processConstantSpec(gf, pkg, valName, valType, val, docString)
 			} else {

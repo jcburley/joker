@@ -1,24 +1,28 @@
-package main
+package genutils
+
+// Helpers for bridging between Go AST and generated Go and Clojure code.
 
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
+	. "go/ast"
+	"strconv"
 	"strings"
 )
 
-func paramNameAsClojure(n string) string {
+func ParamNameAsClojure(n string) string {
 	return n
 }
 
-func paramNameAsGo(p string) string {
+func ParamNameAsGo(p string) string {
 	return p
 }
 
-func typeToGoExtractFuncName(t string) string {
+func TypeToGoExtractFuncName(t string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(t, ".", "_"), "/", "__")
 }
 
-func funcNameAsGoPrivate(f string) string {
+func FuncNameAsGoPrivate(f string) string {
 	// s := strings.ToLower(f[0:1]) + f[1:]
 	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
 	// 	s = "_" + s
@@ -28,7 +32,7 @@ func funcNameAsGoPrivate(f string) string {
 
 var genSymIndex = map[string]int{}
 
-func genSym(pre string) string {
+func GenSym(pre string) string {
 	var idx int
 	if i, ok := genSymIndex[pre]; ok {
 		idx = i + 1
@@ -39,11 +43,11 @@ func genSym(pre string) string {
 	return fmt.Sprintf("%s%d", pre, idx)
 }
 
-func genSymReset() {
+func GenSymReset() {
 	genSymIndex = map[string]int{}
 }
 
-func exprIsUseful(rtn string) bool {
+func ExprIsUseful(rtn string) bool {
 	return rtn != "NIL"
 }
 
@@ -80,7 +84,7 @@ func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *strin
 // or empty string if not supported (which will trigger attempting to
 // generate appropriate code for *_native.go). gol either passes
 // through or "Object" is returned for it if cl is returned as empty.
-func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
+func ClojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 	switch in_cl {
 	case "String", "Int", "Byte", "Double", "Boolean", "Time", "Error":
 		cl = `^"` + in_cl + `"`
@@ -91,9 +95,49 @@ func clojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 	return
 }
 
-func combineGoName(pkg, name string) string {
+func CombineGoName(pkg, name string) string {
 	if pkg == "" || godb.IsBuiltin(name) {
 		return name
 	}
 	return pkg + "." + name
+}
+
+func CommentGroupAsString(d *CommentGroup) string {
+	s := ""
+	if d != nil {
+		s = d.Text()
+	}
+	return s
+}
+
+func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) string {
+	var d string
+	if doc != nil {
+		d = doc.Text()
+	}
+	if goIn != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Go input arguments: " + goIn
+	}
+	if goOut != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Go returns: " + goOut
+	}
+	if jokIn != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker input arguments: " + jokIn
+	}
+	if jokOut != "" {
+		if d != "" {
+			d = strings.Trim(d, " \t\n") + "\n\n"
+		}
+		d += "Joker returns: " + jokOut
+	}
+	return strings.Trim(strconv.Quote(d), " \t\n")
 }

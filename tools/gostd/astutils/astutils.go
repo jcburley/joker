@@ -1,5 +1,7 @@
 package astutils
 
+// Helpers for wrangling Go AST.
+
 import (
 	. "go/ast"
 )
@@ -25,4 +27,3 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 	}
 	return
 }
-

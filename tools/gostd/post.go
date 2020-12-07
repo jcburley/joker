@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	. "go/ast"
 	"strings"
 )
@@ -37,13 +38,13 @@ const resultName = "_res"
 func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string, useful bool) {
 	captureVar = captureName
 	if captureName == "" || captureName == "_" {
-		captureVar = genSym(resultName)
+		captureVar = genutils.GenSym(resultName)
 	}
 	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
 	if captureName != "" && captureName != resultName {
-		gol = paramNameAsGo(captureName) + " " + gol
+		gol = genutils.ParamNameAsGo(captureName) + " " + gol
 	}
-	useful = exprIsUseful(out)
+	useful = genutils.ExprIsUseful(out)
 	if !useful {
 		captureVar = "_"
 	}
