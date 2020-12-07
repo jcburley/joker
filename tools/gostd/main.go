@@ -5,7 +5,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/paths"
-	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/build"
 	"go/token"
 	"os"
@@ -30,6 +29,12 @@ const VERSION = "0.1"
      ./gostd --dir $PWD/tests/small --output-code 2>&1 | grep -C20 lookupMX
 
 */
+
+func Check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
 var goSourcePath string
 

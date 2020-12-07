@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/paths"
-	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
 	"os"
@@ -28,7 +27,9 @@ var ClojureCoreDir = path.Join(ClojureSourceDir, "core")
 // "github.com/candid82/joker".
 func SetClojureSourceDir(p string, r string) {
 	abs, err := filepath.Abs(p)
-	Check(err)
+	if err != nil {
+		panic(fmt.Sprintf("error %s path %s", err, p))
+	}
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
 	ClojureSourceDir = filepath.ToSlash(imp)
 	ClojureCoreDir = path.Join(ClojureSourceDir, "core")
@@ -247,7 +248,9 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Pa
 				Print(Fset, imp)
 			}
 			importPath, err := strconv.Unquote(imp.Path.Value)
-			Check(err)
+			if err != nil {
+				panic(fmt.Sprintf("error %s unquoting %s", err, imp.Path.Value))
+			}
 			var as string
 			if n := imp.Name; n != nil {
 				switch n.Name {

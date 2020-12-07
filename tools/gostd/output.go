@@ -6,7 +6,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
-	. "github.com/candid82/joker/tools/gostd/utils"
 	"go/doc"
 	"go/token"
 	"io/ioutil"
