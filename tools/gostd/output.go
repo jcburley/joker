@@ -155,7 +155,7 @@ func SwitchGoType(g interface{}) int {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = imports.AddImport(importeds, "", t.GoPackage(), "", "", true, token.NoPos) + "."
+			pkgPlusSeparator = imports.Add(importeds, "", t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
 		specificity := ""
 		if t.Specificity() != ConcreteType {
@@ -347,7 +347,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, jokerLibDir string, outputCode,
 				return // it me
 			}
 
-			imports.AddImport(pi.ImportsNative, ".", JokerCoreDir, "", "", false, pos)
+			imports.Add(pi.ImportsNative, ".", JokerCoreDir, "", "", false, pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})

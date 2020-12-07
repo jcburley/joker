@@ -34,7 +34,7 @@ type Imports struct {
 /* and isn't already used (picking an alternate local name if
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
-func AddImport(imports *Imports, local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
+func Add(imports *Imports, local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
 	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
@@ -148,4 +148,14 @@ func JokerGoImportsMap(pi *Imports) string {
 			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, v.PathPrefix+k))
 		})
 	return Join(imports, ", ")
+}
+
+func Promote(from, to *Imports, pos token.Pos) {
+	for _, imp := range from.FullNames {
+		local := imp.Local
+		if local == "" {
+			local = path.Base(imp.Full)
+		}
+		Add(to, local, imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, pos)
+	}
 }
