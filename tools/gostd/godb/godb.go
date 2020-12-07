@@ -2,11 +2,11 @@ package godb
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
 	"go/token"
-	"go/types"
 	"os"
 	"path"
 	"path/filepath"
@@ -50,10 +50,6 @@ func FileAt(p token.Pos) string {
 		Offset: 0, Line: 0, Column: 0}.String()
 }
 
-func IsBuiltin(name string) bool {
-	return types.Universe.Lookup(name) != nil
-}
-
 type mapping struct {
 	prefix  paths.UnixPath // E.g. "/home/user/go/src"
 	cljRoot string         // E.g. "go.std."
@@ -92,7 +88,7 @@ func GoFilenameForPos(p token.Pos) string {
 }
 
 func GoFilenameForExpr(e Expr) string {
-	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+	if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
 		return "" // A builtin, so not package-qualified.
 	}
 	return GoFilenameForPos(e.Pos())
@@ -112,7 +108,7 @@ func GoPackageForPos(p token.Pos) string {
 }
 
 func GoPackageForExpr(e Expr) string {
-	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+	if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
 		return "" // A builtin, so not package-qualified.
 	}
 	return GoPackageForPos(e.Pos())
@@ -132,7 +128,7 @@ func ClojureNamespaceForPos(p token.Position) string {
 }
 
 func ClojureNamespaceForExpr(e Expr) string {
-	if id, yes := e.(*Ident); yes && IsBuiltin(id.Name) {
+	if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
 		panic(fmt.Sprintf("no Clojure namespace for builtin `%s'", id.Name))
 	}
 	return ClojureNamespaceForPos(Fset.Position(e.Pos()))

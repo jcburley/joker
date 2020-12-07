@@ -5,6 +5,7 @@ package astutils
 import (
 	"fmt"
 	. "go/ast"
+	"go/types"
 )
 
 type FieldItem struct {
@@ -27,6 +28,10 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 		}
 	}
 	return
+}
+
+func IsBuiltin(name string) bool {
+	return types.Universe.Lookup(name) != nil
 }
 
 func IsExportedType(f *Expr) bool {

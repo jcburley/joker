@@ -2,6 +2,7 @@ package jtypes
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
@@ -56,7 +57,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 
 	switch v := ue.(type) {
 	case *Ident:
-		if !IsBuiltin(v.Name) {
+		if !astutils.IsBuiltin(v.Name) {
 			ns = ClojureNamespaceForExpr(ue)
 			baseName = v.Name
 		} else {

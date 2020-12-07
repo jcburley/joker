@@ -4,7 +4,7 @@ package genutils
 
 import (
 	"fmt"
-	"github.com/candid82/joker/tools/gostd/godb"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	. "go/ast"
 	"os"
 	"sort"
@@ -105,7 +105,7 @@ func ClojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
 }
 
 func CombineGoName(pkg, name string) string {
-	if pkg == "" || godb.IsBuiltin(name) {
+	if pkg == "" || astutils.IsBuiltin(name) {
 		return name
 	}
 	return pkg + "." + name
