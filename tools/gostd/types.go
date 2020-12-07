@@ -20,9 +20,9 @@ type TypeInfo interface {
 	ArgExtractFunc() string       // Call Extract<this>() for arg with my type
 	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure() string
-	ConvertFromMap() string // Pattern to convert a map %s key %s to this type
-	Custom() bool           // Whether this is defined by the codebase vs either builtin or derived
-	AsClojureObject() string  // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
+	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
+	Custom() bool            // Whether this is defined by the codebase vs either builtin or derived
+	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
 	ClojureNameDoc(e Expr) string
 	ClojurePattern() string
@@ -417,6 +417,7 @@ func AllTypesSorted() []TypeInfo {
 }
 
 func typeKeyForSort(ti TypeInfo) string {
+	// Put the pattern (e.g. "%s", "*%s") at the end, to put related types together in a reasonable order.
 	return genutils.CombineGoName(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
 }
 
