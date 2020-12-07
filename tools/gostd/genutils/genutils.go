@@ -32,6 +32,13 @@ func FuncNameAsGoPrivate(f string) string {
 	return "_f_" + strings.ToLower(f[0:1]) + f[1:]
 }
 
+func FullTypeNameAsClojure(nsRoot, t string) string {
+	if t[0] == '_' {
+		t = t[1:]
+	}
+	return nsRoot + strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
+}
+
 var genSymIndex = map[string]int{}
 
 func GenSym(pre string) string {

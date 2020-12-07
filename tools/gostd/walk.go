@@ -165,7 +165,7 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
 	curPkgName := fn.SourceFile.Package.Dir
 	basePkgName := path.Base(fullPkgName)
-	clTypeDoc = fullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullPkgName+"."+baseTypeName)
+	clTypeDoc = genutils.FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullPkgName+"."+baseTypeName)
 	clType = clTypeDoc
 	if curPkgName.String() == fullPkgName {
 		code = basePkgName + "." + baseTypeName
@@ -177,13 +177,6 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	doc = imports.Add(fn.Imports, path.Base(fullPkgName), fullPkgName, jokerStdNs, jokerStdPath, false, fn.Pos) + "." + baseTypeName
 	code = doc
 	return
-}
-
-func fullTypeNameAsClojure(nsRoot, t string) string {
-	if t[0] == '_' {
-		t = t[1:]
-	}
-	return nsRoot + ReplaceAll(ReplaceAll(ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
 }
 
 // Map qualified function names to info on each.
