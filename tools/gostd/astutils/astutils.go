@@ -3,6 +3,7 @@ package astutils
 // Helpers for wrangling Go AST.
 
 import (
+	"fmt"
 	. "go/ast"
 )
 
@@ -26,4 +27,17 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 		}
 	}
 	return
+}
+
+func IsExportedType(f *Expr) bool {
+	switch td := (*f).(type) {
+	case *Ident:
+		return IsExported(td.Name)
+	case *ArrayType:
+		return IsExportedType(&td.Elt)
+	case *StarExpr:
+		return IsExportedType(&td.X)
+	default:
+		panic(fmt.Sprintf("unsupported expr type %T", f))
+	}
 }

@@ -242,7 +242,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 		return // unsafe.Offsetof is a syntactic operation in Go.
 	}
 	if v, ok := QualifiedFunctions[fullName]; ok {
-		AddSortedOutput(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
+		genutils.AddSortedStdout(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
@@ -719,19 +719,6 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 	}
 }
 
-func IsExportedType(f *Expr) bool {
-	switch td := (*f).(type) {
-	case *Ident:
-		return IsExported(td.Name)
-	case *ArrayType:
-		return IsExportedType(&td.Elt)
-	case *StarExpr:
-		return IsExportedType(&td.X)
-	default:
-		panic(fmt.Sprintf("unsupported expr type %T", f))
-	}
-}
-
 func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
@@ -757,7 +744,7 @@ Funcs:
 			}
 			if v.Recv != nil {
 				for _, r := range v.Recv.List {
-					if !IsExportedType(&r.Type) {
+					if !astutils.IsExportedType(&r.Type) {
 						continue Funcs // Publishable receivers must operate on public types
 					}
 				}
@@ -785,7 +772,7 @@ Funcs:
 
 func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if godb.Verbose {
-		AddSortedOutput(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
+		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
@@ -825,7 +812,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 	}
 	pkgDirUnix := pkgDirNative.ToUnix()
 	if godb.Verbose {
-		AddSortedOutput(fmt.Sprintf("Processing %s:\n", pkgDirNative.ToUnix()))
+		genutils.AddSortedStdout(fmt.Sprintf("Processing %s:\n", pkgDirNative.ToUnix()))
 	}
 
 	pkgs, err := parser.ParseDir(godb.Fset, pathNative.String(),
@@ -833,13 +820,13 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 		func(info os.FileInfo) bool {
 			if HasSuffix(info.Name(), "_test.go") {
 				if godb.Verbose {
-					AddSortedOutput(fmt.Sprintf("Ignoring test code in %s\n", info.Name()))
+					genutils.AddSortedStdout(fmt.Sprintf("Ignoring test code in %s\n", info.Name()))
 				}
 				return false
 			}
 			b, e := build.Default.MatchFile(pathNative.String(), info.Name())
 			if godb.Verbose {
-				AddSortedOutput(fmt.Sprintf("Matchfile(%s) => %v %v\n",
+				genutils.AddSortedStdout(fmt.Sprintf("Matchfile(%s) => %v %v\n",
 					pathNative.Join(info.Name()).ToUnix(),
 					b, e))
 			}
@@ -855,7 +842,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 	for pkgBaseName, v := range pkgs {
 		if pkgBaseName != pathNative.Base() {
 			if godb.Verbose {
-				AddSortedOutput(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
+				genutils.AddSortedStdout(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
 					pkgBaseName, pathNative))
 			}
 		} else {
@@ -903,7 +890,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 			relNative := paths.NewNativePath(rel)
 			relUnix := relNative.ToUnix()
 			if err != nil {
-				EndSortedOutput()
+				genutils.EndSortedStdout()
 				fmt.Fprintf(os.Stderr, "Skipping %s due to: %v\n", relUnix, err)
 				return err
 			}
@@ -912,7 +899,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 			}
 			if excludeDirs[relUnix.Base()] {
 				if godb.Verbose {
-					AddSortedOutput(fmt.Sprintf("Excluding %s\n", relUnix))
+					genutils.AddSortedStdout(fmt.Sprintf("Excluding %s\n", relUnix))
 				}
 				return paths.SkipDir
 			}
@@ -923,7 +910,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 		})
 
 	if err != nil {
-		EndSortedOutput()
+		genutils.EndSortedStdout()
 		fmt.Fprintf(os.Stderr, "Error while walking %s: %v\n", fsRoot, err)
 		return err
 	}
@@ -944,9 +931,9 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
-	StartSortedOutput()
+	genutils.StartSortedStdout()
 	defer func() {
-		EndSortedOutput()
+		genutils.EndSortedStdout()
 	}()
 
 	for _, d := range dirsToWalk {

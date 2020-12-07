@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
+	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -140,4 +142,25 @@ func CommentGroupInQuotes(doc *CommentGroup, jokIn, jokOut, goIn, goOut string) 
 		d += "Joker returns: " + jokOut
 	}
 	return strings.Trim(strconv.Quote(d), " \t\n")
+}
+
+var outs map[string]struct{}
+
+func StartSortedStdout() {
+	outs = map[string]struct{}{}
+}
+
+func AddSortedStdout(s string) {
+	outs[s] = struct{}{}
+}
+
+func EndSortedStdout() {
+	var keys []string
+	for k, _ := range outs {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		os.Stdout.WriteString(k)
+	}
 }
