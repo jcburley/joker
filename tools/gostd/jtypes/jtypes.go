@@ -25,7 +25,7 @@ type Info struct {
 	ConvertFromClojure   string // Pattern to convert a (scalar) %s to this type
 	ConvertFromMap       string // Pattern to convert a map %s key %s to this type
 	FullNameDoc          string // Full name of type as a Clojure expression (for documentation); just e.g. "Int" for builtin global types
-	AsClojureObject        string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
+	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	IsUnsupported        bool   // Is this unsupported?
 }
@@ -101,7 +101,7 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: name,
 		FullNameDoc:       name,
-		AsClojureObject:     "GoObject(%s%s)",
+		AsClojureObject:   "GoObject(%s%s)",
 	}
 
 	jti.register()
@@ -182,7 +182,7 @@ var Error = &Info{
 	ArgClojureArgType:    "Error",
 	ConvertFromMap:       `FieldAsError(%s, %s)`,
 	FullNameDoc:          "Error",
-	AsClojureObject:        "Error(%s%s)",
+	AsClojureObject:      "Error(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -194,7 +194,7 @@ var Boolean = &Info{
 	ArgClojureArgType:    "Boolean",
 	ConvertFromMap:       "FieldAsBoolean(%s, %s)",
 	FullNameDoc:          "Boolean",
-	AsClojureObject:        "Boolean(%s%s)",
+	AsClojureObject:      "Boolean(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -206,7 +206,7 @@ var Byte = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsByte(%s, %s)`,
 	FullNameDoc:          "Byte",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -218,7 +218,7 @@ var Rune = &Info{
 	ArgClojureArgType:    "Char",
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
 	FullNameDoc:          "Char",
-	AsClojureObject:        "Char(%s%s)",
+	AsClojureObject:      "Char(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -230,7 +230,7 @@ var String = &Info{
 	ArgClojureArgType:    "String",
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
 	FullNameDoc:          "String",
-	AsClojureObject:        "String(%s%s)",
+	AsClojureObject:      "String(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -242,7 +242,7 @@ var Int = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(%s%s)",
+	AsClojureObject:      "Int(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -254,7 +254,7 @@ var Int8 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -266,7 +266,7 @@ var Int16 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt16(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -278,7 +278,7 @@ var Int32 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt32(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -290,7 +290,7 @@ var Int64 = &Info{
 	ArgClojureArgType:    "BigInt",
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
 	FullNameDoc:          "BigInt",
-	AsClojureObject:        "BigInt(%s%s)",
+	AsClojureObject:      "BigInt(%s%s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -302,7 +302,7 @@ var UInt = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
 	FullNameDoc:          "Number",
-	AsClojureObject:        "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -314,7 +314,7 @@ var UInt8 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -326,7 +326,7 @@ var UInt16 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint16(%s, %s)`,
 	FullNameDoc:          "Int",
-	AsClojureObject:        "Int(int(%s)%s)",
+	AsClojureObject:      "Int(int(%s)%s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -338,7 +338,7 @@ var UInt32 = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
 	FullNameDoc:          "Number",
-	AsClojureObject:        "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -350,7 +350,7 @@ var UInt64 = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
 	FullNameDoc:          "Number",
-	AsClojureObject:        "BigIntU(%s%s)",
+	AsClojureObject:      "BigIntU(%s%s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -362,7 +362,7 @@ var UIntPtr = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	FullNameDoc:          "Number",
-	AsClojureObject:        "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -374,7 +374,7 @@ var Float32 = &Info{
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	FullNameDoc:          "Double",
-	AsClojureObject:        "Double(float64(%s)%s)",
+	AsClojureObject:      "Double(float64(%s)%s)",
 	PromoteType:          "float64(%s)",
 }
 
@@ -386,7 +386,7 @@ var Float64 = &Info{
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	FullNameDoc:          "Double",
-	AsClojureObject:        "Double(%s%s)",
+	AsClojureObject:      "Double(%s%s)",
 	PromoteType:          "%s",
 }
 
@@ -398,7 +398,7 @@ var Complex128 = &Info{
 	ArgClojureArgType:    "ABEND007(find these)",
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
 	FullNameDoc:          "ABEND007(find these)",
-	AsClojureObject:        "Complex(%s%s)",
+	AsClojureObject:      "Complex(%s%s)",
 }
 
 var goTypeMap = map[string]*Info{
