@@ -42,7 +42,7 @@ var NumMethods int
 var NumGeneratedMethods int
 
 func WhereAt(p token.Pos) string {
-	return fmt.Sprintf("%s", Fset.Position(p).String())
+	return Fset.Position(p).String()
 }
 
 func FileAt(p token.Pos) string {
