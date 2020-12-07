@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "github.com/candid82/joker/tools/gostd/utils"
 	. "go/ast"
@@ -241,7 +242,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 	if fl == nil {
 		return
 	}
-	fields := FlattenFieldList(fl)
+	fields := astutils.FlattenFieldList(fl)
 	for argNum, field := range fields {
 		p := field.Name
 		resVar := ""
@@ -323,7 +324,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 
 func paramsAsSymbolVec(fl *FieldList) string {
 	genSymReset()
-	fields := FlattenFieldList(fl)
+	fields := astutils.FlattenFieldList(fl)
 	var syms []string
 	for _, field := range fields {
 		var p string

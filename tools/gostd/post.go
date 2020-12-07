@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	. "github.com/candid82/joker/tools/gostd/utils"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	. "go/ast"
 	"strings"
 )
@@ -60,7 +60,7 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 	goCode := []string{}
 
 	result := resultName
-	fields := FlattenFieldList(fl)
+	fields := astutils.FlattenFieldList(fl)
 	multipleCaptures := len(fields) > 1
 	for _, field := range fields {
 		n := ""

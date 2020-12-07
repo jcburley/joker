@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
@@ -187,7 +188,7 @@ func FullTypeNameAsClojure(nsRoot, t string) string {
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
 
-func receiverPrefix(src *godb.GoFile, rl []FieldItem) string {
+func receiverPrefix(src *godb.GoFile, rl []astutils.FieldItem) string {
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
@@ -207,7 +208,7 @@ func receiverPrefix(src *godb.GoFile, rl []FieldItem) string {
 	return res + "_"
 }
 
-func receiverId(src *godb.GoFile, pkgName string, rl []FieldItem) string {
+func receiverId(src *godb.GoFile, pkgName string, rl []astutils.FieldItem) string {
 	pkg := "{{myGoImport}}."
 	res := ""
 	for i, r := range rl {
@@ -233,7 +234,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, fd.Doc)
 		Print(godb.Fset, fd)
 	}
-	fl := FlattenFieldList(fd.Recv)
+	fl := astutils.FlattenFieldList(fd.Recv)
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
 	if fullName == "unsafe._Offsetof" {
