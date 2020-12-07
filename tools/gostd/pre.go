@@ -5,7 +5,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
-	. "github.com/candid82/joker/tools/gostd/utils"
+	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"strconv"
 	"strings"
@@ -68,7 +68,7 @@ func genGoPreNamed(fn *FuncInfo, indent, typeName, paramName string, argNum int)
 
 func genGoPreSelector(fn *FuncInfo, indent string, e *SelectorExpr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam string) {
 	pkgName := e.X.(*Ident).Name
-	fullPathUnix := Unix(FileAt(e.Pos()))
+	fullPathUnix := paths.Unix(FileAt(e.Pos()))
 	referringFile := strings.TrimPrefix(fullPathUnix, fn.SourceFile.Package.Root.String()+"/")
 	rf, ok := GoFilesRelative[referringFile]
 	if !ok {
@@ -215,7 +215,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		clType, clTypeDoc, goType, goTypeDoc, cl2golParam = genGoPreChan(fn, indent, v, paramName, argNum)
 	}
 	if (fn.Fd == nil || fn.Fd.Recv != nil) && goPreCode == "" {
-		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, Unix(WhereAt(e.Pos())))
+		goPreCode = fmt.Sprintf("ABEND644(pre.go: unsupported built-in type %T for %s at: %s)", e, paramName, paths.Unix(WhereAt(e.Pos())))
 	}
 
 	if clType == "" || clTypeDoc == "" {

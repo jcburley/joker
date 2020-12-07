@@ -9,6 +9,17 @@ import (
 
 var SkipDir = filepath.SkipDir
 
+// Convert pathname (as string) to Unix style.
+func Unix(p string) string {
+	return filepath.ToSlash(p)
+}
+
+// Convert pathname (as string) to native style.
+func Native(p string) string {
+	return filepath.FromSlash(p)
+}
+
+// Represents a path of arbitrary type.
 type Path interface {
 	String() string
 

@@ -200,7 +200,7 @@ func IsAvailable(p paths.UnixPath) (available bool) {
 }
 
 func GoFileForPos(p token.Pos) *GoFile {
-	fullPathUnix := Unix(Fset.Position(p).Filename)
+	fullPathUnix := paths.Unix(Fset.Position(p).Filename)
 
 	gf, ok := GoFilesAbsolute[fullPathUnix]
 

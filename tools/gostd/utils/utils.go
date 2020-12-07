@@ -2,7 +2,6 @@ package utils
 
 import (
 	"os"
-	"path/filepath"
 	"sort"
 )
 
@@ -33,10 +32,6 @@ func Check(e error) {
 // 	}
 // 	return j
 // }
-
-func Unix(p string) string {
-	return filepath.ToSlash(p)
-}
 
 var outs map[string]struct{}
 

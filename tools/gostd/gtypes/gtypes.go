@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/utils"
+	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
 	"os"
@@ -311,7 +311,7 @@ func InfoForExpr(e Expr) *Info {
 	case *SelectorExpr:
 		pkgName := v.X.(*Ident).Name
 		localName = v.Sel.Name
-		fullPathUnix := utils.Unix(godb.FileAt(v.Pos()))
+		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
 		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
 			if !godb.IsAvailable(fullPkgName) {
