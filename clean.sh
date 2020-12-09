@@ -4,7 +4,7 @@
 
 rm -fr docs/go.std.* core/a_*_data.go
 
-(cd tools/gostd && go build .) && ./tools/gostd/gostd --undo --joker .
+(cd tools/gostd && go build .) && ./tools/gostd/gostd --undo --clojure .
 
 (cd docs; ../joker generate-docs.joke --no-go)
 

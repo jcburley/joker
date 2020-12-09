@@ -19,7 +19,7 @@ else
     ALREADY_BUILT=false
 fi
 
-[ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --joker .
+[ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --clojure .
 
 # Check for changes in std, and run just-built Joker, only when building for host os/architecture.
 SUM256="$(go run tools/sum256dir/main.go std)"
