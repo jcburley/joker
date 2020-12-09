@@ -715,10 +715,28 @@ func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
+			if !IsExported(v.Name.Name) {
+				continue // Skipping non-exported functions
+			}
+			if v.Recv != nil {
+				for _, r := range v.Recv.List {
+					if !astutils.IsExportedType(&r.Type) {
+						continue Funcs // Publishable receivers must operate on public types
+					}
+				}
+			}
+			processFuncDeclForTypes(gf, pkgDirUnix, f, v)
 		case *GenDecl:
 			switch v.Tok {
 			case token.TYPE:
 				processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
+			case token.CONST:
+				processValueSpecsForTypes(gf, pkgDirUnix, v.Specs, v.Doc, true)
+			case token.VAR:
+				processValueSpecsForTypes(gf, pkgDirUnix, v.Specs, v.Doc, false)
+			case token.IMPORT: // Ignore these
+			default:
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
 			}
 		default:
 			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, godb.WhereAt(v.Pos())))
@@ -727,7 +745,7 @@ func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
 }
 
 func processOthers(gf *godb.GoFile, pkgDirUnix string, f *File) {
-Funcs:
+Others:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -737,7 +755,7 @@ Funcs:
 			if v.Recv != nil {
 				for _, r := range v.Recv.List {
 					if !astutils.IsExportedType(&r.Type) {
-						continue Funcs // Publishable receivers must operate on public types
+						continue Others // Publishable receivers must operate on public types
 					}
 				}
 				NumReceivers++
