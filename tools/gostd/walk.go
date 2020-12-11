@@ -178,6 +178,21 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	return
 }
 
+func processFieldsForTypes(items []astutils.FieldItem) {
+	for _, f := range items {
+		fmt.Printf("%s\n", StringForExpr(f.Field.Type))
+	}
+}
+
+func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+	processFieldsForTypes(astutils.FlattenFieldList(fd.Recv))
+	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Params))
+	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Results))
+}
+
+func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
+}
+
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
 
@@ -712,6 +727,7 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 }
 
 func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
+Funcs:
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
@@ -780,7 +796,61 @@ Others:
 	}
 }
 
-func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func processPackage(gf *godb.GoFile, pkgDirUnix string, f *File, phaseFunc func(rootUnix, pkgDirUnix, nsRoot string, p *Package)) {
+	for _, s := range f.Decls {
+		switch v := s.(type) {
+		case *FuncDecl:
+			phaseFunc.FuncDecl(gf, pkgDirUnix, f, v)
+		case *GenDecl:
+			switch v.Tok {
+			case token.TYPE:
+				phaseFunc.TypeDecl(gf, pkgDirUnix, f, v)
+			case token.CONST:
+				phaseFunc.ConstDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+			case token.VAR:
+				phaseFunc.VarDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+			case token.IMPORT: // Ignore these
+			default:
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
+			}
+		}
+	}
+}
+
+type fileDeclFuncs struct {
+	FuncDecl  func(*godb.GoFile, string, *File, *FuncDecl)
+	TypeDecl  func(*godb.GoFile, string, *File, *GenDecl)
+	ConstDecl func(*godb.GoFile, string, *File, *GenDecl)
+	VarDecl   func(*godb.GoFile, string, *File, *GenDecl)
+}
+
+func processDecls(gf *godb.GoFile, pkgDirUnix string, f *File, declFuncs fileDeclFuncs) {
+	goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+	gf := godb.GoFilesRelative[goFilePathUnix]
+	if gf == nil {
+		panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
+	}
+	for _, s := range f.Decls {
+		switch v := s.(type) {
+		case *FuncDecl:
+			declFuncs.FuncDecl(gf, pkgDirUnix, f, v)
+		case *GenDecl:
+			switch v.Tok {
+			case token.TYPE:
+				declFuncs.TypeDecl(gf, pkgDirUnix, f, v)
+			case token.CONST:
+				declFuncs.ConstDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+			case token.VAR:
+				declFuncs.VarDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+			case token.IMPORT: // Ignore these
+			default:
+				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
+			}
+		}
+	}
+}
+
+func phaseInits(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	if godb.Verbose {
 		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
@@ -795,23 +865,19 @@ func processPackageFilesTypes(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	}
 
 	for path, f := range p.Files {
-		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := godb.GoFilesRelative[goFilePathUnix]
-		if gf == nil {
-			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
-		}
-		processTypes(gf, pkgDirUnix, f)
+		processDecls(gf, pkgDirUnix, f, fileTypeDecls)
 	}
 }
 
-func processPackageFilesOthers(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func phaseTypeRefs(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	for path, f := range p.Files {
-		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-		gf := godb.GoFilesRelative[goFilePathUnix]
-		if gf == nil {
-			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
-		}
-		processOthers(gf, pkgDirUnix, f)
+		processDecls(gf, pkgDirUnix, f, fileTypeRefs)
+	}
+}
+
+func phaseOtherDecls(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+	for path, f := range p.Files {
+		processDecls(gf, pkgDirUnix, f, fileOtherDecls)
 	}
 }
 
@@ -941,6 +1007,13 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
+	const phases = []func(string, string, string, *Package){
+		phaseInits,
+		//		phaseTypeDecls,
+		phaseTypeRefs,
+		phaseOtherDecls,
+	}
+
 	genutils.StartSortedStdout()
 	defer func() {
 		genutils.EndSortedStdout()
@@ -952,11 +1025,12 @@ func WalkAllDirs() (error, paths.NativePath) {
 			return err, d.srcDir
 		}
 	}
-	for _, wp := range godb.PackagesAsDiscovered {
-		processPackageFilesTypes(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
+
+	for _, phase := range phases {
+		for _, wp := range godb.PackagesAsDiscovered {
+			processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+		}
 	}
-	for _, wp := range godb.PackagesAsDiscovered {
-		processPackageFilesOthers(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
-	}
+
 	return nil, paths.NewNativePath("")
 }
