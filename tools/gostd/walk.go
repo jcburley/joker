@@ -193,10 +193,17 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	return
 }
 
+func processTypeRef(t Expr) {
+	//	fmt.Printf("%T\n", t)
+	if t != nil {
+		TypeInfoForExpr(t)
+	}
+}
+
 func processFieldsForTypes(items []astutils.FieldItem) {
-	//	for _, f := range items {
-	//		fmt.Printf("%s\n", StringForExpr(f.Field.Type))
-	//	}
+	for _, f := range items {
+		processTypeRef(f.Field.Type)
+	}
 }
 
 func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
@@ -206,6 +213,10 @@ func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *Fu
 }
 
 func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+	for _, spec := range tss {
+		ts := spec.(*ValueSpec)
+		processTypeRef(ts.Type)
+	}
 }
 
 // Map qualified function names to info on each.

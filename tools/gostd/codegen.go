@@ -598,10 +598,6 @@ func GenTypeFromDb(ti TypeInfo) {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
 		return // Do not generate anything for private or array types
 	}
-	if ti.Specificity() == ConcreteType {
-		genCtor(ti)
-		return // The code below currently handles only interface{} types
-	}
 	//	fmt.Printf("codegen.go/GenTypeFromDb: not a concrete type\n")
 
 	ts := ti.TypeSpec()
@@ -612,6 +608,13 @@ func GenTypeFromDb(ti TypeInfo) {
 			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.ClojureName())
 			return
 		}
+	}
+
+	if ti.Specificity() == ConcreteType {
+		if ts != nil {
+			genCtor(ti)
+		}
+		return // The code below currently handles only interface{} types
 	}
 
 	if ts != nil {
@@ -645,6 +648,12 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 	ts := ti.TypeSpec()
 	if ts == nil {
 		ts = ti.UnderlyingTypeInfo().TypeSpec()
+	}
+	if ts == nil {
+		panic(fmt.Sprintf("nil ts for ti=%+v gti=%+v jti=%+v", ti, ti.GoTypeInfo(), ti.ClojureTypeInfo()))
+	}
+	if ts.Type == nil {
+		panic(fmt.Sprintf("nil ts.Type for ts=%T %+v", ts, *ts))
 	}
 	switch t := ts.Type.(type) {
 	case *Ident:
