@@ -135,6 +135,21 @@ type FuncInfo struct {
 	Pos        token.Pos
 }
 
+func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+	if godb.Verbose {
+		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
+	}
+
+	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
+		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
+			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
+		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
+			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
+		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
+			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
+	}
+}
+
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
 /* key) of a map such that any arbitrary type can be substituted at
 /* run time, so there are several of these nearly-identical functions
@@ -179,9 +194,9 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 }
 
 func processFieldsForTypes(items []astutils.FieldItem) {
-	for _, f := range items {
-		fmt.Printf("%s\n", StringForExpr(f.Field.Type))
-	}
+	//	for _, f := range items {
+	//		fmt.Printf("%s\n", StringForExpr(f.Field.Type))
+	//	}
 }
 
 func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
@@ -190,7 +205,7 @@ func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *Fu
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Results))
 }
 
-func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
+func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 }
 
 // Map qualified function names to info on each.
@@ -726,122 +741,68 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 	}
 }
 
-func processTypes(gf *godb.GoFile, pkgDirUnix string, f *File) {
-Funcs:
-	for _, s := range f.Decls {
-		switch v := s.(type) {
-		case *FuncDecl:
-			if !IsExported(v.Name.Name) {
-				continue // Skipping non-exported functions
-			}
-			if v.Recv != nil {
-				for _, r := range v.Recv.List {
-					if !astutils.IsExportedType(&r.Type) {
-						continue Funcs // Publishable receivers must operate on public types
-					}
-				}
-			}
-			processFuncDeclForTypes(gf, pkgDirUnix, f, v)
-		case *GenDecl:
-			switch v.Tok {
-			case token.TYPE:
-				processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
-			case token.CONST:
-				processValueSpecsForTypes(gf, pkgDirUnix, v.Specs, v.Doc, true)
-			case token.VAR:
-				processValueSpecsForTypes(gf, pkgDirUnix, v.Specs, v.Doc, false)
-			case token.IMPORT: // Ignore these
-			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
-			}
-		default:
-			panic(fmt.Sprintf("unrecognized Decl type %T at: %s", v, godb.WhereAt(v.Pos())))
-		}
+func declFunc(gf *godb.GoFile, pkgDirUnix string, f *File, v *FuncDecl) {
+	if !IsExported(v.Name.Name) {
+		return // Skipping non-exported functions
 	}
+	if v.Recv != nil {
+		for _, r := range v.Recv.List {
+			if !astutils.IsExportedType(&r.Type) {
+				return // Publishable receivers must operate on public types
+			}
+		}
+		NumReceivers++
+	} else {
+		NumStandalones++
+	}
+	NumFunctions++
+	processFuncDecl(gf, pkgDirUnix, f, v)
 }
 
-func processOthers(gf *godb.GoFile, pkgDirUnix string, f *File) {
-Others:
-	for _, s := range f.Decls {
-		switch v := s.(type) {
-		case *FuncDecl:
-			if !IsExported(v.Name.Name) {
-				continue // Skipping non-exported functions
-			}
-			if v.Recv != nil {
-				for _, r := range v.Recv.List {
-					if !astutils.IsExportedType(&r.Type) {
-						continue Others // Publishable receivers must operate on public types
-					}
-				}
-				NumReceivers++
-			} else {
-				NumStandalones++
-			}
-			NumFunctions++
-			processFuncDecl(gf, pkgDirUnix, f, v)
-		case *GenDecl:
-			switch v.Tok {
-			case token.TYPE:
-				// Already processed
-			case token.CONST:
-				processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, true)
-			case token.VAR:
-				processValueSpecs(gf, pkgDirUnix, v.Specs, v.Doc, false)
-			case token.IMPORT: // Ignore these
-			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
-			}
-		}
-	}
+func declType(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
+	processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 }
 
-func processPackage(gf *godb.GoFile, pkgDirUnix string, f *File, phaseFunc func(rootUnix, pkgDirUnix, nsRoot string, p *Package)) {
-	for _, s := range f.Decls {
-		switch v := s.(type) {
-		case *FuncDecl:
-			phaseFunc.FuncDecl(gf, pkgDirUnix, f, v)
-		case *GenDecl:
-			switch v.Tok {
-			case token.TYPE:
-				phaseFunc.TypeDecl(gf, pkgDirUnix, f, v)
-			case token.CONST:
-				phaseFunc.ConstDecl(gf, pkgDirUnix, v.Specs, v.Doc)
-			case token.VAR:
-				phaseFunc.VarDecl(gf, pkgDirUnix, v.Specs, v.Doc)
-			case token.IMPORT: // Ignore these
-			default:
-				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
-			}
-		}
-	}
+func declValSpecForType(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
+	processValueSpecsForTypes(gf, pkgDirUnix, specs, doc)
+}
+
+func declConstSpec(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
+	processValueSpecs(gf, pkgDirUnix, specs, doc, true)
+}
+
+func declVarSpec(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
+	processValueSpecs(gf, pkgDirUnix, specs, doc, false)
 }
 
 type fileDeclFuncs struct {
 	FuncDecl  func(*godb.GoFile, string, *File, *FuncDecl)
 	TypeDecl  func(*godb.GoFile, string, *File, *GenDecl)
-	ConstDecl func(*godb.GoFile, string, *File, *GenDecl)
-	VarDecl   func(*godb.GoFile, string, *File, *GenDecl)
+	ConstDecl func(*godb.GoFile, string, []Spec, *CommentGroup)
+	VarDecl   func(*godb.GoFile, string, []Spec, *CommentGroup)
 }
 
 func processDecls(gf *godb.GoFile, pkgDirUnix string, f *File, declFuncs fileDeclFuncs) {
-	goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
-	gf := godb.GoFilesRelative[goFilePathUnix]
-	if gf == nil {
-		panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
-	}
 	for _, s := range f.Decls {
 		switch v := s.(type) {
 		case *FuncDecl:
-			declFuncs.FuncDecl(gf, pkgDirUnix, f, v)
+			if declFuncs.FuncDecl != nil {
+				declFuncs.FuncDecl(gf, pkgDirUnix, f, v)
+			}
 		case *GenDecl:
 			switch v.Tok {
 			case token.TYPE:
-				declFuncs.TypeDecl(gf, pkgDirUnix, f, v)
+				if declFuncs.TypeDecl != nil {
+					declFuncs.TypeDecl(gf, pkgDirUnix, f, v)
+				}
 			case token.CONST:
-				declFuncs.ConstDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+				if declFuncs.ConstDecl != nil {
+					declFuncs.ConstDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+				}
 			case token.VAR:
-				declFuncs.VarDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+				if declFuncs.VarDecl != nil {
+					declFuncs.VarDecl(gf, pkgDirUnix, v.Specs, v.Doc)
+				}
 			case token.IMPORT: // Ignore these
 			default:
 				panic(fmt.Sprintf("unrecognized token %s at: %s", v.Tok.String(), godb.WhereAt(v.Pos())))
@@ -850,34 +811,44 @@ func processDecls(gf *godb.GoFile, pkgDirUnix string, f *File, declFuncs fileDec
 	}
 }
 
-func phaseInits(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	if godb.Verbose {
-		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
-	}
+type phaseFunc func(*godb.GoFile, string, *File)
 
-	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
-			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
-		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
-			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
-		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
-			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
-	}
-
-	for path, f := range p.Files {
-		processDecls(gf, pkgDirUnix, f, fileTypeDecls)
-	}
+func phaseTypeDefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
+	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
+		FuncDecl:  nil,
+		TypeDecl:  declType,
+		ConstDecl: nil,
+		VarDecl:   nil,
+	})
 }
 
-func phaseTypeRefs(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
-	for path, f := range p.Files {
-		processDecls(gf, pkgDirUnix, f, fileTypeRefs)
-	}
+func phaseTypeRefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
+	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
+		FuncDecl:  nil,
+		TypeDecl:  nil,
+		ConstDecl: declValSpecForType,
+		VarDecl:   declValSpecForType,
+	})
 }
 
-func phaseOtherDecls(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func phaseOtherDecls(gf *godb.GoFile, pkgDirUnix string, f *File) {
+	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
+		FuncDecl:  declFunc,
+		TypeDecl:  nil,
+		ConstDecl: declConstSpec,
+		VarDecl:   declVarSpec,
+	})
+}
+
+func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFunc) {
 	for path, f := range p.Files {
-		processDecls(gf, pkgDirUnix, f, fileOtherDecls)
+		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
+		gf := godb.GoFilesRelative[goFilePathUnix]
+		if gf == nil {
+			panic(fmt.Sprintf("cannot find GoFile object for %s", goFilePathUnix))
+		}
+
+		fn(gf, pkgDirUnix, f)
 	}
 }
 
@@ -1007,9 +978,8 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
-	const phases = []func(string, string, string, *Package){
-		phaseInits,
-		//		phaseTypeDecls,
+	var phases = []phaseFunc{
+		phaseTypeDefs,
 		phaseTypeRefs,
 		phaseOtherDecls,
 	}
@@ -1024,6 +994,10 @@ func WalkAllDirs() (error, paths.NativePath) {
 		if err != nil {
 			return err, d.srcDir
 		}
+	}
+
+	for _, wp := range godb.PackagesAsDiscovered {
+		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
 	}
 
 	for _, phase := range phases {
