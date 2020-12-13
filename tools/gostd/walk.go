@@ -774,7 +774,7 @@ func declType(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
 	processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 }
 
-func declValSpecForType(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
+func declValueSpecForTypes(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
 	processValueSpecsForTypes(gf, pkgDirUnix, specs, doc)
 }
 
@@ -837,8 +837,8 @@ func phaseTypeRefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
 		FuncDecl:  nil,
 		TypeDecl:  nil,
-		ConstDecl: declValSpecForType,
-		VarDecl:   declValSpecForType,
+		ConstDecl: declValueSpecForTypes,
+		VarDecl:   declValueSpecForTypes,
 	})
 }
 
