@@ -206,7 +206,11 @@ func processFieldsForTypes(items []astutils.FieldItem) {
 	}
 }
 
-func processFuncDeclForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+func declFuncForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+	if !IsExported(fd.Name.Name) {
+		return // Skipping non-exported functions
+	}
+
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Recv))
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Params))
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Results))
@@ -835,7 +839,7 @@ func phaseTypeDefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
 
 func phaseTypeRefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
-		FuncDecl:  nil,
+		FuncDecl:  declFuncForTypes,
 		TypeDecl:  nil,
 		ConstDecl: declValueSpecForTypes,
 		VarDecl:   declValueSpecForTypes,
