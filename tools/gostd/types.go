@@ -49,6 +49,7 @@ type TypeInfo interface {
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
 	IsBuiltin() bool
+	IsSwitchable() bool
 }
 
 type TypesMap map[string]TypeInfo
@@ -370,6 +371,10 @@ func (ti typeInfo) IsExported() bool {
 
 func (ti typeInfo) IsBuiltin() bool {
 	return ti.gti.IsBuiltin
+}
+
+func (ti typeInfo) IsSwitchable() bool {
+	return ti.gti.IsSwitchable
 }
 
 func (ti typeInfo) TypeMappingsName() string {

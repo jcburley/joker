@@ -34,6 +34,7 @@ type Info struct {
 	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported     bool
 	IsBuiltin      bool
+	IsSwitchable   bool // Can type's Go name be used in a "case" statement?
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -51,15 +52,16 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	}
 
 	info := &Info{
-		who:        "getInfo",
-		FullName:   fullName,
-		Pattern:    pattern,
-		Package:    pkg,
-		LocalName:  fmt.Sprintf(pattern, name),
-		DocPattern: pattern,
-		IsNullable: nullable,
-		IsExported: pkg == "" || IsExported(name),
-		IsBuiltin:  true,
+		who:          "getInfo",
+		FullName:     fullName,
+		Pattern:      pattern,
+		Package:      pkg,
+		LocalName:    fmt.Sprintf(pattern, name),
+		DocPattern:   pattern,
+		IsNullable:   nullable,
+		IsExported:   pkg == "" || IsExported(name),
+		IsBuiltin:    true,
+		IsSwitchable: true,
 	}
 
 	typesByFullName[fullName] = info
@@ -163,7 +165,7 @@ func defineAndFinish(ti *Info) {
 	finish(ti)
 }
 
-func finishVariant(pattern, docPattern string, innerInfo *Info, te Expr) *Info {
+func finishVariant(pattern, docPattern string, switchable bool, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Expr:           te,
 		who:            "finishVariant",
@@ -176,6 +178,7 @@ func finishVariant(pattern, docPattern string, innerInfo *Info, te Expr) *Info {
 		DefPos:         innerInfo.DefPos,
 		UnderlyingType: innerInfo,
 		Specificity:    Concrete,
+		IsSwitchable:   switchable && innerInfo.IsSwitchable,
 	}
 
 	finish(ti)
@@ -197,18 +200,19 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types := []*Info{}
 
 	ti := &Info{
-		who:         "TypeDefine",
-		Type:        ts.Type,
-		TypeSpec:    ts,
-		IsExported:  IsExported(localName),
-		Doc:         genutils.CommentGroupAsString(doc),
-		DefPos:      ts.Name.NamePos,
-		File:        gf,
-		Pattern:     "%s",
-		Package:     godb.GoPackageForTypeSpec(ts),
-		LocalName:   localName,
-		DocPattern:  "%s",
-		Specificity: specificity(ts),
+		who:          "TypeDefine",
+		Type:         ts.Type,
+		TypeSpec:     ts,
+		IsExported:   IsExported(localName),
+		Doc:          genutils.CommentGroupAsString(doc),
+		DefPos:       ts.Name.NamePos,
+		File:         gf,
+		Pattern:      "%s",
+		Package:      godb.GoPackageForTypeSpec(ts),
+		LocalName:    localName,
+		DocPattern:   "%s",
+		Specificity:  specificity(ts),
+		IsSwitchable: true,
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
@@ -230,6 +234,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			DocPattern:     newPattern,
 			UnderlyingType: ti,
 			Specificity:    Concrete,
+			IsSwitchable:   true,
 		}
 		finish(tiPtrTo)
 		types = append(types, tiPtrTo)
@@ -262,15 +267,16 @@ func InfoForExpr(e Expr) *Info {
 			return ti
 		}
 		ti := &Info{
-			Expr:       e,
-			who:        "TypeForExpr",
-			IsExported: true,
-			DefPos:     id.Pos(),
-			FullName:   fullName,
-			Pattern:    "%s",
-			Package:    pkg,
-			LocalName:  id.Name,
-			DocPattern: "%s",
+			Expr:         e,
+			who:          "TypeForExpr",
+			IsExported:   true,
+			DefPos:       id.Pos(),
+			FullName:     fullName,
+			Pattern:      "%s",
+			Package:      pkg,
+			LocalName:    id.Name,
+			DocPattern:   "%s",
+			IsSwitchable: true,
 		}
 
 		typesByExpr[e] = ti
@@ -282,6 +288,7 @@ func InfoForExpr(e Expr) *Info {
 	var innerInfo *Info
 	pattern := "%s"
 	docPattern := pattern
+	switchable := true
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -300,6 +307,9 @@ func InfoForExpr(e Expr) *Info {
 			localName = innerInfo.LocalName
 			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
+		}
+		if strings.Contains(pattern, "ABEND") {
+			switchable = false
 		}
 	case *InterfaceType:
 		localName = "interface{"
@@ -361,12 +371,13 @@ func InfoForExpr(e Expr) *Info {
 			DocPattern:     docPattern,
 			DefPos:         e.Pos(),
 			UnderlyingType: innerInfo,
+			IsSwitchable:   switchable,
 		}
 		finish(ti)
 		return ti
 	}
 
-	return finishVariant(pattern, docPattern, innerInfo, e)
+	return finishVariant(pattern, docPattern, switchable, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {
