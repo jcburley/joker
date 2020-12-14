@@ -163,7 +163,7 @@ func defineAndFinish(ti *Info) {
 	finish(ti)
 }
 
-func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
+func finishVariant(pattern, docPattern string, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Expr:           te,
 		who:            "finishVariant",
@@ -172,7 +172,7 @@ func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 		Pattern:        pattern,
 		Package:        innerInfo.Package,
 		LocalName:      innerInfo.LocalName,
-		DocPattern:     pattern,
+		DocPattern:     docPattern,
 		DefPos:         innerInfo.DefPos,
 		UnderlyingType: innerInfo,
 		Specificity:    Concrete,
@@ -299,7 +299,7 @@ func InfoForExpr(e Expr) *Info {
 		} else {
 			localName = innerInfo.LocalName
 			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
-			docPattern = fmt.Sprintf(pattern, innerInfo.DocPattern)
+			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
 	case *InterfaceType:
 		localName = "interface{"
@@ -366,7 +366,7 @@ func InfoForExpr(e Expr) *Info {
 		return ti
 	}
 
-	return finishVariant(pattern, innerInfo, e)
+	return finishVariant(pattern, docPattern, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {
@@ -387,16 +387,28 @@ func intExprToString(e Expr) (real, doc string) {
 	if e == nil {
 		return
 	}
+
 	res := eval(e)
 	switch r := res.(type) {
 	case int:
 		real = fmt.Sprintf("%d", r)
-		doc = real
 	default:
 		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, godb.WhereAt(e.Pos()))
-		doc = real
 	}
+
+	doc = intExprToDocString(e)
+
 	return
+}
+
+func intExprToDocString(e Expr) string {
+	switch v := e.(type) {
+	case *BasicLit:
+		return v.Value
+	case *Ident:
+		return v.Name
+	}
+	return "???"
 }
 
 var eval func(e Expr) interface{}
