@@ -581,7 +581,6 @@ func GenTypeInfo() {
 			}
 		}
 		if !ti.IsSwitchable() {
-			fmt.Printf("not switchable: %s\n", ti.GoName())
 			continue
 		}
 		types = append(types, ti)
