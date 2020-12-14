@@ -375,13 +375,19 @@ func exprToString(e Expr) string {
 	if e == nil {
 		return ""
 	}
-	switch v := e.(type) {
-	case *Ellipsis:
-		return "..." + exprToString(v.Elt)
-	case *BasicLit:
-		return v.Value
+	res := eval(e)
+	switch r := res.(type) {
+	case int:
+		return fmt.Sprintf("%d", r)
+	default:
+		return fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, godb.WhereAt(e.Pos()))
 	}
-	return fmt.Sprintf("%v", e)
+}
+
+var eval func(e Expr) interface{}
+
+func SetEvalFn(fn func(e Expr) interface{}) {
+	eval = fn
 }
 
 func (ti *Info) Reflected() (packageImport, pattern string) {
