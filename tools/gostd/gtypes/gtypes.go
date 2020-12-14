@@ -26,6 +26,7 @@ type Info struct {
 	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
 	Package        string // E.g. "net/url", "" (always Unix style)
 	LocalName      string // E.g. "Listener"
+	DocPattern     string // E.g. "[SomeConst]%s", vs "[5]%s" in Pattern
 	Doc            string
 	DefPos         token.Pos
 	File           *godb.GoFile
@@ -55,6 +56,7 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 		Pattern:    pattern,
 		Package:    pkg,
 		LocalName:  fmt.Sprintf(pattern, name),
+		DocPattern: pattern,
 		IsNullable: nullable,
 		IsExported: pkg == "" || IsExported(name),
 		IsBuiltin:  true,
@@ -170,6 +172,7 @@ func finishVariant(pattern string, innerInfo *Info, te Expr) *Info {
 		Pattern:        pattern,
 		Package:        innerInfo.Package,
 		LocalName:      innerInfo.LocalName,
+		DocPattern:     pattern,
 		DefPos:         innerInfo.DefPos,
 		UnderlyingType: innerInfo,
 		Specificity:    Concrete,
@@ -204,6 +207,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Pattern:     "%s",
 		Package:     godb.GoPackageForTypeSpec(ts),
 		LocalName:   localName,
+		DocPattern:  "%s",
 		Specificity: specificity(ts),
 	}
 	defineAndFinish(ti)
@@ -211,6 +215,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Clojure code to access them.
+		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		tiPtrTo := &Info{
 			Expr:           &StarExpr{X: nil},
 			who:            "*TypeDefine*",
@@ -219,9 +224,10 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			Doc:            ti.Doc,
 			DefPos:         ti.DefPos,
 			File:           gf,
-			Pattern:        fmt.Sprintf(ti.Pattern, "*%s"),
+			Pattern:        newPattern,
 			Package:        ti.Package,
 			LocalName:      ti.LocalName,
+			DocPattern:     newPattern,
 			UnderlyingType: ti,
 			Specificity:    Concrete,
 		}
@@ -264,6 +270,7 @@ func InfoForExpr(e Expr) *Info {
 			Pattern:    "%s",
 			Package:    pkg,
 			LocalName:  id.Name,
+			DocPattern: "%s",
 		}
 
 		typesByExpr[e] = ti
@@ -274,21 +281,25 @@ func InfoForExpr(e Expr) *Info {
 
 	var innerInfo *Info
 	pattern := "%s"
+	docPattern := pattern
 
 	switch v := e.(type) {
 	case *StarExpr:
 		innerInfo = InfoForExpr(v.X)
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
+		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
-		len := exprToString(v.Len)
+		len, docLen := intExprToString(v.Len)
 		pattern = "[" + len + "]%s"
+		docPattern = "[" + docLen + "]%s"
 		if innerInfo == nil {
 			localName = fmt.Sprintf("%v", v.Elt)
 		} else {
 			localName = innerInfo.LocalName
 			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
+			docPattern = fmt.Sprintf(pattern, innerInfo.DocPattern)
 		}
 	case *InterfaceType:
 		localName = "interface{"
@@ -347,6 +358,7 @@ func InfoForExpr(e Expr) *Info {
 			Pattern:        pattern,
 			FullName:       fullName,
 			LocalName:      localName,
+			DocPattern:     docPattern,
 			DefPos:         e.Pos(),
 			UnderlyingType: innerInfo,
 		}
@@ -371,17 +383,20 @@ func methodsToString(methods []*Field) string {
 	return strings.Join(mStrings, ", ")
 }
 
-func exprToString(e Expr) string {
+func intExprToString(e Expr) (real, doc string) {
 	if e == nil {
-		return ""
+		return
 	}
 	res := eval(e)
 	switch r := res.(type) {
 	case int:
-		return fmt.Sprintf("%d", r)
+		real = fmt.Sprintf("%d", r)
+		doc = real
 	default:
-		return fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, godb.WhereAt(e.Pos()))
+		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, godb.WhereAt(e.Pos()))
+		doc = real
 	}
+	return
 }
 
 var eval func(e Expr) interface{}
@@ -422,7 +437,7 @@ func (ti *Info) AbsoluteName() string {
 
 func (ti *Info) NameDoc(e Expr) string {
 	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
-		return ti.FullName
+		return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
 	}
-	return fmt.Sprintf(ti.Pattern, ti.LocalName)
+	return fmt.Sprintf(ti.DocPattern, ti.LocalName)
 }

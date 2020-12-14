@@ -2371,7 +2371,7 @@ CLOJURE FUNC net/http.ListenAndServeTLS from net/http/server.go:
 
 CLOJURE FUNC net/http.MaxBytesReader from net/http/request.go:
 ;; (defn MaxBytesReader
-;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser')\n\nJoker input arguments: [^ResponseWriter w, ^go.std.io/ReadCloser r, ^BigInt n]\n\nJoker returns: ^go.std.io/ReadCloser"
+;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r io.ReadCloser, n int64)\n\nGo returns: ABEND002(reference to unavailable package `io' looking for type `ReadCloser')\n\nJoker input arguments: [^ResponseWriter w, ^go.std.io/ReadCloser r, ^BigInt n]\n\nJoker returns: ^go.std.io/ReadCloser"
 ;;   {:added "1.0"
 ;;    :go "_f_maxBytesReader(*_v_w, *_v_r, _v_n)"}
 ;;   [^go.std.net.http/ResponseWriter _v_w, ^go.std.io/ReadCloser _v_r, ^Int64 _v_n])
@@ -2420,7 +2420,7 @@ CLOJURE FUNC net/http.ParseHTTPVersion from net/http/request.go:
 
 CLOJURE FUNC net/http.ParseTime from net/http/header.go:
 ;; (defn ParseTime
-;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo input arguments: (text string)\n\nGo returns: (t time.ABEND002(reference to unavailable package `time' looking for type `Time'), err error)\n\nJoker input arguments: [^String text]\n\nJoker returns: [^go.std.time/Time t, ^Error err]"
+;;   "ParseTime parses a time header (such as the Date: header),\ntrying each of the three formats allowed by HTTP/1.1:\nTimeFormat, time.RFC850, and time.ANSIC.\n\nGo input arguments: (text string)\n\nGo returns: (t ABEND002(reference to unavailable package `time' looking for type `Time'), err error)\n\nJoker input arguments: [^String text]\n\nJoker returns: [^go.std.time/Time t, ^Error err]"
 ;;   {:added "1.0"
 ;;    :go "_f_parseTime(_v_text)"}
 ;;   [^String _v_text])
@@ -3062,7 +3062,7 @@ CLOJURE FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace
 
 CLOJURE FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
 ;; (defn WithClientTrace
-;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: context.ABEND002(reference to unavailable package `context' looking for type `Context')\n\nJoker input arguments: [^go.std.context/Context ctx, ^refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
+;;   "WithClientTrace returns a new context based on the provided parent\nctx. HTTP client requests made with the returned context will use\nthe provided trace hooks, in addition to any previous hooks\nregistered with ctx. Any hooks defined in the provided trace will\nbe called first.\n\nGo input arguments: (ctx context.Context, trace *ClientTrace)\n\nGo returns: ABEND002(reference to unavailable package `context' looking for type `Context')\n\nJoker input arguments: [^go.std.context/Context ctx, ^refToClientTrace trace]\n\nJoker returns: ^go.std.context/Context"
 ;;   {:added "1.0"
 ;;    :go "_f_withClientTrace(*_v_ctx, _v_trace)"}
 ;;   [^go.std.context/Context _v_ctx, ^go.std.net.http.httptrace/ClientTrace _v_trace])
@@ -3206,14 +3206,14 @@ CLOJURE FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
 
 CLOJURE FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
 ;; (defn NewChunkedReader
-;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo input arguments: (r io.Reader)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `Reader')\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker returns: ^go.std.io/Reader"
+;;   "NewChunkedReader returns a new chunkedReader that translates the data read from r\nout of HTTP \"chunked\" format before returning it.\nThe chunkedReader returns io.EOF when the final 0-length chunk is read.\n\nNewChunkedReader is not needed by normal applications. The http package\nautomatically decodes chunking when reading response bodies.\n\nGo input arguments: (r io.Reader)\n\nGo returns: ABEND002(reference to unavailable package `io' looking for type `Reader')\n\nJoker input arguments: [^go.std.io/Reader r]\n\nJoker returns: ^go.std.io/Reader"
 ;;   {:added "1.0"
 ;;    :go "_f_newChunkedReader(*_v_r)"}
 ;;   [^go.std.io/Reader _v_r])
 
 CLOJURE FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
 ;; (defn NewChunkedWriter
-;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo input arguments: (w io.Writer)\n\nGo returns: io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser')\n\nJoker input arguments: [^go.std.io/Writer w]\n\nJoker returns: ^go.std.io/WriteCloser"
+;;   "NewChunkedWriter returns a new chunkedWriter that translates writes into HTTP\n\"chunked\" format before writing them to w. Closing the returned chunkedWriter\nsends the final 0-length chunk that marks the end of the stream but does\nnot send the final CRLF that appears after trailers; trailers and the last\nCRLF must be written separately.\n\nNewChunkedWriter is not needed by normal applications. The http\npackage adds chunking automatically if handlers don't set a\nContent-Length header. Using NewChunkedWriter inside a handler\nwould result in double chunking or chunking with a Content-Length\nlength, both of which are wrong.\n\nGo input arguments: (w io.Writer)\n\nGo returns: ABEND002(reference to unavailable package `io' looking for type `WriteCloser')\n\nJoker input arguments: [^go.std.io/Writer w]\n\nJoker returns: ^go.std.io/WriteCloser"
 ;;   {:added "1.0"
 ;;    :go "_f_newChunkedWriter(*_v_w)"}
 ;;   [^go.std.io/Writer _v_w])
@@ -3373,7 +3373,7 @@ CLOJURE FUNC net/mail.ParseAddressList from net/mail/message.go:
 
 CLOJURE FUNC net/mail.ParseDate from net/mail/message.go:
 ;; (defn ParseDate
-;;   "ParseDate parses an RFC 5322 date string.\n\nGo input arguments: (date string)\n\nGo returns: (time.ABEND002(reference to unavailable package `time' looking for type `Time'), error)\n\nJoker input arguments: [^String date]\n\nJoker returns: [^go.std.time/Time, ^Error]"
+;;   "ParseDate parses an RFC 5322 date string.\n\nGo input arguments: (date string)\n\nGo returns: (ABEND002(reference to unavailable package `time' looking for type `Time'), error)\n\nJoker input arguments: [^String date]\n\nJoker returns: [^go.std.time/Time, ^Error]"
 ;;   {:added "1.0"
 ;;    :go "_f_parseDate(_v_date)"}
 ;;   [^String _v_date])
@@ -6425,7 +6425,7 @@ GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 
 GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 // func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
@@ -6754,7 +6754,7 @@ func _f_ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net._f_ptrTo_TCPConn_SyscallConn from net/tcpsock.go:
 // func _f_ptrTo_TCPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_TCPListener_Accept from net/tcpsock.go:
 func _f_ptrTo_TCPListener_Accept(o GoObject, args Object) Object {  // Receiver
@@ -6804,7 +6804,7 @@ GO FUNC net._f_ptrTo_TCPListener_SetDeadline from net/tcpsock.go:
 
 GO FUNC net._f_ptrTo_TCPListener_SyscallConn from net/tcpsock.go:
 // func _f_ptrTo_TCPListener_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UDPAddr_Network from net/udpsock.go:
 func _f_ptrTo_UDPAddr_Network(o GoObject, args Object) Object {  // Receiver
@@ -6861,7 +6861,7 @@ GO FUNC net._f_ptrTo_UDPConn_ReadMsgUDP from net/udpsock.go:
 
 GO FUNC net._f_ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 // func _f_ptrTo_UDPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UDPConn_WriteMsgUDP from net/udpsock.go:
 // func _f_ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {  // Receiver
@@ -6970,7 +6970,7 @@ GO FUNC net._f_ptrTo_UnixConn_ReadMsgUnix from net/unixsock.go:
 
 GO FUNC net._f_ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 // func _f_ptrTo_UnixConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_UnixConn_WriteMsgUnix from net/unixsock.go:
 // func _f_ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {  // Receiver
@@ -7063,7 +7063,7 @@ GO FUNC net._f_ptrTo_UnixListener_SetUnlinkOnClose from net/unixsock_posix.go:
 
 GO FUNC net._f_ptrTo_UnixListener_SyscallConn from net/unixsock.go:
 // func _f_ptrTo_UnixListener_SyscallConn(o GoObject, args Object) Object {  // Receiver
-// (syscall.ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
+// (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_unknownNetworkError_Error from net/net.go:
 func _f_unknownNetworkError_Error(o GoObject, args Object) Object {  // Receiver
@@ -9412,7 +9412,7 @@ func _f_ptrTo_Request_BasicAuth(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/http._f_ptrTo_Request_Context from net/http/request.go:
 // func _f_ptrTo_Request_Context(o GoObject, args Object) Object {  // Receiver
-// context.ABEND002(reference to unavailable package `context' looking for type `Context')}
+// ABEND002(reference to unavailable package `context' looking for type `Context')}
 
 GO FUNC net/http._f_ptrTo_Request_Cookie from net/http/request.go:
 func _f_ptrTo_Request_Cookie(o GoObject, args Object) Object {  // Receiver
@@ -9434,7 +9434,7 @@ func _f_ptrTo_Request_Cookies(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/http._f_ptrTo_Request_FormFile from net/http/request.go:
 // func _f_ptrTo_Request_FormFile(o GoObject, args Object) Object {  // Receiver
-// (mime/multipart.ABEND002(reference to unavailable package `mime/multipart' looking for type `File'), *ABEND002(reference to unavailable package `mime/multipart' looking for type `FileHeader'), error)}
+// (ABEND002(reference to unavailable package `mime/multipart' looking for type `File'), *ABEND002(reference to unavailable package `mime/multipart' looking for type `FileHeader'), error)}
 
 GO FUNC net/http._f_ptrTo_Request_FormValue from net/http/request.go:
 func _f_ptrTo_Request_FormValue(o GoObject, args Object) Object {  // Receiver
@@ -12085,7 +12085,7 @@ func _f_header_AddressList(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/mail._f_header_Date from net/mail/message.go:
 // func _f_header_Date(o GoObject, args Object) Object {  // Receiver
-// (time.ABEND002(reference to unavailable package `time' looking for type `Time'), error)}
+// (ABEND002(reference to unavailable package `time' looking for type `Time'), error)}
 
 GO FUNC net/mail._f_header_Get from net/mail/message.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
@@ -13207,7 +13207,7 @@ func _f_ptrTo_Client_Close(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/smtp._f_ptrTo_Client_Data from net/smtp/smtp.go:
 // func _f_ptrTo_Client_Data(o GoObject, args Object) Object {  // Receiver
-// (io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser'), error)}
+// (ABEND002(reference to unavailable package `io' looking for type `WriteCloser'), error)}
 
 GO FUNC net/smtp._f_ptrTo_Client_Extension from net/smtp/smtp.go:
 func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
@@ -13275,7 +13275,7 @@ GO FUNC net/smtp._f_ptrTo_Client_StartTLS from net/smtp/smtp.go:
 
 GO FUNC net/smtp._f_ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 // func _f_ptrTo_Client_TLSConnectionState(o GoObject, args Object) Object {  // Receiver
-// (state crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), ok bool)}
+// (state ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), ok bool)}
 
 GO FUNC net/smtp._f_ptrTo_Client_Verify from net/smtp/smtp.go:
 func _f_ptrTo_Client_Verify(o GoObject, args Object) Object {  // Receiver
@@ -13776,7 +13776,7 @@ GO FUNC net/textproto._f_ptrTo_Pipeline_StartResponse from net/textproto/pipelin
 
 GO FUNC net/textproto._f_ptrTo_Reader_DotReader from net/textproto/reader.go:
 // func _f_ptrTo_Reader_DotReader(o GoObject, args Object) Object {  // Receiver
-// io.ABEND002(reference to unavailable package `io' looking for type `Reader')}
+// ABEND002(reference to unavailable package `io' looking for type `Reader')}
 
 GO FUNC net/textproto._f_ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {  // Receiver
@@ -13874,7 +13874,7 @@ func _f_ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net/textproto._f_ptrTo_Writer_DotWriter from net/textproto/writer.go:
 // func _f_ptrTo_Writer_DotWriter(o GoObject, args Object) Object {  // Receiver
-// io.ABEND002(reference to unavailable package `io' looking for type `WriteCloser')}
+// ABEND002(reference to unavailable package `io' looking for type `WriteCloser')}
 
 GO FUNC net/textproto._f_ptrTo_Writer_PrintfLine from net/textproto/writer.go:
 // func _f_ptrTo_Writer_PrintfLine(o GoObject, args Object) Object {  // Receiver
