@@ -287,17 +287,10 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, fd.Pos()}
 }
 
-// Maps qualified typename ("path/to/pkg.TypeName") to type info.
-func processTypeDecl(gf *godb.GoFile, pkg string, ts *TypeSpec, parentDoc *CommentGroup) {
-	if !RegisterTypeDecl(ts, gf, pkg, parentDoc) {
-		return
-	}
-}
-
 func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*TypeSpec)
-		processTypeDecl(gf, pkg, ts, parentDoc)
+		RegisterTypeDecl(ts, gf, pkg, parentDoc)
 	}
 }
 

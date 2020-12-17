@@ -68,7 +68,11 @@ type typeInfo struct {
 	who             string // who made me
 }
 
-func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
+func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
+	if ts.Assign != token.NoPos {
+		return // Ignore type aliases (which are used in go1.16.1beta1)
+	}
+
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
@@ -105,8 +109,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			GoCode[pkg].InitTypes[ti] = struct{}{}
 		}
 	}
-
-	return true
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
