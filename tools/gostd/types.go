@@ -49,7 +49,8 @@ type TypeInfo interface {
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
 	IsBuiltin() bool
-	IsSwitchable() bool
+	IsSwitchable() bool  // Can (Go) name be used in a 'case' statement or type assertion?
+	IsAddressable() bool // Is "&instance" going to pass muster, even with 'go vet'?
 }
 
 type TypesMap map[string]TypeInfo
@@ -373,6 +374,10 @@ func (ti typeInfo) IsBuiltin() bool {
 
 func (ti typeInfo) IsSwitchable() bool {
 	return ti.gti.IsSwitchable
+}
+
+func (ti typeInfo) IsAddressable() bool {
+	return ti.gti.IsAddressable
 }
 
 func (ti typeInfo) TypeMappingsName() string {

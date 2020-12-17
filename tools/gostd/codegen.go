@@ -460,7 +460,7 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 
 	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ts)
 	goExtractRefTo := ""
-	if !(ti.GoPackage() == "reflect" && (ti.GoBaseName() == "StringHeader" || ti.GoBaseName() == "SliceHeader")) {
+	if ti.IsAddressable() {
 		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName)
 	}
 	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, goExtractRefTo, typeName, others, t)
@@ -480,7 +480,7 @@ func genCtor(tyi TypeInfo) {
 	if !tyi.Custom() {
 		return
 	}
-	if tyi.GoPackage() == "reflect" && (tyi.GoBaseName() == "StringHeader" || tyi.GoBaseName() == "SliceHeader") {
+	if !tyi.IsAddressable() {
 		return
 	}
 

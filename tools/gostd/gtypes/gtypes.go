@@ -35,6 +35,7 @@ type Info struct {
 	IsExported     bool
 	IsBuiltin      bool
 	IsSwitchable   bool // Can type's Go name be used in a "case" statement?
+	IsAddressable  bool // Is "&instance" going to pass muster, even with 'go vet'?
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -52,16 +53,17 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	}
 
 	info := &Info{
-		who:          "getInfo",
-		FullName:     fullName,
-		Pattern:      pattern,
-		Package:      pkg,
-		LocalName:    fmt.Sprintf(pattern, name),
-		DocPattern:   pattern,
-		IsNullable:   nullable,
-		IsExported:   pkg == "" || IsExported(name),
-		IsBuiltin:    true,
-		IsSwitchable: true,
+		who:           "getInfo",
+		FullName:      fullName,
+		Pattern:       pattern,
+		Package:       pkg,
+		LocalName:     fmt.Sprintf(pattern, name),
+		DocPattern:    pattern,
+		IsNullable:    nullable,
+		IsExported:    pkg == "" || IsExported(name),
+		IsBuiltin:     true,
+		IsSwitchable:  true,
+		IsAddressable: true,
 	}
 
 	typesByFullName[fullName] = info
@@ -179,6 +181,7 @@ func finishVariant(pattern, docPattern string, switchable bool, innerInfo *Info,
 		UnderlyingType: innerInfo,
 		Specificity:    Concrete,
 		IsSwitchable:   switchable && innerInfo.IsSwitchable,
+		IsAddressable:  innerInfo.IsAddressable,
 	}
 
 	finish(ti)
@@ -186,8 +189,14 @@ func finishVariant(pattern, docPattern string, switchable bool, innerInfo *Info,
 	return ti
 }
 
+func isAddressable(pkg, name string) bool {
+	// See: https://github.com/golang/go/issues/40701
+	return !(pkg == "reflect" && (name == "StringHeader" || name == "SliceHeader"))
+}
+
 func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
+	pkg := godb.GoPackageForTypeSpec(ts)
 
 	doc := ts.Doc // Try block comments for this specific decl
 	if doc == nil {
@@ -200,19 +209,20 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types := []*Info{}
 
 	ti := &Info{
-		who:          "TypeDefine",
-		Type:         ts.Type,
-		TypeSpec:     ts,
-		IsExported:   IsExported(localName),
-		Doc:          genutils.CommentGroupAsString(doc),
-		DefPos:       ts.Name.NamePos,
-		File:         gf,
-		Pattern:      "%s",
-		Package:      godb.GoPackageForTypeSpec(ts),
-		LocalName:    localName,
-		DocPattern:   "%s",
-		Specificity:  specificity(ts),
-		IsSwitchable: ts.Assign == token.NoPos,
+		who:           "TypeDefine",
+		Type:          ts.Type,
+		TypeSpec:      ts,
+		IsExported:    IsExported(localName),
+		Doc:           genutils.CommentGroupAsString(doc),
+		DefPos:        ts.Name.NamePos,
+		File:          gf,
+		Pattern:       "%s",
+		Package:       pkg,
+		LocalName:     localName,
+		DocPattern:    "%s",
+		Specificity:   specificity(ts),
+		IsSwitchable:  ts.Assign == token.NoPos,
+		IsAddressable: isAddressable(pkg, localName),
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
@@ -235,6 +245,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			UnderlyingType: ti,
 			Specificity:    Concrete,
 			IsSwitchable:   ti.IsSwitchable,
+			IsAddressable:  ti.IsAddressable,
 		}
 		finish(tiPtrTo)
 		types = append(types, tiPtrTo)
