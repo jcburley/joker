@@ -1,11 +1,11 @@
+(def EE Error)
+
 (ns joker.test-joker.go-objects
   (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
-(def fs-namespace
-  (if (try (do (use 'go.std.io.fs) true) (catch Nil e false))
-    "go.std.io.fs"
-    "go.std.os"))
+(def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
+(use (symbol fs-namespace))
 
 (deftest comparable-types
   (let [res1 ((go.std.os/Stat "run.sh") 0)
