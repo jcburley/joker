@@ -10,6 +10,16 @@ Note that `gostd` is still very much a "work in progress". It does not convert t
 
 ## Recent Design Changes
 
+### 2020-12-17
+
+Type aliases (e.g. `type foo = bar`) are now ignored, so their Clojure names are not available for use.
+
+Their use (in the Go standard library) seems to have been introduced (with respect to the timeframe in which `gostd` has existed) in Go version `1.16.1beta1`.
+
+Ideally, `gostd` would support them, but as they seem designed for only short-term use around refactoring, properly implementing them in Joker seems less urgent than numerous other matters.
+
+For more information on type aliases, see [Proposal: Type Aliases](https://go.googlesource.com/proposal/+/master/design/18130-type-alias.md) by Russ Cox and Robert Griesemer, December 16, 2016.
+
 ### 2020-04-17
 
 Values returned by functions (this includes receivers and methods) are now returned "as-is", rather than (for some types) autoconverted to suitable Joker representations.
@@ -60,7 +70,7 @@ $
 
 ## Types
 
-Named types, defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`.
+Named types (other than aliases), defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`.
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
 
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:

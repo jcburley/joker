@@ -49,7 +49,8 @@ type TypeInfo interface {
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
 	IsBuiltin() bool
-	IsSwitchable() bool
+	IsSwitchable() bool  // Can (Go) name be used in a 'case' statement or type assertion?
+	IsAddressable() bool // Is "&instance" going to pass muster, even with 'go vet'?
 }
 
 type TypesMap map[string]TypeInfo
@@ -68,7 +69,7 @@ type typeInfo struct {
 	who             string // who made me
 }
 
-func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) bool {
+func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
@@ -105,8 +106,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			GoCode[pkg].InitTypes[ti] = struct{}{}
 		}
 	}
-
-	return true
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
@@ -375,6 +374,10 @@ func (ti typeInfo) IsBuiltin() bool {
 
 func (ti typeInfo) IsSwitchable() bool {
 	return ti.gti.IsSwitchable
+}
+
+func (ti typeInfo) IsAddressable() bool {
+	return ti.gti.IsAddressable
 }
 
 func (ti typeInfo) TypeMappingsName() string {

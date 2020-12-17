@@ -1,15 +1,21 @@
+(def EE Error)
+
 (ns joker.test-joker.go-objects
-  (:use joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template))
+  (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template))
+
+;; Temporary workaround for lack of support for type aliases in gostd:
+(def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
+(use (symbol fs-namespace))
 
 (deftest comparable-types
-  (let [res1 ((Stat "run.sh") 0)
-        res2 ((Stat "core") 0)
+  (let [res1 ((go.std.os/Stat "run.sh") 0)
+        res2 ((go.std.os/Stat "core") 0)
         res3 (NewIEEE)]
     (is (= (str (type res1)) "GoObject"))
     (is (= (str (type res2)) "GoObject"))
     (is (= (str (type res3)) "GoObject"))
-    (is (= (str (GoTypeOf res1)) "go.std.os/FileInfo"))
-    (is (= (str (GoTypeOf res2)) "go.std.os/FileInfo"))
+    (is (= (str (GoTypeOf res1)) (str fs-namespace "/FileInfo")))
+    (is (= (str (GoTypeOf res2)) (str fs-namespace"/FileInfo")))
     (is (= (str (GoTypeOf res3)) "go.std.hash/Hash32"))
     (is (= (type res1) (type res2)))
     (is (= (type res1) (type res3)))

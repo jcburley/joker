@@ -443,21 +443,27 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 	switch o := a.(type) {
 	case GoObject:
 		switch r := o.O.(type) {
-		case %s:
-			return &r
-		case *%s:
+%s		case *%s:
 			return r
 		}
 	%s}
 	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
 }
 `
+	const goExtractRefToTemplate = `
+		case %s:
+			return &r
+`
 
 	baseTypeName := ts.Name.Name
 	typeName := myGoImport + "." + baseTypeName
 
 	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ts)
-	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, typeName, typeName, others, t)
+	goExtractRefTo := ""
+	if ti.IsAddressable() {
+		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName)
+	}
+	goc := fmt.Sprintf(goExtractTemplate, baseTypeName, typeName, goExtractRefTo, typeName, others, t)
 
 	goc += goTypeExtractor(t, ti)
 
@@ -472,6 +478,9 @@ var CtorNames = map[TypeInfo]string{}
 
 func genCtor(tyi TypeInfo) {
 	if !tyi.Custom() {
+		return
+	}
+	if !tyi.IsAddressable() {
 		return
 	}
 
