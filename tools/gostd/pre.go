@@ -159,6 +159,31 @@ func genGoPreChan(fn *FuncInfo, indent string, e *ChanType, paramName string, ar
 }
 
 func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
+	if true {
+		ti := TypeInfoForExpr(e)
+		clType, clTypeDoc, goType, goTypeDoc = ti.ClojureName(), ti.ClojureNameDoc(e), ti.GoName(), ti.GoNameDoc(e)
+		cl2golParam = paramName
+		if fn.Fd == nil || fn.Fd.Recv != nil {
+			goPreCode = fmt.Sprintf("%s := SeqNth(_argList, %d).(Native)", paramName, argNum)
+		}
+
+		return
+	} else if false {
+		ti := TypeInfoForExpr(e)
+		unwrap := ti.ArgExtractFunc()
+		convert := ""
+		if unwrap == "" {
+			convert = fmt.Sprintf("ConvertFromClojureObject(%s)", paramName)
+			clType = "GoObject"
+		} else {
+			convert = "ConvertFromClojureObject_" + fmt.Sprintf(unwrap, paramName, "")
+			clType = ti.ArgExtractFunc()
+		}
+		clTypeDoc = ti.ClojureNameDoc(e)
+		cl2golParam = convert
+
+		return
+	}
 	cl2golParam = paramName
 	switch v := e.(type) {
 	case *Ident:
