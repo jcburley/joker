@@ -212,7 +212,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		LocalName:    localName,
 		DocPattern:   "%s",
 		Specificity:  specificity(ts),
-		IsSwitchable: true,
+		IsSwitchable: ts.Assign == token.NoPos,
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
@@ -234,7 +234,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			DocPattern:     newPattern,
 			UnderlyingType: ti,
 			Specificity:    Concrete,
-			IsSwitchable:   true,
+			IsSwitchable:   ti.IsSwitchable,
 		}
 		finish(tiPtrTo)
 		types = append(types, tiPtrTo)

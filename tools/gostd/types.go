@@ -69,10 +69,6 @@ type typeInfo struct {
 }
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
-	if ts.Assign != token.NoPos {
-		return // Ignore type aliases (which are used in go1.16.1beta1)
-	}
-
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
