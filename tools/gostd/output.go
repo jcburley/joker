@@ -146,7 +146,7 @@ func SwitchGoType(g interface{}) int {
 `
 
 	var cases string
-	var importeds = &imports.Imports{PackageName: "core"}
+	var importeds = &imports.Imports{}
 	for _, t := range types {
 		if t.Specificity() == 0 {
 			// These are empty interface{} types, and so really can't be specifically matched to anything.
