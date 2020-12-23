@@ -408,7 +408,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 	localType := "{{myGoImport}}." + ti.GoBaseName()
 	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
 
-	fmtLocal := PackagesInfo[godb.GoPackageForTypeSpec(ts)].ImportsNative.Add("", "fmt", "", "", true, ts.Pos())
+	fmtLocal := PackagesInfo[godb.GoPackageForTypeSpec(ts)].ImportsNative.Add("fmt", "fmt", "", "", true, ts.Pos())
 
 	fnName := "ExtractGo_" + mangled
 	resType := localType

@@ -167,6 +167,8 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			goPreCode = fmt.Sprintf("%s := SeqNth(_argList, %d).(Native)", paramName, argNum)
 		}
 
+		fn.AddToImports(ti)
+
 		return
 	} else if false {
 		ti := TypeInfoForExpr(e)

@@ -193,6 +193,20 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	return
 }
 
+// Add whatever ti needs to be code-generated for fn to fn's list of
+// imports; return what is picked as the Go short package name for the
+// generated file.
+func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
+	exprPkgName := ti.GoPackage()
+	curPkgName := fn.SourceFile.Package.Dir
+	if exprPkgName == "" || curPkgName.String() == exprPkgName {
+		return ""
+	}
+	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
+	clojureStdPath := "github.com/candid82/joker/std/go/std/"
+	return fn.Imports.Add(path.Base(exprPkgName), exprPkgName, clojureStdNs, clojureStdPath, false, fn.Pos)
+}
+
 func processTypeRef(t Expr) {
 	//	fmt.Printf("%T\n", t)
 	if t != nil {
