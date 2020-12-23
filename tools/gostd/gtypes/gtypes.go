@@ -42,12 +42,7 @@ type Info struct {
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
 
-func getInfo(pattern, pkg, name string, nullable bool) *Info {
-	if pattern == "" {
-		pattern = "%s"
-	}
-	fullName := fmt.Sprintf(pattern, genutils.CombineGoName(pkg, name))
-
+func getInfo(fullName string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
@@ -55,12 +50,12 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
-		Pattern:       pattern,
-		Package:       pkg,
-		LocalName:     fmt.Sprintf(pattern, name),
-		DocPattern:    pattern,
+		Pattern:       "%s",
+		Package:       "",
+		LocalName:     fullName,
+		DocPattern:    "%s",
 		IsNullable:    nullable,
-		IsExported:    pkg == "" || IsExported(name),
+		IsExported:    true,
 		IsBuiltin:     true,
 		IsSwitchable:  true,
 		IsAddressable: true,
@@ -73,43 +68,43 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 
 var Nil = Info{}
 
-var Error = getInfo("", "", "error", true)
+var Error = getInfo("error", true)
 
-var Bool = getInfo("", "", "bool", false)
+var Bool = getInfo("bool", false)
 
-var Byte = getInfo("", "", "byte", false)
+var Byte = getInfo("byte", false)
 
-var Rune = getInfo("", "", "rune", false)
+var Rune = getInfo("rune", false)
 
-var String = getInfo("", "", "string", false)
+var String = getInfo("string", false)
 
-var Int = getInfo("", "", "int", false)
+var Int = getInfo("int", false)
 
-var Int8 = getInfo("", "", "int8", false)
+var Int8 = getInfo("int8", false)
 
-var Int16 = getInfo("", "", "int16", false)
+var Int16 = getInfo("int16", false)
 
-var Int32 = getInfo("", "", "int32", false)
+var Int32 = getInfo("int32", false)
 
-var Int64 = getInfo("", "", "int64", false)
+var Int64 = getInfo("int64", false)
 
-var UInt = getInfo("", "", "uint", false)
+var UInt = getInfo("uint", false)
 
-var UInt8 = getInfo("", "", "uint8", false)
+var UInt8 = getInfo("uint8", false)
 
-var UInt16 = getInfo("", "", "uint16", false)
+var UInt16 = getInfo("uint16", false)
 
-var UInt32 = getInfo("", "", "uint32", false)
+var UInt32 = getInfo("uint32", false)
 
-var UInt64 = getInfo("", "", "uint64", false)
+var UInt64 = getInfo("uint64", false)
 
-var UIntPtr = getInfo("", "", "uintptr", false)
+var UIntPtr = getInfo("uintptr", false)
 
-var Float32 = getInfo("", "", "float32", false)
+var Float32 = getInfo("float32", false)
 
-var Float64 = getInfo("", "", "float64", false)
+var Float64 = getInfo("float64", false)
 
-var Complex128 = getInfo("", "", "complex128", false)
+var Complex128 = getInfo("complex128", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -269,10 +264,11 @@ func InfoForExpr(e Expr) *Info {
 
 	localName := ""
 	fullName := ""
+	pkgName := ""
 
 	if id, yes := e.(*Ident); yes {
-		pkg := godb.GoPackageForExpr(e)
-		fullName = genutils.CombineGoName(pkg, id.Name)
+		pkgName = godb.GoPackageForExpr(e)
+		fullName = genutils.CombineGoName(pkgName, id.Name)
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti
@@ -284,7 +280,7 @@ func InfoForExpr(e Expr) *Info {
 			DefPos:       id.Pos(),
 			FullName:     fullName,
 			Pattern:      "%s",
-			Package:      pkg,
+			Package:      pkgName,
 			LocalName:    id.Name,
 			DocPattern:   "%s",
 			IsSwitchable: true,
@@ -307,6 +303,7 @@ func InfoForExpr(e Expr) *Info {
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
+		pkgName = innerInfo.Package
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := intExprToString(v.Len)
@@ -319,6 +316,7 @@ func InfoForExpr(e Expr) *Info {
 			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
+		pkgName = innerInfo.Package
 		if strings.Contains(pattern, "ABEND") {
 			switchable = false
 		}
@@ -334,18 +332,19 @@ func InfoForExpr(e Expr) *Info {
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 	case *SelectorExpr:
-		pkgName := v.X.(*Ident).Name
+		pkg := v.X.(*Ident).Name
 		localName = v.Sel.Name
 		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
-		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+		if fullPkgName, found := (*rf.Spaces)[pkg]; found {
 			if !godb.IsAvailable(fullPkgName) {
 				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
 			}
-			fullName = fullPkgName.String() + "." + localName
+			pkgName = fullPkgName.String()
+			fullName = pkgName + "." + localName
 		} else {
 			panic(fmt.Sprintf("processing %s: could not find %s in %s",
-				godb.WhereAt(v.Pos()), pkgName, fullPathUnix))
+				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
 		}
 	case *ChanType:
 		ty := InfoForExpr(v.Value)
@@ -373,10 +372,14 @@ func InfoForExpr(e Expr) *Info {
 				return ti
 			}
 		}
+		if strings.Contains(localName, "ABEND") {
+			pkgName = ""
+		}
 		ti := &Info{
 			Expr:           e,
 			who:            fmt.Sprintf("[InfoForExpr %T]", e),
 			Pattern:        pattern,
+			Package:        pkgName,
 			FullName:       fullName,
 			LocalName:      localName,
 			DocPattern:     docPattern,
