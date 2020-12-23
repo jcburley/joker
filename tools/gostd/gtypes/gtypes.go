@@ -361,6 +361,9 @@ func InfoForExpr(e Expr) *Info {
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
 		localName = "func{}" // TODO: add more info here
+	case *Ellipsis:
+		ty := InfoForExpr(v.Elt)
+		localName = "..." + ty.RelativeName(e.Pos())
 	}
 
 	if innerInfo == nil {
