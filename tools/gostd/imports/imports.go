@@ -24,8 +24,9 @@ type Import struct {
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
 type Imports struct {
-	LocalNames map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
-	FullNames  map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
+	PackageName string             // 'package %s' reserves that name
+	LocalNames  map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
+	FullNames   map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
 }
 
 /* Given desired local and the full (though relative) name of the
@@ -34,7 +35,6 @@ type Imports struct {
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
 func (imports *Imports) Add(local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
-	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
 	}
@@ -49,16 +49,19 @@ func (imports *Imports) Add(local, full, nsPrefix, pathPrefix string, okToSubsti
 	}
 
 	substituted := false
+	components := Split(full, "/")
 	localRef := local
+
 	if local == "" {
 		localRef = components[len(components)-1]
 	}
+
 	if localRef != "." {
 		prevComponentIndex := len(components) - 1
 		for {
 			origLocalRef := localRef
 			curFull, found := imports.LocalNames[localRef]
-			if !found {
+			if !found && localRef != imports.PackageName {
 				break
 			}
 			substituted = true

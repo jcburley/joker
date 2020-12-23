@@ -559,7 +559,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 					Ft:         m.Type.(*FuncType),
 					Doc:        doc,
 					SourceFile: ti.GoFile(),
-					Imports:    &imports.Imports{},
+					Imports:    &imports.Imports{PackageName: path.Base(ti.GoPackage())},
 					Pos:        n.NamePos,
 				}
 			}
