@@ -42,12 +42,7 @@ type Info struct {
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
 
-func getInfo(pattern, pkg, name string, nullable bool) *Info {
-	if pattern == "" {
-		pattern = "%s"
-	}
-	fullName := fmt.Sprintf(pattern, genutils.CombineGoName(pkg, name))
-
+func getInfo(fullName string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
@@ -55,12 +50,12 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
-		Pattern:       pattern,
-		Package:       pkg,
-		LocalName:     fmt.Sprintf(pattern, name),
-		DocPattern:    pattern,
+		Pattern:       "%s",
+		Package:       "",
+		LocalName:     fullName,
+		DocPattern:    "%s",
 		IsNullable:    nullable,
-		IsExported:    pkg == "" || IsExported(name),
+		IsExported:    true,
 		IsBuiltin:     true,
 		IsSwitchable:  true,
 		IsAddressable: true,
@@ -73,43 +68,43 @@ func getInfo(pattern, pkg, name string, nullable bool) *Info {
 
 var Nil = Info{}
 
-var Error = getInfo("", "", "error", true)
+var Error = getInfo("error", true)
 
-var Bool = getInfo("", "", "bool", false)
+var Bool = getInfo("bool", false)
 
-var Byte = getInfo("", "", "byte", false)
+var Byte = getInfo("byte", false)
 
-var Rune = getInfo("", "", "rune", false)
+var Rune = getInfo("rune", false)
 
-var String = getInfo("", "", "string", false)
+var String = getInfo("string", false)
 
-var Int = getInfo("", "", "int", false)
+var Int = getInfo("int", false)
 
-var Int8 = getInfo("", "", "int8", false)
+var Int8 = getInfo("int8", false)
 
-var Int16 = getInfo("", "", "int16", false)
+var Int16 = getInfo("int16", false)
 
-var Int32 = getInfo("", "", "int32", false)
+var Int32 = getInfo("int32", false)
 
-var Int64 = getInfo("", "", "int64", false)
+var Int64 = getInfo("int64", false)
 
-var UInt = getInfo("", "", "uint", false)
+var UInt = getInfo("uint", false)
 
-var UInt8 = getInfo("", "", "uint8", false)
+var UInt8 = getInfo("uint8", false)
 
-var UInt16 = getInfo("", "", "uint16", false)
+var UInt16 = getInfo("uint16", false)
 
-var UInt32 = getInfo("", "", "uint32", false)
+var UInt32 = getInfo("uint32", false)
 
-var UInt64 = getInfo("", "", "uint64", false)
+var UInt64 = getInfo("uint64", false)
 
-var UIntPtr = getInfo("", "", "uintptr", false)
+var UIntPtr = getInfo("uintptr", false)
 
-var Float32 = getInfo("", "", "float32", false)
+var Float32 = getInfo("float32", false)
 
-var Float64 = getInfo("", "", "float64", false)
+var Float64 = getInfo("float64", false)
 
-var Complex128 = getInfo("", "", "complex128", false)
+var Complex128 = getInfo("complex128", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
