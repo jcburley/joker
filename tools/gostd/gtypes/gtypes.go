@@ -369,8 +369,11 @@ func InfoForExpr(e Expr) *Info {
 				return " " + astutils.FieldListAsString(v.Results, true, typeAsStringRelative(v.Pos()))
 			}())
 	case *Ellipsis:
-		ty := InfoForExpr(v.Elt)
-		localName = "..." + ty.RelativeName(e.Pos())
+		innerInfo = InfoForExpr(v.Elt)
+		pattern = fmt.Sprintf("...%s", innerInfo.Pattern)
+		docPattern = fmt.Sprintf("...%s", innerInfo.DocPattern)
+		localName = innerInfo.LocalName
+		pkgName = innerInfo.Package
 	}
 
 	if innerInfo == nil {
