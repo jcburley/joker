@@ -13,7 +13,6 @@ import (
 	"go/token"
 	"math"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -178,7 +177,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
 	clojureStdPath := "github.com/candid82/joker/std/go/std/"
-	return fn.Imports.Add(path.Base(exprPkgName), exprPkgName, clojureStdNs, clojureStdPath, false, fn.Pos)
+	return fn.Imports.Add("", exprPkgName, clojureStdNs, clojureStdPath, false, fn.Pos)
 }
 
 func processTypeRef(t Expr) {

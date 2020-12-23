@@ -34,10 +34,10 @@ type Imports struct {
 /* necessary), add the mapping if necessary, and return the (possibly
 /* alternate) local name. */
 func (imports *Imports) Add(local, full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
-	components := Split(full, "/")
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
 	}
+
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
 			return e.LocalRef
@@ -48,8 +48,10 @@ func (imports *Imports) Add(local, full, nsPrefix, pathPrefix string, okToSubsti
 		panic(fmt.Sprintf("addImport(%s,%s) at %s told to to replace (%s,%s) at %s", local, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
 	}
 
+	components := Split(full, "/")
 	substituted := false
 	localRef := local
+
 	if local == "" {
 		localRef = components[len(components)-1]
 	}
