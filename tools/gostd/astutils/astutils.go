@@ -6,6 +6,7 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/types"
+	"strings"
 )
 
 type FieldItem struct {
@@ -28,6 +29,33 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 		}
 	}
 	return
+}
+
+func TypeAsString(f *Field) string {
+	return "hey"
+}
+
+func FieldListAsString(fl *FieldList, needParens bool, fn func(f *Field) string) string {
+	if fl == nil || len(fl.List) == 0 {
+		return ""
+	}
+	items := FlattenFieldList(fl)
+	if len(items) < 2 {
+		return fn(items[0].Field)
+	}
+
+	types := make([]string, len(items))
+	for ix, it := range items {
+		types[ix] = fn(it.Field)
+	}
+
+	res := strings.Join(types, ", ")
+
+	if needParens {
+		return "(" + res + ")"
+	}
+
+	return res
 }
 
 func IsBuiltin(name string) bool {
