@@ -43,14 +43,18 @@ func FieldListAsString(fl *FieldList, needParens bool, fn func(f *Field) string)
 	if len(items) < 2 {
 		return fn(items[0].Field)
 	}
+
 	types := make([]string, len(items))
 	for ix, it := range items {
 		types[ix] = fn(it.Field)
 	}
+
 	res := strings.Join(types, ", ")
+
 	if needParens {
 		return "(" + res + ")"
 	}
+
 	return res
 }
 

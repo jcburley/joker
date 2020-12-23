@@ -361,14 +361,12 @@ func InfoForExpr(e Expr) *Info {
 	case *StructType:
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
-		localName = fmt.Sprintf("func(%s)%s", astutils.FieldListAsString(v.Params, false,
-			func(f *Field) string { return typeAsString(f, v.Pos()) }),
+		localName = fmt.Sprintf("func(%s)%s", astutils.FieldListAsString(v.Params, false, typeAsStringRelative(v.Pos())),
 			func() string {
 				if v.Results == nil {
 					return ""
 				}
-				return " " + astutils.FieldListAsString(v.Results, true,
-					func(f *Field) string { return typeAsString(f, v.Pos()) })
+				return " " + astutils.FieldListAsString(v.Results, true, typeAsStringRelative(v.Pos()))
 			}())
 	}
 
@@ -453,6 +451,10 @@ func typeAsString(f *Field, pos token.Pos) string {
 		pkgPrefix = ""
 	}
 	return fmt.Sprintf(ti.Pattern, genutils.CombineGoName(pkgPrefix, ti.LocalName))
+}
+
+func typeAsStringRelative(p token.Pos) func(*Field) string {
+	return func(f *Field) string { return typeAsString(f, p) }
 }
 
 var eval func(e Expr) interface{}
