@@ -269,10 +269,11 @@ func InfoForExpr(e Expr) *Info {
 
 	localName := ""
 	fullName := ""
+	pkgName := ""
 
 	if id, yes := e.(*Ident); yes {
-		pkg := godb.GoPackageForExpr(e)
-		fullName = genutils.CombineGoName(pkg, id.Name)
+		pkgName = godb.GoPackageForExpr(e)
+		fullName = genutils.CombineGoName(pkgName, id.Name)
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti
@@ -284,7 +285,7 @@ func InfoForExpr(e Expr) *Info {
 			DefPos:       id.Pos(),
 			FullName:     fullName,
 			Pattern:      "%s",
-			Package:      pkg,
+			Package:      pkgName,
 			LocalName:    id.Name,
 			DocPattern:   "%s",
 			IsSwitchable: true,
@@ -307,6 +308,7 @@ func InfoForExpr(e Expr) *Info {
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
+		pkgName = innerInfo.Package
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := intExprToString(v.Len)
@@ -319,6 +321,7 @@ func InfoForExpr(e Expr) *Info {
 			pattern = fmt.Sprintf(pattern, innerInfo.Pattern)
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
+		pkgName = innerInfo.Package
 		if strings.Contains(pattern, "ABEND") {
 			switchable = false
 		}
@@ -334,18 +337,19 @@ func InfoForExpr(e Expr) *Info {
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 	case *SelectorExpr:
-		pkgName := v.X.(*Ident).Name
+		pkg := v.X.(*Ident).Name
 		localName = v.Sel.Name
 		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
-		if fullPkgName, found := (*rf.Spaces)[pkgName]; found {
+		if fullPkgName, found := (*rf.Spaces)[pkg]; found {
 			if !godb.IsAvailable(fullPkgName) {
 				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
 			}
-			fullName = fullPkgName.String() + "." + localName
+			pkgName = fullPkgName.String()
+			fullName = pkgName + "." + localName
 		} else {
 			panic(fmt.Sprintf("processing %s: could not find %s in %s",
-				godb.WhereAt(v.Pos()), pkgName, fullPathUnix))
+				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
 		}
 	case *ChanType:
 		ty := InfoForExpr(v.Value)
@@ -373,10 +377,14 @@ func InfoForExpr(e Expr) *Info {
 				return ti
 			}
 		}
+		if strings.Contains(localName, "ABEND") {
+			pkgName = ""
+		}
 		ti := &Info{
 			Expr:           e,
 			who:            fmt.Sprintf("[InfoForExpr %T]", e),
 			Pattern:        pattern,
+			Package:        pkgName,
 			FullName:       fullName,
 			LocalName:      localName,
 			DocPattern:     docPattern,
