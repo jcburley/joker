@@ -2343,7 +2343,7 @@ CLOJURE FUNC net/http.Handle from net/http/server.go:
 
 CLOJURE FUNC net/http.HandleFunc from net/http/server.go:
 (defn HandleFunc
-  "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler func{})\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
+  "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler func(ResponseWriter, *Request))\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
   {:added "1.0"
    :go "_f_handleFunc(_v_pattern, _v_handler)"}
   [^String _v_pattern, ^GoObject _v_handler])
@@ -2448,11 +2448,7 @@ CLOJURE FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
 
 CLOJURE FUNC net/http.ProxyURL from net/http/transport.go:
 (defn ProxyURL
-<<<<<<< HEAD
-  "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *url.URL)\n\nGo returns: func(*Request) (*net/url.URL, error)\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
-=======
-  "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: func{}\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
->>>>>>> fc0335b4bce5913b1e680590413620fb91293d89
+  "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: func(*Request) (*net/url.URL, error)\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
   {:added "1.0"
    :go "_f_proxyURL(_v_fixedURL)"}
   [^go.std.net.url/refToURL _v_fixedURL])
@@ -8930,7 +8926,7 @@ func _f_handle(_v_pattern string, _v_handler net/http.Handler) Object {
 }
 
 GO FUNC net/http.HandleFunc from net/http/server.go:
-func _f_handleFunc(_v_pattern string, _v_handler func{}) Object {
+func _f_handleFunc(_v_pattern string, _v_handler func(ResponseWriter, *Request)) Object {
 	http.HandleFunc(_v_pattern, _v_handler)
 	return NIL
 }
@@ -15119,19 +15115,11 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-<<<<<<< HEAD
-ABENDs: 002(141) 049(138) 048(93) 644(90) 041(54) 275(40) 674(20) 907(14) 906(3) 902(2) 908(2) 124(1) 909(1)
-Totals: functions=470 generated=307 (65.32%)
-          non-receivers=148 (31.49%) generated=138 (93.24%)
-          receivers=273 (58.09%) generated=149 (54.58%)
-          methods=49 (10.43%) generated=20 (40.82%)
-=======
-ABENDs: 002(212) 049(138) 048(93) 041(54) 275(43) 674(20) 124(1)
+ABENDs: 002(234) 049(138) 048(93) 041(54) 275(43) 674(20) 124(1)
 Totals: functions=470 generated=342 (72.77%)
           non-receivers=148 (31.49%) generated=117 (79.05%)
           receivers=273 (58.09%) generated=189 (69.23%)
           methods=49 (10.43%) generated=36 (73.47%)
->>>>>>> fc0335b4bce5913b1e680590413620fb91293d89
         types=184
           constructable=164 ctors=82 (50.00%)
         constants=91 generated=91 (100.00%)
