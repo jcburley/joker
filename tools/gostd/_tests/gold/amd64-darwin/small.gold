@@ -160,7 +160,7 @@ CLOJURE FUNC net.DialIP from net/iprawsock.go:
   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr, ^refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialIP(_v_network, _v_laddr, _v_raddr)"}
-  [^String _v_network, ^go.std.net/IPAddr _v_laddr, ^go.std.net/IPAddr _v_raddr])
+  [^String _v_network, ^go.std.net/refToIPAddr _v_laddr, ^go.std.net/refToIPAddr _v_raddr])
 
 CLOJURE FUNC net.IPv4 from net/ip.go:
 (defn IPv4
@@ -181,7 +181,7 @@ CLOJURE FUNC net.ListenIP from net/iprawsock.go:
   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenIP(_v_network, _v_laddr)"}
-  [^String _v_network, ^go.std.net/IPAddr _v_laddr])
+  [^String _v_network, ^go.std.net/refToIPAddr _v_laddr])
 
 CLOJURE FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
@@ -1783,15 +1783,15 @@ func _f_conn_LocalAddr(o GoObject, args Object) Object {  // Method
 }
 
 GO FUNC net._f_conn_Read from net/net.go:
-// func _f_conn_Read(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.Conn)Read()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/net.go:117:9)
-// 	n, err := o.O.(net.Conn).Read(_v_b)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_conn_Read(o GoObject, args Object) Object {  // Method
+	_argList := CheckGoArity("(net.Conn)Read()", args, 1, 1)
+	_v_b := SeqNth(_argList, 0).(Native)
+	n, err := o.O.(net.Conn).Read(_v_b)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_conn_RemoteAddr from net/net.go:
 func _f_conn_RemoteAddr(o GoObject, args Object) Object {  // Method
@@ -1802,38 +1802,26 @@ func _f_conn_RemoteAddr(o GoObject, args Object) Object {  // Method
 
 GO FUNC net._f_conn_SetDeadline from net/net.go:
 // func _f_conn_SetDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.Conn)SetDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:149:16)
-// 	_res := o.O.(net.Conn).SetDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_conn_SetReadDeadline from net/net.go:
 // func _f_conn_SetReadDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.Conn)SetReadDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:154:20)
-// 	_res := o.O.(net.Conn).SetReadDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_conn_SetWriteDeadline from net/net.go:
 // func _f_conn_SetWriteDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.Conn)SetWriteDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:161:21)
-// 	_res := o.O.(net.Conn).SetWriteDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_conn_Write from net/net.go:
-// func _f_conn_Write(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.Conn)Write()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/net.go:122:10)
-// 	n, err := o.O.(net.Conn).Write(_v_b)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_conn_Write(o GoObject, args Object) Object {  // Method
+	_argList := CheckGoArity("(net.Conn)Write()", args, 1, 1)
+	_v_b := SeqNth(_argList, 0).(Native)
+	n, err := o.O.(net.Conn).Write(_v_b)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_error_Error from net/net.go:
 // func _f_error_Error(o GoObject, args Object) Object {  // Method
@@ -1883,7 +1871,7 @@ func _f_iP_DefaultMask(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_iP_Equal from net/ip.go:
 func _f_iP_Equal(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(net.IP)Equal()", args, 1, 1)
-	_v_x := ExtractGo_go_std_net__IP("(net.IP)Equal()", "_v_x", _argList, 0)
+	_v_x := SeqNth(_argList, 0).(Native)
 	_res := o.O.(net.IP).Equal(_v_x)
 	return MakeBoolean(_res)
 }
@@ -1950,7 +1938,7 @@ func _f_iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_iP_Mask from net/ip.go:
 func _f_iP_Mask(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(net.IP)Mask()", args, 1, 1)
-	_v_mask := ExtractGo_go_std_net__IPMask("(net.IP)Mask()", "_v_mask", _argList, 0)
+	_v_mask := SeqNth(_argList, 0).(Native)
 	_res := o.O.(net.IP).Mask(_v_mask)
 	return MakeGoObject(_res)
 }
@@ -2036,52 +2024,40 @@ func _f_packetConn_LocalAddr(o GoObject, args Object) Object {  // Method
 }
 
 GO FUNC net._f_packetConn_ReadFrom from net/net.go:
-// func _f_packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.PacketConn)ReadFrom()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_p at: _tests/small/src/net/net.go:314:13)
-// 	n, addr, err := o.O.(net.PacketConn).ReadFrom(_v_p)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeGoObject(addr))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
+	_argList := CheckGoArity("(net.PacketConn)ReadFrom()", args, 1, 1)
+	_v_p := SeqNth(_argList, 0).(Native)
+	n, addr, err := o.O.(net.PacketConn).ReadFrom(_v_p)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(MakeGoObject(addr))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_packetConn_SetDeadline from net/net.go:
 // func _f_packetConn_SetDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.PacketConn)SetDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:345:16)
-// 	_res := o.O.(net.PacketConn).SetDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_packetConn_SetReadDeadline from net/net.go:
 // func _f_packetConn_SetReadDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.PacketConn)SetReadDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:350:20)
-// 	_res := o.O.(net.PacketConn).SetReadDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_packetConn_SetWriteDeadline from net/net.go:
 // func _f_packetConn_SetWriteDeadline(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.PacketConn)SetWriteDeadline()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_t at: _tests/small/src/net/net.go:357:21)
-// 	_res := o.O.(net.PacketConn).SetWriteDeadline(_v_t)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+// (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
 GO FUNC net._f_packetConn_WriteTo from net/net.go:
-// func _f_packetConn_WriteTo(o GoObject, args Object) Object {  // Method
-// 	_argList := CheckGoArity("(net.PacketConn)WriteTo()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_p at: _tests/small/src/net/net.go:321:12)
-// 	_v_addr := ExtractGo_go_std_net__Addr("(net.PacketConn)WriteTo()", "_v_addr", _argList, 1)
-// 	n, err := o.O.(net.PacketConn).WriteTo(_v_p, _v_addr)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_packetConn_WriteTo(o GoObject, args Object) Object {  // Method
+	_argList := CheckGoArity("(net.PacketConn)WriteTo()", args, 2, 2)
+	_v_p := SeqNth(_argList, 0).(Native)
+	_v_addr := SeqNth(_argList, 1).(Native)
+	n, err := o.O.(net.PacketConn).WriteTo(_v_p, _v_addr)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_AddrError_Error from net/net.go:
 func _f_ptrTo_AddrError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2105,26 +2081,19 @@ func _f_ptrTo_AddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net._f_ptrTo_Buffers_Read from net/net.go:
-// func _f_ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Buffers)Read()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_p at: _tests/small/src/net/net.go:674:26)
-// 	n, err := o.O.(*net.Buffers).Read(_v_p)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.Buffers)Read()", args, 1, 1)
+	_v_p := SeqNth(_argList, 0).(Native)
+	n, err := o.O.(*net.Buffers).Read(_v_p)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_Buffers_WriteTo from net/net.go:
 // func _f_ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Buffers)WriteTo()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_w at: _tests/small/src/net/net.go:658:29)
-// 	n, err := o.O.(*net.Buffers).WriteTo(_v_w)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeBigInt(n))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (w ABEND002(reference to unavailable package `io' looking for type `Writer'))}
 
 GO FUNC net._f_ptrTo_DNSConfigError_Error from net/net.go:
 func _f_ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2183,90 +2152,90 @@ func _f_ptrTo_IPAddr_String(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net._f_ptrTo_IPConn_ReadFrom from net/iprawsock.go:
-// func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)ReadFrom()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:125:29)
-// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFrom(_v_b)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(_res1))
-// 	_res = _res.Conjoin(MakeGoObject(_res2))
-// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)ReadFrom()", args, 1, 1)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFrom(_v_b)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(_res1))
+	_res = _res.Conjoin(MakeGoObject(_res2))
+	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
-// func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:113:31)
-// 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFromIP(_v_b)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(_res1))
-// 	_res = _res.Conjoin(MakeGoObject(_res2))
-// 	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFromIP(_v_b)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(_res1))
+	_res = _res.Conjoin(MakeGoObject(_res2))
+	_res = _res.Conjoin(func () Object { if (_res3) == nil { return NIL } else { return MakeError(_res3) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
-// func _f_ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:146:35)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_oob at: _tests/small/src/net/iprawsock.go:146:35)
-// 	n, oobn, flags, addr, err := o.O.(*net.IPConn).ReadMsgIP(_v_b, _v_oob)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeInt(oobn))
-// 	_res = _res.Conjoin(MakeInt(flags))
-// 	_res = _res.Conjoin(MakeGoObject(addr))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_v_oob := SeqNth(_argList, 1).(Native)
+	n, oobn, flags, addr, err := o.O.(*net.IPConn).ReadMsgIP(_v_b, _v_oob)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(MakeInt(oobn))
+	_res = _res.Conjoin(MakeInt(flags))
+	_res = _res.Conjoin(MakeGoObject(addr))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
 // (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
-// func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:191:36)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_oob at: _tests/small/src/net/iprawsock.go:191:36)
-// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for _v_addr at: _tests/small/src/net/iprawsock.go:191:49)
-// 	n, oobn, err := o.O.(*net.IPConn).WriteMsgIP(_v_b, _v_oob, _v_addr)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(n))
-// 	_res = _res.Conjoin(MakeInt(oobn))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_v_oob := SeqNth(_argList, 1).(Native)
+	_v_addr := SeqNth(_argList, 2).(Native)
+	n, oobn, err := o.O.(*net.IPConn).WriteMsgIP(_v_b, _v_oob, _v_addr)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(n))
+	_res = _res.Conjoin(MakeInt(oobn))
+	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_WriteTo from net/iprawsock.go:
-// func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)WriteTo()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:170:28)
-// 	_v_addr := ExtractGo_go_std_net__Addr("(*net.IPConn)WriteTo()", "_v_addr", _argList, 1)
-// 	_res1, _res2 := o.O.(*net.IPConn).WriteTo(_v_b, _v_addr)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)WriteTo()", args, 2, 2)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_v_addr := SeqNth(_argList, 1).(Native)
+	_res1, _res2 := o.O.(*net.IPConn).WriteTo(_v_b, _v_addr)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPConn_WriteToIP from net/iprawsock.go:
-// func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IPConn)WriteToIP()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_b at: _tests/small/src/net/iprawsock.go:158:30)
-// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for _v_addr at: _tests/small/src/net/iprawsock.go:158:43)
-// 	_res1, _res2 := o.O.(*net.IPConn).WriteToIP(_v_b, _v_addr)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IPConn)WriteToIP()", args, 2, 2)
+	_v_b := SeqNth(_argList, 0).(Native)
+	_v_addr := SeqNth(_argList, 1).(Native)
+	_res1, _res2 := o.O.(*net.IPConn).WriteToIP(_v_b, _v_addr)
+	_res := EmptyVector()
+	_res = _res.Conjoin(MakeInt(_res1))
+	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+	return _res
+}
 
 GO FUNC net._f_ptrTo_IPNet_Contains from net/ip.go:
 func _f_ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPNet)Contains()", args, 1, 1)
-	_v_ip := ExtractGo_go_std_net__IP("(*net.IPNet)Contains()", "_v_ip", _argList, 0)
+	_v_ip := SeqNth(_argList, 0).(Native)
 	_res := o.O.(*net.IPNet).Contains(_v_ip)
 	return MakeBoolean(_res)
 }
@@ -2286,12 +2255,12 @@ func _f_ptrTo_IPNet_String(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net._f_ptrTo_IP_UnmarshalText from net/ip.go:
-// func _f_ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.IP)UnmarshalText()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_text at: _tests/small/src/net/ip.go:390:34)
-// 	_res := o.O.(*net.IP).UnmarshalText(_v_text)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+func _f_ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*net.IP)UnmarshalText()", args, 1, 1)
+	_v_text := SeqNth(_argList, 0).(Native)
+	_res := o.O.(*net.IP).UnmarshalText(_v_text)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
 
 GO FUNC net._f_ptrTo_OpError_Error from net/net.go:
 func _f_ptrTo_OpError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2323,115 +2292,39 @@ func _f_ptrTo_ParseError_Error(o GoObject, args Object) Object {  // Receiver
 
 GO FUNC net._f_ptrTo_Resolver_LookupAddr from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupAddr()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:398:35)
-// 	_v_addr := ExtractGoString("(*net.Resolver)LookupAddr()", "_v_addr", _argList, 1)
-// 	names, err := o.O.(*net.Resolver).LookupAddr(_v_ctx, _v_addr)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(names))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), addr string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupCNAME from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupCNAME()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:327:36)
-// 	_v_host := ExtractGoString("(*net.Resolver)LookupCNAME()", "_v_host", _argList, 1)
-// 	cname, err := o.O.(*net.Resolver).LookupCNAME(_v_ctx, _v_host)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeString(cname))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupHost from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupHost()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:163:35)
-// 	_v_host := ExtractGoString("(*net.Resolver)LookupHost()", "_v_host", _argList, 1)
-// 	addrs, err := o.O.(*net.Resolver).LookupHost(_v_ctx, _v_host)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(addrs))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupIPAddr()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:191:37)
-// 	_v_host := ExtractGoString("(*net.Resolver)LookupIPAddr()", "_v_host", _argList, 1)
-// 	_res1, _res2 := o.O.(*net.Resolver).LookupIPAddr(_v_ctx, _v_host)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupMX from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupMX()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:363:33)
-// 	_v_name := ExtractGoString("(*net.Resolver)LookupMX()", "_v_name", _argList, 1)
-// 	_res1, _res2 := o.O.(*net.Resolver).LookupMX(_v_ctx, _v_name)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupNS from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupNS()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:373:33)
-// 	_v_name := ExtractGoString("(*net.Resolver)LookupNS()", "_v_name", _argList, 1)
-// 	_res1, _res2 := o.O.(*net.Resolver).LookupNS(_v_ctx, _v_name)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupPort from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupPort()", args, 3, 3)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:289:35)
-// 	_v_network := ExtractGoString("(*net.Resolver)LookupPort()", "_v_network", _argList, 1)
-// 	_v_service := ExtractGoString("(*net.Resolver)LookupPort()", "_v_service", _argList, 2)
-// 	port, err := o.O.(*net.Resolver).LookupPort(_v_ctx, _v_network, _v_service)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeInt(port))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), network string, service string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupSRV from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupSRV()", args, 4, 4)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:353:34)
-// 	_v_service := ExtractGoString("(*net.Resolver)LookupSRV()", "_v_service", _argList, 1)
-// 	_v_proto := ExtractGoString("(*net.Resolver)LookupSRV()", "_v_proto", _argList, 2)
-// 	_v_name := ExtractGoString("(*net.Resolver)LookupSRV()", "_v_name", _argList, 3)
-// 	cname, addrs, err := o.O.(*net.Resolver).LookupSRV(_v_ctx, _v_service, _v_proto, _v_name)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeString(cname))
-// 	_res = _res.Conjoin(MakeGoObject(addrs))
-// 	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), service string, proto string, name string)}
 
 GO FUNC net._f_ptrTo_Resolver_LookupTXT from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*net.Resolver)LookupTXT()", args, 2, 2)
-// 	ABEND644(pre.go: unsupported built-in type *ast.SelectorExpr for _v_ctx at: _tests/small/src/net/lookup.go:383:34)
-// 	_v_name := ExtractGoString("(*net.Resolver)LookupTXT()", "_v_name", _argList, 1)
-// 	_res1, _res2 := o.O.(*net.Resolver).LookupTXT(_v_ctx, _v_name)
-// 	_res := EmptyVector()
-// 	_res = _res.Conjoin(MakeGoObject(_res1))
-// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-// 	return _res
-// }
+// (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
 GO FUNC net._f_unknownNetworkError_Error from net/net.go:
 func _f_unknownNetworkError_Error(o GoObject, args Object) Object {  // Receiver
@@ -2614,6 +2507,7 @@ GO INFO FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
 	info_PtrTo_Buffers = GoTypeInfo{Name: "go.std.net/refToBuffers",
 		GoType: &GoType{T: &info_PtrTo_Buffers},
 		Members: GoMembers{
+			"Read": MakeGoReceiver("Read", _f_ptrTo_Buffers_Read, "", "1.0", NewVectorFrom(MakeSymbol("p"))),
 		},
 	}
 
@@ -2624,7 +2518,9 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", _f_conn_Close, "Close closes the connection.\nAny blocked Read or Write operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 			"LocalAddr": MakeGoReceiver("LocalAddr", _f_conn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"Read": MakeGoReceiver("Read", _f_conn_Read, "Read reads data from the connection.\nRead can be made to time out and return an Error with Timeout() == true\nafter a fixed time limit; see SetDeadline and SetReadDeadline.\n", "1.0", NewVectorFrom(MakeSymbol("b"))),
 			"RemoteAddr": MakeGoReceiver("RemoteAddr", _f_conn_RemoteAddr, "RemoteAddr returns the remote network address.\n", "1.0", NewVectorFrom()),
+			"Write": MakeGoReceiver("Write", _f_conn_Write, "Write writes data to the connection.\nWrite can be made to time out and return an Error with Timeout() == true\nafter a fixed time limit; see SetDeadline and SetWriteDeadline.\n", "1.0", NewVectorFrom(MakeSymbol("b"))),
 		},
 	}
 
@@ -2707,6 +2603,7 @@ GO INFO FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
 	info_PtrTo_IP = GoTypeInfo{Name: "go.std.net/refToIP",
 		GoType: &GoType{T: &info_PtrTo_IP},
 		Members: GoMembers{
+			"UnmarshalText": MakeGoReceiver("UnmarshalText", _f_ptrTo_IP_UnmarshalText, "UnmarshalText implements the encoding.TextUnmarshaler interface.\nThe IP address is expected in a form accepted by ParseIP.\n", "1.0", NewVectorFrom(MakeSymbol("text"))),
 		},
 	}
 
@@ -2743,6 +2640,12 @@ GO INFO FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:9
 		GoType: &GoType{T: &info_PtrTo_IPConn},
 		Ctor: _Wrapped_Ctor_IPConn,
 		Members: GoMembers{
+			"ReadFrom": MakeGoReceiver("ReadFrom", _f_ptrTo_IPConn_ReadFrom, "ReadFrom implements the PacketConn ReadFrom method.\n", "1.0", NewVectorFrom(MakeSymbol("b"))),
+			"ReadFromIP": MakeGoReceiver("ReadFromIP", _f_ptrTo_IPConn_ReadFromIP, "ReadFromIP acts like ReadFrom but returns an IPAddr.\n", "1.0", NewVectorFrom(MakeSymbol("b"))),
+			"ReadMsgIP": MakeGoReceiver("ReadMsgIP", _f_ptrTo_IPConn_ReadMsgIP, "ReadMsgIP reads a message from c, copying the payload into b and\nthe associated out-of-band data into oob. It returns the number of\nbytes copied into b, the number of bytes copied into oob, the flags\nthat were set on the message and the source address of the message.\n\nThe packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be\nused to manipulate IP-level socket options in oob.\n", "1.0", NewVectorFrom(MakeSymbol("b"), MakeSymbol("oob"))),
+			"WriteMsgIP": MakeGoReceiver("WriteMsgIP", _f_ptrTo_IPConn_WriteMsgIP, "WriteMsgIP writes a message to addr via c, copying the payload from\nb and the associated out-of-band data from oob. It returns the\nnumber of payload and out-of-band bytes written.\n\nThe packages golang.org/x/net/ipv4 and golang.org/x/net/ipv6 can be\nused to manipulate IP-level socket options in oob.\n", "1.0", NewVectorFrom(MakeSymbol("b"), MakeSymbol("oob"), MakeSymbol("addr"))),
+			"WriteTo": MakeGoReceiver("WriteTo", _f_ptrTo_IPConn_WriteTo, "WriteTo implements the PacketConn WriteTo method.\n", "1.0", NewVectorFrom(MakeSymbol("b"), MakeSymbol("addr"))),
+			"WriteToIP": MakeGoReceiver("WriteToIP", _f_ptrTo_IPConn_WriteToIP, "WriteToIP acts like WriteTo but takes an IPAddr.\n", "1.0", NewVectorFrom(MakeSymbol("b"), MakeSymbol("addr"))),
 		},
 	}
 
@@ -2877,6 +2780,8 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", _f_packetConn_Close, "Close closes the connection.\nAny blocked ReadFrom or WriteTo operations will be unblocked and return errors.\n", "1.0", NewVectorFrom()),
 			"LocalAddr": MakeGoReceiver("LocalAddr", _f_packetConn_LocalAddr, "LocalAddr returns the local network address.\n", "1.0", NewVectorFrom()),
+			"ReadFrom": MakeGoReceiver("ReadFrom", _f_packetConn_ReadFrom, "ReadFrom reads a packet from the connection,\ncopying the payload into p. It returns the number of\nbytes copied into p and the return address that\nwas on the packet.\nIt returns the number of bytes read (0 <= n <= len(p))\nand any error encountered. Callers should always process\nthe n > 0 bytes returned before considering the error err.\nReadFrom can be made to time out and return\nan Error with Timeout() == true after a fixed time limit;\nsee SetDeadline and SetReadDeadline.\n", "1.0", NewVectorFrom(MakeSymbol("p"))),
+			"WriteTo": MakeGoReceiver("WriteTo", _f_packetConn_WriteTo, "WriteTo writes a packet with payload p to addr.\nWriteTo can be made to time out and return\nan Error with Timeout() == true after a fixed time limit;\nsee SetDeadline and SetWriteDeadline.\nOn packet-oriented connections, write timeouts are rare.\n", "1.0", NewVectorFrom(MakeSymbol("p"), MakeSymbol("addr"))),
 		},
 	}
 
@@ -3477,7 +3382,7 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)Parse()", args, 1, 1)
-	_v_ref := ExtractGoString("(*url.URL)Parse()", "_v_ref", _argList, 0)
+	_v_ref := SeqNth(_argList, 0).(Native)
 	_res1, _res2 := o.O.(*url.URL).Parse(_v_ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -3507,12 +3412,12 @@ func _f_ptrTo_URL_RequestURI(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/url._f_ptrTo_URL_ResolveReference from net/url/url.go:
-// func _f_ptrTo_URL_ResolveReference(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*url.URL)ResolveReference()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.StarExpr for _v_ref at: _tests/small/src/net/url/url.go:973:36)
-// 	_res := o.O.(*url.URL).ResolveReference(_v_ref)
-// 	return MakeGoObject(_res)
-// }
+func _f_ptrTo_URL_ResolveReference(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*url.URL)ResolveReference()", args, 1, 1)
+	_v_ref := SeqNth(_argList, 0).(Native)
+	_res := o.O.(*url.URL).ResolveReference(_v_ref)
+	return MakeGoObject(_res)
+}
 
 GO FUNC net/url._f_ptrTo_URL_String from net/url/url.go:
 func _f_ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
@@ -3522,12 +3427,12 @@ func _f_ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/url._f_ptrTo_URL_UnmarshalBinary from net/url/url.go:
-// func _f_ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
-// 	_argList := CheckGoArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
-// 	ABEND644(pre.go: unsupported built-in type *ast.ArrayType for _v_text at: _tests/small/src/net/url/url.go:1079:36)
-// 	_res := o.O.(*url.URL).UnmarshalBinary(_v_text)
-// 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-// }
+func _f_ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
+	_v_text := SeqNth(_argList, 0).(Native)
+	_res := o.O.(*url.URL).UnmarshalBinary(_v_text)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
 
 GO FUNC net/url._f_ptrTo_Userinfo_Password from net/url/url.go:
 func _f_ptrTo_Userinfo_Password(o GoObject, args Object) Object {  // Receiver
@@ -3573,7 +3478,7 @@ func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(url.Values)Get()", args, 1, 1)
-	_v_key := ExtractGoString("(url.Values)Get()", "_v_key", _argList, 0)
+	_v_key := SeqNth(_argList, 0).(Native)
 	_res := o.O.(url.Values).Get(_v_key)
 	return MakeString(_res)
 }
@@ -3698,7 +3603,9 @@ GO INFO FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:34
 			"Port": MakeGoReceiver("Port", _f_ptrTo_URL_Port, "Port returns the port part of u.Host, without the leading colon.\nIf u.Host doesn't contain a port, Port returns an empty string.\n", "1.0", NewVectorFrom()),
 			"Query": MakeGoReceiver("Query", _f_ptrTo_URL_Query, "Query parses RawQuery and returns the corresponding values.\nIt silently discards malformed value pairs.\nTo check errors use ParseQuery.\n", "1.0", NewVectorFrom()),
 			"RequestURI": MakeGoReceiver("RequestURI", _f_ptrTo_URL_RequestURI, "RequestURI returns the encoded path?query or opaque?query\nstring that would be used in an HTTP request for u.\n", "1.0", NewVectorFrom()),
+			"ResolveReference": MakeGoReceiver("ResolveReference", _f_ptrTo_URL_ResolveReference, "ResolveReference resolves a URI reference to an absolute URI from\nan absolute base URI u, per RFC 3986 Section 5.2. The URI reference\nmay be relative or absolute. ResolveReference always returns a new\nURL instance, even if the returned URL is identical to either the\nbase or reference. If ref is an absolute URL, then ResolveReference\nignores base and returns a copy of ref.\n", "1.0", NewVectorFrom(MakeSymbol("ref"))),
 			"String": MakeGoReceiver("String", _f_ptrTo_URL_String, "String reassembles the URL into a valid URL string.\nThe general form of the result is one of:\n\n\tscheme:opaque?query#fragment\n\tscheme://userinfo@host/path?query#fragment\n\nIf u.Opaque is non-empty, String uses the first form;\notherwise it uses the second form.\nTo obtain the path, String uses u.EscapedPath().\n\nIn the second form, the following rules apply:\n\t- if u.Scheme is empty, scheme: is omitted.\n\t- if u.User is nil, userinfo@ is omitted.\n\t- if u.Host is empty, host/ is omitted.\n\t- if u.Scheme and u.Host are empty and u.User is nil,\n\t   the entire scheme://userinfo@host/ is omitted.\n\t- if u.Host is non-empty and u.Path begins with a /,\n\t   the form host/path does not add its own /.\n\t- if u.RawQuery is empty, ?query is omitted.\n\t- if u.Fragment is empty, #fragment is omitted.\n", "1.0", NewVectorFrom()),
+			"UnmarshalBinary": MakeGoReceiver("UnmarshalBinary", _f_ptrTo_URL_UnmarshalBinary, "", "1.0", NewVectorFrom(MakeSymbol("text"))),
 		},
 	}
 
@@ -3926,11 +3833,16 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
+<<<<<<< HEAD
 ABENDs: 644(34) 048(13) 674(9) 041(8) 002(3) 275(3) 049(2) 124(1)
 Totals: functions=132 generated=97 (73.48%)
+=======
+ABENDs: 002(17) 048(13) 674(9) 041(8) 275(3) 049(2) 124(1)
+Totals: functions=132 generated=111 (84.09%)
+>>>>>>> fc0335b4bce5913b1e680590413620fb91293d89
           non-receivers=26 (19.70%) generated=26 (100.00%)
-          receivers=83 (62.88%) generated=59 (71.08%)
-          methods=23 (17.42%) generated=12 (52.17%)
+          receivers=83 (62.88%) generated=69 (83.13%)
+          methods=23 (17.42%) generated=16 (69.57%)
         types=51
           constructable=46 ctors=28 (60.87%)
         constants=2 generated=2 (100.00%)
