@@ -312,10 +312,11 @@ func %s(%s) %s {
 		pi := PackagesInfo[pkgDirUnix]
 		pi.NonEmpty = true
 		if clojureReturnType == "" {
-			pi.ImportsNative.Add(".", godb.ClojureCoreDir, "", "", false, fn.Pos)
-			myGoImport := pi.ImportsNative.Add("", pkgDirUnix, "", "", true, fn.Pos)
+			im := pi.ImportsNative
+			im.Add(".", godb.ClojureCoreDir, "", "", false, fn.Pos)
+			myGoImport := im.Add("", pkgDirUnix, "", "", true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
-			pi.ImportsNative.Promote(fn.Imports, fn.Pos)
+			im.Promote(fn.Imports, fn.Pos)
 		} else {
 			// No Go code needs to be generated when a return type is explicitly specified.
 			pi.ImportsAutoGen.Add("", pkgDirUnix, fn.SourceFile.Package.NsRoot, "", false, fn.Pos)
