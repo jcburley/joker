@@ -2,6 +2,7 @@ package gtypes
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/paths"
@@ -360,7 +361,15 @@ func InfoForExpr(e Expr) *Info {
 	case *StructType:
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
-		localName = "func{}" // TODO: add more info here
+		localName = fmt.Sprintf("func(%s)%s", astutils.FieldListAsString(v.Params, false,
+			func(f *Field) string { return typeAsString(f, v.Pos()) }),
+			func() string {
+				if v.Results == nil {
+					return ""
+				}
+				return " " + astutils.FieldListAsString(v.Results, true,
+					func(f *Field) string { return typeAsString(f, v.Pos()) })
+			}())
 	}
 
 	if innerInfo == nil {
@@ -434,6 +443,16 @@ func intExprToDocString(e Expr) string {
 		return v.Name
 	}
 	return "???"
+}
+
+func typeAsString(f *Field, pos token.Pos) string {
+	ty := f.Type
+	ti := InfoForExpr(ty)
+	pkgPrefix := ti.Package
+	if pkgPrefix == "" || pkgPrefix == godb.GoPackageForPos(pos) {
+		pkgPrefix = ""
+	}
+	return fmt.Sprintf(ti.Pattern, genutils.CombineGoName(pkgPrefix, ti.LocalName))
 }
 
 var eval func(e Expr) interface{}
