@@ -167,32 +167,6 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 	}
 }
 
-// Given an input package name such as "foo/bar" and typename
-// "bletch", decides whether to return (for 'code' and 'cl2gol') just
-// "_bar.bletch" and "bletch" if the package being compiled will be
-// implementing Go's package of the same name (in this case, the
-// generated file will be foo/bar_native.go and start with "package
-// bar"); or, to return (for both) simply "bar.bletch" and ensure
-// "foo/bar" is imported (implicitly as "bar", assuming no
-// conflicts). NOTE: As a side effect, updates imports needed by the
-// function.
-func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType, clTypeDoc, code, doc string) {
-	curPkgName := fn.SourceFile.Package.Dir
-	basePkgName := path.Base(fullPkgName)
-	clTypeDoc = genutils.FullTypeNameAsClojure(fn.SourceFile.Package.NsRoot, fullPkgName+"."+baseTypeName)
-	clType = clTypeDoc
-	if curPkgName.String() == fullPkgName {
-		code = basePkgName + "." + baseTypeName
-		doc = baseTypeName
-		return
-	}
-	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
-	clojureStdPath := "github.com/candid82/joker/std/go/std/"
-	doc = fn.Imports.Add(basePkgName, fullPkgName, clojureStdNs, clojureStdPath, true, fn.Pos) + "." + baseTypeName
-	code = doc
-	return
-}
-
 // Add whatever ti needs to be code-generated for fn to fn's list of
 // imports; return what is picked as the Go short package name for the
 // generated file.
