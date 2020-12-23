@@ -188,7 +188,7 @@ func FullPkgNameAsGoType(fn *FuncInfo, fullPkgName, baseTypeName string) (clType
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
 	clojureStdPath := "github.com/candid82/joker/std/go/std/"
-	doc = fn.Imports.Add(path.Base(fullPkgName), fullPkgName, clojureStdNs, clojureStdPath, false, fn.Pos) + "." + baseTypeName
+	doc = fn.Imports.Add(path.Base(fullPkgName), fullPkgName, clojureStdNs, clojureStdPath, true, fn.Pos) + "." + baseTypeName
 	code = doc
 	return
 }
