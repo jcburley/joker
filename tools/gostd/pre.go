@@ -11,14 +11,15 @@ import (
 
 func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
 	ti := TypeInfoForExpr(e)
-	goName := fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(fn.AddToImports(ti), ti.GoBaseName()))
+
+	pkgBaseName := fn.AddToImports(ti)
+	goName := fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, ti.GoBaseName()))
+
 	clType, clTypeDoc, goType, goTypeDoc = ti.ClojureName(), ti.ClojureNameDoc(e), goName, ti.GoNameDoc(e)
-	cl2golParam = paramName
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		goPreCode = fmt.Sprintf("%s := SeqNth(_argList, %d).(Native)", paramName, argNum)
 	}
-
-	fn.AddToImports(ti)
+	cl2golParam = paramName
 
 	return
 }

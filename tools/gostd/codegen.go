@@ -210,7 +210,7 @@ func %s(o GoObject, args Object) Object {  // %s
 		NumGeneratedFunctions++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
 		im := PackagesInfo[pkgDirUnix].ImportsNative
-		im.Promote(fn.Imports, fn.Pos)
+		im.Promote(fn.ImportsNative, fn.Pos)
 		im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
 		myGoImport := im.AddPackage(pkgDirUnix, "", "", true, fn.Pos)
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
@@ -316,12 +316,12 @@ func %s(%s) %s {
 			im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
 			myGoImport := im.AddPackage(pkgDirUnix, "", "", true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
-			im.Promote(fn.Imports, fn.Pos)
+			im.Promote(fn.ImportsNative, fn.Pos)
 		} else {
 			// No Go code needs to be generated when a return type is explicitly specified.
 			pi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.NsRoot, "", false, fn.Pos)
 		}
-		pi.ImportsAutoGen.Promote(fn.Imports, fn.Pos)
+		pi.ImportsAutoGen.Promote(fn.ImportsAutoGen, fn.Pos)
 	}
 
 	ClojureCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
@@ -550,17 +550,18 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 					doc = m.Comment
 				}
 				QualifiedFunctions[fullName] = &FuncInfo{
-					BaseName:   n.Name,
-					ReceiverId: "{{myGoImport}}." + typeBaseName,
-					Name:       baseName,
-					DocName:    "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + n.Name + "()",
-					Fd:         nil,
-					ToM:        ti,
-					Ft:         m.Type.(*FuncType),
-					Doc:        doc,
-					SourceFile: ti.GoFile(),
-					Imports:    &imports.Imports{},
-					Pos:        n.NamePos,
+					BaseName:       n.Name,
+					ReceiverId:     "{{myGoImport}}." + typeBaseName,
+					Name:           baseName,
+					DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + n.Name + "()",
+					Fd:             nil,
+					ToM:            ti,
+					Ft:             m.Type.(*FuncType),
+					Doc:            doc,
+					SourceFile:     ti.GoFile(),
+					ImportsNative:  &imports.Imports{},
+					ImportsAutoGen: &imports.Imports{},
+					Pos:            n.NamePos,
 				}
 			}
 			continue

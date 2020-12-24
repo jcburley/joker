@@ -121,17 +121,18 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo))
 }
 
 type FuncInfo struct {
-	BaseName   string    // Just the name without receiver-type info
-	ReceiverId string    // Receiver info (only one type supported here and by Golang itself for now)
-	Name       string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName    string    // Everything, for documentation and diagnostics
-	Fd         *FuncDecl // nil for methods
-	ToM        TypeInfo  // Method operates on this type (nil for standalones and receivers)
-	Ft         *FuncType
-	Doc        *CommentGroup
-	SourceFile *godb.GoFile
-	Imports    *imports.Imports // Add these to package info if function is generated (no ABENDs)
-	Pos        token.Pos
+	BaseName       string    // Just the name without receiver-type info
+	ReceiverId     string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name           string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName        string    // Everything, for documentation and diagnostics
+	Fd             *FuncDecl // nil for methods
+	ToM            TypeInfo  // Method operates on this type (nil for standalones and receivers)
+	Ft             *FuncType
+	Doc            *CommentGroup
+	SourceFile     *godb.GoFile
+	ImportsNative  *imports.Imports // Add these to package imports if function is generated (no ABENDs)
+	ImportsAutoGen *imports.Imports // Add these to package imports if function is generated (no ABENDs)
+	Pos            token.Pos
 }
 
 func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
@@ -172,12 +173,21 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
 func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	exprPkgName := ti.GoPackage()
 	curPkgName := fn.SourceFile.Package.Dir
-	if exprPkgName == "" || curPkgName.String() == exprPkgName {
+	if exprPkgName == "" {
 		return ""
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
 	clojureStdPath := "github.com/candid82/joker/std/go/std/"
-	return fn.Imports.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
+
+	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
+	if curPkgName.String() == ti.GoPackage() {
+		return native
+	}
+	autoGen := fn.ImportsAutoGen.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
+	if native != autoGen {
+		panic(fmt.Sprintf("disagreement over '%s': native='%s' autoGen='%s'", exprPkgName, native, autoGen))
+	}
+	return native
 }
 
 func processTypeRef(t Expr) {
@@ -271,7 +281,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, fd.Pos()}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, &imports.Imports{}, fd.Pos()}
 }
 
 func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
