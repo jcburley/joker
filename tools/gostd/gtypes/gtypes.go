@@ -18,25 +18,26 @@ const Concrete = ^uint(0) /* MaxUint */
 var NumExprHits uint
 
 type Info struct {
-	Expr           Expr      // [key] The canonical referencing expression (if any)
-	FullName       string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
-	who            string    // who made me
-	Type           Expr      // The actual type (if any)
-	TypeSpec       *TypeSpec // The definition of the named type (if any)
-	UnderlyingType *Info
-	Pattern        string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
-	Package        string // E.g. "net/url", "" (always Unix style)
-	LocalName      string // E.g. "Listener"
-	DocPattern     string // E.g. "[SomeConst]%s", vs "[5]%s" in Pattern
-	Doc            string
-	DefPos         token.Pos
-	File           *godb.GoFile
-	Specificity    uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
-	IsNullable     bool // Can an instance of the type == nil (e.g. 'error' type)?
-	IsExported     bool
-	IsBuiltin      bool
-	IsSwitchable   bool // Can type's Go name be used in a "case" statement?
-	IsAddressable  bool // Is "&instance" going to pass muster, even with 'go vet'?
+	Expr              Expr      // [key] The canonical referencing expression (if any)
+	FullName          string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	who               string    // who made me
+	Type              Expr      // The actual type (if any)
+	TypeSpec          *TypeSpec // The definition of the named type (if any)
+	UnderlyingType    *Info
+	Pattern           string // E.g. "%s", "*%s" (for reference types), "[]%s" (for array types)
+	Package           string // E.g. "net/url", "" (always Unix style)
+	LocalName         string // E.g. "Listener"
+	DocPattern        string // E.g. "[SomeConst]%s", vs "[5]%s" in Pattern
+	Doc               string
+	DefPos            token.Pos
+	File              *godb.GoFile
+	Specificity       uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+	IsNullable        bool // Can an instance of the type == nil (e.g. 'error' type)?
+	IsExported        bool
+	IsBuiltin         bool
+	IsSwitchable      bool // Can type's Go name be used in a "case" statement?
+	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
+	IsPassedByAddress bool // Excludes builtins, some complex, and interface{} types
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -163,21 +164,22 @@ func defineAndFinish(ti *Info) {
 	finish(ti)
 }
 
-func finishVariant(pattern, docPattern string, switchable bool, innerInfo *Info, te Expr) *Info {
+func finishVariant(pattern, docPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
-		Expr:           te,
-		who:            "finishVariant",
-		IsExported:     innerInfo.IsExported,
-		File:           innerInfo.File,
-		Pattern:        pattern,
-		Package:        innerInfo.Package,
-		LocalName:      innerInfo.LocalName,
-		DocPattern:     docPattern,
-		DefPos:         innerInfo.DefPos,
-		UnderlyingType: innerInfo,
-		Specificity:    Concrete,
-		IsSwitchable:   switchable && innerInfo.IsSwitchable,
-		IsAddressable:  innerInfo.IsAddressable,
+		Expr:              te,
+		who:               "finishVariant",
+		IsExported:        innerInfo.IsExported,
+		File:              innerInfo.File,
+		Pattern:           pattern,
+		Package:           innerInfo.Package,
+		LocalName:         innerInfo.LocalName,
+		DocPattern:        docPattern,
+		DefPos:            innerInfo.DefPos,
+		UnderlyingType:    innerInfo,
+		Specificity:       Concrete,
+		IsSwitchable:      switchable && innerInfo.IsSwitchable,
+		IsAddressable:     innerInfo.IsAddressable,
+		IsPassedByAddress: isPassedByAddress,
 	}
 
 	finish(ti)
@@ -205,20 +207,21 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types := []*Info{}
 
 	ti := &Info{
-		who:           "TypeDefine",
-		Type:          ts.Type,
-		TypeSpec:      ts,
-		IsExported:    IsExported(localName),
-		Doc:           genutils.CommentGroupAsString(doc),
-		DefPos:        ts.Name.NamePos,
-		File:          gf,
-		Pattern:       "%s",
-		Package:       pkg,
-		LocalName:     localName,
-		DocPattern:    "%s",
-		Specificity:   specificity(ts),
-		IsSwitchable:  ts.Assign == token.NoPos,
-		IsAddressable: isAddressable(pkg, localName),
+		who:               "TypeDefine",
+		Type:              ts.Type,
+		TypeSpec:          ts,
+		IsExported:        IsExported(localName),
+		Doc:               genutils.CommentGroupAsString(doc),
+		DefPos:            ts.Name.NamePos,
+		File:              gf,
+		Pattern:           "%s",
+		Package:           pkg,
+		LocalName:         localName,
+		DocPattern:        "%s",
+		Specificity:       specificity(ts),
+		IsSwitchable:      ts.Assign == token.NoPos,
+		IsAddressable:     isAddressable(pkg, localName),
+		IsPassedByAddress: true,
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
@@ -227,21 +230,22 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		// Concrete types get reference-to variants, allowing Clojure code to access them.
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		tiPtrTo := &Info{
-			Expr:           &StarExpr{X: nil},
-			who:            "*TypeDefine*",
-			Type:           &StarExpr{X: ti.Type},
-			IsExported:     ti.IsExported,
-			Doc:            ti.Doc,
-			DefPos:         ti.DefPos,
-			File:           gf,
-			Pattern:        newPattern,
-			Package:        ti.Package,
-			LocalName:      ti.LocalName,
-			DocPattern:     newPattern,
-			UnderlyingType: ti,
-			Specificity:    Concrete,
-			IsSwitchable:   ti.IsSwitchable,
-			IsAddressable:  ti.IsAddressable,
+			Expr:              &StarExpr{X: nil},
+			who:               "*TypeDefine*",
+			Type:              &StarExpr{X: ti.Type},
+			IsExported:        ti.IsExported,
+			Doc:               ti.Doc,
+			DefPos:            ti.DefPos,
+			File:              gf,
+			Pattern:           newPattern,
+			Package:           ti.Package,
+			LocalName:         ti.LocalName,
+			DocPattern:        newPattern,
+			UnderlyingType:    ti,
+			Specificity:       Concrete,
+			IsSwitchable:      ti.IsSwitchable,
+			IsAddressable:     ti.IsAddressable,
+			IsPassedByAddress: false,
 		}
 		finish(tiPtrTo)
 		types = append(types, tiPtrTo)
@@ -275,16 +279,17 @@ func InfoForExpr(e Expr) *Info {
 			return ti
 		}
 		ti := &Info{
-			Expr:         e,
-			who:          "TypeForExpr",
-			IsExported:   true,
-			DefPos:       id.Pos(),
-			FullName:     fullName,
-			Pattern:      "%s",
-			Package:      pkgName,
-			LocalName:    id.Name,
-			DocPattern:   "%s",
-			IsSwitchable: true,
+			Expr:              e,
+			who:               "TypeForExpr",
+			IsExported:        true,
+			DefPos:            id.Pos(),
+			FullName:          fullName,
+			Pattern:           "%s",
+			Package:           pkgName,
+			LocalName:         id.Name,
+			DocPattern:        "%s",
+			IsSwitchable:      true,
+			IsPassedByAddress: true,
 		}
 
 		typesByExpr[e] = ti
@@ -297,6 +302,7 @@ func InfoForExpr(e Expr) *Info {
 	pattern := "%s"
 	docPattern := pattern
 	switchable := true
+	isPassedByAddress := true
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -305,6 +311,7 @@ func InfoForExpr(e Expr) *Info {
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
+		isPassedByAddress = false
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := intExprToString(v.Len)
@@ -321,6 +328,7 @@ func InfoForExpr(e Expr) *Info {
 		if strings.Contains(pattern, "ABEND") {
 			switchable = false
 		}
+		isPassedByAddress = false
 	case *InterfaceType:
 		localName = "interface{"
 		methods := methodsToString(v.Methods.List)
@@ -328,10 +336,12 @@ func InfoForExpr(e Expr) *Info {
 			methods = strings.Join([]string{methods, "..."}, ", ")
 		}
 		localName += methods + "}"
+		isPassedByAddress = false
 	case *MapType:
 		key := InfoForExpr(v.Key)
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
+		isPassedByAddress = false
 	case *SelectorExpr:
 		pkg := v.X.(*Ident).Name
 		localName = v.Sel.Name
@@ -368,12 +378,14 @@ func InfoForExpr(e Expr) *Info {
 				}
 				return " " + astutils.FieldListAsString(v.Results, true, typeAsStringRelative(v.Pos()))
 			}())
+		isPassedByAddress = false
 	case *Ellipsis:
 		innerInfo = InfoForExpr(v.Elt)
 		pattern = fmt.Sprintf("...%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("...%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
+		isPassedByAddress = false
 	}
 
 	if innerInfo == nil {
@@ -387,24 +399,26 @@ func InfoForExpr(e Expr) *Info {
 		}
 		if strings.Contains(localName, "ABEND") {
 			pkgName = ""
+			isPassedByAddress = false
 		}
 		ti := &Info{
-			Expr:           e,
-			who:            fmt.Sprintf("[InfoForExpr %T]", e),
-			Pattern:        pattern,
-			Package:        pkgName,
-			FullName:       fullName,
-			LocalName:      localName,
-			DocPattern:     docPattern,
-			DefPos:         e.Pos(),
-			UnderlyingType: innerInfo,
-			IsSwitchable:   switchable,
+			Expr:              e,
+			who:               fmt.Sprintf("[InfoForExpr %T]", e),
+			Pattern:           pattern,
+			Package:           pkgName,
+			FullName:          fullName,
+			LocalName:         localName,
+			DocPattern:        docPattern,
+			DefPos:            e.Pos(),
+			UnderlyingType:    innerInfo,
+			IsSwitchable:      switchable,
+			IsPassedByAddress: isPassedByAddress,
 		}
 		finish(ti)
 		return ti
 	}
 
-	return finishVariant(pattern, docPattern, switchable, innerInfo, e)
+	return finishVariant(pattern, docPattern, switchable, isPassedByAddress, innerInfo, e)
 }
 
 func fieldToString(f *Field) string {

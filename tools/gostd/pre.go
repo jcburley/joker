@@ -19,7 +19,11 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		goPreCode = fmt.Sprintf("%s := SeqNth(_argList, %d).(Native)", paramName, argNum)
 	}
-	cl2golParam = paramName
+	if ti.IsPassedByAddress() {
+		cl2golParam = "*" + paramName
+	} else {
+		cl2golParam = paramName
+	}
 
 	return
 }
