@@ -13,8 +13,7 @@ import (
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
-	Local         string // "foo", "_", ".", or empty
-	LocalRef      string // local unless empty, in which case final component of full (e.g. "foo")
+	Local         string // "foo", "_", or "."
 	Full          string // "bar/bletch/foo"
 	ClojurePrefix string // E.g. "go.std."
 	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/" (for other namespaces)
@@ -42,48 +41,47 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix string, okToSubsti
 
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
-			return e.LocalRef
+			return e.Local
 		}
 		if okToSubstitute {
-			return e.LocalRef
+			return e.Local
 		}
 		panic(fmt.Sprintf("AddPackage('%s') at %s cannot supercede '%s' aka \"%s\" at %s", full, godb.WhereAt(pos), e.Full, e.Local, godb.WhereAt(e.Pos)))
 	}
 
 	components := Split(full, "/")
 	substituted := false
-	localRef := local
-	origLocalRef := localRef
+	origLocal := local
 	prevComponentIndex := len(components) - 1
 	for {
-		curFull, found := imports.LocalNames[localRef]
-		//		fmt.Printf("imports.go/AddPackage(%p): full=%s local=%s localRef=%s origLocalRef=%s curFull='%s' found=%v\n", imports, full, local, localRef, origLocalRef, curFull, found)
+		curFull, found := imports.LocalNames[local]
+		//		fmt.Printf("imports.go/AddPackage(%p): full=%s local=%s local=%s origLocal=%s curFull='%s' found=%v\n", imports, full, local, local, origLocal, curFull, found)
 		if !found {
 			break
 		}
 		substituted = true
 		prevComponentIndex--
 		if prevComponentIndex >= 0 {
-			localRef = components[prevComponentIndex] + "_" + localRef
+			local = components[prevComponentIndex] + "_" + local
 			continue
 		} else if prevComponentIndex > -99 { // avoid infinite loop
-			localRef = fmt.Sprintf("%s_%d", origLocalRef, -prevComponentIndex)
+			local = fmt.Sprintf("%s_%d", origLocal, -prevComponentIndex)
 			continue
 		}
-		panic(fmt.Sprintf("AddPackage('%s') aka \"%s\" cannot coexist with '%s' aka \"%s\"", full, localRef, curFull, imports.FullNames[curFull].LocalRef))
+		panic(fmt.Sprintf("AddPackage('%s') aka \"%s\" cannot coexist with '%s' aka \"%s\"", full, local, curFull, imports.FullNames[curFull].Local))
 	}
 
 	if imports.LocalNames == nil {
 		imports.LocalNames = map[string]string{}
 	}
-	imports.LocalNames[localRef] = full
+	imports.LocalNames[local] = full
 
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, localRef, full, nsPrefix, pathPrefix, substituted, pos}
+	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, substituted, pos}
 
-	return localRef
+	return local
 }
 
 // Given the full (though relative) name of the package, establish it
@@ -112,7 +110,7 @@ func (imports *Imports) InternPackage(full, nsPrefix, pathPrefix string, pos tok
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", ".", full, nsPrefix, pathPrefix, false, pos}
+	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, false, pos}
 }
 
 func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
@@ -163,10 +161,10 @@ func (pi *Imports) sort(f func(k string, v *Import)) {
 func (pi *Imports) QuotedList(prefix string) string {
 	imports := ""
 	pi.sort(func(k string, v *Import) {
-		if v.LocalRef == path.Base(k) {
+		if v.Local == path.Base(k) {
 			imports += prefix + `"` + k + `"`
 		} else {
-			imports += prefix + v.LocalRef + ` "` + k + `"`
+			imports += prefix + v.Local + ` "` + k + `"`
 		}
 	})
 	return imports
@@ -175,7 +173,7 @@ func (pi *Imports) QuotedList(prefix string) string {
 func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
 	pi.sort(func(k string, v *Import) {
-		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.LocalRef, v.PathPrefix+k))
+		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, v.PathPrefix+k))
 	})
 	return Join(imports, ", ")
 }
