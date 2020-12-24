@@ -5948,7 +5948,7 @@ func _f_conn_LocalAddr(o GoObject, args Object) Object {  // Method
 GO FUNC net._f_conn_Read from net/net.go:
 func _f_conn_Read(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net.Conn)Read()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	n, err := o.O.(net.Conn).Read(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -5978,7 +5978,7 @@ GO FUNC net._f_conn_SetWriteDeadline from net/net.go:
 GO FUNC net._f_conn_Write from net/net.go:
 func _f_conn_Write(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net.Conn)Write()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	n, err := o.O.(net.Conn).Write(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6048,7 +6048,7 @@ func _f_iP_DefaultMask(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_iP_Equal from net/ip.go:
 func _f_iP_Equal(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(net.IP)Equal()", args, 1, 1)
-	_v_x := SeqNth(_argList, 0).(Native)
+	_v_x := SeqNth(_argList, 0).(Native).(net.IP)
 	_res := o.O.(net.IP).Equal(_v_x)
 	return MakeBoolean(_res)
 }
@@ -6115,7 +6115,7 @@ func _f_iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_iP_Mask from net/ip.go:
 func _f_iP_Mask(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(net.IP)Mask()", args, 1, 1)
-	_v_mask := SeqNth(_argList, 0).(Native)
+	_v_mask := SeqNth(_argList, 0).(Native).(net.IPMask)
 	_res := o.O.(net.IP).Mask(_v_mask)
 	return MakeGoObject(_res)
 }
@@ -6203,7 +6203,7 @@ func _f_packetConn_LocalAddr(o GoObject, args Object) Object {  // Method
 GO FUNC net._f_packetConn_ReadFrom from net/net.go:
 func _f_packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net.PacketConn)ReadFrom()", args, 1, 1)
-	_v_p := SeqNth(_argList, 0).(Native)
+	_v_p := SeqNth(_argList, 0).(Native).([]byte)
 	n, addr, err := o.O.(net.PacketConn).ReadFrom(_v_p)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6227,8 +6227,8 @@ GO FUNC net._f_packetConn_SetWriteDeadline from net/net.go:
 GO FUNC net._f_packetConn_WriteTo from net/net.go:
 func _f_packetConn_WriteTo(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net.PacketConn)WriteTo()", args, 2, 2)
-	_v_p := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_p := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(net.Addr)
 	n, err := o.O.(net.PacketConn).WriteTo(_v_p, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6260,7 +6260,7 @@ func _f_ptrTo_AddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_Buffers_Read from net/net.go:
 func _f_ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.Buffers)Read()", args, 1, 1)
-	_v_p := SeqNth(_argList, 0).(Native)
+	_v_p := SeqNth(_argList, 0).(Native).([]byte)
 	n, err := o.O.(*net.Buffers).Read(_v_p)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6317,8 +6317,8 @@ func _f_ptrTo_DNSError_Timeout(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_Dialer_Dial from net/dial.go:
 func _f_ptrTo_Dialer_Dial(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.Dialer)Dial()", args, 2, 2)
-	_v_network := SeqNth(_argList, 0).(Native)
-	_v_address := SeqNth(_argList, 1).(Native)
+	_v_network := SeqNth(_argList, 0).(Native).(string)
+	_v_address := SeqNth(_argList, 1).(Native).(string)
 	_res1, _res2 := o.O.(*net.Dialer).Dial(_v_network, _v_address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -6347,7 +6347,7 @@ func _f_ptrTo_IPAddr_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPConn_ReadFrom from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)ReadFrom()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFrom(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6359,7 +6359,7 @@ func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.IPConn).ReadFromIP(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6371,8 +6371,8 @@ func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
 	n, oobn, flags, addr, err := o.O.(*net.IPConn).ReadMsgIP(_v_b, _v_oob)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6390,9 +6390,9 @@ GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
-	_v_addr := SeqNth(_argList, 2).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 2).(Native).(*net.IPAddr)
 	n, oobn, err := o.O.(*net.IPConn).WriteMsgIP(_v_b, _v_oob, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6404,8 +6404,8 @@ func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPConn_WriteTo from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)WriteTo()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(net.Addr)
 	_res1, _res2 := o.O.(*net.IPConn).WriteTo(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6416,8 +6416,8 @@ func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPConn)WriteToIP()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(*net.IPAddr)
 	_res1, _res2 := o.O.(*net.IPConn).WriteToIP(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6428,7 +6428,7 @@ func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IPNet_Contains from net/ip.go:
 func _f_ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IPNet)Contains()", args, 1, 1)
-	_v_ip := SeqNth(_argList, 0).(Native)
+	_v_ip := SeqNth(_argList, 0).(Native).(net.IP)
 	_res := o.O.(*net.IPNet).Contains(_v_ip)
 	return MakeBoolean(_res)
 }
@@ -6450,7 +6450,7 @@ func _f_ptrTo_IPNet_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_IP_UnmarshalText from net/ip.go:
 func _f_ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.IP)UnmarshalText()", args, 1, 1)
-	_v_text := SeqNth(_argList, 0).(Native)
+	_v_text := SeqNth(_argList, 0).(Native).([]byte)
 	_res := o.O.(*net.IP).UnmarshalText(_v_text)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6582,7 +6582,7 @@ GO FUNC net._f_ptrTo_TCPConn_ReadFrom from net/tcpsock.go:
 GO FUNC net._f_ptrTo_TCPConn_SetKeepAlive from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetKeepAlive(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetKeepAlive()", args, 1, 1)
-	_v_keepalive := SeqNth(_argList, 0).(Native)
+	_v_keepalive := SeqNth(_argList, 0).(Native).(bool)
 	_res := o.O.(*net.TCPConn).SetKeepAlive(_v_keepalive)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6594,7 +6594,7 @@ GO FUNC net._f_ptrTo_TCPConn_SetKeepAlivePeriod from net/tcpsock.go:
 GO FUNC net._f_ptrTo_TCPConn_SetLinger from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetLinger()", args, 1, 1)
-	_v_sec := SeqNth(_argList, 0).(Native)
+	_v_sec := SeqNth(_argList, 0).(Native).(int)
 	_res := o.O.(*net.TCPConn).SetLinger(_v_sec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6602,7 +6602,7 @@ func _f_ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_TCPConn_SetNoDelay from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetNoDelay()", args, 1, 1)
-	_v_noDelay := SeqNth(_argList, 0).(Native)
+	_v_noDelay := SeqNth(_argList, 0).(Native).(bool)
 	_res := o.O.(*net.TCPConn).SetNoDelay(_v_noDelay)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6674,7 +6674,7 @@ func _f_ptrTo_UDPAddr_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UDPConn_ReadFrom from net/udpsock.go:
 func _f_ptrTo_UDPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)ReadFrom()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.UDPConn).ReadFrom(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6686,7 +6686,7 @@ func _f_ptrTo_UDPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UDPConn_ReadFromUDP from net/udpsock.go:
 func _f_ptrTo_UDPConn_ReadFromUDP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)ReadFromUDP()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.UDPConn).ReadFromUDP(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6698,8 +6698,8 @@ func _f_ptrTo_UDPConn_ReadFromUDP(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UDPConn_ReadMsgUDP from net/udpsock.go:
 func _f_ptrTo_UDPConn_ReadMsgUDP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)ReadMsgUDP()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
 	n, oobn, flags, addr, err := o.O.(*net.UDPConn).ReadMsgUDP(_v_b, _v_oob)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6717,9 +6717,9 @@ GO FUNC net._f_ptrTo_UDPConn_SyscallConn from net/udpsock.go:
 GO FUNC net._f_ptrTo_UDPConn_WriteMsgUDP from net/udpsock.go:
 func _f_ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)WriteMsgUDP()", args, 3, 3)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
-	_v_addr := SeqNth(_argList, 2).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 2).(Native).(*net.UDPAddr)
 	n, oobn, err := o.O.(*net.UDPConn).WriteMsgUDP(_v_b, _v_oob, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6731,8 +6731,8 @@ func _f_ptrTo_UDPConn_WriteMsgUDP(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UDPConn_WriteTo from net/udpsock.go:
 func _f_ptrTo_UDPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)WriteTo()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(net.Addr)
 	_res1, _res2 := o.O.(*net.UDPConn).WriteTo(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6743,8 +6743,8 @@ func _f_ptrTo_UDPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UDPConn_WriteToUDP from net/udpsock.go:
 func _f_ptrTo_UDPConn_WriteToUDP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UDPConn)WriteToUDP()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(*net.UDPAddr)
 	_res1, _res2 := o.O.(*net.UDPConn).WriteToUDP(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6783,7 +6783,7 @@ func _f_ptrTo_UnixConn_CloseWrite(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UnixConn_ReadFrom from net/unixsock.go:
 func _f_ptrTo_UnixConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)ReadFrom()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.UnixConn).ReadFrom(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6795,7 +6795,7 @@ func _f_ptrTo_UnixConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UnixConn_ReadFromUnix from net/unixsock.go:
 func _f_ptrTo_UnixConn_ReadFromUnix(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)ReadFromUnix()", args, 1, 1)
-	_v_b := SeqNth(_argList, 0).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2, _res3 := o.O.(*net.UnixConn).ReadFromUnix(_v_b)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6807,8 +6807,8 @@ func _f_ptrTo_UnixConn_ReadFromUnix(o GoObject, args Object) Object {  // Receiv
 GO FUNC net._f_ptrTo_UnixConn_ReadMsgUnix from net/unixsock.go:
 func _f_ptrTo_UnixConn_ReadMsgUnix(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)ReadMsgUnix()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
 	n, oobn, flags, addr, err := o.O.(*net.UnixConn).ReadMsgUnix(_v_b, _v_oob)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6826,9 +6826,9 @@ GO FUNC net._f_ptrTo_UnixConn_SyscallConn from net/unixsock.go:
 GO FUNC net._f_ptrTo_UnixConn_WriteMsgUnix from net/unixsock.go:
 func _f_ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)WriteMsgUnix()", args, 3, 3)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_oob := SeqNth(_argList, 1).(Native)
-	_v_addr := SeqNth(_argList, 2).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_oob := SeqNth(_argList, 1).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 2).(Native).(*net.UnixAddr)
 	n, oobn, err := o.O.(*net.UnixConn).WriteMsgUnix(_v_b, _v_oob, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(n))
@@ -6840,8 +6840,8 @@ func _f_ptrTo_UnixConn_WriteMsgUnix(o GoObject, args Object) Object {  // Receiv
 GO FUNC net._f_ptrTo_UnixConn_WriteTo from net/unixsock.go:
 func _f_ptrTo_UnixConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)WriteTo()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(net.Addr)
 	_res1, _res2 := o.O.(*net.UnixConn).WriteTo(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -6852,8 +6852,8 @@ func _f_ptrTo_UnixConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_UnixConn_WriteToUnix from net/unixsock.go:
 func _f_ptrTo_UnixConn_WriteToUnix(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.UnixConn)WriteToUnix()", args, 2, 2)
-	_v_b := SeqNth(_argList, 0).(Native)
-	_v_addr := SeqNth(_argList, 1).(Native)
+	_v_b := SeqNth(_argList, 0).(Native).([]byte)
+	_v_addr := SeqNth(_argList, 1).(Native).(*net.UnixAddr)
 	_res1, _res2 := o.O.(*net.UnixConn).WriteToUnix(_v_b, _v_addr)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -9108,7 +9108,7 @@ func _f_connState_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_cookieJar_Cookies from net/http/jar.go:
 func _f_cookieJar_Cookies(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.CookieJar)Cookies()", args, 1, 1)
-	_v_u := SeqNth(_argList, 0).(Native)
+	_v_u := SeqNth(_argList, 0).(Native).(*url.URL)
 	_res := o.O.(http.CookieJar).Cookies(_v_u)
 	return MakeGoObject(_res)
 }
@@ -9121,7 +9121,7 @@ GO FUNC net/http._f_cookieJar_SetCookies from net/http/jar.go:
 GO FUNC net/http._f_dir_Open from net/http/fs.go:
 func _f_dir_Open(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(http.Dir)Open()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native)
+	_v_name := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(http.Dir).Open(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9132,7 +9132,7 @@ func _f_dir_Open(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_fileSystem_Open from net/http/fs.go:
 func _f_fileSystem_Open(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.FileSystem)Open()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native)
+	_v_name := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(http.FileSystem).Open(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9168,7 +9168,7 @@ GO FUNC net/http._f_header_Del from net/http/header.go:
 GO FUNC net/http._f_header_Get from net/http/header.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(http.Header)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(http.Header).Get(_v_key)
 	return MakeString(_res)
 }
@@ -9193,7 +9193,7 @@ GO FUNC net/http._f_hijacker_Hijack from net/http/server.go:
 GO FUNC net/http._f_ptrTo_Client_Do from net/http/client.go:
 func _f_ptrTo_Client_Do(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)Do()", args, 1, 1)
-	_v_req := SeqNth(_argList, 0).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
 	_res1, _res2 := o.O.(*http.Client).Do(_v_req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9204,7 +9204,7 @@ func _f_ptrTo_Client_Do(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Client_Get from net/http/client.go:
 func _f_ptrTo_Client_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)Get()", args, 1, 1)
-	_v_url := SeqNth(_argList, 0).(Native)
+	_v_url := SeqNth(_argList, 0).(Native).(string)
 	resp, err := o.O.(*http.Client).Get(_v_url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9215,7 +9215,7 @@ func _f_ptrTo_Client_Get(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Client_Head from net/http/client.go:
 func _f_ptrTo_Client_Head(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)Head()", args, 1, 1)
-	_v_url := SeqNth(_argList, 0).(Native)
+	_v_url := SeqNth(_argList, 0).(Native).(string)
 	resp, err := o.O.(*http.Client).Head(_v_url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9230,8 +9230,8 @@ GO FUNC net/http._f_ptrTo_Client_Post from net/http/client.go:
 GO FUNC net/http._f_ptrTo_Client_PostForm from net/http/client.go:
 func _f_ptrTo_Client_PostForm(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)PostForm()", args, 2, 2)
-	_v_url := SeqNth(_argList, 0).(Native)
-	_v_data := SeqNth(_argList, 1).(Native)
+	_v_url := SeqNth(_argList, 0).(Native).(string)
+	_v_data := SeqNth(_argList, 1).(Native).(url.Values)
 	resp, err := o.O.(*http.Client).PostForm(_v_url, _v_data)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9276,7 +9276,7 @@ GO FUNC net/http._f_ptrTo_Request_Context from net/http/request.go:
 GO FUNC net/http._f_ptrTo_Request_Cookie from net/http/request.go:
 func _f_ptrTo_Request_Cookie(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)Cookie()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native)
+	_v_name := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*http.Request).Cookie(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9298,7 +9298,7 @@ GO FUNC net/http._f_ptrTo_Request_FormFile from net/http/request.go:
 GO FUNC net/http._f_ptrTo_Request_FormValue from net/http/request.go:
 func _f_ptrTo_Request_FormValue(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)FormValue()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*http.Request).FormValue(_v_key)
 	return MakeString(_res)
 }
@@ -9317,7 +9317,7 @@ func _f_ptrTo_Request_ParseForm(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Request_ParseMultipartForm from net/http/request.go:
 func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)ParseMultipartForm()", args, 1, 1)
-	_v_maxMemory := SeqNth(_argList, 0).(Native)
+	_v_maxMemory := SeqNth(_argList, 0).(Native).(int64)
 	_res := o.O.(*http.Request).ParseMultipartForm(_v_maxMemory)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9325,7 +9325,7 @@ func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // R
 GO FUNC net/http._f_ptrTo_Request_PostFormValue from net/http/request.go:
 func _f_ptrTo_Request_PostFormValue(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)PostFormValue()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*http.Request).PostFormValue(_v_key)
 	return MakeString(_res)
 }
@@ -9333,8 +9333,8 @@ func _f_ptrTo_Request_PostFormValue(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/http._f_ptrTo_Request_ProtoAtLeast from net/http/request.go:
 func _f_ptrTo_Request_ProtoAtLeast(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)ProtoAtLeast()", args, 2, 2)
-	_v_major := SeqNth(_argList, 0).(Native)
-	_v_minor := SeqNth(_argList, 1).(Native)
+	_v_major := SeqNth(_argList, 0).(Native).(int)
+	_v_minor := SeqNth(_argList, 1).(Native).(int)
 	_res := o.O.(*http.Request).ProtoAtLeast(_v_major, _v_minor)
 	return MakeBoolean(_res)
 }
@@ -9390,8 +9390,8 @@ func _f_ptrTo_Response_Location(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Response_ProtoAtLeast from net/http/response.go:
 func _f_ptrTo_Response_ProtoAtLeast(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Response)ProtoAtLeast()", args, 2, 2)
-	_v_major := SeqNth(_argList, 0).(Native)
-	_v_minor := SeqNth(_argList, 1).(Native)
+	_v_major := SeqNth(_argList, 0).(Native).(int)
+	_v_minor := SeqNth(_argList, 1).(Native).(int)
 	_res := o.O.(*http.Response).ProtoAtLeast(_v_major, _v_minor)
 	return MakeBoolean(_res)
 }
@@ -9413,7 +9413,7 @@ GO FUNC net/http._f_ptrTo_ServeMux_HandleFunc from net/http/server.go:
 GO FUNC net/http._f_ptrTo_ServeMux_Handler from net/http/server.go:
 func _f_ptrTo_ServeMux_Handler(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.ServeMux)Handler()", args, 1, 1)
-	_v_r := SeqNth(_argList, 0).(Native)
+	_v_r := SeqNth(_argList, 0).(Native).(*http.Request)
 	h, pattern := o.O.(*http.ServeMux).Handler(_v_r)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(h))
@@ -9443,8 +9443,8 @@ func _f_ptrTo_Server_ListenAndServe(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/http._f_ptrTo_Server_ListenAndServeTLS from net/http/server.go:
 func _f_ptrTo_Server_ListenAndServeTLS(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Server)ListenAndServeTLS()", args, 2, 2)
-	_v_certFile := SeqNth(_argList, 0).(Native)
-	_v_keyFile := SeqNth(_argList, 1).(Native)
+	_v_certFile := SeqNth(_argList, 0).(Native).(string)
+	_v_keyFile := SeqNth(_argList, 1).(Native).(string)
 	_res := o.O.(*http.Server).ListenAndServeTLS(_v_certFile, _v_keyFile)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9457,7 +9457,7 @@ GO FUNC net/http._f_ptrTo_Server_RegisterOnShutdown from net/http/server.go:
 GO FUNC net/http._f_ptrTo_Server_Serve from net/http/server.go:
 func _f_ptrTo_Server_Serve(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Server)Serve()", args, 1, 1)
-	_v_l := SeqNth(_argList, 0).(Native)
+	_v_l := SeqNth(_argList, 0).(Native).(net.Listener)
 	_res := o.O.(*http.Server).Serve(_v_l)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9465,9 +9465,9 @@ func _f_ptrTo_Server_Serve(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Server_ServeTLS from net/http/server.go:
 func _f_ptrTo_Server_ServeTLS(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Server)ServeTLS()", args, 3, 3)
-	_v_l := SeqNth(_argList, 0).(Native)
-	_v_certFile := SeqNth(_argList, 1).(Native)
-	_v_keyFile := SeqNth(_argList, 2).(Native)
+	_v_l := SeqNth(_argList, 0).(Native).(net.Listener)
+	_v_certFile := SeqNth(_argList, 1).(Native).(string)
+	_v_keyFile := SeqNth(_argList, 2).(Native).(string)
 	_res := o.O.(*http.Server).ServeTLS(_v_l, _v_certFile, _v_keyFile)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9499,7 +9499,7 @@ GO FUNC net/http._f_ptrTo_Transport_RegisterProtocol from net/http/transport.go:
 GO FUNC net/http._f_ptrTo_Transport_RoundTrip from net/http/roundtrip.go:
 func _f_ptrTo_Transport_RoundTrip(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Transport)RoundTrip()", args, 1, 1)
-	_v_req := SeqNth(_argList, 0).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
 	_res1, _res2 := o.O.(*http.Transport).RoundTrip(_v_req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9510,8 +9510,8 @@ func _f_ptrTo_Transport_RoundTrip(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_pusher_Push from net/http/http.go:
 func _f_pusher_Push(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.Pusher)Push()", args, 2, 2)
-	_v_target := SeqNth(_argList, 0).(Native)
-	_v_opts := SeqNth(_argList, 1).(Native)
+	_v_target := SeqNth(_argList, 0).(Native).(string)
+	_v_opts := SeqNth(_argList, 1).(Native).(*http.PushOptions)
 	_res := o.O.(http.Pusher).Push(_v_target, _v_opts)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9526,7 +9526,7 @@ func _f_responseWriter_Header(o GoObject, args Object) Object {  // Method
 GO FUNC net/http._f_responseWriter_Write from net/http/server.go:
 func _f_responseWriter_Write(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.ResponseWriter)Write()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2 := o.O.(http.ResponseWriter).Write(__arg1)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -9542,7 +9542,7 @@ GO FUNC net/http._f_responseWriter_WriteHeader from net/http/server.go:
 GO FUNC net/http._f_roundTripper_RoundTrip from net/http/client.go:
 func _f_roundTripper_RoundTrip(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.RoundTripper)RoundTrip()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(*http.Request)
 	_res1, _res2 := o.O.(http.RoundTripper).RoundTrip(__arg1)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -10410,7 +10410,7 @@ func _f_new(_v_o *cookiejar.Options) Object {
 GO FUNC net/http/cookiejar._f_ptrTo_Jar_Cookies from net/http/cookiejar/jar.go:
 func _f_ptrTo_Jar_Cookies(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*cookiejar.Jar)Cookies()", args, 1, 1)
-	_v_u := SeqNth(_argList, 0).(Native)
+	_v_u := SeqNth(_argList, 0).(Native).(*url.URL)
 	_res := o.O.(*cookiejar.Jar).Cookies(_v_u)
 	return MakeGoObject(_res)
 }
@@ -10423,7 +10423,7 @@ GO FUNC net/http/cookiejar._f_ptrTo_Jar_SetCookies from net/http/cookiejar/jar.g
 GO FUNC net/http/cookiejar._f_publicSuffixList_PublicSuffix from net/http/cookiejar/jar.go:
 func _f_publicSuffixList_PublicSuffix(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http/cookiejar.PublicSuffixList)PublicSuffix()", args, 1, 1)
-	_v_domain := SeqNth(_argList, 0).(Native)
+	_v_domain := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(cookiejar.PublicSuffixList).PublicSuffix(_v_domain)
 	return MakeString(_res)
 }
@@ -10689,7 +10689,7 @@ func _f_ptrTo_ResponseRecorder_Result(o GoObject, args Object) Object {  // Rece
 GO FUNC net/http/httptest._f_ptrTo_ResponseRecorder_Write from net/http/httptest/recorder.go:
 func _f_ptrTo_ResponseRecorder_Write(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httptest.ResponseRecorder)Write()", args, 1, 1)
-	_v_buf := SeqNth(_argList, 0).(Native)
+	_v_buf := SeqNth(_argList, 0).(Native).([]byte)
 	_res1, _res2 := o.O.(*httptest.ResponseRecorder).Write(_v_buf)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -10705,7 +10705,7 @@ GO FUNC net/http/httptest._f_ptrTo_ResponseRecorder_WriteHeader from net/http/ht
 GO FUNC net/http/httptest._f_ptrTo_ResponseRecorder_WriteString from net/http/httptest/recorder.go:
 func _f_ptrTo_ResponseRecorder_WriteString(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httptest.ResponseRecorder)WriteString()", args, 1, 1)
-	_v_str := SeqNth(_argList, 0).(Native)
+	_v_str := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*httptest.ResponseRecorder).WriteString(_v_str)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -11464,7 +11464,7 @@ func _f_ptrTo_ClientConn_Close(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http/httputil._f_ptrTo_ClientConn_Do from net/http/httputil/persist.go:
 func _f_ptrTo_ClientConn_Do(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httputil.ClientConn)Do()", args, 1, 1)
-	_v_req := SeqNth(_argList, 0).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
 	_res1, _res2 := o.O.(*httputil.ClientConn).Do(_v_req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11486,7 +11486,7 @@ func _f_ptrTo_ClientConn_Pending(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http/httputil._f_ptrTo_ClientConn_Read from net/http/httputil/persist.go:
 func _f_ptrTo_ClientConn_Read(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httputil.ClientConn)Read()", args, 1, 1)
-	_v_req := SeqNth(_argList, 0).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
 	resp, err := o.O.(*httputil.ClientConn).Read(_v_req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -11497,7 +11497,7 @@ func _f_ptrTo_ClientConn_Read(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http/httputil._f_ptrTo_ClientConn_Write from net/http/httputil/persist.go:
 func _f_ptrTo_ClientConn_Write(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httputil.ClientConn)Write()", args, 1, 1)
-	_v_req := SeqNth(_argList, 0).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
 	_res := o.O.(*httputil.ClientConn).Write(_v_req)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -11538,8 +11538,8 @@ func _f_ptrTo_ServerConn_Read(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http/httputil._f_ptrTo_ServerConn_Write from net/http/httputil/persist.go:
 func _f_ptrTo_ServerConn_Write(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httputil.ServerConn)Write()", args, 2, 2)
-	_v_req := SeqNth(_argList, 0).(Native)
-	_v_resp := SeqNth(_argList, 1).(Native)
+	_v_req := SeqNth(_argList, 0).(Native).(*http.Request)
+	_v_resp := SeqNth(_argList, 1).(Native).(*http.Response)
 	_res := o.O.(*httputil.ServerConn).Write(_v_req, _v_resp)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -11933,7 +11933,7 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 GO FUNC net/mail._f_header_AddressList from net/mail/message.go:
 func _f_header_AddressList(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(mail.Header)AddressList()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(mail.Header).AddressList(_v_key)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11948,7 +11948,7 @@ GO FUNC net/mail._f_header_Date from net/mail/message.go:
 GO FUNC net/mail._f_header_Get from net/mail/message.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(mail.Header)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(mail.Header).Get(_v_key)
 	return MakeString(_res)
 }
@@ -11956,7 +11956,7 @@ func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/mail._f_ptrTo_AddressParser_Parse from net/mail/message.go:
 func _f_ptrTo_AddressParser_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*mail.AddressParser)Parse()", args, 1, 1)
-	_v_address := SeqNth(_argList, 0).(Native)
+	_v_address := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*mail.AddressParser).Parse(_v_address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11967,7 +11967,7 @@ func _f_ptrTo_AddressParser_Parse(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/mail._f_ptrTo_AddressParser_ParseList from net/mail/message.go:
 func _f_ptrTo_AddressParser_ParseList(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*mail.AddressParser)ParseList()", args, 1, 1)
-	_v_list := SeqNth(_argList, 0).(Native)
+	_v_list := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*mail.AddressParser).ParseList(_v_list)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -12500,7 +12500,7 @@ func _f_clientCodec_Close(o GoObject, args Object) Object {  // Method
 GO FUNC net/rpc._f_clientCodec_ReadResponseBody from net/rpc/client.go:
 func _f_clientCodec_ReadResponseBody(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ClientCodec)ReadResponseBody()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(interface{})
 	_res := o.O.(rpc.ClientCodec).ReadResponseBody(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12508,7 +12508,7 @@ func _f_clientCodec_ReadResponseBody(o GoObject, args Object) Object {  // Metho
 GO FUNC net/rpc._f_clientCodec_ReadResponseHeader from net/rpc/client.go:
 func _f_clientCodec_ReadResponseHeader(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ClientCodec)ReadResponseHeader()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(*rpc.Response)
 	_res := o.O.(rpc.ClientCodec).ReadResponseHeader(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12516,8 +12516,8 @@ func _f_clientCodec_ReadResponseHeader(o GoObject, args Object) Object {  // Met
 GO FUNC net/rpc._f_clientCodec_WriteRequest from net/rpc/client.go:
 func _f_clientCodec_WriteRequest(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ClientCodec)WriteRequest()", args, 2, 2)
-	__arg1 := SeqNth(_argList, 0).(Native)
-	__arg2 := SeqNth(_argList, 1).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(*rpc.Request)
+	__arg2 := SeqNth(_argList, 1).(Native).(interface{})
 	_res := o.O.(rpc.ClientCodec).WriteRequest(__arg1, __arg2)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12525,9 +12525,9 @@ func _f_clientCodec_WriteRequest(o GoObject, args Object) Object {  // Method
 GO FUNC net/rpc._f_ptrTo_Client_Call from net/rpc/client.go:
 func _f_ptrTo_Client_Call(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Client)Call()", args, 3, 3)
-	_v_serviceMethod := SeqNth(_argList, 0).(Native)
-	_v_args := SeqNth(_argList, 1).(Native)
-	_v_reply := SeqNth(_argList, 2).(Native)
+	_v_serviceMethod := SeqNth(_argList, 0).(Native).(string)
+	_v_args := SeqNth(_argList, 1).(Native).(interface{})
+	_v_reply := SeqNth(_argList, 2).(Native).(interface{})
 	_res := o.O.(*rpc.Client).Call(_v_serviceMethod, _v_args, _v_reply)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12542,10 +12542,10 @@ func _f_ptrTo_Client_Close(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/rpc._f_ptrTo_Client_Go from net/rpc/client.go:
 func _f_ptrTo_Client_Go(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Client)Go()", args, 4, 4)
-	_v_serviceMethod := SeqNth(_argList, 0).(Native)
-	_v_args := SeqNth(_argList, 1).(Native)
-	_v_reply := SeqNth(_argList, 2).(Native)
-	_v_done := SeqNth(_argList, 3).(Native)
+	_v_serviceMethod := SeqNth(_argList, 0).(Native).(string)
+	_v_args := SeqNth(_argList, 1).(Native).(interface{})
+	_v_reply := SeqNth(_argList, 2).(Native).(interface{})
+	_v_done := SeqNth(_argList, 3).(Native).(chan *Call)
 	_res := o.O.(*rpc.Client).Go(_v_serviceMethod, _v_args, _v_reply, _v_done)
 	return MakeGoObject(_res)
 }
@@ -12563,7 +12563,7 @@ GO FUNC net/rpc._f_ptrTo_Server_HandleHTTP from net/rpc/server.go:
 GO FUNC net/rpc._f_ptrTo_Server_Register from net/rpc/server.go:
 func _f_ptrTo_Server_Register(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Server)Register()", args, 1, 1)
-	_v_rcvr := SeqNth(_argList, 0).(Native)
+	_v_rcvr := SeqNth(_argList, 0).(Native).(interface{})
 	_res := o.O.(*rpc.Server).Register(_v_rcvr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12571,8 +12571,8 @@ func _f_ptrTo_Server_Register(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/rpc._f_ptrTo_Server_RegisterName from net/rpc/server.go:
 func _f_ptrTo_Server_RegisterName(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Server)RegisterName()", args, 2, 2)
-	_v_name := SeqNth(_argList, 0).(Native)
-	_v_rcvr := SeqNth(_argList, 1).(Native)
+	_v_name := SeqNth(_argList, 0).(Native).(string)
+	_v_rcvr := SeqNth(_argList, 1).(Native).(interface{})
 	_res := o.O.(*rpc.Server).RegisterName(_v_name, _v_rcvr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12594,7 +12594,7 @@ GO FUNC net/rpc._f_ptrTo_Server_ServeHTTP from net/rpc/server.go:
 GO FUNC net/rpc._f_ptrTo_Server_ServeRequest from net/rpc/server.go:
 func _f_ptrTo_Server_ServeRequest(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Server)ServeRequest()", args, 1, 1)
-	_v_codec := SeqNth(_argList, 0).(Native)
+	_v_codec := SeqNth(_argList, 0).(Native).(rpc.ServerCodec)
 	_res := o.O.(*rpc.Server).ServeRequest(_v_codec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12609,7 +12609,7 @@ func _f_serverCodec_Close(o GoObject, args Object) Object {  // Method
 GO FUNC net/rpc._f_serverCodec_ReadRequestBody from net/rpc/server.go:
 func _f_serverCodec_ReadRequestBody(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ServerCodec)ReadRequestBody()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(interface{})
 	_res := o.O.(rpc.ServerCodec).ReadRequestBody(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12617,7 +12617,7 @@ func _f_serverCodec_ReadRequestBody(o GoObject, args Object) Object {  // Method
 GO FUNC net/rpc._f_serverCodec_ReadRequestHeader from net/rpc/server.go:
 func _f_serverCodec_ReadRequestHeader(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ServerCodec)ReadRequestHeader()", args, 1, 1)
-	__arg1 := SeqNth(_argList, 0).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(*rpc.Request)
 	_res := o.O.(rpc.ServerCodec).ReadRequestHeader(__arg1)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -12625,8 +12625,8 @@ func _f_serverCodec_ReadRequestHeader(o GoObject, args Object) Object {  // Meth
 GO FUNC net/rpc._f_serverCodec_WriteResponse from net/rpc/server.go:
 func _f_serverCodec_WriteResponse(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/rpc.ServerCodec)WriteResponse()", args, 2, 2)
-	__arg1 := SeqNth(_argList, 0).(Native)
-	__arg2 := SeqNth(_argList, 1).(Native)
+	__arg1 := SeqNth(_argList, 0).(Native).(*rpc.Response)
+	__arg2 := SeqNth(_argList, 1).(Native).(interface{})
 	_res := o.O.(rpc.ServerCodec).WriteResponse(__arg1, __arg2)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13064,8 +13064,8 @@ func _f_plainAuth(_v_identity string, _v_username string, _v_password string, _v
 GO FUNC net/smtp._f_auth_Next from net/smtp/auth.go:
 func _f_auth_Next(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/smtp.Auth)Next()", args, 2, 2)
-	_v_fromServer := SeqNth(_argList, 0).(Native)
-	_v_more := SeqNth(_argList, 1).(Native)
+	_v_fromServer := SeqNth(_argList, 0).(Native).([]byte)
+	_v_more := SeqNth(_argList, 1).(Native).(bool)
 	toServer, err := o.O.(smtp.Auth).Next(_v_fromServer, _v_more)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(toServer))
@@ -13076,7 +13076,7 @@ func _f_auth_Next(o GoObject, args Object) Object {  // Method
 GO FUNC net/smtp._f_auth_Start from net/smtp/auth.go:
 func _f_auth_Start(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/smtp.Auth)Start()", args, 1, 1)
-	_v_server := SeqNth(_argList, 0).(Native)
+	_v_server := SeqNth(_argList, 0).(Native).(*smtp.ServerInfo)
 	proto, toServer, err := o.O.(smtp.Auth).Start(_v_server)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeString(proto))
@@ -13088,7 +13088,7 @@ func _f_auth_Start(o GoObject, args Object) Object {  // Method
 GO FUNC net/smtp._f_ptrTo_Client_Auth from net/smtp/smtp.go:
 func _f_ptrTo_Client_Auth(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Auth()", args, 1, 1)
-	_v_a := SeqNth(_argList, 0).(Native)
+	_v_a := SeqNth(_argList, 0).(Native).(smtp.Auth)
 	_res := o.O.(*smtp.Client).Auth(_v_a)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13107,7 +13107,7 @@ GO FUNC net/smtp._f_ptrTo_Client_Data from net/smtp/smtp.go:
 GO FUNC net/smtp._f_ptrTo_Client_Extension from net/smtp/smtp.go:
 func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Extension()", args, 1, 1)
-	_v_ext := SeqNth(_argList, 0).(Native)
+	_v_ext := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*smtp.Client).Extension(_v_ext)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(_res1))
@@ -13118,7 +13118,7 @@ func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Hello from net/smtp/smtp.go:
 func _f_ptrTo_Client_Hello(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Hello()", args, 1, 1)
-	_v_localName := SeqNth(_argList, 0).(Native)
+	_v_localName := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*smtp.Client).Hello(_v_localName)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13126,7 +13126,7 @@ func _f_ptrTo_Client_Hello(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Mail from net/smtp/smtp.go:
 func _f_ptrTo_Client_Mail(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Mail()", args, 1, 1)
-	_v_from := SeqNth(_argList, 0).(Native)
+	_v_from := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*smtp.Client).Mail(_v_from)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13148,7 +13148,7 @@ func _f_ptrTo_Client_Quit(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Rcpt from net/smtp/smtp.go:
 func _f_ptrTo_Client_Rcpt(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Rcpt()", args, 1, 1)
-	_v_to := SeqNth(_argList, 0).(Native)
+	_v_to := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*smtp.Client).Rcpt(_v_to)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13171,7 +13171,7 @@ GO FUNC net/smtp._f_ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 GO FUNC net/smtp._f_ptrTo_Client_Verify from net/smtp/smtp.go:
 func _f_ptrTo_Client_Verify(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Verify()", args, 1, 1)
-	_v_addr := SeqNth(_argList, 0).(Native)
+	_v_addr := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(*smtp.Client).Verify(_v_addr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13605,7 +13605,7 @@ GO FUNC net/textproto._f_mIMEHeader_Del from net/textproto/header.go:
 GO FUNC net/textproto._f_mIMEHeader_Get from net/textproto/header.go:
 func _f_mIMEHeader_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(textproto.MIMEHeader)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(textproto.MIMEHeader).Get(_v_key)
 	return MakeString(_res)
 }
@@ -13630,16 +13630,8 @@ func _f_ptrTo_Conn_Close(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/textproto._f_ptrTo_Conn_Cmd from net/textproto/textproto.go:
-func _f_ptrTo_Conn_Cmd(o GoObject, args Object) Object {  // Receiver
-	_argList := CheckGoArity("(*textproto.Conn)Cmd()", args, 2, 2)
-	_v_format := SeqNth(_argList, 0).(Native)
-	_v_args := SeqNth(_argList, 1).(Native)
-	id, err := o.O.(*textproto.Conn).Cmd(_v_format, _v_args)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeBigIntU(uint64(id)))
-	_res = _res.Conjoin(func () Object { if (err) == nil { return NIL } else { return MakeError(err) } }())
-	return _res
-}
+// func _f_ptrTo_Conn_Cmd(o GoObject, args Object) Object {  // Receiver
+// _v_format string, _v_args ABEND747(gtypes.go: ...interface{})}
 
 GO FUNC net/textproto._f_ptrTo_Error_Error from net/textproto/textproto.go:
 func _f_ptrTo_Error_Error(o GoObject, args Object) Object {  // Receiver
@@ -13682,7 +13674,7 @@ GO FUNC net/textproto._f_ptrTo_Reader_DotReader from net/textproto/reader.go:
 GO FUNC net/textproto._f_ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*textproto.Reader)ReadCodeLine()", args, 1, 1)
-	_v_expectCode := SeqNth(_argList, 0).(Native)
+	_v_expectCode := SeqNth(_argList, 0).(Native).(int)
 	code, message, err := o.O.(*textproto.Reader).ReadCodeLine(_v_expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
@@ -13764,7 +13756,7 @@ func _f_ptrTo_Reader_ReadMIMEHeader(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/textproto._f_ptrTo_Reader_ReadResponse from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*textproto.Reader)ReadResponse()", args, 1, 1)
-	_v_expectCode := SeqNth(_argList, 0).(Native)
+	_v_expectCode := SeqNth(_argList, 0).(Native).(int)
 	code, message, err := o.O.(*textproto.Reader).ReadResponse(_v_expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
@@ -13778,13 +13770,8 @@ GO FUNC net/textproto._f_ptrTo_Writer_DotWriter from net/textproto/writer.go:
 // ABEND002(reference to unavailable package `io' looking for type `WriteCloser')}
 
 GO FUNC net/textproto._f_ptrTo_Writer_PrintfLine from net/textproto/writer.go:
-func _f_ptrTo_Writer_PrintfLine(o GoObject, args Object) Object {  // Receiver
-	_argList := CheckGoArity("(*textproto.Writer)PrintfLine()", args, 2, 2)
-	_v_format := SeqNth(_argList, 0).(Native)
-	_v_args := SeqNth(_argList, 1).(Native)
-	_res := o.O.(*textproto.Writer).PrintfLine(_v_format, _v_args)
-	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
-}
+// func _f_ptrTo_Writer_PrintfLine(o GoObject, args Object) Object {  // Receiver
+// _v_format string, _v_args ABEND747(gtypes.go: ...interface{})}
 
 GO VARDEF FOR TYPE go.std.net.textproto/Conn from _tests/big/src/net/textproto/textproto.go:58:6:
 var info_Conn GoTypeInfo
@@ -13843,7 +13830,6 @@ GO INFO FOR TYPE go.std.net.textproto/refToConn from _tests/big/src/net/textprot
 		Ctor: _Wrapped_Ctor_Conn,
 		Members: GoMembers{
 			"Close": MakeGoReceiver("Close", _f_ptrTo_Conn_Close, "Close closes the connection.\n", "1.0", NewVectorFrom()),
-			"Cmd": MakeGoReceiver("Cmd", _f_ptrTo_Conn_Cmd, "Cmd is a convenience method that sends a command after\nwaiting its turn in the pipeline. The command text is the\nresult of formatting format with args and appending \\r\\n.\nCmd returns the id of the command, for use with StartResponse and EndResponse.\n\nFor example, a client might run a HELP command that returns a dot-body\nby using:\n\n\tid, err := c.Cmd(\"HELP\")\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tc.StartResponse(id)\n\tdefer c.EndResponse(id)\n\n\tif _, _, err = c.ReadCodeLine(110); err != nil {\n\t\treturn nil, err\n\t}\n\ttext, err := c.ReadDotBytes()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\treturn c.ReadCodeLine(250)\n", "1.0", NewVectorFrom(MakeSymbol("format"), MakeSymbol("args"))),
 		},
 	}
 
@@ -13959,7 +13945,6 @@ GO INFO FOR TYPE go.std.net.textproto/refToWriter from _tests/big/src/net/textpr
 	info_PtrTo_Writer = GoTypeInfo{Name: "go.std.net.textproto/refToWriter",
 		GoType: &GoType{T: &info_PtrTo_Writer},
 		Members: GoMembers{
-			"PrintfLine": MakeGoReceiver("PrintfLine", _f_ptrTo_Writer_PrintfLine, "PrintfLine writes the formatted output followed by \\r\\n.\n", "1.0", NewVectorFrom(MakeSymbol("format"), MakeSymbol("args"))),
 		},
 	}
 
@@ -14397,7 +14382,7 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)Parse()", args, 1, 1)
-	_v_ref := SeqNth(_argList, 0).(Native)
+	_v_ref := SeqNth(_argList, 0).(Native).(string)
 	_res1, _res2 := o.O.(*url.URL).Parse(_v_ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -14429,7 +14414,7 @@ func _f_ptrTo_URL_RequestURI(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_ResolveReference from net/url/url.go:
 func _f_ptrTo_URL_ResolveReference(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)ResolveReference()", args, 1, 1)
-	_v_ref := SeqNth(_argList, 0).(Native)
+	_v_ref := SeqNth(_argList, 0).(Native).(*url.URL)
 	_res := o.O.(*url.URL).ResolveReference(_v_ref)
 	return MakeGoObject(_res)
 }
@@ -14444,7 +14429,7 @@ func _f_ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_UnmarshalBinary from net/url/url.go:
 func _f_ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
-	_v_text := SeqNth(_argList, 0).(Native)
+	_v_text := SeqNth(_argList, 0).(Native).([]byte)
 	_res := o.O.(*url.URL).UnmarshalBinary(_v_text)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -14493,7 +14478,7 @@ func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(url.Values)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native)
+	_v_key := SeqNth(_argList, 0).(Native).(string)
 	_res := o.O.(url.Values).Get(_v_key)
 	return MakeString(_res)
 }
@@ -15115,10 +15100,10 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(234) 049(138) 048(93) 041(54) 275(43) 674(20) 124(1)
-Totals: functions=470 generated=342 (72.77%)
+ABENDs: 002(234) 049(138) 048(93) 041(54) 275(43) 674(20) 747(2) 124(1)
+Totals: functions=470 generated=340 (72.34%)
           non-receivers=148 (31.49%) generated=117 (79.05%)
-          receivers=273 (58.09%) generated=189 (69.23%)
+          receivers=273 (58.09%) generated=187 (68.50%)
           methods=49 (10.43%) generated=36 (73.47%)
         types=184
           constructable=164 ctors=82 (50.00%)
