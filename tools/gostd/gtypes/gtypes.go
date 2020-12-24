@@ -381,7 +381,7 @@ func InfoForExpr(e Expr) *Info {
 		isPassedByAddress = false
 	case *Ellipsis:
 		innerInfo = InfoForExpr(v.Elt)
-		pattern = fmt.Sprintf("...%s", innerInfo.Pattern)
+		pattern = fmt.Sprintf("ABEND747(gtypes.go: ...%s)", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("...%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
