@@ -5582,7 +5582,7 @@ func _f_dialTCP(_v_network string, _v_laddr *net.TCPAddr, _v_raddr *net.TCPAddr)
 }
 
 GO FUNC net.DialTimeout from net/dial.go:
-// func _f_dialTimeout(_v_network string, _v_address string, _v_timeout time.ABEND002(reference to unavailable package `time' looking for type `Duration')) Object {
+// func _f_dialTimeout(_v_network string, _v_address string, _v_timeout ABEND002(reference to unavailable package `time' looking for type `Duration')) Object {
 // 	_res1, _res2 := net.DialTimeout(_v_network, _v_address, _v_timeout)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -8898,13 +8898,13 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // }
 
 GO FUNC net/http.Error from net/http/server.go:
-func _f_error(_v_w net/http.ResponseWriter, _v_error string, _v_code int) Object {
+func _f_error(_v_w http.ResponseWriter, _v_error string, _v_code int) Object {
 	http.Error(_v_w, _v_error, _v_code)
 	return NIL
 }
 
 GO FUNC net/http.FileServer from net/http/fs.go:
-func _f_fileServer(_v_root net/http.FileSystem) Object {
+func _f_fileServer(_v_root http.FileSystem) Object {
 	_res := http.FileServer(_v_root)
 	return MakeGoObject(_res)
 }
@@ -8919,7 +8919,7 @@ func _f_get(_v_url string) Object {
 }
 
 GO FUNC net/http.Handle from net/http/server.go:
-func _f_handle(_v_pattern string, _v_handler net/http.Handler) Object {
+func _f_handle(_v_pattern string, _v_handler http.Handler) Object {
 	http.Handle(_v_pattern, _v_handler)
 	return NIL
 }
@@ -8940,19 +8940,19 @@ func _f_head(_v_url string) Object {
 }
 
 GO FUNC net/http.MaxBytesReader from net/http/request.go:
-// func _f_maxBytesReader(_v_w net/http.ResponseWriter, _v_r io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), _v_n int64) Object {
+// func _f_maxBytesReader(_v_w http.ResponseWriter, _v_r ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), _v_n int64) Object {
 // 	_res := http.MaxBytesReader(_v_w, _v_r, _v_n)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http.NewFileTransport from net/http/filetransport.go:
-func _f_newFileTransport(_v_fs net/http.FileSystem) Object {
+func _f_newFileTransport(_v_fs http.FileSystem) Object {
 	_res := http.NewFileTransport(_v_fs)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.NewRequest from net/http/request.go:
-// func _f_newRequest(_v_method string, _v_url string, _v_body io.ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
+// func _f_newRequest(_v_method string, _v_url string, _v_body ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
 // 	_res1, _res2 := http.NewRequest(_v_method, _v_url, _v_body)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -8967,7 +8967,7 @@ func _f_newServeMux() Object {
 }
 
 GO FUNC net/http.NotFound from net/http/server.go:
-func _f_notFound(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_notFound(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	http.NotFound(_v_w, _v_r)
 	return NIL
 }
@@ -8998,7 +8998,7 @@ GO FUNC net/http.ParseTime from net/http/header.go:
 // }
 
 GO FUNC net/http.Post from net/http/client.go:
-// func _f_post(_v_url string, _v_contentType string, _v_body io.ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
+// func _f_post(_v_url string, _v_contentType string, _v_body ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
 // 	resp, err := http.Post(_v_url, _v_contentType, _v_body)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9007,7 +9007,7 @@ GO FUNC net/http.Post from net/http/client.go:
 // }
 
 GO FUNC net/http.PostForm from net/http/client.go:
-func _f_postForm(_v_url string, _v_data net/url.Values) Object {
+func _f_postForm(_v_url string, _v_data url.Values) Object {
 	resp, err := http.PostForm(_v_url, _v_data)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9016,7 +9016,7 @@ func _f_postForm(_v_url string, _v_data net/url.Values) Object {
 }
 
 GO FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
-func _f_proxyFromEnvironment(_v_req *net/http.Request) Object {
+func _f_proxyFromEnvironment(_v_req *http.Request) Object {
 	_res1, _res2 := http.ProxyFromEnvironment(_v_req)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9025,7 +9025,7 @@ func _f_proxyFromEnvironment(_v_req *net/http.Request) Object {
 }
 
 GO FUNC net/http.ProxyURL from net/http/transport.go:
-func _f_proxyURL(_v_fixedURL *net/url.URL) Object {
+func _f_proxyURL(_v_fixedURL *url.URL) Object {
 	_res := http.ProxyURL(_v_fixedURL)
 	return MakeGoObject(_res)
 }
@@ -9040,7 +9040,7 @@ GO FUNC net/http.ReadRequest from net/http/request.go:
 // }
 
 GO FUNC net/http.ReadResponse from net/http/response.go:
-// func _f_readResponse(_v_r *ABEND002(reference to unavailable package `bufio' looking for type `Reader'), _v_req *net/http.Request) Object {
+// func _f_readResponse(_v_r *ABEND002(reference to unavailable package `bufio' looking for type `Reader'), _v_req *http.Request) Object {
 // 	_res1, _res2 := http.ReadResponse(_v_r, _v_req)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9049,7 +9049,7 @@ GO FUNC net/http.ReadResponse from net/http/response.go:
 // }
 
 GO FUNC net/http.Redirect from net/http/server.go:
-func _f_redirect(_v_w net/http.ResponseWriter, _v_r *net/http.Request, _v_url string, _v_code int) Object {
+func _f_redirect(_v_w http.ResponseWriter, _v_r *http.Request, _v_url string, _v_code int) Object {
 	http.Redirect(_v_w, _v_r, _v_url, _v_code)
 	return NIL
 }
@@ -9061,31 +9061,31 @@ func _f_redirectHandler(_v_url string, _v_code int) Object {
 }
 
 GO FUNC net/http.ServeContent from net/http/fs.go:
-// func _f_serveContent(_v_w net/http.ResponseWriter, _v_req *net/http.Request, _v_name string, _v_modtime time.ABEND002(reference to unavailable package `time' looking for type `Time'), _v_content io.ABEND002(reference to unavailable package `io' looking for type `ReadSeeker')) Object {
+// func _f_serveContent(_v_w http.ResponseWriter, _v_req *http.Request, _v_name string, _v_modtime ABEND002(reference to unavailable package `time' looking for type `Time'), _v_content ABEND002(reference to unavailable package `io' looking for type `ReadSeeker')) Object {
 // 	http.ServeContent(_v_w, _v_req, _v_name, _v_modtime, _v_content)
 // 	return NIL
 // }
 
 GO FUNC net/http.ServeFile from net/http/fs.go:
-func _f_serveFile(_v_w net/http.ResponseWriter, _v_r *net/http.Request, _v_name string) Object {
+func _f_serveFile(_v_w http.ResponseWriter, _v_r *http.Request, _v_name string) Object {
 	http.ServeFile(_v_w, _v_r, _v_name)
 	return NIL
 }
 
 GO FUNC net/http.SetCookie from net/http/cookie.go:
-func _f_setCookie(_v_w net/http.ResponseWriter, _v_cookie *net/http.Cookie) Object {
+func _f_setCookie(_v_w http.ResponseWriter, _v_cookie *http.Cookie) Object {
 	http.SetCookie(_v_w, _v_cookie)
 	return NIL
 }
 
 GO FUNC net/http.StripPrefix from net/http/server.go:
-func _f_stripPrefix(_v_prefix string, _v_h net/http.Handler) Object {
+func _f_stripPrefix(_v_prefix string, _v_h http.Handler) Object {
 	_res := http.StripPrefix(_v_prefix, _v_h)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http.TimeoutHandler from net/http/server.go:
-// func _f_timeoutHandler(_v_h net/http.Handler, _v_dt time.ABEND002(reference to unavailable package `time' looking for type `Duration'), _v_msg string) Object {
+// func _f_timeoutHandler(_v_h http.Handler, _v_dt ABEND002(reference to unavailable package `time' looking for type `Duration'), _v_msg string) Object {
 // 	_res := http.TimeoutHandler(_v_h, _v_dt, _v_msg)
 // 	return MakeGoObject(_res)
 // }
@@ -10398,7 +10398,7 @@ func ExtractGo_go_std_net_http_cookiejar__PublicSuffixList(rcvr, arg string, arg
 }
 
 GO FUNC net/http/cookiejar.New from net/http/cookiejar/jar.go:
-func _f_new(_v_o *net/http/cookiejar.Options) Object {
+func _f_new(_v_o *cookiejar.Options) Object {
 	_res1, _res2 := cookiejar.New(_v_o)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -10522,7 +10522,7 @@ GO ENSURE-LOADED FOR cookiejar:
 	EnsureLoaded("go.std.unicode.utf8")  // E.g. from: _tests/big/src/net/http/cookiejar/punycode.go:12:2
 
 GO FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
-func _f_processEnv(_v_r *net/http.Request) Object {
+func _f_processEnv(_v_r *http.Request) Object {
 	_res := fcgi.ProcessEnv(_v_r)
 	return MakeGoObject(_res)
 }
@@ -10643,25 +10643,25 @@ func _f_newRecorder() Object {
 }
 
 GO FUNC net/http/httptest.NewRequest from net/http/httptest/httptest.go:
-// func _f_newRequest(_v_method string, _v_target string, _v_body io.ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
+// func _f_newRequest(_v_method string, _v_target string, _v_body ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
 // 	_res := httptest.NewRequest(_v_method, _v_target, _v_body)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptest.NewServer from net/http/httptest/server.go:
-func _f_newServer(_v_handler net/http.Handler) Object {
+func _f_newServer(_v_handler http.Handler) Object {
 	_res := httptest.NewServer(_v_handler)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http/httptest.NewTLSServer from net/http/httptest/server.go:
-func _f_newTLSServer(_v_handler net/http.Handler) Object {
+func _f_newTLSServer(_v_handler http.Handler) Object {
 	_res := httptest.NewTLSServer(_v_handler)
 	return MakeGoObject(_res)
 }
 
 GO FUNC net/http/httptest.NewUnstartedServer from net/http/httptest/server.go:
-func _f_newUnstartedServer(_v_handler net/http.Handler) Object {
+func _f_newUnstartedServer(_v_handler http.Handler) Object {
 	_res := httptest.NewUnstartedServer(_v_handler)
 	return MakeGoObject(_res)
 }
@@ -11059,13 +11059,13 @@ func _Wrapped_Ctor_WroteRequestInfo(_o Object) Object {
 }
 
 GO FUNC net/http/httptrace.ContextClientTrace from net/http/httptrace/trace.go:
-// func _f_contextClientTrace(_v_ctx context.ABEND002(reference to unavailable package `context' looking for type `Context')) Object {
+// func _f_contextClientTrace(_v_ctx ABEND002(reference to unavailable package `context' looking for type `Context')) Object {
 // 	_res := httptrace.ContextClientTrace(_v_ctx)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httptrace.WithClientTrace from net/http/httptrace/trace.go:
-// func _f_withClientTrace(_v_ctx context.ABEND002(reference to unavailable package `context' looking for type `Context'), _v_trace *net/http/httptrace.ClientTrace) Object {
+// func _f_withClientTrace(_v_ctx ABEND002(reference to unavailable package `context' looking for type `Context'), _v_trace *httptrace.ClientTrace) Object {
 // 	_res := httptrace.WithClientTrace(_v_ctx, _v_trace)
 // 	return MakeGoObject(_res)
 // }
@@ -11379,7 +11379,7 @@ func _Wrapped_Ctor_ServerConn(_o Object) Object {
 }
 
 GO FUNC net/http/httputil.DumpRequest from net/http/httputil/dump.go:
-func _f_dumpRequest(_v_req *net/http.Request, _v_body bool) Object {
+func _f_dumpRequest(_v_req *http.Request, _v_body bool) Object {
 	_res1, _res2 := httputil.DumpRequest(_v_req, _v_body)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11388,7 +11388,7 @@ func _f_dumpRequest(_v_req *net/http.Request, _v_body bool) Object {
 }
 
 GO FUNC net/http/httputil.DumpRequestOut from net/http/httputil/dump.go:
-func _f_dumpRequestOut(_v_req *net/http.Request, _v_body bool) Object {
+func _f_dumpRequestOut(_v_req *http.Request, _v_body bool) Object {
 	_res1, _res2 := httputil.DumpRequestOut(_v_req, _v_body)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11397,7 +11397,7 @@ func _f_dumpRequestOut(_v_req *net/http.Request, _v_body bool) Object {
 }
 
 GO FUNC net/http/httputil.DumpResponse from net/http/httputil/dump.go:
-func _f_dumpResponse(_v_resp *net/http.Response, _v_body bool) Object {
+func _f_dumpResponse(_v_resp *http.Response, _v_body bool) Object {
 	_res1, _res2 := httputil.DumpResponse(_v_resp, _v_body)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11406,13 +11406,13 @@ func _f_dumpResponse(_v_resp *net/http.Response, _v_body bool) Object {
 }
 
 GO FUNC net/http/httputil.NewChunkedReader from net/http/httputil/httputil.go:
-// func _f_newChunkedReader(_v_r io.ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
+// func _f_newChunkedReader(_v_r ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
 // 	_res := httputil.NewChunkedReader(_v_r)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/http/httputil.NewChunkedWriter from net/http/httputil/httputil.go:
-// func _f_newChunkedWriter(_v_w io.ABEND002(reference to unavailable package `io' looking for type `Writer')) Object {
+// func _f_newChunkedWriter(_v_w ABEND002(reference to unavailable package `io' looking for type `Writer')) Object {
 // 	_res := httputil.NewChunkedWriter(_v_w)
 // 	return MakeGoObject(_res)
 // }
@@ -11436,7 +11436,7 @@ GO FUNC net/http/httputil.NewServerConn from net/http/httputil/persist.go:
 // }
 
 GO FUNC net/http/httputil.NewSingleHostReverseProxy from net/http/httputil/reverseproxy.go:
-func _f_newSingleHostReverseProxy(_v_target *net/url.URL) Object {
+func _f_newSingleHostReverseProxy(_v_target *url.URL) Object {
 	_res := httputil.NewSingleHostReverseProxy(_v_target)
 	return MakeGoObject(_res)
 }
@@ -11673,7 +11673,7 @@ GO ENSURE-LOADED FOR httputil:
 	EnsureLoaded("go.std.time")  // E.g. from: _tests/big/src/net/http/httputil/dump.go:18:2
 
 GO FUNC net/http/pprof.Cmdline from net/http/pprof/pprof.go:
-func _f_cmdline(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_cmdline(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	pprof.Cmdline(_v_w, _v_r)
 	return NIL
 }
@@ -11685,25 +11685,25 @@ func _f_handler(_v_name string) Object {
 }
 
 GO FUNC net/http/pprof.Index from net/http/pprof/pprof.go:
-func _f_index(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_index(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	pprof.Index(_v_w, _v_r)
 	return NIL
 }
 
 GO FUNC net/http/pprof.Profile from net/http/pprof/pprof.go:
-func _f_profile(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_profile(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	pprof.Profile(_v_w, _v_r)
 	return NIL
 }
 
 GO FUNC net/http/pprof.Symbol from net/http/pprof/pprof.go:
-func _f_symbol(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_symbol(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	pprof.Symbol(_v_w, _v_r)
 	return NIL
 }
 
 GO FUNC net/http/pprof.Trace from net/http/pprof/pprof.go:
-func _f_trace(_v_w net/http.ResponseWriter, _v_r *net/http.Request) Object {
+func _f_trace(_v_w http.ResponseWriter, _v_r *http.Request) Object {
 	pprof.Trace(_v_w, _v_r)
 	return NIL
 }
@@ -11921,7 +11921,7 @@ GO FUNC net/mail.ParseDate from net/mail/message.go:
 // }
 
 GO FUNC net/mail.ReadMessage from net/mail/message.go:
-// func _f_readMessage(_v_r io.ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
+// func _f_readMessage(_v_r ABEND002(reference to unavailable package `io' looking for type `Reader')) Object {
 // 	msg, err := mail.ReadMessage(_v_r)
 // 	_res := EmptyVector()
 // 	_res = _res.Conjoin(MakeGoObject(msg))
@@ -12460,13 +12460,13 @@ func _f_handleHTTP() Object {
 }
 
 GO FUNC net/rpc.NewClient from net/rpc/client.go:
-// func _f_newClient(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_newClient(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	_res := rpc.NewClient(_v_conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc.NewClientWithCodec from net/rpc/client.go:
-func _f_newClientWithCodec(_v_codec net/rpc.ClientCodec) Object {
+func _f_newClientWithCodec(_v_codec rpc.ClientCodec) Object {
 	_res := rpc.NewClientWithCodec(_v_codec)
 	return MakeGoObject(_res)
 }
@@ -12478,13 +12478,13 @@ func _f_newServer() Object {
 }
 
 GO FUNC net/rpc.ServeCodec from net/rpc/server.go:
-func _f_serveCodec(_v_codec net/rpc.ServerCodec) Object {
+func _f_serveCodec(_v_codec rpc.ServerCodec) Object {
 	rpc.ServeCodec(_v_codec)
 	return NIL
 }
 
 GO FUNC net/rpc.ServeConn from net/rpc/server.go:
-// func _f_serveConn(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_serveConn(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	rpc.ServeConn(_v_conn)
 // 	return NIL
 // }
@@ -12885,25 +12885,25 @@ func _f_dial(_v_network string, _v_address string) Object {
 }
 
 GO FUNC net/rpc/jsonrpc.NewClient from net/rpc/jsonrpc/client.go:
-// func _f_newClient(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_newClient(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	_res := jsonrpc.NewClient(_v_conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewClientCodec from net/rpc/jsonrpc/client.go:
-// func _f_newClientCodec(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_newClientCodec(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	_res := jsonrpc.NewClientCodec(_v_conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.NewServerCodec from net/rpc/jsonrpc/server.go:
-// func _f_newServerCodec(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_newServerCodec(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	_res := jsonrpc.NewServerCodec(_v_conn)
 // 	return MakeGoObject(_res)
 // }
 
 GO FUNC net/rpc/jsonrpc.ServeConn from net/rpc/jsonrpc/server.go:
-// func _f_serveConn(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_serveConn(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	jsonrpc.ServeConn(_v_conn)
 // 	return NIL
 // }
@@ -13568,7 +13568,7 @@ func _f_dial(_v_network string, _v_addr string) Object {
 }
 
 GO FUNC net/textproto.NewConn from net/textproto/textproto.go:
-// func _f_newConn(_v_conn io.ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
+// func _f_newConn(_v_conn ABEND002(reference to unavailable package `io' looking for type `ReadWriteCloser')) Object {
 // 	_res := textproto.NewConn(_v_conn)
 // 	return MakeGoObject(_res)
 // }
