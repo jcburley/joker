@@ -154,7 +154,7 @@ func SwitchGoType(g interface{}) int {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = importeds.Add("", t.GoPackage(), "", "", true, token.NoPos) + "."
+			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
 		specificity := ""
 		if t.Specificity() != ConcreteType {
@@ -346,7 +346,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 				return // it me
 			}
 
-			pi.ImportsNative.Add(".", ClojureCoreDir, "", "", false, pos)
+			pi.ImportsNative.InternPackage(ClojureCoreDir, "", "", pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})
