@@ -177,7 +177,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
 	clojureStdPath := "github.com/candid82/joker/std/go/std/"
-	return fn.Imports.Add("", exprPkgName, clojureStdNs, clojureStdPath, false, fn.Pos)
+	return fn.Imports.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
 }
 
 func processTypeRef(t Expr) {
