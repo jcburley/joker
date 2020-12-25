@@ -12,6 +12,7 @@ build() {
 set -e  # Exit on error.
 
 if [ ! -x "$JOKER" ]; then
+    ./clean.sh >/dev/null 2>/dev/null
     build
     JOKER=../joker
     ALREADY_BUILT=true
