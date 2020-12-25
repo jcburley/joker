@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"strconv"
 )
 
 type GoMembers map[string]*Var
@@ -67,6 +68,10 @@ func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	return res
 }
 
+func Ensure_bool(obj Object, pattern string) bool {
+	return AssertBoolean(obj, pattern).B
+}
+
 func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
@@ -90,6 +95,10 @@ func FieldAsBoolean(o Map, k string) bool {
 	return res.B
 }
 
+func Ensure_int(obj Object, pattern string) int {
+	return AssertInt(obj, pattern).I
+}
+
 func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
@@ -109,6 +118,17 @@ func FieldAsInt(o Map, k string) int {
 	return int(v)
 }
 
+func Ensure_uint(obj Object, pattern string) uint {
+	if pattern == "" {
+		pattern = "%s"
+	}
+	v := AssertNumber(obj, fmt.Sprintf(pattern, "")).BigInt().Uint64()
+	if v > uint64(MAX_UINT) {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint")))
+	}
+	return uint(v)
+}
+
 func ExtractGoUint(rcvr, name string, args *ArraySeq, n int) uint {
 	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
@@ -124,6 +144,17 @@ func FieldAsUint(o Map, k string) uint {
 			v, k)))
 	}
 	return uint(v)
+}
+
+func Ensure_byte(obj Object, pattern string) byte {
+	if pattern == "" {
+		pattern = "%s"
+	}
+	v := AssertInt(obj, fmt.Sprintf(pattern, "")).I
+	if v < 0 || v > 255 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Int "+strconv.Itoa(v)+" out of range for byte")))
+	}
+	return byte(v)
 }
 
 func ExtractGoByte(rcvr, name string, args *ArraySeq, n int) byte {
