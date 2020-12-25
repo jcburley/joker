@@ -180,7 +180,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var cryptoNamespace = GLOBAL_ENV.EnsureLib(MakeSymbol("joker.crypto"))
+var cryptoNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.crypto"))
 
 func init() {
 	cryptoNamespace.Lazy = Init
