@@ -15,7 +15,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var {nsName}Namespace = GLOBAL_ENV.EnsureLib(MakeSymbol("{nsFullName}"))
+var {nsName}Namespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("{nsFullName}"))
 
 func init() {
 	{nsName}Namespace.Lazy = Init

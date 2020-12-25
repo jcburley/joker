@@ -389,7 +389,7 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		}
 		return true, MakeGoObjectIfNeeded(v.MapIndex(key.(Valuable).ValueOf()).Interface())
 	case reflect.Array, reflect.Slice, reflect.String:
-		i := AssertInt(key, "")
+		i := EnsureObjectIsInt(key, "")
 		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
 	}
 	panic(fmt.Sprintf("Unsupported type=%T kind=%s for getting", o, reflect.TypeOf(o).Kind().String()))
