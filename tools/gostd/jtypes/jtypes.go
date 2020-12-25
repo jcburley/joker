@@ -208,6 +208,7 @@ var Byte = &Info{
 	ConvertFromMap:       `FieldAsByte(%s, %s)`,
 	FullNameDoc:          "Byte",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_byte(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -220,6 +221,7 @@ var Rune = &Info{
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
 	FullNameDoc:          "Char",
 	AsClojureObject:      "Char(%s%s)",
+	ConvertFromClojure:   "AssertChar(%s, %s).Ch",
 	PromoteType:          "%s",
 }
 
@@ -232,6 +234,7 @@ var String = &Info{
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
 	FullNameDoc:          "String",
 	AsClojureObject:      "String(%s%s)",
+	ConvertFromClojure:   "AssertString(%s, %s).S",
 	PromoteType:          "%s",
 }
 
@@ -244,6 +247,7 @@ var Int = &Info{
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(%s%s)",
+	ConvertFromClojure:   "AssertInt(%s, %s).I",
 	PromoteType:          "%s",
 }
 

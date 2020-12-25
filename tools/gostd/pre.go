@@ -17,7 +17,12 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 
 	clType, clTypeDoc, goType, goTypeDoc = ti.ClojureName(), ti.ClojureNameDoc(e), goName, ti.GoNameDoc(e)
 	if fn.Fd == nil || fn.Fd.Recv != nil {
-		goPreCode = fmt.Sprintf("%s := SeqNth(_argList, %d).(Native).(%s)", paramName, argNum, goName)
+		cvt := ti.ConvertFromClojure()
+		if cvt == "" {
+			cvt = fmt.Sprintf("%%s.(Native).(%s)%%.s", goName)
+		}
+		argNumAsString := strconv.Itoa(argNum)
+		goPreCode = paramName + " := " + fmt.Sprintf(cvt, "SeqNth(_argList, "+argNumAsString+")", strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
 	}
 	if ti.IsPassedByAddress() {
 		cl2golParam = "*" + paramName

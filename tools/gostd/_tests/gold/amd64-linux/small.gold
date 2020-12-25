@@ -3382,7 +3382,7 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)Parse()", args, 1, 1)
-	_v_ref := SeqNth(_argList, 0).(Native).(string)
+	_v_ref := AssertString(SeqNth(_argList, 0), "Arg[0] (_v_ref): ").S
 	_res1, _res2 := o.O.(*url.URL).Parse(_v_ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -3478,7 +3478,7 @@ func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(url.Values)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := AssertString(SeqNth(_argList, 0), "Arg[0] (_v_key): ").S
 	_res := o.O.(url.Values).Get(_v_key)
 	return MakeString(_res)
 }
