@@ -47,7 +47,7 @@ func Init() {
 	InternsOrThunks()
 }
 
-var yamlNamespace = GLOBAL_ENV.EnsureLib(MakeSymbol("joker.yaml"))
+var yamlNamespace = GLOBAL_ENV.EnsureSymbolIsLib(MakeSymbol("joker.yaml"))
 
 func init() {
 	yamlNamespace.Lazy = Init
