@@ -184,6 +184,7 @@ var Error = &Info{
 	ConvertFromMap:       `FieldAsError(%s, %s)`,
 	FullNameDoc:          "Error",
 	AsClojureObject:      "Error(%s%s)",
+	ConvertFromClojure:   "Ensure_error(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -196,6 +197,7 @@ var Boolean = &Info{
 	ConvertFromMap:       "FieldAsBoolean(%s, %s)",
 	FullNameDoc:          "Boolean",
 	AsClojureObject:      "Boolean(%s%s)",
+	ConvertFromClojure:   "Ensure_bool(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -221,7 +223,7 @@ var Rune = &Info{
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
 	FullNameDoc:          "Char",
 	AsClojureObject:      "Char(%s%s)",
-	ConvertFromClojure:   "AssertChar(%s, %s).Ch",
+	ConvertFromClojure:   "Ensure_rune(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -234,7 +236,7 @@ var String = &Info{
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
 	FullNameDoc:          "String",
 	AsClojureObject:      "String(%s%s)",
-	ConvertFromClojure:   "AssertString(%s, %s).S",
+	ConvertFromClojure:   "Ensure_string(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -247,7 +249,7 @@ var Int = &Info{
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(%s%s)",
-	ConvertFromClojure:   "AssertInt(%s, %s).I",
+	ConvertFromClojure:   "Ensure_int(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -260,6 +262,7 @@ var Int8 = &Info{
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_int8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -272,6 +275,7 @@ var Int16 = &Info{
 	ConvertFromMap:       `FieldAsInt16(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_int16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -284,6 +288,7 @@ var Int32 = &Info{
 	ConvertFromMap:       `FieldAsInt32(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_int32(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -296,6 +301,7 @@ var Int64 = &Info{
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
 	FullNameDoc:          "BigInt",
 	AsClojureObject:      "BigInt(%s%s)",
+	ConvertFromClojure:   "Ensure_int64(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -308,6 +314,7 @@ var UInt = &Info{
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
 	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	ConvertFromClojure:   "Ensure_uint(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -320,6 +327,7 @@ var UInt8 = &Info{
 	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_uint8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -332,6 +340,7 @@ var UInt16 = &Info{
 	ConvertFromMap:       `FieldAsUint16(%s, %s)`,
 	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
+	ConvertFromClojure:   "Ensure_uint16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -344,6 +353,7 @@ var UInt32 = &Info{
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
 	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	ConvertFromClojure:   "Ensure_uint32(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -356,6 +366,7 @@ var UInt64 = &Info{
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
 	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(%s%s)",
+	ConvertFromClojure:   "Ensure_uint64(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -368,6 +379,7 @@ var UIntPtr = &Info{
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	ConvertFromClojure:   "Ensure_uintptr(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -380,6 +392,7 @@ var Float32 = &Info{
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	FullNameDoc:          "Double",
 	AsClojureObject:      "Double(float64(%s)%s)",
+	ConvertFromClojure:   "Ensure_float32(%s, %s)",
 	PromoteType:          "float64(%s)",
 }
 
@@ -392,6 +405,7 @@ var Float64 = &Info{
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	FullNameDoc:          "Double",
 	AsClojureObject:      "Double(%s%s)",
+	ConvertFromClojure:   "Ensure_float64(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -403,6 +417,7 @@ var Complex128 = &Info{
 	ArgClojureArgType:    "ABEND007(find these)",
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
 	FullNameDoc:          "ABEND007(find these)",
+	ConvertFromClojure:   "Ensure_complex128(%s, %s)",
 	AsClojureObject:      "Complex(%s%s)",
 }
 
