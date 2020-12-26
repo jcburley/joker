@@ -24,7 +24,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			if ix := strings.Index(cvt, "("); ix > 0 {
 				runtime := cvt[0:ix]
 				if _, found := coreApis[runtime]; !found {
-					panic(fmt.Sprintf("API '%s' is unimplemented", runtime))
+					cvt = fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, cvt)
 				}
 			}
 		}
