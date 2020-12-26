@@ -68,8 +68,8 @@ func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	return res
 }
 
-func Ensure_bool(obj Object, pattern string) bool {
-	return AssertBoolean(obj, pattern).B
+func Extract_bool(obj Object, pattern string) bool {
+	return EnsureObjectIsBoolean(obj, pattern).B
 }
 
 func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
@@ -95,8 +95,8 @@ func FieldAsBoolean(o Map, k string) bool {
 	return res.B
 }
 
-func Ensure_int(obj Object, pattern string) int {
-	return AssertInt(obj, pattern).I
+func Extract_int(obj Object, pattern string) int {
+	return EnsureObjectIsInt(obj, pattern).I
 }
 
 func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
@@ -118,11 +118,8 @@ func FieldAsInt(o Map, k string) int {
 	return int(v)
 }
 
-func Ensure_uint(obj Object, pattern string) uint {
-	if pattern == "" {
-		pattern = "%s"
-	}
-	v := AssertNumber(obj, fmt.Sprintf(pattern, "")).BigInt().Uint64()
+func Extract_uint(obj Object, pattern string) uint {
+	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint")))
 	}
@@ -146,11 +143,8 @@ func FieldAsUint(o Map, k string) uint {
 	return uint(v)
 }
 
-func Ensure_byte(obj Object, pattern string) byte {
-	if pattern == "" {
-		pattern = "%s"
-	}
-	v := AssertInt(obj, fmt.Sprintf(pattern, "")).I
+func Extract_byte(obj Object, pattern string) byte {
+	v := EnsureObjectIsInt(obj, pattern).I
 	if v < 0 || v > 255 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Int "+strconv.Itoa(v)+" out of range for byte")))
 	}
@@ -197,6 +191,14 @@ func FieldAsNumber(o Map, k string) Number {
 	return res
 }
 
+func Extract_int8(obj Object, pattern string) int8 {
+	v := EnsureObjectIsInt(obj, pattern).I
+	if v > math.MaxInt8 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int8")))
+	}
+	return int8(v)
+}
+
 func FieldAsInt8(o Map, k string) int8 {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > math.MaxInt8 || v < math.MinInt8 {
@@ -206,6 +208,14 @@ func FieldAsInt8(o Map, k string) int8 {
 	return int8(v)
 }
 
+func Extract_int16(obj Object, pattern string) int16 {
+	v := EnsureObjectIsInt(obj, pattern).I
+	if v > math.MaxInt16 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int16")))
+	}
+	return int16(v)
+}
+
 func FieldAsInt16(o Map, k string) int16 {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > math.MaxInt16 || v < math.MinInt16 {
@@ -213,6 +223,14 @@ func FieldAsInt16(o Map, k string) int16 {
 			v, k)))
 	}
 	return int16(v)
+}
+
+func Extract_int32(obj Object, pattern string) int32 {
+	v := EnsureObjectIsInt(obj, pattern).I
+	if v > math.MaxInt32 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int32")))
+	}
+	return int32(v)
 }
 
 func ExtractGoInt32(rcvr, name string, args *ArraySeq, n int) int32 {
@@ -232,6 +250,14 @@ func FieldAsInt32(o Map, k string) int32 {
 	return int32(v)
 }
 
+func Extract_uint8(obj Object, pattern string) uint8 {
+	v := EnsureObjectIsInt(obj, pattern).I
+	if v > math.MaxUint8 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint8")))
+	}
+	return uint8(v)
+}
+
 func FieldAsUint8(o Map, k string) uint8 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint8 {
@@ -241,6 +267,14 @@ func FieldAsUint8(o Map, k string) uint8 {
 	return uint8(v)
 }
 
+func Extract_uint16(obj Object, pattern string) uint16 {
+	v := EnsureObjectIsInt(obj, pattern).I
+	if v > math.MaxUint16 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint16")))
+	}
+	return uint16(v)
+}
+
 func FieldAsUint16(o Map, k string) uint16 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint16 {
@@ -248,6 +282,14 @@ func FieldAsUint16(o Map, k string) uint16 {
 			v, k)))
 	}
 	return uint16(v)
+}
+
+func Extract_uint32(obj Object, pattern string) uint32 {
+	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
+	if v > math.MaxUint32 {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint32")))
+	}
+	return uint32(v)
 }
 
 func ExtractGoUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
@@ -271,8 +313,16 @@ func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 }
 
+func Extract_int64(obj Object, pattern string) int64 {
+	return EnsureObjectIsNumber(obj, pattern).BigInt().Int64()
+}
+
 func FieldAsInt64(o Map, k string) int64 {
 	return FieldAsNumber(o, k).BigInt().Int64()
+}
+
+func Extract_uint64(obj Object, pattern string) uint64 {
+	return EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 }
 
 func ExtractGoUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
@@ -281,6 +331,14 @@ func ExtractGoUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
 
 func FieldAsUint64(o Map, k string) uint64 {
 	return FieldAsNumber(o, k).BigInt().Uint64()
+}
+
+func Extract_uintptr(obj Object, pattern string) uintptr {
+	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
+	if uint64(uintptr(v)) != v {
+		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(v, 10)+" out of range for uintptr")))
+	}
+	return uintptr(v)
 }
 
 func ExtractGoUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
@@ -302,6 +360,10 @@ func FieldAsDouble(o Map, k string) float64 {
 			k, v)))
 	}
 	return res.D
+}
+
+func Extract_rune(obj Object, pattern string) rune {
+	return EnsureObjectIsChar(obj, pattern).Ch
 }
 
 func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
@@ -327,6 +389,10 @@ func FieldAsChar(o Map, k string) rune {
 	return res.Ch
 }
 
+func Extract_string(obj Object, pattern string) string {
+	return EnsureObjectIsString(obj, pattern).S
+}
+
 func ExtractGoString(rcvr, name string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
@@ -348,6 +414,10 @@ func FieldAsString(o Map, k string) string {
 			k, v)))
 	}
 	return res.S
+}
+
+func Extract_error(obj Object, pattern string) error {
+	return EnsureObjectIsError(obj, pattern)
 }
 
 func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
