@@ -103,7 +103,7 @@ func readCoreApiFile(src string) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()
-		if godb.Verbose {
+		if godb.Verbose && !noTimeAndVersion {
 			fmt.Printf("readCoreApiFile() took %d ns.\n", end-start)
 		}
 	}()

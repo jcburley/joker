@@ -1018,7 +1018,7 @@ func findApis(src paths.NativePath) (apis map[string]struct{}) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()
-		if godb.Verbose {
+		if godb.Verbose && !noTimeAndVersion {
 			fmt.Printf("findApis() took %d ns.\n", end-start)
 		}
 	}()
