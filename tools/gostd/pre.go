@@ -20,6 +20,13 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
 			cvt = fmt.Sprintf("%%s.(Native).(%s)%%.s", goName)
+		} else {
+			if ix := strings.Index(cvt, "("); ix > 0 {
+				runtime := cvt[0:ix]
+				if _, found := coreApis[runtime]; !found {
+					panic(fmt.Sprintf("API '%s' is unimplemented", runtime))
+				}
+			}
 		}
 		argNumAsString := strconv.Itoa(argNum)
 		goPreCode = paramName + " := " + fmt.Sprintf(cvt, "SeqNth(_argList, "+argNumAsString+")", strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))

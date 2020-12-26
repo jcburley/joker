@@ -115,8 +115,8 @@ func readCoreApiFile(src string) {
 		}
 
 		coreDir := paths.NewNativePath(src).Join("core")
-		apis := findApis(coreDir)
-		if len(apis) == 0 {
+		coreApis = findApis(coreDir)
+		if len(coreApis) == 0 {
 			panic(fmt.Sprintf("no APIs found at %s", coreDir))
 		}
 
@@ -126,7 +126,7 @@ func readCoreApiFile(src string) {
 		f, err := os.Create(coreApiFilename)
 		Check(err)
 		enc := gob.NewEncoder(f)
-		err = enc.Encode(apis)
+		err = enc.Encode(coreApis)
 		Check(err)
 		return
 	}
