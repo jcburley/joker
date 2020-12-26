@@ -2342,11 +2342,11 @@ CLOJURE FUNC net/http.Handle from net/http/server.go:
   [^String _v_pattern, ^go.std.net.http/Handler _v_handler])
 
 CLOJURE FUNC net/http.HandleFunc from net/http/server.go:
-(defn HandleFunc
-  "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler func(ResponseWriter, *Request))\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
-  {:added "1.0"
-   :go "_f_handleFunc(_v_pattern, _v_handler)"}
-  [^String _v_pattern, ^GoObject _v_handler])
+;; (defn HandleFunc
+;;   "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler ABEND727(gtypes.go: func(ResponseWriter, *Request)))\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
+;;   {:added "1.0"
+;;    :go "_f_handleFunc(_v_pattern, _v_handler)"}
+;;   [^String _v_pattern, ^GoObject _v_handler])
 
 CLOJURE FUNC net/http.Head from net/http/client.go:
 (defn Head
@@ -2447,11 +2447,11 @@ CLOJURE FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
   [^go.std.net.http/refToRequest _v_req])
 
 CLOJURE FUNC net/http.ProxyURL from net/http/transport.go:
-(defn ProxyURL
-  "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: func(*Request) (*net/url.URL, error)\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
-  {:added "1.0"
-   :go "_f_proxyURL(_v_fixedURL)"}
-  [^go.std.net.url/refToURL _v_fixedURL])
+;; (defn ProxyURL
+;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: ABEND727(gtypes.go: func(*Request) (*net/url.URL, error))\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
+;;   {:added "1.0"
+;;    :go "_f_proxyURL(_v_fixedURL)"}
+;;   [^go.std.net.url/refToURL _v_fixedURL])
 
 CLOJURE FUNC net/http.ReadRequest from net/http/request.go:
 ;; (defn ReadRequest
@@ -4393,13 +4393,13 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 // 	return &net.Dialer{
 // 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		Deadline: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Time') (-)),
-// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 		DualStack: FieldAsBoolean(o, "DualStack"),
 // 		FallbackDelay: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		KeepAlive: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (-)),
 // 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
-// 		Control: ABEND049(codegen.go: no conversion to private type func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error (-)),
+// 		Control: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error) (-)),
 // 	}
 // }
 
@@ -4834,7 +4834,7 @@ func ExtractGo_go_std_net__ListenConfig(rcvr, arg string, args *ArraySeq, n int)
 
 // func _mapToListenConfig(o Map) *net.ListenConfig {
 // 	return &net.ListenConfig{
-// 		Control: ABEND049(codegen.go: no conversion to private type func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error (-)),
+// 		Control: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error) (-)),
 // 	}
 // }
 
@@ -4991,8 +4991,8 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &net.OpError{
 // 		Op: FieldAsString(o, "Op"),
 // 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 		Err: FieldAsError(o, "Err"),
 // 	}
 // }
@@ -5107,7 +5107,7 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	return &net.Resolver{
 // 		PreferGo: FieldAsBoolean(o, "PreferGo"),
 // 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error)) (-)),
 // 	}
 // }
 
@@ -8021,9 +8021,9 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 
 // func _mapToClient(o Map) *http.Client {
 // 	return &http.Client{
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: func(*Request) (*Response, error)!)})),
-// 		CheckRedirect: ABEND049(codegen.go: no conversion to private type func(*Request, []*Request) error (-)),
-// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{ABEND041(gtypes.go/fieldToString found something: func(*net/url.URL, []*Cookie)!), ABEND041(gtypes.go/fieldToString found something: func(*net/url.URL) []*Cookie!)})),
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*Request) (*Response, error))!)})),
+// 		CheckRedirect: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*Request, []*Request) error) (-)),
+// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*net/url.URL, []*Cookie))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*net/url.URL) []*Cookie)!)})),
 // 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 	}
 // }
@@ -8569,7 +8569,7 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser') (-)),
-// 		GetBody: ABEND049(codegen.go: no conversion to private type func() (ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), error) (-)),
+// 		GetBody: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func() (ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), error)) (-)),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Close: FieldAsBoolean(o, "Close"),
@@ -8813,15 +8813,15 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // func _mapToServer(o Map) *http.Server {
 // 	return &http.Server{
 // 		Addr: FieldAsString(o, "Addr"),
-// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: func(ResponseWriter, *Request)!)})),
+// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ResponseWriter, *Request))!)})),
 // 		TLSConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		IdleTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
-// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]func(*Server, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn'), Handler) (-)),
-// 		ConnState: ABEND049(codegen.go: no conversion to private type func(net.Conn, ConnState) (-)),
+// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND727(gtypes.go: func(*Server, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn'), Handler)) (-)),
+// 		ConnState: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(net.Conn, ConnState)) (-)),
 // 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 	}
 // }
@@ -8865,10 +8865,10 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 
 // func _mapToTransport(o Map) *http.Transport {
 // 	return &http.Transport{
-// 		Proxy: ABEND049(codegen.go: no conversion to private type func(*Request) (*net/url.URL, error) (-)),
-// 		DialContext: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (net.Conn, error) (-)),
-// 		Dial: ABEND049(codegen.go: no conversion to private type func(string, string) (net.Conn, error) (-)),
-// 		DialTLS: ABEND049(codegen.go: no conversion to private type func(string, string) (net.Conn, error) (-)),
+// 		Proxy: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*Request) (*net/url.URL, error)) (-)),
+// 		DialContext: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (net.Conn, error)) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string) (net.Conn, error)) (-)),
+// 		DialTLS: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string) (net.Conn, error)) (-)),
 // 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
@@ -8879,7 +8879,7 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		IdleConnTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ResponseHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ExpectContinueTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
-// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]func(string, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn')) RoundTripper (-)),
+// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND727(gtypes.go: func(string, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn')) RoundTripper) (-)),
 // 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		MaxResponseHeaderBytes: FieldAsInt64(o, "MaxResponseHeaderBytes"),
 // 	}
@@ -8925,10 +8925,10 @@ func _f_handle(_v_pattern string, _v_handler http.Handler) Object {
 }
 
 GO FUNC net/http.HandleFunc from net/http/server.go:
-func _f_handleFunc(_v_pattern string, _v_handler func(ResponseWriter, *Request)) Object {
-	http.HandleFunc(_v_pattern, _v_handler)
-	return NIL
-}
+// func _f_handleFunc(_v_pattern string, _v_handler ABEND727(gtypes.go: func(ResponseWriter, *Request))) Object {
+// 	http.HandleFunc(_v_pattern, _v_handler)
+// 	return NIL
+// }
 
 GO FUNC net/http.Head from net/http/client.go:
 func _f_head(_v_url string) Object {
@@ -9025,10 +9025,10 @@ func _f_proxyFromEnvironment(_v_req *http.Request) Object {
 }
 
 GO FUNC net/http.ProxyURL from net/http/transport.go:
-func _f_proxyURL(_v_fixedURL *url.URL) Object {
-	_res := http.ProxyURL(_v_fixedURL)
-	return MakeGoObject(_res)
-}
+// func _f_proxyURL(_v_fixedURL *url.URL) Object {
+// 	_res := http.ProxyURL(_v_fixedURL)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net/http.ReadRequest from net/http/request.go:
 // func _f_readRequest(_v_b *ABEND002(reference to unavailable package `bufio' looking for type `Reader')) Object {
@@ -9406,8 +9406,7 @@ GO FUNC net/http._f_ptrTo_ServeMux_Handle from net/http/server.go:
 
 GO FUNC net/http._f_ptrTo_ServeMux_HandleFunc from net/http/server.go:
 // func _f_ptrTo_ServeMux_HandleFunc(o GoObject, args Object) Object {  // Receiver
-// 	...ABEND275: TODO...
-// }
+// (pattern string, handler ABEND727(gtypes.go: func(ResponseWriter, *Request)))}
 
 GO FUNC net/http._f_ptrTo_ServeMux_Handler from net/http/server.go:
 func _f_ptrTo_ServeMux_Handler(o GoObject, args Object) Object {  // Receiver
@@ -9450,8 +9449,7 @@ func _f_ptrTo_Server_ListenAndServeTLS(o GoObject, args Object) Object {  // Rec
 
 GO FUNC net/http._f_ptrTo_Server_RegisterOnShutdown from net/http/server.go:
 // func _f_ptrTo_Server_RegisterOnShutdown(o GoObject, args Object) Object {  // Receiver
-// 	...ABEND275: TODO...
-// }
+// (f ABEND727(gtypes.go: func()))}
 
 GO FUNC net/http._f_ptrTo_Server_Serve from net/http/server.go:
 func _f_ptrTo_Server_Serve(o GoObject, args Object) Object {  // Receiver
@@ -10202,7 +10200,7 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 		Logger: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Stderr: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `Writer') (-)),
-// 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: func(ResponseWriter, *Request)!)})),
+// 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ResponseWriter, *Request))!)})),
 // 	}
 // }
 
@@ -10356,7 +10354,7 @@ func ExtractGo_go_std_net_http_cookiejar__Options(rcvr, arg string, args *ArrayS
 
 // func _mapToOptions(o Map) *cookiejar.Options {
 // 	return &cookiejar.Options{
-// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{ABEND041(gtypes.go/fieldToString found something: func(string) string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(string) string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 	}
 // }
 
@@ -10618,7 +10616,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // func _mapToServer(o Map) *httptest.Server {
 // 	return &httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
-// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: func() (Conn, error)!), ABEND041(gtypes.go/fieldToString found something: func() error!), ABEND041(gtypes.go/fieldToString found something: func() Addr!)})),
+// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() (Conn, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!)})),
 // 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
 // 	}
@@ -10850,22 +10848,22 @@ func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *Ar
 
 // func _mapToClientTrace(o Map) *httptrace.ClientTrace {
 // 	return &httptrace.ClientTrace{
-// 		GetConn: ABEND049(codegen.go: no conversion to private type func(string) (-)),
-// 		GotConn: ABEND049(codegen.go: no conversion to private type func(GotConnInfo) (-)),
-// 		PutIdleConn: ABEND049(codegen.go: no conversion to private type func(error) (-)),
-// 		GotFirstResponseByte: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Got100Continue: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Got1xxResponse: ABEND049(codegen.go: no conversion to private type func(int, net/textproto.MIMEHeader) error (-)),
-// 		DNSStart: ABEND049(codegen.go: no conversion to private type func(DNSStartInfo) (-)),
-// 		DNSDone: ABEND049(codegen.go: no conversion to private type func(DNSDoneInfo) (-)),
-// 		ConnectStart: ABEND049(codegen.go: no conversion to private type func(string, string) (-)),
-// 		ConnectDone: ABEND049(codegen.go: no conversion to private type func(string, string, error) (-)),
-// 		TLSHandshakeStart: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		TLSHandshakeDone: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), error) (-)),
-// 		WroteHeaderField: ABEND049(codegen.go: no conversion to private type func(string, []string) (-)),
-// 		WroteHeaders: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Wait100Continue: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		WroteRequest: ABEND049(codegen.go: no conversion to private type func(WroteRequestInfo) (-)),
+// 		GetConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string)) (-)),
+// 		GotConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(GotConnInfo)) (-)),
+// 		PutIdleConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(error)) (-)),
+// 		GotFirstResponseByte: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Got100Continue: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Got1xxResponse: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(int, net/textproto.MIMEHeader) error) (-)),
+// 		DNSStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(DNSStartInfo)) (-)),
+// 		DNSDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(DNSDoneInfo)) (-)),
+// 		ConnectStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string)) (-)),
+// 		ConnectDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, error)) (-)),
+// 		TLSHandshakeStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		TLSHandshakeDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), error)) (-)),
+// 		WroteHeaderField: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, []string)) (-)),
+// 		WroteHeaders: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Wait100Continue: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		WroteRequest: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(WroteRequestInfo)) (-)),
 // 	}
 // }
 
@@ -10996,7 +10994,7 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 
 // func _mapToGotConnInfo(o Map) *httptrace.GotConnInfo {
 // 	return &httptrace.GotConnInfo{
-// 		Conn: ABEND048(codegen.go: no conversion from Clojure for net.Conn (interface{ABEND041(gtypes.go/fieldToString found something: func([]byte) (int, error)!), ABEND041(gtypes.go/fieldToString found something: func([]byte) (int, error)!), ABEND041(gtypes.go/fieldToString found something: func() error!), ABEND041(gtypes.go/fieldToString found something: func() Addr!), ABEND041(gtypes.go/fieldToString found something: func() Addr!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!)})),
+// 		Conn: ABEND048(codegen.go: no conversion from Clojure for net.Conn (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte) (int, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte) (int, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!)})),
 // 		Reused: FieldAsBoolean(o, "Reused"),
 // 		WasIdle: FieldAsBoolean(o, "WasIdle"),
 // 		IdleTime: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
@@ -11315,13 +11313,13 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 
 // func _mapToReverseProxy(o Map) *httputil.ReverseProxy {
 // 	return &httputil.ReverseProxy{
-// 		Director: ABEND049(codegen.go: no conversion to private type func(*net/http.Request) (-)),
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: func(*Request) (*Response, error)!)})),
+// 		Director: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*net/http.Request)) (-)),
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*Request) (*Response, error))!)})),
 // 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
-// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: func() []byte!), ABEND041(gtypes.go/fieldToString found something: func([]byte)!)})),
-// 		ModifyResponse: ABEND049(codegen.go: no conversion to private type func(*net/http.Response) error (-)),
-// 		ErrorHandler: ABEND049(codegen.go: no conversion to private type func(net/http.ResponseWriter, *net/http.Request, error) (-)),
+// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() []byte)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte))!)})),
+// 		ModifyResponse: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*net/http.Response) error) (-)),
+// 		ErrorHandler: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(net/http.ResponseWriter, *net/http.Request, error)) (-)),
 // 	}
 // }
 
@@ -15099,9 +15097,9 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(234) 049(138) 048(93) 041(54) 275(43) 674(20) 747(2) 124(1)
-Totals: functions=470 generated=340 (72.34%)
-          non-receivers=148 (31.49%) generated=117 (79.05%)
+ABENDs: 002(234) 049(138) 727(121) 048(93) 041(54) 275(41) 674(20) 747(2) 124(1)
+Totals: functions=470 generated=338 (71.91%)
+          non-receivers=148 (31.49%) generated=115 (77.70%)
           receivers=273 (58.09%) generated=187 (68.50%)
           methods=49 (10.43%) generated=36 (73.47%)
         types=184

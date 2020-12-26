@@ -371,7 +371,7 @@ func InfoForExpr(e Expr) *Info {
 	case *StructType:
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
-		localName = fmt.Sprintf("func(%s)%s", astutils.FieldListAsString(v.Params, false, typeAsStringRelative(v.Pos())),
+		localName = fmt.Sprintf("ABEND727(gtypes.go: func(%s)%s)", astutils.FieldListAsString(v.Params, false, typeAsStringRelative(v.Pos())),
 			func() string {
 				if v.Results == nil {
 					return ""
