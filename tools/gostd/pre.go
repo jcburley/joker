@@ -16,17 +16,15 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	goName := fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, ti.GoBaseName()))
 
 	clType, clTypeDoc, goType, goTypeDoc = ti.ClojureName(), ti.ClojureNameDoc(e), goName, ti.GoNameDoc(e)
+	if clType != "" {
+		clType = assertRuntime("Extract", "ExtractGoObject", clType)
+	}
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
 			cvt = fmt.Sprintf("%%s.(Native).(%s)%%.s", goName)
 		} else {
-			if ix := strings.Index(cvt, "("); ix > 0 {
-				runtime := cvt[0:ix]
-				if _, found := coreApis[runtime]; !found {
-					cvt = fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, cvt)
-				}
-			}
+			cvt = assertRuntime("", "", cvt)
 		}
 		argNumAsString := strconv.Itoa(argNum)
 		goPreCode = paramName + " := " + fmt.Sprintf(cvt, "SeqNth(_argList, "+argNumAsString+")", strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))

@@ -1056,3 +1056,20 @@ func findApis(src paths.NativePath) (apis map[string]struct{}) {
 
 	return
 }
+
+func assertRuntime(prefix, nsPrefix, s string) string {
+	runtime := s
+	if ix := Index(s, "("); ix >= 0 {
+		runtime = runtime[0:ix]
+	}
+	if ix := Index(runtime, "/"); ix >= 0 {
+		ns := runtime[0 : ix+1]
+		runtime = ns + nsPrefix + runtime[ix+1:]
+	} else {
+		runtime = prefix + runtime
+	}
+	if _, found := coreApis[runtime]; !found {
+		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, s)
+	}
+	return s
+}

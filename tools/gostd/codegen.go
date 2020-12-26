@@ -472,6 +472,10 @@ func ExtractGoObject%s(args []Object, index int) *%s {
 
 	GoCodeForType[ti] = goc
 	ClojureCodeForType[ti] = ""
+
+	api := pi.ClojureNameSpace + "/ExtractGoObject" + baseTypeName
+	coreApis[api] = struct{}{}
+	//	fmt.Printf("codegen.go/GenType(): added API '%s'\n", api)
 }
 
 var Ctors = map[TypeInfo]string{}
