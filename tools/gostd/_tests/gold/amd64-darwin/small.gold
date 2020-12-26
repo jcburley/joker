@@ -1393,8 +1393,8 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &net.OpError{
 // 		Op: FieldAsString(o, "Op"),
 // 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 		Err: FieldAsError(o, "Err"),
 // 	}
 // }
@@ -1509,7 +1509,7 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	return &net.Resolver{
 // 		PreferGo: FieldAsBoolean(o, "PreferGo"),
 // 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error)) (-)),
 // 	}
 // }
 
@@ -3382,7 +3382,7 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)Parse()", args, 1, 1)
-	_v_ref := SeqNth(_argList, 0).(Native).(string)
+	_v_ref := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_ref): %s")
 	_res1, _res2 := o.O.(*url.URL).Parse(_v_ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -3478,7 +3478,7 @@ func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(url.Values)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(url.Values).Get(_v_key)
 	return MakeString(_res)
 }
@@ -3833,7 +3833,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(19) 048(13) 674(9) 041(8) 275(3) 049(2) 124(1)
+ABENDs: 002(19) 048(13) 727(10) 674(9) 041(8) 275(3) 049(2) 124(1)
 Totals: functions=132 generated=111 (84.09%)
           non-receivers=26 (19.70%) generated=26 (100.00%)
           receivers=83 (62.88%) generated=69 (83.13%)

@@ -2342,11 +2342,11 @@ CLOJURE FUNC net/http.Handle from net/http/server.go:
   [^String _v_pattern, ^go.std.net.http/Handler _v_handler])
 
 CLOJURE FUNC net/http.HandleFunc from net/http/server.go:
-(defn HandleFunc
-  "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler func(ResponseWriter, *Request))\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
-  {:added "1.0"
-   :go "_f_handleFunc(_v_pattern, _v_handler)"}
-  [^String _v_pattern, ^GoObject _v_handler])
+;; (defn HandleFunc
+;;   "HandleFunc registers the handler function for the given pattern\nin the DefaultServeMux.\nThe documentation for ServeMux explains how patterns are matched.\n\nGo input arguments: (pattern string, handler ABEND727(gtypes.go: func(ResponseWriter, *Request)))\n\nJoker input arguments: [^String pattern, ^GoObject handler]"
+;;   {:added "1.0"
+;;    :go "_f_handleFunc(_v_pattern, _v_handler)"}
+;;   [^String _v_pattern, ^GoObject _v_handler])
 
 CLOJURE FUNC net/http.Head from net/http/client.go:
 (defn Head
@@ -2447,11 +2447,11 @@ CLOJURE FUNC net/http.ProxyFromEnvironment from net/http/transport.go:
   [^go.std.net.http/refToRequest _v_req])
 
 CLOJURE FUNC net/http.ProxyURL from net/http/transport.go:
-(defn ProxyURL
-  "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: func(*Request) (*net/url.URL, error)\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
-  {:added "1.0"
-   :go "_f_proxyURL(_v_fixedURL)"}
-  [^go.std.net.url/refToURL _v_fixedURL])
+;; (defn ProxyURL
+;;   "ProxyURL returns a proxy function (for use in a Transport)\nthat always returns the same URL.\n\nGo input arguments: (fixedURL *net/url.URL)\n\nGo returns: ABEND727(gtypes.go: func(*Request) (*net/url.URL, error))\n\nJoker input arguments: [^go.std.net.url/refToURL fixedURL]\n\nJoker returns: ^GoObject"
+;;   {:added "1.0"
+;;    :go "_f_proxyURL(_v_fixedURL)"}
+;;   [^go.std.net.url/refToURL _v_fixedURL])
 
 CLOJURE FUNC net/http.ReadRequest from net/http/request.go:
 ;; (defn ReadRequest
@@ -4393,13 +4393,13 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 // 	return &net.Dialer{
 // 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		Deadline: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Time') (-)),
-// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		LocalAddr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 		DualStack: FieldAsBoolean(o, "DualStack"),
 // 		FallbackDelay: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		KeepAlive: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (-)),
 // 		Cancel: ABEND049(codegen.go: no conversion to private type <-chan struct{} (-)),
-// 		Control: ABEND049(codegen.go: no conversion to private type func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error (-)),
+// 		Control: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error) (-)),
 // 	}
 // }
 
@@ -4834,7 +4834,7 @@ func ExtractGo_go_std_net__ListenConfig(rcvr, arg string, args *ArraySeq, n int)
 
 // func _mapToListenConfig(o Map) *net.ListenConfig {
 // 	return &net.ListenConfig{
-// 		Control: ABEND049(codegen.go: no conversion to private type func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error (-)),
+// 		Control: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error) (-)),
 // 	}
 // }
 
@@ -4991,8 +4991,8 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &net.OpError{
 // 		Op: FieldAsString(o, "Op"),
 // 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: func() string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 		Err: FieldAsError(o, "Err"),
 // 	}
 // }
@@ -5107,7 +5107,7 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	return &net.Resolver{
 // 		PreferGo: FieldAsBoolean(o, "PreferGo"),
 // 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error)) (-)),
 // 	}
 // }
 
@@ -6317,8 +6317,8 @@ func _f_ptrTo_DNSError_Timeout(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_Dialer_Dial from net/dial.go:
 func _f_ptrTo_Dialer_Dial(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.Dialer)Dial()", args, 2, 2)
-	_v_network := SeqNth(_argList, 0).(Native).(string)
-	_v_address := SeqNth(_argList, 1).(Native).(string)
+	_v_network := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_network): %s")
+	_v_address := Extract_string(SeqNth(_argList, 1), "Arg[1] (_v_address): %s")
 	_res1, _res2 := o.O.(*net.Dialer).Dial(_v_network, _v_address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -6582,7 +6582,7 @@ GO FUNC net._f_ptrTo_TCPConn_ReadFrom from net/tcpsock.go:
 GO FUNC net._f_ptrTo_TCPConn_SetKeepAlive from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetKeepAlive(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetKeepAlive()", args, 1, 1)
-	_v_keepalive := SeqNth(_argList, 0).(Native).(bool)
+	_v_keepalive := Extract_bool(SeqNth(_argList, 0), "Arg[0] (_v_keepalive): %s")
 	_res := o.O.(*net.TCPConn).SetKeepAlive(_v_keepalive)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6594,7 +6594,7 @@ GO FUNC net._f_ptrTo_TCPConn_SetKeepAlivePeriod from net/tcpsock.go:
 GO FUNC net._f_ptrTo_TCPConn_SetLinger from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetLinger()", args, 1, 1)
-	_v_sec := SeqNth(_argList, 0).(Native).(int)
+	_v_sec := Extract_int(SeqNth(_argList, 0), "Arg[0] (_v_sec): %s")
 	_res := o.O.(*net.TCPConn).SetLinger(_v_sec)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -6602,7 +6602,7 @@ func _f_ptrTo_TCPConn_SetLinger(o GoObject, args Object) Object {  // Receiver
 GO FUNC net._f_ptrTo_TCPConn_SetNoDelay from net/tcpsock.go:
 func _f_ptrTo_TCPConn_SetNoDelay(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*net.TCPConn)SetNoDelay()", args, 1, 1)
-	_v_noDelay := SeqNth(_argList, 0).(Native).(bool)
+	_v_noDelay := Extract_bool(SeqNth(_argList, 0), "Arg[0] (_v_noDelay): %s")
 	_res := o.O.(*net.TCPConn).SetNoDelay(_v_noDelay)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -8022,9 +8022,9 @@ func ExtractGo_go_std_net_http__Client(rcvr, arg string, args *ArraySeq, n int) 
 
 // func _mapToClient(o Map) *http.Client {
 // 	return &http.Client{
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: func(*Request) (*Response, error)!)})),
-// 		CheckRedirect: ABEND049(codegen.go: no conversion to private type func(*Request, []*Request) error (-)),
-// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{ABEND041(gtypes.go/fieldToString found something: func(*net/url.URL, []*Cookie)!), ABEND041(gtypes.go/fieldToString found something: func(*net/url.URL) []*Cookie!)})),
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*Request) (*Response, error))!)})),
+// 		CheckRedirect: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*Request, []*Request) error) (-)),
+// 		Jar: ABEND048(codegen.go: no conversion from Clojure for net/http.CookieJar (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*net/url.URL, []*Cookie))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*net/url.URL) []*Cookie)!)})),
 // 		Timeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 	}
 // }
@@ -8570,7 +8570,7 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
 // 		Header: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		Body: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `ReadCloser') (-)),
-// 		GetBody: ABEND049(codegen.go: no conversion to private type func() (ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), error) (-)),
+// 		GetBody: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func() (ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), error)) (-)),
 // 		ContentLength: FieldAsInt64(o, "ContentLength"),
 // 		TransferEncoding: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Close: FieldAsBoolean(o, "Close"),
@@ -8814,15 +8814,15 @@ func ExtractGo_go_std_net_http__Server(rcvr, arg string, args *ArraySeq, n int) 
 // func _mapToServer(o Map) *http.Server {
 // 	return &http.Server{
 // 		Addr: FieldAsString(o, "Addr"),
-// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: func(ResponseWriter, *Request)!)})),
+// 		Handler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ResponseWriter, *Request))!)})),
 // 		TLSConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		ReadTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ReadHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		WriteTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		IdleTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		MaxHeaderBytes: FieldAsInt(o, "MaxHeaderBytes"),
-// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]func(*Server, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn'), Handler) (-)),
-// 		ConnState: ABEND049(codegen.go: no conversion to private type func(net.Conn, ConnState) (-)),
+// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND727(gtypes.go: func(*Server, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn'), Handler)) (-)),
+// 		ConnState: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(net.Conn, ConnState)) (-)),
 // 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 	}
 // }
@@ -8866,10 +8866,10 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 
 // func _mapToTransport(o Map) *http.Transport {
 // 	return &http.Transport{
-// 		Proxy: ABEND049(codegen.go: no conversion to private type func(*Request) (*net/url.URL, error) (-)),
-// 		DialContext: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (net.Conn, error) (-)),
-// 		Dial: ABEND049(codegen.go: no conversion to private type func(string, string) (net.Conn, error) (-)),
-// 		DialTLS: ABEND049(codegen.go: no conversion to private type func(string, string) (net.Conn, error) (-)),
+// 		Proxy: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*Request) (*net/url.URL, error)) (-)),
+// 		DialContext: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (net.Conn, error)) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string) (net.Conn, error)) (-)),
+// 		DialTLS: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string) (net.Conn, error)) (-)),
 // 		TLSClientConfig: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		TLSHandshakeTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		DisableKeepAlives: FieldAsBoolean(o, "DisableKeepAlives"),
@@ -8880,7 +8880,7 @@ func ExtractGo_go_std_net_http__Transport(rcvr, arg string, args *ArraySeq, n in
 // 		IdleConnTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ResponseHeaderTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ExpectContinueTimeout: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
-// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]func(string, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn')) RoundTripper (-)),
+// 		TLSNextProto: ABEND049(codegen.go: no conversion to private type map[string]ABEND727(gtypes.go: func(string, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn')) RoundTripper) (-)),
 // 		ProxyConnectHeader: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
 // 		MaxResponseHeaderBytes: FieldAsInt64(o, "MaxResponseHeaderBytes"),
 // 	}
@@ -8926,10 +8926,10 @@ func _f_handle(_v_pattern string, _v_handler http.Handler) Object {
 }
 
 GO FUNC net/http.HandleFunc from net/http/server.go:
-func _f_handleFunc(_v_pattern string, _v_handler func(ResponseWriter, *Request)) Object {
-	http.HandleFunc(_v_pattern, _v_handler)
-	return NIL
-}
+// func _f_handleFunc(_v_pattern string, _v_handler ABEND727(gtypes.go: func(ResponseWriter, *Request))) Object {
+// 	http.HandleFunc(_v_pattern, _v_handler)
+// 	return NIL
+// }
 
 GO FUNC net/http.Head from net/http/client.go:
 func _f_head(_v_url string) Object {
@@ -9026,10 +9026,10 @@ func _f_proxyFromEnvironment(_v_req *http.Request) Object {
 }
 
 GO FUNC net/http.ProxyURL from net/http/transport.go:
-func _f_proxyURL(_v_fixedURL *url.URL) Object {
-	_res := http.ProxyURL(_v_fixedURL)
-	return MakeGoObject(_res)
-}
+// func _f_proxyURL(_v_fixedURL *url.URL) Object {
+// 	_res := http.ProxyURL(_v_fixedURL)
+// 	return MakeGoObject(_res)
+// }
 
 GO FUNC net/http.ReadRequest from net/http/request.go:
 // func _f_readRequest(_v_b *ABEND002(reference to unavailable package `bufio' looking for type `Reader')) Object {
@@ -9121,7 +9121,7 @@ GO FUNC net/http._f_cookieJar_SetCookies from net/http/jar.go:
 GO FUNC net/http._f_dir_Open from net/http/fs.go:
 func _f_dir_Open(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(http.Dir)Open()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native).(string)
+	_v_name := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_name): %s")
 	_res1, _res2 := o.O.(http.Dir).Open(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9132,7 +9132,7 @@ func _f_dir_Open(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_fileSystem_Open from net/http/fs.go:
 func _f_fileSystem_Open(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.FileSystem)Open()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native).(string)
+	_v_name := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_name): %s")
 	_res1, _res2 := o.O.(http.FileSystem).Open(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9168,7 +9168,7 @@ GO FUNC net/http._f_header_Del from net/http/header.go:
 GO FUNC net/http._f_header_Get from net/http/header.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(http.Header)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(http.Header).Get(_v_key)
 	return MakeString(_res)
 }
@@ -9204,7 +9204,7 @@ func _f_ptrTo_Client_Do(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Client_Get from net/http/client.go:
 func _f_ptrTo_Client_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)Get()", args, 1, 1)
-	_v_url := SeqNth(_argList, 0).(Native).(string)
+	_v_url := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_url): %s")
 	resp, err := o.O.(*http.Client).Get(_v_url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9215,7 +9215,7 @@ func _f_ptrTo_Client_Get(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Client_Head from net/http/client.go:
 func _f_ptrTo_Client_Head(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)Head()", args, 1, 1)
-	_v_url := SeqNth(_argList, 0).(Native).(string)
+	_v_url := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_url): %s")
 	resp, err := o.O.(*http.Client).Head(_v_url)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(resp))
@@ -9230,7 +9230,7 @@ GO FUNC net/http._f_ptrTo_Client_Post from net/http/client.go:
 GO FUNC net/http._f_ptrTo_Client_PostForm from net/http/client.go:
 func _f_ptrTo_Client_PostForm(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Client)PostForm()", args, 2, 2)
-	_v_url := SeqNth(_argList, 0).(Native).(string)
+	_v_url := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_url): %s")
 	_v_data := SeqNth(_argList, 1).(Native).(url.Values)
 	resp, err := o.O.(*http.Client).PostForm(_v_url, _v_data)
 	_res := EmptyVector()
@@ -9276,7 +9276,7 @@ GO FUNC net/http._f_ptrTo_Request_Context from net/http/request.go:
 GO FUNC net/http._f_ptrTo_Request_Cookie from net/http/request.go:
 func _f_ptrTo_Request_Cookie(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)Cookie()", args, 1, 1)
-	_v_name := SeqNth(_argList, 0).(Native).(string)
+	_v_name := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_name): %s")
 	_res1, _res2 := o.O.(*http.Request).Cookie(_v_name)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -9298,7 +9298,7 @@ GO FUNC net/http._f_ptrTo_Request_FormFile from net/http/request.go:
 GO FUNC net/http._f_ptrTo_Request_FormValue from net/http/request.go:
 func _f_ptrTo_Request_FormValue(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)FormValue()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(*http.Request).FormValue(_v_key)
 	return MakeString(_res)
 }
@@ -9317,7 +9317,7 @@ func _f_ptrTo_Request_ParseForm(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Request_ParseMultipartForm from net/http/request.go:
 func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)ParseMultipartForm()", args, 1, 1)
-	_v_maxMemory := SeqNth(_argList, 0).(Native).(int64)
+	_v_maxMemory := Extract_int64(SeqNth(_argList, 0), "Arg[0] (_v_maxMemory): %s")
 	_res := o.O.(*http.Request).ParseMultipartForm(_v_maxMemory)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9325,7 +9325,7 @@ func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // R
 GO FUNC net/http._f_ptrTo_Request_PostFormValue from net/http/request.go:
 func _f_ptrTo_Request_PostFormValue(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)PostFormValue()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(*http.Request).PostFormValue(_v_key)
 	return MakeString(_res)
 }
@@ -9333,8 +9333,8 @@ func _f_ptrTo_Request_PostFormValue(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/http._f_ptrTo_Request_ProtoAtLeast from net/http/request.go:
 func _f_ptrTo_Request_ProtoAtLeast(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Request)ProtoAtLeast()", args, 2, 2)
-	_v_major := SeqNth(_argList, 0).(Native).(int)
-	_v_minor := SeqNth(_argList, 1).(Native).(int)
+	_v_major := Extract_int(SeqNth(_argList, 0), "Arg[0] (_v_major): %s")
+	_v_minor := Extract_int(SeqNth(_argList, 1), "Arg[1] (_v_minor): %s")
 	_res := o.O.(*http.Request).ProtoAtLeast(_v_major, _v_minor)
 	return MakeBoolean(_res)
 }
@@ -9390,8 +9390,8 @@ func _f_ptrTo_Response_Location(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_ptrTo_Response_ProtoAtLeast from net/http/response.go:
 func _f_ptrTo_Response_ProtoAtLeast(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Response)ProtoAtLeast()", args, 2, 2)
-	_v_major := SeqNth(_argList, 0).(Native).(int)
-	_v_minor := SeqNth(_argList, 1).(Native).(int)
+	_v_major := Extract_int(SeqNth(_argList, 0), "Arg[0] (_v_major): %s")
+	_v_minor := Extract_int(SeqNth(_argList, 1), "Arg[1] (_v_minor): %s")
 	_res := o.O.(*http.Response).ProtoAtLeast(_v_major, _v_minor)
 	return MakeBoolean(_res)
 }
@@ -9407,8 +9407,7 @@ GO FUNC net/http._f_ptrTo_ServeMux_Handle from net/http/server.go:
 
 GO FUNC net/http._f_ptrTo_ServeMux_HandleFunc from net/http/server.go:
 // func _f_ptrTo_ServeMux_HandleFunc(o GoObject, args Object) Object {  // Receiver
-// 	...ABEND275: TODO...
-// }
+// (pattern string, handler ABEND727(gtypes.go: func(ResponseWriter, *Request)))}
 
 GO FUNC net/http._f_ptrTo_ServeMux_Handler from net/http/server.go:
 func _f_ptrTo_ServeMux_Handler(o GoObject, args Object) Object {  // Receiver
@@ -9443,16 +9442,15 @@ func _f_ptrTo_Server_ListenAndServe(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/http._f_ptrTo_Server_ListenAndServeTLS from net/http/server.go:
 func _f_ptrTo_Server_ListenAndServeTLS(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Server)ListenAndServeTLS()", args, 2, 2)
-	_v_certFile := SeqNth(_argList, 0).(Native).(string)
-	_v_keyFile := SeqNth(_argList, 1).(Native).(string)
+	_v_certFile := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_certFile): %s")
+	_v_keyFile := Extract_string(SeqNth(_argList, 1), "Arg[1] (_v_keyFile): %s")
 	_res := o.O.(*http.Server).ListenAndServeTLS(_v_certFile, _v_keyFile)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
 GO FUNC net/http._f_ptrTo_Server_RegisterOnShutdown from net/http/server.go:
 // func _f_ptrTo_Server_RegisterOnShutdown(o GoObject, args Object) Object {  // Receiver
-// 	...ABEND275: TODO...
-// }
+// (f ABEND727(gtypes.go: func()))}
 
 GO FUNC net/http._f_ptrTo_Server_Serve from net/http/server.go:
 func _f_ptrTo_Server_Serve(o GoObject, args Object) Object {  // Receiver
@@ -9466,8 +9464,8 @@ GO FUNC net/http._f_ptrTo_Server_ServeTLS from net/http/server.go:
 func _f_ptrTo_Server_ServeTLS(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*http.Server)ServeTLS()", args, 3, 3)
 	_v_l := SeqNth(_argList, 0).(Native).(net.Listener)
-	_v_certFile := SeqNth(_argList, 1).(Native).(string)
-	_v_keyFile := SeqNth(_argList, 2).(Native).(string)
+	_v_certFile := Extract_string(SeqNth(_argList, 1), "Arg[1] (_v_certFile): %s")
+	_v_keyFile := Extract_string(SeqNth(_argList, 2), "Arg[2] (_v_keyFile): %s")
 	_res := o.O.(*http.Server).ServeTLS(_v_l, _v_certFile, _v_keyFile)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -9510,7 +9508,7 @@ func _f_ptrTo_Transport_RoundTrip(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/http._f_pusher_Push from net/http/http.go:
 func _f_pusher_Push(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http.Pusher)Push()", args, 2, 2)
-	_v_target := SeqNth(_argList, 0).(Native).(string)
+	_v_target := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_target): %s")
 	_v_opts := SeqNth(_argList, 1).(Native).(*http.PushOptions)
 	_res := o.O.(http.Pusher).Push(_v_target, _v_opts)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
@@ -10203,7 +10201,7 @@ func ExtractGo_go_std_net_http_cgi__Handler(rcvr, arg string, args *ArraySeq, n 
 // 		Logger: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
 // 		Args: ABEND048(codegen.go: no conversion from Clojure for []string (-)),
 // 		Stderr: ABEND049(codegen.go: no conversion to private type io.ABEND002(reference to unavailable package `io' looking for type `Writer') (-)),
-// 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: func(ResponseWriter, *Request)!)})),
+// 		PathLocationHandler: ABEND048(codegen.go: no conversion from Clojure for net/http.Handler (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ResponseWriter, *Request))!)})),
 // 	}
 // }
 
@@ -10357,7 +10355,7 @@ func ExtractGo_go_std_net_http_cookiejar__Options(rcvr, arg string, args *ArrayS
 
 // func _mapToOptions(o Map) *cookiejar.Options {
 // 	return &cookiejar.Options{
-// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{ABEND041(gtypes.go/fieldToString found something: func(string) string!), ABEND041(gtypes.go/fieldToString found something: func() string!)})),
+// 		PublicSuffixList: ABEND048(codegen.go: no conversion from Clojure for net/http/cookiejar.PublicSuffixList (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(string) string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
 // 	}
 // }
 
@@ -10423,7 +10421,7 @@ GO FUNC net/http/cookiejar._f_ptrTo_Jar_SetCookies from net/http/cookiejar/jar.g
 GO FUNC net/http/cookiejar._f_publicSuffixList_PublicSuffix from net/http/cookiejar/jar.go:
 func _f_publicSuffixList_PublicSuffix(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/http/cookiejar.PublicSuffixList)PublicSuffix()", args, 1, 1)
-	_v_domain := SeqNth(_argList, 0).(Native).(string)
+	_v_domain := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_domain): %s")
 	_res := o.O.(cookiejar.PublicSuffixList).PublicSuffix(_v_domain)
 	return MakeString(_res)
 }
@@ -10619,7 +10617,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // func _mapToServer(o Map) *httptest.Server {
 // 	return &httptest.Server{
 // 		URL: FieldAsString(o, "URL"),
-// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: func() (Conn, error)!), ABEND041(gtypes.go/fieldToString found something: func() error!), ABEND041(gtypes.go/fieldToString found something: func() Addr!)})),
+// 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() (Conn, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!)})),
 // 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
 // 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
 // 	}
@@ -10705,7 +10703,7 @@ GO FUNC net/http/httptest._f_ptrTo_ResponseRecorder_WriteHeader from net/http/ht
 GO FUNC net/http/httptest._f_ptrTo_ResponseRecorder_WriteString from net/http/httptest/recorder.go:
 func _f_ptrTo_ResponseRecorder_WriteString(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*httptest.ResponseRecorder)WriteString()", args, 1, 1)
-	_v_str := SeqNth(_argList, 0).(Native).(string)
+	_v_str := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_str): %s")
 	_res1, _res2 := o.O.(*httptest.ResponseRecorder).WriteString(_v_str)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(_res1))
@@ -10851,22 +10849,22 @@ func ExtractGo_go_std_net_http_httptrace__ClientTrace(rcvr, arg string, args *Ar
 
 // func _mapToClientTrace(o Map) *httptrace.ClientTrace {
 // 	return &httptrace.ClientTrace{
-// 		GetConn: ABEND049(codegen.go: no conversion to private type func(string) (-)),
-// 		GotConn: ABEND049(codegen.go: no conversion to private type func(GotConnInfo) (-)),
-// 		PutIdleConn: ABEND049(codegen.go: no conversion to private type func(error) (-)),
-// 		GotFirstResponseByte: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Got100Continue: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Got1xxResponse: ABEND049(codegen.go: no conversion to private type func(int, net/textproto.MIMEHeader) error (-)),
-// 		DNSStart: ABEND049(codegen.go: no conversion to private type func(DNSStartInfo) (-)),
-// 		DNSDone: ABEND049(codegen.go: no conversion to private type func(DNSDoneInfo) (-)),
-// 		ConnectStart: ABEND049(codegen.go: no conversion to private type func(string, string) (-)),
-// 		ConnectDone: ABEND049(codegen.go: no conversion to private type func(string, string, error) (-)),
-// 		TLSHandshakeStart: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		TLSHandshakeDone: ABEND049(codegen.go: no conversion to private type func(ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), error) (-)),
-// 		WroteHeaderField: ABEND049(codegen.go: no conversion to private type func(string, []string) (-)),
-// 		WroteHeaders: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		Wait100Continue: ABEND049(codegen.go: no conversion to private type func() (-)),
-// 		WroteRequest: ABEND049(codegen.go: no conversion to private type func(WroteRequestInfo) (-)),
+// 		GetConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string)) (-)),
+// 		GotConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(GotConnInfo)) (-)),
+// 		PutIdleConn: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(error)) (-)),
+// 		GotFirstResponseByte: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Got100Continue: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Got1xxResponse: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(int, net/textproto.MIMEHeader) error) (-)),
+// 		DNSStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(DNSStartInfo)) (-)),
+// 		DNSDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(DNSDoneInfo)) (-)),
+// 		ConnectStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string)) (-)),
+// 		ConnectDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, error)) (-)),
+// 		TLSHandshakeStart: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		TLSHandshakeDone: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'), error)) (-)),
+// 		WroteHeaderField: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, []string)) (-)),
+// 		WroteHeaders: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		Wait100Continue: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func()) (-)),
+// 		WroteRequest: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(WroteRequestInfo)) (-)),
 // 	}
 // }
 
@@ -10997,7 +10995,7 @@ func ExtractGo_go_std_net_http_httptrace__GotConnInfo(rcvr, arg string, args *Ar
 
 // func _mapToGotConnInfo(o Map) *httptrace.GotConnInfo {
 // 	return &httptrace.GotConnInfo{
-// 		Conn: ABEND048(codegen.go: no conversion from Clojure for net.Conn (interface{ABEND041(gtypes.go/fieldToString found something: func([]byte) (int, error)!), ABEND041(gtypes.go/fieldToString found something: func([]byte) (int, error)!), ABEND041(gtypes.go/fieldToString found something: func() error!), ABEND041(gtypes.go/fieldToString found something: func() Addr!), ABEND041(gtypes.go/fieldToString found something: func() Addr!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!), ABEND041(gtypes.go/fieldToString found something: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error!)})),
+// 		Conn: ABEND048(codegen.go: no conversion from Clojure for net.Conn (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte) (int, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte) (int, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `time' looking for type `Time')) error)!)})),
 // 		Reused: FieldAsBoolean(o, "Reused"),
 // 		WasIdle: FieldAsBoolean(o, "WasIdle"),
 // 		IdleTime: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
@@ -11316,13 +11314,13 @@ func ExtractGo_go_std_net_http_httputil__ReverseProxy(rcvr, arg string, args *Ar
 
 // func _mapToReverseProxy(o Map) *httputil.ReverseProxy {
 // 	return &httputil.ReverseProxy{
-// 		Director: ABEND049(codegen.go: no conversion to private type func(*net/http.Request) (-)),
-// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: func(*Request) (*Response, error)!)})),
+// 		Director: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*net/http.Request)) (-)),
+// 		Transport: ABEND048(codegen.go: no conversion from Clojure for net/http.RoundTripper (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func(*Request) (*Response, error))!)})),
 // 		FlushInterval: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		ErrorLog: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `log' looking for type `Logger') (log.ABEND002(reference to unavailable package `log' looking for type `Logger'))),
-// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: func() []byte!), ABEND041(gtypes.go/fieldToString found something: func([]byte)!)})),
-// 		ModifyResponse: ABEND049(codegen.go: no conversion to private type func(*net/http.Response) error (-)),
-// 		ErrorHandler: ABEND049(codegen.go: no conversion to private type func(net/http.ResponseWriter, *net/http.Request, error) (-)),
+// 		BufferPool: ABEND048(codegen.go: no conversion from Clojure for net/http/httputil.BufferPool (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() []byte)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func([]byte))!)})),
+// 		ModifyResponse: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(*net/http.Response) error) (-)),
+// 		ErrorHandler: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(net/http.ResponseWriter, *net/http.Request, error)) (-)),
 // 	}
 // }
 
@@ -11933,7 +11931,7 @@ GO FUNC net/mail.ReadMessage from net/mail/message.go:
 GO FUNC net/mail._f_header_AddressList from net/mail/message.go:
 func _f_header_AddressList(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(mail.Header)AddressList()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res1, _res2 := o.O.(mail.Header).AddressList(_v_key)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11948,7 +11946,7 @@ GO FUNC net/mail._f_header_Date from net/mail/message.go:
 GO FUNC net/mail._f_header_Get from net/mail/message.go:
 func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(mail.Header)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(mail.Header).Get(_v_key)
 	return MakeString(_res)
 }
@@ -11956,7 +11954,7 @@ func _f_header_Get(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/mail._f_ptrTo_AddressParser_Parse from net/mail/message.go:
 func _f_ptrTo_AddressParser_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*mail.AddressParser)Parse()", args, 1, 1)
-	_v_address := SeqNth(_argList, 0).(Native).(string)
+	_v_address := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_address): %s")
 	_res1, _res2 := o.O.(*mail.AddressParser).Parse(_v_address)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -11967,7 +11965,7 @@ func _f_ptrTo_AddressParser_Parse(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/mail._f_ptrTo_AddressParser_ParseList from net/mail/message.go:
 func _f_ptrTo_AddressParser_ParseList(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*mail.AddressParser)ParseList()", args, 1, 1)
-	_v_list := SeqNth(_argList, 0).(Native).(string)
+	_v_list := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_list): %s")
 	_res1, _res2 := o.O.(*mail.AddressParser).ParseList(_v_list)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -12525,7 +12523,7 @@ func _f_clientCodec_WriteRequest(o GoObject, args Object) Object {  // Method
 GO FUNC net/rpc._f_ptrTo_Client_Call from net/rpc/client.go:
 func _f_ptrTo_Client_Call(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Client)Call()", args, 3, 3)
-	_v_serviceMethod := SeqNth(_argList, 0).(Native).(string)
+	_v_serviceMethod := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_serviceMethod): %s")
 	_v_args := SeqNth(_argList, 1).(Native).(interface{})
 	_v_reply := SeqNth(_argList, 2).(Native).(interface{})
 	_res := o.O.(*rpc.Client).Call(_v_serviceMethod, _v_args, _v_reply)
@@ -12542,7 +12540,7 @@ func _f_ptrTo_Client_Close(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/rpc._f_ptrTo_Client_Go from net/rpc/client.go:
 func _f_ptrTo_Client_Go(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Client)Go()", args, 4, 4)
-	_v_serviceMethod := SeqNth(_argList, 0).(Native).(string)
+	_v_serviceMethod := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_serviceMethod): %s")
 	_v_args := SeqNth(_argList, 1).(Native).(interface{})
 	_v_reply := SeqNth(_argList, 2).(Native).(interface{})
 	_v_done := SeqNth(_argList, 3).(Native).(chan *Call)
@@ -12571,7 +12569,7 @@ func _f_ptrTo_Server_Register(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/rpc._f_ptrTo_Server_RegisterName from net/rpc/server.go:
 func _f_ptrTo_Server_RegisterName(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*rpc.Server)RegisterName()", args, 2, 2)
-	_v_name := SeqNth(_argList, 0).(Native).(string)
+	_v_name := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_name): %s")
 	_v_rcvr := SeqNth(_argList, 1).(Native).(interface{})
 	_res := o.O.(*rpc.Server).RegisterName(_v_name, _v_rcvr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
@@ -13065,7 +13063,7 @@ GO FUNC net/smtp._f_auth_Next from net/smtp/auth.go:
 func _f_auth_Next(o GoObject, args Object) Object {  // Method
 	_argList := CheckGoArity("(net/smtp.Auth)Next()", args, 2, 2)
 	_v_fromServer := SeqNth(_argList, 0).(Native).([]byte)
-	_v_more := SeqNth(_argList, 1).(Native).(bool)
+	_v_more := Extract_bool(SeqNth(_argList, 1), "Arg[1] (_v_more): %s")
 	toServer, err := o.O.(smtp.Auth).Next(_v_fromServer, _v_more)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(toServer))
@@ -13107,7 +13105,7 @@ GO FUNC net/smtp._f_ptrTo_Client_Data from net/smtp/smtp.go:
 GO FUNC net/smtp._f_ptrTo_Client_Extension from net/smtp/smtp.go:
 func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Extension()", args, 1, 1)
-	_v_ext := SeqNth(_argList, 0).(Native).(string)
+	_v_ext := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_ext): %s")
 	_res1, _res2 := o.O.(*smtp.Client).Extension(_v_ext)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeBoolean(_res1))
@@ -13118,7 +13116,7 @@ func _f_ptrTo_Client_Extension(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Hello from net/smtp/smtp.go:
 func _f_ptrTo_Client_Hello(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Hello()", args, 1, 1)
-	_v_localName := SeqNth(_argList, 0).(Native).(string)
+	_v_localName := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_localName): %s")
 	_res := o.O.(*smtp.Client).Hello(_v_localName)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13126,7 +13124,7 @@ func _f_ptrTo_Client_Hello(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Mail from net/smtp/smtp.go:
 func _f_ptrTo_Client_Mail(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Mail()", args, 1, 1)
-	_v_from := SeqNth(_argList, 0).(Native).(string)
+	_v_from := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_from): %s")
 	_res := o.O.(*smtp.Client).Mail(_v_from)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13148,7 +13146,7 @@ func _f_ptrTo_Client_Quit(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/smtp._f_ptrTo_Client_Rcpt from net/smtp/smtp.go:
 func _f_ptrTo_Client_Rcpt(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Rcpt()", args, 1, 1)
-	_v_to := SeqNth(_argList, 0).(Native).(string)
+	_v_to := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_to): %s")
 	_res := o.O.(*smtp.Client).Rcpt(_v_to)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13171,7 +13169,7 @@ GO FUNC net/smtp._f_ptrTo_Client_TLSConnectionState from net/smtp/smtp.go:
 GO FUNC net/smtp._f_ptrTo_Client_Verify from net/smtp/smtp.go:
 func _f_ptrTo_Client_Verify(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*smtp.Client)Verify()", args, 1, 1)
-	_v_addr := SeqNth(_argList, 0).(Native).(string)
+	_v_addr := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_addr): %s")
 	_res := o.O.(*smtp.Client).Verify(_v_addr)
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
@@ -13605,7 +13603,7 @@ GO FUNC net/textproto._f_mIMEHeader_Del from net/textproto/header.go:
 GO FUNC net/textproto._f_mIMEHeader_Get from net/textproto/header.go:
 func _f_mIMEHeader_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(textproto.MIMEHeader)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(textproto.MIMEHeader).Get(_v_key)
 	return MakeString(_res)
 }
@@ -13674,7 +13672,7 @@ GO FUNC net/textproto._f_ptrTo_Reader_DotReader from net/textproto/reader.go:
 GO FUNC net/textproto._f_ptrTo_Reader_ReadCodeLine from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadCodeLine(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*textproto.Reader)ReadCodeLine()", args, 1, 1)
-	_v_expectCode := SeqNth(_argList, 0).(Native).(int)
+	_v_expectCode := Extract_int(SeqNth(_argList, 0), "Arg[0] (_v_expectCode): %s")
 	code, message, err := o.O.(*textproto.Reader).ReadCodeLine(_v_expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
@@ -13756,7 +13754,7 @@ func _f_ptrTo_Reader_ReadMIMEHeader(o GoObject, args Object) Object {  // Receiv
 GO FUNC net/textproto._f_ptrTo_Reader_ReadResponse from net/textproto/reader.go:
 func _f_ptrTo_Reader_ReadResponse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*textproto.Reader)ReadResponse()", args, 1, 1)
-	_v_expectCode := SeqNth(_argList, 0).(Native).(int)
+	_v_expectCode := Extract_int(SeqNth(_argList, 0), "Arg[0] (_v_expectCode): %s")
 	code, message, err := o.O.(*textproto.Reader).ReadResponse(_v_expectCode)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeInt(code))
@@ -14382,7 +14380,7 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(*url.URL)Parse()", args, 1, 1)
-	_v_ref := SeqNth(_argList, 0).(Native).(string)
+	_v_ref := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_ref): %s")
 	_res1, _res2 := o.O.(*url.URL).Parse(_v_ref)
 	_res := EmptyVector()
 	_res = _res.Conjoin(MakeGoObject(_res1))
@@ -14478,7 +14476,7 @@ func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckGoArity("(url.Values)Get()", args, 1, 1)
-	_v_key := SeqNth(_argList, 0).(Native).(string)
+	_v_key := Extract_string(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
 	_res := o.O.(url.Values).Get(_v_key)
 	return MakeString(_res)
 }
@@ -15100,9 +15098,9 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(234) 049(138) 048(93) 041(54) 275(43) 674(20) 747(2) 124(1)
-Totals: functions=470 generated=340 (72.34%)
-          non-receivers=148 (31.49%) generated=117 (79.05%)
+ABENDs: 002(234) 049(138) 727(121) 048(93) 041(54) 275(41) 674(20) 747(2) 124(1)
+Totals: functions=470 generated=338 (71.91%)
+          non-receivers=148 (31.49%) generated=115 (77.70%)
           receivers=273 (58.09%) generated=187 (68.50%)
           methods=49 (10.43%) generated=36 (73.47%)
         types=184
