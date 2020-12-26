@@ -123,7 +123,7 @@ func readCoreApiFile(src string) {
 		if godb.Verbose {
 			fmt.Printf("Writing Core APIs found at %s to %s.\n", coreDir, coreApiFilename)
 		}
-		f, err := os.Create(coreApiFilename)
+		f, err = os.Create(coreApiFilename)
 		Check(err)
 		enc := gob.NewEncoder(f)
 		err = enc.Encode(coreApis)
