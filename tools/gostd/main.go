@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/godb"
@@ -11,6 +12,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"syscall"
 )
 
 const VERSION = "0.1"
@@ -55,6 +57,7 @@ Options:
   --fresh                     # (Default) Refuse to overwrite existing <clojure-std-subdir> directory
   --clojure <clojure-source-dir>  # Modify pertinent source files to reflect packages being created
   --import-from <dir>         # Override <clojure-source-dir> with <dir> for use in generated import decls; "--" means use default
+  --joker <dir>               # Where to find the core/ directory with the APIs that generated Joker code may thus call
   --verbose, -v               # Print info on what's going on
   --summary                   # Print summary of #s of types, functions, etc.
   --output-code               # Print generated code to stdout (used by test.sh)
@@ -87,6 +90,53 @@ func listOfOthers(other string) (others []string) {
 	return
 }
 
+var coreApiFilename = "core-apis.dat"
+var coreApis = map[string]struct{}{}
+
+func getCPU() int64 {
+	usage := new(syscall.Rusage)
+	syscall.Getrusage(syscall.RUSAGE_SELF, usage)
+	return usage.Utime.Nano() + usage.Stime.Nano()
+}
+
+func readCoreApiFile(src string) {
+	start := getCPU()
+	defer func() {
+		end := getCPU()
+		if godb.Verbose {
+			fmt.Printf("readCoreApiFile() took %d ns.\n", end-start)
+		}
+	}()
+
+	f, err := os.Open(coreApiFilename)
+	if err != nil {
+		if godb.Verbose {
+			fmt.Printf("The list of core APIs is missing; file '%s' does not exist.\n", coreApiFilename)
+		}
+
+		coreDir := paths.NewNativePath(src).Join("core")
+		apis := findApis(coreDir)
+		if len(apis) == 0 {
+			panic(fmt.Sprintf("no APIs found at %s", coreDir))
+		}
+
+		if godb.Verbose {
+			fmt.Printf("Writing Core APIs found at %s to %s: %+v\n", coreDir, coreApiFilename, apis)
+		}
+		f, err := os.Create(coreApiFilename)
+		Check(err)
+		enc := gob.NewEncoder(f)
+		err = enc.Encode(apis)
+		Check(err)
+		return
+	}
+	Check(err)
+	dec := gob.NewDecoder(f)
+	err = dec.Decode(&coreApis)
+	Check(err)
+	//	fmt.Printf("Core APIs: %+v\n", coreApis)
+}
+
 func main() {
 	godb.Fset = token.NewFileSet() // positions are relative to Fset
 
@@ -98,6 +148,7 @@ func main() {
 	var otherSourceDirs []string
 	clojureSourceDir := ""
 	clojureImportDir := ""
+	jokerSourceDir := "."
 	replace := false
 	overwrite := false
 	summary := false
@@ -191,6 +242,14 @@ func main() {
 					fmt.Fprintf(os.Stderr, "missing path after --import-from option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
 				}
+			case "--joker":
+				if i < length-1 && notOption(os.Args[i+1]) {
+					i += 1 // shift
+					jokerSourceDir = os.Args[i]
+				} else {
+					fmt.Fprintf(os.Stderr, "missing path after --joker option; got %s, which looks like an option\n", os.Args[i+1])
+					os.Exit(1)
+				}
 			default:
 				fmt.Fprintf(os.Stderr, "unrecognized option %s\n", a)
 				os.Exit(1)
@@ -238,6 +297,7 @@ func main() {
 		fmt.Printf("goSrcDir: %s\n", goSrcDir)
 		fmt.Printf("goSourcePath: %s\n", goSourcePath)
 		fmt.Printf("ClojureSourceDir (for import line): %s\n", godb.ClojureSourceDir)
+		fmt.Printf("JokerSourceDir: %s\n", jokerSourceDir)
 		for _, o := range others {
 			otherSourceDirs = append(otherSourceDirs, listOfOthers(o)...)
 		}
@@ -245,6 +305,8 @@ func main() {
 			fmt.Printf("Other: %s\n", o)
 		}
 	}
+
+	readCoreApiFile(jokerSourceDir)
 
 	clojureLibDir := ""
 	if clojureSourceDir != "" && clojureSourceDir != "-" {

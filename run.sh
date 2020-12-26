@@ -13,6 +13,7 @@ set -e  # Exit on error.
 
 if [ ! -x "$JOKER" ]; then
     ./clean.sh >/dev/null 2>/dev/null
+    rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
     build
     JOKER=../joker
     ALREADY_BUILT=true

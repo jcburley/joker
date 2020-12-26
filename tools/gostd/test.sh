@@ -22,13 +22,13 @@ fi
 
 [ ! -x gostd ] && echo >&2 "No executable to test." && exit 99
 
-./gostd --no-timestamp --output-code --verbose --go _tests/small 2>&1 | grep -v '^Default context:' > $GOENV/small.gold
+./gostd --no-timestamp --output-code --verbose --joker ../.. --go _tests/small 2>&1 | grep -v '^Default context:' > $GOENV/small.gold
 git diff --quiet -u $GOENV/small.gold || { echo >&2 "FAILED: small test"; RC=1; $EXIT; }
 
-./gostd --no-timestamp --output-code --verbose --go _tests/big --replace --clojure $GOENV/joker --import-from -- 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
+./gostd --no-timestamp --output-code --verbose --joker ../.. --go _tests/big --replace --clojure $GOENV/joker --import-from -- 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
 git diff --quiet -u $GOENV/big.gold || { echo >&2 "FAILED: big test"; RC=1; $EXIT; }
 
-./gostd --no-timestamp --output-code --verbose 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
+./gostd --no-timestamp --output-code --verbose --joker ../.. 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
 git diff --quiet -u $GOENV/gosrc.gold || { echo >&2 "FAILED: gosrc test"; RC=1; $EXIT; }
 
 exit $RC

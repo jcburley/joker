@@ -1013,3 +1013,46 @@ func WalkAllDirs() (error, paths.NativePath) {
 
 	return nil, paths.NewNativePath("")
 }
+
+func findApis(src paths.NativePath) (apis map[string]struct{}) {
+	start := getCPU()
+	defer func() {
+		end := getCPU()
+		if godb.Verbose {
+			fmt.Printf("findApis() took %d ns.\n", end-start)
+		}
+	}()
+
+	apis = map[string]struct{}{}
+
+	var fset = token.NewFileSet()
+
+	target, err := src.EvalSymlinks()
+	Check(err)
+
+	pkgs, err := parser.ParseDir(fset, target.String(), nil, 0)
+	Check(err)
+
+	var pkg *Package
+	for k, v := range pkgs {
+		if k != "core" {
+			panic(fmt.Sprintf("Expected only package 'core', found '%s'", k))
+		}
+		pkg = v
+	}
+
+	for _, f := range pkg.Files {
+		for _, d := range f.Decls {
+			switch o := d.(type) {
+			case *FuncDecl:
+				if o.Recv == nil {
+					if IsExported(o.Name.Name) {
+						apis[o.Name.Name] = struct{}{}
+					}
+				}
+			}
+		}
+	}
+
+	return
+}
