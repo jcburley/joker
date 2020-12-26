@@ -349,6 +349,10 @@ func FieldAsUintPtr(o Map, k string) uintptr {
 	return uintptr(FieldAsUint64(o, k))
 }
 
+func Extract_float64(obj Object, pattern string) float64 {
+	return EnsureObjectIsDouble(obj, pattern).D
+}
+
 func FieldAsDouble(o Map, k string) float64 {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok {
