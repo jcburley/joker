@@ -11,7 +11,7 @@ fi
 
 RC=0
 
-rm -fr $GOENV/joker
+rm -fr $GOENV/joker core-apis.dat
 mkdir -p $GOENV/joker/{core/data,std}
 git show gostd:../../custom.go > $GOENV/joker/custom.go
 git show gostd:../../core/data/customlibs.joke > $GOENV/joker/core/data/customlibs.joke
