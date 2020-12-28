@@ -2861,11 +2861,11 @@ CLOJURE FUNC net/http/cgi.Request from net/http/cgi/child.go:
   [])
 
 CLOJURE FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
-(defn RequestFromMap
-  "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[string]string)\n\nGo returns: (*net/http.Request, error)\n\nJoker input arguments: [^GoObject params]\n\nJoker returns: [^go.std.net.http/refToRequest, ^Error]"
-  {:added "1.0"
-   :go "_f_requestFromMap(_v_params)"}
-  [^GoObject _v_params])
+;; (defn RequestFromMap
+;;   "RequestFromMap creates an http.Request from CGI variables.\nThe returned Request's Body field is not populated.\n\nGo input arguments: (params map[string]string)\n\nGo returns: (*net/http.Request, error)\n\nJoker input arguments: [^ABEND777(jtypes.go: multiple underlying expressions not supported: map_String_Of_<whatever>) params]\n\nJoker returns: [^go.std.net.http/refToRequest, ^Error]"
+;;   {:added "1.0"
+;;    :go "_f_requestFromMap(_v_params)"}
+;;   [^ABEND777(jtypes.go: multiple underlying expressions not supported: map_String_Of_<whatever>) _v_params])
 
 CLOJURE FUNC net/http/cgi.Serve from net/http/cgi/child.go:
 (defn ^"Error" Serve
@@ -2959,7 +2959,7 @@ CLOJURE VARIABLE ErrRequestAborted from net/http/fcgi/child.go:
 
 CLOJURE FUNC net/http/fcgi.ProcessEnv from net/http/fcgi/child.go:
 ;; (defn ProcessEnv
-;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *net/http.Request)\n\nGo returns: map[string]string\n\nJoker input arguments: [^go.std.net.http/refToRequest r]\n\nJoker returns: ^GoObject"
+;;   "ProcessEnv returns FastCGI environment variables associated with the request r\nfor which no effort was made to be included in the request itself - the data\nis hidden in the request's context. As an example, if REMOTE_USER is set for a\nrequest, it will not be found anywhere in r, but it will be included in\nProcessEnv's response (via r's context).\n\nGo input arguments: (r *net/http.Request)\n\nGo returns: map[string]string\n\nJoker input arguments: [^go.std.net.http/refToRequest r]\n\nJoker returns: ^ABEND777(jtypes.go: multiple underlying expressions not supported: map_String_Of_<whatever>)"
 ;;   {:added "1.0"
 ;;    :go "_f_processEnv(_v_r)"}
 ;;   [^ABEND707(API 'go.std.net.http/ExtractGoObjectrefToRequest' is unimplemented: go.std.net.http/refToRequest) _v_r])
@@ -9949,13 +9949,13 @@ func _f_request() Object {
 }
 
 GO FUNC net/http/cgi.RequestFromMap from net/http/cgi/child.go:
-func _f_requestFromMap(_v_params map[string]string) Object {
-	_res1, _res2 := cgi.RequestFromMap(_v_params)
-	_res := EmptyVector()
-	_res = _res.Conjoin(MakeGoObject(_res1))
-	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
-	return _res
-}
+// func _f_requestFromMap(_v_params map[string]string) Object {
+// 	_res1, _res2 := cgi.RequestFromMap(_v_params)
+// 	_res := EmptyVector()
+// 	_res = _res.Conjoin(MakeGoObject(_res1))
+// 	_res = _res.Conjoin(func () Object { if (_res2) == nil { return NIL } else { return MakeError(_res2) } }())
+// 	return _res
+// }
 
 GO FUNC net/http/cgi._f_ptrTo_Handler_ServeHTTP from net/http/cgi/host.go:
 // func _f_ptrTo_Handler_ServeHTTP(o GoObject, args Object) Object {  // Receiver
@@ -14723,9 +14723,9 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(234) 707(140) 049(138) 727(121) 048(93) 041(54) 275(30) 674(20) 737(8) 747(2) 124(1)
-Totals: functions=470 generated=262 (55.74%)
-          non-receivers=148 (31.49%) generated=86 (58.11%)
+ABENDs: 002(234) 707(140) 049(138) 727(121) 048(93) 041(54) 275(30) 674(20) 737(8) 777(3) 747(2) 124(1)
+Totals: functions=470 generated=261 (55.53%)
+          non-receivers=148 (31.49%) generated=85 (57.43%)
           receivers=273 (58.09%) generated=155 (56.78%)
           methods=49 (10.43%) generated=21 (42.86%)
         types=184

@@ -1068,6 +1068,9 @@ func assertRuntime(prefix, nsPrefix, s string) string {
 	} else {
 		runtime = prefix + runtime
 	}
+	if Contains(runtime, "ABEND") {
+		return s
+	}
 	if _, found := coreApis[runtime]; !found {
 		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, s)
 	}

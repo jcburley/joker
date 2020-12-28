@@ -46,6 +46,11 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	case *StarExpr:
 		pattern, e = patternForExpr(v.X)
 		return "refTo" + pattern, e
+	case *MapType:
+		patternKey, _ := patternForExpr(v.Key)
+		patternValue, eValue := patternForExpr(v.Value)
+		res := "map_" + patternKey + "_Of_" + fmt.Sprintf(patternValue, "<whatever>")
+		return fmt.Sprintf("ABEND777(jtypes.go: multiple underlying expressions not supported: %s)", res), eValue
 	default:
 		return "%s", e
 	}
