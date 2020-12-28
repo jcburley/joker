@@ -367,7 +367,7 @@ func InfoForExpr(e Expr) *Info {
 			localName = "<-" + localName
 		default:
 		}
-		localName += " " + ty.RelativeName(e.Pos())
+		localName = fmt.Sprintf("ABEND737(gtypes.go: %s %s)", localName, ty.RelativeName(e.Pos()))
 	case *StructType:
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
