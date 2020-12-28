@@ -12,11 +12,16 @@ build() {
 set -e  # Exit on error.
 
 if [ ! -x "$JOKER" ]; then
-    ./clean.sh >/dev/null 2>/dev/null
-    rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
-    build
-    JOKER=../joker
-    ALREADY_BUILT=true
+    if [ -x ./joker-good ]; then
+        JOKER=../joker-good
+        ALREADY_BUILT=false
+    else
+        ./clean.sh >/dev/null 2>/dev/null
+        rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
+        build
+        JOKER=../joker
+        ALREADY_BUILT=true
+    fi
 else
     ALREADY_BUILT=false
 fi
