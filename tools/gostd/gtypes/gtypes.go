@@ -206,6 +206,11 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	types := []*Info{}
 
+	isPassedByAddress := true
+	if pkg == "unsafe" && localName == "ArbitraryType" {
+		isPassedByAddress = false
+	}
+
 	ti := &Info{
 		who:               "TypeDefine",
 		Type:              ts.Type,
@@ -221,7 +226,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Specificity:       specificity(ts),
 		IsSwitchable:      ts.Assign == token.NoPos,
 		IsAddressable:     isAddressable(pkg, localName),
-		IsPassedByAddress: true,
+		IsPassedByAddress: isPassedByAddress,
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
