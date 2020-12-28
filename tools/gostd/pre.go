@@ -22,7 +22,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
-			cvt = fmt.Sprintf("%%s.(Native).(%s)%%.s", goName)
+			cvt = fmt.Sprintf("%%s.(GoObject).O.(%s)%%.s", goName)
 		} else {
 			cvt = assertRuntime("", "", cvt)
 		}
