@@ -2375,7 +2375,7 @@ CLOJURE FUNC net/http.MaxBytesReader from net/http/request.go:
 ;;   "MaxBytesReader is similar to io.LimitReader but is intended for\nlimiting the size of incoming request bodies. In contrast to\nio.LimitReader, MaxBytesReader's result is a ReadCloser, returns a\nnon-EOF error for a Read beyond the limit, and closes the\nunderlying reader when its Close method is called.\n\nMaxBytesReader prevents clients from accidentally or maliciously\nsending a large request and wasting server resources.\n\nGo input arguments: (w ResponseWriter, r ABEND002(reference to unavailable package `io' looking for type `ReadCloser'), n int64)\n\nGo returns: ABEND002(reference to unavailable package `io' looking for type `ReadCloser')\n\nJoker input arguments: [^ResponseWriter w, ^go.std.io/ReadCloser r, ^BigInt n]\n\nJoker returns: ^go.std.io/ReadCloser"
 ;;   {:added "1.0"
 ;;    :go "_f_maxBytesReader(*_v_w, _v_r, _v_n)"}
-;;   [^go.std.net.http/ResponseWriter _v_w, ^ABEND707(API 'go.std.io/ExtractGoObjectReadCloser' is unimplemented: go.std.io/ReadCloser) _v_r, ^ABEND707(API 'ExtractBigInt' is unimplemented: BigInt) _v_n])
+;;   [^go.std.net.http/ResponseWriter _v_w, ^ABEND707(API 'go.std.io/ExtractGoObjectReadCloser' is unimplemented: go.std.io/ReadCloser) _v_r, ^Int64 _v_n])
 
 CLOJURE FUNC net/http.NewFileTransport from net/http/filetransport.go:
 (defn NewFileTransport
@@ -9080,8 +9080,12 @@ func _f_ptrTo_Request_ParseForm(o GoObject, args Object) Object {  // Receiver
 }
 
 GO FUNC net/http._f_ptrTo_Request_ParseMultipartForm from net/http/request.go:
-// func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // Receiver
-// ^ABEND707(API 'ExtractBigInt' is unimplemented: BigInt) _v_maxMemory}
+func _f_ptrTo_Request_ParseMultipartForm(o GoObject, args Object) Object {  // Receiver
+	_argList := CheckGoArity("(*http.Request)ParseMultipartForm()", args, 1, 1)
+	_v_maxMemory := Extract_int64(SeqNth(_argList, 0), "Arg[0] (_v_maxMemory): %s")
+	_res := o.O.(*http.Request).ParseMultipartForm(_v_maxMemory)
+	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
+}
 
 GO FUNC net/http._f_ptrTo_Request_PostFormValue from net/http/request.go:
 func _f_ptrTo_Request_PostFormValue(o GoObject, args Object) Object {  // Receiver
@@ -9612,6 +9616,7 @@ GO INFO FOR TYPE go.std.net.http/refToRequest from _tests/big/src/net/http/reque
 			"Cookies": MakeGoReceiver("Cookies", _f_ptrTo_Request_Cookies, "Cookies parses and returns the HTTP cookies sent with the request.\n", "1.0", NewVectorFrom()),
 			"FormValue": MakeGoReceiver("FormValue", _f_ptrTo_Request_FormValue, "FormValue returns the first value for the named component of the query.\nPOST and PUT body parameters take precedence over URL query string values.\nFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, FormValue returns the empty string.\nTo access multiple values of the same key, call ParseForm and\nthen inspect Request.Form directly.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 			"ParseForm": MakeGoReceiver("ParseForm", _f_ptrTo_Request_ParseForm, "ParseForm populates r.Form and r.PostForm.\n\nFor all requests, ParseForm parses the raw query from the URL and updates\nr.Form.\n\nFor POST, PUT, and PATCH requests, it also parses the request body as a form\nand puts the results into both r.PostForm and r.Form. Request body parameters\ntake precedence over URL query string values in r.Form.\n\nFor other HTTP methods, or when the Content-Type is not\napplication/x-www-form-urlencoded, the request Body is not read, and\nr.PostForm is initialized to a non-nil, empty value.\n\nIf the request Body's size has not already been limited by MaxBytesReader,\nthe size is capped at 10MB.\n\nParseMultipartForm calls ParseForm automatically.\nParseForm is idempotent.\n", "1.0", NewVectorFrom()),
+			"ParseMultipartForm": MakeGoReceiver("ParseMultipartForm", _f_ptrTo_Request_ParseMultipartForm, "ParseMultipartForm parses a request body as multipart/form-data.\nThe whole request body is parsed and up to a total of maxMemory bytes of\nits file parts are stored in memory, with the remainder stored on\ndisk in temporary files.\nParseMultipartForm calls ParseForm if necessary.\nAfter one call to ParseMultipartForm, subsequent calls have no effect.\n", "1.0", NewVectorFrom(MakeSymbol("maxMemory"))),
 			"PostFormValue": MakeGoReceiver("PostFormValue", _f_ptrTo_Request_PostFormValue, "PostFormValue returns the first value for the named component of the POST,\nPATCH, or PUT request body. URL query parameters are ignored.\nPostFormValue calls ParseMultipartForm and ParseForm if necessary and ignores\nany errors returned by these functions.\nIf key is not present, PostFormValue returns the empty string.\n", "1.0", NewVectorFrom(MakeSymbol("key"))),
 			"ProtoAtLeast": MakeGoReceiver("ProtoAtLeast", _f_ptrTo_Request_ProtoAtLeast, "ProtoAtLeast reports whether the HTTP protocol used\nin the request is at least major.minor.\n", "1.0", NewVectorFrom(MakeSymbol("major"), MakeSymbol("minor"))),
 			"Referer": MakeGoReceiver("Referer", _f_ptrTo_Request_Referer, "Referer returns the referring URL, if sent in the request.\n\nReferer is misspelled as in the request itself, a mistake from the\nearliest days of HTTP.  This value can also be fetched from the\nHeader map as Header[\"Referer\"]; the benefit of making it available\nas a method is that the compiler can diagnose programs that use the\nalternate (correct English) spelling req.Referrer() but cannot\ndiagnose programs that use Header[\"Referrer\"].\n", "1.0", NewVectorFrom()),
@@ -14312,7 +14317,7 @@ GO ENSURE-LOADED FOR url:
 
 Adding 15 custom imports to _tests/gold/amd64-darwin/joker/custom.go
 Adding 15 custom loaded libraries to _tests/gold/amd64-darwin/joker/core/data/customlibs.joke
-Adding only 189 types (out of 202) to _tests/gold/amd64-darwin/joker/core/goswitch.go
+Adding only 189 types (out of 205) to _tests/gold/amd64-darwin/joker/core/goswitch.go
 Generated file goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
 
@@ -14718,10 +14723,10 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(234) 707(142) 049(138) 727(121) 048(93) 041(54) 275(30) 674(20) 737(8) 747(2) 124(1)
-Totals: functions=470 generated=261 (55.53%)
+ABENDs: 002(234) 707(140) 049(138) 727(121) 048(93) 041(54) 275(30) 674(20) 737(8) 747(2) 124(1)
+Totals: functions=470 generated=262 (55.74%)
           non-receivers=148 (31.49%) generated=86 (58.11%)
-          receivers=273 (58.09%) generated=154 (56.41%)
+          receivers=273 (58.09%) generated=155 (56.78%)
           methods=49 (10.43%) generated=21 (42.86%)
         types=184
           constructable=164 ctors=82 (50.00%)

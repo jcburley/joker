@@ -15,17 +15,18 @@ import (
 type Info struct {
 	Expr                 Expr   // [key] The canonical referencing expression (if any)
 	FullName             string // [key] Full name of type as a Clojure expression
+	FullNameDoc          string // Full name of type as a Clojure expression (for documentation); just e.g. "Int" for builtin global types
 	Who                  string // who made me
 	Pattern              string // E.g. "%s", "refTo%s" (for reference types), "arrayOf%s" (for array types)
 	Namespace            string // E.g. "go.std.net.url", in which this type resides ("" denotes global namespace)
 	BaseName             string // E.g. "Listener"
+	BaseNameDoc          string // Might be e.g. "Int" when BaseName is "Int8"
 	ArgClojureType       string // Can convert this type to a Go function arg with my type
 	ArgFromClojureObject string // Append this to Clojure object to extract value of my type
 	ArgExtractFunc       string
 	ArgClojureArgType    string // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure   string // Pattern to convert a (scalar) %s to this type
 	ConvertFromMap       string // Pattern to convert a map %s key %s to this type
-	FullNameDoc          string // Full name of type as a Clojure expression (for documentation); just e.g. "Int" for builtin global types
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	IsUnsupported        bool   // Is this unsupported?
@@ -50,7 +51,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
+func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
 
 	var ue Expr
 	pattern, ue = patternForExpr(e)
@@ -60,12 +61,14 @@ func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 		if !astutils.IsBuiltin(v.Name) {
 			ns = ClojureNamespaceForExpr(ue)
 			baseName = v.Name
+			baseNameDoc = baseName
 		} else {
 			uInfo, found := goTypeMap[v.Name]
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
 			}
-			baseName = uInfo.FullNameDoc
+			baseName = uInfo.FullName
+			baseNameDoc = uInfo.FullNameDoc
 			if e == ue {
 				info = uInfo
 			}
@@ -74,11 +77,14 @@ func namingForExpr(e Expr) (pattern, ns, baseName, name string, info *Info) {
 		pkgName := v.X.(*Ident).Name
 		ns = ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v))
 		baseName = v.Sel.Name
+		baseNameDoc = baseName
 	default:
 		baseName = "GoObject"
+		baseNameDoc = baseName
 	}
 
 	name = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseName))
+	nameDoc = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseNameDoc))
 
 	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
 
@@ -95,13 +101,14 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 
 	jti := &Info{
 		FullName:          name,
+		FullNameDoc:       name,
 		Who:               "TypeDefine",
 		Pattern:           pattern,
 		Namespace:         ns,
 		BaseName:          ts.Name.Name,
+		BaseNameDoc:       ts.Name.Name,
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: name,
-		FullNameDoc:       name,
 		AsClojureObject:   "GoObject(%s%s)",
 	}
 
@@ -120,7 +127,7 @@ func InfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	pattern, ns, baseName, fullName, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, info := namingForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
@@ -138,11 +145,12 @@ func InfoForExpr(e Expr) *Info {
 	info = &Info{
 		Expr:               e,
 		FullName:           fullName,
+		FullNameDoc:        fullNameDoc,
 		Who:                fmt.Sprintf("TypeForExpr %T", e),
 		Pattern:            pattern,
 		Namespace:          ns,
 		BaseName:           baseName,
-		FullNameDoc:        fullName,
+		BaseNameDoc:        baseNameDoc,
 		ArgClojureArgType:  fullName,
 		ConvertFromClojure: convertFromClojure,
 		ConvertFromMap:     convertFromMap,
@@ -156,13 +164,13 @@ func InfoForExpr(e Expr) *Info {
 
 func (ti *Info) NameDoc(e Expr) string {
 	if ti.Pattern == "" || ti.Namespace == "" {
-		return ti.FullName
+		return ti.FullNameDoc
 	}
 	if e != nil && ClojureNamespaceForExpr(e) != ti.Namespace {
 		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), ti.FullName, ti.Namespace, ClojureNamespaceForExpr(e))
-		return ti.FullName
+		return ti.FullNameDoc
 	}
-	res := fmt.Sprintf(ti.Pattern, ti.BaseName)
+	res := fmt.Sprintf(ti.Pattern, ti.BaseNameDoc)
 	//	fmt.Printf("jtypes.NameDoc(%+v at %s) => just %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), res, ti.Namespace, ClojureNamespaceForExpr(e))
 	return res
 }
@@ -177,12 +185,12 @@ var Nil = &Info{}
 
 var Error = &Info{
 	FullName:             "Error",
+	FullNameDoc:          "Error",
 	ArgClojureType:       "Error",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "Error",
 	ArgClojureArgType:    "Error",
 	ConvertFromMap:       `FieldAsError(%s, %s)`,
-	FullNameDoc:          "Error",
 	AsClojureObject:      "Error(%s%s)",
 	ConvertFromClojure:   "Extract_error(%s, %s)",
 	PromoteType:          "%s",
@@ -190,12 +198,12 @@ var Error = &Info{
 
 var Boolean = &Info{
 	FullName:             "Boolean",
+	FullNameDoc:          "Boolean",
 	ArgClojureType:       "Boolean",
 	ArgFromClojureObject: ".B",
 	ArgExtractFunc:       "Boolean",
 	ArgClojureArgType:    "Boolean",
 	ConvertFromMap:       "FieldAsBoolean(%s, %s)",
-	FullNameDoc:          "Boolean",
 	AsClojureObject:      "Boolean(%s%s)",
 	ConvertFromClojure:   "Extract_bool(%s, %s)",
 	PromoteType:          "%s",
@@ -203,12 +211,12 @@ var Boolean = &Info{
 
 var Byte = &Info{
 	FullName:             "Byte",
+	FullNameDoc:          "Byte",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Byte",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsByte(%s, %s)`,
-	FullNameDoc:          "Byte",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_byte(%s, %s)",
 	PromoteType:          "int(%s)",
@@ -216,12 +224,12 @@ var Byte = &Info{
 
 var Rune = &Info{
 	FullName:             "Char",
+	FullNameDoc:          "Char",
 	ArgClojureType:       "Char",
 	ArgFromClojureObject: ".Ch",
 	ArgExtractFunc:       "Char",
 	ArgClojureArgType:    "Char",
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
-	FullNameDoc:          "Char",
 	AsClojureObject:      "Char(%s%s)",
 	ConvertFromClojure:   "Extract_rune(%s, %s)",
 	PromoteType:          "%s",
@@ -229,12 +237,12 @@ var Rune = &Info{
 
 var String = &Info{
 	FullName:             "String",
+	FullNameDoc:          "String",
 	ArgClojureType:       "String",
 	ArgFromClojureObject: ".S",
 	ArgExtractFunc:       "String",
 	ArgClojureArgType:    "String",
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
-	FullNameDoc:          "String",
 	AsClojureObject:      "String(%s%s)",
 	ConvertFromClojure:   "Extract_string(%s, %s)",
 	PromoteType:          "%s",
@@ -242,142 +250,142 @@ var String = &Info{
 
 var Int = &Info{
 	FullName:             "Int",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(%s%s)",
 	ConvertFromClojure:   "Extract_int(%s, %s)",
 	PromoteType:          "%s",
 }
 
 var Int8 = &Info{
-	FullName:             "Int",
+	FullName:             "Int8",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int8",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_int8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
 var Int16 = &Info{
-	FullName:             "Int",
+	FullName:             "Int16",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int16",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt16(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_int16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
 var Int32 = &Info{
-	FullName:             "Int",
+	FullName:             "Int32",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int32",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt32(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_int32(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
 var Int64 = &Info{
-	FullName:             "BigInt",
+	FullName:             "Int64",
+	FullNameDoc:          "BigInt",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Int64()",
 	ArgExtractFunc:       "Int64",
 	ArgClojureArgType:    "BigInt",
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
-	FullNameDoc:          "BigInt",
 	AsClojureObject:      "BigInt(%s%s)",
 	ConvertFromClojure:   "Extract_int64(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
 var UInt = &Info{
-	FullName:             "Number",
+	FullName:             "Uint",
+	FullNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
-	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	ConvertFromClojure:   "Extract_uint(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
 var UInt8 = &Info{
-	FullName:             "Int",
+	FullName:             "Uint8",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint8",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_uint8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
 var UInt16 = &Info{
-	FullName:             "Int",
+	FullName:             "Uint16",
+	FullNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint16",
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint16(%s, %s)`,
-	FullNameDoc:          "Int",
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "Extract_uint16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
 var UInt32 = &Info{
-	FullName:             "Number",
+	FullName:             "Uint32",
+	FullNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint32",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
-	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	ConvertFromClojure:   "Extract_uint32(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
 var UInt64 = &Info{
-	FullName:             "Number",
+	FullName:             "Uint64",
+	FullNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Uint64()",
 	ArgExtractFunc:       "Uint64",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
-	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(%s%s)",
 	ConvertFromClojure:   "Extract_uint64(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
 var UIntPtr = &Info{
-	FullName:             "Number",
+	FullName:             "UintPtr",
+	FullNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Uint64()",
 	ArgExtractFunc:       "UintPtr",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
-	FullNameDoc:          "Number",
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
 	ConvertFromClojure:   "Extract_uintptr(%s, %s)",
 	PromoteType:          "uint64(%s)",
@@ -385,12 +393,12 @@ var UIntPtr = &Info{
 
 var Float32 = &Info{
 	FullName:             "Double",
+	FullNameDoc:          "Double",
 	ArgClojureType:       "",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
-	FullNameDoc:          "Double",
 	AsClojureObject:      "Double(float64(%s)%s)",
 	ConvertFromClojure:   "Extract_float32(%s, %s)",
 	PromoteType:          "float64(%s)",
@@ -398,12 +406,12 @@ var Float32 = &Info{
 
 var Float64 = &Info{
 	FullName:             "Double",
+	FullNameDoc:          "Double",
 	ArgClojureType:       "Double",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
-	FullNameDoc:          "Double",
 	AsClojureObject:      "Double(%s%s)",
 	ConvertFromClojure:   "Extract_float64(%s, %s)",
 	PromoteType:          "%s",
@@ -411,12 +419,12 @@ var Float64 = &Info{
 
 var Complex128 = &Info{
 	FullName:             "ABEND007(find these)",
+	FullNameDoc:          "ABEND007(find these)",
 	ArgClojureType:       "",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
 	ArgClojureArgType:    "ABEND007(find these)",
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
-	FullNameDoc:          "ABEND007(find these)",
 	ConvertFromClojure:   "Extract_complex128(%s, %s)",
 	AsClojureObject:      "Complex(%s%s)",
 }
