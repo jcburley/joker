@@ -392,7 +392,7 @@ var UIntPtr = &Info{
 }
 
 var Float32 = &Info{
-	FullName:             "Double",
+	FullName:             "Float32",
 	FullNameDoc:          "Double",
 	ArgClojureType:       "",
 	ArgFromClojureObject: "",
