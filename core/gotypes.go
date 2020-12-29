@@ -553,3 +553,127 @@ func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added str
 	v.meta = m
 	return v
 }
+
+func ExtractarrayOfByte(args []Object, index int) []byte {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []byte:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]byte]"))
+}
+
+func ConvertToarrayOfByte(o Object) []byte {
+	switch obj := o.(type) {
+	case String:
+		return []byte(obj.S)
+	case *Vector:
+		vec := make([]byte, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(Int); ok {
+				b := val.I
+				if b >= 0 && b <= 255 {
+					vec[i] = byte(b)
+				} else {
+					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Byte: %s", i, b, obj.ToString(false))))
+				}
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Byte: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []byte:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of byte: %T", g)))
+		}
+	default:
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of byte: %s", obj.ToString(true))))
+	}
+}
+
+func ExtractarrayOfInt(args []Object, index int) []int {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []int:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]int]"))
+}
+
+func ConvertToarrayOfInt(o Object) []int {
+	switch obj := o.(type) {
+	case *Vector:
+		vec := make([]int, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(Int); ok {
+				v := val.I
+				if v >= MIN_INT && v <= MAX_INT {
+					vec[i] = v
+				} else {
+					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Int: %s", i, v, obj.ToString(false))))
+				}
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Int: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []int:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of int: %T", g)))
+		}
+	default:
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of int: %s", obj.ToString(true))))
+	}
+}
+
+func ExtractarrayOfString(args []Object, index int) []string {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []string:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
+}
+
+func ConvertToarrayOfString(o Object) []string {
+	switch obj := o.(type) {
+	case *Vector:
+		vec := make([]string, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(String); ok {
+				v := val.S
+				vec[i] = v
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to String: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
+	case Native:
+		switch g := obj.Native().(type) {
+		case []string:
+			return g
+		default:
+			panic(RT.NewError(fmt.Sprintf("Not an array of string: %T", g)))
+		}
+	default:
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of string: %s", obj.ToString(true))))
+	}
+}
