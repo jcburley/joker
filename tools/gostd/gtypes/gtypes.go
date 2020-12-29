@@ -242,7 +242,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
-		// Concrete types get reference-to variants, allowing Clojure code to access them.
+		// Concrete types get reference-to and array-of variants, allowing Clojure code to access them.
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		tiPtrTo := &Info{
 			Expr:              &StarExpr{X: nil},
@@ -264,6 +264,28 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		}
 		finish(tiPtrTo)
 		types = append(types, tiPtrTo)
+
+		newPattern = fmt.Sprintf(ti.Pattern, "[]%s")
+		tiArrayOf := &Info{
+			Expr:              &ArrayType{Elt: nil},
+			who:               "*TypeDefine*",
+			Type:              &ArrayType{Elt: ti.Type},
+			IsExported:        ti.IsExported,
+			Doc:               ti.Doc,
+			DefPos:            ti.DefPos,
+			File:              gf,
+			Pattern:           newPattern,
+			Package:           ti.Package,
+			LocalName:         ti.LocalName,
+			DocPattern:        newPattern,
+			UnderlyingType:    ti,
+			Specificity:       Concrete,
+			IsSwitchable:      ti.IsSwitchable,
+			IsAddressable:     ti.IsAddressable,
+			IsPassedByAddress: false,
+		}
+		finish(tiArrayOf)
+		types = append(types, tiArrayOf)
 	}
 
 	return types

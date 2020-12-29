@@ -9,9 +9,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
-	//	"os"
 	"sort"
-	"strings"
 )
 
 type TypeInfo interface {
@@ -106,10 +104,8 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			}
 		}
 
-		if !strings.Contains(gti.FullName, "[") { // exclude arrays
-			ClojureCode[pkg].InitTypes[ti] = struct{}{}
-			GoCode[pkg].InitTypes[ti] = struct{}{}
-		}
+		ClojureCode[pkg].InitTypes[ti] = struct{}{}
+		GoCode[pkg].InitTypes[ti] = struct{}{}
 	}
 }
 
@@ -423,7 +419,14 @@ func (ti typeInfo) TypeMappingsName() string {
 		return ""
 	}
 	if ugt := ti.gti.UnderlyingType; ugt != nil {
-		return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+		switch ti.gti.Expr.(type) {
+		case *ArrayType:
+			return "info_ArrayOf_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+		case *StarExpr:
+			return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+		default:
+			panic(fmt.Sprintf("unexpected expr %T with underlying type", ti.gti.Expr))
+		}
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
 }
