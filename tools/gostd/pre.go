@@ -13,16 +13,23 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	ti := TypeInfoForExpr(e)
 
 	pkgBaseName := fn.AddToImports(ti)
-	goName := fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, ti.GoBaseName()))
+	goEffectiveBaseName := ti.GoEffectiveBaseName()
+	if ti.GoBaseName() == ti.GoEffectiveBaseName() {
+		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
+	} else {
+		// unsafe.ArbitraryType becomes interface{}, so omit the package name.
+		goType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+	}
 
-	clType, clTypeDoc, goType, goTypeDoc = ti.ClojureName(), ti.ClojureNameDoc(e), goName, ti.GoNameDoc(e)
+	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
+
 	if clType != "" {
 		clType = assertRuntime("Extract", "ExtractGoObject", clType)
 	}
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
-			cvt = fmt.Sprintf("%%s.(GoObject).O.(%s)%%.s", goName)
+			cvt = fmt.Sprintf("%%s.(GoObject).O.(%s)%%.s", goType)
 		} else {
 			cvt = assertRuntime("", "", cvt)
 		}
@@ -56,11 +63,6 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 			resVarDoc = p.Name
 		}
 		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
-		if goType == "unsafe.ArbitraryType" {
-			goType = "interface{}"
-			clType = "GoObject"
-			clTypeDoc = "GoObject"
-		}
 
 		if clojureParamList != "" {
 			clojureParamList += ", "

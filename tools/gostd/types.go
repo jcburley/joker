@@ -24,6 +24,7 @@ type TypeInfo interface {
 	Custom() bool            // Whether this is defined by the codebase vs either builtin or derived
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
+	ClojureEffectiveName() string
 	ClojureNameDoc(e Expr) string
 	ClojurePattern() string
 	ClojureBaseName() string
@@ -31,10 +32,12 @@ type TypeInfo interface {
 	ClojureWho() string
 	RequiredImports() *imports.Imports
 	GoName() string
+	GoEffectiveName() string // Substitutes what actually works in generated Go code (inteface{} instead of unsafe.Arbitrary)
 	GoNameDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
+	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (inteface{} instead of Arbitrary if in unsafe pkg)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -271,7 +274,17 @@ func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
 }
 
+func (ti typeInfo) ClojureEffectiveName() string {
+	if ti.gti.FullName == "unsafe.ArbitraryType" {
+		return "GoObject"
+	}
+	return ti.jti.FullName
+}
+
 func (ti typeInfo) ClojureNameDoc(e Expr) string {
+	if ti.gti.FullName == "unsafe.ArbitraryType" {
+		return "GoObject"
+	}
 	return ti.jti.NameDoc(e)
 }
 
@@ -303,6 +316,14 @@ func (ti typeInfo) GoName() string {
 	return ti.gti.FullName
 }
 
+func (ti typeInfo) GoEffectiveName() string {
+	name := ti.gti.FullName
+	if name == "unsafe.ArbitraryType" {
+		return "interface{}"
+	}
+	return name
+}
+
 func (ti typeInfo) GoNameDoc(e Expr) string {
 	return ti.gti.NameDoc(e)
 }
@@ -316,6 +337,13 @@ func (ti typeInfo) GoPattern() string {
 }
 
 func (ti typeInfo) GoBaseName() string {
+	return ti.gti.LocalName
+}
+
+func (ti typeInfo) GoEffectiveBaseName() string {
+	if ti.gti.FullName == "unsafe.ArbitraryType" {
+		return "interface{}"
+	}
 	return ti.gti.LocalName
 }
 
