@@ -17,7 +17,6 @@ if [ ! -x "$JOKER" ]; then
         ALREADY_BUILT=false
     else
         ./clean.sh >/dev/null 2>/dev/null
-        rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
         build
         JOKER=../joker
         ALREADY_BUILT=true
@@ -26,6 +25,7 @@ else
     ALREADY_BUILT=false
 fi
 
+rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
 [ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --clojure .
 
 # Check for changes in std, and run just-built Joker, only when building for host os/architecture.
