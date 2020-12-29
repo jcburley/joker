@@ -276,7 +276,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 				return
 			}
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || ti.GoBaseName() == "" || !ti.IsExported() {
+			if tmn == "" || ti.GoBaseName() == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			typeDoc := ti.Doc()
@@ -399,7 +399,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
@@ -427,7 +427,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			k1 := ti.ClojureName()
@@ -460,7 +460,7 @@ import (%s
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)

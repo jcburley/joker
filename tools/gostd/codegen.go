@@ -612,7 +612,7 @@ func GenTypeFromDb(ti TypeInfo) {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 	}
 
-	if !ti.IsExported() || (false && strings.Contains(ti.ClojureName(), "[")) {
+	if !ti.IsExported() || ti.IsArbitraryType() {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
 		return // Do not generate anything for private or array types
 	}
