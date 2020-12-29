@@ -38,6 +38,7 @@ type Info struct {
 	IsSwitchable      bool // Can type's Go name be used in a "case" statement?
 	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress bool // Excludes builtins, some complex, and interface{} types
+	IsArbitraryType   bool // Is unsafe.ArbitraryType, which gets treated as interface{}
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -143,6 +144,10 @@ func (ti *Info) computeFullName() string {
 func finish(ti *Info) {
 	fullName := ti.computeFullName()
 
+	if fullName == "unsafe.ArbitraryType" {
+		ti.IsArbitraryType = true
+	}
+
 	if _, ok := typesByFullName[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
 		return
@@ -230,6 +235,13 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
+
+	if ti.IsArbitraryType {
+		// This snuck through above as a concrete type, but it
+		// really isn't. Fix that now, before generating a
+		// reference variant.
+		ti.Specificity = 0
+	}
 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Clojure code to access them.

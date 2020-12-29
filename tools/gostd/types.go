@@ -55,6 +55,7 @@ type TypeInfo interface {
 	IsSwitchable() bool      // Can (Go) name be used in a 'case' statement or type assertion?
 	IsAddressable() bool     // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress() bool // Excludes builtins, some complex, and interface{} types
+	IsArbitraryType() bool   // Is unsafe.ArbitraryType, which gets treated as interface{}
 }
 
 type TypesMap map[string]TypeInfo
@@ -275,14 +276,14 @@ func (ti typeInfo) ClojureName() string {
 }
 
 func (ti typeInfo) ClojureEffectiveName() string {
-	if ti.gti.FullName == "unsafe.ArbitraryType" {
+	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
 	return ti.jti.FullName
 }
 
 func (ti typeInfo) ClojureNameDoc(e Expr) string {
-	if ti.gti.FullName == "unsafe.ArbitraryType" {
+	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
 	return ti.jti.NameDoc(e)
@@ -317,11 +318,11 @@ func (ti typeInfo) GoName() string {
 }
 
 func (ti typeInfo) GoEffectiveName() string {
-	name := ti.gti.FullName
-	if name == "unsafe.ArbitraryType" {
+	if ti.gti.IsArbitraryType {
 		return "interface{}"
 	}
-	return name
+	return ti.gti.FullName
+
 }
 
 func (ti typeInfo) GoNameDoc(e Expr) string {
@@ -341,7 +342,7 @@ func (ti typeInfo) GoBaseName() string {
 }
 
 func (ti typeInfo) GoEffectiveBaseName() string {
-	if ti.gti.FullName == "unsafe.ArbitraryType" {
+	if ti.gti.IsArbitraryType {
 		return "interface{}"
 	}
 	return ti.gti.LocalName
@@ -413,6 +414,10 @@ func (ti typeInfo) IsPassedByAddress() bool {
 	return ti.gti.IsPassedByAddress
 }
 
+func (ti typeInfo) IsArbitraryType() bool {
+	return ti.gti.IsArbitraryType
+}
+
 func (ti typeInfo) TypeMappingsName() string {
 	if !ti.IsExported() {
 		return ""
@@ -439,7 +444,7 @@ func SortAllTypes() {
 
 		// fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.ClojureName(), ti, ti)
 		t := ti.GoTypeInfo()
-		if t.IsExported && (t.Package != "unsafe" || t.LocalName != "ArbitraryType") {
+		if t.IsExported && !t.IsArbitraryType {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
 		}
 	}
