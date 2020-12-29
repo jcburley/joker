@@ -110,8 +110,17 @@
     (is (= (type c) GoObject))
     (is (= (type si) Int))))
 
-(deftest array-args-work
-  (is (go.std.bytes/Equal "hey" "hey"))
-  (is (not (go.std.bytes/Equal "hey" "there")))
-  (is (go.std.sort/IntsAreSorted [1 2 3 4]))
-  (is (not (go.std.sort/IntsAreSorted [1 2 4 3]))))
+;; 2020-12-28 Disabled for now as, without having IsReadOnly ("ro"
+;; proposal in Go 2, for example) set for these APIs, it seems best to
+;; assume the incoming []byte and []string arrays will be modified by
+;; the APIs, and thus not autoconvert from "hey" and [1 2 3 4] to
+;; those, respectively, thus silently discarding whatever changes are
+;; made. Adding IsReadOnly support is one idea; but, without Go
+;; support for it coming along, it is perhaps more sensible to just
+;; make callers explicitly convert, which (right now) I don't think
+;; they can do.
+;; (deftest array-args-work
+;;   (is (go.std.bytes/Equal "hey" "hey"))
+;;   (is (not (go.std.bytes/Equal "hey" "there")))
+;;   (is (go.std.sort/IntsAreSorted [1 2 3 4]))
+;;   (is (not (go.std.sort/IntsAreSorted [1 2 4 3]))))
