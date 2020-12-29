@@ -14,11 +14,11 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 
 	pkgBaseName := fn.AddToImports(ti)
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
-	if ti.GoBaseName() == ti.GoEffectiveBaseName() {
-		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
-	} else {
+	if ti.IsArbitraryType() {
 		// unsafe.ArbitraryType becomes interface{}, so omit the package name.
 		goType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+	} else {
+		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
 	}
 
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)

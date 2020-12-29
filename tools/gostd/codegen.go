@@ -422,7 +422,7 @@ func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
 
 func GenType(t string, ti TypeInfo) {
 	ts := ti.TypeSpec()
-	if !ti.IsExported() || ti.GoName() == "unsafe.ArbitraryType" {
+	if !ti.IsExported() || ti.IsArbitraryType() {
 		return // Do not generate anything for private or array types
 	}
 

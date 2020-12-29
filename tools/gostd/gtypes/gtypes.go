@@ -125,7 +125,7 @@ func specificityOfInterface(ts *InterfaceType) uint {
 	return sp
 }
 
-func specificity(ts *TypeSpec) uint {
+func calculateSpecificity(ts *TypeSpec) uint {
 	if iface, ok := ts.Type.(*InterfaceType); ok {
 		return specificityOfInterface(iface)
 	}
@@ -143,10 +143,6 @@ func (ti *Info) computeFullName() string {
 
 func finish(ti *Info) {
 	fullName := ti.computeFullName()
-
-	if fullName == "unsafe.ArbitraryType" {
-		ti.IsArbitraryType = true
-	}
 
 	if _, ok := typesByFullName[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
@@ -211,9 +207,17 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	types := []*Info{}
 
-	isPassedByAddress := true
+	var specificity uint
+	var isPassedByAddress bool
+	var isArbitraryType bool
 	if pkg == "unsafe" && localName == "ArbitraryType" {
 		isPassedByAddress = false
+		isArbitraryType = true
+		specificity = 0
+	} else {
+		isPassedByAddress = true
+		isArbitraryType = false
+		specificity = calculateSpecificity(ts)
 	}
 
 	ti := &Info{
@@ -228,20 +232,14 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Package:           pkg,
 		LocalName:         localName,
 		DocPattern:        "%s",
-		Specificity:       specificity(ts),
+		Specificity:       specificity,
 		IsSwitchable:      ts.Assign == token.NoPos,
 		IsAddressable:     isAddressable(pkg, localName),
 		IsPassedByAddress: isPassedByAddress,
+		IsArbitraryType:   isArbitraryType,
 	}
 	defineAndFinish(ti)
 	types = append(types, ti)
-
-	if ti.IsArbitraryType {
-		// This snuck through above as a concrete type, but it
-		// really isn't. Fix that now, before generating a
-		// reference variant.
-		ti.Specificity = 0
-	}
 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to variants, allowing Clojure code to access them.
