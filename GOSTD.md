@@ -101,39 +101,33 @@ A `GoObject` is a Joker object that wraps a Go object (of type `interface{}`). E
 
 ```
 $ joker
-Welcome to joker v0.12.9. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
-user=> (use '[go.std.net :as n])
-nil
-user=> (doc n/Interfaces)
--------------------------
-go.std.net/Interfaces
-([])
-  Interfaces returns a list of the system's network interfaces.
-
-Go return type: ([]Interface, error)
-
-Joker input arguments: []
-
-Joker return type: [(vector-of go.std.net/Interface) Error]
-nil
-user=> (def r (n/Interfaces))
+Welcome to joker v0.15.7-gostd. Use '(exit)', EOF (Ctrl-D), or SIGINT (Ctrl-C) to exit.
+user=> (def r (go.std.net/Interfaces))
 #'user/r
 user=> r
-[[{1 65536 lo  up|loopback} {2 1500 eth0 14:da:e9:1f:c8:57 up|broadcast|multicast} {3 1500 docker0 02:42:6a:a9:a8:d8 up|broadcast|multicast}] nil]
+[[{1 16384 lo0  up|loopback|multicast} {2 1280 gif0  pointtopoint|multicast} {3 1280 stf0  0} {5 1500 en0 78:4f:43:84:9e:b3 up|broadcast|multicast} {6 2304 p2p0 0a:4f:43:84:9e:b3 up|broadcast|multicast} {7 1484 awdl0 fe:e0:5f:62:7a:ec up|broadcast|multicast} {8 1500 llw0 fe:e0:5f:62:7a:ec up|broadcast|multicast} {9 1500 en3 82:c9:92:c2:a0:01 up|broadcast|multicast} {10 1500 en1 82:c9:92:c2:a0:00 up|broadcast|multicast} {11 1500 en4 82:c9:92:c2:a0:05 up|broadcast|multicast} {12 1500 en2 82:c9:92:c2:a0:04 up|broadcast|multicast} {13 1500 bridge0 82:c9:92:c2:a0:00 up|broadcast|multicast} {14 1380 utun0  up|pointtopoint|multicast} {15 2000 utun1  up|pointtopoint|multicast} {4 1500 en5 ac:de:48:00:11:22 up|broadcast|multicast}] nil]
 user=> (type r)
 Vector
-user=> (type (r 0))
-Vector
-user=> (type ((r 0) 0))
+user=> (def i (r 0))
+#'user/i
+user=> i
+[{1 16384 lo0  up|loopback|multicast} {2 1280 gif0  pointtopoint|multicast} {3 1280 stf0  0} {5 1500 en0 78:4f:43:84:9e:b3 up|broadcast|multicast} {6 2304 p2p0 0a:4f:43:84:9e:b3 up|broadcast|multicast} {7 1484 awdl0 fe:e0:5f:62:7a:ec up|broadcast|multicast} {8 1500 llw0 fe:e0:5f:62:7a:ec up|broadcast|multicast} {9 1500 en3 82:c9:92:c2:a0:01 up|broadcast|multicast} {10 1500 en1 82:c9:92:c2:a0:00 up|broadcast|multicast} {11 1500 en4 82:c9:92:c2:a0:05 up|broadcast|multicast} {12 1500 en2 82:c9:92:c2:a0:04 up|broadcast|multicast} {13 1500 bridge0 82:c9:92:c2:a0:00 up|broadcast|multicast} {14 1380 utun0  up|pointtopoint|multicast} {15 2000 utun1  up|pointtopoint|multicast} {4 1500 en5 ac:de:48:00:11:22 up|broadcast|multicast}]
+user=> (type i)
 GoObject
-user=> (GoTypeOf ((r 0) 0))
+user=> (GoTypeOf i)
+go.std.net/arrayOfInterface
+user=> (def j (get i 1))
+#'user/j
+user=> j
+{2 1280 gif0  pointtopoint|multicast}
+user=> (type j)
+GoObject
+user=> (GoTypeOf j)
 go.std.net/Interface
-user=> ((r 0) 0)
-{1 65536 lo  up|loopback}
 user=>
 ```
 
-In the above case, multiple `GoObject` objects are returned by a single call to `go.std.net/Interface`: they are returned as a (Clojure) vector, which in turn is wrapped in a vector along with the `error` return value, per the "Go return type" shown by `doc`.
+In the above case, a `GoObject` that wraps an instance of `[]net.Interface` is returned by a single call to `go.std.net/Interface`: though not a (Clojure) vector, `get` works on that array similarly. That `GoObject` is in turn is wrapped in a Clojure vector along with the `error` return value, per the "Go return type" shown by `doc`.
 
 ### Copying GoObjects
 
@@ -223,7 +217,7 @@ Calling a Go wrapper function (for a Go function, receiver, or method) in Joker 
 
 Generally, the types of an input argument (to a Go wrapper function) must be either a built-in type (such as `int`) or a `GoObject` wrapping an object of the same (named) type as the corresponding input argument to the Go API.
 
-Arguments with built-in types must be passed appropriate Clojure objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported. However, GoObject-creation rules take this into account, substituting appropriate Clojure objects when the types are compatible.
+Arguments of built-in types must be passed appropriate Clojure objects (`Int`, `String`, and so on) -- no "unwrapping" of `GoObject`'s is supported. However, GoObject-creation rules take this into account, substituting appropriate Clojure objects when the types are compatible.
 
 Other arguments (with named types) are passed `GoObject` instances that can be:
 * Constructed
@@ -360,7 +354,7 @@ Also note that Clojure's `.foo` form and its `.` special operator are not (yet?)
 
 Multiple return values are converted to a (Clojure) vector of the arguments, each treated as its own return value as far as this section of the document is concerned.
 
-Arrays are returned as vectors, types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
+Types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
 Returned `GoObject` instances can:
 * Be ignored (they'll presumably be garbage-collected at some point)
@@ -473,24 +467,59 @@ The version of `run.sh` on this branch invokes `tools/gostd/gostd` to create the
 
 Before building Joker by hand, one can optionally run the `gostd` tool against a Go source tree (the default is found via `go/build.Default.GOROOT`), which _must_ correspond to the version of Go used to build Joker itself (as it likely will). It contains a complete `src` subdirectory, which `gostd` walks and parses, in order to populate `std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
-This is still a work in progress; for example, `net.LookupMX()` returns a vector including a vector of pointers to `net.MX` objects, which cannot yet be properly examined (though Go's conversion to text is often reasonably helpful). E.g.:
+This is still a work in progress; for example, `net.LookupMX()` returns a vector including a `GoObject` wrapping a `[]*net.MX` object, which is not yet itself fully itself as a type, but can be examined. E.g.:
 
 ```
-user=> (n/LookupMX "github.com")
-[[&{aspmx.l.google.com. 1} &{alt1.aspmx.l.google.com. 5} &{alt2.aspmx.l.google.com. 5} &{alt3.aspmx.l.google.com. 10} &{alt4.aspmx.l.google.com. 10}] nil]
-user=> (def r0 (((n/LookupMX "github.com") 0) 0))
-#'user/r0
-user=> r0
-&{aspmx.l.google.com. 1}
-user=> (deref r0)
-<joker.core>:1448:3: Eval error: Arg[0] of core/deref__ must have type Deref, got GoObject[*net.MX]
+user=> (def mxe (go.std.net/LookupMX "burleyarch.com"))
+#'user/mxe
+user=> mxe
+[[0xc00059e160] nil]
+user=> (type mxe)
+Vector
+user=> (def mx (get mxe 0))
+#'user/mx
+user=> mx
+[0xc00059e160]
+user=> (type mx)
+GoObject
+user=> (GoTypeOf mx)
+<joker.core>:4678:3: Eval error: Unsupported Go type []*net.MX
 Stacktrace:
-  global <repl>:15:1
-  core/deref <joker.core>:1448:3
+  global <repl>:20:1
+  core/GoTypeOf <joker.core>:4678:3
+user=> (deref mx)
+[0xc00059e160]
+user=> (def m0 (get mx 0))
+#'user/m0
+user=> m0
+&{p25.llamail.com. 10}
+user=> (type m0)
+GoObject
+user=> (GoTypeOf m0)
+go.std.net/refToMX
+user=> (deref m0)
+{p25.llamail.com. 10}
+user=> (type (deref m0))
+GoObject
+user=> (GoTypeOf (deref m0))
+go.std.net/MX
+user=> (def m (deref m0))
+#'user/m
+user=> m
+{p25.llamail.com. 10}
+user=> (get m 0)
+<joker.core>:1105:4: Eval error: interface conversion: core.Int is not core.Fieldable: missing method AsFieldName
+Stacktrace:
+  global <repl>:31:1
+  core/get <joker.core>:1105:4
+user=> (get m :Pref)
+10
+user=> (get m :Host)
+"p25.llamail.com."
 user=>
 ```
 
-You can run it standalone like this:
+You can run `gostd` standalone like this:
 
 ```
 $ cd tools/gostd
@@ -499,15 +528,14 @@ $ go run . --output-code 2>&1 | less
 
 Then page through the output. Code snippets intended for e.g. `std/go/std/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/custom.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
 
-Anything not supported results in either a `panic` or, more often, the string `ABEND` along with some kind of explanation. The latter is used to auto-detect a non-convertible function, in which case the snippet(s) are still output, but commented-out, so it's easy to see what's missing and (perhaps) why.
+Most anything not supported results in either a `panic` or, more often, the string `ABEND` along with some kind of explanation. The latter is used to auto-detect a non-convertible function, in which case the snippet(s) are still output, but commented-out, so it's easy to see what's missing and (perhaps) why.
 
 Among things to do to "productize" this:
 
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
 * Improve docstrings for constructors (show and document the members)
-* Refactor `gotypes.go`, as was started and (for the time being) abandoned on 2019-08-19 in the `gostd-bad-refactor` branch (now in progress in the form of `types/types.go`)
 * Document the code better
-* Assess performance impact (especially startup time) on Joker, and mitigate as appropriate (good progress has already been made here, via lazy loading of namespaces; it seems to be not much slower than standard Joker)
+* Assess performance impact (especially startup time) on Joker
 
 ### Evaluation Tests
 
@@ -587,4 +615,19 @@ Restore them via:
 $ ./cleanup.sh
 ```
 
-This should result in `git` showing no differences (tracked nor untracked files) if only `gostd` has made changes to the source tree.
+This should result in `git` showing no differences (tracked nor untracked files) if only `gostd` has made changes to the source tree. If Joker hadn't previously been successfully built, there'll be a diagnostic; but the result should still be a "cleaned" tree.
+
+### Caching of Core-API Information
+
+To ease development, `gostd` dynamically determines the list of exported functions in Joker's `core` package, and avoids generating calls to unlisted functions. This helps to catch missing APIs earlier in the development process (mainly, while building and testing `gostd` in isolation, versus requiring a build of Joker itself).
+
+The resulting list is cached in `./core-apis.dat`, and reused by `./test.sh` for the second and third tests, to save time (which amounts to a substantial portion of the time it takes to build and test `gostd`).
+
+As building Joker takes enough longer to make this caching less useful, `run.sh` deletes the cache prior to each build.
+
+
+### Caching of Working Joker Version
+
+To save time when building Joker, either an environment variable `$JOKER` or a copy (or link) named `joker-good` (in the top-level Joker directory), pointing to a previously-built and working version of Joker, can be provided.
+
+This causes `run.sh` to skip building an initial version of Joker, and instead use that existing version to run `std/generate-std.joke` and then decide whether it is necessary to rebuild Joker with the resulting libraries (as will always be the case when `gostd` is involved).
