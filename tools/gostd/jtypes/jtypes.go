@@ -41,8 +41,9 @@ var typesByFullname = map[string]*Info{}
 func patternForExpr(e Expr) (pattern string, ue Expr) {
 	switch v := e.(type) {
 	case *ArrayType:
+		len, _ := astutils.IntExprToString(v.Len)
 		pattern, e = patternForExpr(v.Elt)
-		return "arrayOf" + pattern, e
+		return "array" + len + "Of" + pattern, e
 	case *StarExpr:
 		pattern, e = patternForExpr(v.X)
 		return "refTo" + pattern, e
@@ -57,7 +58,6 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 }
 
 func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
-
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 

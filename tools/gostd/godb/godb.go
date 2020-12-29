@@ -347,4 +347,6 @@ func init() {
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", decls}
 	packagesByUnixPath[""] = pkgDb
+
+	astutils.WhereAt = WhereAt
 }

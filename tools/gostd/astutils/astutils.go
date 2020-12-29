@@ -5,7 +5,9 @@ package astutils
 import (
 	"fmt"
 	. "go/ast"
+	"go/token"
 	"go/types"
+	"strconv"
 	"strings"
 )
 
@@ -74,3 +76,54 @@ func IsExportedType(f *Expr) bool {
 		panic(fmt.Sprintf("unsupported expr type %T", f))
 	}
 }
+
+func EvalExpr(e Expr) interface{} {
+	switch v := e.(type) {
+	case *BasicLit:
+		switch v.Kind {
+		case token.STRING:
+			return v.Value
+		case token.INT:
+			res, err := strconv.Atoi(v.Value)
+			if err != nil {
+				panic(err)
+			}
+			return res
+		default:
+			panic(fmt.Sprintf("unsupported BasicLit type %T", v.Kind))
+		}
+	case *ParenExpr:
+		return EvalExpr(v.X)
+	}
+	return nil
+}
+
+func IntExprToString(e Expr) (real, doc string) {
+	if e == nil {
+		return
+	}
+
+	res := EvalExpr(e)
+	switch r := res.(type) {
+	case int:
+		real = fmt.Sprintf("%d", r)
+	default:
+		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, WhereAt(e.Pos()))
+	}
+
+	doc = IntExprToDocString(e)
+
+	return
+}
+
+func IntExprToDocString(e Expr) string {
+	switch v := e.(type) {
+	case *BasicLit:
+		return v.Value
+	case *Ident:
+		return v.Name
+	}
+	return "???"
+}
+
+var WhereAt func(p token.Pos) string

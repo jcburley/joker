@@ -458,5 +458,4 @@ func TypesByGoName() TypesMap {
 
 func init() {
 	jtypes.ConversionsFn = conversions
-	gtypes.SetEvalFn(evalExpr)
 }

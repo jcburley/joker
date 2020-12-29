@@ -319,7 +319,7 @@ func InfoForExpr(e Expr) *Info {
 		isPassedByAddress = false
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
-		len, docLen := intExprToString(v.Len)
+		len, docLen := astutils.IntExprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		docPattern = "[" + docLen + "]%s"
 		if innerInfo == nil {
@@ -440,34 +440,6 @@ func methodsToString(methods []*Field) string {
 	return strings.Join(mStrings, ", ")
 }
 
-func intExprToString(e Expr) (real, doc string) {
-	if e == nil {
-		return
-	}
-
-	res := eval(e)
-	switch r := res.(type) {
-	case int:
-		real = fmt.Sprintf("%d", r)
-	default:
-		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, godb.WhereAt(e.Pos()))
-	}
-
-	doc = intExprToDocString(e)
-
-	return
-}
-
-func intExprToDocString(e Expr) string {
-	switch v := e.(type) {
-	case *BasicLit:
-		return v.Value
-	case *Ident:
-		return v.Name
-	}
-	return "???"
-}
-
 func typeAsString(f *Field, pos token.Pos) string {
 	ty := f.Type
 	ti := InfoForExpr(ty)
@@ -480,12 +452,6 @@ func typeAsString(f *Field, pos token.Pos) string {
 
 func typeAsStringRelative(p token.Pos) func(*Field) string {
 	return func(f *Field) string { return typeAsString(f, p) }
-}
-
-var eval func(e Expr) interface{}
-
-func SetEvalFn(fn func(e Expr) interface{}) {
-	eval = fn
 }
 
 func (ti *Info) Reflected() (packageImport, pattern string) {
