@@ -208,7 +208,7 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 			fromClojure = "&" + ti.ConvertFromClojure()
 		}
 		if ti.ConvertFromMap() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
-			fromMap = "&" + ti.ConvertFromMap()
+			//			fromMap = "&" + ti.ConvertFromMap()
 		}
 	default:
 		//		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
