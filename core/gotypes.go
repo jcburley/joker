@@ -566,6 +566,42 @@ func ExtractarrayOfByte(args []Object, index int) []byte {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]byte]"))
 }
 
+func Extractarray4OfByte(args []Object, index int) [4]byte {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [4]byte:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[4]byte]"))
+}
+
+func ExtractarrayOfarrayOfByte(args []Object, index int) [][]byte {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [][]byte:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[][]byte]"))
+}
+
+func ExtractarrayOfarray32OfByte(args []Object, index int) [][32]byte {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [][32]byte:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[][32]byte]"))
+}
+
 func ConvertToarrayOfByte(o Object) []byte {
 	switch obj := o.(type) {
 	case String:
@@ -640,6 +676,54 @@ func ConvertToarrayOfInt(o Object) []int {
 	}
 }
 
+func ExtractarrayOfUint16(args []Object, index int) []uint16 {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []uint16:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]uint16]"))
+}
+
+func ExtractarrayOfUintPtr(args []Object, index int) []uintptr {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []uintptr:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]uintptr]"))
+}
+
+func ExtractarrayOfDouble(args []Object, index int) []float64 {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []float64:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]float64]"))
+}
+
+func ExtractarrayOfChar(args []Object, index int) []rune {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []rune:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[]rune]"))
+}
+
 func ExtractarrayOfString(args []Object, index int) []string {
 	o := args[index]
 	switch obj := o.(type) {
@@ -650,6 +734,18 @@ func ExtractarrayOfString(args []Object, index int) []string {
 		}
 	}
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
+}
+
+func ExtractarrayOfarrayOfString(args []Object, index int) [][]string {
+	o := args[index]
+	switch obj := o.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [][]string:
+			return g
+		}
+	}
+	panic(RT.NewArgTypeError(index, o, "GoObject[[][]string]"))
 }
 
 func ConvertToarrayOfString(o Object) []string {
