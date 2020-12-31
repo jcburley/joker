@@ -444,8 +444,9 @@ func SortAllTypes() {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, ti := range typesByClojureName {
-
-		// fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.ClojureName(), ti, ti)
+		if ti.GoName() == "[][]*crypto/x509.Certificate" {
+			fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.ClojureName(), ti, ti)
+		}
 		t := ti.GoTypeInfo()
 		if t.IsExported && !t.IsArbitraryType {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
