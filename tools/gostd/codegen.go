@@ -589,18 +589,30 @@ func GenTypeInfo() {
 	ord := (uint)(0)
 
 	for _, ti := range allTypesSorted {
+		more := false
+		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
+			more = true
+		}
 		if !ti.Custom() {
 			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
-				//				fmt.Printf("codegen.go/GenTypeInfo: no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
+				if more {
+					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
+				}
 				continue
 			}
 		}
 		if !ti.IsSwitchable() {
+			if more {
+				fmt.Printf("codegen.go/GenTypeInfo(): %s not switchable\n", ti.GoName())
+			}
 			continue
 		}
 		types = append(types, ti)
 		Ordinal[ti] = ord
-		//		fmt.Printf("codegen.go/GenTypeInfo: assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.(*typeInfo).gti.FullName, ti.Specificity())
+		if more {
+			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.GoName(), ti.Specificity())
+		}
 		ord++
 	}
 

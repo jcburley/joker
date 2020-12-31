@@ -119,14 +119,14 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 
 	if ti, found := typesByGoName[gti.FullName]; found {
 		if _, ok := typesByClojureName[jti.FullName]; !ok {
-			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s]\n", gti.FullName, jti.FullName)
+			fmt.Printf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s]\n", gti.FullName, jti.FullName)
 			typesByClojureName[jti.FullName] = ti
 		}
 		return ti
 	}
 	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
-			//			fmt.Printf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
+			fmt.Printf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName)
 		}
 	}
 

@@ -146,7 +146,7 @@ func insert(ti *Info) {
 
 	typesByFullName[fullName] = ti
 
-	if fullName == "[][]*crypto/x509.Certificate" {
+	if fullName == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
 		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
 	}
 
