@@ -360,7 +360,7 @@ func (ti typeInfo) UnderlyingTypeInfo() TypeInfo {
 	if ut.Expr == nil {
 		return typesByGoName[ut.FullName]
 	}
-	return typesByExpr[ut.Expr]
+	return TypeInfoForExpr(ut.Expr)
 }
 
 func (ti typeInfo) UnderlyingType() Expr {
@@ -445,7 +445,7 @@ func SortAllTypes() {
 	}
 	for _, ti := range typesByClojureName {
 		if ti.GoName() == "[][]*crypto/x509.Certificate" {
-			fmt.Printf("types.go/AllTypesSorted: %s == @%p %+v\n", ti.ClojureName(), ti, ti)
+			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
 		if t.IsExported && !t.IsArbitraryType {
