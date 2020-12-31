@@ -456,6 +456,7 @@ func InfoForExpr(e Expr) *Info {
 			IsPassedByAddress: isPassedByAddress,
 		}
 		insert(ti)
+		//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
 		return ti
 	}
 
