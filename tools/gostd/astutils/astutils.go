@@ -108,7 +108,7 @@ func IntExprToString(e Expr) (real, doc string) {
 	case int:
 		real = fmt.Sprintf("%d", r)
 	default:
-		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", res, WhereAt(e.Pos()))
+		real = fmt.Sprintf("ABEND229(non-int expression %T at %s)", e, WhereAt(e.Pos()))
 	}
 
 	doc = IntExprToDocString(e)
