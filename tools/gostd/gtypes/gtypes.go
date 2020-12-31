@@ -33,7 +33,7 @@ type Info struct {
 	File              *godb.GoFile
 	Specificity       uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	IsNullable        bool // Can an instance of the type == nil (e.g. 'error' type)?
-	IsExported        bool
+	IsExported        bool // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
 	IsSwitchable      bool // Can type's Go name be used in a "case" statement?
 	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
@@ -340,6 +340,7 @@ func InfoForExpr(e Expr) *Info {
 	docPattern := pattern
 	switchable := true
 	isPassedByAddress := true
+	isExported := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -349,6 +350,7 @@ func InfoForExpr(e Expr) *Info {
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
 		isPassedByAddress = false
+		isExported = innerInfo.IsExported
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -362,10 +364,12 @@ func InfoForExpr(e Expr) *Info {
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
 		pkgName = innerInfo.Package
+		isPassedByAddress = false
+		isExported = innerInfo.IsExported
 		if strings.Contains(pattern, "ABEND") {
 			switchable = false
+			isExported = false
 		}
-		isPassedByAddress = false
 	case *InterfaceType:
 		localName = "interface{"
 		methods := methodsToString(v.Methods.List)
@@ -379,6 +383,7 @@ func InfoForExpr(e Expr) *Info {
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 		isPassedByAddress = false
+		isExported = key.IsExported && value.IsExported
 	case *SelectorExpr:
 		pkg := v.X.(*Ident).Name
 		localName = v.Sel.Name
@@ -394,6 +399,7 @@ func InfoForExpr(e Expr) *Info {
 			panic(fmt.Sprintf("processing %s: could not find %s in %s",
 				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
 		}
+		isExported = IsExported(localName)
 	case *ChanType:
 		ty := InfoForExpr(v.Value)
 		localName = "chan"
@@ -405,6 +411,7 @@ func InfoForExpr(e Expr) *Info {
 		default:
 		}
 		localName = fmt.Sprintf("ABEND737(gtypes.go: %s %s)", localName, ty.RelativeName(e.Pos()))
+		isExported = ty.IsExported
 	case *StructType:
 		localName = "struct{}" // TODO: add more info here
 	case *FuncType:
@@ -423,6 +430,7 @@ func InfoForExpr(e Expr) *Info {
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
 		isPassedByAddress = false
+		isExported = innerInfo.IsExported
 	}
 
 	if innerInfo == nil {
@@ -455,7 +463,13 @@ func InfoForExpr(e Expr) *Info {
 		return ti
 	}
 
-	return finishVariant(pattern, docPattern, switchable, isPassedByAddress, innerInfo, e)
+	variant := finishVariant(pattern, docPattern, switchable, isPassedByAddress, innerInfo, e)
+	if isExported {
+		variant.IsExported = isExported
+		//		fmt.Printf("gtypes.go: %s (%p) is exportable\n", variant.FullName, variant)
+	}
+
+	return variant
 }
 
 func fieldToString(f *Field) string {
