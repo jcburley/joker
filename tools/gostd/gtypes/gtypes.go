@@ -132,20 +132,15 @@ func calculateSpecificity(ts *TypeSpec) uint {
 	return Concrete
 }
 
-func (ti *Info) computeFullName() string {
-	n := ti.FullName
-	if n == "" {
-		n = fmt.Sprintf(ti.Pattern, genutils.CombineGoName(ti.Package, ti.LocalName))
-		ti.FullName = n
-	}
-	return n
+func computeFullName(pattern, pkg, localName string) string {
+	return fmt.Sprintf(pattern, genutils.CombineGoName(pkg, localName))
 }
 
-func finish(ti *Info) {
-	fullName := ti.computeFullName()
+func insert(ti *Info) {
+	fullName := ti.FullName
 
-	if _, ok := typesByFullName[fullName]; ok {
-		fmt.Fprintf(os.Stderr, "") // "gtypes.finish(): already seen/defined type %s at %s (%p) and again at %s (%p)\n", fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
+	if existingTi, ok := typesByFullName[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "gtypes.insert(): %s already seen/defined type %s at %s (%p) and again at %s (%p)\n", ti.who, fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
 		return
 	}
 
@@ -160,14 +155,10 @@ func finish(ti *Info) {
 	}
 }
 
-func defineAndFinish(ti *Info) {
-	// Might be more to do here at some point.
-	finish(ti)
-}
-
-func finishVariant(pattern, docPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
+func finishVariant(fullName, pattern, docPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Expr:              te,
+		FullName:          fullName,
 		who:               "finishVariant",
 		IsExported:        innerInfo.IsExported,
 		File:              innerInfo.File,
@@ -183,7 +174,7 @@ func finishVariant(pattern, docPattern string, switchable, isPassedByAddress boo
 		IsPassedByAddress: isPassedByAddress,
 	}
 
-	finish(ti)
+	insert(ti)
 
 	return ti
 }
@@ -220,7 +211,10 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		specificity = calculateSpecificity(ts)
 	}
 
+	fullName := computeFullName("%s", pkg, localName)
+
 	ti := &Info{
+		FullName:          fullName,
 		who:               "TypeDefine",
 		Type:              ts.Type,
 		TypeSpec:          ts,
@@ -238,14 +232,16 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		IsPassedByAddress: isPassedByAddress,
 		IsArbitraryType:   isArbitraryType,
 	}
-	defineAndFinish(ti)
+	insert(ti)
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
 		// Concrete types get reference-to and array-of variants, allowing Clojure code to access them.
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
+		fullName = computeFullName(newPattern, pkg, localName)
 		tiPtrTo := &Info{
 			Expr:              &StarExpr{X: nil},
+			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &StarExpr{X: ti.Type},
 			IsExported:        ti.IsExported,
@@ -262,12 +258,14 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
 		}
-		finish(tiPtrTo)
+		insert(tiPtrTo)
 		types = append(types, tiPtrTo)
 
 		newPattern = fmt.Sprintf(ti.Pattern, "[]%s")
+		fullName = computeFullName(newPattern, pkg, localName)
 		tiArrayOf := &Info{
 			Expr:              &ArrayType{Elt: nil},
+			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
 			IsExported:        ti.IsExported,
@@ -284,7 +282,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
 		}
-		finish(tiArrayOf)
+		insert(tiArrayOf)
 		types = append(types, tiArrayOf)
 	}
 
@@ -317,10 +315,10 @@ func InfoForExpr(e Expr) *Info {
 		}
 		ti := &Info{
 			Expr:              e,
+			FullName:          fullName,
 			who:               "TypeForExpr",
 			IsExported:        true,
 			DefPos:            id.Pos(),
-			FullName:          fullName,
 			Pattern:           "%s",
 			Package:           pkgName,
 			LocalName:         id.Name,
@@ -330,7 +328,7 @@ func InfoForExpr(e Expr) *Info {
 		}
 
 		typesByExpr[e] = ti
-		finish(ti)
+		insert(ti)
 
 		return ti
 	}
@@ -338,7 +336,7 @@ func InfoForExpr(e Expr) *Info {
 	var innerInfo *Info
 	pattern := "%s"
 	docPattern := pattern
-	switchable := true
+	isSwitchable := true
 	isPassedByAddress := true
 	isExported := false
 
@@ -366,10 +364,6 @@ func InfoForExpr(e Expr) *Info {
 		pkgName = innerInfo.Package
 		isPassedByAddress = false
 		isExported = innerInfo.IsExported
-		if strings.Contains(pattern, "ABEND") {
-			switchable = false
-			isExported = false
-		}
 	case *InterfaceType:
 		localName = "interface{"
 		methods := methodsToString(v.Methods.List)
@@ -390,7 +384,8 @@ func InfoForExpr(e Expr) *Info {
 		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
 		rf := godb.GoFileForExpr(v)
 		if fullPkgName, found := (*rf.Spaces)[pkg]; found {
-			if !godb.IsAvailable(fullPkgName) {
+			if godb.IsAvailable(fullPkgName) {
+			} else {
 				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
 			}
 			pkgName = fullPkgName.String()
@@ -437,10 +432,11 @@ func InfoForExpr(e Expr) *Info {
 		if localName == "" && fullName == "" {
 			localName = fmt.Sprintf("ABEND001(gtypes.go:NO GO NAME for %T)", e)
 		}
-		if fullName != "" {
-			if ti, ok := typesByFullName[fullName]; ok {
-				return ti
-			}
+		if fullName == "" {
+			fullName = computeFullName(pattern, pkgName, localName)
+		}
+		if ti, ok := typesByFullName[fullName]; ok {
+			return ti
 		}
 		if strings.Contains(localName, "ABEND") {
 			pkgName = ""
@@ -456,16 +452,27 @@ func InfoForExpr(e Expr) *Info {
 			DocPattern:        docPattern,
 			DefPos:            e.Pos(),
 			UnderlyingType:    innerInfo,
-			IsSwitchable:      switchable,
+			IsSwitchable:      isSwitchable,
 			IsPassedByAddress: isPassedByAddress,
 		}
-		finish(ti)
+		insert(ti)
 		return ti
 	}
 
-	variant := finishVariant(pattern, docPattern, switchable, isPassedByAddress, innerInfo, e)
+	if fullName == "" {
+		fullName = computeFullName(pattern, innerInfo.Package, innerInfo.LocalName)
+	}
+	if strings.Contains(fullName, "ABEND") {
+		isSwitchable = false
+		isExported = false
+	}
+	if variant, found := typesByFullName[fullName]; found {
+		return variant
+	}
+
+	variant := finishVariant(fullName, pattern, docPattern, isSwitchable, isPassedByAddress, innerInfo, e)
 	if isExported {
-		variant.IsExported = isExported
+		variant.IsExported = true
 		//		fmt.Printf("gtypes.go: %s (%p) is exportable\n", variant.FullName, variant)
 	}
 

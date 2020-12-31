@@ -204,13 +204,13 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 		//		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
 	case *StarExpr:
 		//		fmt.Fprintf(os.Stderr, "conversions(StarExpr:%+v)\n", v)
-		ti := TypeInfoForExpr(v.X)
-		if ti.ConvertFromClojure() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
-			fromClojure = "&" + ti.ConvertFromClojure()
-		}
-		if ti.ConvertFromMap() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
-			//			fromMap = "&" + ti.ConvertFromMap()
-		}
+		// ti := TypeInfoForExpr(v.X)
+		// if ti.ConvertFromClojure() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
+		// 	fromClojure = "&" + ti.ConvertFromClojure()
+		// }
+		// if ti.ConvertFromMap() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
+		// 	//			fromMap = "&" + ti.ConvertFromMap()
+		// }
 	default:
 		//		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
 	}
