@@ -152,10 +152,13 @@ func insert(ti *Info) {
 
 	if e := ti.Expr; e != nil {
 		tiByExpr, found := typesByExpr[e]
-		if found && tiByExpr != ti {
-			panic(fmt.Sprintf("different expr for type %s", fullName))
+		if found {
+			if tiByExpr != ti {
+				panic(fmt.Sprintf("different expr for type %s", fullName))
+			}
+		} else {
+			typesByExpr[e] = ti
 		}
-		typesByExpr[e] = ti
 	}
 }
 
