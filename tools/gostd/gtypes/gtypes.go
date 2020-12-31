@@ -146,6 +146,10 @@ func insert(ti *Info) {
 
 	typesByFullName[fullName] = ti
 
+	if fullName == "[][]*crypto/x509.Certificate" {
+		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
+	}
+
 	if e := ti.Expr; e != nil {
 		tiByExpr, found := typesByExpr[e]
 		if found && tiByExpr != ti {
