@@ -571,6 +571,12 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 // There might even be an existing Go package to do some of the heavy lifting in that direction. In any case, the result
 // would be a lot cleaner and clearer than having "constants" wrapped in GoObject's or GoVar's.
 func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+	defer func() {
+		if x := recover(); x != nil {
+			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
+		}
+	}()
+
 	clName := name.Name
 	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name

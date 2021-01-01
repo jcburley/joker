@@ -153,7 +153,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 
 	gti := gtypes.InfoForName(goName)
 	if gti == nil {
-		return nil // panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
+		panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
 	}
 
 	jti := jtypes.InfoForGoName(goName)
