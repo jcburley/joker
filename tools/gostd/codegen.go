@@ -488,9 +488,9 @@ func %s(args []Object, index int) %s%s {
 	if ti.IsAddressable() {
 		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
 	}
-	// if goExtract == "" && goExtractRefTo == "" {
-	// 	return // E.g. reflect_native.go's refToStringHeader
-	// }
+	if goExtract == "" && goExtractRefTo == "" {
+		return // E.g. reflect_native.go's refToStringHeader
+	}
 
 	goc := fmt.Sprintf(goTemplate, apiName, ptrTo, typeName, goExtract, goExtractRefTo, others, t)
 
