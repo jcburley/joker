@@ -15,21 +15,6 @@ Processing net/url:
 Processing net:
 Processing package=net/url:
 Processing package=net:
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Err string,Addr string} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Err error} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Err string,Name string,Server string,IsTimeout bool,IsTemporary bool} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{IP IP,Zone string} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{conn} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{IP IP,Mask IPMask} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Host string,Pref uint16} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Host string} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Op string,Net string,Source Addr,Addr Addr,Err error} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Type string,Text string} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{PreferGo bool,StrictErrors bool,Dial func(ctx context.Context,network string,address string)(Conn,error),lookupGroup singleflight.Group} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Target string,Port uint16,Priority uint16,Weight uint16} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Op string,URL string,Err error} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{Scheme string,Opaque string,User *Userinfo,Host string,Path string,RawPath string,ForceQuery bool,RawQuery string,Fragment string} not supported)]
-types.go/TypeInfoForExpr: have typesByGoName[ABEND787(gtypes.go: struct{} not supported)] but not typesByClojureName[ABEND787(jtypes.go: struct{username string,password string,passwordSet bool} not supported)]
 CLOJURE CONSTANT IPv4len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
@@ -1595,8 +1580,8 @@ func ExtractGo_go_std_net__OpError(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &net.OpError{
 // 		Op: FieldAsString(o, "Op"),
 // 		Net: FieldAsString(o, "Net"),
-// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
-// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() string)!)})),
+// 		Source: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND320(gtypes.go: interface{Network func()string,String func()string} not supported))),
+// 		Addr: ABEND048(codegen.go: no conversion from Clojure for net.Addr (ABEND320(gtypes.go: interface{Network func()string,String func()string} not supported))),
 // 		Err: FieldAsError(o, "Err"),
 // 	}
 // }
@@ -1711,7 +1696,7 @@ func ExtractGo_go_std_net__Resolver(rcvr, arg string, args *ArraySeq, n int) (re
 // 	return &net.Resolver{
 // 		PreferGo: FieldAsBoolean(o, "PreferGo"),
 // 		StrictErrors: FieldAsBoolean(o, "StrictErrors"),
-// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ABEND002(reference to unavailable package `context' looking for type `Context'), string, string) (Conn, error)) (-)),
+// 		Dial: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(ctx context.Context,network string,address string)(Conn,error) not supported) (-)),
 // 	}
 // }
 
@@ -4394,7 +4379,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(20) 048(18) 727(15) 041(12) 674(12) 707(6) 049(3) 275(3) 124(1)
+ABENDs: 048(18) 002(17) 674(12) 320(6) 707(6) 049(3) 275(3) 727(3) 124(1)
 Totals: functions=132 generated=106 (80.30%)
           non-receivers=26 (19.70%) generated=24 (92.31%)
           receivers=83 (62.88%) generated=66 (79.52%)
