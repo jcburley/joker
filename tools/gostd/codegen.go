@@ -446,36 +446,53 @@ func GenType(t string, ti TypeInfo) {
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
 
-	const goExtractTemplate = `
+	const goTemplate = `
 func %s(args []Object, index int) %s%s {
 	a := args[index]
 	switch o := a.(type) {
 	case GoObject:
 		switch r := o.O.(type) {
-%s		case %s%s:
-			return r
-		}
+%s%s		}
 	%s}
 	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
 }
 `
+
+	const goExtractTemplate = `
+		case %s%s:
+			return r
+`
+
 	const goExtractRefToTemplate = `
-		case *%s:
-			return *r
+		case %s:
+			return %sr  // refTo
 `
 
 	apiName := "ExtractGoObject" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
 
 	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
+
+	goExtract := ""
 	goExtractRefTo := ""
 	ptrTo := ""
+	refTo := ""
+
 	if ti.IsPassedByAddress() {
-		ptrTo = "*"
-	} else if ti.IsAddressable() {
-		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName)
+		if ti.IsAddressable() {
+			ptrTo = "*"
+			refTo = "&"
+		}
+		goExtract = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
 	}
-	goc := fmt.Sprintf(goExtractTemplate, apiName, ptrTo, typeName, goExtractRefTo, ptrTo, typeName, others, t)
+	if ti.IsAddressable() {
+		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
+	}
+	// if goExtract == "" && goExtractRefTo == "" {
+	// 	return // E.g. reflect_native.go's refToStringHeader
+	// }
+
+	goc := fmt.Sprintf(goTemplate, apiName, ptrTo, typeName, goExtract, goExtractRefTo, others, t)
 
 	goc += goTypeExtractor(t, ti)
 

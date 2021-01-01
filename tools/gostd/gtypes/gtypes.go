@@ -37,7 +37,7 @@ type Info struct {
 	IsBuiltin         bool
 	IsSwitchable      bool // Can type's Go name be used in a "case" statement?
 	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
-	IsPassedByAddress bool // Excludes builtins, some complex, and interface{} types
+	IsPassedByAddress bool // Whether Joker passes only references to these around (excludes builtins, some complex, and interface{} types)
 	IsArbitraryType   bool // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsUnsupported     bool
 }
@@ -218,7 +218,13 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		isArbitraryType = true
 		specificity = 0
 	} else {
-		isPassedByAddress = true
+		switch ts.Type.(type) {
+		case *InterfaceType:
+		case *StarExpr:
+		case *ArrayType:
+		default:
+			isPassedByAddress = true
+		}
 		isArbitraryType = false
 		specificity = calculateSpecificity(ts)
 	}
