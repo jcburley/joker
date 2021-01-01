@@ -373,12 +373,11 @@ func InfoForExpr(e Expr) *Info {
 		isPassedByAddress = false
 		isExported = innerInfo.IsExported
 	case *InterfaceType:
-		localName = "interface{"
-		methods := methodsToString(v.Methods.List)
-		if v.Incomplete {
-			methods = strings.Join([]string{methods, "..."}, ", ")
+		if !v.Incomplete && len(v.Methods.List) == 0 {
+			localName = "interface{}"
+		} else {
+			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
-		localName += methods + "}"
 		isPassedByAddress = false
 	case *MapType:
 		key := InfoForExpr(v.Key)
@@ -404,36 +403,13 @@ func InfoForExpr(e Expr) *Info {
 		}
 		isExported = IsExported(localName)
 	case *ChanType:
-		ty := InfoForExpr(v.Value)
-		localName = "chan"
-		switch v.Dir & (SEND | RECV) {
-		case SEND:
-			localName += "<-"
-		case RECV:
-			localName = "<-" + localName
-		default:
-		}
-		localName = fmt.Sprintf("ABEND737(gtypes.go: %s %s)", localName, ty.RelativeName(e.Pos()))
-		isExported = ty.IsExported
+		localName = fmt.Sprintf("ABEND737(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *StructType:
 		localName = "ABEND787(gtypes.go: struct{} not supported)" // TODO: add more info here
 	case *FuncType:
-		localName = fmt.Sprintf("ABEND727(gtypes.go: func(%s)%s)", astutils.FieldListAsString(v.Params, false, typeAsStringRelative(v.Pos())),
-			func() string {
-				if v.Results == nil {
-					return ""
-				}
-				return " " + astutils.FieldListAsString(v.Results, true, typeAsStringRelative(v.Pos()))
-			}())
-		isPassedByAddress = false
+		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *Ellipsis:
-		innerInfo = InfoForExpr(v.Elt)
-		pattern = fmt.Sprintf("ABEND747(gtypes.go: ...%s)", innerInfo.Pattern)
-		docPattern = fmt.Sprintf("...%s", innerInfo.DocPattern)
-		localName = innerInfo.LocalName
-		pkgName = innerInfo.Package
-		isPassedByAddress = false
-		isExported = innerInfo.IsExported
+		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
 	}
 
 	if innerInfo == nil {
