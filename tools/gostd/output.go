@@ -252,7 +252,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 				return
 			}
 			if outputCode {
-				fmt.Printf("CLOJURE TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), ClojureCodeForType[ti])
+				fmt.Printf("CLOJURE TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.UnderlyingTypeSpec()), ClojureCodeForType[ti])
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ClojureCodeForType[ti])
@@ -374,7 +374,7 @@ import (%s
 				ctor = c
 			}
 			if outputCode {
-				fmt.Printf("GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.TypeSpec()), GoCodeForType[ti], ctor)
+				fmt.Printf("GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.UnderlyingTypeSpec()), GoCodeForType[ti], ctor)
 			}
 			if t == "crypto.Hash" {
 				// fmt.Printf("output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
