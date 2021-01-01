@@ -83,9 +83,27 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		ns = ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v))
 		baseName = v.Sel.Name
 		baseNameDoc = baseName
-	default:
-		baseName = "GoObject"
+	case *InterfaceType:
+		if !v.Incomplete && len(v.Methods.List) == 0 {
+			baseName = "GoObject"
+		} else {
+			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		}
 		baseNameDoc = baseName
+	case *ChanType:
+		baseName = fmt.Sprintf("ABEND737(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseNameDoc = baseName
+	case *StructType:
+		baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseNameDoc = baseName
+	case *FuncType:
+		baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseNameDoc = baseName
+	case *Ellipsis:
+		baseName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseNameDoc = baseName
+	default:
+		panic(fmt.Sprintf("unrecognized underlying expr %T for %T", ue, e))
 	}
 
 	name = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseName))

@@ -33,10 +33,6 @@ func FlattenFieldList(fl *FieldList) (items []FieldItem) {
 	return
 }
 
-func TypeAsString(f *Field) string {
-	return "hey"
-}
-
 func FieldListAsString(fl *FieldList, needParens bool, fn func(f *Field) string) string {
 	if fl == nil || len(fl.List) == 0 {
 		return ""
@@ -124,6 +120,118 @@ func IntExprToDocString(e Expr) string {
 		return v.Name
 	}
 	return "???"
+}
+
+// Return arbitrary, yet somewhat-identifiable and "unique", string for an expr.
+func ExprToString(e Expr) string {
+	if e == nil {
+		return ""
+	}
+	switch v := e.(type) {
+	case *Ident:
+		return v.Name
+	case *SelectorExpr:
+		return ExprToString(v.X) + "." + v.Sel.Name
+	case *ArrayType:
+		return "[" + ExprToString(v.Len) + "]" + ExprToString(v.Elt)
+	case *StarExpr:
+		return "*" + ExprToString(v.X)
+	case *ChanType:
+		dir := "chan"
+		switch d := v.Dir & (SEND | RECV); d {
+		case SEND:
+			dir = "chan<-"
+		case RECV:
+			dir = "<-chan"
+		case SEND | RECV:
+			dir = "chan"
+		default:
+			panic(fmt.Sprintf("unrecognized channel direction %d", d))
+		}
+		return dir + " " + ExprToString(v.Value)
+	case *InterfaceType:
+		incomplete := ""
+		if v.Incomplete {
+			incomplete = ",..."
+		}
+		fl := FieldListToString(v.Methods)
+		return "interface{" + fl + incomplete + "}"
+	case *MapType:
+		return "map[" + ExprToString(v.Key) + "]" + ExprToString(v.Value)
+	case *StructType:
+		incomplete := ""
+		if v.Incomplete {
+			incomplete = ",..."
+		}
+		return "struct{" + FieldListToString(v.Fields) + incomplete + "}"
+	case *FuncType:
+		return "func(" + FieldListToString(v.Params) + ")" + FieldListToString(v.Results)
+	case *Ellipsis:
+		return "..." + ExprToString(v.Elt)
+	case *BasicLit:
+		return BasicLitToString(v)
+	case *BinaryExpr:
+		return ExprToString(v.X) + v.Op.String() + ExprToString(v.Y)
+	case *ParenExpr:
+		return "(" + ExprToString(v.X) + ")"
+	case *CallExpr:
+		ellipsis := ""
+		if v.Ellipsis != token.NoPos {
+			if v.Args != nil && len(v.Args) != 0 {
+				ellipsis = ",..."
+			} else {
+				ellipsis = "..."
+			}
+		}
+		return ExprToString(v.Fun) + "(" + ExprArrayToString(v.Args) + ellipsis + ")"
+	case *CompositeLit:
+		incomplete := ""
+		if v.Incomplete {
+			if v.Elts != nil {
+				incomplete = ",..."
+			} else {
+				incomplete = "..."
+			}
+		}
+		return "{" + ExprArrayToString(v.Elts) + incomplete + "}"
+	default:
+		panic(fmt.Sprintf("unrecognized expr type %T", v))
+	}
+}
+
+func ExprArrayToString(ea []Expr) string {
+	rl := []string{}
+	for _, e := range ea {
+		rl = append(rl, ExprToString(e))
+	}
+	return strings.Join(rl, ",")
+}
+
+func FieldListToString(fl *FieldList) string {
+	f := FlattenFieldList(fl)
+	rl := []string{}
+	for _, it := range f {
+		s := ""
+		if it.Name != nil {
+			s = it.Name.Name + " "
+		}
+		s += fieldToString(it.Field)
+		rl = append(rl, s)
+	}
+	return strings.Join(rl, ",")
+}
+
+// Private, as this ignores f.Names, which the caller must handle.
+func fieldToString(f *Field) string {
+	s := ExprToString(f.Type)
+	if f.Tag != nil {
+		s += BasicLitToString(f.Tag)
+	}
+	return s
+}
+
+func BasicLitToString(b *BasicLit) string {
+	return b.Kind.String() + "(" + b.Value + ")"
 }
 
 var WhereAt func(p token.Pos) string
