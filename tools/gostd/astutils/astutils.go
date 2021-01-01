@@ -154,8 +154,8 @@ func ExprToString(e Expr) string {
 		if v.Incomplete {
 			incomplete = ",..."
 		}
-		fl := FieldListToString(v.Methods)
-		return "interface{" + fl + incomplete + "}"
+		fl := FieldListToString(v.Methods, "{", "}")
+		return "interface" + fl + incomplete
 	case *MapType:
 		return "map[" + ExprToString(v.Key) + "]" + ExprToString(v.Value)
 	case *StructType:
@@ -163,9 +163,9 @@ func ExprToString(e Expr) string {
 		if v.Incomplete {
 			incomplete = ",..."
 		}
-		return "struct{" + FieldListToString(v.Fields) + incomplete + "}"
+		return "struct" + FieldListToString(v.Fields, "{", "}") + incomplete
 	case *FuncType:
-		return "func(" + FieldListToString(v.Params) + ")" + FieldListToString(v.Results)
+		return "func" + FieldListToString(v.Params, "(", ")") + FieldListToString(v.Results, "(", ")")
 	case *Ellipsis:
 		return "..." + ExprToString(v.Elt)
 	case *BasicLit:
@@ -207,7 +207,7 @@ func ExprArrayToString(ea []Expr) string {
 	return strings.Join(rl, ",")
 }
 
-func FieldListToString(fl *FieldList) string {
+func FieldListToString(fl *FieldList, open, close string) string {
 	f := FlattenFieldList(fl)
 	rl := []string{}
 	for _, it := range f {
@@ -218,7 +218,20 @@ func FieldListToString(fl *FieldList) string {
 		s += fieldToString(it.Field)
 		rl = append(rl, s)
 	}
-	return strings.Join(rl, ",")
+	r := strings.Join(rl, ",")
+	if fl != nil && fl.Opening != token.NoPos {
+		if open == "" {
+			panic(fmt.Sprintf("no opening for expr at %s", WhereAt(fl.Pos())))
+		}
+		r = open + r
+	}
+	if fl != nil && fl.Closing != token.NoPos {
+		if close == "" {
+			panic(fmt.Sprintf("no closing for expr at %s", WhereAt(fl.Pos())))
+		}
+		r += close
+	}
+	return r
 }
 
 // Private, as this ignores f.Names, which the caller must handle.
