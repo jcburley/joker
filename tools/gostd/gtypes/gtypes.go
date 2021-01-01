@@ -221,6 +221,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	fullName := computeFullName("%s", pkg, localName)
 
 	ti := &Info{
+		Expr:              ts.Name,
 		FullName:          fullName,
 		who:               "TypeDefine",
 		Type:              ts.Type,
@@ -247,7 +248,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		fullName = computeFullName(newPattern, pkg, localName)
 		tiPtrTo := &Info{
-			Expr:              &StarExpr{X: nil},
+			Expr:              &StarExpr{X: ti.Expr},
 			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &StarExpr{X: ti.Type},
@@ -271,7 +272,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		newPattern = fmt.Sprintf(ti.Pattern, "[]%s")
 		fullName = computeFullName(newPattern, pkg, localName)
 		tiArrayOf := &Info{
-			Expr:              &ArrayType{Elt: nil},
+			Expr:              &ArrayType{Elt: ti.Expr},
 			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
@@ -415,7 +416,7 @@ func InfoForExpr(e Expr) *Info {
 		localName = fmt.Sprintf("ABEND737(gtypes.go: %s %s)", localName, ty.RelativeName(e.Pos()))
 		isExported = ty.IsExported
 	case *StructType:
-		localName = "struct{}" // TODO: add more info here
+		localName = "ABEND787(gtypes.go: struct{} not supported)" // TODO: add more info here
 	case *FuncType:
 		localName = fmt.Sprintf("ABEND727(gtypes.go: func(%s)%s)", astutils.FieldListAsString(v.Params, false, typeAsStringRelative(v.Pos())),
 			func() string {
