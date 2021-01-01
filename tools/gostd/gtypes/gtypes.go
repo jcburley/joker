@@ -405,7 +405,7 @@ func InfoForExpr(e Expr) *Info {
 	case *ChanType:
 		localName = fmt.Sprintf("ABEND737(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *StructType:
-		localName = "ABEND787(gtypes.go: struct{} not supported)" // TODO: add more info here
+		localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *FuncType:
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *Ellipsis:
