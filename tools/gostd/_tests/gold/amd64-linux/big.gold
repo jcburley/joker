@@ -312,7 +312,6 @@ Processing package=net/textproto:
 Processing package=net/url:
 Processing package=net:
 types.go/TypeInfoForExpr: have typesByClojureName[ABEND777(jtypes.go: multiple underlying expressions not supported: map_GoObject_Of_<whatever>)] but not typesByGoName[map[string]ABEND727(gtypes.go: func(string, *ABEND002(reference to unavailable package `crypto/tls' looking for type `Conn')) RoundTripper)]
-types.go/TypeInfoForExpr: have typesByGoName[*net.MX] but not typesByClojureName[refToGoObject]
 CLOJURE CONSTANT FlagBroadcast from net/interface.go:
 (def
   ^{:doc "interface supports broadcast access capability\n"
@@ -5056,8 +5055,8 @@ func ExtractGo_go_std_net__Dialer(rcvr, arg string, args *ArraySeq, n int) (res 
 // 		DualStack: FieldAsBoolean(o, "DualStack"),
 // 		FallbackDelay: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
 // 		KeepAlive: ABEND049(codegen.go: no conversion to private type time.ABEND002(reference to unavailable package `time' looking for type `Duration') (-)),
-// 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (-)),
-// 		Cancel: ABEND049(codegen.go: no conversion to private type ABEND737(gtypes.go: <-chan struct{}) (-)),
+// 		Resolver: ABEND048(codegen.go: no conversion from Clojure for *net.Resolver (net.Resolver)),
+// 		Cancel: ABEND049(codegen.go: no conversion to private type ABEND737(gtypes.go: <-chan ABEND787(gtypes.go: struct{} not supported)) (-)),
 // 		Control: ABEND049(codegen.go: no conversion to private type ABEND727(gtypes.go: func(string, string, ABEND002(reference to unavailable package `syscall' looking for type `RawConn')) error) (-)),
 // 	}
 // }
@@ -9599,7 +9598,7 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // func _mapToRequest(o Map) *http.Request {
 // 	return &http.Request{
 // 		Method: FieldAsString(o, "Method"),
-// 		URL: ABEND048(codegen.go: no conversion from Clojure for *net/url.URL (-)),
+// 		URL: ABEND048(codegen.go: no conversion from Clojure for *net/url.URL (net/url.URL)),
 // 		Proto: FieldAsString(o, "Proto"),
 // 		ProtoMajor: FieldAsInt(o, "ProtoMajor"),
 // 		ProtoMinor: FieldAsInt(o, "ProtoMinor"),
@@ -9617,8 +9616,8 @@ func ExtractGo_go_std_net_http__Request(rcvr, arg string, args *ArraySeq, n int)
 // 		RemoteAddr: FieldAsString(o, "RemoteAddr"),
 // 		RequestURI: FieldAsString(o, "RequestURI"),
 // 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'))),
-// 		Cancel: ABEND049(codegen.go: no conversion to private type ABEND737(gtypes.go: <-chan struct{}) (-)),
-// 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (-)),
+// 		Cancel: ABEND049(codegen.go: no conversion to private type ABEND737(gtypes.go: <-chan ABEND787(gtypes.go: struct{} not supported)) (-)),
+// 		Response: ABEND048(codegen.go: no conversion from Clojure for *net/http.Response (net/http.Response)),
 // 	}
 // }
 
@@ -9673,7 +9672,7 @@ func ExtractGo_go_std_net_http__Response(rcvr, arg string, args *ArraySeq, n int
 // 		Close: FieldAsBoolean(o, "Close"),
 // 		Uncompressed: FieldAsBoolean(o, "Uncompressed"),
 // 		Trailer: ABEND048(codegen.go: no conversion from Clojure for net/http.Header (map[string][]string)),
-// 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (-)),
+// 		Request: ABEND048(codegen.go: no conversion from Clojure for *net/http.Request (net/http.Request)),
 // 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `ConnectionState'))),
 // 	}
 // }
@@ -11838,7 +11837,7 @@ func ExtractGo_go_std_net_http_httptest__Server(rcvr, arg string, args *ArraySeq
 // 		URL: FieldAsString(o, "URL"),
 // 		Listener: ABEND048(codegen.go: no conversion from Clojure for net.Listener (interface{ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() (Conn, error))!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() error)!), ABEND041(gtypes.go/fieldToString found something: ABEND727(gtypes.go: func() Addr)!)})),
 // 		TLS: ABEND049(codegen.go: no conversion to private type *ABEND002(reference to unavailable package `crypto/tls' looking for type `Config') (crypto/tls.ABEND002(reference to unavailable package `crypto/tls' looking for type `Config'))),
-// 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (-)),
+// 		Config: ABEND048(codegen.go: no conversion from Clojure for *net/http.Server (net/http.Server)),
 // 	}
 // }
 
@@ -12154,7 +12153,7 @@ func ExtractGo_go_std_net_http_httptrace__DNSDoneInfo(rcvr, arg string, args *Ar
 
 // func _mapToDNSDoneInfo(o Map) *httptrace.DNSDoneInfo {
 // 	return &httptrace.DNSDoneInfo{
-// 		Addrs: ABEND048(codegen.go: no conversion from Clojure for []net.IPAddr (-)),
+// 		Addrs: ABEND048(codegen.go: no conversion from Clojure for []net.IPAddr (net.IPAddr)),
 // 		Err: FieldAsError(o, "Err"),
 // 		Coalesced: FieldAsBoolean(o, "Coalesced"),
 // 	}
@@ -14418,7 +14417,7 @@ func ExtractGo_go_std_net_smtp__Client(rcvr, arg string, args *ArraySeq, n int) 
 
 // func _mapToClient(o Map) *smtp.Client {
 // 	return &smtp.Client{
-// 		Text: ABEND048(codegen.go: no conversion from Clojure for *net/textproto.Conn (-)),
+// 		Text: ABEND048(codegen.go: no conversion from Clojure for *net/textproto.Conn (net/textproto.Conn)),
 // 	}
 // }
 
@@ -15725,7 +15724,7 @@ func ExtractGo_go_std_net_url__URL(rcvr, arg string, args *ArraySeq, n int) (res
 // 	return &url.URL{
 // 		Scheme: FieldAsString(o, "Scheme"),
 // 		Opaque: FieldAsString(o, "Opaque"),
-// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (-)),
+// 		User: ABEND048(codegen.go: no conversion from Clojure for *net/url.Userinfo (net/url.Userinfo)),
 // 		Host: FieldAsString(o, "Host"),
 // 		Path: FieldAsString(o, "Path"),
 // 		RawPath: FieldAsString(o, "RawPath"),
@@ -16924,7 +16923,7 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-ABENDs: 002(291) 049(207) 727(179) 048(135) 707(101) 041(81) 275(31) 674(28) 737(11) 777(3) 747(2) 124(1)
+ABENDs: 002(291) 049(207) 727(179) 048(135) 707(101) 041(81) 275(31) 674(28) 737(11) 787(6) 777(3) 747(2) 124(1)
 Totals: functions=470 generated=286 (60.85%)
           non-receivers=148 (31.49%) generated=88 (59.46%)
           receivers=273 (58.09%) generated=171 (62.64%)
