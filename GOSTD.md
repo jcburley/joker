@@ -28,7 +28,7 @@ For example, calling a Go function returning `[]string` now returns a `GoObject`
 
 Use `(vec ...)` to perform an explicit conversion, in this example, as `GoObject`s that wrap appropriate types are `Seqable` and thus support `(count ...`), `(rest ...)`, and so on.
 
-This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Joker code, and where the number of returned elements (or their individual elements) is large.
+This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Clojure code, and where the number of returned elements (or their individual elements) is large.
 
 *Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
 
@@ -79,11 +79,11 @@ For example, the `MX` type defined in the `net` package is wrapped as `go.std.ne
 * Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX`
 * Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else)`
 
-Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`) in the namespace.
+Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`, named `refToMX`) in the namespace as well as an array-of version (e.g. `[]MX`, named `arrayOfMX`).
 
 Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(Go f :Name)`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
 
-Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Joker, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(Go fi :ModTime)` works on such an object.
+Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Clojure, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(Go fi :ModTime)` works on such an object.
 
 ## Constants
 
@@ -91,7 +91,7 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 ## Variables
 
-Pointers to global variables are wrapped in `GoVar{}` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Joker wrappers (such as `Int` and `String`).
+Pointers to global variables are wrapped in `GoVar{}` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
 
 `(var-set var newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
@@ -143,11 +143,11 @@ As a result, references to such objects are generally used.
 
 Similarly, `(ref obj)` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that; or, more likely, to a copy that is made for this purpose.
 
-The `reflect` package (in Go) is used here; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. `reflect.New()` and `reflect.Indirect().Set()` are otherwise used to create a new, referencable, object that is set to the value of the original.
+The `reflect` package (in Go) is used here; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. `reflect.New()` and `reflect.Indirect().Set()` are otherwise used to create a new, referenceable, object that is set to the value of the original.
 
 ### Rules Governing GoObject Creation
 
-When considering whether to wrap a given object in a `GoObject`, Joker normally substitutes a suitable Joker type (such as `Int`, `Number`, or `String`) when one is available and suitable for the underlying type (not just the value). For example, instead of wrapping an `int64` in a `GoObject`, Joker will wrap it in a `Number`, even if the value is small (such as zero).
+When considering whether to wrap a given object in a `GoObject`, Joker normally substitutes a suitable Clojure type (such as `Int`, `Number`, or `String`) when one is available and suitable for the underlying type (not just the value). For example, instead of wrapping an `int64` in a `GoObject`, Joker will wrap it in a `Number`, even if the value is small (such as zero).
 
 ### Constructing a GoObject
 
@@ -185,10 +185,10 @@ If a particular constructor is missing, that indicates lack of support for the u
 
 ### Converting a GoObject to a Joker (Clojure) Datatype
 
-Given a `GoObject`, one may convert (to a native Joker type) and/or examine it via:
+Given a `GoObject`, one may convert (to a native Clojure type) and/or examine it via:
 * `count`, which returns the number of elements (`.Len()`) for anything `seq` supports, without converting any of the elements themselves
-* `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Joker object or (if one isn't suitable) a `GoObject`; or, if the `GoObject` does not wrap a pointer, the underlying object is converted to a Joker object if possible, else wrapped by a newly constructed `GoObject`
-* `get`, which returns the value corresponding to the given key for structs (the key can named via a string, keyword, or symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Joker object is not suitable
+* `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Clojure object or (if one isn't suitable) a `GoObject`; or, if the `GoObject` does not wrap a pointer, the underlying object is converted to a Clojure object if possible, else wrapped by a newly constructed `GoObject`
+* `get`, which returns the value corresponding to the given key for structs (the key can named via a string, keyword, or symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Clojure object is not suitable
 * `if`, `and`, `or`, and similar, which convert to `bool` (and all `GoObject`'s evaluate as `true`)
 * `seq`, which works on arrays, channels, maps, slices, strings, and structs, but is (currently) not lazily evaluated
 * `vec`, like `seq` but returns a vector instead of a sequence
@@ -201,7 +201,7 @@ As touched on above, `count`, `seq`, and `vec` operate on Go `struct` types (der
 * `seq` returns `([key-1 value-1] [key-2 value-2] ... [key-N value-N])`, where `N` equals `(count ...)` for the same object, where `key-n` is a keyword named after the Go field name (typically capitalized, due to being public)
 * `vec` is like `seq`, but returns a vector of key-value pairs
 
-Though it might be faster to retrieve individual fields as needed, a Joker (Clojure) map of field names (as keywords) to values can be constructed via e.g.:
+Though it might be faster to retrieve individual fields as needed, a Clojure map of field names (as keywords) to values can be constructed via e.g.:
 
 ```
 (apply hash-map (flatten (seq goobject-wrapping-a-struct)))
@@ -224,7 +224,7 @@ Other arguments (with named types) are passed `GoObject` instances that can be:
 * Extracted as members of other `GoObject` instances
 * Returned by Go API wrappers
 
-However, Joker does support some implicit conversion of Joker objects (such as `Int`) _to_ `GoObject`, in some ways beyond what the Go language itself provides, as explained below.
+However, Joker does support some implicit conversion of Clojure objects (such as `Int`) _to_ `GoObject`, in some ways beyond what the Go language itself provides, as explained below.
 
 ##### Implicit Conversion from Joker (Clojure) Type to GoObject
 
@@ -244,9 +244,9 @@ Go input arguments: (name string, mode FileMode)
 
 Go return type: error
 
-Joker input arguments: [^String name, ^go.std.os/FileMode mode]
+Clojure input arguments: [^String name, ^go.std.os/FileMode mode]
 
-Joker return type: Error
+Clojure return type: Error
 nil
 user=>
 ```
@@ -317,7 +317,7 @@ Similarly, implicit conversion of `String` expressions to Go types that have `st
 
 #### Specifying the Target Function
 
-For standalone functions, their Go name is (sometimes) directly usable as a Joker (Clojure) function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
+For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
 
 For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as an expression that evaluates to a keyword, string, or symbol) of the receiver, and any arguments:
 
@@ -359,7 +359,7 @@ Types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `B
 Returned `GoObject` instances can:
 * Be ignored (they'll presumably be garbage-collected at some point)
 * Be stringized (via e.g. `(str goobj)`)
-* Be converted to a suitable Joker representation
+* Be converted to a suitable Clojure representation
 * Be passed as arguments to Go API wrappers
 * Be provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
 * Have receivers/methods, defined on them, invoked via the `Go` function
@@ -379,9 +379,9 @@ from the default Source.
 
 Go return type: uint64
 
-Joker input arguments: []
+Clojure input arguments: []
 
-Joker return type: BigInt
+Clojure return type: BigInt
 nil
 user=> (r/Uint64)
 13211699322299636880N
