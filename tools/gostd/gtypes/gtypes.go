@@ -39,6 +39,7 @@ type Info struct {
 	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress bool // Excludes builtins, some complex, and interface{} types
 	IsArbitraryType   bool // Is unsafe.ArbitraryType, which gets treated as interface{}
+	IsUnsupported     bool
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -148,6 +149,10 @@ func insert(ti *Info) {
 
 	if fullName == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
 		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
+	}
+
+	if strings.Contains(fullName, "ABEND") {
+		ti.IsUnsupported = true
 	}
 
 	if e := ti.Expr; e != nil {

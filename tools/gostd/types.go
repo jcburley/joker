@@ -40,6 +40,7 @@ type TypeInfo interface {
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
 	UnderlyingType() Expr // nil if not a declared type
+	UnderlyingTypeSpec() *TypeSpec
 	GoFile() *godb.GoFile
 	DefPos() token.Pos
 	Specificity() uint // ConcreteType, else # of methods defined for interface{} (abstract) type
@@ -294,7 +295,7 @@ func (ti typeInfo) ClojureBaseName() string {
 }
 
 func (ti typeInfo) IsUnsupported() bool {
-	return ti.jti.IsUnsupported
+	return ti.gti.IsUnsupported || ti.jti.IsUnsupported
 }
 
 func (ti typeInfo) ClojureTypeInfo() *jtypes.Info {
@@ -366,6 +367,16 @@ func (ti typeInfo) UnderlyingTypeInfo() TypeInfo {
 func (ti typeInfo) UnderlyingType() Expr {
 	if ut := ti.gti.UnderlyingType; ut != nil {
 		return ut.Expr
+	}
+	return nil
+}
+
+func (ti typeInfo) UnderlyingTypeSpec() *TypeSpec {
+	if ts := ti.gti.TypeSpec; ts != nil {
+		return ts
+	}
+	if uti := ti.UnderlyingTypeInfo(); uti != nil {
+		return uti.UnderlyingTypeSpec()
 	}
 	return nil
 }
