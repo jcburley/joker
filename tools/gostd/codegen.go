@@ -430,7 +430,7 @@ func GenType(t string, ti TypeInfo) {
 
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
-		fmt.Printf("codegen.go/GenType(): skipping %s due to no underlying TypeSpec\n", ti.GoName())
+		//		fmt.Printf("codegen.go/GenType(): skipping %s due to no underlying TypeSpec\n", ti.GoName())
 		return
 	}
 

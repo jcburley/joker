@@ -573,7 +573,7 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
-			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
+			// fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
 		}
 	}()
 
