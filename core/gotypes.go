@@ -18,6 +18,8 @@ type GoTypeInfo struct {
 	Type    reflect.Type
 }
 
+// This seems quite good, e.g.:
+// "Eval error: expected GoObject[go.std.net/IP], got GoObject[go.std.net/arrayOfIP]"
 func LookupGoType(g interface{}) *GoTypeInfo {
 	ix := SwitchGoType(g)
 	if ix < 0 || ix >= len(GoTypesVec) || GoTypesVec[ix] == nil {
