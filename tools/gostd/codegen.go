@@ -392,37 +392,6 @@ func maybeDeref(ptrTo string) string {
 	return "*"
 }
 
-func goTypeExtractor(t string, ti TypeInfo) string {
-	ts := ti.UnderlyingTypeSpec()
-
-	const template = `
-func %s(rcvr, arg string, args *ArraySeq, n int) (res %s) {
-	a := CheckGoNth(rcvr, "%s", arg, args, n).O
-	res, ok := a.(%s)
-	if !ok {
-		panic(RT.NewError(%s.Sprintf("Argument %%d passed to %%s should be type GoObject[%s], but is GoObject[%%s]",
-			n, rcvr, GoObjectTypeToString(a))))
-	}
-	return
-}
-`
-
-	mangled := genutils.TypeToGoExtractFuncName(ti.ArgClojureArgType())
-	localType := fmt.Sprintf(ti.GoPattern(), "{{myGoImport}}."+ti.GoBaseName())
-	typeDoc := ti.ArgClojureArgType() // "path.filepath.Mode"
-
-	fmtLocal := PackagesInfo[godb.GoPackageForTypeSpec(ts)].ImportsNative.AddPackage("fmt", "", "", true, ts.Pos())
-
-	fnName := "ExtractGo_" + mangled
-	resType := localType
-	resTypeDoc := typeDoc // or similar
-	resType += ""         // repeated here
-	fmtLocal += ""        //
-	resTypeDoc += ""      // repeated here
-
-	return fmt.Sprintf(template, fnName, resType, resTypeDoc, resType, fmtLocal, resTypeDoc)
-}
-
 func GenType(t string, ti TypeInfo) {
 	if ti.IsUnsupported() || !ti.IsExported() || ti.IsArbitraryType() {
 		return
@@ -493,8 +462,6 @@ func %s(args []Object, index int) %s%s {
 	}
 
 	goc := fmt.Sprintf(goTemplate, apiName, ptrTo, typeName, goExtract, goExtractRefTo, others, t)
-
-	goc += goTypeExtractor(t, ti)
 
 	goc = strings.ReplaceAll(goc, "{{myGoImport}}", myGoImport)
 

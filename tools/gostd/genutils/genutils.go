@@ -20,10 +20,6 @@ func ParamNameAsGo(p string) string {
 	return p
 }
 
-func TypeToGoExtractFuncName(t string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(t, ".", "_"), "/", "__")
-}
-
 func FuncNameAsGoPrivate(f string) string {
 	// s := strings.ToLower(f[0:1]) + f[1:]
 	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
