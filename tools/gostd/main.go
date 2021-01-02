@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"syscall"
 )
 
 const VERSION = "0.1"
@@ -93,17 +92,11 @@ func listOfOthers(other string) (others []string) {
 var coreApiFilename = "core-apis.dat"
 var coreApis = map[string]struct{}{}
 
-func getCPU() int64 {
-	usage := new(syscall.Rusage)
-	syscall.Getrusage(syscall.RUSAGE_SELF, usage)
-	return usage.Utime.Nano() + usage.Stime.Nano()
-}
-
 func readCoreApiFile(src string) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()
-		if godb.Verbose && !noTimeAndVersion {
+		if godb.Verbose && !noTimeAndVersion && start != 0 && end != 0 {
 			fmt.Printf("readCoreApiFile() took %d ns.\n", end-start)
 		}
 	}()
