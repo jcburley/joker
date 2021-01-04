@@ -24,7 +24,7 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
 
 	if clType != "" {
-		clType = assertRuntime("Extract", "ExtractGoObject", clType)
+		clType = assertRuntime("Extract", "Extract_ns_", clType)
 	}
 	if fn.Fd == nil || fn.Fd.Recv != nil {
 		cvt := ti.ConvertFromClojure()

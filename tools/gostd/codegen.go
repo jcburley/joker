@@ -125,7 +125,7 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 
 func genReceiverCode(fn *FuncInfo, goFname string) string {
 	const arityTemplate = `
-	%sCheckGoArity("%s", args, %d, %d)
+	%sCheckReceiverArity("%s", args, %d, %d)
 	`
 
 	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
@@ -437,7 +437,7 @@ func %s(args []Object, index int) %s%s {
 			return %sr  // refTo
 `
 
-	apiName := "ExtractGoObject" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
+	apiName := "Extract_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
 
 	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)

@@ -1063,6 +1063,12 @@ func findApis(src paths.NativePath) (apis map[string]struct{}) {
 	return
 }
 
+// Determine the runtime API name for a function call, given a choice
+// of prefixes (core and namespace-based) and the type name.  Ensure
+// the resulting API has been code-generated or already exists in
+// package core, wrapping it in an ABEND if not, and return the
+// resulting wrap or, if no errors, the original string (which
+// generate-std.joke will use to reconstitute the same API name).
 func assertRuntime(prefix, nsPrefix, s string) string {
 	runtime := s
 	if ix := Index(s, "("); ix >= 0 {

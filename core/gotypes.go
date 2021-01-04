@@ -43,7 +43,7 @@ func GoObjectTypeToString(o interface{}) string {
 	return GoTypeToString(reflect.TypeOf(o))
 }
 
-func CheckGoArity(rcvr string, args Object, min, max int) *ArraySeq {
+func CheckReceiverArity(rcvr string, args Object, min, max int) *ArraySeq {
 	n := 0
 	switch s := args.(type) {
 	case Nil:
