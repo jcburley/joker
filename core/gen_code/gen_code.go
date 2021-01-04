@@ -40,7 +40,7 @@ var CoreSourceFiles []FileInfo = []FileInfo{
 	},
 	{
 		Name:     "<joker.core>",
-		Filename: "customlibs.joke",
+		Filename: "g_customlibs.joke",
 	},
 	{
 		Name:     "<joker.repl>",

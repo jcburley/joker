@@ -32,15 +32,15 @@ func curTimeAndVersion() string {
 }
 
 func RegisterPackages(pkgs []string, clojureSourceDir string) {
-	updateCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "custom.go"))
+	updateCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "g_custom.go"))
 }
 
 func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
-	updateCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "customlibs.joke"))
+	updateCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "g_customlibs.joke"))
 }
 
 func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode bool) {
-	updateGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "goswitch.go"), outputCode)
+	updateGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "g_goswitch.go"), outputCode)
 }
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
@@ -172,7 +172,7 @@ func SwitchGoType(g interface{}) int {
 	}
 
 	if outputCode {
-		fmt.Println("Generated file goswitch.go:")
+		fmt.Println("Generated file g_goswitch.go:")
 		fmt.Print(m)
 	}
 }

@@ -5,7 +5,7 @@ package core
 var haveSetCoreNamespaces bool
 
 func ProcessCoreData() {
-	processData(customlibsData)
+	processData(g_customlibsData)
 	// Let MaybeLazy() handle initialization.
 	if !haveSetCoreNamespaces {
 		setCoreNamespaces()
