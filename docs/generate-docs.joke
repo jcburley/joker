@@ -38,10 +38,11 @@
 (def usage-with-types-template
   (slurp "templates/usage-with-types.html"))
 
-(defn go-type-of
-  [^Namespace ns ^GoVar v]
-  (let [ty (GoTypeOfAsString v)]
-    (s/replace-first ty (str ns "/") "")))
+#?(:gostd
+   (defn go-type-of
+     [^Namespace ns ^GoVar v]
+     (let [ty (GoTypeOfAsString v)]
+       (s/replace-first ty (str ns "/") ""))))
 
 (defn type-name
   [^Namespace ns ^Object v]
@@ -52,7 +53,8 @@
       (:macro m) "Macro"
       (= Fn (type @v)) "Function"
       (= Proc (type @v)) "Function"
-      (= GoVar (type @v)) (str "GoVar of " (go-type-of ns (deref v)))
+      #?@(:gostd
+          [(= GoVar (type @v)) (str "GoVar of " (go-type-of ns (deref v)))])
       (:tag m) (let [t (str (:tag m))]
                  (if (= t "GoType")
                    (str (if (:specificity m)
@@ -71,9 +73,11 @@
            (:macro m) :macro
            :else :function)
       Proc :function
-      GoType :type
-      GoVar :variable
-      GoObject :variable
+      #?@(
+          :gostd
+          [GoType :type
+           GoVar :variable
+           GoObject :variable])
       (cond
         (not (bound? v)) :variable  ; E.g. joker.core/*1
         (:special-form m) :special
@@ -150,35 +154,36 @@
         base (get (s/split t #"/") 1)]
     (str prefix base)))
 
-(defn receiver-doc
-  [t r what]
-  (if-let [m (Go t (str r))]
-    (-> receiver-template
-        (s/replace "{id}" (str r))
-        (s/replace "{name}" (str r))
-        (s/replace "{type}" (str what " for " (type-string (str t))))
-        (s/replace "{kind}" what)
-        (s/replace "{usage}" (s/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
-        (s/replace "{docstring}" (s/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
-        (s/replace "{added}" (str (:added m)))
-        (s/replace
-         "{source}"
-         (if (:line m)
-           (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
-                   (source-file (:ns m))
-                   (str (:line m)))
-           "{blank}")))
-    "{blank}"))
+#?(:gostd
+   (do (defn receiver-doc
+      [t r what]
+      (if-let [m (Go t (str r))]
+        (-> receiver-template
+            (s/replace "{id}" (str r))
+            (s/replace "{name}" (str r))
+            (s/replace "{type}" (str what " for " (type-string (str t))))
+            (s/replace "{kind}" what)
+            (s/replace "{usage}" (s/replace usage-template "{usage}" (str (apply list (get m :arglists)))))
+            (s/replace "{docstring}" (s/replace (joker.html/escape (:doc m)) "\n" "<br>\n"))
+            (s/replace "{added}" (str (:added m)))
+            (s/replace
+             "{source}"
+             (if (:line m)
+               (format "<a href=\"https://github.com/candid82/joker/blob/master/core/data/%s.joke#L%s\">source</a>"
+                       (source-file (:ns m))
+                       (str (:line m)))
+               "{blank}")))
+        "{blank}"))
 
-(defn receivers-doc
-  [k v what]
-  (let [go-type-info (deref (Go v ""))
-        members (get go-type-info "Members")
-        memvec (sort (get members nil))]
-    (s/join
-     ""
-     (for [m memvec]
-       (receiver-doc v m what)))))
+    (defn receivers-doc
+      [k v what]
+      (let [go-type-info (deref (Go v ""))
+            members (get go-type-info "Members")
+            memvec (sort (get members nil))]
+        (s/join
+         ""
+         (for [m memvec]
+           (receiver-doc v m what)))))))
 
 (defn var-doc
   [k v]
@@ -207,10 +212,11 @@
            "{blank}"))
         (s/replace
          "{receivers}"
-         (if (= GoType (type (deref v)))
-           (let [what (if (:specificity (meta v)) "Method" "Receiver")]
-             (receivers-doc k (deref v) what))
-           "{blank}"))
+         #?(:gostd (if (= GoType (type (deref v)))
+                     (let [what (if (:specificity (meta v)) "Method" "Receiver")]
+                       (receivers-doc k (deref v) what))
+                     "{blank}")
+            :default ""))
         (s/replace "{show-types}"
                    (if (s/includes? usage-str "^")
                      "<a href=\"#\" class=\"types\">show types</a>"
@@ -302,7 +308,8 @@
 
 (defn go-version
   []
-  (s/replace (go.std.runtime/Version) "go" ""))
+  #?(:gostd (s/replace (go.std.runtime/Version) "go" "")
+     :default "<unknown>"))
 
 (defn shell-or-substitute
   [sub-fn & args]

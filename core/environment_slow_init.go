@@ -10,6 +10,7 @@ func NewEnv() *Env {
 	features := EmptySet()
 	features.Add(MakeKeyword("default"))
 	features.Add(MakeKeyword("joker"))
+	features.Add(MakeKeyword("gostd"))
 	res := &Env{
 		Namespaces: make(map[*string]*Namespace),
 		Features:   features,
