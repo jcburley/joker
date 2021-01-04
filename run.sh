@@ -12,7 +12,7 @@ build() {
 set -e  # Exit on error.
 
 if [ ! -x "$JOKER" ]; then
-    if [ -x ./joker-good ]; then
+    if [ -x ./joker-good -a ! -f NO-GOSTD.flag ]; then
         JOKER=../joker-good
         ALREADY_BUILT=false
     else
@@ -26,7 +26,10 @@ else
 fi
 
 rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
-[ ! -f NO-GOSTD.flag ] && (cd tools/gostd && go build .) && ./tools/gostd/gostd --replace --clojure .
+if [ ! -f NO-GOSTD.flag ]; then
+    (cd tools/gostd && go build .)
+    ./tools/gostd/gostd --replace --clojure .
+fi
 
 # Check for changes in std, and run just-built Joker, only when building for host os/architecture.
 SUM256="$(go run tools/sum256dir/main.go std)"
