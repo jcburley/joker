@@ -211,11 +211,11 @@
                    (str (:line m)))
            "{blank}"))
         (s/replace
-         "{receivers}"
+         "  {receivers}\n"
          #?(:gostd (if (= GoType (type (deref v)))
                      (let [what (if (:specificity (meta v)) "Method" "Receiver")]
-                       (receivers-doc k (deref v) what))
-                     "{blank}")
+                       (str "  "(receivers-doc k (deref v) what) "\n"))
+                     "")
             :default ""))
         (s/replace "{show-types}"
                    (if (s/includes? usage-str "^")
