@@ -63,7 +63,6 @@ Options:
   --empty                     # Generate empty packages (those with no Clojure code)
   --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp              # Don't put the time (and version) info in generated/modified files
-  --undo                      # Undo effects of --clojure ...
   --help, -h                  # Print this information
 
 If <clojure-std-subdir> is not specified, no Go nor Clojure source files
@@ -147,7 +146,6 @@ func main() {
 	summary := false
 	generateEmpty := false
 	outputCode := false
-	undo := false
 
 	for i := 1; i < length; i++ { // shift
 		a := os.Args[i]
@@ -179,8 +177,6 @@ func main() {
 				outputCode = true
 			case "--empty":
 				generateEmpty = true
-			case "--undo":
-				undo = true
 			case "--go":
 				if goSourceDir != "" {
 					fmt.Fprintf(os.Stderr, "cannot specify --go <go-source-dir> more than once\n")
@@ -304,18 +300,11 @@ func main() {
 	clojureLibDir := ""
 	if clojureSourceDir != "" && clojureSourceDir != "-" {
 		clojureLibDir = filepath.Join(clojureSourceDir, "std", "go", "std")
-		if replace || undo {
+		if replace {
 			if e := os.RemoveAll(clojureLibDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", clojureLibDir)
 				os.Exit(1)
 			}
-		}
-
-		if undo {
-			RegisterPackages([]string{}, clojureSourceDir)
-			RegisterClojureFiles([]string{}, clojureSourceDir)
-			RegisterGoTypeSwitch([]TypeInfo{}, clojureSourceDir, false)
-			os.Exit(0)
 		}
 
 		if !overwrite {
