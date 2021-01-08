@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
 	"github.com/candid82/joker/tools/gostd/genutils"
@@ -10,6 +11,7 @@ import (
 	"path"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 /* The transformation code, below, takes an approach that is new for me.
@@ -123,11 +125,20 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 	return
 }
 
-func genReceiverCode(fn *FuncInfo, goFname string) string {
-	const arityTemplate = `
-	%sCheckReceiverArity("%s", args, %d, %d)
+type ArityInfo struct {
+	ArgList string
+	DocName string
+	Min     int
+	Max     int
+}
+
+const receiverArityTemplate = `
+	{{.ArgList}}CheckReceiverArity("{{.DocName}}", args, {{.Min}}, {{.Max}})
 	`
 
+var receiverArity = template.Must(template.New("receiverArity").Parse(receiverArityTemplate[1:]))
+
+func genReceiverCode(fn *FuncInfo, goFname string) string {
 	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
 	if strings.Contains(paramListDoc, "ABEND") {
 		return paramListDoc
@@ -169,7 +180,15 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	if max > 0 {
 		maybeAssignArgList = "_argList := "
 	}
-	arity := fmt.Sprintf(arityTemplate[1:], maybeAssignArgList, fn.DocName, min, max)
+	ai := ArityInfo{
+		ArgList: maybeAssignArgList,
+		DocName: fn.DocName,
+		Min:     min,
+		Max:     max,
+	}
+	buf := new(bytes.Buffer)
+	receiverArity.Execute(buf, ai)
+	arity := buf.String()
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
