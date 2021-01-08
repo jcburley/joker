@@ -215,7 +215,7 @@ var Error = &Info{
 	ArgClojureArgType:    "Error",
 	ConvertFromMap:       `FieldAsError(%s, %s)`,
 	AsClojureObject:      "Error(%s%s)",
-	ConvertFromClojure:   "Extract_error(%s, %s)",
+	ConvertFromClojure:   "ObjectAsError(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -228,7 +228,7 @@ var Boolean = &Info{
 	ArgClojureArgType:    "Boolean",
 	ConvertFromMap:       "FieldAsBoolean(%s, %s)",
 	AsClojureObject:      "Boolean(%s%s)",
-	ConvertFromClojure:   "Extract_bool(%s, %s)",
+	ConvertFromClojure:   "ObjectAsBoolean(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -241,7 +241,7 @@ var Byte = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsByte(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_byte(%s, %s)",
+	ConvertFromClojure:   "ObjectAsByte(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -254,7 +254,7 @@ var Rune = &Info{
 	ArgClojureArgType:    "Char",
 	ConvertFromMap:       `FieldAsChar(%s, %s)`,
 	AsClojureObject:      "Char(%s%s)",
-	ConvertFromClojure:   "Extract_rune(%s, %s)",
+	ConvertFromClojure:   "ObjectAsChar(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -267,7 +267,7 @@ var String = &Info{
 	ArgClojureArgType:    "String",
 	ConvertFromMap:       `FieldAsString(%s, %s)`,
 	AsClojureObject:      "String(%s%s)",
-	ConvertFromClojure:   "Extract_string(%s, %s)",
+	ConvertFromClojure:   "ObjectAsString(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -280,7 +280,7 @@ var Int = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt(%s, %s)`,
 	AsClojureObject:      "Int(%s%s)",
-	ConvertFromClojure:   "Extract_int(%s, %s)",
+	ConvertFromClojure:   "ObjectAsInt(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -293,7 +293,7 @@ var Int8 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt8(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_int8(%s, %s)",
+	ConvertFromClojure:   "ObjectAsInt8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -306,7 +306,7 @@ var Int16 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt16(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_int16(%s, %s)",
+	ConvertFromClojure:   "ObjectAsInt16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -319,7 +319,7 @@ var Int32 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsInt32(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_int32(%s, %s)",
+	ConvertFromClojure:   "ObjectAsInt32(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -332,7 +332,7 @@ var Int64 = &Info{
 	ArgClojureArgType:    "BigInt",
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
 	AsClojureObject:      "BigInt(%s%s)",
-	ConvertFromClojure:   "Extract_int64(%s, %s)",
+	ConvertFromClojure:   "ObjectAsInt64(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -345,7 +345,7 @@ var UInt = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
-	ConvertFromClojure:   "Extract_uint(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -358,7 +358,7 @@ var UInt8 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_uint8(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -371,7 +371,7 @@ var UInt16 = &Info{
 	ArgClojureArgType:    "Int",
 	ConvertFromMap:       `FieldAsUint16(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "Extract_uint16(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint16(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
@@ -384,7 +384,7 @@ var UInt32 = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
-	ConvertFromClojure:   "Extract_uint32(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint32(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
 
@@ -397,7 +397,7 @@ var UInt64 = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
 	AsClojureObject:      "BigIntU(%s%s)",
-	ConvertFromClojure:   "Extract_uint64(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint64(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -410,7 +410,7 @@ var UIntPtr = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
-	ConvertFromClojure:   "Extract_uintptr(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUintptr(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 
@@ -423,7 +423,7 @@ var Float32 = &Info{
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	AsClojureObject:      "Double(float64(%s)%s)",
-	ConvertFromClojure:   "Extract_float32(%s, %s)",
+	ConvertFromClojure:   "ObjectAsFloat32(%s, %s)",
 	PromoteType:          "float64(%s)",
 }
 
@@ -436,7 +436,7 @@ var Float64 = &Info{
 	ArgClojureArgType:    "Double",
 	ConvertFromMap:       `FieldAsDouble(%s, %s)`,
 	AsClojureObject:      "Double(%s%s)",
-	ConvertFromClojure:   "Extract_float64(%s, %s)",
+	ConvertFromClojure:   "ObjectAsFloat64(%s, %s)",
 	PromoteType:          "%s",
 }
 
@@ -448,7 +448,7 @@ var Complex128 = &Info{
 	ArgExtractFunc:       "ABEND007(find these)",
 	ArgClojureArgType:    "ABEND007(find these)",
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
-	ConvertFromClojure:   "Extract_complex128(%s, %s)",
+	ConvertFromClojure:   "ObjectAsComplex128(%s, %s)",
 	AsClojureObject:      "Complex(%s%s)",
 }
 

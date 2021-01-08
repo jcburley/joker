@@ -70,7 +70,7 @@ func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	return res
 }
 
-func Extract_bool(obj Object, pattern string) bool {
+func ObjectAsBoolean(obj Object, pattern string) bool {
 	return EnsureObjectIsBoolean(obj, pattern).B
 }
 
@@ -97,7 +97,7 @@ func FieldAsBoolean(o Map, k string) bool {
 	return res.B
 }
 
-func Extract_int(obj Object, pattern string) int {
+func ObjectAsInt(obj Object, pattern string) int {
 	return EnsureObjectIsInt(obj, pattern).I
 }
 
@@ -120,7 +120,7 @@ func FieldAsInt(o Map, k string) int {
 	return int(v)
 }
 
-func Extract_uint(obj Object, pattern string) uint {
+func ObjectAsUint(obj Object, pattern string) uint {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint")))
@@ -145,7 +145,7 @@ func FieldAsUint(o Map, k string) uint {
 	return uint(v)
 }
 
-func Extract_byte(obj Object, pattern string) byte {
+func ObjectAsByte(obj Object, pattern string) byte {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v < 0 || v > 255 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Int "+strconv.Itoa(v)+" out of range for byte")))
@@ -193,7 +193,7 @@ func FieldAsNumber(o Map, k string) Number {
 	return res
 }
 
-func Extract_int8(obj Object, pattern string) int8 {
+func ObjectAsint8(obj Object, pattern string) int8 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt8 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int8")))
@@ -210,7 +210,7 @@ func FieldAsInt8(o Map, k string) int8 {
 	return int8(v)
 }
 
-func Extract_int16(obj Object, pattern string) int16 {
+func ObjectAsInt16(obj Object, pattern string) int16 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt16 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int16")))
@@ -227,7 +227,7 @@ func FieldAsInt16(o Map, k string) int16 {
 	return int16(v)
 }
 
-func Extract_int32(obj Object, pattern string) int32 {
+func ObjectAsInt32(obj Object, pattern string) int32 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt32 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int32")))
@@ -252,7 +252,7 @@ func FieldAsInt32(o Map, k string) int32 {
 	return int32(v)
 }
 
-func Extract_uint8(obj Object, pattern string) uint8 {
+func ObjectAsUint8(obj Object, pattern string) uint8 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxUint8 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint8")))
@@ -269,7 +269,7 @@ func FieldAsUint8(o Map, k string) uint8 {
 	return uint8(v)
 }
 
-func Extract_uint16(obj Object, pattern string) uint16 {
+func ObjectAsUint16(obj Object, pattern string) uint16 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxUint16 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint16")))
@@ -286,7 +286,7 @@ func FieldAsUint16(o Map, k string) uint16 {
 	return uint16(v)
 }
 
-func Extract_uint32(obj Object, pattern string) uint32 {
+func ObjectAsUint32(obj Object, pattern string) uint32 {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint32")))
@@ -315,7 +315,7 @@ func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
 	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
 }
 
-func Extract_int64(obj Object, pattern string) int64 {
+func ObjectAsInt64(obj Object, pattern string) int64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Int64()
 }
 
@@ -323,7 +323,7 @@ func FieldAsInt64(o Map, k string) int64 {
 	return FieldAsNumber(o, k).BigInt().Int64()
 }
 
-func Extract_uint64(obj Object, pattern string) uint64 {
+func ObjectAsUint64(obj Object, pattern string) uint64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 }
 
@@ -335,7 +335,7 @@ func FieldAsUint64(o Map, k string) uint64 {
 	return FieldAsNumber(o, k).BigInt().Uint64()
 }
 
-func Extract_uintptr(obj Object, pattern string) uintptr {
+func ObjectAsUintptr(obj Object, pattern string) uintptr {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if uint64(uintptr(v)) != v {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(v, 10)+" out of range for uintptr")))
@@ -351,7 +351,7 @@ func FieldAsUintPtr(o Map, k string) uintptr {
 	return uintptr(FieldAsUint64(o, k))
 }
 
-func Extract_float64(obj Object, pattern string) float64 {
+func ObjectAsFloat64(obj Object, pattern string) float64 {
 	return EnsureObjectIsDouble(obj, pattern).D
 }
 
@@ -368,7 +368,7 @@ func FieldAsDouble(o Map, k string) float64 {
 	return res.D
 }
 
-func Extract_rune(obj Object, pattern string) rune {
+func ObjectAsChar(obj Object, pattern string) rune {
 	return EnsureObjectIsChar(obj, pattern).Ch
 }
 
@@ -395,7 +395,7 @@ func FieldAsChar(o Map, k string) rune {
 	return res.Ch
 }
 
-func Extract_string(obj Object, pattern string) string {
+func ObjectAsString(obj Object, pattern string) string {
 	return EnsureObjectIsString(obj, pattern).S
 }
 
@@ -422,7 +422,7 @@ func FieldAsString(o Map, k string) string {
 	return res.S
 }
 
-func Extract_error(obj Object, pattern string) error {
+func ObjectAsError(obj Object, pattern string) error {
 	return EnsureObjectIsError(obj, pattern)
 }
 
