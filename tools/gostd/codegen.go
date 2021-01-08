@@ -374,6 +374,20 @@ func GenVariable(vi *VariableInfo) {
 	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
 }
 
+type ExInfo struct {
+	ArgType  string
+	TypeName string
+	DeclType string
+}
+
+const exTemplate = `
+case {{.ArgType}}:
+		v := {{.TypeName}}(Extract{{.DeclType}}(args, index))
+		return &v
+	`
+
+var ex = template.Must(template.New("ex").Parse(exTemplate[1:]))
+
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string {
 	ts := ti.TypeSpec()
 	if ts == nil {
@@ -385,16 +399,18 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 		return ""
 	}
 
-	argType := t.ArgClojureType()
-	declType := t.ArgExtractFunc()
-	if argType == "" || declType == "" {
+	ei := ExInfo{
+		ArgType:  t.ArgClojureType(),
+		TypeName: typeName,
+		DeclType: t.ArgExtractFunc(),
+	}
+	if ei.ArgType == "" || ei.DeclType == "" {
 		return ""
 	}
-	const exTemplate = `case %s:
-		v := %s(Extract%s(args, index))
-		return &v
-	`
-	return fmt.Sprintf(exTemplate, argType, typeName, declType)
+
+	buf := new(bytes.Buffer)
+	ex.Execute(buf, ei)
+	return buf.String()
 }
 
 func addressOf(ptrTo string) string {
