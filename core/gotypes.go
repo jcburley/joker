@@ -60,6 +60,7 @@ func CheckReceiverArity(rcvr string, args Object, min, max int) *ArraySeq {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, rcvr, RangeString(min, max))))
 }
 
+// TODO: Needed? (Not currently used.)
 func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	a := SeqNth(args, n)
 	res, ok := a.(GoObject)
@@ -74,7 +75,7 @@ func ObjectAsBoolean(obj Object, pattern string) bool {
 	return EnsureObjectIsBoolean(obj, pattern).B
 }
 
-func ExtractGoBoolean(rcvr, name string, args *ArraySeq, n int) bool {
+func ReceiverArgAsBoolean(rcvr, name string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
 	if !ok {
@@ -101,7 +102,7 @@ func ObjectAsInt(obj Object, pattern string) int {
 	return EnsureObjectIsInt(obj, pattern).I
 }
 
-func ExtractGoInt(rcvr, name string, args *ArraySeq, n int) int {
+func ReceiverArgAsInt(rcvr, name string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
 	if !ok {
@@ -128,8 +129,8 @@ func ObjectAsUint(obj Object, pattern string) uint {
 	return uint(v)
 }
 
-func ExtractGoUint(rcvr, name string, args *ArraySeq, n int) uint {
-	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint(rcvr, name string, args *ArraySeq, n int) uint {
+	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
 	}
@@ -153,8 +154,8 @@ func ObjectAsByte(obj Object, pattern string) byte {
 	return byte(v)
 }
 
-func ExtractGoByte(rcvr, name string, args *ArraySeq, n int) byte {
-	v := ExtractGoInt(rcvr, name, args, n)
+func ReceiverArgAsByte(rcvr, name string, args *ArraySeq, n int) byte {
+	v := ReceiverArgAsInt(rcvr, name, args, n)
 	if v < 0 || v > 255 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "byte"))
 	}
@@ -170,7 +171,7 @@ func FieldAsByte(o Map, k string) byte {
 	return byte(v)
 }
 
-func ExtractGoNumber(rcvr, name string, args *ArraySeq, n int) Number {
+func ReceiverArgAsNumber(rcvr, name string, args *ArraySeq, n int) Number {
 	a := SeqNth(args, n)
 	res, ok := a.(Number)
 	if !ok {
@@ -235,8 +236,8 @@ func ObjectAsInt32(obj Object, pattern string) int32 {
 	return int32(v)
 }
 
-func ExtractGoInt32(rcvr, name string, args *ArraySeq, n int) int32 {
-	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
+func ReceiverArgAsInt32(rcvr, name string, args *ArraySeq, n int) int32 {
+	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
 	if v > math.MaxInt32 || v < math.MinInt32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "int32"))
 	}
@@ -294,8 +295,8 @@ func ObjectAsUint32(obj Object, pattern string) uint32 {
 	return uint32(v)
 }
 
-func ExtractGoUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
-	v := ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
+	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint32"))
 	}
@@ -311,8 +312,8 @@ func FieldAsUint32(o Map, k string) uint32 {
 	return uint32(v)
 }
 
-func ExtractGoInt64(rcvr, name string, args *ArraySeq, n int) int64 {
-	return ExtractGoNumber(rcvr, name, args, n).BigInt().Int64()
+func ReceiverArgAsInt64(rcvr, name string, args *ArraySeq, n int) int64 {
+	return ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
 }
 
 func ObjectAsInt64(obj Object, pattern string) int64 {
@@ -327,8 +328,8 @@ func ObjectAsUint64(obj Object, pattern string) uint64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 }
 
-func ExtractGoUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
-	return ExtractGoNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
+	return ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
 }
 
 func FieldAsUint64(o Map, k string) uint64 {
@@ -343,8 +344,8 @@ func ObjectAsUintptr(obj Object, pattern string) uintptr {
 	return uintptr(v)
 }
 
-func ExtractGoUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
-	return uintptr(ExtractGoUint64(rcvr, name, args, n))
+func ReceiverArgAsUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
+	return uintptr(ReceiverArgAsUint64(rcvr, name, args, n))
 }
 
 func FieldAsUintPtr(o Map, k string) uintptr {
@@ -372,7 +373,7 @@ func ObjectAsChar(obj Object, pattern string) rune {
 	return EnsureObjectIsChar(obj, pattern).Ch
 }
 
-func ExtractGoChar(rcvr, name string, args *ArraySeq, n int) rune {
+func ReceiverArgAsChar(rcvr, name string, args *ArraySeq, n int) rune {
 	a := SeqNth(args, n)
 	res, ok := a.(Char)
 	if !ok {
@@ -399,7 +400,7 @@ func ObjectAsString(obj Object, pattern string) string {
 	return EnsureObjectIsString(obj, pattern).S
 }
 
-func ExtractGoString(rcvr, name string, args *ArraySeq, n int) string {
+func ReceiverArgAsString(rcvr, name string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
 	if !ok {
@@ -426,7 +427,7 @@ func ObjectAsError(obj Object, pattern string) error {
 	return EnsureObjectIsError(obj, pattern)
 }
 
-func ExtractGoError(rcvr, name string, args *ArraySeq, n int) error {
+func ReceiverArgAsError(rcvr, name string, args *ArraySeq, n int) error {
 	a := SeqNth(args, n)
 	if s, ok := a.(String); ok {
 		return errors.New(s.S)
