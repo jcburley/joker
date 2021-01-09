@@ -592,67 +592,46 @@ func EnsureArgIsChannel(args []Object, index int) *Channel {
 }
 
 func EnsureObjectIsGoObject(obj Object, pattern string) GoObject {
-	switch c := obj.(type) {
-	case GoObject:
+	if c, yes := obj.(GoObject); yes {
 		return c
-	default:
-		if pattern == "" {
-			pattern = "%s"
-		}
-		msg := fmt.Sprintf("Expected %s, got %s", "GoObject", obj.GetType().ToString(false))
-		panic(RT.NewError(fmt.Sprintf(pattern, msg)))
 	}
+	panic(FailObject(obj, "GoObject", pattern))
 }
 
 func EnsureArgIsGoObject(args []Object, index int) GoObject {
-	switch c := args[index].(type) {
-	case GoObject:
+	obj := args[index]
+	if c, yes := obj.(GoObject); yes {
 		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoObject"))
 	}
+	panic(FailArg(obj, "GoObject", index))
 }
 
 func EnsureObjectIsGoVar(obj Object, pattern string) *GoVar {
-	switch c := obj.(type) {
-	case *GoVar:
+	if c, yes := obj.(*GoVar); yes {
 		return c
-	default:
-		if pattern == "" {
-			pattern = "%s"
-		}
-		msg := fmt.Sprintf("Expected %s, got %s", "GoVar", obj.GetType().ToString(false))
-		panic(RT.NewError(fmt.Sprintf(pattern, msg)))
 	}
+	panic(FailObject(obj, "GoVar", pattern))
 }
 
 func EnsureArgIsGoVar(args []Object, index int) *GoVar {
-	switch c := args[index].(type) {
-	case *GoVar:
+	obj := args[index]
+	if c, yes := obj.(*GoVar); yes {
 		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoVar"))
 	}
+	panic(FailArg(obj, "GoVar", index))
 }
 
 func EnsureObjectIsGoType(obj Object, pattern string) *GoType {
-	switch c := obj.(type) {
-	case *GoType:
+	if c, yes := obj.(*GoType); yes {
 		return c
-	default:
-		if pattern == "" {
-			pattern = "%s"
-		}
-		msg := fmt.Sprintf("Expected %s, got %s", "GoType", obj.GetType().ToString(false))
-		panic(RT.NewError(fmt.Sprintf(pattern, msg)))
 	}
+	panic(FailObject(obj, "GoType", pattern))
 }
 
 func EnsureArgIsGoType(args []Object, index int) *GoType {
-	switch c := args[index].(type) {
-	case *GoType:
+	obj := args[index]
+	if c, yes := obj.(*GoType); yes {
 		return c
-	default:
-		panic(RT.NewArgTypeError(index, c, "GoType"))
 	}
+	panic(FailArg(obj, "GoType", index))
 }
