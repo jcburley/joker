@@ -34,7 +34,10 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			cvt = assertRuntime("", "", cvt)
 		}
 		argNumAsString := strconv.Itoa(argNum)
-		goPreCode = paramName + " := " + fmt.Sprintf(cvt, "SeqNth(_argList, "+argNumAsString+")", strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
+		goPreCode = paramName + " := " +
+			fmt.Sprintf(cvt,
+				"SeqNth(_argList, "+argNumAsString+")",
+				strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
 	}
 	if ti.IsPassedByAddress() {
 		cl2golParam = "*" + paramName
