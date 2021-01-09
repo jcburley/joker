@@ -192,14 +192,22 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
 }
 
+type ReceiverFuncInfo struct {
+	FuncName string
+	What     string
+	Code     string
+}
+
+const receiverFuncTemplate = `
+func {{.FuncName}}(o GoObject, args Object) Object {  // {{.What}}
+{{.Code}}}
+`
+
+var receiverFunc = template.Must(template.New("receiverFunc").Parse(receiverFuncTemplate))
+
 func GenReceiver(fn *FuncInfo) {
 	genutils.GenSymReset()
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
-
-	const goTemplate = `
-func %s(o GoObject, args Object) Object {  // %s
-%s}
-`
 
 	goFname := genutils.FuncNameAsGoPrivate(fn.Name)
 
@@ -207,14 +215,22 @@ func %s(o GoObject, args Object) Object {  // %s
 		return
 	}
 
-	clojureFn := ""
-
-	what := "Receiver"
-	if fn.Fd == nil {
-		what = "Method"
+	receiverFuncInfo := ReceiverFuncInfo{
+		FuncName: goFname,
+		What: func() string {
+			if fn.Fd == nil {
+				return "Method"
+			} else {
+				return "Receiver"
+			}
+		}(),
+		Code: genReceiverCode(fn, goFname),
 	}
-	goFn := fmt.Sprintf(goTemplate, goFname, what, genReceiverCode(fn, goFname))
+	buf := new(bytes.Buffer)
+	receiverFunc.Execute(buf, receiverFuncInfo)
+	goFn := buf.String()
 
+	clojureFn := ""
 	if strings.Contains(clojureFn, "ABEND") || strings.Contains(goFn, "ABEND") {
 		clojureFn = nonEmptyLineRegexp.ReplaceAllString(clojureFn, `;; $1`)
 		goFn = nonEmptyLineRegexp.ReplaceAllString(goFn, `// $1`)
@@ -270,18 +286,43 @@ func %s(o GoObject, args Object) Object {  // %s
 	}
 }
 
+type ClojureDefnInfo struct {
+	ReturnType string
+	Name       string
+	DocString  string
+	GoCode     string
+	ParamList  string
+}
+
+const clojureDefnTemplate = `
+(defn {{.ReturnType}}{{.Name}}
+  {{.DocString}}  {:added "1.0"
+   :go "{{.GoCode}}"}
+  [{{.ParamList}}])
+`
+
+var clojureDefn = template.Must(template.New("clojureDefn").Parse(clojureDefnTemplate))
+
+type GoFuncInfo struct {
+	Name       string
+	ParamList  string
+	ReturnType string
+	Code       string
+}
+
+const goFuncTemplate = `
+func {{.Name}}({{.ParamList}}) {{.ReturnType}} {
+{{.Code}}}
+`
+
+var goFunc = template.Must(template.New("goFunc").Parse(goFuncTemplate))
+
 func GenStandalone(fn *FuncInfo) {
 	genutils.GenSymReset()
 	d := fn.Fd
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 	pkgBaseName := fn.SourceFile.Package.BaseName
 
-	const clojureTemplate = `
-(defn %s%s
-%s  {:added "1.0"
-   :go "%s"}
-  [%s])
-`
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Ft, goFname)
 	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
@@ -303,17 +344,28 @@ func GenStandalone(fn *FuncInfo) {
 		cl2golCall = fmt.Sprintf(fc.conversion, cl2golCall)
 	}
 
-	clojureFn := fmt.Sprintf(clojureTemplate, clojureReturnType, d.Name.Name,
-		"  "+genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
-			fc.goParamListDoc, fc.goReturnTypeForDoc)+"\n",
-		cl2golCall, fc.clojureParamList)
+	clojureDefnInfo := ClojureDefnInfo{
+		ReturnType: clojureReturnType,
+		Name:       d.Name.Name,
+		DocString: genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+			fc.goParamListDoc, fc.goReturnTypeForDoc) + "\n",
+		GoCode:    cl2golCall,
+		ParamList: fc.clojureParamList,
+	}
+	buf := new(bytes.Buffer)
+	clojureDefn.Execute(buf, clojureDefnInfo)
+	clojureFn := buf.String()
 
-	const goTemplate = `
-func %s(%s) %s {
-%s}
-`
+	goFuncInfo := GoFuncInfo{
+		Name:       goFname,
+		ParamList:  fc.goParamList,
+		ReturnType: goReturnType,
+		Code:       fc.goCode,
+	}
+	buf.Reset()
+	goFunc.Execute(buf, goFuncInfo)
+	goFn := buf.String()
 
-	goFn := fmt.Sprintf(goTemplate, goFname, fc.goParamList, goReturnType, fc.goCode)
 	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
 		goFn = ""
 	}
@@ -511,6 +563,31 @@ func %s(args []Object, index int) %s%s {
 var Ctors = map[TypeInfo]string{}
 var CtorNames = map[TypeInfo]string{}
 
+type GoCtorInfo struct {
+	HelperFunc      string
+	CtorName        string
+	WrappedCtorName string
+	PtrTo           string
+	TypeName        string
+	Cases           string
+	Expected        string
+}
+
+const goCtorTemplate = `
+{{.HelperFunc}}func {{.CtorName}}(_v Object) {{.PtrTo}}{{.TypeName}} {
+	switch _o := _v.(type) {
+	{{.Cases}}
+	}
+	panic(RT.NewArgTypeError(0, _v, "{{.Expected}}"))
+}
+
+func {{.WrappedCtorName}}(_o Object) Object {
+	return MakeGoObject({{.CtorName}}(_o))
+}
+`
+
+var goCtor = template.Must(template.New("goCtor").Parse(goCtorTemplate))
+
 func genCtor(tyi TypeInfo) {
 	if !tyi.Custom() || !tyi.IsAddressable() {
 		return
@@ -521,28 +598,25 @@ func genCtor(tyi TypeInfo) {
 		return // TODO: Support *type, []type, etc
 	}
 
-	const goConstructTemplate = `
-%sfunc %s(_v Object) %s%s {
-	switch _o := _v.(type) {
-	%s
-	}
-	panic(RT.NewArgTypeError(0, _v, "%s"))
-}
-
-func %s(_o Object) Object {
-	return MakeGoObject(%s(_o))
-}
-`
-
 	typeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
 	localTypeName := fmt.Sprintf(tyi.GoPattern(), tyi.GoBaseName())
 	ctorApiName := "_Ctor_" + fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
 	wrappedCtorApiName := "_Wrapped" + ctorApiName
 
-	nonGoObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tyi, typeName, localTypeName)
+	possibleObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tyi, typeName, localTypeName)
 
-	goConstructor := fmt.Sprintf(goConstructTemplate, helperFunc, ctorApiName, ptrTo, typeName, nonGoObject, expectedObjectDoc,
-		wrappedCtorApiName, ctorApiName)
+	goCtorInfo := GoCtorInfo{
+		HelperFunc:      helperFunc,
+		CtorName:        ctorApiName,
+		WrappedCtorName: wrappedCtorApiName,
+		PtrTo:           ptrTo,
+		TypeName:        typeName,
+		Cases:           possibleObject,
+		Expected:        expectedObjectDoc,
+	}
+	buf := new(bytes.Buffer)
+	goCtor.Execute(buf, goCtorInfo)
+	goConstructor := buf.String()
 
 	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	if strings.Contains(goConstructor, "ABEND") {
@@ -655,8 +729,8 @@ func GenTypeFromDb(ti TypeInfo) {
 	}
 
 	if !ti.IsExported() || ti.IsArbitraryType() {
-		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or an array type\n")
-		return // Do not generate anything for private or array types
+		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or a special type\n")
+		return // Do not generate anything for private or special types
 	}
 	//	fmt.Printf("codegen.go/GenTypeFromDb: not a concrete type\n")
 
@@ -682,16 +756,30 @@ func GenTypeFromDb(ti TypeInfo) {
 	}
 }
 
-func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
-	const nonGoObjectCaseTemplate = `%s:
-		return %s`
+type possibleObjectCaseInfo struct {
+	Type   string
+	Return string
+}
 
+const possibleObjectCaseTemplate = `
+{{.Type}}:
+		return {{.Return}}`
+
+var possibleObjectCase = template.Must(template.New("possibleObjectCase").Parse(possibleObjectCaseTemplate[1:]))
+
+func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(ti, typeName, baseTypeName)
 
 	nonGoObjectCasePrefix := ""
 	nonGoObjectCase = ""
+	buf := new(bytes.Buffer)
 	for i := 0; i < len(nonGoObjectTypes); i++ {
-		nonGoObjectCase += nonGoObjectCasePrefix + fmt.Sprintf(nonGoObjectCaseTemplate, nonGoObjectTypes[i], extractClojureObjects[i])
+		possibleObjectCaseInfo := possibleObjectCaseInfo{
+			Type:   nonGoObjectTypes[i],
+			Return: extractClojureObjects[i],
+		}
+		possibleObjectCase.Execute(buf, possibleObjectCaseInfo)
+		nonGoObjectCase += nonGoObjectCasePrefix + buf.String()
 		nonGoObjectCasePrefix = `
 	`
 	}
