@@ -32,31 +32,24 @@ func curTimeAndVersion() string {
 }
 
 func RegisterPackages(pkgs []string, clojureSourceDir string) {
-	updateCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "g_custom.go"))
+	writeCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "g_custom.go"))
 }
 
 func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
-	updateCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "g_customlibs.joke"))
+	writeCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "g_customlibs.joke"))
 }
 
 func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode bool) {
-	updateGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "g_goswitch.go"), outputCode)
+	writeGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "g_goswitch.go"), outputCode)
 }
 
 // E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
-func updateCustomLibsGo(pkgs []string, f string) {
+func writeCustomLibsGo(pkgs []string, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	var m string
-	if len(pkgs) > 0 {
-		m = "// Auto-modified by gostd at " + curTimeAndVersion()
-	} else {
-		m = "// Placeholder for custom libraries. Overwritten by gostd."
-	}
-
-	m += `
+	m := "// Auto-modified by gostd at " + curTimeAndVersion() + `
 
 package main
 `
@@ -79,19 +72,12 @@ import (
 	Check(err)
 }
 
-func updateCustomLibsClojure(pkgs []string, f string) {
+func writeCustomLibsClojure(pkgs []string, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	var m string
-	if len(pkgs) > 0 {
-		m = ";; Auto-modified by gostd at " + curTimeAndVersion()
-	} else {
-		m = ";; Placeholder for custom libraries. Overwritten by gostd."
-	}
-
-	m += `
+	m := ";; Auto-modified by gostd at " + curTimeAndVersion() + `
 
 (def ^:dynamic
   ^{:private true
@@ -115,21 +101,14 @@ func updateCustomLibsClojure(pkgs []string, f string) {
 var Ordinal = map[TypeInfo]uint{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
-func updateGoTypeSwitch(allTypes []TypeInfo, f string, outputCode bool) {
+func writeGoTypeSwitch(allTypes []TypeInfo, f string, outputCode bool) {
 	types := SwitchableTypes
 
 	if Verbose {
 		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
 	}
 
-	var pattern string
-	if len(types) > 0 {
-		pattern = "// Auto-modified by gostd at " + curTimeAndVersion()
-	} else {
-		pattern = "// Placeholder for big Go switch on types. Overwritten by gostd."
-	}
-
-	pattern += `
+	pattern := "// Auto-modified by gostd at " + curTimeAndVersion() + `
 
 package core
 
