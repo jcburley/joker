@@ -903,3 +903,7 @@ func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
 		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, imp.Pos)
 	}
 }
+
+func init() {
+	nonEmptyLineRegexp = regexp.MustCompile(`(?m)^(.)`)
+}

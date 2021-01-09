@@ -10,8 +10,8 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
+	"text/template"
 )
 
 const VERSION = "0.1"
@@ -129,8 +129,13 @@ func readCoreApiFile(src string) {
 	//	fmt.Printf("Core APIs: %+v\n", coreApis)
 }
 
+var Templates *template.Template
+var TemplatesFuncMap = template.FuncMap{}
+
 func main() {
 	godb.Fset = token.NewFileSet() // positions are relative to Fset
+
+	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join("templates", "*.tmpl")))
 
 	length := len(os.Args)
 	goSourceDir := ""
@@ -426,8 +431,4 @@ func pct(i, j int) string {
 		return "--"
 	}
 	return fmt.Sprintf("%0.2f", (float64(i)/float64(j))*100.0)
-}
-
-func init() {
-	nonEmptyLineRegexp = regexp.MustCompile(`(?m)^(.)`)
 }

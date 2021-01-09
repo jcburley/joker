@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
@@ -43,32 +44,21 @@ func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode 
 	writeGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "g_goswitch.go"), outputCode)
 }
 
-// E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
 func writeCustomLibsGo(pkgs []string, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	m := "// Auto-modified by gostd at " + curTimeAndVersion() + `
-
-package main
-`
-
-	if len(pkgs) > 0 {
-		newImports := `
-
-import (
-`
-		importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
-		for _, p := range pkgs {
-			newImports += importPrefix + p + "\"\n"
-		}
-		newImports += `)
-`
-		m += newImports
+	newImports := ""
+	importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
+	for _, p := range pkgs {
+		newImports += importPrefix + p + "\"\n"
 	}
 
-	err := ioutil.WriteFile(f, []byte(m), 0777)
+	buf := new(bytes.Buffer)
+	Templates.ExecuteTemplate(buf, "customlibs", newImports)
+
+	err := ioutil.WriteFile(f, buf.Bytes(), 0777)
 	Check(err)
 }
 
@@ -485,4 +475,8 @@ func OutputPackageCode(clojureLibDir string, outputCode, generateEmpty bool) {
 		func(pkgDirUnix string, v CodeInfo) {
 			outputGoCode(pkgDirUnix, v, clojureLibDir, outputCode, generateEmpty)
 		})
+}
+
+func init() {
+	TemplatesFuncMap["curtimeandversion"] = curTimeAndVersion
 }
