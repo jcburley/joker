@@ -374,19 +374,19 @@ func GenVariable(vi *VariableInfo) {
 	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
 }
 
-type ExInfo struct {
+type MaybeImplicitlyConvertInfo struct {
 	ArgType  string
 	TypeName string
 	DeclType string
 }
 
-const exTemplate = `
+const maybeImplicitlyConvertTemplate = `
 case {{.ArgType}}:
 		v := {{.TypeName}}(Extract{{.DeclType}}(args, index))
 		return &v
 	`
 
-var ex = template.Must(template.New("ex").Parse(exTemplate[1:]))
+var maybeImplicitlyConvert = template.Must(template.New("maybeImplicitlyConvert").Parse(maybeImplicitlyConvertTemplate[1:]))
 
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string {
 	ts := ti.TypeSpec()
@@ -399,17 +399,17 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 		return ""
 	}
 
-	ei := ExInfo{
+	mic := MaybeImplicitlyConvertInfo{
 		ArgType:  t.ArgClojureType(),
 		TypeName: typeName,
 		DeclType: t.ArgExtractFunc(),
 	}
-	if ei.ArgType == "" || ei.DeclType == "" {
+	if mic.ArgType == "" || mic.DeclType == "" {
 		return ""
 	}
 
 	buf := new(bytes.Buffer)
-	ex.Execute(buf, ei)
+	maybeImplicitlyConvert.Execute(buf, mic)
 	return buf.String()
 }
 
