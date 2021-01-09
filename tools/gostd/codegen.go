@@ -756,7 +756,7 @@ func GenTypeFromDb(ti TypeInfo) {
 	}
 }
 
-type possibleObjectCaseInfo struct {
+type PossibleObjectCaseInfo struct {
 	Type   string
 	Return string
 }
@@ -774,7 +774,7 @@ func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCas
 	nonGoObjectCase = ""
 	buf := new(bytes.Buffer)
 	for i := 0; i < len(nonGoObjectTypes); i++ {
-		possibleObjectCaseInfo := possibleObjectCaseInfo{
+		possibleObjectCaseInfo := PossibleObjectCaseInfo{
 			Type:   nonGoObjectTypes[i],
 			Return: extractClojureObjects[i],
 		}
