@@ -106,22 +106,6 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string, outputCode bool) {
 		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
 	}
 
-	pattern := "// Auto-modified by gostd at " + curTimeAndVersion() + `
-
-package core
-
-import (%s
-)
-
-var GoTypesVec [%d]*GoTypeInfo
-
-func SwitchGoType(g interface{}) int {
-	switch g.(type) {
-%s	}
-	return -1
-}
-`
-
 	var cases string
 	var importeds = &imports.Imports{}
 	for _, t := range types {
@@ -140,16 +124,22 @@ func SwitchGoType(g interface{}) int {
 		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t])
 	}
 
-	m := fmt.Sprintf(pattern, importeds.QuotedList("\n\t"), len(types), cases)
+	info := map[string]string{}
+	info["Imports"] = importeds.QuotedList("\n\t")
+	info["NumberOfTypes"] = strconv.Itoa(len(types))
+	info["Cases"] = cases
+
+	buf := new(bytes.Buffer)
+	Templates.ExecuteTemplate(buf, "go-type-switch.tmpl", info)
 
 	if dir != "" {
-		err := ioutil.WriteFile(filepath.Join(dir, f), []byte(m), 0777)
+		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
 		Check(err)
 	}
 
 	if outputCode {
 		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
-		fmt.Print(m)
+		fmt.Print(buf.String())
 		fmt.Printf("-------- END generated file %s.\n\n", f)
 	}
 }
