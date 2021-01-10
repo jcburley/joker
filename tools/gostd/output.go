@@ -80,8 +80,9 @@ import (
 	}
 
 	if outputCode {
-		fmt.Printf("\n-------- Generated file %s:\n", f)
+		fmt.Printf("\n-------- BEGIN Generated file %s:\n", f)
 		fmt.Print(m)
+		fmt.Printf("\n-------- END generated file %s.\n\n", f)
 	}
 }
 
@@ -120,8 +121,9 @@ func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
 	}
 
 	if outputCode {
-		fmt.Printf("\n-------- Generated file %s:\n", f)
+		fmt.Printf("\n-------- BEGIN Generated file %s:\n", f)
 		fmt.Print(m)
+		fmt.Printf("\n-------- END generated file %s.\n\n", f)
 	}
 }
 
@@ -184,8 +186,9 @@ func SwitchGoType(g interface{}) int {
 	}
 
 	if outputCode {
-		fmt.Printf("\n-------- Generated file %s:\n", f)
+		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
 		fmt.Print(m)
+		fmt.Printf("\n-------- END generated file %s.\n\n", f)
 	}
 }
 
