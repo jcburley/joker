@@ -178,10 +178,6 @@ func main() {
 			case "--empty":
 				generateEmpty = true
 			case "--go":
-				if goSourceDir != "" {
-					fmt.Fprintf(os.Stderr, "cannot specify --go <go-source-dir> more than once\n")
-					os.Exit(1)
-				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					goSourceDir = os.Args[i]
@@ -208,22 +204,18 @@ func main() {
 					os.Exit(1)
 				}
 			case "--clojure":
-				if clojureSourceDir != "" {
-					fmt.Fprintf(os.Stderr, "cannot specify --clojure <clojure-source-dir> more than once\n")
-					os.Exit(1)
-				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					clojureSourceDir = os.Args[i]
+					if clojureSourceDir == "-" {
+						clojureSourceDir = ""
+						outputCode = true
+					}
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --clojure option\n")
 					os.Exit(1)
 				}
 			case "--import-from":
-				if clojureImportDir != "" {
-					fmt.Fprintf(os.Stderr, "cannot specify --import-from <import-dir> more than once\n")
-					os.Exit(1)
-				}
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					clojureImportDir = os.Args[i]
@@ -298,7 +290,7 @@ func main() {
 	readCoreApiFile(jokerSourceDir)
 
 	clojureLibDir := ""
-	if clojureSourceDir != "" && clojureSourceDir != "-" {
+	if clojureSourceDir != "" {
 		clojureLibDir = filepath.Join(clojureSourceDir, "std", "go", "std")
 		if replace {
 			if e := os.RemoveAll(clojureLibDir); e != nil {
@@ -375,7 +367,7 @@ func main() {
 
 	OutputPackageCode(clojureLibDir, outputCode, generateEmpty)
 
-	if clojureSourceDir != "" && clojureSourceDir != "-" {
+	if outputCode || clojureSourceDir != "" {
 		var packagesArray = []string{} // Relative package pathnames in alphabetical order
 		var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
 
@@ -389,8 +381,8 @@ func main() {
 				}
 				dotJokeArray = append(dotJokeArray, p)
 			})
-		RegisterPackages(packagesArray, clojureSourceDir)
-		RegisterClojureFiles(dotJokeArray, clojureSourceDir)
+		RegisterPackages(packagesArray, clojureSourceDir, outputCode)
+		RegisterClojureFiles(dotJokeArray, clojureSourceDir, outputCode)
 	}
 
 	RegisterGoTypeSwitch(AllTypesSorted(), clojureSourceDir, outputCode)

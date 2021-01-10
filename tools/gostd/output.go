@@ -31,20 +31,19 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, clojureSourceDir string) {
-	updateCustomLibsGo(pkgs, filepath.Join(clojureSourceDir, "g_custom.go"))
+func RegisterPackages(pkgs []string, clojureSourceDir string, outputCode bool) {
+	writeCustomLibsGo(pkgs, clojureSourceDir, "g_custom.go", outputCode)
 }
 
-func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
-	updateCustomLibsClojure(clojureFiles, filepath.Join(clojureSourceDir, "core", "data", "g_customlibs.joke"))
+func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string, outputCode bool) {
+	writeCustomLibsClojure(clojureFiles, clojureSourceDir, filepath.Join("core", "data", "g_customlibs.joke"), outputCode)
 }
 
 func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode bool) {
-	updateGoTypeSwitch(types, filepath.Join(clojureSourceDir, "core", "g_goswitch.go"), outputCode)
+	updateGoTypeSwitch(types, clojureSourceDir, filepath.Join("core", "g_goswitch.go"), outputCode)
 }
 
-// E.g.: \t_ "github.com/candid82/joker/std/go/std/net"
-func updateCustomLibsGo(pkgs []string, f string) {
+func writeCustomLibsGo(pkgs []string, dir, f string, outputCode bool) {
 	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
@@ -75,11 +74,18 @@ import (
 		m += newImports
 	}
 
-	err := ioutil.WriteFile(f, []byte(m), 0777)
-	Check(err)
+	if dir != "" {
+		err := ioutil.WriteFile(filepath.Join(dir, f), []byte(m), 0777)
+		Check(err)
+	}
+
+	if outputCode {
+		fmt.Printf("\n-------- Generated file %s:\n", f)
+		fmt.Print(m)
+	}
 }
 
-func updateCustomLibsClojure(pkgs []string, f string) {
+func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
 	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
@@ -108,14 +114,21 @@ func updateCustomLibsClojure(pkgs []string, f string) {
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 `
 
-	err := ioutil.WriteFile(f, []byte(m), 0777)
-	Check(err)
+	if dir != "" {
+		err := ioutil.WriteFile(filepath.Join(dir, f), []byte(m), 0777)
+		Check(err)
+	}
+
+	if outputCode {
+		fmt.Printf("\n-------- Generated file %s:\n", f)
+		fmt.Print(m)
+	}
 }
 
 var Ordinal = map[TypeInfo]uint{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
-func updateGoTypeSwitch(allTypes []TypeInfo, f string, outputCode bool) {
+func updateGoTypeSwitch(allTypes []TypeInfo, dir, f string, outputCode bool) {
 	types := SwitchableTypes
 
 	if Verbose {
@@ -165,14 +178,13 @@ func SwitchGoType(g interface{}) int {
 
 	m := fmt.Sprintf(pattern, importeds.QuotedList("\n\t"), len(types), cases)
 
-	err := ioutil.WriteFile(f, []byte(m), 0777)
-	// Ignore error if outputting code to stdout:
-	if !outputCode {
+	if dir != "" {
+		err := ioutil.WriteFile(filepath.Join(dir, f), []byte(m), 0777)
 		Check(err)
 	}
 
 	if outputCode {
-		fmt.Println("Generated file g_goswitch.go:")
+		fmt.Printf("\n-------- Generated file %s:\n", f)
 		fmt.Print(m)
 	}
 }

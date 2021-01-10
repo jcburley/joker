@@ -4588,8 +4588,35 @@ import (
 func initNative() {
 }
 
+Adding 2 custom imports to g_custom.go
+
+-------- Generated file g_custom.go:
+// Auto-modified by gostd at (omitted for testing)
+
+package main
+
+
+import (
+	_ "github.com/candid82/joker/std/go/std/net"
+	_ "github.com/candid82/joker/std/go/std/net/url"
+)
+Adding 2 custom loaded libraries to core/data/g_customlibs.joke
+
+-------- Generated file core/data/g_customlibs.joke:
+;; Auto-modified by gostd at (omitted for testing)
+
+(def ^:dynamic
+  ^{:private true
+    :doc "A set of symbols representing loaded custom libs"}
+  *custom-libs* #{
+     'go.std.net
+     'go.std.net.url
+    })
+
+(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
 Adding only 79 types (out of 85) to core/g_goswitch.go
-Generated file g_goswitch.go:
+
+-------- Generated file core/g_goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
 
 package core
