@@ -56,7 +56,7 @@ func writeCustomLibsGo(pkgs []string, dir, f string, outputCode bool) {
 	}
 
 	buf := new(bytes.Buffer)
-	Templates.ExecuteTemplate(buf, "customlibs.tmpl", newImports)
+	Templates.ExecuteTemplate(buf, "custom-libs-go.tmpl", newImports)
 
 	if dir != "" {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
