@@ -135,8 +135,6 @@ var TemplatesFuncMap = template.FuncMap{}
 func main() {
 	godb.Fset = token.NewFileSet() // positions are relative to Fset
 
-	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join("templates", "*.tmpl")))
-
 	length := len(os.Args)
 	goSourceDir := ""
 	goSourceDirVia := ""
@@ -293,6 +291,11 @@ func main() {
 	}
 
 	readCoreApiFile(jokerSourceDir)
+
+	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join(jokerSourceDir, "tools", "gostd", "templates", "*.tmpl")))
+	if outputCode {
+		fmt.Println(Templates.DefinedTemplates())
+	}
 
 	clojureLibDir := ""
 	if clojureSourceDir != "" {
