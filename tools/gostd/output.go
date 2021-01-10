@@ -75,31 +75,23 @@ func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
 
-	m := ";; Auto-modified by gostd at " + curTimeAndVersion() + `
-
-(def ^:dynamic
-  ^{:private true
-    :doc "A set of symbols representing loaded custom libs"}
-  *custom-libs* #{
-`
-
+	m := ""
 	const importPrefix = " 'go.std."
 	for _, p := range pkgs {
 		m += "    " + importPrefix + strings.ReplaceAll(p, "/", ".") + "\n"
 	}
-	m += `    })
 
-(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
-`
+	buf := new(bytes.Buffer)
+	Templates.ExecuteTemplate(buf, "custom-libs-clojure.tmpl", m)
 
 	if dir != "" {
-		err := ioutil.WriteFile(filepath.Join(dir, f), []byte(m), 0777)
+		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
 		Check(err)
 	}
 
 	if outputCode {
 		fmt.Printf("\n-------- BEGIN Generated file %s:\n", f)
-		fmt.Print(m)
+		fmt.Print(buf.String())
 		fmt.Printf("-------- END generated file %s.\n\n", f)
 	}
 }
