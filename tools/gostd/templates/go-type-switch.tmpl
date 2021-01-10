@@ -1,0 +1,15 @@
+// {{/* -*- mode: go -*- */ -}} Auto-modified by gostd at {{curtimeandversion}}
+
+package core
+
+import (
+{{- .Imports}}
+)
+
+var GoTypesVec [{{.NumberOfTypes}}]*GoTypeInfo
+
+func SwitchGoType(g interface{}) int {
+	switch g.(type) {
+{{.Cases}}	}
+	return -1
+}
