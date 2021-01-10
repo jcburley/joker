@@ -17753,10 +17753,61 @@ GO ENSURE-LOADED FOR url:
 	EnsureLoaded("go.std.strconv")  // E.g. from: _tests/big/src/net/url/url.go:17:2
 	EnsureLoaded("go.std.strings")  // E.g. from: _tests/big/src/net/url/url.go:18:2
 
-Adding 15 custom imports to _tests/gold/amd64-linux/joker/g_custom.go
-Adding 15 custom loaded libraries to _tests/gold/amd64-linux/joker/core/data/g_customlibs.joke
-Adding only 275 types (out of 286) to _tests/gold/amd64-linux/joker/core/g_goswitch.go
-Generated file g_goswitch.go:
+Adding 15 custom imports to g_custom.go
+
+-------- Generated file g_custom.go:
+// Auto-modified by gostd at (omitted for testing)
+
+package main
+
+
+import (
+	_ "github.com/candid82/joker/std/go/std/net"
+	_ "github.com/candid82/joker/std/go/std/net/http"
+	_ "github.com/candid82/joker/std/go/std/net/http/cgi"
+	_ "github.com/candid82/joker/std/go/std/net/http/cookiejar"
+	_ "github.com/candid82/joker/std/go/std/net/http/fcgi"
+	_ "github.com/candid82/joker/std/go/std/net/http/httptest"
+	_ "github.com/candid82/joker/std/go/std/net/http/httptrace"
+	_ "github.com/candid82/joker/std/go/std/net/http/httputil"
+	_ "github.com/candid82/joker/std/go/std/net/http/pprof"
+	_ "github.com/candid82/joker/std/go/std/net/mail"
+	_ "github.com/candid82/joker/std/go/std/net/rpc"
+	_ "github.com/candid82/joker/std/go/std/net/rpc/jsonrpc"
+	_ "github.com/candid82/joker/std/go/std/net/smtp"
+	_ "github.com/candid82/joker/std/go/std/net/textproto"
+	_ "github.com/candid82/joker/std/go/std/net/url"
+)
+Adding 15 custom loaded libraries to core/data/g_customlibs.joke
+
+-------- Generated file core/data/g_customlibs.joke:
+;; Auto-modified by gostd at (omitted for testing)
+
+(def ^:dynamic
+  ^{:private true
+    :doc "A set of symbols representing loaded custom libs"}
+  *custom-libs* #{
+     'go.std.net
+     'go.std.net.http
+     'go.std.net.http.cgi
+     'go.std.net.http.cookiejar
+     'go.std.net.http.fcgi
+     'go.std.net.http.httptest
+     'go.std.net.http.httptrace
+     'go.std.net.http.httputil
+     'go.std.net.http.pprof
+     'go.std.net.mail
+     'go.std.net.rpc
+     'go.std.net.rpc.jsonrpc
+     'go.std.net.smtp
+     'go.std.net.textproto
+     'go.std.net.url
+    })
+
+(var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
+Adding only 275 types (out of 286) to core/g_goswitch.go
+
+-------- Generated file core/g_goswitch.go:
 // Auto-modified by gostd at (omitted for testing)
 
 package core
