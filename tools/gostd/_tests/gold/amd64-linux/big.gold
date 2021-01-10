@@ -2,6 +2,7 @@ goSrcDir: _tests/big/src
 goSourcePath: /home/craig/go/src
 ClojureSourceDir (for import line): github.com/candid82/joker
 JokerSourceDir: ../..
+; defined templates are: "customlibs.tmpl"
 Excluding _tests/big/src/net/http/cgi/testdata
 Excluding _tests/big/src/net/http/internal
 Excluding _tests/big/src/net/http/testdata
@@ -17760,7 +17761,6 @@ Adding 15 custom imports to g_custom.go
 
 package main
 
-
 import (
 	_ "github.com/candid82/joker/std/go/std/net"
 	_ "github.com/candid82/joker/std/go/std/net/http"
@@ -17778,7 +17778,6 @@ import (
 	_ "github.com/candid82/joker/std/go/std/net/textproto"
 	_ "github.com/candid82/joker/std/go/std/net/url"
 )
-
 -------- END generated file g_custom.go.
 
 Adding 15 custom loaded libraries to core/data/g_customlibs.joke
@@ -17808,7 +17807,6 @@ Adding 15 custom loaded libraries to core/data/g_customlibs.joke
     })
 
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
-
 -------- END generated file core/data/g_customlibs.joke.
 
 Adding only 275 types (out of 286) to core/g_goswitch.go
@@ -18390,7 +18388,6 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-
 -------- END generated file core/g_goswitch.go.
 
 ABENDs: 002(153) 048(45) 275(41) 727(39) 707(30) 320(12) 674(9) 737(5) 777(3) 049(2) 747(2) 124(1)

@@ -4,6 +4,7 @@ ClojureSourceDir (for import line): github.com/candid82/joker
 JokerSourceDir: ../..
 The list of core APIs is missing; file 'core-apis.dat' does not exist.
 Writing Core APIs found at ../../core to core-apis.dat.
+; defined templates are: "customlibs.tmpl"
 Matchfile(_tests/small/src/net/dnsclient.go) => true <nil>
 Matchfile(_tests/small/src/net/ip.go) => true <nil>
 Matchfile(_tests/small/src/net/iprawsock.go) => true <nil>
@@ -4595,12 +4596,10 @@ Adding 2 custom imports to g_custom.go
 
 package main
 
-
 import (
 	_ "github.com/candid82/joker/std/go/std/net"
 	_ "github.com/candid82/joker/std/go/std/net/url"
 )
-
 -------- END generated file g_custom.go.
 
 Adding 2 custom loaded libraries to core/data/g_customlibs.joke
@@ -4617,7 +4616,6 @@ Adding 2 custom loaded libraries to core/data/g_customlibs.joke
     })
 
 (var-set #'*loaded-libs* (into *loaded-libs* *custom-libs*))
-
 -------- END generated file core/data/g_customlibs.joke.
 
 Adding only 79 types (out of 85) to core/g_goswitch.go
@@ -4797,7 +4795,6 @@ func SwitchGoType(g interface{}) int {
 	}
 	return -1
 }
-
 -------- END generated file core/g_goswitch.go.
 
 ABENDs: 002(17) 048(6) 674(4) 275(3) 320(2) 124(1) 727(1)
