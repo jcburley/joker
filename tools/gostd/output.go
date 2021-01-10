@@ -64,7 +64,7 @@ func writeCustomLibsGo(pkgs []string, dir, f string, outputCode bool) {
 	}
 
 	if outputCode {
-		fmt.Printf("\n-------- BEGIN Generated file %s:\n", f)
+		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
 		fmt.Print(buf.String())
 		fmt.Printf("-------- END generated file %s.\n\n", f)
 	}
@@ -90,7 +90,7 @@ func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
 	}
 
 	if outputCode {
-		fmt.Printf("\n-------- BEGIN Generated file %s:\n", f)
+		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
 		fmt.Print(buf.String())
 		fmt.Printf("-------- END generated file %s.\n\n", f)
 	}
@@ -148,7 +148,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if clojureLibDir != "" && clojureLibDir != "-" &&
+	if clojureLibDir != "" &&
 		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
 		jf := filepath.Join(clojureLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
 		var e error
@@ -286,7 +286,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if clojureLibDir != "" && clojureLibDir != "-" &&
+	if clojureLibDir != "" &&
 		(generateEmpty || pi.NonEmpty) {
 		gf := filepath.Join(clojureLibDir, pkgDirNative,
 			pkgBaseName+"_native.go")

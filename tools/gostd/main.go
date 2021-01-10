@@ -210,10 +210,6 @@ func main() {
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
 					clojureSourceDir = os.Args[i]
-					if clojureSourceDir == "-" {
-						clojureSourceDir = ""
-						outputCode = true
-					}
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --clojure option\n")
 					os.Exit(1)
@@ -246,6 +242,11 @@ func main() {
 
 	if godb.Verbose {
 		fmt.Printf("Default context: %v\n", build.Default)
+	}
+
+	if clojureSourceDir == "-" {
+		clojureSourceDir = ""
+		outputCode = true
 	}
 
 	if goSourceDir == "" {
