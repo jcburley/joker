@@ -168,6 +168,16 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 		stdout = bufio.NewWriterSize(os.Stdout, 16384)
 	}
 
+	defer func() {
+		stdout.Flush()
+		if out != nil {
+			out.Flush()
+			if unbuf_out != os.Stdout {
+				unbuf_out.Close()
+			}
+		}
+	}()
+
 	pi := PackagesInfo[pkgDirUnix]
 
 	if out != nil {
@@ -278,14 +288,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 				out.WriteString(fnCode)
 			}
 		})
-
-	if out != nil {
-		out.Flush()
-		if unbuf_out != os.Stdout {
-			unbuf_out.Close()
-		}
-	}
-	stdout.Flush()
 }
 
 func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCode, generateEmpty bool) {
