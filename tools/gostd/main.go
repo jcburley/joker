@@ -296,9 +296,9 @@ func main() {
 
 	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join(jokerSourceDir, "tools", "gostd", "templates", "*.tmpl")))
 	if outputCode {
-		strs := strings.Split(Templates.DefinedTemplates(), " ")
+		strs := strings.Split(Templates.DefinedTemplates()+",", " ")
 		sort.Strings(strs[4:]) // skip "; defined templates are: " in [0-3]
-		fmt.Println(strings.Join(strs, " "))
+		fmt.Println(strings.TrimRight(strings.Join(strs, " "), ","))
 	}
 
 	clojureLibDir := ""
