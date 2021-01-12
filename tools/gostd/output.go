@@ -344,8 +344,8 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 
 	if out != nil {
 		info := map[string]string{
-			"Name":    pkgBaseName,
-			"Imports": pi.ImportsNative.QuotedList("\n\t"),
+			"PackageName": pkgBaseName,
+			"Imports":     pi.ImportsNative.QuotedList("\n\t"),
 		}
 
 		buf := new(bytes.Buffer)
@@ -403,15 +403,6 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			}
 		})
 
-	const initInfoTemplate = `
-	%s = GoTypeInfo{Name: "%s",
-		GoType: &GoType{T: &%s},
-%s		Members: GoMembers{
-%s		},
-%s	}
-
-`
-
 	if out != nil {
 		out.WriteString("\nfunc initNative() {\n")
 	}
@@ -440,12 +431,26 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 `[1:],
 						c, c, g, strconv.Quote(genutils.CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
-			o := fmt.Sprintf(initInfoTemplate[1:], tmn, k1, tmn, ctor, mem, "" /*"Type:"..., but probably not needed*/)
-			if outputCode {
-				fmt.Fprintf(stdout, "GO INFO FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), o)
+
+			info := map[string]string{
+				"GoName":      tmn,
+				"ClojureName": k1,
+				"Ctor":        ctor,
+				"Members":     mem,
+				"Type":        "", /*"Type:"..., but probably not needed*/
 			}
+
+			buf := new(bytes.Buffer)
+			Templates.ExecuteTemplate(buf, "go-func-init.tmpl", info)
+
+			if outputCode {
+				fmt.Fprintf(stdout, "GO INFO FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), buf.String())
+			}
+
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(o)
+				if n, err := out.Write(buf.Bytes()); err != nil {
+					panic(fmt.Sprintf("n=%d err=%s", n, err))
+				}
 			}
 		})
 
