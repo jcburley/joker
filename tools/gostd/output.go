@@ -261,21 +261,26 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 			if ti.Specificity() != ConcreteType {
 				specificity = fmt.Sprintf("    :specificity %d\n", ti.Specificity())
 			}
-			fnCode := fmt.Sprintf(`
-(def
-  ^{:doc %s
-    :added "1.0"
-    :tag "GoType"
-%s    :go "&%s"}
-  %s)
-`,
-				strconv.Quote(typeDoc), specificity, tmn, fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName()))
-			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE TYPE %s:%s\n",
-					ti.ClojureName(), fnCode)
+
+			info := map[string]string{
+				"Doc":         strconv.Quote(typeDoc),
+				"Specificity": specificity,
+				"GoName":      tmn,
+				"ClojureName": fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName()),
 			}
+
+			buf := new(bytes.Buffer)
+			Templates.ExecuteTemplate(buf, "clojure-typedef.tmpl", info)
+
+			if outputCode {
+				fmt.Fprintf(stdout, "CLOJURE TYPE %s:\n%s\n",
+					ti.ClojureName(), buf.String())
+			}
+
 			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(fnCode)
+				if n, err := out.Write(buf.Bytes()); err != nil {
+					panic(fmt.Sprintf("n=%d err=%s", n, err))
+				}
 			}
 		})
 }
