@@ -206,7 +206,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 	SortedConstantInfoMap(v.Constants,
 		func(c string, ci *ConstantInfo) {
 			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE CONSTANT %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
+				fmt.Fprintf(stdout, "%s", ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
@@ -216,7 +216,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 	SortedVariableInfoMap(v.Variables,
 		func(c string, ci *VariableInfo) {
 			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE VARIABLE %s from %s:%s\n", c, ci.SourceFile.Name, ci.Def)
+				fmt.Fprintf(stdout, "%s", ci.Def)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
@@ -229,7 +229,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 				return
 			}
 			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE TYPE %s from %s:%s\n", t, GoFilenameForTypeSpec(ti.UnderlyingTypeSpec()), ClojureCodeForType[ti])
+				fmt.Fprintf(stdout, "%s", ClojureCodeForType[ti])
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ClojureCodeForType[ti])
@@ -239,8 +239,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
 			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE FUNC %s.%s from %s:%s\n",
-					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
+				fmt.Fprintf(stdout, "%s", w.FnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(w.FnCode)
@@ -273,8 +272,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 			Templates.ExecuteTemplate(buf, "clojure-typedef.tmpl", info)
 
 			if outputCode {
-				fmt.Fprintf(stdout, "CLOJURE TYPE %s:\n%s\n",
-					ti.ClojureName(), buf.String())
+				fmt.Fprintf(stdout, "%s\n", buf.String())
 			}
 
 			if out != nil && unbuf_out != os.Stdout {
@@ -366,7 +364,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 				ctor = c
 			}
 			if outputCode {
-				fmt.Fprintf(stdout, "GO TYPE %s from %s:%s%s\n", t, GoFilenameForTypeSpec(ti.UnderlyingTypeSpec()), GoCodeForType[ti], ctor)
+				fmt.Fprintf(stdout, "%s%s", GoCodeForType[ti], ctor)
 			}
 			if t == "crypto.Hash" {
 				// fmt.Fprintf(stdout, "output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
@@ -380,8 +378,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
 			if outputCode {
-				fmt.Fprintf(stdout, "GO FUNC %s.%s from %s:%s\n",
-					pkgDirUnix, f, w.SourceFile.Name, w.FnCode)
+				fmt.Fprintf(stdout, "%s", w.FnCode)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(w.FnCode)
@@ -396,7 +393,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
 			if outputCode && tmn != "" {
-				fmt.Fprintf(stdout, "GO VARDEF FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), tmn)
+				fmt.Fprintf(stdout, "%s\n", tmn)
 			}
 			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
@@ -444,7 +441,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			Templates.ExecuteTemplate(buf, "go-func-init.tmpl", info)
 
 			if outputCode {
-				fmt.Fprintf(stdout, "GO INFO FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), buf.String())
+				fmt.Fprintf(stdout, "%s\n", buf.String())
 			}
 
 			if out != nil && unbuf_out != os.Stdout {
@@ -462,7 +459,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
 			if outputCode {
-				fmt.Fprintf(stdout, "GO VECSET FOR TYPE %s from %s:\n%s\n", ti.ClojureName(), WhereAt(ti.DefPos()), o)
+				fmt.Fprintf(stdout, "%s\n", o)
 			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
@@ -471,7 +468,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 
 	if ensure != "" {
 		if outputCode {
-			fmt.Fprintf(stdout, "GO ENSURE-LOADED FOR %s:\n%s\n", pi.Pkg.Name, ensure)
+			fmt.Fprintf(stdout, "%s\n", ensure)
 		}
 		if out != nil && unbuf_out != os.Stdout {
 			out.WriteString(ensure)

@@ -23,7 +23,7 @@ Processing package=net:
     :doc "Provides a low-level interface to the net package.\n\nPackage net provides a portable interface for network I/O, including\nTCP/IP, UDP, domain name resolution, and Unix domain sockets.\n\nAlthough the package provides access to low-level networking\nprimitives, most clients will need only the basic interface provided\nby the Dial, Listen, and Accept functions and the associated\nConn and Listener interfaces. The crypto/tls package uses\nthe same interfaces and similar Dial and Listen functions.\n\nThe Dial function connects to a server:\n\n\tconn, err := net.Dial(\"tcp\", \"golang.org:80\")\n\tif err != nil {\n\t\t// handle error\n\t}\n\tfmt.Fprintf(conn, \"GET / HTTP/1.0\\r\\n\\r\\n\")\n\tstatus, err := bufio.NewReader(conn).ReadString('\\n')\n\t// ...\n\nThe Listen function creates servers:\n\n\tln, err := net.Listen(\"tcp\", \":8080\")\n\tif err != nil {\n\t\t// handle error\n\t}\n\tfor {\n\t\tconn, err := ln.Accept()\n\t\tif err != nil {\n\t\t\t// handle error\n\t\t}\n\t\tgo handleConnection(conn)\n\t}\n\nName Resolution\n\nThe method for resolving domain names, whether indirectly with functions like Dial\nor directly with functions like LookupHost and LookupAddr, varies by operating system.\n\nOn Unix systems, the resolver has two options for resolving names.\nIt can use a pure Go resolver that sends DNS requests directly to the servers\nlisted in /etc/resolv.conf, or it can use a cgo-based resolver that calls C\nlibrary routines such as getaddrinfo and getnameinfo.\n\nBy default the pure Go resolver is used, because a blocked DNS request consumes\nonly a goroutine, while a blocked C call consumes an operating system thread.\nWhen cgo is available, the cgo-based resolver is used instead under a variety of\nconditions: on systems that do not let programs make direct DNS requests (OS X),\nwhen the LOCALDOMAIN environment variable is present (even if empty),\nwhen the RES_OPTIONS or HOSTALIASES environment variable is non-empty,\nwhen the ASR_CONFIG environment variable is non-empty (OpenBSD only),\nwhen /etc/resolv.conf or /etc/nsswitch.conf specify the use of features that the\nGo resolver does not implement, and when the name being looked up ends in .local\nor is an mDNS name.\n\nThe resolver decision can be overridden by setting the netdns value of the\nGODEBUG environment variable (see package runtime) to go or cgo, as in:\n\n\texport GODEBUG=netdns=go    # force pure Go resolver\n\texport GODEBUG=netdns=cgo   # force cgo resolver\n\nThe decision can also be forced while building the Go source tree\nby setting the netgo or netcgo build tag.\n\nA numeric netdns setting, as in GODEBUG=netdns=1, causes the resolver\nto print debugging information about its decisions.\nTo force a particular resolver while also printing debugging information,\njoin the two settings by a plus sign, as in GODEBUG=netdns=go+1.\n\nOn Plan 9, the resolver always accesses /net/cs and /net/dns.\n\nOn Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.\n"
     :empty false}
   go.std.net)
-CLOJURE CONSTANT IPv4len from net/ip.go:
+
 (def
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
@@ -32,7 +32,6 @@ CLOJURE CONSTANT IPv4len from net/ip.go:
     :go "net.IPv4len"}
   IPv4len)
 
-CLOJURE CONSTANT IPv6len from net/ip.go:
 (def
   ^{:doc "IP address lengths (bytes).\n"
     :added "1.0"
@@ -41,7 +40,6 @@ CLOJURE CONSTANT IPv6len from net/ip.go:
     :go "net.IPv6len"}
   IPv6len)
 
-CLOJURE VARIABLE DefaultResolver from net/lookup.go:
 (def
   ^{:doc "DefaultResolver is the resolver used by the package-level Lookup\nfunctions and by Dialers without a specified Resolver.\n"
     :added "1.0"
@@ -49,7 +47,6 @@ CLOJURE VARIABLE DefaultResolver from net/lookup.go:
     :go "net.DefaultResolver"}
   DefaultResolver)
 
-CLOJURE VARIABLE ErrWriteToConnected from net/net.go:
 (def
   ^{:doc "Various errors contained in OpError.\n"
     :added "1.0"
@@ -57,7 +54,6 @@ CLOJURE VARIABLE ErrWriteToConnected from net/net.go:
     :go "net.ErrWriteToConnected"}
   ErrWriteToConnected)
 
-CLOJURE VARIABLE IPv4allrouter from net/ip.go:
 (def
   ^{:doc "all routers\n"
     :added "1.0"
@@ -65,7 +61,6 @@ CLOJURE VARIABLE IPv4allrouter from net/ip.go:
     :go "net.IPv4allrouter"}
   IPv4allrouter)
 
-CLOJURE VARIABLE IPv4allsys from net/ip.go:
 (def
   ^{:doc "all systems\n"
     :added "1.0"
@@ -73,7 +68,6 @@ CLOJURE VARIABLE IPv4allsys from net/ip.go:
     :go "net.IPv4allsys"}
   IPv4allsys)
 
-CLOJURE VARIABLE IPv4bcast from net/ip.go:
 (def
   ^{:doc "limited broadcast\n"
     :added "1.0"
@@ -81,7 +75,6 @@ CLOJURE VARIABLE IPv4bcast from net/ip.go:
     :go "net.IPv4bcast"}
   IPv4bcast)
 
-CLOJURE VARIABLE IPv4zero from net/ip.go:
 (def
   ^{:doc "all zeros\n"
     :added "1.0"
@@ -89,7 +82,6 @@ CLOJURE VARIABLE IPv4zero from net/ip.go:
     :go "net.IPv4zero"}
   IPv4zero)
 
-CLOJURE VARIABLE IPv6interfacelocalallnodes from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -97,7 +89,6 @@ CLOJURE VARIABLE IPv6interfacelocalallnodes from net/ip.go:
     :go "net.IPv6interfacelocalallnodes"}
   IPv6interfacelocalallnodes)
 
-CLOJURE VARIABLE IPv6linklocalallnodes from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -105,7 +96,6 @@ CLOJURE VARIABLE IPv6linklocalallnodes from net/ip.go:
     :go "net.IPv6linklocalallnodes"}
   IPv6linklocalallnodes)
 
-CLOJURE VARIABLE IPv6linklocalallrouters from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -113,7 +103,6 @@ CLOJURE VARIABLE IPv6linklocalallrouters from net/ip.go:
     :go "net.IPv6linklocalallrouters"}
   IPv6linklocalallrouters)
 
-CLOJURE VARIABLE IPv6loopback from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -121,7 +110,6 @@ CLOJURE VARIABLE IPv6loopback from net/ip.go:
     :go "net.IPv6loopback"}
   IPv6loopback)
 
-CLOJURE VARIABLE IPv6unspecified from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -129,7 +117,6 @@ CLOJURE VARIABLE IPv6unspecified from net/ip.go:
     :go "net.IPv6unspecified"}
   IPv6unspecified)
 
-CLOJURE VARIABLE IPv6zero from net/ip.go:
 (def
   ^{:doc "Well-known IPv6 addresses\n"
     :added "1.0"
@@ -137,185 +124,107 @@ CLOJURE VARIABLE IPv6zero from net/ip.go:
     :go "net.IPv6zero"}
   IPv6zero)
 
-CLOJURE TYPE []*net.MX from net/dnsclient.go:
-CLOJURE TYPE []*net.NS from net/dnsclient.go:
-CLOJURE TYPE []*net.SRV from net/dnsclient.go:
-CLOJURE TYPE []net.AddrError from net/net.go:
-CLOJURE TYPE []net.Buffers from net/net.go:
-CLOJURE TYPE []net.DNSConfigError from net/net.go:
-CLOJURE TYPE []net.DNSError from net/net.go:
-CLOJURE TYPE []net.IP from net/ip.go:
-CLOJURE TYPE []net.IPAddr from net/iprawsock.go:
-CLOJURE TYPE []net.IPConn from net/iprawsock.go:
-CLOJURE TYPE []net.IPMask from net/ip.go:
-CLOJURE TYPE []net.IPNet from net/ip.go:
-CLOJURE TYPE []net.InvalidAddrError from net/net.go:
-CLOJURE TYPE []net.MX from net/dnsclient.go:
-CLOJURE TYPE []net.NS from net/dnsclient.go:
-CLOJURE TYPE []net.OpError from net/net.go:
-CLOJURE TYPE []net.ParseError from net/net.go:
-CLOJURE TYPE []net.Resolver from net/lookup.go:
-CLOJURE TYPE []net.SRV from net/dnsclient.go:
-CLOJURE TYPE []net.UnknownNetworkError from net/net.go:
-CLOJURE TYPE net.Addr from net/net.go:
-CLOJURE TYPE net.AddrError from net/net.go:
-CLOJURE TYPE *net.AddrError from net/net.go:
-CLOJURE TYPE net.Buffers from net/net.go:
-CLOJURE TYPE *net.Buffers from net/net.go:
-CLOJURE TYPE net.Conn from net/net.go:
-CLOJURE TYPE net.DNSConfigError from net/net.go:
-CLOJURE TYPE *net.DNSConfigError from net/net.go:
-CLOJURE TYPE net.DNSError from net/net.go:
-CLOJURE TYPE *net.DNSError from net/net.go:
-CLOJURE TYPE net.Error from net/net.go:
-CLOJURE TYPE net.IP from net/ip.go:
-CLOJURE TYPE *net.IP from net/ip.go:
-CLOJURE TYPE net.IPAddr from net/iprawsock.go:
-CLOJURE TYPE *net.IPAddr from net/iprawsock.go:
-CLOJURE TYPE net.IPConn from net/iprawsock.go:
-CLOJURE TYPE *net.IPConn from net/iprawsock.go:
-CLOJURE TYPE net.IPMask from net/ip.go:
-CLOJURE TYPE *net.IPMask from net/ip.go:
-CLOJURE TYPE net.IPNet from net/ip.go:
-CLOJURE TYPE *net.IPNet from net/ip.go:
-CLOJURE TYPE net.InvalidAddrError from net/net.go:
-CLOJURE TYPE *net.InvalidAddrError from net/net.go:
-CLOJURE TYPE net.Listener from net/net.go:
-CLOJURE TYPE net.MX from net/dnsclient.go:
-CLOJURE TYPE *net.MX from net/dnsclient.go:
-CLOJURE TYPE net.NS from net/dnsclient.go:
-CLOJURE TYPE *net.NS from net/dnsclient.go:
-CLOJURE TYPE net.OpError from net/net.go:
-CLOJURE TYPE *net.OpError from net/net.go:
-CLOJURE TYPE net.PacketConn from net/net.go:
-CLOJURE TYPE net.ParseError from net/net.go:
-CLOJURE TYPE *net.ParseError from net/net.go:
-CLOJURE TYPE net.Resolver from net/lookup.go:
-CLOJURE TYPE *net.Resolver from net/lookup.go:
-CLOJURE TYPE net.SRV from net/dnsclient.go:
-CLOJURE TYPE *net.SRV from net/dnsclient.go:
-CLOJURE TYPE net.UnknownNetworkError from net/net.go:
-CLOJURE TYPE *net.UnknownNetworkError from net/net.go:
-CLOJURE FUNC net.CIDRMask from net/ip.go:
 (defn CIDRMask
   "CIDRMask returns an IPMask consisting of `ones' 1 bits\nfollowed by 0s up to a total length of `bits' bits.\nFor a mask of this form, CIDRMask is the inverse of IPMask.Size.\n\nGo input arguments: (ones int, bits int)\n\nGo returns: IPMask\n\nJoker input arguments: [^Int ones, ^Int bits]\n\nJoker returns: ^IPMask"
   {:added "1.0"
    :go "_f_cIDRMask(_v_ones, _v_bits)"}
   [^Int _v_ones, ^Int _v_bits])
 
-CLOJURE FUNC net.DialIP from net/iprawsock.go:
 (defn DialIP
   "DialIP acts like Dial for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf laddr is nil, a local address is automatically chosen.\nIf the IP field of raddr is nil or an unspecified IP address, the\nlocal system is assumed.\n\nGo input arguments: (network string, laddr *IPAddr, raddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr, ^refToIPAddr raddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_dialIP(_v_network, _v_laddr, _v_raddr)"}
   [^String _v_network, ^go.std.net/refToIPAddr _v_laddr, ^go.std.net/refToIPAddr _v_raddr])
 
-CLOJURE FUNC net.IPv4 from net/ip.go:
 (defn IPv4
   "IPv4 returns the IP address (in 16-byte form) of the\nIPv4 address a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IP\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IP"
   {:added "1.0"
    :go "_f_iPv4(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
 
-CLOJURE FUNC net.IPv4Mask from net/ip.go:
 (defn IPv4Mask
   "IPv4Mask returns the IP mask (in 4-byte form) of the\nIPv4 mask a.b.c.d.\n\nGo input arguments: (a byte, b byte, c byte, d byte)\n\nGo returns: IPMask\n\nJoker input arguments: [^Byte a, ^Byte b, ^Byte c, ^Byte d]\n\nJoker returns: ^IPMask"
   {:added "1.0"
    :go "_f_iPv4Mask(_v_a, _v_b, _v_c, _v_d)"}
   [^Byte _v_a, ^Byte _v_b, ^Byte _v_c, ^Byte _v_d])
 
-CLOJURE FUNC net.ListenIP from net/iprawsock.go:
 (defn ListenIP
   "ListenIP acts like ListenPacket for IP networks.\n\nThe network must be an IP network name; see func Dial for details.\n\nIf the IP field of laddr is nil or an unspecified IP address,\nListenIP listens on all available IP addresses of the local system\nexcept multicast IP addresses.\n\nGo input arguments: (network string, laddr *IPAddr)\n\nGo returns: (*IPConn, error)\n\nJoker input arguments: [^String network, ^refToIPAddr laddr]\n\nJoker returns: [^refToIPConn, ^Error]"
   {:added "1.0"
    :go "_f_listenIP(_v_network, _v_laddr)"}
   [^String _v_network, ^go.std.net/refToIPAddr _v_laddr])
 
-CLOJURE FUNC net.LookupAddr from net/lookup.go:
 (defn LookupAddr
   "LookupAddr performs a reverse lookup for the given address, returning a list\nof names mapping to that address.\n\nWhen using the host C library resolver, at most one result will be\nreturned. To bypass the host resolver, use a custom Resolver.\n\nGo input arguments: (addr string)\n\nGo returns: (names []string, err error)\n\nJoker input arguments: [^String addr]\n\nJoker returns: [^arrayOfString names, ^Error err]"
   {:added "1.0"
    :go "_f_lookupAddr(_v_addr)"}
   [^String _v_addr])
 
-CLOJURE FUNC net.LookupCNAME from net/lookup.go:
 (defn LookupCNAME
   "LookupCNAME returns the canonical name for the given host.\nCallers that do not care about the canonical name can call\nLookupHost or LookupIP directly; both take care of resolving\nthe canonical name as part of the lookup.\n\nA canonical name is the final name after following zero\nor more CNAME records.\nLookupCNAME does not return an error if host does not\ncontain DNS \"CNAME\" records, as long as host resolves to\naddress records.\n\nGo input arguments: (host string)\n\nGo returns: (cname string, err error)\n\nJoker input arguments: [^String host]\n\nJoker returns: [^String cname, ^Error err]"
   {:added "1.0"
    :go "_f_lookupCNAME(_v_host)"}
   [^String _v_host])
 
-CLOJURE FUNC net.LookupHost from net/lookup.go:
 (defn LookupHost
   "LookupHost looks up the given host using the local resolver.\nIt returns a slice of that host's addresses.\n\nGo input arguments: (host string)\n\nGo returns: (addrs []string, err error)\n\nJoker input arguments: [^String host]\n\nJoker returns: [^arrayOfString addrs, ^Error err]"
   {:added "1.0"
    :go "_f_lookupHost(_v_host)"}
   [^String _v_host])
 
-CLOJURE FUNC net.LookupIP from net/lookup.go:
 (defn LookupIP
   "LookupIP looks up host using the local resolver.\nIt returns a slice of that host's IPv4 and IPv6 addresses.\n\nGo input arguments: (host string)\n\nGo returns: ([]IP, error)\n\nJoker input arguments: [^String host]\n\nJoker returns: [^arrayOfIP, ^Error]"
   {:added "1.0"
    :go "_f_lookupIP(_v_host)"}
   [^String _v_host])
 
-CLOJURE FUNC net.LookupMX from net/lookup.go:
 (defn LookupMX
   "LookupMX returns the DNS MX records for the given domain name sorted by preference.\n\nGo input arguments: (name string)\n\nGo returns: ([]*MX, error)\n\nJoker input arguments: [^String name]\n\nJoker returns: [^arrayOfrefToMX, ^Error]"
   {:added "1.0"
    :go "_f_lookupMX(_v_name)"}
   [^String _v_name])
 
-CLOJURE FUNC net.LookupNS from net/lookup.go:
 (defn LookupNS
   "LookupNS returns the DNS NS records for the given domain name.\n\nGo input arguments: (name string)\n\nGo returns: ([]*NS, error)\n\nJoker input arguments: [^String name]\n\nJoker returns: [^arrayOfrefToNS, ^Error]"
   {:added "1.0"
    :go "_f_lookupNS(_v_name)"}
   [^String _v_name])
 
-CLOJURE FUNC net.LookupPort from net/lookup.go:
 (defn LookupPort
   "LookupPort looks up the port for the given network and service.\n\nGo input arguments: (network string, service string)\n\nGo returns: (port int, err error)\n\nJoker input arguments: [^String network, ^String service]\n\nJoker returns: [^Int port, ^Error err]"
   {:added "1.0"
    :go "_f_lookupPort(_v_network, _v_service)"}
   [^String _v_network, ^String _v_service])
 
-CLOJURE FUNC net.LookupSRV from net/lookup.go:
 (defn LookupSRV
   "LookupSRV tries to resolve an SRV query of the given service,\nprotocol, and domain name. The proto is \"tcp\" or \"udp\".\nThe returned records are sorted by priority and randomized\nby weight within a priority.\n\nLookupSRV constructs the DNS name to look up following RFC 2782.\nThat is, it looks up _service._proto.name. To accommodate services\npublishing SRV records under non-standard names, if both service\nand proto are empty strings, LookupSRV looks up name directly.\n\nGo input arguments: (service string, proto string, name string)\n\nGo returns: (cname string, addrs []*SRV, err error)\n\nJoker input arguments: [^String service, ^String proto, ^String name]\n\nJoker returns: [^String cname, ^arrayOfrefToSRV addrs, ^Error err]"
   {:added "1.0"
    :go "_f_lookupSRV(_v_service, _v_proto, _v_name)"}
   [^String _v_service, ^String _v_proto, ^String _v_name])
 
-CLOJURE FUNC net.LookupTXT from net/lookup.go:
 (defn LookupTXT
   "LookupTXT returns the DNS TXT records for the given domain name.\n\nGo input arguments: (name string)\n\nGo returns: ([]string, error)\n\nJoker input arguments: [^String name]\n\nJoker returns: [^arrayOfString, ^Error]"
   {:added "1.0"
    :go "_f_lookupTXT(_v_name)"}
   [^String _v_name])
 
-CLOJURE FUNC net.ParseCIDR from net/ip.go:
 (defn ParseCIDR
   "ParseCIDR parses s as a CIDR notation IP address and prefix length,\nlike \"192.0.2.0/24\" or \"2001:db8::/32\", as defined in\nRFC 4632 and RFC 4291.\n\nIt returns the IP address and the network implied by the IP and\nprefix length.\nFor example, ParseCIDR(\"192.0.2.1/24\") returns the IP address\n192.0.2.1 and the network 192.0.2.0/24.\n\nGo input arguments: (s string)\n\nGo returns: (IP, *IPNet, error)\n\nJoker input arguments: [^String s]\n\nJoker returns: [^IP, ^refToIPNet, ^Error]"
   {:added "1.0"
    :go "_f_parseCIDR(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net.ParseIP from net/ip.go:
 (defn ParseIP
   "ParseIP parses s as an IP address, returning the result.\nThe string s can be in dotted decimal (\"192.0.2.1\")\nor IPv6 (\"2001:db8::68\") form.\nIf s is not a valid textual representation of an IP address,\nParseIP returns nil.\n\nGo input arguments: (s string)\n\nGo returns: IP\n\nJoker input arguments: [^String s]\n\nJoker returns: ^IP"
   {:added "1.0"
    :go "_f_parseIP(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net.ResolveIPAddr from net/iprawsock.go:
 (defn ResolveIPAddr
   "ResolveIPAddr returns an address of IP end point.\n\nThe network must be an IP network name.\n\nIf the host in the address parameter is not a literal IP address,\nResolveIPAddr resolves the address to an address of IP end point.\nOtherwise, it parses the address as a literal IP address.\nThe address parameter can use a host name, but this is not\nrecommended, because it will return at most one of the host name's\nIP addresses.\n\nSee func Dial for a description of the network and address\nparameters.\n\nGo input arguments: (network string, address string)\n\nGo returns: (*IPAddr, error)\n\nJoker input arguments: [^String network, ^String address]\n\nJoker returns: [^refToIPAddr, ^Error]"
   {:added "1.0"
    :go "_f_resolveIPAddr(_v_network, _v_address)"}
   [^String _v_network, ^String _v_address])
-
-CLOJURE TYPE go.std.net/Addr:
 (def
   ^{:doc "Addr represents a network end point address.\n\nThe two methods Network and String conventionally return strings\nthat can be passed as the arguments to Dial, but the exact form\nand meaning of the strings is up to the implementation.\n"
     :added "1.0"
@@ -324,7 +233,6 @@ CLOJURE TYPE go.std.net/Addr:
     :go "&info_Addr"}
   Addr)
 
-CLOJURE TYPE go.std.net/AddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -332,7 +240,6 @@ CLOJURE TYPE go.std.net/AddrError:
     :go "&info_AddrError"}
   AddrError)
 
-CLOJURE TYPE go.std.net/refToAddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -340,7 +247,6 @@ CLOJURE TYPE go.std.net/refToAddrError:
     :go "&info_PtrTo_AddrError"}
   refToAddrError)
 
-CLOJURE TYPE go.std.net/arrayOfAddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -348,7 +254,6 @@ CLOJURE TYPE go.std.net/arrayOfAddrError:
     :go "&info_ArrayOf_AddrError"}
   arrayOfAddrError)
 
-CLOJURE TYPE go.std.net/Buffers:
 (def
   ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
     :added "1.0"
@@ -356,7 +261,6 @@ CLOJURE TYPE go.std.net/Buffers:
     :go "&info_Buffers"}
   Buffers)
 
-CLOJURE TYPE go.std.net/refToBuffers:
 (def
   ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
     :added "1.0"
@@ -364,7 +268,6 @@ CLOJURE TYPE go.std.net/refToBuffers:
     :go "&info_PtrTo_Buffers"}
   refToBuffers)
 
-CLOJURE TYPE go.std.net/arrayOfBuffers:
 (def
   ^{:doc "Buffers contains zero or more runs of bytes to write.\n\nOn certain machines, for certain types of connections, this is\noptimized into an OS-specific batch write operation (such as\n\"writev\").\n"
     :added "1.0"
@@ -372,7 +275,6 @@ CLOJURE TYPE go.std.net/arrayOfBuffers:
     :go "&info_ArrayOf_Buffers"}
   arrayOfBuffers)
 
-CLOJURE TYPE go.std.net/Conn:
 (def
   ^{:doc "Conn is a generic stream-oriented network connection.\n\nMultiple goroutines may invoke methods on a Conn simultaneously.\n"
     :added "1.0"
@@ -381,7 +283,6 @@ CLOJURE TYPE go.std.net/Conn:
     :go "&info_Conn"}
   Conn)
 
-CLOJURE TYPE go.std.net/DNSConfigError:
 (def
   ^{:doc "DNSConfigError represents an error reading the machine's DNS configuration.\n(No longer used; kept for compatibility.)\n"
     :added "1.0"
@@ -389,7 +290,6 @@ CLOJURE TYPE go.std.net/DNSConfigError:
     :go "&info_DNSConfigError"}
   DNSConfigError)
 
-CLOJURE TYPE go.std.net/refToDNSConfigError:
 (def
   ^{:doc "DNSConfigError represents an error reading the machine's DNS configuration.\n(No longer used; kept for compatibility.)\n"
     :added "1.0"
@@ -397,7 +297,6 @@ CLOJURE TYPE go.std.net/refToDNSConfigError:
     :go "&info_PtrTo_DNSConfigError"}
   refToDNSConfigError)
 
-CLOJURE TYPE go.std.net/arrayOfDNSConfigError:
 (def
   ^{:doc "DNSConfigError represents an error reading the machine's DNS configuration.\n(No longer used; kept for compatibility.)\n"
     :added "1.0"
@@ -405,7 +304,6 @@ CLOJURE TYPE go.std.net/arrayOfDNSConfigError:
     :go "&info_ArrayOf_DNSConfigError"}
   arrayOfDNSConfigError)
 
-CLOJURE TYPE go.std.net/DNSError:
 (def
   ^{:doc "DNSError represents a DNS lookup error.\n"
     :added "1.0"
@@ -413,7 +311,6 @@ CLOJURE TYPE go.std.net/DNSError:
     :go "&info_DNSError"}
   DNSError)
 
-CLOJURE TYPE go.std.net/refToDNSError:
 (def
   ^{:doc "DNSError represents a DNS lookup error.\n"
     :added "1.0"
@@ -421,7 +318,6 @@ CLOJURE TYPE go.std.net/refToDNSError:
     :go "&info_PtrTo_DNSError"}
   refToDNSError)
 
-CLOJURE TYPE go.std.net/arrayOfDNSError:
 (def
   ^{:doc "DNSError represents a DNS lookup error.\n"
     :added "1.0"
@@ -429,7 +325,6 @@ CLOJURE TYPE go.std.net/arrayOfDNSError:
     :go "&info_ArrayOf_DNSError"}
   arrayOfDNSError)
 
-CLOJURE TYPE go.std.net/Error:
 (def
   ^{:doc "An Error represents a network error.\n"
     :added "1.0"
@@ -438,7 +333,6 @@ CLOJURE TYPE go.std.net/Error:
     :go "&info_Error"}
   Error)
 
-CLOJURE TYPE go.std.net/IP:
 (def
   ^{:doc "An IP is a single IP address, a slice of bytes.\nFunctions in this package accept either 4-byte (IPv4)\nor 16-byte (IPv6) slices as input.\n\nNote that in this documentation, referring to an\nIP address as an IPv4 address or an IPv6 address\nis a semantic property of the address, not just the\nlength of the byte slice: a 16-byte slice can still\nbe an IPv4 address.\n"
     :added "1.0"
@@ -446,7 +340,6 @@ CLOJURE TYPE go.std.net/IP:
     :go "&info_IP"}
   IP)
 
-CLOJURE TYPE go.std.net/refToIP:
 (def
   ^{:doc "An IP is a single IP address, a slice of bytes.\nFunctions in this package accept either 4-byte (IPv4)\nor 16-byte (IPv6) slices as input.\n\nNote that in this documentation, referring to an\nIP address as an IPv4 address or an IPv6 address\nis a semantic property of the address, not just the\nlength of the byte slice: a 16-byte slice can still\nbe an IPv4 address.\n"
     :added "1.0"
@@ -454,7 +347,6 @@ CLOJURE TYPE go.std.net/refToIP:
     :go "&info_PtrTo_IP"}
   refToIP)
 
-CLOJURE TYPE go.std.net/IPAddr:
 (def
   ^{:doc "IPAddr represents the address of an IP end point.\n"
     :added "1.0"
@@ -462,7 +354,6 @@ CLOJURE TYPE go.std.net/IPAddr:
     :go "&info_IPAddr"}
   IPAddr)
 
-CLOJURE TYPE go.std.net/refToIPAddr:
 (def
   ^{:doc "IPAddr represents the address of an IP end point.\n"
     :added "1.0"
@@ -470,7 +361,6 @@ CLOJURE TYPE go.std.net/refToIPAddr:
     :go "&info_PtrTo_IPAddr"}
   refToIPAddr)
 
-CLOJURE TYPE go.std.net/arrayOfIPAddr:
 (def
   ^{:doc "IPAddr represents the address of an IP end point.\n"
     :added "1.0"
@@ -478,7 +368,6 @@ CLOJURE TYPE go.std.net/arrayOfIPAddr:
     :go "&info_ArrayOf_IPAddr"}
   arrayOfIPAddr)
 
-CLOJURE TYPE go.std.net/IPConn:
 (def
   ^{:doc "IPConn is the implementation of the Conn and PacketConn interfaces\nfor IP network connections.\n"
     :added "1.0"
@@ -486,7 +375,6 @@ CLOJURE TYPE go.std.net/IPConn:
     :go "&info_IPConn"}
   IPConn)
 
-CLOJURE TYPE go.std.net/refToIPConn:
 (def
   ^{:doc "IPConn is the implementation of the Conn and PacketConn interfaces\nfor IP network connections.\n"
     :added "1.0"
@@ -494,7 +382,6 @@ CLOJURE TYPE go.std.net/refToIPConn:
     :go "&info_PtrTo_IPConn"}
   refToIPConn)
 
-CLOJURE TYPE go.std.net/arrayOfIPConn:
 (def
   ^{:doc "IPConn is the implementation of the Conn and PacketConn interfaces\nfor IP network connections.\n"
     :added "1.0"
@@ -502,7 +389,6 @@ CLOJURE TYPE go.std.net/arrayOfIPConn:
     :go "&info_ArrayOf_IPConn"}
   arrayOfIPConn)
 
-CLOJURE TYPE go.std.net/IPMask:
 (def
   ^{:doc "An IP mask is an IP address.\n"
     :added "1.0"
@@ -510,7 +396,6 @@ CLOJURE TYPE go.std.net/IPMask:
     :go "&info_IPMask"}
   IPMask)
 
-CLOJURE TYPE go.std.net/refToIPMask:
 (def
   ^{:doc "An IP mask is an IP address.\n"
     :added "1.0"
@@ -518,7 +403,6 @@ CLOJURE TYPE go.std.net/refToIPMask:
     :go "&info_PtrTo_IPMask"}
   refToIPMask)
 
-CLOJURE TYPE go.std.net/arrayOfIPMask:
 (def
   ^{:doc "An IP mask is an IP address.\n"
     :added "1.0"
@@ -526,7 +410,6 @@ CLOJURE TYPE go.std.net/arrayOfIPMask:
     :go "&info_ArrayOf_IPMask"}
   arrayOfIPMask)
 
-CLOJURE TYPE go.std.net/IPNet:
 (def
   ^{:doc "An IPNet represents an IP network.\n"
     :added "1.0"
@@ -534,7 +417,6 @@ CLOJURE TYPE go.std.net/IPNet:
     :go "&info_IPNet"}
   IPNet)
 
-CLOJURE TYPE go.std.net/refToIPNet:
 (def
   ^{:doc "An IPNet represents an IP network.\n"
     :added "1.0"
@@ -542,7 +424,6 @@ CLOJURE TYPE go.std.net/refToIPNet:
     :go "&info_PtrTo_IPNet"}
   refToIPNet)
 
-CLOJURE TYPE go.std.net/arrayOfIPNet:
 (def
   ^{:doc "An IPNet represents an IP network.\n"
     :added "1.0"
@@ -550,7 +431,6 @@ CLOJURE TYPE go.std.net/arrayOfIPNet:
     :go "&info_ArrayOf_IPNet"}
   arrayOfIPNet)
 
-CLOJURE TYPE go.std.net/arrayOfIP:
 (def
   ^{:doc "An IP is a single IP address, a slice of bytes.\nFunctions in this package accept either 4-byte (IPv4)\nor 16-byte (IPv6) slices as input.\n\nNote that in this documentation, referring to an\nIP address as an IPv4 address or an IPv6 address\nis a semantic property of the address, not just the\nlength of the byte slice: a 16-byte slice can still\nbe an IPv4 address.\n"
     :added "1.0"
@@ -558,7 +438,6 @@ CLOJURE TYPE go.std.net/arrayOfIP:
     :go "&info_ArrayOf_IP"}
   arrayOfIP)
 
-CLOJURE TYPE go.std.net/InvalidAddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -566,7 +445,6 @@ CLOJURE TYPE go.std.net/InvalidAddrError:
     :go "&info_InvalidAddrError"}
   InvalidAddrError)
 
-CLOJURE TYPE go.std.net/refToInvalidAddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -574,7 +452,6 @@ CLOJURE TYPE go.std.net/refToInvalidAddrError:
     :go "&info_PtrTo_InvalidAddrError"}
   refToInvalidAddrError)
 
-CLOJURE TYPE go.std.net/arrayOfInvalidAddrError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -582,7 +459,6 @@ CLOJURE TYPE go.std.net/arrayOfInvalidAddrError:
     :go "&info_ArrayOf_InvalidAddrError"}
   arrayOfInvalidAddrError)
 
-CLOJURE TYPE go.std.net/Listener:
 (def
   ^{:doc "A Listener is a generic network listener for stream-oriented protocols.\n\nMultiple goroutines may invoke methods on a Listener simultaneously.\n"
     :added "1.0"
@@ -591,7 +467,6 @@ CLOJURE TYPE go.std.net/Listener:
     :go "&info_Listener"}
   Listener)
 
-CLOJURE TYPE go.std.net/MX:
 (def
   ^{:doc "An MX represents a single DNS MX record.\n"
     :added "1.0"
@@ -599,7 +474,6 @@ CLOJURE TYPE go.std.net/MX:
     :go "&info_MX"}
   MX)
 
-CLOJURE TYPE go.std.net/refToMX:
 (def
   ^{:doc "An MX represents a single DNS MX record.\n"
     :added "1.0"
@@ -607,7 +481,6 @@ CLOJURE TYPE go.std.net/refToMX:
     :go "&info_PtrTo_MX"}
   refToMX)
 
-CLOJURE TYPE go.std.net/arrayOfMX:
 (def
   ^{:doc "An MX represents a single DNS MX record.\n"
     :added "1.0"
@@ -615,7 +488,6 @@ CLOJURE TYPE go.std.net/arrayOfMX:
     :go "&info_ArrayOf_MX"}
   arrayOfMX)
 
-CLOJURE TYPE go.std.net/NS:
 (def
   ^{:doc "An NS represents a single DNS NS record.\n"
     :added "1.0"
@@ -623,7 +495,6 @@ CLOJURE TYPE go.std.net/NS:
     :go "&info_NS"}
   NS)
 
-CLOJURE TYPE go.std.net/refToNS:
 (def
   ^{:doc "An NS represents a single DNS NS record.\n"
     :added "1.0"
@@ -631,7 +502,6 @@ CLOJURE TYPE go.std.net/refToNS:
     :go "&info_PtrTo_NS"}
   refToNS)
 
-CLOJURE TYPE go.std.net/arrayOfNS:
 (def
   ^{:doc "An NS represents a single DNS NS record.\n"
     :added "1.0"
@@ -639,7 +509,6 @@ CLOJURE TYPE go.std.net/arrayOfNS:
     :go "&info_ArrayOf_NS"}
   arrayOfNS)
 
-CLOJURE TYPE go.std.net/OpError:
 (def
   ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
     :added "1.0"
@@ -647,7 +516,6 @@ CLOJURE TYPE go.std.net/OpError:
     :go "&info_OpError"}
   OpError)
 
-CLOJURE TYPE go.std.net/refToOpError:
 (def
   ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
     :added "1.0"
@@ -655,7 +523,6 @@ CLOJURE TYPE go.std.net/refToOpError:
     :go "&info_PtrTo_OpError"}
   refToOpError)
 
-CLOJURE TYPE go.std.net/arrayOfOpError:
 (def
   ^{:doc "OpError is the error type usually returned by functions in the net\npackage. It describes the operation, network type, and address of\nan error.\n"
     :added "1.0"
@@ -663,7 +530,6 @@ CLOJURE TYPE go.std.net/arrayOfOpError:
     :go "&info_ArrayOf_OpError"}
   arrayOfOpError)
 
-CLOJURE TYPE go.std.net/PacketConn:
 (def
   ^{:doc "PacketConn is a generic packet-oriented network connection.\n\nMultiple goroutines may invoke methods on a PacketConn simultaneously.\n"
     :added "1.0"
@@ -672,7 +538,6 @@ CLOJURE TYPE go.std.net/PacketConn:
     :go "&info_PacketConn"}
   PacketConn)
 
-CLOJURE TYPE go.std.net/ParseError:
 (def
   ^{:doc "A ParseError is the error type of literal network address parsers.\n"
     :added "1.0"
@@ -680,7 +545,6 @@ CLOJURE TYPE go.std.net/ParseError:
     :go "&info_ParseError"}
   ParseError)
 
-CLOJURE TYPE go.std.net/refToParseError:
 (def
   ^{:doc "A ParseError is the error type of literal network address parsers.\n"
     :added "1.0"
@@ -688,7 +552,6 @@ CLOJURE TYPE go.std.net/refToParseError:
     :go "&info_PtrTo_ParseError"}
   refToParseError)
 
-CLOJURE TYPE go.std.net/arrayOfParseError:
 (def
   ^{:doc "A ParseError is the error type of literal network address parsers.\n"
     :added "1.0"
@@ -696,7 +559,6 @@ CLOJURE TYPE go.std.net/arrayOfParseError:
     :go "&info_ArrayOf_ParseError"}
   arrayOfParseError)
 
-CLOJURE TYPE go.std.net/Resolver:
 (def
   ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
     :added "1.0"
@@ -704,7 +566,6 @@ CLOJURE TYPE go.std.net/Resolver:
     :go "&info_Resolver"}
   Resolver)
 
-CLOJURE TYPE go.std.net/refToResolver:
 (def
   ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
     :added "1.0"
@@ -712,7 +573,6 @@ CLOJURE TYPE go.std.net/refToResolver:
     :go "&info_PtrTo_Resolver"}
   refToResolver)
 
-CLOJURE TYPE go.std.net/arrayOfResolver:
 (def
   ^{:doc "A Resolver looks up names and numbers.\n\nA nil *Resolver is equivalent to a zero Resolver.\n"
     :added "1.0"
@@ -720,7 +580,6 @@ CLOJURE TYPE go.std.net/arrayOfResolver:
     :go "&info_ArrayOf_Resolver"}
   arrayOfResolver)
 
-CLOJURE TYPE go.std.net/SRV:
 (def
   ^{:doc "An SRV represents a single DNS SRV record.\n"
     :added "1.0"
@@ -728,7 +587,6 @@ CLOJURE TYPE go.std.net/SRV:
     :go "&info_SRV"}
   SRV)
 
-CLOJURE TYPE go.std.net/refToSRV:
 (def
   ^{:doc "An SRV represents a single DNS SRV record.\n"
     :added "1.0"
@@ -736,7 +594,6 @@ CLOJURE TYPE go.std.net/refToSRV:
     :go "&info_PtrTo_SRV"}
   refToSRV)
 
-CLOJURE TYPE go.std.net/arrayOfSRV:
 (def
   ^{:doc "An SRV represents a single DNS SRV record.\n"
     :added "1.0"
@@ -744,7 +601,6 @@ CLOJURE TYPE go.std.net/arrayOfSRV:
     :go "&info_ArrayOf_SRV"}
   arrayOfSRV)
 
-CLOJURE TYPE go.std.net/UnknownNetworkError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -752,7 +608,6 @@ CLOJURE TYPE go.std.net/UnknownNetworkError:
     :go "&info_UnknownNetworkError"}
   UnknownNetworkError)
 
-CLOJURE TYPE go.std.net/refToUnknownNetworkError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -760,7 +615,6 @@ CLOJURE TYPE go.std.net/refToUnknownNetworkError:
     :go "&info_PtrTo_UnknownNetworkError"}
   refToUnknownNetworkError)
 
-CLOJURE TYPE go.std.net/arrayOfUnknownNetworkError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -775,88 +629,60 @@ CLOJURE TYPE go.std.net/arrayOfUnknownNetworkError:
     :doc "Provides a low-level interface to the net/url package.\n\nPackage url parses URLs and implements query escaping.\n"
     :empty false}
   go.std.net.url)
-CLOJURE TYPE []net/url.Error from net/url/url.go:
-CLOJURE TYPE []net/url.EscapeError from net/url/url.go:
-CLOJURE TYPE []net/url.InvalidHostError from net/url/url.go:
-CLOJURE TYPE []net/url.URL from net/url/url.go:
-CLOJURE TYPE []net/url.Userinfo from net/url/url.go:
-CLOJURE TYPE []net/url.Values from net/url/url.go:
-CLOJURE TYPE net/url.Error from net/url/url.go:
-CLOJURE TYPE *net/url.Error from net/url/url.go:
-CLOJURE TYPE net/url.EscapeError from net/url/url.go:
-CLOJURE TYPE *net/url.EscapeError from net/url/url.go:
-CLOJURE TYPE net/url.InvalidHostError from net/url/url.go:
-CLOJURE TYPE *net/url.InvalidHostError from net/url/url.go:
-CLOJURE TYPE net/url.URL from net/url/url.go:
-CLOJURE TYPE *net/url.URL from net/url/url.go:
-CLOJURE TYPE net/url.Userinfo from net/url/url.go:
-CLOJURE TYPE *net/url.Userinfo from net/url/url.go:
-CLOJURE TYPE net/url.Values from net/url/url.go:
-CLOJURE TYPE *net/url.Values from net/url/url.go:
-CLOJURE FUNC net/url.Parse from net/url/url.go:
+
 (defn Parse
   "Parse parses rawurl into a URL structure.\n\nThe rawurl may be relative (a path, without a host) or absolute\n(starting with a scheme). Trying to parse a hostname and path\nwithout a scheme is invalid but may not necessarily return an\nerror, due to parsing ambiguities.\n\nGo input arguments: (rawurl string)\n\nGo returns: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker returns: [^refToURL, ^Error]"
   {:added "1.0"
    :go "_f_parse(_v_rawurl)"}
   [^String _v_rawurl])
 
-CLOJURE FUNC net/url.ParseQuery from net/url/url.go:
 (defn ParseQuery
   "ParseQuery parses the URL-encoded query string and returns\na map listing the values specified for each key.\nParseQuery always returns a non-nil map containing all the\nvalid query parameters found; err describes the first decoding error\nencountered, if any.\n\nQuery is expected to be a list of key=value settings separated by\nampersands or semicolons. A setting without an equals sign is\ninterpreted as a key set to an empty value.\n\nGo input arguments: (query string)\n\nGo returns: (Values, error)\n\nJoker input arguments: [^String query]\n\nJoker returns: [^Values, ^Error]"
   {:added "1.0"
    :go "_f_parseQuery(_v_query)"}
   [^String _v_query])
 
-CLOJURE FUNC net/url.ParseRequestURI from net/url/url.go:
 (defn ParseRequestURI
   "ParseRequestURI parses rawurl into a URL structure. It assumes that\nrawurl was received in an HTTP request, so the rawurl is interpreted\nonly as an absolute URI or an absolute path.\nThe string rawurl is assumed not to have a #fragment suffix.\n(Web browsers strip #fragment before sending the URL to a web server.)\n\nGo input arguments: (rawurl string)\n\nGo returns: (*URL, error)\n\nJoker input arguments: [^String rawurl]\n\nJoker returns: [^refToURL, ^Error]"
   {:added "1.0"
    :go "_f_parseRequestURI(_v_rawurl)"}
   [^String _v_rawurl])
 
-CLOJURE FUNC net/url.PathEscape from net/url/url.go:
 (defn ^"String" PathEscape
   "PathEscape escapes the string so it can be safely placed\ninside a URL path segment.\n\nGo input arguments: (s string)\n\nGo returns: string\n\nJoker input arguments: [^String s]\n\nJoker returns: ^String"
   {:added "1.0"
    :go "url.PathEscape(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net/url.PathUnescape from net/url/url.go:
 (defn PathUnescape
   "PathUnescape does the inverse transformation of PathEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB. It returns an error if any % is not followed\nby two hexadecimal digits.\n\nPathUnescape is identical to QueryUnescape except that it does not\nunescape '+' to ' ' (space).\n\nGo input arguments: (s string)\n\nGo returns: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker returns: [^String, ^Error]"
   {:added "1.0"
    :go "_f_pathUnescape(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net/url.QueryEscape from net/url/url.go:
 (defn ^"String" QueryEscape
   "QueryEscape escapes the string so it can be safely placed\ninside a URL query.\n\nGo input arguments: (s string)\n\nGo returns: string\n\nJoker input arguments: [^String s]\n\nJoker returns: ^String"
   {:added "1.0"
    :go "url.QueryEscape(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net/url.QueryUnescape from net/url/url.go:
 (defn QueryUnescape
   "QueryUnescape does the inverse transformation of QueryEscape,\nconverting each 3-byte encoded substring of the form \"%AB\" into the\nhex-decoded byte 0xAB.\nIt returns an error if any % is not followed by two hexadecimal\ndigits.\n\nGo input arguments: (s string)\n\nGo returns: (string, error)\n\nJoker input arguments: [^String s]\n\nJoker returns: [^String, ^Error]"
   {:added "1.0"
    :go "_f_queryUnescape(_v_s)"}
   [^String _v_s])
 
-CLOJURE FUNC net/url.User from net/url/url.go:
 (defn User
   "User returns a Userinfo containing the provided username\nand no password set.\n\nGo input arguments: (username string)\n\nGo returns: *Userinfo\n\nJoker input arguments: [^String username]\n\nJoker returns: ^refToUserinfo"
   {:added "1.0"
    :go "_f_user(_v_username)"}
   [^String _v_username])
 
-CLOJURE FUNC net/url.UserPassword from net/url/url.go:
 (defn UserPassword
   "UserPassword returns a Userinfo containing the provided username\nand password.\n\nThis functionality should only be used with legacy web sites.\nRFC 2396 warns that interpreting Userinfo this way\n``is NOT RECOMMENDED, because the passing of authentication\ninformation in clear text (such as URI) has proven to be a\nsecurity risk in almost every case where it has been used.''\n\nGo input arguments: (username string, password string)\n\nGo returns: *Userinfo\n\nJoker input arguments: [^String username, ^String password]\n\nJoker returns: ^refToUserinfo"
   {:added "1.0"
    :go "_f_userPassword(_v_username, _v_password)"}
   [^String _v_username, ^String _v_password])
-
-CLOJURE TYPE go.std.net.url/Error:
 (def
   ^{:doc "Error reports an error and the operation and URL that caused it.\n"
     :added "1.0"
@@ -864,7 +690,6 @@ CLOJURE TYPE go.std.net.url/Error:
     :go "&info_Error"}
   Error)
 
-CLOJURE TYPE go.std.net.url/refToError:
 (def
   ^{:doc "Error reports an error and the operation and URL that caused it.\n"
     :added "1.0"
@@ -872,7 +697,6 @@ CLOJURE TYPE go.std.net.url/refToError:
     :go "&info_PtrTo_Error"}
   refToError)
 
-CLOJURE TYPE go.std.net.url/arrayOfError:
 (def
   ^{:doc "Error reports an error and the operation and URL that caused it.\n"
     :added "1.0"
@@ -880,7 +704,6 @@ CLOJURE TYPE go.std.net.url/arrayOfError:
     :go "&info_ArrayOf_Error"}
   arrayOfError)
 
-CLOJURE TYPE go.std.net.url/EscapeError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -888,7 +711,6 @@ CLOJURE TYPE go.std.net.url/EscapeError:
     :go "&info_EscapeError"}
   EscapeError)
 
-CLOJURE TYPE go.std.net.url/refToEscapeError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -896,7 +718,6 @@ CLOJURE TYPE go.std.net.url/refToEscapeError:
     :go "&info_PtrTo_EscapeError"}
   refToEscapeError)
 
-CLOJURE TYPE go.std.net.url/arrayOfEscapeError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -904,7 +725,6 @@ CLOJURE TYPE go.std.net.url/arrayOfEscapeError:
     :go "&info_ArrayOf_EscapeError"}
   arrayOfEscapeError)
 
-CLOJURE TYPE go.std.net.url/InvalidHostError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -912,7 +732,6 @@ CLOJURE TYPE go.std.net.url/InvalidHostError:
     :go "&info_InvalidHostError"}
   InvalidHostError)
 
-CLOJURE TYPE go.std.net.url/refToInvalidHostError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -920,7 +739,6 @@ CLOJURE TYPE go.std.net.url/refToInvalidHostError:
     :go "&info_PtrTo_InvalidHostError"}
   refToInvalidHostError)
 
-CLOJURE TYPE go.std.net.url/arrayOfInvalidHostError:
 (def
   ^{:doc ""
     :added "1.0"
@@ -928,7 +746,6 @@ CLOJURE TYPE go.std.net.url/arrayOfInvalidHostError:
     :go "&info_ArrayOf_InvalidHostError"}
   arrayOfInvalidHostError)
 
-CLOJURE TYPE go.std.net.url/URL:
 (def
   ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
     :added "1.0"
@@ -936,7 +753,6 @@ CLOJURE TYPE go.std.net.url/URL:
     :go "&info_URL"}
   URL)
 
-CLOJURE TYPE go.std.net.url/refToURL:
 (def
   ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
     :added "1.0"
@@ -944,7 +760,6 @@ CLOJURE TYPE go.std.net.url/refToURL:
     :go "&info_PtrTo_URL"}
   refToURL)
 
-CLOJURE TYPE go.std.net.url/arrayOfURL:
 (def
   ^{:doc "A URL represents a parsed URL (technically, a URI reference).\n\nThe general form represented is:\n\n\t[scheme:][//[userinfo@]host][/]path[?query][#fragment]\n\nURLs that do not start with a slash after the scheme are interpreted as:\n\n\tscheme:opaque[?query][#fragment]\n\nNote that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/.\nA consequence is that it is impossible to tell which slashes in the Path were\nslashes in the raw URL and which were %2f. This distinction is rarely important,\nbut when it is, code must not use Path directly.\nThe Parse function sets both Path and RawPath in the URL it returns,\nand URL's String method uses RawPath if it is a valid encoding of Path,\nby calling the EscapedPath method.\n"
     :added "1.0"
@@ -952,7 +767,6 @@ CLOJURE TYPE go.std.net.url/arrayOfURL:
     :go "&info_ArrayOf_URL"}
   arrayOfURL)
 
-CLOJURE TYPE go.std.net.url/Userinfo:
 (def
   ^{:doc "The Userinfo type is an immutable encapsulation of username and\npassword details for a URL. An existing Userinfo value is guaranteed\nto have a username set (potentially empty, as allowed by RFC 2396),\nand optionally a password.\n"
     :added "1.0"
@@ -960,7 +774,6 @@ CLOJURE TYPE go.std.net.url/Userinfo:
     :go "&info_Userinfo"}
   Userinfo)
 
-CLOJURE TYPE go.std.net.url/refToUserinfo:
 (def
   ^{:doc "The Userinfo type is an immutable encapsulation of username and\npassword details for a URL. An existing Userinfo value is guaranteed\nto have a username set (potentially empty, as allowed by RFC 2396),\nand optionally a password.\n"
     :added "1.0"
@@ -968,7 +781,6 @@ CLOJURE TYPE go.std.net.url/refToUserinfo:
     :go "&info_PtrTo_Userinfo"}
   refToUserinfo)
 
-CLOJURE TYPE go.std.net.url/arrayOfUserinfo:
 (def
   ^{:doc "The Userinfo type is an immutable encapsulation of username and\npassword details for a URL. An existing Userinfo value is guaranteed\nto have a username set (potentially empty, as allowed by RFC 2396),\nand optionally a password.\n"
     :added "1.0"
@@ -976,7 +788,6 @@ CLOJURE TYPE go.std.net.url/arrayOfUserinfo:
     :go "&info_ArrayOf_Userinfo"}
   arrayOfUserinfo)
 
-CLOJURE TYPE go.std.net.url/Values:
 (def
   ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
     :added "1.0"
@@ -984,7 +795,6 @@ CLOJURE TYPE go.std.net.url/Values:
     :go "&info_Values"}
   Values)
 
-CLOJURE TYPE go.std.net.url/refToValues:
 (def
   ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
     :added "1.0"
@@ -992,7 +802,6 @@ CLOJURE TYPE go.std.net.url/refToValues:
     :go "&info_PtrTo_Values"}
   refToValues)
 
-CLOJURE TYPE go.std.net.url/arrayOfValues:
 (def
   ^{:doc "Values maps a string key to a list of values.\nIt is typically used for query parameters and form values.\nUnlike in the http.Header map, the keys in a Values map\nare case-sensitive.\n"
     :added "1.0"
@@ -1008,7 +817,7 @@ import (
 	. "github.com/candid82/joker/core"
 	"net"
 )
-GO TYPE []*net.MX from net/dnsclient.go:
+
 func Extract_ns_arrayOfrefToMX(args []Object, index int) []*net.MX {
 	a := args[index]
 	switch o := a.(type) {
@@ -1021,7 +830,6 @@ func Extract_ns_arrayOfrefToMX(args []Object, index int) []*net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]*net.MX]"))
 }
 
-GO TYPE []*net.NS from net/dnsclient.go:
 func Extract_ns_arrayOfrefToNS(args []Object, index int) []*net.NS {
 	a := args[index]
 	switch o := a.(type) {
@@ -1034,7 +842,6 @@ func Extract_ns_arrayOfrefToNS(args []Object, index int) []*net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]*net.NS]"))
 }
 
-GO TYPE []*net.SRV from net/dnsclient.go:
 func Extract_ns_arrayOfrefToSRV(args []Object, index int) []*net.SRV {
 	a := args[index]
 	switch o := a.(type) {
@@ -1047,7 +854,6 @@ func Extract_ns_arrayOfrefToSRV(args []Object, index int) []*net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]*net.SRV]"))
 }
 
-GO TYPE []net.AddrError from net/net.go:
 func Extract_ns_arrayOfAddrError(args []Object, index int) []net.AddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1060,7 +866,6 @@ func Extract_ns_arrayOfAddrError(args []Object, index int) []net.AddrError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.AddrError]"))
 }
 
-GO TYPE []net.Buffers from net/net.go:
 func Extract_ns_arrayOfBuffers(args []Object, index int) []net.Buffers {
 	a := args[index]
 	switch o := a.(type) {
@@ -1073,7 +878,6 @@ func Extract_ns_arrayOfBuffers(args []Object, index int) []net.Buffers {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.Buffers]"))
 }
 
-GO TYPE []net.DNSConfigError from net/net.go:
 func Extract_ns_arrayOfDNSConfigError(args []Object, index int) []net.DNSConfigError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1086,7 +890,6 @@ func Extract_ns_arrayOfDNSConfigError(args []Object, index int) []net.DNSConfigE
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.DNSConfigError]"))
 }
 
-GO TYPE []net.DNSError from net/net.go:
 func Extract_ns_arrayOfDNSError(args []Object, index int) []net.DNSError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1099,7 +902,6 @@ func Extract_ns_arrayOfDNSError(args []Object, index int) []net.DNSError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.DNSError]"))
 }
 
-GO TYPE []net.IP from net/ip.go:
 func Extract_ns_arrayOfIP(args []Object, index int) []net.IP {
 	a := args[index]
 	switch o := a.(type) {
@@ -1112,7 +914,6 @@ func Extract_ns_arrayOfIP(args []Object, index int) []net.IP {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.IP]"))
 }
 
-GO TYPE []net.IPAddr from net/iprawsock.go:
 func Extract_ns_arrayOfIPAddr(args []Object, index int) []net.IPAddr {
 	a := args[index]
 	switch o := a.(type) {
@@ -1125,7 +926,6 @@ func Extract_ns_arrayOfIPAddr(args []Object, index int) []net.IPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.IPAddr]"))
 }
 
-GO TYPE []net.IPConn from net/iprawsock.go:
 func Extract_ns_arrayOfIPConn(args []Object, index int) []net.IPConn {
 	a := args[index]
 	switch o := a.(type) {
@@ -1138,7 +938,6 @@ func Extract_ns_arrayOfIPConn(args []Object, index int) []net.IPConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.IPConn]"))
 }
 
-GO TYPE []net.IPMask from net/ip.go:
 func Extract_ns_arrayOfIPMask(args []Object, index int) []net.IPMask {
 	a := args[index]
 	switch o := a.(type) {
@@ -1151,7 +950,6 @@ func Extract_ns_arrayOfIPMask(args []Object, index int) []net.IPMask {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.IPMask]"))
 }
 
-GO TYPE []net.IPNet from net/ip.go:
 func Extract_ns_arrayOfIPNet(args []Object, index int) []net.IPNet {
 	a := args[index]
 	switch o := a.(type) {
@@ -1164,7 +962,6 @@ func Extract_ns_arrayOfIPNet(args []Object, index int) []net.IPNet {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.IPNet]"))
 }
 
-GO TYPE []net.InvalidAddrError from net/net.go:
 func Extract_ns_arrayOfInvalidAddrError(args []Object, index int) []net.InvalidAddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1177,7 +974,6 @@ func Extract_ns_arrayOfInvalidAddrError(args []Object, index int) []net.InvalidA
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.InvalidAddrError]"))
 }
 
-GO TYPE []net.MX from net/dnsclient.go:
 func Extract_ns_arrayOfMX(args []Object, index int) []net.MX {
 	a := args[index]
 	switch o := a.(type) {
@@ -1190,7 +986,6 @@ func Extract_ns_arrayOfMX(args []Object, index int) []net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.MX]"))
 }
 
-GO TYPE []net.NS from net/dnsclient.go:
 func Extract_ns_arrayOfNS(args []Object, index int) []net.NS {
 	a := args[index]
 	switch o := a.(type) {
@@ -1203,7 +998,6 @@ func Extract_ns_arrayOfNS(args []Object, index int) []net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.NS]"))
 }
 
-GO TYPE []net.OpError from net/net.go:
 func Extract_ns_arrayOfOpError(args []Object, index int) []net.OpError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1216,7 +1010,6 @@ func Extract_ns_arrayOfOpError(args []Object, index int) []net.OpError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.OpError]"))
 }
 
-GO TYPE []net.ParseError from net/net.go:
 func Extract_ns_arrayOfParseError(args []Object, index int) []net.ParseError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1229,7 +1022,6 @@ func Extract_ns_arrayOfParseError(args []Object, index int) []net.ParseError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.ParseError]"))
 }
 
-GO TYPE []net.Resolver from net/lookup.go:
 func Extract_ns_arrayOfResolver(args []Object, index int) []net.Resolver {
 	a := args[index]
 	switch o := a.(type) {
@@ -1242,7 +1034,6 @@ func Extract_ns_arrayOfResolver(args []Object, index int) []net.Resolver {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.Resolver]"))
 }
 
-GO TYPE []net.SRV from net/dnsclient.go:
 func Extract_ns_arrayOfSRV(args []Object, index int) []net.SRV {
 	a := args[index]
 	switch o := a.(type) {
@@ -1255,7 +1046,6 @@ func Extract_ns_arrayOfSRV(args []Object, index int) []net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.SRV]"))
 }
 
-GO TYPE []net.UnknownNetworkError from net/net.go:
 func Extract_ns_arrayOfUnknownNetworkError(args []Object, index int) []net.UnknownNetworkError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1268,7 +1058,6 @@ func Extract_ns_arrayOfUnknownNetworkError(args []Object, index int) []net.Unkno
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net.UnknownNetworkError]"))
 }
 
-GO TYPE net.Addr from net/net.go:
 func Extract_ns_Addr(args []Object, index int) net.Addr {
 	a := args[index]
 	switch o := a.(type) {
@@ -1281,7 +1070,6 @@ func Extract_ns_Addr(args []Object, index int) net.Addr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Addr]"))
 }
 
-GO TYPE net.AddrError from net/net.go:
 func Extract_ns_AddrError(args []Object, index int) *net.AddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1315,7 +1103,6 @@ func _Wrapped_Ctor_AddrError(_o Object) Object {
 	return MakeGoObject(_Ctor_AddrError(_o))
 }
 
-GO TYPE *net.AddrError from net/net.go:
 func Extract_ns_refToAddrError(args []Object, index int) *net.AddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1328,7 +1115,6 @@ func Extract_ns_refToAddrError(args []Object, index int) *net.AddrError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.AddrError]"))
 }
 
-GO TYPE net.Buffers from net/net.go:
 func Extract_ns_Buffers(args []Object, index int) net.Buffers {
 	a := args[index]
 	switch o := a.(type) {
@@ -1353,7 +1139,6 @@ func Extract_ns_Buffers(args []Object, index int) net.Buffers {
 // 	return MakeGoObject(_Ctor_Buffers(_o))
 // }
 
-GO TYPE *net.Buffers from net/net.go:
 func Extract_ns_refToBuffers(args []Object, index int) *net.Buffers {
 	a := args[index]
 	switch o := a.(type) {
@@ -1366,7 +1151,6 @@ func Extract_ns_refToBuffers(args []Object, index int) *net.Buffers {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.Buffers]"))
 }
 
-GO TYPE net.Conn from net/net.go:
 func Extract_ns_Conn(args []Object, index int) net.Conn {
 	a := args[index]
 	switch o := a.(type) {
@@ -1379,7 +1163,6 @@ func Extract_ns_Conn(args []Object, index int) net.Conn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Conn]"))
 }
 
-GO TYPE net.DNSConfigError from net/net.go:
 func Extract_ns_DNSConfigError(args []Object, index int) *net.DNSConfigError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1412,7 +1195,6 @@ func _Wrapped_Ctor_DNSConfigError(_o Object) Object {
 	return MakeGoObject(_Ctor_DNSConfigError(_o))
 }
 
-GO TYPE *net.DNSConfigError from net/net.go:
 func Extract_ns_refToDNSConfigError(args []Object, index int) *net.DNSConfigError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1425,7 +1207,6 @@ func Extract_ns_refToDNSConfigError(args []Object, index int) *net.DNSConfigErro
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.DNSConfigError]"))
 }
 
-GO TYPE net.DNSError from net/net.go:
 func Extract_ns_DNSError(args []Object, index int) *net.DNSError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1462,7 +1243,6 @@ func _Wrapped_Ctor_DNSError(_o Object) Object {
 	return MakeGoObject(_Ctor_DNSError(_o))
 }
 
-GO TYPE *net.DNSError from net/net.go:
 func Extract_ns_refToDNSError(args []Object, index int) *net.DNSError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1475,7 +1255,6 @@ func Extract_ns_refToDNSError(args []Object, index int) *net.DNSError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.DNSError]"))
 }
 
-GO TYPE net.Error from net/net.go:
 func Extract_ns_Error(args []Object, index int) net.Error {
 	a := args[index]
 	switch o := a.(type) {
@@ -1488,7 +1267,6 @@ func Extract_ns_Error(args []Object, index int) net.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Error]"))
 }
 
-GO TYPE net.IP from net/ip.go:
 func Extract_ns_IP(args []Object, index int) net.IP {
 	a := args[index]
 	switch o := a.(type) {
@@ -1513,7 +1291,6 @@ func Extract_ns_IP(args []Object, index int) net.IP {
 // 	return MakeGoObject(_Ctor_IP(_o))
 // }
 
-GO TYPE *net.IP from net/ip.go:
 func Extract_ns_refToIP(args []Object, index int) *net.IP {
 	a := args[index]
 	switch o := a.(type) {
@@ -1526,7 +1303,6 @@ func Extract_ns_refToIP(args []Object, index int) *net.IP {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IP]"))
 }
 
-GO TYPE net.IPAddr from net/iprawsock.go:
 func Extract_ns_IPAddr(args []Object, index int) *net.IPAddr {
 	a := args[index]
 	switch o := a.(type) {
@@ -1560,7 +1336,6 @@ func Extract_ns_IPAddr(args []Object, index int) *net.IPAddr {
 // 	return MakeGoObject(_Ctor_IPAddr(_o))
 // }
 
-GO TYPE *net.IPAddr from net/iprawsock.go:
 func Extract_ns_refToIPAddr(args []Object, index int) *net.IPAddr {
 	a := args[index]
 	switch o := a.(type) {
@@ -1573,7 +1348,6 @@ func Extract_ns_refToIPAddr(args []Object, index int) *net.IPAddr {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPAddr]"))
 }
 
-GO TYPE net.IPConn from net/iprawsock.go:
 func Extract_ns_IPConn(args []Object, index int) *net.IPConn {
 	a := args[index]
 	switch o := a.(type) {
@@ -1604,7 +1378,6 @@ func _Wrapped_Ctor_IPConn(_o Object) Object {
 	return MakeGoObject(_Ctor_IPConn(_o))
 }
 
-GO TYPE *net.IPConn from net/iprawsock.go:
 func Extract_ns_refToIPConn(args []Object, index int) *net.IPConn {
 	a := args[index]
 	switch o := a.(type) {
@@ -1617,7 +1390,6 @@ func Extract_ns_refToIPConn(args []Object, index int) *net.IPConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPConn]"))
 }
 
-GO TYPE net.IPMask from net/ip.go:
 func Extract_ns_IPMask(args []Object, index int) net.IPMask {
 	a := args[index]
 	switch o := a.(type) {
@@ -1642,7 +1414,6 @@ func Extract_ns_IPMask(args []Object, index int) net.IPMask {
 // 	return MakeGoObject(_Ctor_IPMask(_o))
 // }
 
-GO TYPE *net.IPMask from net/ip.go:
 func Extract_ns_refToIPMask(args []Object, index int) *net.IPMask {
 	a := args[index]
 	switch o := a.(type) {
@@ -1655,7 +1426,6 @@ func Extract_ns_refToIPMask(args []Object, index int) *net.IPMask {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPMask]"))
 }
 
-GO TYPE net.IPNet from net/ip.go:
 func Extract_ns_IPNet(args []Object, index int) *net.IPNet {
 	a := args[index]
 	switch o := a.(type) {
@@ -1689,7 +1459,6 @@ func Extract_ns_IPNet(args []Object, index int) *net.IPNet {
 // 	return MakeGoObject(_Ctor_IPNet(_o))
 // }
 
-GO TYPE *net.IPNet from net/ip.go:
 func Extract_ns_refToIPNet(args []Object, index int) *net.IPNet {
 	a := args[index]
 	switch o := a.(type) {
@@ -1702,7 +1471,6 @@ func Extract_ns_refToIPNet(args []Object, index int) *net.IPNet {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.IPNet]"))
 }
 
-GO TYPE net.InvalidAddrError from net/net.go:
 func Extract_ns_InvalidAddrError(args []Object, index int) *net.InvalidAddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1732,7 +1500,6 @@ func _Wrapped_Ctor_InvalidAddrError(_o Object) Object {
 	return MakeGoObject(_Ctor_InvalidAddrError(_o))
 }
 
-GO TYPE *net.InvalidAddrError from net/net.go:
 func Extract_ns_refToInvalidAddrError(args []Object, index int) *net.InvalidAddrError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1745,7 +1512,6 @@ func Extract_ns_refToInvalidAddrError(args []Object, index int) *net.InvalidAddr
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.InvalidAddrError]"))
 }
 
-GO TYPE net.Listener from net/net.go:
 func Extract_ns_Listener(args []Object, index int) net.Listener {
 	a := args[index]
 	switch o := a.(type) {
@@ -1758,7 +1524,6 @@ func Extract_ns_Listener(args []Object, index int) net.Listener {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.Listener]"))
 }
 
-GO TYPE net.MX from net/dnsclient.go:
 func Extract_ns_MX(args []Object, index int) *net.MX {
 	a := args[index]
 	switch o := a.(type) {
@@ -1792,7 +1557,6 @@ func _Wrapped_Ctor_MX(_o Object) Object {
 	return MakeGoObject(_Ctor_MX(_o))
 }
 
-GO TYPE *net.MX from net/dnsclient.go:
 func Extract_ns_refToMX(args []Object, index int) *net.MX {
 	a := args[index]
 	switch o := a.(type) {
@@ -1805,7 +1569,6 @@ func Extract_ns_refToMX(args []Object, index int) *net.MX {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.MX]"))
 }
 
-GO TYPE net.NS from net/dnsclient.go:
 func Extract_ns_NS(args []Object, index int) *net.NS {
 	a := args[index]
 	switch o := a.(type) {
@@ -1838,7 +1601,6 @@ func _Wrapped_Ctor_NS(_o Object) Object {
 	return MakeGoObject(_Ctor_NS(_o))
 }
 
-GO TYPE *net.NS from net/dnsclient.go:
 func Extract_ns_refToNS(args []Object, index int) *net.NS {
 	a := args[index]
 	switch o := a.(type) {
@@ -1851,7 +1613,6 @@ func Extract_ns_refToNS(args []Object, index int) *net.NS {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.NS]"))
 }
 
-GO TYPE net.OpError from net/net.go:
 func Extract_ns_OpError(args []Object, index int) *net.OpError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1888,7 +1649,6 @@ func Extract_ns_OpError(args []Object, index int) *net.OpError {
 // 	return MakeGoObject(_Ctor_OpError(_o))
 // }
 
-GO TYPE *net.OpError from net/net.go:
 func Extract_ns_refToOpError(args []Object, index int) *net.OpError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1901,7 +1661,6 @@ func Extract_ns_refToOpError(args []Object, index int) *net.OpError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.OpError]"))
 }
 
-GO TYPE net.PacketConn from net/net.go:
 func Extract_ns_PacketConn(args []Object, index int) net.PacketConn {
 	a := args[index]
 	switch o := a.(type) {
@@ -1914,7 +1673,6 @@ func Extract_ns_PacketConn(args []Object, index int) net.PacketConn {
 	panic(RT.NewArgTypeError(index, a, "GoObject[net.PacketConn]"))
 }
 
-GO TYPE net.ParseError from net/net.go:
 func Extract_ns_ParseError(args []Object, index int) *net.ParseError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1948,7 +1706,6 @@ func _Wrapped_Ctor_ParseError(_o Object) Object {
 	return MakeGoObject(_Ctor_ParseError(_o))
 }
 
-GO TYPE *net.ParseError from net/net.go:
 func Extract_ns_refToParseError(args []Object, index int) *net.ParseError {
 	a := args[index]
 	switch o := a.(type) {
@@ -1961,7 +1718,6 @@ func Extract_ns_refToParseError(args []Object, index int) *net.ParseError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.ParseError]"))
 }
 
-GO TYPE net.Resolver from net/lookup.go:
 func Extract_ns_Resolver(args []Object, index int) *net.Resolver {
 	a := args[index]
 	switch o := a.(type) {
@@ -1996,7 +1752,6 @@ func Extract_ns_Resolver(args []Object, index int) *net.Resolver {
 // 	return MakeGoObject(_Ctor_Resolver(_o))
 // }
 
-GO TYPE *net.Resolver from net/lookup.go:
 func Extract_ns_refToResolver(args []Object, index int) *net.Resolver {
 	a := args[index]
 	switch o := a.(type) {
@@ -2009,7 +1764,6 @@ func Extract_ns_refToResolver(args []Object, index int) *net.Resolver {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.Resolver]"))
 }
 
-GO TYPE net.SRV from net/dnsclient.go:
 func Extract_ns_SRV(args []Object, index int) *net.SRV {
 	a := args[index]
 	switch o := a.(type) {
@@ -2045,7 +1799,6 @@ func _Wrapped_Ctor_SRV(_o Object) Object {
 	return MakeGoObject(_Ctor_SRV(_o))
 }
 
-GO TYPE *net.SRV from net/dnsclient.go:
 func Extract_ns_refToSRV(args []Object, index int) *net.SRV {
 	a := args[index]
 	switch o := a.(type) {
@@ -2058,7 +1811,6 @@ func Extract_ns_refToSRV(args []Object, index int) *net.SRV {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.SRV]"))
 }
 
-GO TYPE net.UnknownNetworkError from net/net.go:
 func Extract_ns_UnknownNetworkError(args []Object, index int) *net.UnknownNetworkError {
 	a := args[index]
 	switch o := a.(type) {
@@ -2088,7 +1840,6 @@ func _Wrapped_Ctor_UnknownNetworkError(_o Object) Object {
 	return MakeGoObject(_Ctor_UnknownNetworkError(_o))
 }
 
-GO TYPE *net.UnknownNetworkError from net/net.go:
 func Extract_ns_refToUnknownNetworkError(args []Object, index int) *net.UnknownNetworkError {
 	a := args[index]
 	switch o := a.(type) {
@@ -2101,13 +1852,11 @@ func Extract_ns_refToUnknownNetworkError(args []Object, index int) *net.UnknownN
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net.UnknownNetworkError]"))
 }
 
-GO FUNC net.CIDRMask from net/ip.go:
 func _f_cIDRMask(_v_ones int, _v_bits int) Object {
 	_res := net.CIDRMask(_v_ones, _v_bits)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net.DialIP from net/iprawsock.go:
 func _f_dialIP(_v_network string, _v_laddr *net.IPAddr, _v_raddr *net.IPAddr) Object {
 	_res1, _res2 := net.DialIP(_v_network, _v_laddr, _v_raddr)
 	_res := EmptyVector()
@@ -2116,19 +1865,16 @@ func _f_dialIP(_v_network string, _v_laddr *net.IPAddr, _v_raddr *net.IPAddr) Ob
 	return _res
 }
 
-GO FUNC net.IPv4 from net/ip.go:
 func _f_iPv4(_v_a byte, _v_b byte, _v_c byte, _v_d byte) Object {
 	_res := net.IPv4(_v_a, _v_b, _v_c, _v_d)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net.IPv4Mask from net/ip.go:
 func _f_iPv4Mask(_v_a byte, _v_b byte, _v_c byte, _v_d byte) Object {
 	_res := net.IPv4Mask(_v_a, _v_b, _v_c, _v_d)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net.ListenIP from net/iprawsock.go:
 func _f_listenIP(_v_network string, _v_laddr *net.IPAddr) Object {
 	_res1, _res2 := net.ListenIP(_v_network, _v_laddr)
 	_res := EmptyVector()
@@ -2137,7 +1883,6 @@ func _f_listenIP(_v_network string, _v_laddr *net.IPAddr) Object {
 	return _res
 }
 
-GO FUNC net.LookupAddr from net/lookup.go:
 func _f_lookupAddr(_v_addr string) Object {
 	names, err := net.LookupAddr(_v_addr)
 	_res := EmptyVector()
@@ -2146,7 +1891,6 @@ func _f_lookupAddr(_v_addr string) Object {
 	return _res
 }
 
-GO FUNC net.LookupCNAME from net/lookup.go:
 func _f_lookupCNAME(_v_host string) Object {
 	cname, err := net.LookupCNAME(_v_host)
 	_res := EmptyVector()
@@ -2155,7 +1899,6 @@ func _f_lookupCNAME(_v_host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupHost from net/lookup.go:
 func _f_lookupHost(_v_host string) Object {
 	addrs, err := net.LookupHost(_v_host)
 	_res := EmptyVector()
@@ -2164,7 +1907,6 @@ func _f_lookupHost(_v_host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupIP from net/lookup.go:
 func _f_lookupIP(_v_host string) Object {
 	_res1, _res2 := net.LookupIP(_v_host)
 	_res := EmptyVector()
@@ -2173,7 +1915,6 @@ func _f_lookupIP(_v_host string) Object {
 	return _res
 }
 
-GO FUNC net.LookupMX from net/lookup.go:
 func _f_lookupMX(_v_name string) Object {
 	_res1, _res2 := net.LookupMX(_v_name)
 	_res := EmptyVector()
@@ -2182,7 +1923,6 @@ func _f_lookupMX(_v_name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupNS from net/lookup.go:
 func _f_lookupNS(_v_name string) Object {
 	_res1, _res2 := net.LookupNS(_v_name)
 	_res := EmptyVector()
@@ -2191,7 +1931,6 @@ func _f_lookupNS(_v_name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupPort from net/lookup.go:
 func _f_lookupPort(_v_network string, _v_service string) Object {
 	port, err := net.LookupPort(_v_network, _v_service)
 	_res := EmptyVector()
@@ -2200,7 +1939,6 @@ func _f_lookupPort(_v_network string, _v_service string) Object {
 	return _res
 }
 
-GO FUNC net.LookupSRV from net/lookup.go:
 func _f_lookupSRV(_v_service string, _v_proto string, _v_name string) Object {
 	cname, addrs, err := net.LookupSRV(_v_service, _v_proto, _v_name)
 	_res := EmptyVector()
@@ -2210,7 +1948,6 @@ func _f_lookupSRV(_v_service string, _v_proto string, _v_name string) Object {
 	return _res
 }
 
-GO FUNC net.LookupTXT from net/lookup.go:
 func _f_lookupTXT(_v_name string) Object {
 	_res1, _res2 := net.LookupTXT(_v_name)
 	_res := EmptyVector()
@@ -2219,7 +1956,6 @@ func _f_lookupTXT(_v_name string) Object {
 	return _res
 }
 
-GO FUNC net.ParseCIDR from net/ip.go:
 func _f_parseCIDR(_v_s string) Object {
 	_res1, _res2, _res3 := net.ParseCIDR(_v_s)
 	_res := EmptyVector()
@@ -2229,13 +1965,11 @@ func _f_parseCIDR(_v_s string) Object {
 	return _res
 }
 
-GO FUNC net.ParseIP from net/ip.go:
 func _f_parseIP(_v_s string) Object {
 	_res := net.ParseIP(_v_s)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net.ResolveIPAddr from net/iprawsock.go:
 func _f_resolveIPAddr(_v_network string, _v_address string) Object {
 	_res1, _res2 := net.ResolveIPAddr(_v_network, _v_address)
 	_res := EmptyVector()
@@ -2244,35 +1978,30 @@ func _f_resolveIPAddr(_v_network string, _v_address string) Object {
 	return _res
 }
 
-GO FUNC net._f_addr_Network from net/net.go:
 func _f_addr_Network(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Addr)Network()", args, 0, 0)
 	_res := o.O.(net.Addr).Network()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_addr_String from net/net.go:
 func _f_addr_String(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Addr)String()", args, 0, 0)
 	_res := o.O.(net.Addr).String()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_conn_Close from net/net.go:
 func _f_conn_Close(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Conn)Close()", args, 0, 0)
 	_res := o.O.(net.Conn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
-GO FUNC net._f_conn_LocalAddr from net/net.go:
 func _f_conn_LocalAddr(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Conn)LocalAddr()", args, 0, 0)
 	_res := o.O.(net.Conn).LocalAddr()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_conn_Read from net/net.go:
 func _f_conn_Read(o GoObject, args Object) Object {  // Method
 	_argList := CheckReceiverArity("(net.Conn)Read()", args, 1, 1)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2283,26 +2012,21 @@ func _f_conn_Read(o GoObject, args Object) Object {  // Method
 	return _res
 }
 
-GO FUNC net._f_conn_RemoteAddr from net/net.go:
 func _f_conn_RemoteAddr(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Conn)RemoteAddr()", args, 0, 0)
 	_res := o.O.(net.Conn).RemoteAddr()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_conn_SetDeadline from net/net.go:
 // func _f_conn_SetDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_conn_SetReadDeadline from net/net.go:
 // func _f_conn_SetReadDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_conn_SetWriteDeadline from net/net.go:
 // func _f_conn_SetWriteDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_conn_Write from net/net.go:
 func _f_conn_Write(o GoObject, args Object) Object {  // Method
 	_argList := CheckReceiverArity("(net.Conn)Write()", args, 1, 1)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2313,28 +2037,24 @@ func _f_conn_Write(o GoObject, args Object) Object {  // Method
 	return _res
 }
 
-GO FUNC net._f_error_Error from net/net.go:
 // func _f_error_Error(o GoObject, args Object) Object {  // Method
 // 	CheckReceiverArity("(net.Error)Error()", args, 0, 0)
 // 	return o.O.(net.Error).Error()
 // 	ABEND124(post.go: no public information returned)
 // }
 
-GO FUNC net._f_error_Temporary from net/net.go:
 func _f_error_Temporary(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Error)Temporary()", args, 0, 0)
 	_res := o.O.(net.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_error_Timeout from net/net.go:
 func _f_error_Timeout(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Error)Timeout()", args, 0, 0)
 	_res := o.O.(net.Error).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iPMask_Size from net/ip.go:
 func _f_iPMask_Size(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IPMask)Size()", args, 0, 0)
 	ones, bits := o.O.(net.IPMask).Size()
@@ -2344,21 +2064,18 @@ func _f_iPMask_Size(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_iPMask_String from net/ip.go:
 func _f_iPMask_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IPMask)String()", args, 0, 0)
 	_res := o.O.(net.IPMask).String()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_iP_DefaultMask from net/ip.go:
 func _f_iP_DefaultMask(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)DefaultMask()", args, 0, 0)
 	_res := o.O.(net.IP).DefaultMask()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_iP_Equal from net/ip.go:
 func _f_iP_Equal(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(net.IP)Equal()", args, 1, 1)
 	_v_x := SeqNth(_argList, 0).(GoObject).O.(net.IP)
@@ -2366,56 +2083,48 @@ func _f_iP_Equal(o GoObject, args Object) Object {  // Receiver
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsGlobalUnicast from net/ip.go:
 func _f_iP_IsGlobalUnicast(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsGlobalUnicast()", args, 0, 0)
 	_res := o.O.(net.IP).IsGlobalUnicast()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsInterfaceLocalMulticast from net/ip.go:
 func _f_iP_IsInterfaceLocalMulticast(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsInterfaceLocalMulticast()", args, 0, 0)
 	_res := o.O.(net.IP).IsInterfaceLocalMulticast()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsLinkLocalMulticast from net/ip.go:
 func _f_iP_IsLinkLocalMulticast(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsLinkLocalMulticast()", args, 0, 0)
 	_res := o.O.(net.IP).IsLinkLocalMulticast()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsLinkLocalUnicast from net/ip.go:
 func _f_iP_IsLinkLocalUnicast(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsLinkLocalUnicast()", args, 0, 0)
 	_res := o.O.(net.IP).IsLinkLocalUnicast()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsLoopback from net/ip.go:
 func _f_iP_IsLoopback(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsLoopback()", args, 0, 0)
 	_res := o.O.(net.IP).IsLoopback()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsMulticast from net/ip.go:
 func _f_iP_IsMulticast(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsMulticast()", args, 0, 0)
 	_res := o.O.(net.IP).IsMulticast()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_IsUnspecified from net/ip.go:
 func _f_iP_IsUnspecified(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)IsUnspecified()", args, 0, 0)
 	_res := o.O.(net.IP).IsUnspecified()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_iP_MarshalText from net/ip.go:
 func _f_iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)MarshalText()", args, 0, 0)
 	_res1, _res2 := o.O.(net.IP).MarshalText()
@@ -2425,7 +2134,6 @@ func _f_iP_MarshalText(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_iP_Mask from net/ip.go:
 func _f_iP_Mask(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(net.IP)Mask()", args, 1, 1)
 	_v_mask := SeqNth(_argList, 0).(GoObject).O.(net.IPMask)
@@ -2433,49 +2141,42 @@ func _f_iP_Mask(o GoObject, args Object) Object {  // Receiver
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_iP_String from net/ip.go:
 func _f_iP_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)String()", args, 0, 0)
 	_res := o.O.(net.IP).String()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_iP_To16 from net/ip.go:
 func _f_iP_To16(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)To16()", args, 0, 0)
 	_res := o.O.(net.IP).To16()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_iP_To4 from net/ip.go:
 func _f_iP_To4(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.IP)To4()", args, 0, 0)
 	_res := o.O.(net.IP).To4()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_invalidAddrError_Error from net/net.go:
 func _f_invalidAddrError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.InvalidAddrError)Error()", args, 0, 0)
 	_res := o.O.(net.InvalidAddrError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_invalidAddrError_Temporary from net/net.go:
 func _f_invalidAddrError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.InvalidAddrError)Temporary()", args, 0, 0)
 	_res := o.O.(net.InvalidAddrError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_invalidAddrError_Timeout from net/net.go:
 func _f_invalidAddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.InvalidAddrError)Timeout()", args, 0, 0)
 	_res := o.O.(net.InvalidAddrError).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_listener_Accept from net/net.go:
 func _f_listener_Accept(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Listener)Accept()", args, 0, 0)
 	_res1, _res2 := o.O.(net.Listener).Accept()
@@ -2485,35 +2186,30 @@ func _f_listener_Accept(o GoObject, args Object) Object {  // Method
 	return _res
 }
 
-GO FUNC net._f_listener_Addr from net/net.go:
 func _f_listener_Addr(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Listener)Addr()", args, 0, 0)
 	_res := o.O.(net.Listener).Addr()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_listener_Close from net/net.go:
 func _f_listener_Close(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.Listener)Close()", args, 0, 0)
 	_res := o.O.(net.Listener).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
-GO FUNC net._f_packetConn_Close from net/net.go:
 func _f_packetConn_Close(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.PacketConn)Close()", args, 0, 0)
 	_res := o.O.(net.PacketConn).Close()
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
-GO FUNC net._f_packetConn_LocalAddr from net/net.go:
 func _f_packetConn_LocalAddr(o GoObject, args Object) Object {  // Method
 	CheckReceiverArity("(net.PacketConn)LocalAddr()", args, 0, 0)
 	_res := o.O.(net.PacketConn).LocalAddr()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net._f_packetConn_ReadFrom from net/net.go:
 func _f_packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
 	_argList := CheckReceiverArity("(net.PacketConn)ReadFrom()", args, 1, 1)
 	_v_p := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2525,19 +2221,15 @@ func _f_packetConn_ReadFrom(o GoObject, args Object) Object {  // Method
 	return _res
 }
 
-GO FUNC net._f_packetConn_SetDeadline from net/net.go:
 // func _f_packetConn_SetDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_packetConn_SetReadDeadline from net/net.go:
 // func _f_packetConn_SetReadDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_packetConn_SetWriteDeadline from net/net.go:
 // func _f_packetConn_SetWriteDeadline(o GoObject, args Object) Object {  // Method
 // (t ABEND002(reference to unavailable package `time' looking for type `Time'))}
 
-GO FUNC net._f_packetConn_WriteTo from net/net.go:
 func _f_packetConn_WriteTo(o GoObject, args Object) Object {  // Method
 	_argList := CheckReceiverArity("(net.PacketConn)WriteTo()", args, 2, 2)
 	_v_p := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2549,28 +2241,24 @@ func _f_packetConn_WriteTo(o GoObject, args Object) Object {  // Method
 	return _res
 }
 
-GO FUNC net._f_ptrTo_AddrError_Error from net/net.go:
 func _f_ptrTo_AddrError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.AddrError)Error()", args, 0, 0)
 	_res := o.O.(*net.AddrError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_AddrError_Temporary from net/net.go:
 func _f_ptrTo_AddrError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.AddrError)Temporary()", args, 0, 0)
 	_res := o.O.(*net.AddrError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_AddrError_Timeout from net/net.go:
 func _f_ptrTo_AddrError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.AddrError)Timeout()", args, 0, 0)
 	_res := o.O.(*net.AddrError).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_Buffers_Read from net/net.go:
 func _f_ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.Buffers)Read()", args, 1, 1)
 	_v_p := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2581,67 +2269,57 @@ func _f_ptrTo_Buffers_Read(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_Buffers_WriteTo from net/net.go:
 // func _f_ptrTo_Buffers_WriteTo(o GoObject, args Object) Object {  // Receiver
 // (w ABEND002(reference to unavailable package `io' looking for type `Writer'))}
 
-GO FUNC net._f_ptrTo_DNSConfigError_Error from net/net.go:
 func _f_ptrTo_DNSConfigError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSConfigError)Error()", args, 0, 0)
 	_res := o.O.(*net.DNSConfigError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_DNSConfigError_Temporary from net/net.go:
 func _f_ptrTo_DNSConfigError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSConfigError)Temporary()", args, 0, 0)
 	_res := o.O.(*net.DNSConfigError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_DNSConfigError_Timeout from net/net.go:
 func _f_ptrTo_DNSConfigError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSConfigError)Timeout()", args, 0, 0)
 	_res := o.O.(*net.DNSConfigError).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_DNSError_Error from net/net.go:
 func _f_ptrTo_DNSError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSError)Error()", args, 0, 0)
 	_res := o.O.(*net.DNSError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_DNSError_Temporary from net/net.go:
 func _f_ptrTo_DNSError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSError)Temporary()", args, 0, 0)
 	_res := o.O.(*net.DNSError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_DNSError_Timeout from net/net.go:
 func _f_ptrTo_DNSError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.DNSError)Timeout()", args, 0, 0)
 	_res := o.O.(*net.DNSError).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_IPAddr_Network from net/iprawsock.go:
 func _f_ptrTo_IPAddr_Network(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.IPAddr)Network()", args, 0, 0)
 	_res := o.O.(*net.IPAddr).Network()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_IPAddr_String from net/iprawsock.go:
 func _f_ptrTo_IPAddr_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.IPAddr)String()", args, 0, 0)
 	_res := o.O.(*net.IPAddr).String()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_IPConn_ReadFrom from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)ReadFrom()", args, 1, 1)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2653,7 +2331,6 @@ func _f_ptrTo_IPConn_ReadFrom(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPConn_ReadFromIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)ReadFromIP()", args, 1, 1)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2665,7 +2342,6 @@ func _f_ptrTo_IPConn_ReadFromIP(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPConn_ReadMsgIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)ReadMsgIP()", args, 2, 2)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2680,11 +2356,9 @@ func _f_ptrTo_IPConn_ReadMsgIP(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPConn_SyscallConn from net/iprawsock.go:
 // func _f_ptrTo_IPConn_SyscallConn(o GoObject, args Object) Object {  // Receiver
 // (ABEND002(reference to unavailable package `syscall' looking for type `RawConn'), error)}
 
-GO FUNC net._f_ptrTo_IPConn_WriteMsgIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)WriteMsgIP()", args, 3, 3)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2698,7 +2372,6 @@ func _f_ptrTo_IPConn_WriteMsgIP(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPConn_WriteTo from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)WriteTo()", args, 2, 2)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2710,7 +2383,6 @@ func _f_ptrTo_IPConn_WriteTo(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPConn_WriteToIP from net/iprawsock.go:
 func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPConn)WriteToIP()", args, 2, 2)
 	_v_b := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2722,7 +2394,6 @@ func _f_ptrTo_IPConn_WriteToIP(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net._f_ptrTo_IPNet_Contains from net/ip.go:
 func _f_ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IPNet)Contains()", args, 1, 1)
 	_v_ip := SeqNth(_argList, 0).(GoObject).O.(net.IP)
@@ -2730,21 +2401,18 @@ func _f_ptrTo_IPNet_Contains(o GoObject, args Object) Object {  // Receiver
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_IPNet_Network from net/ip.go:
 func _f_ptrTo_IPNet_Network(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.IPNet)Network()", args, 0, 0)
 	_res := o.O.(*net.IPNet).Network()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_IPNet_String from net/ip.go:
 func _f_ptrTo_IPNet_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.IPNet)String()", args, 0, 0)
 	_res := o.O.(*net.IPNet).String()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_IP_UnmarshalText from net/ip.go:
 func _f_ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*net.IP)UnmarshalText()", args, 1, 1)
 	_v_text := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -2752,262 +2420,188 @@ func _f_ptrTo_IP_UnmarshalText(o GoObject, args Object) Object {  // Receiver
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
-GO FUNC net._f_ptrTo_OpError_Error from net/net.go:
 func _f_ptrTo_OpError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.OpError)Error()", args, 0, 0)
 	_res := o.O.(*net.OpError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_OpError_Temporary from net/net.go:
 func _f_ptrTo_OpError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.OpError)Temporary()", args, 0, 0)
 	_res := o.O.(*net.OpError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_OpError_Timeout from net/net.go:
 func _f_ptrTo_OpError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.OpError)Timeout()", args, 0, 0)
 	_res := o.O.(*net.OpError).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_ptrTo_ParseError_Error from net/net.go:
 func _f_ptrTo_ParseError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*net.ParseError)Error()", args, 0, 0)
 	_res := o.O.(*net.ParseError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_ptrTo_Resolver_LookupAddr from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupAddr(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), addr string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupCNAME from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupCNAME(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupHost from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupHost(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupIPAddr from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupIPAddr(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), host string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupMX from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupMX(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupNS from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupNS(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupPort from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupPort(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), network string, service string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupSRV from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupSRV(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), service string, proto string, name string)}
 
-GO FUNC net._f_ptrTo_Resolver_LookupTXT from net/lookup.go:
 // func _f_ptrTo_Resolver_LookupTXT(o GoObject, args Object) Object {  // Receiver
 // (ctx ABEND002(reference to unavailable package `context' looking for type `Context'), name string)}
 
-GO FUNC net._f_unknownNetworkError_Error from net/net.go:
 func _f_unknownNetworkError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.UnknownNetworkError)Error()", args, 0, 0)
 	_res := o.O.(net.UnknownNetworkError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net._f_unknownNetworkError_Temporary from net/net.go:
 func _f_unknownNetworkError_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.UnknownNetworkError)Temporary()", args, 0, 0)
 	_res := o.O.(net.UnknownNetworkError).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net._f_unknownNetworkError_Timeout from net/net.go:
 func _f_unknownNetworkError_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(net.UnknownNetworkError)Timeout()", args, 0, 0)
 	_res := o.O.(net.UnknownNetworkError).Timeout()
 	return MakeBoolean(_res)
 }
-
-GO VARDEF FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 var info_Addr GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 var info_AddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToAddrError from _tests/small/src/net/net.go:529:6:
 var info_PtrTo_AddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfAddrError from _tests/small/src/net/net.go:529:6:
 var info_ArrayOf_AddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
 var info_Buffers GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
 var info_PtrTo_Buffers GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfBuffers from _tests/small/src/net/net.go:651:6:
 var info_ArrayOf_Buffers GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 var info_Conn GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
 var info_DNSConfigError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToDNSConfigError from _tests/small/src/net/net.go:562:6:
 var info_PtrTo_DNSConfigError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfDNSConfigError from _tests/small/src/net/net.go:562:6:
 var info_ArrayOf_DNSConfigError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 var info_DNSError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToDNSError from _tests/small/src/net/net.go:576:6:
 var info_PtrTo_DNSError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfDNSError from _tests/small/src/net/net.go:576:6:
 var info_ArrayOf_DNSError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 var info_Error GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 var info_IP GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
 var info_PtrTo_IP GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
 var info_IPAddr GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 var info_PtrTo_IPAddr GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 var info_ArrayOf_IPAddr GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 var info_IPConn GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:99:6:
 var info_PtrTo_IPConn GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfIPConn from _tests/small/src/net/iprawsock.go:99:6:
 var info_ArrayOf_IPConn GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 var info_IPMask GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToIPMask from _tests/small/src/net/ip.go:35:6:
 var info_PtrTo_IPMask GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfIPMask from _tests/small/src/net/ip.go:35:6:
 var info_ArrayOf_IPMask GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
 var info_IPNet GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToIPNet from _tests/small/src/net/ip.go:38:6:
 var info_PtrTo_IPNet GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfIPNet from _tests/small/src/net/ip.go:38:6:
 var info_ArrayOf_IPNet GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfIP from _tests/small/src/net/ip.go:32:6:
 var info_ArrayOf_IP GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 var info_InvalidAddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToInvalidAddrError from _tests/small/src/net/net.go:554:6:
 var info_PtrTo_InvalidAddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfInvalidAddrError from _tests/small/src/net/net.go:554:6:
 var info_ArrayOf_InvalidAddrError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 var info_Listener GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 var info_MX GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToMX from _tests/small/src/net/dnsclient.go:193:6:
 var info_PtrTo_MX GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfMX from _tests/small/src/net/dnsclient.go:193:6:
 var info_ArrayOf_MX GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 var info_NS GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToNS from _tests/small/src/net/dnsclient.go:215:6:
 var info_PtrTo_NS GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfNS from _tests/small/src/net/dnsclient.go:215:6:
 var info_ArrayOf_NS GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
 var info_OpError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToOpError from _tests/small/src/net/net.go:425:6:
 var info_PtrTo_OpError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfOpError from _tests/small/src/net/net.go:425:6:
 var info_ArrayOf_OpError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 var info_PacketConn GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 var info_ParseError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToParseError from _tests/small/src/net/net.go:518:6:
 var info_PtrTo_ParseError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfParseError from _tests/small/src/net/net.go:518:6:
 var info_ArrayOf_ParseError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
 var info_Resolver GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToResolver from _tests/small/src/net/lookup.go:107:6:
 var info_PtrTo_Resolver GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfResolver from _tests/small/src/net/lookup.go:107:6:
 var info_ArrayOf_Resolver GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 var info_SRV GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToSRV from _tests/small/src/net/dnsclient.go:139:6:
 var info_PtrTo_SRV GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfSRV from _tests/small/src/net/dnsclient.go:139:6:
 var info_ArrayOf_SRV GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 var info_UnknownNetworkError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/refToUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 var info_PtrTo_UnknownNetworkError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net/arrayOfUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 var info_ArrayOf_UnknownNetworkError GoTypeInfo
 
 
 func initNative() {
-GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	info_Addr = GoTypeInfo{Name: "go.std.net/Addr",
 		GoType: &GoType{T: &info_Addr},
 		Members: GoMembers{
@@ -3017,7 +2611,6 @@ GO INFO FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 	info_AddrError = GoTypeInfo{Name: "go.std.net/AddrError",
 		GoType: &GoType{T: &info_AddrError},
 		Ctor: _Wrapped_Ctor_AddrError,
@@ -3026,7 +2619,6 @@ GO INFO FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToAddrError from _tests/small/src/net/net.go:529:6:
 	info_PtrTo_AddrError = GoTypeInfo{Name: "go.std.net/refToAddrError",
 		GoType: &GoType{T: &info_PtrTo_AddrError},
 		Members: GoMembers{
@@ -3037,7 +2629,6 @@ GO INFO FOR TYPE go.std.net/refToAddrError from _tests/small/src/net/net.go:529:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfAddrError from _tests/small/src/net/net.go:529:6:
 	info_ArrayOf_AddrError = GoTypeInfo{Name: "go.std.net/arrayOfAddrError",
 		GoType: &GoType{T: &info_ArrayOf_AddrError},
 		Members: GoMembers{
@@ -3045,7 +2636,6 @@ GO INFO FOR TYPE go.std.net/arrayOfAddrError from _tests/small/src/net/net.go:52
 	}
 
 
-GO INFO FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
 	info_Buffers = GoTypeInfo{Name: "go.std.net/Buffers",
 		GoType: &GoType{T: &info_Buffers},
 		Members: GoMembers{
@@ -3053,7 +2643,6 @@ GO INFO FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
 	info_PtrTo_Buffers = GoTypeInfo{Name: "go.std.net/refToBuffers",
 		GoType: &GoType{T: &info_PtrTo_Buffers},
 		Members: GoMembers{
@@ -3062,7 +2651,6 @@ GO INFO FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfBuffers from _tests/small/src/net/net.go:651:6:
 	info_ArrayOf_Buffers = GoTypeInfo{Name: "go.std.net/arrayOfBuffers",
 		GoType: &GoType{T: &info_ArrayOf_Buffers},
 		Members: GoMembers{
@@ -3070,7 +2658,6 @@ GO INFO FOR TYPE go.std.net/arrayOfBuffers from _tests/small/src/net/net.go:651:
 	}
 
 
-GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	info_Conn = GoTypeInfo{Name: "go.std.net/Conn",
 		GoType: &GoType{T: &info_Conn},
 		Members: GoMembers{
@@ -3083,7 +2670,6 @@ GO INFO FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
 	info_DNSConfigError = GoTypeInfo{Name: "go.std.net/DNSConfigError",
 		GoType: &GoType{T: &info_DNSConfigError},
 		Ctor: _Wrapped_Ctor_DNSConfigError,
@@ -3092,7 +2678,6 @@ GO INFO FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToDNSConfigError from _tests/small/src/net/net.go:562:6:
 	info_PtrTo_DNSConfigError = GoTypeInfo{Name: "go.std.net/refToDNSConfigError",
 		GoType: &GoType{T: &info_PtrTo_DNSConfigError},
 		Members: GoMembers{
@@ -3103,7 +2688,6 @@ GO INFO FOR TYPE go.std.net/refToDNSConfigError from _tests/small/src/net/net.go
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfDNSConfigError from _tests/small/src/net/net.go:562:6:
 	info_ArrayOf_DNSConfigError = GoTypeInfo{Name: "go.std.net/arrayOfDNSConfigError",
 		GoType: &GoType{T: &info_ArrayOf_DNSConfigError},
 		Members: GoMembers{
@@ -3111,7 +2695,6 @@ GO INFO FOR TYPE go.std.net/arrayOfDNSConfigError from _tests/small/src/net/net.
 	}
 
 
-GO INFO FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 	info_DNSError = GoTypeInfo{Name: "go.std.net/DNSError",
 		GoType: &GoType{T: &info_DNSError},
 		Ctor: _Wrapped_Ctor_DNSError,
@@ -3120,7 +2703,6 @@ GO INFO FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToDNSError from _tests/small/src/net/net.go:576:6:
 	info_PtrTo_DNSError = GoTypeInfo{Name: "go.std.net/refToDNSError",
 		GoType: &GoType{T: &info_PtrTo_DNSError},
 		Members: GoMembers{
@@ -3131,7 +2713,6 @@ GO INFO FOR TYPE go.std.net/refToDNSError from _tests/small/src/net/net.go:576:6
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfDNSError from _tests/small/src/net/net.go:576:6:
 	info_ArrayOf_DNSError = GoTypeInfo{Name: "go.std.net/arrayOfDNSError",
 		GoType: &GoType{T: &info_ArrayOf_DNSError},
 		Members: GoMembers{
@@ -3139,7 +2720,6 @@ GO INFO FOR TYPE go.std.net/arrayOfDNSError from _tests/small/src/net/net.go:576
 	}
 
 
-GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	info_Error = GoTypeInfo{Name: "go.std.net/Error",
 		GoType: &GoType{T: &info_Error},
 		Members: GoMembers{
@@ -3149,7 +2729,6 @@ GO INFO FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	info_IP = GoTypeInfo{Name: "go.std.net/IP",
 		GoType: &GoType{T: &info_IP},
 		Members: GoMembers{
@@ -3171,7 +2750,6 @@ GO INFO FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
 	info_PtrTo_IP = GoTypeInfo{Name: "go.std.net/refToIP",
 		GoType: &GoType{T: &info_PtrTo_IP},
 		Members: GoMembers{
@@ -3180,7 +2758,6 @@ GO INFO FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	info_IPAddr = GoTypeInfo{Name: "go.std.net/IPAddr",
 		GoType: &GoType{T: &info_IPAddr},
 		Members: GoMembers{
@@ -3188,7 +2765,6 @@ GO INFO FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	info_PtrTo_IPAddr = GoTypeInfo{Name: "go.std.net/refToIPAddr",
 		GoType: &GoType{T: &info_PtrTo_IPAddr},
 		Members: GoMembers{
@@ -3198,7 +2774,6 @@ GO INFO FOR TYPE go.std.net/refToIPAddr from _tests/small/src/net/iprawsock.go:3
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	info_ArrayOf_IPAddr = GoTypeInfo{Name: "go.std.net/arrayOfIPAddr",
 		GoType: &GoType{T: &info_ArrayOf_IPAddr},
 		Members: GoMembers{
@@ -3206,7 +2781,6 @@ GO INFO FOR TYPE go.std.net/arrayOfIPAddr from _tests/small/src/net/iprawsock.go
 	}
 
 
-GO INFO FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 	info_IPConn = GoTypeInfo{Name: "go.std.net/IPConn",
 		GoType: &GoType{T: &info_IPConn},
 		Ctor: _Wrapped_Ctor_IPConn,
@@ -3215,7 +2789,6 @@ GO INFO FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:99:6:
 	info_PtrTo_IPConn = GoTypeInfo{Name: "go.std.net/refToIPConn",
 		GoType: &GoType{T: &info_PtrTo_IPConn},
 		Members: GoMembers{
@@ -3229,7 +2802,6 @@ GO INFO FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:9
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfIPConn from _tests/small/src/net/iprawsock.go:99:6:
 	info_ArrayOf_IPConn = GoTypeInfo{Name: "go.std.net/arrayOfIPConn",
 		GoType: &GoType{T: &info_ArrayOf_IPConn},
 		Members: GoMembers{
@@ -3237,7 +2809,6 @@ GO INFO FOR TYPE go.std.net/arrayOfIPConn from _tests/small/src/net/iprawsock.go
 	}
 
 
-GO INFO FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	info_IPMask = GoTypeInfo{Name: "go.std.net/IPMask",
 		GoType: &GoType{T: &info_IPMask},
 		Members: GoMembers{
@@ -3247,7 +2818,6 @@ GO INFO FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToIPMask from _tests/small/src/net/ip.go:35:6:
 	info_PtrTo_IPMask = GoTypeInfo{Name: "go.std.net/refToIPMask",
 		GoType: &GoType{T: &info_PtrTo_IPMask},
 		Members: GoMembers{
@@ -3255,7 +2825,6 @@ GO INFO FOR TYPE go.std.net/refToIPMask from _tests/small/src/net/ip.go:35:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfIPMask from _tests/small/src/net/ip.go:35:6:
 	info_ArrayOf_IPMask = GoTypeInfo{Name: "go.std.net/arrayOfIPMask",
 		GoType: &GoType{T: &info_ArrayOf_IPMask},
 		Members: GoMembers{
@@ -3263,7 +2832,6 @@ GO INFO FOR TYPE go.std.net/arrayOfIPMask from _tests/small/src/net/ip.go:35:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
 	info_IPNet = GoTypeInfo{Name: "go.std.net/IPNet",
 		GoType: &GoType{T: &info_IPNet},
 		Members: GoMembers{
@@ -3271,7 +2839,6 @@ GO INFO FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToIPNet from _tests/small/src/net/ip.go:38:6:
 	info_PtrTo_IPNet = GoTypeInfo{Name: "go.std.net/refToIPNet",
 		GoType: &GoType{T: &info_PtrTo_IPNet},
 		Members: GoMembers{
@@ -3282,7 +2849,6 @@ GO INFO FOR TYPE go.std.net/refToIPNet from _tests/small/src/net/ip.go:38:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfIPNet from _tests/small/src/net/ip.go:38:6:
 	info_ArrayOf_IPNet = GoTypeInfo{Name: "go.std.net/arrayOfIPNet",
 		GoType: &GoType{T: &info_ArrayOf_IPNet},
 		Members: GoMembers{
@@ -3290,7 +2856,6 @@ GO INFO FOR TYPE go.std.net/arrayOfIPNet from _tests/small/src/net/ip.go:38:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfIP from _tests/small/src/net/ip.go:32:6:
 	info_ArrayOf_IP = GoTypeInfo{Name: "go.std.net/arrayOfIP",
 		GoType: &GoType{T: &info_ArrayOf_IP},
 		Members: GoMembers{
@@ -3298,7 +2863,6 @@ GO INFO FOR TYPE go.std.net/arrayOfIP from _tests/small/src/net/ip.go:32:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	info_InvalidAddrError = GoTypeInfo{Name: "go.std.net/InvalidAddrError",
 		GoType: &GoType{T: &info_InvalidAddrError},
 		Ctor: _Wrapped_Ctor_InvalidAddrError,
@@ -3310,7 +2874,6 @@ GO INFO FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:55
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToInvalidAddrError from _tests/small/src/net/net.go:554:6:
 	info_PtrTo_InvalidAddrError = GoTypeInfo{Name: "go.std.net/refToInvalidAddrError",
 		GoType: &GoType{T: &info_PtrTo_InvalidAddrError},
 		Members: GoMembers{
@@ -3318,7 +2881,6 @@ GO INFO FOR TYPE go.std.net/refToInvalidAddrError from _tests/small/src/net/net.
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfInvalidAddrError from _tests/small/src/net/net.go:554:6:
 	info_ArrayOf_InvalidAddrError = GoTypeInfo{Name: "go.std.net/arrayOfInvalidAddrError",
 		GoType: &GoType{T: &info_ArrayOf_InvalidAddrError},
 		Members: GoMembers{
@@ -3326,7 +2888,6 @@ GO INFO FOR TYPE go.std.net/arrayOfInvalidAddrError from _tests/small/src/net/ne
 	}
 
 
-GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	info_Listener = GoTypeInfo{Name: "go.std.net/Listener",
 		GoType: &GoType{T: &info_Listener},
 		Members: GoMembers{
@@ -3337,7 +2898,6 @@ GO INFO FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 	info_MX = GoTypeInfo{Name: "go.std.net/MX",
 		GoType: &GoType{T: &info_MX},
 		Ctor: _Wrapped_Ctor_MX,
@@ -3346,7 +2906,6 @@ GO INFO FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToMX from _tests/small/src/net/dnsclient.go:193:6:
 	info_PtrTo_MX = GoTypeInfo{Name: "go.std.net/refToMX",
 		GoType: &GoType{T: &info_PtrTo_MX},
 		Members: GoMembers{
@@ -3354,7 +2913,6 @@ GO INFO FOR TYPE go.std.net/refToMX from _tests/small/src/net/dnsclient.go:193:6
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfMX from _tests/small/src/net/dnsclient.go:193:6:
 	info_ArrayOf_MX = GoTypeInfo{Name: "go.std.net/arrayOfMX",
 		GoType: &GoType{T: &info_ArrayOf_MX},
 		Members: GoMembers{
@@ -3362,7 +2920,6 @@ GO INFO FOR TYPE go.std.net/arrayOfMX from _tests/small/src/net/dnsclient.go:193
 	}
 
 
-GO INFO FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 	info_NS = GoTypeInfo{Name: "go.std.net/NS",
 		GoType: &GoType{T: &info_NS},
 		Ctor: _Wrapped_Ctor_NS,
@@ -3371,7 +2928,6 @@ GO INFO FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToNS from _tests/small/src/net/dnsclient.go:215:6:
 	info_PtrTo_NS = GoTypeInfo{Name: "go.std.net/refToNS",
 		GoType: &GoType{T: &info_PtrTo_NS},
 		Members: GoMembers{
@@ -3379,7 +2935,6 @@ GO INFO FOR TYPE go.std.net/refToNS from _tests/small/src/net/dnsclient.go:215:6
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfNS from _tests/small/src/net/dnsclient.go:215:6:
 	info_ArrayOf_NS = GoTypeInfo{Name: "go.std.net/arrayOfNS",
 		GoType: &GoType{T: &info_ArrayOf_NS},
 		Members: GoMembers{
@@ -3387,7 +2942,6 @@ GO INFO FOR TYPE go.std.net/arrayOfNS from _tests/small/src/net/dnsclient.go:215
 	}
 
 
-GO INFO FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
 	info_OpError = GoTypeInfo{Name: "go.std.net/OpError",
 		GoType: &GoType{T: &info_OpError},
 		Members: GoMembers{
@@ -3395,7 +2949,6 @@ GO INFO FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToOpError from _tests/small/src/net/net.go:425:6:
 	info_PtrTo_OpError = GoTypeInfo{Name: "go.std.net/refToOpError",
 		GoType: &GoType{T: &info_PtrTo_OpError},
 		Members: GoMembers{
@@ -3406,7 +2959,6 @@ GO INFO FOR TYPE go.std.net/refToOpError from _tests/small/src/net/net.go:425:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfOpError from _tests/small/src/net/net.go:425:6:
 	info_ArrayOf_OpError = GoTypeInfo{Name: "go.std.net/arrayOfOpError",
 		GoType: &GoType{T: &info_ArrayOf_OpError},
 		Members: GoMembers{
@@ -3414,7 +2966,6 @@ GO INFO FOR TYPE go.std.net/arrayOfOpError from _tests/small/src/net/net.go:425:
 	}
 
 
-GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	info_PacketConn = GoTypeInfo{Name: "go.std.net/PacketConn",
 		GoType: &GoType{T: &info_PacketConn},
 		Members: GoMembers{
@@ -3426,7 +2977,6 @@ GO INFO FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 	info_ParseError = GoTypeInfo{Name: "go.std.net/ParseError",
 		GoType: &GoType{T: &info_ParseError},
 		Ctor: _Wrapped_Ctor_ParseError,
@@ -3435,7 +2985,6 @@ GO INFO FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToParseError from _tests/small/src/net/net.go:518:6:
 	info_PtrTo_ParseError = GoTypeInfo{Name: "go.std.net/refToParseError",
 		GoType: &GoType{T: &info_PtrTo_ParseError},
 		Members: GoMembers{
@@ -3444,7 +2993,6 @@ GO INFO FOR TYPE go.std.net/refToParseError from _tests/small/src/net/net.go:518
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfParseError from _tests/small/src/net/net.go:518:6:
 	info_ArrayOf_ParseError = GoTypeInfo{Name: "go.std.net/arrayOfParseError",
 		GoType: &GoType{T: &info_ArrayOf_ParseError},
 		Members: GoMembers{
@@ -3452,7 +3000,6 @@ GO INFO FOR TYPE go.std.net/arrayOfParseError from _tests/small/src/net/net.go:5
 	}
 
 
-GO INFO FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
 	info_Resolver = GoTypeInfo{Name: "go.std.net/Resolver",
 		GoType: &GoType{T: &info_Resolver},
 		Members: GoMembers{
@@ -3460,7 +3007,6 @@ GO INFO FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToResolver from _tests/small/src/net/lookup.go:107:6:
 	info_PtrTo_Resolver = GoTypeInfo{Name: "go.std.net/refToResolver",
 		GoType: &GoType{T: &info_PtrTo_Resolver},
 		Members: GoMembers{
@@ -3468,7 +3014,6 @@ GO INFO FOR TYPE go.std.net/refToResolver from _tests/small/src/net/lookup.go:10
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfResolver from _tests/small/src/net/lookup.go:107:6:
 	info_ArrayOf_Resolver = GoTypeInfo{Name: "go.std.net/arrayOfResolver",
 		GoType: &GoType{T: &info_ArrayOf_Resolver},
 		Members: GoMembers{
@@ -3476,7 +3021,6 @@ GO INFO FOR TYPE go.std.net/arrayOfResolver from _tests/small/src/net/lookup.go:
 	}
 
 
-GO INFO FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 	info_SRV = GoTypeInfo{Name: "go.std.net/SRV",
 		GoType: &GoType{T: &info_SRV},
 		Ctor: _Wrapped_Ctor_SRV,
@@ -3485,7 +3029,6 @@ GO INFO FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToSRV from _tests/small/src/net/dnsclient.go:139:6:
 	info_PtrTo_SRV = GoTypeInfo{Name: "go.std.net/refToSRV",
 		GoType: &GoType{T: &info_PtrTo_SRV},
 		Members: GoMembers{
@@ -3493,7 +3036,6 @@ GO INFO FOR TYPE go.std.net/refToSRV from _tests/small/src/net/dnsclient.go:139:
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfSRV from _tests/small/src/net/dnsclient.go:139:6:
 	info_ArrayOf_SRV = GoTypeInfo{Name: "go.std.net/arrayOfSRV",
 		GoType: &GoType{T: &info_ArrayOf_SRV},
 		Members: GoMembers{
@@ -3501,7 +3043,6 @@ GO INFO FOR TYPE go.std.net/arrayOfSRV from _tests/small/src/net/dnsclient.go:13
 	}
 
 
-GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	info_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/UnknownNetworkError",
 		GoType: &GoType{T: &info_UnknownNetworkError},
 		Ctor: _Wrapped_Ctor_UnknownNetworkError,
@@ -3513,7 +3054,6 @@ GO INFO FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go
 	}
 
 
-GO INFO FOR TYPE go.std.net/refToUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	info_PtrTo_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/refToUnknownNetworkError",
 		GoType: &GoType{T: &info_PtrTo_UnknownNetworkError},
 		Members: GoMembers{
@@ -3521,7 +3061,6 @@ GO INFO FOR TYPE go.std.net/refToUnknownNetworkError from _tests/small/src/net/n
 	}
 
 
-GO INFO FOR TYPE go.std.net/arrayOfUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	info_ArrayOf_UnknownNetworkError = GoTypeInfo{Name: "go.std.net/arrayOfUnknownNetworkError",
 		GoType: &GoType{T: &info_ArrayOf_UnknownNetworkError},
 		Members: GoMembers{
@@ -3529,175 +3068,118 @@ GO INFO FOR TYPE go.std.net/arrayOfUnknownNetworkError from _tests/small/src/net
 	}
 
 
-GO VECSET FOR TYPE go.std.net/Addr from _tests/small/src/net/net.go:105:6:
 	GoTypesVec[78] = &info_Addr
 
-GO VECSET FOR TYPE go.std.net/AddrError from _tests/small/src/net/net.go:529:6:
 	GoTypesVec[51] = &info_AddrError
 
-GO VECSET FOR TYPE go.std.net/refToAddrError from _tests/small/src/net/net.go:529:6:
 	GoTypesVec[0] = &info_PtrTo_AddrError
 
-GO VECSET FOR TYPE go.std.net/arrayOfAddrError from _tests/small/src/net/net.go:529:6:
 	GoTypesVec[27] = &info_ArrayOf_AddrError
 
-GO VECSET FOR TYPE go.std.net/Buffers from _tests/small/src/net/net.go:651:6:
 	GoTypesVec[52] = &info_Buffers
 
-GO VECSET FOR TYPE go.std.net/refToBuffers from _tests/small/src/net/net.go:651:6:
 	GoTypesVec[1] = &info_PtrTo_Buffers
 
-GO VECSET FOR TYPE go.std.net/arrayOfBuffers from _tests/small/src/net/net.go:651:6:
 	GoTypesVec[28] = &info_ArrayOf_Buffers
 
-GO VECSET FOR TYPE go.std.net/Conn from _tests/small/src/net/net.go:113:6:
 	GoTypesVec[74] = &info_Conn
 
-GO VECSET FOR TYPE go.std.net/DNSConfigError from _tests/small/src/net/net.go:562:6:
 	GoTypesVec[53] = &info_DNSConfigError
 
-GO VECSET FOR TYPE go.std.net/refToDNSConfigError from _tests/small/src/net/net.go:562:6:
 	GoTypesVec[2] = &info_PtrTo_DNSConfigError
 
-GO VECSET FOR TYPE go.std.net/arrayOfDNSConfigError from _tests/small/src/net/net.go:562:6:
 	GoTypesVec[29] = &info_ArrayOf_DNSConfigError
 
-GO VECSET FOR TYPE go.std.net/DNSError from _tests/small/src/net/net.go:576:6:
 	GoTypesVec[54] = &info_DNSError
 
-GO VECSET FOR TYPE go.std.net/refToDNSError from _tests/small/src/net/net.go:576:6:
 	GoTypesVec[3] = &info_PtrTo_DNSError
 
-GO VECSET FOR TYPE go.std.net/arrayOfDNSError from _tests/small/src/net/net.go:576:6:
 	GoTypesVec[30] = &info_ArrayOf_DNSError
 
-GO VECSET FOR TYPE go.std.net/Error from _tests/small/src/net/net.go:387:6:
 	GoTypesVec[76] = &info_Error
 
-GO VECSET FOR TYPE go.std.net/IP from _tests/small/src/net/ip.go:32:6:
 	GoTypesVec[55] = &info_IP
 
-GO VECSET FOR TYPE go.std.net/refToIP from _tests/small/src/net/ip.go:32:6:
 	GoTypesVec[4] = &info_PtrTo_IP
 
-GO VECSET FOR TYPE go.std.net/IPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	GoTypesVec[56] = &info_IPAddr
 
-GO VECSET FOR TYPE go.std.net/refToIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	GoTypesVec[5] = &info_PtrTo_IPAddr
 
-GO VECSET FOR TYPE go.std.net/arrayOfIPAddr from _tests/small/src/net/iprawsock.go:31:6:
 	GoTypesVec[32] = &info_ArrayOf_IPAddr
 
-GO VECSET FOR TYPE go.std.net/IPConn from _tests/small/src/net/iprawsock.go:99:6:
 	GoTypesVec[57] = &info_IPConn
 
-GO VECSET FOR TYPE go.std.net/refToIPConn from _tests/small/src/net/iprawsock.go:99:6:
 	GoTypesVec[6] = &info_PtrTo_IPConn
 
-GO VECSET FOR TYPE go.std.net/arrayOfIPConn from _tests/small/src/net/iprawsock.go:99:6:
 	GoTypesVec[33] = &info_ArrayOf_IPConn
 
-GO VECSET FOR TYPE go.std.net/IPMask from _tests/small/src/net/ip.go:35:6:
 	GoTypesVec[58] = &info_IPMask
 
-GO VECSET FOR TYPE go.std.net/refToIPMask from _tests/small/src/net/ip.go:35:6:
 	GoTypesVec[7] = &info_PtrTo_IPMask
 
-GO VECSET FOR TYPE go.std.net/arrayOfIPMask from _tests/small/src/net/ip.go:35:6:
 	GoTypesVec[34] = &info_ArrayOf_IPMask
 
-GO VECSET FOR TYPE go.std.net/IPNet from _tests/small/src/net/ip.go:38:6:
 	GoTypesVec[59] = &info_IPNet
 
-GO VECSET FOR TYPE go.std.net/refToIPNet from _tests/small/src/net/ip.go:38:6:
 	GoTypesVec[8] = &info_PtrTo_IPNet
 
-GO VECSET FOR TYPE go.std.net/arrayOfIPNet from _tests/small/src/net/ip.go:38:6:
 	GoTypesVec[35] = &info_ArrayOf_IPNet
 
-GO VECSET FOR TYPE go.std.net/arrayOfIP from _tests/small/src/net/ip.go:32:6:
 	GoTypesVec[31] = &info_ArrayOf_IP
 
-GO VECSET FOR TYPE go.std.net/InvalidAddrError from _tests/small/src/net/net.go:554:6:
 	GoTypesVec[60] = &info_InvalidAddrError
 
-GO VECSET FOR TYPE go.std.net/refToInvalidAddrError from _tests/small/src/net/net.go:554:6:
 	GoTypesVec[9] = &info_PtrTo_InvalidAddrError
 
-GO VECSET FOR TYPE go.std.net/arrayOfInvalidAddrError from _tests/small/src/net/net.go:554:6:
 	GoTypesVec[36] = &info_ArrayOf_InvalidAddrError
 
-GO VECSET FOR TYPE go.std.net/Listener from _tests/small/src/net/net.go:374:6:
 	GoTypesVec[77] = &info_Listener
 
-GO VECSET FOR TYPE go.std.net/MX from _tests/small/src/net/dnsclient.go:193:6:
 	GoTypesVec[61] = &info_MX
 
-GO VECSET FOR TYPE go.std.net/refToMX from _tests/small/src/net/dnsclient.go:193:6:
 	GoTypesVec[10] = &info_PtrTo_MX
 
-GO VECSET FOR TYPE go.std.net/arrayOfMX from _tests/small/src/net/dnsclient.go:193:6:
 	GoTypesVec[37] = &info_ArrayOf_MX
 
-GO VECSET FOR TYPE go.std.net/NS from _tests/small/src/net/dnsclient.go:215:6:
 	GoTypesVec[62] = &info_NS
 
-GO VECSET FOR TYPE go.std.net/refToNS from _tests/small/src/net/dnsclient.go:215:6:
 	GoTypesVec[11] = &info_PtrTo_NS
 
-GO VECSET FOR TYPE go.std.net/arrayOfNS from _tests/small/src/net/dnsclient.go:215:6:
 	GoTypesVec[38] = &info_ArrayOf_NS
 
-GO VECSET FOR TYPE go.std.net/OpError from _tests/small/src/net/net.go:425:6:
 	GoTypesVec[63] = &info_OpError
 
-GO VECSET FOR TYPE go.std.net/refToOpError from _tests/small/src/net/net.go:425:6:
 	GoTypesVec[12] = &info_PtrTo_OpError
 
-GO VECSET FOR TYPE go.std.net/arrayOfOpError from _tests/small/src/net/net.go:425:6:
 	GoTypesVec[39] = &info_ArrayOf_OpError
 
-GO VECSET FOR TYPE go.std.net/PacketConn from _tests/small/src/net/net.go:303:6:
 	GoTypesVec[75] = &info_PacketConn
 
-GO VECSET FOR TYPE go.std.net/ParseError from _tests/small/src/net/net.go:518:6:
 	GoTypesVec[64] = &info_ParseError
 
-GO VECSET FOR TYPE go.std.net/refToParseError from _tests/small/src/net/net.go:518:6:
 	GoTypesVec[13] = &info_PtrTo_ParseError
 
-GO VECSET FOR TYPE go.std.net/arrayOfParseError from _tests/small/src/net/net.go:518:6:
 	GoTypesVec[40] = &info_ArrayOf_ParseError
 
-GO VECSET FOR TYPE go.std.net/Resolver from _tests/small/src/net/lookup.go:107:6:
 	GoTypesVec[65] = &info_Resolver
 
-GO VECSET FOR TYPE go.std.net/refToResolver from _tests/small/src/net/lookup.go:107:6:
 	GoTypesVec[14] = &info_PtrTo_Resolver
 
-GO VECSET FOR TYPE go.std.net/arrayOfResolver from _tests/small/src/net/lookup.go:107:6:
 	GoTypesVec[41] = &info_ArrayOf_Resolver
 
-GO VECSET FOR TYPE go.std.net/SRV from _tests/small/src/net/dnsclient.go:139:6:
 	GoTypesVec[66] = &info_SRV
 
-GO VECSET FOR TYPE go.std.net/refToSRV from _tests/small/src/net/dnsclient.go:139:6:
 	GoTypesVec[15] = &info_PtrTo_SRV
 
-GO VECSET FOR TYPE go.std.net/arrayOfSRV from _tests/small/src/net/dnsclient.go:139:6:
 	GoTypesVec[42] = &info_ArrayOf_SRV
 
-GO VECSET FOR TYPE go.std.net/UnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	GoTypesVec[67] = &info_UnknownNetworkError
 
-GO VECSET FOR TYPE go.std.net/refToUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	GoTypesVec[16] = &info_PtrTo_UnknownNetworkError
 
-GO VECSET FOR TYPE go.std.net/arrayOfUnknownNetworkError from _tests/small/src/net/net.go:548:6:
 	GoTypesVec[43] = &info_ArrayOf_UnknownNetworkError
 
-GO ENSURE-LOADED FOR net:
 	EnsureLoaded("go.std.context")  // E.g. from: _tests/small/src/net/iprawsock.go:8:2
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/small/src/net/net.go:83:2
 	EnsureLoaded("go.std.golang_org.x.net.dns.dnsmessage")  // E.g. from: _tests/small/src/net/dnsclient.go:11:2
@@ -3719,7 +3201,7 @@ import (
 	. "github.com/candid82/joker/core"
 	"net/url"
 )
-GO TYPE []net/url.Error from net/url/url.go:
+
 func Extract_ns_arrayOfError(args []Object, index int) []url.Error {
 	a := args[index]
 	switch o := a.(type) {
@@ -3732,7 +3214,6 @@ func Extract_ns_arrayOfError(args []Object, index int) []url.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.Error]"))
 }
 
-GO TYPE []net/url.EscapeError from net/url/url.go:
 func Extract_ns_arrayOfEscapeError(args []Object, index int) []url.EscapeError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3745,7 +3226,6 @@ func Extract_ns_arrayOfEscapeError(args []Object, index int) []url.EscapeError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.EscapeError]"))
 }
 
-GO TYPE []net/url.InvalidHostError from net/url/url.go:
 func Extract_ns_arrayOfInvalidHostError(args []Object, index int) []url.InvalidHostError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3758,7 +3238,6 @@ func Extract_ns_arrayOfInvalidHostError(args []Object, index int) []url.InvalidH
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.InvalidHostError]"))
 }
 
-GO TYPE []net/url.URL from net/url/url.go:
 func Extract_ns_arrayOfURL(args []Object, index int) []url.URL {
 	a := args[index]
 	switch o := a.(type) {
@@ -3771,7 +3250,6 @@ func Extract_ns_arrayOfURL(args []Object, index int) []url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.URL]"))
 }
 
-GO TYPE []net/url.Userinfo from net/url/url.go:
 func Extract_ns_arrayOfUserinfo(args []Object, index int) []url.Userinfo {
 	a := args[index]
 	switch o := a.(type) {
@@ -3784,7 +3262,6 @@ func Extract_ns_arrayOfUserinfo(args []Object, index int) []url.Userinfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.Userinfo]"))
 }
 
-GO TYPE []net/url.Values from net/url/url.go:
 func Extract_ns_arrayOfValues(args []Object, index int) []url.Values {
 	a := args[index]
 	switch o := a.(type) {
@@ -3797,7 +3274,6 @@ func Extract_ns_arrayOfValues(args []Object, index int) []url.Values {
 	panic(RT.NewArgTypeError(index, a, "GoObject[[]net/url.Values]"))
 }
 
-GO TYPE net/url.Error from net/url/url.go:
 func Extract_ns_Error(args []Object, index int) *url.Error {
 	a := args[index]
 	switch o := a.(type) {
@@ -3832,7 +3308,6 @@ func _Wrapped_Ctor_Error(_o Object) Object {
 	return MakeGoObject(_Ctor_Error(_o))
 }
 
-GO TYPE *net/url.Error from net/url/url.go:
 func Extract_ns_refToError(args []Object, index int) *url.Error {
 	a := args[index]
 	switch o := a.(type) {
@@ -3845,7 +3320,6 @@ func Extract_ns_refToError(args []Object, index int) *url.Error {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.Error]"))
 }
 
-GO TYPE net/url.EscapeError from net/url/url.go:
 func Extract_ns_EscapeError(args []Object, index int) *url.EscapeError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3875,7 +3349,6 @@ func _Wrapped_Ctor_EscapeError(_o Object) Object {
 	return MakeGoObject(_Ctor_EscapeError(_o))
 }
 
-GO TYPE *net/url.EscapeError from net/url/url.go:
 func Extract_ns_refToEscapeError(args []Object, index int) *url.EscapeError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3888,7 +3361,6 @@ func Extract_ns_refToEscapeError(args []Object, index int) *url.EscapeError {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.EscapeError]"))
 }
 
-GO TYPE net/url.InvalidHostError from net/url/url.go:
 func Extract_ns_InvalidHostError(args []Object, index int) *url.InvalidHostError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3918,7 +3390,6 @@ func _Wrapped_Ctor_InvalidHostError(_o Object) Object {
 	return MakeGoObject(_Ctor_InvalidHostError(_o))
 }
 
-GO TYPE *net/url.InvalidHostError from net/url/url.go:
 func Extract_ns_refToInvalidHostError(args []Object, index int) *url.InvalidHostError {
 	a := args[index]
 	switch o := a.(type) {
@@ -3931,7 +3402,6 @@ func Extract_ns_refToInvalidHostError(args []Object, index int) *url.InvalidHost
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.InvalidHostError]"))
 }
 
-GO TYPE net/url.URL from net/url/url.go:
 func Extract_ns_URL(args []Object, index int) *url.URL {
 	a := args[index]
 	switch o := a.(type) {
@@ -3972,7 +3442,6 @@ func Extract_ns_URL(args []Object, index int) *url.URL {
 // 	return MakeGoObject(_Ctor_URL(_o))
 // }
 
-GO TYPE *net/url.URL from net/url/url.go:
 func Extract_ns_refToURL(args []Object, index int) *url.URL {
 	a := args[index]
 	switch o := a.(type) {
@@ -3985,7 +3454,6 @@ func Extract_ns_refToURL(args []Object, index int) *url.URL {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.URL]"))
 }
 
-GO TYPE net/url.Userinfo from net/url/url.go:
 func Extract_ns_Userinfo(args []Object, index int) *url.Userinfo {
 	a := args[index]
 	switch o := a.(type) {
@@ -4016,7 +3484,6 @@ func _Wrapped_Ctor_Userinfo(_o Object) Object {
 	return MakeGoObject(_Ctor_Userinfo(_o))
 }
 
-GO TYPE *net/url.Userinfo from net/url/url.go:
 func Extract_ns_refToUserinfo(args []Object, index int) *url.Userinfo {
 	a := args[index]
 	switch o := a.(type) {
@@ -4029,7 +3496,6 @@ func Extract_ns_refToUserinfo(args []Object, index int) *url.Userinfo {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.Userinfo]"))
 }
 
-GO TYPE net/url.Values from net/url/url.go:
 func Extract_ns_Values(args []Object, index int) *url.Values {
 	a := args[index]
 	switch o := a.(type) {
@@ -4056,7 +3522,6 @@ func Extract_ns_Values(args []Object, index int) *url.Values {
 // 	return MakeGoObject(_Ctor_Values(_o))
 // }
 
-GO TYPE *net/url.Values from net/url/url.go:
 func Extract_ns_refToValues(args []Object, index int) *url.Values {
 	a := args[index]
 	switch o := a.(type) {
@@ -4069,7 +3534,6 @@ func Extract_ns_refToValues(args []Object, index int) *url.Values {
 	panic(RT.NewArgTypeError(index, a, "GoObject[*net/url.Values]"))
 }
 
-GO FUNC net/url.Parse from net/url/url.go:
 func _f_parse(_v_rawurl string) Object {
 	_res1, _res2 := url.Parse(_v_rawurl)
 	_res := EmptyVector()
@@ -4078,7 +3542,6 @@ func _f_parse(_v_rawurl string) Object {
 	return _res
 }
 
-GO FUNC net/url.ParseQuery from net/url/url.go:
 func _f_parseQuery(_v_query string) Object {
 	_res1, _res2 := url.ParseQuery(_v_query)
 	_res := EmptyVector()
@@ -4087,7 +3550,6 @@ func _f_parseQuery(_v_query string) Object {
 	return _res
 }
 
-GO FUNC net/url.ParseRequestURI from net/url/url.go:
 func _f_parseRequestURI(_v_rawurl string) Object {
 	_res1, _res2 := url.ParseRequestURI(_v_rawurl)
 	_res := EmptyVector()
@@ -4096,7 +3558,6 @@ func _f_parseRequestURI(_v_rawurl string) Object {
 	return _res
 }
 
-GO FUNC net/url.PathUnescape from net/url/url.go:
 func _f_pathUnescape(_v_s string) Object {
 	_res1, _res2 := url.PathUnescape(_v_s)
 	_res := EmptyVector()
@@ -4105,7 +3566,6 @@ func _f_pathUnescape(_v_s string) Object {
 	return _res
 }
 
-GO FUNC net/url.QueryUnescape from net/url/url.go:
 func _f_queryUnescape(_v_s string) Object {
 	_res1, _res2 := url.QueryUnescape(_v_s)
 	_res := EmptyVector()
@@ -4114,75 +3574,64 @@ func _f_queryUnescape(_v_s string) Object {
 	return _res
 }
 
-GO FUNC net/url.User from net/url/url.go:
 func _f_user(_v_username string) Object {
 	_res := url.User(_v_username)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net/url.UserPassword from net/url/url.go:
 func _f_userPassword(_v_username string, _v_password string) Object {
 	_res := url.UserPassword(_v_username, _v_password)
 	return MakeGoObject(_res)
 }
 
-GO FUNC net/url._f_escapeError_Error from net/url/url.go:
 func _f_escapeError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(url.EscapeError)Error()", args, 0, 0)
 	_res := o.O.(url.EscapeError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_invalidHostError_Error from net/url/url.go:
 func _f_invalidHostError_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(url.InvalidHostError)Error()", args, 0, 0)
 	_res := o.O.(url.InvalidHostError).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_Error_Error from net/url/url.go:
 func _f_ptrTo_Error_Error(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Error)Error()", args, 0, 0)
 	_res := o.O.(*url.Error).Error()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_Error_Temporary from net/url/url.go:
 func _f_ptrTo_Error_Temporary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Error)Temporary()", args, 0, 0)
 	_res := o.O.(*url.Error).Temporary()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net/url._f_ptrTo_Error_Timeout from net/url/url.go:
 func _f_ptrTo_Error_Timeout(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Error)Timeout()", args, 0, 0)
 	_res := o.O.(*url.Error).Timeout()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_EscapedPath from net/url/url.go:
 func _f_ptrTo_URL_EscapedPath(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)EscapedPath()", args, 0, 0)
 	_res := o.O.(*url.URL).EscapedPath()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_Hostname from net/url/url.go:
 func _f_ptrTo_URL_Hostname(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)Hostname()", args, 0, 0)
 	_res := o.O.(*url.URL).Hostname()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_IsAbs from net/url/url.go:
 func _f_ptrTo_URL_IsAbs(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)IsAbs()", args, 0, 0)
 	_res := o.O.(*url.URL).IsAbs()
 	return MakeBoolean(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_MarshalBinary from net/url/url.go:
 func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)MarshalBinary()", args, 0, 0)
 	text, err := o.O.(*url.URL).MarshalBinary()
@@ -4192,7 +3641,6 @@ func _f_ptrTo_URL_MarshalBinary(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net/url._f_ptrTo_URL_Parse from net/url/url.go:
 func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*url.URL)Parse()", args, 1, 1)
 	_v_ref := ObjectAsString(SeqNth(_argList, 0), "Arg[0] (_v_ref): %s")
@@ -4203,28 +3651,24 @@ func _f_ptrTo_URL_Parse(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net/url._f_ptrTo_URL_Port from net/url/url.go:
 func _f_ptrTo_URL_Port(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)Port()", args, 0, 0)
 	_res := o.O.(*url.URL).Port()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_Query from net/url/url.go:
 func _f_ptrTo_URL_Query(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)Query()", args, 0, 0)
 	_res := o.O.(*url.URL).Query()
 	return MakeGoObject(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_RequestURI from net/url/url.go:
 func _f_ptrTo_URL_RequestURI(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)RequestURI()", args, 0, 0)
 	_res := o.O.(*url.URL).RequestURI()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_ResolveReference from net/url/url.go:
 func _f_ptrTo_URL_ResolveReference(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*url.URL)ResolveReference()", args, 1, 1)
 	_v_ref := SeqNth(_argList, 0).(GoObject).O.(*url.URL)
@@ -4232,14 +3676,12 @@ func _f_ptrTo_URL_ResolveReference(o GoObject, args Object) Object {  // Receive
 	return MakeGoObject(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_String from net/url/url.go:
 func _f_ptrTo_URL_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.URL)String()", args, 0, 0)
 	_res := o.O.(*url.URL).String()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_URL_UnmarshalBinary from net/url/url.go:
 func _f_ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(*url.URL)UnmarshalBinary()", args, 1, 1)
 	_v_text := SeqNth(_argList, 0).(GoObject).O.([]byte)
@@ -4247,7 +3689,6 @@ func _f_ptrTo_URL_UnmarshalBinary(o GoObject, args Object) Object {  // Receiver
 	return func () Object { if (_res) == nil { return NIL } else { return MakeError(_res) } }()
 }
 
-GO FUNC net/url._f_ptrTo_Userinfo_Password from net/url/url.go:
 func _f_ptrTo_Userinfo_Password(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Userinfo)Password()", args, 0, 0)
 	_res1, _res2 := o.O.(*url.Userinfo).Password()
@@ -4257,38 +3698,32 @@ func _f_ptrTo_Userinfo_Password(o GoObject, args Object) Object {  // Receiver
 	return _res
 }
 
-GO FUNC net/url._f_ptrTo_Userinfo_String from net/url/url.go:
 func _f_ptrTo_Userinfo_String(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Userinfo)String()", args, 0, 0)
 	_res := o.O.(*url.Userinfo).String()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_ptrTo_Userinfo_Username from net/url/url.go:
 func _f_ptrTo_Userinfo_Username(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(*url.Userinfo)Username()", args, 0, 0)
 	_res := o.O.(*url.Userinfo).Username()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_values_Add from net/url/url.go:
 // func _f_values_Add(o GoObject, args Object) Object {  // Receiver
 // 	...ABEND275: TODO...
 // }
 
-GO FUNC net/url._f_values_Del from net/url/url.go:
 // func _f_values_Del(o GoObject, args Object) Object {  // Receiver
 // 	...ABEND275: TODO...
 // }
 
-GO FUNC net/url._f_values_Encode from net/url/url.go:
 func _f_values_Encode(o GoObject, args Object) Object {  // Receiver
 	CheckReceiverArity("(url.Values)Encode()", args, 0, 0)
 	_res := o.O.(url.Values).Encode()
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_values_Get from net/url/url.go:
 func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	_argList := CheckReceiverArity("(url.Values)Get()", args, 1, 1)
 	_v_key := ObjectAsString(SeqNth(_argList, 0), "Arg[0] (_v_key): %s")
@@ -4296,68 +3731,47 @@ func _f_values_Get(o GoObject, args Object) Object {  // Receiver
 	return MakeString(_res)
 }
 
-GO FUNC net/url._f_values_Set from net/url/url.go:
 // func _f_values_Set(o GoObject, args Object) Object {  // Receiver
 // 	...ABEND275: TODO...
 // }
-
-GO VARDEF FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 var info_Error GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToError from _tests/small/src/net/url/url.go:22:6:
 var info_PtrTo_Error GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfError from _tests/small/src/net/url/url.go:22:6:
 var info_ArrayOf_Error GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 var info_EscapeError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToEscapeError from _tests/small/src/net/url/url.go:84:6:
 var info_PtrTo_EscapeError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfEscapeError from _tests/small/src/net/url/url.go:84:6:
 var info_ArrayOf_EscapeError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 var info_InvalidHostError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 var info_PtrTo_InvalidHostError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 var info_ArrayOf_InvalidHostError GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
 var info_URL GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:344:6:
 var info_PtrTo_URL GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfURL from _tests/small/src/net/url/url.go:344:6:
 var info_ArrayOf_URL GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
 var info_Userinfo GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToUserinfo from _tests/small/src/net/url/url.go:378:6:
 var info_PtrTo_Userinfo GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfUserinfo from _tests/small/src/net/url/url.go:378:6:
 var info_ArrayOf_Userinfo GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 var info_Values GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go:804:6:
 var info_PtrTo_Values GoTypeInfo
 
-GO VARDEF FOR TYPE go.std.net.url/arrayOfValues from _tests/small/src/net/url/url.go:804:6:
 var info_ArrayOf_Values GoTypeInfo
 
 
 func initNative() {
-GO INFO FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 	info_Error = GoTypeInfo{Name: "go.std.net.url/Error",
 		GoType: &GoType{T: &info_Error},
 		Ctor: _Wrapped_Ctor_Error,
@@ -4366,7 +3780,6 @@ GO INFO FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToError from _tests/small/src/net/url/url.go:22:6:
 	info_PtrTo_Error = GoTypeInfo{Name: "go.std.net.url/refToError",
 		GoType: &GoType{T: &info_PtrTo_Error},
 		Members: GoMembers{
@@ -4377,7 +3790,6 @@ GO INFO FOR TYPE go.std.net.url/refToError from _tests/small/src/net/url/url.go:
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfError from _tests/small/src/net/url/url.go:22:6:
 	info_ArrayOf_Error = GoTypeInfo{Name: "go.std.net.url/arrayOfError",
 		GoType: &GoType{T: &info_ArrayOf_Error},
 		Members: GoMembers{
@@ -4385,7 +3797,6 @@ GO INFO FOR TYPE go.std.net.url/arrayOfError from _tests/small/src/net/url/url.g
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	info_EscapeError = GoTypeInfo{Name: "go.std.net.url/EscapeError",
 		GoType: &GoType{T: &info_EscapeError},
 		Ctor: _Wrapped_Ctor_EscapeError,
@@ -4395,7 +3806,6 @@ GO INFO FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToEscapeError from _tests/small/src/net/url/url.go:84:6:
 	info_PtrTo_EscapeError = GoTypeInfo{Name: "go.std.net.url/refToEscapeError",
 		GoType: &GoType{T: &info_PtrTo_EscapeError},
 		Members: GoMembers{
@@ -4403,7 +3813,6 @@ GO INFO FOR TYPE go.std.net.url/refToEscapeError from _tests/small/src/net/url/u
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfEscapeError from _tests/small/src/net/url/url.go:84:6:
 	info_ArrayOf_EscapeError = GoTypeInfo{Name: "go.std.net.url/arrayOfEscapeError",
 		GoType: &GoType{T: &info_ArrayOf_EscapeError},
 		Members: GoMembers{
@@ -4411,7 +3820,6 @@ GO INFO FOR TYPE go.std.net.url/arrayOfEscapeError from _tests/small/src/net/url
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	info_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/InvalidHostError",
 		GoType: &GoType{T: &info_InvalidHostError},
 		Ctor: _Wrapped_Ctor_InvalidHostError,
@@ -4421,7 +3829,6 @@ GO INFO FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/u
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	info_PtrTo_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/refToInvalidHostError",
 		GoType: &GoType{T: &info_PtrTo_InvalidHostError},
 		Members: GoMembers{
@@ -4429,7 +3836,6 @@ GO INFO FOR TYPE go.std.net.url/refToInvalidHostError from _tests/small/src/net/
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	info_ArrayOf_InvalidHostError = GoTypeInfo{Name: "go.std.net.url/arrayOfInvalidHostError",
 		GoType: &GoType{T: &info_ArrayOf_InvalidHostError},
 		Members: GoMembers{
@@ -4437,7 +3843,6 @@ GO INFO FOR TYPE go.std.net.url/arrayOfInvalidHostError from _tests/small/src/ne
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
 	info_URL = GoTypeInfo{Name: "go.std.net.url/URL",
 		GoType: &GoType{T: &info_URL},
 		Members: GoMembers{
@@ -4445,7 +3850,6 @@ GO INFO FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:344:6:
 	info_PtrTo_URL = GoTypeInfo{Name: "go.std.net.url/refToURL",
 		GoType: &GoType{T: &info_PtrTo_URL},
 		Members: GoMembers{
@@ -4464,7 +3868,6 @@ GO INFO FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:34
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfURL from _tests/small/src/net/url/url.go:344:6:
 	info_ArrayOf_URL = GoTypeInfo{Name: "go.std.net.url/arrayOfURL",
 		GoType: &GoType{T: &info_ArrayOf_URL},
 		Members: GoMembers{
@@ -4472,7 +3875,6 @@ GO INFO FOR TYPE go.std.net.url/arrayOfURL from _tests/small/src/net/url/url.go:
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
 	info_Userinfo = GoTypeInfo{Name: "go.std.net.url/Userinfo",
 		GoType: &GoType{T: &info_Userinfo},
 		Ctor: _Wrapped_Ctor_Userinfo,
@@ -4481,7 +3883,6 @@ GO INFO FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:37
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToUserinfo from _tests/small/src/net/url/url.go:378:6:
 	info_PtrTo_Userinfo = GoTypeInfo{Name: "go.std.net.url/refToUserinfo",
 		GoType: &GoType{T: &info_PtrTo_Userinfo},
 		Members: GoMembers{
@@ -4492,7 +3893,6 @@ GO INFO FOR TYPE go.std.net.url/refToUserinfo from _tests/small/src/net/url/url.
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfUserinfo from _tests/small/src/net/url/url.go:378:6:
 	info_ArrayOf_Userinfo = GoTypeInfo{Name: "go.std.net.url/arrayOfUserinfo",
 		GoType: &GoType{T: &info_ArrayOf_Userinfo},
 		Members: GoMembers{
@@ -4500,7 +3900,6 @@ GO INFO FOR TYPE go.std.net.url/arrayOfUserinfo from _tests/small/src/net/url/ur
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 	info_Values = GoTypeInfo{Name: "go.std.net.url/Values",
 		GoType: &GoType{T: &info_Values},
 		Members: GoMembers{
@@ -4510,7 +3909,6 @@ GO INFO FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go:804:6:
 	info_PtrTo_Values = GoTypeInfo{Name: "go.std.net.url/refToValues",
 		GoType: &GoType{T: &info_PtrTo_Values},
 		Members: GoMembers{
@@ -4518,7 +3916,6 @@ GO INFO FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go
 	}
 
 
-GO INFO FOR TYPE go.std.net.url/arrayOfValues from _tests/small/src/net/url/url.go:804:6:
 	info_ArrayOf_Values = GoTypeInfo{Name: "go.std.net.url/arrayOfValues",
 		GoType: &GoType{T: &info_ArrayOf_Values},
 		Members: GoMembers{
@@ -4526,61 +3923,42 @@ GO INFO FOR TYPE go.std.net.url/arrayOfValues from _tests/small/src/net/url/url.
 	}
 
 
-GO VECSET FOR TYPE go.std.net.url/Error from _tests/small/src/net/url/url.go:22:6:
 	GoTypesVec[68] = &info_Error
 
-GO VECSET FOR TYPE go.std.net.url/refToError from _tests/small/src/net/url/url.go:22:6:
 	GoTypesVec[17] = &info_PtrTo_Error
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfError from _tests/small/src/net/url/url.go:22:6:
 	GoTypesVec[44] = &info_ArrayOf_Error
 
-GO VECSET FOR TYPE go.std.net.url/EscapeError from _tests/small/src/net/url/url.go:84:6:
 	GoTypesVec[69] = &info_EscapeError
 
-GO VECSET FOR TYPE go.std.net.url/refToEscapeError from _tests/small/src/net/url/url.go:84:6:
 	GoTypesVec[18] = &info_PtrTo_EscapeError
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfEscapeError from _tests/small/src/net/url/url.go:84:6:
 	GoTypesVec[45] = &info_ArrayOf_EscapeError
 
-GO VECSET FOR TYPE go.std.net.url/InvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	GoTypesVec[70] = &info_InvalidHostError
 
-GO VECSET FOR TYPE go.std.net.url/refToInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	GoTypesVec[19] = &info_PtrTo_InvalidHostError
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfInvalidHostError from _tests/small/src/net/url/url.go:90:6:
 	GoTypesVec[46] = &info_ArrayOf_InvalidHostError
 
-GO VECSET FOR TYPE go.std.net.url/URL from _tests/small/src/net/url/url.go:344:6:
 	GoTypesVec[71] = &info_URL
 
-GO VECSET FOR TYPE go.std.net.url/refToURL from _tests/small/src/net/url/url.go:344:6:
 	GoTypesVec[20] = &info_PtrTo_URL
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfURL from _tests/small/src/net/url/url.go:344:6:
 	GoTypesVec[47] = &info_ArrayOf_URL
 
-GO VECSET FOR TYPE go.std.net.url/Userinfo from _tests/small/src/net/url/url.go:378:6:
 	GoTypesVec[72] = &info_Userinfo
 
-GO VECSET FOR TYPE go.std.net.url/refToUserinfo from _tests/small/src/net/url/url.go:378:6:
 	GoTypesVec[21] = &info_PtrTo_Userinfo
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfUserinfo from _tests/small/src/net/url/url.go:378:6:
 	GoTypesVec[48] = &info_ArrayOf_Userinfo
 
-GO VECSET FOR TYPE go.std.net.url/Values from _tests/small/src/net/url/url.go:804:6:
 	GoTypesVec[73] = &info_Values
 
-GO VECSET FOR TYPE go.std.net.url/refToValues from _tests/small/src/net/url/url.go:804:6:
 	GoTypesVec[22] = &info_PtrTo_Values
 
-GO VECSET FOR TYPE go.std.net.url/arrayOfValues from _tests/small/src/net/url/url.go:804:6:
 	GoTypesVec[49] = &info_ArrayOf_Values
 
-GO ENSURE-LOADED FOR url:
 	EnsureLoaded("go.std.errors")  // E.g. from: _tests/small/src/net/url/url.go:14:2
 	EnsureLoaded("go.std.fmt")  // E.g. from: _tests/small/src/net/url/url.go:15:2
 	EnsureLoaded("go.std.sort")  // E.g. from: _tests/small/src/net/url/url.go:16:2
