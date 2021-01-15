@@ -1,34 +1,23 @@
 #!/bin/bash
 
-export GOENV="_tests/gold/$(go env GOARCH)-$(go env GOOS)"
-mkdir -p "$GOENV"
-
-EXIT="exit 99"
-if [ "$1" = "--on-error" ]; then
-    EXIT="$2"
-    shift 2
-fi
-
-RC=0
-
-rm -fr $GOENV/joker core-apis.dat
-mkdir -p $GOENV/joker/{core/data,std}
-git show gostd:../../core/go_templates/g_goswitch.gotemplate > $GOENV/joker/core/g_goswitch.go
-git show gostd:../../core/go_templates/g_customlibs.joketemplate > $GOENV/joker/core/data/g_customlibs.joke
-
-if [ "$1" = "--reset" ]; then
-    exit 0
-fi
+dircat() {
+    find "$1" -type f | sort | while read f; do printf -- "-------- BEGIN %s:\n" "$f"; cat "$f"; printf -- "-------- END %s.\n" "$f"; done
+}
 
 [ ! -x gostd ] && echo >&2 "No executable to test." && exit 99
 
-./gostd --no-timestamp --output-code --verbose --joker ../.. --go _tests/small 2>&1 | grep -v '^Default context:' > $GOENV/small.gold
-git diff --quiet -u $GOENV/small.gold || { echo >&2 "FAILED: small test"; RC=1; $EXIT; }
+export GOENV="_tests/gold/$(go env GOARCH)-$(go env GOOS)"
+OUTDIR="$GOENV/joker"
 
-./gostd --no-timestamp --output-code --verbose --joker ../.. --go _tests/big --replace --clojure $GOENV/joker --import-from -- 2>&1 | grep -v '^Default context:' > $GOENV/big.gold
-git diff --quiet -u $GOENV/big.gold || { echo >&2 "FAILED: big test"; RC=1; $EXIT; }
+rm -fr "$OUTDIR" core-apis.dat
+mkdir -p "$OUTDIR"/{core/data,std}
 
-./gostd --no-timestamp --output-code --verbose --joker ../.. 2>&1 | grep -v '^Default context:' > $GOENV/gosrc.gold
-git diff --quiet -u $GOENV/gosrc.gold || { echo >&2 "FAILED: gosrc test"; RC=1; $EXIT; }
+git show gostd:../../core/go_templates/g_goswitch.gotemplate > "$OUTDIR/core/g_goswitch.go"
+git show gostd:../../core/go_templates/g_customlibs.joketemplate > "$OUTDIR/core/data/g_customlibs.joke"
+
+RC=0
+
+{ ./gostd --no-timestamp --verbose --joker ../.. --replace --output "$OUTDIR" 2>&1 | grep -v '^Default context:'; dircat "$OUTDIR"; } > "$GOENV/gosrc.gold"
+git diff --quiet -u "$GOENV/gosrc.gold" || { echo >&2 "FAILED: gosrc test"; RC=1; $EXIT; }
 
 exit $RC
