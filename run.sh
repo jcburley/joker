@@ -28,7 +28,7 @@ fi
 rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
 if [ ! -f NO-GOSTD.flag ]; then
     (cd tools/gostd && go build .)
-    ./tools/gostd/gostd --replace --clojure .
+    ./tools/gostd/gostd --replace --output .
 fi
 
 # Check for changes in std, and run just-built Joker, only when building for host os/architecture.
