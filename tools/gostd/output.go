@@ -127,40 +127,27 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 }
 
 func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
-	var out, stdout *bufio.Writer
+	pi := PackagesInfo[pkgDirUnix]
+
+	if !generateEmpty && !pi.NonEmpty {
+		return
+	}
+
+	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if clojureLibDir != "" &&
-		(generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty) {
-		jf := filepath.Join(clojureLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
-		var e error
-		e = os.MkdirAll(filepath.Dir(jf), 0777)
-		unbuf_out, e = os.Create(jf)
-		Check(e)
-	} else if generateEmpty || PackagesInfo[pkgDirUnix].NonEmpty {
-		unbuf_out = os.Stdout
-	}
-	if unbuf_out != nil {
-		out = bufio.NewWriterSize(unbuf_out, 16384)
-		if unbuf_out == os.Stdout {
-			stdout = out
-		}
-	}
-	if stdout == nil {
-		stdout = bufio.NewWriterSize(os.Stdout, 16384)
-	}
+	jf := filepath.Join(clojureLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
+	var e error
+	e = os.MkdirAll(filepath.Dir(jf), 0777)
+	Check(e)
+	unbuf_out, e = os.Create(jf)
+	Check(e)
+	out = bufio.NewWriterSize(unbuf_out, 16384)
 
 	defer func() {
-		stdout.Flush()
-		if out != nil {
-			out.Flush()
-			if unbuf_out != os.Stdout {
-				unbuf_out.Close()
-			}
-		}
+		out.Flush()
+		unbuf_out.Close()
 	}()
-
-	pi := PackagesInfo[pkgDirUnix]
 
 	if out != nil {
 		importPath, _ := filepath.Abs("/")
@@ -187,16 +174,12 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 
 	SortedConstantInfoMap(v.Constants,
 		func(c string, ci *ConstantInfo) {
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ci.Def)
-			}
+			out.WriteString(ci.Def)
 		})
 
 	SortedVariableInfoMap(v.Variables,
 		func(c string, ci *VariableInfo) {
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ci.Def)
-			}
+			out.WriteString(ci.Def)
 		})
 
 	SortedTypeInfoMap(v.Types,
@@ -204,16 +187,12 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 			if !ti.Custom() {
 				return
 			}
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(ClojureCodeForType[ti])
-			}
+			out.WriteString(ClojureCodeForType[ti])
 		})
 
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(w.FnCode)
-			}
+			out.WriteString(w.FnCode)
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
@@ -241,53 +220,38 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 			buf := new(bytes.Buffer)
 			Templates.ExecuteTemplate(buf, "clojure-typedef.tmpl", info)
 
-			if out != nil && unbuf_out != os.Stdout {
-				if n, err := out.Write(buf.Bytes()); err != nil {
-					panic(fmt.Sprintf("n=%d err=%s", n, err))
-				}
+			if n, err := out.Write(buf.Bytes()); err != nil {
+				panic(fmt.Sprintf("n=%d err=%s", n, err))
 			}
 		})
 }
 
 func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
-	pkgBaseName := path.Base(pkgDirUnix)
 	pi := PackagesInfo[pkgDirUnix]
+
+	if !generateEmpty && !pi.NonEmpty {
+		return
+	}
+
 	pi.HasGoFiles = true
+	pkgBaseName := path.Base(pkgDirUnix)
 	pkgDirNative := filepath.FromSlash(pkgDirUnix)
 
-	var out, stdout *bufio.Writer
+	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	if clojureLibDir != "" &&
-		(generateEmpty || pi.NonEmpty) {
-		gf := filepath.Join(clojureLibDir, pkgDirNative,
-			pkgBaseName+"_native.go")
-		var e error
-		e = os.MkdirAll(filepath.Dir(gf), 0777)
-		Check(e)
-		unbuf_out, e = os.Create(gf)
-		Check(e)
-	} else if generateEmpty || pi.NonEmpty {
-		unbuf_out = os.Stdout
-	}
-	if unbuf_out != nil {
-		out = bufio.NewWriterSize(unbuf_out, 16384)
-		if unbuf_out == os.Stdout {
-			stdout = out
-		}
-	}
-	if stdout == nil {
-		stdout = bufio.NewWriterSize(os.Stdout, 16384)
-	}
+	gf := filepath.Join(clojureLibDir, pkgDirNative,
+		pkgBaseName+"_native.go")
+	var e error
+	e = os.MkdirAll(filepath.Dir(gf), 0777)
+	Check(e)
+	unbuf_out, e = os.Create(gf)
+	Check(e)
+	out = bufio.NewWriterSize(unbuf_out, 16384)
 
 	defer func() {
-		stdout.Flush()
-		if out != nil {
-			out.Flush()
-			if unbuf_out != os.Stdout {
-				unbuf_out.Close()
-			}
-		}
+		out.Flush()
+		unbuf_out.Close()
 	}()
 
 	// First, figure out what other packages need to be imported,
@@ -330,19 +294,15 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 				ctor = c
 			}
 			if t == "crypto.Hash" {
-				// fmt.Fprintf(stdout, "output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
+				// fmt.Fprintf(os.Stdout, "output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
 			}
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(GoCodeForType[ti])
-				out.WriteString(ctor)
-			}
+			out.WriteString(GoCodeForType[ti])
+			out.WriteString(ctor)
 		})
 
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(w.FnCode)
-			}
+			out.WriteString(w.FnCode)
 		})
 
 	SortedTypeDefinitions(v.InitTypes,
@@ -352,9 +312,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 				return
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
-			if out != nil && unbuf_out != os.Stdout && tmn != "" {
-				out.WriteString(tmn)
-			}
+			out.WriteString(tmn)
 		})
 
 	if out != nil {
@@ -397,10 +355,8 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			buf := new(bytes.Buffer)
 			Templates.ExecuteTemplate(buf, "go-func-init.tmpl", info)
 
-			if out != nil && unbuf_out != os.Stdout {
-				if n, err := out.Write(buf.Bytes()); err != nil {
-					panic(fmt.Sprintf("n=%d err=%s", n, err))
-				}
+			if n, err := out.Write(buf.Bytes()); err != nil {
+				panic(fmt.Sprintf("n=%d err=%s", n, err))
 			}
 		})
 
@@ -411,23 +367,14 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 				return
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
-			if out != nil && unbuf_out != os.Stdout {
-				out.WriteString(o)
-			}
+			out.WriteString(o)
 		})
 
 	if ensure != "" {
-		if out != nil && unbuf_out != os.Stdout {
-			out.WriteString(ensure)
-		}
+		out.WriteString(ensure)
 	}
 
-	if out != nil {
-		out.WriteString("}\n")
-		if unbuf_out == os.Stdout {
-			out.WriteString("\n") // separate from next "file" output for testing
-		}
-	}
+	out.WriteString("}\n")
 }
 
 func OutputPackageCode(clojureLibDir string, generateEmpty bool) {
