@@ -144,7 +144,6 @@ func main() {
 	overwrite := false
 	summary := false
 	generateEmpty := false
-	outputCode := false
 
 	for i := 1; i < length; i++ { // shift
 		a := os.Args[i]
@@ -292,7 +291,7 @@ func main() {
 	readCoreApiFile(jokerSourceDir)
 
 	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join(jokerSourceDir, "tools", "gostd", "templates", "*.tmpl")))
-	if outputCode {
+	if godb.Verbose {
 		strs := strings.Split(Templates.DefinedTemplates()+",", " ")
 		sort.Strings(strs[4:]) // skip "; defined templates are: " in [0-3]
 		fmt.Println(strings.TrimRight(strings.Join(strs, " "), ","))
@@ -374,27 +373,25 @@ func main() {
 			}
 		})
 
-	OutputPackageCode(outputGoStdDir, outputCode, generateEmpty)
+	OutputPackageCode(outputGoStdDir, generateEmpty)
 
-	if outputCode || outputDir != "" {
-		var packagesArray = []string{} // Relative package pathnames in alphabetical order
-		var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
+	var packagesArray = []string{} // Relative package pathnames in alphabetical order
+	var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
 
-		SortedPackagesInfo(PackagesInfo,
-			func(p string, i *PackageInfo) {
-				if !generateEmpty && !i.NonEmpty {
-					return
-				}
-				if i.HasGoFiles {
-					packagesArray = append(packagesArray, p)
-				}
-				dotJokeArray = append(dotJokeArray, p)
-			})
-		RegisterPackages(packagesArray, outputDir, outputCode)
-		RegisterClojureFiles(dotJokeArray, outputDir, outputCode)
-	}
+	SortedPackagesInfo(PackagesInfo,
+		func(p string, i *PackageInfo) {
+			if !generateEmpty && !i.NonEmpty {
+				return
+			}
+			if i.HasGoFiles {
+				packagesArray = append(packagesArray, p)
+			}
+			dotJokeArray = append(dotJokeArray, p)
+		})
+	RegisterPackages(packagesArray, outputDir)
+	RegisterClojureFiles(dotJokeArray, outputDir)
 
-	RegisterGoTypeSwitch(AllTypesSorted(), outputDir, outputCode)
+	RegisterGoTypeSwitch(AllTypesSorted(), outputDir)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")

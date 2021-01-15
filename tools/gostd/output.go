@@ -32,19 +32,19 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, clojureSourceDir string, outputCode bool) {
-	writeCustomLibsGo(pkgs, clojureSourceDir, "g_custom.go", outputCode)
+func RegisterPackages(pkgs []string, clojureSourceDir string) {
+	writeCustomLibsGo(pkgs, clojureSourceDir, "g_custom.go")
 }
 
-func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string, outputCode bool) {
-	writeCustomLibsClojure(clojureFiles, clojureSourceDir, filepath.Join("core", "data", "g_customlibs.joke"), outputCode)
+func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
+	writeCustomLibsClojure(clojureFiles, clojureSourceDir, filepath.Join("core", "data", "g_customlibs.joke"))
 }
 
-func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string, outputCode bool) {
-	writeGoTypeSwitch(types, clojureSourceDir, filepath.Join("core", "g_goswitch.go"), outputCode)
+func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string) {
+	writeGoTypeSwitch(types, clojureSourceDir, filepath.Join("core", "g_goswitch.go"))
 }
 
-func writeCustomLibsGo(pkgs []string, dir, f string, outputCode bool) {
+func writeCustomLibsGo(pkgs []string, dir, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
@@ -62,15 +62,9 @@ func writeCustomLibsGo(pkgs []string, dir, f string, outputCode bool) {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
 		Check(err)
 	}
-
-	if outputCode {
-		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
-		fmt.Print(buf.String())
-		fmt.Printf("-------- END generated file %s.\n\n", f)
-	}
 }
 
-func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
+func writeCustomLibsClojure(pkgs []string, dir, f string) {
 	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
 	}
@@ -88,18 +82,12 @@ func writeCustomLibsClojure(pkgs []string, dir, f string, outputCode bool) {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
 		Check(err)
 	}
-
-	if outputCode {
-		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
-		fmt.Print(buf.String())
-		fmt.Printf("-------- END generated file %s.\n\n", f)
-	}
 }
 
 var Ordinal = map[TypeInfo]uint{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
-func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string, outputCode bool) {
+func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 	types := SwitchableTypes
 
 	if Verbose {
@@ -136,15 +124,9 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string, outputCode bool) {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
 		Check(err)
 	}
-
-	if outputCode {
-		fmt.Printf("\n-------- BEGIN generated file %s:\n", f)
-		fmt.Print(buf.String())
-		fmt.Printf("-------- END generated file %s.\n\n", f)
-	}
 }
 
-func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCode, generateEmpty bool) {
+func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
 	var out, stdout *bufio.Writer
 	var unbuf_out *os.File
 
@@ -205,9 +187,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 
 	SortedConstantInfoMap(v.Constants,
 		func(c string, ci *ConstantInfo) {
-			if outputCode {
-				fmt.Fprintf(stdout, "%s", ci.Def)
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
 			}
@@ -215,9 +194,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 
 	SortedVariableInfoMap(v.Variables,
 		func(c string, ci *VariableInfo) {
-			if outputCode {
-				fmt.Fprintf(stdout, "%s", ci.Def)
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ci.Def)
 			}
@@ -228,9 +204,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 			if !ti.Custom() {
 				return
 			}
-			if outputCode {
-				fmt.Fprintf(stdout, "%s", ClojureCodeForType[ti])
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(ClojureCodeForType[ti])
 			}
@@ -238,9 +211,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
-			if outputCode {
-				fmt.Fprintf(stdout, "%s", w.FnCode)
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(w.FnCode)
 			}
@@ -271,10 +241,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 			buf := new(bytes.Buffer)
 			Templates.ExecuteTemplate(buf, "clojure-typedef.tmpl", info)
 
-			if outputCode {
-				fmt.Fprintf(stdout, "%s\n", buf.String())
-			}
-
 			if out != nil && unbuf_out != os.Stdout {
 				if n, err := out.Write(buf.Bytes()); err != nil {
 					panic(fmt.Sprintf("n=%d err=%s", n, err))
@@ -283,7 +249,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outp
 		})
 }
 
-func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCode, generateEmpty bool) {
+func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
 	pkgBaseName := path.Base(pkgDirUnix)
 	pi := PackagesInfo[pkgDirUnix]
 	pi.HasGoFiles = true
@@ -363,9 +329,6 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			if c, found := Ctors[ti]; found && c[0] != '/' {
 				ctor = c
 			}
-			if outputCode {
-				fmt.Fprintf(stdout, "%s%s", GoCodeForType[ti], ctor)
-			}
 			if t == "crypto.Hash" {
 				// fmt.Fprintf(stdout, "output.go: %s aka %s @%p: %+v\n", t, ti.ClojureName(), ti, ti)
 			}
@@ -377,9 +340,6 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 
 	SortedCodeMap(v,
 		func(f string, w *FnCodeInfo) {
-			if outputCode {
-				fmt.Fprintf(stdout, "%s", w.FnCode)
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(w.FnCode)
 			}
@@ -392,9 +352,6 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 				return
 			}
 			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
-			if outputCode && tmn != "" {
-				fmt.Fprintf(stdout, "%s\n", tmn)
-			}
 			if out != nil && unbuf_out != os.Stdout && tmn != "" {
 				out.WriteString(tmn)
 			}
@@ -440,10 +397,6 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 			buf := new(bytes.Buffer)
 			Templates.ExecuteTemplate(buf, "go-func-init.tmpl", info)
 
-			if outputCode {
-				fmt.Fprintf(stdout, "%s\n", buf.String())
-			}
-
 			if out != nil && unbuf_out != os.Stdout {
 				if n, err := out.Write(buf.Bytes()); err != nil {
 					panic(fmt.Sprintf("n=%d err=%s", n, err))
@@ -458,18 +411,12 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 				return
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
-			if outputCode {
-				fmt.Fprintf(stdout, "%s\n", o)
-			}
 			if out != nil && unbuf_out != os.Stdout {
 				out.WriteString(o)
 			}
 		})
 
 	if ensure != "" {
-		if outputCode {
-			fmt.Fprintf(stdout, "%s\n", ensure)
-		}
 		if out != nil && unbuf_out != os.Stdout {
 			out.WriteString(ensure)
 		}
@@ -483,15 +430,15 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, outputCod
 	}
 }
 
-func OutputPackageCode(clojureLibDir string, outputCode, generateEmpty bool) {
+func OutputPackageCode(clojureLibDir string, generateEmpty bool) {
 	SortedPackageMap(ClojureCode,
 		func(pkgDirUnix string, v CodeInfo) {
-			outputClojureCode(pkgDirUnix, v, clojureLibDir, outputCode, generateEmpty)
+			outputClojureCode(pkgDirUnix, v, clojureLibDir, generateEmpty)
 		})
 
 	SortedPackageMap(GoCode,
 		func(pkgDirUnix string, v CodeInfo) {
-			outputGoCode(pkgDirUnix, v, clojureLibDir, outputCode, generateEmpty)
+			outputGoCode(pkgDirUnix, v, clojureLibDir, generateEmpty)
 		})
 }
 
