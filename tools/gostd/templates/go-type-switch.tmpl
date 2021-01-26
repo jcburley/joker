@@ -10,6 +10,6 @@ var GoTypesVec [{{.NumberOfTypes}}]*GoTypeInfo
 
 func SwitchGoType(g interface{}) int {
 	switch g.(type) {
-{{.Cases}}	}
+{{range .Cases}}{{.}}{{end}}	}
 	return -1
 }

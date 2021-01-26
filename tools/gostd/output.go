@@ -94,7 +94,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
 	}
 
-	var cases string
+	var cases []string
 	var importeds = &imports.Imports{}
 	for _, t := range types {
 		if t.Specificity() == 0 {
@@ -109,10 +109,10 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 		if t.Specificity() != ConcreteType {
 			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity())
 		}
-		cases += fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t])
+		cases = append(cases, fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t]))
 	}
 
-	info := map[string]string{}
+	info := map[string]interface{}{}
 	info["Imports"] = importeds.QuotedList("\n\t")
 	info["NumberOfTypes"] = strconv.Itoa(len(types))
 	info["Cases"] = cases
