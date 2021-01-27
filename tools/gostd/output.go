@@ -94,10 +94,11 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
 	}
 
-	var cases []string
+	var cases []map[string]interface{}
 	var importeds = &imports.Imports{}
 	for _, t := range types {
-		if t.Specificity() == 0 {
+		specificity := t.Specificity()
+		if specificity == 0 {
 			// These are empty interface{} types, and so really can't be specifically matched to anything.
 			continue
 		}
@@ -105,11 +106,17 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 		if t.GoPackage() != "" {
 			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
-		specificity := ""
-		if t.Specificity() != ConcreteType {
-			specificity = fmt.Sprintf("  // Specificity=%d", t.Specificity())
-		}
-		cases = append(cases, fmt.Sprintf("\tcase %s:%s\n\t\treturn %d\n", fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()), specificity, Ordinal[t]))
+		cases = append(cases, map[string]interface{}{
+			"match":       fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()),
+			"specificity": func() uint {
+				if specificity != ConcreteType {
+					return specificity
+				} else {
+					return 0  // These won't occur here (if they did, no comment would be emitted).
+				}
+			}(),
+			"ordinal":     Ordinal[t],
+		})
 	}
 
 	info := map[string]interface{}{}
