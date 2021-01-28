@@ -121,7 +121,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 
 	info := map[string]interface{}{}
 	info["Imports"] = importeds.QuotedList("\n\t")
-	info["NumberOfTypes"] = strconv.Itoa(len(types))
+	info["NumberOfTypes"] = len(types)
 	info["Cases"] = cases
 
 	buf := new(bytes.Buffer)
