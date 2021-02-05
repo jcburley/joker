@@ -13,8 +13,8 @@ RC=0
 
 rm -fr $GOENV/joker core-apis.dat
 mkdir -p $GOENV/joker/{core/data,std}
-git show gostd:../../custom.go > $GOENV/joker/custom.go
-git show gostd:../../core/data/customlibs.joke > $GOENV/joker/core/data/customlibs.joke
+git show @:../../custom.go > $GOENV/joker/custom.go
+git show @:../../core/data/customlibs.joke > $GOENV/joker/core/data/customlibs.joke
 
 if [ "$1" = "--reset" ]; then
     exit 0
