@@ -32,7 +32,7 @@ type Info struct {
 	DefPos            token.Pos
 	File              *godb.GoFile
 	Specificity       uint   // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
-	NilPattern        string // 'nil%.0s' or e.g. '%s{}'
+	NilPattern        string // 'nil%.s' or e.g. '%s{}'
 	IsNullable        bool   // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported        bool   // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
@@ -54,7 +54,7 @@ func getInfo(fullName string, nullable bool) *Info {
 
 	nilPattern := "~~~%s-NOT-NILABLE!!~~~"
 	if nullable {
-		nilPattern = "nil%.0s"
+		nilPattern = "nil%.s"
 	}
 	info := &Info{
 		who:           "getInfo",
@@ -239,7 +239,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	}
 
 	fullName := computeFullName("%s", pkg, localName)
-	nilPattern := "nil%.0s"
+	nilPattern := "nil%.s"
 	if !isNullable {
 		nilPattern = "%s{}"
 	}
@@ -287,7 +287,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			DocPattern:        newPattern,
 			UnderlyingType:    ti,
 			Specificity:       Concrete,
-			NilPattern:        "nil%.0s",
+			NilPattern:        "nil%.s",
 			IsSwitchable:      ti.IsSwitchable,
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
@@ -487,7 +487,7 @@ func InfoForExpr(e Expr) *Info {
 		return variant
 	}
 
-	nilPattern := "nil%.0s"
+	nilPattern := "nil%.s"
 	if !isNullable {
 		nilPattern = "%s{}"
 	}
