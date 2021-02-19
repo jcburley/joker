@@ -410,7 +410,7 @@ var UIntPtr = &Info{
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
 	AsClojureObject:      "BigIntU(uint64(%s)%s)",
-	ConvertFromClojure:   "ObjectAsUintptr(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUintPtr(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
 

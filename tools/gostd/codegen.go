@@ -517,6 +517,7 @@ func GenType(t string, ti TypeInfo) {
 	info["ObjectAsApiName"] = ObjectAsApiName
 	info["ExtractApiName"] = ExtractApiName
 	info["TypeName"] = typeName
+	info["TypeAsString"] = t
 
 	info["Others"] = maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
 
