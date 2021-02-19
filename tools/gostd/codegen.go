@@ -444,6 +444,9 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	coerceApi := "ObjectAs" + declType
+	if _, ok := coreApis[coerceApi]; !ok {
+		return "" // Not implemented
+	}
 
 	mic := map[string]string{
 		"ArgType":   argType,
