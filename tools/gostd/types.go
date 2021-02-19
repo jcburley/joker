@@ -47,6 +47,7 @@ type TypeInfo interface {
 	PromoteType() string
 	TypeMappingsName() string
 	Doc() string
+	NilPattern() string
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
@@ -292,6 +293,10 @@ func (ti typeInfo) ClojurePattern() string {
 
 func (ti typeInfo) ClojureBaseName() string {
 	return ti.jti.BaseName
+}
+
+func (ti typeInfo) NilPattern() string {
+	return ti.gti.NilPattern
 }
 
 func (ti typeInfo) IsUnsupported() bool {

@@ -125,6 +125,11 @@ func readCoreApiFile(src string) {
 	//	fmt.Printf("Core APIs: %+v\n", coreApis)
 }
 
+func NewCoreApi(api, src string) {
+	coreApis[api] = struct{}{}
+	//	fmt.Printf("%s: added API '%s'\n", src, api)
+}
+
 var Templates *template.Template
 var TemplatesFuncMap = template.FuncMap{}
 

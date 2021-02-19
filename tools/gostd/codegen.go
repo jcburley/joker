@@ -434,8 +434,8 @@ type MaybeImplicitlyConvertInfo struct {
 
 const maybeImplicitlyConvertTemplate = `
 case {{.ArgType}}:
-		v := {{.TypeName}}(Extract{{.DeclType}}(args, index))
-		return &v
+		v := {{.TypeName}}(ObjectAs{{.DeclType}}(o, ""))
+		return &v, true
 	`
 
 var maybeImplicitlyConvert = template.Must(template.New("maybeImplicitlyConvert").Parse(maybeImplicitlyConvertTemplate[1:]))
@@ -502,62 +502,61 @@ func GenType(t string, ti TypeInfo) {
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
 
-	const goTemplate = `
-func %s(args []Object, index int) %s%s {
-	a := args[index]
-	switch o := a.(type) {
-	case GoObject:
-		switch r := o.O.(type) {
-%s%s		}
-	%s}
-	panic(RT.NewArgTypeError(index, a, "GoObject[%s]"))
-}
-`
-
 	const goExtractTemplate = `
 		case %s%s:
-			return r
+			return r, true
 `
 
 	const goExtractRefToTemplate = `
 		case %s:
-			return %sr  // refTo
+			return %sr, true  // refTo
 `
 
-	apiName := "Extract_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
+	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
+	ObjectAsApiName := "ObjectAs" + apiSuffix
+	ExtractApiName := "Extract" + apiSuffix
 
-	others := maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
+	info := map[string]string{}
 
-	goExtract := ""
-	goExtractRefTo := ""
+	info["ObjectAsApiName"] = ObjectAsApiName
+	info["ExtractApiName"] = ExtractApiName
+	info["TypeName"] = typeName
+
+	info["Others"] = maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
+
+	coerce := ""
+	coerceRefTo := ""
 	ptrTo := ""
 	refTo := ""
-
+	nilForType := fmt.Sprintf(ti.NilPattern(), typeName)
 	if ti.IsPassedByAddress() {
 		if ti.IsAddressable() {
+			nilForType = "nil"
 			ptrTo = "*"
 			refTo = "&"
 		}
-		goExtract = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
+		coerce = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
 	}
 	if ti.IsAddressable() {
-		goExtractRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
+		coerceRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
 	}
-	if goExtract == "" && goExtractRefTo == "" {
+	if coerce == "" && coerceRefTo == "" {
 		return // E.g. reflect_native.go's refToStringHeader
 	}
+	info["Coerce"] = coerce
+	info["CoerceRefTo"] = coerceRefTo
+	info["PtrTo"] = ptrTo
+	info["NilForType"] = nilForType
 
-	goc := fmt.Sprintf(goTemplate, apiName, ptrTo, typeName, goExtract, goExtractRefTo, others, t)
+	buf := new(bytes.Buffer)
+	Templates.ExecuteTemplate(buf, "go-coerce.tmpl", info)
 
-	goc = strings.ReplaceAll(goc, "{{myGoImport}}", myGoImport)
-
-	GoCodeForType[ti] = goc
+	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	apiFullName := pi.ClojureNameSpace + "/" + apiName
-	coreApis[apiFullName] = struct{}{}
-	//	fmt.Printf("codegen.go/GenType(): added API '%s'\n", apiFullName)
+	NewCoreApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
+	NewCoreApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
 }
 
 var Ctors = map[TypeInfo]string{}

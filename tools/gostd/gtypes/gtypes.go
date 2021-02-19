@@ -31,9 +31,10 @@ type Info struct {
 	Doc               string
 	DefPos            token.Pos
 	File              *godb.GoFile
-	Specificity       uint // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
-	IsNullable        bool // Can an instance of the type == nil (e.g. 'error' type)?
-	IsExported        bool // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
+	Specificity       uint   // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
+	NilPattern        string // 'nil%.0s' or e.g. '%s{}'
+	IsNullable        bool   // Can an instance of the type == nil (e.g. 'error' type)?
+	IsExported        bool   // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
 	IsSwitchable      bool // Can type's Go name be used in a "case" statement?
 	IsAddressable     bool // Is "&instance" going to pass muster, even with 'go vet'?
@@ -51,6 +52,10 @@ func getInfo(fullName string, nullable bool) *Info {
 		return info
 	}
 
+	nilPattern := "~~~%s-NOT-NILABLE!!~~~"
+	if nullable {
+		nilPattern = "nil%.0s"
+	}
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
@@ -58,6 +63,7 @@ func getInfo(fullName string, nullable bool) *Info {
 		Package:       "",
 		LocalName:     fullName,
 		DocPattern:    "%s",
+		NilPattern:    nilPattern,
 		IsNullable:    nullable,
 		IsExported:    true,
 		IsBuiltin:     true,
@@ -167,7 +173,7 @@ func insert(ti *Info) {
 	}
 }
 
-func finishVariant(fullName, pattern, docPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
+func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
 	ti := &Info{
 		Expr:              te,
 		FullName:          fullName,
@@ -181,6 +187,7 @@ func finishVariant(fullName, pattern, docPattern string, switchable, isPassedByA
 		DefPos:            innerInfo.DefPos,
 		UnderlyingType:    innerInfo,
 		Specificity:       Concrete,
+		NilPattern:        nilPattern,
 		IsSwitchable:      switchable && innerInfo.IsSwitchable,
 		IsAddressable:     innerInfo.IsAddressable,
 		IsPassedByAddress: isPassedByAddress,
@@ -211,16 +218,18 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types := []*Info{}
 
 	var specificity uint
-	var isPassedByAddress bool
-	var isArbitraryType bool
+	isPassedByAddress := false
+	isArbitraryType := false
+	isNullable := false
 	if pkg == "unsafe" && localName == "ArbitraryType" {
-		isPassedByAddress = false
 		isArbitraryType = true
 		specificity = 0
 	} else {
 		switch ts.Type.(type) {
 		case *InterfaceType:
+			isNullable = true
 		case *StarExpr:
+			isNullable = true
 		case *ArrayType:
 		default:
 			isPassedByAddress = true
@@ -230,6 +239,10 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	}
 
 	fullName := computeFullName("%s", pkg, localName)
+	nilPattern := "nil%.0s"
+	if !isNullable {
+		nilPattern = "%s{}"
+	}
 
 	ti := &Info{
 		Expr:              ts.Name,
@@ -246,6 +259,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		LocalName:         localName,
 		DocPattern:        "%s",
 		Specificity:       specificity,
+		NilPattern:        nilPattern,
 		IsSwitchable:      ts.Assign == token.NoPos,
 		IsAddressable:     isAddressable(pkg, localName),
 		IsPassedByAddress: isPassedByAddress,
@@ -273,6 +287,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			DocPattern:        newPattern,
 			UnderlyingType:    ti,
 			Specificity:       Concrete,
+			NilPattern:        "nil%.0s",
 			IsSwitchable:      ti.IsSwitchable,
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
@@ -297,6 +312,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			DocPattern:        newPattern,
 			UnderlyingType:    ti,
 			Specificity:       Concrete,
+			NilPattern:        "%s{}",
 			IsSwitchable:      ti.IsSwitchable,
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
@@ -342,6 +358,7 @@ func InfoForExpr(e Expr) *Info {
 			Package:           pkgName,
 			LocalName:         id.Name,
 			DocPattern:        "%s",
+			NilPattern:        "~~~%s-NEEDS-FIGURING-OUT~~~",
 			IsSwitchable:      true,
 			IsPassedByAddress: true,
 		}
@@ -358,6 +375,7 @@ func InfoForExpr(e Expr) *Info {
 	isSwitchable := true
 	isPassedByAddress := true
 	isExported := false
+	isNullable := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -368,6 +386,7 @@ func InfoForExpr(e Expr) *Info {
 		pkgName = innerInfo.Package
 		isPassedByAddress = false
 		isExported = innerInfo.IsExported
+		isNullable = true
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -390,6 +409,7 @@ func InfoForExpr(e Expr) *Info {
 			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 		isPassedByAddress = false
+		isNullable = true
 	case *MapType:
 		key := InfoForExpr(v.Key)
 		value := InfoForExpr(v.Value)
@@ -447,6 +467,7 @@ func InfoForExpr(e Expr) *Info {
 			DocPattern:        docPattern,
 			DefPos:            e.Pos(),
 			UnderlyingType:    innerInfo,
+			NilPattern:        "~~~%s-NEEDS-CLARITY~~~",
 			IsSwitchable:      isSwitchable,
 			IsPassedByAddress: isPassedByAddress,
 		}
@@ -466,7 +487,11 @@ func InfoForExpr(e Expr) *Info {
 		return variant
 	}
 
-	variant := finishVariant(fullName, pattern, docPattern, isSwitchable, isPassedByAddress, innerInfo, e)
+	nilPattern := "nil%.0s"
+	if !isNullable {
+		nilPattern = "%s{}"
+	}
+	variant := finishVariant(fullName, pattern, docPattern, nilPattern, isSwitchable, isPassedByAddress, innerInfo, e)
 	if isExported {
 		variant.IsExported = true
 		//		fmt.Printf("gtypes.go: %s (%p) is exportable\n", variant.FullName, variant)

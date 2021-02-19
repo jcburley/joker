@@ -1,0 +1,17 @@
+func {{.ObjectAsApiName}}(o Object) ({{.PtrTo}}{{.TypeName}}, bool) {
+	switch o := o.(type) {
+	case GoObject:
+		switch r := o.O.(type) {
+{{.Coerce}}{{.CoerceRefTo}}		}
+	{{.Others}}}
+	return {{.NilForType}}, false
+}
+
+func {{.ExtractApiName}}(args []Object, index int) {{.PtrTo}}{{.TypeName}} {
+	a := args[index]
+	if res, ok := {{.ObjectAsApiName}}(a); ok {
+		return res
+	}
+	panic(RT.NewArgTypeError(index, a, "GoObject[{{.TypeAsString}}]"))
+}
+
