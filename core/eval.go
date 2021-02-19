@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"strconv"
 	"strings"
 	"sync"
 	"unsafe"
@@ -437,7 +438,7 @@ func TryEval(expr Expr) (obj Object, err error) {
 			case *ExInfo:
 				err = r.(error)
 			default:
-				panic(fmt.Sprintf("Unrecoverable error %s handling %s", r, obj))
+				panic(fmt.Sprintf("Unrecoverable error %s handling %T:%+v", strconv.Quote(fmt.Sprintf("%s", r)), expr, expr))
 			}
 		}
 	}()
