@@ -426,20 +426,6 @@ func GenVariable(vi *VariableInfo) {
 	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
 }
 
-type MaybeImplicitlyConvertInfo struct {
-	ArgType  string
-	TypeName string
-	DeclType string
-}
-
-const maybeImplicitlyConvertTemplate = `
-case {{.ArgType}}:
-		v := {{.TypeName}}(ObjectAs{{.DeclType}}(o, ""))
-		return &v, true
-	`
-
-var maybeImplicitlyConvert = template.Must(template.New("maybeImplicitlyConvert").Parse(maybeImplicitlyConvertTemplate[1:]))
-
 func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string {
 	ts := ti.TypeSpec()
 	if ts == nil {
@@ -451,17 +437,23 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 		return ""
 	}
 
-	mic := MaybeImplicitlyConvertInfo{
-		ArgType:  t.ArgClojureType(),
-		TypeName: typeName,
-		DeclType: t.ArgExtractFunc(),
-	}
-	if mic.ArgType == "" || mic.DeclType == "" {
+	argType := t.ArgClojureType()
+	declType := t.ArgExtractFunc()
+	if argType == "" || declType == "" {
 		return ""
 	}
 
+	coerceApi := "ObjectAs" + declType
+
+	mic := map[string]string{
+		"ArgType":   argType,
+		"TypeName":  typeName,
+		"CoerceApi": coerceApi,
+	}
+
 	buf := new(bytes.Buffer)
-	maybeImplicitlyConvert.Execute(buf, mic)
+	Templates.ExecuteTemplate(buf, "go-implicit-convert.tmpl", mic)
+
 	return buf.String()
 }
 
