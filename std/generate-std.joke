@@ -471,7 +471,7 @@
 
 (def custom-namespaces (mapv (comp symbol #(rpl % "/" "."))
                              (sort (mapcat new-custom-namespaces-here
-                                           (try (walk-dirs "go")
+                                           (try (walk-dirs "gostd")
                                                 (catch Error e nil))))))
 
 (when (seq custom-namespaces)
