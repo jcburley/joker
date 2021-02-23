@@ -16,7 +16,7 @@ type Import struct {
 	Local         string // "foo", "_", or "."
 	Full          string // "bar/bletch/foo"
 	ClojurePrefix string // E.g. "go.std."
-	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/" (for other namespaces)
+	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/joker/std/gostd/go/std" (for other namespaces)
 	substituted   bool   // Had to substitute a different local name
 	Pos           token.Pos
 }
@@ -173,7 +173,7 @@ func (pi *Imports) QuotedList(prefix string) string {
 func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
 	pi.sort(func(k string, v *Import) {
-		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, v.PathPrefix+k))
+		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, path.Join(v.PathPrefix, k)))
 	})
 	return Join(imports, ", ")
 }

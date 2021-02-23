@@ -14,6 +14,7 @@ import (
 	"go/token"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -179,7 +180,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 		return ""
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
-	clojureStdPath := "github.com/candid82/joker/std/go/std/"
+	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
 
 	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
 	if curPkgName.String() == ti.GoPackage() {

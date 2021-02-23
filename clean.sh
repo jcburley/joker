@@ -5,10 +5,10 @@
 set -e  # Exit on error.
 
 rm -fr docs/go.std.* core/a_*_data.go
+rm -f g_* core/g_* core/data/g_*
+rm -fr std/gostd
 
 # Restore original versions of generated files so vanilla Joker can build.
-rm -f g_* core/g_* core/data/g_*
-rm -fr std/go
 cp core/go_templates/g_goswitch.gotemplate core/g_goswitch.go
 cp core/go_templates/g_customlibs.joketemplate core/data/g_customlibs.joke
 

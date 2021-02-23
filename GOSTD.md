@@ -465,7 +465,7 @@ user=>
 
 The version of `run.sh` on this branch invokes `tools/gostd/gostd` to create the `go.std...` namespaces, generate wrappers, and so on.
 
-Before building Joker by hand, one can optionally run the `gostd` tool against a Go source tree (the default is found via `go/build.Default.GOROOT`), which _must_ correspond to the version of Go used to build Joker itself (as it likely will). It contains a complete `src` subdirectory, which `gostd` walks and parses, in order to populate `std/go/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
+Before building Joker by hand, one can optionally run the `gostd` tool against a Go source tree (the default is found via `go/build.Default.GOROOT`), which _must_ correspond to the version of Go used to build Joker itself (as it likely will). It contains a complete `src` subdirectory, which `gostd` walks and parses, in order to populate `std/gostd/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
 This is still a work in progress; for example, `net.LookupMX()` returns a vector including a `GoObject` wrapping a `[]*net.MX` object, which is not yet itself fully itself as a type, but can be examined. E.g.:
 
@@ -519,17 +519,6 @@ user=> (get m :Host)
 user=>
 ```
 
-You can run `gostd` standalone like this:
-
-```
-$ cd tools/gostd
-$ go run . --output-code 2>&1 | less
-```
-
-Then page through the output. Code snippets intended for e.g. `std/go/std/net.joke` are printed to `stdout`, making iteration (during development of this tool) much easier. Specify `--joker <joker-source-directory>` (typically `--joker .`) to get all the individual `*.joke` and `*.go` files in `<dir>/std/go/`, along with modifications to `<dir>/custom.go`, `<dir>/core/data/core.joke`, and `<dir>/std/generate-std.joke`.
-
-Most anything not supported results in either a `panic` or, more often, the string `ABEND` along with some kind of explanation. The latter is used to auto-detect a non-convertible function, in which case the snippet(s) are still output, but commented-out, so it's easy to see what's missing and (perhaps) why.
-
 Among things to do to "productize" this:
 
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
@@ -545,22 +534,14 @@ A handful of tests (assertions) can be found in `tests/eval/go-objects.joke`. Th
 
 ### Run gostd Tests
 
-The `test.sh` script in `joker/tools/gostd/` runs tests against a small, then larger, then full, copy of Go 1.11's `golang/go/src/` tree. Invoke `test.sh` either with no options, or with `--on-error :` to run the `:` (`true`) command when it detects an error (the default being `exit 99`).
-
-E.g.:
+The `test.sh` script in `joker/tools/gostd/` runs tests against the full copy of Go's `golang/go/src/` tree. E.g.:
 
 ```
 $ ./test.sh
 $
 ```
 
-The script currently runs tests in this order:
-
-1. `_tests/small`
-2. `_tests/big`
-3. `build.Default.GOROOT`
-
-After each test it runs, it uses `git diff` to compare the resulting `.gold` file with the checked-out version and, if there are any differences, it runs the command specified via `--on-error` (again, the default is `exit 99`, so the script will exit as soon as it sees a failing test).
+After running the test, it uses `git diff` to compare the resulting `gosrc.gold` file with the checked-out version.
 
 ### Update Tests on Other Machines
 
@@ -609,7 +590,7 @@ $
 
 After building the `gostd` branch, numerous additional files will have been created, and several existing files (in the source distribution, including generated files) will have been modified.
 
-Restore them via:
+Clean these out (essentially resetting to the base state) via:
 
 ```
 $ ./cleanup.sh
@@ -617,14 +598,22 @@ $ ./cleanup.sh
 
 This should result in `git` showing no differences (tracked nor untracked files) if only `gostd` has made changes to the source tree. If Joker hadn't previously been successfully built, there'll be a diagnostic; but the result should still be a "cleaned" tree.
 
+When switching away from a `gostd` to a non-`gostd` branch (such as `master`), do this before attempting to build:
+
+```
+rm -fv g_* core/g_* core/data/g_*
+rm -fr std/gostd
+```
+
+That'll clean out the files left over from running `gostd`, which a non-`gostd` branch won't know how to clean up but which will likely get caught up in a subsequent `go build` command, leading to build errors. (There might still be numerous files left over in `docs/`, but those won't disturb a fresh build.)
+
 ### Caching of Core-API Information
 
 To ease development, `gostd` dynamically determines the list of exported functions in Joker's `core` package, and avoids generating calls to unlisted functions. This helps to catch missing APIs earlier in the development process (mainly, while building and testing `gostd` in isolation, versus requiring a build of Joker itself).
 
-The resulting list is cached in `./core-apis.dat`, and reused by `./test.sh` for the second and third tests, to save time (which amounts to a substantial portion of the time it takes to build and test `gostd`).
+The resulting list is cached in `./core-apis.dat`, though currently not reused by `./test.sh` to save time (which amounts to a substantial portion of the time it takes to build and test `gostd`).
 
 As building Joker takes enough longer to make this caching less useful, `run.sh` deletes the cache prior to each build.
-
 
 ### Caching of Working Joker Version
 

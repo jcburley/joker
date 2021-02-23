@@ -50,7 +50,7 @@ func writeCustomLibsGo(pkgs []string, dir, f string) {
 	}
 
 	newImports := ""
-	importPrefix := "\t_ \"github.com/candid82/joker/std/go/std/"
+	importPrefix := "\t_ \"github.com/candid82/joker/" + importStdRoot + "/"
 	for _, p := range pkgs {
 		newImports += importPrefix + p + "\"\n"
 	}
@@ -107,15 +107,15 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", true, token.NoPos) + "."
 		}
 		cases = append(cases, map[string]interface{}{
-			"match":       fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()),
+			"match": fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()),
 			"specificity": func() uint {
 				if specificity != ConcreteType {
 					return specificity
 				} else {
-					return 0  // These won't occur here (if they did, no comment would be emitted).
+					return 0 // These won't occur here (if they did, no comment would be emitted).
 				}
 			}(),
-			"ordinal":     Ordinal[t],
+			"ordinal": Ordinal[t],
 		})
 	}
 

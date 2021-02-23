@@ -39,6 +39,8 @@ func Check(err error) {
 }
 
 var goPath string
+var jokerStdRoot = filepath.Join("std", "gostd", "go", "std") // Relative to --output dir.
+var importStdRoot = filepath.ToSlash(jokerStdRoot)            // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
 
 func notOption(arg string) bool {
 	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
@@ -55,7 +57,7 @@ Options:
   --output <new-code-dir>     # Modify pertinent source files here to reflect packages being created (default: ".")
   --joker <joker-dir>         # Where to find the core/ directory with the APIs that generated Joker code may thus call (default: <new-code-dir>)
   --overwrite                 # Overwrite any existing <new-code-dir> files, leaving existing files intact
-  --replace                   # 'rm -fr <new-code-dir>/std/go' before creating <new-code-dir>
+  --replace                   # 'rm -fr <new-code-dir>/std/gostd' before creating <new-code-dir>
   --fresh                     # (Default) Refuse to overwrite existing <new-code-dir> directory
   --import-from <dir>         # Override <joker-dir> with <dir> for use in generated import decls (default: <joker-dir>)
   --verbose, -v               # Print info on what's going on
@@ -209,7 +211,7 @@ func main() {
 					i += 1 // shift
 					outputDir = os.Args[i]
 				} else {
-					fmt.Fprintf(os.Stderr, "missing path after --clojure option\n")
+					fmt.Fprintf(os.Stderr, "missing path after --output option\n")
 					os.Exit(1)
 				}
 			case "--import-from":
@@ -286,8 +288,12 @@ func main() {
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
 		fmt.Printf("goPath: %s\n", goPath)
-		fmt.Printf("importDir: %s\n", godb.ClojureSourceDir)
+		fmt.Printf("ClojureSourceDir: %s\n", godb.ClojureSourceDir)
+		fmt.Printf("outputDir: %s\n", outputDir)
+		fmt.Printf("clojureImportDir: %s\n", clojureImportDir)
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
+		fmt.Printf("jokerStdRoot: %s\n", jokerStdRoot)
+		fmt.Printf("importStdRoot: %s\n", importStdRoot)
 		for _, o := range otherSourceDirs {
 			fmt.Printf("other: %s\n", o)
 		}
@@ -304,7 +310,7 @@ func main() {
 
 	outputGoStdDir := ""
 	if outputDir != "" {
-		outputGoStdDir = filepath.Join(outputDir, "std", "go", "std")
+		outputGoStdDir = filepath.Join(outputDir, jokerStdRoot)
 		if replace {
 			if e := os.RemoveAll(outputGoStdDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", outputGoStdDir)
