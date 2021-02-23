@@ -15,7 +15,8 @@
 (defn debug
   [& args]
   (when ((os/env) "JOKER_DEBUG_STD")
-    (apply println args)))
+    (apply println args))
+  (get args 0))
 
 (debug "Preloaded:" preloaded)
 
@@ -333,6 +334,7 @@
 
 (defn generate-ns
   [ns-sym ns-name ns-name-final]
+  (debug ns-sym)
   (let [ns (find-ns ns-sym)
         m (meta ns)
         go-non-fns (sort-by first (ns-public-go-non-fns ns))
@@ -442,7 +444,19 @@
       (spit (ns-file-name-fast-init dir ns-name-final)
            (remove-blanky-lines (generate-ns-fast-init ns-sym ns-name ns-name-final))))))
 
-;;; Handle "custom" (gostd-generated) namespaces.
+;;; Handle "custom" (gostd-generated) namespaces.  These are placed in
+;;; std/gostd/ ("gostd" is specified once, as the value for the
+;;; `custom-dir` variable), which nicely segregates them, but which
+;;; also complicates this script somewhat. In particular, the "gostd"
+;;; pathname prefix must be removed when inferring namespaces, and it
+;;; must be restored when loading .joke files and when writing .go
+;;; files.
+
+(def custom-dir "gostd")
+
+(defn drop-first-component
+  [path]
+  (get (s/split path #"/" 2) 1))
 
 (defn new-custom-namespaces-here
   [dir]
@@ -452,7 +466,7 @@
        (filter #(s/ends-with? % ".joke"))
        (map #(rpl % #"[.]joke$" ""))
        (map symbol)
-       (map #(str dir "/" %))))
+       (map #(str (drop-first-component dir) "/" %))))
 
 (defn find-dirs
   [dir]
@@ -471,15 +485,18 @@
 
 (def custom-namespaces (mapv (comp symbol #(rpl % "/" "."))
                              (sort (mapcat new-custom-namespaces-here
-                                           (try (walk-dirs "gostd")
+                                           (try (walk-dirs custom-dir)
                                                 (catch Error e nil))))))
 
+(debug custom-namespaces)
+
 (when (seq custom-namespaces)
-  (apply require :reload custom-namespaces))
+  (binding [joker.core/*classpath* [(str (os/cwd) "/" custom-dir "/")]]
+    (apply require :reload custom-namespaces)))
 
 (doseq [ns-sym custom-namespaces]
   (let [ns-name (str ns-sym)
-        dir (rpl ns-name "." "/")
+        dir (str custom-dir "/" (rpl ns-name "." "/"))
         ns-name-final (rpl ns-name #".*[.]" "")
         pre (preloaded (joker-ize ns-sym))]
     (debug "Processing custom namespace" ns-name "in" dir "final name" ns-name-final)
