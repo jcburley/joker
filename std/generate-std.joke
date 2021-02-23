@@ -98,7 +98,7 @@
   [m ns-name imports]
   (let [fulltype (str (:tag m))]
     (if (s/includes? fulltype "/")
-      (let [spl (s/split fulltype #"/")
+      (let [spl (s/split fulltype "/")
             pkg (spl 0)
             t (spl 1)
             t (cond-> t
@@ -456,7 +456,7 @@
 
 (defn drop-first-component
   [path]
-  (get (s/split path #"/" 2) 1))
+  (get (s/split path "/" 2) 1))
 
 (defn new-custom-namespaces-here
   [dir]
