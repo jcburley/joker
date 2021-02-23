@@ -95,23 +95,28 @@ type (
 	}
 	Double struct {
 		InfoHolder
-		D float64
+		D        float64
+		Original string
 	}
 	Int struct {
 		InfoHolder
-		I int
+		I        int
+		Original string
 	}
 	BigInt struct {
 		InfoHolder
-		b big.Int
+		b        big.Int
+		Original string
 	}
 	BigFloat struct {
 		InfoHolder
-		b big.Float
+		b        big.Float
+		Original string
 	}
 	Ratio struct {
 		InfoHolder
-		r big.Rat
+		r        big.Rat
+		Original string
 	}
 	Boolean struct {
 		InfoHolder
@@ -1112,6 +1117,9 @@ func MakeNumber(n interface{}) *BigInt {
 }
 
 func (bi *BigInt) ToString(escape bool) string {
+	if FORMAT_MODE && bi.Original != "" {
+		return bi.Original
+	}
 	return bi.b.String() + "N"
 }
 
@@ -1137,6 +1145,9 @@ func (bi *BigInt) ValueOf() reflect.Value {
 }
 
 func (bf *BigFloat) ToString(escape bool) string {
+	if FORMAT_MODE && bf.Original != "" {
+		return bf.Original
+	}
 	b := bf.b
 	if b.IsInf() {
 		if b.Signbit() {
@@ -1394,6 +1405,9 @@ func MakeDouble(d float64) Double {
 }
 
 func (d Double) ToString(escape bool) string {
+	if FORMAT_MODE && d.Original != "" {
+		return d.Original
+	}
 	dbl := d.D
 	if math.IsInf(dbl, 1) {
 		return "##Inf"
@@ -1404,14 +1418,11 @@ func (d Double) ToString(escape bool) string {
 	if math.IsNaN(dbl) {
 		return "##NaN"
 	}
-	res := fmt.Sprintf("%f", dbl)
-	var i int
-	for i = len(res) - 1; res[i] == '0'; i-- {
+	res := fmt.Sprintf("%g", dbl)
+	if strings.ContainsAny(res, ".e") {
+		return res
 	}
-	if res[i] == '.' {
-		return res[0 : i+2]
-	}
-	return res[0 : i+1]
+	return res + ".0"
 }
 
 func (d Double) Equals(other interface{}) bool {
@@ -1444,11 +1455,18 @@ func (d Double) Compare(other Object) int {
 }
 
 func (i Int) ToString(escape bool) string {
+	if FORMAT_MODE && i.Original != "" {
+		return i.Original
+	}
 	return fmt.Sprintf("%d", i.I)
 }
 
 func MakeInt(i int) Int {
 	return Int{I: i}
+}
+
+func MakeIntWithOriginal(orig string, i int) Int {
+	return Int{I: i, Original: orig}
 }
 
 func (i Int) Equals(other interface{}) bool {
