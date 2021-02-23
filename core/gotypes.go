@@ -194,7 +194,7 @@ func FieldAsNumber(o Map, k string) Number {
 	return res
 }
 
-func ObjectAsint8(obj Object, pattern string) int8 {
+func ObjectAsInt8(obj Object, pattern string) int8 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt8 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int8")))
@@ -336,7 +336,7 @@ func FieldAsUint64(o Map, k string) uint64 {
 	return FieldAsNumber(o, k).BigInt().Uint64()
 }
 
-func ObjectAsUintptr(obj Object, pattern string) uintptr {
+func ObjectAsUintPtr(obj Object, pattern string) uintptr {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if uint64(uintptr(v)) != v {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(v, 10)+" out of range for uintptr")))
@@ -567,6 +567,18 @@ func ExtractarrayOfByte(args []Object, index int) []byte {
 		}
 	}
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]byte]"))
+}
+
+func ReceiverArgAsarrayOfByte(rcvr, name string, args *ArraySeq, n int) []byte {
+	a := SeqNth(args, n)
+	if g, good := a.(GoObject); good {
+		res, ok := g.O.([]byte)
+		if ok {
+			return res
+		}
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s must be type GoObject[[]byte], but is %T",
+		n, name, rcvr, a)))
 }
 
 func Extractarray4OfByte(args []Object, index int) [4]byte {
