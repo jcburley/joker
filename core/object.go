@@ -1851,6 +1851,11 @@ func IsSymbol(obj Object) bool {
 	}
 }
 
+func IsKeyword(obj Object) bool {
+	_, ok := obj.(Keyword)
+	return ok
+}
+
 func IsVector(obj Object) bool {
 	switch obj.(type) {
 	case *Vector:

@@ -35,6 +35,7 @@ var (
 	PROBLEM_COUNT      = 0
 	DIALECT       Dialect
 	LINTER_CONFIG *Var
+	SUPPRESS_READ bool = false
 )
 
 var (
@@ -167,8 +168,24 @@ func readSpecialCharacter(reader *Reader, ending string, r rune) Object {
 	return MakeReadObject(reader, Char{Ch: r})
 }
 
+func isJavaSpace(r rune) bool {
+	switch r {
+	case ' ', '\t', '\n', '\r': // Listed here purely for speed of common cases
+		return true
+	case 0xa0 /*&nbsp;*/, 0x85 /*NEL*/, 0x2007 /*&numsp;*/, 0x202f /*narrow non-break space*/ :
+		return false
+	case 0x1c /*FS*/, 0x1d /*GS*/, 0x1e /*RS*/, 0x1f /*US*/ :
+		return true
+	default:
+		if r > unicode.MaxLatin1 && unicode.In(r, unicode.Zl, unicode.Zp, unicode.Zs) {
+			return true
+		}
+	}
+	return unicode.IsSpace(r)
+}
+
 func isWhitespace(r rune) bool {
-	return unicode.IsSpace(r) || r == ','
+	return isJavaSpace(r) || r == ','
 }
 
 func readComment(reader *Reader) Object {
@@ -387,18 +404,16 @@ func readNumber(reader *Reader) Object {
 	return scanInt(str, str, 0, reader)
 }
 
-func isSymbolInitial(r rune) bool {
-	switch r {
-	case '*', '+', '!', '-', '_', '?', ':', '=', '<', '>', '&', '%', '$', '|':
-		return true
-	case '.':
-		return DIALECT != CLJS
-	}
-	return unicode.IsLetter(r) || r > 255
-}
-
+/* Returns whether the rune may be a non-initial character in a symbol
+/* name. */
 func isSymbolRune(r rune) bool {
-	return isSymbolInitial(r) || unicode.IsDigit(r) || r == '#' || r == '/' || r == '\'' || r == '.'
+	switch r {
+	case '"', ';', '@', '^', '`', '~', '(', ')', '[', ']', '{', '}', '\\', ',', ' ', '\t', '\n', '\r', EOF:
+		// Whitespace listed above (' ', '\t', '\n', '\r') purely for speed of common cases
+
+		return false
+	}
+	return !isJavaSpace(r)
 }
 
 func readSymbol(reader *Reader, first rune) Object {
@@ -555,6 +570,75 @@ func readString(reader *Reader) Object {
 		r = reader.Get()
 	}
 	return MakeReadObject(reader, String{S: b.String()})
+}
+
+func readMulti(reader *Reader, previouslyRead []Object) (Object, []Object) {
+	if len(previouslyRead) == 0 {
+		obj, multi := Read(reader)
+		if multi {
+			v := obj.(*Vector)
+			for i := 0; i < v.Count(); i++ {
+				previouslyRead = append(previouslyRead, v.at(i))
+			}
+		} else {
+			return obj, previouslyRead
+		}
+	}
+	obj := previouslyRead[len(previouslyRead)-1]
+	previouslyRead = previouslyRead[0 : len(previouslyRead)-1]
+	return obj, previouslyRead
+}
+
+func readError(reader *Reader, msg string) {
+	if LINTER_MODE {
+		printReadError(reader, msg)
+	} else {
+		panic(MakeReadError(reader, msg))
+	}
+}
+
+func readCondList(reader *Reader) Object {
+	previousSuppressRead := SUPPRESS_READ
+	defer func() {
+		SUPPRESS_READ = previousSuppressRead
+	}()
+
+	var forms []Object
+	eatWhitespace(reader)
+	r := reader.Peek()
+	var res Object = nil
+	for r != ')' || len(forms) != 0 {
+		if res == nil {
+			feature, forms := readMulti(reader, forms)
+			if feature.Equals(KEYWORDS.none) || feature.Equals(KEYWORDS.else_) {
+				panic(MakeReadError(reader, "Feature name "+feature.ToString(false)+" is reserved"))
+			}
+			if !IsKeyword(feature) {
+				panic(MakeReadError(reader, "Feature should be a keyword"))
+			}
+			eatWhitespace(reader)
+			if len(forms) == 0 && reader.Peek() == ')' {
+				reader.Get()
+				readError(reader, "Reader conditional requires an even number of forms")
+				return feature
+			}
+			if ok, _ := GLOBAL_ENV.Features.Get(feature); ok {
+				res, forms = readMulti(reader, forms)
+			} else {
+				SUPPRESS_READ = true
+				_, forms = readMulti(reader, forms)
+				SUPPRESS_READ = false
+			}
+		} else {
+			SUPPRESS_READ = true
+			_, forms = readMulti(reader, forms)
+			SUPPRESS_READ = false
+		}
+		eatWhitespace(reader)
+		r = reader.Peek()
+	}
+	reader.Get()
+	return res
 }
 
 func readList(reader *Reader) Object {
@@ -906,6 +990,9 @@ func filename(f *string) string {
 }
 
 func handleNoReaderError(reader *Reader, s Symbol) Object {
+	if SUPPRESS_READ {
+		return readFirst(reader)
+	}
 	if LINTER_MODE {
 		if DIALECT != EDN {
 			printReadWarning(reader, "No reader function for tag "+s.ToString(false))
@@ -952,8 +1039,8 @@ func readConditional(reader *Reader) (Object, bool) {
 	if r != '(' {
 		panic(MakeReadError(reader, "Reader conditional body must be a list"))
 	}
-	cond := readList(reader).(*List)
 	if FORMAT_MODE {
+		cond := readList(reader).(*List)
 		if isSplicing {
 			addPrefix(cond, "#?@")
 		} else {
@@ -961,34 +1048,19 @@ func readConditional(reader *Reader) (Object, bool) {
 		}
 		return cond, false
 	}
-	if cond.count%2 != 0 {
-		if LINTER_MODE {
-			printReadError(reader, "Reader conditional requires an even number of forms")
-		} else {
-			panic(MakeReadError(reader, "Reader conditional requires an even number of forms"))
-		}
+	v := readCondList(reader)
+	if v == nil {
+		return EmptyVector(), true
 	}
-	for cond.count > 0 {
-		if ok, _ := GLOBAL_ENV.Features.Get(cond.first); ok {
-			v := Second(cond)
-			if isSplicing {
-				s, ok := v.(Seqable)
-				if !ok {
-					msg := "Spliced form in reader conditional must be Seqable, got " + v.GetType().ToString(false)
-					if LINTER_MODE {
-						printReadError(reader, msg)
-						return EmptyVector(), true
-					} else {
-						panic(MakeReadError(reader, msg))
-					}
-				}
-				return NewVectorFromSeq(s.Seq()), true
-			}
-			return v, false
+	if isSplicing {
+		s, ok := v.(Seqable)
+		if !ok {
+			readError(reader, "Spliced form in reader conditional must be Seqable, got "+v.GetType().ToString(false))
+			return EmptyVector(), true
 		}
-		cond = cond.rest.rest
+		return DeriveReadObject(v, NewVectorFromSeq(s.Seq())), true
 	}
-	return EmptyVector(), true
+	return v, false
 }
 
 func namespacedMapPrefix(auto bool, nsSym Object) string {
@@ -1208,8 +1280,6 @@ func Read(reader *Reader) (Object, bool) {
 			return readSymbol(reader, r), false
 		}
 		return readArgSymbol(reader), false
-	case isSymbolInitial(r):
-		return readSymbol(reader, r), false
 	case r == '"':
 		return readString(reader), false
 	case r == '(':
@@ -1273,8 +1343,9 @@ func Read(reader *Reader) (Object, bool) {
 		return readDispatch(reader)
 	case r == EOF:
 		panic(MakeReadError(reader, "Unexpected end of file"))
+	default:
+		return readSymbol(reader, r), false
 	}
-	panic(MakeReadError(reader, fmt.Sprintf("Unexpected %c", r)))
 }
 
 func TryRead(reader *Reader) (obj Object, err error) {
@@ -1293,7 +1364,10 @@ func TryRead(reader *Reader) (obj Object, err error) {
 		if !multi {
 			return obj, nil
 		}
-		if obj.(*Vector).Count() > 0 {
+		// Check for obj's info to distinguish between
+		// legitimate empty vector as read from the source
+		// and surrogate value that means "no object was read".
+		if obj.GetInfo() != nil {
 			PROBLEM_COUNT++
 			return NIL, MakeReadError(reader, "Reader conditional splicing not allowed at the top level.")
 		}
