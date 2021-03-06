@@ -10,6 +10,7 @@ import (
 	. "go/ast"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -133,7 +134,8 @@ type ArityInfo struct {
 }
 
 const receiverArityTemplate = `
-	{{.ArgList}}CheckReceiverArity("{{.DocName}}", args, {{.Min}}, {{.Max}})
+	const myName = {{.DocName}}
+	{{.ArgList}}CheckReceiverArity(myName, args, {{.Min}}, {{.Max}})
 	`
 
 var receiverArity = template.Must(template.New("receiverArity").Parse(receiverArityTemplate[1:]))
@@ -167,7 +169,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	}
 	ai := ArityInfo{
 		ArgList: maybeAssignArgList,
-		DocName: fn.DocName,
+		DocName: strconv.Quote(fn.DocName),
 		Min:     min,
 		Max:     max,
 	}
