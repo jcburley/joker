@@ -23,10 +23,10 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
 
-	if clType != "" {
-		clType = assertRuntime("Extract", "Extract_ns_", clType)
-	}
 	if fn.Fd == nil || fn.Fd.Recv != nil {
+		if clType != "" {
+			clType = assertRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", clType)
+		}
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
 			cvt = fmt.Sprintf("%%s.(GoObject).O.(%s)%%.s", goType)
@@ -38,6 +38,10 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 			fmt.Sprintf(cvt,
 				"SeqNth(_argList, "+argNumAsString+")",
 				strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
+	} else {
+		if clType != "" {
+			clType = assertRuntime("Extract", "Extract_ns_", clType)
+		}
 	}
 	if ti.IsPassedByAddress() {
 		cl2golParam = "*" + paramName

@@ -228,6 +228,14 @@ func FieldAsInt16(o Map, k string) int16 {
 	return int16(v)
 }
 
+func ReceiverArgAsUint16(rcvr, name string, args *ArraySeq, n int) uint16 {
+	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
+	if v > math.MaxUint16 || v < 0 {
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint16"))
+	}
+	return uint16(v)
+}
+
 func ObjectAsInt32(obj Object, pattern string) int32 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt32 {
@@ -255,7 +263,7 @@ func FieldAsInt32(o Map, k string) int32 {
 
 func ObjectAsUint8(obj Object, pattern string) uint8 {
 	v := EnsureObjectIsInt(obj, pattern).I
-	if v > math.MaxUint8 {
+	if v > math.MaxUint8 || v < 0 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint8")))
 	}
 	return uint8(v)
@@ -272,7 +280,7 @@ func FieldAsUint8(o Map, k string) uint8 {
 
 func ObjectAsUint16(obj Object, pattern string) uint16 {
 	v := EnsureObjectIsInt(obj, pattern).I
-	if v > math.MaxUint16 {
+	if v > math.MaxUint16 || v < 0 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint16")))
 	}
 	return uint16(v)
@@ -365,6 +373,16 @@ func FieldAsDouble(o Map, k string) float64 {
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Double, but is %T",
 			k, v)))
+	}
+	return res.D
+}
+
+func ReceiverArgAsDouble(rcvr, name string, args *ArraySeq, n int) float64 {
+	a := SeqNth(args, n)
+	res, ok := a.(Double)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %T",
+			n, name, rcvr, a)))
 	}
 	return res.D
 }
@@ -465,6 +483,16 @@ func FieldAsGoObject(o Map, k string) interface{} {
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject, but is %T",
 			k, v)))
+	}
+	return res.O
+}
+
+func ReceiverArgAsGoObject(rcvr, name string, args *ArraySeq, n int) interface{} {
+	a := SeqNth(args, n)
+	res, ok := a.(GoObject)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject, but is %T",
+			n, name, rcvr, a)))
 	}
 	return res.O
 }
@@ -617,6 +645,19 @@ func ExtractarrayOfarray32OfByte(args []Object, index int) [][32]byte {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[][32]byte]"))
 }
 
+func ReceiverArgAsarrayOfarray32OfByte(rcvr, name string, args *ArraySeq, n int) [][32]byte {
+	a := SeqNth(args, n)
+	switch obj := a.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [][32]byte:
+			return g
+		}
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][32]byte], but is %T",
+		n, name, rcvr, a)))
+}
+
 func ConvertToarrayOfByte(o Object) []byte {
 	switch obj := o.(type) {
 	case String:
@@ -659,6 +700,19 @@ func ExtractarrayOfInt(args []Object, index int) []int {
 		}
 	}
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]int]"))
+}
+
+func ReceiverArgAsarrayOfInt(rcvr, name string, args *ArraySeq, n int) []int {
+	a := SeqNth(args, n)
+	switch obj := a.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []int:
+			return g
+		}
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %T",
+		n, name, rcvr, a)))
 }
 
 func ConvertToarrayOfInt(o Object) []int {
@@ -751,6 +805,19 @@ func ExtractarrayOfString(args []Object, index int) []string {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
 }
 
+func ReceiverArgAsarrayOfString(rcvr, name string, args *ArraySeq, n int) []string {
+	a := SeqNth(args, n)
+	switch obj := a.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case []string:
+			return g
+		}
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[]string], but is %T",
+		n, name, rcvr, a)))
+}
+
 func ExtractarrayOfarrayOfString(args []Object, index int) [][]string {
 	o := args[index]
 	switch obj := o.(type) {
@@ -761,6 +828,19 @@ func ExtractarrayOfarrayOfString(args []Object, index int) [][]string {
 		}
 	}
 	panic(RT.NewArgTypeError(index, o, "GoObject[[][]string]"))
+}
+
+func ReceiverArgAsarrayOfarrayOfString(rcvr, name string, args *ArraySeq, n int) [][]string {
+	a := SeqNth(args, n)
+	switch obj := a.(type) {
+	case Native:
+		switch g := obj.Native().(type) {
+		case [][]string:
+			return g
+		}
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][]string], but is %T",
+		n, name, rcvr, a)))
 }
 
 func ConvertToarrayOfString(o Object) []string {

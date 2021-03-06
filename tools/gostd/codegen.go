@@ -511,11 +511,13 @@ func GenType(t string, ti TypeInfo) {
 	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
 	ObjectAsApiName := "ObjectAs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
+	ReceiverApiName := "ReceiverArgAs" + apiSuffix
 
 	info := map[string]string{}
 
 	info["ObjectAsApiName"] = ObjectAsApiName
 	info["ExtractApiName"] = ExtractApiName
+	info["ReceiverApiName"] = ReceiverApiName
 	info["TypeName"] = typeName
 	info["TypeAsString"] = t
 
@@ -553,6 +555,7 @@ func GenType(t string, ti TypeInfo) {
 
 	NewCoreApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
 	NewCoreApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
+	NewCoreApi(pi.ClojureNameSpace+"/"+ReceiverApiName, "codegen.go/GenType()")
 }
 
 var Ctors = map[TypeInfo]string{}

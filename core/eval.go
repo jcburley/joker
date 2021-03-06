@@ -60,6 +60,10 @@ func (rt *Runtime) NewArgTypeError(index int, obj Object, expectedType string) *
 	return rt.NewError(fmt.Sprintf("Arg[%d] of %s must have type %s, got %s", index, name, expectedType, obj.GetType().ToString(false)))
 }
 
+func (rt *Runtime) NewReceiverArgTypeError(index int, name, rcvr string, obj Object, expectedType string) *EvalError {
+	return rt.NewError(fmt.Sprintf("Arg[%d] (%s) of %s must have type %s, got %s", index, name, rcvr, expectedType, obj.GetType().ToString(false)))
+}
+
 func (rt *Runtime) NewErrorWithPos(msg string, pos Position) *EvalError {
 	return &EvalError{
 		msg: msg,
