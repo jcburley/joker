@@ -201,7 +201,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 
 	apiPkgPath := path.Join(godb.ClojureSourceDir, importStdRoot, ReplaceAll(clType[0:ix], ".", "/"))
 	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
-	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
+	//	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
