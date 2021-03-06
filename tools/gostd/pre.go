@@ -9,8 +9,9 @@ import (
 	"strings"
 )
 
-func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
+func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, resExpr string) {
 	ti := TypeInfoForExpr(e)
+	resExpr = paramName
 
 	pkgBaseName := fn.AddToImports(ti)
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
@@ -43,7 +44,10 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 		}
 	}
 	if ti.IsPassedByAddress() {
-		cl2golParam = "*" + paramName
+		if ti.IsAddressable() {
+			cl2golParam = "*" + paramName
+			resExpr = "*" + resExpr
+		}
 	} else {
 		cl2golParam = paramName
 	}
@@ -68,7 +72,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 			resVar = "_v_" + p.Name
 			resVarDoc = p.Name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, resExpr := genTypePre(fn, indent, field.Field.Type, resVar, argNum)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -117,7 +121,7 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 		if goParams != "" {
 			goParams += ", "
 		}
-		goParams += genutils.ParamNameAsGo(resVar)
+		goParams += genutils.ParamNameAsGo(resExpr)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"
