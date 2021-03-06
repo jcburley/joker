@@ -51,13 +51,14 @@ func FileAt(p token.Pos) string {
 }
 
 type mapping struct {
-	prefix  paths.UnixPath // E.g. "/home/user/go/src"
-	cljRoot string         // E.g. "go.std."
+	prefix   paths.UnixPath // E.g. "/home/user/go/src"
+	cljRoot  string         // E.g. "go.std."
+	importMe string         // E.g. "github.com/candid82/joker/std/gostd/go/std/"
 }
 
 var mappings = []mapping{}
 
-func AddMapping(dirNative paths.NativePath, root string) {
+func AddMapping(dirNative paths.NativePath, root, importMe string) {
 	dir := dirNative.ToUnix()
 	dirString := dir.String()
 	for _, m := range mappings {
@@ -65,22 +66,22 @@ func AddMapping(dirNative paths.NativePath, root string) {
 			panic(fmt.Sprintf("duplicate mapping %s and %s", dirString, m.prefix))
 		}
 	}
-	mappings = append(mappings, mapping{dir, root})
+	mappings = append(mappings, mapping{dir, root, importMe})
 }
 
-func goPackageForDirname(dirName string) (pkg, prefix string) {
+func goPackageForDirname(dirName string) (pkg, prefix, importMe string) {
 	for _, m := range mappings {
 		if HasPrefix(dirName, m.prefix.String()) {
-			return dirName[len(m.prefix.String())+1:], m.cljRoot
+			return dirName[len(m.prefix.String())+1:], m.cljRoot, m.importMe
 		}
 	}
-	return "", mappings[0].cljRoot
+	return "", mappings[0].cljRoot, ""
 }
 
 func GoFilenameForPos(p token.Pos) string {
 	fn := Fset.Position(p).Filename
 	dirName := filepath.ToSlash(filepath.Dir(fn))
-	pkg, _ := goPackageForDirname(dirName)
+	pkg, _, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s", dirName))
 	}
@@ -100,7 +101,7 @@ func GoFilenameForTypeSpec(ts *TypeSpec) string {
 
 func GoPackageForPos(p token.Pos) string {
 	dirName := path.Dir(filepath.ToSlash(Fset.Position(p).Filename))
-	pkg, _ := goPackageForDirname(dirName)
+	pkg, _, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s", dirName))
 	}
@@ -120,7 +121,7 @@ func GoPackageForTypeSpec(ts *TypeSpec) string {
 
 func ClojureNamespaceForPos(p token.Position) string {
 	dirName := path.Dir(filepath.ToSlash(p.Filename))
-	pkg, root := goPackageForDirname(dirName)
+	pkg, root, _ := goPackageForDirname(dirName)
 	if pkg == "" {
 		panic(fmt.Sprintf("no mapping for %s given %s", dirName, filepath.ToSlash(p.Filename)))
 	}
@@ -135,7 +136,7 @@ func ClojureNamespaceForExpr(e Expr) string {
 }
 
 func ClojureNamespaceForDirname(d string) string {
-	pkg, root := goPackageForDirname(d)
+	pkg, root, _ := goPackageForDirname(d)
 	if pkg == "" {
 		pkg = root + d
 	}
@@ -145,7 +146,7 @@ func ClojureNamespaceForDirname(d string) string {
 func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
 	if fullPkgName, found := (*g.Spaces)[pkg]; found {
 		f := fullPkgName.String()
-		p, root := goPackageForDirname(f)
+		p, root, _ := goPackageForDirname(f)
 		if p == "" {
 			p = root + f
 		}
@@ -165,6 +166,7 @@ type PackageDb struct {
 	Dir      paths.UnixPath
 	BaseName string
 	NsRoot   string // "go.std." or whatever is desired as the root namespace
+	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
 	decls    map[string]DeclInfo
 }
 
@@ -226,13 +228,13 @@ func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node N
 	(*decls)[name.Name] = DeclInfo{name.Name, node, name.NamePos}
 }
 
-func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot string, pkg *Package) {
+func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
 	if _, found := packagesByUnixPath[pkgDirUnix.String()]; found {
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
 	decls := map[string]DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, importMe, decls}
 
 	for p, f := range pkg.Files {
 		absFilePathUnix := paths.NewNativePath(p).ToUnix()
@@ -345,7 +347,7 @@ func init() {
 	decls := map[string]DeclInfo{}
 	decls["error"] = decl
 
-	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", decls}
+	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb
 
 	astutils.WhereAt = WhereAt

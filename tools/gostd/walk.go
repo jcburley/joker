@@ -201,7 +201,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 
 	apiPkgPath := path.Join(godb.ClojureSourceDir, importStdRoot, ReplaceAll(clType[0:ix], ".", "/"))
 	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
-	if apiPkgPath == clojureStdPath {
+	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
 
@@ -917,7 +917,7 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFun
 	}
 }
 
-func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
+func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMe string) error {
 	pkgDirNative, ok := pathNative.RelativeTo(rootNative)
 	if !ok {
 		panic(fmt.Sprintf("%s is not relative to %s", pathNative, rootNative))
@@ -963,7 +963,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot string) error {
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, v)
+			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, importMe, v)
 			found = true
 		}
 	}
@@ -992,7 +992,7 @@ func LegitimateImport(p string) bool {
 	return true
 }
 
-func walkDir(fsRoot paths.NativePath, nsRoot string) error {
+func walkDir(fsRoot paths.NativePath, nsRoot, importMe string) error {
 	target, err := fsRoot.EvalSymlinks()
 	Check(err)
 
@@ -1016,7 +1016,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 				return paths.SkipDir
 			}
 			if info.IsDir() {
-				return processDir(fsRoot, relNative, nsRoot)
+				return processDir(fsRoot, relNative, nsRoot, importMe)
 			}
 			return nil // not a directory
 		})
@@ -1031,15 +1031,16 @@ func walkDir(fsRoot paths.NativePath, nsRoot string) error {
 }
 
 type dirToWalk struct {
-	srcDir paths.NativePath
-	fsRoot paths.NativePath
-	nsRoot string
+	srcDir   paths.NativePath
+	fsRoot   paths.NativePath
+	nsRoot   string
+	importMe string
 }
 
 var dirsToWalk []dirToWalk
 
-func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot string) {
-	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot})
+func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
+	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot, importMe})
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
@@ -1055,7 +1056,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 	}()
 
 	for _, d := range dirsToWalk {
-		err := walkDir(d.fsRoot, d.nsRoot)
+		err := walkDir(d.fsRoot, d.nsRoot, d.importMe)
 		if err != nil {
 			return err, d.srcDir
 		}

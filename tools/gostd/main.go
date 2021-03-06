@@ -41,7 +41,10 @@ func Check(err error) {
 var goPath string
 var jokerStdRoot = filepath.Join("std", "gostd")   // Relative to --output dir.
 var importStdRoot = filepath.ToSlash(jokerStdRoot) // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
+
 const goStdPrefix = "go/std/"
+
+var goNsPrefix = strings.ReplaceAll(goStdPrefix, "/", ".")
 
 var generatedPkgPrefix string
 
@@ -342,14 +345,15 @@ func main() {
 		}
 	}
 
-	godb.AddMapping(goRootSrc, "go.std.")
+	importMe := filepath.Join(generatedPkgPrefix, goStdPrefix)
+	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
 	root := goRootSrc.Join(".")
-	AddWalkDir(goRootSrc, root, "go.std.")
+	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
 
 	for _, o := range otherSourceDirs {
 		op := paths.NewNativePath(o)
 		root := op.Join(".")
-		AddWalkDir(op, root, "x.y.z.")
+		AddWalkDir(op, root, "x.y.z.", filepath.Join(generatedPkgPrefix, "x/y/z/"))
 	}
 
 	err, badDir := WalkAllDirs()
