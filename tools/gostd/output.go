@@ -297,7 +297,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 				return
 			}
 			ctor := ""
-			if c, found := Ctors[ti]; found && c[0] != '/' {
+			if c, found := Ctors[ti]; found {
 				ctor = c
 			}
 			if t == "crypto.Hash" {

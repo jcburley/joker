@@ -1,0 +1,13 @@
+{{/* -*- mode: go -*- */ -}}
+
+{{.HelperFunc}}func {{.CtorName}}(_v Object) {{.PtrTo}}{{.TypeName}} {
+	switch _o := _v.(type) {
+	{{.Cases}}
+	}
+	panic(RT.NewArgTypeError(0, _v, "{{.Expected}}"))
+}
+
+func {{.WrappedCtorName}}(_o Object) Object {
+	return MakeGoObject({{.CtorName}}(_o))
+}
+

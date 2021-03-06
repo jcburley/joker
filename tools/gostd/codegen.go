@@ -547,31 +547,6 @@ func GenType(t string, ti TypeInfo) {
 var Ctors = map[TypeInfo]string{}
 var CtorNames = map[TypeInfo]string{}
 
-type GoCtorInfo struct {
-	HelperFunc      string
-	CtorName        string
-	WrappedCtorName string
-	PtrTo           string
-	TypeName        string
-	Cases           string
-	Expected        string
-}
-
-const goCtorTemplate = `
-{{.HelperFunc}}func {{.CtorName}}(_v Object) {{.PtrTo}}{{.TypeName}} {
-	switch _o := _v.(type) {
-	{{.Cases}}
-	}
-	panic(RT.NewArgTypeError(0, _v, "{{.Expected}}"))
-}
-
-func {{.WrappedCtorName}}(_o Object) Object {
-	return MakeGoObject({{.CtorName}}(_o))
-}
-`
-
-var goCtor = template.Must(template.New("goCtor").Parse(goCtorTemplate))
-
 func genCtor(tyi TypeInfo) {
 	if !tyi.Custom() || !tyi.IsAddressable() {
 		return
@@ -589,17 +564,18 @@ func genCtor(tyi TypeInfo) {
 
 	possibleObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tyi, typeName, localTypeName)
 
-	goCtorInfo := GoCtorInfo{
-		HelperFunc:      helperFunc,
-		CtorName:        ctorApiName,
-		WrappedCtorName: wrappedCtorApiName,
-		PtrTo:           ptrTo,
-		TypeName:        typeName,
-		Cases:           possibleObject,
-		Expected:        expectedObjectDoc,
+	goCtorInfo := map[string]string{
+		"HelperFunc":      helperFunc,
+		"CtorName":        ctorApiName,
+		"WrappedCtorName": wrappedCtorApiName,
+		"PtrTo":           ptrTo,
+		"TypeName":        typeName,
+		"Cases":           possibleObject,
+		"Expected":        expectedObjectDoc,
 	}
+
 	buf := new(bytes.Buffer)
-	goCtor.Execute(buf, goCtorInfo)
+	Templates.ExecuteTemplate(buf, "go-ctor.tmpl", goCtorInfo)
 	goConstructor := buf.String()
 
 	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
@@ -618,7 +594,7 @@ func genCtor(tyi TypeInfo) {
 
 	Ctors[tyi] = goConstructor
 
-	//	fmt.Printf("codegen.go/genCtor: %s %+v\n", tyi, tyi.ClojureTypeInfo())
+	//	fmt.Printf("codegen.go/genCtor: %s\n%s\n", tyi.GoName(), goConstructor)
 }
 
 func appendMethods(ti TypeInfo, iface *InterfaceType) {
