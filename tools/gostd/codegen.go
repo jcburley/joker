@@ -430,7 +430,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	coerceApi := "ObjectAs" + declType
-	if _, ok := coreApis[coerceApi]; !ok {
+	if _, ok := definedApis[coerceApi]; !ok {
 		return "" // Not implemented
 	}
 
@@ -539,9 +539,9 @@ func GenType(t string, ti TypeInfo) {
 	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	NewCoreApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
-	NewCoreApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
-	NewCoreApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
 var Ctors = map[TypeInfo]string{}

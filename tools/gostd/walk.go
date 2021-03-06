@@ -1140,7 +1140,7 @@ func assertRuntime(prefix, nsPrefix, s string) string {
 	if Contains(runtime, "ABEND") {
 		return s
 	}
-	if _, found := coreApis[runtime]; !found {
+	if _, found := definedApis[runtime]; !found {
 		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, s)
 	}
 	return s
@@ -1164,7 +1164,7 @@ func determineRuntime(prefix, nsPrefix, imp, clType string) string {
 	if Contains(runtime, "ABEND") {
 		return runtime
 	}
-	if _, found := coreApis[runtime]; !found {
+	if _, found := definedApis[runtime]; !found {
 		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, clType)
 	}
 	return call

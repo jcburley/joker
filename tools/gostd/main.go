@@ -93,7 +93,7 @@ func listOfOthers(other string) (others []string) {
 }
 
 var coreApiFilename = "core-apis.dat"
-var coreApis = map[string]struct{}{}
+var definedApis = map[string]struct{}{}
 
 func readCoreApiFile(src string) {
 	start := getCPU()
@@ -111,8 +111,8 @@ func readCoreApiFile(src string) {
 		}
 
 		coreDir := paths.NewNativePath(src).Join("core")
-		coreApis = findApis(coreDir)
-		if len(coreApis) == 0 {
+		definedApis = findApis(coreDir)
+		if len(definedApis) == 0 {
 			panic(fmt.Sprintf("no APIs found at %s", coreDir))
 		}
 
@@ -122,20 +122,20 @@ func readCoreApiFile(src string) {
 		f, err = os.Create(coreApiFilename)
 		Check(err)
 		enc := gob.NewEncoder(f)
-		err = enc.Encode(coreApis)
+		err = enc.Encode(definedApis)
 		Check(err)
 		return
 	}
 	Check(err)
 	dec := gob.NewDecoder(f)
-	err = dec.Decode(&coreApis)
+	err = dec.Decode(&definedApis)
 	Check(err)
-	//	fmt.Printf("Core APIs: %+v\n", coreApis)
+	//	fmt.Printf("Core APIs: %+v\n", definedApis)
 }
 
-func NewCoreApi(api, src string) {
-	coreApis[api] = struct{}{}
-	//	fmt.Printf("%s: added API '%s'\n", src, api)
+func NewDefinedApi(api, src string) {
+	definedApis[api] = struct{}{}
+	//	fmt.Printf("%s: Defined API '%s'\n", src, api)
 }
 
 var Templates *template.Template
