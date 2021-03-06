@@ -104,7 +104,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", true, token.NoPos) + "."
+			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", "", true, token.NoPos) + "."
 		}
 		cases = append(cases, map[string]interface{}{
 			"match": fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()),

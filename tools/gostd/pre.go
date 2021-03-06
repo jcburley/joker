@@ -24,20 +24,19 @@ func genTypePre(fn *FuncInfo, indent string, e Expr, paramName string, argNum in
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
 
 	if fn.Fd == nil || fn.Fd.Recv != nil {
-		if clType != "" {
-			clType = assertRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", clType)
-		}
+		apiImportName := fn.AddApiToImports(clType)
 		cvt := ti.ConvertFromClojure()
 		if cvt == "" {
-			cvt = fmt.Sprintf("%%s.(GoObject).O.(%s)%%.s", goType)
+			api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+			goPreCode = fmt.Sprintf("%s := %s(%q, %q, _argList, %d)", paramName, api, "[RCVR]", paramName, argNum)
 		} else {
 			cvt = assertRuntime("", "", cvt)
+			argNumAsString := strconv.Itoa(argNum)
+			goPreCode = paramName + " := " +
+				fmt.Sprintf(cvt,
+					"SeqNth(_argList, "+argNumAsString+")",
+					strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
 		}
-		argNumAsString := strconv.Itoa(argNum)
-		goPreCode = paramName + " := " +
-			fmt.Sprintf(cvt,
-				"SeqNth(_argList, "+argNumAsString+")",
-				strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
 	} else {
 		if clType != "" {
 			clType = assertRuntime("Extract", "Extract_ns_", clType)

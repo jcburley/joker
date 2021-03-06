@@ -17,6 +17,7 @@ type Import struct {
 	Full          string // "bar/bletch/foo"
 	ClojurePrefix string // E.g. "go.std."
 	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/joker/std/gostd/go/std" (for other namespaces)
+	Suffix        string // E.g. "_gostd" (for APIs generated in *_native.go files)
 	substituted   bool   // Had to substitute a different local name
 	Pos           token.Pos
 }
@@ -32,12 +33,12 @@ type Imports struct {
 // agrees with any existing entry and isn't already used, trying
 // alternate local names as necessary, add the mapping if necessary,
 // and return the local name.
-func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix string, okToSubstitute bool, pos token.Pos) string {
+func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, okToSubstitute bool, pos token.Pos) string {
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
 	}
 
-	local := path.Base(full)
+	local := path.Base(full) + suffix
 
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
@@ -79,7 +80,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix string, okToSubsti
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, substituted, pos}
+	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, substituted, pos}
 
 	return local
 }
@@ -110,7 +111,7 @@ func (imports *Imports) InternPackage(full, nsPrefix, pathPrefix string, pos tok
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, false, pos}
+	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", false, pos}
 }
 
 func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
@@ -180,6 +181,6 @@ func (pi *Imports) AsClojureMap() string {
 
 func (to *Imports) Promote(from *Imports, pos token.Pos) {
 	for _, imp := range from.FullNames {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, pos)
+		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, imp.Suffix, false, pos)
 	}
 }

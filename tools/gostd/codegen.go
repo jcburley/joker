@@ -247,7 +247,7 @@ func GenReceiver(fn *FuncInfo) {
 		im := PackagesInfo[pkgDirUnix].ImportsNative
 		im.Promote(fn.ImportsNative, fn.Pos)
 		im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
-		myGoImport := im.AddPackage(pkgDirUnix, "", "", true, fn.Pos)
+		myGoImport := im.AddPackage(pkgDirUnix, "", "", "", true, fn.Pos)
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
 			NumFunctions++
@@ -385,12 +385,12 @@ func GenStandalone(fn *FuncInfo) {
 		if clojureReturnType == "" {
 			im := pi.ImportsNative
 			im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
-			myGoImport := im.AddPackage(pkgDirUnix, "", "", true, fn.Pos)
+			myGoImport := im.AddPackage(pkgDirUnix, "", "", "", true, fn.Pos)
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			im.Promote(fn.ImportsNative, fn.Pos)
 		} else {
 			// No Go code needs to be generated when a return type is explicitly specified.
-			pi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.NsRoot, "", false, fn.Pos)
+			pi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.NsRoot, "", "", false, fn.Pos)
 		}
 		pi.ImportsAutoGen.Promote(fn.ImportsAutoGen, fn.Pos)
 	}
@@ -408,7 +408,7 @@ func GenConstant(ci *ConstantInfo) {
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, ci.SourceFile.Package.NsRoot, "", true, ci.Name.NamePos)
+	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, ci.SourceFile.Package.NsRoot, "", "", true, ci.Name.NamePos)
 	ci.Def = strings.ReplaceAll(ci.Def, "{{myGoImport}}", myGoImport)
 
 	ClojureCode[pkgDirUnix].Constants[ci.Name.Name] = ci
@@ -420,7 +420,7 @@ func GenVariable(vi *VariableInfo) {
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, vi.SourceFile.Package.NsRoot, "", true, vi.Name.NamePos)
+	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, vi.SourceFile.Package.NsRoot, "", "", true, vi.Name.NamePos)
 	vi.Def = strings.ReplaceAll(vi.Def, "{{myGoImport}}", myGoImport)
 
 	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
@@ -492,7 +492,7 @@ func GenType(t string, ti TypeInfo) {
 	where := ts.Pos()
 
 	pi.ImportsNative.InternPackage(godb.ClojureCoreDir, "", "", where)
-	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", true, where)
+	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", "", true, where)
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -624,7 +624,7 @@ func genCtor(tyi TypeInfo) {
 	} else {
 		pi := PackagesInfo[pkgDirUnix]
 		pi.ImportsNative.Promote(tyi.RequiredImports(), tyi.DefPos())
-		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", true, tyi.DefPos())
+		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", "", true, tyi.DefPos())
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
 		NumGeneratedCtors++
@@ -898,7 +898,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
 	to := ti.RequiredImports()
 	for _, imp := range importeds {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, false, imp.Pos)
+		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, "", false, imp.Pos)
 	}
 }
 

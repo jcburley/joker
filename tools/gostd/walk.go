@@ -182,14 +182,32 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
 	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot, goStdPrefix)
 
-	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
+	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
 	if curPkgName.String() == ti.GoPackage() {
 		return native
 	}
-	autoGen := fn.ImportsAutoGen.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
+	autoGen := fn.ImportsAutoGen.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
 	if native != autoGen {
 		panic(fmt.Sprintf("disagreement over '%s': native='%s' autoGen='%s'", exprPkgName, native, autoGen))
 	}
+	return native
+}
+
+func (fn *FuncInfo) AddApiToImports(clType string) string {
+	ix := Index(clType, "/")
+	if ix < 0 {
+		return "" // builtin type (api is in core)
+	}
+
+	apiPkgPath := path.Join(godb.ClojureSourceDir, importStdRoot, ReplaceAll(clType[0:ix], ".", "/"))
+	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
+	if apiPkgPath == clojureStdPath {
+		return "" // api is local to function
+	}
+
+	clojureStdNs := fn.SourceFile.Package.NsRoot
+	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, fn.Pos)
+
 	return native
 }
 
@@ -1123,4 +1141,25 @@ func assertRuntime(prefix, nsPrefix, s string) string {
 		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, s)
 	}
 	return s
+}
+
+// Determines (and validates) the API to call (in context), given the
+// full Clojure typename (e.g. "go.std.something/Foo" or
+// "arrayOfByte"), the import base name, and choice of prefixes.
+func determineRuntime(prefix, nsPrefix, imp, clType string) string {
+	var runtime, call string
+	if ix := Index(clType, "/"); ix >= 0 {
+		runtime = clType[0:ix+1] + nsPrefix + clType[ix+1:]
+		call = imp + "." + nsPrefix + clType[ix+1:]
+	} else {
+		runtime = prefix + clType
+		call = runtime
+	}
+	if Contains(runtime, "ABEND") {
+		return runtime
+	}
+	if _, found := coreApis[runtime]; !found {
+		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, clType)
+	}
+	return call
 }
