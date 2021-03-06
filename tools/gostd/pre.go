@@ -140,6 +140,70 @@ func genGoPre(fn *FuncInfo, indent string, fl *FieldList, goFname string) (cloju
 	return
 }
 
+func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goPreCode, resExpr string) {
+	ti := TypeInfoForExpr(e)
+	resExpr = paramName
+
+	clType := ti.ClojureEffectiveName()
+
+	if fn.Fd == nil || fn.Fd.Recv != nil {
+		apiImportName := fn.AddApiToImports(clType)
+		cvt := ti.ConvertFromClojure()
+		if cvt == "" {
+			api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+			goPreCode = fmt.Sprintf("%s := %s(%q, %q, _argList, %d)", paramName, api, "[RCVR]", paramName, argNum)
+		} else {
+			cvt = assertRuntime("", "", cvt)
+			argNumAsString := strconv.Itoa(argNum)
+			goPreCode = paramName + " := " +
+				fmt.Sprintf(cvt,
+					"SeqNth(_argList, "+argNumAsString+")",
+					strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
+		}
+	} else {
+		if clType != "" {
+			clType = assertRuntime("Extract", "Extract_ns_", clType)
+		}
+	}
+	if ti.IsPassedByAddress() && ti.IsAddressable() {
+		resExpr = "*" + resExpr
+	}
+
+	return
+}
+
+func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
+	if fn.Ft.Params == nil {
+		return
+	}
+	fields := astutils.FlattenFieldList(fn.Ft.Params)
+	for argNum, field := range fields {
+		p := field.Name
+		resVar := ""
+		if p == nil {
+			resVar = genutils.GenSym("__arg")
+		} else {
+			resVar = "_v_" + p.Name
+		}
+		preCode, resExpr := genTypePreReceiver(fn, field.Field.Type, resVar, argNum)
+
+		if preCode != "" {
+			if goPreCode != "" {
+				goPreCode += "\n\t"
+			}
+			goPreCode += preCode
+		}
+
+		if goParams != "" {
+			goParams += ", "
+		}
+		goParams += genutils.ParamNameAsGo(resExpr)
+	}
+	min = len(fields)
+	max = len(fields)
+	return
+}
+
 func paramsAsSymbolVec(fl *FieldList) string {
 	genutils.GenSymReset()
 	fields := astutils.FlattenFieldList(fl)

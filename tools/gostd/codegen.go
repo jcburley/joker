@@ -139,22 +139,7 @@ const receiverArityTemplate = `
 var receiverArity = template.Must(template.New("receiverArity").Parse(receiverArityTemplate[1:]))
 
 func genReceiverCode(fn *FuncInfo, goFname string) string {
-	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, _, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
-	if strings.Contains(paramListDoc, "ABEND") {
-		return paramListDoc
-	}
-	if strings.Contains(paramList, "ABEND") {
-		return paramList
-	}
-	if strings.Contains(cljParamListDoc, "ABEND") {
-		return cljParamListDoc
-	}
-	if strings.Contains(cljParamList, "ABEND") {
-		return cljParamList
-	}
-	if strings.Contains(cljGoParams, "ABEND") {
-		return cljGoParams
-	}
+	preCode, params, min, max := genGoPreReceiver(fn)
 
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
