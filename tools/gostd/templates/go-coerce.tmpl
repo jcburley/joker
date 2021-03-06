@@ -15,7 +15,7 @@ func {{.ExtractApiName}}(args []Object, index int) {{.PtrTo}}{{.TypeName}} {
 	panic(RT.NewArgTypeError(index, a, "GoObject[{{.TypeAsString}}]"))
 }
 
-func {{.ReceiverArgAsApiName}}(rcvr, name string, args *ArraySeq, n int) {{.PtrTo}}{{.TypeName}} {
+func {{.ReceiverArgAsApiName}}(name, rcvr string, args *ArraySeq, n int) {{.PtrTo}}{{.TypeName}} {
 	a := SeqNth(args, n)
 	if res, ok := {{.ObjectAsApiName}}(a); ok {
 		return res

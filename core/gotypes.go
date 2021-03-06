@@ -75,7 +75,7 @@ func ObjectAsBoolean(obj Object, pattern string) bool {
 	return EnsureObjectIsBoolean(obj, pattern).B
 }
 
-func ReceiverArgAsBoolean(rcvr, name string, args *ArraySeq, n int) bool {
+func ReceiverArgAsBoolean(name, rcvr string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
 	if !ok {
@@ -102,7 +102,7 @@ func ObjectAsInt(obj Object, pattern string) int {
 	return EnsureObjectIsInt(obj, pattern).I
 }
 
-func ReceiverArgAsInt(rcvr, name string, args *ArraySeq, n int) int {
+func ReceiverArgAsInt(name, rcvr string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
 	if !ok {
@@ -129,8 +129,8 @@ func ObjectAsUint(obj Object, pattern string) uint {
 	return uint(v)
 }
 
-func ReceiverArgAsUint(rcvr, name string, args *ArraySeq, n int) uint {
-	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint(name, rcvr string, args *ArraySeq, n int) uint {
+	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
 	}
@@ -154,8 +154,8 @@ func ObjectAsByte(obj Object, pattern string) byte {
 	return byte(v)
 }
 
-func ReceiverArgAsByte(rcvr, name string, args *ArraySeq, n int) byte {
-	v := ReceiverArgAsInt(rcvr, name, args, n)
+func ReceiverArgAsByte(name, rcvr string, args *ArraySeq, n int) byte {
+	v := ReceiverArgAsInt(name, rcvr, args, n)
 	if v < 0 || v > 255 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "byte"))
 	}
@@ -171,7 +171,7 @@ func FieldAsByte(o Map, k string) byte {
 	return byte(v)
 }
 
-func ReceiverArgAsNumber(rcvr, name string, args *ArraySeq, n int) Number {
+func ReceiverArgAsNumber(name, rcvr string, args *ArraySeq, n int) Number {
 	a := SeqNth(args, n)
 	res, ok := a.(Number)
 	if !ok {
@@ -228,8 +228,8 @@ func FieldAsInt16(o Map, k string) int16 {
 	return int16(v)
 }
 
-func ReceiverArgAsUint16(rcvr, name string, args *ArraySeq, n int) uint16 {
-	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
+func ReceiverArgAsUint16(name, rcvr string, args *ArraySeq, n int) uint16 {
+	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 	if v > math.MaxUint16 || v < 0 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint16"))
 	}
@@ -244,8 +244,8 @@ func ObjectAsInt32(obj Object, pattern string) int32 {
 	return int32(v)
 }
 
-func ReceiverArgAsInt32(rcvr, name string, args *ArraySeq, n int) int32 {
-	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
+func ReceiverArgAsInt32(name, rcvr string, args *ArraySeq, n int) int32 {
+	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 	if v > math.MaxInt32 || v < math.MinInt32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "int32"))
 	}
@@ -303,8 +303,8 @@ func ObjectAsUint32(obj Object, pattern string) uint32 {
 	return uint32(v)
 }
 
-func ReceiverArgAsUint32(rcvr, name string, args *ArraySeq, n int) uint32 {
-	v := ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint32(name, rcvr string, args *ArraySeq, n int) uint32 {
+	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint32"))
 	}
@@ -320,8 +320,8 @@ func FieldAsUint32(o Map, k string) uint32 {
 	return uint32(v)
 }
 
-func ReceiverArgAsInt64(rcvr, name string, args *ArraySeq, n int) int64 {
-	return ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Int64()
+func ReceiverArgAsInt64(name, rcvr string, args *ArraySeq, n int) int64 {
+	return ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 }
 
 func ObjectAsInt64(obj Object, pattern string) int64 {
@@ -336,8 +336,8 @@ func ObjectAsUint64(obj Object, pattern string) uint64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 }
 
-func ReceiverArgAsUint64(rcvr, name string, args *ArraySeq, n int) uint64 {
-	return ReceiverArgAsNumber(rcvr, name, args, n).BigInt().Uint64()
+func ReceiverArgAsUint64(name, rcvr string, args *ArraySeq, n int) uint64 {
+	return ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 }
 
 func FieldAsUint64(o Map, k string) uint64 {
@@ -352,8 +352,8 @@ func ObjectAsUintPtr(obj Object, pattern string) uintptr {
 	return uintptr(v)
 }
 
-func ReceiverArgAsUintPtr(rcvr, name string, args *ArraySeq, n int) uintptr {
-	return uintptr(ReceiverArgAsUint64(rcvr, name, args, n))
+func ReceiverArgAsUintPtr(name, rcvr string, args *ArraySeq, n int) uintptr {
+	return uintptr(ReceiverArgAsUint64(name, rcvr, args, n))
 }
 
 func FieldAsUintPtr(o Map, k string) uintptr {
@@ -377,7 +377,7 @@ func FieldAsDouble(o Map, k string) float64 {
 	return res.D
 }
 
-func ReceiverArgAsDouble(rcvr, name string, args *ArraySeq, n int) float64 {
+func ReceiverArgAsDouble(name, rcvr string, args *ArraySeq, n int) float64 {
 	a := SeqNth(args, n)
 	res, ok := a.(Double)
 	if !ok {
@@ -391,7 +391,7 @@ func ObjectAsChar(obj Object, pattern string) rune {
 	return EnsureObjectIsChar(obj, pattern).Ch
 }
 
-func ReceiverArgAsChar(rcvr, name string, args *ArraySeq, n int) rune {
+func ReceiverArgAsChar(name, rcvr string, args *ArraySeq, n int) rune {
 	a := SeqNth(args, n)
 	res, ok := a.(Char)
 	if !ok {
@@ -418,7 +418,7 @@ func ObjectAsString(obj Object, pattern string) string {
 	return EnsureObjectIsString(obj, pattern).S
 }
 
-func ReceiverArgAsString(rcvr, name string, args *ArraySeq, n int) string {
+func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
 	if !ok {
@@ -445,7 +445,7 @@ func ObjectAsError(obj Object, pattern string) error {
 	return EnsureObjectIsError(obj, pattern)
 }
 
-func ReceiverArgAsError(rcvr, name string, args *ArraySeq, n int) error {
+func ReceiverArgAsError(name, rcvr string, args *ArraySeq, n int) error {
 	a := SeqNth(args, n)
 	if s, ok := a.(String); ok {
 		return errors.New(s.S)
@@ -487,7 +487,7 @@ func FieldAsGoObject(o Map, k string) interface{} {
 	return res.O
 }
 
-func ReceiverArgAsGoObject(rcvr, name string, args *ArraySeq, n int) interface{} {
+func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
 	a := SeqNth(args, n)
 	res, ok := a.(GoObject)
 	if !ok {
@@ -597,7 +597,7 @@ func ExtractarrayOfByte(args []Object, index int) []byte {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]byte]"))
 }
 
-func ReceiverArgAsarrayOfByte(rcvr, name string, args *ArraySeq, n int) []byte {
+func ReceiverArgAsarrayOfByte(name, rcvr string, args *ArraySeq, n int) []byte {
 	a := SeqNth(args, n)
 	if g, good := a.(GoObject); good {
 		res, ok := g.O.([]byte)
@@ -645,7 +645,7 @@ func ExtractarrayOfarray32OfByte(args []Object, index int) [][32]byte {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[][32]byte]"))
 }
 
-func ReceiverArgAsarrayOfarray32OfByte(rcvr, name string, args *ArraySeq, n int) [][32]byte {
+func ReceiverArgAsarrayOfarray32OfByte(name, rcvr string, args *ArraySeq, n int) [][32]byte {
 	a := SeqNth(args, n)
 	switch obj := a.(type) {
 	case Native:
@@ -702,7 +702,7 @@ func ExtractarrayOfInt(args []Object, index int) []int {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]int]"))
 }
 
-func ReceiverArgAsarrayOfInt(rcvr, name string, args *ArraySeq, n int) []int {
+func ReceiverArgAsarrayOfInt(name, rcvr string, args *ArraySeq, n int) []int {
 	a := SeqNth(args, n)
 	switch obj := a.(type) {
 	case Native:
@@ -805,7 +805,7 @@ func ExtractarrayOfString(args []Object, index int) []string {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
 }
 
-func ReceiverArgAsarrayOfString(rcvr, name string, args *ArraySeq, n int) []string {
+func ReceiverArgAsarrayOfString(name, rcvr string, args *ArraySeq, n int) []string {
 	a := SeqNth(args, n)
 	switch obj := a.(type) {
 	case Native:
@@ -830,7 +830,7 @@ func ExtractarrayOfarrayOfString(args []Object, index int) [][]string {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[][]string]"))
 }
 
-func ReceiverArgAsarrayOfarrayOfString(rcvr, name string, args *ArraySeq, n int) [][]string {
+func ReceiverArgAsarrayOfarrayOfString(name, rcvr string, args *ArraySeq, n int) [][]string {
 	a := SeqNth(args, n)
 	switch obj := a.(type) {
 	case Native:
