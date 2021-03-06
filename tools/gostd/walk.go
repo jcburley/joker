@@ -201,6 +201,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 
 	apiPkgPath := path.Join(godb.ClojureSourceDir, importStdRoot, ReplaceAll(clType[0:ix], ".", "/"))
 	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
+	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
@@ -917,15 +918,16 @@ func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFun
 	}
 }
 
-func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMe string) error {
+func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMeRoot string) error {
 	pkgDirNative, ok := pathNative.RelativeTo(rootNative)
 	if !ok {
 		panic(fmt.Sprintf("%s is not relative to %s", pathNative, rootNative))
 	}
 	pkgDirUnix := pkgDirNative.ToUnix()
 	if godb.Verbose {
-		genutils.AddSortedStdout(fmt.Sprintf("Processing %s:\n", pkgDirNative.ToUnix()))
+		genutils.AddSortedStdout(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
+	importMe := filepath.Join(importMeRoot, pkgDirUnix.String())
 
 	pkgs, err := parser.ParseDir(godb.Fset, pathNative.String(),
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."
@@ -992,7 +994,7 @@ func LegitimateImport(p string) bool {
 	return true
 }
 
-func walkDir(fsRoot paths.NativePath, nsRoot, importMe string) error {
+func walkDir(fsRoot paths.NativePath, nsRoot, importMeRoot string) error {
 	target, err := fsRoot.EvalSymlinks()
 	Check(err)
 
@@ -1016,7 +1018,7 @@ func walkDir(fsRoot paths.NativePath, nsRoot, importMe string) error {
 				return paths.SkipDir
 			}
 			if info.IsDir() {
-				return processDir(fsRoot, relNative, nsRoot, importMe)
+				return processDir(fsRoot, relNative, nsRoot, importMeRoot)
 			}
 			return nil // not a directory
 		})
@@ -1151,7 +1153,10 @@ func determineRuntime(prefix, nsPrefix, imp, clType string) string {
 	var runtime, call string
 	if ix := Index(clType, "/"); ix >= 0 {
 		runtime = clType[0:ix+1] + nsPrefix + clType[ix+1:]
-		call = imp + "." + nsPrefix + clType[ix+1:]
+		if imp != "" {
+			imp += "."
+		}
+		call = imp + nsPrefix + clType[ix+1:]
 	} else {
 		runtime = prefix + clType
 		call = runtime
