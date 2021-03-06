@@ -110,7 +110,7 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
-	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _ =
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams, _, _, _ =
 		genGoPre(fn, "\t", t.Params, goFname)
 	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
 	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
@@ -139,7 +139,7 @@ const receiverArityTemplate = `
 var receiverArity = template.Must(template.New("receiverArity").Parse(receiverArityTemplate[1:]))
 
 func genReceiverCode(fn *FuncInfo, goFname string) string {
-	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
+	cljParamList, cljParamListDoc, cljGoParams, paramList, paramListDoc, preCode, _, params, min, max := genGoPre(fn, "\t", fn.Ft.Params, goFname)
 	if strings.Contains(paramListDoc, "ABEND") {
 		return paramListDoc
 	}
