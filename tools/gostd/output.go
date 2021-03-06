@@ -50,9 +50,9 @@ func writeCustomLibsGo(pkgs []string, dir, f string) {
 	}
 
 	newImports := ""
-	importPrefix := "\t_ \"github.com/candid82/joker/" + importStdRoot + "/" + goStdPrefix
+	importPrefix := "\t_ "
 	for _, p := range pkgs {
-		newImports += importPrefix + p + "\"\n"
+		newImports += importPrefix + fmt.Sprintf("%q\n", generatedPkgPrefix+goStdPrefix+p)
 	}
 
 	buf := new(bytes.Buffer)

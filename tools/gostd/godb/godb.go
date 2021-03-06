@@ -14,10 +14,10 @@ import (
 )
 
 // Root of Clojure source tree for generated import lines (so, using Unix path syntax).
-var ClojureSourceDir = "github.com/candid82/joker"
+var ClojureSourceDir string
 
 // Clojure source tree's core directory for generated import lines (so, using Unix path syntax).
-var ClojureCoreDir = path.Join(ClojureSourceDir, "core")
+var ClojureCoreDir string
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
 // import lines to the given host-syntax path, with the local path

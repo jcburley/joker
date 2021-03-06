@@ -43,6 +43,8 @@ var jokerStdRoot = filepath.Join("std", "gostd")   // Relative to --output dir.
 var importStdRoot = filepath.ToSlash(jokerStdRoot) // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
 const goStdPrefix = "go/std/"
 
+var generatedPkgPrefix string
+
 func notOption(arg string) bool {
 	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
 }
@@ -285,6 +287,7 @@ func main() {
 	}
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
+	generatedPkgPrefix = godb.ClojureSourceDir + "/" + importStdRoot + "/"
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
@@ -295,6 +298,7 @@ func main() {
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
 		fmt.Printf("jokerStdRoot: %s\n", jokerStdRoot)
 		fmt.Printf("importStdRoot: %s\n", importStdRoot)
+		fmt.Printf("generatedPkgPrefix: %s\n", generatedPkgPrefix)
 		for _, o := range otherSourceDirs {
 			fmt.Printf("other: %s\n", o)
 		}
