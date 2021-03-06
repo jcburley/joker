@@ -147,18 +147,8 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 	clType := ti.ClojureEffectiveName()
 
 	apiImportName := fn.AddApiToImports(clType)
-	cvt := ti.ConvertFromClojure()
-	if cvt == "" {
-		api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
-		goPreCode = fmt.Sprintf("%s := %s(%q, %q, _argList, %d)", paramName, api, "[RCVR]", paramName, argNum)
-	} else {
-		cvt = assertRuntime("", "", cvt)
-		argNumAsString := strconv.Itoa(argNum)
-		goPreCode = paramName + " := " +
-			fmt.Sprintf(cvt,
-				"SeqNth(_argList, "+argNumAsString+")",
-				strconv.Quote("Arg["+argNumAsString+"] ("+paramName+"): %s"))
-	}
+	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+	goPreCode = fmt.Sprintf("%s := %s(%q, %q, _argList, %d)", paramName, api, "[RCVR]", paramName, argNum)
 
 	if ti.IsPassedByAddress() && ti.IsAddressable() {
 		resExpr = "*" + resExpr
