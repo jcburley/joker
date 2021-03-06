@@ -180,7 +180,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 		return ""
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
-	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
+	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot, goStdPrefix)
 
 	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, true, fn.Pos)
 	if curPkgName.String() == ti.GoPackage() {

@@ -50,7 +50,7 @@ func writeCustomLibsGo(pkgs []string, dir, f string) {
 	}
 
 	newImports := ""
-	importPrefix := "\t_ \"github.com/candid82/joker/" + importStdRoot + "/"
+	importPrefix := "\t_ \"github.com/candid82/joker/" + importStdRoot + "/" + goStdPrefix
 	for _, p := range pkgs {
 		newImports += importPrefix + p + "\"\n"
 	}

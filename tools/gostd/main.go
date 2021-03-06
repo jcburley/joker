@@ -39,8 +39,9 @@ func Check(err error) {
 }
 
 var goPath string
-var jokerStdRoot = filepath.Join("std", "gostd", "go", "std") // Relative to --output dir.
-var importStdRoot = filepath.ToSlash(jokerStdRoot)            // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
+var jokerStdRoot = filepath.Join("std", "gostd")   // Relative to --output dir.
+var importStdRoot = filepath.ToSlash(jokerStdRoot) // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
+const goStdPrefix = "go/std/"
 
 func notOption(arg string) bool {
 	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
@@ -310,7 +311,7 @@ func main() {
 
 	outputGoStdDir := ""
 	if outputDir != "" {
-		outputGoStdDir = filepath.Join(outputDir, jokerStdRoot)
+		outputGoStdDir = filepath.Join(outputDir, jokerStdRoot, goStdPrefix)
 		if replace {
 			if e := os.RemoveAll(outputGoStdDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", outputGoStdDir)
