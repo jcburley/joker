@@ -56,7 +56,7 @@ func writeCustomLibsGo(pkgs []string, dir, f string) {
 	}
 
 	buf := new(bytes.Buffer)
-	Templates.ExecuteTemplate(buf, "custom-libs-go.tmpl", newImports)
+	Templates.ExecuteTemplate(buf, "go-custom-libs.tmpl", newImports)
 
 	if dir != "" {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
@@ -76,7 +76,7 @@ func writeCustomLibsClojure(pkgs []string, dir, f string) {
 	}
 
 	buf := new(bytes.Buffer)
-	Templates.ExecuteTemplate(buf, "custom-libs-clojure.tmpl", m)
+	Templates.ExecuteTemplate(buf, "clojure-custom-libs.tmpl", m)
 
 	if dir != "" {
 		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
