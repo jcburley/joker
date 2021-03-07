@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 build() {
-  go clean
-  rm -f core/a_*.go  # In case switching from a gen-code branch or similar (any existing files might break the build here)
-  go generate ./...
-  (cd core; go fmt a_*.go > /dev/null)
-  go vet ./...
-  go build
+    go clean
+    # In case we've switched from a gostd branch or similar (existing files might break the build):
+    rm -fr core/a_*.go
+    go generate ./...
+    (cd core; go fmt a_*.go > /dev/null)
+    go vet ./...
+    go build
 }
 
 set -e  # Exit on error.
@@ -27,6 +28,7 @@ fi
 
 rm -f core-apis.dat  # Refresh list of 'core' APIs via tools/gostd/walk.go/findApis()
 if [ ! -f NO-GOSTD.flag ]; then
+    ./clean.sh >/dev/null 2>/dev/null
     (cd tools/gostd && go build .)
     ./tools/gostd/gostd --replace --output .
 fi
