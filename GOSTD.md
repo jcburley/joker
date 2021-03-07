@@ -1,22 +1,34 @@
 # GOSTD Usage
 
-Build the version of Joker on the `gostd` branch as described in the [Joker README](README.md#the-gostd-namespaces).
+Build the version of Joker on the **gostd** branch as described in the [Joker README](README.md#gostd).
 
-After building, HTML documentation is available in the `docs` directory. For example, I use a URL to [my local docs tree](file:///home/craig/go/src/github.com/candid82/joker/docs/index.html) to get the latest info.
+After building, HTML documentation is available in the `docs` directory. For example, I use a URL to [my local docs tree](file:docs/index.html) to get the latest info.
 
 Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joker/docs) to get an idea of what is available, as those pages are generally updated when new features (supporting more, or better, conversions/wrappers of Go packages to Joker) are pushed to the repository. (The Windows pages are updated less frequently.)
 
-Note that `gostd` is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the `gostd` tool does not yet convert, and so omits from the generated code that gets built into Joker.
+Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker.
 
 ## Recent Design Changes
+
+### 2021-03-07
+
+The `:gostd` reader conditional has been introduced, primarily to allow `docs/generate-docs.joke` to work on any version of Joker. E.g. `#?(:gostd ...)` will process the `...` only if run by a (recent version of) this **gostd** fork of Joker. It's unlikely to have the same name by the time this fork gains some sort of official status (well beyond proof-of-concept).
+
+Incompatible types for arguments passed to receivers no longer crash Joker; they can be caught, and otherwise produce reasonable diagnostics, just as occurs with normal functions. E.g. `./joker -e '(Go (new go.std.os/File {}) :Write "hi there")'` no longer crashes Joker.
+
+`map`, `struct`, `chan`, and `func` types, as well as `...` in argument lists, are explicitly disabled for now.
+
+The build process no longer changes files known to Git; generated files, whose names are all prefixed with `g_`, start out as stubs copied in by `run.sh` and are then overwritten by `tools/gostd/gostd` later by that script.
+
+The **gostd** tool itself has been simplified, including replacing some substantial `fmt.Sprintf` calls (which can be difficult to maintain) with use of templates (via Go's `text/template` package), which are kept in `tools/gostd/templates/`. More work is expected in this area (simplification as well as templatization) in the future.
 
 ### 2020-12-17
 
 Type aliases (e.g. `type foo = bar`) are now ignored, so their Clojure names are not available for use.
 
-Their use (in the Go standard library) seems to have been introduced (with respect to the timeframe in which `gostd` has existed) in Go version `1.16.1beta1`.
+Their use (in the Go standard library) seems to have been introduced (with respect to the timeframe in which **gostd** has existed) in Go version `1.16.1beta1`.
 
-Ideally, `gostd` would support them, but as they seem designed for only short-term use around refactoring, properly implementing them in Joker seems less urgent than numerous other matters.
+Ideally, **gostd** would support them, but as they seem designed for only short-term use around refactoring, properly implementing them in Joker seems less urgent than numerous other matters.
 
 For more information on type aliases, see [Proposal: Type Aliases](https://go.googlesource.com/proposal/+/master/design/18130-type-alias.md) by Russ Cox and Robert Griesemer, December 16, 2016.
 
@@ -34,7 +46,7 @@ This change improves performance in cases where the returned value will be used 
 
 ## Sample Usage
 
-This sends a completely empty (and thus technically invalid SMTP) message, as the conversion of a `string` to `[]int` is TBD:
+This sends a completely empty (and thus technically invalid SMTP) message, as the conversion of a `string` to `[]byte` is TBD:
 
 ```
 user=> (use 'go.std.net.smtp)
@@ -46,31 +58,37 @@ user=> (SendMail "p25.llamail.com:smtp" au "james@burleyarch.com" ["james-recipi
 user=>
 ```
 
-## Design Principles
+## Design Goals
+
+Normally, to make Go APIs available from Joker code, one might write a custom Joker source file, such as `std/some-namespace.joke`, perhaps accompanied by `std/os/some-namespace_native*.go` files, and then rebuild Joker.
+
+Alternately, one could add a namespace to `core/data/some-namespace.joke` and have it call new Go code, calling the desired APIs, provided in `core/procs.go` (or similar), which can be more complicated due to needing to modify other files and then rebuild Joker.
+
+Either way, the source code of Joker has to be modified, and Joker rebuilt, so the API can be called. Both approaches require the kind of in-depth knowledge described, for developers working on Joker internals, in [`DEVELOPER.md`](https://github.com/candid82/joker/blob/master/DEVELOPER.md).
+
+This **gostd** fork strives to provide out-of-the-box access to all the Go standard-library packages via very low-level Joker access. Each such Go package (say, `html/template`) is wrapped by a Joker namespace named with the `go.std.` prefix (so, `go.std.html.template`) and containing functions, methods, receivers, constants, variables, and types, all providing access to the corresponding public elements of the Go package.
 
 The `go.std.` namespaces being automatically generated, they are not necessarily intended for direct use by business logic:
 * They aren't the same on all architectures
-* They're very low-level -- little effort is made to provide Clojure-like wrapping beyond the minimum necessary
+* They're very low-level; little effort is made to provide Clojure-like wrapping beyond the minimum necessary
 
 Yet, by (someday) providing _all_ the (supported) APIs, Joker enables higher-level, Clojure-like, APIs (that call these low-level API wrappers) to be written without requiring changes to the Joker codebase or executable itself.
 
-## Including Other Go Packages
+That allows one to write custom Joker libraries (namespaces) as “pure” Joker code. These would provide Joker-like (Clojure-like) APIs that are implemented by calling the **gostd**-provided wrappers underneath. No rebuild of Joker would be required, nor the source tree changed (in the source-control sense; it is actually changed when building the **gostd** version, in a fashion more expansive than that which official Joker does via `go generate`).
 
-*NOTE:* This is work-in-progress and not yet complete.
+This "pure" Joker code, that one might write to provide Clojure-like access to raw Go APIs wrapped by **gostd**, would presumably be deployed alongside one’s application as yet another namespace, or perhaps more widely if used across an organization or in a project.
 
-```
-$ touch NO-GOSTD.flag # Inhibit automatic running of gostd tool
-$ build # Build canonical Joker
-$ go get golang.org/x/crypto/ssh # Grab a sample package
-$ (cd tools/gostd && go build) # Build gostd
-$ ./tools/gostd/gostd --others golang.org/x/crypto/ssh --replace --joker . # Wrap both go.std.* and golang.org/x/crypto/ssh packages
-$ build # Build Joker again, this time with additional packages
-$
-```
+That is, such Joker code would be organized and deployed as described in [`LIBRARIES.md`](https://github.com/candid82/joker/blob/master/LIBRARIES.md), intended for developers of Joker code, rather than the earlier-cited document, which is intended for developers working on Joker internals.
+
+What this does not yet solve, out of the box, is access to APIs outside the Go standard library. Select “popular” libraries might be added to the canonical version; but it’s likely a mechanism will be added allowing easy configure of additional libraries (packages, wrapped by Joker namespaces) to be included in a particular build of Joker. This (of course) would require rebuilding Joker, though not to contain substantial new Joker code just to provide decent, Clojure-like, access to those APIs.
+
+Going forward, **gostd** might make some or all of those "low-level" APIs private (and thus largely undocumented by default, though the `generate-docs.joke` tool does now have an option to generate docs for private as well as public members of each namespace). It would then provide useful automatic generation of Clojure-like wrappers, using various heuristics, where feasible.
+
+Such heuristics might (in at least some cases) eliminate the need to hand-write one’s own Joker libraries to wrap the **gostd**-generated ones more elegantly.
 
 ## Types
 
-Named types (other than aliases), defined by the packages wrapped by the `gostd` tool, are themselves wrapped as `Object`s of type `GoType`.
+Named types (other than aliases), defined by the packages wrapped by the **gostd** tool, are themselves wrapped as `Object`s of type `GoType`.
 `GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
 
 For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
@@ -95,7 +113,7 @@ Pointers to global variables are wrapped in `GoVar{}` objects that can be unwrap
 
 `(var-set var newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
-## GoObject
+## GoObjects
 
 A `GoObject` is a Joker object that wraps a Go object (of type `interface{}`). E.g.:
 
@@ -346,7 +364,7 @@ user=>
 
 (Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.)
 
-**IMPORTANT:** The `Go` function is, like `gostd` generally, a proof-of-concept prototype. Its name was chosen to set it apart from all other Joker code and specifically to identify it as referring to the Go language and its runtime. It might well be changed (incompatibly) or removed in the future.
+**IMPORTANT:** The `Go` function is, like **gostd** generally, a proof-of-concept prototype. Its name was chosen to set it apart from all other Joker code and specifically to identify it as referring to the Go language and its runtime. It might well be changed (incompatibly) or removed in the future.
 
 Also note that Clojure's `.foo` form and its `.` special operator are not (yet?) supported. When they are, they'll (likely) be much more stable than `Go`.
 
@@ -461,11 +479,13 @@ user=> (Go (deref Stdin) :Name)
 user=>
 ```
 
+# GOSTD Deeper Dive
+
 ## Developer Notes
 
 The version of `run.sh` on this branch invokes `tools/gostd/gostd` to create the `go.std...` namespaces, generate wrappers, and so on.
 
-Before building Joker by hand, one can optionally run the `gostd` tool against a Go source tree (the default is found via `go/build.Default.GOROOT`), which _must_ correspond to the version of Go used to build Joker itself (as it likely will). It contains a complete `src` subdirectory, which `gostd` walks and parses, in order to populate `std/gostd/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
+Before building Joker by hand, one can optionally run the **gostd** tool against a Go source tree (the default is found via `go/build.Default.GOROOT`), which _must_ correspond to the version of Go used to build Joker itself (as it likely will). It contains a complete `src` subdirectory, which **gostd** walks and parses, in order to populate `std/gostd/` and modify related Joker source files. Further, the build parameters (`$GOARCH`, `$GOOS`, etc.) must match -- so `build-all.sh` would have to pass those to this tool (if it was to be used) for each of the targets.
 
 This is still a work in progress; for example, `net.LookupMX()` returns a vector including a `GoObject` wrapping a `[]*net.MX` object, which is not yet itself fully itself as a type, but can be examined. E.g.:
 
@@ -519,11 +539,13 @@ user=> (get m :Host)
 user=>
 ```
 
+### To Be Done and Work in Progress
+
 Among things to do to "productize" this:
 
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
 * Improve docstrings for constructors (show and document the members)
-* Document the code better
+* Clean up and document the (mostly **gostd**) code better
 * Assess performance impact (especially startup time) on Joker
 
 ### Evaluation Tests
@@ -545,7 +567,7 @@ After running the test, it uses `git diff` to compare the resulting `gosrc.gold`
 
 ### Update Tests on Other Machines
 
-The Go standard library is customized per system architecture and OS, and `gostd` picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the `gostd` repo is somewhat automated via `update.sh` -- e.g.:
+The Go standard library is customized per system architecture and OS, and **gostd** picks up these differences via its use of Go's build-related packages. That's why `_tests/gold/` has a subdirectory for each combination of `$GOARCH` and `$GOOS`. Updating another machine's copy of the **gostd** repo is somewhat automated via `update.sh` -- e.g.:
 
 ```
 $ ./update.sh
@@ -588,35 +610,74 @@ $
 
 ### Clean Up After Full Build
 
-After building the `gostd` branch, numerous additional files will have been created, and several existing files (in the source distribution, including generated files) will have been modified.
+After building the **gostd** branch, numerous additional files will have been created, and several existing files (including a few copied from elsewhere in the source distribution to become "stubs" for the first build of Joker) will have been modified.
 
 Clean these out (essentially resetting to the base state) via:
 
 ```
-$ ./cleanup.sh
+$ ./clean.sh
 ```
 
-This should result in `git` showing no differences (tracked nor untracked files) if only `gostd` has made changes to the source tree. If Joker hadn't previously been successfully built, there'll be a diagnostic; but the result should still be a "cleaned" tree.
+This should result in `git` showing no differences (tracked nor untracked files) if only **gostd** has made changes to the source tree. If Joker hadn't previously been successfully built (if there's no `joker` executable in the top-level directory), there'll be a diagnostic; but the result should still be a "cleaned" tree.
 
-When switching away from a `gostd` to a non-`gostd` branch (such as `master`), do this before attempting to build:
+When switching away from a **gostd** to a non-**gostd** branch (such as `master`), do this before attempting to build:
 
 ```
 rm -fv g_* core/g_* core/data/g_*
-rm -fr std/gostd
+rm -fr std/go*
 ```
 
-That'll clean out the files left over from running `gostd`, which a non-`gostd` branch won't know how to clean up but which will likely get caught up in a subsequent `go build` command, leading to build errors. (There might still be numerous files left over in `docs/`, but those won't disturb a fresh build.)
+That'll clean out the files left over from running **gostd**, which a non-**gostd** branch won't know how to clean up but which will likely get caught up in a subsequent `go build` command, leading to build errors. (There might still be numerous files left over in `docs/`, but those won't disturb a fresh build.)
 
 ### Caching of Core-API Information
 
-To ease development, `gostd` dynamically determines the list of exported functions in Joker's `core` package, and avoids generating calls to unlisted functions. This helps to catch missing APIs earlier in the development process (mainly, while building and testing `gostd` in isolation, versus requiring a build of Joker itself).
+To ease development, **gostd** dynamically determines the list of exported functions in Joker's `core` package, and avoids generating calls to unlisted functions. This helps to catch missing APIs earlier in the development process (mainly, while building and testing **gostd** in isolation, versus requiring a build of Joker itself).
 
-The resulting list is cached in `./core-apis.dat`, though currently not reused by `./test.sh` to save time (which amounts to a substantial portion of the time it takes to build and test `gostd`).
+The resulting list is cached in `./core-apis.dat`, though currently not reused by `./test.sh` to save time (which amounts to a substantial portion of the time it takes to build and test **gostd**).
 
 As building Joker takes enough longer to make this caching less useful, `run.sh` deletes the cache prior to each build.
 
 ### Caching of Working Joker Version
 
-To save time when building Joker, either an environment variable `$JOKER` or a copy (or link) named `joker-good` (in the top-level Joker directory), pointing to a previously-built and working version of Joker, can be provided.
+To save time when building Joker, either an environment variable `$JOKER` specifying the path to a working Joker executable, or a copy of (or link to) such an executable named `joker-good` (in the top-level Joker directory), can be provided.
 
-This causes `run.sh` to skip building an initial version of Joker, and instead use that existing version to run `std/generate-std.joke` and then decide whether it is necessary to rebuild Joker with the resulting libraries (as will always be the case when `gostd` is involved).
+This causes `run.sh` to skip building an initial version of Joker, and instead use that existing version to run `std/generate-std.joke` and then decide whether it is necessary to rebuild Joker with the resulting libraries (as will always be the case when **gostd** is involved).
+
+## FUTURE: Including Other Go Packages
+
+*NOTE:* This is work-in-progress and not yet complete.
+
+```
+$ touch NO-GOSTD.flag # Inhibit automatic running of gostd tool
+$ build # Build canonical Joker
+$ go get golang.org/x/crypto/ssh # Grab a sample package
+$ (cd tools/gostd && go build) # Build gostd
+$ ./tools/gostd/gostd --others golang.org/x/crypto/ssh --replace --joker . # Wrap both go.std.* and golang.org/x/crypto/ssh packages
+$ build # Build Joker again, this time with additional packages
+$
+```
+
+## Design Considerations
+
+### Why GoType (Versus Type)?
+
+`GoType` is a "fatter" `Type` because it:
+* supports constructors
+* has members
+* belongs to a namespace
+
+### Why GoObject (Versus Object)?
+
+A `GoObject` has a single member:
+* `O interface{}`
+
+### Why GoVar (Versus Var)?
+
+`GoVar` differs from `Var`:
+* its `Value` member is of `interface{}`, not `Object`, type
+
+### Why GoReceiver?
+
+`GoReceiver` extends `Object` with:
+* `R func(GoObject, Object) Object`, connecting a `(Go <obj> <rcvr-name> ...)` call to a concrete implementation
+

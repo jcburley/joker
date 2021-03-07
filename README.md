@@ -6,7 +6,7 @@
 
 Joker is a small Clojure interpreter, linter, and formatter written in Go.
 
-[This `gostd` experimental fork](https://github.com/jcburley/joker/) extends official Joker by reading Golang source code (the Go standard library) and "wrapping" some of their functions, types, constants, and variables so that code written in Joker can access them. See [below](#gostd) for information on the [`go.std.*` namespaces](https://burleyarch.com/joker/docs/) thereby provided.
+[This **gostd** experimental fork](https://github.com/jcburley/joker/) extends official Joker by reading Golang source code (the Go standard library) and "wrapping" some of their functions, types, constants, and variables so that code written in Joker can access them. See [below](#gostd) for information on the [`go.std.*` namespaces](https://burleyarch.com/joker/docs/) thereby provided.
 
 ## Installation
 
@@ -357,9 +357,9 @@ Since Linux (on **amd64**) supports building _and running_ 32-bit (**386**) exec
 
 # <a name="gostd"></a>The go.std.* Namespaces
 
-On this experimental branch, Joker is built against a Golang tree in order to pull in and "wrap" functions, types, constants, and variables provided by Go `std` packages.
+On this experimental branch, Joker is built along with the results of an automated analysis of the Golang source directory in order to pull in and "wrap" functions, types, constants, and variables provided by Go `std` packages.
 
-NOTE: Only Joker versions >= 0.12 are now supported by this branch.
+NOTE: Only Joker versions >= 0.15 are now supported by this branch.
 
 ## Quick Start
 
