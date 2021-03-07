@@ -70,7 +70,7 @@ func writeCustomLibsClojure(pkgs []string, dir, f string) {
 	}
 
 	m := ""
-	const importPrefix = " 'go.std."
+	var importPrefix = " '" + goNsPrefix
 	for _, p := range pkgs {
 		m += "    " + importPrefix + strings.ReplaceAll(p, "/", ".") + "\n"
 	}
@@ -168,7 +168,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 			"Imports":   pi.ImportsAutoGen.AsClojureMap(),
 			"Doc":       strconv.Quote(pkgDoc),
 			"Empty":     !pi.NonEmpty,
-			"Namespace": "go.std." + strings.ReplaceAll(pkgDirUnix, "/", "."),
+			"Namespace": goNsPrefix + strings.ReplaceAll(pkgDirUnix, "/", "."),
 		}
 
 		buf := new(bytes.Buffer)
