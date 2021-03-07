@@ -25,6 +25,7 @@ import (
 	_ "github.com/candid82/joker/std/http"
 	_ "github.com/candid82/joker/std/io"
 	_ "github.com/candid82/joker/std/json"
+	_ "github.com/candid82/joker/std/markdown"
 	_ "github.com/candid82/joker/std/math"
 	_ "github.com/candid82/joker/std/os"
 	_ "github.com/candid82/joker/std/strconv"
@@ -275,6 +276,7 @@ func configureLinterMode(dialect Dialect, filename string, workingDir string) {
 	lm, _ := GLOBAL_ENV.Resolve(MakeSymbol("joker.core/*linter-mode*"))
 	lm.Value = Boolean{B: true}
 	GLOBAL_ENV.Features = GLOBAL_ENV.Features.Disjoin(MakeKeyword("joker")).Conj(makeDialectKeyword(dialect)).(Set)
+	EnableIdentValidation()
 }
 
 func detectDialect(filename string) Dialect {
