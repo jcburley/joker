@@ -12,7 +12,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"text/template"
 )
 
 /* The transformation code, below, takes an approach that is new for me.
@@ -244,37 +243,6 @@ func GenReceiver(fn *FuncInfo) {
 	}
 }
 
-type ClojureDefnInfo struct {
-	ReturnType string
-	Name       string
-	DocString  string
-	GoCode     string
-	ParamList  string
-}
-
-const clojureDefnTemplate = `
-(defn {{.ReturnType}}{{.Name}}
-  {{.DocString}}  {:added "1.0"
-   :go "{{.GoCode}}"}
-  [{{.ParamList}}])
-`
-
-var clojureDefn = template.Must(template.New("clojureDefn").Parse(clojureDefnTemplate))
-
-type GoFuncInfo struct {
-	Name       string
-	ParamList  string
-	ReturnType string
-	Code       string
-}
-
-const goFuncTemplate = `
-func {{.Name}}({{.ParamList}}) {{.ReturnType}} {
-{{.Code}}}
-`
-
-var goFunc = template.Must(template.New("goFunc").Parse(goFuncTemplate))
-
 func GenStandalone(fn *FuncInfo) {
 	genutils.GenSymReset()
 	d := fn.Fd
@@ -302,26 +270,28 @@ func GenStandalone(fn *FuncInfo) {
 		cl2golCall = fmt.Sprintf(fc.conversion, cl2golCall)
 	}
 
-	clojureDefnInfo := ClojureDefnInfo{
-		ReturnType: clojureReturnType,
-		Name:       d.Name.Name,
-		DocString: genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
+	clojureDefnInfo := map[string]string{
+		"ReturnType": clojureReturnType,
+		"Name":       d.Name.Name,
+		"DocString": genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc) + "\n",
-		GoCode:    cl2golCall,
-		ParamList: fc.clojureParamList,
+		"GoCode":    cl2golCall,
+		"ParamList": fc.clojureParamList,
 	}
+
 	buf := new(bytes.Buffer)
-	clojureDefn.Execute(buf, clojureDefnInfo)
+	Templates.ExecuteTemplate(buf, "clojure-defn.tmpl", clojureDefnInfo)
 	clojureFn := buf.String()
 
-	goFuncInfo := GoFuncInfo{
-		Name:       goFname,
-		ParamList:  fc.goParamList,
-		ReturnType: goReturnType,
-		Code:       fc.goCode,
+	goFuncInfo := map[string]string{
+		"Name":       goFname,
+		"ParamList":  fc.goParamList,
+		"ReturnType": goReturnType,
+		"Code":       fc.goCode,
 	}
+
 	buf.Reset()
-	goFunc.Execute(buf, goFuncInfo)
+	Templates.ExecuteTemplate(buf, "go-func-info.tmpl", goFuncInfo)
 	goFn := buf.String()
 
 	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
@@ -688,17 +658,6 @@ func GenTypeFromDb(ti TypeInfo) {
 	}
 }
 
-type PossibleObjectCaseInfo struct {
-	Type   string
-	Return string
-}
-
-const possibleObjectCaseTemplate = `
-{{.Type}}:
-		return {{.Return}}`
-
-var possibleObjectCase = template.Must(template.New("possibleObjectCase").Parse(possibleObjectCaseTemplate[1:]))
-
 func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
 	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(ti, typeName, baseTypeName)
 
@@ -706,12 +665,14 @@ func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCas
 	nonGoObjectCase = ""
 	buf := new(bytes.Buffer)
 	for i := 0; i < len(nonGoObjectTypes); i++ {
-		possibleObjectCaseInfo := PossibleObjectCaseInfo{
-			Type:   nonGoObjectTypes[i],
-			Return: extractClojureObjects[i],
+		possibleObjectCaseInfo := map[string]string{
+			"Type":   nonGoObjectTypes[i],
+			"Return": extractClojureObjects[i],
 		}
-		possibleObjectCase.Execute(buf, possibleObjectCaseInfo)
+
+		Templates.ExecuteTemplate(buf, "go-possible-case.tmpl", possibleObjectCaseInfo)
 		nonGoObjectCase += nonGoObjectCasePrefix + buf.String()
+
 		nonGoObjectCasePrefix = `
 	`
 	}

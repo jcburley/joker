@@ -2,8 +2,7 @@
 
 {{.HelperFunc}}func {{.CtorName}}(_v Object) {{.PtrTo}}{{.TypeName}} {
 	switch _o := _v.(type) {
-	{{.Cases}}
-	}
+{{.Cases}}	}
 	panic(RT.NewArgTypeError(0, _v, "{{.Expected}}"))
 }
 
