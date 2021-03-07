@@ -19,7 +19,6 @@ import (
 	"sort"
 	"strconv"
 	. "strings"
-	"text/template"
 )
 
 var WalkDump bool
@@ -524,25 +523,6 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 	return ti.ArgClojureArgType(), fmt.Sprintf(ti.PromoteType(), innerPromotion)
 }
 
-type ConstantDefInfo struct {
-	DocString       string
-	ValueTypeString string
-	GoCode          string
-	ClojureName     string
-}
-
-const constantDefTemplate = `
-(def
-  ^{:doc {{.DocString}}
-    :added "1.0"
-    :tag "{{.ValueTypeString}}"
-    :const true
-    :go "{{.GoCode}}"}
-  {{.ClojureName}})
-`
-
-var constantDef = template.Must(template.New("constantDef").Parse(constantDefTemplate))
-
 // Constants are currently emitted while walking the packages. Unlike with variables, where the types are not needed,
 // this code seemingly must determine the type of a constant so as to give the Clojure wrapper the appropriate type (and
 // that is the straightforward way to handle this).
@@ -651,15 +631,15 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	goCode := fmt.Sprintf(promoteType, localName)
 
 	// Note: :tag value is a string to avoid conflict with like-named member of namespace
-	constantDefInfo := ConstantDefInfo{
-		DocString:       docString,
-		ValueTypeString: valTypeString,
-		GoCode:          goCode,
-		ClojureName:     clName,
+	constantDefInfo := map[string]string{
+		"DocString":       docString,
+		"ValueTypeString": valTypeString,
+		"GoCode":          goCode,
+		"ClojureName":     clName,
 	}
 
 	buf := new(bytes.Buffer)
-	constantDef.Execute(buf, constantDefInfo)
+	Templates.ExecuteTemplate(buf, "clojure-constant-def.tmpl", constantDefInfo)
 
 	gt := &ConstantInfo{name, gf, buf.String()}
 	GoConstants[fullName] = gt
@@ -667,23 +647,6 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 
 	return true
 }
-
-type VariableDefInfo struct {
-	DocString   string
-	LocalName   string
-	ClojureName string
-}
-
-const variableDefTemplate = `
-(def
-  ^{:doc {{.DocString}}
-    :added "1.0"
-    :tag "Var"
-    :go "{{.LocalName}}"}
-  {{.ClojureName}})
-`
-
-var variableDef = template.Must(template.New("variableDef").Parse(variableDefTemplate))
 
 // Note that the 'val' argument isn't used (except when dumping info)
 // as it isn't needed to determine the type of a variable, since the
@@ -717,13 +680,14 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	}
 
 	// Note: :tag value is a string to avoid conflict with like-named member of namespace
-	variableDefInfo := VariableDefInfo{
-		DocString:   docString,
-		LocalName:   localName,
-		ClojureName: clName,
+	variableDefInfo := map[string]string{
+		"DocString":   docString,
+		"LocalName":   localName,
+		"ClojureName": clName,
 	}
+
 	buf := new(bytes.Buffer)
-	variableDef.Execute(buf, variableDefInfo)
+	Templates.ExecuteTemplate(buf, "clojure-variable-def.tmpl", variableDefInfo)
 
 	gt := &VariableInfo{name, gf, buf.String()}
 	GoVariables[fullName] = gt
