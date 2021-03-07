@@ -25,6 +25,8 @@ func __convert_string_(_args []Object) Object {
 
 func Init() {
 
+	initNative()
+
 	InternsOrThunks()
 }
 
