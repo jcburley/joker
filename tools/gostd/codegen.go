@@ -144,9 +144,6 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
 	}
-	if resultAssign != "" {
-		resultAssign = "\t" + resultAssign
-	}
 	maybeAssignArgList := ""
 	if max > 0 {
 		maybeAssignArgList = "_argList := "
@@ -162,7 +159,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	Templates.ExecuteTemplate(buf, "go-receiver-arity.tmpl", ai)
 	arity := buf.String()
 
-	return arity + preCode + resultAssign + call + "\n" + postCode
+	return arity + preCode + "\t" + resultAssign + call + "\n" + postCode
 }
 
 func GenReceiver(fn *FuncInfo) {
