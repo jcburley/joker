@@ -124,7 +124,7 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 
 	apiImportName := fn.AddApiToImports(clType)
 	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
-	goPreCode = fmt.Sprintf("%s := %s(%q, myName, _argList, %d)", paramName, api, paramName, argNum)
+	goPreCode = fmt.Sprintf("\t%s := %s(%q, myName, _argList, %d)\n", paramName, api, paramName, argNum)
 
 	if ti.IsPassedByAddress() && ti.IsAddressable() {
 		resExpr = "*" + resExpr
@@ -148,12 +148,7 @@ func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
 		}
 		preCode, resExpr := genTypePreReceiver(fn, field.Field.Type, resVar, argNum)
 
-		if preCode != "" {
-			if goPreCode != "" {
-				goPreCode += "\n\t"
-			}
-			goPreCode += preCode
-		}
+		goPreCode += preCode
 
 		if goParams != "" {
 			goParams += ", "

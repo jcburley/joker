@@ -125,20 +125,6 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFn
 	return
 }
 
-type ArityInfo struct {
-	ArgList string
-	DocName string
-	Min     int
-	Max     int
-}
-
-const receiverArityTemplate = `
-	const myName = {{.DocName}}
-	{{.ArgList}}CheckReceiverArity(myName, args, {{.Min}}, {{.Max}})
-	`
-
-var receiverArity = template.Must(template.New("receiverArity").Parse(receiverArityTemplate[1:]))
-
 func genReceiverCode(fn *FuncInfo, goFname string) string {
 	preCode, params, min, max := genGoPreReceiver(fn)
 
@@ -158,38 +144,26 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	if postCode == "" && resultAssign == "" {
 		return "\t...ABEND275: TODO...\n"
 	}
-	finishPreCode := ""
-	if preCode != "" {
-		finishPreCode = "\n\t"
+	if resultAssign != "" {
+		resultAssign = "\t" + resultAssign
 	}
 	maybeAssignArgList := ""
 	if max > 0 {
 		maybeAssignArgList = "_argList := "
 	}
-	ai := ArityInfo{
-		ArgList: maybeAssignArgList,
-		DocName: strconv.Quote(fn.DocName),
-		Min:     min,
-		Max:     max,
+	ai := map[string]interface{}{
+		"ArgList": maybeAssignArgList,
+		"DocName": strconv.Quote(fn.DocName),
+		"Min":     min,
+		"Max":     max,
 	}
+
 	buf := new(bytes.Buffer)
-	receiverArity.Execute(buf, ai)
+	Templates.ExecuteTemplate(buf, "go-receiver-arity.tmpl", ai)
 	arity := buf.String()
-	return arity + preCode + finishPreCode + resultAssign + call + "\n" + postCode
+
+	return arity + preCode + resultAssign + call + "\n" + postCode
 }
-
-type ReceiverFuncInfo struct {
-	FuncName string
-	What     string
-	Code     string
-}
-
-const receiverFuncTemplate = `
-func {{.FuncName}}(o GoObject, args Object) Object {  // {{.What}}
-{{.Code}}}
-`
-
-var receiverFunc = template.Must(template.New("receiverFunc").Parse(receiverFuncTemplate))
 
 func GenReceiver(fn *FuncInfo) {
 	genutils.GenSymReset()
@@ -201,19 +175,20 @@ func GenReceiver(fn *FuncInfo) {
 		return
 	}
 
-	receiverFuncInfo := ReceiverFuncInfo{
-		FuncName: goFname,
-		What: func() string {
+	receiverFuncInfo := map[string]string{
+		"FuncName": goFname,
+		"What": func() string {
 			if fn.Fd == nil {
 				return "Method"
 			} else {
 				return "Receiver"
 			}
 		}(),
-		Code: genReceiverCode(fn, goFname),
+		"Code": genReceiverCode(fn, goFname),
 	}
+
 	buf := new(bytes.Buffer)
-	receiverFunc.Execute(buf, receiverFuncInfo)
+	Templates.ExecuteTemplate(buf, "go-receiver-func.tmpl", receiverFuncInfo)
 	goFn := buf.String()
 
 	clojureFn := ""
