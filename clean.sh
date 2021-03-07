@@ -4,7 +4,10 @@
 
 set -e  # Exit on error.
 
-rm -fr docs/go.std.* core/a_*_data.go
+rm -fr docs/go.std.*
+
+# In case we've switched from a gostd branch or similar (existing files might break the build):
+rm -fr core/a_*.go g_* core/g_* core/data/g_* std/go*
 
 # Restore original versions of generated files so vanilla Joker can build.
 rm -f g_* core/g_* core/data/g_*
