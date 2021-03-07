@@ -33,3 +33,6 @@ func convertString(source string) string {
 	}
 	return buf.String()
 }
+
+func initNative() {
+}
