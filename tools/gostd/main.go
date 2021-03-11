@@ -77,7 +77,7 @@ Options:
 }
 
 func listOfOthers(other string) (others []string) {
-	o := path.Join(goPath, other)
+	o := filepath.Join(goPath, other)
 	s, e := os.Stat(o)
 	if e != nil {
 		o = other // try original without $GOPATH/src/ prefix
@@ -274,7 +274,7 @@ func main() {
 	}
 
 	if fi, e := os.Stat(goRootSrc.Join("go").String()); e != nil || !fi.IsDir() {
-		if m, e := filepath.Glob(filepath.ToSlash(goRootSrc.Join("*.go").String())); e != nil || m == nil || len(m) == 0 {
+		if m, e := filepath.Glob(goRootSrc.Join("*.go").String()); e != nil || m == nil || len(m) == 0 {
 			fmt.Fprintf(os.Stderr, "Does not exist or is not a Go source directory: %s (specified via %s);\n%v",
 				goRootSrc, goRootVia, m)
 			os.Exit(2)
@@ -285,8 +285,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "no Go source path defined via either $GOPATH or --go-path")
 		os.Exit(1)
 	}
-	if fi, e := os.Stat(goPath); e == nil && fi.IsDir() && path.Base(goPath) != "src" {
-		goPath = path.Join(goPath, "src")
+	if fi, e := os.Stat(goPath); e == nil && fi.IsDir() && filepath.Base(goPath) != "src" {
+		goPath = filepath.Join(goPath, "src")
 	}
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
@@ -308,7 +308,7 @@ func main() {
 
 	readCoreApiFile(jokerSourceDir)
 
-	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(path.Join(jokerSourceDir, "tools", "gostd", "templates", "*.tmpl")))
+	Templates = template.Must(template.New("Templates").Funcs(TemplatesFuncMap).ParseGlob(filepath.Join(jokerSourceDir, "tools", "gostd", "templates", "*.tmpl")))
 	if godb.Verbose {
 		strs := strings.Split(Templates.DefinedTemplates()+",", " ")
 		sort.Strings(strs[4:]) // skip "; defined templates are: " in [0-3]
@@ -317,7 +317,7 @@ func main() {
 
 	outputGoStdDir := ""
 	if outputDir != "" {
-		outputGoStdDir = path.Join(outputDir, importStdRoot, goStdPrefix)
+		outputGoStdDir = filepath.Join(outputDir, importStdRoot, goStdPrefix)
 		if replace {
 			if e := os.RemoveAll(outputGoStdDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", outputGoStdDir)
@@ -344,7 +344,7 @@ func main() {
 		}
 	}
 
-	importMe := path.Join(generatedPkgPrefix, goStdPrefix)
+	importMe := filepath.Join(generatedPkgPrefix, goStdPrefix)
 	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
 	root := goRootSrc.Join(".")
 	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
@@ -352,7 +352,7 @@ func main() {
 	for _, o := range otherSourceDirs {
 		op := paths.NewNativePath(o)
 		root := op.Join(".")
-		AddWalkDir(op, root, "x.y.z.", path.Join(generatedPkgPrefix, "x/y/z/"))
+		AddWalkDir(op, root, "x.y.z.", filepath.Join(generatedPkgPrefix, "x/y/z/"))
 	}
 
 	err, badDir := WalkAllDirs()
