@@ -213,7 +213,7 @@ func main() {
 			case "--output":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					outputDir = paths.NewPath(os.Args[i])
+					outputDir = paths.NewPath(os.Args[i]).ToNative()
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --output option\n")
 					os.Exit(1)
@@ -221,7 +221,7 @@ func main() {
 			case "--import-from":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					clojureImportDir = paths.NewPath(os.Args[i])
+					clojureImportDir = paths.NewPath(os.Args[i]).ToNative()
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --import-from option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
@@ -229,7 +229,7 @@ func main() {
 			case "--joker":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					jokerSourceDir = paths.NewPath(os.Args[i])
+					jokerSourceDir = paths.NewPath(os.Args[i]).ToNative()
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --joker option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
