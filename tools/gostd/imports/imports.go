@@ -6,7 +6,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
-	"os"
 	"path"
 	"sort"
 	"strconv"
@@ -52,9 +51,9 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 		panic(fmt.Sprintf("AddPackage('%s') at %s cannot supercede '%s' aka \"%s\" at %s", full, godb.WhereAt(pos), e.Full, e.Local, godb.WhereAt(e.Pos)))
 	}
 
-	if suffix != "" {
-		fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s local=%s\n", full, nsPrefix, pathPrefix, suffix, local)
-	}
+	// if suffix != "" {
+	// 	fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s local=%s\n", full, nsPrefix, pathPrefix, suffix, local)
+	// }
 
 	components := Split(full, "/")
 	substituted := false
@@ -87,7 +86,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 		imports.FullNames = map[string]*Import{}
 	}
 	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, substituted, pos}
-	fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s\n", full, nsPrefix, pathPrefix, suffix)
+	// fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s\n", full, nsPrefix, pathPrefix, suffix)
 
 	return local
 }
@@ -120,7 +119,7 @@ func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPre
 		imports.FullNames = map[string]*Import{}
 	}
 	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", false, pos}
-	fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
+	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
 }
 
 func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
