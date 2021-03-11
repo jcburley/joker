@@ -26,7 +26,8 @@ type Path interface {
 	// These always return the same concrete type as upon which they operate:
 	// 	Dir() Path
 	// 	EvalSymlinks() (Path, error)
-	// 	Join(el ...string) Path
+	//      Glob() ([]Path, error)
+	Join(el ...string) Path
 	// 	Split() (Path, string)
 	//	Walk(WalkFunc) error
 
@@ -93,11 +94,11 @@ func (n NativePath) EvalSymlinks() (NativePath, error) {
 	return NewNativePath(p), e
 }
 
-func (u UnixPath) Join(el ...string) UnixPath {
+func (u UnixPath) Join(el ...string) Path {
 	return NewUnixPath(path.Join(u.String(), path.Join(el...)))
 }
 
-func (n NativePath) Join(el ...string) NativePath {
+func (n NativePath) Join(el ...string) Path {
 	return NewNativePath(filepath.Join(n.String(), filepath.Join(el...)))
 }
 
@@ -165,4 +166,26 @@ func (n NativePath) RelativeTo(prefix NativePath) (NativePath, bool) {
 		return n, false
 	}
 	return NewNativePath(beyond), true
+}
+
+func (u UnixPath) Glob() (matches []UnixPath, err error) {
+	m, e := filepath.Glob(u.String())
+	if e != nil {
+		return matches, err
+	}
+	for _, p := range m {
+		matches = append(matches, NewUnixPath(p))
+	}
+	return
+}
+
+func (n NativePath) Glob() (matches []NativePath, err error) {
+	m, e := filepath.Glob(n.String())
+	if e != nil {
+		return matches, err
+	}
+	for _, p := range m {
+		matches = append(matches, NewNativePath(p))
+	}
+	return
 }
