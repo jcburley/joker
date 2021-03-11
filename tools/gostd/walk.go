@@ -14,6 +14,7 @@ import (
 	"go/token"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -890,7 +891,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMeRoot st
 	if godb.Verbose {
 		genutils.AddSortedStdout(fmt.Sprintf("Processing %s:\n", pkgDirUnix))
 	}
-	importMe := filepath.Join(importMeRoot, pkgDirUnix.String())
+	importMe := path.Join(importMeRoot, pkgDirUnix.String())
 
 	pkgs, err := parser.ParseDir(godb.Fset, pathNative.String(),
 		// Walk only *.go files that meet default (target) build constraints, e.g. per "// build ..."

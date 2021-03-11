@@ -285,6 +285,7 @@ func main() {
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
 	generatedPkgPrefix = godb.ClojureSourceDir.Join(importStdRoot.String()).String() + "/"
+	importMe := path.Join(generatedPkgPrefix, goStdPrefix.String())
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
@@ -296,6 +297,7 @@ func main() {
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
 		fmt.Printf("importStdRoot: %s\n", importStdRoot)
 		fmt.Printf("generatedPkgPrefix: %s\n", generatedPkgPrefix)
+		fmt.Printf("importMe: %s\n", importMe)
 		for _, o := range otherSourceDirs {
 			fmt.Printf("other: %s\n", o)
 		}
@@ -339,7 +341,6 @@ func main() {
 		}
 	}
 
-	importMe := path.Join(generatedPkgPrefix, goStdPrefix.String())
 	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
 	root := goRootSrc.Join(".").(paths.NativePath)
 	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
