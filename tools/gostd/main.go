@@ -147,7 +147,8 @@ func main() {
 	length := len(os.Args)
 	var goRoot, outputDir, clojureImportDir, jokerSourceDir paths.Path
 	goRootVia := ""
-	goPath = paths.NewPath(os.Getenv("GOPATH"))
+	GOPATH := os.Getenv("GOPATH")
+	goPath = paths.NewPath(GOPATH)
 	var others []paths.Path
 	var otherSourceDirs []paths.NativePath
 	replace := false
@@ -287,6 +288,7 @@ func main() {
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
+		fmt.Printf("GOPATH: %s\n", GOPATH)
 		fmt.Printf("goPath: %s\n", goPath)
 		fmt.Printf("ClojureSourceDir: %s\n", godb.ClojureSourceDir)
 		fmt.Printf("outputDir: %s\n", outputDir)
