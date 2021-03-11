@@ -14,10 +14,10 @@ import (
 )
 
 // Root of Clojure source tree for generated import lines (so, using Unix path syntax).
-var ClojureSourceDir string
+var ClojureSourceDir paths.UnixPath
 
 // Clojure source tree's core directory for generated import lines (so, using Unix path syntax).
-var ClojureCoreDir string
+var ClojureCoreDir paths.UnixPath
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
 // import lines to the given host-syntax path, with the local path
@@ -25,14 +25,16 @@ var ClojureCoreDir string
 // Abs(p)=="/home/me/go/src/github.com/candid82/joker", then the
 // resulting root for import lines would be
 // "github.com/candid82/joker".
-func SetClojureSourceDir(p string, r string) {
+func SetClojureSourceDir(pPath, rPath paths.Path) {
+	p := pPath.String()
+	r := rPath.String()
 	abs, err := filepath.Abs(p)
 	if err != nil {
 		panic(fmt.Sprintf("error %s path %s", err, p))
 	}
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
-	ClojureSourceDir = filepath.ToSlash(imp)
-	ClojureCoreDir = path.Join(ClojureSourceDir, "core")
+	ClojureSourceDir = paths.NewUnixPath(filepath.ToSlash(imp))
+	ClojureCoreDir = ClojureSourceDir.Join("core").(paths.UnixPath)
 }
 
 var Fset *token.FileSet

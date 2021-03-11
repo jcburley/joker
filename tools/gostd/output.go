@@ -7,6 +7,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
+	"github.com/candid82/joker/tools/gostd/paths"
 	"go/doc"
 	"go/token"
 	"io/ioutil"
@@ -32,41 +33,41 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, clojureSourceDir string) {
-	writeCustomLibsGo(pkgs, clojureSourceDir, "g_custom.go")
+func RegisterPackages(pkgs []string, clojureSourceDir paths.Path) {
+	writeCustomLibsGo(pkgs, clojureSourceDir, paths.NewNativePath("g_custom.go"))
 }
 
-func RegisterClojureFiles(clojureFiles []string, clojureSourceDir string) {
-	writeCustomLibsClojure(clojureFiles, clojureSourceDir, filepath.Join("core", "data", "g_customlibs.joke"))
+func RegisterClojureFiles(clojureFiles []string, clojureSourceDir paths.Path) {
+	writeCustomLibsClojure(clojureFiles, clojureSourceDir, paths.NewNativePath(filepath.Join("core", "data", "g_customlibs.joke")))
 }
 
-func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir string) {
-	writeGoTypeSwitch(types, clojureSourceDir, filepath.Join("core", "g_goswitch.go"))
+func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir paths.Path) {
+	writeGoTypeSwitch(types, clojureSourceDir, paths.NewNativePath(filepath.Join("core", "g_goswitch.go")))
 }
 
-func writeCustomLibsGo(pkgs []string, dir, f string) {
+func writeCustomLibsGo(pkgs []string, dir, f paths.Path) {
 	if Verbose {
-		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), filepath.ToSlash(f))
+		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), f)
 	}
 
 	newImports := ""
 	importPrefix := "\t_ "
 	for _, p := range pkgs {
-		newImports += importPrefix + fmt.Sprintf("%q\n", generatedPkgPrefix+goStdPrefix+p)
+		newImports += importPrefix + fmt.Sprintf("%q\n", generatedPkgPrefix+goStdPrefix.String()+p)
 	}
 
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "go-custom-libs.tmpl", newImports)
 
-	if dir != "" {
-		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
+	if dir.String() != "" {
+		err := ioutil.WriteFile(dir.Join(f.String()).ToNative().String(), buf.Bytes(), 0777)
 		Check(err)
 	}
 }
 
-func writeCustomLibsClojure(pkgs []string, dir, f string) {
+func writeCustomLibsClojure(pkgs []string, dir, f paths.Path) {
 	if Verbose {
-		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), filepath.ToSlash(f))
+		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), f)
 	}
 
 	m := ""
@@ -78,8 +79,8 @@ func writeCustomLibsClojure(pkgs []string, dir, f string) {
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "clojure-custom-libs.tmpl", m)
 
-	if dir != "" {
-		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
+	if dir.String() != "" {
+		err := ioutil.WriteFile(dir.Join(f.String()).ToNative().String(), buf.Bytes(), 0777)
 		Check(err)
 	}
 }
@@ -87,11 +88,11 @@ func writeCustomLibsClojure(pkgs []string, dir, f string) {
 var Ordinal = map[TypeInfo]uint{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
-func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
+func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.Path) {
 	types := SwitchableTypes
 
 	if Verbose {
-		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), filepath.ToSlash(f))
+		fmt.Printf("Adding only %d types (out of %d) to %s\n", len(types), len(allTypes), f)
 	}
 
 	var cases []map[string]interface{}
@@ -127,8 +128,8 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f string) {
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "go-type-switch.tmpl", info)
 
-	if dir != "" {
-		err := ioutil.WriteFile(filepath.Join(dir, f), buf.Bytes(), 0777)
+	if dir.String() != "" {
+		err := ioutil.WriteFile(dir.Join(f.String()).ToNative().String(), buf.Bytes(), 0777)
 		Check(err)
 	}
 }

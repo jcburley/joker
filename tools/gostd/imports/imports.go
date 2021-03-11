@@ -3,6 +3,7 @@ package imports
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
+	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
 	"path"
@@ -88,7 +89,8 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 // Given the full (though relative) name of the package, establish it
 // as the (only) interned package (using the "."  name in Go's
 // 'import' statement).
-func (imports *Imports) InternPackage(full, nsPrefix, pathPrefix string, pos token.Pos) {
+func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPrefix string, pos token.Pos) {
+	full := fullPath.String()
 	if imports == nil {
 		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
 	}

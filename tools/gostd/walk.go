@@ -14,7 +14,6 @@ import (
 	"go/token"
 	"math"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -179,7 +178,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 		return ""
 	}
 	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
-	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot, goStdPrefix)
+	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String(), goStdPrefix.String()).ToUnix().String()
 
 	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
 	if curPkgName.String() == ti.GoPackage() {
@@ -198,8 +197,8 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // builtin type (api is in core)
 	}
 
-	apiPkgPath := path.Join(godb.ClojureSourceDir, importStdRoot, ReplaceAll(clType[0:ix], ".", "/"))
-	clojureStdPath := path.Join(godb.ClojureSourceDir, importStdRoot)
+	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), ReplaceAll(clType[0:ix], ".", "/")).String()
+	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
 	//	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
@@ -1041,7 +1040,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 	return nil, paths.NewNativePath("")
 }
 
-func findApis(src paths.NativePath) (apis map[string]struct{}) {
+func findApis(src paths.Path) (apis map[string]struct{}) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()
@@ -1054,7 +1053,7 @@ func findApis(src paths.NativePath) (apis map[string]struct{}) {
 
 	var fset = token.NewFileSet()
 
-	target, err := src.EvalSymlinks()
+	target, err := src.ToNative().EvalSymlinks()
 	Check(err)
 
 	pkgs, err := parser.ParseDir(fset, target.String(), nil, 0)
