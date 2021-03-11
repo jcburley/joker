@@ -25,7 +25,7 @@ var ClojureCoreDir paths.UnixPath
 // Abs(p)=="/home/me/go/src/github.com/candid82/joker", then the
 // resulting root for import lines would be
 // "github.com/candid82/joker".
-func SetClojureSourceDir(pPath, rPath paths.Path) {
+func SetClojureSourceDir(pPath, rPath paths.NativePath) {
 	p := pPath.String()
 	r := rPath.String()
 	abs, err := filepath.Abs(p)
@@ -34,7 +34,7 @@ func SetClojureSourceDir(pPath, rPath paths.Path) {
 	}
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
 	ClojureSourceDir = paths.NewUnixPath(filepath.ToSlash(imp))
-	ClojureCoreDir = ClojureSourceDir.Join("core").(paths.UnixPath)
+	ClojureCoreDir = ClojureSourceDir.Join("core").ToUnix()
 }
 
 var Fset *token.FileSet

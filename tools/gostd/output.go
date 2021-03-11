@@ -33,19 +33,19 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, clojureSourceDir paths.Path) {
+func RegisterPackages(pkgs []string, clojureSourceDir paths.NativePath) {
 	writeCustomLibsGo(pkgs, clojureSourceDir, paths.NewNativePath("g_custom.go"))
 }
 
-func RegisterClojureFiles(clojureFiles []string, clojureSourceDir paths.Path) {
+func RegisterClojureFiles(clojureFiles []string, clojureSourceDir paths.NativePath) {
 	writeCustomLibsClojure(clojureFiles, clojureSourceDir, paths.NewNativePath(filepath.Join("core", "data", "g_customlibs.joke")))
 }
 
-func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir paths.Path) {
+func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir paths.NativePath) {
 	writeGoTypeSwitch(types, clojureSourceDir, paths.NewNativePath(filepath.Join("core", "g_goswitch.go")))
 }
 
-func writeCustomLibsGo(pkgs []string, dir, f paths.Path) {
+func writeCustomLibsGo(pkgs []string, dir, f paths.NativePath) {
 	if Verbose {
 		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), f)
 	}
@@ -65,7 +65,7 @@ func writeCustomLibsGo(pkgs []string, dir, f paths.Path) {
 	}
 }
 
-func writeCustomLibsClojure(pkgs []string, dir, f paths.Path) {
+func writeCustomLibsClojure(pkgs []string, dir, f paths.NativePath) {
 	if Verbose {
 		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), f)
 	}
@@ -88,7 +88,7 @@ func writeCustomLibsClojure(pkgs []string, dir, f paths.Path) {
 var Ordinal = map[TypeInfo]uint{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
-func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.Path) {
+func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	types := SwitchableTypes
 
 	if Verbose {

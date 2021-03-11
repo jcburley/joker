@@ -1041,7 +1041,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 	return nil, paths.NewNativePath("")
 }
 
-func findApis(src paths.Path) (apis map[string]struct{}) {
+func findApis(src paths.NativePath) (apis map[string]struct{}) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()

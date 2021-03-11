@@ -76,8 +76,8 @@ Options:
 	os.Exit(0)
 }
 
-func listOfOthers(other paths.Path) (others []paths.NativePath) {
-	o := filepath.Join(goPath.String(), other.String())
+func listOfOthers(other paths.NativePath) (others []paths.NativePath) {
+	o := goPath.JoinPaths(other).String()
 	s, e := os.Stat(o)
 	if e != nil {
 		o = other.String() // try original without $GOPATH/src/ prefix
@@ -95,7 +95,7 @@ func listOfOthers(other paths.Path) (others []paths.NativePath) {
 var coreApiFilename = "core-apis.dat"
 var definedApis = map[string]struct{}{}
 
-func readCoreApiFile(src paths.Path) {
+func readCoreApiFile(src paths.NativePath) {
 	start := getCPU()
 	defer func() {
 		end := getCPU()
@@ -145,11 +145,11 @@ func main() {
 	godb.Fset = token.NewFileSet() // positions are relative to Fset
 
 	length := len(os.Args)
-	var goRoot, outputDir, clojureImportDir, jokerSourceDir paths.Path
+	var goRoot, outputDir, clojureImportDir, jokerSourceDir paths.NativePath
 	goRootVia := ""
 	GOPATH := os.Getenv("GOPATH")
 	goPath = paths.NewNativePath(filepath.FromSlash(GOPATH))
-	var others []paths.Path
+	var others []paths.NativePath
 	var otherSourceDirs []paths.NativePath
 	replace := false
 	overwrite := false
@@ -187,7 +187,7 @@ func main() {
 			case "--go-root":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					goRoot = paths.NewPath(os.Args[i])
+					goRoot = paths.NewPathAsNative(os.Args[i])
 					goRootVia = "--go-root"
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --go-root option\n")
@@ -200,12 +200,12 @@ func main() {
 				}
 				for i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					others = append(others, paths.NewPath(os.Args[i]))
+					others = append(others, paths.NewPathAsNative(os.Args[i]))
 				}
 			case "--go-path":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					goPath = paths.NewPath(os.Args[i]).ToNative()
+					goPath = paths.NewPathAsNative(os.Args[i])
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --go-path option\n")
 					os.Exit(1)
@@ -213,7 +213,7 @@ func main() {
 			case "--output":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					outputDir = paths.NewPath(os.Args[i]).ToNative()
+					outputDir = paths.NewPathAsNative(os.Args[i])
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --output option\n")
 					os.Exit(1)
@@ -221,7 +221,7 @@ func main() {
 			case "--import-from":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					clojureImportDir = paths.NewPath(os.Args[i]).ToNative()
+					clojureImportDir = paths.NewPathAsNative(os.Args[i])
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --import-from option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
@@ -229,7 +229,7 @@ func main() {
 			case "--joker":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					jokerSourceDir = paths.NewPath(os.Args[i]).ToNative()
+					jokerSourceDir = paths.NewPathAsNative(os.Args[i])
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --joker option; got %s, which looks like an option\n", os.Args[i+1])
 					os.Exit(1)
@@ -248,16 +248,16 @@ func main() {
 		fmt.Printf("Default context: %v\n", build.Default)
 	}
 
-	if jokerSourceDir == nil {
+	if jokerSourceDir.IsEmpty() {
 		jokerSourceDir = outputDir
 	}
 
-	if clojureImportDir == nil {
+	if clojureImportDir.IsEmpty() {
 		clojureImportDir = jokerSourceDir
 	}
 
-	if goRoot == nil {
-		goRoot = paths.NewPath(build.Default.GOROOT)
+	if goRoot.IsEmpty() {
+		goRoot = paths.NewPathAsNative(build.Default.GOROOT)
 		goRootVia = "build.Default.GOROOT"
 	}
 
@@ -268,7 +268,7 @@ func main() {
 	}
 
 	if fi, e := os.Stat(goRootSrc.Join("go").String()); e != nil || !fi.IsDir() {
-		if m, e := goRootSrc.Join("*.go").(paths.NativePath).Glob(); e != nil || m == nil || len(m) == 0 {
+		if m, e := goRootSrc.Join("*.go").Glob(); e != nil || m == nil || len(m) == 0 {
 			fmt.Fprintf(os.Stderr, "Does not exist or is not a Go source directory: %s (specified via %s);\n%v",
 				goRootSrc, goRootVia, m)
 			os.Exit(2)
@@ -284,7 +284,7 @@ func main() {
 	}
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
-	generatedPkgPrefix = godb.ClojureSourceDir.Join(importStdRoot.String()).String() + "/"
+	generatedPkgPrefix = godb.ClojureSourceDir.JoinPaths(importStdRoot).String() + "/"
 	importMe := path.Join(generatedPkgPrefix, goStdPrefix.String())
 
 	if godb.Verbose {
@@ -314,7 +314,7 @@ func main() {
 
 	outputGoStdDir := ""
 	if outputDir.String() != "" {
-		outputGoStdDir = outputDir.Join(importStdRoot.String()).Join(goStdPrefix.String()).String()
+		outputGoStdDir = outputDir.JoinPaths(importStdRoot.ToNative()).String()
 		if replace {
 			if e := os.RemoveAll(outputGoStdDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", outputGoStdDir)
@@ -342,11 +342,11 @@ func main() {
 	}
 
 	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
-	root := goRootSrc.Join(".").(paths.NativePath)
+	root := goRootSrc.Join(".")
 	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
 
 	for _, o := range otherSourceDirs {
-		AddWalkDir(o, o.Join(".").(paths.NativePath), "x.y.z.", path.Join(generatedPkgPrefix, "x/y/z/"))
+		AddWalkDir(o, o.Join("."), "x.y.z.", path.Join(generatedPkgPrefix, "x/y/z/"))
 	}
 
 	err, badDir := WalkAllDirs()
@@ -386,7 +386,7 @@ func main() {
 			}
 		})
 
-	OutputPackageCode(outputGoStdDir, generateEmpty)
+	OutputPackageCode(path.Join(outputGoStdDir, goStdPrefix.String()), generateEmpty)
 
 	var packagesArray = []string{} // Relative package pathnames in alphabetical order
 	var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order

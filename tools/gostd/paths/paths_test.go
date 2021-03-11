@@ -32,7 +32,7 @@ func TestIsUnixPath(t *testing.T) {
 }
 
 func TestCtorAndString(t *testing.T) {
-	nut := NewPath(ut)
+	nut := NewPathAsUnix(ut)
 	if fmt.Sprintf("%s", nut) != ut {
 		t.Fail()
 	}
@@ -40,7 +40,7 @@ func TestCtorAndString(t *testing.T) {
 		t.Fail()
 	}
 
-	nnt := NewPath(nt)
+	nnt := NewPathAsNative(nt)
 	if fmt.Sprintf("%s", nnt) != nt {
 	}
 	if nnt.ToUnix().String() != ut {

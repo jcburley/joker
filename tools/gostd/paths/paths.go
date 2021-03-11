@@ -22,12 +22,14 @@ func Native(p string) string {
 // Represents a path of arbitrary type.
 type Path interface {
 	String() string
+	IsEmpty() bool
 
 	// These always return the same concrete type as upon which they operate:
 	// 	Dir() Path
 	// 	EvalSymlinks() (Path, error)
 	//      Glob() ([]Path, error)
-	Join(el ...string) Path
+	//	Join(el ...string) Path
+	//	JoinPaths(el ...Path) Path
 	// 	Split() (Path, string)
 	//	Walk(WalkFunc) error
 
@@ -61,11 +63,26 @@ func IsUnixPath(p string) bool {
 	return strings.Contains(p, "/") && (filepath.Separator == '/' || !strings.Contains(p, string(filepath.Separator)))
 }
 
-func NewPath(p string) Path {
+func NewPathAsUnix(p string) UnixPath {
 	if IsUnixPath(p) {
 		return NewUnixPath(p)
 	}
+	return NewNativePath(p).ToUnix()
+}
+
+func NewPathAsNative(p string) NativePath {
+	if IsUnixPath(p) {
+		return NewUnixPath(p).ToNative()
+	}
 	return NewNativePath(p)
+}
+
+func (u UnixPath) IsEmpty() bool {
+	return u.path == ""
+}
+
+func (n NativePath) IsEmpty() bool {
+	return n.path == ""
 }
 
 func (u UnixPath) Base() string {
@@ -94,11 +111,27 @@ func (n NativePath) EvalSymlinks() (NativePath, error) {
 	return NewNativePath(p), e
 }
 
-func (u UnixPath) Join(el ...string) Path {
+func (u UnixPath) Join(el ...string) UnixPath {
 	return NewUnixPath(path.Join(u.String(), path.Join(el...)))
 }
 
-func (n NativePath) Join(el ...string) Path {
+func (n NativePath) Join(el ...string) NativePath {
+	return NewNativePath(filepath.Join(n.String(), filepath.Join(el...)))
+}
+
+func (u UnixPath) JoinPaths(elp ...UnixPath) UnixPath {
+	el := []string{}
+	for _, p := range elp {
+		el = append(el, p.String())
+	}
+	return NewUnixPath(path.Join(u.String(), path.Join(el...)))
+}
+
+func (n NativePath) JoinPaths(elp ...NativePath) NativePath {
+	el := []string{}
+	for _, p := range elp {
+		el = append(el, p.String())
+	}
 	return NewNativePath(filepath.Join(n.String(), filepath.Join(el...)))
 }
 
