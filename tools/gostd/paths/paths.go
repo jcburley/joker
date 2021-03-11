@@ -31,6 +31,8 @@ type Path interface {
 	//	Walk(WalkFunc) error
 
 	Base() string
+	ToUnix() UnixPath
+	ToNative() NativePath
 }
 
 type UnixPath struct {
@@ -52,6 +54,17 @@ func NewUnixPath(p string) UnixPath {
 
 func NewNativePath(p string) NativePath {
 	return NativePath{path: p}
+}
+
+func IsUnixPath(p string) bool {
+	return strings.Contains(p, "/") && (filepath.Separator == '/' || !strings.Contains(p, string(filepath.Separator)))
+}
+
+func NewPath(p string) Path {
+	if IsUnixPath(p) {
+		return NewUnixPath(p)
+	}
+	return NewNativePath(p)
 }
 
 func (u UnixPath) Base() string {
@@ -106,8 +119,16 @@ func (n NativePath) String() string {
 	return n.path
 }
 
+func (u UnixPath) ToUnix() UnixPath {
+	return u
+}
+
 func (u UnixPath) ToNative() NativePath {
 	return NewNativePath(filepath.FromSlash(u.String()))
+}
+
+func (n NativePath) ToNative() NativePath {
+	return n
 }
 
 func (n NativePath) ToUnix() UnixPath {

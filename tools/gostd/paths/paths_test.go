@@ -1,6 +1,7 @@
 package paths
 
 import (
+	"fmt"
 	"path"
 	"path/filepath"
 	"testing"
@@ -20,6 +21,32 @@ var nd = NewNativePath(ntd)
 
 var utb = path.Base(ut)
 var ntb = filepath.Base(nt)
+
+func TestIsUnixPath(t *testing.T) {
+	if !IsUnixPath(ut) {
+		t.Fail()
+	}
+	if nt != ut && IsUnixPath(nt) {
+		t.Fail()
+	}
+}
+
+func TestCtorAndString(t *testing.T) {
+	nut := NewPath(ut)
+	if fmt.Sprintf("%s", nut) != ut {
+		t.Fail()
+	}
+	if nut.ToNative().String() != nt {
+		t.Fail()
+	}
+
+	nnt := NewPath(nt)
+	if fmt.Sprintf("%s", nnt) != nt {
+	}
+	if nnt.ToUnix().String() != ut {
+		t.Fail()
+	}
+}
 
 func TestUnixCtorAndString(t *testing.T) {
 	if u.String() != ut {
