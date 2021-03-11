@@ -39,7 +39,7 @@ func Check(err error) {
 	}
 }
 
-var goPath paths.Path
+var goPath paths.NativePath
 var importStdRoot = paths.NewUnixPath(path.Join("std", "gostd")) // Relative to --output dir.
 
 var goStdPrefix = paths.NewUnixPath("go/std/")
@@ -148,7 +148,7 @@ func main() {
 	var goRoot, outputDir, clojureImportDir, jokerSourceDir paths.Path
 	goRootVia := ""
 	GOPATH := os.Getenv("GOPATH")
-	goPath = paths.NewPath(GOPATH)
+	goPath = paths.NewNativePath(filepath.FromSlash(GOPATH))
 	var others []paths.Path
 	var otherSourceDirs []paths.NativePath
 	replace := false
@@ -205,7 +205,7 @@ func main() {
 			case "--go-path":
 				if i < length-1 && notOption(os.Args[i+1]) {
 					i += 1 // shift
-					goPath = paths.NewPath(os.Args[i])
+					goPath = paths.NewPath(os.Args[i]).ToNative()
 				} else {
 					fmt.Fprintf(os.Stderr, "missing path after --go-path option\n")
 					os.Exit(1)
@@ -280,7 +280,7 @@ func main() {
 		os.Exit(1)
 	}
 	if fi, e := os.Stat(goPath.String()); e == nil && fi.IsDir() && goPath.Base() != "src" {
-		goPath = goPath.Join("src")
+		goPath = goPath.Join("src").ToNative()
 	}
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
