@@ -284,7 +284,7 @@ func main() {
 	}
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
-	generatedPkgPrefix = godb.ClojureSourceDir.Join(importStdRoot.ToNative().String()).String() + "/"
+	generatedPkgPrefix = godb.ClojureSourceDir.Join(importStdRoot.String()).String() + "/"
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
