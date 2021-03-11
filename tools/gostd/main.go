@@ -9,6 +9,7 @@ import (
 	"go/build"
 	"go/token"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -39,8 +40,7 @@ func Check(err error) {
 }
 
 var goPath string
-var jokerStdRoot = filepath.Join("std", "gostd")   // Relative to --output dir.
-var importStdRoot = filepath.ToSlash(jokerStdRoot) // Same as jokerStdRoot, but with forward slashes (Unix/Go-style).
+var importStdRoot = path.Join("std", "gostd") // Relative to --output dir.
 
 const goStdPrefix = "go/std/"
 
@@ -299,7 +299,6 @@ func main() {
 		fmt.Printf("outputDir: %s\n", outputDir)
 		fmt.Printf("clojureImportDir: %s\n", clojureImportDir)
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
-		fmt.Printf("jokerStdRoot: %s\n", jokerStdRoot)
 		fmt.Printf("importStdRoot: %s\n", importStdRoot)
 		fmt.Printf("generatedPkgPrefix: %s\n", generatedPkgPrefix)
 		for _, o := range otherSourceDirs {
@@ -318,7 +317,7 @@ func main() {
 
 	outputGoStdDir := ""
 	if outputDir != "" {
-		outputGoStdDir = filepath.Join(outputDir, jokerStdRoot, goStdPrefix)
+		outputGoStdDir = filepath.Join(outputDir, importStdRoot, goStdPrefix)
 		if replace {
 			if e := os.RemoveAll(outputGoStdDir); e != nil {
 				fmt.Fprintf(os.Stderr, "Unable to effectively 'rm -fr %s'\n", outputGoStdDir)
