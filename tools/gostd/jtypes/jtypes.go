@@ -91,8 +91,20 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		}
 		baseNameDoc = baseName
 	case *ChanType:
-		baseName = fmt.Sprintf("ABEND737(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseName := "chan"
+		switch v.Dir {
+		case SEND:
+			baseName = "chan<-"
+		case RECV:
+			baseName = "chan->"
+		case SEND | RECV:
+		default:
+			baseName = fmt.Sprintf("ABEND737(jtypes.go: %s Dir=0x%x not supported)", astutils.ExprToString(v), v.Dir)
+		}
+		value := InfoForExpr(v.Value)
+		baseName += "Of" + value.FullName
 		baseNameDoc = baseName
+		fmt.Printf("jtypes.go/namingForExpr(%s) => %s\n", astutils.ExprToString(v), baseName)
 	case *StructType:
 		baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		baseNameDoc = baseName

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/gtypes"
@@ -121,14 +122,14 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 
 	if ti, found := typesByGoName[gti.FullName]; found {
 		if _, ok := typesByClojureName[jti.FullName]; !ok {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s]\n", gti.FullName, jti.FullName))
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 			//			typesByClojureName[jti.FullName] = ti
 		}
 		return ti
 	}
 	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s]\n", jti.FullName, gti.FullName))
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 		}
 	}
 
