@@ -35,7 +35,7 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 
 const resultName = "_res"
 
-func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string, useful bool) {
+func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string) {
 	captureVar = captureName
 	if captureName == "" || captureName == "_" {
 		captureVar = genutils.GenSym(resultName)
@@ -44,16 +44,11 @@ func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf st
 	if captureName != "" && captureName != resultName {
 		gol = genutils.ParamNameAsGo(captureName) + " " + gol
 	}
-	useful = genutils.ExprIsUseful(out)
-	if !useful {
-		captureVar = "_"
-	}
 	return
 }
 
 // Caller generates "outGOCALL;goc" while saving cl and gol for type info (they go into .joke as metadata and docstrings)
 func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, goc, out, conversion string) {
-	useful := false
 	captureVars := []string{}
 	clType := []string{}
 	clTypeDoc := []string{}
@@ -62,6 +57,7 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 
 	result := resultName
 	fields := astutils.FlattenFieldList(fl)
+	useful := len(fields) > 0
 	multipleCaptures := len(fields) > 1
 	for _, field := range fields {
 		n := ""
@@ -72,8 +68,7 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 		if multipleCaptures {
 			captureName = n
 		}
-		captureVar, clNew, clDocNew, golNew, gocNew, outNew, conversionNew, usefulItem := genGoPostItem(fn, indent, captureName, field.Field, "")
-		useful = useful || usefulItem
+		captureVar, clNew, clDocNew, golNew, gocNew, outNew, conversionNew := genGoPostItem(fn, indent, captureName, field.Field, "")
 		if multipleCaptures {
 			gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
 		} else {
@@ -115,21 +110,18 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 	goc = strings.Join(goCode, "")
 
 	if multipleCaptures {
-		if useful {
-			goc = indent + result + " := EmptyVector()\n" + goc + indent + "return " + result + "\n"
-		} else {
-			goc = indent + "ABEND123(post.go: no public information returned)\n"
-		}
+		goc = indent + result + " := EmptyVector()\n" + goc + indent + "return " + result + "\n"
 		conversion = ""
-	} else {
+	} else if useful {
 		if goc == "" && result == resultName {
 			out = "return " // No code generated, so no need to use intermediary
 		} else {
 			goc += indent + "return " + result + "\n"
 		}
-		if !useful {
-			goc += indent + "ABEND124(post.go: no public information returned)\n"
-		}
+	} else {
+		// An Error() method (from 'error' in an interface{}). Capture and wrap the string.
+		out = result + " := "
+		goc = indent + "return MakeString(" + result + ")\n"
 	}
 
 	return

@@ -52,10 +52,6 @@ func GenSymReset() {
 	genSymIndex = map[string]int{}
 }
 
-func ExprIsUseful(rtn string) bool {
-	return rtn != "NIL"
-}
-
 // Generates code that, at run time, tests each of the onlyIf's and, if all true, returns the expr; else returns NIL.
 func wrapOnlyIfs(onlyIf string, e string) string {
 	if len(onlyIf) == 0 {
