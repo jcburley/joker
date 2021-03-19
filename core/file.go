@@ -15,6 +15,10 @@ func (f *File) ToString(escape bool) string {
 	return "#object[File]"
 }
 
+func (f *File) TypeToString(escape bool) string {
+	return f.GetType().ToString(escape)
+}
+
 func (f *File) Equals(other interface{}) bool {
 	return f == other
 }

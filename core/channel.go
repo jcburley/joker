@@ -24,6 +24,10 @@ func (ch *Channel) ToString(escape bool) string {
 	return "#object[Channel]"
 }
 
+func (ch *Channel) TypeToString(escape bool) string {
+	return ch.GetType().ToString(escape)
+}
+
 func (ch *Channel) Equals(other interface{}) bool {
 	return ch == other
 }

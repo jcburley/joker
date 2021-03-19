@@ -55,6 +55,10 @@ func (seq *ArrayMapSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
+func (seq *ArrayMapSeq) TypeToString(escape bool) string {
+	return seq.GetType().ToString(escape)
+}
+
 func (seq *ArrayMapSeq) Pprint(w io.Writer, indent int) int {
 	return pprintSeq(seq, w, indent)
 }
@@ -266,6 +270,10 @@ func (m *ArrayMap) Conj(obj Object) Conjable {
 
 func (m *ArrayMap) ToString(escape bool) string {
 	return mapToString(m, escape)
+}
+
+func (m *ArrayMap) TypeToString(escape bool) string {
+	return m.GetType().ToString(escape)
 }
 
 func (m *ArrayMap) Equals(other interface{}) bool {

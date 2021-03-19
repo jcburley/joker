@@ -22,6 +22,10 @@ func (iow *IOWriter) ToString(escape bool) string {
 	return "#object[IOWriter]"
 }
 
+func (iow *IOWriter) TypeToString(escape bool) string {
+	return iow.GetType().ToString(escape)
+}
+
 func (iow *IOWriter) Equals(other interface{}) bool {
 	return iow == other
 }

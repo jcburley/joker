@@ -597,6 +597,10 @@ func (err *ParseError) ToString(escape bool) string {
 	return err.Error()
 }
 
+func (err *ParseError) TypeToString(escape bool) string {
+	return err.GetType().ToString(escape)
+}
+
 func (err *ParseError) Equals(other interface{}) bool {
 	return err == other
 }

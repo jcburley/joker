@@ -28,6 +28,10 @@ func (db BoltDB) ToString(escape bool) string {
 	return "#object[BoltDB]"
 }
 
+func (db BoltDB) TypeToString(escape bool) string {
+	return db.GetType().ToString(escape)
+}
+
 func (db BoltDB) Equals(other interface{}) bool {
 	if otherDb, ok := other.(BoltDB); ok {
 		return db.DB == otherDb.DB

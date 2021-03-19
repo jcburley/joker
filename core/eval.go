@@ -61,7 +61,7 @@ func (rt *Runtime) NewArgTypeError(index int, obj Object, expectedType string) *
 }
 
 func (rt *Runtime) NewReceiverArgTypeError(index int, name, rcvr string, obj Object, expectedType string) *EvalError {
-	return rt.NewError(fmt.Sprintf("Arg[%d] (%s) of %s must have type %s, got %s", index, name, rcvr, expectedType, obj.GetType().ToString(false)))
+	return rt.NewError(fmt.Sprintf("Arg[%d] (%s) of %s must have type %s, got %s", index, name, rcvr, expectedType, obj.TypeToString(false)))
 }
 
 func (rt *Runtime) NewErrorWithPos(msg string, pos Position) *EvalError {
@@ -149,6 +149,10 @@ func MakeEvalError(msg string, pos Position, rt *Runtime) *EvalError {
 
 func (err *EvalError) ToString(escape bool) string {
 	return err.Error()
+}
+
+func (err *EvalError) TypeToString(escape bool) string {
+	return err.GetType().ToString(escape)
 }
 
 func (err *EvalError) Equals(other interface{}) bool {

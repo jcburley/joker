@@ -23,6 +23,10 @@ func (ns *Namespace) ToString(escape bool) string {
 	return ns.Name.ToString(escape)
 }
 
+func (ns *Namespace) TypeToString(escape bool) string {
+	return ns.GetType().ToString(escape)
+}
+
 func (ns *Namespace) Print(w io.Writer, printReadably bool) {
 	fmt.Fprint(w, "#object[Namespace \""+ns.Name.ToString(true)+"\"]")
 }

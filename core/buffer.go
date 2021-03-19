@@ -22,6 +22,10 @@ func (b *Buffer) ToString(escape bool) string {
 	return b.String()
 }
 
+func (b *Buffer) TypeToString(escape bool) string {
+	return b.GetType().ToString(escape)
+}
+
 func (b *Buffer) Equals(other interface{}) bool {
 	return b == other
 }

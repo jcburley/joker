@@ -65,6 +65,10 @@ func (set *MapSet) ToString(escape bool) string {
 	return b.String()
 }
 
+func (set *MapSet) TypeToString(escape bool) string {
+	return set.GetType().ToString(escape)
+}
+
 func (set *MapSet) Equals(other interface{}) bool {
 	switch otherSet := other.(type) {
 	case *MapSet:

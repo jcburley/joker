@@ -47,6 +47,10 @@ func (list *List) ToString(escape bool) string {
 	return SeqToString(list, escape)
 }
 
+func (list *List) TypeToString(escape bool) string {
+	return list.GetType().ToString(escape)
+}
+
 func (seq *List) Pprint(w io.Writer, indent int) int {
 	return pprintSeq(seq, w, indent)
 }
