@@ -42,7 +42,7 @@ type (
 	Object interface {
 		Equality
 		ToString(escape bool) string
-		TypeToString(escape bool) string
+		TypeToString(escape bool) string // Goes deeper than just "GoObject"
 		GetInfo() *ObjectInfo
 		WithInfo(*ObjectInfo) Object
 		GetType() *Type
@@ -525,6 +525,15 @@ func equalsNumbers(x Number, y interface{}) bool {
 		return category(x) == category(y) && numbersEq(x, y)
 	default:
 		return false
+	}
+}
+
+func AnyTypeToString(any interface{}, escape bool) string {
+	switch o := any.(type) {
+	case Object:
+		return o.TypeToString(escape)
+	default:
+		return fmt.Sprintf("%T", o)
 	}
 }
 

@@ -65,8 +65,8 @@ func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
 	a := SeqNth(args, n)
 	res, ok := a.(GoObject)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type net.GoObject[%s], but is %T",
-			n, name, rcvr, t, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type net.GoObject[%s], but is %s",
+			n, name, rcvr, t, a.TypeToString(false))))
 	}
 	return res
 }
@@ -79,8 +79,8 @@ func ReceiverArgAsBoolean(name, rcvr string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Boolean, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Boolean, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.B
 }
@@ -92,8 +92,8 @@ func FieldAsBoolean(o Map, k string) bool {
 	}
 	res, ok := v.(Boolean)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Boolean, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Boolean, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res.B
 }
@@ -106,8 +106,8 @@ func ReceiverArgAsInt(name, rcvr string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Int, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Int, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.I
 }
@@ -175,8 +175,8 @@ func ReceiverArgAsNumber(name, rcvr string, args *ArraySeq, n int) Number {
 	a := SeqNth(args, n)
 	res, ok := a.(Number)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Number, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Number, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res
 }
@@ -188,8 +188,8 @@ func FieldAsNumber(o Map, k string) Number {
 	}
 	res, ok := v.(Number)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Number, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Number, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res
 }
@@ -371,8 +371,8 @@ func FieldAsDouble(o Map, k string) float64 {
 	}
 	res, ok := v.(Double)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Double, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Double, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res.D
 }
@@ -381,8 +381,8 @@ func ReceiverArgAsDouble(name, rcvr string, args *ArraySeq, n int) float64 {
 	a := SeqNth(args, n)
 	res, ok := a.(Double)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.D
 }
@@ -395,8 +395,8 @@ func ReceiverArgAsChar(name, rcvr string, args *ArraySeq, n int) rune {
 	a := SeqNth(args, n)
 	res, ok := a.(Char)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Char, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Char, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.Ch
 }
@@ -408,8 +408,8 @@ func FieldAsChar(o Map, k string) rune {
 	}
 	res, ok := v.(Char)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Char, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Char, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res.Ch
 }
@@ -422,8 +422,8 @@ func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, ok := a.(String)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type String, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type String, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.S
 }
@@ -435,8 +435,8 @@ func FieldAsString(o Map, k string) string {
 	}
 	res, ok := v.(String)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type String, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type String, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res.S
 }
@@ -452,8 +452,8 @@ func ReceiverArgAsError(name, rcvr string, args *ArraySeq, n int) error {
 	}
 	res, ok := a.(Error)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Error or String, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Error or String, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res
 }
@@ -468,8 +468,8 @@ func FieldAsError(o Map, k string) error {
 	}
 	res, ok := v.(error)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Error or String, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Error or String, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res
 }
@@ -481,8 +481,8 @@ func FieldAsGoObject(o Map, k string) interface{} {
 	}
 	res, ok := v.(GoObject)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject, but is %T",
-			k, v)))
+		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject, but is %s",
+			k, v.TypeToString(false))))
 	}
 	return res.O
 }
@@ -491,8 +491,8 @@ func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{}
 	a := SeqNth(args, n)
 	res, ok := a.(GoObject)
 	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject, but is %T",
-			n, name, rcvr, a)))
+		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject, but is %s",
+			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.O
 }
@@ -528,7 +528,7 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		i := EnsureObjectIsInt(key, "")
 		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for getting", o, reflect.TypeOf(o).Kind().String()))
+	panic(fmt.Sprintf("Unsupported type=%s kind=%s for getting", AnyTypeToString(o, false), reflect.TypeOf(o).Kind().String()))
 }
 
 func GoObjectCount(o interface{}) int {
@@ -538,13 +538,14 @@ func GoObjectCount(o interface{}) int {
 		}
 	}()
 	v := reflect.Indirect(reflect.ValueOf(o))
-	switch v.Kind() {
+	switch k := v.Kind(); k {
 	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
 		return v.Len()
 	case reflect.Struct:
 		return v.NumField()
+	default:
+		panic(fmt.Sprintf("Unsupported type=%s kind=%s for counting", AnyTypeToString(o, false), k))
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for counting", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func GoObjectSeq(o interface{}) Seq {
@@ -554,7 +555,7 @@ func GoObjectSeq(o interface{}) Seq {
 		}
 	}()
 	v := reflect.Indirect(reflect.ValueOf(o))
-	switch v.Kind() {
+	switch k := v.Kind(); k {
 	case reflect.Array, reflect.Chan, reflect.Map, reflect.Slice, reflect.String:
 		n := v.Len()
 		elements := make([]Object, n)
@@ -570,8 +571,9 @@ func GoObjectSeq(o interface{}) Seq {
 			elements[i] = NewVectorFrom(MakeKeyword(ty.Field(i).Name), MakeGoObjectIfNeeded(v.Field(i).Interface()))
 		}
 		return &ArraySeq{arr: elements}
+	default:
+		panic(fmt.Sprintf("Unsupported type=%s kind=%s for sequencing", AnyTypeToString(o, false), k))
 	}
-	panic(fmt.Sprintf("Unsupported type=%T kind=%s for sequencing", o, reflect.TypeOf(o).Kind().String()))
 }
 
 func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
@@ -605,8 +607,8 @@ func ReceiverArgAsarrayOfByte(name, rcvr string, args *ArraySeq, n int) []byte {
 			return res
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s must be type GoObject[[]byte], but is %T",
-		n, name, rcvr, a)))
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s must be type GoObject[[]byte], but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func Extractarray4OfByte(args []Object, index int) [4]byte {
@@ -654,8 +656,8 @@ func ReceiverArgAsarrayOfarray32OfByte(name, rcvr string, args *ArraySeq, n int)
 			return g
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][32]byte], but is %T",
-		n, name, rcvr, a)))
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][32]byte], but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func ConvertToarrayOfByte(o Object) []byte {
@@ -683,7 +685,7 @@ func ConvertToarrayOfByte(o Object) []byte {
 		case []byte:
 			return g
 		default:
-			panic(RT.NewError(fmt.Sprintf("Not an array of byte: %T", g)))
+			panic(RT.NewError(fmt.Sprintf("Not an array of byte: %s", AnyTypeToString(g, false))))
 		}
 	default:
 		panic(RT.NewError(fmt.Sprintf("Not convertible to array of byte: %s", obj.ToString(true))))
@@ -711,8 +713,8 @@ func ReceiverArgAsarrayOfInt(name, rcvr string, args *ArraySeq, n int) []int {
 			return g
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %T",
-		n, name, rcvr, a)))
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Double, but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func ConvertToarrayOfInt(o Object) []int {
@@ -738,7 +740,7 @@ func ConvertToarrayOfInt(o Object) []int {
 		case []int:
 			return g
 		default:
-			panic(RT.NewError(fmt.Sprintf("Not an array of int: %T", g)))
+			panic(RT.NewError(fmt.Sprintf("Not an array of int: %s", AnyTypeToString(g, false))))
 		}
 	default:
 		panic(RT.NewError(fmt.Sprintf("Not convertible to array of int: %s", obj.ToString(true))))
@@ -814,8 +816,8 @@ func ReceiverArgAsarrayOfString(name, rcvr string, args *ArraySeq, n int) []stri
 			return g
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[]string], but is %T",
-		n, name, rcvr, a)))
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[]string], but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func ExtractarrayOfarrayOfString(args []Object, index int) [][]string {
@@ -839,8 +841,8 @@ func ReceiverArgAsarrayOfarrayOfString(name, rcvr string, args *ArraySeq, n int)
 			return g
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][]string], but is %T",
-		n, name, rcvr, a)))
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][]string], but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func ConvertToarrayOfString(o Object) []string {
@@ -862,7 +864,7 @@ func ConvertToarrayOfString(o Object) []string {
 		case []string:
 			return g
 		default:
-			panic(RT.NewError(fmt.Sprintf("Not an array of string: %T", g)))
+			panic(RT.NewError(fmt.Sprintf("Not an array of string: %s", AnyTypeToString(g, false))))
 		}
 	default:
 		panic(RT.NewError(fmt.Sprintf("Not convertible to array of string: %s", obj.ToString(true))))
