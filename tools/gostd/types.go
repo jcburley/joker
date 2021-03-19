@@ -203,6 +203,10 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 				}
 			}
 		}
+	case *InterfaceType:
+		if !v.Incomplete && len(v.Methods.List) == 0 {
+			fromMap = "FieldAsGoObject(%s, %s)"
+		}
 	case *ArrayType:
 		//		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
 	case *StarExpr:
