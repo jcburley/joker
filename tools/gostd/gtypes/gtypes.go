@@ -437,16 +437,16 @@ func InfoForExpr(e Expr) *Info {
 		pattern = "chan"
 		switch v.Dir {
 		case SEND:
-			pattern = "<-chan"
-		case RECV:
 			pattern = "chan<-"
+		case RECV:
+			pattern = "<-chan"
 		case SEND | RECV:
 		default:
 			pattern = fmt.Sprintf("ABEND737(gtypes.go: %s Dir=0x%x not supported) %%s", astutils.ExprToString(v), v.Dir)
 		}
 		innerInfo = InfoForExpr(v.Value)
 		localName = innerInfo.LocalName
-		pattern += " %s"
+		pattern = fmt.Sprintf("%s %s", pattern, innerInfo.Pattern)
 		docPattern = pattern
 		isPassedByAddress = false
 		isNullable = true

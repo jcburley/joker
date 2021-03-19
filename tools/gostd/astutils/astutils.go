@@ -142,7 +142,7 @@ func ExprToString(e Expr) string {
 		case SEND:
 			dir = "chan<-"
 		case RECV:
-			dir = "chan<-"
+			dir = "<-chan"
 		case SEND | RECV:
 			dir = "chan"
 		default:

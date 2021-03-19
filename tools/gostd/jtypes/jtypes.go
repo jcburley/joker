@@ -52,6 +52,19 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 		patternValue, eValue := patternForExpr(v.Value)
 		res := "map_" + patternKey + "_Of_" + fmt.Sprintf(patternValue, "<whatever>")
 		return fmt.Sprintf("ABEND777(jtypes.go: multiple underlying expressions not supported: %s)", res), eValue
+	case *ChanType:
+		pattern, e = patternForExpr(v.Value)
+		baseName := "chan"
+		switch v.Dir {
+		case SEND:
+			baseName = "chanSend"
+		case RECV:
+			baseName = "chanRecv"
+		case SEND | RECV:
+		default:
+			baseName = fmt.Sprintf("ABEND737(jtypes.go: %s Dir=0x%x not supported)", astutils.ExprToString(v), v.Dir)
+		}
+		return baseName + "Of" + pattern, e
 	default:
 		return "%s", e
 	}
@@ -90,23 +103,12 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 		baseNameDoc = baseName
-	case *ChanType:
-		baseName = "chan"
-		switch v.Dir {
-		case SEND:
-			baseName = "chanSend"
-		case RECV:
-			baseName = "chanRecv"
-		case SEND | RECV:
-		default:
-			baseName = fmt.Sprintf("ABEND737(jtypes.go: %s Dir=0x%x not supported)", astutils.ExprToString(v), v.Dir)
-		}
-		value := InfoForExpr(v.Value)
-		baseName += "Of" + value.BaseName
-		baseNameDoc = baseName
-		//		fmt.Printf("jtypes.go/namingForExpr(%s) => %s\n", astutils.ExprToString(v), baseName)
 	case *StructType:
-		baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		if v.Fields == nil || len(v.Fields.List) == 99 {
+			baseName = "struct{}"
+		} else {
+			baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		}
 		baseNameDoc = baseName
 	case *FuncType:
 		baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", astutils.ExprToString(v))
