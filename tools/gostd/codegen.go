@@ -141,7 +141,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 		return cljReturnTypeForDoc
 	}
 	if postCode == "" && resultAssign == "" {
-		return "\t...ABEND275: TODO...\n"
+		postCode = "\treturn NIL\n"
 	}
 	maybeAssignArgList := ""
 	if max > 0 {
