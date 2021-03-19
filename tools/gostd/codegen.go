@@ -443,13 +443,13 @@ func GenType(t string, ti TypeInfo) {
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
 	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
-	ObjectAsApiName := "ObjectAs" + apiSuffix
+	MaybeIsApiName := "MaybeIs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
 	ReceiverArgAsApiName := "ReceiverArgAs" + apiSuffix
 
 	info := map[string]string{}
 
-	info["ObjectAsApiName"] = ObjectAsApiName
+	info["MaybeIsApiName"] = MaybeIsApiName
 	info["ExtractApiName"] = ExtractApiName
 	info["ReceiverArgAsApiName"] = ReceiverArgAsApiName
 	info["TypeName"] = typeName
@@ -487,7 +487,7 @@ func GenType(t string, ti TypeInfo) {
 	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
