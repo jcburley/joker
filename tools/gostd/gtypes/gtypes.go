@@ -453,7 +453,15 @@ func InfoForExpr(e Expr) *Info {
 		isExported = innerInfo.IsExported
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
-		localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		if v.Fields == nil || len(v.Fields.List) == 0 {
+			localName = "struct{}"
+			fullName = localName
+			isPassedByAddress = false
+			isNullable = true
+			isExported = true
+		} else {
+			localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		}
 	case *FuncType:
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *Ellipsis:
