@@ -446,7 +446,7 @@ func TryEval(expr Expr) (obj Object, err error) {
 			case *ExInfo:
 				err = r.(error)
 			default:
-				panic(fmt.Sprintf("Unrecoverable error %s handling %T:%+v", strconv.Quote(fmt.Sprintf("%s", r)), expr, expr))
+				panic(fmt.Sprintf("Unrecoverable error %s handling %s:%+v", strconv.Quote(fmt.Sprintf("%s", r)), expr.TypeToString(false), expr))
 			}
 		}
 	}()
