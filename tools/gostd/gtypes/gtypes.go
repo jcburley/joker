@@ -434,22 +434,24 @@ func InfoForExpr(e Expr) *Info {
 		}
 		isExported = IsExported(localName)
 	case *ChanType:
-		localName := "chan"
+		pattern = "chan"
 		switch v.Dir {
 		case SEND:
-			localName = "<-chan"
+			pattern = "<-chan"
 		case RECV:
-			localName = "chan->"
+			pattern = "chan<-"
 		case SEND | RECV:
 		default:
-			localName = fmt.Sprintf("ABEND737(gtypes.go: %s Dir=0x%x not supported)", astutils.ExprToString(v), v.Dir)
+			pattern = fmt.Sprintf("ABEND737(gtypes.go: %s Dir=0x%x not supported) %%s", astutils.ExprToString(v), v.Dir)
 		}
 		innerInfo = InfoForExpr(v.Value)
-		localName += " " + innerInfo.RelativeName(e.Pos())
+		localName = innerInfo.LocalName
+		pattern += " %s"
+		docPattern = pattern
 		isPassedByAddress = false
 		isNullable = true
 		isExported = innerInfo.IsExported
-		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), localName)
+		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
 		localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *FuncType:
