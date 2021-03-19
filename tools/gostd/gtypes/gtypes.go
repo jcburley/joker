@@ -487,6 +487,7 @@ func InfoForExpr(e Expr) *Info {
 			NilPattern:        "~~~%s-NEEDS-CLARITY~~~",
 			IsSwitchable:      isSwitchable,
 			IsPassedByAddress: isPassedByAddress,
+			IsExported:        isExported,
 		}
 		insert(ti)
 		//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
