@@ -140,7 +140,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		who:             "TypeInfoForExpr",
 	}
 
-	//	fmt.Printf("types.go/TypeInfoForExpr: %s == @%p %+v at %s\n", ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	//	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
 
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
