@@ -808,7 +808,12 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
 	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
 
-	return fmt.Sprintf("%s(o, %s)", api, value)
+	deref := ""
+	if ti.IsPassedByAddress() && ti.IsAddressable() {
+		deref = "*"
+	}
+
+	return fmt.Sprintf("%s%s(o, %s)", deref, api, value)
 }
 
 func addApiToImports(ti TypeInfo, clType string) string {

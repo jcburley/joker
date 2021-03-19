@@ -236,9 +236,9 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		case *ChanType:
 			isNullable = true
 		case *ArrayType:
+		case *MapType:
 		case *Ident:
-			isPassedByAddress = !astutils.IsBuiltin(t.Name)
-			if !isPassedByAddress {
+			if astutils.IsBuiltin(t.Name) {
 				switch t.Name {
 				case "string":
 					nilPattern = "\"\"%.s"
@@ -247,6 +247,9 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				default:
 					nilPattern = "%s(0)"
 				}
+			} else {
+				// TODO: Recursively determine whether subtype is passed by address.
+				isPassedByAddress = true
 			}
 		default:
 			isPassedByAddress = true
