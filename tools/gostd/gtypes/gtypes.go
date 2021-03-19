@@ -425,6 +425,7 @@ func InfoForExpr(e Expr) *Info {
 	case *InterfaceType:
 		if !v.Incomplete && len(v.Methods.List) == 0 {
 			localName = "interface{}"
+			isExported = true
 		} else {
 			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
