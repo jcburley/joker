@@ -597,7 +597,7 @@ func GenTypeInfo() {
 	allTypes := AllTypesSorted()
 
 	for _, ti := range allTypes {
-		GenTypeFromDb(ti)
+		genTypeFromDb(ti)
 	}
 
 	var types []TypeInfo
@@ -634,7 +634,7 @@ func GenTypeInfo() {
 	SwitchableTypes = types
 }
 
-func GenTypeFromDb(ti TypeInfo) {
+func genTypeFromDb(ti TypeInfo) {
 	if ti.ClojureName() == "crypto/Hash" || true {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 	}
@@ -794,8 +794,30 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.GoName(), StringForExpr(uty))
+	clType := v.ClojureEffectiveName()
+	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
+	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
+
+	return fmt.Sprintf("%s(o, %s)", api, value)
+}
+
+func addApiToImports(ti TypeInfo, clType string) string {
+	ix := strings.Index(clType, "/")
+	if ix < 0 {
+		return "" // builtin type (api is in core)
+	}
+
+	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), strings.ReplaceAll(clType[0:ix], ".", "/")).String()
+	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
+	//	fmt.Fprintf(os.Stderr, "codegen.go/addApiToImports: Compared %s to %s\n", apiPkgPath, fn.GoFile().Package.ImportMe)
+	if apiPkgPath == ti.GoFile().Package.ImportMe {
+		return "" // api is local to function
+	}
+
+	clojureStdNs := ti.GoFile().Package.NsRoot
+	native := ti.RequiredImports().AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, ti.DefPos())
+
+	return native
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
