@@ -358,6 +358,16 @@ func FieldAsUintPtr(o Map, k string) uintptr {
 	return uintptr(FieldAsUint64(o, k))
 }
 
+func ExtractFloat32(args []Object, index int) float32 {
+	o := ExtractObject(args, index)
+	if g, ok := o.(GoObject); ok {
+		if f, ok := g.O.(float32); ok {
+			return f
+		}
+	}
+	return float32(EnsureArgIsDouble(args, index).D)
+}
+
 func ObjectAsFloat64(obj Object, pattern string) float64 {
 	return EnsureObjectIsDouble(obj, pattern).D
 }
