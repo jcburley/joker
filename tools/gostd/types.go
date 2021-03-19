@@ -112,6 +112,49 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	}
 }
 
+func RegisterAllSubtypes(e Expr) {
+	if e == nil {
+		return
+	}
+
+	switch v := e.(type) {
+	case *Ident:
+		return
+	case *StarExpr:
+		RegisterAllSubtypes(v.X)
+	case *ArrayType:
+		RegisterAllSubtypes(v.Len)
+		RegisterAllSubtypes(v.Elt)
+	case *InterfaceType:
+		for _, f := range astutils.FlattenFieldList(v.Methods) {
+			if f.Name == nil || IsExported(f.Name.Name) {
+				RegisterAllSubtypes(f.Field.Type)
+			}
+		}
+	case *MapType:
+		// RegisterAllSubtypes(v.Key)
+		// RegisterAllSubtypes(v.Value)
+		return
+	case *SelectorExpr:
+	case *ChanType:
+		RegisterAllSubtypes(v.Value)
+	case *StructType:
+		for _, f := range astutils.FlattenFieldList(v.Fields) {
+			if f.Name == nil || IsExported(f.Name.Name) {
+				RegisterAllSubtypes(f.Field.Type)
+			}
+		}
+	case *FuncType:
+		return
+	case *Ellipsis:
+		return
+	default:
+		return
+	}
+
+	TypeInfoForExpr(e)
+}
+
 func TypeInfoForExpr(e Expr) TypeInfo {
 	if ti, found := typesByExpr[e]; found {
 		return ti
@@ -458,7 +501,7 @@ func SortAllTypes() {
 			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
-		if t.IsExported && !t.IsArbitraryType {
+		if t.IsExported && !t.IsArbitraryType && !t.IsBuiltin {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
 		}
 	}

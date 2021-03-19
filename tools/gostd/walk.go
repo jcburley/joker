@@ -312,6 +312,13 @@ func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Commen
 	}
 }
 
+func processTypesForTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+	for _, spec := range tss {
+		ts := spec.(*TypeSpec)
+		RegisterAllSubtypes(ts.Type)
+	}
+}
+
 type VariableInfo struct {
 	Name       *Ident
 	SourceFile *godb.GoFile
@@ -793,6 +800,10 @@ func declType(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
 	processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 }
 
+func declTypesForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
+	processTypesForTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
+}
+
 func declValueSpecForTypes(gf *godb.GoFile, pkgDirUnix string, specs []Spec, doc *CommentGroup) {
 	processValueSpecsForTypes(gf, pkgDirUnix, specs, doc)
 }
@@ -855,7 +866,7 @@ func phaseTypeDefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
 func phaseTypeRefs(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	processDecls(gf, pkgDirUnix, f, fileDeclFuncs{
 		FuncDecl:  declFuncForTypes,
-		TypeDecl:  nil,
+		TypeDecl:  declTypesForTypes,
 		ConstDecl: declValueSpecForTypes,
 		VarDecl:   declValueSpecForTypes,
 	})

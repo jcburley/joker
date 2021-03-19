@@ -191,6 +191,8 @@ func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable,
 		IsSwitchable:      switchable && innerInfo.IsSwitchable,
 		IsAddressable:     innerInfo.IsAddressable,
 		IsPassedByAddress: isPassedByAddress,
+		IsArbitraryType:   innerInfo.IsArbitraryType,
+		IsBuiltin:         innerInfo.IsBuiltin,
 	}
 
 	insert(ti)
@@ -320,7 +322,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	tiArrayOf := &Info{
 		Expr:              &ArrayType{Elt: ti.Expr},
 		FullName:          fullName,
-		who:               "*TypeDefine*",
+		who:               "[]TypeDefine",
 		Type:              &ArrayType{Elt: ti.Type},
 		IsExported:        ti.IsExported,
 		Doc:               ti.Doc,
@@ -396,6 +398,7 @@ func InfoForExpr(e Expr) *Info {
 	isPassedByAddress := true
 	isExported := false
 	isNullable := false
+	isArbitraryType := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -407,6 +410,7 @@ func InfoForExpr(e Expr) *Info {
 		isPassedByAddress = false
 		isExported = innerInfo.IsExported
 		isNullable = true
+		isArbitraryType = innerInfo.IsArbitraryType
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -517,6 +521,7 @@ func InfoForExpr(e Expr) *Info {
 			IsSwitchable:      isSwitchable,
 			IsPassedByAddress: isPassedByAddress,
 			IsExported:        isExported,
+			IsArbitraryType:   isArbitraryType,
 		}
 		insert(ti)
 		//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
