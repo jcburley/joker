@@ -375,6 +375,8 @@ func main() {
 			GenType(t, ti)
 		})
 
+	GenTypeCtors()
+
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {

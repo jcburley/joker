@@ -409,13 +409,13 @@ func maybeDeref(ptrTo string) string {
 }
 
 func GenType(t string, ti TypeInfo) {
+	//	fmt.Printf("codegen.go/GenType(): %s\n", ti.GoName())
 	if ti.IsUnsupported() || !ti.IsExported() || ti.IsArbitraryType() {
 		return
 	}
 
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
-		//		fmt.Printf("codegen.go/GenType(): skipping %s due to no underlying TypeSpec\n", ti.GoName())
 		return
 	}
 
@@ -656,7 +656,6 @@ func genTypeFromDb(ti TypeInfo) {
 	}
 
 	if ti.Specificity() == ConcreteType {
-		genCtor(ti)
 		return // The code below currently handles only interface{} types
 	}
 
@@ -665,6 +664,17 @@ func genTypeFromDb(ti TypeInfo) {
 			appendMethods(ti, ts.Type.(*InterfaceType))
 		}
 	}
+}
+
+func GenTypeCtors() {
+	allTypes := AllTypesSorted()
+
+	for _, ti := range allTypes {
+		if ti.IsExported() && !ti.IsArbitraryType() && ti.Specificity() == ConcreteType {
+			genCtor(ti)
+		}
+	}
+
 }
 
 func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
