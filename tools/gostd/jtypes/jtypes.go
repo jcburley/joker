@@ -209,6 +209,8 @@ var Nil = &Info{}
 var Error = &Info{
 	FullName:             "Error",
 	FullNameDoc:          "Error",
+	BaseName:             "Error",
+	BaseNameDoc:          "Error",
 	ArgClojureType:       "Error",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "Error",
@@ -222,6 +224,8 @@ var Error = &Info{
 var Boolean = &Info{
 	FullName:             "Boolean",
 	FullNameDoc:          "Boolean",
+	BaseName:             "Boolean",
+	BaseNameDoc:          "Boolean",
 	ArgClojureType:       "Boolean",
 	ArgFromClojureObject: ".B",
 	ArgExtractFunc:       "Boolean",
@@ -235,6 +239,8 @@ var Boolean = &Info{
 var Byte = &Info{
 	FullName:             "Byte",
 	FullNameDoc:          "Byte",
+	BaseName:             "Byte",
+	BaseNameDoc:          "Byte",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Byte",
@@ -248,6 +254,8 @@ var Byte = &Info{
 var Rune = &Info{
 	FullName:             "Char",
 	FullNameDoc:          "Char",
+	BaseName:             "Char",
+	BaseNameDoc:          "Char",
 	ArgClojureType:       "Char",
 	ArgFromClojureObject: ".Ch",
 	ArgExtractFunc:       "Char",
@@ -261,6 +269,8 @@ var Rune = &Info{
 var String = &Info{
 	FullName:             "String",
 	FullNameDoc:          "String",
+	BaseName:             "String",
+	BaseNameDoc:          "String",
 	ArgClojureType:       "String",
 	ArgFromClojureObject: ".S",
 	ArgExtractFunc:       "String",
@@ -274,6 +284,8 @@ var String = &Info{
 var Int = &Info{
 	FullName:             "Int",
 	FullNameDoc:          "Int",
+	BaseName:             "Int",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int",
@@ -287,6 +299,8 @@ var Int = &Info{
 var Int8 = &Info{
 	FullName:             "Int8",
 	FullNameDoc:          "Int",
+	BaseName:             "Int8",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int8",
@@ -300,6 +314,8 @@ var Int8 = &Info{
 var Int16 = &Info{
 	FullName:             "Int16",
 	FullNameDoc:          "Int",
+	BaseName:             "Int16",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int16",
@@ -313,6 +329,8 @@ var Int16 = &Info{
 var Int32 = &Info{
 	FullName:             "Int32",
 	FullNameDoc:          "Int",
+	BaseName:             "Int32",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Int32",
@@ -326,6 +344,8 @@ var Int32 = &Info{
 var Int64 = &Info{
 	FullName:             "Int64",
 	FullNameDoc:          "BigInt",
+	BaseName:             "Int64",
+	BaseNameDoc:          "BigInt",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Int64()",
 	ArgExtractFunc:       "Int64",
@@ -339,6 +359,8 @@ var Int64 = &Info{
 var UInt = &Info{
 	FullName:             "Uint",
 	FullNameDoc:          "Number",
+	BaseName:             "Uint",
+	BaseNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint",
@@ -352,6 +374,8 @@ var UInt = &Info{
 var UInt8 = &Info{
 	FullName:             "Uint8",
 	FullNameDoc:          "Int",
+	BaseName:             "Uint8",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint8",
@@ -365,6 +389,8 @@ var UInt8 = &Info{
 var UInt16 = &Info{
 	FullName:             "Uint16",
 	FullNameDoc:          "Int",
+	BaseName:             "Uint16",
+	BaseNameDoc:          "Int",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint16",
@@ -378,6 +404,8 @@ var UInt16 = &Info{
 var UInt32 = &Info{
 	FullName:             "Uint32",
 	FullNameDoc:          "Number",
+	BaseName:             "Uint32",
+	BaseNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Uint32",
@@ -391,6 +419,8 @@ var UInt32 = &Info{
 var UInt64 = &Info{
 	FullName:             "Uint64",
 	FullNameDoc:          "Number",
+	BaseName:             "Uint64",
+	BaseNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Uint64()",
 	ArgExtractFunc:       "Uint64",
@@ -404,6 +434,8 @@ var UInt64 = &Info{
 var UIntPtr = &Info{
 	FullName:             "UintPtr",
 	FullNameDoc:          "Number",
+	BaseName:             "UintPtr",
+	BaseNameDoc:          "Number",
 	ArgClojureType:       "Number",
 	ArgFromClojureObject: ".BigInt().Uint64()",
 	ArgExtractFunc:       "UintPtr",
@@ -417,6 +449,8 @@ var UIntPtr = &Info{
 var Float32 = &Info{
 	FullName:             "Float32",
 	FullNameDoc:          "Double",
+	BaseName:             "Float32",
+	BaseNameDoc:          "Double",
 	ArgClojureType:       "",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
@@ -430,6 +464,8 @@ var Float32 = &Info{
 var Float64 = &Info{
 	FullName:             "Double",
 	FullNameDoc:          "Double",
+	BaseName:             "Double",
+	BaseNameDoc:          "Double",
 	ArgClojureType:       "Double",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
@@ -443,6 +479,8 @@ var Float64 = &Info{
 var Complex128 = &Info{
 	FullName:             "ABEND007(find these)",
 	FullNameDoc:          "ABEND007(find these)",
+	BaseName:             "ABEND007(find these)",
+	BaseNameDoc:          "ABEND007(find these)",
 	ArgClojureType:       "",
 	ArgFromClojureObject: "",
 	ArgExtractFunc:       "ABEND007(find these)",
