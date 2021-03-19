@@ -287,7 +287,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
-		// Concrete types get reference-to and array-of variants, allowing Clojure code to access them.
+		// Concrete types get a reference-to variant, allowing Clojure code to access them.
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		fullName = computeFullName(newPattern, pkg, localName)
 		tiPtrTo := &Info{
@@ -309,35 +309,37 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsSwitchable:      ti.IsSwitchable,
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
+			IsArbitraryType:   isArbitraryType,
 		}
 		insert(tiPtrTo)
 		types = append(types, tiPtrTo)
-
-		newPattern = fmt.Sprintf(ti.Pattern, "[]%s")
-		fullName = computeFullName(newPattern, pkg, localName)
-		tiArrayOf := &Info{
-			Expr:              &ArrayType{Elt: ti.Expr},
-			FullName:          fullName,
-			who:               "*TypeDefine*",
-			Type:              &ArrayType{Elt: ti.Type},
-			IsExported:        ti.IsExported,
-			Doc:               ti.Doc,
-			DefPos:            ti.DefPos,
-			File:              gf,
-			Pattern:           newPattern,
-			Package:           ti.Package,
-			LocalName:         ti.LocalName,
-			DocPattern:        newPattern,
-			UnderlyingType:    ti,
-			Specificity:       Concrete,
-			NilPattern:        "%s{}",
-			IsSwitchable:      ti.IsSwitchable,
-			IsAddressable:     ti.IsAddressable,
-			IsPassedByAddress: false,
-		}
-		insert(tiArrayOf)
-		types = append(types, tiArrayOf)
 	}
+
+	newPattern := fmt.Sprintf(ti.Pattern, "[]%s")
+	fullName = computeFullName(newPattern, pkg, localName)
+	tiArrayOf := &Info{
+		Expr:              &ArrayType{Elt: ti.Expr},
+		FullName:          fullName,
+		who:               "*TypeDefine*",
+		Type:              &ArrayType{Elt: ti.Type},
+		IsExported:        ti.IsExported,
+		Doc:               ti.Doc,
+		DefPos:            ti.DefPos,
+		File:              gf,
+		Pattern:           newPattern,
+		Package:           ti.Package,
+		LocalName:         ti.LocalName,
+		DocPattern:        newPattern,
+		UnderlyingType:    ti,
+		Specificity:       Concrete,
+		NilPattern:        "%s{}",
+		IsSwitchable:      ti.IsSwitchable,
+		IsAddressable:     ti.IsAddressable,
+		IsPassedByAddress: false,
+		IsArbitraryType:   isArbitraryType,
+	}
+	insert(tiArrayOf)
+	types = append(types, tiArrayOf)
 
 	return types
 }
