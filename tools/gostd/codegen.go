@@ -491,7 +491,7 @@ func GenType(t string, ti TypeInfo) {
 
 	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
+	//	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
