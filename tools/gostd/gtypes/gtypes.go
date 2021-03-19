@@ -237,6 +237,8 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			isNullable = true
 		case *ArrayType:
 		case *MapType:
+		case *StructType:
+			isPassedByAddress = isAddressable(pkg, localName)
 		case *Ident:
 			if astutils.IsBuiltin(t.Name) {
 				switch t.Name {
@@ -312,7 +314,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			Specificity:       Concrete,
 			NilPattern:        "nil%.s",
 			IsSwitchable:      ti.IsSwitchable,
-			IsAddressable:     ti.IsAddressable,
+			IsAddressable:     false,
 			IsPassedByAddress: false,
 			IsArbitraryType:   isArbitraryType,
 		}
@@ -339,7 +341,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Specificity:       Concrete,
 		NilPattern:        "%s{}",
 		IsSwitchable:      ti.IsSwitchable,
-		IsAddressable:     ti.IsAddressable,
+		IsAddressable:     false,
 		IsPassedByAddress: false,
 		IsArbitraryType:   isArbitraryType,
 	}
@@ -384,7 +386,7 @@ func InfoForExpr(e Expr) *Info {
 			LocalName:         id.Name,
 			DocPattern:        "%s",
 			NilPattern:        "~~~%s-NEEDS-FIGURING-OUT~~~",
-			IsSwitchable:      true,
+			IsSwitchable:      true, // TODO: Use underlying type to determine this.
 			IsPassedByAddress: true,
 		}
 
@@ -461,6 +463,7 @@ func InfoForExpr(e Expr) *Info {
 				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
 		}
 		isExported = IsExported(localName)
+		isPassedByAddress = true // TODO: Need to find actual type to determine this properly.
 	case *ChanType:
 		pattern = "chan"
 		switch v.Dir {

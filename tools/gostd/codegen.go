@@ -438,7 +438,7 @@ func GenType(t string, ti TypeInfo) {
 
 	const goExtractRefToTemplate = `
 		case %s:
-			return %sr, true  // refTo
+			return %sr, true
 `
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
@@ -465,19 +465,16 @@ func GenType(t string, ti TypeInfo) {
 	refTo := ""
 	nilForType := fmt.Sprintf(ti.NilPattern(), typeName)
 	if ti.IsPassedByAddress() {
+		ptrTo = "*"
+		refTo = "&"
+		nilForType = "nil"
 		if ti.IsAddressable() {
-			nilForType = "nil"
-			ptrTo = "*"
-			refTo = "&"
+			coerceRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
 		}
-		coerce = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
 	}
-	if ti.IsAddressable() {
-		coerceRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
-	}
-	if coerce == "" && coerceRefTo == "" {
-		return // E.g. reflect_native.go's refToStringHeader
-	}
+
+	coerce = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
+
 	info["Coerce"] = coerce
 	info["CoerceRefTo"] = coerceRefTo
 	info["PtrTo"] = ptrTo
@@ -809,7 +806,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
 
 	deref := ""
-	if ti.IsPassedByAddress() && ti.IsAddressable() {
+	if ti.IsPassedByAddress() {
 		deref = "*"
 	}
 
