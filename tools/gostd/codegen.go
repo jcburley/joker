@@ -445,12 +445,14 @@ func GenType(t string, ti TypeInfo) {
 	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
 	MaybeIsApiName := "MaybeIs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
+	ObjectAsApiName := "ObjectAs" + apiSuffix
 	ReceiverArgAsApiName := "ReceiverArgAs" + apiSuffix
 
 	info := map[string]string{}
 
 	info["MaybeIsApiName"] = MaybeIsApiName
 	info["ExtractApiName"] = ExtractApiName
+	info["ObjectAsApiName"] = ObjectAsApiName
 	info["ReceiverArgAsApiName"] = ReceiverArgAsApiName
 	info["TypeName"] = typeName
 	info["TypeAsString"] = t
@@ -489,6 +491,7 @@ func GenType(t string, ti TypeInfo) {
 
 	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
