@@ -376,10 +376,16 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 		return "" // Not implemented
 	}
 
+	addressOf := ""
+	if t.IsPassedByAddress() {
+		addressOf = "&"
+	}
+
 	mic := map[string]string{
 		"ArgType":   argType,
 		"TypeName":  typeName,
 		"CoerceApi": coerceApi,
+		"AddressOf": addressOf,
 	}
 
 	buf := new(bytes.Buffer)

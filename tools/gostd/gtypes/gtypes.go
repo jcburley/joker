@@ -221,16 +221,31 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	isPassedByAddress := false
 	isArbitraryType := false
 	isNullable := false
+	nilPattern := ""
 	if pkg == "unsafe" && localName == "ArbitraryType" {
 		isArbitraryType = true
 		specificity = 0
 	} else {
-		switch ts.Type.(type) {
+		switch t := ts.Type.(type) {
 		case *InterfaceType:
 			isNullable = true
 		case *StarExpr:
 			isNullable = true
+		case *ChanType:
+			isNullable = true
 		case *ArrayType:
+		case *Ident:
+			isPassedByAddress = !astutils.IsBuiltin(t.Name)
+			if !isPassedByAddress {
+				switch t.Name {
+				case "string":
+					nilPattern = "\"\"%.s"
+				case "bool":
+					nilPattern = "false%.s"
+				default:
+					nilPattern = "%s(0)"
+				}
+			}
 		default:
 			isPassedByAddress = true
 		}
@@ -238,11 +253,14 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		specificity = calculateSpecificity(ts)
 	}
 
-	fullName := computeFullName("%s", pkg, localName)
-	nilPattern := "nil%.s"
-	if !isNullable {
-		nilPattern = "%s{}"
+	if nilPattern == "" {
+		nilPattern = "nil%.s"
+		if !isNullable {
+			nilPattern = "%s{}"
+		}
 	}
+
+	fullName := computeFullName("%s", pkg, localName)
 
 	ti := &Info{
 		Expr:              ts.Name,
