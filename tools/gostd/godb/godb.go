@@ -241,7 +241,7 @@ func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node No
 		node:     node,
 		ix:       ix,
 		pos:      id.NamePos}
-	if IsExported(name) {
+	if IsExported(name) || astutils.IsBuiltin(name) {
 		(*decls)[name] = decl
 	}
 
@@ -404,13 +404,9 @@ func init() {
 	emethods := &FieldList{List: []*Field{emethod}}
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
-	decl := DeclInfo{
-		name:     "error",
-		fullName: "error",
-		node:     ets}
 
 	decls := map[string]*DeclInfo{}
-	decls["error"] = &decl
+	newDecl(&decls, paths.NewUnixPath(""), eid, ets, 0)
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb
