@@ -169,7 +169,7 @@ type PackageDb struct {
 	BaseName string
 	NsRoot   string // "go.std." or whatever is desired as the root namespace
 	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
-	decls    map[string]DeclInfo
+	decls    map[string]*DeclInfo
 }
 
 var packagesByUnixPath = map[string]*PackageDb{}
@@ -220,14 +220,14 @@ func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
 	return GoFileForPos(ts.Pos())
 }
 
-func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
+func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
 	if !IsExported(name.Name) {
 		return
 	}
 	if e, found := (*decls)[name.Name]; found {
 		panic(fmt.Sprintf("already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(name.NamePos)))
 	}
-	(*decls)[name.Name] = DeclInfo{name.Name, node, name.NamePos}
+	(*decls)[name.Name] = &DeclInfo{name.Name, node, name.NamePos}
 }
 
 func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
@@ -235,7 +235,7 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe strin
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
-	decls := map[string]DeclInfo{}
+	decls := map[string]*DeclInfo{}
 	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, importMe, decls}
 
 	for p, f := range pkg.Files {
@@ -312,8 +312,11 @@ func ResolveInPackage(pkg, name string) Node {
 	if p == nil {
 		return nil
 	}
-	res := p.decls[name].node
-	return res
+	n := p.decls[name]
+	if n == nil {
+		return nil
+	}
+	return n.node
 }
 
 func ResolveSelector(n Node) string {
@@ -346,8 +349,8 @@ func init() {
 	ets := &TypeSpec{Name: eid, Type: etype}
 	decl := DeclInfo{"error", ets, 0}
 
-	decls := map[string]DeclInfo{}
-	decls["error"] = decl
+	decls := map[string]*DeclInfo{}
+	decls["error"] = &decl
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb
