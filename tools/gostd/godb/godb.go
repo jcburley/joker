@@ -3,6 +3,7 @@ package godb
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
@@ -177,9 +178,9 @@ var packagesByUnixPath = map[string]*PackageDb{}
 var PackagesAsDiscovered = []*PackageDb{}
 
 type DeclInfo struct {
-	name string
-	node Node
-	pos  token.Pos
+	name, fullName string
+	node           Node
+	pos            token.Pos
 }
 
 type GoFile struct {
@@ -220,14 +221,46 @@ func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
 	return GoFileForPos(ts.Pos())
 }
 
-func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
-	if !IsExported(name.Name) {
-		return
+var allDecls = map[string]*DeclInfo{}
+
+func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node Node) {
+	name := id.Name
+	fullName := genutils.CombineGoName(pkg.String(), name)
+
+	if e, found := (*decls)[name]; found {
+		panic(fmt.Sprintf("godb.go/newDecl: already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(id.NamePos)))
 	}
-	if e, found := (*decls)[name.Name]; found {
-		panic(fmt.Sprintf("already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(name.NamePos)))
+
+	decl := &DeclInfo{name, fullName, node, id.NamePos}
+	if IsExported(name) {
+		(*decls)[name] = decl
 	}
-	(*decls)[name.Name] = &DeclInfo{name.Name, node, name.NamePos}
+
+	if e, found := allDecls[fullName]; found {
+		fmt.Printf("godb.go/newDecl: Already seen decl %s at %s, now: %v at %s\n", e.fullName, WhereAt(e.pos), node, WhereAt(id.NamePos))
+	}
+	if IsExported(name) || (name != "_" && name != "init") {
+		// Put even private names here, so constants can be fully evaluated
+		allDecls[fullName] = decl
+	}
+}
+
+func LookupDeclInfo(fullName string) *DeclInfo {
+	return allDecls[fullName]
+}
+
+func (info *DeclInfo) FullName() string {
+	if info == nil {
+		return ""
+	}
+	return info.fullName
+}
+
+func (info *DeclInfo) Node() Node {
+	if info == nil {
+		return nil
+	}
+	return info.node
 }
 
 func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
@@ -347,7 +380,7 @@ func init() {
 	emethods := &FieldList{List: []*Field{emethod}}
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
-	decl := DeclInfo{"error", ets, 0}
+	decl := DeclInfo{"error", "error", ets, 0}
 
 	decls := map[string]*DeclInfo{}
 	decls["error"] = &decl
