@@ -182,6 +182,7 @@ type DeclInfo struct {
 	node           Node
 	ix             int // Valid for only node.(*ValueSpec)
 	pos            token.Pos
+	value          *interface{} // Computed value (if any) for constant
 }
 
 type GoFile struct {
@@ -234,7 +235,12 @@ func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node No
 		panic(fmt.Sprintf("godb.go/newDecl: already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(id.NamePos)))
 	}
 
-	decl := &DeclInfo{name, fullName, node, ix, id.NamePos}
+	decl := &DeclInfo{
+		name:     name,
+		fullName: fullName,
+		node:     node,
+		ix:       ix,
+		pos:      id.NamePos}
 	if IsExported(name) {
 		(*decls)[name] = decl
 	}
@@ -398,7 +404,10 @@ func init() {
 	emethods := &FieldList{List: []*Field{emethod}}
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
-	decl := DeclInfo{"error", "error", ets, 0, 0}
+	decl := DeclInfo{
+		name:     "error",
+		fullName: "error",
+		node:     ets}
 
 	decls := map[string]*DeclInfo{}
 	decls["error"] = &decl
