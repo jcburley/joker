@@ -17,35 +17,35 @@ var one = &ValueSpec{
 	Values: []Expr{v_1},
 }
 
-var stringType = &Ident{
-	Name: "string",
+var v_2 = &BasicLit{
+	Kind:  token.INT,
+	Value: "2",
 }
 
-var intType = &Ident{
-	Name: "int",
+var two = &ValueSpec{
+	Names:  []*Ident{&Ident{Name: "two"}},
+	Type:   &Ident{Name: "int8"},
+	Values: []Expr{v_2},
 }
 
-var floatType = &Ident{
-	Name: "float",
-}
+var cfg = &Config{}
 
-var charType = &Ident{
-	Name: "char",
-}
-
-var cfg = &Config{
-	StringType: stringType,
-	IntType:    intType,
-	FloatType:  floatType,
-	CharType:   charType,
-}
-
-func TestEval(t *testing.T) {
+func TestEvalOne(t *testing.T) {
 	ts, val := cfg.Eval(one.Type, one.Values[0])
 	if ts == nil || ts.(*Ident).Name != "int" {
 		t.Errorf("ts==%+v", ts)
 	}
 	if val.(int) != 1 {
+		t.Errorf("val==%+v", val)
+	}
+}
+
+func TestEvalTwo(t *testing.T) {
+	ts, val := cfg.Eval(two.Type, two.Values[0])
+	if ts == nil || ts.(*Ident).Name != "int8" {
+		t.Errorf("ts==%+v", ts)
+	}
+	if val.(int) != 2 {
 		t.Errorf("val==%+v", val)
 	}
 }
