@@ -245,7 +245,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		case *ArrayType:
 		case *MapType:
 		case *StructType:
-			isPassedByAddress = isAddressable(pkg, localName)
+			isPassedByAddress = isTypeAddressable(pkg, localName)
 		case *Ident:
 			if astutils.IsBuiltin(t.Name) {
 				switch t.Name {
