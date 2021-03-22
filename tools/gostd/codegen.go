@@ -668,7 +668,7 @@ func GenTypeCtors() {
 	allTypes := AllTypesSorted()
 
 	for _, ti := range allTypes {
-		if ti.IsExported() && !ti.IsArbitraryType() && ti.Specificity() == ConcreteType {
+		if ti.IsCtorable() {
 			genCtor(ti)
 		}
 	}
