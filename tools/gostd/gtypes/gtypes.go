@@ -170,33 +170,6 @@ func insert(ti *Info) {
 	}
 }
 
-func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable, isPassedByAddress bool, innerInfo *Info, te Expr) *Info {
-	ti := &Info{
-		Expr:              te,
-		FullName:          fullName,
-		who:               "finishVariant",
-		IsExported:        innerInfo.IsExported,
-		File:              innerInfo.File,
-		Pattern:           pattern,
-		Package:           innerInfo.Package,
-		LocalName:         innerInfo.LocalName,
-		DocPattern:        docPattern,
-		DefPos:            innerInfo.DefPos,
-		UnderlyingType:    innerInfo,
-		Specificity:       Concrete,
-		NilPattern:        nilPattern,
-		IsSwitchable:      switchable && innerInfo.IsSwitchable,
-		IsAddressable:     innerInfo.IsAddressable,
-		IsPassedByAddress: isPassedByAddress,
-		IsArbitraryType:   innerInfo.IsArbitraryType,
-		IsBuiltin:         innerInfo.IsBuiltin,
-	}
-
-	insert(ti)
-
-	return ti
-}
-
 func isTypeAddressable(fullName string) bool {
 	// See: https://github.com/golang/go/issues/40701
 	return fullName != "reflect.StringHeader" && fullName != "reflect.SliceHeader"
@@ -391,7 +364,7 @@ func InfoForExpr(e Expr) *Info {
 			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
 		}
 
-		return Define(ts, nil, di.Doc())[0] // TODO: parentDoc, maybe handle other elements as well?
+		return Define(ts, nil, di.Doc())[0] // Return the base type, not the * or [] variants.
 	}
 
 	var innerInfo *Info
@@ -529,13 +502,30 @@ func InfoForExpr(e Expr) *Info {
 	if !isNullable {
 		nilPattern = "%s{}"
 	}
-	variant := finishVariant(fullName, pattern, docPattern, nilPattern, isSwitchable, isPassedByAddress, innerInfo, e)
-	if isExported {
-		variant.IsExported = true
-		//		fmt.Printf("gtypes.go: %s (%p) is exportable\n", variant.FullName, variant)
+	ti := &Info{
+		Expr:              e,
+		FullName:          fullName,
+		who:               "finishVariant",
+		IsExported:        isExported && innerInfo.IsExported,
+		File:              innerInfo.File,
+		Pattern:           pattern,
+		Package:           innerInfo.Package,
+		LocalName:         innerInfo.LocalName,
+		DocPattern:        docPattern,
+		DefPos:            innerInfo.DefPos,
+		UnderlyingType:    innerInfo,
+		Specificity:       Concrete,
+		NilPattern:        nilPattern,
+		IsSwitchable:      isSwitchable && innerInfo.IsSwitchable,
+		IsAddressable:     innerInfo.IsAddressable,
+		IsPassedByAddress: isPassedByAddress,
+		IsArbitraryType:   innerInfo.IsArbitraryType,
+		IsBuiltin:         innerInfo.IsBuiltin,
 	}
 
-	return variant
+	insert(ti)
+
+	return ti
 }
 
 func fieldToString(f *Field) string {
