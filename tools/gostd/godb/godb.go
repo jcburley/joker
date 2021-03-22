@@ -3,6 +3,7 @@ package godb
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/astutils"
+	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
@@ -169,7 +170,7 @@ type PackageDb struct {
 	BaseName string
 	NsRoot   string // "go.std." or whatever is desired as the root namespace
 	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
-	decls    map[string]DeclInfo
+	decls    map[string]*DeclInfo
 }
 
 var packagesByUnixPath = map[string]*PackageDb{}
@@ -177,9 +178,11 @@ var packagesByUnixPath = map[string]*PackageDb{}
 var PackagesAsDiscovered = []*PackageDb{}
 
 type DeclInfo struct {
-	name string
-	node Node
-	pos  token.Pos
+	name, fullName string
+	node           Node
+	ix             int // Valid for only node.(*ValueSpec)
+	pos            token.Pos
+	value          *interface{} // Computed value (if any) for constant
 }
 
 type GoFile struct {
@@ -220,14 +223,66 @@ func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
 	return GoFileForPos(ts.Pos())
 }
 
-func newDecl(decls *map[string]DeclInfo, pkg paths.UnixPath, name *Ident, node Node) {
-	if !IsExported(name.Name) {
-		return
+var allDecls = map[string]*DeclInfo{}
+
+// ix is valid for only node.(*ValueSpec); its the index of this name
+// into node.Names and node.Values.
+func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node Node, ix int) {
+	name := id.Name
+	fullName := genutils.CombineGoName(pkg.String(), name)
+
+	if e, found := (*decls)[name]; found {
+		panic(fmt.Sprintf("godb.go/newDecl: already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(id.NamePos)))
 	}
-	if e, found := (*decls)[name.Name]; found {
-		panic(fmt.Sprintf("already seen decl %s.%s at %s, now: %v at %s", pkg, e.name, WhereAt(e.pos), node, WhereAt(name.NamePos)))
+
+	decl := &DeclInfo{
+		name:     name,
+		fullName: fullName,
+		node:     node,
+		ix:       ix,
+		pos:      id.NamePos}
+	if IsExported(name) || astutils.IsBuiltin(name) {
+		(*decls)[name] = decl
 	}
-	(*decls)[name.Name] = DeclInfo{name.Name, node, name.NamePos}
+
+	if e, found := allDecls[fullName]; found {
+		fmt.Printf("godb.go/newDecl: Already seen decl %s at %s, now: %v at %s\n", e.fullName, WhereAt(e.pos), node, WhereAt(id.NamePos))
+	}
+	if IsExported(name) || (name != "_" && name != "init") {
+		// Put even private names here, so constants can be fully evaluated
+		allDecls[fullName] = decl
+	}
+}
+
+func newValueDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, specs *ValueSpec) {
+	for ix, name := range specs.Names {
+		newDecl(decls, pkg, name, specs, ix)
+	}
+}
+
+// Given a full name for a static decl, such as "fmt.Printf" or
+// "github.com/someone/somepkg.SomeVar", return the DeclInfo for it,
+// or nil if not found. "Static decls" are decls that, at
+// static-analysis (e.g. compile) time, might be useful to look up;
+// these include (private as well as public) constants, variables,
+// types, and statically-referenced functions (which excludes methods
+// and receivers).
+func LookupDeclInfo(fullName string) *DeclInfo {
+	return allDecls[fullName]
+}
+
+func (info *DeclInfo) FullName() string {
+	if info == nil {
+		return ""
+	}
+	return info.fullName
+}
+
+func (info *DeclInfo) Node() Node {
+	if info == nil {
+		return nil
+	}
+	return info.node
 }
 
 func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
@@ -235,7 +290,7 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe strin
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
-	decls := map[string]DeclInfo{}
+	decls := map[string]*DeclInfo{}
 	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, importMe, decls}
 
 	for p, f := range pkg.Files {
@@ -284,16 +339,18 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe strin
 			switch o := d.(type) {
 			case *FuncDecl:
 				if o.Recv == nil {
-					newDecl(&decls, pkgDirUnix, o.Name, o)
+					newDecl(&decls, pkgDirUnix, o.Name, o, 0)
 				}
 			case *GenDecl:
 				for _, s := range o.Specs {
 					switch o.Tok {
 					case token.IMPORT: // Ignore these
 					case token.CONST:
+						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec))
 					case token.TYPE:
-						newDecl(&decls, pkgDirUnix, s.(*TypeSpec).Name, s)
+						newDecl(&decls, pkgDirUnix, s.(*TypeSpec).Name, s, 0)
 					case token.VAR:
+						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec))
 					default:
 						panic(fmt.Sprintf("unrecognized GenDecl type %d for %v", o.Tok, o))
 					}
@@ -312,8 +369,11 @@ func ResolveInPackage(pkg, name string) Node {
 	if p == nil {
 		return nil
 	}
-	res := p.decls[name].node
-	return res
+	n := p.decls[name]
+	if n == nil {
+		return nil
+	}
+	return n.node
 }
 
 func ResolveSelector(n Node) string {
@@ -344,10 +404,9 @@ func init() {
 	emethods := &FieldList{List: []*Field{emethod}}
 	etype := &InterfaceType{Methods: emethods}
 	ets := &TypeSpec{Name: eid, Type: etype}
-	decl := DeclInfo{"error", ets, 0}
 
-	decls := map[string]DeclInfo{}
-	decls["error"] = decl
+	decls := map[string]*DeclInfo{}
+	newDecl(&decls, paths.NewUnixPath(""), eid, ets, 0)
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb

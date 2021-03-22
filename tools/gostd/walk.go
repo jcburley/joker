@@ -531,7 +531,7 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 }
 
 // Constants are currently emitted while walking the packages. Unlike with variables, where the types are not needed,
-// this code seemingly must determine the type of a constant so as to give the Clojure wrapper the appropriate type (and
+// this code seemingly must determine the type of a constant so as to give the Joker wrapper the appropriate type (and
 // that is the straightforward way to handle this).
 //
 // In Go, constants can be explicitly typed, implicitly typed via the constant expressions to which they're assigned, or
@@ -577,7 +577,7 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 //		return Int{I: int(obj.Value.(syscall.Errno))}
 //
 // This allowed "(int EXFULL)" (also "(int (deref EXFULL))", i.e. (int <GoObject[syscall.Errno]>)) to work in that it
-// evaluates to a Clojure object of type "Int".
+// evaluates to a Joker object of type "Int".
 //
 // Though the kludge (special-casing syscall.Errno) above can be automated away, it doesn't seem like having to always
 // wrap such constants in a converter is a helpful requirement.
@@ -588,7 +588,7 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 //    var E = math.E
 //    var E_ *GoVar = &GoVar{Value: E}
 //
-// It's possible (and perhaps desirable anyway?) that Clojure could automatically cast (convert) all GoVar and GoObject
+// It's possible (and perhaps desirable anyway?) that Joker could automatically cast (convert) all GoVar and GoObject
 // values to their builtin equivalents, which might allow this all to make more sense.
 //
 // But it might actually be less work to move the determination of a constant's type to the code-generation phase (so it
