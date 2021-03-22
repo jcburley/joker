@@ -207,6 +207,12 @@ func isTypeAddressable(pkg, name string) bool {
 func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
 	pkg := godb.GoPackageForTypeSpec(ts)
+	fullName := computeFullName("%s", pkg, localName)
+
+	di := godb.LookupDeclInfo(fullName)
+	if di == nil {
+		fmt.Fprintf(os.Stderr, "gtypes.go/Define: unregistered type %q\n", fullName)
+	}
 
 	doc := ts.Doc // Try block comments for this specific decl
 	if doc == nil {
@@ -223,7 +229,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	isArbitraryType := false
 	isNullable := false
 	nilPattern := ""
-	if pkg == "unsafe" && localName == "ArbitraryType" {
+	if fullName == "unsafe.ArbitraryType" {
 		isArbitraryType = true
 		specificity = 0
 	} else {
@@ -260,8 +266,6 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			nilPattern = "%s{}"
 		}
 	}
-
-	fullName := computeFullName("%s", pkg, localName)
 
 	isAddressable := isTypeAddressable(pkg, localName)
 	ti := &Info{
