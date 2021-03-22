@@ -391,7 +391,7 @@ func InfoForExpr(e Expr) *Info {
 			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
 		}
 
-		return Define(ts, nil, nil)[0] // TODO: parentDoc, maybe handle other elements as well?
+		return Define(ts, nil, di.Doc())[0] // TODO: parentDoc, maybe handle other elements as well?
 	}
 
 	var innerInfo *Info

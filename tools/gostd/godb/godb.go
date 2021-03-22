@@ -180,6 +180,7 @@ var PackagesAsDiscovered = []*PackageDb{}
 type DeclInfo struct {
 	name, fullName string
 	node           Node
+	doc            *CommentGroup
 	ix             int // Valid for only node.(*ValueSpec)
 	pos            token.Pos
 	value          *interface{} // Computed value (if any) for constant
@@ -227,7 +228,7 @@ var allDecls = map[string]*DeclInfo{}
 
 // ix is valid for only node.(*ValueSpec); its the index of this name
 // into node.Names and node.Values.
-func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node Node, ix int) {
+func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node Node, doc *CommentGroup, ix int) {
 	name := id.Name
 	fullName := genutils.CombineGoName(pkg.String(), name)
 
@@ -239,6 +240,7 @@ func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node No
 		name:     name,
 		fullName: fullName,
 		node:     node,
+		doc:      doc,
 		ix:       ix,
 		pos:      id.NamePos}
 	if IsExported(name) || astutils.IsBuiltin(name) {
@@ -254,9 +256,9 @@ func newDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, id *Ident, node No
 	}
 }
 
-func newValueDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, specs *ValueSpec) {
+func newValueDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, specs *ValueSpec, doc *CommentGroup) {
 	for ix, name := range specs.Names {
-		newDecl(decls, pkg, name, specs, ix)
+		newDecl(decls, pkg, name, specs, doc, ix)
 	}
 }
 
@@ -283,6 +285,13 @@ func (info *DeclInfo) Node() Node {
 		return nil
 	}
 	return info.node
+}
+
+func (info *DeclInfo) Doc() *CommentGroup {
+	if info == nil {
+		return nil
+	}
+	return info.doc
 }
 
 func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
@@ -339,18 +348,18 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe strin
 			switch o := d.(type) {
 			case *FuncDecl:
 				if o.Recv == nil {
-					newDecl(&decls, pkgDirUnix, o.Name, o, 0)
+					newDecl(&decls, pkgDirUnix, o.Name, o, o.Doc, 0)
 				}
 			case *GenDecl:
 				for _, s := range o.Specs {
 					switch o.Tok {
 					case token.IMPORT: // Ignore these
 					case token.CONST:
-						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec))
+						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec), o.Doc)
 					case token.TYPE:
-						newDecl(&decls, pkgDirUnix, s.(*TypeSpec).Name, s, 0)
+						newDecl(&decls, pkgDirUnix, s.(*TypeSpec).Name, s, o.Doc, 0)
 					case token.VAR:
-						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec))
+						newValueDecl(&decls, pkgDirUnix, s.(*ValueSpec), o.Doc)
 					default:
 						panic(fmt.Sprintf("unrecognized GenDecl type %d for %v", o.Tok, o))
 					}
@@ -406,7 +415,7 @@ func init() {
 	ets := &TypeSpec{Name: eid, Type: etype}
 
 	decls := map[string]*DeclInfo{}
-	newDecl(&decls, paths.NewUnixPath(""), eid, ets, 0)
+	newDecl(&decls, paths.NewUnixPath(""), eid, ets, nil, 0)
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb
