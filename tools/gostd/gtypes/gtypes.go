@@ -368,13 +368,16 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	var innerInfo *Info
-	isPassedByAddress := false
-	isNullable := false
-	nilPattern := "nil%.s"
 	pattern := "%s"
 	docPattern := pattern
+	nilPattern := ""
+	isNullable := false
+	isExported := true
+	isBuiltin := false
 	isSwitchable := true
-	isExported := false
+	isAddressable := true
+	isPassedByAddress := false
+	isArbitraryType := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -383,9 +386,10 @@ func InfoForExpr(e Expr) *Info {
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
-		isExported = innerInfo.IsExported
 		isNullable = true
-		isSwitchable = innerInfo.IsSwitchable
+		isBuiltin = innerInfo.IsBuiltin
+		isAddressable = false
+		isArbitraryType = true
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -399,13 +403,15 @@ func InfoForExpr(e Expr) *Info {
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
 		pkgName = innerInfo.Package
-		isExported = innerInfo.IsExported
-		isSwitchable = innerInfo.IsSwitchable
+		isBuiltin = innerInfo.IsBuiltin
+		isAddressable = false
+		isArbitraryType = true
 	case *InterfaceType:
 		pkgName = ""
 		if !v.Incomplete && len(v.Methods.List) == 0 {
 			localName = "interface{}"
 			isExported = true
+			isBuiltin = true
 		} else {
 			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
@@ -416,6 +422,7 @@ func InfoForExpr(e Expr) *Info {
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 		isExported = key.IsExported && value.IsExported
+		isBuiltin = key.IsBuiltin && value.IsBuiltin
 	case *ChanType:
 		pattern = "chan"
 		switch v.Dir {
@@ -433,7 +440,8 @@ func InfoForExpr(e Expr) *Info {
 		pattern = fmt.Sprintf("%s %s", pattern, innerInfo.Pattern)
 		docPattern = pattern
 		isNullable = true
-		isExported = innerInfo.IsExported
+		isBuiltin = innerInfo.IsBuiltin
+		isArbitraryType = true
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
 		pkgName = ""
@@ -441,16 +449,20 @@ func InfoForExpr(e Expr) *Info {
 			localName = "struct{}"
 			fullName = localName
 			isExported = true
+			isBuiltin = true
 		} else {
 			localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
+		isPassedByAddress = true
 	case *FuncType:
 		pkgName = ""
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		isNullable = true
 	case *Ellipsis:
 		pkgName = ""
 		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		isSwitchable = false
+		isAddressable = false
 	}
 
 	if innerInfo == nil {
@@ -458,72 +470,69 @@ func InfoForExpr(e Expr) *Info {
 			localName = fmt.Sprintf("ABEND001(gtypes.go:NO GO NAME for %T aka %q)", e, fullName)
 			fullName = ""
 		}
-		if fullName == "" {
-			fullName = computeFullName(pattern, pkgName, localName)
+		isArbitraryType = false
+	} else {
+		if localName == "" {
+			localName = innerInfo.LocalName
 		}
-		if ti, ok := typesByFullName[fullName]; ok {
-			return ti
-		}
-		if strings.Contains(localName, "ABEND") {
-			pkgName = ""
-			isPassedByAddress = false
-		}
-		ti := &Info{
-			Expr:              e,
-			who:               fmt.Sprintf("[InfoForExpr %T]", e),
-			Pattern:           pattern,
-			Package:           pkgName,
-			FullName:          fullName,
-			LocalName:         localName,
-			DocPattern:        docPattern,
-			DefPos:            e.Pos(),
-			UnderlyingType:    innerInfo,
-			NilPattern:        nilPattern,
-			IsSwitchable:      isSwitchable,
-			IsPassedByAddress: isPassedByAddress,
-			IsExported:        isExported,
-		}
-		insert(ti)
-		//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
-		return ti
+		isExported = isExported && innerInfo.IsExported
+		isSwitchable = isSwitchable && innerInfo.IsSwitchable
+		isArbitraryType = isArbitraryType && innerInfo.IsArbitraryType
 	}
 
 	if fullName == "" {
-		fullName = computeFullName(pattern, pkgName, innerInfo.LocalName)
-	}
-	if strings.Contains(fullName, "ABEND") {
-		isSwitchable = false
-		isExported = false
-	}
-	if variant, found := typesByFullName[fullName]; found {
-		return variant
+		fullName = computeFullName(pattern, pkgName, localName)
 	}
 
-	if !isNullable {
-		nilPattern = "%s{}"
+	if ti, ok := typesByFullName[fullName]; ok {
+		return ti
 	}
+
+	isUnsupported := false
+	isCtorable := true
+
+	if strings.Contains(fullName, "ABEND") {
+		isExported = false
+		isBuiltin = false
+		isSwitchable = false
+		isAddressable = false
+		isUnsupported = true
+		isCtorable = false
+	}
+	if nilPattern == "" {
+		if isNullable {
+			nilPattern = "nil%.s"
+		} else {
+			nilPattern = "%s{}"
+		}
+	}
+
 	ti := &Info{
 		Expr:              e,
 		FullName:          fullName,
-		who:               "finishVariant",
-		IsExported:        isExported && innerInfo.IsExported,
-		File:              innerInfo.File,
-		Pattern:           pattern,
-		Package:           innerInfo.Package,
-		LocalName:         innerInfo.LocalName,
-		DocPattern:        docPattern,
-		DefPos:            innerInfo.DefPos,
+		who:               fmt.Sprintf("[InfoForExpr %T]", e),
 		UnderlyingType:    innerInfo,
+		Pattern:           pattern,
+		Package:           pkgName,
+		LocalName:         localName,
+		DocPattern:        docPattern,
+		DefPos:            e.Pos(),
+		File:              nil, // TODO: need this? why?
 		Specificity:       Concrete,
 		NilPattern:        nilPattern,
-		IsSwitchable:      isSwitchable && innerInfo.IsSwitchable,
-		IsAddressable:     innerInfo.IsAddressable,
+		IsNullable:        isNullable,
+		IsExported:        isExported,
+		IsBuiltin:         isBuiltin,
+		IsSwitchable:      isSwitchable,
+		IsAddressable:     isAddressable,
 		IsPassedByAddress: isPassedByAddress,
-		IsArbitraryType:   innerInfo.IsArbitraryType,
-		IsBuiltin:         innerInfo.IsBuiltin,
+		IsArbitraryType:   isArbitraryType,
+		IsUnsupported:     isUnsupported,
+		IsCtorable:        isCtorable,
 	}
-
 	insert(ti)
+
+	//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
 
 	return ti
 }

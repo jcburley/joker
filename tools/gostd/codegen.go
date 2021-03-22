@@ -647,7 +647,11 @@ func genTypeFromDb(ti TypeInfo) {
 
 	if ts != nil {
 		if ts.Type != nil {
-			appendMethods(ti, ts.Type.(*InterfaceType))
+			if it, ok := ts.Type.(*InterfaceType); ok {
+				appendMethods(ti, it)
+			} else {
+				panic(fmt.Sprintf("ts.Type for %q is %T, not *InterfaceType", ti.GoName(), ts.Type))
+			}
 		}
 	}
 }
