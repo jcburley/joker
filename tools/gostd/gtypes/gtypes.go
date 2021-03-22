@@ -467,7 +467,6 @@ func InfoForExpr(e Expr) *Info {
 		if v.Fields == nil || len(v.Fields.List) == 0 {
 			localName = "struct{}"
 			fullName = localName
-			isNullable = true
 			isExported = true
 		} else {
 			localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
