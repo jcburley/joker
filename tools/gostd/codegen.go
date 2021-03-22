@@ -89,20 +89,6 @@ type funcCode struct {
 	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
 
-/* IMPORTANT: The public functions listed herein should be only those
-   defined in joker/core/custom-runtime.go.
-
-   That's how gostd knows to not actually generate calls to
-   as-yet-unimplemented (or stubbed-out) functions, saving the
-   developer the hassle of getting most of the way through a build
-   before hitting undefined-func errors.
-*/
-var customRuntimeImplemented = map[string]struct{}{
-	"ConvertToArrayOfbyte":   {},
-	"ConvertToArrayOfint":    {},
-	"ConvertToArrayOfstring": {},
-}
-
 func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "{{myGoImport}}." + goFname + "(" + goParams + ")\n"
 }
@@ -361,7 +347,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	t := TypeInfoForExpr(ts.Type)
-	if t.Custom() {
+	if t.IsCustom() {
 		return ""
 	}
 
@@ -496,7 +482,7 @@ var Ctors = map[TypeInfo]string{}
 var CtorNames = map[TypeInfo]string{}
 
 func genCtor(tyi TypeInfo) {
-	if !tyi.Custom() || !tyi.IsAddressable() {
+	if !tyi.IsCtorable() {
 		return
 	}
 
@@ -606,8 +592,8 @@ func GenTypeInfo() {
 			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 			more = true
 		}
-		if !ti.Custom() {
-			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
+		if !ti.IsCustom() {
+			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.IsCustom() {
 				if more {
 					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
 				}

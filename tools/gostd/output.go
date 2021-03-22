@@ -192,7 +192,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 
 	SortedTypeInfoMap(v.Types,
 		func(t string, ti TypeInfo) {
-			if !ti.Custom() {
+			if !ti.IsCustom() {
 				return
 			}
 			out.WriteString(ClojureCodeForType[ti])
@@ -205,7 +205,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
-			if !ti.Custom() {
+			if !ti.IsCustom() {
 				return
 			}
 			tmn := ti.TypeMappingsName()
@@ -294,7 +294,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 
 	SortedTypeInfoMap(v.Types,
 		func(t string, ti TypeInfo) {
-			if !ti.Custom() {
+			if !ti.IsCustom() {
 				return
 			}
 			ctor := ""
