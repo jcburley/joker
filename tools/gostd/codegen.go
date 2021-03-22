@@ -486,26 +486,28 @@ var CtorNames = map[TypeInfo]string{}
 
 func genCtor(tyi TypeInfo) {
 	if !tyi.IsCtorable() {
+		//		fmt.Fprintf(os.Stderr, "codegen.go/genCtor: Not ctorable: %q\n", tyi.GoName())
 		return
 	}
 
 	ts := tyi.TypeSpec()
 	if ts == nil {
+		//		fmt.Fprintf(os.Stderr, "codegen.go/genCtor: No TypeSpec: %q\n", tyi.GoName())
 		return // TODO: Support *type, []type, etc
 	}
 
-	typeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
-	localTypeName := fmt.Sprintf(tyi.GoPattern(), tyi.GoBaseName())
-	ctorApiName := "_Ctor_" + fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
+	typeName := "{{myGoImport}}." + tyi.GoBaseName()
+	localTypeName := fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
+	ctorApiName := "_Ctor_" + localTypeName
 	wrappedCtorApiName := "_Wrapped" + ctorApiName
 
-	possibleObject, expectedObjectDoc, helperFunc, ptrTo := nonGoObjectCase(tyi, typeName, localTypeName)
+	possibleObject, expectedObjectDoc, helperFunc, _ := nonGoObjectCase(tyi, typeName, localTypeName)
 
 	goCtorInfo := map[string]string{
 		"HelperFunc":      helperFunc,
 		"CtorName":        ctorApiName,
 		"WrappedCtorName": wrappedCtorApiName,
-		"PtrTo":           ptrTo,
+		"PtrTo":           "",
 		"TypeName":        typeName,
 		"Cases":           possibleObject,
 		"Expected":        expectedObjectDoc,
@@ -712,7 +714,7 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 		}
 	case *StructType:
 		uniqueTypeName := typeName
-		mapHelperFName := "_mapTo" + baseTypeName
+		mapHelperFName := "_mapTo_" + baseTypeName
 		return []string{"case *ArrayMap, *HashMap"},
 			[]string{"Map"},
 			[]string{mapHelperFName + "(_o.(Map))"},

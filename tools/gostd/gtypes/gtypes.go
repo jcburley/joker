@@ -228,7 +228,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsAddressable:     isAddressable,
 			NilPattern:        underlyingInfo.NilPattern,
 			IsPassedByAddress: underlyingInfo.IsPassedByAddress,
-			IsCtorable:        underlyingInfo.IsAddressable,
+			IsCtorable:        false,
 		}
 		insert(ti)
 	}
@@ -245,6 +245,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				FullName:          fullName,
 				who:               "*TypeDefine*",
 				Type:              &StarExpr{X: ti.Type},
+				TypeSpec:          ts,
 				IsExported:        ti.IsExported,
 				Doc:               ti.Doc,
 				DefPos:            ti.DefPos,
@@ -260,6 +261,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsAddressable:     ti.IsAddressable,
 				IsPassedByAddress: false,
 				IsArbitraryType:   isArbitraryType,
+				IsCtorable:        true,
 			}
 			insert(tiPtrTo)
 		}
@@ -275,6 +277,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
+			TypeSpec:          ts,
 			IsExported:        ti.IsExported,
 			Doc:               ti.Doc,
 			DefPos:            ti.DefPos,
