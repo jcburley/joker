@@ -20,7 +20,6 @@ type TypeInfo interface {
 	ArgClojureArgType() string    // Clojure argument type for a Go function arg with my type
 	ConvertFromClojure() string
 	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
-	Custom() bool            // Whether this is defined by the codebase vs either builtin or derived
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
 	ClojureEffectiveName() string
@@ -49,6 +48,7 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
+	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
@@ -194,7 +194,7 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 	case *Ident:
 		//		fmt.Fprintf(os.Stderr, "conversions(Ident:%+v)\n", v)
 		if ti := TypeInfoForGoName(v.Name); ti != nil {
-			if ti.Custom() {
+			if ti.IsCustom() {
 				uti := TypeInfoForExpr(ti.TypeSpec().Type)
 				if uti.ConvertFromClojure() != "" {
 					fromClojure = fmt.Sprintf("%s.%s(%s)", ti.GoPackage(), ti.GoBaseName(), uti.ConvertFromClojure())
@@ -256,10 +256,6 @@ func (ti typeInfo) ConvertFromMap() string {
 	return ti.jti.ConvertFromMap
 }
 
-func (ti typeInfo) Custom() bool {
-	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
-}
-
 func (ti typeInfo) AsClojureObject() string {
 	return ti.jti.AsClojureObject
 }
@@ -294,16 +290,16 @@ func (ti typeInfo) NilPattern() string {
 	return ti.gti.NilPattern
 }
 
-func (ti typeInfo) IsUnsupported() bool {
-	return ti.gti.IsUnsupported || ti.jti.IsUnsupported
-}
-
 func (ti typeInfo) ClojureTypeInfo() *jtypes.Info {
 	return ti.jti
 }
 
 func (ti typeInfo) ClojureWho() string {
 	return ti.jti.Who
+}
+
+func (ti typeInfo) PromoteType() string {
+	return ti.jti.PromoteType
 }
 
 func (ti typeInfo) RequiredImports() *imports.Imports {
@@ -397,6 +393,31 @@ func (ti typeInfo) Doc() string {
 	return ti.gti.Doc
 }
 
+func (ti typeInfo) TypeMappingsName() string {
+	if !ti.IsExported() {
+		return ""
+	}
+	if ugt := ti.gti.UnderlyingType; ugt != nil {
+		switch ti.gti.Expr.(type) {
+		case *ArrayType:
+			return "info_ArrayOf_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+		case *StarExpr:
+			return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
+		default:
+			panic(fmt.Sprintf("unexpected expr %T with underlying type", ti.gti.Expr))
+		}
+	}
+	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
+}
+
+func (ti typeInfo) IsCustom() bool {
+	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
+}
+
+func (ti typeInfo) IsUnsupported() bool {
+	return ti.gti.IsUnsupported || ti.jti.IsUnsupported
+}
+
 func (ti typeInfo) IsNullable() bool {
 	return ti.gti.IsNullable
 }
@@ -427,27 +448,6 @@ func (ti typeInfo) IsArbitraryType() bool {
 
 func (ti typeInfo) IsCtorable() bool {
 	return ti.gti.IsCtorable
-}
-
-func (ti typeInfo) TypeMappingsName() string {
-	if !ti.IsExported() {
-		return ""
-	}
-	if ugt := ti.gti.UnderlyingType; ugt != nil {
-		switch ti.gti.Expr.(type) {
-		case *ArrayType:
-			return "info_ArrayOf_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
-		case *StarExpr:
-			return "info_PtrTo_" + fmt.Sprintf(ugt.Pattern, ugt.LocalName)
-		default:
-			panic(fmt.Sprintf("unexpected expr %T with underlying type", ti.gti.Expr))
-		}
-	}
-	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
-}
-
-func (ti typeInfo) PromoteType() string {
-	return ti.jti.PromoteType
 }
 
 var allTypesSorted = []TypeInfo{}

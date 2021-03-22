@@ -347,7 +347,7 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	t := TypeInfoForExpr(ts.Type)
-	if t.Custom() {
+	if t.IsCustom() {
 		return ""
 	}
 
@@ -595,8 +595,8 @@ func GenTypeInfo() {
 			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 			more = true
 		}
-		if !ti.Custom() {
-			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.Custom() {
+		if !ti.IsCustom() {
+			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.IsCustom() {
 				if more {
 					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
 				}
