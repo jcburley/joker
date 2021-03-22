@@ -399,11 +399,13 @@ func GenType(t string, ti TypeInfo) {
 	if ti.IsUnsupported() || !ti.IsExported() || ti.IsArbitraryType() {
 		return
 	}
+	//	fmt.Printf("codegen.go/GenType(): %s GOOD SO FAR\n", ti.GoName())
 
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
 		return
 	}
+	//	fmt.Printf("codegen.go/GenType(): %s BETTER\n", ti.GoName())
 
 	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
 	pi := PackagesInfo[pkgDirUnix]
@@ -451,19 +453,17 @@ func GenType(t string, ti TypeInfo) {
 	refTo := ""
 	nilForType := fmt.Sprintf(ti.NilPattern(), typeName)
 	if ti.IsPassedByAddress() {
+		ptrTo = "*"
+		refTo = "&"
+		nilForType = "nil"
 		if ti.IsAddressable() {
-			nilForType = "nil"
-			ptrTo = "*"
-			refTo = "&"
+			coerceRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
 		}
-		coerce = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
 	}
-	if ti.IsAddressable() {
-		coerceRefTo = fmt.Sprintf(goExtractRefToTemplate[1:], typeName, refTo)
-	}
-	if coerce == "" && coerceRefTo == "" {
-		return // E.g. reflect_native.go's refToStringHeader
-	}
+
+	coerce = fmt.Sprintf(goExtractTemplate[1:], ptrTo, typeName)
+
+	//	fmt.Printf("codegen.go/GenType(): %s DONE!\n", ti.GoName())
 	info["Coerce"] = coerce
 	info["CoerceRefTo"] = coerceRefTo
 	info["PtrTo"] = ptrTo
