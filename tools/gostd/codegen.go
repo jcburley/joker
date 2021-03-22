@@ -380,20 +380,6 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	return buf.String()
 }
 
-func addressOf(ptrTo string) string {
-	if ptrTo == "*" {
-		return "&"
-	}
-	return ""
-}
-
-func maybeDeref(ptrTo string) string {
-	if ptrTo == "*" {
-		return ""
-	}
-	return "*"
-}
-
 func GenType(t string, ti TypeInfo) {
 	//	fmt.Printf("codegen.go/GenType(): %s\n", ti.GoName())
 	if ti.IsUnsupported() || !ti.IsExported() || ti.IsArbitraryType() {
