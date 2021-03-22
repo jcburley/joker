@@ -188,6 +188,8 @@ func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable,
 		IsSwitchable:      switchable && innerInfo.IsSwitchable,
 		IsAddressable:     innerInfo.IsAddressable,
 		IsPassedByAddress: isPassedByAddress,
+		IsArbitraryType:   innerInfo.IsArbitraryType,
+		IsBuiltin:         innerInfo.IsBuiltin,
 	}
 
 	insert(ti)
@@ -312,7 +314,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			Specificity:       Concrete,
 			NilPattern:        "%s{}",
 			IsSwitchable:      ti.IsSwitchable,
-			IsAddressable:     ti.IsAddressable,
+			IsAddressable:     false,
 			IsPassedByAddress: false,
 			IsArbitraryType:   isArbitraryType,
 		}
@@ -386,7 +388,7 @@ func InfoForExpr(e Expr) *Info {
 		}
 		ts, ok := tsNode.(*TypeSpec)
 		if !ok {
-			panic(fmt.Sprintf("gtypes.go/Define: non-Typespec %T for %q (%+v)\n", ts, fullName, ts))
+			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
 		}
 
 		return Define(ts, nil, nil)[0] // TODO: parentDoc, maybe handle other elements as well?

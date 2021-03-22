@@ -426,7 +426,7 @@ func GenType(t string, ti TypeInfo) {
 
 	const goExtractRefToTemplate = `
 		case %s:
-			return %sr, true  // refTo
+			return %sr, true
 `
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
@@ -477,7 +477,7 @@ func GenType(t string, ti TypeInfo) {
 
 	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
-	//	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
@@ -794,7 +794,12 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
 	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
 
-	return fmt.Sprintf("%s(o, %s)", api, value)
+	deref := ""
+	if ti.IsPassedByAddress() {
+		deref = "*"
+	}
+
+	return fmt.Sprintf("%s%s(o, %s)", deref, api, value)
 }
 
 func addApiToImports(ti TypeInfo, clType string) string {

@@ -28,9 +28,7 @@ func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType,
 	}
 
 	if ti.IsPassedByAddress() {
-		if ti.IsAddressable() {
-			cl2golParam = "*" + paramName
-		}
+		cl2golParam = "*" + paramName
 	} else {
 		cl2golParam = paramName
 	}
@@ -126,7 +124,7 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
 	goPreCode = fmt.Sprintf("\t%s := %s(%q, myName, _argList, %d)\n", paramName, api, paramName, argNum)
 
-	if ti.IsPassedByAddress() && ti.IsAddressable() {
+	if ti.IsPassedByAddress() {
 		resExpr = "*" + resExpr
 	}
 
