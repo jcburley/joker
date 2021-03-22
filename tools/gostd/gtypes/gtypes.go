@@ -481,8 +481,9 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	if innerInfo == nil {
-		if localName == "" && fullName == "" {
-			localName = fmt.Sprintf("ABEND001(gtypes.go:NO GO NAME for %T)", e)
+		if localName == "" {
+			localName = fmt.Sprintf("ABEND001(gtypes.go:NO GO NAME for %T aka %q)", e, fullName)
+			fullName = ""
 		}
 		if fullName == "" {
 			fullName = computeFullName(pattern, pkgName, localName)
