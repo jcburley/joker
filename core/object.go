@@ -42,6 +42,7 @@ type (
 	Object interface {
 		Equality
 		ToString(escape bool) string
+		TypeToString(escape bool) string // Goes deeper than just "GoObject"
 		GetInfo() *ObjectInfo
 		WithInfo(*ObjectInfo) Object
 		GetType() *Type
@@ -527,8 +528,21 @@ func equalsNumbers(x Number, y interface{}) bool {
 	}
 }
 
+func AnyTypeToString(any interface{}, escape bool) string {
+	switch o := any.(type) {
+	case Object:
+		return o.TypeToString(escape)
+	default:
+		return fmt.Sprintf("%T", o)
+	}
+}
+
 func (a *Atom) ToString(escape bool) string {
 	return "#object[Atom {:val " + a.value.ToString(escape) + "}]"
+}
+
+func (a *Atom) TypeToString(escape bool) string {
+	return a.GetType().ToString(escape)
 }
 
 func (a *Atom) Equals(other interface{}) bool {
@@ -579,6 +593,10 @@ func (d *Delay) ToString(escape bool) string {
 	return "#object[Delay]"
 }
 
+func (d *Delay) TypeToString(escape bool) string {
+	return d.GetType().ToString(escape)
+}
+
 func (d *Delay) Equals(other interface{}) bool {
 	return d == other
 }
@@ -623,6 +641,10 @@ func (t *Type) ToString(escape bool) string {
 	return t.name
 }
 
+func (t *Type) TypeToString(escape bool) string {
+	return t.GetType().ToString(escape)
+}
+
 func (t *Type) Equals(other interface{}) bool {
 	return t == other
 }
@@ -643,6 +665,10 @@ func (rb RecurBindings) ToString(escape bool) string {
 	return "#object[RecurBindings]"
 }
 
+func (rb RecurBindings) TypeToString(escape bool) string {
+	return rb.GetType().ToString(escape)
+}
+
 func (rb RecurBindings) Equals(other interface{}) bool {
 	return false
 }
@@ -661,6 +687,10 @@ func (rb RecurBindings) Hash() uint32 {
 
 func (exInfo *ExInfo) ToString(escape bool) string {
 	return exInfo.Error()
+}
+
+func (exInfo *ExInfo) TypeToString(escape bool) string {
+	return exInfo.GetType().ToString(escape)
 }
 
 func (exInfo *ExInfo) Equals(other interface{}) bool {
@@ -705,6 +735,10 @@ func (exInfo *ExInfo) Error() string {
 
 func (fn *Fn) ToString(escape bool) string {
 	return "#object[Fn]"
+}
+
+func (fn *Fn) TypeToString(escape bool) string {
+	return fn.GetType().ToString(escape)
 }
 
 func (fn *Fn) Equals(other interface{}) bool {
@@ -812,6 +846,10 @@ func (p Proc) ToString(escape bool) string {
 	return fmt.Sprintf("#object[Proc:%s%s]", pkg, p.Name)
 }
 
+func (p Proc) TypeToString(escape bool) string {
+	return p.GetType().ToString(escape)
+}
+
 func (p Proc) Equals(other interface{}) bool {
 	switch other := other.(type) {
 	case Proc:
@@ -866,6 +904,10 @@ func (v *Var) Name() string {
 
 func (v *Var) ToString(escape bool) string {
 	return "#'" + v.Name()
+}
+
+func (v *Var) TypeToString(escape bool) string {
+	return v.GetType().ToString(escape)
 }
 
 func (v *Var) Equals(other interface{}) bool {
@@ -924,6 +966,10 @@ func (v *Var) ValueOf() reflect.Value {
 
 func (v *GoVar) ToString(escape bool) string {
 	return fmt.Sprintf("%v", reflect.ValueOf(v.Value))
+}
+
+func (v *GoVar) TypeToString(escape bool) string {
+	return v.GetType().ToString(escape)
 }
 
 func (v *GoVar) Equals(other interface{}) bool {
@@ -986,6 +1032,10 @@ func (v *GoVar) ValueOf() reflect.Value {
 
 func (n Nil) ToString(escape bool) string {
 	return "nil"
+}
+
+func (n Nil) TypeToString(escape bool) string {
+	return n.GetType().ToString(escape)
 }
 
 func (n Nil) Equals(other interface{}) bool {
@@ -1078,6 +1128,10 @@ func (rat *Ratio) ToString(escape bool) string {
 	return rat.r.String()
 }
 
+func (rat *Ratio) TypeToString(escape bool) string {
+	return rat.GetType().ToString(escape)
+}
+
 func (rat *Ratio) Equals(other interface{}) bool {
 	return equalsNumbers(rat, other)
 }
@@ -1123,6 +1177,10 @@ func (bi *BigInt) ToString(escape bool) string {
 	return bi.b.String() + "N"
 }
 
+func (bi *BigInt) TypeToString(escape bool) string {
+	return bi.GetType().ToString(escape)
+}
+
 func (bi *BigInt) Equals(other interface{}) bool {
 	return equalsNumbers(bi, other)
 }
@@ -1158,6 +1216,10 @@ func (bf *BigFloat) ToString(escape bool) string {
 	return b.Text('g', -1) + "M"
 }
 
+func (bf *BigFloat) TypeToString(escape bool) string {
+	return bf.GetType().ToString(escape)
+}
+
 func (bf *BigFloat) Equals(other interface{}) bool {
 	return equalsNumbers(bf, other)
 }
@@ -1184,6 +1246,10 @@ func (c Char) ToString(escape bool) string {
 		return escapeRune(c.Ch)
 	}
 	return string(c.Ch)
+}
+
+func (c Char) TypeToString(escape bool) string {
+	return c.GetType().ToString(escape)
 }
 
 func (c Char) Equals(other interface{}) bool {
@@ -1286,6 +1352,10 @@ func (o GoObject) ToString(escape bool) string {
 	return fmt.Sprintf("%v", o.O)
 }
 
+func (o GoObject) TypeToString(escape bool) string {
+	return "GoObject[" + GoObjectTypeToString(o.O) + "]"
+}
+
 func (o GoObject) Equals(other interface{}) bool {
 	switch other := other.(type) {
 	case GoObject:
@@ -1357,6 +1427,10 @@ func (t *GoType) ToString(escape bool) string {
 	return fmt.Sprintf("%s", t.T.Name)
 }
 
+func (t *GoType) TypeToString(escape bool) string {
+	return t.GetType().ToString(escape)
+}
+
 func (t *GoType) Equals(other interface{}) bool {
 	switch other := other.(type) {
 	case *GoType:
@@ -1425,6 +1499,10 @@ func (d Double) ToString(escape bool) string {
 	return res + ".0"
 }
 
+func (d Double) TypeToString(escape bool) string {
+	return d.GetType().ToString(escape)
+}
+
 func (d Double) Equals(other interface{}) bool {
 	return equalsNumbers(d, other)
 }
@@ -1459,6 +1537,10 @@ func (i Int) ToString(escape bool) string {
 		return i.Original
 	}
 	return fmt.Sprintf("%d", i.I)
+}
+
+func (i Int) TypeToString(escape bool) string {
+	return i.GetType().ToString(escape)
 }
 
 func MakeInt(i int) Int {
@@ -1500,6 +1582,10 @@ func (i Int) Compare(other Object) int {
 
 func (b Boolean) ToString(escape bool) string {
 	return fmt.Sprintf("%t", b.B)
+}
+
+func (b Boolean) TypeToString(escape bool) string {
+	return b.GetType().ToString(escape)
 }
 
 func (b Boolean) Equals(other interface{}) bool {
@@ -1551,6 +1637,10 @@ func (t Time) ToString(escape bool) string {
 	return t.T.String()
 }
 
+func (t Time) TypeToString(escape bool) string {
+	return t.GetType().ToString(escape)
+}
+
 func (t Time) Equals(other interface{}) bool {
 	switch other := other.(type) {
 	case Time:
@@ -1593,6 +1683,10 @@ func (k Keyword) ToString(escape bool) string {
 		return ":" + *k.ns + "/" + *k.name
 	}
 	return ":" + *k.name
+}
+
+func (k Keyword) TypeToString(escape bool) string {
+	return k.GetType().ToString(escape)
 }
 
 func (k Keyword) AsFieldName() string {
@@ -1647,6 +1741,10 @@ func (rx *Regex) ToString(escape bool) string {
 	return rx.R.String()
 }
 
+func (rx *Regex) TypeToString(escape bool) string {
+	return rx.GetType().ToString(escape)
+}
+
 func (rx *Regex) Print(w io.Writer, printReadably bool) {
 	fmt.Fprint(w, rx.ToString(true))
 }
@@ -1673,6 +1771,10 @@ func (s Symbol) ToString(escape bool) string {
 		return *s.ns + "/" + *s.name
 	}
 	return *s.name
+}
+
+func (s Symbol) TypeToString(escape bool) string {
+	return s.GetType().ToString(escape)
 }
 
 func (s Symbol) AsFieldName() string {
@@ -1720,6 +1822,10 @@ func (c Comment) ToString(escape bool) string {
 	return c.C
 }
 
+func (c Comment) TypeToString(escape bool) string {
+	return c.GetType().ToString(escape)
+}
+
 func (c Comment) Equals(other interface{}) bool {
 	return false
 }
@@ -1741,6 +1847,10 @@ func (s String) ToString(escape bool) string {
 		return escapeString(s.S)
 	}
 	return s.S
+}
+
+func (s String) TypeToString(escape bool) string {
+	return s.GetType().ToString(escape)
 }
 
 func (s String) AsFieldName() string {

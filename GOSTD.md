@@ -10,13 +10,21 @@ Note that **gostd** is still very much a "work in progress". It does not convert
 
 ## Recent Design Changes
 
+### 2021-03-18
+
+Got `chan` and (empty) `struct{}` types working at a rudimentary level.
+
+Receivers that have no return values are now implemented; the Joker wrappers return `NIL`, just as for regular functions and methods.
+
+Types defined in terms of builtin types are now pass-by-value. However, this is not recursive, in that a type defined in terms of another type that is pass-by-value (but not builtin) is not pass-by-value. E.g. see `crypto/x509.InsecureAlgorithmError`, which is still pass-by-reference despite being simply a wrapper around `crypto/x509.SignatureAlgorithm` (which is defined as an `int`).
+
 ### 2021-03-07
 
 The `:gostd` reader conditional has been introduced, primarily to allow `docs/generate-docs.joke` to work on any version of Joker. E.g. `#?(:gostd ...)` will process the `...` only if run by a (recent version of) this **gostd** fork of Joker. It's unlikely to have the same name by the time this fork gains some sort of official status (well beyond proof-of-concept).
 
 Incompatible types for arguments passed to receivers no longer crash Joker; they can be caught, and otherwise produce reasonable diagnostics, just as occurs with normal functions. E.g. `./joker -e '(Go (new go.std.os/File {}) :Write "hi there")'` no longer crashes Joker.
 
-`map`, `struct`, `chan`, and `func` types, as well as `...` in argument lists, are explicitly disabled for now.
+`map`, `struct` (except empty `struct{}`), and `func` types, as well as `...` in argument lists, are explicitly disabled for now.
 
 The build process no longer changes files known to Git; generated files, whose names are all prefixed with `g_`, start out as stubs copied in by `run.sh` and are then overwritten by `tools/gostd/gostd` later by that script.
 

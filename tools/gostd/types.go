@@ -203,19 +203,12 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 				}
 			}
 		}
-	case *ArrayType:
-		//		fmt.Fprintf(os.Stderr, "conversions(ArrayType:%+v)\n", v)
-	case *StarExpr:
-		//		fmt.Fprintf(os.Stderr, "conversions(StarExpr:%+v)\n", v)
-		// ti := TypeInfoForExpr(v.X)
-		// if ti.ConvertFromClojure() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
-		// 	fromClojure = "&" + ti.ConvertFromClojure()
-		// }
-		// if ti.ConvertFromMap() != "" && ti.ArgClojureArgType() == ti.ArgExtractFunc() {
-		// 	//			fromMap = "&" + ti.ConvertFromMap()
-		// }
+	case *InterfaceType:
+		if !v.Incomplete && len(v.Methods.List) == 0 {
+			fromMap = "FieldAsGoObject(%s, %s)"
+			fromClojure = "ObjectAsGoObject(%s, %s)"
+		}
 	default:
-		//		fmt.Fprintf(os.Stderr, "conversions(default:%+v)\n", v)
 	}
 	return
 }

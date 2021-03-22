@@ -1,4 +1,4 @@
-func {{.ObjectAsApiName}}(o Object) ({{.PtrTo}}{{.TypeName}}, bool) {
+func {{.MaybeIsApiName}}(o Object) ({{.PtrTo}}{{.TypeName}}, bool) {
 	switch o := o.(type) {
 	case GoObject:
 		switch r := o.O.(type) {
@@ -9,15 +9,26 @@ func {{.ObjectAsApiName}}(o Object) ({{.PtrTo}}{{.TypeName}}, bool) {
 
 func {{.ExtractApiName}}(args []Object, index int) {{.PtrTo}}{{.TypeName}} {
 	a := args[index]
-	if res, ok := {{.ObjectAsApiName}}(a); ok {
+	if res, ok := {{.MaybeIsApiName}}(a); ok {
 		return res
 	}
 	panic(RT.NewArgTypeError(index, a, "GoObject[{{.TypeAsString}}]"))
 }
 
+// func {{.FieldAsApiName}}(o Map, k string) {{.PtrTo}}{{.TypeName}} {
+// 	ok, v := o.Get(MakeKeyword(k))
+// 	if !ok || v.Equals(NIL) {
+// 		return {{.NilForType}}
+// 	}
+// 	if res, ok := {{.MaybeIsApiName}}(v); ok {
+// 		return res
+// 	}
+// 	panic(FailObject(v, "GoObject[{{.TypeAsString}}]", ""))
+// }
+
 func {{.ReceiverArgAsApiName}}(name, rcvr string, args *ArraySeq, n int) {{.PtrTo}}{{.TypeName}} {
 	a := SeqNth(args, n)
-	if res, ok := {{.ObjectAsApiName}}(a); ok {
+	if res, ok := {{.MaybeIsApiName}}(a); ok {
 		return res
 	}
 	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[{{.TypeAsString}}]"))

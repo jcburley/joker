@@ -23,6 +23,10 @@ func (br *BufferedReader) ToString(escape bool) string {
 	return "#object[BufferedReader]"
 }
 
+func (br *BufferedReader) TypeToString(escape bool) string {
+	return br.GetType().ToString(escape)
+}
+
 func (br *BufferedReader) Equals(other interface{}) bool {
 	return br == other
 }

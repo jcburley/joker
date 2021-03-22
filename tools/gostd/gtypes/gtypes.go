@@ -221,16 +221,31 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	isPassedByAddress := false
 	isArbitraryType := false
 	isNullable := false
+	nilPattern := ""
 	if pkg == "unsafe" && localName == "ArbitraryType" {
 		isArbitraryType = true
 		specificity = 0
 	} else {
-		switch ts.Type.(type) {
+		switch t := ts.Type.(type) {
 		case *InterfaceType:
 			isNullable = true
 		case *StarExpr:
 			isNullable = true
+		case *ChanType:
+			isNullable = true
 		case *ArrayType:
+		case *Ident:
+			isPassedByAddress = !astutils.IsBuiltin(t.Name)
+			if !isPassedByAddress {
+				switch t.Name {
+				case "string":
+					nilPattern = "\"\"%.s"
+				case "bool":
+					nilPattern = "false%.s"
+				default:
+					nilPattern = "%s(0)"
+				}
+			}
 		default:
 			isPassedByAddress = true
 		}
@@ -238,11 +253,14 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		specificity = calculateSpecificity(ts)
 	}
 
-	fullName := computeFullName("%s", pkg, localName)
-	nilPattern := "nil%.s"
-	if !isNullable {
-		nilPattern = "%s{}"
+	if nilPattern == "" {
+		nilPattern = "nil%.s"
+		if !isNullable {
+			nilPattern = "%s{}"
+		}
 	}
+
+	fullName := computeFullName("%s", pkg, localName)
 
 	ti := &Info{
 		Expr:              ts.Name,
@@ -269,7 +287,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types = append(types, ti)
 
 	if ti.Specificity == Concrete {
-		// Concrete types get reference-to and array-of variants, allowing Clojure code to access them.
+		// Concrete types get a reference-to variant, allowing Clojure code to access them.
 		newPattern := fmt.Sprintf(ti.Pattern, "*%s")
 		fullName = computeFullName(newPattern, pkg, localName)
 		tiPtrTo := &Info{
@@ -291,35 +309,37 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsSwitchable:      ti.IsSwitchable,
 			IsAddressable:     ti.IsAddressable,
 			IsPassedByAddress: false,
+			IsArbitraryType:   isArbitraryType,
 		}
 		insert(tiPtrTo)
 		types = append(types, tiPtrTo)
-
-		newPattern = fmt.Sprintf(ti.Pattern, "[]%s")
-		fullName = computeFullName(newPattern, pkg, localName)
-		tiArrayOf := &Info{
-			Expr:              &ArrayType{Elt: ti.Expr},
-			FullName:          fullName,
-			who:               "*TypeDefine*",
-			Type:              &ArrayType{Elt: ti.Type},
-			IsExported:        ti.IsExported,
-			Doc:               ti.Doc,
-			DefPos:            ti.DefPos,
-			File:              gf,
-			Pattern:           newPattern,
-			Package:           ti.Package,
-			LocalName:         ti.LocalName,
-			DocPattern:        newPattern,
-			UnderlyingType:    ti,
-			Specificity:       Concrete,
-			NilPattern:        "%s{}",
-			IsSwitchable:      ti.IsSwitchable,
-			IsAddressable:     ti.IsAddressable,
-			IsPassedByAddress: false,
-		}
-		insert(tiArrayOf)
-		types = append(types, tiArrayOf)
 	}
+
+	newPattern := fmt.Sprintf(ti.Pattern, "[]%s")
+	fullName = computeFullName(newPattern, pkg, localName)
+	tiArrayOf := &Info{
+		Expr:              &ArrayType{Elt: ti.Expr},
+		FullName:          fullName,
+		who:               "*TypeDefine*",
+		Type:              &ArrayType{Elt: ti.Type},
+		IsExported:        ti.IsExported,
+		Doc:               ti.Doc,
+		DefPos:            ti.DefPos,
+		File:              gf,
+		Pattern:           newPattern,
+		Package:           ti.Package,
+		LocalName:         ti.LocalName,
+		DocPattern:        newPattern,
+		UnderlyingType:    ti,
+		Specificity:       Concrete,
+		NilPattern:        "%s{}",
+		IsSwitchable:      ti.IsSwitchable,
+		IsAddressable:     ti.IsAddressable,
+		IsPassedByAddress: false,
+		IsArbitraryType:   isArbitraryType,
+	}
+	insert(tiArrayOf)
+	types = append(types, tiArrayOf)
 
 	return types
 }
@@ -405,6 +425,7 @@ func InfoForExpr(e Expr) *Info {
 	case *InterfaceType:
 		if !v.Incomplete && len(v.Methods.List) == 0 {
 			localName = "interface{}"
+			isExported = true
 		} else {
 			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}

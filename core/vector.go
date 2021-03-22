@@ -129,6 +129,10 @@ func (v *Vector) ToString(escape bool) string {
 	return b.String()
 }
 
+func (v *Vector) TypeToString(escape bool) string {
+	return v.GetType().ToString(escape)
+}
+
 func (v *Vector) Equals(other interface{}) bool {
 	if v == other {
 		return true
@@ -154,6 +158,10 @@ func (vseq *VectorSeq) Equals(other interface{}) bool {
 
 func (vseq *VectorSeq) ToString(escape bool) string {
 	return SeqToString(vseq, escape)
+}
+
+func (vseq *VectorSeq) TypeToString(escape bool) string {
+	return vseq.GetType().ToString(escape)
 }
 
 func (seq *VectorSeq) Pprint(w io.Writer, indent int) int {
@@ -212,6 +220,10 @@ func (vseq *VectorRSeq) Equals(other interface{}) bool {
 
 func (vseq *VectorRSeq) ToString(escape bool) string {
 	return SeqToString(vseq, escape)
+}
+
+func (vseq *VectorRSeq) TypeToString(escape bool) string {
+	return vseq.GetType().ToString(escape)
 }
 
 func (seq *VectorRSeq) Pprint(w io.Writer, indent int) int {

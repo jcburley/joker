@@ -141,7 +141,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 		return cljReturnTypeForDoc
 	}
 	if postCode == "" && resultAssign == "" {
-		return "\t...ABEND275: TODO...\n"
+		postCode = "\treturn NIL\n"
 	}
 	maybeAssignArgList := ""
 	if max > 0 {
@@ -376,10 +376,16 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 		return "" // Not implemented
 	}
 
+	addressOf := ""
+	if t.IsPassedByAddress() {
+		addressOf = "&"
+	}
+
 	mic := map[string]string{
 		"ArgType":   argType,
 		"TypeName":  typeName,
 		"CoerceApi": coerceApi,
+		"AddressOf": addressOf,
 	}
 
 	buf := new(bytes.Buffer)
@@ -403,13 +409,13 @@ func maybeDeref(ptrTo string) string {
 }
 
 func GenType(t string, ti TypeInfo) {
+	//	fmt.Printf("codegen.go/GenType(): %s\n", ti.GoName())
 	if ti.IsUnsupported() || !ti.IsExported() || ti.IsArbitraryType() {
 		return
 	}
 
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
-		//		fmt.Printf("codegen.go/GenType(): skipping %s due to no underlying TypeSpec\n", ti.GoName())
 		return
 	}
 
@@ -437,14 +443,16 @@ func GenType(t string, ti TypeInfo) {
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
 	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
-	ObjectAsApiName := "ObjectAs" + apiSuffix
+	MaybeIsApiName := "MaybeIs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
+	FieldAsApiName := "FieldAs" + apiSuffix
 	ReceiverArgAsApiName := "ReceiverArgAs" + apiSuffix
 
 	info := map[string]string{}
 
-	info["ObjectAsApiName"] = ObjectAsApiName
+	info["MaybeIsApiName"] = MaybeIsApiName
 	info["ExtractApiName"] = ExtractApiName
+	info["FieldAsApiName"] = FieldAsApiName
 	info["ReceiverArgAsApiName"] = ReceiverArgAsApiName
 	info["TypeName"] = typeName
 	info["TypeAsString"] = t
@@ -481,8 +489,9 @@ func GenType(t string, ti TypeInfo) {
 	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ObjectAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
+	//	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
 	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
@@ -588,7 +597,7 @@ func GenTypeInfo() {
 	allTypes := AllTypesSorted()
 
 	for _, ti := range allTypes {
-		GenTypeFromDb(ti)
+		genTypeFromDb(ti)
 	}
 
 	var types []TypeInfo
@@ -625,7 +634,7 @@ func GenTypeInfo() {
 	SwitchableTypes = types
 }
 
-func GenTypeFromDb(ti TypeInfo) {
+func genTypeFromDb(ti TypeInfo) {
 	if ti.ClojureName() == "crypto/Hash" || true {
 		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 	}
@@ -647,7 +656,6 @@ func GenTypeFromDb(ti TypeInfo) {
 	}
 
 	if ti.Specificity() == ConcreteType {
-		genCtor(ti)
 		return // The code below currently handles only interface{} types
 	}
 
@@ -656,6 +664,17 @@ func GenTypeFromDb(ti TypeInfo) {
 			appendMethods(ti, ts.Type.(*InterfaceType))
 		}
 	}
+}
+
+func GenTypeCtors() {
+	allTypes := AllTypesSorted()
+
+	for _, ti := range allTypes {
+		if ti.IsExported() && !ti.IsArbitraryType() && ti.Specificity() == ConcreteType {
+			genCtor(ti)
+		}
+	}
+
 }
 
 func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
@@ -785,8 +804,30 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	return fmt.Sprintf("ABEND048(codegen.go: no conversion from Clojure for %s (%s))",
-		v.GoName(), StringForExpr(uty))
+	clType := v.ClojureEffectiveName()
+	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
+	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
+
+	return fmt.Sprintf("%s(o, %s)", api, value)
+}
+
+func addApiToImports(ti TypeInfo, clType string) string {
+	ix := strings.Index(clType, "/")
+	if ix < 0 {
+		return "" // builtin type (api is in core)
+	}
+
+	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), strings.ReplaceAll(clType[0:ix], ".", "/")).String()
+	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
+	//	fmt.Fprintf(os.Stderr, "codegen.go/addApiToImports: Compared %s to %s\n", apiPkgPath, fn.GoFile().Package.ImportMe)
+	if apiPkgPath == ti.GoFile().Package.ImportMe {
+		return "" // api is local to function
+	}
+
+	clojureStdNs := ti.GoFile().Package.NsRoot
+	native := ti.RequiredImports().AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, ti.DefPos())
+
+	return native
 }
 
 // Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).

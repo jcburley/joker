@@ -22,6 +22,10 @@ func (ior *IOReader) ToString(escape bool) string {
 	return "#object[IOReader]"
 }
 
+func (ior *IOReader) TypeToString(escape bool) string {
+	return ior.GetType().ToString(escape)
+}
+
 func (ior *IOReader) Equals(other interface{}) bool {
 	return ior == other
 }

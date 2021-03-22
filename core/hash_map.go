@@ -176,6 +176,10 @@ func (s *ArrayNodeSeq) ToString(escape bool) string {
 	return SeqToString(s, escape)
 }
 
+func (s *ArrayNodeSeq) TypeToString(escape bool) string {
+	return s.GetType().ToString(escape)
+}
+
 func (seq *ArrayNodeSeq) Pprint(w io.Writer, indent int) int {
 	return pprintSeq(seq, w, indent)
 }
@@ -267,6 +271,10 @@ func (s *NodeSeq) Equals(other interface{}) bool {
 
 func (s *NodeSeq) ToString(escape bool) string {
 	return SeqToString(s, escape)
+}
+
+func (s *NodeSeq) TypeToString(escape bool) string {
+	return s.GetType().ToString(escape)
 }
 
 func (seq *NodeSeq) Pprint(w io.Writer, indent int) int {
@@ -698,6 +706,10 @@ func (m *HashMap) WithMeta(meta Map) Object {
 
 func (m *HashMap) ToString(escape bool) string {
 	return mapToString(m, escape)
+}
+
+func (m *HashMap) TypeToString(escape bool) string {
+	return m.GetType().ToString(escape)
 }
 
 func (m *HashMap) Equals(other interface{}) bool {

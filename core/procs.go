@@ -733,30 +733,15 @@ var procGoTypeOf = func(args []Object) Object {
 		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
 	}
 	if t == nil {
-		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %T", x)))
+		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %s", AnyTypeToString(x, false))))
 	}
 	return t.GoType
 }
 
-var procGoTypeOfAsString = func(args []Object) Object {
+var procTypeOfAsString = func(args []Object) Object {
 	CheckArity(args, 1, 1)
-	var t *GoTypeInfo
 	var x interface{} = args[0]
-	switch o := x.(type) {
-	case GoObject:
-		x = o.O
-		t = LookupGoType(x)
-	case *GoVar:
-		x = o.Value
-		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
-		t = LookupGoType(y) // GoVar's are always pointers to variables
-	default:
-		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
-	}
-	if t == nil {
-		return MakeString(fmt.Sprintf("%T", x))
-	}
-	return MakeString(t.GoType.ToString(false))
+	return MakeString(AnyTypeToString(x, false))
 }
 
 // Mainly for generate-docs.joke, return information on the Go type itself.
@@ -798,13 +783,13 @@ var proc_Go = func(args []Object) Object {
 		if val, ok := arg.(Native); ok {
 			return MakeGoObject(val.Native())
 		}
-		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Native)", arg)))
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a Native)", arg.TypeToString(false))))
 	case ".":
 		arg := args[0]
 		if val, ok := arg.(Valuable); ok {
 			return MakeGoObject(val.ValueOf())
 		}
-		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a ValueOf)", arg)))
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a ValueOf)", arg.TypeToString(false))))
 	}
 	if goType != nil {
 		return goGetTypeInfo(goType, member)
@@ -812,7 +797,7 @@ var proc_Go = func(args []Object) Object {
 	o := EnsureArgIsGoObject(args, 0)
 	g := LookupGoType(o.O)
 	if g == nil {
-		panic(RT.NewError("Unsupported Go type " + GoTypeToString(reflect.TypeOf(o.O))))
+		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
 	}
 	f := g.Members[member]
 	if f != nil {
@@ -826,11 +811,11 @@ var proc_Go = func(args []Object) Object {
 		k = v.Kind()
 	}
 	if k != reflect.Struct {
-		panic(RT.NewError(fmt.Sprintf("Unsupported Kind %s for %s", k, GoTypeToString(reflect.TypeOf(o.O)))))
+		panic(RT.NewError(fmt.Sprintf("No such receiver/method %s/%s", o.TypeToString(false), member)))
 	}
 	field := v.FieldByName(member)
 	if field.Kind() == reflect.Invalid {
-		panic(RT.NewError("No such Go member/field " + GoTypeToString(reflect.TypeOf(o.O)) + "/" + member))
+		panic(RT.NewError(fmt.Sprintf("No such member/field %s/%s", o.TypeToString(false), member)))
 	}
 	if field.CanAddr() {
 		return &GoVar{Value: field.Addr().Interface()}
@@ -1558,16 +1543,16 @@ var procVarSet = func(args []Object) Object {
 		goVar := reflect.ValueOf(g.Value)
 		k := goVar.Kind()
 		if k != reflect.Ptr {
-			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a Ptr, but rather a %s: %T", k, goVar)))
+			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a Ptr, but rather a %s: %s", k, AnyTypeToString(goVar, false))))
 		}
 		goVar = reflect.Indirect(goVar)
 		if !goVar.CanSet() {
-			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %T", k, goVar)))
+			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %s", k, AnyTypeToString(goVar, false))))
 		}
 		arg := args[1]
 		exprValue, ok := arg.(Valuable)
 		if !ok {
-			panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %T (not a Valuable)", arg)))
+			panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a Valuable)", arg.TypeToString(false))))
 		}
 		exprVal := exprValue.ValueOf()
 		if !exprVal.Type().AssignableTo(goVar.Type()) {

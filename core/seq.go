@@ -83,6 +83,10 @@ func (seq *MappingSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
+func (seq *MappingSeq) TypeToString(escape bool) string {
+	return seq.GetType().ToString(escape)
+}
+
 func (seq *MappingSeq) Pprint(w io.Writer, indent int) int {
 	return pprintSeq(seq, w, indent)
 }
@@ -148,6 +152,10 @@ func (seq *LazySeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
+func (seq *LazySeq) TypeToString(escape bool) string {
+	return seq.GetType().ToString(escape)
+}
+
 func (seq *LazySeq) Pprint(w io.Writer, indent int) int {
 	return pprintSeq(seq, w, indent)
 }
@@ -205,6 +213,10 @@ func (seq *ArraySeq) Equals(other interface{}) bool {
 
 func (seq *ArraySeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
+}
+
+func (seq *ArraySeq) TypeToString(escape bool) string {
+	return seq.GetType().ToString(escape)
 }
 
 func (seq *ArraySeq) Pprint(w io.Writer, indent int) int {
@@ -282,6 +294,10 @@ func (seq *ConsSeq) Equals(other interface{}) bool {
 
 func (seq *ConsSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
+}
+
+func (seq *ConsSeq) TypeToString(escape bool) string {
+	return seq.GetType().ToString(escape)
 }
 
 func (seq *ConsSeq) Pprint(w io.Writer, indent int) int {
