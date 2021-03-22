@@ -490,10 +490,16 @@ func genCtor(tyi TypeInfo) {
 		return
 	}
 
+	refTo := ""
+	uti := tyi
 	ts := tyi.TypeSpec()
 	if ts == nil {
-		//		fmt.Fprintf(os.Stderr, "codegen.go/genCtor: No TypeSpec: %q\n", tyi.GoName())
-		return // TODO: Support *type, []type, etc
+		uti = tyi.UnderlyingTypeInfo()
+		ts = uti.TypeSpec()
+		if ts == nil {
+			return
+		}
+		refTo = "*"
 	}
 
 	typeName := "{{myGoImport}}." + tyi.GoBaseName()
@@ -507,7 +513,7 @@ func genCtor(tyi TypeInfo) {
 		"HelperFunc":      helperFunc,
 		"CtorName":        ctorApiName,
 		"WrappedCtorName": wrappedCtorApiName,
-		"PtrTo":           "",
+		"RefTo":           refTo,
 		"TypeName":        typeName,
 		"Cases":           possibleObject,
 		"Expected":        expectedObjectDoc,

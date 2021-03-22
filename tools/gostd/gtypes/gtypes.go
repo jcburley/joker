@@ -206,6 +206,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	underlyingInfo := InfoForExpr(ts.Type)
 	isAddressable := isTypeAddressable(fullName) && underlyingInfo.IsAddressable
+	isCtorable := underlyingInfo.IsBuiltin && underlyingInfo.UnderlyingType == nil
 
 	if ti == nil {
 		ti = &Info{
@@ -228,7 +229,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsAddressable:     isAddressable,
 			NilPattern:        underlyingInfo.NilPattern,
 			IsPassedByAddress: underlyingInfo.IsPassedByAddress,
-			IsCtorable:        false,
+			IsCtorable:        isCtorable,
 		}
 		insert(ti)
 	}
@@ -245,7 +246,6 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				FullName:          fullName,
 				who:               "*TypeDefine*",
 				Type:              &StarExpr{X: ti.Type},
-				TypeSpec:          ts,
 				IsExported:        ti.IsExported,
 				Doc:               ti.Doc,
 				DefPos:            ti.DefPos,
@@ -261,7 +261,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsAddressable:     ti.IsAddressable,
 				IsPassedByAddress: false,
 				IsArbitraryType:   isArbitraryType,
-				IsCtorable:        true,
+				IsCtorable:        !isCtorable,
 			}
 			insert(tiPtrTo)
 		}
@@ -277,7 +277,6 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			FullName:          fullName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
-			TypeSpec:          ts,
 			IsExported:        ti.IsExported,
 			Doc:               ti.Doc,
 			DefPos:            ti.DefPos,
@@ -381,6 +380,7 @@ func InfoForExpr(e Expr) *Info {
 	isAddressable := true
 	isPassedByAddress := false
 	isArbitraryType := false
+	isCtorable := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -393,6 +393,7 @@ func InfoForExpr(e Expr) *Info {
 		isBuiltin = innerInfo.IsBuiltin
 		isAddressable = false
 		isArbitraryType = true
+		isCtorable = pattern == "*%s" // ctors for only *scalar types
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -492,7 +493,6 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	isUnsupported := false
-	isCtorable := true
 
 	if strings.Contains(fullName, "ABEND") {
 		isExported = false

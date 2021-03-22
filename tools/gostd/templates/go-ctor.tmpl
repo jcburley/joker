@@ -1,6 +1,6 @@
 {{/* -*- mode: go -*- */ -}}
 
-{{.HelperFunc}}func {{.CtorName}}(_v Object) *{{.TypeName}} {
+{{.HelperFunc}}func {{.CtorName}}(_v Object) {{.RefTo}}{{.TypeName}} {
 	switch _o := _v.(type) {
 {{.Cases}}	}
 	panic(RT.NewArgTypeError(0, _v, "{{.Expected}}"))
