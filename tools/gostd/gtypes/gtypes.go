@@ -48,15 +48,11 @@ type Info struct {
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
 
-func getInfo(fullName string, nullable bool) *Info {
+func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
 
-	nilPattern := "~~~%s-NOT-NILABLE!!~~~"
-	if nullable {
-		nilPattern = "nil%.s"
-	}
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
@@ -79,43 +75,43 @@ func getInfo(fullName string, nullable bool) *Info {
 
 var Nil = Info{}
 
-var Error = getInfo("error", true)
+var Error = getInfo("error", "nil%.s", true)
 
-var Bool = getInfo("bool", false)
+var Bool = getInfo("bool", "false%.s", false)
 
-var Byte = getInfo("byte", false)
+var Byte = getInfo("byte", "0%.s", false)
 
-var Rune = getInfo("rune", false)
+var Rune = getInfo("rune", "0%.s", false)
 
-var String = getInfo("string", false)
+var String = getInfo("string", "\"\"%.s", false)
 
-var Int = getInfo("int", false)
+var Int = getInfo("int", "0%.s", false)
 
-var Int8 = getInfo("int8", false)
+var Int8 = getInfo("int8", "0%.s", false)
 
-var Int16 = getInfo("int16", false)
+var Int16 = getInfo("int16", "0%.s", false)
 
-var Int32 = getInfo("int32", false)
+var Int32 = getInfo("int32", "0%.s", false)
 
-var Int64 = getInfo("int64", false)
+var Int64 = getInfo("int64", "0%.s", false)
 
-var UInt = getInfo("uint", false)
+var UInt = getInfo("uint", "0%.s", false)
 
-var UInt8 = getInfo("uint8", false)
+var UInt8 = getInfo("uint8", "0%.s", false)
 
-var UInt16 = getInfo("uint16", false)
+var UInt16 = getInfo("uint16", "0%.s", false)
 
-var UInt32 = getInfo("uint32", false)
+var UInt32 = getInfo("uint32", "0%.s", false)
 
-var UInt64 = getInfo("uint64", false)
+var UInt64 = getInfo("uint64", "0%.s", false)
 
-var UIntPtr = getInfo("uintptr", false)
+var UIntPtr = getInfo("uintptr", "0%.s", false)
 
-var Float32 = getInfo("float32", false)
+var Float32 = getInfo("float32", "0%.s", false)
 
-var Float64 = getInfo("float64", false)
+var Float64 = getInfo("float64", "0%.s", false)
 
-var Complex128 = getInfo("complex128", false)
+var Complex128 = getInfo("complex128", "0%.s", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -199,9 +195,9 @@ func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable,
 	return ti
 }
 
-func isTypeAddressable(pkg, name string) bool {
+func isTypeAddressable(fullName string) bool {
 	// See: https://github.com/golang/go/issues/40701
-	return !(pkg == "reflect" && (name == "StringHeader" || name == "SliceHeader"))
+	return fullName != "reflect.StringHeader" && fullName != "reflect.SliceHeader"
 }
 
 func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
@@ -209,9 +205,8 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	pkg := godb.GoPackageForTypeSpec(ts)
 	fullName := computeFullName("%s", pkg, localName)
 
-	di := godb.LookupDeclInfo(fullName)
-	if di == nil {
-		fmt.Fprintf(os.Stderr, "gtypes.go/Define: unregistered type %q\n", fullName)
+	if gf == nil {
+		gf = godb.GoFileForPos(ts.Pos())
 	}
 
 	doc := ts.Doc // Try block comments for this specific decl
@@ -225,49 +220,17 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	types := []*Info{}
 
 	var specificity uint
-	isPassedByAddress := false
 	isArbitraryType := false
-	isNullable := false
-	nilPattern := ""
 	if fullName == "unsafe.ArbitraryType" {
 		isArbitraryType = true
 		specificity = 0
 	} else {
-		switch t := ts.Type.(type) {
-		case *InterfaceType:
-			isNullable = true
-		case *StarExpr:
-			isNullable = true
-		case *ChanType:
-			isNullable = true
-		case *ArrayType:
-		case *Ident:
-			isPassedByAddress = !astutils.IsBuiltin(t.Name)
-			if !isPassedByAddress {
-				switch t.Name {
-				case "string":
-					nilPattern = "\"\"%.s"
-				case "bool":
-					nilPattern = "false%.s"
-				default:
-					nilPattern = "%s(0)"
-				}
-			}
-		default:
-			isPassedByAddress = true
-		}
-		isArbitraryType = false
 		specificity = calculateSpecificity(ts)
 	}
 
-	if nilPattern == "" {
-		nilPattern = "nil%.s"
-		if !isNullable {
-			nilPattern = "%s{}"
-		}
-	}
+	underlyingInfo := InfoForExpr(ts.Type)
+	isAddressable := isTypeAddressable(fullName) && underlyingInfo.IsAddressable
 
-	isAddressable := isTypeAddressable(pkg, localName)
 	ti := &Info{
 		Expr:              ts.Name,
 		FullName:          fullName,
@@ -283,12 +246,12 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		LocalName:         localName,
 		DocPattern:        "%s",
 		Specificity:       specificity,
-		NilPattern:        nilPattern,
-		IsSwitchable:      ts.Assign == token.NoPos,
-		IsAddressable:     isAddressable,
-		IsPassedByAddress: isPassedByAddress,
+		IsSwitchable:      ts.Assign == token.NoPos, // Aliases exactly match their targets, so both can't be in the big switch statement
 		IsArbitraryType:   isArbitraryType,
-		IsCtorable:        ts != nil && isAddressable,
+		IsAddressable:     isAddressable,
+		NilPattern:        underlyingInfo.NilPattern,
+		IsPassedByAddress: underlyingInfo.IsPassedByAddress,
+		IsCtorable:        underlyingInfo.IsAddressable,
 	}
 	insert(ti)
 	types = append(types, ti)
@@ -367,42 +330,67 @@ func InfoForExpr(e Expr) *Info {
 	localName := ""
 	fullName := ""
 	pkgName := ""
+	isNamed := false
 
-	if id, yes := e.(*Ident); yes {
+	// If an explicit name, Define (if necessary) the name and return the resulting info
+	switch v := e.(type) {
+	case *Ident:
+		isNamed = true
+		localName = v.Name
 		pkgName = godb.GoPackageForExpr(e)
-		fullName = genutils.CombineGoName(pkgName, id.Name)
+		fullName = genutils.CombineGoName(pkgName, localName)
+
+	case *SelectorExpr:
+		localName = v.Sel.Name
+
+		pkg := v.X.(*Ident).Name
+		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
+		rf := godb.GoFileForExpr(v)
+		if fullPkgName, found := (*rf.Spaces)[pkg]; found {
+			if godb.IsAvailable(fullPkgName) {
+				isNamed = true
+			} else {
+				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
+			}
+			pkgName = fullPkgName.String()
+			fullName = pkgName + "." + localName
+		} else {
+			panic(fmt.Sprintf("processing %s: could not find %s in %s",
+				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
+		}
+	}
+
+	if isNamed {
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti
 		}
-		ti := &Info{
-			Expr:              e,
-			FullName:          fullName,
-			who:               "TypeForExpr",
-			IsExported:        true,
-			DefPos:            id.Pos(),
-			Pattern:           "%s",
-			Package:           pkgName,
-			LocalName:         id.Name,
-			DocPattern:        "%s",
-			NilPattern:        "~~~%s-NEEDS-FIGURING-OUT~~~",
-			IsSwitchable:      true,
-			IsPassedByAddress: true,
+
+		// Define the type here and now, return the resulting Info.
+		di := godb.LookupDeclInfo(fullName)
+		if di == nil {
+			panic(fmt.Sprintf("gtypes.go/Define: unregistered type %q\n", fullName))
+		}
+		tsNode := di.Node()
+		if tsNode == nil {
+			panic(fmt.Sprintf("gtypes.go/Define: nil Node for %q\n", fullName))
+		}
+		ts, ok := tsNode.(*TypeSpec)
+		if !ok {
+			panic(fmt.Sprintf("gtypes.go/Define: non-Typespec %T for %q (%+v)\n", ts, fullName, ts))
 		}
 
-		typesByExpr[e] = ti
-		insert(ti)
-
-		return ti
+		return Define(ts, nil, nil)[0] // TODO: parentDoc, maybe handle other elements as well?
 	}
 
 	var innerInfo *Info
+	isPassedByAddress := false
+	isNullable := false
+	nilPattern := "nil%.s"
 	pattern := "%s"
 	docPattern := pattern
 	isSwitchable := true
-	isPassedByAddress := true
 	isExported := false
-	isNullable := false
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -411,9 +399,9 @@ func InfoForExpr(e Expr) *Info {
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
 		pkgName = innerInfo.Package
-		isPassedByAddress = false
 		isExported = innerInfo.IsExported
 		isNullable = true
+		isSwitchable = innerInfo.IsSwitchable
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
@@ -427,41 +415,25 @@ func InfoForExpr(e Expr) *Info {
 			docPattern = fmt.Sprintf(docPattern, innerInfo.DocPattern)
 		}
 		pkgName = innerInfo.Package
-		isPassedByAddress = false
 		isExported = innerInfo.IsExported
+		isSwitchable = innerInfo.IsSwitchable
 	case *InterfaceType:
+		pkgName = ""
 		if !v.Incomplete && len(v.Methods.List) == 0 {
 			localName = "interface{}"
 			isExported = true
 		} else {
 			localName = fmt.Sprintf("ABEND320(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
-		isPassedByAddress = false
 		isNullable = true
 	case *MapType:
+		pkgName = ""
 		key := InfoForExpr(v.Key)
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
-		isPassedByAddress = false
 		isExported = key.IsExported && value.IsExported
-	case *SelectorExpr:
-		pkg := v.X.(*Ident).Name
-		localName = v.Sel.Name
-		fullPathUnix := paths.Unix(godb.FileAt(v.Pos()))
-		rf := godb.GoFileForExpr(v)
-		if fullPkgName, found := (*rf.Spaces)[pkg]; found {
-			if godb.IsAvailable(fullPkgName) {
-			} else {
-				localName = fmt.Sprintf("ABEND002(reference to unavailable package `%s' looking for type `%s')", fullPkgName, localName)
-			}
-			pkgName = fullPkgName.String()
-			fullName = pkgName + "." + localName
-		} else {
-			panic(fmt.Sprintf("processing %s: could not find %s in %s",
-				godb.WhereAt(v.Pos()), pkg, fullPathUnix))
-		}
-		isExported = IsExported(localName)
 	case *ChanType:
+		pkgName = ""
 		pattern = "chan"
 		switch v.Dir {
 		case SEND:
@@ -476,24 +448,26 @@ func InfoForExpr(e Expr) *Info {
 		localName = innerInfo.LocalName
 		pattern = fmt.Sprintf("%s %s", pattern, innerInfo.Pattern)
 		docPattern = pattern
-		isPassedByAddress = false
 		isNullable = true
 		isExported = innerInfo.IsExported
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
+		pkgName = ""
 		if v.Fields == nil || len(v.Fields.List) == 0 {
 			localName = "struct{}"
 			fullName = localName
-			isPassedByAddress = false
 			isNullable = true
 			isExported = true
 		} else {
 			localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 	case *FuncType:
+		pkgName = ""
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
 	case *Ellipsis:
+		pkgName = ""
 		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		isSwitchable = false
 	}
 
 	if innerInfo == nil {
@@ -520,7 +494,7 @@ func InfoForExpr(e Expr) *Info {
 			DocPattern:        docPattern,
 			DefPos:            e.Pos(),
 			UnderlyingType:    innerInfo,
-			NilPattern:        "~~~%s-NEEDS-CLARITY~~~",
+			NilPattern:        nilPattern,
 			IsSwitchable:      isSwitchable,
 			IsPassedByAddress: isPassedByAddress,
 			IsExported:        isExported,
@@ -531,7 +505,7 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	if fullName == "" {
-		fullName = computeFullName(pattern, innerInfo.Package, innerInfo.LocalName)
+		fullName = computeFullName(pattern, pkgName, innerInfo.LocalName)
 	}
 	if strings.Contains(fullName, "ABEND") {
 		isSwitchable = false
@@ -541,7 +515,6 @@ func InfoForExpr(e Expr) *Info {
 		return variant
 	}
 
-	nilPattern := "nil%.s"
 	if !isNullable {
 		nilPattern = "%s{}"
 	}
