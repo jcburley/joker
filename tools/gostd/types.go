@@ -57,6 +57,7 @@ type TypeInfo interface {
 	IsAddressable() bool     // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress() bool // Excludes builtins, some complex, and interface{} types
 	IsArbitraryType() bool   // Is unsafe.ArbitraryType, which gets treated as interface{}
+	IsCtorable() bool        // Whether a ctor for this type can (and will) be created
 }
 
 type TypesMap map[string]TypeInfo
@@ -422,6 +423,10 @@ func (ti typeInfo) IsPassedByAddress() bool {
 
 func (ti typeInfo) IsArbitraryType() bool {
 	return ti.gti.IsArbitraryType
+}
+
+func (ti typeInfo) IsCtorable() bool {
+	return ti.gti.IsCtorable
 }
 
 func (ti typeInfo) TypeMappingsName() string {

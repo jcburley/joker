@@ -485,7 +485,7 @@ var Ctors = map[TypeInfo]string{}
 var CtorNames = map[TypeInfo]string{}
 
 func genCtor(tyi TypeInfo) {
-	if !tyi.Custom() || !tyi.IsAddressable() {
+	if !tyi.IsCtorable() {
 		return
 	}
 

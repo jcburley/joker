@@ -41,6 +41,7 @@ type Info struct {
 	IsPassedByAddress bool // Whether Joker passes only references to these around (excludes builtins, some complex, and interface{} types)
 	IsArbitraryType   bool // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsUnsupported     bool
+	IsCtorable        bool // Whether a ctor for this type can (and will) be created
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -198,7 +199,7 @@ func finishVariant(fullName, pattern, docPattern, nilPattern string, switchable,
 	return ti
 }
 
-func isAddressable(pkg, name string) bool {
+func isTypeAddressable(pkg, name string) bool {
 	// See: https://github.com/golang/go/issues/40701
 	return !(pkg == "reflect" && (name == "StringHeader" || name == "SliceHeader"))
 }
@@ -262,6 +263,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	fullName := computeFullName("%s", pkg, localName)
 
+	isAddressable := isTypeAddressable(pkg, localName)
 	ti := &Info{
 		Expr:              ts.Name,
 		FullName:          fullName,
@@ -279,9 +281,10 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		Specificity:       specificity,
 		NilPattern:        nilPattern,
 		IsSwitchable:      ts.Assign == token.NoPos,
-		IsAddressable:     isAddressable(pkg, localName),
+		IsAddressable:     isAddressable,
 		IsPassedByAddress: isPassedByAddress,
 		IsArbitraryType:   isArbitraryType,
+		IsCtorable:        ts != nil && isAddressable,
 	}
 	insert(ti)
 	types = append(types, ti)
