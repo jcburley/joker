@@ -485,7 +485,6 @@ func genCtor(tyi TypeInfo) {
 		if ts == nil {
 			return
 		}
-		//		refTo = "*"
 	}
 
 	goTypeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
@@ -520,6 +519,9 @@ func genCtor(tyi TypeInfo) {
 		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", "", true, tyi.DefPos())
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
+		if tyi != uti {
+			CtorNames[uti] = wrappedCtorApiName
+		}
 		NumGeneratedCtors++
 	}
 
