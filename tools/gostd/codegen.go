@@ -789,11 +789,11 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
 
 	deref := ""
-	if ti.IsPassedByAddress() {
+	if v.IsPassedByAddress() {
 		deref = "*"
 	}
-	if ti.GoName() == "reflect.Value" || true {
-		// fmt.Printf("codegen.go/valueToType: Type %s has deref=%q\n", ti.GoName(), deref)
+	if v.GoName() == "reflect.Value" {
+		fmt.Printf("codegen.go/valueToType: Type %s has deref=%q\n", v.GoName(), deref)
 	}
 
 	return fmt.Sprintf("%s%s(o, %s)", deref, api, value)
