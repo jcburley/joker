@@ -493,7 +493,7 @@ func genCtor(tyi TypeInfo) {
 	ctorApiName := "_Ctor_" + localTypeName
 	wrappedCtorApiName := "_Wrapped" + ctorApiName
 
-	possibleObject, expectedObjectDoc, helperFunc, _ := nonGoObjectCase(tyi, typeName, localTypeName)
+	possibleObject, expectedObjectDoc, helperFunc := nonGoObjectCase(tyi, typeName, localTypeName)
 
 	goCtorInfo := map[string]string{
 		"HelperFunc":      helperFunc,
@@ -661,8 +661,8 @@ func GenTypeCtors() {
 
 }
 
-func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc, ptrTo string) {
-	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs, ptrTo := nonGoObjectTypeFor(ti, typeName, baseTypeName)
+func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc string) {
+	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs := nonGoObjectTypeFor(ti, typeName, baseTypeName)
 
 	nonGoObjectCasePrefix := ""
 	nonGoObjectCase = ""
@@ -682,11 +682,10 @@ func nonGoObjectCase(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectCas
 
 	return nonGoObjectCase,
 		fmt.Sprintf("GoObject[%s] or: %s", typeName, strings.Join(nonGoObjectTypeDocs, " or ")),
-		strings.Join(helperFuncs, ""),
-		ptrTo
+		strings.Join(helperFuncs, "")
 }
 
-func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string, ptrTo string) {
+func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string) {
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
 		panic(fmt.Sprintf("nil ts for ti=%+v gti=%+v jti=%+v", ti, ti.GoTypeInfo(), ti.ClojureTypeInfo()))
@@ -705,21 +704,18 @@ func nonGoObjectTypeFor(ti TypeInfo, typeName, baseTypeName string) (nonGoObject
 			return
 		}
 	case *StructType:
-		uniqueTypeName := typeName
 		mapHelperFName := "_mapTo_" + baseTypeName
 		return []string{"case *ArrayMap, *HashMap"},
 			[]string{"Map"},
 			[]string{mapHelperFName + "(_o.(Map))"},
-			[]string{mapToType(ti, mapHelperFName, uniqueTypeName, t)},
-			"*"
+			[]string{mapToType(ti, mapHelperFName, typeName, t)}
 	case *ArrayType:
 	}
 	return []string{"default"},
 		[]string{"whatever"},
 		[]string{fmt.Sprintf("_%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
 			typeName, ts.Type, baseTypeName)},
-		[]string{""},
-		""
+		[]string{""}
 }
 
 func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
@@ -795,6 +791,9 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	deref := ""
 	if ti.IsPassedByAddress() {
 		deref = "*"
+	}
+	if ti.GoName() == "reflect.Value" || true {
+		// fmt.Printf("codegen.go/valueToType: Type %s has deref=%q\n", ti.GoName(), deref)
 	}
 
 	return fmt.Sprintf("%s%s(o, %s)", deref, api, value)
