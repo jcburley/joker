@@ -261,7 +261,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsAddressable:     ti.IsAddressable,
 				IsPassedByAddress: false,
 				IsArbitraryType:   isArbitraryType,
-				IsCtorable:        !isCtorable,
+				IsCtorable:        !isCtorable && isTypeAddressable(ti.FullName),
 			}
 			insert(tiPtrTo)
 		}
