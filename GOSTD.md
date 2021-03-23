@@ -16,7 +16,9 @@ Got `chan` and (empty) `struct{}` types working at a rudimentary level.
 
 Receivers that have no return values are now implemented; the Joker wrappers return `NIL`, just as for regular functions and methods.
 
-Types defined (recursively) in terms of builtin types are now pass-by-value, as is `struct{}`.
+Types defined (recursively) in terms of builtin types are now pass-by-value (and construct-by-value), as is `struct{}`.
+
+Note that constructors for pass-by-reference types return reference types. E.g. `(new Foo ...)` returns `refToFoo`. Assuming the Go code defines methods on `*Foo`, they should work on the result; else, one should be able to dereference and then invoke them, as in `(Go (deref my-foo) :SomeMethod ...)`.
 
 ### 2021-03-07
 
