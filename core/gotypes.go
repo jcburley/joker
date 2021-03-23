@@ -595,28 +595,45 @@ func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added str
 	return v
 }
 
-func ExtractarrayOfByte(args []Object, index int) []byte {
-	o := args[index]
+func MaybeIsarrayOfByte(o Object) ([]byte, bool) {
 	switch obj := o.(type) {
 	case Native:
-		switch g := obj.Native().(type) {
+		switch r := obj.Native().(type) {
 		case []byte:
-			return g
+			return r, true
+		case string:
+			return []byte(r), true
 		}
 	}
-	panic(RT.NewArgTypeError(index, o, "GoObject[[]byte]"))
+	return nil, false
+}
+
+func ExtractarrayOfByte(args []Object, index int) []byte {
+	a := args[index]
+	if res, ok := MaybeIsarrayOfByte(a); ok {
+		return res
+	}
+	panic(FailArg(a, "[]byte", index))
 }
 
 func ReceiverArgAsarrayOfByte(name, rcvr string, args *ArraySeq, n int) []byte {
 	a := SeqNth(args, n)
-	if g, good := a.(GoObject); good {
-		res, ok := g.O.([]byte)
-		if ok {
-			return res
-		}
+	if res, ok := MaybeIsarrayOfByte(a); ok {
+		return res
 	}
 	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s must be type GoObject[[]byte], but is %s",
 		n, name, rcvr, a.TypeToString(false))))
+}
+
+func FieldAsarrayOfByte(o Map, k string) []byte {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok || v.Equals(NIL) {
+		return []byte{}
+	}
+	if res, ok := MaybeIsarrayOfByte(v); ok {
+		return res
+	}
+	panic(FailObject(v, "[]byte", ""))
 }
 
 func Extractarray4OfByte(args []Object, index int) [4]byte {

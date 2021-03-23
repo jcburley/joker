@@ -12,9 +12,11 @@ Note that **gostd** is still very much a "work in progress". It does not convert
 
 ### 2021-03-23
 
+`[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). More like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
+
 Got `chan` and (empty) `struct{}` types working at a rudimentary level.
 
-Receivers that have no return values are now implemented; the Joker wrappers return `NIL`, just as for regular functions and methods.
+Receivers that have no return values are now implemented; their Joker wrappers return `NIL`, just as for regular functions and methods.
 
 Types defined (recursively) in terms of builtin types are now pass-by-value (and construct-by-value), as is `struct{}`.
 
@@ -56,7 +58,7 @@ This change improves performance in cases where the returned value will be used 
 
 ## Sample Usage
 
-This sends a completely empty (and thus technically invalid SMTP) message, as the conversion of a `string` to `[]byte` is TBD:
+This sends a completely empty (and thus technically invalid SMTP) message:
 
 ```
 user=> (use 'go.std.net.smtp)
