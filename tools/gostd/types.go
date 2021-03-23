@@ -103,7 +103,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		if IsExported(name) {
 			NumTypes++
-			if ti.Specificity() == ConcreteType {
+			if ti.IsCtorable() {
 				NumCtableTypes++
 			}
 		}
