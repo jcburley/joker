@@ -456,8 +456,8 @@ func InfoForExpr(e Expr) *Info {
 			isBuiltin = true
 		} else {
 			localName = fmt.Sprintf("ABEND787(gtypes.go: %s not supported)", astutils.ExprToString(v))
+			isPassedByAddress = true
 		}
-		isPassedByAddress = true
 	case *FuncType:
 		pkgName = ""
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
