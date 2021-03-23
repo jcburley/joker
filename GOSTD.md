@@ -10,13 +10,13 @@ Note that **gostd** is still very much a "work in progress". It does not convert
 
 ## Recent Design Changes
 
-### 2021-03-18
+### 2021-03-23
 
 Got `chan` and (empty) `struct{}` types working at a rudimentary level.
 
 Receivers that have no return values are now implemented; the Joker wrappers return `NIL`, just as for regular functions and methods.
 
-Types defined in terms of builtin types are now pass-by-value. However, this is not recursive, in that a type defined in terms of another type that is pass-by-value (but not builtin) is not pass-by-value. E.g. see `crypto/x509.InsecureAlgorithmError`, which is still pass-by-reference despite being simply a wrapper around `crypto/x509.SignatureAlgorithm` (which is defined as an `int`).
+Types defined (recursively) in terms of builtin types are now pass-by-value, as is `struct{}`.
 
 ### 2021-03-07
 
