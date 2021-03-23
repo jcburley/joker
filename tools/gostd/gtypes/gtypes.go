@@ -175,6 +175,18 @@ func isTypeAddressable(fullName string) bool {
 	return fullName != "reflect.StringHeader" && fullName != "reflect.SliceHeader"
 }
 
+func isTypeNewable(ti *Info) bool {
+	switch ti.Type.(type) {
+	case *StructType:
+	case *MapType:
+	// case *SelectorExpr:  // Are these all just aliases? Might try to support these someday?
+	// 	return isTypeNewable(InfoForExpr(uti))
+	default:
+		return false
+	}
+	return ti.Pattern == "%s" && isTypeAddressable(ti.FullName)
+}
+
 func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	localName := ts.Name.Name
 	pkg := godb.GoPackageForTypeSpec(ts)
@@ -261,7 +273,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsAddressable:     ti.IsAddressable,
 				IsPassedByAddress: false,
 				IsArbitraryType:   isArbitraryType,
-				IsCtorable:        !isCtorable && isTypeAddressable(ti.FullName),
+				IsCtorable:        !isCtorable && isTypeNewable(ti),
 			}
 			insert(tiPtrTo)
 		}
@@ -393,7 +405,7 @@ func InfoForExpr(e Expr) *Info {
 		isBuiltin = innerInfo.IsBuiltin
 		isAddressable = false
 		isArbitraryType = true
-		isCtorable = pattern == "*%s" // ctors for only *scalar types
+		isCtorable = isTypeNewable(innerInfo)
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
 		len, docLen := astutils.IntExprToString(v.Len)
