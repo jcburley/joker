@@ -123,7 +123,7 @@ func ExtractString(args []Object, index int) string {
 			case rune:
 				res += string(el)
 			case int:
-				res += string(el)
+				res += string(rune(el))
 			default:
 				panic(FailObject(elObj, "Vector with String, Char, or Int elements", ""))
 			}
