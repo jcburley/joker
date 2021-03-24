@@ -426,16 +426,6 @@ func ObjectAsString(obj Object, pattern string) string {
 	return EnsureObjectIsString(obj, pattern).S
 }
 
-func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
-	a := SeqNth(args, n)
-	res, ok := a.(String)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type String, but is %s",
-			n, name, rcvr, a.TypeToString(false))))
-	}
-	return res.S
-}
-
 func FieldAsString(o Map, k string) string {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok {
@@ -491,16 +481,6 @@ func FieldAsGoObject(o Map, k string) interface{} {
 	if !ok {
 		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject, but is %s",
 			k, v.TypeToString(false))))
-	}
-	return res.O
-}
-
-func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
-	a := SeqNth(args, n)
-	res, ok := a.(GoObject)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject, but is %s",
-			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.O
 }

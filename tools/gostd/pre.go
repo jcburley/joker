@@ -134,10 +134,22 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 }
 
 func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goPreCode, resExpr string) {
+	actualType, isEllipsis := e.(*Ellipsis)
+	if isEllipsis {
+		e = actualType.Elt
+	}
+
 	ti := TypeInfoForExpr(e)
 	resExpr = paramName
 
 	clType := ti.ClojureEffectiveName()
+	if isEllipsis {
+		if strings.Contains(clType, "/") {
+			clType += "_s"
+		} else {
+			clType += "s"
+		}
+	}
 
 	apiImportName := fn.AddApiToImports(clType)
 	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
@@ -145,6 +157,13 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 
 	if ti.IsPassedByAddress() {
 		resExpr = "*" + resExpr
+	}
+
+	if isEllipsis {
+		resExpr += "..."
+		if ti.IsPassedByAddress() {
+			resExpr = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", resExpr)
+		}
 	}
 
 	return

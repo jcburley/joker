@@ -57,10 +57,17 @@ func ExtractObject(args []Object, index int) Object {
 	return args[index]
 }
 
+func MaybeIsNative(o Object) (interface{}, bool) {
+	if o, yes := o.(Native); yes {
+		return o.Native(), true
+	}
+	return nil, false
+}
+
 func EnsureArgIsNative(args []Object, index int) interface{} {
 	obj := args[index]
-	if c, yes := obj.(Native); yes {
-		return c.Native()
+	if c, yes := MaybeIsNative(obj); yes {
+		return c
 	}
 	panic(FailArg(obj, "GoObject or concrete Type", index))
 }
@@ -77,6 +84,23 @@ func ExtractGoObjects(args []Object, index int) []interface{} {
 	return vec
 }
 
+func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
+	a := SeqNth(args, n)
+	if res, ok := MaybeIsNative(a); ok {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject or concrete type"))
+}
+
+func ReceiverArgAsGoObjects(name, rcvr string, args *ArraySeq, n int) []interface{} {
+	vec := make([]interface{}, 0)
+	count := SeqCount(args)
+	for i := n; i < count; i++ {
+		vec = append(vec, ReceiverArgAsGoObject(name, rcvr, args, i))
+	}
+	return vec
+}
+
 func ExtractString(args []Object, index int) string {
 	return EnsureArgIsString(args, index).S
 }
@@ -89,12 +113,36 @@ func ExtractStringable(args []Object, index int) string {
 	return EnsureArgIsStringable(args, index).S
 }
 
+func MaybeIsString(o Object) (string, bool) {
+	if o, yes := o.(String); yes {
+		return o.S, true
+	}
+	return "", false
+}
+
 func ExtractStrings(args []Object, index int) []string {
 	strs := make([]string, 0)
 	for i := index; i < len(args); i++ {
 		strs = append(strs, EnsureArgIsString(args, i).S)
 	}
 	return strs
+}
+
+func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
+	a := SeqNth(args, n)
+	if res, ok := MaybeIsString(a); ok {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "String"))
+}
+
+func ReceiverArgAsStrings(name, rcvr string, args *ArraySeq, n int) []string {
+	vec := make([]string, 0)
+	count := SeqCount(args)
+	for i := n; i < count; i++ {
+		vec = append(vec, ReceiverArgAsString(name, rcvr, args, i))
+	}
+	return vec
 }
 
 func ExtractInt(args []Object, index int) int {

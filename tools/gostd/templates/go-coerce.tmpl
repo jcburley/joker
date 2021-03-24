@@ -42,3 +42,12 @@ func {{.ReceiverArgAsApiName}}(name, rcvr string, args *ArraySeq, n int) {{.PtrT
 	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[{{.TypeAsString}}]"))
 }
 
+func {{.ReceiverArgAsApiName}}_s(name, rcvr string, args *ArraySeq, n int) []{{.PtrTo}}{{.TypeName}} {
+	vec := make([]{{.PtrTo}}{{.TypeName}}, 0)
+	count := SeqCount(args)
+	for i := n; i < count; i++ {
+		vec = append(vec, {{.ReceiverArgAsApiName}}(name, rcvr, args, i))
+	}
+	return vec
+}
+

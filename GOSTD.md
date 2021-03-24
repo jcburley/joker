@@ -6,13 +6,28 @@ After building, HTML documentation is available in the `docs` directory. For exa
 
 Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joker/docs) to get an idea of what is available, as those pages are generally updated when new features (supporting more, or better, conversions/wrappers of Go packages to Joker) are pushed to the repository. (The Windows pages are updated less frequently.)
 
-Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker.
+Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go, though is now at or greater than 90% coverage in most cases. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker. Further, some key "standalone" functions (such as the `builtin` package's functions) are not yet available.
+
+Current stats on `amd64-linux`:
+
+```
+Totals: functions=4067 generated=3897 (95.82%)
+          non-receivers=1599 (39.32%) generated=1473 (92.12%)
+          receivers=2069 (50.87%) generated=2032 (98.21%)
+          methods=399 (9.81%) generated=392 (98.25%)
+        types=2861
+          constructable=800 ctors=663 (82.88%)
+        constants=4394 generated=4354 (99.09%)
+        variables=439 generated=439 (100.00%)
+```
 
 ## Recent Design Changes
 
 ### 2021-03-24
 
-`...` arguments are now supported for normal functions (not methods nor receivers just yet), unless the underlying type is any other type Joker decides to pass by reference (currently these are all non-empty `struct{}` types; as a result, `reflect.Append()` is unsupported). E.g.:
+tl;dr: As of now, this fork is verging on usefulness!
+
+`...` arguments are now supported for functions, methods, and receivers, unless the underlying type is any other type Joker decides to pass by reference (currently these are all non-empty `struct{}` types; as a result, `reflect.Append()` is unsupported). E.g.:
 
 ```
 user=> (go.std.fmt/Println (go.std.net/IPv4 1 2 3 4) (go.std.net/IPv4Mask 255 255 255 127))
