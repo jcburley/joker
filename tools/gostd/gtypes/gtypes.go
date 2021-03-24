@@ -42,6 +42,7 @@ type Info struct {
 	IsArbitraryType   bool // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsUnsupported     bool
 	IsCtorable        bool // Whether a ctor for this type can (and will) be created
+	IsNameable        bool // Whether the type can be named in Go or Joker code (excludes e.g. "...<type>")
 }
 
 // Maps type-defining Expr or string to exactly one struct describing that type
@@ -242,6 +243,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			NilPattern:        underlyingInfo.NilPattern,
 			IsPassedByAddress: underlyingInfo.IsPassedByAddress,
 			IsCtorable:        isCtorable,
+			IsNameable:        true,
 		}
 		insert(ti)
 	}
@@ -274,6 +276,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsPassedByAddress: false,
 				IsArbitraryType:   isArbitraryType,
 				IsCtorable:        !isCtorable && isTypeNewable(ti),
+				IsNameable:        true,
 			}
 			insert(tiPtrTo)
 		}
@@ -304,6 +307,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsAddressable:     false,
 			IsPassedByAddress: false,
 			IsArbitraryType:   isArbitraryType,
+			IsNameable:        true,
 		}
 		insert(tiArrayOf)
 	}
@@ -393,6 +397,7 @@ func InfoForExpr(e Expr) *Info {
 	isPassedByAddress := false
 	isArbitraryType := false
 	isCtorable := false
+	isNameable := true
 
 	switch v := e.(type) {
 	case *StarExpr:
@@ -475,10 +480,7 @@ func InfoForExpr(e Expr) *Info {
 		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
 		isNullable = true
 	case *Ellipsis:
-		pkgName = ""
-		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
-		isSwitchable = false
-		isAddressable = false
+		return InfoForExpr(v.Elt)
 	}
 
 	if innerInfo == nil {
@@ -544,6 +546,7 @@ func InfoForExpr(e Expr) *Info {
 		IsArbitraryType:   isArbitraryType,
 		IsUnsupported:     isUnsupported,
 		IsCtorable:        isCtorable,
+		IsNameable:        isNameable,
 	}
 	insert(ti)
 

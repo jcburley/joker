@@ -160,6 +160,10 @@ func InfoForGoName(fullName string) *Info {
 }
 
 func InfoForExpr(e Expr) *Info {
+	if ellipsis, yes := e.(*Ellipsis); yes {
+		return InfoForExpr(ellipsis.Elt)
+	}
+
 	if info, ok := typesByExpr[e]; ok {
 		return info
 	}

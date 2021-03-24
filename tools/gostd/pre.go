@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam string) {
+func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
 	ti := TypeInfoForExpr(e)
 
 	pkgBaseName := fn.AddToImports(ti)
@@ -24,13 +24,24 @@ func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType,
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
 
 	if clType != "" {
-		clType = assertRuntime("Extract", "Extract_ns_", clType)
+		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
+		clTypeDoc = "^" + clTypeDoc
 	}
 
 	if ti.IsPassedByAddress() {
 		cl2golParam = "*" + paramName
 	} else {
 		cl2golParam = paramName
+	}
+
+	newResVar = paramName
+	if _, isEllipsis := e.(*Ellipsis); isEllipsis {
+		clType = "& " + clType
+		clTypeDoc = "& " + clTypeDoc
+		goType = "..." + goType
+		goTypeDoc = "..." + goTypeDoc
+		cl2golParam += "..."
+		newResVar += "..."
 	}
 
 	return
@@ -53,13 +64,13 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			resVar = "_v_" + p.Name
 			resVarDoc = p.Name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam := genTypePreFunc(fn, field.Field.Type, resVar, argNum)
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field.Field.Type, resVar, argNum)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
 		}
 		if clType != "" {
-			clojureParamList += "^" + clType + " "
+			clojureParamList += clType + " "
 		}
 		clojureParamList += genutils.ParamNameAsClojure(resVar)
 
@@ -67,7 +78,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			clojureParamListDoc += ", "
 		}
 		if clTypeDoc != "" {
-			clojureParamListDoc += "^" + clTypeDoc + " "
+			clojureParamListDoc += clTypeDoc + " "
 		}
 		clojureParamListDoc += genutils.ParamNameAsClojure(resVarDoc)
 
@@ -102,7 +113,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 		if goParams != "" {
 			goParams += ", "
 		}
-		goParams += genutils.ParamNameAsGo(resVar)
+		goParams += genutils.ParamNameAsGo(newResVar)
 	}
 	clojureGoParams = "(" + clojureGoParams + ")"
 	clojureParamListDoc = "[" + clojureParamListDoc + "]"
