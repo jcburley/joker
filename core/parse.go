@@ -977,18 +977,26 @@ func isFinally(obj Object) bool {
 }
 
 func resolveType(obj Object, ctx *ParseContext) *Type {
+	// First, if a symbol, look it up as a native type. If found, just use that!
+	if sym, yes := obj.(Symbol); yes && sym.ns == nil {
+		if ty, found := TYPES[sym.name]; found {
+			return ty
+		}
+	}
 	excType := Parse(obj, ctx)
 	switch excType := excType.(type) {
 	case *LiteralExpr:
 		switch t := excType.obj.(type) {
 		case *Type:
 			return t
+		default:
+			obj = t
 		}
 	}
 	if LINTER_MODE {
 		return TYPE.Error
 	}
-	panic(&ParseError{obj: obj, msg: "Unable to resolve type: " + obj.ToString(false)})
+	panic(&ParseError{obj: obj, msg: fmt.Sprintf("Unable to resolve type: %s, got: %s", obj.ToString(false), excType.Dump(false).ToString(false))})
 }
 
 func parseCatch(obj Object, ctx *ParseContext) *CatchExpr {
