@@ -10,9 +10,27 @@ Note that **gostd** is still very much a "work in progress". It does not convert
 
 ## Recent Design Changes
 
-### 2021-03-23
+### 2021-03-24
 
-`[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). More like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
+`...` arguments are now supported for normal functions (not methods nor receivers just yet), unless the underlying type is any other type Joker decides to pass by reference (currently these are all non-empty `struct{}` types; as a result, `reflect.Append()` is unsupported). E.g.:
+
+```
+user=> (go.std.fmt/Println (go.std.net/IPv4 1 2 3 4) (go.std.net/IPv4Mask 255 255 255 127))
+1.2.3.4 ffffff7f
+[17 nil]
+user=>
+```
+
+`^GoObject` arguments are extended to support many native Joker types via their underlying (`Native`) types. E.g.:
+
+```
+user=> (go.std.fmt/Println 1 2 3 4)
+1 2 3 4
+[8 nil]
+user=>
+```
+
+`[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). There are more conversions like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
 
 Got `chan` and (empty) `struct{}` types working at a rudimentary level.
 

@@ -47,6 +47,9 @@ func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType,
 		goTypeDoc = "..." + goTypeDoc
 		cl2golParam += "..."
 		newResVar += "..."
+		if ti.IsPassedByAddress() {
+			goType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goType)
+		}
 	}
 
 	return

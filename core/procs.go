@@ -57,14 +57,22 @@ func ExtractObject(args []Object, index int) Object {
 	return args[index]
 }
 
+func EnsureArgIsNative(args []Object, index int) interface{} {
+	obj := args[index]
+	if c, yes := obj.(Native); yes {
+		return c.Native()
+	}
+	panic(FailArg(obj, "GoObject or concrete Type", index))
+}
+
 func ExtractGoObject(args []Object, index int) interface{} {
-	return EnsureArgIsGoObject(args, index).O
+	return EnsureArgIsNative(args, index)
 }
 
 func ExtractGoObjects(args []Object, index int) []interface{} {
 	vec := make([]interface{}, 0)
 	for i := index; i < len(args); i++ {
-		vec = append(vec, EnsureArgIsGoObject(args, i).O)
+		vec = append(vec, EnsureArgIsNative(args, i))
 	}
 	return vec
 }
