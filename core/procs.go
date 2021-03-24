@@ -61,6 +61,14 @@ func ExtractGoObject(args []Object, index int) interface{} {
 	return EnsureArgIsGoObject(args, index).O
 }
 
+func ExtractGoObjects(args []Object, index int) []interface{} {
+	vec := make([]interface{}, 0)
+	for i := index; i < len(args); i++ {
+		vec = append(vec, EnsureArgIsGoObject(args, i).O)
+	}
+	return vec
+}
+
 func ExtractString(args []Object, index int) string {
 	return EnsureArgIsString(args, index).S
 }
@@ -83,6 +91,14 @@ func ExtractStrings(args []Object, index int) []string {
 
 func ExtractInt(args []Object, index int) int {
 	return EnsureArgIsInt(args, index).I
+}
+
+func ExtractInts(args []Object, index int) []int {
+	vec := make([]int, 0)
+	for i := index; i < len(args); i++ {
+		vec = append(vec, EnsureArgIsInt(args, i).I)
+	}
+	return vec
 }
 
 func ExtractInteger(args []Object, index int) int {

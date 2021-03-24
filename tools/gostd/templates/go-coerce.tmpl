@@ -15,6 +15,14 @@ func {{.ExtractApiName}}(args []Object, index int) {{.PtrTo}}{{.TypeName}} {
 	panic(RT.NewArgTypeError(index, a, "GoObject[{{.TypeAsString}}]"))
 }
 
+func {{.ExtractApiName}}_s(args []Object, index int) []{{.PtrTo}}{{.TypeName}} {
+	vec := make([]{{.PtrTo}}{{.TypeName}}, 0)
+	for i := index; i < len(args); i++ {
+		vec = append(vec, {{.ExtractApiName}}(args, i))
+	}
+	return vec
+}
+
 func {{.FieldAsApiName}}(o Map, k string) {{.PtrTo}}{{.TypeName}} {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok || v.Equals(NIL) {
