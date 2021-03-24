@@ -55,6 +55,8 @@ Types defined (recursively) in terms of builtin types are now pass-by-value (and
 
 Note that constructors for pass-by-reference types return reference types. E.g. `(new Foo ...)` returns `refToFoo`. Assuming the Go code defines methods on `*Foo`, they should work on the result; else, one should be able to dereference and then invoke them, as in `(Go (deref my-foo) :SomeMethod ...)`.
 
+Though some namespaces redefine (shadow) built-in types such as `String` and `Error`, `(catch <type> ...)` now first checks *type* to see whether it is a symbol that names one of the built-in types (and does not specify a namespace). If so, that type is used, rather than an error resulting.
+
 ### 2021-03-07
 
 The `:gostd` reader conditional has been introduced, primarily to allow `docs/generate-docs.joke` to work on any version of Joker. E.g. `#?(:gostd ...)` will process the `...` only if run by a (recent version of) this **gostd** fork of Joker. It's unlikely to have the same name by the time this fork gains some sort of official status (well beyond proof-of-concept).
@@ -229,14 +231,14 @@ user=> (type h)
 GoObject
 user=> (GoTypeOf h)
 go.std.html.template/HTML
-user=> (def le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"]))
+user=> (def le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"}))
 #'user/le
 user=> le
 hey there you: silly
 user=> (type le)
 GoObject
 user=> (GoTypeOf le)
-*go.std.os/LinkError
+go.std.os/refToLinkError
 user=> (goobject? le)
 true
 user=> (goobject? "foo")
@@ -400,10 +402,10 @@ user=> (Go im :Size)
 user=> (Go ip :Equal ip)
 true
 user=> (Go ip :Equal im)
-<joker.core>:4458:3: Eval error: Argument 0 passed to (_net.IP)Equal() should be type GoObject[go.std.net/IP], but is GoObject[net.IPMask]
+<joker.core>:4609:3: Eval error: Arg[0] (_v_x) of (net.IP)Equal() must have type GoObject[net.IP], got GoObject[net.IPMask]
 Stacktrace:
-  global <repl>:20:1
-  core/Go <joker.core>:4458:3
+  global <repl>:4:1
+  core/Go <joker.core>:4609:3
 user=>
 ```
 
@@ -417,7 +419,7 @@ Also note that Clojure's `.foo` form and its `.` special operator are not (yet?)
 
 Multiple return values are converted to a (Clojure) vector of the arguments, each treated as its own return value as far as this section of the document is concerned.
 
-Types are returned as `GoObject` wrappers, and numbers are returned as `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
+Most package-defined types are returned as `GoObject` wrappers, while builtin types are returned as `String`, `Int`, `BigInt`, `Double`, or whatever is best suited to handle the range of possible return values.
 
 Returned `GoObject` instances can:
 * Be ignored (they'll presumably be garbage-collected at some point)
@@ -487,10 +489,10 @@ user=> (var-set v "golly")
 user=> (str le)
 "hi golly you: silly"
 user=> (var-set Stdout "whoa")
-<joker.core>:4517:3: Eval error: Cannot assign a string to a *os.File
+<joker.core>:1364:24: Eval error: Cannot assign a string to a *os.File
 Stacktrace:
-  global <repl>:3:1
-  core/Go <joker.core>:4517:3
+  global <repl>:7:1
+  core/var-set <joker.core>:1364:24
 user=>
 ```
 
