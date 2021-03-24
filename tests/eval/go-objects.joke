@@ -118,5 +118,8 @@
   ;; (is (not (go.std.sort/IntsAreSorted [1 2 4 3]))))
   )
 
+(deftest simple-errno
+  (is (= (type (new go.std.syscall/Errno 3)) GoObject)))
+
 (deftest do-not-crash-joker
   (is (= (try (Go (new go.std.os/File {}) :Write "hi there") (catch Error e "ok")) "ok")))

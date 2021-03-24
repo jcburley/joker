@@ -15,7 +15,7 @@ func maybeNil(expr, captureName string) string {
 func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
 	ti := TypeInfoForExpr(e)
 	if ti.AsClojureObject() == "" {
-		out = fmt.Sprintf("MakeGoObject(%s)", captureName)
+		out = fmt.Sprintf("MakeGoObjectIfNeeded(%s)", captureName)
 		cl = "GoObject"
 	} else {
 		out = "Make" + fmt.Sprintf(ti.AsClojureObject(), captureName, "")

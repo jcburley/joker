@@ -146,7 +146,7 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 		BaseNameDoc:       ts.Name.Name,
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: name,
-		AsClojureObject:   "GoObject(%s%s)",
+		AsClojureObject:   "GoObjectIfNeeded(%s%s)",
 	}
 
 	jti.register()

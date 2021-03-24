@@ -429,7 +429,7 @@ Returned `GoObject` instances can:
 * Be provided as members in a newly constructed `GoObject` instance (of the same or, more typically, some other, type)
 * Have receivers/methods, defined on them, invoked via the `Go` function
 
-Built-in type instances are converted directly to appropriate Joker (Clojure) types. For example, a Go API that returns `uint64` will be converted to a `Number` so as to ensure the full range of potential values is supported:
+Builtin type instances are converted directly to appropriate Joker (Clojure) types. For example, a Go API that returns `uint64` will be converted to a `Number` so as to ensure the full range of potential values is supported:
 
 
 ```
@@ -460,6 +460,8 @@ user=> (r/Uint64)
 15617289313243222146N
 user=>
 ```
+
+Note that returned objects that are considered (by Go) to be `error` or `string` types, but are not the builtin forms of their types (for example, they're actually defined types or non-predeclared undefined types), are wrapped in `GoObject` as usual so that type-based actions (such as invoking receivers) work on them.
 
 ### Referencing a Member of a GoObject
 

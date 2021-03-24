@@ -1307,6 +1307,10 @@ func MakeGoObject(o interface{}) GoObject {
 	return GoObject{O: o}
 }
 
+func isBuiltinError(o interface{}) bool {
+	return reflect.TypeOf(o).String() == "*errors.errorString"
+}
+
 // The (partial) reverse of this is (Go <obj> :<>).
 func MakeGoObjectIfNeeded(o interface{}) Object {
 	switch v := o.(type) {
@@ -1335,11 +1339,15 @@ func MakeGoObjectIfNeeded(o interface{}) Object {
 	case float64:
 		return MakeDouble(v)
 	case string:
-		return MakeString(v)
+		if reflect.TypeOf(o).Kind() == reflect.String {
+			return MakeString(v)
+		} // Else don't convert something merely because it's Stringable
 	case []string:
 		return MakeStringVector(v)
 	case error:
-		return MakeError(v) // TODO: Joker should probably have a concrete Error type instead of converting immediately to String
+		if isBuiltinError(o) {
+			return MakeError(v) // TODO: Joker should probably have a concrete Error type instead of converting immediately to String
+		} // Else don't convert something merely because it's Errorable
 	case time.Time:
 		return MakeTime(v)
 	case bool:
