@@ -47,6 +47,15 @@ user=>
 
 `[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). There are more conversions like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
 
+A `Vector` or `Seq` may be provided in lieu of a `String` (this might be too general!). E.g.:
+
+```
+user=> (go.std.fmt/Printf [65 66 67 10])
+ABC
+[4 nil]
+user=>
+```
+
 Got `chan` and (empty) `struct{}` types working at a rudimentary level.
 
 Receivers that have no return values are now implemented; their Joker wrappers return `NIL`, just as for regular functions and methods.
@@ -592,6 +601,22 @@ user=>
 
 Among things to do to "productize" this:
 
+* Support the `.` (and maybe `..`) special forms, replacing (or at least superseding) the current `(Go <obj> <method> <args>...)` approach
+* Support explicit conversion (e.g. via constructors) of `Vector`, `Seq`, and such to `[]<type>` (and *vice versa*), though to `String` is already implemented
+* Avoid generating unused code (`ReceiverArg_ns_*`, etc) to reduce executable size
+* Fully evaluate all constants
+* Support `func()` types (somehow)
+* Support ad-hoc `map` types
+* Support ad-hoc `struct{...}` types
+* Create a `go.std.builtin` space with useful functions (not exported in the usual sense, but built in to the compiler) from the `builtin` package
+* Automagically support all ad-hoc types, such as `[64]byte`, that appear in package source code, including "mashups" like `map[foo.TypeA][bar.TypeB]`, which can't really belong to one namespace or the other
+* Support `(Type. ...)` as in `(new Type ...)`
+* Support `(.Foo bar)` as in `(. Foo bar)`, `(.-Foo bar)`, etc
+* Support `deftype` and the like
+* Autogenerate Clojure-like APIs *a la* how they tend to be hand-written for Joker, so (for example) a low-level API returning `(string, error)` would be further wrapped by one, likely named with a lowercase initial letter, that returns merely `String` and panics if `error` came back non-`nil`
+* Support wrapping arbitrary 3rd-party packages
+* Support (perhaps via autogeneration) more-complicated types built on builtins, such as `[][]byte`, in constructors
+* Support vectors (instead of only maps with keys) in constructors
 * MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
 * Improve docstrings for constructors (show and document the members)
 * Clean up and document the (mostly **gostd**) code better

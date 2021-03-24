@@ -102,7 +102,34 @@ func ReceiverArgAsGoObjects(name, rcvr string, args *ArraySeq, n int) []interfac
 }
 
 func ExtractString(args []Object, index int) string {
-	return EnsureArgIsString(args, index).S
+	arg := args[index]
+	var s Seq
+	switch obj := arg.(type) {
+	case String:
+		return obj.S
+	case *Vector:
+		s = obj.Seq()
+	case Seq:
+	default:
+		panic(FailArg(obj, "String", index))
+	}
+	res := ""
+	for ; !s.IsEmpty(); s = s.Rest() {
+		elObj := s.First()
+		if elNative, ok := elObj.(Native); ok {
+			switch el := elNative.Native().(type) {
+			case string:
+				res += el
+			case rune:
+				res += string(el)
+			case int:
+				res += string(el)
+			default:
+				panic(FailObject(elObj, "Vector with String, Char, or Int elements", ""))
+			}
+		}
+	}
+	return res
 }
 
 func ExtractKeyword(args []Object, index int) string {
@@ -123,7 +150,7 @@ func MaybeIsString(o Object) (string, bool) {
 func ExtractStrings(args []Object, index int) []string {
 	strs := make([]string, 0)
 	for i := index; i < len(args); i++ {
-		strs = append(strs, EnsureArgIsString(args, i).S)
+		strs = append(strs, ExtractString(args, i))
 	}
 	return strs
 }
