@@ -10,6 +10,11 @@ import (
 )
 
 func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
+	actualType, isEllipsis := e.(*Ellipsis)
+	if isEllipsis {
+		e = actualType.Elt
+	}
+
 	ti := TypeInfoForExpr(e)
 
 	pkgBaseName := fn.AddToImports(ti)
@@ -35,7 +40,7 @@ func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType,
 	}
 
 	newResVar = paramName
-	if _, isEllipsis := e.(*Ellipsis); isEllipsis {
+	if isEllipsis {
 		clType = "& " + clType
 		clTypeDoc = "& " + clTypeDoc
 		goType = "..." + goType
