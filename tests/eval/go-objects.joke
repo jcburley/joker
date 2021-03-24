@@ -119,4 +119,4 @@
   )
 
 (deftest do-not-crash-joker
-  (= (try (Go (new go.std.os/File {}) :Write "hi there") (catch Error e "ok") (finally "then"))) "ok then")
+  (is (= (try (Go (new go.std.os/File {}) :Write "hi there") (catch Error e "ok")) "ok")))
