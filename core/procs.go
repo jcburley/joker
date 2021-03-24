@@ -835,7 +835,7 @@ func goGetTypeInfo(ty *GoType, mem string) Object {
 	return mi.meta
 }
 
-var proc_Go = func(args []Object) Object {
+var proc_Go = func(args []Object) (obj Object) {
 	CheckArity(args, 3, 3)
 	var goType *GoType
 	if ty, ok := args[0].(*GoType); ok {
@@ -874,6 +874,12 @@ var proc_Go = func(args []Object) Object {
 	f := g.Members[member]
 	if f != nil {
 		// Currently only receivers/methods are listed in Members[].
+		defer func() {
+			if r := recover(); r != nil {
+				obj = RT.NewError(fmt.Sprintf("method/receiver invocation panic: %s", r))
+				return
+			}
+		}()
 		return (f.Value.(*GoReceiver).R)(o, args[2])
 	}
 	v := reflect.ValueOf(o.O)
