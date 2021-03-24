@@ -49,10 +49,10 @@ func CheckReceiverArity(rcvr string, args Object, min, max int) *ArraySeq {
 			return nil
 		}
 	case *ArraySeq:
-		if max > 0 {
+		n = SeqCount(s)
+		if n >= min && n <= max {
 			return s
 		}
-		n = SeqCount(s)
 	default:
 	}
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, rcvr, RangeString(min, max))))
