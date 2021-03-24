@@ -58,17 +58,6 @@ func CheckReceiverArity(rcvr string, args Object, min, max int) *ArraySeq {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, rcvr, RangeString(min, max))))
 }
 
-// TODO: Needed? (Not currently used.)
-func CheckGoNth(rcvr, t, name string, args *ArraySeq, n int) GoObject {
-	a := SeqNth(args, n)
-	res, ok := a.(GoObject)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type net.GoObject[%s], but is %s",
-			n, name, rcvr, t, a.TypeToString(false))))
-	}
-	return res
-}
-
 func ObjectAsBoolean(obj Object, pattern string) bool {
 	return EnsureObjectIsBoolean(obj, pattern).B
 }
