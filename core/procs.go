@@ -876,7 +876,12 @@ var proc_Go = func(args []Object) Object {
 		// Currently only receivers/methods are listed in Members[].
 		defer func() {
 			if r := recover(); r != nil {
-				panic(RT.NewError(fmt.Sprintf("method/receiver invocation panic: %s", r)))
+				switch r.(type) {
+				case Error:
+					panic(r)
+				default:
+					panic(RT.NewError(fmt.Sprintf("method/receiver invocation panic: %s", r)))
+				}
 			}
 		}()
 		return (f.Value.(*GoReceiver).R)(o, args[2])
