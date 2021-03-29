@@ -523,9 +523,6 @@ func determineType(name string, valType, val Expr) (cl, gl string) {
 		return
 	}
 	if ti == nil || ti.ArgClojureArgType() == "" || ti.PromoteType() == "" {
-		if typeName == "Errno" { // Special-case syscall/zerrors_*.go
-			return "Number", "uint64(%s)"
-		}
 		return typeName, innerPromotion
 	}
 	return ti.ArgClojureArgType(), fmt.Sprintf(ti.PromoteType(), innerPromotion)
