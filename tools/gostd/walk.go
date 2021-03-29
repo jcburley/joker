@@ -489,15 +489,22 @@ func determineConstExprType(val Expr) (typeName string) {
 // Returns the Clojure type and a constant expression of that type.
 // E.g. "GoObject" and "net.Flags(1)" (which becomes net.FlagsUp).
 func useTypeCheckedInfo(typeAndValue types.TypeAndValue) (cl, gl string) {
-	typ, val := typeAndValue.Type, typeAndValue.Value
-	return typ.String(), val.ExactString()
+	typ, val := types.Default(typeAndValue.Type), typeAndValue.Value
+	typeName := typ.String()
+	ti := TypeInfoForGoName(typeName)
+	if typ.Underlying() != nil && typ.Underlying() != typ {
+		cl, gl = "GoObject", fmt.Sprintf("%s(%%s)", path.Base(typeName))
+	} else {
+		cl, gl = ti.ArgClojureArgType(), ti.PromoteType()
+	}
+	return cl, fmt.Sprintf(gl, val.ExactString())
 }
 
 func determineType(constName string, valType, val Expr) (cl, gl string) {
-	if typeAndValue, found := typeCheckerInfo.Types[val]; found && false {
+	if typeAndValue, found := typeCheckerInfo.Types[val]; found {
 		return useTypeCheckedInfo(typeAndValue)
 	} else {
-		//		fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s; guessing it.\n", constName)
+		fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s; guessing it.\n", constName)
 	}
 
 	switch constName {
