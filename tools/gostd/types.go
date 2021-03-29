@@ -30,12 +30,12 @@ type TypeInfo interface {
 	ClojureWho() string
 	RequiredImports() *imports.Imports
 	GoName() string
-	GoEffectiveName() string // Substitutes what actually works in generated Go code (inteface{} instead of unsafe.Arbitrary)
+	GoEffectiveName() string // Substitutes what actually works in generated Go code (interface{} instead of unsafe.Arbitrary)
 	GoNameDoc(e Expr) string
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
-	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (inteface{} instead of Arbitrary if in unsafe pkg)
+	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
