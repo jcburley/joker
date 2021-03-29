@@ -23,6 +23,58 @@ Totals: functions=4067 generated=3897 (95.82%)
 
 ## Recent Design Changes
 
+### 2021-03-29
+
+Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants):
+
+```
+user=> go.std.net/FlagUp
+up
+user=>
+```
+
+Constants and variables whose names match Joker type names are no longer renamed away. Use explicit namespace resolution to specify them; or, if referring a namespace that shadows a Joker type (which is not recommended), quote the type when using it as a tag. E.g.:
+
+```
+user=> Int
+Int
+user=> (type Int)
+Type
+user=> go.std.go.constant/Int
+3
+user=> (use 'go.std.go.constant)
+nil
+user=> Int
+3
+user=> (type Int)
+GoObject
+user=> (defn ^Int foo [])
+#'user/foo
+user=> (meta (var foo))
+{:line 12, :column 1, :file "<repl>", :ns user, :name foo, :tag 3, :arglists ([])}
+user=> (defn ^"Int" foo [])
+#'user/foo
+user=> (meta (var foo))
+{:line 14, :column 1, :file "<repl>", :ns user, :name foo, :tag "Int", :arglists ([])}
+user=>
+```
+
+Note that the first argument to `catch` in a `try` is known to specify a type, so the builtin Joker types will be checked first, as will likely be desirable (since `catch` does not support `GoType`s). E.g.:
+
+```
+user=> (use 'go.std.go.scanner)
+nil
+user=> Error
+go.std.go.scanner/Error
+user=> (type Error)
+GoType
+user=> (try true (catch Error e))
+true
+user=> (try true (catch go.std.go.scanner/Error e))
+<repl>:26:18: Parse error: Unable to resolve type: go.std.go.scanner/Error, got: {:type :var-ref, :var #'go.std.go.scanner/Error}
+user=>
+```
+
 ### 2021-03-24
 
 tl;dr: As of now, this fork is verging on usefulness!
