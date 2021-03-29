@@ -622,11 +622,6 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	switch name.Name {
-	case "Int", "String", "Boolean":
-		clName += "-renamed" // TODO: is there a better solution possible?
-	}
-
 	valTypeString, promoteType := determineType(name.Name, valType, val)
 	if WalkDump || (godb.Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
 		fmt.Printf("Constant %s at %s:\n", name, godb.WhereAt(name.Pos()))
@@ -675,11 +670,6 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	if c, ok := GoVariables[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: variable %s found at %s and now again at %s\n",
 			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
-	}
-
-	switch name.Name {
-	case "Int", "String", "Boolean":
-		clName += "-renamed" // TODO: is there a better solution possible?
 	}
 
 	if WalkDump {
