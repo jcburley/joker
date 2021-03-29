@@ -1033,6 +1033,27 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
 var typeCheckerConfig *types.Config
 var typeCheckerInfo *types.Info
 
+type importerFunc func(path string) (*types.Package, error)
+
+func (f importerFunc) Import(path string) (*types.Package, error) {
+	return f(path)
+}
+
+func myImporter(path string) (*types.Package, error) {
+	if path == "unsafe" {
+		return types.Unsafe, nil
+	}
+	pkg := godb.GetPackageInfo(path)
+	if pkg == nil {
+		return nil, nil // TODO: Something better when package not found?
+	}
+	files := []*File{}
+	for _, f := range pkg.Files {
+		files = append(files, f)
+	}
+	return typeCheckerConfig.Check(path, godb.Fset, files, typeCheckerInfo)
+}
+
 func WalkAllDirs() (error, paths.NativePath) {
 	var phases = []phaseFunc{
 		phaseTypeDefs,
@@ -1052,12 +1073,19 @@ func WalkAllDirs() (error, paths.NativePath) {
 		}
 	}
 
+	importer := importerFunc(myImporter)
+
 	typeCheckerConfig = &types.Config{
 		IgnoreFuncBodies: true,
+		Importer:         importer,
 	}
 	typeCheckerInfo = &types.Info{
 		Types: map[Expr]types.TypeAndValue{},
 		Defs:  map[*Ident]types.Object{},
+	}
+
+	if _, err := myImporter("net"); err != nil {
+		fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", "net", err)
 	}
 
 	for _, wp := range godb.PackagesAsDiscovered {

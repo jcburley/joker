@@ -203,6 +203,13 @@ func IsAvailable(p paths.UnixPath) (available bool) {
 	return
 }
 
+func GetPackageInfo(pkg string) *Package {
+	if p, found := packagesByUnixPath[pkg]; found {
+		return p.Pkg
+	}
+	return nil
+}
+
 func GoFileForPos(p token.Pos) *GoFile {
 	fullPathUnix := paths.Unix(Fset.Position(p).Filename)
 
