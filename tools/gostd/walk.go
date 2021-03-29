@@ -10,7 +10,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/build"
-	//	"go/importer"
+	"go/importer"
 	"go/parser"
 	"go/token"
 	"go/types"
@@ -612,7 +612,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	fullName := pkg + "." + name.Name
 
 	if typeAndValue, found := typeCheckerInfo.Types[val]; found {
-		fmt.Printf("walk.go/processConstantSpec: %s\n", typeAndValue.Value)
+		fmt.Printf("walk.go/processConstantSpec: %s.%s == %s (type %s)\n", pkg, name, typeAndValue.Value, typeAndValue.Type)
 	}
 
 	if c, ok := GoConstants[fullName]; ok {
@@ -1073,11 +1073,12 @@ func WalkAllDirs() (error, paths.NativePath) {
 		}
 	}
 
-	importer := importerFunc(myImporter)
+	//	importer := importerFunc(myImporter)
 
 	typeCheckerConfig = &types.Config{
 		IgnoreFuncBodies: true,
-		Importer:         importer,
+		FakeImportC:      true,
+		Importer:         importer.Default(),
 	}
 	typeCheckerInfo = &types.Info{
 		Types: map[Expr]types.TypeAndValue{},
