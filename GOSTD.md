@@ -25,7 +25,7 @@ Totals: functions=4067 generated=3897 (95.82%)
 
 ### 2021-03-29
 
-Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants):
+Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants), instead of just `1N` being printed:
 
 ```
 user=> go.std.net/FlagUp
