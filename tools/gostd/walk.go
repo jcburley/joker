@@ -501,25 +501,28 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 	// .ExactString() uses strconv.Quote() only for
 	// constant.String types; the other types are not surrounded
 	// by double quotes.
-	gl = val.ExactString()
 
 	var valPat string
-	if val.Kind() == constant.String {
+	switch val.Kind() {
+	case constant.String:
+		gl = val.ExactString()
 		valPat = "%s"
-	} else {
+	case constant.Float:
+		f, _ := constant.Float64Val(val)
+		gl = fmt.Sprintf("%g", f)
+		valPat = "%q"
+	default:
+		gl = val.String()
 		valPat = "%q"
 	}
 
-	//	var outerPat string
 	typeName := typ.String()
 	ti := TypeInfoForGoName(typeName)
 	if typ.Underlying() != nil && typ.Underlying() != typ {
 		cl = "GoObject"
-		//		outerPat = "%q" // Must re-quote string value
 		valPat = fmt.Sprintf("%s(%%s)", path.Base(typeName))
 	} else {
 		cl = ti.ArgClojureArgType()
-		//		outerPat = valPat
 		valPat = ti.PromoteType()
 	}
 
@@ -650,7 +653,7 @@ func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl s
 func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
-			// fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
+			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
 		}
 	}()
 
