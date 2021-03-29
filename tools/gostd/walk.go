@@ -611,8 +611,10 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
-	if typeAndValue, found := typeCheckerInfo.Types[val]; found {
-		fmt.Printf("walk.go/processConstantSpec: %s.%s == %s (type %s)\n", pkg, name, typeAndValue.Value, typeAndValue.Type)
+	if /*typeAndValue*/ _, found := typeCheckerInfo.Types[val]; found {
+		//		fmt.Printf("walk.go/processConstantSpec: %s.%s == %s (type %s)\n", pkg, name, typeAndValue.Value, typeAndValue.Type)
+	} else {
+		fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s.%s\n", pkg, name)
 	}
 
 	if c, ok := GoConstants[fullName]; ok {
@@ -1085,11 +1087,11 @@ func WalkAllDirs() (error, paths.NativePath) {
 		Defs:  map[*Ident]types.Object{},
 	}
 
-	if _, err := myImporter("net"); err != nil {
-		fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", "net", err)
-	}
-
 	for _, wp := range godb.PackagesAsDiscovered {
+		pkg := wp.Dir.String()
+		if _, err := myImporter(pkg); err != nil {
+			fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", pkg, err)
+		}
 		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
 	}
 
