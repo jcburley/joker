@@ -488,20 +488,42 @@ func determineConstExprType(val Expr) (typeName string) {
 
 // Returns the Clojure type and a constant expression of that type.
 // E.g. "GoObject" and "net.Flags(1)" (which becomes net.FlagsUp).
+// The returned <gl> argument must be returned inside double
+// quotes. If it represents an unwrapped (builtin) string, it needs to
+// be quoted "%q"-style, which .ExactString() does for strings.  If
+// wrapped by a type, the outer expression must still have double
+// quotes, but the inner would need them only for a string.
 func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 	c := constObj.(*types.Const)
 	typ, val := types.Default(c.Type()), c.Val()
+
+	// Though documented as returning a "quoted" string,
+	// .ExactString() uses strconv.Quote() only for
+	// constant.String types; the other types are not surrounded
+	// by double quotes.
+	gl = val.ExactString()
+
+	var valPat string
+	if val.Kind() == constant.String {
+		valPat = "%s"
+	} else {
+		valPat = "%q"
+	}
+
+	var outerPat string
 	typeName := typ.String()
 	ti := TypeInfoForGoName(typeName)
 	if typ.Underlying() != nil && typ.Underlying() != typ {
-		cl, gl = "GoObject", fmt.Sprintf("%s(%%s)", path.Base(typeName))
+		cl = "GoObject"
+		outerPat = "%q" // Must re-quote string value
+		valPat = fmt.Sprintf("%s(%%s)", path.Base(typeName))
 	} else {
-		cl, gl = ti.ArgClojureArgType(), ti.PromoteType()
+		cl = ti.ArgClojureArgType()
+		outerPat = valPat
+		valPat = ti.PromoteType()
 	}
-	if val.Kind() == constant.String {
-		return cl, fmt.Sprintf(gl, val.ExactString())
-	}
-	return cl, strconv.Quote(fmt.Sprintf(gl, val.ExactString()))
+
+	return cl, fmt.Sprintf(outerPat, fmt.Sprintf(valPat, gl))
 }
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
