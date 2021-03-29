@@ -10,7 +10,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/build"
-	//	"go/constant"
+	"go/constant"
 	"go/importer"
 	"go/parser"
 	"go/token"
@@ -488,8 +488,9 @@ func determineConstExprType(val Expr) (typeName string) {
 
 // Returns the Clojure type and a constant expression of that type.
 // E.g. "GoObject" and "net.Flags(1)" (which becomes net.FlagsUp).
-func useTypeCheckedInfo(typeAndValue types.TypeAndValue) (cl, gl string) {
-	typ, val := types.Default(typeAndValue.Type), typeAndValue.Value
+func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
+	c := constObj.(*types.Const)
+	typ, val := types.Default(c.Type()), c.Val()
 	typeName := typ.String()
 	ti := TypeInfoForGoName(typeName)
 	if typ.Underlying() != nil && typ.Underlying() != typ {
@@ -497,15 +498,19 @@ func useTypeCheckedInfo(typeAndValue types.TypeAndValue) (cl, gl string) {
 	} else {
 		cl, gl = ti.ArgClojureArgType(), ti.PromoteType()
 	}
-	return cl, fmt.Sprintf(gl, val.ExactString())
+	if val.Kind() == constant.String {
+		return cl, fmt.Sprintf(gl, val.ExactString())
+	}
+	return cl, strconv.Quote(fmt.Sprintf(gl, val.ExactString()))
 }
 
-func determineType(constName string, valType, val Expr) (cl, gl string) {
-	if typeAndValue, found := typeCheckerInfo.Types[val]; found {
-		return useTypeCheckedInfo(typeAndValue)
-	} else {
-		fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s; guessing it.\n", constName)
+func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
+	if constObj, found := typeCheckerInfo.Defs[name]; found {
+		return useTypeCheckedInfo(constObj)
 	}
+
+	constName := pkgBaseName + "." + name.Name
+	fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s; guessing it.\n", constName)
 
 	switch constName {
 	case "InvalidHandle": // TODO: uintptr on Windows; not found elsewhere
@@ -546,10 +551,10 @@ func determineType(constName string, valType, val Expr) (cl, gl string) {
 		return
 	}
 	if ti == nil || ti.ArgClojureArgType() == "" || ti.PromoteType() == "" {
-		return typeName, fmt.Sprintf(innerPromotion, constName)
+		return typeName, strconv.Quote(fmt.Sprintf(innerPromotion, constName))
 
 	}
-	return ti.ArgClojureArgType(), fmt.Sprintf(fmt.Sprintf(ti.PromoteType(), innerPromotion), constName)
+	return ti.ArgClojureArgType(), strconv.Quote(fmt.Sprintf(fmt.Sprintf(ti.PromoteType(), innerPromotion), constName))
 }
 
 // Constants are currently emitted while walking the packages. Unlike with variables, where the types are not needed,
@@ -628,15 +633,14 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	}()
 
 	clName := name.Name
-	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
 	if c, ok := GoConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
-			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
+			fullName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	valTypeString, goCode := determineType(localName, valType, val)
+	valTypeString, goCode := determineType(gf.Package.BaseName, name, valType, val)
 	if WalkDump || (godb.Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
 		fmt.Printf("Constant %s at %s:\n", name, godb.WhereAt(name.Pos()))
 		if valType != nil {
