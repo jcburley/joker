@@ -510,20 +510,20 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 		valPat = "%q"
 	}
 
-	var outerPat string
+	//	var outerPat string
 	typeName := typ.String()
 	ti := TypeInfoForGoName(typeName)
 	if typ.Underlying() != nil && typ.Underlying() != typ {
 		cl = "GoObject"
-		outerPat = "%q" // Must re-quote string value
+		//		outerPat = "%q" // Must re-quote string value
 		valPat = fmt.Sprintf("%s(%%s)", path.Base(typeName))
 	} else {
 		cl = ti.ArgClojureArgType()
-		outerPat = valPat
+		//		outerPat = valPat
 		valPat = ti.PromoteType()
 	}
 
-	return cl, fmt.Sprintf(outerPat, fmt.Sprintf(valPat, gl))
+	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, gl))
 }
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
