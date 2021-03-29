@@ -664,11 +664,6 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	switch name.Name {
-	case "Int", "String", "Boolean":
-		clName += "-renamed" // TODO: is there a better solution possible?
-	}
-
 	if WalkDump {
 		fmt.Printf("Variable %s at %s:\n", name, godb.WhereAt(name.Pos()))
 		if valType != nil {
