@@ -10,8 +10,10 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/build"
+	//	"go/importer"
 	"go/parser"
 	"go/token"
+	"go/types"
 	"math"
 	"os"
 	"path"
@@ -609,6 +611,10 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
 
+	if typeAndValue, found := typeCheckerInfo.Types[val]; found {
+		fmt.Printf("walk.go/processConstantSpec: %s\n", typeAndValue.Value)
+	}
+
 	if c, ok := GoConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
 			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
@@ -928,7 +934,11 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMeRoot st
 	}
 
 	found := false
-	for pkgBaseName, v := range pkgs {
+	for pkgBaseName, pkg := range pkgs {
+		// fmt.Println(pkg.ID, pkg.GoFiles)
+		// info := &types.Info{}
+		// checkedPkg, err := typesConf.Check("hey/what", godb.Fset, pkg.GoFiles, info)
+
 		if pkgBaseName != pathNative.Base() {
 			if godb.Verbose {
 				genutils.AddSortedStdout(fmt.Sprintf("NOTICE: Package %s is defined in %s -- ignored due to name mismatch\n",
@@ -940,7 +950,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMeRoot st
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, importMe, v)
+			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, importMe, pkg)
 			found = true
 		}
 	}
@@ -1020,6 +1030,9 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
 	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot, importMe})
 }
 
+var typeCheckerConfig *types.Config
+var typeCheckerInfo *types.Info
+
 func WalkAllDirs() (error, paths.NativePath) {
 	var phases = []phaseFunc{
 		phaseTypeDefs,
@@ -1037,6 +1050,14 @@ func WalkAllDirs() (error, paths.NativePath) {
 		if err != nil {
 			return err, d.srcDir
 		}
+	}
+
+	typeCheckerConfig = &types.Config{
+		IgnoreFuncBodies: true,
+	}
+	typeCheckerInfo = &types.Info{
+		Types: map[Expr]types.TypeAndValue{},
+		Defs:  map[*Ident]types.Object{},
 	}
 
 	for _, wp := range godb.PackagesAsDiscovered {
