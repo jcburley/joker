@@ -523,35 +523,10 @@ func useTypeCheckedInfo(constObj types.Object, origVal Expr) (cl, gl string) {
 	c := constObj.(*types.Const)
 	typ, val := types.Default(c.Type()), c.Val()
 
-	// Though documented as returning a "quoted" string,
-	// .ExactString() uses strconv.Quote() only for
-	// constant.String types; the other types are not surrounded
-	// by double quotes.
-
-	var valPat string
-	switch val.Kind() {
-	case constant.String:
-		gl = val.ExactString()
-		valPat = "%s"
-	case constant.Float:
-		f, _ := constant.Float64Val(val)
-		gl = fmt.Sprintf("%g", f)
-		valPat = "%q"
-	case constant.Int:
-		f, _ := constant.Int64Val(val)
-		gl = fmt.Sprintf("%d", f)
-		valPat = "%q"
-	default:
-		gl = val.String()
-		valPat = "%q"
-	}
-
-	if lit := isBasicLiteral(origVal); lit != nil {
-		gl = lit.Value
-	}
-
 	typeName := typ.String()
 	ti := TypeInfoForGoName(typeName)
+	var valPat string
+
 	if typ.Underlying() != nil && typ.Underlying() != typ {
 		cl = "GoObject"
 		valPat = fmt.Sprintf("%s(%%s)", refToIdent(typeName, c.Pos(), true))
@@ -560,7 +535,39 @@ func useTypeCheckedInfo(constObj types.Object, origVal Expr) (cl, gl string) {
 		valPat = ti.PromoteType()
 	}
 
-	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, gl))
+	// Though documented as returning a "quoted" string,
+	// .ExactString() uses strconv.Quote() only for
+	// constant.String types; the other types are not surrounded
+	// by double quotes.
+
+	numPat := "%s"
+	switch val.Kind() {
+	case constant.String:
+		gl = val.ExactString()
+	case constant.Float:
+		f, _ := constant.Float64Val(val)
+		gl = fmt.Sprintf("%g", f)
+	case constant.Int:
+		f, ok := constant.Int64Val(val)
+		gl = fmt.Sprintf("%d", f)
+		if !ok {
+			cl = "Number"
+			u, _ := constant.Uint64Val(val)
+			gl = fmt.Sprintf("%d", u)
+			numPat = "uint64(%s)"
+		}
+	default:
+		gl = val.String()
+	}
+
+	if lit := isBasicLiteral(origVal); lit != nil {
+		// After determining what type is suitable based on
+		// the value, substitute the original literal if
+		// available.
+		gl = lit.Value
+	}
+
+	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, fmt.Sprintf(numPat, gl)))
 }
 
 func isBasicLiteral(e Expr) *BasicLit {
