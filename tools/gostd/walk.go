@@ -155,6 +155,32 @@ func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
 	}
 }
 
+// Given an (possibly fully qualified) identifier name and a position
+// pos, return a suitable (Go) reference to that identifier with the
+// package qualifier shortened to just the base and that maps to the
+// package (which might well be added to appropriate Imports for the
+// package at the position).
+func refToIdent(ident string, pos token.Pos, autoGen bool) string {
+	ix := LastIndex(ident, ".")
+	if ix < 0 {
+		return ident
+	}
+	pkgName := ident[0:ix]
+
+	goPkgForPos := godb.GoPackageForPos(pos)
+	if pi, found := PackagesInfo[goPkgForPos]; found {
+		var imp *imports.Imports
+		if autoGen {
+			imp = pi.ImportsAutoGen
+		} else {
+			imp = pi.ImportsNative
+		}
+		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), "", "", true, pos)
+		return myImportId + "." + ident[ix+1:]
+	}
+	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
+}
+
 /* Go apparently doesn't support/allow 'interface{}' as the value (or
 /* key) of a map such that any arbitrary type can be substituted at
 /* run time, so there are several of these nearly-identical functions
@@ -531,32 +557,6 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 	}
 
 	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, gl))
-}
-
-// Given an (possibly fully qualified) identifier name and a position
-// pos, return a suitable (Go) reference to that identifier with the
-// package qualifier shortened to just the base and that maps to the
-// package (which might well be added to appropriate Imports for the
-// package at the position).
-func refToIdent(ident string, pos token.Pos, autoGen bool) string {
-	ix := LastIndex(ident, ".")
-	if ix < 0 {
-		return ident
-	}
-	pkgName := ident[0:ix]
-
-	goPkgForPos := godb.GoPackageForPos(pos)
-	if pi, found := PackagesInfo[goPkgForPos]; found {
-		var imp *imports.Imports
-		if autoGen {
-			imp = pi.ImportsAutoGen
-		} else {
-			imp = pi.ImportsNative
-		}
-		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), "", "", true, pos)
-		return myImportId + "." + ident[ix+1:]
-	}
-	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
 }
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
