@@ -8,16 +8,16 @@ Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joke
 
 Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go, though is now at or greater than 90% coverage in most cases. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker. Further, some key "standalone" functions (such as the `builtin` package's functions) are not yet available.
 
-Current conversion-rate stats on `amd64-linux`:
+Current conversion-rate stats on `amd64-darwin`:
 
 ```
-Totals: functions=4067 generated=3897 (95.82%)
-          non-receivers=1599 (39.32%) generated=1473 (92.12%)
-          receivers=2069 (50.87%) generated=2032 (98.21%)
-          methods=399 (9.81%) generated=392 (98.25%)
-        types=2861
-          constructable=800 ctors=663 (82.88%)
-        constants=4394 generated=4354 (99.09%)
+Totals: functions=4020 generated=3850 (95.77%)
+          non-receivers=1555 (38.68%) generated=1429 (91.90%)
+          receivers=2066 (51.39%) generated=2029 (98.21%)
+          methods=399 (9.93%) generated=392 (98.25%)
+        types=2834
+          constructable=790 ctors=652 (82.53%)
+        constants=4162 generated=4162 (100.00%)
         variables=439 generated=439 (100.00%)
 ```
 
