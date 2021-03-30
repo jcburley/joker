@@ -511,6 +511,10 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 		f, _ := constant.Float64Val(val)
 		gl = fmt.Sprintf("%g", f)
 		valPat = "%q"
+	case constant.Int:
+		f, _ := constant.Int64Val(val)
+		gl = fmt.Sprintf("%d", f)
+		valPat = "%q"
 	default:
 		gl = val.String()
 		valPat = "%q"
