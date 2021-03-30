@@ -519,7 +519,7 @@ func determineConstExprType(val Expr) (typeName string) {
 // be quoted "%q"-style, which .ExactString() does for strings.  If
 // wrapped by a type, the outer expression must still have double
 // quotes, but the inner would need them only for a string.
-func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
+func useTypeCheckedInfo(constObj types.Object, origVal Expr) (cl, gl string) {
 	c := constObj.(*types.Const)
 	typ, val := types.Default(c.Type()), c.Val()
 
@@ -544,6 +544,10 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 	default:
 		gl = val.String()
 		valPat = "%q"
+	}
+
+	if lit := isBasicLiteral(origVal); lit != nil {
+		gl = lit.Value
 	}
 
 	typeName := typ.String()
@@ -573,12 +577,8 @@ func isBasicLiteral(e Expr) *BasicLit {
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
 
-	// if lit := isBasicLiteral(val); lit != nil {
-	// 	fmt.Printf("walk.go/determineType: %q is really just %q\n", name, lit.Value)
-	// }
-
 	if constObj, found := typeCheckerInfo.Defs[name]; found {
-		return useTypeCheckedInfo(constObj)
+		return useTypeCheckedInfo(constObj, val)
 	}
 
 	constName := pkgBaseName + "." + name.Name
