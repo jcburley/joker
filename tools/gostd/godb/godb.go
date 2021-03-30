@@ -203,11 +203,18 @@ func IsAvailable(p paths.UnixPath) (available bool) {
 	return
 }
 
-func GetPackageInfo(pkg string) *Package {
+func GetPackagePackage(pkg string) *Package {
 	if p, found := packagesByUnixPath[pkg]; found {
 		return p.Pkg
 	}
 	return nil
+}
+
+func GetPackageNsRoot(pkg string) string {
+	if p, found := packagesByUnixPath[pkg]; found {
+		return p.NsRoot
+	}
+	return ""
 }
 
 func GoFileForPos(p token.Pos) *GoFile {

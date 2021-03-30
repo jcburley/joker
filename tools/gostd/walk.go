@@ -524,13 +524,39 @@ func useTypeCheckedInfo(constObj types.Object) (cl, gl string) {
 	ti := TypeInfoForGoName(typeName)
 	if typ.Underlying() != nil && typ.Underlying() != typ {
 		cl = "GoObject"
-		valPat = fmt.Sprintf("%s(%%s)", path.Base(typeName))
+		valPat = fmt.Sprintf("%s(%%s)", refToIdent(typeName, c.Pos(), true))
 	} else {
 		cl = ti.ArgClojureArgType()
 		valPat = ti.PromoteType()
 	}
 
 	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, gl))
+}
+
+// Given an (possibly fully qualified) identifier name and a position
+// pos, return a suitable (Go) reference to that identifier with the
+// package qualifier shortened to just the base and that maps to the
+// package (which might well be added to appropriate Imports for the
+// package at the position).
+func refToIdent(ident string, pos token.Pos, autoGen bool) string {
+	ix := LastIndex(ident, ".")
+	if ix < 0 {
+		return ident
+	}
+	pkgName := ident[0:ix]
+
+	goPkgForPos := godb.GoPackageForPos(pos)
+	if pi, found := PackagesInfo[goPkgForPos]; found {
+		var imp *imports.Imports
+		if autoGen {
+			imp = pi.ImportsAutoGen
+		} else {
+			imp = pi.ImportsNative
+		}
+		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), "", "", true, pos)
+		return myImportId + "." + ident[ix+1:]
+	}
+	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
 }
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
@@ -1012,7 +1038,7 @@ func myImporter(path string) (*types.Package, error) {
 	if path == "unsafe" {
 		return types.Unsafe, nil
 	}
-	pkg := godb.GetPackageInfo(path)
+	pkg := godb.GetPackagePackage(path)
 	if pkg == nil {
 		return nil, nil // TODO: Something better when package not found?
 	}
@@ -1041,8 +1067,6 @@ func WalkAllDirs() (error, paths.NativePath) {
 			return err, d.srcDir
 		}
 	}
-
-	//	importer := importerFunc(myImporter)
 
 	typeCheckerConfig = &types.Config{
 		IgnoreFuncBodies: true,
