@@ -322,9 +322,6 @@ func GenConstant(ci *ConstantInfo) {
 
 	PackagesInfo[pkgDirUnix].NonEmpty = true
 
-	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, ci.SourceFile.Package.NsRoot, "", "", true, ci.Name.NamePos)
-	ci.Def = strings.ReplaceAll(ci.Def, "{{myGoImport}}", myGoImport)
-
 	ClojureCode[pkgDirUnix].Constants[ci.Name.Name] = ci
 }
 
