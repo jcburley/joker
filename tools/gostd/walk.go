@@ -573,9 +573,9 @@ func isBasicLiteral(e Expr) *BasicLit {
 
 func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
 
-	if lit := isBasicLiteral(val); lit != nil {
-		fmt.Printf("walk.go/determineType: %q is really just %q\n", name, lit.Value)
-	}
+	// if lit := isBasicLiteral(val); lit != nil {
+	// 	fmt.Printf("walk.go/determineType: %q is really just %q\n", name, lit.Value)
+	// }
 
 	if constObj, found := typeCheckerInfo.Defs[name]; found {
 		return useTypeCheckedInfo(constObj)
