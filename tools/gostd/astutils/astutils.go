@@ -73,6 +73,18 @@ func IsExportedType(f *Expr) bool {
 	}
 }
 
+func AnyNamesExported(names []*Ident) bool {
+	if names == nil {
+		return false
+	}
+	for _, n := range names {
+		if IsExported(n.Name) {
+			return true
+		}
+	}
+	return false
+}
+
 var TypeCheckerInfo *types.Info
 
 func IntExprToString(e Expr) (real, doc string) {
