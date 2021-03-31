@@ -5,7 +5,6 @@ package astutils
 import (
 	"fmt"
 	. "go/ast"
-	"go/token"
 	"go/types"
 	"strconv"
 	"strings"
@@ -125,5 +124,3 @@ func ExprToString(e Expr) string {
 	}
 	return fmt.Sprintf("ABEND334(asutils.go/ExprToString: Cannot find expression %q)", e)
 }
-
-var WhereAt func(p token.Pos) string
