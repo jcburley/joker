@@ -1145,14 +1145,28 @@ var procCompare = func(args []Object) Object {
 }
 
 var procInt = func(args []Object) Object {
-	switch obj := args[0].(type) {
+	obj := args[0]
+	switch obj := obj.(type) {
 	case Char:
 		return Int{I: int(obj.Ch)}
 	case Number:
 		return obj.Int()
-	default:
-		panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to Int", obj.ToString(true), obj.GetType().ToString(false))))
+	case Native:
+		// This is a kludge to get (int go.std.net/FlagUp) working, but
+		// TODO: Implement Number interface for all types wrapping numbers.
+		// That was, (num go.std.net/FlagUp) et al will also work.
+		// Once that's taken care of, this whole case should probably be removed.
+		ref := reflect.ValueOf(obj.Native())
+		switch ref.Kind() {
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			return MakeInt(int(ref.Int()))
+		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+			return MakeInt(int(ref.Uint()))
+		case reflect.Float32, reflect.Float64:
+			return MakeInt(int(ref.Float()))
+		}
 	}
+	panic(RT.NewError(fmt.Sprintf("Cannot cast %s (type: %s) to Int", obj.ToString(true), obj.GetType().ToString(false))))
 }
 
 var procNumber = func(args []Object) Object {
