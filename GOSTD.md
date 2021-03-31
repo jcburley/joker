@@ -23,13 +23,17 @@ Totals: functions=4020 generated=3850 (95.77%)
 
 ## Recent Design Changes
 
-### 2021-03-29
+### 2021-03-30
+
+All (exported) constants are now wrapped; evaluation of constant expressions is now done via `go/types`, `go/importer`, and `go/constant`, rather than via custom code in `gostd`.
 
 Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants), instead of just `1N` being printed:
 
 ```
 user=> go.std.net/FlagUp
 up
+user=> (int go.std.net/FlagUp)
+1
 user=>
 ```
 
@@ -213,7 +217,43 @@ Methods on `interface{}` (abstract) types are now supported, though only some of
 
 ## Constants
 
-(Most) constants, defined in packages, are converted and thus available for reference. In some cases, their type is `Number` when an `Int` would suffice; this is due to how the conversion code is currently implemented, in that it doesn't attempt to fully evaluate the constant expressions in all cases, just provide some "guesses".
+All exported constants, defined in packages, are converted and thus available for reference. In some cases, their type is `BigInt` when an `Int` would suffice; this is due to their values being too large to fit in an `Int`.
+
+However, besides `BigInt` being well-supported in normal Joker usage, certain conversions to native Go types (mainly `interface{}` in the arguments to `(format <pattern> <arguments...>)`) check to see whether a more-suitable native type (such as `int`) can precisely and accurately represent the value. If so, that conversion is performed, even in official Joker. An example of this effect herein is:
+
+```
+user=> (type go.std.hash.crc64/ISO)
+BigInt
+user=> (format "%x" go.std.hash.crc64/ISO)
+"d800000000000000"
+user=>
+```
+
+If `format` (or any other function that attempts such a conversion) cannot precisely and accurately coerce a non-native `Number`, such as a `BigInt`, `BigFloat`, or `Ratio`, to a suitable native type, it'll use the stringized form of the number, which might not be desirable:
+
+```
+user=> (def bignum 99999999999999999999999999999999N)
+#'user/bignum
+user=> (type bignum)
+BigInt
+user=> (format "%s" bignum)
+"99999999999999999999999999999999N"
+user=> (format "%x" bignum)
+"39393939393939393939393939393939393939393939393939393939393939394e"
+user=>
+```
+
+Here, the number is too large to convert to a native numeric Go type, so it is converted to a string. While that looks reasonable formatted by `%s`, the result of formatting it via `%x` is the hex form of the stringized version; that's probably not desirable.
+
+Finally, note that floating-point constants are not currently promoted to `BigFloat` even if they cannot be accurately and precisely be represented via `Double`; that might change in the future. In the meantime:
+
+```
+user=> go.std.math/E
+2.718281828459045
+user=> (type go.std.math/E)
+Double
+user=>
+```
 
 ## Variables
 
@@ -654,22 +694,19 @@ user=>
 Among things to do to "productize" this:
 
 * Support the `.` (and maybe `..`) special forms, replacing (or at least superseding) the current `(Go <obj> <method> <args>...)` approach
+* Support `(Type. ...)` as in `(new Type ...)`
 * Support explicit conversion (e.g. via constructors) of `Vector`, `Seq`, and such to `[]<type>` (and *vice versa*), though to `String` is already implemented
 * Avoid generating unused code (`ReceiverArg_ns_*`, etc) to reduce executable size
-* Fully evaluate all constants
 * Support `func()` types (somehow)
 * Support ad-hoc `map` types
 * Support ad-hoc `struct{...}` types
 * Create a `go.std.builtin` space with useful functions (not exported in the usual sense, but built in to the compiler) from the `builtin` package
 * Automagically support all ad-hoc types, such as `[64]byte`, that appear in package source code, including "mashups" like `map[foo.TypeA][bar.TypeB]`, which can't really belong to one namespace or the other
-* Support `(Type. ...)` as in `(new Type ...)`
-* Support `(.Foo bar)` as in `(. Foo bar)`, `(.-Foo bar)`, etc
 * Support `deftype` and the like
 * Autogenerate Clojure-like APIs *a la* how they tend to be hand-written for Joker, so (for example) a low-level API returning `(string, error)` would be further wrapped by one, likely named with a lowercase initial letter, that returns merely `String` and panics if `error` came back non-`nil`
 * Support wrapping arbitrary 3rd-party packages
 * Support (perhaps via autogeneration) more-complicated types built on builtins, such as `[][]byte`, in constructors
 * Support vectors (instead of only maps with keys) in constructors
-* MOSTLY DONE: Might have to replace the current ad-hoc tracking of Go packages with something that respects `import` and the like
 * Improve docstrings for constructors (show and document the members)
 * Clean up and document the (mostly **gostd**) code better
 * Assess performance impact (especially startup time) on Joker
@@ -806,4 +843,3 @@ A `GoObject` has a single member:
 
 `GoReceiver` extends `Object` with:
 * `R func(GoObject, Object) Object`, connecting a `(Go <obj> <rcvr-name> ...)` call to a concrete implementation
-
