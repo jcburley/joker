@@ -402,7 +402,7 @@ func SortedConstantInfoMap(m map[string]*ConstantInfo, f func(k string, v *Const
 // be quoted "%q"-style, which .ExactString() does for strings.  If
 // wrapped by a type, the outer expression must still have double
 // quotes.
-func getCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
+func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 	c := constObj.(*types.Const)
 	typ, val := types.Default(c.Type()), c.Val()
 
@@ -480,7 +480,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 			fullName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	valTypeString, goCode := getCodeForConstant(typeCheckerInfo.Defs[name], val)
+	valTypeString, goCode := genCodeForConstant(typeCheckerInfo.Defs[name], val)
 
 	if valTypeString == "" {
 		return false
