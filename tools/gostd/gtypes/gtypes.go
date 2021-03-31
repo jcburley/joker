@@ -552,34 +552,6 @@ func InfoForExpr(e Expr) *Info {
 	return ti
 }
 
-func fieldToString(f *Field) string {
-	ti := InfoForExpr(f.Type)
-	// Don't bother implementing this until it's actually needed:
-	return "ABEND041(gtypes.go/fieldToString found something: " + ti.LocalName + "!)"
-}
-
-func methodsToString(methods []*Field) string {
-	mStrings := make([]string, len(methods))
-	for i, m := range methods {
-		mStrings[i] = fieldToString(m)
-	}
-	return strings.Join(mStrings, ", ")
-}
-
-func typeAsString(f *Field, pos token.Pos) string {
-	ty := f.Type
-	ti := InfoForExpr(ty)
-	pkgPrefix := ti.Package
-	if pkgPrefix == "" || pkgPrefix == godb.GoPackageForPos(pos) {
-		pkgPrefix = ""
-	}
-	return fmt.Sprintf(ti.Pattern, genutils.CombineGoName(pkgPrefix, ti.LocalName))
-}
-
-func typeAsStringRelative(p token.Pos) func(*Field) string {
-	return func(f *Field) string { return typeAsString(f, p) }
-}
-
 func (ti *Info) Reflected() (packageImport, pattern string) {
 	t := ""
 	suffix := ".Elem()"
