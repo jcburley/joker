@@ -15,12 +15,10 @@ import (
 	"go/parser"
 	"go/token"
 	"go/types"
-	"math"
 	"os"
 	"path"
 	"path/filepath"
 	"sort"
-	"strconv"
 	. "strings"
 )
 
@@ -390,136 +388,14 @@ func SortedConstantInfoMap(m map[string]*ConstantInfo, f func(k string, v *Const
 	}
 }
 
-func fitInt(value string) string {
-	_, e := strconv.ParseInt(value, 0, 32)
-	if e == nil {
-		return "int"
-	}
-	_, e = strconv.ParseInt(value, 0, 64)
-	if e == nil {
-		return "int64"
-	}
-	_, e = strconv.ParseUint(value, 0, 64)
-	if e == nil {
-		return "uint64"
-	}
-	return ""
-}
-
-func evalConstType(ty *TypeSpec) (typeName string) {
-	typeName = ty.Name.Name
-	ti := TypeInfoForGoName(typeName)
-	if ti == nil {
-		// Not a known type; use the underlying type.
-		typeName = ty.Type.(*Ident).Name
-	}
-
-	return
-}
-
-func evalConstExpr(val Expr) (typeName, result string) {
-	switch v := val.(type) {
-	case *BasicLit:
-		result = v.Value
-		switch v.Kind {
-		case token.STRING:
-			typeName = "string"
-		case token.INT:
-			typeName = fitInt(result)
-		case token.FLOAT:
-			typeName = "float64"
-		case token.CHAR:
-			typeName = "rune"
-		}
-	case *UnaryExpr:
-		typeName, result = evalConstExpr(v.X)
-		if result == "" && typeName == "" {
-			typeName = "int" // TODO: maybe not, but try this for now
-		}
-		switch v.Op {
-		case token.SUB:
-			typeName, result = fitInt(result), "-"+result
-		default:
-		}
-	case *BinaryExpr:
-		leftType, _ := evalConstExpr(v.X)
-		rightType, rightValue := evalConstExpr(v.Y)
-		if leftType == rightType {
-			typeName = leftType
-		} else if leftType == "float64" || rightType == "float64" {
-			typeName = "float64" // TODO: probably a good guess for now
-		} else if leftType == "int64" || rightType == "int64" {
-			typeName = "int64"
-		} else if leftType == "rune" || rightType == "rune" {
-			typeName = "int"
-		}
-		if typeName == "int" && v.Op == token.SHL {
-			if rightValue == "64" { // TODO: this supports MaxUint64 but is overly specific
-				typeName, result = "uint64", strconv.FormatUint(math.MaxUint64, 10)
-			} else {
-				typeName = "int64"
-			}
-		} else if typeName == "" {
-			typeName = "uint64" // TODO: the outer MaxUint64 definition
-		}
-	case *ParenExpr:
-		typeName, result = evalConstExpr(v.X)
-	case *Ident:
-		switch v.Name {
-		case "iota":
-			typeName, result = "int", "0"
-		case "false", "true":
-			typeName, result = "bool", v.Name
-		case "Errno": // TODO: another heuristic, for go.std.syscall only though
-			typeName, result = "uintptr", "0"
-		case "Signal": // TODO: another heuristic, for go.std.syscall only though
-			typeName, result = "int16", "0" // int16 forces "int()" conversion, which Go requires of "type Signal int"!
-		}
-		if v.Obj != nil {
-			switch spec := v.Obj.Decl.(type) {
-			case *ValueSpec:
-				if len(spec.Values) == 0 {
-					typeName, result = "int", "1" // TODO: probably a good guess for now
-				} else {
-					typeName, result = evalConstExpr(spec.Values[0])
-				}
-			case *TypeSpec:
-				typeName = evalConstType(spec)
-			}
-		}
-	case *CallExpr:
-		typeName, result = evalConstExpr(v.Fun)
-	}
-	return
-}
-
-func determineConstExprType(val Expr) (typeName string) {
-	switch v := val.(type) {
-	case *BasicLit:
-		switch v.Kind {
-		case token.STRING:
-			typeName = "string"
-		case token.INT:
-			typeName = fitInt(v.Value)
-		case token.FLOAT:
-			typeName = "float64"
-		case token.CHAR:
-			typeName = "rune"
-		}
-	default:
-		typeName, _ = evalConstExpr(val)
-	}
-	return
-}
-
 // Returns the Clojure type and a constant expression of that type.
 // E.g. "GoObject" and "net.Flags(1)" (which becomes net.FlagsUp).
 // The returned <gl> argument must be returned inside double
 // quotes. If it represents an unwrapped (builtin) string, it needs to
 // be quoted "%q"-style, which .ExactString() does for strings.  If
 // wrapped by a type, the outer expression must still have double
-// quotes, but the inner would need them only for a string.
-func useTypeCheckedInfo(constObj types.Object, origVal Expr) (cl, gl string) {
+// quotes.
+func getCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 	c := constObj.(*types.Const)
 	typ, val := types.Default(c.Type()), c.Val()
 
@@ -582,60 +458,6 @@ func isBasicLiteral(e Expr) *BasicLit {
 	}
 }
 
-func determineType(pkgBaseName string, name *Ident, valType, val Expr) (cl, gl string) {
-
-	if constObj, found := typeCheckerInfo.Defs[name]; found {
-		return useTypeCheckedInfo(constObj, val)
-	}
-
-	constName := pkgBaseName + "." + name.Name
-	fmt.Fprintf(os.Stderr, "walk.go/processConstantSpec: No info for constant %s; guessing it.\n", constName)
-
-	switch constName {
-	case "InvalidHandle": // TODO: uintptr on Windows; not found elsewhere
-		return "Number", "uint64(%s)"
-	}
-	typeName := ""
-	innerPromotion := "%s"
-	var ti TypeInfo
-	if valType == nil {
-		typeName = determineConstExprType(val)
-		ti = TypeInfoForGoName(typeName)
-	} else {
-		ident, ok := valType.(*Ident)
-		if !ok {
-			return
-		}
-		valObj := ident.Obj
-		if valObj != nil {
-			if valObj.Decl != nil {
-				ts, ok := valObj.Decl.(*TypeSpec)
-				if !ok {
-					return
-				}
-				if ts.Name == nil {
-					return
-				}
-				if _, ok := ts.Type.(*Ident); ok {
-					typeName = "GoObject"
-				}
-				innerPromotion = "%s"
-			}
-		} else {
-			typeName = ident.Name
-			ti = TypeInfoForGoName(typeName)
-		}
-	}
-	if typeName == "" {
-		return
-	}
-	if ti == nil || ti.ArgClojureArgType() == "" || ti.PromoteType() == "" {
-		return typeName, strconv.Quote(fmt.Sprintf(innerPromotion, constName))
-
-	}
-	return ti.ArgClojureArgType(), strconv.Quote(fmt.Sprintf(fmt.Sprintf(ti.PromoteType(), innerPromotion), constName))
-}
-
 func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
@@ -651,18 +473,8 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 			fullName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	valTypeString, goCode := determineType(gf.Package.BaseName, name, valType, val)
-	if WalkDump || (godb.Verbose && valTypeString == "**FOO**") { // or "**FOO**" to quickly disable this
-		fmt.Printf("Constant %s at %s:\n", name, godb.WhereAt(name.Pos()))
-		if valType != nil {
-			fmt.Printf("  valType at %s:\n", godb.WhereAt(valType.Pos()))
-			Print(godb.Fset, valType)
-		}
-		if val != nil {
-			fmt.Printf("  val at %s:\n", godb.WhereAt(val.Pos()))
-			Print(godb.Fset, val)
-		}
-	}
+	valTypeString, goCode := getCodeForConstant(typeCheckerInfo.Defs[name], val)
+
 	if valTypeString == "" {
 		return false
 	}
