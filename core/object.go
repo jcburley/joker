@@ -1124,6 +1124,14 @@ func (n Nil) ValueOf() reflect.Value {
 	return reflect.ValueOf(NIL)
 }
 
+func MakeRatio(s string) *Ratio {
+	r := new(big.Rat)
+	if _, ok := r.SetString(s); ok {
+		return &Ratio{r: *r}
+	}
+	panic(RT.NewError(fmt.Sprintf("Invalid BigFloat: %s", s)))
+}
+
 func (rat *Ratio) ToString(escape bool) string {
 	return rat.r.String()
 }
@@ -1202,20 +1210,12 @@ func (bi *BigInt) ValueOf() reflect.Value {
 	return reflect.ValueOf(&bi.b)
 }
 
-// The string may be a Ratio.
 func MakeBigFloat(s string) *BigFloat {
-	prec := len(s) * 4 // TODO: Consider a better algorithm?
-	ok := false
+	prec := len(s) * 4 // TODO: Consider a better algorithm? This is overkill.
 	f := new(big.Float)
 	f.SetPrec(uint(prec))
-	if _, ok = f.SetString(s); !ok {
-		r := new(big.Rat)
-		if _, ok = r.SetString(s); ok {
-			_, ok = f.SetString(r.FloatString(prec))
-		}
-	}
-	if ok {
-		return &BigFloat{b: *f} // TODO: Docs say use f.Set(), so b should be *big.Float
+	if _, ok := f.SetString(s); ok {
+		return &BigFloat{b: *f} // TODO: Docs say use f.Set(), so b should be *big.Float?
 	}
 	panic(RT.NewError(fmt.Sprintf("Invalid BigFloat: %s", s)))
 }
