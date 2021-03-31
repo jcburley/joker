@@ -239,7 +239,12 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 }
 
 func processTypeRef(t Expr) {
-	//	fmt.Printf("%T\n", t)
+	defer func() {
+		if x := recover(); x != nil {
+			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(t.Pos()), t)
+		}
+	}()
+
 	if t != nil {
 		TypeInfoForExpr(t)
 	}
@@ -913,6 +918,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 		Types: map[Expr]types.TypeAndValue{},
 		Defs:  map[*Ident]types.Object{},
 	}
+	astutils.TypeCheckerInfo = typeCheckerInfo
 
 	for _, wp := range godb.PackagesAsDiscovered {
 		pkg := wp.Dir.String()
