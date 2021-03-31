@@ -266,10 +266,24 @@ func declFuncForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl)
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Results))
 }
 
+func anyNamesExported(names []*Ident) bool {
+	if names == nil {
+		return false
+	}
+	for _, n := range names {
+		if IsExported(n.Name) {
+			return true
+		}
+	}
+	return false
+}
+
 func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*ValueSpec)
-		processTypeRef(ts.Type)
+		if anyNamesExported(ts.Names) {
+			processTypeRef(ts.Type)
+		}
 	}
 }
 
