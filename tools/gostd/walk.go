@@ -428,8 +428,13 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 	case constant.String:
 		gl = val.ExactString()
 	case constant.Float:
-		f, _ := constant.Float64Val(val)
+		f, ok := constant.Float64Val(val)
 		gl = fmt.Sprintf("%g", f)
+		if !ok {
+			cl = "BigFloat"
+			gl = val.ExactString()
+			numPat = "%q"
+		}
 	case constant.Int:
 		f, ok := constant.Int64Val(val)
 		gl = fmt.Sprintf("%d", f)
