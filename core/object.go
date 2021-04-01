@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar *GoType
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar *GoType
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq *GoVar
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
@@ -1231,7 +1231,7 @@ func computePrecision(s string) (prec uint) {
 	bitsPerDigit := 3.3 // (joker.math/log-2 10) => 3.32192809488736
 	exponentUpper, exponentLower := 'E', 'e'
 
-	if len(s) > 2 && s[0] == '0' && strings.ContainsAny(s[1:1], "bBoOxX") {
+	if len(s) > 2 && s[0] == '0' && strings.ContainsAny(s[1:2], "bBoOxX") {
 		switch s[1] {
 		case 'b', 'B':
 			bitsPerDigit = 1
@@ -1239,6 +1239,8 @@ func computePrecision(s string) (prec uint) {
 			bitsPerDigit = 3
 		case 'x', 'X':
 			bitsPerDigit = 4
+		default:
+			panic(fmt.Sprintf("internal error examining %q", s))
 		}
 		exponentUpper, exponentLower = 'P', 'p'
 		s = s[2:]

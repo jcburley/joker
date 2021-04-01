@@ -192,4 +192,6 @@ func init() {
 	intern("GoTypeOf__", procGoTypeOf, "procGoTypeOf")
 	intern("TypeOfAsString__", procTypeOfAsString, "procTypeOfAsString")
 	intern("ref__", procRef, "procRef")
+
+	intern("precision__", procPrecision, "procPrecision")
 }
