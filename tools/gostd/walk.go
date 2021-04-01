@@ -455,6 +455,10 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 		gl = lit.Value
 	}
 
+	if cl == "BigFloat" && Contains(gl, "/") {
+		cl = "Ratio"
+	}
+
 	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, fmt.Sprintf(numPat, gl)))
 }
 
