@@ -106,17 +106,17 @@ type (
 	}
 	BigInt struct {
 		InfoHolder
-		b        big.Int
+		b        *big.Int
 		Original string
 	}
 	BigFloat struct {
 		InfoHolder
-		b        big.Float
+		b        *big.Float
 		Original string
 	}
 	Ratio struct {
 		InfoHolder
-		r        big.Rat
+		r        *big.Rat
 		Original string
 	}
 	Boolean struct {
@@ -1127,9 +1127,9 @@ func (n Nil) ValueOf() reflect.Value {
 func MakeRatio(s string) *Ratio {
 	r := new(big.Rat)
 	if _, ok := r.SetString(s); ok {
-		return &Ratio{r: *r}
+		return &Ratio{r: r}
 	}
-	panic(RT.NewError(fmt.Sprintf("Invalid BigFloat: %s", s)))
+	panic(RT.NewError(fmt.Sprintf("Invalid Ratio: %s", s)))
 }
 
 func (rat *Ratio) ToString(escape bool) string {
@@ -1149,7 +1149,7 @@ func (rat *Ratio) GetType() *Type {
 }
 
 func (rat *Ratio) Hash() uint32 {
-	return hashGobEncoder(&rat.r)
+	return hashGobEncoder(rat.r)
 }
 
 func (rat *Ratio) Compare(other Object) int {
@@ -1162,13 +1162,13 @@ func (rat *Ratio) ValueOf() reflect.Value {
 }
 
 func MakeBigInt(bi int64) *BigInt {
-	return &BigInt{b: *big.NewInt(bi)}
+	return &BigInt{b: big.NewInt(bi)}
 }
 
 func MakeBigIntU(b uint64) *BigInt {
 	bigint := big.NewInt(0)
 	bigint.SetUint64(b)
-	return &BigInt{b: *bigint}
+	return &BigInt{b: bigint}
 }
 
 func MakeNumber(n interface{}) *BigInt {
@@ -1198,7 +1198,7 @@ func (bi *BigInt) GetType() *Type {
 }
 
 func (bi *BigInt) Hash() uint32 {
-	return hashGobEncoder(&bi.b)
+	return hashGobEncoder(bi.b)
 }
 
 func (bi *BigInt) Compare(other Object) int {
@@ -1265,7 +1265,7 @@ func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
 	f.SetPrec(uint(prec))
 
 	if _, ok := f.SetString(s); ok {
-		return &BigFloat{b: *f, Original: orig}, true // TODO: Docs say use f.Copy(), so b should be *big.Float?
+		return &BigFloat{b: f, Original: orig}, true
 	}
 
 	return nil, false
@@ -1306,7 +1306,7 @@ func (bf *BigFloat) GetType() *Type {
 }
 
 func (bf *BigFloat) Hash() uint32 {
-	return hashGobEncoder(&bf.b)
+	return hashGobEncoder(bf.b)
 }
 
 func (bf *BigFloat) Compare(other Object) int {
