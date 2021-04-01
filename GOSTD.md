@@ -11,8 +11,8 @@ Note that **gostd** is still very much a "work in progress". It does not convert
 Current conversion-rate stats on `amd64-darwin`:
 
 ```
-Totals: functions=4020 generated=3850 (95.77%)
-          non-receivers=1555 (38.68%) generated=1429 (91.90%)
+Totals: functions=4020 generated=3858 (95.97%)
+          non-receivers=1555 (38.68%) generated=1437 (92.41%)
           receivers=2066 (51.39%) generated=2029 (98.21%)
           methods=399 (9.93%) generated=392 (98.25%)
         types=2834
@@ -23,7 +23,7 @@ Totals: functions=4020 generated=3850 (95.77%)
 
 ## Recent Design Changes
 
-### 2021-03-30
+### 2021-04-01
 
 All (exported) constants are now wrapped; evaluation of constant expressions is now done via `go/types`, `go/importer`, and `go/constant`, rather than via custom code in `gostd`.
 
@@ -78,6 +78,14 @@ user=> (try true (catch go.std.go.scanner/Error e))
 <repl>:26:18: Parse error: Unable to resolve type: go.std.go.scanner/Error, got: {:type :var-ref, :var #'go.std.go.scanner/Error}
 user=>
 ```
+
+The `BigFloat` type is now supported for `std`-generated libraries (namespaces in the `std` subdirectory and built into Joker).
+
+Further, `BigFloat`s created from strings (such as `1.3M`) are given a minimum precision of 53 (the same precision as a `Double`, aka `float64`) or more precision based on the number of digits and the number of bits each digit represents (3.3 for decimal; 1, 3, or 4 for binary, octal, and hex).
+
+All arrays with constant lengths are now supported. Previously only easily-evaluated lengths (such as literal constants) were supported; now, any constant expression works. This results in more functions being wrapped.
+
+A new `joker.core/precision` function has been introduced mainly to inspect `BigFloat` types, though it supports a few others.
 
 ### 2021-03-24
 
