@@ -166,7 +166,7 @@ func GoPackageBaseName(e Expr) string {
 type PackageDb struct {
 	Pkg      *Package // nil means Universal scope
 	Root     paths.UnixPath
-	Dir      paths.UnixPath
+	Dir      paths.UnixPath // "math", "math/big", etc.
 	BaseName string
 	NsRoot   string // "go.std." or whatever is desired as the root namespace
 	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
