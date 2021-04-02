@@ -1056,11 +1056,15 @@
 (defn get
   "Returns the value mapped to key, not-found or nil if key not present.
 
-  When the map is a GoObject, an empty-string key returns (for
-  appropriate underlying objects, and for documentation purposes) a
-  vector of strings comprising the map's field or key names; while a
-  non-empty key (specified as a keyword, string, or symbol) returns
-  the value indexed by the key."
+  When map is a GoObject, the underlying object can be a struct, map,
+  array, slice, or string; for a struct, the key must evaluate to a
+  symbol. However, rather than (get obj 'FieldName), consider
+  (. obj FieldName).
+
+  \"Undocumented\": When map is a GoObject with underlying struct or
+  map, an empty-string key returns (for documentation purposes) a
+  vector of strings comprising the struct's field, or map's key,
+  names."
   {:added "1.0"}
   ([map key]
    (get__ map key))

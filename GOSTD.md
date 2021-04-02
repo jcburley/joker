@@ -696,7 +696,7 @@ user=> m
 {p25.llamail.com. 10}
 user=> (. m 0)
 <repl>:14:7: Parse error: dot form member not an unqualified symbol
-user=> (. m Pref)
+user=> (. m Pref)  ;; (get m 'Pref) would also work.
 10
 user=> (. m Host)
 "p25.llamail.com."
