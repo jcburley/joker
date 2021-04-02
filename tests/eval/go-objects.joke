@@ -97,11 +97,11 @@
 ;; (is (deref timeout))))
 
 (deftest native-wrapping-works
-  (let [one (joker.core/Go 1 :<>)
+  (let [one (joker.core/Go 1 '<>)
         un (deref one)
-        f (joker.core/Go false :<>)
+        f (joker.core/Go false '<>)
         ff (deref f)
-        c (joker.core/Go (nth "hey" 1) :<>)
+        c (joker.core/Go (nth "hey" 1) '<>)
         si (deref c)]
     (is (= (str one) "1"))
     (is (= un 1))

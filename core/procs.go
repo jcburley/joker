@@ -895,10 +895,10 @@ var proc_Go = func(args []Object) Object {
 		goType = ty
 	}
 	member := ""
-	if fn, ok := args[1].(Fieldable); ok {
-		member = fn.AsFieldName()
+	if sym, ok := args[1].(Symbol); ok {
+		member = sym.Name()
 	} else {
-		panic(RT.NewArgTypeError(0, args[1], "Fieldable"))
+		panic(RT.NewArgTypeError(1, args[1], "Symbol"))
 	}
 	switch member {
 	case "!":
