@@ -1090,7 +1090,6 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 		member:   SYMBOLS.emptySymbol,
 	}
 	state := Instance
-	warned := false
 	seq := obj.(Seq).Rest()
 
 	for !seq.IsEmpty() {
@@ -1100,11 +1099,10 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 			res.instance = Parse(obj, ctx)
 			state++
 		case Member:
-			if s, yes := obj.(Symbol); yes {
+			if s, yes := obj.(Symbol); yes && s.ns == nil {
 				res.member = s
 			} else {
-				printParseWarning(res.Pos(), "dot form with non-symbol member")
-				warned = true
+				panic(&ParseError{obj: obj, msg: "dot form member not an unqualified symbol"})
 			}
 			state++
 		case Args:

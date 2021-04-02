@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -363,12 +364,47 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 }
 
 func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
-	args := "<nil>"
-	if expr.args != nil {
-		args = fmt.Sprintf("%d", len(expr.args))
+	instance := Eval(expr.instance, env)
+	memberSym := expr.member
+	member := *memberSym.name
+	args := &ArraySeq{arr: evalSeq(expr.args, env)}
+	o := EnsureObjectIsGoObject(instance, "")
+	g := LookupGoType(o.O)
+	if g == nil {
+		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
 	}
-	fmt.Printf("eval.go/(*DotExpr)Eval(): instance=%T member=%s args=%s\n", expr.instance, expr.member.ToString(false), args)
-	return NIL
+	f := g.Members[member]
+	if f != nil {
+		// Currently only receivers/methods are listed in Members[].
+		defer func() {
+			if r := recover(); r != nil {
+				switch r.(type) {
+				case Error:
+					panic(r)
+				default:
+					panic(RT.NewError(fmt.Sprintf("method/receiver invocation panic: %s", r)))
+				}
+			}
+		}()
+		return (f.Value.(*GoReceiver).R)(o, args)
+	}
+	v := reflect.ValueOf(o.O)
+	k := v.Kind()
+	if k == reflect.Ptr {
+		v = reflect.Indirect(v)
+		k = v.Kind()
+	}
+	if k != reflect.Struct {
+		panic(RT.NewError(fmt.Sprintf("No such receiver/method %s/%s", o.TypeToString(false), member)))
+	}
+	field := v.FieldByName(member)
+	if field.Kind() == reflect.Invalid {
+		panic(RT.NewError(fmt.Sprintf("No such member/field %s/%s", o.TypeToString(false), member)))
+	}
+	if args != nil {
+		panic(RT.NewError(fmt.Sprintf("Field %s cannot be passed arguments", member)))
+	}
+	return MakeGoObjectIfNeeded(field.Interface())
 }
 
 func evalBody(body []Expr, env *LocalEnv) Object {
