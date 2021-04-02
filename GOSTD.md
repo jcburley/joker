@@ -23,7 +23,7 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
-### 2021-04-01
+### 2021-04-02
 
 The dot (`.`) special form, `(. <instance> <member> <args>*)`, is implemented and the corresponding
 functionality of the `joker.core/Go` function (invoking methods/receivers and reference fields)
@@ -31,6 +31,9 @@ has been removed. As the `set!` special operator has not yet been impemented, th
 way to directly set a field's value. (The `joker.core/Go` function, now private,
 returned a `var` for a field, rather than the value of a field, requiring a `deref` to
 etrieve the value, but also permitting use of `var-set` to change the value.)
+
+`(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
+Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
 
 ### 2021-04-01
 
@@ -371,7 +374,7 @@ If a particular constructor is missing, that indicates lack of support for the u
 Given a `GoObject`, one may convert (to a native Clojure type) and/or examine it via:
 * `count`, which returns the number of elements (`.Len()`) for anything `seq` supports, without converting any of the elements themselves
 * `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Clojure object or (if one isn't suitable) a `GoObject`; or, if the `GoObject` does not wrap a pointer, the underlying object is converted to a Clojure object if possible, else wrapped by a newly constructed `GoObject`
-* `get`, which returns the value corresponding to the given key for structs (the key can named via a string, keyword, or symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Clojure object is not suitable
+* `get`, which returns the value corresponding to the given key for structs (the key must evaluate to a symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Clojure object is not suitable
 * `if`, `and`, `or`, and similar, which convert to `bool` (and all `GoObject`'s evaluate as `true`)
 * `seq`, which works on arrays, channels, maps, slices, strings, and structs, but is (currently) not lazily evaluated
 * `vec`, like `seq` but returns a vector instead of a sequence
