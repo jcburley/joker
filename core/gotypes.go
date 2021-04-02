@@ -512,7 +512,15 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		return false, NIL
 	case reflect.Array, reflect.Slice, reflect.String:
 		i := EnsureObjectIsInt(key, "")
-		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
+		return func() (ok bool, obj Object) {
+			defer func() {
+				if r := recover(); r != nil {
+					return
+				}
+			}()
+			obj = NIL
+			return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
+		}()
 	}
 	panic(fmt.Sprintf("Unsupported type=%s kind=%s for getting", AnyTypeToString(o, false), reflect.TypeOf(o).Kind().String()))
 }
