@@ -694,14 +694,11 @@ user=> (def m (deref m0))
 #'user/m
 user=> m
 {p25.llamail.com. 10}
-user=> (get m 0)
-<joker.core>:1105:4: Eval error: interface conversion: core.Int is not core.Fieldable: missing method AsFieldName
-Stacktrace:
-  global <repl>:31:1
-  core/get <joker.core>:1105:4
-user=> (get m :Pref)
+user=> (. m 0)
+<repl>:14:7: Parse error: dot form member not an unqualified symbol
+user=> (. m Pref)
 10
-user=> (get m :Host)
+user=> (. m Host)
 "p25.llamail.com."
 user=>
 ```

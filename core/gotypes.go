@@ -493,8 +493,11 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 			}
 			return true, NewVectorFrom(objs...) // TODO: Someday: MakeGoObject(v.MapKeys())
 		}
-		f := v.FieldByName(key.(Fieldable).AsFieldName())
-		return true, MakeGoObjectIfNeeded(f.Interface())
+		if sym, ok := key.(Symbol); ok {
+			f := v.FieldByName(sym.Name())
+			return true, MakeGoObjectIfNeeded(f.Interface())
+		}
+		panic(fmt.Sprintf("Key must evaluate to a symbol, not type %T", key))
 	case reflect.Map:
 		if key.Equals(NIL) {
 			// Special case for nil key (used during doc generation): return vector of keys as reflect.Value's
