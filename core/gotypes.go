@@ -495,7 +495,10 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		}
 		if sym, ok := key.(Symbol); ok {
 			f := v.FieldByName(sym.Name())
-			return true, MakeGoObjectIfNeeded(f.Interface())
+			if f.IsValid() {
+				return true, MakeGoObjectIfNeeded(f.Interface())
+			}
+			return false, NIL
 		}
 		panic(fmt.Sprintf("Key must evaluate to a symbol, not type %T", key))
 	case reflect.Map:
@@ -503,7 +506,10 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 			// Special case for nil key (used during doc generation): return vector of keys as reflect.Value's
 			return true, MakeGoObject(v.MapKeys())
 		}
-		return true, MakeGoObjectIfNeeded(v.MapIndex(key.(Valuable).ValueOf()).Interface())
+		if res := v.MapIndex(key.(Valuable).ValueOf()); res.IsValid() {
+			return true, MakeGoObjectIfNeeded(res.Interface())
+		}
+		return false, NIL
 	case reflect.Array, reflect.Slice, reflect.String:
 		i := EnsureObjectIsInt(key, "")
 		return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
