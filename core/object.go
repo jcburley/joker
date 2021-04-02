@@ -54,12 +54,6 @@ type (
 		// Similar to reflect.ValueOf(obj.Native()), but (for some types) panics "nicely" if the underlying object is nil
 		ValueOf() reflect.Value
 	}
-	Fieldable interface {
-		Object
-
-		// Returns (unquoted) string, keyword name without colon, or symbol name
-		AsFieldName() string
-	}
 	Conjable interface {
 		Object
 		Conj(obj Object) Conjable
@@ -1774,10 +1768,6 @@ func (k Keyword) TypeToString(escape bool) string {
 	return k.GetType().ToString(escape)
 }
 
-func (k Keyword) AsFieldName() string {
-	return *k.name
-}
-
 func (k Keyword) Name() string {
 	return *k.name
 }
@@ -1862,10 +1852,6 @@ func (s Symbol) TypeToString(escape bool) string {
 	return s.GetType().ToString(escape)
 }
 
-func (s Symbol) AsFieldName() string {
-	return *s.name
-}
-
 func (s Symbol) Name() string {
 	return *s.name
 }
@@ -1936,10 +1922,6 @@ func (s String) ToString(escape bool) string {
 
 func (s String) TypeToString(escape bool) string {
 	return s.GetType().ToString(escape)
-}
-
-func (s String) AsFieldName() string {
-	return s.S
 }
 
 func (s String) Format(w io.Writer, indent int) int {
