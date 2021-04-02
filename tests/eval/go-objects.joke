@@ -32,19 +32,19 @@
         j (go.std.net/ParseIP "::ffff:c000:0280")
         k (go.std.net/ParseIP "2001:0db8:85a3:0000:0000:8a2e:0370:7334")
         im (IPv4Mask 252 0 0 0)
-        sz (Go im "Size")]
-    (is (= (Go i "String") "1.2.3.4"))
-    (is (= (Go j "String") "192.0.2.128"))
-    (is (= (Go k "String") "2001:db8:85a3::8a2e:370:7334"))
-    (is (Go i "IsGlobalUnicast"))
-    (is (not (Go i "IsMulticast")))
-    (is (= (Go (Go k "To4") "String") "<nil>"))
-    (is (Go i "Equal" i))
-    (is (Go j "Equal" j))
-    (is (Go k "Equal" k))
-    (is (not (Go i "Equal" j)))
-    (is (not (Go i "Equal" k)))
-    (is (not (Go j "Equal" i)))
+        sz (. im Size)]
+    (is (= (. i String) "1.2.3.4"))
+    (is (= (. j String) "192.0.2.128"))
+    (is (= (. k String) "2001:db8:85a3::8a2e:370:7334"))
+    (is (. i IsGlobalUnicast))
+    (is (not (. i IsMulticast)))
+    (is (= (. (. k To4) String) "<nil>"))
+    (is (. i Equal i))
+    (is (. j Equal j))
+    (is (. k Equal k))
+    (is (not (. i Equal j)))
+    (is (not (. i Equal k)))
+    (is (not (. j Equal i)))
     (is (= (get sz 0) 6))
     (is (= (get sz 1) 32))
     (is (= (Sprint i (go.std.net/IPv4Mask 255 255 255 127) "hey" true) "1.2.3.4 ffffff7fheytrue"))
@@ -71,30 +71,30 @@
 (deftest fields-work
   (let [le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})
         dle (deref le)
-        old (Go le :Old)]
-    (is (= (deref (Go le :Op)) "hey"))
-    (is (= (deref old) "there"))
-    (is (= (var-set old "wow") "wow"))
-    (is (= (deref old) "wow"))
-    (is (= (str le) "hey wow you: silly"))
+        old (. le Old)]
+    (is (= (. le Op) "hey"))
+    (is (= old "there"))
+    ;; (is (= (var-set old "wow") "wow"))
+    ;; (is (= (deref old) "wow"))
+    (is (= (str le) "hey there you: silly"))
     (is (= (count le) 4))
     (is (= (count dle) 4))
-    (is (= (seq le) '([:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"])))
+    (is (= (seq le) '([:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"])))
     (is (= (seq dle) '([:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"])))
-    (is (= (vec le) [[:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"]]))
+    (is (= (vec le) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"]]))
     (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"]]))))
 
 (deftest govars-work
   (let [dnserr (new DNSError {})
-        temp (Go dnserr :IsTemporary)
-        timeout (Go dnserr :IsTimeout)]
-    (is (not (deref timeout)))
-    (is (not (deref temp)))
-    (is (var-set temp true))
-    (is (deref temp))
-    (is (not (deref timeout)))
-    (var-set timeout temp)
-    (is (deref timeout))))
+        temp (. dnserr IsTemporary)
+        timeout (. dnserr IsTimeout)]
+    (is (not timeout))
+    (is (not temp))))
+;; (is (var-set temp true))
+;; (is (deref temp))
+;; (is (not (deref timeout)))
+;; (var-set timeout temp)
+;; (is (deref timeout))))
 
 (deftest native-wrapping-works
   (let [one (Go 1 :<>)
@@ -123,7 +123,7 @@
   (is (= (type (new go.std.syscall/Errno 3)) GoObject)))
 
 (deftest do-not-crash-joker
-  (is (= (try (Go (new go.std.os/File {}) :Write "hi there") (catch Error e "ok")) "ok")))
+  (is (= (try (. (new go.std.os/File {}) Write "hi there") (catch Error e "ok")) "ok")))
 
 (deftest vector-to-string
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))

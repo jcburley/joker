@@ -367,7 +367,10 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	instance := Eval(expr.instance, env)
 	memberSym := expr.member
 	member := *memberSym.name
-	args := &ArraySeq{arr: evalSeq(expr.args, env)}
+	var args Object = NIL
+	if expr.args != nil && len(expr.args) > 0 {
+		args = &ArraySeq{arr: evalSeq(expr.args, env)}
+	}
 	o := EnsureObjectIsGoObject(instance, "")
 	g := LookupGoType(o.O)
 	if g == nil {
@@ -401,7 +404,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	if field.Kind() == reflect.Invalid {
 		panic(RT.NewError(fmt.Sprintf("No such member/field %s/%s", o.TypeToString(false), member)))
 	}
-	if args != nil {
+	if args != NIL {
 		panic(RT.NewError(fmt.Sprintf("Field %s cannot be passed arguments", member)))
 	}
 	return MakeGoObjectIfNeeded(field.Interface())
