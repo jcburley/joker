@@ -1119,14 +1119,6 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 		panic(&ParseError{obj: obj, msg: "dot form must specify at least an instance and member"})
 	}
 
-	if LINTER_MODE {
-		if res.instance == nil {
-			printParseWarning(res.Pos(), "dot form with empty instance")
-		}
-		if res.member == SYMBOLS.emptySymbol && !warned {
-			printParseWarning(res.Pos(), "dot form with empty member")
-		}
-	}
 	return res
 }
 
