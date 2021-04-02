@@ -515,10 +515,10 @@ func GoObjectGet(o interface{}, key Object) (bool, Object) {
 		return func() (ok bool, obj Object) {
 			defer func() {
 				if r := recover(); r != nil {
+					obj = NIL
 					return
 				}
 			}()
-			obj = NIL
 			return true, MakeGoObjectIfNeeded(v.Index(i.I).Interface())
 		}()
 	}
