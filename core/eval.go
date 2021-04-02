@@ -362,6 +362,15 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 	panic(RT.NewError("This should never happen!"))
 }
 
+func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
+	args := "<nil>"
+	if expr.args != nil {
+		args = fmt.Sprintf("%d", len(expr.args))
+	}
+	fmt.Printf("eval.go/(*DotExpr)Eval(): instance=%T member=%s args=%s\n", expr.instance, expr.member.ToString(false), args)
+	return NIL
+}
+
 func evalBody(body []Expr, env *LocalEnv) Object {
 	var res Object = NIL
 	for _, expr := range body {

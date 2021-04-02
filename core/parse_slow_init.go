@@ -97,6 +97,8 @@ var (
 		extendProtocol:     MakeSymbol("extend-protocol"),
 		extendType:         MakeSymbol("extend-type"),
 		reify:              MakeSymbol("reify"),
+		dot:                MakeSymbol("."),
+		// dotDot:             MakeSymbol(".."),
 	}
 	STR = Str{
 		_if:          STRINGS.Intern("if"),
@@ -114,6 +116,8 @@ var (
 		throw:        STRINGS.Intern("throw"),
 		try:          STRINGS.Intern("try"),
 		coreFilename: STRINGS.Intern("<joker.core>"),
+		dot:          STRINGS.Intern("."),
+		// dotDot:       STRINGS.Intern(".."),
 	}
 	SPECIAL_SYMBOLS = make(map[*string]bool)
 )
@@ -135,4 +139,6 @@ func init() {
 	SPECIAL_SYMBOLS[SYMBOLS.try.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.catch.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.finally.name] = true
+	SPECIAL_SYMBOLS[SYMBOLS.dot.name] = true
+	// SPECIAL_SYMBOLS[SYMBOLS.dotDot.name] = true
 }

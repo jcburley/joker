@@ -117,6 +117,12 @@ type (
 		catches     []*CatchExpr
 		finallyExpr []Expr
 	}
+	DotExpr struct {
+		Position
+		instance Expr
+		member   Symbol
+		args     []Expr
+	}
 	SetMacroExpr struct {
 		Position
 		vr *Var
@@ -254,6 +260,7 @@ type (
 		extendProtocol     Symbol
 		extendType         Symbol
 		reify              Symbol
+		dot                Symbol
 	}
 	Str struct {
 		_if          *string
@@ -271,6 +278,7 @@ type (
 		throw        *string
 		try          *string
 		coreFilename *string
+		dot          *string
 	}
 )
 
@@ -1070,6 +1078,53 @@ func parseTry(obj Object, ctx *ParseContext) *TryExpr {
 	return res
 }
 
+func parseDot(obj Object, ctx *ParseContext) *DotExpr {
+	const (
+		Instance = iota
+		Member
+		Args
+	)
+
+	res := &DotExpr{
+		Position: GetPosition(obj),
+		member:   SYMBOLS.emptySymbol,
+	}
+	state := Instance
+	warned := false
+	seq := obj.(Seq).Rest()
+
+	for !seq.IsEmpty() {
+		obj = seq.First()
+		switch state {
+		case Instance:
+			res.instance = Parse(obj, ctx)
+			state++
+		case Member:
+			if s, yes := obj.(Symbol); yes {
+				res.member = s
+			} else {
+				printParseWarning(res.Pos(), "dot form with non-symbol member")
+				warned = true
+			}
+			state++
+		case Args:
+			res.args = append(res.args, Parse(obj, ctx))
+		default:
+			panic("whaaa???")
+		}
+		seq = seq.Rest()
+	}
+	if LINTER_MODE {
+		if res.instance == nil {
+			printParseWarning(res.Pos(), "dot form with empty instance")
+		}
+		if res.member == SYMBOLS.emptySymbol && !warned {
+			printParseWarning(res.Pos(), "dot form with empty member")
+		}
+	}
+	return res
+}
+
 func parseLet(obj Object, ctx *ParseContext) *LetExpr {
 	return parseLetLoop(obj, "let", ctx)
 }
@@ -1659,6 +1714,10 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 			}
 		case STR.try:
 			return parseTry(obj, ctx)
+		case STR.dot:
+			return parseDot(obj, ctx)
+			// case STR.dotDot:
+			// 	return parseDotDot(obj, ctx)
 		}
 	}
 

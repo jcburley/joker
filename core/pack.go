@@ -27,6 +27,7 @@ const (
 	BINDING_EXPR   = 18
 	LOOP_EXPR      = 19
 	SET_MACRO_EXPR = 20
+	DOT_EXPR       = 21
 	NULL           = 100
 	NOT_NULL       = 101
 	SYMBOL_OBJ     = 102
@@ -865,6 +866,30 @@ func unpackTryExpr(p []byte, header *PackHeader) (*TryExpr, []byte) {
 	return res, p
 }
 
+func (expr *DotExpr) Pack(p []byte, env *PackEnv) []byte {
+	p = append(p, DOT_EXPR)
+	p = expr.Pos().Pack(p, env)
+	p = expr.instance.Pack(p, env)
+	p = expr.member.Pack(p, env)
+	p = packSeq(p, expr.args, env)
+	return p
+}
+
+func unpackDotExpr(p []byte, header *PackHeader) (*DotExpr, []byte) {
+	p = p[1:]
+	pos, p := unpackPosition(p, header)
+	instance, p := UnpackExpr(p, header)
+	member, p := unpackSymbol(p, header)
+	args, p := unpackSeq(p, header)
+	res := &DotExpr{
+		Position: pos,
+		instance: instance,
+		member:   member,
+		args:     args,
+	}
+	return res, p
+}
+
 func PackExprOrNull(expr Expr, p []byte, env *PackEnv) []byte {
 	if expr == nil {
 		return append(p, NULL)
@@ -916,6 +941,8 @@ func UnpackExpr(p []byte, header *PackHeader) (Expr, []byte) {
 		return unpackCatchExpr(p, header)
 	case TRY_EXPR:
 		return unpackTryExpr(p, header)
+	case DOT_EXPR:
+		return unpackDotExpr(p, header)
 	case VARREF_EXPR:
 		return unpackVarRefExpr(p, header)
 	case SET_MACRO_EXPR:

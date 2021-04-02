@@ -317,3 +317,15 @@ func (expr *TryExpr) Dump(pos bool) Map {
 	res.Add(MakeKeyword("catches"), catches)
 	return res
 }
+
+func (expr *DotExpr) InferType() *Type {
+	return expr.instance.InferType()
+}
+
+func (expr *DotExpr) Dump(pos bool) Map {
+	res := exprArrayMap(expr, "dot", pos)
+	res.Add(MakeKeyword("instance"), expr.instance.Dump(pos))
+	res.Add(MakeKeyword("member"), expr.member)
+	addVector(res, expr.args, "args", pos)
+	return res
+}

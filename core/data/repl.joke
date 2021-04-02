@@ -34,7 +34,11 @@
   User code should normally use (ex-info) function to create new Error objects."}
     var {:forms [(var symbol)]
          :doc "The symbol must resolve to a var, and the Var object
-  itself (not its value) is returned. The reader macro #'x expands to (var x)."}})
+  itself (not its value) is returned. The reader macro #'x expands to (var x)."}
+    . {:forms [(. instance member args*)
+                 (.member instance args*)]
+         :doc "The instance is evaluated and the member (receiver, method, or
+  field name) invoked with args* or retrieved."}})
 
 (defn- special-doc [name-symbol]
   (assoc (or (special-doc-map name-symbol) (meta (resolve name-symbol)))
