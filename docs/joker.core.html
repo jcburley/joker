@@ -134,9 +134,6 @@
   <a class="var-kind Function" href="#>=">&gt;=</a>
 </li>
 <li>
-  <a class="var-kind Function" href="#Go">Go</a>
-</li>
-<li>
   <a class="var-kind Function" href="#GoTypeOf">GoTypeOf</a>
 </li>
 <li>
@@ -1636,61 +1633,13 @@
   <a href="#" class="types">show types</a>
 </li>
 <li>
-  <h3 class="Function" id="Go">Go</h3>
-  <span class="var-kind Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(Go o m &amp; args)</code><code class="hide">(Go ^GoObject|GoType o m &amp; args)</code></div>
-</pre>
-  <p class="var-docstr">Invokes a receiver for a GoObject, returning the result.<br>
-<br>
-  The receiver is named via a keyword, symbol, or string. E.g.:<br>
-<br>
-    (Go &lt;FileInfoObject&gt; :IsDir)<br>
-<br>
-  Arguments may be specified. E.g.:<br>
-<br>
-    (Go &lt;IPv4Object&gt; :Equal other-goobj)<br>
-<br>
-  SPECIAL SYNTAX: these are receiver names that cannot, syntactically,<br>
-  name Go receivers or methods. They currently ignore unused<br>
-  arguments, and are intended primarily for use by developers of Joker<br>
-  itself:<br>
-<br>
-  . returns, wrapped by a GoObject, either: for a GoType argument, the<br>
-  reflect.Type of the underlying type (TBI, if needed); or, for an<br>
-  argument of some other type, a reflect.Value of the underlying<br>
-  value.<br>
-<br>
-  ! returns a GoObject that wraps the first argument (which, in this<br>
-  case, can be any Joker object) in a GoObject. E.g. (Go &#34;hey&#34; :!)<br>
-  returns a GoObject wrapping a String. This can aid Joker developers<br>
-  in examining Joker objects directly.<br>
-<br>
-  &lt;&gt; returns a GoObject that wraps the underlying object in the first<br>
-  argument (which, in this case, can be any Joker object), regardless<br>
-  of the usual conversion rules. E.g. (Go &#34;hey&#34; :&lt;&gt;) returns a<br>
-  GoObject wrapping a string. (Not all underlying types are supported;<br>
-  in such cases, the original Joker argument is wrapped by a<br>
-  GoObject. Also intended for use primarily by Joker developers.)<br>
-<br>
-  NOTE: If the first argument is a GoType, the semantics are very<br>
-  different, and are for internal use by Joker (mainly by the<br>
-  documentation generator). Specifically, a nil or non-special-syntax<br>
-  second argument returns internal information on the type: for nil, a<br>
-  GoVar wrapping the internal description of that type; else, the map<br>
-  of meta tags for a receiver/method identified by that second<br>
-  argument.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4567">source</a>
-  <a href="#" class="types">show types</a>
-</li>
-<li>
   <h3 class="Function" id="GoTypeOf">GoTypeOf</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(GoTypeOf t)</code><code class="hide">(GoTypeOf ^GoType t)</code></div>
 </pre>
   <p class="var-docstr">Returns the GoType of a GoObject or GoVar. Panics if it&#39;s not a GoType.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4617">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4609">source</a>
   <a href="#" class="types">show types</a>
 </li>
 <li>
@@ -1700,7 +1649,7 @@
   <pre class="var-usage"><div><code>(TypeOfAsString t)</code></div>
 </pre>
   <p class="var-docstr">Returns the full Joker type name of any object as a docstring.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4623">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4615">source</a>
 </li>
 <li>
   <h3 class="Function" id="alias">alias</h3>
@@ -3915,7 +3864,7 @@
   <pre class="var-usage"><div><code>(new t init)</code><code class="hide">(new ^GoType t ^Vector|Map init)</code></div>
 </pre>
   <p class="var-docstr">Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4611">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4603">source</a>
   <a href="#" class="types">show types</a>
 </li>
 <li>
@@ -4399,7 +4348,7 @@
   If f is not a type supported by this operation (such as Ratio), -1<br>
   is returned. (For GoObjects, invoke the appropriate methods<br>
   directly instead of using this function.)</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4642">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4634">source</a>
   <a href="#" class="types">show types</a>
 </li>
 <li>
@@ -4781,7 +4730,7 @@
 <br>
   Note that (GoTypeOf ...) of the resulting GoObject might not be<br>
   fully supported.</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4629">source</a>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4621">source</a>
 </li>
 <li>
   <h3 class="Function" id="refer">refer</h3>

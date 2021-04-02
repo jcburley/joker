@@ -25,6 +25,15 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ### 2021-04-01
 
+The dot (`.`) special form, `(. <instance> <member> <args>*)`, is implemented and the corresponding
+functionality of the `joker.core/Go` function (invoking methods/receivers and reference fields)
+has been removed. As the `set!` special operator has not yet been impemented, there's not yet a
+way to directly set a field's value. (The `joker.core/Go` function, now private,
+returned a `var` for a field, rather than the value of a field, requiring a `deref` to
+etrieve the value, but also permitting use of `var-set` to change the value.)
+
+### 2021-04-01
+
 All (exported) constants are now wrapped; evaluation of constant expressions is now done via `go/types`, `go/importer`, and `go/constant`, rather than via custom code in `gostd`.
 
 Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants), instead of just `1N` being printed:

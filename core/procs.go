@@ -919,43 +919,7 @@ var proc_Go = func(args []Object) Object {
 	if goType != nil {
 		return goGetTypeInfo(goType, member)
 	}
-	o := EnsureArgIsGoObject(args, 0)
-	g := LookupGoType(o.O)
-	if g == nil {
-		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
-	}
-	f := g.Members[member]
-	if f != nil {
-		// Currently only receivers/methods are listed in Members[].
-		defer func() {
-			if r := recover(); r != nil {
-				switch r.(type) {
-				case Error:
-					panic(r)
-				default:
-					panic(RT.NewError(fmt.Sprintf("method/receiver invocation panic: %s", r)))
-				}
-			}
-		}()
-		return (f.Value.(*GoReceiver).R)(o, args[2])
-	}
-	v := reflect.ValueOf(o.O)
-	k := v.Kind()
-	if k == reflect.Ptr {
-		v = reflect.Indirect(v)
-		k = v.Kind()
-	}
-	if k != reflect.Struct {
-		panic(RT.NewError(fmt.Sprintf("No such receiver/method %s/%s", o.TypeToString(false), member)))
-	}
-	field := v.FieldByName(member)
-	if field.Kind() == reflect.Invalid {
-		panic(RT.NewError(fmt.Sprintf("No such member/field %s/%s", o.TypeToString(false), member)))
-	}
-	if field.CanAddr() {
-		return &GoVar{Value: field.Addr().Interface()}
-	}
-	return &GoVar{Value: field.Interface()}
+	panic(RT.NewError("invalid form for (Go ...); use (. instance members args*) instead"))
 }
 
 var procRef = func(args []Object) Object {

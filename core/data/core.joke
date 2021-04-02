@@ -4564,21 +4564,13 @@
   ([^Int code]
    (exit__ code)))
 
-(defn Go
-  "Invokes a receiver for a GoObject, returning the result.
+(defn- Go
+  "Manipulates GoObjects on behalf of Joker developers.
 
-  The receiver is named via a keyword, symbol, or string. E.g.:
+    (Go <obj> <op>)
 
-    (Go <FileInfoObject> :IsDir)
-
-  Arguments may be specified. E.g.:
-
-    (Go <IPv4Object> :Equal other-goobj)
-
-  SPECIAL SYNTAX: these are receiver names that cannot, syntactically,
-  name Go receivers or methods. They currently ignore unused
-  arguments, and are intended primarily for use by developers of Joker
-  itself:
+  <obj> is typically a GoObject, while <op> must be a symbol, keyword,
+  or string specifying one of these:
 
   . returns, wrapped by a GoObject, either: for a GoType argument, the
   reflect.Type of the underlying type (TBI, if needed); or, for an

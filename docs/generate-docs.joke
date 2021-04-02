@@ -157,7 +157,7 @@
 #?(:gostd
    (do (defn receiver-doc
       [t r what]
-      (if-let [m (Go t (str r))]
+      (if-let [m (joker.core/Go t (str r))]
         (-> receiver-template
             (s/replace "{id}" (str r))
             (s/replace "{name}" (str r))
@@ -177,7 +177,7 @@
 
     (defn receivers-doc
       [k v what]
-      (let [go-type-info (deref (Go v ""))
+      (let [go-type-info (deref (joker.core/Go v ""))
             members (get go-type-info "Members")
             memvec (sort (get members nil))]
         (s/join

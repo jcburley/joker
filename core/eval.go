@@ -364,13 +364,16 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 }
 
 func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
+	returnVar := false // TODO: true when wrapped in a (var ...), a (set! ...), anything else?
 	instance := Eval(expr.instance, env)
 	memberSym := expr.member
 	member := *memberSym.name
+
 	var args Object = NIL
 	if expr.args != nil && len(expr.args) > 0 {
 		args = &ArraySeq{arr: evalSeq(expr.args, env)}
 	}
+
 	o := EnsureObjectIsGoObject(instance, "")
 	g := LookupGoType(o.O)
 	if g == nil {
@@ -406,6 +409,12 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	if args != NIL {
 		panic(RT.NewError(fmt.Sprintf("Field %s cannot be passed arguments", member)))
+	}
+	if returnVar {
+		if field.CanAddr() {
+			return &GoVar{Value: field.Addr().Interface()}
+		}
+		return &GoVar{Value: field.Interface()}
 	}
 	return MakeGoObjectIfNeeded(field.Interface())
 }
