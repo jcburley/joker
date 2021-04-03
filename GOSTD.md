@@ -265,13 +265,47 @@ user=>
 
 Here, the number is too large to convert to a native numeric Go type, so it is converted to a string. While that looks reasonable formatted by `%s`, the result of formatting it via `%x` is the hex form of the stringized version; that's probably not desirable.
 
-Finally, note that floating-point constants are not currently promoted to `BigFloat` even if they cannot be accurately and precisely be represented via `Double`; that might change in the future. In the meantime:
+### Floating-point Constants
+
+Floating-point constants that are not accurately and precisely representable via `Double` are promoted to `BigFloat`. Compare the `gostd` rendition of _e_ with Joker's official version:
 
 ```
-user=> go.std.math/E
+user=> joker.math/e
 2.718281828459045
-user=> (type go.std.math/E)
-Double
+user=> go.std.math/E
+2.71828182845904523536028747135266249775724709369995957496696763M
+user=>
+```
+
+Further, `BigFloat`s created from strings (as is `math/big.E`, or when a constant such as `1.3M` is parsed by Joker) are given a _minimum_ precision of 53 (the same precision as a `Double`, aka `float64`) and a _maximum_ precision based on the number of digits and the number of bits each digit represents (3.3 for decimal; 1, 3, or 4 for binary, octal, and hex).
+
+A new `joker.core/precision` function has been introduced mainly to inspect `BigFloat` types, though it supports a few others.
+
+This combines to produce a fairly useful set of default behaviors:
+
+```
+user=> (def c1 1.3M)
+#'user/c1
+user=> (def c2 0000000000001.3000000000000M)
+#'user/c2
+user=> (precision c1)
+53
+user=> (precision c2)
+86
+user=> (= c1 c2)
+false
+user=> (+ c1 c2)
+2.600000000000000044408921M
+user=>
+```
+
+Note the inequality of the two values: when `c1` is binary-extended to match the precision of `c2`, it represents a slightly different value than does `c1`, as confirmed when adding the two values. This effect is not observed when using binary-based (binary, octal, or hexadecimal) encoding, since they encode the mantissa and thus the value precisely, which base-10 encoding (shown above) does not, due to the underlying representation using binary (rather than decimal) digits. E.g.:
+
+```
+user=> (= 0x1.fM 0x1.fM)
+true
+user=> (= 0x1.fM 0x1.f00000000000000000000000000M)
+true
 user=>
 ```
 
