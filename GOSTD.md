@@ -23,7 +23,7 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
-### 2021-04-02
+### 2021-04-03
 
 The dot (`.`) special form, `(. <instance> <member> <args>*)`, is implemented and the corresponding
 functionality of the `joker.core/Go` function (invoking methods/receivers and reference fields)
@@ -37,7 +37,7 @@ Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
 
 ### Earlier Changes
 
-See near the bottom of this document for earlier design changes.
+See [below](#earlier-design-changes) for more history.
 
 ## Sample Usage
 
@@ -485,7 +485,7 @@ Note that returned objects that are considered (by Go) to be `error` or `string`
 
 `(. obj field)` returns the value of the named field, when `obj` denotes a structure (`struct` type in Go) wrapped by (underlying a) `GoObject`. (TBD?: `obj` may also wrap a `map[]`, array, slice, or string.)
 
-If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Alternatively, `(get obj 'field)` (notice how the symbol name is quoted, which isn't necessary for the `.` special form) will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`.
+If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Alternatively, `(get obj 'field)` will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`. (Note how the symbol name is quoted so it evalutes to a symbol, since `get` evaluates all its arguments; such quoting is neither necessary nor permitted for the `.` special form.)
 
 TBD: wrapping the `.` special form in a `(var ...)` returns not the value of the object's field, but a reference (pointer) to it, as a `GoVar`. The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
 
