@@ -30,7 +30,7 @@ functionality of the `joker.core/Go` function (invoking methods/receivers and re
 has been removed. As the `set!` special operator has not yet been impemented, there's not yet a
 way to directly set a field's value. (The `joker.core/Go` function, now private,
 returned a `var` for a field, rather than the value of a field, requiring a `deref` to
-etrieve the value, but also permitting use of `var-set` to change the value.)
+retrieve the value, but also permitting use of `var-set` to change the value.)
 
 `(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
 Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
@@ -505,7 +505,7 @@ Similarly, implicit conversion of `String` expressions to Go types that have `st
 
 For standalone functions, their Go name is (sometimes) directly usable as a Clojure function. E.g. `(go.std.os/Chmod "sample.txt" 0777)`, where `Chmod` is the function name.
 
-For receivers, given an object of the appropriate type, the `Go` function (specific to this version of Joker) is used, specifying the object, the name (as an expression that evaluates to a keyword, string, or symbol) of the receiver, and any arguments:
+For receivers, given an object of the appropriate type, the `.` special form (specific to this version of Joker) is used, specifying the object, the name (as a symbol that is unevaluated) of the receiver, and any arguments:
 
 ```
 user=> (use 'go.std.net)
@@ -518,11 +518,11 @@ user=> (def im (IPv4Mask 252 0 0 0))
 #'user/im
 user=> im
 fc000000
-user=> (Go im :Size)
+user=> (. im Size)
 [6 32]
-user=> (Go ip :Equal ip)
+user=> (. ip Equal ip)
 true
-user=> (Go ip :Equal im)
+user=> (. ip Equal im)
 <joker.core>:4609:3: Eval error: Arg[0] (_v_x) of (net.IP)Equal() must have type GoObject[net.IP], got GoObject[net.IPMask]
 Stacktrace:
   global <repl>:4:1
@@ -530,11 +530,9 @@ Stacktrace:
 user=>
 ```
 
-(Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.)
+Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.
 
-**IMPORTANT:** The `Go` function is, like **gostd** generally, a proof-of-concept prototype. Its name was chosen to set it apart from all other Joker code and specifically to identify it as referring to the Go language and its runtime. It might well be changed (incompatibly) or removed in the future.
-
-Also note that Clojure's `.foo` form and its `.` special operator are not (yet?) supported. When they are, they'll (likely) be much more stable than `Go`.
+Also note that Clojure's `(.receiver instance args*)` special form, which macroexpands to `(. instance receiver args*)`, is not yet supported.
 
 #### Returned Values
 
@@ -588,11 +586,13 @@ Note that returned objects that are considered (by Go) to be `error` or `string`
 
 #### Fields in Structures
 
-`(Go obj field)` returns a `GoVar` wrapping the field named (typically via a keyword) by `field`. `obj` must denote a structure (`struct` type in Go).
+`(. obj field)` returns the value of the named field, when `obj` denotes a structure (`struct` type in Go) wrapped by (underlying a) `GoObject`. (TBD?: `obj` may also wrap a `map[]`, array, slice, or string.)
 
-The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
+If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Alternatively, `(get obj 'field)` (notice how the symbol name is quoted, which isn't necessary for the `.` special form) will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`.
 
-It can also be changed, as if via Go's assignment statement, via `(var-set var newval)`.
+TBD: wrapping the `.` special form in a `(var ...)` returns not the value of the object's field, but a reference (pointer) to it, as a `GoVar`. The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
+
+It can also be changed, as in Go's assignment (`=` or `:=`) statement, via `(var-set var newval)`.
 
 For example:
 
@@ -603,9 +603,9 @@ user=> (def le (new LinkError {:Op "hi" :Old "there" :New "you" :Err "silly"}))
 #'user/le
 user=> (str le)
 "hi there you: silly"
-user=> (Go le :Old)
+user=> (. le Old)
 0xc000f56a10
-user=> (def v (Go le :Old))
+user=> (def v (var (. le Old)))  ; This is TBD (not yet implemented).
 #'user/v
 user=> (var-set v "golly")
 "golly"
@@ -621,9 +621,7 @@ user=>
 
 #### Receivers and Methods
 
-`(Go obj receiver [args...])`, where `obj` is a `GoObject`, calls a receiver (or method) for `obj` with the specified arguments.
-
-As `Go` is a function, `receiver` (like `obj` and `args`) is evaluated. Typically it will be a self-evaluating form, as it must evaluate to a keyword, symbol, or string, which are supported as equivalent:
+`(. obj receiver [args...])`, where `obj` is a `GoObject`, calls `receiver` (an unevaluated symbol) for `obj` with the specified arguments. For examples:
 
 ```
 user=> (use 'go.std.os)
@@ -632,19 +630,19 @@ user=> (def file (get (Create "TEMP.txt") 0))
 #'user/file
 user=> file
 &{0xc000c01b60}
-user=> (Go file :Name)
+user=> (. file Name)
 "TEMP.txt"
-user=> (Go file :WriteString "Hello, world!\n")
+user=> (. file WriteString "Hello, world!\n")
 [14 nil]
-user=> (Go file "Close)
+user=> (. file Close)
 nil
-user=> (Go file 'Name)  ;; Same as (Go file "Name") and (Go file :Name)
+user=> (. file Name)
 "TEMP.txt"
-user=> (Go file "WriteString" "Hello, world again!\n")
+user=> (. file WriteString "Hello, world again!\n")
 [0 "write TEMP.txt: file already closed"]
 user=> (slurp "TEMP.txt")
 "Hello, world!\n"
-user=> (Go (deref Stdin) :Name)
+user=> (. (deref Stdin) Name)
 "/dev/stdin"
 user=>
 ```
@@ -710,7 +708,6 @@ user=>
 
 Among things to do to "productize" this:
 
-* Support the `.` (and maybe `..`) special forms, replacing (or at least superseding) the current `(Go <obj> <method> <args>...)` approach
 * Support `(Type. ...)` as in `(new Type ...)`
 * Support explicit conversion (e.g. via constructors) of `Vector`, `Seq`, and such to `[]<type>` (and *vice versa*), though to `String` is already implemented
 * Avoid generating unused code (`ReceiverArg_ns_*`, etc) to reduce executable size
@@ -859,4 +856,4 @@ A `GoObject` has a single member:
 ### Why GoReceiver?
 
 `GoReceiver` extends `Object` with:
-* `R func(GoObject, Object) Object`, connecting a `(Go <obj> <rcvr-name> ...)` call to a concrete implementation
+* `R func(GoObject, Object) Object`, connecting a `(. obj receiver args*)` call to a concrete implementation
