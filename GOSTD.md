@@ -231,9 +231,9 @@ For example, the `MX` type defined in the `net` package is wrapped as `go.std.ne
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`, named `refToMX`) in the namespace as well as an array-of version (e.g. `[]MX`, named `arrayOfMX`).
 
-Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(Go f :Name)`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
+Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(. f Name)`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
 
-Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Clojure, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(Go fi :ModTime)` works on such an object.
+Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Clojure, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(. fi ModTime)` works on such an object.
 
 ## Constants
 
