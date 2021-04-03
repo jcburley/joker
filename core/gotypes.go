@@ -814,6 +814,17 @@ func ExtractarrayOfString(args []Object, index int) []string {
 		case []string:
 			return g
 		}
+	case *Vector:
+		vec := make([]string, obj.Count())
+		for i := 0; i < obj.Count(); i++ {
+			el := obj.Nth(i)
+			if val, ok := el.(String); ok {
+				vec[i] = val.S
+			} else {
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to String: %s", i, el.ToString(true))))
+			}
+		}
+		return vec
 	}
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
 }
