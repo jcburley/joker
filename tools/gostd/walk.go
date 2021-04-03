@@ -439,7 +439,9 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 		f, ok := constant.Int64Val(val)
 		gl = fmt.Sprintf("%d", f)
 		if !ok {
-			cl = "Number"
+			if cl != "GoObject" {
+				cl = "Number"
+			}
 			u, _ := constant.Uint64Val(val)
 			gl = fmt.Sprintf("%d", u)
 			numPat = "uint64(%s)"
