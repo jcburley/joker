@@ -35,146 +35,9 @@ retrieve the value, but also permitting use of `var-set` to change the value.)
 `(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
 Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
 
-### 2021-04-01
+### Earlier Changes
 
-All (exported) constants are now wrapped; evaluation of constant expressions is now done via `go/types`, `go/importer`, and `go/constant`, rather than via custom code in `gostd`.
-
-Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants), instead of just `1N` being printed:
-
-```
-user=> go.std.net/FlagUp
-up
-user=> (int go.std.net/FlagUp)
-1
-user=>
-```
-
-Constants and variables whose names match Joker type names are no longer renamed away. Use explicit namespace resolution to specify them; or, if referring a namespace that shadows a Joker type (which is not recommended), quote the type when using it as a tag. E.g.:
-
-```
-user=> Int
-Int
-user=> (type Int)
-Type
-user=> go.std.go.constant/Int
-3
-user=> (use 'go.std.go.constant)
-nil
-user=> Int
-3
-user=> (type Int)
-GoObject
-user=> (defn ^Int foo [])
-#'user/foo
-user=> (meta (var foo))
-{:line 12, :column 1, :file "<repl>", :ns user, :name foo, :tag 3, :arglists ([])}
-user=> (defn ^"Int" foo [])
-#'user/foo
-user=> (meta (var foo))
-{:line 14, :column 1, :file "<repl>", :ns user, :name foo, :tag "Int", :arglists ([])}
-user=>
-```
-
-Note that the first argument to `catch` in a `try` is known to specify a type, so the builtin Joker types will be checked first, as will likely be desirable (since `catch` does not support `GoType`s). E.g.:
-
-```
-user=> (use 'go.std.go.scanner)
-nil
-user=> Error
-go.std.go.scanner/Error
-user=> (type Error)
-GoType
-user=> (try true (catch Error e))
-true
-user=> (try true (catch go.std.go.scanner/Error e))
-<repl>:26:18: Parse error: Unable to resolve type: go.std.go.scanner/Error, got: {:type :var-ref, :var #'go.std.go.scanner/Error}
-user=>
-```
-
-The `BigFloat` type is now supported for `std`-generated libraries (namespaces in the `std` subdirectory and built into Joker).
-
-Further, `BigFloat`s created from strings (such as `1.3M`) are given a minimum precision of 53 (the same precision as a `Double`, aka `float64`) or more precision based on the number of digits and the number of bits each digit represents (3.3 for decimal; 1, 3, or 4 for binary, octal, and hex).
-
-All arrays with constant lengths are now supported. Previously only easily-evaluated lengths (such as literal constants) were supported; now, any constant expression works. This results in more functions being wrapped.
-
-A new `joker.core/precision` function has been introduced mainly to inspect `BigFloat` types, though it supports a few others.
-
-### 2021-03-24
-
-tl;dr: As of now, this fork is verging on usefulness!
-
-`...` arguments are now supported for functions, methods, and receivers, unless the underlying type is any other type Joker decides to pass by reference (currently these are all non-empty `struct{}` types; as a result, `reflect.Append()` is unsupported). E.g.:
-
-```
-user=> (go.std.fmt/Println (go.std.net/IPv4 1 2 3 4) (go.std.net/IPv4Mask 255 255 255 127))
-1.2.3.4 ffffff7f
-[17 nil]
-user=>
-```
-
-`^GoObject` arguments are extended to support many native Joker types via their underlying (`Native`) types. E.g.:
-
-```
-user=> (go.std.fmt/Println 1 2 3 4)
-1 2 3 4
-[8 nil]
-user=>
-```
-
-`[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). There are more conversions like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
-
-A `Vector` or `Seq` may be provided in lieu of a `String` (this might be too general!). E.g.:
-
-```
-user=> (go.std.fmt/Printf [65 66 67 10])
-ABC
-[4 nil]
-user=>
-```
-
-Got `chan` and (empty) `struct{}` types working at a rudimentary level.
-
-Receivers that have no return values are now implemented; their Joker wrappers return `NIL`, just as for regular functions and methods.
-
-Types defined (recursively) in terms of builtin types are now pass-by-value (and construct-by-value), as is `struct{}`.
-
-Note that constructors for pass-by-reference types return reference types. E.g. `(new Foo ...)` returns `refToFoo`. Assuming the Go code defines methods on `*Foo`, they should work on the result; else, one should be able to dereference and then invoke them, as in `(Go (deref my-foo) :SomeMethod ...)`.
-
-Though some namespaces redefine (shadow) built-in types such as `String` and `Error`, `(catch <type> ...)` now first checks *type* to see whether it is a symbol that names one of the built-in types (and does not specify a namespace). If so, that type is used, rather than an error resulting.
-
-### 2021-03-07
-
-The `:gostd` reader conditional has been introduced, primarily to allow `docs/generate-docs.joke` to work on any version of Joker. E.g. `#?(:gostd ...)` will process the `...` only if run by a (recent version of) this **gostd** fork of Joker. It's unlikely to have the same name by the time this fork gains some sort of official status (well beyond proof-of-concept).
-
-Incompatible types for arguments passed to receivers no longer crash Joker; they can be caught, and otherwise produce reasonable diagnostics, just as occurs with normal functions. E.g. `./joker -e '(Go (new go.std.os/File {}) :Write "hi there")'` no longer crashes Joker.
-
-`map`, `struct` (except empty `struct{}`), and `func` types, as well as `...` in argument lists, are explicitly disabled for now.
-
-The build process no longer changes files known to Git; generated files, whose names are all prefixed with `g_`, start out as stubs copied in by `run.sh` and are then overwritten by `tools/gostd/gostd` later by that script.
-
-The **gostd** tool itself has been simplified, including replacing some substantial `fmt.Sprintf` calls (which can be difficult to maintain) with use of templates (via Go's `text/template` package), which are kept in `tools/gostd/templates/`. More work is expected in this area (simplification as well as templatization) in the future.
-
-### 2020-12-17
-
-Type aliases (e.g. `type foo = bar`) are now ignored, so their Clojure names are not available for use.
-
-Their use (in the Go standard library) seems to have been introduced (with respect to the timeframe in which **gostd** has existed) in Go version `1.16.1beta1`.
-
-Ideally, **gostd** would support them, but as they seem designed for only short-term use around refactoring, properly implementing them in Joker seems less urgent than numerous other matters.
-
-For more information on type aliases, see [Proposal: Type Aliases](https://go.googlesource.com/proposal/+/master/design/18130-type-alias.md) by Russ Cox and Robert Griesemer, December 16, 2016.
-
-### 2020-04-17
-
-Values returned by functions (this includes receivers and methods) are now returned "as-is", rather than (for some types) autoconverted to suitable Joker representations.
-
-For example, calling a Go function returning `[]string` now returns a `GoObject` wrapping that same object (which has a type named `arrayOfstring`, since `[` and `]` are invalid symbol characters), rather than a vector of String objects.
-
-Use `(vec ...)` to perform an explicit conversion, in this example, as `GoObject`s that wrap appropriate types are `Seqable` and thus support `(count ...`), `(rest ...)`, and so on.
-
-This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Clojure code, and where the number of returned elements (or their individual elements) is large.
-
-*Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
+See near the bottom of this document for earlier design changes.
 
 ## Sample Usage
 
@@ -891,3 +754,147 @@ A `GoObject` has a single member:
 
 `GoReceiver` extends `Object` with:
 * `R func(GoObject, Object) Object`, connecting a `(. obj receiver args*)` call to a concrete implementation
+
+## Earlier Design Changes
+
+### 2021-04-01
+
+All (exported) constants are now wrapped; evaluation of constant expressions is now done via `go/types`, `go/importer`, and `go/constant`, rather than via custom code in `gostd`.
+
+Constant types are now preserved. E.g. `go.std.net/FlagUp` is of type `net.Flags`, not `Number`, so this now works (as `go.std.net/Flags` is the type for `FlagUp` and defines a `String()` method for it and other constants), instead of just `1N` being printed:
+
+```
+user=> go.std.net/FlagUp
+up
+user=> (int go.std.net/FlagUp)
+1
+user=>
+```
+
+Constants and variables whose names match Joker type names are no longer renamed away. Use explicit namespace resolution to specify them; or, if referring a namespace that shadows a Joker type (which is not recommended), quote the type when using it as a tag. E.g.:
+
+```
+user=> Int
+Int
+user=> (type Int)
+Type
+user=> go.std.go.constant/Int
+3
+user=> (use 'go.std.go.constant)
+nil
+user=> Int
+3
+user=> (type Int)
+GoObject
+user=> (defn ^Int foo [])
+#'user/foo
+user=> (meta (var foo))
+{:line 12, :column 1, :file "<repl>", :ns user, :name foo, :tag 3, :arglists ([])}
+user=> (defn ^"Int" foo [])
+#'user/foo
+user=> (meta (var foo))
+{:line 14, :column 1, :file "<repl>", :ns user, :name foo, :tag "Int", :arglists ([])}
+user=>
+```
+
+Note that the first argument to `catch` in a `try` is known to specify a type, so the builtin Joker types will be checked first, as will likely be desirable (since `catch` does not support `GoType`s). E.g.:
+
+```
+user=> (use 'go.std.go.scanner)
+nil
+user=> Error
+go.std.go.scanner/Error
+user=> (type Error)
+GoType
+user=> (try true (catch Error e))
+true
+user=> (try true (catch go.std.go.scanner/Error e))
+<repl>:26:18: Parse error: Unable to resolve type: go.std.go.scanner/Error, got: {:type :var-ref, :var #'go.std.go.scanner/Error}
+user=>
+```
+
+The `BigFloat` type is now supported for `std`-generated libraries (namespaces in the `std` subdirectory and built into Joker).
+
+Further, `BigFloat`s created from strings (such as `1.3M`) are given a minimum precision of 53 (the same precision as a `Double`, aka `float64`) or more precision based on the number of digits and the number of bits each digit represents (3.3 for decimal; 1, 3, or 4 for binary, octal, and hex).
+
+All arrays with constant lengths are now supported. Previously only easily-evaluated lengths (such as literal constants) were supported; now, any constant expression works. This results in more functions being wrapped.
+
+A new `joker.core/precision` function has been introduced mainly to inspect `BigFloat` types, though it supports a few others.
+
+### 2021-03-24
+
+tl;dr: As of now, this fork is verging on usefulness!
+
+`...` arguments are now supported for functions, methods, and receivers, unless the underlying type is any other type Joker decides to pass by reference (currently these are all non-empty `struct{}` types; as a result, `reflect.Append()` is unsupported). E.g.:
+
+```
+user=> (go.std.fmt/Println (go.std.net/IPv4 1 2 3 4) (go.std.net/IPv4Mask 255 255 255 127))
+1.2.3.4 ffffff7f
+[17 nil]
+user=>
+```
+
+`^GoObject` arguments are extended to support many native Joker types via their underlying (`Native`) types. E.g.:
+
+```
+user=> (go.std.fmt/Println 1 2 3 4)
+1 2 3 4
+[8 nil]
+user=>
+```
+
+`[]byte` arguments and fields are now supported in function calls and ctors, and also support automatic conversion from strings (e.g. an object of type `String`). There are more conversions like this to come, but this is a nice proof-of-concept, as it enables (for example) sending an email to an SMTP server.
+
+A `Vector` or `Seq` may be provided in lieu of a `String` (this might be too general!). E.g.:
+
+```
+user=> (go.std.fmt/Printf [65 66 67 10])
+ABC
+[4 nil]
+user=>
+```
+
+Got `chan` and (empty) `struct{}` types working at a rudimentary level.
+
+Receivers that have no return values are now implemented; their Joker wrappers return `NIL`, just as for regular functions and methods.
+
+Types defined (recursively) in terms of builtin types are now pass-by-value (and construct-by-value), as is `struct{}`.
+
+Note that constructors for pass-by-reference types return reference types. E.g. `(new Foo ...)` returns `refToFoo`. Assuming the Go code defines methods on `*Foo`, they should work on the result; else, one should be able to dereference and then invoke them, as in `(Go (deref my-foo) :SomeMethod ...)`.
+
+Though some namespaces redefine (shadow) built-in types such as `String` and `Error`, `(catch <type> ...)` now first checks *type* to see whether it is a symbol that names one of the built-in types (and does not specify a namespace). If so, that type is used, rather than an error resulting.
+
+### 2021-03-07
+
+The `:gostd` reader conditional has been introduced, primarily to allow `docs/generate-docs.joke` to work on any version of Joker. E.g. `#?(:gostd ...)` will process the `...` only if run by a (recent version of) this **gostd** fork of Joker. It's unlikely to have the same name by the time this fork gains some sort of official status (well beyond proof-of-concept).
+
+Incompatible types for arguments passed to receivers no longer crash Joker; they can be caught, and otherwise produce reasonable diagnostics, just as occurs with normal functions. E.g. `./joker -e '(Go (new go.std.os/File {}) :Write "hi there")'` no longer crashes Joker.
+
+`map`, `struct` (except empty `struct{}`), and `func` types, as well as `...` in argument lists, are explicitly disabled for now.
+
+The build process no longer changes files known to Git; generated files, whose names are all prefixed with `g_`, start out as stubs copied in by `run.sh` and are then overwritten by `tools/gostd/gostd` later by that script.
+
+The **gostd** tool itself has been simplified, including replacing some substantial `fmt.Sprintf` calls (which can be difficult to maintain) with use of templates (via Go's `text/template` package), which are kept in `tools/gostd/templates/`. More work is expected in this area (simplification as well as templatization) in the future.
+
+### 2020-12-17
+
+Type aliases (e.g. `type foo = bar`) are now ignored, so their Clojure names are not available for use.
+
+Their use (in the Go standard library) seems to have been introduced (with respect to the timeframe in which **gostd** has existed) in Go version `1.16.1beta1`.
+
+Ideally, **gostd** would support them, but as they seem designed for only short-term use around refactoring, properly implementing them in Joker seems less urgent than numerous other matters.
+
+For more information on type aliases, see [Proposal: Type Aliases](https://go.googlesource.com/proposal/+/master/design/18130-type-alias.md) by Russ Cox and Robert Griesemer, December 16, 2016.
+
+### 2020-04-17
+
+Values returned by functions (this includes receivers and methods) are now returned "as-is", rather than (for some types) autoconverted to suitable Joker representations.
+
+For example, calling a Go function returning `[]string` now returns a `GoObject` wrapping that same object (which has a type named `arrayOfstring`, since `[` and `]` are invalid symbol characters), rather than a vector of String objects.
+
+Use `(vec ...)` to perform an explicit conversion, in this example, as `GoObject`s that wrap appropriate types are `Seqable` and thus support `(count ...`), `(rest ...)`, and so on.
+
+This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Clojure code, and where the number of returned elements (or their individual elements) is large.
+
+*Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
+
