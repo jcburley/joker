@@ -73,6 +73,7 @@
         dle (deref le)
         old (var (. le Old))]
     (is (= (. le Op) "hey"))
+    (is (= (. le -Op) "hey"))
     (is (= (deref old) "there"))
     (is (= (var-set old "wow") "wow"))
     (is (= (deref old) "wow"))

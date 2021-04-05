@@ -368,6 +368,11 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	instance := Eval(expr.instance, env)
 	memberSym := expr.member
 	member := *memberSym.name
+	isField := false
+	if len(member) > 0 && member[0] == '-' {
+		isField = true
+		member = member[1:]
+	}
 
 	var args Object = NIL
 	if expr.args != nil && len(expr.args) > 0 {
@@ -383,6 +388,9 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	if f != nil {
 		if returnVar {
 			panic(RT.NewError(fmt.Sprintf("Cannot return GoVar of a method/receiver invocation (%s)", member)))
+		}
+		if isField {
+			panic(RT.NewError(fmt.Sprintf("Not a field: %s", member)))
 		}
 		// Currently only receivers/methods are listed in Members[].
 		defer func() {
