@@ -364,7 +364,7 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 }
 
 func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
-	returnVar := false // TODO: true when wrapped in a (var ...), a (set! ...), anything else?
+	returnVar := expr.isVarRef
 	instance := Eval(expr.instance, env)
 	memberSym := expr.member
 	member := *memberSym.name
@@ -381,6 +381,9 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	f := g.Members[member]
 	if f != nil {
+		if returnVar {
+			panic(RT.NewError(fmt.Sprintf("Cannot return GoVar of a method/receiver invocation (%s)", member)))
+		}
 		// Currently only receivers/methods are listed in Members[].
 		defer func() {
 			if r := recover(); r != nil {

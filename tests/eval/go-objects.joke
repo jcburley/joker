@@ -71,30 +71,30 @@
 (deftest fields-work
   (let [le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})
         dle (deref le)
-        old (. le Old)]
+        old (var (. le Old))]
     (is (= (. le Op) "hey"))
-    (is (= old "there"))
-    ;; (is (= (var-set old "wow") "wow"))
-    ;; (is (= (deref old) "wow"))
-    (is (= (str le) "hey there you: silly"))
+    (is (= (deref old) "there"))
+    (is (= (var-set old "wow") "wow"))
+    (is (= (deref old) "wow"))
+    (is (= (str le) "hey wow you: silly"))
     (is (= (count le) 4))
     (is (= (count dle) 4))
-    (is (= (seq le) '([:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"])))
+    (is (= (seq le) '([:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"])))
     (is (= (seq dle) '([:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"])))
-    (is (= (vec le) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"]]))
+    (is (= (vec le) [[:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"]]))
     (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"]]))))
 
 (deftest govars-work
   (let [dnserr (new DNSError {})
-        temp (. dnserr IsTemporary)
-        timeout (. dnserr IsTimeout)]
-    (is (not timeout))
-    (is (not temp))))
-;; (is (var-set temp true))
-;; (is (deref temp))
-;; (is (not (deref timeout)))
-;; (var-set timeout temp)
-;; (is (deref timeout))))
+        temp (var (. dnserr IsTemporary))
+        timeout (var (. dnserr IsTimeout))]
+    (is (not (deref timeout)))
+    (is (not (deref temp)))
+    (is (var-set temp true))
+    (is (deref temp))
+    (is (not (deref timeout)))
+    (var-set timeout temp)
+    (is (deref timeout))))
 
 (deftest native-wrapping-works
   (let [one (joker.core/Go 1 '<>)

@@ -23,14 +23,14 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
-### 2021-04-03
+### 2021-04-05
 
 The dot (`.`) special form, `(. <instance> <member> <args>*)`, is implemented and the corresponding
 functionality of the `joker.core/Go` function (invoking methods/receivers and reference fields)
-has been removed. As the `set!` special operator has not yet been impemented, there's not yet a
-way to directly set a field's value. (The `joker.core/Go` function, now private,
-returned a `var` for a field, rather than the value of a field, requiring a `deref` to
-retrieve the value, but also permitting use of `var-set` to change the value.)
+has been removed. The `set!` special operator is not implemented; instead, use `(var ...)` to wrap
+the special form, yielding a `GoVar` that can then be the first operand of a `var-set`.
+(The `joker.core/Go` function, now private, returned a `var` for a field, rather than the value of
+field, requiring a `deref` to retrieve the value.)
 
 `(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
 Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
@@ -174,9 +174,9 @@ user=>
 
 ## Variables
 
-Pointers to global variables are wrapped in `GoVar{}` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
+Pointers to global variables are wrapped in `GoVar` objects that can be unwrapped via `(deref gv)`, yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
 
-`(var-set var newval)`, where `var` is a GoVar, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
+`(var-set var newval)`, where `var` is a `GoVar`, assigns `newval` to the variable. `newval` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var`, `GoVar`, or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
 ## GoObjects
 
@@ -487,7 +487,7 @@ Note that returned objects that are considered (by Go) to be `error` or `string`
 
 If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Alternatively, `(get obj 'field)` will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`. (Note how the symbol name is quoted so it evalutes to a symbol, since `get` evaluates all its arguments; such quoting is neither necessary nor permitted for the `.` special form.)
 
-TBD: wrapping the `.` special form in a `(var ...)` returns not the value of the object's field, but a reference (pointer) to it, as a `GoVar`. The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
+Wrapping the `.` special form in a `(var ...)` returns not the value of the object's field, but a sort of reference (pointer) to it, as a `GoVar`. The resulting `GoVar` can be dereferenced, as in `(deref var)` or `(var-get var)`, yielding a snapshot of the value of that field at that time.
 
 It can also be changed, as in Go's assignment (`=` or `:=`) statement, via `(var-set var newval)`.
 
@@ -502,7 +502,7 @@ user=> (str le)
 "hi there you: silly"
 user=> (. le Old)
 0xc000f56a10
-user=> (def v (var (. le Old)))  ; This is TBD (not yet implemented).
+user=> (def v (var (. le Old)))
 #'user/v
 user=> (var-set v "golly")
 "golly"

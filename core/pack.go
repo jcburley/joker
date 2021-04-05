@@ -872,6 +872,7 @@ func (expr *DotExpr) Pack(p []byte, env *PackEnv) []byte {
 	p = expr.instance.Pack(p, env)
 	p = expr.member.Pack(p, env)
 	p = packSeq(p, expr.args, env)
+	p = appendBool(p, expr.isVarRef)
 	return p
 }
 
@@ -881,11 +882,13 @@ func unpackDotExpr(p []byte, header *PackHeader) (*DotExpr, []byte) {
 	instance, p := UnpackExpr(p, header)
 	member, p := unpackSymbol(p, header)
 	args, p := unpackSeq(p, header)
+	isVarRef, p := extractBool(p)
 	res := &DotExpr{
 		Position: pos,
 		instance: instance,
 		member:   member,
 		args:     args,
+		isVarRef: isVarRef,
 	}
 	return res, p
 }

@@ -122,6 +122,7 @@ type (
 		instance Expr
 		member   Symbol
 		args     []Expr
+		isVarRef bool
 	}
 	SetMacroExpr struct {
 		Position
@@ -158,6 +159,7 @@ type (
 		recur                  bool
 		noRecurAllowed         bool
 		isUnknownCallableScope bool
+		isVarRef               bool
 	}
 	Warnings struct {
 		ifWithoutElse           bool
@@ -1088,9 +1090,14 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 	res := &DotExpr{
 		Position: GetPosition(obj),
 		member:   SYMBOLS.emptySymbol,
+		isVarRef: ctx.isVarRef,
 	}
 	state := Instance
 	seq := obj.(Seq).Rest()
+
+	isVarRef := ctx.isVarRef
+	ctx.isVarRef = false
+	defer func() { ctx.isVarRef = isVarRef }()
 
 	for !seq.IsEmpty() {
 		obj = seq.First()
@@ -1685,9 +1692,17 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 					obj:      vr,
 					Position: pos,
 				}
+			case Seq:
+				isVarRef := ctx.isVarRef
+				ctx.isVarRef = true
+				res := parseList(sym, ctx)
+				defer func() { ctx.isVarRef = isVarRef }()
+				if dot, ok := res.(*DotExpr); ok {
+					return dot
+				}
 			default:
-				panic(&ParseError{obj: obj, msg: "var's argument must be a symbol"})
 			}
+			panic(&ParseError{obj: obj, msg: fmt.Sprintf("var's argument must be a symbol or field reference via '.' special form, not %T", obj)})
 		case STR.do:
 			res := &DoExpr{
 				body:             parseBody(seq.Rest(), ctx),
