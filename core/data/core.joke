@@ -4573,20 +4573,20 @@
 
     (Go <obj> <op>)
 
-  <obj> is typically a GoObject, while <op> must be a symbol, keyword,
-  or string specifying one of these:
+  <obj> is typically a GoObject, while <op> must evaluate to one of
+  these symbols:
 
-  . returns, wrapped by a GoObject, either: for a GoType argument, the
-  reflect.Type of the underlying type (TBI, if needed); or, for an
+  .  Returns, wrapped by a GoObject, either: for a GoType argument,
+  the reflect.Type of the underlying type (TBI, if needed); or, for an
   argument of some other type, a reflect.Value of the underlying
   value.
 
-  ! returns a GoObject that wraps the first argument (which, in this
+  !  Returns a GoObject that wraps the first argument (which, in this
   case, can be any Joker object) in a GoObject. E.g. (Go \"hey\" :!)
   returns a GoObject wrapping a String. This can aid Joker developers
   in examining Joker objects directly.
 
-  <> returns a GoObject that wraps the underlying object in the first
+  <> Returns a GoObject that wraps the underlying object in the first
   argument (which, in this case, can be any Joker object), regardless
   of the usual conversion rules. E.g. (Go \"hey\" :<>) returns a
   GoObject wrapping a string. (Not all underlying types are supported;
