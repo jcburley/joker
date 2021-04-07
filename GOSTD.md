@@ -32,10 +32,13 @@ the special form, yielding a `GoVar` that can then be the first operand of a `va
 (The `joker.core/Go` function, now private, returned a `var` for a field, rather than the value of
 field, requiring a `deref` to retrieve the value.)
 
+The `(.<member> <instance> <args>*)` macroexpansion to `(. <instance> <member> <args>*)` is
+also implemented.
+
 The `(t. init)` macroexpansion to `(new t init)` is implemented.
 
 `(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
-Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
+Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)` or `(.SomeKey obj)`.
 
 ### Earlier Changes
 
@@ -96,7 +99,7 @@ For example, the `MX` type defined in the `net` package is wrapped as `go.std.ne
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`, named `refToMX`) in the namespace as well as an array-of version (e.g. `[]MX`, named `arrayOfMX`).
 
-Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(. f Name)`, where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
+Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(. f Name)` (or `(.Name f)`), where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoVar` named `Stdin`).
 
 Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Clojure, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(. fi ModTime)` works on such an object.
 
@@ -268,7 +271,7 @@ user=>
 
 If a particular constructor is missing, that indicates lack of support for the underlying type, or that the underlying type is abstract (`interface{}`).
 
-Note that, as in Clojure `(.t init)` is macro-expanded to `(new t init)`. However, unlike in Clojure, `new` is not a special form; and, as there are
+Note that, as in Clojure `(t. init)` is macro-expanded to `(new t init)`. However, unlike in Clojure, `new` is not a special form; and, as there are
 no constructors (in the formal sense) in Go, the constructors described above are implemented by `gostd` for each supported type.
 
 ### Converting a GoObject to a Joker (Clojure) Datatype
@@ -424,7 +427,7 @@ user=> (. im Size)
 [6 32]
 user=> (. ip Equal ip)
 true
-user=> (. ip Equal im)
+user=> (.Equal ip im)
 <joker.core>:4609:3: Eval error: Arg[0] (_v_x) of (net.IP)Equal() must have type GoObject[net.IP], got GoObject[net.IPMask]
 Stacktrace:
   global <repl>:4:1
@@ -434,7 +437,7 @@ user=>
 
 Note the diagnostic produced when passing an object of incorrect type to a receiver, just as happens when passing the wrong thing to a standalone function.
 
-Also note that Clojure's `(.receiver instance args*)` special form, which macroexpands to `(. instance receiver args*)`, is not yet supported.
+Also note that Clojure's `(.receiver instance args*)` special form, which macroexpands to `(. instance receiver args*)`, is supported.
 
 #### Returned Values
 
@@ -488,7 +491,7 @@ Note that returned objects that are considered (by Go) to be `error` or `string`
 
 #### Fields in Structures
 
-`(. obj field)` returns the value of the named field, when `obj` denotes a structure (`struct` type in Go) wrapped by (underlying a) `GoObject`. (TBD?: `obj` may also wrap a `map[]`, array, slice, or string.)
+`(. obj field)` returns the value of the named field, when `obj` denotes a structure (`struct` type in Go) wrapped by (underlying a) `GoObject`. (TBD?: `obj` may also wrap a `map[]`, array, slice, or string.) An alternate syntax, supported by Clojure as well, is `(.field obj)`.
 
 If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Alternatively, `(get obj 'field)` will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`. (Note how the symbol name is quoted so it evalutes to a symbol, since `get` evaluates all its arguments; such quoting is neither necessary nor permitted for the `.` special form.)
 
@@ -538,7 +541,7 @@ user=> (. file WriteString "Hello, world!\n")
 [14 nil]
 user=> (. file Close)
 nil
-user=> (. file Name)
+user=> (.Name file)
 "TEMP.txt"
 user=> (. file WriteString "Hello, world again!\n")
 [0 "write TEMP.txt: file already closed"]

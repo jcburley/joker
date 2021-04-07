@@ -35,15 +35,15 @@
         sz (. im Size)]
     (is (= (. i String) "1.2.3.4"))
     (is (= (. j String) "192.0.2.128"))
-    (is (= (. k String) "2001:db8:85a3::8a2e:370:7334"))
+    (is (= (.String k) "2001:db8:85a3::8a2e:370:7334"))
     (is (. i IsGlobalUnicast))
     (is (not (. i IsMulticast)))
     (is (= (. (. k To4) String) "<nil>"))
     (is (. i Equal i))
     (is (. j Equal j))
-    (is (. k Equal k))
+    (is (.Equal k k))
     (is (not (. i Equal j)))
-    (is (not (. i Equal k)))
+    (is (not (.Equal i k)))
     (is (not (. j Equal i)))
     (is (= (get sz 0) 6))
     (is (= (get sz 1) 32))
@@ -73,7 +73,7 @@
         dle (deref le)
         old (var (. le Old))]
     (is (= (. le Op) "hey"))
-    (is (= (. le -Op) "hey"))
+    (is (= (.-Op le) "hey"))
     (is (= (deref old) "there"))
     (is (= (var-set old "wow") "wow"))
     (is (= (deref old) "wow"))
@@ -124,7 +124,7 @@
   (is (= (type (new go.std.syscall/Errno 3)) GoObject)))
 
 (deftest do-not-crash-joker
-  (is (= (try (. (new go.std.os/File {}) Write "hi there") (catch Error e "ok")) "ok")))
+  (is (= (try (.Write (new go.std.os/File {}) "hi there") (catch Error e "ok")) "ok")))
 
 (deftest vector-to-string
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))

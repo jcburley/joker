@@ -1362,6 +1362,34 @@ func expandNew(seq Seq, ctx *ParseContext) Object {
 	return NewListFrom(rest...)
 }
 
+func expandMemberRef(seq Seq, ctx *ParseContext) Object {
+	sym := seq.First().(Symbol)
+	name := *sym.name
+	newSym := Symbol{}
+	newSym = sym
+	newName := name[1:]
+	newSym.name = STRINGS.Intern(newName)
+
+	if seqRest := seq.Rest(); seqRest.IsEmpty() {
+		panic(&ParseError{obj: seq, msg: "Malformed member expression, expecting (.member target ...): " + seq.ToString(false)})
+	} else {
+		seq = seqRest
+	}
+	instance := seq.First()
+	seq = seq.Rest()
+
+	rest := []Object{SYMBOLS.dot, instance, newSym}
+	for {
+		if seq.IsEmpty() {
+			break
+		}
+		rest = append(rest, seq.First())
+		seq = seq.Rest()
+	}
+
+	return NewListFrom(rest...)
+}
+
 func macroexpand1(seq Seq, ctx *ParseContext) Object {
 	op := seq.First()
 	vr, name := resolveMacro(op, ctx)
@@ -1376,8 +1404,11 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 	}
 
 	if len(name) > 1 {
+		if name == ".." {
+			return seq // TODO: Implement dotdot
+		}
 		if name[0] == '.' {
-			return seq // TODO: Implement member ref
+			return expandMemberRef(seq, ctx)
 		}
 		if name[len(name)-1] == '.' {
 			return expandNew(seq, ctx)
