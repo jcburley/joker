@@ -745,8 +745,10 @@ $
 ### Why GoType (Versus Type)?
 
 `GoType` is a "fatter" `Type` because it:
+* is also an `Object` (not just a `MetaHolder`)
+* has a name identifying the underlying Go type (builtin, named, or derived from direct specification)
 * supports constructors
-* has members
+* has members (currently only receivers/methods, not fields in structs)
 * belongs to a namespace
 
 ### Why GoObject (Versus Object)?
