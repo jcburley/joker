@@ -19,7 +19,7 @@
 
 (def *known-macros*
   {'memfn nil
-   '.. nil '. nil 'clojure.test/deftest nil 'clojure.test/is nil 'clojure.test/are nil 'tag__ nil})
+   'clojure.test/deftest nil 'clojure.test/is nil 'clojure.test/are nil 'tag__ nil})
 
 (defn ^:private taggify__
   [x]
@@ -198,7 +198,6 @@
   ([^Map opts ^String s] (read-string__ s)))
 
 ;; Clojure special forms not supported by Joker
-(defn new [& args])
 
 ;; Fake "macro" to handle tagged literals
 (defn tag__ [x])
@@ -210,8 +209,6 @@
 (defn locking [x & body])
 (defn amap [a idx ret expr])
 (defn memfn [name & args])
-(defn .. [x form & more])
-(defn . [x m & args])
 
 ;; Clojure core functions not supported by Joker
 
