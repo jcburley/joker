@@ -1480,6 +1480,8 @@ func Read(reader *Reader) (Object, bool) {
 		return readDispatch(reader)
 	case r == EOF:
 		panic(MakeReadError(reader, "Unexpected end of file"))
+	case r == ')' || r == ']' || r == '}':
+		panic(MakeReadError(reader, "Unmatched delimiter: "+string(r)))
 	default:
 		return readIdentFn(reader, r), false
 	}
@@ -1489,7 +1491,18 @@ func TryRead(reader *Reader) (obj Object, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			PROBLEM_COUNT++
-			err = r.(error)
+			switch r.(type) {
+			case ReadError:
+				err = r.(error)
+			case *ParseError:
+				err = r.(error)
+			case *EvalError:
+				err = r.(error)
+			case *ExInfo:
+				err = r.(error)
+			default:
+				panic(r)
+			}
 		}
 	}()
 	for {
