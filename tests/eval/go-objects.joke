@@ -65,8 +65,8 @@
   (is (= (str (new go.std.net/MX {:Host "burleyarch.com" :Pref 10})) "&{burleyarch.com 10}"))
   (is (= (str (new go.std.net/MX {:Host "burleyarch.com"})) "&{burleyarch.com 0}"))
   (is (= (str (new go.std.net/MX {:Pref 99})) "&{ 99}"))
-  (is (= (str (new HTML "this is an html object")) "this is an html object"))
-  (is (= (str (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})) "hey there you: silly")))
+  (is (= (str (HTML. "this is an html object")) "this is an html object"))
+  (is (= (str (LinkError. {:Op "hey" :Old "there" :New "you" :Err "silly"})) "hey there you: silly")))
 
 (deftest fields-work
   (let [le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})

@@ -4605,7 +4605,11 @@
   (Go__ o m args))
 
 (defn new
-  "Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values."
+  "Constructs a new GoObject given a GoType and (possibly optional) initial values in the form of a vector of the values or a map of the values.
+
+  May be abbreviated as (t. init).
+
+  Note: unlike in Clojure, (new ...) is not a special form."
   {:added "1.0"}
   [^GoType t ^"Vector|Map" init]
   (new__ t init))

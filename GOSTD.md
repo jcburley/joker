@@ -23,7 +23,7 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
-### 2021-04-05
+### 2021-04-07
 
 The dot (`.`) special form, `(. <instance> <member> <args>*)`, is implemented and the corresponding
 functionality of the `joker.core/Go` function (invoking methods/receivers and reference fields)
@@ -31,6 +31,8 @@ has been removed. The `set!` special operator is not implemented; instead, use `
 the special form, yielding a `GoVar` that can then be the first operand of a `var-set`.
 (The `joker.core/Go` function, now private, returned a `var` for a field, rather than the value of
 field, requiring a `deref` to retrieve the value.)
+
+The `(t. init)` macroexpansion to `(new t init)` is implemented.
 
 `(get obj key)` on a GoObject wrapping a `struct{}` now requires `key` to evaluate to a symbol.
 Instead of `(get obj 'SomeKey)`, however, just use `(. obj SomeKey)`.
@@ -265,6 +267,9 @@ user=>
 ```
 
 If a particular constructor is missing, that indicates lack of support for the underlying type, or that the underlying type is abstract (`interface{}`).
+
+Note that, as in Clojure `(.t init)` is macro-expanded to `(new t init)`. However, unlike in Clojure, `new` is not a special form; and, as there are
+no constructors (in the formal sense) in Go, the constructors described above are implemented by `gostd` for each supported type.
 
 ### Converting a GoObject to a Joker (Clojure) Datatype
 
@@ -605,7 +610,6 @@ user=>
 
 Among things to do to "productize" this:
 
-* Support `(Type. ...)` as in `(new Type ...)`
 * Support explicit conversion (e.g. via constructors) of `Vector`, `Seq`, and such to `[]<type>` (and *vice versa*), though to `String` is already implemented
 * Avoid generating unused code (`ReceiverArg_ns_*`, etc) to reduce executable size
 * Support `func()` types (somehow)
@@ -614,11 +618,13 @@ Among things to do to "productize" this:
 * Create a `go.std.builtin` space with useful functions (not exported in the usual sense, but built in to the compiler) from the `builtin` package
 * Automagically support all ad-hoc types, such as `[64]byte`, that appear in package source code, including "mashups" like `map[foo.TypeA][bar.TypeB]`, which can't really belong to one namespace or the other
 * Support `deftype` and the like
+* Make `(new ...)` a special form, so it can't be shadowed
 * Autogenerate Clojure-like APIs *a la* how they tend to be hand-written for Joker, so (for example) a low-level API returning `(string, error)` would be further wrapped by one, likely named with a lowercase initial letter, that returns merely `String` and panics if `error` came back non-`nil`
 * Support wrapping arbitrary 3rd-party packages
 * Support (perhaps via autogeneration) more-complicated types built on builtins, such as `[][]byte`, in constructors
 * Support vectors (instead of only maps with keys) in constructors
 * Improve docstrings for constructors (show and document the members)
+* Consider promoting/lifting `GoType` into `Type`, `GoObject` into `Object`, etc, if feasible and sufficiently useful
 * Clean up and document the (mostly **gostd**) code better
 * Assess performance impact (especially startup time) on Joker
 

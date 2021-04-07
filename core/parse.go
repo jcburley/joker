@@ -1257,15 +1257,21 @@ func parseRecur(obj Object, ctx *ParseContext) *RecurExpr {
 	}
 }
 
-func resolveMacro(obj Object, ctx *ParseContext) *Var {
+// Returns a Var that represents a Callable (macro), or returns nil
+// along with either the name of a Symbol that might be a special form
+// needing expansion or the empty string (indicating no such expansion
+// should occur).
+func resolveMacro(obj Object, ctx *ParseContext) (vr *Var, name string) {
 	switch sym := obj.(type) {
 	case Symbol:
+		name = sym.Name()
 		if ctx.GetLocalBinding(sym) != nil {
-			return nil
+			return nil, ""
 		}
-		vr, ok := ctx.GlobalEnv.Resolve(sym)
+		var ok bool
+		vr, ok = ctx.GlobalEnv.Resolve(sym)
 		if !ok || !vr.isMacro || vr.Value == nil {
-			return nil
+			return nil, name
 		}
 		vr.isUsed = true
 		vr.isGloballyUsed = true
@@ -1281,9 +1287,9 @@ func resolveMacro(obj Object, ctx *ParseContext) *Var {
 		}
 		vr.ns.isUsed = true
 		vr.ns.isGloballyUsed = true
-		return vr
+		return
 	default:
-		return nil
+		return nil, ""
 	}
 }
 
@@ -1336,9 +1342,29 @@ func fixInfo(obj Object, info *ObjectInfo) Object {
 	}
 }
 
+func expandNew(seq Seq, ctx *ParseContext) Object {
+	sym := seq.First().(Symbol)
+	name := *sym.name
+	newSym := Symbol{}
+	newSym = sym
+	newName := name[0 : len(name)-1]
+	newSym.name = STRINGS.Intern(newName)
+
+	rest := []Object{MakeSymbol("new"), newSym}
+	for {
+		seq = seq.Rest()
+		if seq.IsEmpty() {
+			break
+		}
+		rest = append(rest, seq.First())
+	}
+
+	return NewListFrom(rest...)
+}
+
 func macroexpand1(seq Seq, ctx *ParseContext) Object {
 	op := seq.First()
-	vr := resolveMacro(op, ctx)
+	vr, name := resolveMacro(op, ctx)
 	if vr != nil {
 		expr := &MacroCallExpr{
 			Position: GetPosition(seq),
@@ -1347,9 +1373,18 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 			name:     varCallableString(vr),
 		}
 		return fixInfo(Eval(expr, nil), seq.GetInfo())
-	} else {
-		return seq
 	}
+
+	if len(name) > 1 {
+		if name[0] == '.' {
+			return seq // TODO: Implement member ref
+		}
+		if name[len(name)-1] == '.' {
+			return expandNew(seq, ctx)
+		}
+	}
+
+	return seq
 }
 
 func reportNotAFunction(pos Position, name string) {
