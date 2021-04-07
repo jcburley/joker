@@ -1403,10 +1403,7 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 		return fixInfo(Eval(expr, nil), seq.GetInfo())
 	}
 
-	if len(name) > 1 {
-		if name == ".." {
-			return seq // TODO: Implement dotdot
-		}
+	if len(name) > 1 && name != ".." {
 		if name[0] == '.' {
 			return expandMemberRef(seq, ctx)
 		}
