@@ -173,7 +173,6 @@ type (
 		expr  Expr
 	}
 	GoType struct {
-		Object
 		T *GoTypeInfo
 	}
 	GoReceiver struct {
