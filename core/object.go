@@ -38,7 +38,9 @@ type (
 		MetaHolder
 		name        string
 		reflectType reflect.Type
+		ctor        Ctor
 	}
+	Ctor   func(Object) Object
 	Object interface {
 		Equality
 		ToString(escape bool) string
@@ -2128,7 +2130,7 @@ func RegRefType(name string, inst interface{}, doc string) *Type {
 	}
 	meta := MakeMeta(nil, "(Concrete reference type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	t := &Type{MetaHolder{meta}, name, reflect.TypeOf(inst)}
+	t := &Type{MetaHolder: MetaHolder{meta}, name: name, reflectType: reflect.TypeOf(inst)}
 	TYPES[STRINGS.Intern(name)] = t
 	return t
 }
@@ -2139,7 +2141,7 @@ func RegType(name string, inst interface{}, doc string) *Type {
 	}
 	meta := MakeMeta(nil, "(Concrete type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	t := &Type{MetaHolder{meta}, name, reflect.TypeOf(inst).Elem()}
+	t := &Type{MetaHolder: MetaHolder{meta}, name: name, reflectType: reflect.TypeOf(inst).Elem()}
 	TYPES[STRINGS.Intern(name)] = t
 	return t
 }
@@ -2150,7 +2152,19 @@ func RegInterface(name string, inst interface{}, doc string) *Type {
 	}
 	meta := MakeMeta(nil, "(Interface type)"+doc, "1.0")
 	meta.Add(KEYWORDS.name, MakeString(name))
-	t := &Type{MetaHolder{meta}, name, reflect.TypeOf(inst).Elem()}
+	t := &Type{MetaHolder: MetaHolder{meta}, name: name, reflectType: reflect.TypeOf(inst).Elem()}
 	TYPES[STRINGS.Intern(name)] = t
 	return t
+}
+
+func MakeType(name string, ctor Ctor) *Type {
+	return &Type{name: name, ctor: ctor}
+}
+
+func MakeTypeMeta(docstring, added string) *ArrayMap {
+	res := EmptyArrayMap()
+	res.Add(KEYWORDS.doc, String{S: docstring})
+	res.Add(KEYWORDS.added, String{S: added})
+	res.Add(KEYWORDS.tag, String{S: *STRINGS.Intern("Type")})
+	return res
 }

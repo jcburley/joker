@@ -834,10 +834,18 @@ var procGoObject = func(args []Object) Object {
 
 var procNew = func(args []Object) Object {
 	CheckArity(args, 2, 2)
-	t := EnsureArgIsGoType(args, 0)
-	f := t.T.Ctor
+	var f Ctor
+	name := "<unknown>"
+	switch t := args[0].(type) {
+	case *GoType:
+		f = t.T.Ctor
+		name = t.T.Name
+	case *Type:
+		f = t.ctor
+		name = t.name
+	}
 	if f == nil {
-		panic(RT.NewError("No constructor available for Go type " + t.T.Name))
+		panic(RT.NewError("No constructor available for type " + name))
 	}
 	return f(args[1])
 }
