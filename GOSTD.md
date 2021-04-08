@@ -745,13 +745,12 @@ $
 ### Why GoType (Versus Type)?
 
 `GoType` is a "fatter" `Type` because it:
-* is also an `Object` (not just a `MetaHolder`), though `Type` appears to be an `Object` as well
 * has a name identifying the underlying Go type (builtin, named, or derived from direct specification)
 * supports constructors
 * has members (currently only receivers/methods, not fields in structs)
 * belongs to a namespace
 
-If `Type` can be an `Object` (which looks to be the case), it seems quite feasible to fold `GoType` into `Type` by adding support for ctors and such.
+It seems quite feasible to fold `GoType` into `Type` by adding support for ctors and such.
 
 ### Why GoObject (Versus Object)?
 
@@ -765,8 +764,7 @@ A `GoObject` has a single member:
 
 ### Why GoReceiver?
 
-`GoReceiver` extends `Object` with:
-* `R func(GoObject, Object) Object`, connecting a `(. obj receiver args*)` call to a concrete implementation
+`GoReceiver` is of type `func(GoObject, Object) Object`, connecting a `(. obj receiver args*)` call to a concrete implementation. It implements `Object` so an instance can be stored in the `.Value` field of a `Var`.
 
 ## Earlier Design Changes
 
@@ -910,4 +908,3 @@ Use `(vec ...)` to perform an explicit conversion, in this example, as `GoObject
 This change improves performance in cases where the returned value will be used as-is, or only limited information (such as a given element or the number of elements) is needed, by Clojure code, and where the number of returned elements (or their individual elements) is large.
 
 *Note:* Vectors are still returned when the called Go function returns multiple arguments, since Go does not define multiple arguments as a single type.
-
