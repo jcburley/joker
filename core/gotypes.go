@@ -573,7 +573,7 @@ func GoObjectSeq(o interface{}) Seq {
 func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added string, arglist *Vector) *Var {
 	v := &Var{
 		name:  MakeSymbol(name),
-		Value: &GoReceiver{R: f},
+		Value: GoReceiver(f),
 	}
 	m := MakeMeta(NewListFrom(arglist), doc, added)
 	m.Add(KEYWORDS.name, v.name)

@@ -403,7 +403,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 				}
 			}
 		}()
-		return (f.Value.(*GoReceiver).R)(o, args)
+		return (f.Value.(GoReceiver))(o, args)
 	}
 	v := reflect.ValueOf(o.O)
 	k := v.Kind()

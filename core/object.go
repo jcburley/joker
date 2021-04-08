@@ -175,12 +175,9 @@ type (
 	GoType struct {
 		T *GoTypeInfo
 	}
-	GoReceiver struct {
-		Object
-		R func(GoObject, Object) Object
-	}
-	ProcFn func([]Object) Object
-	Proc   struct {
+	GoReceiver func(GoObject, Object) Object
+	ProcFn     func([]Object) Object
+	Proc       struct {
 		Fn      ProcFn
 		Name    string
 		Package string // "" for core (this package), else e.g. "std/string"
@@ -1492,6 +1489,34 @@ func (o GoObject) Count() int {
 
 func (o GoObject) Seq() Seq {
 	return GoObjectSeq(o.O)
+}
+
+func (t GoReceiver) ToString(escape bool) string {
+	return fmt.Sprintf("%v", t)
+}
+
+func (t GoReceiver) TypeToString(escape bool) string {
+	return t.ToString(escape)
+}
+
+func (t GoReceiver) Equals(other interface{}) bool {
+	return false
+}
+
+func (t GoReceiver) GetInfo() *ObjectInfo {
+	return nil
+}
+
+func (t GoReceiver) WithInfo(info *ObjectInfo) Object {
+	return NIL
+}
+
+func (t GoReceiver) GetType() *Type {
+	return nil
+}
+
+func (t GoReceiver) Hash() uint32 {
+	return 0
 }
 
 func MakeGoType(t *GoTypeInfo) *GoType {
