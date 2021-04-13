@@ -1652,6 +1652,14 @@ func MakeInt(i int) Int {
 	return Int{I: i}
 }
 
+func MakeIntVector(ii []int) *Vector {
+	res := EmptyVector()
+	for _, i := range ii {
+		res = res.Conjoin(MakeInt(i))
+	}
+	return res
+}
+
 func MakeIntWithOriginal(orig string, i int) Int {
 	return Int{I: i, Original: orig}
 }
