@@ -2169,11 +2169,3 @@ func RegInterface(name string, inst interface{}, doc string) *Type {
 func MakeType(name string, ctor Ctor, mem GoMembers) *Type {
 	return &Type{name: name, ctor: ctor, members: mem}
 }
-
-func MakeTypeMeta(docstring, added string) *ArrayMap {
-	res := EmptyArrayMap()
-	res.Add(KEYWORDS.doc, String{S: docstring})
-	res.Add(KEYWORDS.added, String{S: added})
-	res.Add(KEYWORDS.tag, String{S: *STRINGS.Intern("Type")})
-	return res
-}
