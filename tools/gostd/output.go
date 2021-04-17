@@ -371,7 +371,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() || !ti.IsSwitchable() {
 				return
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
