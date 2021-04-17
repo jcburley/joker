@@ -18,8 +18,8 @@ type GoTypeInfo struct {
 	Type    reflect.Type
 }
 
-func MakeType(name string, ctor Ctor, mem GoMembers) *Type {
-	return &Type{name: name, ctor: ctor, members: mem}
+func MakeType(name string, ctor Ctor, mem GoMembers) Type {
+	return Type{name: name, ctor: ctor, members: mem}
 }
 
 func LookupGoType(g interface{}) interface{} {
