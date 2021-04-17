@@ -384,7 +384,15 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	if g == nil {
 		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
 	}
-	f := g.Members[member]
+	var f *Var
+	switch g := g.(type) {
+	case *Type:
+		f = g.members[member]
+	case *GoTypeInfo:
+		f = g.Members[member]
+	default:
+		panic("whaaa")
+	}
 	if f != nil {
 		if returnVar {
 			panic(RT.NewError(fmt.Sprintf("Cannot return GoVar of a method/receiver invocation (%s)", member)))

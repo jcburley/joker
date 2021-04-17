@@ -852,7 +852,7 @@ var procNew = func(args []Object) Object {
 
 var procGoTypeOf = func(args []Object) Object {
 	CheckArity(args, 1, 1)
-	var t *GoTypeInfo
+	var t interface{}
 	var x interface{} = args[0]
 	switch o := x.(type) {
 	case GoObject:
@@ -868,7 +868,10 @@ var procGoTypeOf = func(args []Object) Object {
 	if t == nil {
 		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %s", AnyTypeToString(x, false))))
 	}
-	return t.GoType
+	if ty, yes := t.(*Type); yes {
+		return ty
+	}
+	return t.(*GoTypeInfo).GoType
 }
 
 var procTypeOfAsString = func(args []Object) Object {

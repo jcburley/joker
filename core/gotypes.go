@@ -18,7 +18,7 @@ type GoTypeInfo struct {
 	Type    reflect.Type
 }
 
-func LookupGoType(g interface{}) *GoTypeInfo {
+func LookupGoType(g interface{}) interface{} {
 	ix := SwitchGoType(g)
 	if ix < 0 || ix >= len(GoTypesVec) || GoTypesVec[ix] == nil {
 		return nil

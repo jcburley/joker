@@ -39,6 +39,7 @@ type (
 		name        string
 		reflectType reflect.Type
 		ctor        Ctor
+		members     GoMembers
 	}
 	Ctor   func(Object) Object
 	Object interface {
@@ -2165,8 +2166,8 @@ func RegInterface(name string, inst interface{}, doc string) *Type {
 	return t
 }
 
-func MakeType(name string, ctor Ctor) *Type {
-	return &Type{name: name, ctor: ctor}
+func MakeType(name string, ctor Ctor, mem GoMembers) *Type {
+	return &Type{name: name, ctor: ctor, members: mem}
 }
 
 func MakeTypeMeta(docstring, added string) *ArrayMap {
