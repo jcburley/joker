@@ -2165,7 +2165,3 @@ func RegInterface(name string, inst interface{}, doc string) *Type {
 	TYPES[STRINGS.Intern(name)] = t
 	return t
 }
-
-func MakeType(name string, ctor Ctor, mem GoMembers) *Type {
-	return &Type{name: name, ctor: ctor, members: mem}
-}
