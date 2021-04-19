@@ -88,14 +88,13 @@ Such heuristics might (in at least some cases) eliminate the need to hand-write 
 
 ## Types
 
-Named types (other than aliases), defined by the packages wrapped by the **gostd** tool, are themselves wrapped as `Object`s of type `GoType`.
-`GoType` objects are found in the pertinent wrapper namespaces keyed by the type names.
+Named types (other than aliases), defined by the packages wrapped by the **gostd** tool, are similar to builtin Joker types (`Type` objects), but are always found in namespaces and are not "reserved" keywords.
 
-For example, the `MX` type defined in the `net` package is wrapped as `go.std.net/MX`, which is a `GoType` that serves as a "handle" for all type-related activities, such as:
+For example, the `MX` type defined in the `net` package is type `go.std.net/MX`, which supports:
 
 * Constructing a new instance: `(def mx (new go.std.net/MX {:Host "burleyarch.com" :Pref 10}))` => `&{burleyarch.com 10}`
 * Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX`
-* Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else)`
+* Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else))`
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`, named `refToMX`) in the namespace as well as an array-of version (e.g. `[]MX`, named `arrayOfMX`).
 
@@ -627,7 +626,7 @@ Among things to do to "productize" this:
 * Support (perhaps via autogeneration) more-complicated types built on builtins, such as `[][]byte`, in constructors
 * Support vectors (instead of only maps with keys) in constructors
 * Improve docstrings for constructors (show and document the members)
-* Consider promoting/lifting `GoType` into `Type`, `GoObject` into `Object`, etc, if feasible and sufficiently useful
+* Consider promoting/lifting `GoObject` into `Object`, etc, if feasible and sufficiently useful
 * Clean up and document the (mostly **gostd**) code better
 * Assess performance impact (especially startup time) on Joker
 
@@ -742,16 +741,6 @@ $
 
 ## Design Considerations
 
-### Why GoType (Versus Type)?
-
-`GoType` is a "fatter" `Type` because it:
-* has a name identifying the underlying Go type (builtin, named, or derived from direct specification)
-* supports constructors
-* has members (currently only receivers/methods, not fields in structs)
-* belongs to a namespace
-
-It seems quite feasible to fold `GoType` into `Type` by adding support for ctors and such.
-
 ### Why GoObject (Versus Object)?
 
 A `GoObject` has a single member:
@@ -808,7 +797,7 @@ user=> (meta (var foo))
 user=>
 ```
 
-Note that the first argument to `catch` in a `try` is known to specify a type, so the builtin Joker types will be checked first, as will likely be desirable (since `catch` does not support `GoType`s). E.g.:
+Note that the first argument to `catch` in a `try` is known to specify a type, so the builtin Joker types will be checked first, as will likely be desirable (since `catch` does not yet support namespace-based `Type` objects). E.g.:
 
 ```
 user=> (use 'go.std.go.scanner)
@@ -816,7 +805,7 @@ nil
 user=> Error
 go.std.go.scanner/Error
 user=> (type Error)
-GoType
+Type
 user=> (try true (catch Error e))
 true
 user=> (try true (catch go.std.go.scanner/Error e))
