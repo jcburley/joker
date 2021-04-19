@@ -635,18 +635,3 @@ func EnsureArgIsGoVar(args []Object, index int) *GoVar {
 	}
 	panic(FailArg(obj, "GoVar", index))
 }
-
-func EnsureObjectIsGoType(obj Object, pattern string) *GoType {
-	if c, yes := obj.(*GoType); yes {
-		return c
-	}
-	panic(FailObject(obj, "GoType", pattern))
-}
-
-func EnsureArgIsGoType(args []Object, index int) *GoType {
-	obj := args[index]
-	if c, yes := obj.(*GoType); yes {
-		return c
-	}
-	panic(FailArg(obj, "GoType", index))
-}

@@ -10,14 +10,6 @@ import (
 
 type GoMembers map[string]*Var
 
-type GoTypeInfo struct {
-	Name    string
-	GoType  *GoType
-	Ctor    func(Object) Object
-	Members GoMembers
-	Type    reflect.Type
-}
-
 func MakeType(name string, ctor Ctor, mem GoMembers) Type {
 	return Type{name: name, ctor: ctor, members: mem}
 }

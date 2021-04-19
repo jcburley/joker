@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar *GoType
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq *GoVar
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
@@ -175,9 +175,6 @@ type (
 		Value interface{}
 		expr  Expr
 	}
-	GoType struct {
-		T *GoTypeInfo
-	}
 	GoReceiver func(GoObject, Object) Object
 	ProcFn     func([]Object) Object
 	Proc       struct {
@@ -319,7 +316,6 @@ type (
 		Fn             *Type
 		File           *Type
 		GoObject       *Type
-		GoType         *Type
 		GoVar          *Type
 		BufferedReader *Type
 		HashMap        *Type
@@ -1520,64 +1516,6 @@ func (t GoReceiver) GetType() *Type {
 
 func (t GoReceiver) Hash() uint32 {
 	return 0
-}
-
-func MakeGoType(t *GoTypeInfo) *GoType {
-	return t.GoType
-}
-
-func (t *GoType) ToString(escape bool) string {
-	if t.T == nil {
-		return fmt.Sprintf("%v", t)
-	}
-	return fmt.Sprintf("%s", t.T.Name)
-}
-
-func (t *GoType) TypeToString(escape bool) string {
-	return t.GetType().ToString(escape)
-}
-
-func (t *GoType) Equals(other interface{}) bool {
-	switch other := other.(type) {
-	case *GoType:
-		return t.T == other.T
-	default:
-		return false
-	}
-}
-
-func (t *GoType) GetInfo() *ObjectInfo {
-	return nil
-}
-
-func (t *GoType) WithInfo(info *ObjectInfo) Object {
-	return t
-}
-
-func (t *GoType) GetType() *Type {
-	return TYPE.GoType
-}
-
-func (t *GoType) Native() interface{} {
-	return t.T.Type
-}
-
-func (t *GoType) ValueOf() reflect.Value {
-	EnsureLoaded("go.std.reflect")
-	return reflect.ValueOf(t.T.Type)
-}
-
-func (t *GoType) Hash() uint32 {
-	h := getHash()
-	b := make([]byte, 8)
-	binary.LittleEndian.PutUint64(b, uint64(uintptr(unsafe.Pointer(&t.T))))
-	h.Write(b)
-	return h.Sum32()
-}
-
-func (t *GoType) Compare(other Object) int {
-	t2 := EnsureObjectIsGoType(other, "Cannot compare *GoType and "+other.GetType().ToString(false))
-	return strings.Compare(t.ToString(false), t2.ToString(false))
 }
 
 func MakeDouble(d float64) Double {

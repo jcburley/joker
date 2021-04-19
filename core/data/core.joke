@@ -4611,12 +4611,11 @@
   in such cases, the original Joker argument is wrapped by a
   GoObject. Also intended for use primarily by Joker developers.)
 
-  NOTE: If the first argument is a GoType, the semantics are very
+  NOTE: If the first argument is a Type, the semantics are very
   different, and are for internal use by Joker (mainly by the
-  documentation generator). Specifically, a nil or non-special-syntax
-  second argument returns internal information on the type: for nil, a
-  GoVar wrapping the internal description of that type; else, the map
-  of meta tags for a receiver/method identified by that second
+  documentation generator). Specifically, a nil second argument
+  returns a vector of receiver/method names for the type; else, the
+  map of meta tags for a receiver/method identified by that second
   argument."
   {:added "1.0"}
   [^"GoObject|GoType" o m & args]
@@ -4632,10 +4631,10 @@
   [^GoType t ^"Vector|Map" init]
   (new__ t init))
 
-(defn ^GoType GoTypeOf
-  "Returns the GoType of a GoObject or GoVar. Panics if it's not a GoType."
+(defn ^Type GoTypeOf
+  "Returns the Type of a GoObject or GoVar. Panics if it's not a Type."
   {:added "1.0"}
-  [^GoType t]
+  [^"GoObject|GoVar" t]
   (GoTypeOf__ t))
 
 (defn ^String TypeOfAsString

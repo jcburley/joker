@@ -59,8 +59,6 @@ func init() {
 		BufferedReader: RegRefType("BufferedReader", (*BufferedReader)(nil), ""),
 		GoObject: RegType("GoObject", (*GoObject)(nil),
 			"Wraps a Go object (of type 'interface{}'), typically an object of a named type."),
-		GoType: RegType("GoType", (*GoType)(nil),
-			"An arbitrary type, typically with a constructor available via (new <type>)."),
 		GoVar: RegRefType("GoVar", (*Var)(nil),
 			"Wraps a pointer to a Go variable. (deref <govar>) dereferences and unwraps it, yielding a GoObject with the resulting snapshot of the value."),
 		HashMap: RegRefType("HashMap", (*HashMap)(nil), ""),

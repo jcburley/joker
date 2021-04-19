@@ -56,7 +56,7 @@
       #?@(:gostd
           [(= GoVar (type @v)) (str "GoVar of " (go-type-of ns (deref v)))])
       (:tag m) (let [t (str (:tag m))]
-                 (if (= t "GoType")
+                 (if (= t "Type")
                    (str (if (:specificity m)
                           "Abstract "
                           "Concrete ") t)
@@ -75,7 +75,7 @@
       Proc :function
       #?@(
           :gostd
-          [GoType :type
+          [Type :type
            GoVar :variable
            GoObject :variable])
       (cond
@@ -90,7 +90,7 @@
     :function "Function"
     :special "Special form"
     :macro "Macro"
-    :type "GoType"
+    :type "Type"
     :constant "Constant"
     :variable "Variable"))
 
@@ -177,8 +177,7 @@
 
     (defn receivers-doc
       [k v what]
-      (let [go-type-info (deref (joker.core/Go v (symbol "")))
-            members (get go-type-info 'Members)
+      (let [members (joker.core/Go v (symbol ""))
             memvec (sort (get members nil))]
         (s/join
          ""
@@ -212,9 +211,9 @@
            "{blank}"))
         (s/replace
          "  {receivers}\n"
-         #?(:gostd (if (= GoType (type (deref v)))
+         #?(:gostd (if (= Type (type (deref v)))
                      (let [what (if (:specificity (meta v)) "Method" "Receiver")]
-                       (str "  "(receivers-doc k (deref v) what) "\n"))
+                       (str "  " (receivers-doc k (deref v) what) "\n"))
                      "")
             :default ""))
         (s/replace "{show-types}"

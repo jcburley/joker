@@ -836,11 +836,7 @@ var procNew = func(args []Object) Object {
 	CheckArity(args, 2, 2)
 	var f Ctor
 	name := "<unknown>"
-	switch t := args[0].(type) {
-	case *GoType:
-		f = t.T.Ctor
-		name = t.T.Name
-	case *Type:
+	if t, ok := args[0].(*Type); ok {
 		f = t.ctor
 		name = t.name
 	}
@@ -868,10 +864,7 @@ var procGoTypeOf = func(args []Object) Object {
 	if t == nil {
 		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %s", AnyTypeToString(x, false))))
 	}
-	if ty, yes := t.(*Type); yes {
-		return ty
-	}
-	return t.(*GoTypeInfo).GoType
+	return t.(*Type)
 }
 
 var procTypeOfAsString = func(args []Object) Object {
@@ -881,15 +874,14 @@ var procTypeOfAsString = func(args []Object) Object {
 }
 
 // Mainly for generate-docs.joke, return information on the Go type itself.
-func goGetTypeInfo(ty *GoType, mem string) Object {
-	t := ty.T
+func goGetTypeInfo(t *Type, mem string) Object {
 	if t == nil {
-		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(reflect.TypeOf(ty.T))))
+		panic(RT.NewError("Go type not yet supported: " + GoTypeToString(t.reflectType)))
 	}
 	if mem == "" {
-		return &GoVar{Value: t.GoType.T}
+		return MakeGoObject(t.members)
 	}
-	mi, ok := t.GoType.T.Members[mem]
+	mi, ok := t.members[mem]
 	if !ok {
 		panic(RT.NewError("Go member not found: " + mem))
 	}
@@ -901,16 +893,13 @@ func goGetTypeInfo(ty *GoType, mem string) Object {
 
 var proc_Go = func(args []Object) Object {
 	CheckArity(args, 3, 3)
-	var goType *GoType
-	if ty, ok := args[0].(*GoType); ok {
-		goType = ty
-	}
 	member := ""
 	if sym, ok := args[1].(Symbol); ok {
 		member = sym.Name()
 	} else {
 		panic(RT.NewArgTypeError(1, args[1], "Symbol"))
 	}
+
 	switch member {
 	case "!":
 		return MakeGoObject(args[0])
@@ -927,9 +916,11 @@ var proc_Go = func(args []Object) Object {
 		}
 		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a ValueOf)", arg.TypeToString(false))))
 	}
-	if goType != nil {
-		return goGetTypeInfo(goType, member)
+
+	if ty, ok := args[0].(*Type); ok {
+		return goGetTypeInfo(ty, member)
 	}
+
 	panic(RT.NewError("invalid form for (Go ...); use (. instance members args*) instead"))
 }
 
