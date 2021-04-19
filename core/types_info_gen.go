@@ -156,8 +156,3 @@ func (x *VectorRSeq) WithInfo(info *ObjectInfo) Object {
 	x.info = info
 	return x
 }
-
-func (x *GoVar) WithInfo(info *ObjectInfo) Object {
-	x.info = info
-	return x
-}

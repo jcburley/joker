@@ -40,7 +40,7 @@
 
 #?(:gostd
    (defn go-type-of
-     [^Namespace ns ^GoVar v]
+     [^Namespace ns ^Var v]
      (let [ty (TypeOfAsString v)]
        (s/replace-first ty (str ns "/") ""))))
 
@@ -54,7 +54,7 @@
       (= Fn (type @v)) "Function"
       (= Proc (type @v)) "Function"
       #?@(:gostd
-          [(= GoVar (type @v)) (str "GoVar of " (go-type-of ns (deref v)))])
+          [(= Var (type @v)) (str "Var of " (go-type-of ns (deref v)))])
       (:tag m) (let [t (str (:tag m))]
                  (if (= t "Type")
                    (str (if (:specificity m)
@@ -76,7 +76,7 @@
       #?@(
           :gostd
           [Type :type
-           GoVar :variable
+           Var :variable
            GoObject :variable])
       (cond
         (not (bound? v)) :variable  ; E.g. joker.core/*1

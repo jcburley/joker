@@ -387,7 +387,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	f := g.members[member]
 	if f != nil {
 		if returnVar {
-			panic(RT.NewError(fmt.Sprintf("Cannot return GoVar of a method/receiver invocation (%s)", member)))
+			panic(RT.NewError(fmt.Sprintf("Cannot return Var of a method/receiver invocation (%s)", member)))
 		}
 		if isField {
 			panic(RT.NewError(fmt.Sprintf("Not a field: %s", member)))
@@ -423,9 +423,9 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	if returnVar {
 		if field.CanAddr() {
-			return &GoVar{Value: field.Addr().Interface()}
+			return &Var{Value: MakeGoObjectIfNeeded(field.Addr().Interface())}
 		}
-		return &GoVar{Value: field.Interface()}
+		return &Var{Value: MakeGoObjectIfNeeded(field.Interface())}
 	}
 	return MakeGoObjectIfNeeded(field.Interface())
 }

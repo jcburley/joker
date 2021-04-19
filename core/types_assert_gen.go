@@ -620,18 +620,3 @@ func EnsureArgIsGoObject(args []Object, index int) GoObject {
 	}
 	panic(FailArg(obj, "GoObject", index))
 }
-
-func EnsureObjectIsGoVar(obj Object, pattern string) *GoVar {
-	if c, yes := obj.(*GoVar); yes {
-		return c
-	}
-	panic(FailObject(obj, "GoVar", pattern))
-}
-
-func EnsureArgIsGoVar(args []Object, index int) *GoVar {
-	obj := args[index]
-	if c, yes := obj.(*GoVar); yes {
-		return c
-	}
-	panic(FailArg(obj, "GoVar", index))
-}

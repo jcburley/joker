@@ -1661,9 +1661,9 @@
   <h3 class="Function" id="GoTypeOf">GoTypeOf</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(GoTypeOf t)</code><code class="hide">(GoTypeOf ^GoObject|GoVar t)</code></div>
+  <pre class="var-usage"><div><code>(GoTypeOf t)</code><code class="hide">(GoTypeOf ^GoObject t)</code></div>
 </pre>
-  <p class="var-docstr">Returns the Type of a GoObject or GoVar. Panics if it&#39;s not a Type.</p>
+  <p class="var-docstr">Returns the Type of a GoObject. Panics if it&#39;s not a Type.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4634">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -2541,14 +2541,14 @@
   returns its current state. When applied to a delay, forces it if not<br>
   already forced.<br>
 <br>
-  When applied to a GoVar or GoObject, returns a Joker or GoObject<br>
-  with the value itself (dereferenced if the input was already a<br>
-  GoObject). An attempt to dereference a GoObject wrapping a<br>
-  non-pointer concrete object returns a Joker or GoObject wrapping the<br>
-  original value, while an attempt to dereference a GoObject of<br>
-  abstract type returns a GoObject wrapping the underlying concrete<br>
-  type, which might not be supported (via e.g. &#34;(Go ...)&#34;) due to<br>
-  being private in the underlying Go package.</p>
+  When applied to a GoObject, returns a Joker or GoObject with the<br>
+  value itself (dereferenced if the input was already a GoObject). An<br>
+  attempt to dereference a GoObject wrapping a non-pointer concrete<br>
+  object returns a Joker or GoObject wrapping the original value,<br>
+  while an attempt to dereference a GoObject of abstract type returns<br>
+  a GoObject wrapping the underlying concrete type, which might not be<br>
+  supported (via e.g. &#34;(Go ...)&#34;) due to being private in the<br>
+  underlying Go package.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L1449">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5625,9 +5625,9 @@
   <h3 class="Function" id="var-get">var-get</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(var-get x)</code><code class="hide">(var-get ^Var|GoVar x)</code></div>
+  <pre class="var-usage"><div><code>(var-get x)</code><code class="hide">(var-get ^Var x)</code></div>
 </pre>
-  <p class="var-docstr">Gets the value in the var or GoVar object</p>
+  <p class="var-docstr">Gets the value in the Var object</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L1378">source</a>
   <a href="#" class="types">show types</a>
 </li>
@@ -5635,9 +5635,9 @@
   <h3 class="Function" id="var-set">var-set</h3>
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(var-set x val)</code><code class="hide">(var-set ^Var|GoVar x val)</code></div>
+  <pre class="var-usage"><div><code>(var-set x val)</code><code class="hide">(var-set ^Var x val)</code></div>
 </pre>
-  <p class="var-docstr">Sets the value in the var or GoVar object to val.</p>
+  <p class="var-docstr">Sets the value in the Var object to val.</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L1383">source</a>
   <a href="#" class="types">show types</a>
 </li>

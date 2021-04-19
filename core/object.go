@@ -1,5 +1,5 @@
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar
-//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq *GoVar
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject
+//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
 package core
@@ -168,13 +168,6 @@ type (
 		isFake         bool
 		taggedType     *Type
 	}
-	GoVar struct {
-		InfoHolder
-		MetaHolder
-		Name  Symbol
-		Value interface{}
-		expr  Expr
-	}
 	GoReceiver func(GoObject, Object) Object
 	ProcFn     func([]Object) Object
 	Proc       struct {
@@ -316,7 +309,6 @@ type (
 		Fn             *Type
 		File           *Type
 		GoObject       *Type
-		GoVar          *Type
 		BufferedReader *Type
 		HashMap        *Type
 		Int            *Type
@@ -946,72 +938,6 @@ func (v *Var) Deref() Object {
 }
 
 func (v *Var) ValueOf() reflect.Value {
-	if v.Value == nil {
-		panic(RT.NewError("Unbound var: " + v.ToString(false)))
-	}
-	EnsureLoaded("go.std.reflect")
-	return reflect.ValueOf(v.Value)
-}
-
-func (v *GoVar) ToString(escape bool) string {
-	return fmt.Sprintf("%v", reflect.ValueOf(v.Value))
-}
-
-func (v *GoVar) TypeToString(escape bool) string {
-	return v.GetType().ToString(escape)
-}
-
-func (v *GoVar) Equals(other interface{}) bool {
-	// TODO: revisit this
-	return v == other
-}
-
-func (v *GoVar) WithMeta(meta Map) interface{} {
-	res := *v
-	res.meta = SafeMerge(res.meta, meta)
-	return &res
-}
-
-func (v *GoVar) ResetMeta(newMeta Map) Map {
-	v.meta = newMeta
-	return v.meta
-}
-
-func (v *GoVar) AlterMeta(fn *Fn, args []Object) Map {
-	return AlterMeta(&v.MetaHolder, fn, args)
-}
-
-func (v *GoVar) GetType() *Type {
-	return TYPE.GoVar
-}
-
-func (v *GoVar) Hash() uint32 {
-	return HashPtr(uintptr(unsafe.Pointer(v)))
-}
-
-func (v *GoVar) Resolve() interface{} {
-	if v.Value == nil {
-		panic(RT.NewError("Unbound var: " + v.ToString(false)))
-	}
-	return MakeGoObjectIfNeeded(v.Value)
-}
-
-func (v *GoVar) Deref() interface{} {
-	return v.Resolve()
-}
-
-func (v *GoVar) Get(key Object) (bool, Object) {
-	return GoObjectGet(v.Resolve().(GoObject).O, key)
-}
-
-func (v *GoVar) Native() interface{} {
-	if v.Value == nil {
-		panic(RT.NewError("Unbound var: " + v.ToString(false)))
-	}
-	return v.Value
-}
-
-func (v *GoVar) ValueOf() reflect.Value {
 	if v.Value == nil {
 		panic(RT.NewError("Unbound var: " + v.ToString(false)))
 	}

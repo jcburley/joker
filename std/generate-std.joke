@@ -229,7 +229,7 @@
   [name m]
   (let [type (type-name (:tag m))]
     (cond (= type "Var")
-          (format "var %s *GoVar" name)
+          (format "var %s *Var" name)
           (= type "Type")
           ""  ; Intern directly from call to avoid init-order issues
           :else
@@ -239,7 +239,7 @@
   [name m]
   (let [type (type-name (:tag m))]
     (cond (= type "Var")
-          (format "\t%s = &GoVar{Value: &%s}"  ; Get pointer to the actual var, not a copy of the var
+          (format "\t%s = &Var{Value: MakeGoObject(&%s)}"  ; Get pointer to the actual var, not a copy of the var
                   name
                   (:go m))
           (= type "Type")

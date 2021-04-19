@@ -1376,14 +1376,14 @@
      (throw (ex-info (str "Cannot reduce-kv on " (type coll)) {})))))
 
 (defn var-get
-  "Gets the value in the var or GoVar object"
+  "Gets the value in the Var object"
   {:added "1.0"}
-  [^"Var|GoVar" x] (var-get__ x))
+  [^Var x] (var-get__ x))
 
 (defn var-set
-  "Sets the value in the var or GoVar object to val."
+  "Sets the value in the Var object to val."
   {:added "1.0"}
-  [^"Var|GoVar" x val] (var-set__ x val))
+  [^Var x val] (var-set__ x val))
 
 (defn ^:private replace-bindings
   [binding-map]
@@ -1451,14 +1451,14 @@
   returns its current state. When applied to a delay, forces it if not
   already forced.
 
-  When applied to a GoVar or GoObject, returns a Joker or GoObject
-  with the value itself (dereferenced if the input was already a
-  GoObject). An attempt to dereference a GoObject wrapping a
-  non-pointer concrete object returns a Joker or GoObject wrapping the
-  original value, while an attempt to dereference a GoObject of
-  abstract type returns a GoObject wrapping the underlying concrete
-  type, which might not be supported (via e.g. \"(Go ...)\") due to
-  being private in the underlying Go package."
+  When applied to a GoObject, returns a Joker or GoObject with the
+  value itself (dereferenced if the input was already a GoObject). An
+  attempt to dereference a GoObject wrapping a non-pointer concrete
+  object returns a Joker or GoObject wrapping the original value,
+  while an attempt to dereference a GoObject of abstract type returns
+  a GoObject wrapping the underlying concrete type, which might not be
+  supported (via e.g. \"(Go ...)\") due to being private in the
+  underlying Go package."
   {:added "1.0"}
   [^Deref ref]
   (deref__ ref))
@@ -4632,9 +4632,9 @@
   (new__ t init))
 
 (defn ^Type GoTypeOf
-  "Returns the Type of a GoObject or GoVar. Panics if it's not a Type."
+  "Returns the Type of a GoObject. Panics if it's not a Type."
   {:added "1.0"}
-  [^"GoObject|GoVar" t]
+  [^GoObject t]
   (GoTypeOf__ t))
 
 (defn ^String TypeOfAsString

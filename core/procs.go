@@ -651,9 +651,6 @@ var procAtom = func(args []Object) Object {
 
 var procDeref = func(args []Object) Object {
 	switch c := args[0].(type) {
-	case *GoVar:
-		d := reflect.Indirect(reflect.ValueOf(c.Value)).Interface()
-		return MakeGoObjectIfNeeded(d)
 	case GoObject:
 		var d interface{}
 		v := reflect.ValueOf(c.O)
@@ -854,12 +851,12 @@ var procGoTypeOf = func(args []Object) Object {
 	case GoObject:
 		x = o.O
 		t = LookupGoType(x)
-	case *GoVar:
+	case Var:
 		x = o.Value
-		y := reflect.Indirect(reflect.ValueOf(x)).Interface()
-		t = LookupGoType(y) // GoVar's are always pointers to variables
+		y := reflect.Indirect(reflect.ValueOf(x.(GoObject).O)).Interface()
+		t = LookupGoType(y)
 	default:
-		panic(RT.NewArgTypeError(0, args[0], "GoObject or GoVar"))
+		panic(RT.NewArgTypeError(0, args[0], "GoObject"))
 	}
 	if t == nil {
 		panic(RT.NewError(fmt.Sprintf("Unsupported Go type %s", AnyTypeToString(x, false))))
@@ -1647,38 +1644,10 @@ var procNamespaceUnalias = func(args []Object) Object {
 }
 
 var procVarGet = func(args []Object) Object {
-	if g, ok := args[0].(*GoVar); ok {
-		return MakeGoObjectIfNeeded(reflect.Indirect(reflect.ValueOf(g.Value)).Interface())
-	}
 	return EnsureArgIsVar(args, 0).Resolve()
 }
 
 var procVarSet = func(args []Object) Object {
-	if g, ok := args[0].(*GoVar); ok {
-		goVar := reflect.ValueOf(g.Value)
-		k := goVar.Kind()
-		if k != reflect.Ptr {
-			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a Ptr, but rather a %s: %s", k, AnyTypeToString(goVar, false))))
-		}
-		goVar = reflect.Indirect(goVar)
-		if !goVar.CanSet() {
-			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %s", k, AnyTypeToString(goVar, false))))
-		}
-		arg := args[1]
-		exprValue, ok := arg.(Valuable)
-		if !ok {
-			panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a Valuable)", arg.TypeToString(false))))
-		}
-		exprVal := exprValue.ValueOf()
-		if !exprVal.Type().AssignableTo(goVar.Type()) {
-			if !reflect.Indirect(exprVal).Type().AssignableTo(goVar.Type()) {
-				panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), goVar.Type())))
-			}
-			exprVal = reflect.Indirect(exprVal)
-		}
-		goVar.Set(exprVal)
-		return arg
-	}
 	EnsureArgIsVar(args, 0).Value = args[1]
 	return args[1]
 }

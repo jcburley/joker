@@ -37,7 +37,7 @@
   itself (not its value) is returned.
 
   If the argument is a field reference (e.g. (. instance field)), a
-  GoVar object that refers to that field in that instance is returned.
+  Var object that refers to that field in that instance is returned.
 
   The reader macro #'x expands to (var x)."}
     . {:forms [(. instance member args*)
@@ -45,9 +45,9 @@
          :doc "The instance is evaluated and the member (receiver, method, or
   field name) invoked with args* or retrieved.
 
-  If wrapped in a (var (. ...)), a GoVar object specifying the field
-  is returned instead of the value of the field itself. (The member
-  must be a field.)"}})
+  If wrapped in a (var (. ...)), a Var object specifying the field is
+  returned instead of the value of the field itself. (The member must
+  be a field.)"}})
 
 (defn- special-doc [name-symbol]
   (assoc (or (special-doc-map name-symbol) (meta (resolve name-symbol)))
