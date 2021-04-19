@@ -1,6 +1,4 @@
-	{{.GoName}} = GoTypeInfo{Name: "{{.ClojureName}}",
-		GoType: &GoType{T: &{{.GoName}}},
-{{.Ctor}}		Members: GoMembers{
-{{.Members}}		},
-{{.Type}}	}
+	{{.GoName}} = MakeType("{{.ClojureName}}", {{.Ctor}},
+		GoMembers{
+{{.Members}}		})
 

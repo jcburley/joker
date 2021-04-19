@@ -230,7 +230,7 @@
   (let [type (type-name (:tag m))]
     (cond (= type "Var")
           (format "var %s *GoVar" name)
-          (= type "GoType")
+          (= type "Type")
           ""  ; Intern directly from call to avoid init-order issues
           :else
           (format "var %s %s" name (go-return-type type)))))
@@ -242,7 +242,7 @@
           (format "\t%s = &GoVar{Value: &%s}"  ; Get pointer to the actual var, not a copy of the var
                   name
                   (:go m))
-          (= type "GoType")
+          (= type "Type")
           ""  ; Intern directly from call to avoid init-order issues
           :else
           (format "\t%s = Make%s(%s)"
@@ -253,12 +253,10 @@
 (defn direct-or-indirect-init
   [m name]
   (let [type (type-name (:tag m))]
-    (cond (not= type "GoType")
+    (cond (not= type "Type")
           name
           :else  ; Intern directly from call to avoid init-order issues
-          (format "Make%s(%s)"
-                  type
-                  (:go m)))))
+          (:go m))))
 
 (defn generate-non-fn-decl
   [ns-name ns-name-final k v]

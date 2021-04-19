@@ -319,7 +319,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
-			tmn = fmt.Sprintf("var %s GoTypeInfo\n", tmn)
+			tmn = fmt.Sprintf("var %s Type\n", tmn)
 			out.WriteString(tmn)
 		})
 
@@ -333,13 +333,9 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
-			k1 := ti.ClojureName()
-			ctor := ""
+			ctor := "nil"
 			if c, found := CtorNames[ti]; found {
-				ctor = fmt.Sprintf(`
-		Ctor: %s,
-`[1:],
-					c)
+				ctor = c
 			}
 			mem := ""
 			SortedFnCodeInfo(v.InitVars[ti], // Will always be populated
@@ -354,10 +350,9 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 
 			info := map[string]string{
 				"GoName":      tmn,
-				"ClojureName": k1,
+				"ClojureName": ti.ClojureName(),
 				"Ctor":        ctor,
 				"Members":     mem,
-				"Type":        "", /*"Type:"..., but probably not needed*/
 			}
 
 			buf := new(bytes.Buffer)
