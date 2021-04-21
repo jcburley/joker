@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
@@ -1438,6 +1438,13 @@ func (o GoObject) Deref() Object {
 	return MakeGoObjectIfNeeded(d)
 }
 
+func (o GoObject) Message() Object {
+	if s, ok := o.O.(error); ok {
+		return MakeString(s.Error())
+	}
+	panic(RT.NewError(fmt.Sprintf("%s does not implement error.Error()", o.GetType().ToString(false))))
+}
+
 func (t GoReceiver) ToString(escape bool) string {
 	return fmt.Sprintf("%v", t)
 }
@@ -1932,12 +1939,8 @@ func (s String) Compare(other Object) int {
 	return strings.Compare(s.S, s2.S)
 }
 
-// TODO: Return proper Go object (e.g. maybe go.std/error?)
-func MakeError(e error) String {
-	if e == nil {
-		return MakeString("")
-	}
-	return MakeString(e.Error())
+func MakeError(e error) GoObject {
+	return MakeGoObject(e)
 }
 
 func IsSymbol(obj Object) bool {

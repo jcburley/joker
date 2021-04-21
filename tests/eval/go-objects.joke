@@ -1,7 +1,8 @@
 (def EE Error)
 
 (ns joker.test-joker.go-objects
-  (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template go.std.fmt))
+  (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template go.std.fmt)
+  (:require [go.std.errors :as errors]))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -69,7 +70,8 @@
   (is (= (str (LinkError. {:Op "hey" :Old "there" :New "you" :Err "silly"})) "hey there you: silly")))
 
 (deftest fields-work
-  (let [le (new LinkError {:Op "hey" :Old "there" :New "you" :Err "silly"})
+  (let [silly (errors/New "silly")
+        le (new LinkError {:Op "hey" :Old "there" :New "you" :Err silly})
         dle (deref le)
         old (var (. le Old))]
     (is (= (. le Op) "hey"))
@@ -80,10 +82,11 @@
     (is (= (str le) "hey wow you: silly"))
     (is (= (count le) 4))
     (is (= (count dle) 4))
-    (is (= (seq le) '([:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"])))
-    (is (= (seq dle) '([:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"])))
-    (is (= (vec le) [[:Op "hey"] [:Old "wow"] [:New "you"] [:Err "silly"]]))
-    (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err "silly"]]))))
+    (is (= (seq le) `([:Op "hey"] [:Old "wow"] [:New "you"] [:Err ~silly])))
+    (is (= (seq dle) `([:Op "hey"] [:Old "there"] [:New "you"] [:Err ~silly])))
+    (is (= (vec le) [[:Op "hey"] [:Old "wow"] [:New "you"] [:Err silly]]))
+    (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err silly]]))
+    (is (errors/Is (. le Err) (.Err le)))))
 
 (deftest govars-work
   (let [dnserr (new DNSError {})

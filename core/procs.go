@@ -519,7 +519,7 @@ var procExInfo = func(args []Object) Object {
 	res.Add(KEYWORDS.message, EnsureArgIsString(args, 0))
 	res.Add(KEYWORDS.data, EnsureArgIsMap(args, 1))
 	if len(args) == 3 {
-		res.Add(KEYWORDS.cause, EnsureArgIsError(args, 2))
+		res.Add(KEYWORDS.cause, EnsureArgImplementsError(args, 2))
 	}
 	return res
 }
