@@ -85,7 +85,8 @@
     (is (= (seq le) `([:Op "hey"] [:Old "wow"] [:New "you"] [:Err ~silly])))
     (is (= (seq dle) `([:Op "hey"] [:Old "there"] [:New "you"] [:Err ~silly])))
     (is (= (vec le) [[:Op "hey"] [:Old "wow"] [:New "you"] [:Err silly]]))
-    (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err silly]]))))
+    (is (= (vec dle) [[:Op "hey"] [:Old "there"] [:New "you"] [:Err silly]]))
+    (is (errors/Is (. le Err) (.Err le)))))
 
 (deftest govars-work
   (let [dnserr (new DNSError {})
