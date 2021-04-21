@@ -879,6 +879,11 @@ func (sym Symbol) WithMeta(meta Map) Object {
 	return res
 }
 
+func MakeVar(ns *Namespace, name string, o Object) *Var {
+	sym := MakeSymbol(name)
+	return &Var{ns: ns, name: sym, Value: o}
+}
+
 func (v *Var) Name() string {
 	return v.ns.Name.ToString(false) + "/" + v.name.ToString(false)
 }
