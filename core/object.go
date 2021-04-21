@@ -939,12 +939,6 @@ func (v *Var) Call(args []Object) Object {
 }
 
 func (v *Var) Deref() Object {
-	if o := v.Value; o != nil {
-		// This kludge (dereferencing twice, in essence) is another reason to eliminate GoObject's.
-		if g, yes := o.(GoObject); yes {
-			return g.Deref()
-		}
-	}
 	return v.Resolve()
 }
 
@@ -1314,8 +1308,7 @@ func isBuiltinError(o interface{}) bool {
 	return reflect.TypeOf(o).String() == "*errors.errorString"
 }
 
-// The (partial) reverse of this is (Go <obj> :<>).
-func MakeGoObjectIfNeeded(o interface{}) Object {
+func MaybeCanBecomeJokerObject(o interface{}) Object {
 	switch v := o.(type) {
 	case int:
 		return MakeInt(v)
@@ -1355,6 +1348,14 @@ func MakeGoObjectIfNeeded(o interface{}) Object {
 		return MakeTime(v)
 	case bool:
 		return MakeBoolean(v)
+	}
+	return nil
+}
+
+// The (partial) reverse of this is (Go <obj> :<>).
+func MakeGoObjectIfNeeded(o interface{}) Object {
+	if v := MaybeCanBecomeJokerObject(o); v != nil {
+		return v
 	}
 	return GoObject{O: o}
 }
@@ -1430,11 +1431,13 @@ func (o GoObject) Seq() Seq {
 func (o GoObject) Deref() Object {
 	var d interface{}
 	v := reflect.ValueOf(o.O)
-	if v.Kind() == reflect.Ptr {
-		d = reflect.Indirect(v).Interface()
-	} else {
-		d = o.O
+	if v.Kind() != reflect.Ptr {
+		if n := MaybeCanBecomeJokerObject(o.O); n != nil {
+			return n
+		}
+		panic(RT.NewError(fmt.Sprintf("%s is not a reference (pointer) nor a GoObject wrapping a potential Joker object", o.GetType().ToString(false))))
 	}
+	d = reflect.Indirect(v).Interface()
 	return MakeGoObjectIfNeeded(d)
 }
 

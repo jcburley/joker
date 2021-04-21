@@ -1381,9 +1381,15 @@
   [^Var x] (var-get__ x))
 
 (defn var-set
-  "Sets the value in the Var object to val."
+  "Sets the value in the Var object to val.
+
+  Or, if x is a GoObject that is a pointer (reference) to something,
+  sets that thing to val. (Note: this might be replaced by Clojure's
+  set! special form in a future version of gostd.)
+
+  Returns val, or panics if x does not conform to the above."
   {:added "1.0"}
-  [^Var x val] (var-set__ x val))
+  [^"Var|GoObject" x val] (var-set__ x val))
 
 (defn ^:private replace-bindings
   [binding-map]
@@ -1453,12 +1459,14 @@
 
   When applied to a GoObject, returns a Joker or GoObject with the
   value itself (dereferenced if the input was already a GoObject). An
-  attempt to dereference a GoObject wrapping a non-pointer concrete
-  object returns a Joker or GoObject wrapping the original value,
-  while an attempt to dereference a GoObject of abstract type returns
-  a GoObject wrapping the underlying concrete type, which might not be
-  supported (via e.g. \"(Go ...)\") due to being private in the
-  underlying Go package."
+  attempt to dereference a GoObject wrapping a non-pointer object
+  returns a builtin Joker object corresponding to that object, if
+  available; else a panic results.
+
+  Note that a dereferenced GoObject might not be fully supported due
+  to being private in the underlying Go package. For example, objects
+  created via go.std.errors/New are not directly supported by member
+  references."
   {:added "1.0"}
   [^Deref ref]
   (deref__ ref))

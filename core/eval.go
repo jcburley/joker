@@ -423,9 +423,9 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	if returnVar {
 		if field.CanAddr() {
-			return &Var{Value: MakeGoObjectIfNeeded(field.Addr().Interface())}
+			panic(RT.NewError(fmt.Sprintf("Field %s is not addressable", member)))
 		}
-		return &Var{Value: MakeGoObjectIfNeeded(field.Interface())}
+		return &GoObject{O: field.Addr().Interface()}
 	}
 	return MakeGoObjectIfNeeded(field.Interface())
 }
