@@ -1490,6 +1490,13 @@ func (o GoObject) Seq() Seq {
 	return GoObjectSeq(o.O)
 }
 
+func (o GoObject) Message() Object {
+	if s, ok := o.O.(error); ok {
+		return MakeString(s.Error())
+	}
+	panic(RT.NewError(fmt.Sprintf("%s does not implement error.Error()", o.GetType().ToString(false))))
+}
+
 func (t GoReceiver) ToString(escape bool) string {
 	return fmt.Sprintf("%v", t)
 }
@@ -1984,12 +1991,8 @@ func (s String) Compare(other Object) int {
 	return strings.Compare(s.S, s2.S)
 }
 
-// TODO: Return proper Go object (e.g. maybe go.std/error?)
-func MakeError(e error) String {
-	if e == nil {
-		return MakeString("")
-	}
-	return MakeString(e.Error())
+func MakeError(e error) GoObject {
+	return MakeGoObject(e)
 }
 
 func IsSymbol(obj Object) bool {

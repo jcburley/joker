@@ -425,20 +425,33 @@ func FieldAsString(o Map, k string) string {
 }
 
 func ObjectAsError(obj Object, pattern string) error {
-	return EnsureObjectIsError(obj, pattern)
+	switch e := obj.(type) {
+	case String:
+		return errors.New(e.S)
+	case Error:
+		return e
+	case GoObject:
+		if g, ok := e.O.(error); ok {
+			return g
+		}
+	}
+	panic(FailObject(obj, "String or GoObject[error]", pattern))
 }
 
 func ReceiverArgAsError(name, rcvr string, args *ArraySeq, n int) error {
 	a := SeqNth(args, n)
-	if s, ok := a.(String); ok {
-		return errors.New(s.S)
+	switch e := a.(type) {
+	case String:
+		return errors.New(e.S)
+	case Error:
+		return e
+	case GoObject:
+		if g, ok := e.O.(error); ok {
+			return g
+		}
 	}
-	res, ok := a.(Error)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type Error or String, but is %s",
-			n, name, rcvr, a.TypeToString(false))))
-	}
-	return res
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type String or GoObject[error], but is %s",
+		n, name, rcvr, a.TypeToString(false))))
 }
 
 func FieldAsError(o Map, k string) error {
@@ -446,15 +459,18 @@ func FieldAsError(o Map, k string) error {
 	if !ok || v.Equals(NIL) {
 		return nil
 	}
-	if s, ok := v.(String); ok {
-		return errors.New(s.S)
+	switch e := v.(type) {
+	case String:
+		return errors.New(e.S)
+	case Error:
+		return e
+	case GoObject:
+		if g, ok := e.O.(error); ok {
+			return g
+		}
 	}
-	res, ok := v.(error)
-	if !ok {
-		panic(RT.NewError(fmt.Sprintf("Value for key %s should be type Error or String, but is %s",
-			k, v.TypeToString(false))))
-	}
-	return res
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type String or GoObject[error], but is %s",
+		k, v.TypeToString(false))))
 }
 
 func FieldAsGoObject(o Map, k string) interface{} {
