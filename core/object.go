@@ -939,6 +939,12 @@ func (v *Var) Call(args []Object) Object {
 }
 
 func (v *Var) Deref() Object {
+	if o := v.Value; o != nil {
+		// This kludge (dereferencing twice, in essence) is another reason to eliminate GoObject's.
+		if g, yes := o.(GoObject); yes {
+			return g.Deref()
+		}
+	}
 	return v.Resolve()
 }
 
@@ -1419,6 +1425,17 @@ func (o GoObject) Count() int {
 
 func (o GoObject) Seq() Seq {
 	return GoObjectSeq(o.O)
+}
+
+func (o GoObject) Deref() Object {
+	var d interface{}
+	v := reflect.ValueOf(o.O)
+	if v.Kind() == reflect.Ptr {
+		d = reflect.Indirect(v).Interface()
+	} else {
+		d = o.O
+	}
+	return MakeGoObjectIfNeeded(d)
 }
 
 func (t GoReceiver) ToString(escape bool) string {
