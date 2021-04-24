@@ -433,7 +433,7 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 		if !ok {
 			cl = "BigFloat"
 			gl = val.ExactString()
-			numPat = "%q"
+			numPat = "MakeMathBigFloatFromString(%q)"
 		}
 	case constant.Int:
 		f, ok := constant.Int64Val(val)
@@ -459,6 +459,7 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 
 	if cl == "BigFloat" && Contains(gl, "/") {
 		cl = "Ratio"
+		numPat = "MakeMathBigRatFromString(%q)"
 	}
 
 	return cl, fmt.Sprintf("%q", fmt.Sprintf(valPat, fmt.Sprintf(numPat, gl)))
