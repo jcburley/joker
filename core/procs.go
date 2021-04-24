@@ -40,7 +40,7 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.17.0-gostd"
+const VERSION = "v0.17.1-gostd"
 
 const (
 	CLJ Dialect = iota
@@ -300,6 +300,14 @@ func ExtractDouble(args []Object, index int) float64 {
 
 func ExtractNumber(args []Object, index int) Number {
 	return EnsureArgIsNumber(args, index)
+}
+
+func ExtractBigInt(args []Object, index int) *big.Int {
+	return EnsureArgIsBigInt(args, index).b
+}
+
+func ExtractBigFloat(args []Object, index int) *big.Float {
+	return EnsureArgIsBigFloat(args, index).b
 }
 
 func ExtractRegex(args []Object, index int) *regexp.Regexp {
@@ -1571,6 +1579,12 @@ var procInjectNamespace = func(args []Object) Object {
 	ns.isUsed = true
 	ns.isGloballyUsed = true
 	return ns
+}
+
+var procInjectLinterType = func(args []Object) Object {
+	sym := EnsureArgIsSymbol(args, 0)
+	LINTER_TYPES[sym.name] = true
+	return NIL
 }
 
 var procRemoveNamespace = func(args []Object) Object {

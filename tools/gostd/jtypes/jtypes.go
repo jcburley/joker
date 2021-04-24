@@ -365,7 +365,7 @@ var Int64 = &Info{
 	ArgExtractFunc:       "Int64",
 	ArgClojureArgType:    "BigInt",
 	ConvertFromMap:       `FieldAsInt64(%s, %s)`,
-	AsClojureObject:      "BigInt(%s%s)",
+	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsInt64(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
@@ -380,7 +380,7 @@ var UInt = &Info{
 	ArgExtractFunc:       "Uint",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint(%s, %s)`,
-	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
@@ -425,7 +425,7 @@ var UInt32 = &Info{
 	ArgExtractFunc:       "Uint32",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint32(%s, %s)`,
-	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint32(%s, %s)",
 	PromoteType:          "int64(%s)",
 }
@@ -440,7 +440,7 @@ var UInt64 = &Info{
 	ArgExtractFunc:       "Uint64",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUint64(%s, %s)`,
-	AsClojureObject:      "BigIntU(%s%s)",
+	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint64(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }
@@ -455,7 +455,7 @@ var UIntPtr = &Info{
 	ArgExtractFunc:       "UintPtr",
 	ArgClojureArgType:    "Number",
 	ConvertFromMap:       `FieldAsUintPtr(%s, %s)`,
-	AsClojureObject:      "BigIntU(uint64(%s)%s)",
+	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUintPtr(%s, %s)",
 	PromoteType:          "uint64(%s)",
 }

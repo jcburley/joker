@@ -12,7 +12,8 @@
 ;;
 
 (ns joker.test-joker.numbers
-  (:require [joker.test :refer [deftest is are]]))
+  (:require [joker.test :refer [deftest is are]]
+            [joker.math :refer [exp-2 precision set-precision]]))
 
 ;; *** Functions ***
 
@@ -324,8 +325,14 @@
   (are [x y] (= x y)
     53 (precision 1.0)
     53 (precision 1.0M)
-    99 (precision 0000000000000000001.00000000000M)
+    100 (precision 0000000000000000001.00000000000M)
     16 (precision 65535N)
-    17 (precision 65536N)
-    -1 (precision 1/2))
-  (is (or (= 31 (precision 1)) (= 63 (precision 1)))))
+    17 (precision 65536N))
+  (is (or (= 31 (precision 1)) (= 63 (precision 1))))
+  (let [f 123.456M
+        g f
+        h (set-precision 200 f)
+        o (set-precision 999999999999N f)]  ; Max is math.big/MaxPrec, which is math.MaxUint32
+    (is (= 53 (precision f) (precision g)))
+    (is (= 200 (precision h)))
+    (is (= (- (exp-2 32) 1) (double (precision o))))))

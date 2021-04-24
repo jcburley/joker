@@ -1,4 +1,4 @@
-//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar
+//go:generate go run gen/gen_types.go assert Comparable *Vector Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel GoObject *GoVar
 //go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *VectorSeq *VectorRSeq *GoVar
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
@@ -1113,10 +1113,14 @@ func (n Nil) ValueOf() reflect.Value {
 	return reflect.ValueOf(NIL)
 }
 
-func MakeRatio(s string) *Ratio {
+func MakeRatio(r *big.Rat) *Ratio {
+	return &Ratio{r: r}
+}
+
+func MakeMathBigRatFromString(s string) *big.Rat {
 	r := new(big.Rat)
 	if _, ok := r.SetString(s); ok {
-		return &Ratio{r: r}
+		return r
 	}
 	panic(RT.NewError(fmt.Sprintf("Invalid Ratio: %s", s)))
 }
@@ -1150,21 +1154,51 @@ func (rat *Ratio) ValueOf() reflect.Value {
 	return reflect.ValueOf(&rat.r)
 }
 
-func MakeBigInt(bi int64) *BigInt {
-	return &BigInt{b: big.NewInt(bi)}
+func MakeBigInt(b *big.Int) *BigInt {
+	return &BigInt{b: b}
 }
 
-func MakeBigIntU(b uint64) *BigInt {
+// Helper function that returns a math/big.Int given an int.
+func MakeMathBigIntFromInt(i int) *big.Int {
+	return MakeMathBigIntFromInt64(int64(i))
+}
+
+// Helper function that returns a math/big.Int given an int64.
+func MakeMathBigIntFromInt64(i int64) *big.Int {
+	return big.NewInt(i)
+}
+
+// Helper function that returns a math/big.Int given a uint.
+func MakeMathBigIntFromUint(b uint) *big.Int {
+	return MakeMathBigIntFromUint64(uint64(b))
+}
+
+// Helper function that returns a math/big.Int given a uint64.
+func MakeMathBigIntFromUint64(b uint64) *big.Int {
 	bigint := big.NewInt(0)
 	bigint.SetUint64(b)
-	return &BigInt{b: bigint}
+	return bigint
 }
 
 func MakeNumber(n interface{}) *BigInt {
-	if bi, ok := n.(uint64); ok {
-		return MakeBigIntU(bi)
+	var b *big.Int
+	switch i := n.(type) {
+	case int:
+		b = MakeMathBigIntFromInt(i)
+	case int32:
+		b = MakeMathBigIntFromInt(int(i))
+	case int64:
+		b = MakeMathBigIntFromInt64(i)
+	case uint:
+		b = MakeMathBigIntFromUint(i)
+	case uint32:
+		b = MakeMathBigIntFromUint(uint(i))
+	case uint64:
+		b = MakeMathBigIntFromUint64(i)
+	case uintptr:
+		b = MakeMathBigIntFromUint64(uint64(i))
 	}
-	return MakeBigInt(n.(int64))
+	return MakeBigInt(b)
 }
 
 func (bi *BigInt) ToString(escape bool) string {
@@ -1217,7 +1251,7 @@ func computePrecision(s string) (prec uint) {
 	bitsNeeded := 0.
 
 	// Assume base 10 at first.
-	bitsPerDigit := 3.3 // (joker.math/log-2 10) => 3.32192809488736
+	bitsPerDigit := 3.33 // (joker.math/log-2 10) => 3.32192809488736
 	exponentUpper, exponentLower := 'E', 'e'
 
 	if len(s) > 2 && s[0] == '0' && strings.ContainsAny(s[1:2], "bBoOxX") {
@@ -1248,6 +1282,13 @@ func computePrecision(s string) (prec uint) {
 	return uint(bitsNeeded)
 }
 
+func MakeBigFloat(b *big.Float) *BigFloat {
+	return &BigFloat{b: b}
+}
+
+// Helper function that returns a BigFloat given a string, remembering
+// any original string provided, and true if the string had the proper
+// format; nil and false otherwise.
 func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
 	prec := computePrecision(s)
 	f := new(big.Float)
@@ -1260,12 +1301,15 @@ func MakeBigFloatWithOrig(s, orig string) (*BigFloat, bool) {
 	return nil, false
 }
 
-func MakeBigFloat(s string) *BigFloat {
-	if f, ok := MakeBigFloatWithOrig(s, ""); ok {
+func MakeMathBigFloatFromString(s string) *big.Float {
+	prec := computePrecision(s)
+	f := new(big.Float)
+	f.SetPrec(uint(prec))
+
+	if _, ok := f.SetString(s); ok {
 		return f
 	}
-
-	panic(RT.NewError(fmt.Sprintf("Invalid BigFloat: %s", s)))
+	panic(RT.NewError("Invalid BigFloat: " + s))
 }
 
 func (bf *BigFloat) ToString(escape bool) string {
@@ -1383,7 +1427,7 @@ func MakeGoObjectIfNeeded(o interface{}) Object {
 	case int:
 		return MakeInt(v)
 	case int64:
-		return MakeBigInt(v)
+		return MakeNumber(v)
 	case int32:
 		return MakeInt(int(v))
 	case int16:
@@ -1391,11 +1435,11 @@ func MakeGoObjectIfNeeded(o interface{}) Object {
 	case int8:
 		return MakeInt(int(v))
 	case uint:
-		return MakeBigIntU(uint64(v))
+		return MakeNumber(v)
 	case uint64:
-		return MakeBigIntU(v)
+		return MakeNumber(v)
 	case uint32:
-		return MakeBigIntU(uint64(v))
+		return MakeNumber(uint64(v))
 	case uint16:
 		return MakeInt(int(v))
 	case uint8:
