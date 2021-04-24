@@ -845,9 +845,6 @@
   <a class="var-kind Function" href="#pr-str">pr-str</a>
 </li>
 <li>
-  <a class="var-kind Function" href="#precision">precision</a>
-</li>
-<li>
   <a class="var-kind Function" href="#prefer-method">prefer-method</a>
 </li>
 <li>
@@ -4360,30 +4357,6 @@
 </pre>
   <p class="var-docstr">pr to a string, returning it</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L2856">source</a>
-  <a href="#" class="types">show types</a>
-</li>
-<li>
-  <h3 class="Function" id="precision">precision</h3>
-  <span class="var-kind Function">Function</span>
-  <span class="var-added">v1.0</span>
-  <pre class="var-usage"><div><code>(precision f)</code><code class="hide">(precision ^Number f)</code></div>
-</pre>
-  <p class="var-docstr">Returns the precision of a Number.<br>
-<br>
-  The precision excludes any sign or exponent. For a BigInt, it&#39;s the<br>
-  number of bits needed to represent the number; for a BigFloat, Int,<br>
-  or Double, it&#39;s the number of bits available in that instance or<br>
-  type. E.g. (precision 1) returns either 31 or 63, depending on<br>
-  whether the Joker executable is 32-bit or 64-bit (for integers);<br>
-  (precision 1.0) returns 53 (as Double is always a float64); and<br>
-  (precision 1.0M) returns 53 as well, though prepending or appending<br>
-  enough 0 digits will result in a BigFloat with more precision<br>
-  reported.<br>
-<br>
-  If f is not a type supported by this operation (such as Ratio), -1<br>
-  is returned. (For GoObjects, invoke the appropriate methods<br>
-  directly instead of using this function.)</p>
-  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4667">source</a>
   <a href="#" class="types">show types</a>
 </li>
 <li>
