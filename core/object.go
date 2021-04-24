@@ -1439,7 +1439,7 @@ func MakeGoObjectIfNeeded(o interface{}) Object {
 	case uint64:
 		return MakeNumber(v)
 	case uint32:
-		return MakeNumber(uint64(v))
+		return MakeNumber(v)
 	case uint16:
 		return MakeInt(int(v))
 	case uint8:
