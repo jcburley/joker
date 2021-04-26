@@ -75,6 +75,7 @@ var (
 		def:                MakeSymbol("def"),
 		defLinter:          MakeSymbol("def-linter__"),
 		_var:               MakeSymbol("var"),
+		setNow:             MakeSymbol("set!"),
 		do:                 MakeSymbol("do"),
 		throw:              MakeSymbol("throw"),
 		try:                MakeSymbol("try"),
@@ -98,7 +99,6 @@ var (
 		extendType:         MakeSymbol("extend-type"),
 		reify:              MakeSymbol("reify"),
 		dot:                MakeSymbol("."),
-		// dotDot:             MakeSymbol(".."),
 	}
 	STR = Str{
 		_if:          STRINGS.Intern("if"),
@@ -112,12 +112,12 @@ var (
 		def:          STRINGS.Intern("def"),
 		defLinter:    STRINGS.Intern("def-linter__"),
 		_var:         STRINGS.Intern("var"),
+		setNow:       STRINGS.Intern("set!"),
 		do:           STRINGS.Intern("do"),
 		throw:        STRINGS.Intern("throw"),
 		try:          STRINGS.Intern("try"),
 		coreFilename: STRINGS.Intern("<joker.core>"),
 		dot:          STRINGS.Intern("."),
-		// dotDot:       STRINGS.Intern(".."),
 	}
 	SPECIAL_SYMBOLS = make(map[*string]bool)
 )
@@ -134,11 +134,11 @@ func init() {
 	SPECIAL_SYMBOLS[SYMBOLS.def.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.defLinter.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS._var.name] = true
+	SPECIAL_SYMBOLS[SYMBOLS.setNow.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.do.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.throw.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.try.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.catch.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.finally.name] = true
 	SPECIAL_SYMBOLS[SYMBOLS.dot.name] = true
-	// SPECIAL_SYMBOLS[SYMBOLS.dotDot.name] = true
 }

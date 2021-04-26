@@ -4,7 +4,14 @@
   joker.repl)
 
 (def ^:private special-doc-map
-  '{def {:forms [(def symbol doc-string? init?)]
+  '{. {:forms [(. instance member args*)
+               (.member instance args*)]
+         :doc "The instance is evaluated and the member (receiver, method, or
+  field name) invoked with args* or retrieved.
+
+  If wrapped in a (set! (. ...) expr), the member (which must be a field)
+  is set to the value of expr."}
+    def {:forms [(def symbol doc-string? init?)]
          :doc "Creates and interns a global var with the name
   of symbol in the current namespace (*ns*) or locates such a var if
   it already exists.  If init is supplied, it is evaluated, and the
@@ -23,6 +30,10 @@
            :doc "Evaluates the exprs in order, then, in parallel, rebinds
   the bindings of the recursion point to the values of the exprs.
   Execution then jumps back to the recursion point, a loop or fn method."}
+    set! {:forms[(set! var-symbol expr)
+                 (set! (. instance-expr instanceFieldName-symbol) expr)]
+          :url "vars#set"
+          :doc "Set a global vars or field in a struct type. Returns expr."}
     throw {:forms [(throw expr)]
            :doc "The expr is evaluated and thrown, therefore it should yield an Error object.
   User code should normally use (ex-info) function to create new Error objects."}
@@ -32,23 +43,9 @@
 
   Catches and handles errors.
   User code should normally use (ex-info) function to create new Error objects."}
-    var {:forms [(var symbol-or-field-ref)]
-         :doc "A symbol must resolve to a var, and the Var object
-  itself (not its value) is returned.
-
-  If the argument is a field reference (e.g. (. instance field)), a
-  GoObject wrapping a reference to that field in that instance is
-  returned, assuming the field is addressable; else a panic results.
-
-  The reader macro #'x expands to (var x)."}
-    . {:forms [(. instance member args*)
-               (.member instance args*)]
-         :doc "The instance is evaluated and the member (receiver, method, or
-  field name) invoked with args* or retrieved.
-
-  If wrapped in a (var (. ...)), a GoObject wrapping a reference to
-  that field is returned instead of the value of the field
-  itself. (The field must be addressable; else a panic results.)"}})
+    var {:forms [(var symbol)]
+         :doc "The symbol must resolve to a var, and the Var object
+itself (not its value) is returned. The reader macro #'x expands to (var x)."}})
 
 (defn- special-doc [name-symbol]
   (assoc (or (special-doc-map name-symbol) (meta (resolve name-symbol)))

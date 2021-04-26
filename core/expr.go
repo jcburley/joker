@@ -327,6 +327,6 @@ func (expr *DotExpr) Dump(pos bool) Map {
 	res.Add(MakeKeyword("instance"), expr.instance.Dump(pos))
 	res.Add(MakeKeyword("member"), expr.member)
 	addVector(res, expr.args, "args", pos)
-	res.Add(MakeKeyword("isVarRef"), MakeBoolean(expr.isVarRef))
+	res.Add(MakeKeyword("isSetNow"), MakeBoolean(expr.isSetNow))
 	return res
 }

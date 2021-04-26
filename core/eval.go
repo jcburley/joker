@@ -364,19 +364,14 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 }
 
 func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
-	returnVar := expr.isVarRef
 	instance := Eval(expr.instance, env)
 	memberSym := expr.member
 	member := *memberSym.name
-	isField := false
+
+	isField := expr.isSetNow
 	if len(member) > 0 && member[0] == '-' {
 		isField = true
 		member = member[1:]
-	}
-
-	var args Object = NIL
-	if expr.args != nil && len(expr.args) > 0 {
-		args = &ArraySeq{arr: evalSeq(expr.args, env)}
 	}
 
 	o := EnsureObjectIsGoObject(instance, "")
@@ -386,13 +381,10 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	f := g.members[member]
 	if f != nil {
-		if returnVar {
-			panic(RT.NewError(fmt.Sprintf("Cannot return Var of a method/receiver invocation (%s)", member)))
-		}
+		// Currently only receivers/methods are listed in Members[].
 		if isField {
 			panic(RT.NewError(fmt.Sprintf("Not a field: %s", member)))
 		}
-		// Currently only receivers/methods are listed in Members[].
 		defer func() {
 			if r := recover(); r != nil {
 				switch r.(type) {
@@ -403,8 +395,13 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 				}
 			}
 		}()
+		var args Object = NIL
+		if expr.args != nil && len(expr.args) > 0 {
+			args = &ArraySeq{arr: evalSeq(expr.args, env)}
+		}
 		return (f.Value.(GoReceiver))(o, args)
 	}
+
 	v := reflect.ValueOf(o.O)
 	k := v.Kind()
 	if k == reflect.Ptr {
@@ -416,18 +413,32 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	}
 	field := v.FieldByName(member)
 	if field.Kind() == reflect.Invalid {
-		panic(RT.NewError(fmt.Sprintf("No such member/field %s/%s", o.TypeToString(false), member)))
+		panic(RT.NewError(fmt.Sprintf("No such member (field) %s/%s", o.TypeToString(false), member)))
 	}
-	if args != NIL {
-		panic(RT.NewError(fmt.Sprintf("Field %s cannot be passed arguments", member)))
+	if !expr.isSetNow {
+		return MakeGoObjectIfNeeded(field.Interface())
 	}
-	if returnVar {
-		if field.CanAddr() {
-			panic(RT.NewError(fmt.Sprintf("Field %s is not addressable", member)))
+
+	if len(expr.args) != 1 {
+		panic(RT.NewError(fmt.Sprintf("Field %s cannot be set to multiple arguments", member)))
+	}
+	if !field.CanSet() {
+		panic(RT.NewError(fmt.Sprintf("Not a settable value, but rather a %s: %s", k, AnyTypeToString(field, false))))
+	}
+	arg := Eval(expr.args[0], env)
+	exprValue, ok := arg.(Valuable)
+	if !ok {
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a Valuable)", arg.TypeToString(false))))
+	}
+	exprVal := exprValue.ValueOf()
+	if !exprVal.Type().AssignableTo(field.Type()) {
+		if !reflect.Indirect(exprVal).Type().AssignableTo(field.Type()) {
+			panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), field.Type())))
 		}
-		return &GoObject{O: field.Addr().Interface()}
+		exprVal = reflect.Indirect(exprVal)
 	}
-	return MakeGoObjectIfNeeded(field.Interface())
+	field.Set(exprVal)
+	return arg
 }
 
 func evalBody(body []Expr, env *LocalEnv) Object {

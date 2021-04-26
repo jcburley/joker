@@ -1381,13 +1381,7 @@
   [^Var x] (var-get__ x))
 
 (defn var-set
-  "Sets the value in the Var object to val.
-
-  Or, if x is a GoObject that is a pointer (reference) to something,
-  sets that thing to val. (Note: this might be replaced by Clojure's
-  set! special form in a future version of gostd.)
-
-  Returns val, or panics if x does not conform to the above."
+  "Sets the value in the Var object to val. Returns val."
   {:added "1.0"}
   [^"Var|GoObject" x val] (var-set__ x val))
 

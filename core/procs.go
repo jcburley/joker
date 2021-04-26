@@ -1649,31 +1649,6 @@ var procVarGet = func(args []Object) Object {
 }
 
 var procVarSet = func(args []Object) Object {
-	if g, yes := args[0].(GoObject); yes {
-		goRef := reflect.ValueOf(g.O)
-		k := goRef.Kind()
-		if k != reflect.Ptr {
-			panic(RT.NewError(fmt.Sprintf("GoObject does not wrap a Ptr, but rather a %s: %s", k, AnyTypeToString(goRef, false))))
-		}
-		goRef = reflect.Indirect(goRef)
-		if !goRef.CanSet() {
-			panic(RT.NewError(fmt.Sprintf("GoVar does not wrap a settable value, but rather a %s: %s", k, AnyTypeToString(goRef, false))))
-		}
-		arg := args[1]
-		exprValue, ok := arg.(Valuable)
-		if !ok {
-			panic(RT.NewError(fmt.Sprintf("Cannot obtain Value of %s (not a Valuable)", arg.TypeToString(false))))
-		}
-		exprVal := exprValue.ValueOf()
-		if !exprVal.Type().AssignableTo(goRef.Type()) {
-			if !reflect.Indirect(exprVal).Type().AssignableTo(goRef.Type()) {
-				panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", exprVal.Type(), goRef.Type())))
-			}
-			exprVal = reflect.Indirect(exprVal)
-		}
-		goRef.Set(exprVal)
-		return arg
-	}
 	EnsureArgIsVar(args, 0).Value = args[1]
 	return args[1]
 }

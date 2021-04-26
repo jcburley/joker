@@ -122,7 +122,12 @@ type (
 		instance Expr
 		member   Symbol
 		args     []Expr
-		isVarRef bool
+		isSetNow bool // Within a (set! ...)
+	}
+	SetNowExpr struct {
+		Position
+		target Expr
+		value  Expr
 	}
 	SetMacroExpr struct {
 		Position
@@ -159,7 +164,7 @@ type (
 		recur                  bool
 		noRecurAllowed         bool
 		isUnknownCallableScope bool
-		isVarRef               bool
+		isSetNow               bool
 	}
 	Warnings struct {
 		ifWithoutElse           bool
@@ -240,6 +245,7 @@ type (
 		def                Symbol
 		defLinter          Symbol
 		_var               Symbol
+		setNow             Symbol
 		do                 Symbol
 		throw              Symbol
 		try                Symbol
@@ -276,6 +282,7 @@ type (
 		def          *string
 		defLinter    *string
 		_var         *string
+		setNow       *string
 		do           *string
 		throw        *string
 		try          *string
@@ -1090,14 +1097,16 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 	res := &DotExpr{
 		Position: GetPosition(obj),
 		member:   SYMBOLS.emptySymbol,
-		isVarRef: ctx.isVarRef,
+		isSetNow: ctx.isSetNow,
 	}
 	state := Instance
 	seq := obj.(Seq).Rest()
 
-	isVarRef := ctx.isVarRef
-	ctx.isVarRef = false
-	defer func() { ctx.isVarRef = isVarRef }()
+	isSetNow := ctx.isSetNow
+	ctx.isSetNow = false
+	defer func() {
+		ctx.isSetNow = isSetNow
+	}()
 
 	for !seq.IsEmpty() {
 		obj = seq.First()
@@ -1755,17 +1764,44 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 					obj:      vr,
 					Position: pos,
 				}
+			default:
+			}
+			panic(&ParseError{obj: obj, msg: fmt.Sprintf("var's argument must be a symbol, not %T", obj)})
+		case STR.setNow:
+			checkForm(obj, 3, 3)
+			expr := Parse(Third(seq), ctx)
+			switch sym := Second(seq).(type) {
+			// case Symbol:
+			// 	vr, ok := ctx.GlobalEnv.Resolve(sym)
+			// 	if !ok {
+			// 		if !LINTER_MODE {
+			// 			panic(&ParseError{obj: obj, msg: "Unable to resolve var " + sym.ToString(false) + " in this context"})
+			// 		}
+			// 		symNs := ctx.GlobalEnv.NamespaceFor(ctx.GlobalEnv.CurrentNamespace(), sym)
+			// 		if !ctx.isUnknownCallableScope {
+			// 			if symNs == nil || symNs == ctx.GlobalEnv.CurrentNamespace() {
+			// 				printParseError(GetPosition(obj), "Unable to resolve symbol: "+sym.ToString(false))
+			// 			}
+			// 		}
+			// 		vr = InternFakeSymbol(symNs, sym)
+			// 	}
+			// 	vr.isUsed = true
+			// 	vr.isGloballyUsed = true
+			// 	vr.ns.isUsed = true
+			// 	vr.ns.isGloballyUsed = true
+			// 	res.instance = vr
 			case Seq:
-				isVarRef := ctx.isVarRef
-				ctx.isVarRef = true
+				isSetNow := ctx.isSetNow
+				ctx.isSetNow = true
 				res := parseList(sym, ctx)
-				defer func() { ctx.isVarRef = isVarRef }()
+				defer func() { ctx.isSetNow = isSetNow }()
 				if dot, ok := res.(*DotExpr); ok {
+					dot.args = []Expr{expr}
 					return dot
 				}
 			default:
 			}
-			panic(&ParseError{obj: obj, msg: fmt.Sprintf("var's argument must be a symbol or field reference via '.' special form, not %T", obj)})
+			panic(&ParseError{obj: obj, msg: fmt.Sprintf("set! must apply to a symbol or field reference via '.' special form, not to %T", obj)})
 		case STR.do:
 			res := &DoExpr{
 				body:             parseBody(seq.Rest(), ctx),
