@@ -1796,6 +1796,14 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 				res := parseList(sym, ctx)
 				defer func() { ctx.isSetNow = isSetNow }()
 				if dot, ok := res.(*DotExpr); ok {
+					// Mutate field reference to
+					// become a setter with the
+					// specified value. (Might be
+					// more elegant, at least, to
+					// put this in ctx and have
+					// parseDot construct the
+					// &DotExpr with it from the
+					// get-go?)
 					dot.args = []Expr{expr}
 					return dot
 				}
