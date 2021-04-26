@@ -1769,8 +1769,9 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 			panic(&ParseError{obj: obj, msg: fmt.Sprintf("var's argument must be a symbol, not %T", obj)})
 		case STR.setNow:
 			checkForm(obj, 3, 3)
+			thing := Second(seq)
 			expr := Parse(Third(seq), ctx)
-			switch sym := Second(seq).(type) {
+			switch sym := thing.(type) {
 			// case Symbol:
 			// 	vr, ok := ctx.GlobalEnv.Resolve(sym)
 			// 	if !ok {
@@ -1809,7 +1810,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 				}
 			default:
 			}
-			panic(&ParseError{obj: obj, msg: fmt.Sprintf("set! must apply to a symbol or field reference via '.' special form, not to %T", obj)})
+			panic(&ParseError{obj: obj, msg: fmt.Sprintf("set! must apply to a Symbol or to a field reference, not to a %T", thing)})
 		case STR.do:
 			res := &DoExpr{
 				body:             parseBody(seq.Rest(), ctx),
