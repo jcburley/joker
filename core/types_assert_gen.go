@@ -620,3 +620,18 @@ func EnsureArgIsGoObject(args []Object, index int) GoObject {
 	}
 	panic(FailArg(obj, "GoObject", index))
 }
+
+func EnsureObjectIsValuable(obj Object, pattern string) Valuable {
+	if c, yes := obj.(Valuable); yes {
+		return c
+	}
+	panic(FailObject(obj, "Valuable", pattern))
+}
+
+func EnsureArgIsValuable(args []Object, index int) Valuable {
+	obj := args[index]
+	if c, yes := obj.(Valuable); yes {
+		return c
+	}
+	panic(FailArg(obj, "Valuable", index))
+}

@@ -330,3 +330,14 @@ func (expr *DotExpr) Dump(pos bool) Map {
 	res.Add(MakeKeyword("isSetNow"), MakeBoolean(expr.isSetNow))
 	return res
 }
+
+func (expr *SetNowExpr) InferType() *Type {
+	return expr.value.InferType()
+}
+
+func (expr *SetNowExpr) Dump(pos bool) Map {
+	res := exprArrayMap(expr, "set!", pos)
+	res.Add(MakeKeyword("target"), expr.target)
+	res.Add(MakeKeyword("value"), expr.value.Dump(pos))
+	return res
+}

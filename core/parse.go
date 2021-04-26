@@ -126,7 +126,7 @@ type (
 	}
 	SetNowExpr struct {
 		Position
-		target Expr
+		target Object
 		value  Expr
 	}
 	SetMacroExpr struct {
@@ -1772,25 +1772,30 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 			target := Second(seq)
 			value := Parse(Third(seq), ctx)
 			switch sym := target.(type) {
-			// case Symbol:
-			// 	vr, ok := ctx.GlobalEnv.Resolve(sym)
-			// 	if !ok {
-			// 		if !LINTER_MODE {
-			// 			panic(&ParseError{obj: obj, msg: "Unable to resolve var " + sym.ToString(false) + " in this context"})
-			// 		}
-			// 		symNs := ctx.GlobalEnv.NamespaceFor(ctx.GlobalEnv.CurrentNamespace(), sym)
-			// 		if !ctx.isUnknownCallableScope {
-			// 			if symNs == nil || symNs == ctx.GlobalEnv.CurrentNamespace() {
-			// 				printParseError(GetPosition(obj), "Unable to resolve symbol: "+sym.ToString(false))
-			// 			}
-			// 		}
-			// 		vr = InternFakeSymbol(symNs, sym)
-			// 	}
-			// 	vr.isUsed = true
-			// 	vr.isGloballyUsed = true
-			// 	vr.ns.isUsed = true
-			// 	vr.ns.isGloballyUsed = true
-			// 	res.instance = vr
+			case Symbol:
+				vr, ok := ctx.GlobalEnv.Resolve(sym)
+				if !ok {
+					if !LINTER_MODE {
+						panic(&ParseError{obj: obj, msg: "Unable to resolve var " + sym.ToString(false) + " in this context"})
+					}
+					symNs := ctx.GlobalEnv.NamespaceFor(ctx.GlobalEnv.CurrentNamespace(), sym)
+					if !ctx.isUnknownCallableScope {
+						if symNs == nil || symNs == ctx.GlobalEnv.CurrentNamespace() {
+							printParseError(GetPosition(obj), "Unable to resolve symbol: "+sym.ToString(false))
+						}
+					}
+					vr = InternFakeSymbol(symNs, sym)
+				}
+				vr.isUsed = true
+				vr.isGloballyUsed = true
+				vr.ns.isUsed = true
+				vr.ns.isGloballyUsed = true
+				vr.ns.isGloballyUsed = true
+				return &SetNowExpr{
+					target:   vr,
+					value:    value,
+					Position: pos,
+				}
 			case Seq:
 				isSetNow := ctx.isSetNow
 				ctx.isSetNow = true

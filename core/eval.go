@@ -441,6 +441,30 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	return arg
 }
 
+func (expr *SetNowExpr) Eval(env *LocalEnv) (obj Object) {
+	targetExpr := EnsureObjectIsValuable(expr.target.(*Var).Value, "")
+	target := targetExpr.ValueOf()
+	valueExpr := Eval(expr.value, env)
+	value := EnsureObjectIsValuable(valueExpr, "").ValueOf()
+
+	if target.Kind() == reflect.Ptr {
+		target = reflect.Indirect(target)
+	}
+	if !target.CanSet() {
+		panic(RT.NewError(fmt.Sprintf("Not a settable value, but rather a %s: %s", target.Kind(), target.Type())))
+	}
+
+	if !value.Type().AssignableTo(target.Type()) {
+		if !reflect.Indirect(value).Type().AssignableTo(target.Type()) {
+			panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", value.Type(), target.Type())))
+		}
+		value = reflect.Indirect(value)
+	}
+
+	target.Set(value)
+	return valueExpr
+}
+
 func evalBody(body []Expr, env *LocalEnv) Object {
 	var res Object = NIL
 	for _, expr := range body {

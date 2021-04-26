@@ -27,7 +27,7 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` on field references. E.g. instead of `(var-set (var (.member instance)) value)`, use `(set! (.member instance) value)`, which is much more Clojure-like.
 
-The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables. `(deref SomeVar)` (or `@SomeVar`) still yields a snapshot of the `SomeVar` variable.
+The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables. `(deref SomeVar)` (or `@SomeVar`) still yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable.
 
 Values of type `error` are now wrapped in `GoObject`s instead of being converted into `String`s. This allows receivers for those values to be invoked, and is consistent with preserving the native type when not precisely implemented by a Joker type (in this case, `Error`, an abstract type). When an `error` type is needed, the supplied expression may be `String` or `GoObject[error]`.
 
@@ -192,7 +192,7 @@ user=>
 
 Pointers to global variables are implemented as `GoObject` objects wrapping references (pointers) to the global variables. As such, they can be unwrapped via `(deref SomeVar)` (or `@SomeVar`), yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
 
-`(var-set SomeVar new-value)`, where `SomeVar` is a `GoObject` wrapping a reference (pointer) to a variable, assigns `new-value` to that variable. `new-value` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var` or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
+`(set! SomeVar new-value)`, where `SomeVar` is a `GoObject` wrapping a reference (pointer) to a variable, assigns `new-value` to that variable. `new-value` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var` or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
 ## GoObjects
 
@@ -506,9 +506,7 @@ Note that returned objects that are considered (by Go) to be `error` or `string`
 
 If `field` is not a member of `obj` (that is, of the type of `obj`), a (try/catchable) panic results. Or, `(get obj 'field)` will return `nil` in such a situation, while `(get obj 'field not-found)` will return the value of `not-found`. (Note how the symbol name is quoted so it evalutes to a symbol, since `get` evaluates all its arguments; such quoting is neither necessary nor permitted for the `.` special form.)
 
-Wrapping the `.` special form in a `(var ...)` returns not the value of the object's field, but a reference (pointer) to it wrapped in a `GoObject`, if that field supports addressing (the `reflect` package's `.CanAddr()` on its value returns `true`). The resulting `GoObject` (`my-var`) can be dereferenced, as in `(deref my-var)` or `@my-var`, yielding a snapshot of the value of that field at that time.
-
-The target of a reference variable can also be changed, as in Go's assignment (`=` or `:=`) statement, via `(var-set my-var newval)`.
+The target of a field reference, as well as a global variable, can also be changed, as in Go's assignment (`=`) statement, via `(set! target newval)` (which returns `newval` as its result).
 
 For example:
 
@@ -519,23 +517,16 @@ user=> (def le (new LinkError {:Op "hi" :Old "there" :New "you" :Err "silly"}))
 #'user/le
 user=> (str le)
 "hi there you: silly"
-user=> (. le Old)
-0xc000f56a10
-user=> (def v (var (. le Old)))
-#'user/v
-user=> (var-set v "golly")
+user=> (.Old le)
+"there"
+user=> (set! (.Old le) "golly"))
 "golly"
 user=> (str le)
 "hi golly you: silly"
-user=> (var-set Stdout "whoa")
-<joker.core>:1364:24: Eval error: Cannot assign a string to a *os.File
-Stacktrace:
-  global <repl>:7:1
-  core/var-set <joker.core>:1364:24
+user=> (set! Stdout "whoa")
+<repl>:7:1: Eval error: Cannot assign a string to a *os.File
 user=>
 ```
-
-_Note:_ as Go doesn't always make fields in structures addressable, it's likely that a future version of `gostd` will implement Clojure's `set!` special form, and perhaps then remove the special handling of field references by `var` and `var-set`.
 
 #### Receivers and Methods
 

@@ -28,6 +28,7 @@ const (
 	LOOP_EXPR      = 19
 	SET_MACRO_EXPR = 20
 	DOT_EXPR       = 21
+	SETNOW_EXPR    = 22
 	NULL           = 100
 	NOT_NULL       = 101
 	SYMBOL_OBJ     = 102
@@ -893,6 +894,27 @@ func unpackDotExpr(p []byte, header *PackHeader) (*DotExpr, []byte) {
 	return res, p
 }
 
+func (expr *SetNowExpr) Pack(p []byte, env *PackEnv) []byte {
+	p = append(p, SETNOW_EXPR)
+	p = expr.Pos().Pack(p, env)
+	p = packObject(expr.target, p, env)
+	p = expr.value.Pack(p, env)
+	return p
+}
+
+func unpackSetNowExpr(p []byte, header *PackHeader) (*SetNowExpr, []byte) {
+	p = p[1:]
+	pos, p := unpackPosition(p, header)
+	target, p := unpackObject(p, header)
+	value, p := UnpackExpr(p, header)
+	res := &SetNowExpr{
+		Position: pos,
+		target:   target,
+		value:    value,
+	}
+	return res, p
+}
+
 func PackExprOrNull(expr Expr, p []byte, env *PackEnv) []byte {
 	if expr == nil {
 		return append(p, NULL)
@@ -946,6 +968,8 @@ func UnpackExpr(p []byte, header *PackHeader) (Expr, []byte) {
 		return unpackTryExpr(p, header)
 	case DOT_EXPR:
 		return unpackDotExpr(p, header)
+	case SETNOW_EXPR:
+		return unpackSetNowExpr(p, header)
 	case VARREF_EXPR:
 		return unpackVarRefExpr(p, header)
 	case SET_MACRO_EXPR:
