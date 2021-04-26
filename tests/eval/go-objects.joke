@@ -64,7 +64,9 @@
   (is (= (str @flag/ErrHelp) (str (errors/New "flag: help requested"))))
   (let [n (errors/New "hey")]
     (is (= (set! flag/ErrHelp n)) n)
-    (is (= @flag/ErrHelp n))))
+    (is (= @flag/ErrHelp n))
+    (def c (flag/NewFlagSet "foo" 0))
+    (is (= (.Parse c ["-h"]) n))))
 
 (deftest ctors-work
   (is (= (str (new FileMode 0123)) "---x-w--wx"))

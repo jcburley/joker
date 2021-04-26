@@ -821,13 +821,12 @@ func ExtractarrayOfChar(args []Object, index int) []rune {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]rune]"))
 }
 
-func ExtractarrayOfString(args []Object, index int) []string {
-	o := args[index]
+func MaybeIsarrayOfString(o Object) ([]string, bool) {
 	switch obj := o.(type) {
 	case Native:
 		switch g := obj.Native().(type) {
 		case []string:
-			return g
+			return g, true
 		}
 	case *Vector:
 		vec := make([]string, obj.Count())
@@ -839,19 +838,23 @@ func ExtractarrayOfString(args []Object, index int) []string {
 				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to String: %s", i, el.ToString(true))))
 			}
 		}
-		return vec
+		return vec, true
 	}
-	panic(RT.NewArgTypeError(index, o, "GoObject[[]string]"))
+	return nil, false
+}
+
+func ExtractarrayOfString(args []Object, index int) []string {
+	a := args[index]
+	if res, ok := MaybeIsarrayOfString(a); ok {
+		return res
+	}
+	panic(FailArg(a, "[]string", index))
 }
 
 func ReceiverArgAsarrayOfString(name, rcvr string, args *ArraySeq, n int) []string {
 	a := SeqNth(args, n)
-	switch obj := a.(type) {
-	case Native:
-		switch g := obj.Native().(type) {
-		case []string:
-			return g
-		}
+	if res, ok := MaybeIsarrayOfString(a); ok {
+		return res
 	}
 	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[]string], but is %s",
 		n, name, rcvr, a.TypeToString(false))))
