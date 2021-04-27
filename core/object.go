@@ -936,6 +936,7 @@ func (v *Var) Resolve() Object {
 				return MakeGoObjectIfNeeded(reflect.Indirect(v).Interface())
 			}
 		}
+		panic("Not a GoObject wrapping a ptr: " + v.ToString(false))
 	}
 	return v.Value
 }

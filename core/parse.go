@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"unsafe"
 )
@@ -1124,7 +1125,7 @@ func parseDot(obj Object, ctx *ParseContext) *DotExpr {
 		case Args:
 			res.args = append(res.args, Parse(obj, ctx))
 		default:
-			panic("whaaa???")
+			panic("Invalid state " + strconv.Itoa(state))
 		}
 		seq = seq.Rest()
 	}
