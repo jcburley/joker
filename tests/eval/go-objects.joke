@@ -60,14 +60,14 @@
 
 (deftest variables-work
   (is (= (str (type IPv6zero)) "GoObject"))
-  (is (= (str (GoTypeOf IPv6zero)) "go.std.net/refToIP"))
+  (is (= (str (GoTypeOf IPv6zero)) "go.std.net/IP"))
   (is (= (str IPv6zero) "::"))
-  (is (= (str @flag/ErrHelp) (str (errors/New "flag: help requested"))))
+  (is (= (str flag/ErrHelp) (str (errors/New "flag: help requested"))))
   (let [n (errors/New "hey")]
     (is (= (set! flag/ErrHelp n)) n)
-    (is (= @flag/ErrHelp n))
+    (is (= flag/ErrHelp n))
     (def c (flag/NewFlagSet "foo" 0))
-    (.SetOutput c @ioutil/Discard)
+    (.SetOutput c ioutil/Discard)
     (is (= (.Parse c ["-h"]) n))))
 
 (deftest ctors-work

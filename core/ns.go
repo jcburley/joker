@@ -184,6 +184,12 @@ func (ns *Namespace) InternVar(name string, val Object, meta *ArrayMap) *Var {
 	return vr
 }
 
+func (ns *Namespace) InternVarAutoDeref(name string, val Object, meta *ArrayMap) *Var {
+	vr := ns.InternVar(name, val, meta)
+	vr.isAutoDeref = true
+	return vr
+}
+
 func (ns *Namespace) AddAlias(alias Symbol, namespace *Namespace) {
 	if alias.ns != nil {
 		panic(RT.NewError("Alias can't be namespace-qualified"))

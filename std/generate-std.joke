@@ -200,6 +200,7 @@
         intern-str (-> intern-template
                        (rpl "{nsFullName}" ns-name)
                        (rpl "{nsName}" ns-name-final)
+                       (rpl "{autoDeref}" "")
                        (rpl "{fnName}" (str k))
                        (rpl "{goName}" go-fn-name)
                        (rpl "{fnDocstring}" (raw-quoted-string (:doc m)))
@@ -263,9 +264,11 @@
   (let [m (meta v)
         go-non-fn-name (direct-or-indirect-init m (go-name (str k)))
         non-fn-str (generate-const-or-var-decl go-non-fn-name m)
+        auto-deref (if (= (type-name (:tag m)) "Var") "AutoDeref" "")
         intern-str (-> intern-template
                        (rpl "{nsFullName}" ns-name)
                        (rpl "{nsName}" ns-name-final)
+                       (rpl "{autoDeref}" auto-deref)
                        (rpl "{fnName}" (str k))
                        (rpl "{goName}" go-non-fn-name)
                        (rpl "{fnDocstring}" (raw-quoted-string (:doc m)))

@@ -166,6 +166,7 @@ type (
 		isUsed         bool
 		isGloballyUsed bool
 		isFake         bool
+		isAutoDeref    bool
 		taggedType     *Type
 	}
 	GoReceiver func(GoObject, Object) Object
@@ -927,6 +928,12 @@ func (v *Var) Hash() uint32 {
 func (v *Var) Resolve() Object {
 	if v.Value == nil {
 		return NIL
+	}
+	if g, yes := v.Value.(GoObject); v.isAutoDeref && yes {
+		v := reflect.ValueOf(g.O)
+		if v.Kind() == reflect.Ptr {
+			return MakeGoObjectIfNeeded(reflect.Indirect(v).Interface())
+		}
 	}
 	return v.Value
 }
