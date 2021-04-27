@@ -23,11 +23,11 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
-### 2021-04-26
+### 2021-04-27
 
 The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` on field references. E.g. instead of `(var-set (var (.member instance)) value)`, use `(set! (.member instance) value)`, which is much more Clojure-like.
 
-The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables. `(deref SomeVar)` (or `@SomeVar`) still yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable.
+The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables, with automatic derefencing for ordinary usage. So, `SomeVar` yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable.  (`(deref SomeVar)`, aka `@SomeVar`, no longer work on global variables as previously described for earlier versions of this fork. Similarly, `(var (...))` is no longer supported.)
 
 Values of type `error` are now wrapped in `GoObject`s instead of being converted into `String`s. This allows receivers for those values to be invoked, and is consistent with preserving the native type when not precisely implemented by a Joker type (in this case, `Error`, an abstract type). When an `error` type is needed, the supplied expression may be `String` or `GoObject[error]`.
 
@@ -105,12 +105,12 @@ Named types (other than aliases), defined by the packages wrapped by the **gostd
 For example, the `MX` type defined in the `net` package is type `go.std.net/MX`, which supports:
 
 * Constructing a new instance: `(def mx (new go.std.net/MX {:Host "burleyarch.com" :Pref 10}))` => `&{burleyarch.com 10}`
-* Identifying the type of an object: `(GoTypeOf (deref mx))` => `go.std.net/MX`
+* Identifying the type of an object: `(GoTypeOf @mx)` => `go.std.net/MX`
 * Comparing types of objects: `(= (GoTypeOf mx) (GoTypeOf something-else))`
 
 Each package-defined type has a reference (pointed-to) version that is also provided (e.g. `*MX`, named `refToMX`) in the namespace as well as an array-of version (e.g. `[]MX`, named `arrayOfMX`).
 
-Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(. f Name)` (or `(.Name f)`), where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace, or could be `(deref Stdin)` (to take a snapshot, usually in the form of a `GoObject`, of the `GoObject` named `Stdin`).
+Some types have receivers. E.g. [`*go.std.os/File`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#*File) has a number of receivers, such as `Name`, `WriteString`, and `Close`, that maybe be invoked on it via e.g. `(. f Name)` (or `(.Name f)`), where `f` is (typically) returned from a call to `Create` or `Open` in the `go.std.os` namespace. `f` could be `Stdin`, for example, to take a snapshot, usually in the form of a `GoObject`, of the `GoObject` (global variable in Go's `go.std.os` package) named `Stdin`.
 
 Methods on `interface{}` (abstract) types are now supported, though only some of them as of this writing. E.g. `(go.std.os/Stat "existing-file")` returns (inside the returned vector) a concrete type that is actually private to the Go library, so is not directly manipulatable via Clojure, but which also implements the [`go.std.os/FileInfo`](https://burleyarch.com/joker/docs/amd64-linux/go.std.os.html#FileInfo) abstract type. Accordingly, `(. fi ModTime)` works on such an object.
 
@@ -190,9 +190,11 @@ user=>
 
 ## Variables
 
-Pointers to global variables are implemented as `GoObject` objects wrapping references (pointers) to the global variables. As such, they can be unwrapped via `(deref SomeVar)` (or `@SomeVar`), yielding corresponding objects that are "snapshots" of the values as of the invocation of `deref`. Such objects are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
+Global variables (in Go packages) are implemented as `GoObject` objects wrapping references (pointers) to the global variables. When named in a context requiring their evaluation, they are automatically dereferenced.
 
-`(set! SomeVar new-value)`, where `SomeVar` is a `GoObject` wrapping a reference (pointer) to a variable, assigns `new-value` to that variable. `new-value` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var` or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
+As such, `SomeVar`, if a **Var** that wraps a global Go variable, yields a snapshot of that variable at the time of evaluation. Such snapshots are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
+
+Use `(set! SomeVar new-value)` to assign `new-value` to that variable. `new-value` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var` or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
 
 ## GoObjects
 
@@ -236,17 +238,19 @@ As a result, references to such objects are generally used.
 
 ### Dereferencing a GoObject
 
-`(deref obj)` can be used to dereference a wrapped object, returning another `GoObject[]` with the dereferenced object as of that dereference, or to the original object if it wasn't a pointer to an object.
+`(deref obj)` (or `@obj`) can be used to dereference a wrapped object, returning another `GoObject` with the dereferenced object as of the moment of that dereference, or to the original object if it wasn't a pointer to an object.
 
 ### Obtaining a Reference to a GoObject
 
 Similarly, `(ref obj)` returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that; or, more likely, to a copy that is made for this purpose.
 
-The `reflect` package (in Go) is used here; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. `reflect.New()` and `reflect.Indirect().Set()` are otherwise used to create a new, referenceable, object that is set to the value of the original.
+The `reflect` package (in Go) is used here; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. If not, `reflect.New()` and `reflect.Indirect().Set()` are used to create a new, referenceable, object that is set to the value of the original.
 
 ### Rules Governing GoObject Creation
 
 When considering whether to wrap a given object in a `GoObject`, Joker normally substitutes a suitable Clojure type (such as `Int`, `Number`, or `String`) when one is available and suitable for the underlying type (not just the value). For example, instead of wrapping an `int64` in a `GoObject`, Joker will wrap it in a `Number`, even if the value is small (such as zero).
+
+This substitution does not occur for non-builtin, named, types. Preserving the original type allows invocation of methods for the type.
 
 ### Constructing a GoObject
 
@@ -551,7 +555,7 @@ user=> (. file WriteString "Hello, world again!\n")
 [0 "write TEMP.txt: file already closed"]
 user=> (slurp "TEMP.txt")
 "Hello, world!\n"
-user=> (. (deref Stdin) Name)
+user=> (. Stdin Name)
 "/dev/stdin"
 user=>
 ```

@@ -929,10 +929,12 @@ func (v *Var) Resolve() Object {
 	if v.Value == nil {
 		return NIL
 	}
-	if g, yes := v.Value.(GoObject); v.isAutoDeref && yes {
-		v := reflect.ValueOf(g.O)
-		if v.Kind() == reflect.Ptr {
-			return MakeGoObjectIfNeeded(reflect.Indirect(v).Interface())
+	if v.isAutoDeref {
+		if g, yes := v.Value.(GoObject); yes {
+			v := reflect.ValueOf(g.O)
+			if v.Kind() == reflect.Ptr {
+				return MakeGoObjectIfNeeded(reflect.Indirect(v).Interface())
+			}
 		}
 	}
 	return v.Value
