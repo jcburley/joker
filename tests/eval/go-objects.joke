@@ -3,7 +3,8 @@
 (ns joker.test-joker.go-objects
   (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template go.std.fmt)
   (:require [go.std.errors :as errors])
-  (:require [go.std.flag :as flag]))
+  (:require [go.std.flag :as flag])
+  (:require [go.std.io.ioutil :as ioutil]))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -66,6 +67,7 @@
     (is (= (set! flag/ErrHelp n)) n)
     (is (= @flag/ErrHelp n))
     (def c (flag/NewFlagSet "foo" 0))
+    (.SetOutput c @ioutil/Discard)
     (is (= (.Parse c ["-h"]) n))))
 
 (deftest ctors-work
