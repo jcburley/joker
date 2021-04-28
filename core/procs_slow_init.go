@@ -192,5 +192,4 @@ func init() {
 	intern("new__", procNew, "procNew")
 	intern("GoTypeOf__", procGoTypeOf, "procGoTypeOf")
 	intern("TypeOfAsString__", procTypeOfAsString, "procTypeOfAsString")
-	intern("ref__", procRef, "procRef")
 }

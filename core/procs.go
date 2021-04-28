@@ -916,17 +916,17 @@ var proc_Go = func(args []Object) Object {
 	panic(RT.NewError("invalid form for (Go ...); use (. instance members args*) instead"))
 }
 
-var procRef = func(args []Object) Object {
-	CheckArity(args, 1, 1)
-	o := EnsureArgIsGoObject(args, 0)
-	v := reflect.ValueOf(o.O)
-	if v.CanAddr() {
-		return MakeGoObjectIfNeeded(v.Addr().Interface())
-	}
-	d := reflect.New(reflect.TypeOf(o.O))
-	reflect.Indirect(d).Set(v)
-	return MakeGoObjectIfNeeded(d.Interface())
-}
+// var procRef = func(args []Object) Object {
+// 	CheckArity(args, 1, 1)
+// 	o := EnsureArgIsGoObject(args, 0)
+// 	v := reflect.ValueOf(o.O)
+// 	if v.CanAddr() {
+// 		return MakeGoObjectIfNeeded(v.Addr().Interface())
+// 	}
+// 	d := reflect.New(reflect.TypeOf(o.O))
+// 	reflect.Indirect(d).Set(v)
+// 	return MakeGoObjectIfNeeded(d.Interface())
+// }
 
 var procAssoc = func(args []Object) Object {
 	return EnsureArgIsAssociative(args, 0).Assoc(args[1], args[2])
