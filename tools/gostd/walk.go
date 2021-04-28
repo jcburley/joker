@@ -477,7 +477,7 @@ func isBasicLiteral(e Expr) *BasicLit {
 	}
 }
 
-func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
 			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
@@ -516,11 +516,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	return true
 }
 
-// Note that the 'val' argument isn't used (except when dumping info)
-// as it isn't needed to determine the type of a variable, since the
-// type isn't needed for code generation for variables -- just for
-// constants.
-func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr, val Expr, docString string) bool {
+func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, docString string) bool {
 	clName := name.Name
 	localName := gf.Package.BaseName + "." + name.Name
 	fullName := pkg + "." + name.Name
@@ -531,15 +527,7 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, valType Expr,
 	}
 
 	if WalkDump {
-		fmt.Printf("Variable %s at %s:\n", name, godb.WhereAt(name.Pos()))
-		if valType != nil {
-			fmt.Printf("  valType at %s:\n", godb.WhereAt(valType.Pos()))
-			Print(godb.Fset, valType)
-		}
-		if val != nil {
-			fmt.Printf("  val at %s:\n", godb.WhereAt(val.Pos()))
-			Print(godb.Fset, val)
-		}
+		fmt.Printf("Variable %s at %s.\n", name, godb.WhereAt(name.Pos()))
 	}
 
 	// Note: :tag value is a string to avoid conflict with like-named member of namespace
@@ -626,9 +614,9 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 			}
 			docString := genutils.CommentGroupInQuotes(doc, "", "", "", "")
 			if constant {
-				processConstantSpec(gf, pkg, valName, valType, val, docString)
+				processConstantSpec(gf, pkg, valName, val, docString)
 			} else {
-				processVariableSpec(gf, pkg, valName, valType, val, docString)
+				processVariableSpec(gf, pkg, valName, docString)
 			}
 		}
 	}
