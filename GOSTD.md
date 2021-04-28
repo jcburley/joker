@@ -221,7 +221,7 @@ As a result, references to such objects are generally used.
 
 ### Dereferencing a GoObject
 
-`(deref obj)` (or `@obj`) can be used to dereference a wrapped object, returning another `GoObject` with the dereferenced object as of the moment of that dereference, or to the original object if it wasn't a pointer to an object.
+`(deref obj)` (or `@obj`) can be used to dereference a wrapped object, returning another `GoObject` with the dereferenced object as of the moment of that dereference. If the original object isn't a pointer, a panic results.
 
 ### Obtaining a Reference to a GoObject
 
@@ -276,7 +276,7 @@ no constructors (in the formal sense) in Go, the constructors described above ar
 
 Given a `GoObject`, one may convert (to a native Clojure type) and/or examine it via:
 * `count`, which returns the number of elements (`.Len()`) for anything `seq` supports, without converting any of the elements themselves
-* `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Clojure object or (if one isn't suitable) a `GoObject`; or, if the `GoObject` does not wrap a pointer, the underlying object is converted to a Clojure object if possible, else wrapped by a newly constructed `GoObject`
+* `deref`, which dereferences (indirects through the pointer wrapped by) the `GoObject` and returns the resulting "snapshot" of its value, either as a native Clojure object or (if one isn't suitable) a `GoObject`
 * `get`, which returns the value corresponding to the given key for structs (the key must evaluate to a symbol), maps, arrays, slices, and strings; note, however, that a `GoObject` might be returned if a native Clojure object is not suitable
 * `if`, `and`, `or`, and similar, which convert to `bool` (and all `GoObject`'s evaluate as `true`)
 * `seq`, which works on arrays, channels, maps, slices, strings, and structs, but is (currently) not lazily evaluated
@@ -572,7 +572,10 @@ Stacktrace:
   global <repl>:20:1
   core/GoTypeOf <joker.core>:4678:3
 user=> (deref mx)
-[0xc00059e160]
+<joker.core>:1466:3: Eval error: GoObject is not a reference (pointer) nor a GoObject wrapping a potential Joker object
+Stacktrace:
+  global <repl>:8:2
+  core/deref <joker.core>:1466:3
 user=> (def m0 (get mx 0))
 #'user/m0
 user=> m0
