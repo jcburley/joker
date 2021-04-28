@@ -116,6 +116,16 @@ func Eval(expr Expr, env *LocalEnv) Object {
 	return expr.Eval(env)
 }
 
+func EvalMaybeAutoDeref(expr Expr, env *LocalEnv, doAutoDeref bool) Object {
+	parentExpr := RT.currentExpr
+	RT.currentExpr = expr
+	defer (func() { RT.currentExpr = parentExpr })()
+	if v, yes := expr.(*VarRefExpr); yes {
+		return v.vr.Resolve(doAutoDeref)
+	}
+	return expr.Eval(env)
+}
+
 func (s *Callstack) pushFrame(frame Frame) {
 	s.frames = append(s.frames, frame)
 }
@@ -193,7 +203,7 @@ func (err *EvalError) Error() string {
 }
 
 func (expr *VarRefExpr) Eval(env *LocalEnv) Object {
-	return expr.vr.Resolve()
+	return expr.vr.Resolve(true)
 }
 
 func (expr *SetMacroExpr) Eval(env *LocalEnv) Object {
@@ -364,7 +374,7 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 }
 
 func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
-	instance := Eval(expr.instance, env)
+	instance := EvalMaybeAutoDeref(expr.instance, env, !expr.isSetNow)
 	memberSym := expr.member
 	member := *memberSym.name
 
@@ -405,7 +415,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	v := reflect.ValueOf(o.O)
 	k := v.Kind()
 	if k == reflect.Ptr {
-		v = reflect.Indirect(v)
+		v = v.Elem()
 		k = v.Kind()
 	}
 	if k != reflect.Struct {
@@ -423,7 +433,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 		panic(RT.NewError(fmt.Sprintf("Field %s cannot be set to multiple arguments", member)))
 	}
 	if !field.CanSet() {
-		panic(RT.NewError(fmt.Sprintf("Not a settable value, but rather a %s: %s", k, AnyTypeToString(field, false))))
+		panic(RT.NewError(fmt.Sprintf("Not a settable value, but rather a %s: %s", field.Kind(), field.Type())))
 	}
 	arg := Eval(expr.args[0], env)
 	exprValue, ok := arg.(Valuable)

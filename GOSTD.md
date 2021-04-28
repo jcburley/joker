@@ -27,7 +27,7 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` on field references. E.g. instead of `(var-set (var (.member instance)) value)`, use `(set! (.member instance) value)`, which is much more Clojure-like.
 
-The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables, with automatic derefencing for ordinary usage. So, `SomeVar` yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable.  (`(deref SomeVar)`, aka `@SomeVar`, no longer work on global variables as previously described for earlier versions of this fork. Similarly, `(var (...))` is no longer supported.)
+The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables, with automatic derefencing for ordinary usage. So, `SomeVar` yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable, and `(set! (.SomeField SomeVar) new-value)` to change the value of a specific field when `SomeVar` is a `struct`.  (`(deref SomeVar)`, aka `@SomeVar`, no longer work on global variables as previously described for earlier versions of this fork. Similarly, `(var (...))` is no longer supported.)
 
 Values of type `error` are now wrapped in `GoObject`s instead of being converted into `String`s. This allows receivers for those values to be invoked, and is consistent with preserving the native type when not precisely implemented by a Joker type (in this case, `Error`, an abstract type). When an `error` type is needed, the supplied expression may be `String` or `GoObject[error]`.
 
@@ -178,6 +178,8 @@ Global variables (in Go packages) are implemented as `GoObject` objects wrapping
 As such, `SomeVar`, if a **Var** that wraps a global Go variable, yields a snapshot of that variable at the time of evaluation. Such snapshots are (per GoObject-creation rules) either `GoObject` or native Clojure wrappers (such as `Int` and `String`).
 
 Use `(set! SomeVar new-value)` to assign `new-value` to that variable. `new-value` may be an ordinary object such as a `String`, `Int`, or `Boolean`; or it may be a `Var` or `GoObject`, in which case the underlying value is used (and potentially dereferenced once, if that enables assignment, though the original value is nevertheless returned by the function).
+
+Or, use `(set! (.SomeField SomeVar) new-value)` to change the value of a specific field, when `SomeVar` is a `struct`.
 
 ## GoObjects
 
@@ -512,6 +514,14 @@ user=> (str le)
 "hi golly you: silly"
 user=> (set! Stdout "whoa")
 <repl>:7:1: Eval error: Cannot assign a string to a *os.File
+user=> (use 'go.std.go.build)
+nil
+user=> Default
+{amd64 darwin /usr/local/go /Users/craig/go  true false gc [] [go1.1 go1.2 go1.3 go1.4 go1.5 go1.6 go1.7 go1.8 go1.9 go1.10 go1.11 go1.12 go1.13 go1.14 go1.15 go1.16]  <nil> <nil> <nil> <nil> <nil> <nil> <nil>}
+user=> (set! (.GOOS Default) "hey")
+"hey"
+user=> Default
+{amd64 hey /usr/local/go /Users/craig/go  true false gc [] [go1.1 go1.2 go1.3 go1.4 go1.5 go1.6 go1.7 go1.8 go1.9 go1.10 go1.11 go1.12 go1.13 go1.14 go1.15 go1.16]  <nil> <nil> <nil> <nil> <nil> <nil> <nil>}
 user=>
 ```
 

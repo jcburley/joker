@@ -925,11 +925,11 @@ func (v *Var) Hash() uint32 {
 	return HashPtr(uintptr(unsafe.Pointer(v)))
 }
 
-func (v *Var) Resolve() Object {
+func (v *Var) Resolve(doAutoDeref bool) Object {
 	if v.Value == nil {
 		return NIL
 	}
-	if v.isAutoDeref {
+	if v.isAutoDeref && doAutoDeref {
 		if g, yes := v.Value.(GoObject); yes {
 			v := reflect.ValueOf(g.O)
 			if v.Kind() == reflect.Ptr {
@@ -942,14 +942,14 @@ func (v *Var) Resolve() Object {
 }
 
 func (v *Var) Call(args []Object) Object {
-	vl := v.Resolve()
+	vl := v.Resolve(true)
 	return EnsureObjectIsCallable(
 		vl,
 		"Var "+v.ToString(false)+" resolves to "+vl.ToString(false)+", which is not a Fn").Call(args)
 }
 
 func (v *Var) Deref() Object {
-	return v.Resolve()
+	return v.Resolve(true)
 }
 
 func (v *Var) ValueOf() reflect.Value {

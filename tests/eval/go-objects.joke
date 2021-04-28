@@ -4,7 +4,8 @@
   (:use joker.core joker.test go.std.os go.std.hash.crc32 go.std.net go.std.math go.std.html.template go.std.fmt)
   (:require [go.std.errors :as errors])
   (:require [go.std.flag :as flag])
-  (:require [go.std.io.ioutil :as ioutil]))
+  (:require [go.std.io.ioutil :as ioutil])
+  (:require [go.std.go.build :as build]))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -108,6 +109,13 @@
     (is (not (.IsTimeout dnserr)))
     (set! (.IsTimeout dnserr) true)
     (is (.IsTimeout dnserr))))
+
+(deftest struct-variables-work
+  (let [os (.GOOS build/Default)
+        new-os "hey"
+        updated-os (set! (.GOOS build/Default) new-os)]
+    (is (= new-os updated-os))
+    (is (= (set! (.GOOS build/Default) os) os))))
 
 (deftest native-wrapping-works
   (let [one (joker.core/Go 1 '<>)

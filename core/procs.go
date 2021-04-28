@@ -1645,7 +1645,7 @@ var procNamespaceUnalias = func(args []Object) Object {
 }
 
 var procVarGet = func(args []Object) Object {
-	return EnsureArgIsVar(args, 0).Resolve()
+	return EnsureArgIsVar(args, 0).Resolve(true)
 }
 
 var procVarSet = func(args []Object) Object {
