@@ -29,7 +29,7 @@ The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` 
 
 The `GoVar` object no longer exists. Variables are now implemented as `GoObject`s that wrap references (pointers) to the respective variables, with automatic derefencing for ordinary usage. So, `SomeVar` yields a snapshot of the `SomeVar` variable; now, `(set! SomeVar new-value)` is used to change the value of the variable, and `(set! (.SomeField SomeVar) new-value)` to change the value of a specific field when `SomeVar` is a `struct`.  (`(deref SomeVar)`, aka `@SomeVar`, no longer work on global variables as previously described for earlier versions of this fork. Similarly, `(var (...))` is no longer supported.)
 
-The `ref` function (in `joker.core`) has been removed, as it was not similar enough to Clojure's `ref`. In its place, a new special form, `(& expr)`, is provided to return a reference (pointer) to the underlying `expr`. For example, `(& SomeVar)` returns the `GoObject` that wraps a reference to the global variable `SomeVar` (in some Go package) without automatic dereferencing taking place.
+The `ref` function (in `joker.core`) has been removed, as it was not similar enough to Clojure's `ref`. A replacement function (or possibly a special form) is being contemplated for a future release.
 
 Values of type `error` are now wrapped in `GoObject`s instead of being converted into `String`s. This allows receivers for those values to be invoked, and is consistent with preserving the native type when not precisely implemented by a Joker type (in this case, `Error`, an abstract type). When an `error` type is needed, the supplied expression may be `String` or `GoObject[error]`.
 
@@ -229,11 +229,7 @@ As a result, references to such objects are generally used.
 
 ### Obtaining a Reference to a GoObject
 
-Similarly, `(& obj)` is a (non-Clojure) special form that returns a (`GoObject` wrapping a) reference to either the original (underlying) Go object, if it supports that; or to a copy that is made for this purpose.
-
-As a special form, `&` inhibits automatic derefencing of global variables, thus returning a reference (pointer) to them, not to copies. E.g. `(& SomeVar)` returns a reference to the global variable `SomeVar`, not to a copy of that variable.
-
-The `reflect` package (in Go) is used when necessary; see `reflect.CanAddr()`, which is used to determine whether the original underlying object allows a reference to be made to it. If not, `reflect.New()` and `reflect.Indirect().Set()` are used to create a new, referenceable, object that is set to the value of the original.
+This is TBD, as `ref` has been removed due to conflicting with Clojure's `ref` while being too dissimilar.
 
 ### Rules Governing GoObject Creation
 
