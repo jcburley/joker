@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+func IsEmptyFieldList(fl *FieldList) bool {
+	return fl == nil || len(fl.List) == 0
+}
+
 type FieldItem struct {
 	Name  *Ident
 	Field *Field
