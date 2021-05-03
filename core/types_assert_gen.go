@@ -426,21 +426,6 @@ func EnsureArgIsVar(args []Object, index int) *Var {
 	panic(FailArg(obj, "Var", index))
 }
 
-func EnsureObjectIsFn(obj Object, pattern string) *Fn {
-	if c, yes := obj.(*Fn); yes {
-		return c
-	}
-	panic(FailObject(obj, "Fn", pattern))
-}
-
-func EnsureArgIsFn(args []Object, index int) *Fn {
-	obj := args[index]
-	if c, yes := obj.(*Fn); yes {
-		return c
-	}
-	panic(FailArg(obj, "Fn", index))
-}
-
 func EnsureObjectIsDeref(obj Object, pattern string) Deref {
 	if c, yes := obj.(Deref); yes {
 		return c

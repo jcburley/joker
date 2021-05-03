@@ -333,6 +333,65 @@ func ExtractError(args []Object, index int) error {
 	return EnsureArgIsError(args, index)
 }
 
+func MaybeIsFn(o Object) (*Fn, bool) {
+	if c, yes := o.(*Fn); yes {
+		return c, true
+	}
+	return nil, false
+}
+
+func EnsureObjectIsFn(obj Object, pattern string) *Fn {
+	if c, yes := MaybeIsFn(obj); yes {
+		return c
+	}
+	panic(FailObject(obj, "Fn", pattern))
+}
+
+func EnsureArgIsFn(args []Object, index int) *Fn {
+	obj := args[index]
+	if c, yes := MaybeIsFn(obj); yes {
+		return c
+	}
+	panic(FailArg(obj, "Fn", index))
+}
+
+func MaybeIsFunc(o Object) (func(), bool) {
+	if c, yes := o.(Native); yes {
+		if f, yes := c.Native().(func()); yes {
+			return f, true
+		}
+	}
+	return nil, false
+}
+
+func ExtractFn(args []Object, index int) func() {
+	obj := args[index]
+	if c, yes := MaybeIsFunc(obj); yes {
+		return c
+	}
+	panic(FailArg(obj, "GoObject[func()]", index))
+}
+
+func ReceiverArgAsFn(name, rcvr string, args *ArraySeq, n int) func() {
+	a := SeqNth(args, n)
+	if res, ok := MaybeIsFunc(a); ok {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[func()]"))
+}
+
+func FieldAsFn(o Map, k string) func() {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok || v.Equals(NIL) {
+		return nil
+	}
+	if res, ok := MaybeIsFunc(v); ok {
+		return res
+	}
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject[func()], but is %s",
+		k, v.TypeToString(false))))
+}
+
 var procMeta = func(args []Object) Object {
 	CheckArity(args, 1, 1)
 	switch obj := args[0].(type) {

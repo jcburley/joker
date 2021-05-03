@@ -479,8 +479,8 @@ func InfoForExpr(e Expr) *Info {
 			isBuiltin = true
 		} else {
 			localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
-			isNullable = true
 		}
+		isNullable = true
 	case *Ellipsis:
 		pkgName = ""
 		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
