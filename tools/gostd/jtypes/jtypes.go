@@ -105,7 +105,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		baseNameDoc = baseName
 	case *StructType:
 		if astutils.IsEmptyFieldList(v.Fields) {
-			baseName = "struct{}"
+			baseName = "GoObject"
 		} else {
 			baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
