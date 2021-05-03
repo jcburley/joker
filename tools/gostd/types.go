@@ -131,11 +131,7 @@ func RegisterAllSubtypes(e Expr) {
 		RegisterAllSubtypes(v.Len)
 		RegisterAllSubtypes(v.Elt)
 	case *InterfaceType:
-		for _, f := range astutils.FlattenFieldList(v.Methods) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Methods)
 	case *MapType:
 		RegisterAllSubtypes(v.Key)
 		RegisterAllSubtypes(v.Value)
@@ -144,12 +140,10 @@ func RegisterAllSubtypes(e Expr) {
 	case *ChanType:
 		RegisterAllSubtypes(v.Value)
 	case *StructType:
-		for _, f := range astutils.FlattenFieldList(v.Fields) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Fields)
 	case *FuncType:
+		RegisterAllSubtypesInFieldList(v.Params)
+		RegisterAllSubtypesInFieldList(v.Results)
 		return
 	case *Ellipsis:
 		return
@@ -158,6 +152,14 @@ func RegisterAllSubtypes(e Expr) {
 	}
 
 	TypeInfoForExpr(e)
+}
+
+func RegisterAllSubtypesInFieldList(fl *FieldList) {
+	for _, f := range astutils.FlattenFieldList(fl) {
+		if f.Name == nil || IsExported(f.Name.Name) {
+			RegisterAllSubtypes(f.Field.Type)
+		}
+	}
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
