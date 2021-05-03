@@ -118,13 +118,17 @@ func RegisterAllSubtypes(e Expr) {
 		return
 	}
 
+	if typeCheckerInfo.Types[e].Value != nil {
+		return // Don't process a constant
+	}
+
 	switch v := e.(type) {
 	case *Ident:
 		return
 	case *StarExpr:
 		RegisterAllSubtypes(v.X)
 	case *ArrayType:
-		//		RegisterAllSubtypes(v.Len)
+		RegisterAllSubtypes(v.Len)
 		RegisterAllSubtypes(v.Elt)
 	case *InterfaceType:
 		for _, f := range astutils.FlattenFieldList(v.Methods) {
@@ -133,8 +137,8 @@ func RegisterAllSubtypes(e Expr) {
 			}
 		}
 	case *MapType:
-		// RegisterAllSubtypes(v.Key)
-		// RegisterAllSubtypes(v.Value)
+		RegisterAllSubtypes(v.Key)
+		RegisterAllSubtypes(v.Value)
 		return
 	case *SelectorExpr:
 	case *ChanType:

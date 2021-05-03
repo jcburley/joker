@@ -375,7 +375,7 @@ func InfoForExpr(e Expr) *Info {
 		}
 		ts, ok := tsNode.(*TypeSpec)
 		if !ok {
-			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
+			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v) from %T", tsNode, fullName, tsNode, e))
 		}
 
 		return Define(ts, nil, di.Doc())[0] // Return the base type, not the * or [] variants.
