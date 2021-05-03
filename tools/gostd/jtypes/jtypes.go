@@ -97,14 +97,14 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		baseName = v.Sel.Name
 		baseNameDoc = baseName
 	case *InterfaceType:
-		if !v.Incomplete && len(v.Methods.List) == 0 {
+		if !v.Incomplete && astutils.IsEmptyFieldList(v.Methods) {
 			baseName = "GoObject"
 		} else {
 			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 		baseNameDoc = baseName
 	case *StructType:
-		if v.Fields == nil || len(v.Fields.List) == 0 {
+		if astutils.IsEmptyFieldList(v.Fields) {
 			baseName = "struct{}"
 		} else {
 			baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", astutils.ExprToString(v))

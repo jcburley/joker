@@ -424,7 +424,7 @@ func InfoForExpr(e Expr) *Info {
 		isArbitraryType = true
 	case *InterfaceType:
 		pkgName = ""
-		if !v.Incomplete && len(v.Methods.List) == 0 {
+		if !v.Incomplete && astutils.IsEmptyFieldList(v.Methods) {
 			localName = "interface{}"
 			isExported = true
 			isBuiltin = true
@@ -461,7 +461,7 @@ func InfoForExpr(e Expr) *Info {
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
 		pkgName = ""
-		if v.Fields == nil || len(v.Fields.List) == 0 { // TODO: astutils.IsEmptyFieldList()
+		if astutils.IsEmptyFieldList(v.Fields) {
 			localName = "struct{}"
 			fullName = localName
 			isExported = true
