@@ -112,11 +112,11 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		baseNameDoc = baseName
 	case *FuncType:
 		if astutils.IsEmptyFieldList(v.Params) && astutils.IsEmptyFieldList(v.Results) {
-			baseName = "func()"
+			baseName = "Fn"
 		} else {
 			baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", astutils.ExprToString(v))
-			baseNameDoc = baseName
 		}
+		baseNameDoc = baseName
 	case *Ellipsis:
 		baseName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		baseNameDoc = baseName
