@@ -451,6 +451,10 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	return arg
 }
 
+func (expr *DotExpr) Name() string {
+	return "(." + *expr.member.name + ")"
+}
+
 func (expr *SetNowExpr) Eval(env *LocalEnv) (obj Object) {
 	targetExpr := EnsureObjectIsValuable(expr.target.(*Var).Value, "")
 	target := targetExpr.ValueOf()

@@ -355,11 +355,54 @@ func EnsureArgIsFn(args []Object, index int) *Fn {
 	panic(FailArg(obj, "Fn", index))
 }
 
+func buildFunc(fn *Fn) func() {
+	var body []Expr
+	min := math.MaxInt32
+	max := -1
+	for _, arity := range fn.fnExpr.arities {
+		a := len(arity.args)
+		if a == 0 {
+			body = arity.body
+		} else {
+			if min > a {
+				min = a
+			}
+			if max < a {
+				max = a
+			}
+		}
+	}
+	if body == nil {
+		v := fn.fnExpr.variadic
+		if v == nil || 0 < len(v.args)-1 {
+			if v != nil {
+				min = len(v.args)
+				max = math.MaxInt32
+			}
+			c := 0
+			PanicArityMinMax(c, min, max)
+		}
+		body = v.body
+	}
+	return func() {
+		RT.pushFrame()
+		defer RT.popFrame()
+		evalLoop(body, fn.env.addFrame(nil))
+		return
+	}
+}
+
 func MaybeIsFunc(o Object) (func(), bool) {
 	if c, yes := o.(Native); yes {
 		if f, yes := c.Native().(func()); yes {
 			return f, true
 		}
+	}
+	if fn, yes := MaybeIsFn(o); yes {
+		if fn.fn == nil {
+			fn.fn = buildFunc(fn)
+		}
+		return fn.fn, true
 	}
 	return nil, false
 }
@@ -369,7 +412,7 @@ func ExtractFn(args []Object, index int) func() {
 	if c, yes := MaybeIsFunc(obj); yes {
 		return c
 	}
-	panic(FailArg(obj, "GoObject[func()]", index))
+	panic(FailArg(obj, "GoObject[func()] or Fn", index))
 }
 
 func ReceiverArgAsFn(name, rcvr string, args *ArraySeq, n int) func() {
@@ -377,7 +420,7 @@ func ReceiverArgAsFn(name, rcvr string, args *ArraySeq, n int) func() {
 	if res, ok := MaybeIsFunc(a); ok {
 		return res
 	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[func()]"))
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[func()] or Fn"))
 }
 
 func FieldAsFn(o Map, k string) func() {
@@ -388,7 +431,7 @@ func FieldAsFn(o Map, k string) func() {
 	if res, ok := MaybeIsFunc(v); ok {
 		return res
 	}
-	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject[func()], but is %s",
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject[func()] or Fn, but is %s",
 		k, v.TypeToString(false))))
 }
 

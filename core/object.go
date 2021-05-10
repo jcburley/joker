@@ -182,6 +182,7 @@ type (
 		isMacro bool
 		fnExpr  *FnExpr
 		env     *LocalEnv
+		fn      func() // Wrapper that calls Fn (which has no arguments and returns nothing; TODO: support all wrappers)
 	}
 	ExInfo struct {
 		ArrayMap

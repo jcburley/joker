@@ -5,7 +5,9 @@
   (:require [go.std.errors :as errors])
   (:require [go.std.flag :as flag])
   (:require [go.std.io.ioutil :as ioutil])
-  (:require [go.std.go.build :as build]))
+  (:require [go.std.go.build :as build])
+  (:require [go.std.time :as time])
+  (:require [go.std.sync :as sync]))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -148,3 +150,16 @@
 
 (deftest vector-to-string
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))
+
+;; (deftest number-ops-work
+;;   (is (= 500000000 (* 500 time/Millisecond))))
+
+(deftest functions-work
+  (let [d (* 500 (int time/Millisecond)) ; when number-ops-work passes, remove (int ...) wrapper
+        t (time/AfterFunc d #(println "hey it worked"))
+        o (sync/Once. {})]
+    (println "before sleep")
+    (time/Sleep (* 2 d))
+    (println "after sleep")
+    (.Do o #(println "just this once"))
+    (.Do o #(println "OH NO NOT AGAIN!!"))))
