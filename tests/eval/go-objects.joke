@@ -148,3 +148,9 @@
 
 (deftest vector-to-string
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))
+
+(deftest set!-does-not-crash
+  (def xyz)
+  (is (not (try (set! xyz true) (catch Error e false))))
+  (is (not (try (set! flag/ErrHelp true) (catch Error e false)))))
+
