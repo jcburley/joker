@@ -160,11 +160,17 @@
 ;;   (is (= 500000000 (* 500 time/Millisecond))))
 
 (deftest functions-work
-  (let [d (* 500 (int time/Millisecond)) ; when number-ops-work passes, remove (int ...) wrapper
-        t (time/AfterFunc d #(println "hey it worked"))
-        o (sync/Once. {})]
-    (println "before sleep")
+  (def v 1)
+  (let [o (sync/Once. {})
+        d (* 10 (int time/Millisecond))] ; when number-ops-work passes, remove (int ...) wrapper
+    (is v 1)
+    (.Do o #(var-set #'v 2))
+    (.Do o #(var-set #'v 3))
+    (is v 2)
+    (time/AfterFunc d #(var-set #'v 4))
+    (is v 2)  ; if this fails occasionally, increase (say, double) time for d, above (this is a race condition)
     (time/Sleep (* 2 d))
-    (println "after sleep")
-    (.Do o #(println "just this once"))
-    (.Do o #(println "OH NO NOT AGAIN!!"))))
+    (if (not= v 4)
+      (time/Sleep (* 4 d)))  ; sleep a little longer this time?
+    (is v 4)
+    (ns-unmap *ns* 'v)))
