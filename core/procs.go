@@ -402,7 +402,9 @@ func MaybeIsFunc(o Object) (func(), bool) {
 		if fn.fn == nil {
 			fn.fn = buildFunc(fn)
 		}
-		return fn.fn, true
+		if fn, yes := fn.fn.(func()); yes {
+			return fn, true
+		}
 	}
 	return nil, false
 }
