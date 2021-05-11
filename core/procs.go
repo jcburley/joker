@@ -140,11 +140,11 @@ func ExtractStringable(args []Object, index int) string {
 	return EnsureArgIsStringable(args, index).S
 }
 
-func MaybeIsString(o Object) (string, bool) {
+func MaybeIsString(o Object) (String, string) {
 	if o, yes := o.(String); yes {
-		return o.S, true
+		return o, ""
 	}
-	return "", false
+	return String{}, "String"
 }
 
 func ExtractStrings(args []Object, index int) []string {
@@ -157,10 +157,11 @@ func ExtractStrings(args []Object, index int) []string {
 
 func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
-	if res, ok := MaybeIsString(a); ok {
-		return res
+	res, sb := MaybeIsString(a)
+	if sb == "" {
+		return res.S
 	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "String"))
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
 }
 
 func ReceiverArgAsStrings(name, rcvr string, args *ArraySeq, n int) []string {

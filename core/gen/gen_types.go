@@ -12,6 +12,7 @@ type (
 		Name     string
 		TypeName string
 		ShowName string
+		Nilable  bool
 	}
 )
 
@@ -26,22 +27,33 @@ import (
 )
 `
 
+var maybeIsTemplate string = `
+func MaybeIs{{.Name}}(obj Object) ({{.TypeName}}, string) {
+	if res, yes := obj.({{.TypeName}}); yes {
+		return res, ""
+	}
+	return {{if .Nilable}}nil{{else}}{{.TypeName}}{}{{end}}, "{{.ShowName}}"
+}
+`
+
 var ensureObjectIsTemplate string = `
 func EnsureObjectIs{{.Name}}(obj Object, pattern string) {{.TypeName}} {
-	if c, yes := obj.({{.TypeName}}); yes {
-		return c
+	res, sb := MaybeIs{{.Name}}(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "{{.ShowName}}", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 `
 
 var ensureArgIsTemplate string = `
 func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
 	obj := args[index]
-	if c, yes := obj.({{.TypeName}}); yes {
-		return c
+	res, sb := MaybeIs{{.Name}}(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "{{.ShowName}}", index))
+	panic(FailArg(obj, sb, index))
 }
 `
 
@@ -64,6 +76,7 @@ func generateAssertions(types []string) {
 	checkError(err)
 	defer f.Close()
 
+	var maybeIs = template.Must(template.New("maybe").Parse(maybeIsTemplate))
 	var ensureObjectIs = template.Must(template.New("assert").Parse(ensureObjectIsTemplate))
 	var ensureArgIs = template.Must(template.New("ensure").Parse(ensureArgIsTemplate))
 	f.WriteString(header)
@@ -74,11 +87,32 @@ func generateAssertions(types []string) {
 			TypeName: t,
 			ShowName: t,
 		}
-		if t[0] == '*' {
-			typeInfo.Name = t[1:]
-			typeInfo.ShowName = typeInfo.Name
-		} else if strings.ContainsRune(t, '.') {
+		switch t[0] {
+		case '*':
+			t = t[1:]
+			typeInfo.Name = t
+			typeInfo.ShowName = t
+			typeInfo.Nilable = true
+		case '.': // denotes "interface"
+			t = t[1:]
+			typeInfo.Name = t
+			typeInfo.TypeName = t
+			typeInfo.ShowName = t
+			typeInfo.Nilable = true
+		}
+		emitMaybeIs := true
+		if strings.HasSuffix(t, "-") {
+			emitMaybeIs = false
+			t = t[0 : len(t)-1]
+			typeInfo.Name = t
+			typeInfo.TypeName = t
+			typeInfo.ShowName = t
+		}
+		if strings.ContainsRune(t, '.') {
 			typeInfo.Name = strings.ReplaceAll(t, ".", "_")
+		}
+		if emitMaybeIs {
+			maybeIs.Execute(f, typeInfo)
 		}
 		ensureObjectIs.Execute(f, typeInfo)
 		ensureArgIs.Execute(f, typeInfo)
