@@ -140,13 +140,6 @@ func ExtractStringable(args []Object, index int) string {
 	return EnsureArgIsStringable(args, index).S
 }
 
-func MaybeIsString(o Object) (String, string) {
-	if o, yes := o.(String); yes {
-		return o, ""
-	}
-	return String{}, "String"
-}
-
 func ExtractStrings(args []Object, index int) []string {
 	strs := make([]string, 0)
 	for i := index; i < len(args); i++ {

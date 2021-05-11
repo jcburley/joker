@@ -9,10 +9,10 @@ import (
 
 type (
 	TypeInfo struct {
-		Name     string
-		TypeName string
-		ShowName string
-		Nilable  bool
+		GoName   string // Form usable within a Go variable/function name
+		ShowName string // What is shown to the user
+		RealName string // The real name (e.g. "*Foo", when GoName and ShowName are "Foo")
+		Nilable  bool   // Whether "nil" is valid for the type (else use "{{.RealName}}{}")
 	}
 )
 
@@ -28,17 +28,17 @@ import (
 `
 
 var maybeIsTemplate string = `
-func MaybeIs{{.Name}}(obj Object) ({{.TypeName}}, string) {
-	if res, yes := obj.({{.TypeName}}); yes {
+func MaybeIs{{.GoName}}(obj Object) ({{.RealName}}, string) {
+	if res, yes := obj.({{.RealName}}); yes {
 		return res, ""
 	}
-	return {{if .Nilable}}nil{{else}}{{.TypeName}}{}{{end}}, "{{.ShowName}}"
+	return {{if .Nilable}}nil{{else}}{{.RealName}}{}{{end}}, "{{.ShowName}}"
 }
 `
 
 var ensureObjectIsTemplate string = `
-func EnsureObjectIs{{.Name}}(obj Object, pattern string) {{.TypeName}} {
-	res, sb := MaybeIs{{.Name}}(obj)
+func EnsureObjectIs{{.GoName}}(obj Object, pattern string) {{.RealName}} {
+	res, sb := MaybeIs{{.GoName}}(obj)
 	if sb == "" {
 		return res
 	}
@@ -47,9 +47,9 @@ func EnsureObjectIs{{.Name}}(obj Object, pattern string) {{.TypeName}} {
 `
 
 var ensureArgIsTemplate string = `
-func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
+func EnsureArgIs{{.GoName}}(args []Object, index int) {{.RealName}} {
 	obj := args[index]
-	res, sb := MaybeIs{{.Name}}(obj)
+	res, sb := MaybeIs{{.GoName}}(obj)
 	if sb == "" {
 		return res
 	}
@@ -58,7 +58,7 @@ func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
 `
 
 var infoTemplate string = `
-func (x {{.TypeName}}) WithInfo(info *ObjectInfo) Object {
+func (x {{.RealName}}) WithInfo(info *ObjectInfo) Object {
 	x.info = info
 	return x
 }
@@ -70,6 +70,10 @@ func checkError(err error) {
 	}
 }
 
+// For a given type, the prefix "*" indicates a reference type; the
+// prefix "." an abstract (interface{}) type; and the suffix "-" that
+// no MaybeIs*() function need be generated, as a custom one has been
+// written.
 func generateAssertions(types []string) {
 	filename := "types_assert_gen.go"
 	f, err := os.Create(filename)
@@ -82,34 +86,28 @@ func generateAssertions(types []string) {
 	f.WriteString(header)
 	f.WriteString(importFmt)
 	for _, t := range types {
-		typeInfo := TypeInfo{
-			Name:     t,
-			TypeName: t,
-			ShowName: t,
-		}
+		realName := t
+		nilable := false
+		emitMaybeIs := true
 		switch t[0] {
 		case '*':
 			t = t[1:]
-			typeInfo.Name = t
-			typeInfo.ShowName = t
-			typeInfo.Nilable = true
-		case '.': // denotes "interface"
+			nilable = true
+		case '.': // denotes abstract type (interface{}), which is Nilable
 			t = t[1:]
-			typeInfo.Name = t
-			typeInfo.TypeName = t
-			typeInfo.ShowName = t
-			typeInfo.Nilable = true
+			realName = t
+			nilable = true
 		}
-		emitMaybeIs := true
 		if strings.HasSuffix(t, "-") {
-			emitMaybeIs = false
 			t = t[0 : len(t)-1]
-			typeInfo.Name = t
-			typeInfo.TypeName = t
-			typeInfo.ShowName = t
+			realName = t
+			emitMaybeIs = false
 		}
-		if strings.ContainsRune(t, '.') {
-			typeInfo.Name = strings.ReplaceAll(t, ".", "_")
+		typeInfo := TypeInfo{
+			GoName:   strings.ReplaceAll(t, ".", "_"),
+			ShowName: t,
+			RealName: realName,
+			Nilable:  nilable,
 		}
 		if emitMaybeIs {
 			maybeIs.Execute(f, typeInfo)
@@ -130,11 +128,11 @@ func generateInfo(types []string) {
 	f.WriteString(header)
 	for _, t := range types {
 		typeInfo := TypeInfo{
-			Name:     t,
-			TypeName: t,
+			GoName:   t,
+			RealName: t,
 		}
 		if t[0] == '*' {
-			typeInfo.Name = t[1:]
+			typeInfo.GoName = t[1:]
 		}
 		info.Execute(f, typeInfo)
 	}

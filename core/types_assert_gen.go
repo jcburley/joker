@@ -78,6 +78,13 @@ func EnsureArgIsChar(args []Object, index int) Char {
 	panic(FailArg(obj, sb, index))
 }
 
+func MaybeIsString(obj Object) (String, string) {
+	if res, yes := obj.(String); yes {
+		return res, ""
+	}
+	return String{}, "String"
+}
+
 func EnsureObjectIsString(obj Object, pattern string) String {
 	res, sb := MaybeIsString(obj)
 	if sb == "" {
