@@ -57,19 +57,20 @@ func ExtractObject(args []Object, index int) Object {
 	return args[index]
 }
 
-func MaybeIsNative(o Object) (interface{}, bool) {
-	if o, yes := o.(Native); yes {
-		return o.Native(), true
+func MaybeIsNative(o Object) (interface{}, string) {
+	if res, yes := o.(Native); yes {
+		return res.Native(), ""
 	}
-	return nil, false
+	return nil, "GoObject or concrete Type"
 }
 
 func EnsureArgIsNative(args []Object, index int) interface{} {
 	obj := args[index]
-	if c, yes := MaybeIsNative(obj); yes {
-		return c
+	res, sb := MaybeIsNative(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "GoObject or concrete Type", index))
+	panic(FailArg(obj, sb, index))
 }
 
 func ExtractGoObject(args []Object, index int) interface{} {
@@ -86,10 +87,11 @@ func ExtractGoObjects(args []Object, index int) []interface{} {
 
 func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
 	a := SeqNth(args, n)
-	if res, ok := MaybeIsNative(a); ok {
+	res, sb := MaybeIsNative(a)
+	if sb == "" {
 		return res
 	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject or concrete type"))
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
 }
 
 func ReceiverArgAsGoObjects(name, rcvr string, args *ArraySeq, n int) []interface{} {
@@ -148,7 +150,7 @@ func ExtractStrings(args []Object, index int) []string {
 	return strs
 }
 
-func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
+func ReceiverArgAs_string(name, rcvr string, args *ArraySeq, n int) string {
 	a := SeqNth(args, n)
 	res, sb := MaybeIsString(a)
 	if sb == "" {
@@ -157,11 +159,11 @@ func ReceiverArgAsString(name, rcvr string, args *ArraySeq, n int) string {
 	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
 }
 
-func ReceiverArgAsStrings(name, rcvr string, args *ArraySeq, n int) []string {
+func ReceiverArgAs_strings(name, rcvr string, args *ArraySeq, n int) []string {
 	vec := make([]string, 0)
 	count := SeqCount(args)
 	for i := n; i < count; i++ {
-		vec = append(vec, ReceiverArgAsString(name, rcvr, args, i))
+		vec = append(vec, ReceiverArgAs_string(name, rcvr, args, i))
 	}
 	return vec
 }
@@ -324,29 +326,31 @@ func ExtractIOWriter(args []Object, index int) io.Writer {
 }
 
 func ExtractError(args []Object, index int) error {
-	return EnsureArgIsError(args, index)
+	return EnsureArgIs_error(args, index)
 }
 
-func MaybeIsFn(o Object) (*Fn, bool) {
-	if c, yes := o.(*Fn); yes {
-		return c, true
+func MaybeIsFn(o Object) (*Fn, string) {
+	if res, yes := o.(*Fn); yes {
+		return res, ""
 	}
-	return nil, false
+	return nil, "Fn"
 }
 
 func EnsureObjectIsFn(obj Object, pattern string) *Fn {
-	if c, yes := MaybeIsFn(obj); yes {
-		return c
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Fn", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsFn(args []Object, index int) *Fn {
 	obj := args[index]
-	if c, yes := MaybeIsFn(obj); yes {
-		return c
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Fn", index))
+	panic(FailArg(obj, sb, index))
 }
 
 func buildFunc(fn *Fn) func() {
@@ -386,49 +390,52 @@ func buildFunc(fn *Fn) func() {
 	}
 }
 
-func MaybeIsFunc(o Object) (func(), bool) {
-	if c, yes := o.(Native); yes {
-		if f, yes := c.Native().(func()); yes {
-			return f, true
+func MaybeIs_func(o Object) (func(), string) {
+	if res, yes := o.(Native); yes {
+		if f, yes := res.Native().(func()); yes {
+			return f, ""
 		}
 	}
-	if fn, yes := MaybeIsFn(o); yes {
+	if fn, sb := MaybeIsFn(o); sb == "" {
 		if fn.fn == nil {
 			fn.fn = buildFunc(fn)
 		}
 		if fn, yes := fn.fn.(func()); yes {
-			return fn, true
+			return fn, ""
 		}
 	}
-	return nil, false
+	return nil, "Fn or GoObject[func()]"
 }
 
-func ExtractFn(args []Object, index int) func() {
+func Extractfunc(args []Object, index int) func() {
 	obj := args[index]
-	if c, yes := MaybeIsFunc(obj); yes {
-		return c
-	}
-	panic(FailArg(obj, "GoObject[func()] or Fn", index))
-}
-
-func ReceiverArgAsFn(name, rcvr string, args *ArraySeq, n int) func() {
-	a := SeqNth(args, n)
-	if res, ok := MaybeIsFunc(a); ok {
+	res, sb := MaybeIs_func(obj)
+	if sb == "" {
 		return res
 	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, "GoObject[func()] or Fn"))
+	panic(FailArg(obj, sb, index))
 }
 
-func FieldAsFn(o Map, k string) func() {
+func ReceiverArgAsfunc(name, rcvr string, args *ArraySeq, n int) func() {
+	a := SeqNth(args, n)
+	res, sb := MaybeIs_func(a)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
+}
+
+func FieldAsfunc(o Map, k string) func() {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok || v.Equals(NIL) {
 		return nil
 	}
-	if res, ok := MaybeIsFunc(v); ok {
+	res, sb := MaybeIs_func(v)
+	if sb == "" {
 		return res
 	}
-	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type GoObject[func()] or Fn, but is %s",
-		k, v.TypeToString(false))))
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be of type %s, but is %s",
+		k, sb, v.TypeToString(false))))
 }
 
 var procMeta = func(args []Object) Object {
@@ -624,7 +631,7 @@ var procExInfo = func(args []Object) Object {
 	res.Add(KEYWORDS.message, EnsureArgIsString(args, 0))
 	res.Add(KEYWORDS.data, EnsureArgIsMap(args, 1))
 	if len(args) == 3 {
-		res.Add(KEYWORDS.cause, EnsureArgImplementsError(args, 2))
+		res.Add(KEYWORDS.cause, EnsureArgImplements_error(args, 2))
 	}
 	return res
 }
