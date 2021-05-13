@@ -259,7 +259,7 @@ var Byte = &Info{
 	FullNameDoc:          "Byte",
 	BaseName:             "Byte",
 	BaseNameDoc:          "Byte",
-	ArgClojureType:       "Number",
+	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
 	ArgExtractFunc:       "Byte",
 	ArgClojureArgType:    "Int",
