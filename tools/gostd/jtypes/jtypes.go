@@ -261,11 +261,11 @@ var Byte = &Info{
 	BaseNameDoc:          "Byte",
 	ArgClojureType:       "Int",
 	ArgFromClojureObject: ".Int().I",
-	ArgExtractFunc:       "Byte",
+	ArgExtractFunc:       "Uint8",
 	ArgClojureArgType:    "Int",
-	ConvertFromMap:       `FieldAsByte(%s, %s)`,
+	ConvertFromMap:       `FieldAsUint8(%s, %s)`,
 	AsClojureObject:      "Int(int(%s)%s)",
-	ConvertFromClojure:   "ObjectAsByte(%s, %s)",
+	ConvertFromClojure:   "ObjectAsUint8(%s, %s)",
 	PromoteType:          "int(%s)",
 }
 
