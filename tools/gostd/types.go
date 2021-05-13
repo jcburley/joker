@@ -11,6 +11,7 @@ import (
 	. "go/ast"
 	"go/token"
 	"sort"
+	"strings"
 )
 
 type TypeInfo interface {
@@ -36,6 +37,7 @@ type TypeInfo interface {
 	GoPattern() string
 	GoBaseName() string
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
+	GoApiString(bool) string     // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -388,6 +390,18 @@ func (ti typeInfo) GoEffectiveBaseName() string {
 		return "interface{}"
 	}
 	return ti.gti.LocalName
+}
+
+func (ti typeInfo) GoApiString(isEllipsis bool) string {
+	clType := ti.jti.GoApiString
+	if isEllipsis {
+		if strings.Contains(clType, "/") {
+			clType += "_s"
+		} else {
+			clType += "s"
+		}
+	}
+	return clType
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {

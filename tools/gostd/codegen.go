@@ -788,9 +788,9 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	clType := v.ClojureEffectiveName()
+	clType := v.GoApiString(false)
 	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
-	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
+	api := determineRuntime("FieldAs_", "FieldAs_ns_", apiImportName, clType)
 
 	deref := ""
 	if v.IsPassedByAddress() {

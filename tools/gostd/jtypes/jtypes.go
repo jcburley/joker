@@ -29,6 +29,7 @@ type Info struct {
 	ConvertFromMap       string // Pattern to convert a map %s key %s to this type
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
+	GoApiString          string // E.g. "error", "uint16", "go.std.net/IPv4Addr"
 	IsUnsupported        bool   // Is this unsupported?
 }
 
@@ -70,7 +71,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
+func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 
@@ -80,6 +81,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			ns = ClojureNamespaceForExpr(ue)
 			baseName = v.Name
 			baseNameDoc = baseName
+			goApiString = baseName
 		} else {
 			uInfo, found := goTypeMap[v.Name]
 			if !found {
@@ -87,6 +89,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			}
 			baseName = uInfo.FullName
 			baseNameDoc = uInfo.FullNameDoc
+			goApiString = uInfo.GoApiString
 			if e == ue {
 				info = uInfo
 			}
@@ -96,6 +99,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 		ns = ClojureNamespaceForGoFile(pkgName, GoFileForExpr(v))
 		baseName = v.Sel.Name
 		baseNameDoc = baseName
+		goApiString = baseName
 	case *InterfaceType:
 		if !v.Incomplete && astutils.IsEmptyFieldList(v.Methods) {
 			baseName = "GoObject"
@@ -103,6 +107,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 		baseNameDoc = baseName
+		goApiString = baseName
 	case *StructType:
 		if astutils.IsEmptyFieldList(v.Fields) {
 			baseName = "GoObject"
@@ -117,15 +122,18 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		}
 		baseNameDoc = baseName
+		goApiString = baseName
 	case *Ellipsis:
 		baseName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		baseNameDoc = baseName
+		goApiString = baseName
 	default:
 		panic(fmt.Sprintf("unrecognized underlying expr %T for %T", ue, e))
 	}
 
 	name = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseName))
 	nameDoc = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseNameDoc))
+	goApiString = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, goApiString))
 
 	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
 
@@ -151,6 +159,7 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 		ArgExtractFunc:    "Object",
 		ArgClojureArgType: name,
 		AsClojureObject:   "GoObjectIfNeeded(%s%s)",
+		GoApiString:       name,
 	}
 
 	jti.register()
@@ -168,7 +177,7 @@ func InfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goApiString, info := namingForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
@@ -195,6 +204,7 @@ func InfoForExpr(e Expr) *Info {
 		ArgClojureArgType:  fullName,
 		ConvertFromClojure: convertFromClojure,
 		ConvertFromMap:     convertFromMap,
+		GoApiString:        goApiString,
 	}
 
 	typesByExpr[e] = info
@@ -237,6 +247,7 @@ var Error = &Info{
 	AsClojureObject:      "Error(%s%s)",
 	ConvertFromClojure:   "ObjectAsError(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "error",
 }
 
 var Boolean = &Info{
@@ -252,6 +263,7 @@ var Boolean = &Info{
 	AsClojureObject:      "Boolean(%s%s)",
 	ConvertFromClojure:   "ObjectAsBoolean(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "bool",
 }
 
 var Byte = &Info{
@@ -267,6 +279,7 @@ var Byte = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsByte(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "byte",
 }
 
 var Rune = &Info{
@@ -282,6 +295,7 @@ var Rune = &Info{
 	AsClojureObject:      "Char(%s%s)",
 	ConvertFromClojure:   "ObjectAsChar(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "rune",
 }
 
 var String = &Info{
@@ -297,6 +311,7 @@ var String = &Info{
 	AsClojureObject:      "String(%s%s)",
 	ConvertFromClojure:   "ObjectAsString(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "string",
 }
 
 var Int = &Info{
@@ -312,6 +327,7 @@ var Int = &Info{
 	AsClojureObject:      "Int(%s%s)",
 	ConvertFromClojure:   "ObjectAsInt(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "int",
 }
 
 var Int8 = &Info{
@@ -327,6 +343,7 @@ var Int8 = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsInt8(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "int8",
 }
 
 var Int16 = &Info{
@@ -342,6 +359,7 @@ var Int16 = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsInt16(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "int16",
 }
 
 var Int32 = &Info{
@@ -357,6 +375,7 @@ var Int32 = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsInt32(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "int32",
 }
 
 var Int64 = &Info{
@@ -372,6 +391,7 @@ var Int64 = &Info{
 	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsInt64(%s, %s)",
 	PromoteType:          "int64(%s)",
+	GoApiString:          "int64",
 }
 
 var UInt = &Info{
@@ -387,6 +407,7 @@ var UInt = &Info{
 	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint(%s, %s)",
 	PromoteType:          "uint64(%s)",
+	GoApiString:          "uint",
 }
 
 var UInt8 = &Info{
@@ -402,6 +423,7 @@ var UInt8 = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsUint8(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "uint8",
 }
 
 var UInt16 = &Info{
@@ -417,6 +439,7 @@ var UInt16 = &Info{
 	AsClojureObject:      "Int(int(%s)%s)",
 	ConvertFromClojure:   "ObjectAsUint16(%s, %s)",
 	PromoteType:          "int(%s)",
+	GoApiString:          "uint16",
 }
 
 var UInt32 = &Info{
@@ -432,6 +455,7 @@ var UInt32 = &Info{
 	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint32(%s, %s)",
 	PromoteType:          "int64(%s)",
+	GoApiString:          "uint32",
 }
 
 var UInt64 = &Info{
@@ -447,6 +471,7 @@ var UInt64 = &Info{
 	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUint64(%s, %s)",
 	PromoteType:          "uint64(%s)",
+	GoApiString:          "uint64",
 }
 
 var UIntPtr = &Info{
@@ -462,6 +487,7 @@ var UIntPtr = &Info{
 	AsClojureObject:      "Number(%s%s)",
 	ConvertFromClojure:   "ObjectAsUintPtr(%s, %s)",
 	PromoteType:          "uint64(%s)",
+	GoApiString:          "uintptr",
 }
 
 var Float32 = &Info{
@@ -477,6 +503,7 @@ var Float32 = &Info{
 	AsClojureObject:      "Double(float64(%s)%s)",
 	ConvertFromClojure:   "ObjectAsFloat32(%s, %s)",
 	PromoteType:          "float64(%s)",
+	GoApiString:          "float32",
 }
 
 var Float64 = &Info{
@@ -492,6 +519,7 @@ var Float64 = &Info{
 	AsClojureObject:      "Double(%s%s)",
 	ConvertFromClojure:   "ObjectAsFloat64(%s, %s)",
 	PromoteType:          "%s",
+	GoApiString:          "float64",
 }
 
 var Complex128 = &Info{
@@ -506,6 +534,7 @@ var Complex128 = &Info{
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
 	ConvertFromClojure:   "ObjectAsComplex128(%s, %s)",
 	AsClojureObject:      "Complex(%s%s)",
+	GoApiString:          "complex128",
 }
 
 var goTypeMap = map[string]*Info{

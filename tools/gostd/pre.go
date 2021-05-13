@@ -142,17 +142,10 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 	ti := TypeInfoForExpr(e)
 	resExpr = paramName
 
-	clType := ti.ClojureEffectiveName()
-	if isEllipsis {
-		if strings.Contains(clType, "/") {
-			clType += "_s"
-		} else {
-			clType += "s"
-		}
-	}
+	clType := ti.GoApiString(isEllipsis)
 
 	apiImportName := fn.AddApiToImports(clType)
-	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+	api := determineRuntime("ReceiverArgAs_", "ReceiverArgAs_ns_", apiImportName, clType)
 	goPreCode = fmt.Sprintf("\t%s := %s(%q, myName, _argList, %d)\n", paramName, api, paramName, argNum)
 
 	if ti.IsPassedByAddress() {
