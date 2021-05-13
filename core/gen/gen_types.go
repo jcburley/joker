@@ -71,9 +71,7 @@ func checkError(err error) {
 }
 
 // For a given type, the prefix "*" indicates a reference type; the
-// prefix "." an abstract (interface{}) type; and the suffix "-" that
-// no MaybeIs*() function need be generated, as a custom one has been
-// written.
+// prefix "." an abstract (interface{}) type.
 func generateAssertions(types []string) {
 	filename := "types_assert_gen.go"
 	f, err := os.Create(filename)
@@ -88,7 +86,6 @@ func generateAssertions(types []string) {
 	for _, t := range types {
 		realName := t
 		nilable := false
-		emitMaybeIs := true
 		switch t[0] {
 		case '*':
 			t = t[1:]
@@ -98,20 +95,13 @@ func generateAssertions(types []string) {
 			realName = t
 			nilable = true
 		}
-		if strings.HasSuffix(t, "-") {
-			t = t[0 : len(t)-1]
-			realName = t
-			emitMaybeIs = false
-		}
 		typeInfo := TypeInfo{
 			GoName:   strings.ReplaceAll(t, ".", "_"),
 			ShowName: t,
 			RealName: realName,
 			Nilable:  nilable,
 		}
-		if emitMaybeIs {
-			maybeIs.Execute(f, typeInfo)
-		}
+		maybeIs.Execute(f, typeInfo)
 		ensureObjectIs.Execute(f, typeInfo)
 		ensureArgIs.Execute(f, typeInfo)
 	}
