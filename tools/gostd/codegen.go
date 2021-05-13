@@ -349,12 +349,12 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	argType := t.ArgClojureType()
-	declType := t.ArgExtractFunc()
+	declType := t.GoApiString(false)
 	if argType == "" || declType == "" {
 		return ""
 	}
 
-	coerceApi := "ObjectAs" + declType
+	coerceApi := "ObjectAs_" + declType
 	if _, ok := definedApis[coerceApi]; !ok {
 		return "" // Not implemented
 	}

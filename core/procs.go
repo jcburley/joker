@@ -85,24 +85,6 @@ func ExtractGoObjects(args []Object, index int) []interface{} {
 	return vec
 }
 
-func ReceiverArgAsGoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
-	a := SeqNth(args, n)
-	res, sb := MaybeIsNative(a)
-	if sb == "" {
-		return res
-	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
-}
-
-func ReceiverArgAsGoObjects(name, rcvr string, args *ArraySeq, n int) []interface{} {
-	vec := make([]interface{}, 0)
-	count := SeqCount(args)
-	for i := n; i < count; i++ {
-		vec = append(vec, ReceiverArgAsGoObject(name, rcvr, args, i))
-	}
-	return vec
-}
-
 func ExtractString(args []Object, index int) string {
 	arg := args[index]
 	var s Seq
@@ -150,24 +132,6 @@ func ExtractStrings(args []Object, index int) []string {
 	return strs
 }
 
-func ReceiverArgAs_string(name, rcvr string, args *ArraySeq, n int) string {
-	a := SeqNth(args, n)
-	res, sb := MaybeIsString(a)
-	if sb == "" {
-		return res.S
-	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
-}
-
-func ReceiverArgAs_strings(name, rcvr string, args *ArraySeq, n int) []string {
-	vec := make([]string, 0)
-	count := SeqCount(args)
-	for i := n; i < count; i++ {
-		vec = append(vec, ReceiverArgAs_string(name, rcvr, args, i))
-	}
-	return vec
-}
-
 func ExtractInt(args []Object, index int) int {
 	return EnsureArgIsInt(args, index).I
 }
@@ -189,15 +153,7 @@ func ExtractInteger(args []Object, index int) int {
 	}
 }
 
-func ExtractByte(args []Object, index int) byte {
-	v := ExtractInt(args, index)
-	if v < 0 || v > 255 {
-		panic(RT.NewArgTypeError(index, args[index], "byte"))
-	}
-	return byte(v)
-}
-
-func ExtractInt8(args []Object, index int) int8 {
+func Extractint8(args []Object, index int) int8 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt8 || v > math.MaxInt8 {
 		panic(RT.NewArgTypeError(index, args[index], "int8"))
@@ -205,7 +161,7 @@ func ExtractInt8(args []Object, index int) int8 {
 	return int8(v)
 }
 
-func ExtractInt16(args []Object, index int) int16 {
+func Extractint16(args []Object, index int) int16 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt16 || v > math.MaxInt16 {
 		panic(RT.NewArgTypeError(index, args[index], "int16"))
@@ -213,7 +169,7 @@ func ExtractInt16(args []Object, index int) int16 {
 	return int16(v)
 }
 
-func ExtractInt32(args []Object, index int) int32 {
+func Extractint32(args []Object, index int) int32 {
 	v := ExtractInt(args, index)
 	if v < math.MinInt32 || v > math.MaxInt32 {
 		panic(RT.NewArgTypeError(index, args[index], "int32"))
@@ -221,11 +177,11 @@ func ExtractInt32(args []Object, index int) int32 {
 	return int32(v)
 }
 
-func ExtractInt64(args []Object, index int) int64 {
+func Extractint64(args []Object, index int) int64 {
 	return ExtractNumber(args, index).BigInt().Int64()
 }
 
-func ExtractUint(args []Object, index int) uint {
+func Extractuint(args []Object, index int) uint {
 	v := EnsureArgIsNumber(args, index).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(index, args[index], "uint"))
@@ -233,23 +189,23 @@ func ExtractUint(args []Object, index int) uint {
 	return uint(v)
 }
 
-func ExtractUint8(args []Object, index int) uint8 {
-	v := ExtractUint(args, index)
+func Extractuint8(args []Object, index int) uint8 {
+	v := Extractuint(args, index)
 	if v > math.MaxUint8 {
 		panic(RT.NewArgTypeError(index, args[index], "uint8"))
 	}
 	return uint8(v)
 }
 
-func ExtractUint16(args []Object, index int) uint16 {
-	v := ExtractUint(args, index)
+func Extractuint16(args []Object, index int) uint16 {
+	v := Extractuint(args, index)
 	if v > math.MaxUint16 {
 		panic(RT.NewArgTypeError(index, args[index], "uint16"))
 	}
 	return uint16(v)
 }
 
-func ExtractUint32(args []Object, index int) uint32 {
+func Extractuint32(args []Object, index int) uint32 {
 	v := ExtractNumber(args, index).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(index, args[index], "uint32"))
@@ -257,11 +213,11 @@ func ExtractUint32(args []Object, index int) uint32 {
 	return uint32(v)
 }
 
-func ExtractUint64(args []Object, index int) uint64 {
+func Extractuint64(args []Object, index int) uint64 {
 	return ExtractNumber(args, index).BigInt().Uint64()
 }
 
-func ExtractUintPtr(args []Object, index int) uintptr {
+func Extractuintptr(args []Object, index int) uintptr {
 	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
 }
 
@@ -327,115 +283,6 @@ func ExtractIOWriter(args []Object, index int) io.Writer {
 
 func ExtractError(args []Object, index int) error {
 	return EnsureArgIs_error(args, index)
-}
-
-func MaybeIsFn(o Object) (*Fn, string) {
-	if res, yes := o.(*Fn); yes {
-		return res, ""
-	}
-	return nil, "Fn"
-}
-
-func EnsureObjectIsFn(obj Object, pattern string) *Fn {
-	res, sb := MaybeIsFn(obj)
-	if sb == "" {
-		return res
-	}
-	panic(FailObject(obj, sb, pattern))
-}
-
-func EnsureArgIsFn(args []Object, index int) *Fn {
-	obj := args[index]
-	res, sb := MaybeIsFn(obj)
-	if sb == "" {
-		return res
-	}
-	panic(FailArg(obj, sb, index))
-}
-
-func buildFunc(fn *Fn) func() {
-	var body []Expr
-	min := math.MaxInt32
-	max := -1
-	for _, arity := range fn.fnExpr.arities {
-		a := len(arity.args)
-		if a == 0 {
-			body = arity.body
-		} else {
-			if min > a {
-				min = a
-			}
-			if max < a {
-				max = a
-			}
-		}
-	}
-	if body == nil {
-		v := fn.fnExpr.variadic
-		if v == nil || 0 < len(v.args)-1 {
-			if v != nil {
-				min = len(v.args)
-				max = math.MaxInt32
-			}
-			c := 0
-			PanicArityMinMax(c, min, max)
-		}
-		body = v.body
-	}
-	return func() {
-		RT.pushFrame()
-		defer RT.popFrame()
-		evalLoop(body, fn.env.addFrame(nil))
-		return
-	}
-}
-
-func MaybeIs_func(o Object) (func(), string) {
-	if res, yes := o.(Native); yes {
-		if f, yes := res.Native().(func()); yes {
-			return f, ""
-		}
-	}
-	if fn, sb := MaybeIsFn(o); sb == "" {
-		if fn.fn == nil {
-			fn.fn = buildFunc(fn)
-		}
-		if fn, yes := fn.fn.(func()); yes {
-			return fn, ""
-		}
-	}
-	return nil, "Fn or GoObject[func()]"
-}
-
-func Extractfunc(args []Object, index int) func() {
-	obj := args[index]
-	res, sb := MaybeIs_func(obj)
-	if sb == "" {
-		return res
-	}
-	panic(FailArg(obj, sb, index))
-}
-
-func ReceiverArgAsfunc(name, rcvr string, args *ArraySeq, n int) func() {
-	a := SeqNth(args, n)
-	res, sb := MaybeIs_func(a)
-	if sb == "" {
-		return res
-	}
-	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
-}
-
-func FieldAsfunc(o Map, k string) func() {
-	ok, v := o.Get(MakeKeyword(k))
-	if !ok || v.Equals(NIL) {
-		return nil
-	}
-	res, sb := MaybeIs_func(v)
-	if sb == "" {
-		return res
-	}
-	panic(RT.NewError(fmt.Sprintf("Value for key %s should be of type %s, but is %s",
-		k, sb, v.TypeToString(false))))
 }
 
 var procMeta = func(args []Object) Object {

@@ -23,7 +23,7 @@ type TypeInfo interface {
 	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
-	ClojureEffectiveName() string
+	ClojureExtractString() string // What should follow "^" in *.joke arg def (not quite GoApiString)
 	ClojureNameDoc(e Expr) string
 	ClojurePattern() string
 	ClojureBaseName() string
@@ -315,11 +315,29 @@ func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
 }
 
-func (ti typeInfo) ClojureEffectiveName() string {
+// This constructs the string that follows "^" in an arglist in a
+// generated foo.joke file. The complexity results from the original
+// use of, say, "String", which becomes (via generate-std.joke) a call
+// to "ExtractString()", which yields not a String, but the underlying
+// 'string' object.
+//
+// As that can get rather confusing, the new naming convention uses the
+// actual type name being extracted. This would be 'string' if it wasn't
+// necessary to preserve existing assumptions (which make sense in the
+// context of a Clojure work-alike).
+//
+// So, for an API that takes e.g. []string, "arrayOfstring" (not
+// "arrayOfString") is returned. Similarly, if a uint16 is needed,
+// "uint16" is returned.
+func (ti typeInfo) ClojureExtractString() string {
 	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
-	return ti.jti.FullName
+	jti := ti.jti
+	if jti.Namespace == "" && jti.FullName != jti.ArgExtractFunc {
+		return ti.GoApiString(false)
+	}
+	return jti.FullName
 }
 
 func (ti typeInfo) ClojureNameDoc(e Expr) string {

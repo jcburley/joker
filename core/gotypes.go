@@ -54,11 +54,11 @@ func CheckReceiverArity(rcvr string, args Object, min, max int) *ArraySeq {
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, rcvr, RangeString(min, max))))
 }
 
-func ObjectAsBoolean(obj Object, pattern string) bool {
+func ObjectAs_bool(obj Object, pattern string) bool {
 	return EnsureObjectIsBoolean(obj, pattern).B
 }
 
-func ReceiverArgAsBoolean(name, rcvr string, args *ArraySeq, n int) bool {
+func ReceiverArgAs_bool(name, rcvr string, args *ArraySeq, n int) bool {
 	a := SeqNth(args, n)
 	res, ok := a.(Boolean)
 	if !ok {
@@ -68,7 +68,7 @@ func ReceiverArgAsBoolean(name, rcvr string, args *ArraySeq, n int) bool {
 	return res.B
 }
 
-func FieldAsBoolean(o Map, k string) bool {
+func FieldAs_bool(o Map, k string) bool {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok {
 		return false
@@ -81,11 +81,11 @@ func FieldAsBoolean(o Map, k string) bool {
 	return res.B
 }
 
-func ObjectAsInt(obj Object, pattern string) int {
+func ObjectAs_int(obj Object, pattern string) int {
 	return EnsureObjectIsInt(obj, pattern).I
 }
 
-func ReceiverArgAsInt(name, rcvr string, args *ArraySeq, n int) int {
+func ReceiverArgAs_int(name, rcvr string, args *ArraySeq, n int) int {
 	a := SeqNth(args, n)
 	res, ok := a.(Int)
 	if !ok {
@@ -95,7 +95,7 @@ func ReceiverArgAsInt(name, rcvr string, args *ArraySeq, n int) int {
 	return res.I
 }
 
-func FieldAsInt(o Map, k string) int {
+func FieldAs_int(o Map, k string) int {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > int64(MAX_INT) || v < int64(MIN_INT) {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int, but is too large",
@@ -104,7 +104,7 @@ func FieldAsInt(o Map, k string) int {
 	return int(v)
 }
 
-func ObjectAsUint(obj Object, pattern string) uint {
+func ObjectAs_uint(obj Object, pattern string) uint {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint")))
@@ -112,7 +112,7 @@ func ObjectAsUint(obj Object, pattern string) uint {
 	return uint(v)
 }
 
-func ReceiverArgAsUint(name, rcvr string, args *ArraySeq, n int) uint {
+func ReceiverArgAs_uint(name, rcvr string, args *ArraySeq, n int) uint {
 	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint"))
@@ -120,7 +120,7 @@ func ReceiverArgAsUint(name, rcvr string, args *ArraySeq, n int) uint {
 	return uint(v)
 }
 
-func FieldAsUint(o Map, k string) uint {
+func FieldAs_uint(o Map, k string) uint {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > uint64(MAX_UINT) {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint, but is too large",
@@ -129,27 +129,10 @@ func FieldAsUint(o Map, k string) uint {
 	return uint(v)
 }
 
-func ObjectAsByte(obj Object, pattern string) byte {
-	v := EnsureObjectIsInt(obj, pattern).I
+func ReceiverArgAs_uint8(name, rcvr string, args *ArraySeq, n int) uint8 {
+	v := ReceiverArgAs_int(name, rcvr, args, n)
 	if v < 0 || v > 255 {
-		panic(RT.NewError(fmt.Sprintf(pattern, "Int "+strconv.Itoa(v)+" out of range for byte")))
-	}
-	return byte(v)
-}
-
-func ReceiverArgAsByte(name, rcvr string, args *ArraySeq, n int) byte {
-	v := ReceiverArgAsInt(name, rcvr, args, n)
-	if v < 0 || v > 255 {
-		panic(RT.NewArgTypeError(n, SeqNth(args, n), "byte"))
-	}
-	return byte(v)
-}
-
-func FieldAsByte(o Map, k string) byte {
-	v := FieldAsInt(o, k)
-	if v < 0 || v > 255 {
-		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type byte, but its magnitude is too large",
-			v, k)))
+		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint8"))
 	}
 	return byte(v)
 }
@@ -177,7 +160,7 @@ func FieldAsNumber(o Map, k string) Number {
 	return res
 }
 
-func ObjectAsInt8(obj Object, pattern string) int8 {
+func ObjectAs_int8(obj Object, pattern string) int8 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt8 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int8")))
@@ -185,7 +168,7 @@ func ObjectAsInt8(obj Object, pattern string) int8 {
 	return int8(v)
 }
 
-func FieldAsInt8(o Map, k string) int8 {
+func FieldAs_int8(o Map, k string) int8 {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > math.MaxInt8 || v < math.MinInt8 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int8, but its magnitude is too large",
@@ -194,7 +177,7 @@ func FieldAsInt8(o Map, k string) int8 {
 	return int8(v)
 }
 
-func ObjectAsInt16(obj Object, pattern string) int16 {
+func ObjectAs_int16(obj Object, pattern string) int16 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt16 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int16")))
@@ -202,7 +185,7 @@ func ObjectAsInt16(obj Object, pattern string) int16 {
 	return int16(v)
 }
 
-func FieldAsInt16(o Map, k string) int16 {
+func FieldAs_int16(o Map, k string) int16 {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > math.MaxInt16 || v < math.MinInt16 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int16, but its magnitude is too large",
@@ -211,7 +194,7 @@ func FieldAsInt16(o Map, k string) int16 {
 	return int16(v)
 }
 
-func ReceiverArgAsUint16(name, rcvr string, args *ArraySeq, n int) uint16 {
+func ReceiverArgAs_uint16(name, rcvr string, args *ArraySeq, n int) uint16 {
 	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 	if v > math.MaxUint16 || v < 0 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint16"))
@@ -219,7 +202,7 @@ func ReceiverArgAsUint16(name, rcvr string, args *ArraySeq, n int) uint16 {
 	return uint16(v)
 }
 
-func ObjectAsInt32(obj Object, pattern string) int32 {
+func ObjectAs_int32(obj Object, pattern string) int32 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxInt32 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for int32")))
@@ -227,7 +210,7 @@ func ObjectAsInt32(obj Object, pattern string) int32 {
 	return int32(v)
 }
 
-func ReceiverArgAsInt32(name, rcvr string, args *ArraySeq, n int) int32 {
+func ReceiverArgAs_int32(name, rcvr string, args *ArraySeq, n int) int32 {
 	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 	if v > math.MaxInt32 || v < math.MinInt32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "int32"))
@@ -235,7 +218,7 @@ func ReceiverArgAsInt32(name, rcvr string, args *ArraySeq, n int) int32 {
 	return int32(v)
 }
 
-func FieldAsInt32(o Map, k string) int32 {
+func FieldAs_int32(o Map, k string) int32 {
 	v := FieldAsNumber(o, k).BigInt().Int64()
 	if v > math.MaxInt32 || v < math.MinInt32 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type int32, but its magnitude is too large",
@@ -244,7 +227,7 @@ func FieldAsInt32(o Map, k string) int32 {
 	return int32(v)
 }
 
-func ObjectAsUint8(obj Object, pattern string) uint8 {
+func ObjectAs_uint8(obj Object, pattern string) uint8 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxUint8 || v < 0 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint8")))
@@ -252,7 +235,7 @@ func ObjectAsUint8(obj Object, pattern string) uint8 {
 	return uint8(v)
 }
 
-func FieldAsUint8(o Map, k string) uint8 {
+func FieldAs_uint8(o Map, k string) uint8 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint8 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint8, but is too large",
@@ -261,7 +244,7 @@ func FieldAsUint8(o Map, k string) uint8 {
 	return uint8(v)
 }
 
-func ObjectAsUint16(obj Object, pattern string) uint16 {
+func ObjectAs_uint16(obj Object, pattern string) uint16 {
 	v := EnsureObjectIsInt(obj, pattern).I
 	if v > math.MaxUint16 || v < 0 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.Itoa(v)+" out of range for uint16")))
@@ -269,7 +252,7 @@ func ObjectAsUint16(obj Object, pattern string) uint16 {
 	return uint16(v)
 }
 
-func FieldAsUint16(o Map, k string) uint16 {
+func FieldAs_uint16(o Map, k string) uint16 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint16 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint16, but is too large",
@@ -278,7 +261,7 @@ func FieldAsUint16(o Map, k string) uint16 {
 	return uint16(v)
 }
 
-func ObjectAsUint32(obj Object, pattern string) uint32 {
+func ObjectAs_uint32(obj Object, pattern string) uint32 {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(uint64(v), 10)+" out of range for uint32")))
@@ -286,7 +269,7 @@ func ObjectAsUint32(obj Object, pattern string) uint32 {
 	return uint32(v)
 }
 
-func ReceiverArgAsUint32(name, rcvr string, args *ArraySeq, n int) uint32 {
+func ReceiverArgAs_uint32(name, rcvr string, args *ArraySeq, n int) uint32 {
 	v := ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewArgTypeError(n, SeqNth(args, n), "uint32"))
@@ -294,7 +277,7 @@ func ReceiverArgAsUint32(name, rcvr string, args *ArraySeq, n int) uint32 {
 	return uint32(v)
 }
 
-func FieldAsUint32(o Map, k string) uint32 {
+func FieldAs_uint32(o Map, k string) uint32 {
 	v := FieldAsNumber(o, k).BigInt().Uint64()
 	if v > math.MaxUint32 {
 		panic(RT.NewError(fmt.Sprintf("Value %v for key %s should be type uint32, but is too large",
@@ -303,31 +286,31 @@ func FieldAsUint32(o Map, k string) uint32 {
 	return uint32(v)
 }
 
-func ReceiverArgAsInt64(name, rcvr string, args *ArraySeq, n int) int64 {
+func ReceiverArgAs_int64(name, rcvr string, args *ArraySeq, n int) int64 {
 	return ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Int64()
 }
 
-func ObjectAsInt64(obj Object, pattern string) int64 {
+func ObjectAs_int64(obj Object, pattern string) int64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Int64()
 }
 
-func FieldAsInt64(o Map, k string) int64 {
+func FieldAs_int64(o Map, k string) int64 {
 	return FieldAsNumber(o, k).BigInt().Int64()
 }
 
-func ObjectAsUint64(obj Object, pattern string) uint64 {
+func ObjectAs_uint64(obj Object, pattern string) uint64 {
 	return EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 }
 
-func ReceiverArgAsUint64(name, rcvr string, args *ArraySeq, n int) uint64 {
+func ReceiverArgAs_uint64(name, rcvr string, args *ArraySeq, n int) uint64 {
 	return ReceiverArgAsNumber(name, rcvr, args, n).BigInt().Uint64()
 }
 
-func FieldAsUint64(o Map, k string) uint64 {
+func FieldAs_uint64(o Map, k string) uint64 {
 	return FieldAsNumber(o, k).BigInt().Uint64()
 }
 
-func ObjectAsUintPtr(obj Object, pattern string) uintptr {
+func ObjectAs_uintptr(obj Object, pattern string) uintptr {
 	v := EnsureObjectIsNumber(obj, pattern).BigInt().Uint64()
 	if uint64(uintptr(v)) != v {
 		panic(RT.NewError(fmt.Sprintf(pattern, "Number "+strconv.FormatUint(v, 10)+" out of range for uintptr")))
@@ -335,15 +318,15 @@ func ObjectAsUintPtr(obj Object, pattern string) uintptr {
 	return uintptr(v)
 }
 
-func ReceiverArgAsUintPtr(name, rcvr string, args *ArraySeq, n int) uintptr {
-	return uintptr(ReceiverArgAsUint64(name, rcvr, args, n))
+func ReceiverArgAs_uintptr(name, rcvr string, args *ArraySeq, n int) uintptr {
+	return uintptr(ReceiverArgAs_uint64(name, rcvr, args, n))
 }
 
-func FieldAsUintPtr(o Map, k string) uintptr {
-	return uintptr(FieldAsUint64(o, k))
+func FieldAs_uintptr(o Map, k string) uintptr {
+	return uintptr(FieldAs_uint64(o, k))
 }
 
-func ExtractFloat32(args []Object, index int) float32 {
+func Extractfloat32(args []Object, index int) float32 {
 	o := ExtractObject(args, index)
 	if g, ok := o.(GoObject); ok {
 		if f, ok := g.O.(float32); ok {
@@ -353,7 +336,7 @@ func ExtractFloat32(args []Object, index int) float32 {
 	return float32(EnsureArgIsDouble(args, index).D)
 }
 
-func ObjectAsFloat64(obj Object, pattern string) float64 {
+func ObjectAs_float64(obj Object, pattern string) float64 {
 	return EnsureObjectIsDouble(obj, pattern).D
 }
 
@@ -378,6 +361,38 @@ func ReceiverArgAs_float64(name, rcvr string, args *ArraySeq, n int) float64 {
 			n, name, rcvr, a.TypeToString(false))))
 	}
 	return res.D
+}
+
+func MaybeIs_complex128(o Object) (complex128, string) {
+	if g, ok := o.(GoObject); ok {
+		if res, ok := g.O.(complex128); ok {
+			return res, ""
+		}
+	}
+	return 0, "GoObject[complex128]"
+}
+
+func FieldAs_complex128(o Map, k string) complex128 {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok {
+		return 0
+	}
+	res, sb := MaybeIs_complex128(v)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type %s, but is %s",
+		k, sb, v.TypeToString(false))))
+}
+
+func ReceiverArgAs_complex128(name, rcvr string, args *ArraySeq, n int) complex128 {
+	a := SeqNth(args, n)
+	res, sb := MaybeIs_complex128(a)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type %s, but is %s",
+		n, name, rcvr, sb, a.TypeToString(false))))
 }
 
 func ObjectAs_rune(obj Object, pattern string) rune {
@@ -409,6 +424,24 @@ func FieldAs_rune(o Map, k string) rune {
 
 func ObjectAs_string(obj Object, pattern string) string {
 	return EnsureObjectIsString(obj, pattern).S
+}
+
+func ReceiverArgAs_string(name, rcvr string, args *ArraySeq, n int) string {
+	a := SeqNth(args, n)
+	res, sb := MaybeIsString(a)
+	if sb == "" {
+		return res.S
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
+}
+
+func ReceiverArgAs_strings(name, rcvr string, args *ArraySeq, n int) []string {
+	vec := make([]string, 0)
+	count := SeqCount(args)
+	for i := n; i < count; i++ {
+		vec = append(vec, ReceiverArgAs_string(name, rcvr, args, i))
+	}
+	return vec
 }
 
 func FieldAs_string(o Map, k string) string {
@@ -480,7 +513,25 @@ func FieldAs_error(o Map, k string) error {
 		k, sb, v.TypeToString(false))))
 }
 
-func FieldAsGoObject(o Map, k string) interface{} {
+func ReceiverArgAs_GoObject(name, rcvr string, args *ArraySeq, n int) interface{} {
+	a := SeqNth(args, n)
+	res, sb := MaybeIsNative(a)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
+}
+
+func ReceiverArgAs_GoObjects(name, rcvr string, args *ArraySeq, n int) []interface{} {
+	vec := make([]interface{}, 0)
+	count := SeqCount(args)
+	for i := n; i < count; i++ {
+		vec = append(vec, ReceiverArgAs_GoObject(name, rcvr, args, i))
+	}
+	return vec
+}
+
+func FieldAs_GoObject(o Map, k string) interface{} {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok {
 		return ""
@@ -491,6 +542,137 @@ func FieldAsGoObject(o Map, k string) interface{} {
 			k, v.TypeToString(false))))
 	}
 	return res.O
+}
+
+func MaybeIsFn(o Object) (*Fn, string) {
+	if res, yes := o.(*Fn); yes {
+		return res, ""
+	}
+	return nil, "Fn"
+}
+
+func EnsureObjectIsFn(obj Object, pattern string) *Fn {
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
+}
+
+func EnsureArgIsFn(args []Object, index int) *Fn {
+	obj := args[index]
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
+func ReceiverArgAs_func(name, rcvr string, args *ArraySeq, n int) func() {
+	a := SeqNth(args, n)
+	res, sb := MaybeIs_func(a)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
+}
+
+func FieldAs_func(o Map, k string) func() {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok || v.Equals(NIL) {
+		return nil
+	}
+	res, sb := MaybeIs_func(v)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be type %s, but is %s",
+		k, sb, v.TypeToString(false))))
+}
+
+func buildFunc(fn *Fn) func() {
+	var body []Expr
+	min := math.MaxInt32
+	max := -1
+	for _, arity := range fn.fnExpr.arities {
+		a := len(arity.args)
+		if a == 0 {
+			body = arity.body
+		} else {
+			if min > a {
+				min = a
+			}
+			if max < a {
+				max = a
+			}
+		}
+	}
+	if body == nil {
+		v := fn.fnExpr.variadic
+		if v == nil || 0 < len(v.args)-1 {
+			if v != nil {
+				min = len(v.args)
+				max = math.MaxInt32
+			}
+			c := 0
+			PanicArityMinMax(c, min, max)
+		}
+		body = v.body
+	}
+	return func() {
+		RT.pushFrame()
+		defer RT.popFrame()
+		evalLoop(body, fn.env.addFrame(nil))
+		return
+	}
+}
+
+func MaybeIs_func(o Object) (func(), string) {
+	if res, yes := o.(Native); yes {
+		if f, yes := res.Native().(func()); yes {
+			return f, ""
+		}
+	}
+	if fn, sb := MaybeIsFn(o); sb == "" {
+		if fn.fn == nil {
+			fn.fn = buildFunc(fn)
+		}
+		if fn, yes := fn.fn.(func()); yes {
+			return fn, ""
+		}
+	}
+	return nil, "Fn or GoObject[func()]"
+}
+
+func Extractfunc(args []Object, index int) func() {
+	obj := args[index]
+	res, sb := MaybeIs_func(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
+func ReceiverArgAsfunc(name, rcvr string, args *ArraySeq, n int) func() {
+	a := SeqNth(args, n)
+	res, sb := MaybeIs_func(a)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewReceiverArgTypeError(n, name, rcvr, a, sb))
+}
+
+func FieldAsfunc(o Map, k string) func() {
+	ok, v := o.Get(MakeKeyword(k))
+	if !ok || v.Equals(NIL) {
+		return nil
+	}
+	res, sb := MaybeIs_func(v)
+	if sb == "" {
+		return res
+	}
+	panic(RT.NewError(fmt.Sprintf("Value for key %s should be of type %s, but is %s",
+		k, sb, v.TypeToString(false))))
 }
 
 func GoObjectGet(o interface{}, key Object) (bool, Object) {
@@ -600,31 +782,31 @@ func MakeGoReceiver(name string, f func(GoObject, Object) Object, doc, added str
 	return v
 }
 
-func MaybeIs_arrayOfbyte(o Object) ([]byte, string) {
+func MaybeIs_arrayOfuint8(o Object) ([]uint8, string) {
 	switch obj := o.(type) {
 	case Native:
 		switch r := obj.Native().(type) {
-		case []byte:
+		case []uint8:
 			return r, ""
 		case string:
-			return []byte(r), ""
+			return []uint8(r), ""
 		}
 	}
-	return nil, "GoObject[[]byte]"
+	return nil, "GoObject[[]uint8]"
 }
 
-func Extract_arrayOfbyte(args []Object, index int) []byte {
+func ExtractarrayOfuint8(args []Object, index int) []uint8 {
 	a := args[index]
-	res, sb := MaybeIs_arrayOfbyte(a)
+	res, sb := MaybeIs_arrayOfuint8(a)
 	if sb == "" {
 		return res
 	}
 	panic(FailArg(a, sb, index))
 }
 
-func ReceiverArgAs_arrayOfbyte(name, rcvr string, args *ArraySeq, n int) []byte {
+func ReceiverArgAs_arrayOfuint8(name, rcvr string, args *ArraySeq, n int) []uint8 {
 	a := SeqNth(args, n)
-	res, sb := MaybeIs_arrayOfbyte(a)
+	res, sb := MaybeIs_arrayOfuint8(a)
 	if sb == "" {
 		return res
 	}
@@ -632,100 +814,100 @@ func ReceiverArgAs_arrayOfbyte(name, rcvr string, args *ArraySeq, n int) []byte 
 		n, name, rcvr, sb, a.TypeToString(false))))
 }
 
-func FieldAs_arrayOfbyte(o Map, k string) []byte {
+func FieldAs_arrayOfuint8(o Map, k string) []uint8 {
 	ok, v := o.Get(MakeKeyword(k))
 	if !ok || v.Equals(NIL) {
-		return []byte{}
+		return []uint8{}
 	}
-	res, sb := MaybeIs_arrayOfbyte(v)
+	res, sb := MaybeIs_arrayOfuint8(v)
 	if sb == "" {
 		return res
 	}
 	panic(FailObject(v, sb, ""))
 }
 
-func Extract_array4Ofbyte(args []Object, index int) [4]byte {
+func Extractarray4Ofuint8(args []Object, index int) [4]uint8 {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
 		switch g := obj.Native().(type) {
-		case [4]byte:
+		case [4]uint8:
 			return g
 		}
 	}
-	panic(RT.NewArgTypeError(index, o, "GoObject[[4]byte]"))
+	panic(RT.NewArgTypeError(index, o, "GoObject[[4]uint8]"))
 }
 
-func Extract_arrayOfarrayOfbyte(args []Object, index int) [][]byte {
+func ExtractarrayOfarrayOfuint8(args []Object, index int) [][]uint8 {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
 		switch g := obj.Native().(type) {
-		case [][]byte:
+		case [][]uint8:
 			return g
 		}
 	}
-	panic(RT.NewArgTypeError(index, o, "GoObject[[][]byte]"))
+	panic(RT.NewArgTypeError(index, o, "GoObject[[][]uint8]"))
 }
 
-func Extract_arrayOfarray32Ofbyte(args []Object, index int) [][32]byte {
+func ExtractarrayOfarray32Ofuint8(args []Object, index int) [][32]uint8 {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
 		switch g := obj.Native().(type) {
-		case [][32]byte:
+		case [][32]uint8:
 			return g
 		}
 	}
-	panic(RT.NewArgTypeError(index, o, "GoObject[[][32]byte]"))
+	panic(RT.NewArgTypeError(index, o, "GoObject[[][32]uint8]"))
 }
 
-func ReceiverArgAs_arrayOfarray32Ofbyte(name, rcvr string, args *ArraySeq, n int) [][32]byte {
+func ReceiverArgAs_arrayOfarray32Ofuint8(name, rcvr string, args *ArraySeq, n int) [][32]uint8 {
 	a := SeqNth(args, n)
 	switch obj := a.(type) {
 	case Native:
 		switch g := obj.Native().(type) {
-		case [][32]byte:
+		case [][32]uint8:
 			return g
 		}
 	}
-	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][32]byte], but is %s",
+	panic(RT.NewError(fmt.Sprintf("Argument %d (%s) passed to %s should be type GoObject[[][32]uint8], but is %s",
 		n, name, rcvr, a.TypeToString(false))))
 }
 
-func ConvertTo_arrayOfbyte(o Object) []byte {
+func ConvertTo_arrayOfuint8(o Object) []uint8 {
 	switch obj := o.(type) {
 	case String:
-		return []byte(obj.S)
+		return []uint8(obj.S)
 	case *Vector:
-		vec := make([]byte, obj.Count())
+		vec := make([]uint8, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
 			if val, ok := el.(Int); ok {
 				b := val.I
 				if b >= 0 && b <= 255 {
-					vec[i] = byte(b)
+					vec[i] = uint8(b)
 				} else {
-					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Byte: %s", i, b, obj.ToString(false))))
+					panic(RT.NewError(fmt.Sprintf("Element %d out of range (%d) for Uint8: %s", i, b, obj.ToString(false))))
 				}
 			} else {
-				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Byte: %s", i, el.ToString(true))))
+				panic(RT.NewError(fmt.Sprintf("Element %d not convertible to Uint8: %s", i, el.ToString(true))))
 			}
 		}
 		return vec
 	case Native:
 		switch g := obj.Native().(type) {
-		case []byte:
+		case []uint8:
 			return g
 		default:
-			panic(RT.NewError(fmt.Sprintf("Not an array of byte: %s", AnyTypeToString(g, false))))
+			panic(RT.NewError(fmt.Sprintf("Not an array of uint8: %s", AnyTypeToString(g, false))))
 		}
 	default:
-		panic(RT.NewError(fmt.Sprintf("Not convertible to array of byte: %s", obj.ToString(true))))
+		panic(RT.NewError(fmt.Sprintf("Not convertible to array of uint8: %s", obj.ToString(true))))
 	}
 }
 
-func Extract_arrayOfint(args []Object, index int) []int {
+func ExtractarrayOfint(args []Object, index int) []int {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
@@ -780,7 +962,7 @@ func ConvertTo_arrayOfint(o Object) []int {
 	}
 }
 
-func Extract_arrayOfuint16(args []Object, index int) []uint16 {
+func ExtractarrayOfuint16(args []Object, index int) []uint16 {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
@@ -792,7 +974,7 @@ func Extract_arrayOfuint16(args []Object, index int) []uint16 {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]uint16]"))
 }
 
-func Extract_arrayOfuintptr(args []Object, index int) []uintptr {
+func ExtractarrayOfuintptr(args []Object, index int) []uintptr {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
@@ -804,7 +986,7 @@ func Extract_arrayOfuintptr(args []Object, index int) []uintptr {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]uintptr]"))
 }
 
-func Extract_arrayOffloat64(args []Object, index int) []float64 {
+func ExtractarrayOffloat64(args []Object, index int) []float64 {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
@@ -816,7 +998,7 @@ func Extract_arrayOffloat64(args []Object, index int) []float64 {
 	panic(RT.NewArgTypeError(index, o, "GoObject[[]float64]"))
 }
 
-func Extract_arrayOfrune(args []Object, index int) []rune {
+func ExtractarrayOfrune(args []Object, index int) []rune {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
@@ -850,7 +1032,7 @@ func MaybeIs_arrayOfstring(o Object) ([]string, string) {
 	return nil, "Vector of String or GoObject[[]string]"
 }
 
-func Extract_arrayofstring(args []Object, index int) []string {
+func ExtractarrayOfstring(args []Object, index int) []string {
 	a := args[index]
 	res, sb := MaybeIs_arrayOfstring(a)
 	if sb == "" {
@@ -869,7 +1051,7 @@ func ReceiverArgAs_arrayOfstring(name, rcvr string, args *ArraySeq, n int) []str
 		n, name, rcvr, sb, a.TypeToString(false))))
 }
 
-func Extract_arrayOfarrayOfstring(args []Object, index int) [][]string {
+func ExtractarrayOfarrayOfstring(args []Object, index int) [][]string {
 	o := args[index]
 	switch obj := o.(type) {
 	case Native:
