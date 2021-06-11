@@ -209,7 +209,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 	var specificity uint
 	isArbitraryType := false
-	if fullName == "unsafe.ArbitraryType" {
+	if fullName == "unsafe.ArbitraryType" || fullName == "unsafe.IntegerType" {
 		isArbitraryType = true
 		specificity = 0
 	} else {
