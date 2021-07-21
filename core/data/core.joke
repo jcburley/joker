@@ -4748,8 +4748,9 @@
   No fields, options, nor specs are currently supported; though this
   defines a type at runtime, the resulting type is currently
   useless. This macro is implemented for code-generation purposes in
-  the 'gostd' fork, which expects metadata defining the :go keyword
-  appropriately."
+  the 'gostd' fork, which expects metadata defining the `:go` keyword
+  appropriately; so, defining a type without `:go` set in the metadata
+  is rejected at runtime."
 
   {:added "1.0"
    :arglists '([name [& fields] & opts+specs])}
@@ -4763,4 +4764,6 @@
         hinted-fields fields
         fields (vec (map #(with-meta % nil) fields))
         [field-args over] (split-at 20 fields)]
+    (when-not (:go (meta name))
+      (throw (ex-info "deftype not supported for runtime use" {})))
     `(def ~(with-meta name {:tag "Type"}))))
