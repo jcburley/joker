@@ -257,8 +257,8 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 		}
 	case *InterfaceType:
 		if !v.Incomplete && len(v.Methods.List) == 0 {
-			fromMap = "FieldAsGoObject(%s, %s)"
-			fromClojure = "ObjectAsGoObject(%s, %s)"
+			fromMap = "FieldAs_GoObject(%s, %s)"
+			fromClojure = "ObjectAs_GoObject(%s, %s)"
 		}
 	default:
 	}
