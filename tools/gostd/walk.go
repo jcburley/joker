@@ -138,9 +138,13 @@ type FuncInfo struct {
 	Pos            token.Pos
 }
 
-func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func initPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if godb.Verbose {
-		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
+		msg := "Processing builtins\n"
+		if pkgDirUnix != "" {
+			msg = fmt.Sprintf("Processing package=%s:\n", pkgDirUnix)
+		}
+		genutils.AddSortedStdout(msg)
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
@@ -726,7 +730,7 @@ func phaseOtherDecls(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	})
 }
 
-func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFunc) {
+func processPackage(rootUnix, pkgDirUnix string, p *Package, fn phaseFunc) {
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := godb.GoFilesRelative[goFilePathUnix]
@@ -905,6 +909,8 @@ func WalkAllDirs() (error, paths.NativePath) {
 		genutils.EndSortedStdout()
 	}()
 
+	initPackage("", "", nil) // go.std.builtin
+
 	for _, d := range dirsToWalk {
 		err := walkDir(d.fsRoot, d.nsRoot, d.importMe)
 		if err != nil {
@@ -928,12 +934,12 @@ func WalkAllDirs() (error, paths.NativePath) {
 		if _, err := myImporter(pkg); err != nil {
 			fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", pkg, err)
 		}
-		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
+		initPackage(wp.Root.String(), wp.Dir.String(), wp.Pkg)
 	}
 
 	for _, phase := range phases {
 		for _, wp := range godb.PackagesAsDiscovered {
-			processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+			processPackage(wp.Root.String(), wp.Dir.String(), wp.Pkg, phase)
 		}
 	}
 
