@@ -23,6 +23,7 @@ type TypeInfo interface {
 	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
+	ClojureNamespace() string
 	ClojureExtractString() string // What should follow "^" in *.joke arg def (not quite GoApiString)
 	ClojureNameDoc(e Expr) string
 	ClojurePattern() string
@@ -78,9 +79,9 @@ type typeInfo struct {
 	who             string // who made me
 }
 
-func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
+func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkgDirUnix string, parentDoc *CommentGroup) {
 	name := ts.Name.Name
-	goTypeName := pkg + "." + name
+	goTypeName := pkgDirUnix + "." + name
 
 	if WalkDump {
 		fmt.Printf("Type %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
@@ -110,8 +111,9 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			}
 		}
 
-		ClojureCode[pkg].InitTypes[ti] = struct{}{}
-		GoCode[pkg].InitTypes[ti] = struct{}{}
+		ns := ti.ClojureNamespace()
+		ClojureCode[ns].InitTypes[ti] = struct{}{}
+		GoCode[ns].InitTypes[ti] = struct{}{}
 	}
 }
 
@@ -313,6 +315,10 @@ func (ti typeInfo) AsClojureObject() string {
 
 func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
+}
+
+func (ti typeInfo) ClojureNamespace() string {
+	return ti.jti.Namespace
 }
 
 // This constructs the string that follows "^" in an arglist in a
