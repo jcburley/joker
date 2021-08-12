@@ -388,22 +388,22 @@ func main() {
 			}
 		})
 
-	OutputPackageCode(path.Join(outputGoStdDir, goStdPrefix.String()), generateEmpty)
+	OutputNamespaces(path.Join(outputGoStdDir, goStdPrefix.String()), generateEmpty)
 
-	var packagesArray = []string{} // Relative package pathnames in alphabetical order
-	var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
+	var namespacesArray = []string{} // Namespaces in alphabetical order
+	var dotJokeArray = []string{}    // Joker files in namespace-alphabetical order
 
-	SortedPackagesInfo(PackagesInfo,
-		func(p string, i *PackageInfo) {
+	SortedNamespacesInfo(NamespacesInfo,
+		func(p string, i *NamespaceInfo) {
 			if !generateEmpty && !i.NonEmpty {
 				return
 			}
 			if i.HasGoFiles {
-				packagesArray = append(packagesArray, p)
+				namespacesArray = append(namespacesArray, p)
 			}
 			dotJokeArray = append(dotJokeArray, p)
 		})
-	RegisterPackages(packagesArray, outputDir)
+	RegisterNamespaces(namespacesArray, outputDir)
 	RegisterClojureFiles(dotJokeArray, outputDir)
 
 	RegisterGoTypeSwitch(AllTypesSorted(), outputDir)
