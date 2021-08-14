@@ -926,8 +926,6 @@ func WalkAllDirs() (error, paths.NativePath) {
 		genutils.EndSortedStdout()
 	}()
 
-	initPackage("", "", nil) // go.std.builtin
-
 	for _, d := range dirsToWalk {
 		err := walkDir(d.fsRoot, d.nsRoot, d.importMe)
 		if err != nil {
