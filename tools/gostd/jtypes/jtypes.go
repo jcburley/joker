@@ -72,9 +72,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-const resolveAlias = false
-
-func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
+func namingForExpr(e Expr, resolveAlias bool) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 
@@ -179,12 +177,12 @@ func InfoForGoName(fullName string) *Info {
 	return goTypeMap[fullName]
 }
 
-func InfoForExpr(e Expr) *Info {
+func InfoForExpr(e Expr, resolveAlias bool) *Info {
 	if info, ok := typesByExpr[e]; ok {
 		return info
 	}
 
-	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goApiString, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goApiString, info := namingForExpr(e, resolveAlias)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.

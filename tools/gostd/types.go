@@ -182,8 +182,8 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 }
 
 func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found bool) {
-	gti := gtypes.InfoForExpr(e)
-	jti := jtypes.InfoForExpr(e)
+	gti := gtypes.InfoForExpr(e, resolveAlias)
+	jti := jtypes.InfoForExpr(e, resolveAlias)
 
 	if ti, found = typesByGoName[gti.FullName]; found {
 		if _, ok := typesByClojureName[jti.FullName]; !ok {
@@ -205,8 +205,8 @@ func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found 
 		who:             "TypeInfoForExpr",
 	}
 
-	if gti.FullName == "[]uint8" {
-		//		fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	if gti.FullName == "[]uint8" || gti.FullName == "[]byte" {
+		fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
 	}
 
 	typesByGoName[gti.FullName] = ti

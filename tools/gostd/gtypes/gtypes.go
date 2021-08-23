@@ -223,7 +223,8 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		specificity = calculateSpecificity(ts)
 	}
 
-	underlyingInfo := InfoForExpr(ts.Type)
+	underlyingInfo := InfoForExpr(ts.Type, false)
+	_ = InfoForExpr(ts.Type, true) // Also process the resolved version of the underlying type
 	isAddressable := isTypeAddressable(fullName) && underlyingInfo.IsAddressable
 	isCtorable := underlyingInfo.IsBuiltin && underlyingInfo.UnderlyingType == nil
 
@@ -326,7 +327,7 @@ func InfoForName(fullName string) *Info {
 	return nil
 }
 
-func InfoForExpr(e Expr) *Info {
+func InfoForExpr(e Expr, resolveAlias bool) *Info {
 	if ti, ok := typesByExpr[e]; ok {
 		NumExprHits++
 		return ti
@@ -368,7 +369,7 @@ func InfoForExpr(e Expr) *Info {
 	if isNamed {
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
-			return ti
+			return MaybeResolve(ti, resolveAlias)
 		}
 
 		// Define the type here and now, return the resulting Info.
@@ -403,7 +404,7 @@ func InfoForExpr(e Expr) *Info {
 
 	switch v := e.(type) {
 	case *StarExpr:
-		innerInfo = InfoForExprResolved(v.X)
+		innerInfo = InfoForExpr(v.X, resolveAlias)
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
@@ -414,7 +415,7 @@ func InfoForExpr(e Expr) *Info {
 		isArbitraryType = true
 		isCtorable = isTypeNewable(innerInfo)
 	case *ArrayType:
-		innerInfo = InfoForExprResolved(v.Elt)
+		innerInfo = InfoForExpr(v.Elt, resolveAlias)
 		len, docLen := astutils.IntExprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		docPattern = "[" + docLen + "]%s"
@@ -441,8 +442,8 @@ func InfoForExpr(e Expr) *Info {
 		isNullable = true
 	case *MapType:
 		pkgName = ""
-		key := InfoForExprResolved(v.Key)
-		value := InfoForExprResolved(v.Value)
+		key := InfoForExpr(v.Key, resolveAlias)
+		value := InfoForExpr(v.Value, resolveAlias)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
 		isExported = key.IsExported && value.IsExported
 		isBuiltin = key.IsBuiltin && value.IsBuiltin
@@ -457,7 +458,7 @@ func InfoForExpr(e Expr) *Info {
 		default:
 			pattern = fmt.Sprintf("ABEND737(gtypes.go: %s Dir=0x%x not supported) %%s", astutils.ExprToString(v), v.Dir)
 		}
-		innerInfo = InfoForExprResolved(v.Value)
+		innerInfo = InfoForExpr(v.Value, resolveAlias)
 		pkgName = innerInfo.Package
 		localName = innerInfo.LocalName
 		pattern = fmt.Sprintf("%s %s", pattern, innerInfo.Pattern)
@@ -465,7 +466,7 @@ func InfoForExpr(e Expr) *Info {
 		isNullable = true
 		isBuiltin = innerInfo.IsBuiltin
 		isArbitraryType = true
-		//		fmt.Printf("gtypes.go/InfoForExprResolved(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
+		//		fmt.Printf("gtypes.go/InfoForExpr(%s, %b) => %s\n", astutils.ExprToString(v), resolveAlias, fmt.Sprintf(pattern, localName))
 	case *StructType:
 		pkgName = ""
 		if astutils.IsEmptyFieldList(v.Fields) {
@@ -539,7 +540,7 @@ func InfoForExpr(e Expr) *Info {
 	ti := &Info{
 		Expr:              e,
 		FullName:          fullName,
-		who:               fmt.Sprintf("[InfoForExpr %T]", e),
+		who:               fmt.Sprintf("[InfoForExpr %T, %v]", e, resolveAlias),
 		UnderlyingType:    innerInfo,
 		Pattern:           pattern,
 		Package:           pkgName,
@@ -566,12 +567,9 @@ func InfoForExpr(e Expr) *Info {
 	return ti
 }
 
-const resolveAlias = false
-
-func InfoForExprResolved(e Expr) *Info {
-	ti := InfoForExpr(e)
+func MaybeResolve(ti *Info, resolveAlias bool) *Info {
 	if uati := ti.AliasOf; resolveAlias && uati != nil {
-		fmt.Fprintf(os.Stderr, "InfoForExprResolved: Substituting %s for %s\n", (*uati).LocalName, ti.LocalName)
+		fmt.Fprintf(os.Stderr, "MaybeResolve: Substituting %s for %s\n", (*uati).LocalName, ti.LocalName)
 		return *uati
 	}
 	return ti
