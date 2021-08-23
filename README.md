@@ -361,7 +361,7 @@ Since Linux (on **amd64**) supports building _and running_ 32-bit (**386**) exec
 
 On this experimental branch, Joker is built along with the results of an automated analysis of the Golang source directory in order to pull in and "wrap" functions, types, constants, and variables provided by Go `std` packages.
 
-NOTE: Only Joker versions >= 0.15 are now supported by this branch.
+NOTE: Only Joker versions >= 0.16 are now supported by this branch.
 
 ## Quick Start
 
