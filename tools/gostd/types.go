@@ -171,15 +171,26 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		return ti
 	}
 
+	ti, found := typeInfoForExprMaybeResolve(e, false)
+	typeInfoForExprMaybeResolve(e, true)
+
+	if !found {
+		typesByExpr[e] = ti
+	}
+
+	return ti
+}
+
+func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found bool) {
 	gti := gtypes.InfoForExpr(e)
 	jti := jtypes.InfoForExpr(e)
 
-	if ti, found := typesByGoName[gti.FullName]; found {
+	if ti, found = typesByGoName[gti.FullName]; found {
 		if _, ok := typesByClojureName[jti.FullName]; !ok {
 			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 			//			typesByClojureName[jti.FullName] = ti
 		}
-		return ti
+		return ti, true
 	}
 	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
@@ -187,20 +198,21 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		}
 	}
 
-	ti := &typeInfo{
+	ti = &typeInfo{
 		gti:             gti,
 		jti:             jti,
 		requiredImports: &imports.Imports{},
 		who:             "TypeInfoForExpr",
 	}
 
-	//	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	if gti.FullName == "[]uint8" {
+		//		fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	}
 
-	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
 	typesByClojureName[jti.FullName] = ti
 
-	return ti
+	return ti, false
 }
 
 func TypeInfoForGoName(goName string) TypeInfo {
@@ -547,11 +559,14 @@ func SortAllTypes() {
 	}
 	for _, ti := range typesByClojureName {
 		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
-			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
+			//			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
-		if t.IsExported && !t.IsArbitraryType && !t.IsBuiltin {
+		if t.IsExported && !t.IsArbitraryType && t.AliasOf == nil {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
+			if !strings.Contains(ti.GoName(), ".") {
+				//				fmt.Printf("SortallTypes(): ADDING %s (%p)\n", ti.GoName(), t.AliasOf)
+			}
 		}
 	}
 	sort.SliceStable(allTypesSorted, func(i, j int) bool {

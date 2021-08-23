@@ -30,6 +30,7 @@ type Info struct {
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	GoApiString          string // E.g. "error", "uint16", "go.std.net/IPv4Addr"
+	AliasOf              **Info // What this aliases to (nil if nothing)
 	IsUnsupported        bool   // Is this unsupported?
 }
 
@@ -71,6 +72,8 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
+const resolveAlias = false
+
 func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
@@ -86,6 +89,9 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, g
 			uInfo, found := goTypeMap[v.Name]
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
+			}
+			if resolveAlias && uInfo.AliasOf != nil {
+				uInfo = *uInfo.AliasOf
 			}
 			baseName = uInfo.FullName
 			baseNameDoc = uInfo.FullNameDoc
@@ -281,6 +287,7 @@ var Byte = &Info{
 	ConvertFromClojure:   "ObjectAs_uint8(%s, %s)",
 	PromoteType:          "int(%s)",
 	GoApiString:          "uint8",
+	AliasOf:              &UInt8,
 }
 
 var Rune = &Info{
@@ -297,6 +304,7 @@ var Rune = &Info{
 	ConvertFromClojure:   "ObjectAs_rune(%s, %s)",
 	PromoteType:          "%s",
 	GoApiString:          "rune",
+	AliasOf:              &Int32,
 }
 
 var String = &Info{
