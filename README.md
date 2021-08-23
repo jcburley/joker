@@ -372,7 +372,7 @@ To make this "magic" happen:
 3. `cd $GOPATH/src/github.com/candid82/joker`
 4. `git remote add gostd git@github.com:jcburley/joker.git`
 5. `git fetch gostd`
-6. `git co gostd`
+6. `git checkout gostd`
 7. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
 ```
