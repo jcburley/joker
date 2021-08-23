@@ -14,7 +14,7 @@ cp core/go_templates/g_goswitch.gotemplate core/g_goswitch.go
 cp core/go_templates/g_customlibs.joketemplate core/data/g_customlibs.joke
 
 # Ok if failure here.
-(cd docs; ../joker generate-docs.joke --no-go || ../joker-good generate-docs.joke --no-go || :)
+(cd docs; [ -x ../joker ] && ../joker generate-docs.joke --no-go || [ -x ../joker-good ] && ../joker-good generate-docs.joke --no-go || :)
 
 # Delete regenerated file that is not in the repo (in this fork/branch).
 rm -fr docs/index.html

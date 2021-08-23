@@ -361,7 +361,7 @@ Since Linux (on **amd64**) supports building _and running_ 32-bit (**386**) exec
 
 On this experimental branch, Joker is built along with the results of an automated analysis of the Golang source directory in order to pull in and "wrap" functions, types, constants, and variables provided by Go `std` packages.
 
-NOTE: Only Joker versions >= 0.15 are now supported by this branch.
+NOTE: Only Joker versions >= 0.16 are now supported by this branch.
 
 ## Quick Start
 
@@ -372,7 +372,7 @@ To make this "magic" happen:
 3. `cd $GOPATH/src/github.com/candid82/joker`
 4. `git remote add gostd git@github.com:jcburley/joker.git`
 5. `git fetch gostd`
-6. `git co gostd`
+6. `git checkout gostd`
 7. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
 ```
