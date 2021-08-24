@@ -33,7 +33,7 @@ type Info struct {
 	File              *godb.GoFile
 	Specificity       uint   // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	NilPattern        string // 'nil%.s' or e.g. '%s{}'
-	AliasOf           **Info // Actual (non-alias) type, if any
+	AliasOf           *Info  // Actual (non-alias) type, if any
 	IsNullable        bool   // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported        bool   // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
@@ -74,7 +74,7 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	return info
 }
 
-func getInfoAliasOf(fullName string, of **Info) *Info {
+func getInfoAliasOf(fullName string, of *Info) *Info {
 	info := getInfo(fullName, (*of).NilPattern, (*of).IsNullable)
 	info.AliasOf = of
 	return info
@@ -116,9 +116,9 @@ var Float64 = getInfo("float64", "0%.s", false)
 
 var Complex128 = getInfo("complex128", "0%.s", false)
 
-var Byte = getInfoAliasOf("byte", &UInt8)
+var Byte = getInfoAliasOf("byte", UInt8)
 
-var Rune = getInfoAliasOf("rune", &Int32)
+var Rune = getInfoAliasOf("rune", Int32)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -147,7 +147,7 @@ func computeFullName(pattern, pkg, localName string) string {
 	return fmt.Sprintf(pattern, genutils.CombineGoName(pkg, localName))
 }
 
-func insert(ti *Info) {
+func insert(ti *Info, resolveAlias bool) {
 	fullName := ti.FullName
 
 	if existingTi, ok := typesByFullName[fullName]; ok {
@@ -166,13 +166,13 @@ func insert(ti *Info) {
 	}
 
 	if e := ti.Expr; e != nil {
-		tiByExpr, found := typesByExpr[e]
+		tiByExpr, found := lookupInfoForExpr(e, resolveAlias)
 		if found {
 			if tiByExpr != ti {
 				panic(fmt.Sprintf("different expr for type %s", fullName))
 			}
 		} else {
-			typesByExpr[e] = ti
+			setInfoForExpr(e, ti, resolveAlias)
 		}
 	}
 }
@@ -195,6 +195,8 @@ func isTypeNewable(ti *Info) bool {
 }
 
 func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
+	const resolveAlias = false
+
 	localName := ts.Name.Name
 	pkg := godb.GoPackageForTypeSpec(ts)
 	fullName := computeFullName("%s", pkg, localName)
@@ -251,7 +253,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsPassedByAddress: underlyingInfo.IsPassedByAddress,
 			IsCtorable:        isCtorable,
 		}
-		insert(ti)
+		insert(ti, resolveAlias)
 	}
 	types = append(types, ti)
 
@@ -283,7 +285,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 				IsArbitraryType:   isArbitraryType,
 				IsCtorable:        !isCtorable && isTypeNewable(ti),
 			}
-			insert(tiPtrTo)
+			insert(tiPtrTo, resolveAlias)
 		}
 		types = append(types, tiPtrTo)
 	}
@@ -313,7 +315,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			IsPassedByAddress: false,
 			IsArbitraryType:   isArbitraryType,
 		}
-		insert(tiArrayOf)
+		insert(tiArrayOf, resolveAlias)
 	}
 	types = append(types, tiArrayOf)
 
@@ -327,8 +329,27 @@ func InfoForName(fullName string) *Info {
 	return nil
 }
 
+func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
+	if info, ok := typesByExpr[e]; ok {
+		if resolveAlias {
+			if info.AliasOf != nil {
+				return info.AliasOf, true
+			}
+		}
+	}
+	return nil, false
+}
+
+func setInfoForExpr(e Expr, ti *Info, resolveAlias bool) {
+	if resolveAlias {
+		ti.AliasOf = typesByExpr[e]
+	} else {
+		typesByExpr[e] = ti
+	}
+}
+
 func InfoForExpr(e Expr, resolveAlias bool) *Info {
-	if ti, ok := typesByExpr[e]; ok {
+	if ti, ok := lookupInfoForExpr(e, resolveAlias); ok {
 		NumExprHits++
 		return ti
 	}
@@ -368,7 +389,7 @@ func InfoForExpr(e Expr, resolveAlias bool) *Info {
 
 	if isNamed {
 		if ti, ok := typesByFullName[fullName]; ok {
-			typesByExpr[e] = ti
+			setInfoForExpr(e, ti, resolveAlias)
 			return MaybeResolve(ti, resolveAlias)
 		}
 
@@ -560,7 +581,7 @@ func InfoForExpr(e Expr, resolveAlias bool) *Info {
 		IsUnsupported:     isUnsupported,
 		IsCtorable:        isCtorable,
 	}
-	insert(ti)
+	insert(ti, resolveAlias)
 
 	//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
 
@@ -569,8 +590,8 @@ func InfoForExpr(e Expr, resolveAlias bool) *Info {
 
 func MaybeResolve(ti *Info, resolveAlias bool) *Info {
 	if uati := ti.AliasOf; resolveAlias && uati != nil {
-		fmt.Fprintf(os.Stderr, "MaybeResolve: Substituting %s for %s\n", (*uati).LocalName, ti.LocalName)
-		return *uati
+		//		fmt.Fprintf(os.Stderr, "gtypes.go/MaybeResolve: Substituting %s for %s\n", uati.LocalName, ti.LocalName)
+		return uati
 	}
 	return ti
 }

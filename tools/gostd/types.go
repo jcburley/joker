@@ -51,6 +51,7 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
+	AliasOf() TypeInfo
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
@@ -76,6 +77,7 @@ type typeInfo struct {
 	jti             *jtypes.Info
 	gti             *gtypes.Info
 	requiredImports *imports.Imports
+	aliasOf         TypeInfo
 	who             string // who made me
 }
 
@@ -172,7 +174,11 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	}
 
 	ti, found := typeInfoForExprMaybeResolve(e, false)
-	typeInfoForExprMaybeResolve(e, true)
+	resolvedTi, _ := typeInfoForExprMaybeResolve(e, true)
+
+	if resolvedTi != ti {
+		ti.(*typeInfo).aliasOf = resolvedTi
+	}
 
 	if !found {
 		typesByExpr[e] = ti
@@ -187,14 +193,14 @@ func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found 
 
 	if ti, found = typesByGoName[gti.FullName]; found {
 		if _, ok := typesByClojureName[jti.FullName]; !ok {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr(%v): have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", resolveAlias, gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 			//			typesByClojureName[jti.FullName] = ti
 		}
 		return ti, true
 	}
 	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr(%v): have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", resolveAlias, jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 		}
 	}
 
@@ -509,6 +515,10 @@ func (ti typeInfo) TypeMappingsName() string {
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
 }
 
+func (ti typeInfo) AliasOf() TypeInfo {
+	return ti.aliasOf
+}
+
 func (ti typeInfo) IsCustom() bool {
 	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
 }
@@ -562,10 +572,10 @@ func SortAllTypes() {
 			//			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
-		if t.IsExported && !t.IsArbitraryType && t.AliasOf == nil {
+		if t.IsExported && !t.IsArbitraryType && ti.AliasOf() == nil {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
 			if !strings.Contains(ti.GoName(), ".") {
-				//				fmt.Printf("SortallTypes(): ADDING %s (%p)\n", ti.GoName(), t.AliasOf)
+				//				fmt.Printf("SortallTypes(): ADDING %s (%p)\n", ti.GoName(), ti.AliasOf())
 			}
 		}
 	}
