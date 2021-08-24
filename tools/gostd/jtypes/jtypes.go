@@ -30,7 +30,7 @@ type Info struct {
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	GoApiString          string // E.g. "error", "uint16", "go.std.net/IPv4Addr"
-	AliasFor             *Info  // What this aliases to (nil if nothing)
+	aliasFor             *Info  // What this aliases to (nil if nothing)
 	IsUnsupported        bool   // Is this unsupported?
 }
 
@@ -88,9 +88,9 @@ func namingForExpr(e Expr, resolveAlias bool) (pattern, ns, baseName, baseNameDo
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
 			}
-			if resolveAlias && uInfo.AliasFor != nil {
-				//				fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr: Substituting %s for %s\n", uInfo.AliasFor.FullName, uInfo.FullName)
-				uInfo = uInfo.AliasFor
+			if resolveAlias && uInfo.aliasFor != nil {
+				//				fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr: Substituting %s for %s\n", uInfo.aliasFor.FullName, uInfo.FullName)
+				uInfo = uInfo.aliasFor
 			}
 			baseName = uInfo.FullName
 			baseNameDoc = uInfo.FullNameDoc
@@ -181,8 +181,8 @@ func InfoForGoName(fullName string) *Info {
 func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 	if info, ok := typesByExpr[e]; ok {
 		if resolveAlias {
-			if info.AliasFor != nil {
-				return info.AliasFor, true
+			if info.aliasFor != nil {
+				return info.aliasFor, true
 			}
 		}
 	}
@@ -306,6 +306,7 @@ var Byte = &Info{
 	ConvertFromClojure:   "ObjectAs_uint8(%s, %s)",
 	PromoteType:          "int(%s)",
 	GoApiString:          "uint8",
+	aliasFor:             UInt8,
 }
 
 var Rune = &Info{
@@ -322,6 +323,7 @@ var Rune = &Info{
 	ConvertFromClojure:   "ObjectAs_rune(%s, %s)",
 	PromoteType:          "%s",
 	GoApiString:          "rune",
+	aliasFor:             Int32,
 }
 
 var String = &Info{
@@ -587,8 +589,3 @@ var goTypeMap = map[string]*Info{
 }
 
 var ConversionsFn func(e Expr) (fromClojure, fromMap string)
-
-func init() {
-	Byte.AliasFor = UInt8
-	Rune.AliasFor = Int32
-}

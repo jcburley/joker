@@ -33,7 +33,7 @@ type Info struct {
 	File              *godb.GoFile
 	Specificity       uint   // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	NilPattern        string // 'nil%.s' or e.g. '%s{}'
-	AliasFor          *Info  // Actual (non-alias) type, if any
+	aliasFor          *Info  // Actual (non-alias) type, if any
 	IsNullable        bool   // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported        bool   // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
@@ -76,7 +76,7 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 
 func getInfoAliasFor(fullName string, of *Info) *Info {
 	info := getInfo(fullName, (*of).NilPattern, (*of).IsNullable)
-	info.AliasFor = of
+	info.aliasFor = of
 	return info
 }
 
@@ -332,8 +332,8 @@ func InfoForName(fullName string) *Info {
 func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 	if info, ok := typesByExpr[e]; ok {
 		if resolveAlias {
-			if info.AliasFor != nil {
-				return info.AliasFor, true
+			if info.aliasFor != nil {
+				return info.aliasFor, true
 			}
 		}
 	}
