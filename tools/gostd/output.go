@@ -348,11 +348,14 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 						c, c, g, strconv.Quote(genutils.CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
 
+			imp := "nil"
+
 			info := map[string]string{
 				"GoName":      tmn,
 				"ClojureName": ti.ClojureName(),
 				"Ctor":        ctor,
 				"Members":     mem,
+				"Implements":  imp,
 			}
 
 			buf := new(bytes.Buffer)
