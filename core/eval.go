@@ -373,22 +373,7 @@ func (expr *CatchExpr) Eval(env *LocalEnv) (obj Object) {
 	panic(RT.NewError("This should never happen!"))
 }
 
-func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
-	instance := EvalMaybeAutoDeref(expr.instance, env, !expr.isSetNow)
-	memberSym := expr.member
-	member := *memberSym.name
-
-	isField := expr.isSetNow
-	if len(member) > 0 && member[0] == '-' {
-		isField = true
-		member = member[1:]
-	}
-
-	o := EnsureObjectIsGoObject(instance, "")
-	g, ok := LookupGoType(o.O).(*Type)
-	if g == nil || !ok {
-		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
-	}
+func (expr *DotExpr) tryReceiver(env *LocalEnv, o GoObject, g *Type, member string, isField bool) (obj Object, ok bool) {
 	f := g.members[member]
 	if f != nil {
 		// Currently only receivers/methods are listed in Members[].
@@ -409,7 +394,34 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 		if expr.args != nil && len(expr.args) > 0 {
 			args = &ArraySeq{arr: evalSeq(expr.args, env)}
 		}
-		return (f.Value.(GoReceiver))(o, args)
+		return (f.Value.(GoReceiver))(o, args), true
+	}
+	return NIL, false
+}
+
+func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
+	instance := EvalMaybeAutoDeref(expr.instance, env, !expr.isSetNow)
+	memberSym := expr.member
+	member := *memberSym.name
+
+	isField := expr.isSetNow
+	if len(member) > 0 && member[0] == '-' {
+		isField = true
+		member = member[1:]
+	}
+
+	o := EnsureObjectIsGoObject(instance, "")
+	g, ok := LookupGoType(o.O).(*Type)
+	if g == nil || !ok {
+		panic(RT.NewError("Unsupported type " + o.TypeToString(false)))
+	}
+	if obj, ok := expr.tryReceiver(env, o, g, member, isField); ok {
+		return obj
+	}
+	for _, v := range g.implements {
+		if obj, ok := expr.tryReceiver(env, o, v, member, isField); ok {
+			return obj
+		}
 	}
 
 	v := reflect.ValueOf(o.O)

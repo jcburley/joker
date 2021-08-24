@@ -14,6 +14,10 @@ func MakeType(name string, ctor Ctor, mem GoMembers) Type {
 	return Type{name: name, ctor: ctor, members: mem}
 }
 
+func MakeTypeThatImplements(name string, ctor Ctor, mem GoMembers, implements []*Type) Type {
+	return Type{name: name, ctor: ctor, members: mem, implements: implements}
+}
+
 func LookupGoType(g interface{}) interface{} {
 	ix := SwitchGoType(g)
 	if ix < 0 || ix >= len(GoTypesVec) || GoTypesVec[ix] == nil {
