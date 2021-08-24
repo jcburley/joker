@@ -257,7 +257,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 func processTypeRef(t Expr) {
 	defer func() {
 		if x := recover(); x != nil {
-			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(t.Pos()), t)
+			fmt.Fprintf(os.Stderr, "(Panic due to: %s handling %+v: %+v)\n", godb.WhereAt(t.Pos()), t, x)
 		}
 	}()
 
