@@ -51,7 +51,7 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
-	AliasOf() TypeInfo
+	AliasFor() TypeInfo
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
@@ -77,7 +77,7 @@ type typeInfo struct {
 	jti             *jtypes.Info
 	gti             *gtypes.Info
 	requiredImports *imports.Imports
-	aliasOf         TypeInfo
+	aliasFor        TypeInfo
 	who             string // who made me
 }
 
@@ -177,7 +177,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	resolvedTi, _ := typeInfoForExprMaybeResolve(e, true)
 
 	if resolvedTi != ti {
-		ti.(*typeInfo).aliasOf = resolvedTi
+		ti.(*typeInfo).aliasFor = resolvedTi
 	}
 
 	if !found {
@@ -211,9 +211,9 @@ func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found 
 		who:             "TypeInfoForExpr",
 	}
 
-	if gti.FullName == "[]uint8" || gti.FullName == "[]byte" {
-		fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
-	}
+	// if gti.FullName == "[]uint8" || gti.FullName == "[]byte" {
+	// 	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v (.AliasFor: @%p %+v); jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, gti.AliasFor, gti.AliasFor, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	// }
 
 	typesByGoName[gti.FullName] = ti
 	typesByClojureName[jti.FullName] = ti
@@ -515,8 +515,8 @@ func (ti typeInfo) TypeMappingsName() string {
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
 }
 
-func (ti typeInfo) AliasOf() TypeInfo {
-	return ti.aliasOf
+func (ti typeInfo) AliasFor() TypeInfo {
+	return ti.aliasFor
 }
 
 func (ti typeInfo) IsCustom() bool {
@@ -572,10 +572,10 @@ func SortAllTypes() {
 			//			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
-		if t.IsExported && !t.IsArbitraryType && ti.AliasOf() == nil {
+		if t.IsExported && !t.IsArbitraryType && ti.AliasFor() == nil {
 			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
 			if !strings.Contains(ti.GoName(), ".") {
-				//				fmt.Printf("SortallTypes(): ADDING %s (%p)\n", ti.GoName(), ti.AliasOf())
+				//				fmt.Printf("SortallTypes(): ADDING %s (%p)\n", ti.GoName(), ti.AliasFor())
 			}
 		}
 	}

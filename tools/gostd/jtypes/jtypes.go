@@ -30,7 +30,7 @@ type Info struct {
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	GoApiString          string // E.g. "error", "uint16", "go.std.net/IPv4Addr"
-	AliasOf              *Info  // What this aliases to (nil if nothing)
+	AliasFor             *Info  // What this aliases to (nil if nothing)
 	IsUnsupported        bool   // Is this unsupported?
 }
 
@@ -88,9 +88,9 @@ func namingForExpr(e Expr, resolveAlias bool) (pattern, ns, baseName, baseNameDo
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
 			}
-			if resolveAlias && uInfo.AliasOf != nil {
-				//				fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr: Substituting %s for %s\n", uInfo.AliasOf.FullName, uInfo.FullName)
-				uInfo = uInfo.AliasOf
+			if resolveAlias && uInfo.AliasFor != nil {
+				//				fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr: Substituting %s for %s\n", uInfo.AliasFor.FullName, uInfo.FullName)
+				uInfo = uInfo.AliasFor
 			}
 			baseName = uInfo.FullName
 			baseNameDoc = uInfo.FullNameDoc
@@ -181,8 +181,8 @@ func InfoForGoName(fullName string) *Info {
 func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 	if info, ok := typesByExpr[e]; ok {
 		if resolveAlias {
-			if info.AliasOf != nil {
-				return info.AliasOf, true
+			if info.AliasFor != nil {
+				return info.AliasFor, true
 			}
 		}
 	}
@@ -190,9 +190,10 @@ func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 }
 
 func setInfoForExpr(e Expr, ti *Info, resolveAlias bool) {
-	if resolveAlias {
-		ti.AliasOf = typesByExpr[e]
-	} else {
+	if ti.Expr == nil {
+		ti.Expr = e // Populate each builtin as a first reference is found.
+	}
+	if !resolveAlias {
 		typesByExpr[e] = ti
 	}
 }
@@ -588,6 +589,6 @@ var goTypeMap = map[string]*Info{
 var ConversionsFn func(e Expr) (fromClojure, fromMap string)
 
 func init() {
-	Byte.AliasOf = UInt8
-	Rune.AliasOf = Int32
+	Byte.AliasFor = UInt8
+	Rune.AliasFor = Int32
 }

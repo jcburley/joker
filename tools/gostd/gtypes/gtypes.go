@@ -33,7 +33,7 @@ type Info struct {
 	File              *godb.GoFile
 	Specificity       uint   // Concrete means concrete type; else # of methods defined for interface{} (abstract) type
 	NilPattern        string // 'nil%.s' or e.g. '%s{}'
-	AliasOf           *Info  // Actual (non-alias) type, if any
+	AliasFor          *Info  // Actual (non-alias) type, if any
 	IsNullable        bool   // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported        bool   // Builtin, typename exported, or type representable outside package (e.g. map[x.Foo][y.Bar])
 	IsBuiltin         bool
@@ -74,9 +74,9 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	return info
 }
 
-func getInfoAliasOf(fullName string, of *Info) *Info {
+func getInfoAliasFor(fullName string, of *Info) *Info {
 	info := getInfo(fullName, (*of).NilPattern, (*of).IsNullable)
-	info.AliasOf = of
+	info.AliasFor = of
 	return info
 }
 
@@ -116,9 +116,9 @@ var Float64 = getInfo("float64", "0%.s", false)
 
 var Complex128 = getInfo("complex128", "0%.s", false)
 
-var Byte = getInfoAliasOf("byte", UInt8)
+var Byte = getInfoAliasFor("byte", UInt8)
 
-var Rune = getInfoAliasOf("rune", Int32)
+var Rune = getInfoAliasFor("rune", Int32)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -226,7 +226,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	}
 
 	underlyingInfo := InfoForExpr(ts.Type, false)
-	_ = InfoForExpr(ts.Type, true) // Also process the resolved version of the underlying type
+	//	_ = InfoForExpr(ts.Type, true) // Also process the resolved version of the underlying type
 	isAddressable := isTypeAddressable(fullName) && underlyingInfo.IsAddressable
 	isCtorable := underlyingInfo.IsBuiltin && underlyingInfo.UnderlyingType == nil
 
@@ -332,8 +332,8 @@ func InfoForName(fullName string) *Info {
 func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 	if info, ok := typesByExpr[e]; ok {
 		if resolveAlias {
-			if info.AliasOf != nil {
-				return info.AliasOf, true
+			if info.AliasFor != nil {
+				return info.AliasFor, true
 			}
 		}
 	}
@@ -341,9 +341,10 @@ func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 }
 
 func setInfoForExpr(e Expr, ti *Info, resolveAlias bool) {
-	if resolveAlias {
-		ti.AliasOf = typesByExpr[e]
-	} else {
+	if ti.Expr == nil {
+		ti.Expr = e // Populate each builtin as a first reference is found.
+	}
+	if !resolveAlias {
 		typesByExpr[e] = ti
 	}
 }
@@ -390,7 +391,7 @@ func InfoForExpr(e Expr, resolveAlias bool) *Info {
 	if isNamed {
 		if ti, ok := typesByFullName[fullName]; ok {
 			setInfoForExpr(e, ti, resolveAlias)
-			return MaybeResolve(ti, resolveAlias)
+			return ti
 		}
 
 		// Define the type here and now, return the resulting Info.
@@ -585,14 +586,6 @@ func InfoForExpr(e Expr, resolveAlias bool) *Info {
 
 	//		fmt.Printf("gtypes.go: %s inserted %s\n", ti.who, fullName)
 
-	return ti
-}
-
-func MaybeResolve(ti *Info, resolveAlias bool) *Info {
-	if uati := ti.AliasOf; resolveAlias && uati != nil {
-		//		fmt.Fprintf(os.Stderr, "gtypes.go/MaybeResolve: Substituting %s for %s\n", uati.LocalName, ti.LocalName)
-		return uati
-	}
 	return ti
 }
 
