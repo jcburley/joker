@@ -4,8 +4,10 @@ import (
 	"fmt"
 	. "go/ast"
 	"go/build"
+	"go/importer"
 	"go/parser"
 	"go/token"
+	"go/types"
 	"io/fs"
 	"os"
 	"strings"
@@ -13,6 +15,44 @@ import (
 
 func usage() {
 	fmt.Println(`Usage: astdump <dirs>...`)
+}
+
+var Fset *token.FileSet
+
+var packagesByPath = map[string]*Package{}
+
+func GetPackageFromPath(path string) *Package {
+	if pkg, found := packagesByPath[path]; found {
+		return pkg
+	}
+	return nil
+}
+
+func SetPackagePath(path string, pkg *Package) {
+	if q, found := packagesByPath[path]; found {
+		panic(fmt.Sprintf("already have %s for %s, now want it to be %s", q, path, pkg))
+	}
+}
+
+var typeCheckerConfig *types.Config
+var typeCheckerInfo *types.Info
+
+type importerFunc func(path string) (*types.Package, error)
+
+func (f importerFunc) Import(path string) (*types.Package, error) {
+	return f(path)
+}
+
+func myImporter(path string) (*types.Package, error) {
+	if path == "unsafe" {
+		return types.Unsafe, nil
+	}
+	pkg := GetPackageFromPath(path)
+	files := []*File{}
+	for _, f := range pkg.Files {
+		files = append(files, f)
+	}
+	return typeCheckerConfig.Check(path, Fset, files, typeCheckerInfo)
 }
 
 func main() {
@@ -45,9 +85,20 @@ func main() {
 		}
 
 		for p, v := range pkgs {
+			SetPackagePath(dir, v)
 			fmt.Printf("--------\nastdump: Dumping %s:\n", p)
 			Print(Fset, v)
 			fmt.Println("--------")
 		}
+	}
+
+	typeCheckerConfig = &types.Config{
+		IgnoreFuncBodies: true,
+		FakeImportC:      true,
+		Importer:         importer.Default(),
+	}
+	typeCheckerInfo = &types.Info{
+		Types: map[Expr]types.TypeAndValue{},
+		Defs:  map[*Ident]types.Object{},
 	}
 }
