@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	. "go/ast"
 	"go/build"
@@ -10,8 +11,12 @@ import (
 	"go/types"
 	"io/fs"
 	"os"
+	"sort"
 	"strings"
 )
+
+var dumpAST = flag.Bool("ast", true, "whether to dump the AST that results from parsing")
+var dumpTypes = flag.Bool("types", false, "whether to dump the go/types output (after any AST output)")
 
 func usage() {
 	fmt.Println(`Usage: astdump <dirs>...`)
@@ -56,20 +61,31 @@ func myImporter(path string) (*types.Package, error) {
 }
 
 func main() {
+	flag.Parse()
+
 	Fset := token.NewFileSet()
-	allDirs := false
-	for _, dir := range os.Args[1:] {
-		if !allDirs {
-			if dir == "--" {
-				allDirs = true
-				continue
-			}
-			if dir[0] == '-' {
-				fmt.Fprintf(os.Stderr, "Unrecognized option: %s\n", dir)
-				usage()
-				os.Exit(1)
-			}
-		}
+
+	if len(flag.Args()) == 0 {
+		flag.Usage()
+		os.Exit(1)
+		return
+	}
+
+	typeCheckerConfig = &types.Config{
+		IgnoreFuncBodies: true,
+		FakeImportC:      true,
+		Importer:         importer.Default(),
+	}
+	typeCheckerInfo = &types.Info{
+		Types: map[Expr]types.TypeAndValue{},
+		Defs:  map[*Ident]types.Object{},
+	}
+
+	if !(*dumpAST || *dumpTypes) {
+		fmt.Fprintln(os.Stderr, "(not much to do!!)")
+	}
+
+	for _, dir := range flag.Args() {
 		pkgs, err := parser.ParseDir(Fset, dir,
 			func(info fs.FileInfo) bool {
 				if strings.HasSuffix(info.Name(), "_test.go") {
@@ -86,19 +102,54 @@ func main() {
 
 		for p, v := range pkgs {
 			SetPackagePath(dir, v)
-			fmt.Printf("--------\nastdump: Dumping %s:\n", p)
-			Print(Fset, v)
-			fmt.Println("--------")
+			pkg := types.NewPackage(dir, p)
+			files := []*File{}
+			for _, f := range v.Files {
+				files = append(files, f)
+			}
+			chk := types.NewChecker(typeCheckerConfig, Fset, pkg, typeCheckerInfo)
+			if e := chk.Files(files); e != nil {
+				fmt.Fprintf(os.Stderr, "chk.Files(%s) returned error %s\n", files, e)
+			}
+			if *dumpAST {
+				fmt.Printf("--------\nastdump: Dumping %s:\n", p)
+				Print(Fset, v)
+				fmt.Println("--------")
+			}
 		}
 	}
 
-	typeCheckerConfig = &types.Config{
-		IgnoreFuncBodies: true,
-		FakeImportC:      true,
-		Importer:         importer.Default(),
+	if !*dumpTypes {
+		return
 	}
-	typeCheckerInfo = &types.Info{
-		Types: map[Expr]types.TypeAndValue{},
-		Defs:  map[*Ident]types.Object{},
+
+	type L struct {
+		p token.Pos
+		s string
+	}
+	lines := []L{}
+	for k, v := range typeCheckerInfo.Defs {
+		p := k.Pos()
+		lines = append(lines, L{p: p, s: fmt.Sprintf("%s: %s => %s", Fset.Position(p), k, v)})
+	}
+	sort.SliceStable(lines, func(i, j int) bool {
+		if lines[i].p < lines[j].p {
+			return true
+		}
+		if lines[i].p > lines[j].p {
+			return false
+		}
+		return lines[i].s < lines[j].s
+	})
+	for _, v := range lines {
+		fmt.Fprintf(os.Stderr, "%s\n", v.s)
+	}
+}
+
+func init() {
+	var flagUsage = flag.Usage
+	flag.Usage = func() {
+		flagUsage()
+		fmt.Fprintf(os.Stderr, "  dir...\n\tone or more directories to parse/dump.\n")
 	}
 }
