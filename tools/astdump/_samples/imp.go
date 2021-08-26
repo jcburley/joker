@@ -16,6 +16,7 @@ type W interface {
 
 type T struct {
 	I
+	fmt.Stringer
 	n int
 }
 
@@ -45,8 +46,14 @@ func (w w) DoOther() {
 	fmt.Println("wild other thing!")
 }
 
+type str string
+
+func (s str) String() string {
+	return string(s)
+}
+
 func main() {
-	var obj I = T{I: i{}}
+	var obj I = T{I: i{}, Stringer: str("hi")}
 	o := obj.(T)
 	fmt.Printf("o: %+v\n", o)
 	fmt.Printf("obj: %+v\n", obj)
