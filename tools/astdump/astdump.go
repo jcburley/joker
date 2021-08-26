@@ -125,12 +125,12 @@ func main() {
 
 	type L struct {
 		p token.Pos
-		s string
+		k *Ident
 	}
 	lines := []L{}
-	for k, v := range typeCheckerInfo.Defs {
+	for k, _ := range typeCheckerInfo.Defs {
 		p := k.Pos()
-		lines = append(lines, L{p: p, s: fmt.Sprintf("%s: %s => %s", Fset.Position(p), k, v)})
+		lines = append(lines, L{p: p, k: k})
 	}
 	sort.SliceStable(lines, func(i, j int) bool {
 		if lines[i].p < lines[j].p {
@@ -139,10 +139,11 @@ func main() {
 		if lines[i].p > lines[j].p {
 			return false
 		}
-		return lines[i].s < lines[j].s
+		return lines[i].k.Name < lines[j].k.Name
 	})
-	for _, v := range lines {
-		fmt.Fprintf(os.Stderr, "%s\n", v.s)
+	for _, k := range lines {
+		s := fmt.Sprintf("%s: %s => %s", Fset.Position(k.p), k.k, typeCheckerInfo.Defs[k.k])
+		fmt.Fprintln(os.Stderr, s)
 	}
 }
 
