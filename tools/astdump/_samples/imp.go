@@ -6,6 +6,12 @@ import (
 
 type I interface {
 	DoSomething()
+	DoOther()
+	W
+}
+
+type W interface {
+	DoOther()
 }
 
 type T struct {
@@ -16,12 +22,27 @@ type T struct {
 type i struct {
 }
 
+type w struct {
+}
+
 func (x i) DoSomething() {
 	fmt.Println("here I am!")
 }
 
+func (x i) DoOther() {
+	fmt.Println("generic other thing!")
+}
+
 func (o T) DoThis() {
 	fmt.Println("well, hi!")
+}
+
+func (o T) DoOther() {
+	fmt.Println("really other thing!")
+}
+
+func (w w) DoOther() {
+	fmt.Println("wild other thing!")
 }
 
 func main() {
@@ -30,5 +51,6 @@ func main() {
 	fmt.Printf("o: %+v\n", o)
 	fmt.Printf("obj: %+v\n", obj)
 	o.DoThis()
-	obj.DoSomething()
+	o.DoSomething()
+	o.DoOther()
 }
