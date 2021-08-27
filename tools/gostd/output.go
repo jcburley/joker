@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
+	"go/ast"
 	"go/doc"
 	"go/token"
 	"io/ioutil"
@@ -234,6 +236,26 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 		})
 }
 
+func implements(ti TypeInfo) (imp string) {
+	imp = "nil"
+	ts := ti.GoTypeInfo().TypeSpec
+	if ts == nil {
+		return
+	}
+
+	ty := ts.Type
+	if s, yes := ty.(*ast.StructType); yes {
+		if ti.GoName() == "net.TCPConn" {
+			fl := astutils.FlattenFieldList(s.Fields)
+			for i, f := range fl {
+				fmt.Fprintf(os.Stderr, "output.go/OutputGoCode: TCPConn[%d]=%+v\n", i, f.Field)
+			}
+		}
+	}
+
+	return
+}
+
 func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
 	pi := PackagesInfo[pkgDirUnix]
 
@@ -348,7 +370,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 						c, c, g, strconv.Quote(genutils.CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
 
-			imp := "nil"
+			imp := implements(ti)
 
 			info := map[string]string{
 				"GoName":      tmn,
