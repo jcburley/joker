@@ -355,6 +355,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	GenBuiltins()
+
 	SortAllTypes()
 
 	GenTypeInfo()

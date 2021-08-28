@@ -147,11 +147,7 @@ type FuncInfo struct {
 
 func initPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if godb.Verbose {
-		msg := "Processing builtins\n"
-		if pkgDirUnix != "" {
-			msg = fmt.Sprintf("Processing package=%s:\n", pkgDirUnix)
-		}
-		genutils.AddSortedStdout(msg)
+		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
 	nsName := godb.ClojureNamespaceForDirname(pkgDirUnix)
