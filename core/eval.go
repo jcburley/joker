@@ -418,7 +418,7 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	if obj, ok := expr.tryReceiver(env, o, g, member, isField); ok {
 		return obj
 	}
-	for _, v := range g.implements {
+	for _, v := range g.embeds {
 		if obj, ok := expr.tryReceiver(env, o, v, member, isField); ok {
 			return obj
 		}

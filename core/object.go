@@ -40,7 +40,7 @@ type (
 		reflectType reflect.Type
 		ctor        Ctor
 		members     GoMembers
-		implements  []*Type
+		embeds      []*Type
 	}
 	Ctor   func(Object) Object
 	Object interface {

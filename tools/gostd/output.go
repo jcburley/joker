@@ -236,8 +236,8 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 		})
 }
 
-func implements(ti TypeInfo) (imp string) {
-	imp = "nil"
+func embeds(ti TypeInfo) (emb string) {
+	emb = "nil"
 	ts := ti.GoTypeInfo().TypeSpec
 	if ts == nil {
 		return
@@ -370,14 +370,14 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 						c, c, g, strconv.Quote(genutils.CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
 
-			imp := implements(ti)
+			emb := embeds(ti)
 
 			info := map[string]string{
 				"GoName":      tmn,
 				"ClojureName": ti.ClojureName(),
 				"Ctor":        ctor,
 				"Members":     mem,
-				"Implements":  imp,
+				"Embeds":      emb,
 			}
 
 			buf := new(bytes.Buffer)

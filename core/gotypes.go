@@ -10,8 +10,8 @@ import (
 
 type GoMembers map[string]*Var
 
-func MakeType(name string, ctor Ctor, mem GoMembers, implements []*Type) Type {
-	return Type{name: name, ctor: ctor, members: mem, implements: implements}
+func MakeType(name string, ctor Ctor, mem GoMembers, embeds []*Type) Type {
+	return Type{name: name, ctor: ctor, members: mem, embeds: embeds}
 }
 
 func LookupGoType(g interface{}) interface{} {
