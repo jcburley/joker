@@ -35,7 +35,7 @@ func GetPackageFromPath(path string) *Package {
 
 func SetPackagePath(path string, pkg *Package) {
 	if q, found := packagesByPath[path]; found {
-		panic(fmt.Sprintf("already have %s for %s, now want it to be %s", q, path, pkg))
+		panic(fmt.Sprintf("already have %v for %s, now want it to be %v", q, path, pkg))
 	}
 }
 
@@ -109,7 +109,7 @@ func main() {
 			}
 			chk := types.NewChecker(typeCheckerConfig, Fset, pkg, typeCheckerInfo)
 			if e := chk.Files(files); e != nil {
-				fmt.Fprintf(os.Stderr, "chk.Files(%s) returned error %s\n", files, e)
+				fmt.Fprintf(os.Stderr, "chk.Files(%v) returned error %s\n", files, e)
 			}
 			if *dumpAST {
 				fmt.Printf("--------\nastdump: Dumping %s:\n", p)
