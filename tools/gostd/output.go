@@ -343,7 +343,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
+			if tmn == "" || !ti.IsReferenced() || ti.IsArbitraryType() {
 				return
 			}
 			tmn = fmt.Sprintf("var %s Type\n", tmn)
@@ -357,7 +357,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
+			if tmn == "" || !ti.IsReferenced() || ti.IsArbitraryType() {
 				return
 			}
 			ctor := "nil"

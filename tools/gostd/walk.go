@@ -629,7 +629,7 @@ func declFunc(gf *godb.GoFile, pkgDirUnix string, f *File, v *FuncDecl) {
 	}
 	if v.Recv != nil {
 		for _, r := range v.Recv.List {
-			if !astutils.IsExportedType(&r.Type) {
+			if !astutils.IsExportedType(&r.Type) && TypeInfoForExpr(r.Type).GoName() != "*net.conn" {
 				return // Publishable receivers must operate on public types
 			}
 		}

@@ -58,6 +58,7 @@ type TypeInfo interface {
 	IsPassedByAddress() bool // Excludes builtins, some complex, and interface{} types
 	IsArbitraryType() bool   // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsCtorable() bool        // Whether a ctor for this type can (and will) be created
+	IsReferenced() bool      // Either exported or referenced via an embed in an exported type
 }
 
 type TypesMap map[string]TypeInfo
@@ -488,6 +489,10 @@ func (ti typeInfo) IsArbitraryType() bool {
 
 func (ti typeInfo) IsCtorable() bool {
 	return ti.gti.IsCtorable
+}
+
+func (ti typeInfo) IsReferenced() bool {
+	return ti.gti.IsExported || ti.GoName() == "net.conn" || ti.GoName() == "net.*conn"
 }
 
 var allTypesSorted = []TypeInfo{}
