@@ -246,10 +246,14 @@ func embeds(ti TypeInfo) (emb string) {
 	ty := ts.Type
 	e := []string{}
 	if s, yes := ty.(*ast.StructType); yes {
-		if ti.GoName() == "net.TCPConn" {
-			fl := astutils.FlattenFieldList(s.Fields)
-			for _, f := range fl {
-				e = append(e, fmt.Sprintf("&%s", TypeInfoForExpr(f.Field.Type).TypeMappingsName()))
+		fl := astutils.FlattenFieldList(s.Fields)
+		for _, f := range fl {
+			if f.Name != nil {
+				continue
+			}
+			ti := TypeInfoForExpr(f.Field.Type)
+			if ti.IsExported() {
+				e = append(e, fmt.Sprintf("&%s", ti.TypeMappingsName()))
 			}
 		}
 	}
