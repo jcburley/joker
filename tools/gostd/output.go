@@ -247,8 +247,11 @@ func embeds(ti TypeInfo) (emb string) {
 	if s, yes := ty.(*ast.StructType); yes {
 		if ti.GoName() == "net.TCPConn" {
 			fl := astutils.FlattenFieldList(s.Fields)
-			for i, f := range fl {
-				fmt.Fprintf(os.Stderr, "output.go/OutputGoCode: TCPConn[%d]=%+v\n", i, f.Field)
+			if len(fl) > 0 {
+				emb = ""
+			}
+			for _, f := range fl {
+				emb += fmt.Sprintf("&info_%s", f.Field.Type)
 			}
 		}
 	}
