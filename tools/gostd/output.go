@@ -251,6 +251,9 @@ func embeds(ti TypeInfo) (emb string) {
 			if f.Name != nil {
 				continue
 			}
+			if _, yes := f.Field.Type.(*ast.Ident); !yes {
+				continue
+			}
 			ti := TypeInfoForExpr(f.Field.Type)
 			if ti.IsExported() {
 				e = append(e, fmt.Sprintf("&%s", ti.TypeMappingsName()))
@@ -347,7 +350,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsReferenced() || ti.IsArbitraryType() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			tmn = fmt.Sprintf("var %s Type\n", tmn)
@@ -361,7 +364,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	SortedTypeDefinitions(v.InitTypes,
 		func(ti TypeInfo) {
 			tmn := ti.TypeMappingsName()
-			if tmn == "" || !ti.IsReferenced() || ti.IsArbitraryType() {
+			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() {
 				return
 			}
 			ctor := "nil"
