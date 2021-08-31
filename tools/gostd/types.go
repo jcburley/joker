@@ -437,9 +437,6 @@ func (ti typeInfo) Doc() string {
 }
 
 func (ti typeInfo) TypeMappingsName() string {
-	if !ti.IsExported() {
-		return ""
-	}
 	if ugt := ti.gti.UnderlyingType; ugt != nil {
 		switch ti.gti.Expr.(type) {
 		case *ArrayType:

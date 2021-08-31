@@ -249,7 +249,7 @@ func embeds(ti TypeInfo) (emb string) {
 		if ti.GoName() == "net.TCPConn" {
 			fl := astutils.FlattenFieldList(s.Fields)
 			for _, f := range fl {
-				e = append(e, fmt.Sprintf("&info_%s", f.Field.Type))
+				e = append(e, fmt.Sprintf("&%s", TypeInfoForExpr(f.Field.Type).TypeMappingsName()))
 			}
 		}
 	}
