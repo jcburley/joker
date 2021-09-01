@@ -9,6 +9,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path"
 	"regexp"
@@ -568,6 +569,10 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName,
 	if fi, found := QualifiedFunctions[fullName]; found {
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Replacing %s (at %s) at %s\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
 	}
+	if ti.GoFile() == nil {
+		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
+		return
+	}
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       name,
 		ReceiverId:     receiverId,
@@ -627,6 +632,65 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 	}
 }
 
+func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
+	// typeFullName := ti.GoName()
+	// typeBaseName := ti.GoBaseName()
+	// receiverId := "{{myGoImport}}." + typeBaseName
+	d, ok := typeCheckerInfo.Types[ty]
+	if !ok {
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Cannot find def for %T %+v\n", ty, ty)
+		return
+	}
+	s, yes := d.Type.(*types.Struct)
+	if !yes {
+		return
+	}
+	n := s.NumFields()
+	for i := 0; i < n; i++ {
+		v := s.Field(i)
+		if !v.Embedded() {
+			continue
+		}
+		buf := new(bytes.Buffer)
+		types.WriteType(buf, v.Type(), nil)
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", buf)
+		// if m.Names != nil {
+		// 	if len(m.Names) != 1 {
+		// 		Print(godb.Fset, iface)
+		// 		panic("Names has more than one!")
+		// 	}
+		// 	if m.Type == nil {
+		// 		Print(godb.Fset, iface)
+		// 		panic("Why no Type field??")
+		// 	}
+		// 	for _, n := range m.Names {
+		// 		name := n.Name
+		// 		doc := m.Doc
+		// 		if doc == nil {
+		// 			doc = m.Comment
+		// 		}
+		// 		addQualifiedFunction(
+		// 			ti,
+		// 			typeBaseName,
+		// 			receiverId,
+		// 			name,
+		// 			typeFullName+"_"+name,
+		// 			typeBaseName+"_"+name,
+		// 			comment,
+		// 			doc,
+		// 			m.Type.(*FuncType),
+		// 			n.NamePos)
+		// 	}
+		// 	continue
+		// }
+		// ts := godb.Resolve(m.Type)
+		// if ts == nil {
+		// 	return
+		// }
+		// appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+	}
+}
+
 func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 	for _, ti := range allTypesSorted {
 		if ti.ClojureName() == "crypto/Hash" || true {
@@ -640,25 +704,15 @@ func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 
 		ts := ti.TypeSpec()
 		if ts == nil {
-			if uti := ti.UnderlyingTypeInfo(); uti != nil {
-				ts = uti.TypeSpec()
-			} else {
-				//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.ClojureName())
-				continue
-			}
+			continue
 		}
 
-		if ti.Specificity() == ConcreteType {
-			continue // The code below currently handles only interface{} types
-		}
-
-		if ts != nil {
-			if ts.Type != nil {
-				if it, ok := ts.Type.(*InterfaceType); ok {
-					appendMethods(ti, it, "declared interface")
-				} else {
-					panic(fmt.Sprintf("ts.Type for %q is %T, not *InterfaceType", ti.GoName(), ts.Type))
-				}
+		if ts.Type != nil {
+			switch ty := ts.Type.(type) {
+			case *InterfaceType:
+				appendMethods(ti, ty, "declared interface")
+			case *StructType:
+				appendReceivers(ti, ty, "embedded type having defined function")
 			}
 		}
 	}
