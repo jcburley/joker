@@ -8,6 +8,8 @@ import (
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
+	"go/token"
+	"os"
 	"path"
 	"regexp"
 	"strconv"
@@ -527,7 +529,30 @@ func genCtor(tyi TypeInfo) {
 	//	fmt.Printf("codegen.go/genCtor: %s\n%s\n", tyi.GoName(), goConstructor)
 }
 
+func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
+	if fi, found := QualifiedFunctions[fullName]; found {
+		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Replacing %s (at %s) at %s\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
+	}
+	QualifiedFunctions[fullName] = &FuncInfo{
+		BaseName:       name,
+		ReceiverId:     receiverId,
+		Name:           baseName,
+		DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()",
+		Fd:             nil,
+		ToM:            ti,
+		Ft:             ft,
+		Doc:            doc,
+		SourceFile:     ti.GoFile(),
+		ImportsNative:  &imports.Imports{},
+		ImportsAutoGen: &imports.Imports{},
+		Pos:            pos,
+	}
+}
+
 func appendMethods(ti TypeInfo, iface *InterfaceType) {
+	typeFullName := ti.GoName()
+	typeBaseName := ti.GoBaseName()
+	receiverId := "{{myGoImport}}." + typeBaseName
 	for _, m := range iface.Methods.List {
 		if m.Names != nil {
 			if len(m.Names) != 1 {
@@ -539,28 +564,21 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 				panic("Why no Type field??")
 			}
 			for _, n := range m.Names {
-				typeFullName := ti.GoName()
-				fullName := typeFullName + "_" + n.Name
-				typeBaseName := ti.GoBaseName()
-				baseName := typeBaseName + "_" + n.Name
+				name := n.Name
 				doc := m.Doc
 				if doc == nil {
 					doc = m.Comment
 				}
-				QualifiedFunctions[fullName] = &FuncInfo{
-					BaseName:       n.Name,
-					ReceiverId:     "{{myGoImport}}." + typeBaseName,
-					Name:           baseName,
-					DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + n.Name + "()",
-					Fd:             nil,
-					ToM:            ti,
-					Ft:             m.Type.(*FuncType),
-					Doc:            doc,
-					SourceFile:     ti.GoFile(),
-					ImportsNative:  &imports.Imports{},
-					ImportsAutoGen: &imports.Imports{},
-					Pos:            n.NamePos,
-				}
+				addQualifiedFunction(
+					ti,
+					typeBaseName,
+					receiverId,
+					name,
+					typeFullName+"_"+name,
+					typeBaseName+"_"+name,
+					doc,
+					m.Type.(*FuncType),
+					n.NamePos)
 			}
 			continue
 		}
