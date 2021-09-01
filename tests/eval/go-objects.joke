@@ -151,6 +151,9 @@
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))
 
 (deftest val-or-ptr-receiver
-  (let [s (new scanner/Position {})]
-    (is (not (.IsValid s)))
+  (let [p (new scanner/Position {})
+        s @p]
+    (is (not (.IsValid p)))
+    (is "hey" (.String p))
+    ;; (is (not (.IsValid s))) UNSUPPORTED due to reflect.CanAddr() failing
     (is "hey" (.String s))))

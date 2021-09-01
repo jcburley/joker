@@ -23,6 +23,10 @@ Totals: functions=4020 generated=3858 (95.97%)
 
 ## Recent Design Changes
 
+### 2021-09-01
+
+A value receiver for a reference (wrapped by a `GoObject`) can now be called without having to explicitly dereference the object. Some support for calling a pointer receiver for a value is now provided, but doesn't work in the straightforward case of a `GoObject` wrapping that value, as the Go runtime (specifically, the `reflect` package) does not always see such a value as capable of being addressable (`reflect.CanAddr()` fails).
+
 ### 2021-04-28
 
 The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` on field references. E.g. instead of `(var-set (var (.member instance)) value)`, use `(set! (.member instance) value)`, which is much more Clojure-like.

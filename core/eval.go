@@ -424,12 +424,41 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 		}
 	}
 
+	// Try exchanging a pointer with a value to access corresponding receivers.
+
+	var o2 GoObject
+
 	v := reflect.ValueOf(o.O)
 	k := v.Kind()
 	if k == reflect.Ptr {
 		v = v.Elem()
 		k = v.Kind()
+		if v.CanInterface() {
+			o2 = MakeGoObject(v.Interface())
+		}
+	} else if v.CanAddr() {
+		v2 := v.Addr()
+		if v2.CanInterface() {
+			o2 = MakeGoObject(v2.Interface())
+		}
 	}
+
+	if o2.O != nil {
+		g2, ok := LookupGoType(o2.O).(*Type)
+		if ok && g2 != nil {
+			if obj, ok := expr.tryReceiver(env, o2, g2, member, isField); ok {
+				return obj
+			}
+			for _, v := range g2.embeds {
+				if obj, ok := expr.tryReceiver(env, o2, v, member, isField); ok {
+					return obj
+				}
+			}
+		}
+	}
+
+	// Still no receiver, so must be a field reference within a struct.
+
 	if k != reflect.Struct {
 		panic(RT.NewError(fmt.Sprintf("No such receiver/method %s/%s", o.TypeToString(false), member)))
 	}
