@@ -529,6 +529,41 @@ func genCtor(tyi TypeInfo) {
 	//	fmt.Printf("codegen.go/genCtor: %s\n%s\n", tyi.GoName(), goConstructor)
 }
 
+func SetSwitchableTypes(allTypesSorted []TypeInfo) {
+	var types []TypeInfo
+	ord := (uint)(0)
+
+	for _, ti := range allTypesSorted {
+		more := false
+		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
+			more = true
+		}
+		if !ti.IsCustom() {
+			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.IsCustom() {
+				if more {
+					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
+				}
+				continue
+			}
+		}
+		if !ti.IsSwitchable() {
+			if more {
+				fmt.Printf("codegen.go/GenTypeInfo(): %s not switchable\n", ti.GoName())
+			}
+			continue
+		}
+		types = append(types, ti)
+		Ordinal[ti] = ord
+		if more {
+			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.GoName(), ti.Specificity())
+		}
+		ord++
+	}
+
+	SwitchableTypes = types
+}
+
 func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
 	if fi, found := QualifiedFunctions[fullName]; found {
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Replacing %s (at %s) at %s\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
@@ -592,42 +627,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 	}
 }
 
-func SetSwitchableTypes(allTypesSorted []TypeInfo) {
-	var types []TypeInfo
-	ord := (uint)(0)
-
-	for _, ti := range allTypesSorted {
-		more := false
-		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
-			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
-			more = true
-		}
-		if !ti.IsCustom() {
-			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.IsCustom() {
-				if more {
-					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
-				}
-				continue
-			}
-		}
-		if !ti.IsSwitchable() {
-			if more {
-				fmt.Printf("codegen.go/GenTypeInfo(): %s not switchable\n", ti.GoName())
-			}
-			continue
-		}
-		types = append(types, ti)
-		Ordinal[ti] = ord
-		if more {
-			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.GoName(), ti.Specificity())
-		}
-		ord++
-	}
-
-	SwitchableTypes = types
-}
-
-func GenQualifiedFunctionsFromReceivers(allTypesSorted []TypeInfo) {
+func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 	for _, ti := range allTypesSorted {
 		if ti.ClojureName() == "crypto/Hash" || true {
 			//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())

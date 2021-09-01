@@ -377,7 +377,7 @@ func main() {
 
 	GenTypeCtors(allTypesSorted)
 
-	GenQualifiedFunctionsFromReceivers(allTypesSorted)
+	GenQualifiedFunctionsFromEmbeds(allTypesSorted)
 
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
