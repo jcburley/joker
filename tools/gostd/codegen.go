@@ -550,7 +550,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName,
 	}
 }
 
-func appendMethods(ti TypeInfo, iface *InterfaceType) {
+func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
 	receiverId := "{{myGoImport}}." + typeBaseName
@@ -577,7 +577,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 					name,
 					typeFullName+"_"+name,
 					typeBaseName+"_"+name,
-					"interface decl",
+					comment,
 					doc,
 					m.Type.(*FuncType),
 					n.NamePos)
@@ -588,7 +588,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 		if ts == nil {
 			return
 		}
-		appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType))
+		appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
 	}
 }
 
@@ -655,7 +655,7 @@ func GenQualifiedFunctionsFromReceivers(allTypesSorted []TypeInfo) {
 		if ts != nil {
 			if ts.Type != nil {
 				if it, ok := ts.Type.(*InterfaceType); ok {
-					appendMethods(ti, it)
+					appendMethods(ti, it, "declared interface")
 				} else {
 					panic(fmt.Sprintf("ts.Type for %q is %T, not *InterfaceType", ti.GoName(), ts.Type))
 				}
