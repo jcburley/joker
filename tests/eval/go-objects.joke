@@ -5,7 +5,8 @@
   (:require [go.std.errors :as errors])
   (:require [go.std.flag :as flag])
   (:require [go.std.io.ioutil :as ioutil])
-  (:require [go.std.go.build :as build]))
+  (:require [go.std.go.build :as build])
+  (:require [go.std.text.scanner :as scanner]))
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -148,3 +149,8 @@
 
 (deftest vector-to-string
   (is (= (go.std.fmt/Sprintf [65 66 67]) "ABC")))
+
+(deftest val-or-ptr-receiver
+  (let [s (new scanner/Position {})]
+    (is (not (.IsValid s)))
+    (is "hey" (.String s))))
