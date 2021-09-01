@@ -590,13 +590,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 	}
 }
 
-func GenTypeInfo() {
-	allTypes := AllTypesSorted()
-
-	for _, ti := range allTypes {
-		genTypeFromDb(ti)
-	}
-
+func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	var types []TypeInfo
 	ord := (uint)(0)
 
@@ -631,46 +625,45 @@ func GenTypeInfo() {
 	SwitchableTypes = types
 }
 
-func genTypeFromDb(ti TypeInfo) {
-	if ti.ClojureName() == "crypto/Hash" || true {
-		//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
-	}
-
-	if !ti.IsExported() || ti.IsArbitraryType() {
-		//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or a special type\n")
-		return // Do not generate anything for private or special types
-	}
-	//	fmt.Printf("codegen.go/GenTypeFromDb: not a concrete type\n")
-
-	ts := ti.TypeSpec()
-	if ts == nil {
-		if uti := ti.UnderlyingTypeInfo(); uti != nil {
-			ts = uti.TypeSpec()
-		} else {
-			//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.ClojureName())
-			return
+func GenQualifiedFunctionsFromReceivers(allTypesSorted []TypeInfo) {
+	for _, ti := range allTypesSorted {
+		if ti.ClojureName() == "crypto/Hash" || true {
+			//		fmt.Printf("codegen.go/GenTypeFromDb: %s == @%p %+v @%p %+v @%p %+v\n", ti.ClojureName(), ti, ti, ti.ClojureTypeInfo(), ti.ClojureTypeInfo(), ti.GoTypeInfo(), ti.GoTypeInfo())
 		}
-	}
 
-	if ti.Specificity() == ConcreteType {
-		return // The code below currently handles only interface{} types
-	}
+		if !ti.IsExported() || ti.IsArbitraryType() {
+			//		fmt.Printf("codegen.go/GenTypeFromDb: not exported or a special type\n")
+			continue // Do not generate anything for private or special types
+		}
 
-	if ts != nil {
-		if ts.Type != nil {
-			if it, ok := ts.Type.(*InterfaceType); ok {
-				appendMethods(ti, it)
+		ts := ti.TypeSpec()
+		if ts == nil {
+			if uti := ti.UnderlyingTypeInfo(); uti != nil {
+				ts = uti.TypeSpec()
 			} else {
-				panic(fmt.Sprintf("ts.Type for %q is %T, not *InterfaceType", ti.GoName(), ts.Type))
+				//			fmt.Printf("codegen.go/GenTypeFromDb: %s has no underlying type!\n", ti.ClojureName())
+				continue
+			}
+		}
+
+		if ti.Specificity() == ConcreteType {
+			continue // The code below currently handles only interface{} types
+		}
+
+		if ts != nil {
+			if ts.Type != nil {
+				if it, ok := ts.Type.(*InterfaceType); ok {
+					appendMethods(ti, it)
+				} else {
+					panic(fmt.Sprintf("ts.Type for %q is %T, not *InterfaceType", ti.GoName(), ts.Type))
+				}
 			}
 		}
 	}
 }
 
-func GenTypeCtors() {
-	allTypes := AllTypesSorted()
-
-	for _, ti := range allTypes {
+func GenTypeCtors(allTypesSorted []TypeInfo) {
+	for _, ti := range allTypesSorted {
 		if ti.IsCtorable() {
 			genCtor(ti)
 		}

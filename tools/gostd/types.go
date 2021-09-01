@@ -495,12 +495,12 @@ func (ti typeInfo) IsReferenced() bool {
 	return ti.gti.IsExported || ti.GoName() == "net.conn" || ti.GoName() == "net.*conn"
 }
 
-var allTypesSorted = []TypeInfo{}
+var myAllTypesSorted = []TypeInfo{}
 
 // This establishes the order in which types are matched by 'case' statements in the "big switch" in goswitch.go. Once established,
 // new types cannot be discovered/added.
-func SortAllTypes() {
-	if len(allTypesSorted) > 0 {
+func SortAllTypes() []TypeInfo {
+	if len(myAllTypesSorted) > 0 {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, ti := range typesByClojureName {
@@ -509,21 +509,18 @@ func SortAllTypes() {
 		}
 		t := ti.GoTypeInfo()
 		if t.IsExported && !t.IsArbitraryType && !t.IsBuiltin {
-			allTypesSorted = append(allTypesSorted, ti.(*typeInfo))
+			myAllTypesSorted = append(myAllTypesSorted, ti.(*typeInfo))
 		}
 	}
-	sort.SliceStable(allTypesSorted, func(i, j int) bool {
-		i_gti := allTypesSorted[i].GoTypeInfo()
-		j_gti := allTypesSorted[j].GoTypeInfo()
+	sort.SliceStable(myAllTypesSorted, func(i, j int) bool {
+		i_gti := myAllTypesSorted[i].GoTypeInfo()
+		j_gti := myAllTypesSorted[j].GoTypeInfo()
 		if iSpecificity, jSpecificity := i_gti.Specificity, j_gti.Specificity; iSpecificity != jSpecificity {
 			return iSpecificity > jSpecificity
 		}
 		return i_gti.FullName < j_gti.FullName
 	})
-}
-
-func AllTypesSorted() []TypeInfo {
-	return allTypesSorted
+	return myAllTypesSorted
 }
 
 func typeKeyForSort(ti TypeInfo) string {

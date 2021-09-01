@@ -355,9 +355,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	SortAllTypes()
+	allTypesSorted := SortAllTypes()
 
-	GenTypeInfo()
+	SetSwitchableTypes(allTypesSorted)
 
 	SortedConstantInfoMap(GoConstants,
 		func(c string, ci *ConstantInfo) {
@@ -375,7 +375,9 @@ func main() {
 			GenType(t, ti)
 		})
 
-	GenTypeCtors()
+	GenTypeCtors(allTypesSorted)
+
+	GenQualifiedFunctionsFromReceivers(allTypesSorted)
 
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
@@ -406,7 +408,7 @@ func main() {
 	RegisterPackages(packagesArray, outputDir)
 	RegisterClojureFiles(dotJokeArray, outputDir)
 
-	RegisterGoTypeSwitch(AllTypesSorted(), outputDir)
+	RegisterGoTypeSwitch(allTypesSorted, outputDir)
 
 	if godb.Verbose || summary {
 		fmt.Printf("ABENDs:")
