@@ -418,11 +418,6 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	if obj, ok := expr.tryReceiver(env, o, g, member, isField); ok {
 		return obj
 	}
-	for _, v := range g.embeds {
-		if obj, ok := expr.tryReceiver(env, o, v, member, isField); ok {
-			return obj
-		}
-	}
 
 	// Try exchanging a pointer with a value to access corresponding receivers.
 
@@ -448,11 +443,6 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 		if ok && g2 != nil {
 			if obj, ok := expr.tryReceiver(env, o2, g2, member, isField); ok {
 				return obj
-			}
-			for _, v := range g2.embeds {
-				if obj, ok := expr.tryReceiver(env, o2, v, member, isField); ok {
-					return obj
-				}
 			}
 		}
 	}

@@ -4,12 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
 	"github.com/candid82/joker/tools/gostd/paths"
-	"go/ast"
 	"go/doc"
 	"go/token"
 	"io/ioutil"
@@ -236,38 +234,6 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 		})
 }
 
-func embeds(ti TypeInfo) (emb string) {
-	emb = "nil"
-	ts := ti.GoTypeInfo().TypeSpec
-	if ts == nil {
-		return
-	}
-
-	ty := ts.Type
-	e := []string{}
-	if s, yes := ty.(*ast.StructType); yes {
-		fl := astutils.FlattenFieldList(s.Fields)
-		for _, f := range fl {
-			if f.Name != nil {
-				continue
-			}
-			if _, yes := f.Field.Type.(*ast.Ident); !yes {
-				continue
-			}
-			ti := TypeInfoForExpr(f.Field.Type)
-			if ti.IsExported() {
-				e = append(e, fmt.Sprintf("&%s", ti.TypeMappingsName()))
-			}
-		}
-	}
-
-	if len(e) > 0 {
-		emb = fmt.Sprintf("[]*Type{%s}", strings.Join(e, ", "))
-	}
-
-	return
-}
-
 func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
 	pi := PackagesInfo[pkgDirUnix]
 
@@ -382,14 +348,11 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 						c, c, g, strconv.Quote(genutils.CommentGroupAsString(doc)), strconv.Quote("1.0"), paramsAsSymbolVec(r.Params))
 				})
 
-			emb := embeds(ti)
-
 			info := map[string]string{
 				"GoName":      tmn,
 				"ClojureName": ti.ClojureName(),
 				"Ctor":        ctor,
 				"Members":     mem,
-				"Embeds":      emb,
 			}
 
 			buf := new(bytes.Buffer)
