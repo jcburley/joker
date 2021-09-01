@@ -167,7 +167,7 @@ func GenReceiver(fn *FuncInfo) {
 			} else {
 				return "Receiver"
 			}
-		}(),
+		}() + ": " + fn.Comment,
 		"Code": genReceiverCode(fn, goFname),
 	}
 
@@ -529,7 +529,7 @@ func genCtor(tyi TypeInfo) {
 	//	fmt.Printf("codegen.go/genCtor: %s\n%s\n", tyi.GoName(), goConstructor)
 }
 
-func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
 	if fi, found := QualifiedFunctions[fullName]; found {
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Replacing %s (at %s) at %s\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
 	}
@@ -546,6 +546,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName,
 		ImportsNative:  &imports.Imports{},
 		ImportsAutoGen: &imports.Imports{},
 		Pos:            pos,
+		Comment:        comment,
 	}
 }
 
@@ -576,6 +577,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType) {
 					name,
 					typeFullName+"_"+name,
 					typeBaseName+"_"+name,
+					"interface decl",
 					doc,
 					m.Type.(*FuncType),
 					n.NamePos)
