@@ -634,9 +634,6 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 }
 
 func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
-	// typeFullName := ti.GoName()
-	// typeBaseName := ti.GoBaseName()
-	// receiverId := "{{myGoImport}}." + typeBaseName
 	d, ok := astutils.TypeCheckerInfo.Types[ty]
 	if !ok {
 		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Cannot find def for %T %+v\n", ty, ty)
@@ -646,49 +643,53 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 	if !yes {
 		return
 	}
+
+	typeFullName := ti.GoName()
+	typeBaseName := ti.GoBaseName()
+	receiverId := "{{myGoImport}}." + typeBaseName
+
 	n := s.NumFields()
 	for i := 0; i < n; i++ {
 		v := s.Field(i)
 		if !v.Embedded() {
 			continue
 		}
-		p := v.Type()
-		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", astutils.TypePathname(p))
 
-		// if m.Names != nil {
-		// 	if len(m.Names) != 1 {
-		// 		Print(godb.Fset, iface)
-		// 		panic("Names has more than one!")
-		// 	}
-		// 	if m.Type == nil {
-		// 		Print(godb.Fset, iface)
-		// 		panic("Why no Type field??")
-		// 	}
-		// 	for _, n := range m.Names {
-		// 		name := n.Name
-		// 		doc := m.Doc
-		// 		if doc == nil {
-		// 			doc = m.Comment
-		// 		}
-		// 		addQualifiedFunction(
-		// 			ti,
-		// 			typeBaseName,
-		// 			receiverId,
-		// 			name,
-		// 			typeFullName+"_"+name,
-		// 			typeBaseName+"_"+name,
-		// 			comment,
-		// 			doc,
-		// 			m.Type.(*FuncType),
-		// 			n.NamePos)
-		// 	}
-		// 	continue
-		// }
-		// ts := godb.Resolve(m.Type)
-		// if ts == nil {
-		// 	return
-		// }
-		// appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+		_ = func(p types.Type) {
+			receivingTypeName := astutils.TypePathname(p)
+			m, found := ReceivingTypes[receivingTypeName]
+
+			//			fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s (found=%v):\n", receivingTypeName, found)
+
+			if !found {
+				return
+			}
+
+			for _, fd := range m {
+				name := fd.Name.Name
+				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
+
+				doc := fd.Doc
+				addQualifiedFunction(
+					ti,
+					typeBaseName,
+					receiverId,
+					name,
+					typeFullName+"_"+name,
+					typeBaseName+"_"+name,
+					comment,
+					doc,
+					fd.Type,
+					fd.Name.NamePos)
+			}
+		}
+
+		p := v.Type()
+		if _, yes := p.(*types.Pointer); yes {
+			//			f(p)
+		} else {
+			//			f(types.NewPointer(p))
+		}
 	}
 }
 

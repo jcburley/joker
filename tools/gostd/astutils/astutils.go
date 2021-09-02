@@ -131,3 +131,8 @@ func TypePathname(ty types.Type) string {
 	types.WriteType(buf, ty, nil)
 	return buf.String()
 }
+
+func TypePathnameFromExpr(e Expr) string {
+	tav := TypeCheckerInfo.Types[e].Type
+	return TypePathname(tav)
+}

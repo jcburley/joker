@@ -278,6 +278,7 @@ func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDo
 
 // Map qualified function names to info on each.
 var QualifiedFunctions = map[string]*FuncInfo{}
+var ReceivingTypes = map[string][]*FuncDecl{}
 
 func receiverPrefix(src *godb.GoFile, rl []astutils.FieldItem) string {
 	res := ""
@@ -320,9 +321,9 @@ func receiverId(src *godb.GoFile, pkgName string, rl []astutils.FieldItem) strin
 	return res
 }
 
-func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, isExportable bool) {
 	if WalkDump {
-		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, fd.Doc)
+		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p exportable=%v fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, isExportable, fd.Doc)
 		Print(godb.Fset, fd)
 	}
 	fl := astutils.FlattenFieldList(fd.Recv)
@@ -332,6 +333,25 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) 
 	case "unsafe._Offsetof", "unsafe._Add", "unsafe._Slice":
 		return // unsafe.Offsetof et al are syntactic operations in Go.
 	}
+
+	if len(fl) == 1 {
+		// Add exported receivers to list of those supported
+		// for this type, so any structs that embed this type
+		// will have their own copies of adapters to those
+		// receivers created for them.
+		typeName := astutils.TypePathnameFromExpr(fl[0].Field.Type)
+		if _, found := ReceivingTypes[typeName]; !found {
+			ReceivingTypes[typeName] = []*FuncDecl{}
+		}
+		ReceivingTypes[typeName] = append(ReceivingTypes[typeName], fd)
+		//		fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl(): %s => %+v\n", typeName, fd)
+	}
+
+	if !isExportable {
+		// Do not emit a direct wrapper for this function.
+		return
+	}
+
 	if v, ok := QualifiedFunctions[fullName]; ok {
 		genutils.AddSortedStdout(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))
@@ -628,18 +648,35 @@ func declFunc(gf *godb.GoFile, pkgDirUnix string, f *File, v *FuncDecl) {
 	if !IsExported(v.Name.Name) {
 		return // Skipping non-exported functions
 	}
+
+	isExportable := true
+
 	if v.Recv != nil {
+		// Count the func as eligible if the types of all its
+		// receivers (Golang supports only one for now,
+		// thankfully) are exported. But process it
+		// regardless, because another exported type (in the
+		// same package) can embed an unexported type serving
+		// as a receiver to one or more functions, which are
+		// then magically accessible to users of that exported
+		// type.
 		for _, r := range v.Recv.List {
-			if !astutils.IsExportedType(&r.Type) && TypeInfoForExpr(r.Type).GoName() != "*net.connXXX" {
-				return // Publishable receivers must operate on public types
+			if !astutils.IsExportedType(&r.Type) {
+				isExportable = false
 			}
 		}
-		NumReceivers++
+		if isExportable {
+			NumReceivers++
+		}
 	} else {
 		NumStandalones++
 	}
-	NumFunctions++
-	processFuncDecl(gf, pkgDirUnix, f, v)
+
+	if isExportable {
+		NumFunctions++
+	}
+
+	processFuncDecl(gf, pkgDirUnix, f, v, isExportable)
 }
 
 func declType(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
