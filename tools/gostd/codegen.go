@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/abends"
+	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
 	"github.com/candid82/joker/tools/gostd/imports"
@@ -636,7 +637,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 	// typeFullName := ti.GoName()
 	// typeBaseName := ti.GoBaseName()
 	// receiverId := "{{myGoImport}}." + typeBaseName
-	d, ok := typeCheckerInfo.Types[ty]
+	d, ok := astutils.TypeCheckerInfo.Types[ty]
 	if !ok {
 		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Cannot find def for %T %+v\n", ty, ty)
 		return

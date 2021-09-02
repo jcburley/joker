@@ -494,7 +494,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, doc
 			fullName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	valTypeString, goCode := genCodeForConstant(typeCheckerInfo.Defs[name], val)
+	valTypeString, goCode := genCodeForConstant(astutils.TypeCheckerInfo.Defs[name], val)
 
 	if valTypeString == "" {
 		return false
@@ -870,8 +870,8 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
 	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot, importMe})
 }
 
-var typeCheckerConfig *types.Config
-var typeCheckerInfo *types.Info
+var myTypeCheckerConfig *types.Config
+var myTypeCheckerInfo *types.Info
 
 type importerFunc func(path string) (*types.Package, error)
 
@@ -891,7 +891,7 @@ func myImporter(path string) (*types.Package, error) {
 	for _, f := range pkg.Files {
 		files = append(files, f)
 	}
-	return typeCheckerConfig.Check(path, godb.Fset, files, typeCheckerInfo)
+	return myTypeCheckerConfig.Check(path, godb.Fset, files, myTypeCheckerInfo)
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
@@ -913,16 +913,16 @@ func WalkAllDirs() (error, paths.NativePath) {
 		}
 	}
 
-	typeCheckerConfig = &types.Config{
+	myTypeCheckerConfig = &types.Config{
 		IgnoreFuncBodies: true,
 		FakeImportC:      true,
 		Importer:         importer.Default(),
 	}
-	typeCheckerInfo = &types.Info{
+	myTypeCheckerInfo = &types.Info{
 		Types: map[Expr]types.TypeAndValue{},
 		Defs:  map[*Ident]types.Object{},
 	}
-	astutils.TypeCheckerInfo = typeCheckerInfo
+	astutils.TypeCheckerInfo = myTypeCheckerInfo
 
 	for _, wp := range godb.PackagesAsDiscovered {
 		pkg := wp.Dir.String()
