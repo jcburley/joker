@@ -870,16 +870,7 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
 	dirsToWalk = append(dirsToWalk, dirToWalk{srcDir, fsRoot, nsRoot, importMe})
 }
 
-var myTypeCheckerConfig *types.Config
-var myTypeCheckerInfo *types.Info
-
-type importerFunc func(path string) (*types.Package, error)
-
-func (f importerFunc) Import(path string) (*types.Package, error) {
-	return f(path)
-}
-
-func myImporter(path string) (*types.Package, error) {
+func myImporter(cfg *types.Config, info *types.Info, path string) (*types.Package, error) {
 	if path == "unsafe" {
 		return types.Unsafe, nil
 	}
@@ -891,7 +882,7 @@ func myImporter(path string) (*types.Package, error) {
 	for _, f := range pkg.Files {
 		files = append(files, f)
 	}
-	return myTypeCheckerConfig.Check(path, godb.Fset, files, myTypeCheckerInfo)
+	return cfg.Check(path, godb.Fset, files, info)
 }
 
 func WalkAllDirs() (error, paths.NativePath) {
@@ -913,20 +904,20 @@ func WalkAllDirs() (error, paths.NativePath) {
 		}
 	}
 
-	myTypeCheckerConfig = &types.Config{
+	cfg := &types.Config{
 		IgnoreFuncBodies: true,
 		FakeImportC:      true,
 		Importer:         importer.Default(),
 	}
-	myTypeCheckerInfo = &types.Info{
+	info := &types.Info{
 		Types: map[Expr]types.TypeAndValue{},
 		Defs:  map[*Ident]types.Object{},
 	}
-	astutils.TypeCheckerInfo = myTypeCheckerInfo
+	astutils.TypeCheckerInfo = info
 
 	for _, wp := range godb.PackagesAsDiscovered {
 		pkg := wp.Dir.String()
-		if _, err := myImporter(pkg); err != nil {
+		if _, err := myImporter(cfg, info, pkg); err != nil {
 			fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", pkg, err)
 		}
 		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
