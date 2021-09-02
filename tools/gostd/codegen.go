@@ -652,9 +652,9 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 		if !v.Embedded() {
 			continue
 		}
-		buf := new(bytes.Buffer)
-		types.WriteType(buf, v.Type(), nil)
-		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", buf)
+		p := v.Type()
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", astutils.TypePathname(p))
+
 		// if m.Names != nil {
 		// 	if len(m.Names) != 1 {
 		// 		Print(godb.Fset, iface)
