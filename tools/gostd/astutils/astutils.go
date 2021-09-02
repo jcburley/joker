@@ -3,6 +3,7 @@ package astutils
 // Helpers for wrangling Go AST.
 
 import (
+	"bytes"
 	"fmt"
 	. "go/ast"
 	"go/types"
@@ -123,4 +124,10 @@ func ExprToString(e Expr) string {
 		return fmt.Sprintf("%q (type %q)", typ.String(), val.String())
 	}
 	return fmt.Sprintf("ABEND334(asutils.go/ExprToString: Cannot find expression %q)", e)
+}
+
+func TypePathname(ty types.Type) string {
+	buf := new(bytes.Buffer)
+	types.WriteType(buf, ty, nil)
+	return buf.String()
 }
