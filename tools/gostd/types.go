@@ -36,6 +36,7 @@ type TypeInfo interface {
 	GoPattern() string
 	GoBaseName() string
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
+	GoType() Expr                // The actual (Go) type (if any)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -383,6 +384,10 @@ func (ti typeInfo) GoEffectiveBaseName() string {
 		return "interface{}"
 	}
 	return ti.gti.LocalName
+}
+
+func (ti typeInfo) GoType() Expr {
+	return ti.gti.Type
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {

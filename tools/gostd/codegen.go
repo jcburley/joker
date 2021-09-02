@@ -655,7 +655,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 			continue
 		}
 
-		_ = func(p types.Type) {
+		f := func(p types.Type) {
 			receivingTypeName := astutils.TypePathname(p)
 			m, found := ReceivingTypes[receivingTypeName]
 
@@ -685,6 +685,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 		}
 
 		p := v.Type()
+		f(p)
 		if _, yes := p.(*types.Pointer); yes {
 			//			f(p)
 		} else {
@@ -704,17 +705,19 @@ func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 			continue // Do not generate anything for private or special types
 		}
 
-		ts := ti.TypeSpec()
-		if ts == nil {
-			continue
-		}
+		ty := ti.GoType()
 
-		if ts.Type != nil {
-			switch ty := ts.Type.(type) {
+		if ty != nil {
+			switch ty := ty.(type) {
 			case *InterfaceType:
 				appendMethods(ti, ty, "declared interface")
 			case *StructType:
 				appendReceivers(ti, ty, "embedded type having defined function")
+			case *StarExpr:
+				switch ty := ty.X.(type) {
+				case *StructType:
+					appendReceivers(ti, ty, "embedded pointer type having defined function")
+				}
 			}
 		}
 	}
