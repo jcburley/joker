@@ -123,7 +123,7 @@ func ExprToString(e Expr) string {
 		}
 		return fmt.Sprintf("%q (type %q)", typ.String(), val.String())
 	}
-	return fmt.Sprintf("ABEND334(asutils.go/ExprToString: Cannot find expression %q)", e)
+	return fmt.Sprintf("ABEND334(astutils.go/ExprToString: Cannot find expression %q)", e)
 }
 
 func TypePathname(ty types.Type) string {
