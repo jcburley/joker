@@ -568,7 +568,11 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 
 func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
 	if fi, found := QualifiedFunctions[fullName]; found {
-		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Replacing %s (at %s) at %s\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
+		if fi != nil {
+			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Instead of replacing %s (at %s) at %s, will skip generating this function.\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
+		}
+		QualifiedFunctions[fullName] = nil
+		return
 	}
 	if ti.GoFile() == nil {
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())

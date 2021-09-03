@@ -383,6 +383,9 @@ func main() {
 	SortedFuncInfoMap(QualifiedFunctions,
 		func(f string, v *FuncInfo) {
 			//			fmt.Printf("main.go: Qualifiedfunctions[%s]\n", f)
+			if v == nil {
+				return // Nil'ed out due to more than one entry (ambiguous reference would result)
+			}
 			if v.Fd != nil && v.Fd.Recv == nil {
 				GenStandalone(v)
 			} else {
