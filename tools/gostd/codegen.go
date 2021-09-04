@@ -566,9 +566,12 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
-	if _, found := QualifiedFunctions[fullName]; found {
-		QualifiedFunctions[fullName] = nil
+func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
+	if f, found := QualifiedFunctions[fullName]; found {
+		if f.EmbedName != "" && f.EmbedName != name {
+			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction: not replacing %s with %s\n", f.EmbedName, name)
+			QualifiedFunctions[fullName] = nil
+		}
 		return
 	}
 	if ti.GoFile() == nil {
@@ -580,6 +583,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName,
 		ReceiverId:     receiverId,
 		Name:           baseName,
 		DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()",
+		EmbedName:      embedName,
 		Fd:             nil,
 		ToM:            ti,
 		Ft:             ft,
@@ -617,6 +621,7 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 					typeBaseName,
 					receiverId,
 					name,
+					"", /* embedName*/
 					typeFullName+"_"+name,
 					typeBaseName+"_"+name,
 					comment,
@@ -657,6 +662,8 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 			continue
 		}
 
+		embedName := v.Name()
+
 		f := func(p types.Type) {
 			receivingTypeName := astutils.TypePathname(p)
 			m, found := ReceivingTypes[receivingTypeName]
@@ -677,6 +684,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					typeBaseName,
 					receiverId,
 					name,
+					embedName,
 					typeFullName+"_"+name,
 					typeBaseName+"_"+name,
 					comment,

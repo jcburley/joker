@@ -128,6 +128,7 @@ type FuncInfo struct {
 	ReceiverId     string    // Receiver info (only one type supported here and by Golang itself for now)
 	Name           string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
 	DocName        string    // Everything, for documentation and diagnostics
+	EmbedName      string    // "" for function definitions, else basename of embedded type
 	Fd             *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
 	ToM            TypeInfo  // Method operates on this type (nil for standalones and receivers)
 	Ft             *FuncType
@@ -358,7 +359,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, &imports.Imports{}, fd.Pos(), "defined function"}
+	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, "", fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, &imports.Imports{}, fd.Pos(), "defined function"}
 }
 
 func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
