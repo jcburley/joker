@@ -679,7 +679,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				name := fd.Name.Name
 				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
 
-				if overriddenByPtrMethod(typePkgName, typeBaseName, name) {
+				if overriddenByMethod(typePkgName, typeBaseName, name) {
 					// For type T embedding type
 					// U, which implements (U)F(),
 					// do not emit that
@@ -725,9 +725,14 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	}
 }
 
-func overriddenByPtrMethod(typeName, baseName, name string) bool {
+func overriddenByMethod(typeName, baseName, name string) bool {
 	n := typeName + ".PtrTo_" + baseName + "_" + name
 	f, found := QualifiedFunctions[n]
+	if found && f.Fd != nil {
+		return true
+	}
+	n = typeName + "." + baseName + "_" + name
+	f, found = QualifiedFunctions[n]
 	return found && f.Fd != nil
 }
 
