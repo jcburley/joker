@@ -636,9 +636,6 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 
 // ptr is true when processing type *T (thus adding to *T's list of functions), false otherwise.
 func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
-	if ptr {
-		return // TODO: Enable this
-	}
 	d, ok := astutils.TypeCheckerInfo.Types[ty]
 	if !ok {
 		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Cannot find def for %T %+v\n", ty, ty)
@@ -690,12 +687,13 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 		}
 
 		p := v.Type()
-		if !ptr { // Adding to *T's list of methods
-			if _, yes := p.(*types.Pointer); yes {
+		if ptr { // Adding to *T's list of methods
+			f(p)
+		} else {
+			if _, yes := p.(*types.Pointer); !yes {
 				f(p)
 				//				f(types.NewPointer(p))
 			}
-		} else {
 		}
 	}
 }
