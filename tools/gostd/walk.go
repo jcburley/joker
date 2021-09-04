@@ -363,6 +363,9 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 	}
 	rcvrId := receiverId(gf, "", fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
+	// if Contains(fullName, "DotNode") {
+	// 	fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: %s\n", fullName)
+	// }
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       fd.Name.Name,
 		ReceiverId:     rcvrId,
