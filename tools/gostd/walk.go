@@ -301,8 +301,12 @@ func receiverPrefix(src *godb.GoFile, rl []astutils.FieldItem) string {
 	return res + "_"
 }
 
-func receiverId(src *godb.GoFile, pkgName string, rl []astutils.FieldItem) string {
-	pkg := "{{myGoImport}}."
+func receiverId(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
+	if pkg == "" {
+		pkg = "{{myGoImport}}."
+	} else {
+		pkg += "."
+	}
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
@@ -357,7 +361,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 		genutils.AddSortedStdout(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))
 	}
-	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
+	rcvrId := receiverId(gf, "", fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       fd.Name.Name,
