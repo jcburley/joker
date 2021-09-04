@@ -691,8 +691,8 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 
 		p := v.Type()
 		if !ptr { // Adding to *T's list of methods
-			f(p)
-			if _, yes := p.(*types.Pointer); !yes {
+			if _, yes := p.(*types.Pointer); yes {
+				f(p)
 				//				f(types.NewPointer(p))
 			}
 		} else {
