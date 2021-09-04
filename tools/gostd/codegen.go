@@ -567,10 +567,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 }
 
 func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
-	if fi, found := QualifiedFunctions[fullName]; found {
-		if fi != nil {
-			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): Instead of replacing %s (at %s) at %s, will skip generating this function.\n", fullName, godb.WhereAt(fi.Pos), godb.WhereAt(pos))
-		}
+	if _, found := QualifiedFunctions[fullName]; found {
 		QualifiedFunctions[fullName] = nil
 		return
 	}
@@ -637,7 +634,11 @@ func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
 	}
 }
 
-func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
+// ptr is true when processing type *T (thus adding to *T's list of functions), false otherwise.
+func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
+	if ptr {
+		return // TODO: Enable this
+	}
 	d, ok := astutils.TypeCheckerInfo.Types[ty]
 	if !ok {
 		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Cannot find def for %T %+v\n", ty, ty)
@@ -689,11 +690,12 @@ func appendReceivers(ti TypeInfo, ty *StructType, comment string) {
 		}
 
 		p := v.Type()
-		f(p)
-		if _, yes := p.(*types.Pointer); yes {
-			//			f(p)
+		if !ptr { // Adding to *T's list of methods
+			f(p)
+			if _, yes := p.(*types.Pointer); !yes {
+				//				f(types.NewPointer(p))
+			}
 		} else {
-			//			f(types.NewPointer(p))
 		}
 	}
 }
@@ -716,11 +718,11 @@ func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 			case *InterfaceType:
 				appendMethods(ti, ty, "declared interface")
 			case *StructType:
-				appendReceivers(ti, ty, "embedded type having defined function")
+				appendReceivers(ti, ty, false, "embedded type having defined function")
 			case *StarExpr:
 				switch ty := ty.X.(type) {
 				case *StructType:
-					appendReceivers(ti, ty, "embedded pointer type having defined function")
+					appendReceivers(ti, ty, true, "embedded pointer type having defined function")
 				}
 			}
 		}
