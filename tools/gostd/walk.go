@@ -359,7 +359,22 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 	}
 	rcvrId := receiverId(gf, gf.Package.BaseName, fl)
 	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
-	QualifiedFunctions[fullName] = &FuncInfo{fd.Name.Name, rcvrId, fnName, docName, "", fd, nil, fd.Type, fd.Doc, gf, &imports.Imports{}, &imports.Imports{}, fd.Pos(), "defined function"}
+	QualifiedFunctions[fullName] = &FuncInfo{
+		BaseName:       fd.Name.Name,
+		ReceiverId:     rcvrId,
+		Name:           fnName,
+		DocName:        docName,
+		EmbedName:      "",
+		Fd:             fd,
+		ToM:            nil,
+		Ft:             fd.Type,
+		Doc:            fd.Doc,
+		SourceFile:     gf,
+		ImportsNative:  &imports.Imports{},
+		ImportsAutoGen: &imports.Imports{},
+		Pos:            fd.Pos(),
+		Comment:        "defined function",
+	}
 }
 
 func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
