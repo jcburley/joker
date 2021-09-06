@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
-	. "go/ast"
+	"go/types"
 	"strings"
 )
 
@@ -12,8 +11,8 @@ func maybeNil(expr, captureName string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
 }
 
-func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
-	ti := TypeInfoForExpr(e)
+func genGoPostExpr(fn *FuncInfo, indent, captureName string, ty types.Type, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
+	ti := TypeInfoForType(ty)
 	if ti.AsClojureObject() == "" {
 		out = fmt.Sprintf("MakeGoObjectIfNeeded(%s)", captureName)
 		cl = "GoObject"
@@ -26,8 +25,8 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 		out = maybeNil(captureName, out)
 	}
 	cl = ti.ClojureName()
-	clDoc = ti.ClojureNameDoc(e)
-	gol = ti.GoNameDoc(e)
+	clDoc = ti.ClojureNameDocForType(ty)
+	gol = ti.GoNameDocForType(ty)
 	conversion = ti.PromoteType()
 
 	return
@@ -35,12 +34,12 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, e Expr, onlyIf stri
 
 const resultName = "_res"
 
-func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostItem(fn *FuncInfo, indent, captureName string, v *types.Var, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string) {
 	captureVar = captureName
 	if captureName == "" || captureName == "_" {
 		captureVar = genutils.GenSym(resultName)
 	}
-	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, f.Type, onlyIf)
+	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, v.Type(), onlyIf)
 	if captureName != "" && captureName != resultName {
 		gol = genutils.ParamNameAsGo(captureName) + " " + gol
 	}
@@ -48,7 +47,7 @@ func genGoPostItem(fn *FuncInfo, indent, captureName string, f *Field, onlyIf st
 }
 
 // Caller generates "outGOCALL;goc" while saving cl and gol for type info (they go into .joke as metadata and docstrings)
-func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostList(fn *FuncInfo, indent string, tuple *types.Tuple) (cl, clDoc, gol, goc, out, conversion string) {
 	captureVars := []string{}
 	clType := []string{}
 	clTypeDoc := []string{}
@@ -56,19 +55,17 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 	goCode := []string{}
 
 	result := resultName
-	fields := astutils.FlattenFieldList(fl)
-	useful := len(fields) > 0
-	multipleCaptures := len(fields) > 1
-	for _, field := range fields {
-		n := ""
-		if field.Name != nil {
-			n = field.Name.Name
-		}
+	args := tuple.Len()
+	useful := args > 0
+	multipleCaptures := args > 1
+	for argNum := 0; argNum < args; argNum++ {
+		field := tuple.At(argNum)
+		n := field.Name()
 		captureName := result
 		if multipleCaptures {
 			captureName = n
 		}
-		captureVar, clNew, clDocNew, golNew, gocNew, outNew, conversionNew := genGoPostItem(fn, indent, captureName, field.Field, "")
+		captureVar, clNew, clDocNew, golNew, gocNew, outNew, conversionNew := genGoPostItem(fn, indent, captureName, field, "")
 		if multipleCaptures {
 			gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
 		} else {
@@ -127,11 +124,11 @@ func genGoPostList(fn *FuncInfo, indent string, fl *FieldList) (cl, clDoc, gol, 
 	return
 }
 
-func genGoPost(fn *FuncInfo, indent string, t *FuncType) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, conversion string) {
-	fl := t.Results
-	if fl == nil || fl.List == nil {
+func genGoPost(fn *FuncInfo, indent string, t *types.Signature) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, conversion string) {
+	res := t.Results()
+	if res == nil || res.Len() == 0 {
 		return
 	}
-	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign, conversion = genGoPostList(fn, indent, fl)
+	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign, conversion = genGoPostList(fn, indent, res)
 	return
 }

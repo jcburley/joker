@@ -10,6 +10,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	"go/doc"
 	"go/token"
+	"go/types"
 	"io/ioutil"
 	"os"
 	"path"
@@ -390,6 +391,23 @@ func OutputPackageCode(clojureLibDir string, generateEmpty bool) {
 		func(pkgDirUnix string, v CodeInfo) {
 			outputGoCode(pkgDirUnix, v, clojureLibDir, generateEmpty)
 		})
+}
+
+func paramsAsSymbolVec(t *types.Tuple) string {
+	genutils.GenSymReset()
+	args := t.Len()
+	var syms []string
+	for argNum := 0; argNum < args; argNum++ {
+		field := t.At(argNum)
+		var p string
+		if field.Name() == "" {
+			p = genutils.GenSym("arg")
+		} else {
+			p = field.Name()
+		}
+		syms = append(syms, "MakeSymbol("+strconv.Quote(p)+")")
+	}
+	return strings.Join(syms, ", ")
 }
 
 func init() {

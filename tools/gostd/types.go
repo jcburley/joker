@@ -10,6 +10,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"sort"
 )
 
@@ -24,6 +25,7 @@ type TypeInfo interface {
 	ClojureName() string
 	ClojureEffectiveName() string
 	ClojureNameDoc(e Expr) string
+	ClojureNameDocForType(types.Type) string
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
@@ -32,6 +34,7 @@ type TypeInfo interface {
 	GoName() string
 	GoEffectiveName() string // Substitutes what actually works in generated Go code (interface{} instead of unsafe.Arbitrary)
 	GoNameDoc(e Expr) string
+	GoNameDocForType(types.Type) string
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
@@ -223,6 +226,10 @@ func TypeInfoForGoName(goName string) TypeInfo {
 	return ti
 }
 
+func TypeInfoForType(ty types.Type) TypeInfo {
+	return TypeInfoForGoName(ty.String())
+}
+
 func StringForExpr(e Expr) string {
 	if e == nil {
 		return "-"
@@ -323,6 +330,13 @@ func (ti typeInfo) ClojureNameDoc(e Expr) string {
 	return ti.jti.NameDoc(e)
 }
 
+func (ti typeInfo) ClojureNameDocForType(ty types.Type) string {
+	if ti.gti.IsArbitraryType {
+		return "GoObject"
+	}
+	return ti.jti.NameDocForType(ty)
+}
+
 func (ti typeInfo) ClojurePattern() string {
 	return ti.jti.Pattern
 }
@@ -365,6 +379,10 @@ func (ti typeInfo) GoEffectiveName() string {
 
 func (ti typeInfo) GoNameDoc(e Expr) string {
 	return ti.gti.NameDoc(e)
+}
+
+func (ti typeInfo) GoNameDocForType(ty types.Type) string {
+	return ti.gti.NameDocForType(ty)
 }
 
 func (ti typeInfo) GoPackage() string {

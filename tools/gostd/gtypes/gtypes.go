@@ -8,6 +8,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path"
 	"strings"
@@ -584,6 +585,13 @@ func (ti *Info) AbsoluteName() string {
 
 func (ti *Info) NameDoc(e Expr) string {
 	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
+		return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
+	}
+	return fmt.Sprintf(ti.DocPattern, ti.LocalName)
+}
+
+func (ti *Info) NameDocForType(ty types.Type) string {
+	if ty != nil && godb.GoPackageForType(ty) != ti.Package {
 		return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
 	}
 	return fmt.Sprintf(ti.DocPattern, ti.LocalName)

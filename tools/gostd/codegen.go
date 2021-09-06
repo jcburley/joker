@@ -97,7 +97,7 @@ func genGoCall(pkgBaseName, goFname, goParams string) string {
 	return "{{myGoImport}}." + goFname + "(" + goParams + ")\n"
 }
 
-func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFname string) (fc funcCode) {
+func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *types.Signature, goFname string) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams = genGoPreFunc(fn)
@@ -207,7 +207,7 @@ func GenReceiver(fn *FuncInfo) {
 			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
 				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params, FnDoc: fn.Doc}
+			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params(), FnDoc: fn.Doc}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
@@ -218,15 +218,15 @@ func GenReceiver(fn *FuncInfo) {
 				if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
 					GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Doc}
+				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Ft.Params(), FnDoc: fn.Doc}
 			}
 		}
 	}
 
 	if goFn != "" {
-		var params *FieldList
+		var params *types.Tuple
 		if fn.Fd != nil {
-			params = fn.Fd.Type.Params
+			params = fn.Ft.Params()
 		}
 		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
 		//		fmt.Printf("codegen.go/GenReceiver: Added %s to %s\n", goFname, pkgDirUnix)
@@ -566,7 +566,14 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+	sig := (*types.Signature)(nil)
+	switch x := xft.(type) {
+	case *types.Signature:
+		sig = x
+	default:
+		panic(fmt.Sprintf("unexpected type %T", xft))
+	}
 	if f, found := QualifiedFunctions[fullName]; found {
 		if f.EmbedName != "" && f.EmbedName != name {
 			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction: not replacing %s with %s\n", f.EmbedName, name)
@@ -586,7 +593,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		EmbedName:      embedName,
 		Fd:             nil,
 		ToM:            ti,
-		Ft:             ft,
+		Ft:             sig,
 		Doc:            doc,
 		SourceFile:     ti.GoFile(),
 		ImportsNative:  &imports.Imports{},
@@ -596,47 +603,44 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 	}
 }
 
-func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
+func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
+	d, ok := astutils.TypeCheckerInfo.Types[ity]
+	if !ok {
+		fmt.Fprintf(os.Stderr, "codegen.go/appendMethods(): Cannot find def for %T %+v\n", ity, ity)
+		return
+	}
+	iface, yes := d.Type.(*types.Interface)
+	if !yes {
+		return
+	}
+
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
 	receiverId := "{{myGoImport}}." + typeBaseName
-	for _, m := range iface.Methods.List {
-		if m.Names != nil {
-			if len(m.Names) != 1 {
-				Print(godb.Fset, iface)
-				panic("Names has more than one!")
-			}
-			if m.Type == nil {
-				Print(godb.Fset, iface)
-				panic("Why no Type field??")
-			}
-			for _, n := range m.Names {
-				name := n.Name
-				doc := m.Doc
-				if doc == nil {
-					doc = m.Comment
-				}
-				addQualifiedFunction(
-					ti,
-					typeBaseName,
-					receiverId,
-					name,
-					"", /* embedName*/
-					typeFullName+"_"+name,
-					typeBaseName+"_"+name,
-					comment,
-					doc,
-					m.Type.(*FuncType),
-					n.NamePos)
-			}
-			continue
-		}
-		ts := godb.Resolve(m.Type)
-		if ts == nil {
-			return
-		}
-		appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+
+	num := iface.NumMethods()
+	for i := 0; i < num; i++ {
+		m := iface.Method(i)
+		name := m.Name()
+		doc := &CommentGroup{}
+		addQualifiedFunction(
+			ti,
+			typeBaseName,
+			receiverId,
+			name,
+			"", /* embedName*/
+			typeFullName+"_"+name,
+			typeBaseName+"_"+name,
+			comment,
+			doc,
+			m.Type(),
+			m.Pos())
 	}
+	// num := iface.NumEmbeddeds()
+	// for i := 0; i < num; i++ {
+	// 	m := iface.EmbeddedType(i)
+	// 	appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+	// }
 }
 
 // ptr is true when processing type *T (thus adding to *T's list of functions), false otherwise.

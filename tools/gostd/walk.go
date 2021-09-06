@@ -69,7 +69,7 @@ type FnCodeInfo struct {
 	SourceFile *godb.GoFile
 	FnCode     string
 	FnDecl     *FuncDecl // Empty for standalones and methods; used to get docstring for receivers
-	Params     *FieldList
+	Params     *types.Tuple
 	FnDoc      *CommentGroup
 }
 
@@ -131,7 +131,7 @@ type FuncInfo struct {
 	EmbedName      string    // "" for function definitions, else basename of embedded type
 	Fd             *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
 	ToM            TypeInfo  // Method operates on this type (nil for standalones and receivers)
-	Ft             *FuncType
+	Ft             *types.Signature
 	Doc            *CommentGroup
 	SourceFile     *godb.GoFile
 	ImportsNative  *imports.Imports // Add these to package imports if function is generated (no ABENDs)
@@ -335,7 +335,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 	fnName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + fnName
 	switch fullName {
-	case "unsafe._Offsetof", "unsafe._Add", "unsafe._Slice":
+	case "unsafe._Offsetof", "unsafe._Add", "unsafe._Slice", "unsafe._Sizeof", "unsafe._Alignof":
 		return // unsafe.Offsetof et al are syntactic operations in Go.
 	}
 
@@ -366,6 +366,15 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 	// if Contains(fullName, "DotNode") {
 	// 	fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: %s\n", fullName)
 	// }
+	var sig *types.Signature
+	if ty, ok := astutils.TypeCheckerInfo.Defs[fd.Name]; !ok {
+		fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: no info on %s.%s\n", pkgDirUnix, fd.Name)
+	} else {
+		sig = ty.Type().(*types.Signature)
+		if sig == nil {
+			fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: no signature for %s.%s\n", pkgDirUnix, fd.Name)
+		}
+	}
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       fd.Name.Name,
 		ReceiverId:     rcvrId,
@@ -374,7 +383,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 		EmbedName:      "",
 		Fd:             fd,
 		ToM:            nil,
-		Ft:             fd.Type,
+		Ft:             sig,
 		Doc:            fd.Doc,
 		SourceFile:     gf,
 		ImportsNative:  &imports.Imports{},

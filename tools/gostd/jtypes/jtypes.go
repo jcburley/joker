@@ -6,6 +6,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/genutils"
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
+	"go/types"
 )
 
 // Info on Clojure types, including map of Clojure type names to said type
@@ -204,6 +205,19 @@ func (ti *Info) NameDoc(e Expr) string {
 		return ti.FullNameDoc
 	}
 	if e != nil && ClojureNamespaceForExpr(e) != ti.Namespace {
+		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), ti.FullName, ti.Namespace, ClojureNamespaceForExpr(e))
+		return ti.FullNameDoc
+	}
+	res := fmt.Sprintf(ti.Pattern, ti.BaseNameDoc)
+	//	fmt.Printf("jtypes.NameDoc(%+v at %s) => just %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), res, ti.Namespace, ClojureNamespaceForExpr(e))
+	return res
+}
+
+func (ti *Info) NameDocForType(ty types.Type) string {
+	if ti.Pattern == "" || ti.Namespace == "" {
+		return ti.FullNameDoc
+	}
+	if ty != nil && ClojureNamespaceForType(ty) != ti.Namespace {
 		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), ti.FullName, ti.Namespace, ClojureNamespaceForExpr(e))
 		return ti.FullNameDoc
 	}

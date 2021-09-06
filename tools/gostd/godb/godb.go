@@ -7,6 +7,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path"
 	"path/filepath"
@@ -118,6 +119,14 @@ func GoPackageForExpr(e Expr) string {
 	return GoPackageForPos(e.Pos())
 }
 
+func GoPackageForType(ty types.Type) string {
+	return "Huh!!"
+	// if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
+	// 	return "" // A builtin, so not package-qualified.
+	// }
+	// return GoPackageForPos(e.Pos())
+}
+
 func GoPackageForTypeSpec(ts *TypeSpec) string {
 	return GoPackageForPos(ts.Pos())
 }
@@ -136,6 +145,10 @@ func ClojureNamespaceForExpr(e Expr) string {
 		panic(fmt.Sprintf("no Clojure namespace for builtin `%s'", id.Name))
 	}
 	return ClojureNamespaceForPos(Fset.Position(e.Pos()))
+}
+
+func ClojureNamespaceForType(ty types.Type) string {
+	return "HUH??" // ClojureNamespaceForPos(ty.Pos())
 }
 
 func ClojureNamespaceForDirname(d string) string {
