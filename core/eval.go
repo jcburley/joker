@@ -3,6 +3,7 @@ package core
 import (
 	"bytes"
 	"fmt"
+	"go/ast"
 	"reflect"
 	"strconv"
 	"strings"
@@ -457,7 +458,14 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 		panic(RT.NewError(fmt.Sprintf("No such member (field) %s/%s", o.TypeToString(false), member)))
 	}
 	if !expr.isSetNow {
-		return MakeGoObjectIfNeeded(field.Interface())
+		if field.CanInterface() {
+			return MakeGoObjectIfNeeded(field.Interface())
+		}
+		why := ""
+		if !ast.IsExported(member) {
+			why = "unexported "
+		}
+		panic(RT.NewError(fmt.Sprintf("Cannot obtain value of %sfield %s/%s", why, o.TypeToString(false), member)))
 	}
 
 	if len(expr.args) != 1 {
