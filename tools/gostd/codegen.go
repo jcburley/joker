@@ -701,6 +701,15 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					continue
 				}
 
+				var sig *types.Signature
+				if ty, ok := astutils.TypeCheckerInfo.Defs[fd.Name]; !ok {
+					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no info on %s.%s\n", typeFullName, fd.Name)
+				} else {
+					sig = ty.Type().(*types.Signature)
+					if sig == nil {
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no signature for %s.%s\n", typeFullName, fd.Name)
+					}
+				}
 				doc := fd.Doc
 				addQualifiedFunction(
 					ti,
@@ -712,7 +721,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					typeBaseName+"_"+name,
 					comment,
 					doc,
-					fd.Type,
+					sig,
 					fd.Name.NamePos)
 			}
 		}
