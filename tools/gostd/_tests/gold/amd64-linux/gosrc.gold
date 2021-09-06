@@ -2536,34 +2536,31 @@ Processing unicode/utf16:
 Processing unicode/utf8:
 Processing unicode:
 Processing unsafe:
-codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing *image/color.NYCbCrA_RGBA (embed=YCbCr)
-codegen.go/appendReceivers: inhibiting overridden method (*text/template/parse.Tree)Parse() while processing *text/template.Template_Parse (embed=Tree)
-codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing *text/template/parse.DotNode_Type (embed=NodeType)
-codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing *text/template/parse.NilNode_Type (embed=NodeType)
-codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing image/color.NYCbCrA_RGBA (embed=YCbCr)
-codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.DotNode_Type (embed=NodeType)
-codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.NilNode_Type (embed=NodeType)
-panic: cannot find `func(rune) bool' in gtypes
+panic: cannot find type info for go.std.unsafe/refToArbitraryType
 
 goroutine 1 [running]:
-main.TypeInfoForGoName({0xc00e3eac30, 0xf})
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/types.go:208 +0x2c5
-main.TypeInfoForType({0x743cc8, 0xc0038e46c0})
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/types.go:230 +0x2c
-main.genTypePreFunc(0xc010d690d8, {0x743cc8, 0xc0038e46c0}, {0xc00e3eac20, 0x203003}, 0x0)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/pre.go:11 +0x66
-main.genGoPreFunc(0xc006a78f20)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/pre.go:67 +0x2c5
-main.genFuncCode(0xc006a78f20, {0x750328, 0x30}, {0x0, 0xc0013df770}, 0x10000c010d693e8, {0x7fe9df860c30, 0x30})
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:103 +0x5a
-main.GenStandalone(0xc006a78f20)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:243 +0x15e
-main.main.func4({0x6a1100, 0xc0000a1740}, 0xc006a72858)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:390 +0x34
-main.SortedFuncInfoMap(0xc00811c000, 0x6f80e0)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:197 +0x1cb
+github.com/candid82/joker/tools/gostd/jtypes.namingForExpr({0x746c70, 0xc0022a4d38})
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/jtypes/jtypes.go:156 +0x859
+github.com/candid82/joker/tools/gostd/jtypes.InfoForExpr({0x746c70, 0xc0022a4d38})
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/jtypes/jtypes.go:198 +0x8f
+main.TypeInfoForExpr({0x746c70, 0xc0022a4d38})
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/types.go:173 +0x99
+main.RegisterAllSubtypes({0x746c70, 0xc0022a4d38})
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/types.go:164 +0x230
+main.processTypesForTypeDecls(0x0, {0xc007f10800, 0xc010e63318}, {0xc0048c86a0, 0x1, 0x1}, 0x1)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:406 +0x71
+main.declTypesForTypes(0x0, {0xc008b4e852, 0x2}, 0xc0047b53c0, 0xc00159aba0)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:719 +0x30
+main.processDecls(0x2a000000006a2c80, {0xc008b4e852, 0x6}, 0xc003c84f00, {0x6fa248, 0x6fa258, 0x6fa268, 0x6fa268})
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:752 +0x251
+main.phaseTypeRefs(0x6a2aa0, {0xc008b4e852, 0xc00382d602}, 0x10)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:782 +0x36
+main.processPackage({0xc00039d320, 0x11}, {0xc008b4e852, 0x6}, {0xc00001c8b9, 0x7}, 0xc0015ed080, 0x6fa2b0)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:807 +0xae
+main.WalkAllDirs()
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:997 +0x571
 main.main()
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:383 +0x2e58
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:352 +0x2ca5
 -------- BEGIN _tests/gold/amd64-linux/joker/core/data/g_customlibs.joke:
 ;; Placeholder for custom libraries. Overwritten by gostd.
 

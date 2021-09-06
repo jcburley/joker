@@ -41,6 +41,7 @@ type TypeInfo interface {
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
 	GoType() Expr                // The actual (Go) type (if any)
 	GoTypeInfo() *gtypes.Info
+	GoTypeName() string
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
 	UnderlyingType() Expr // nil if not a declared type
@@ -71,6 +72,7 @@ type TypesMap map[string]TypeInfo
 var typesByExpr = map[Expr]TypeInfo{}
 var typesByGoName = TypesMap{}
 var typesByClojureName = TypesMap{}
+var typesByGoTypeName = TypesMap{}
 
 const ConcreteType = gtypes.Concrete
 
@@ -105,6 +107,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		typesByGoName[ti.GoName()] = ti
 		typesByClojureName[ti.ClojureName()] = ti
+		typesByGoTypeName[ti.GoTypeName()] = ti
 
 		if IsExported(name) {
 			NumTypes++
@@ -174,11 +177,17 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 			//			typesByClojureName[jti.FullName] = ti
 		}
+		if _, ok := typesByGoTypeName[gti.TypeName]; !ok {
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByGoTypeName[%s] for %s at %s\n", gti.FullName, gti.TypeName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+		}
 		return ti
 	}
 	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
-		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
+		if inf := jtypes.InfoForGoTypeName(jti.FullName); inf == nil {
 			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+		}
+		if _, ok := typesByGoTypeName[gti.TypeName]; ok {
+			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoTypeName[%s] but not typesByGoName[%s] for %s at %s\n", gti.TypeName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 		}
 	}
 
@@ -194,6 +203,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 	typesByExpr[e] = ti
 	typesByGoName[gti.FullName] = ti
 	typesByClojureName[jti.FullName] = ti
+	typesByGoTypeName[gti.TypeName] = ti
 
 	return ti
 }
@@ -208,7 +218,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
 	}
 
-	jti := jtypes.InfoForGoName(goName)
+	jti := jtypes.InfoForGoTypeName(goName)
 	if jti == nil {
 		panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
 	}
@@ -222,12 +232,39 @@ func TypeInfoForGoName(goName string) TypeInfo {
 
 	typesByGoName[gti.FullName] = ti
 	typesByClojureName[jti.FullName] = ti
+	typesByGoTypeName[gti.TypeName] = ti
 
 	return ti
 }
 
 func TypeInfoForType(ty types.Type) TypeInfo {
-	return TypeInfoForGoName(ty.String())
+	typeName := ty.String()
+	if ti, found := typesByGoTypeName[typeName]; found {
+		return ti
+	}
+
+	gti := gtypes.InfoForTypeName(typeName)
+	if gti == nil {
+		panic(fmt.Sprintf("cannot find `%s' in gtypes", typeName))
+	}
+
+	jti := jtypes.InfoForGoTypeName(typeName)
+	if jti == nil {
+		panic(fmt.Sprintf("cannot find `%s' in jtypes", typeName))
+	}
+
+	ti := &typeInfo{
+		gti:             gti,
+		jti:             jti,
+		requiredImports: &imports.Imports{},
+		who:             "TypeInfoForType",
+	}
+
+	typesByGoName[gti.FullName] = ti
+	typesByClojureName[jti.FullName] = ti
+	typesByGoTypeName[gti.TypeName] = ti
+
+	return ti
 }
 
 func StringForExpr(e Expr) string {
@@ -410,6 +447,10 @@ func (ti typeInfo) GoType() Expr {
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {
 	return ti.gti
+}
+
+func (ti typeInfo) GoTypeName() string {
+	return ti.gti.TypeName
 }
 
 func (ti typeInfo) TypeSpec() *TypeSpec {

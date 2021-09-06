@@ -21,6 +21,7 @@ var NumExprHits uint
 type Info struct {
 	Expr              Expr      // [key] The canonical referencing expression (if any)
 	FullName          string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	TypeName          string    // The types.Type.String() corresponding to this type
 	who               string    // who made me
 	Type              Expr      // The actual type (if any)
 	TypeSpec          *TypeSpec // The definition of the named type (if any)
@@ -48,6 +49,7 @@ type Info struct {
 // Maps type-defining Expr or string to exactly one struct describing that type
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
+var typesByTypeName = map[string]*Info{}
 
 func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
@@ -57,6 +59,7 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
+		TypeName:      fullName,
 		Pattern:       "%s",
 		Package:       "",
 		LocalName:     fullName,
@@ -70,6 +73,7 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	}
 
 	typesByFullName[fullName] = info
+	typesByTypeName[fullName] = info
 
 	return info
 }
@@ -143,13 +147,25 @@ func computeFullName(pattern, pkg, localName string) string {
 
 func insert(ti *Info) {
 	fullName := ti.FullName
+	typeName := ti.TypeName
 
-	if existingTi, ok := typesByFullName[fullName]; ok {
-		fmt.Fprintf(os.Stderr, "gtypes.insert(): %s already seen/defined type %s at %s (%p) and again at %s (%p)\n", ti.who, fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
-		return
+	if fullName != typeName && !strings.Contains(fullName, "ABEND") {
+		//		fmt.Fprintf(os.Stderr, "gtypes.go/insert: %s vs %s\n", fullName, typeName)
+		return // Don't insert an alias type.
 	}
 
+	if existingTi, ok := typesByFullName[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "gtypes.insert(fullName): %s already seen/defined type %s (aka %s) at %s (%p) and again (aka %s) at %s (%p)\n", ti.who, fullName, existingTi.TypeName, godb.WhereAt(existingTi.DefPos), existingTi, typeName, godb.WhereAt(ti.DefPos), ti)
+		return
+	}
 	typesByFullName[fullName] = ti
+
+	if _, ok := typesByTypeName[typeName]; !ok {
+		typesByTypeName[typeName] = ti
+	} else {
+		// Alias type; no need to re-enter this.
+		//		fmt.Fprintf(os.Stderr, "gtypes.insert(typeName): %s already seen/defined type %s (aka %s) at %s (%p) and again (aka %s) at %s (%p)\n", ti.who, typeName, existingTi.FullName, godb.WhereAt(existingTi.DefPos), existingTi, fullName, godb.WhereAt(ti.DefPos), ti)
+	}
 
 	if fullName == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
 		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
@@ -194,6 +210,15 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	fullName := computeFullName("%s", pkg, localName)
 	ti := typesByFullName[fullName]
 
+	var typeName string
+	tav, found := astutils.TypeCheckerInfo.Defs[ts.Name]
+	if found {
+		typeName = tav.Type().String()
+	} else {
+		// panic(fmt.Sprintf("cannot find type info for %s", fullName))
+		typeName = fullName
+	}
+
 	if gf == nil {
 		gf = godb.GoFileForPos(ts.Pos())
 	}
@@ -225,6 +250,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		ti = &Info{
 			Expr:              ts.Name,
 			FullName:          fullName,
+			TypeName:          typeName,
 			who:               "TypeDefine",
 			Type:              ts.Type,
 			TypeSpec:          ts,
@@ -257,6 +283,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			tiPtrTo = &Info{
 				Expr:              &StarExpr{X: ti.Expr},
 				FullName:          fullName,
+				TypeName:          "*" + typeName,
 				who:               "*TypeDefine*",
 				Type:              &StarExpr{X: ti.Type},
 				IsExported:        ti.IsExported,
@@ -288,6 +315,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		tiArrayOf = &Info{
 			Expr:              &ArrayType{Elt: ti.Expr},
 			FullName:          fullName,
+			TypeName:          "[]" + typeName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
 			IsExported:        ti.IsExported,
@@ -315,6 +343,13 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 
 func InfoForName(fullName string) *Info {
 	if ti, ok := typesByFullName[fullName]; ok {
+		return ti
+	}
+	return nil
+}
+
+func InfoForTypeName(typeName string) *Info {
+	if ti, ok := typesByTypeName[typeName]; ok {
 		return ti
 	}
 	return nil
@@ -438,6 +473,20 @@ func InfoForExpr(e Expr) *Info {
 		key := InfoForExpr(v.Key)
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
+		if key.Package == "" {
+			if value.Package == "" {
+			} else {
+				pkgName = value.Package
+				fullName = "map[" + key.RelativeName(e.Pos()) + "]" + fmt.Sprintf(value.Pattern, value.Package+"."+value.LocalName)
+			}
+		} else {
+			if value.Package == "" {
+				pkgName = key.Package
+				fullName = "map[" + fmt.Sprintf(key.Pattern, key.Package+"."+key.LocalName) + "]" + value.RelativeName(e.Pos())
+			} else {
+				fullName = fmt.Sprintf("ABEND444(both packages %s and %s unsupported for %s)", key.Package, value.Package, localName)
+			}
+		}
 		isExported = key.IsExported && value.IsExported
 		isBuiltin = key.IsBuiltin && value.IsBuiltin
 	case *ChanType:
@@ -505,6 +554,15 @@ func InfoForExpr(e Expr) *Info {
 		return ti
 	}
 
+	var typeName string
+	tav, found := astutils.TypeCheckerInfo.Types[e]
+	if found {
+		typeName = tav.Type.String()
+	} else {
+		typeName = fullName
+		// panic(fmt.Sprintf("cannot find type info for %s", fullName))
+	}
+
 	isUnsupported := false
 
 	if strings.Contains(fullName, "ABEND") {
@@ -526,6 +584,7 @@ func InfoForExpr(e Expr) *Info {
 	ti := &Info{
 		Expr:              e,
 		FullName:          fullName,
+		TypeName:          typeName,
 		who:               fmt.Sprintf("[InfoForExpr %T]", e),
 		UnderlyingType:    innerInfo,
 		Pattern:           pattern,

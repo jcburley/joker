@@ -16,6 +16,7 @@ import (
 type Info struct {
 	Expr                 Expr   // [key] The canonical referencing expression (if any)
 	FullName             string // [key] Full name of type as a Clojure expression
+	GoTypeName           string // types.Type.String()
 	FullNameDoc          string // Full name of type as a Clojure expression (for documentation); just e.g. "Int" for builtin global types
 	Who                  string // who made me
 	Pattern              string // E.g. "%s", "refTo%s" (for reference types), "arrayOf%s" (for array types)
@@ -37,7 +38,29 @@ type Info struct {
 // "<ns>/" prefixes, depending on globality) to exactly one struct
 // describing that type.
 var typesByExpr = map[Expr]*Info{}
-var typesByFullname = map[string]*Info{}
+var typesByFullName = map[string]*Info{}
+var typesByGoTypeName = map[string]*Info{
+	"nil":        Nil,
+	"error":      Error,
+	"bool":       Boolean,
+	"byte":       Byte,
+	"rune":       Rune,
+	"string":     String,
+	"int":        Int,
+	"int8":       Int8,
+	"int16":      Int16,
+	"int32":      Int32,
+	"int64":      Int64,
+	"uint":       UInt,
+	"uint8":      UInt8,
+	"uint16":     UInt16,
+	"uint32":     UInt32,
+	"uint64":     UInt64,
+	"uintptr":    UIntPtr,
+	"float32":    Float32,
+	"float64":    Float64,
+	"complex128": Complex128,
+}
 
 func patternForExpr(e Expr) (pattern string, ue Expr) {
 	switch v := e.(type) {
@@ -71,7 +94,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
+func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goTypeName string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 
@@ -82,7 +105,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 			baseName = v.Name
 			baseNameDoc = baseName
 		} else {
-			uInfo, found := goTypeMap[v.Name]
+			uInfo, found := typesByGoTypeName[v.Name]
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
 			}
@@ -126,6 +149,13 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc st
 
 	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
 
+	tav, found := astutils.TypeCheckerInfo.Types[e]
+	if found {
+		goTypeName = tav.Type.String()
+	} else {
+		panic(fmt.Sprintf("cannot find type info for %s", name))
+	}
+
 	return
 }
 
@@ -156,8 +186,8 @@ func Define(ts *TypeSpec, varExpr Expr) *Info {
 
 }
 
-func InfoForGoName(fullName string) *Info {
-	return goTypeMap[fullName]
+func InfoForGoTypeName(typeName string) *Info {
+	return typesByGoTypeName[typeName]
 }
 
 func InfoForExpr(e Expr) *Info {
@@ -165,7 +195,7 @@ func InfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goTypeName, info := namingForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
@@ -173,7 +203,7 @@ func InfoForExpr(e Expr) *Info {
 		return info
 	}
 
-	if inf, found := typesByFullname[fullName]; found {
+	if inf, found := typesByFullName[fullName]; found {
 		typesByExpr[e] = inf
 		return inf
 	}
@@ -183,6 +213,7 @@ func InfoForExpr(e Expr) *Info {
 	info = &Info{
 		Expr:               e,
 		FullName:           fullName,
+		GoTypeName:         goTypeName,
 		FullNameDoc:        fullNameDoc,
 		Who:                fmt.Sprintf("TypeForExpr %T", e),
 		Pattern:            pattern,
@@ -195,7 +226,8 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	typesByExpr[e] = info
-	typesByFullname[fullName] = info
+	typesByFullName[fullName] = info
+	typesByGoTypeName[goTypeName] = info
 
 	return info
 }
@@ -227,8 +259,11 @@ func (ti *Info) NameDocForType(ty types.Type) string {
 }
 
 func (ti *Info) register() {
-	if _, found := typesByFullname[ti.FullName]; !found {
-		typesByFullname[ti.FullName] = ti
+	if _, found := typesByFullName[ti.FullName]; !found {
+		typesByFullName[ti.FullName] = ti
+	}
+	if _, found := typesByGoTypeName[ti.GoTypeName]; !found {
+		typesByGoTypeName[ti.GoTypeName] = ti
 	}
 }
 
@@ -516,29 +551,6 @@ var Complex128 = &Info{
 	ConvertFromMap:       "", // TODO: support this in Clojure, even if via just [real imag]
 	ConvertFromClojure:   "ObjectAsComplex128(%s, %s)",
 	AsClojureObject:      "Complex(%s%s)",
-}
-
-var goTypeMap = map[string]*Info{
-	"nil":        Nil,
-	"error":      Error,
-	"bool":       Boolean,
-	"byte":       Byte,
-	"rune":       Rune,
-	"string":     String,
-	"int":        Int,
-	"int8":       Int8,
-	"int16":      Int16,
-	"int32":      Int32,
-	"int64":      Int64,
-	"uint":       UInt,
-	"uint8":      UInt8,
-	"uint16":     UInt16,
-	"uint32":     UInt32,
-	"uint64":     UInt64,
-	"uintptr":    UIntPtr,
-	"float32":    Float32,
-	"float64":    Float64,
-	"complex128": Complex128,
 }
 
 var ConversionsFn func(e Expr) (fromClojure, fromMap string)
