@@ -243,7 +243,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 func processTypeRef(t Expr) {
 	defer func() {
 		if x := recover(); x != nil {
-			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(t.Pos()), t)
+			panic(fmt.Sprintf("(Panic at %s processing %s: %s)\n", godb.WhereAt(t.Pos()), astutils.ExprToString(t), x))
 		}
 	}()
 
@@ -394,15 +394,31 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 }
 
 func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+	var ts *TypeSpec
+
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("(Panic at %s processing %+v: %s)", godb.WhereAt(ts.Pos()), ts, x))
+		}
+	}()
+
 	for _, spec := range tss {
-		ts := spec.(*TypeSpec)
+		ts = spec.(*TypeSpec)
 		RegisterTypeDecl(ts, gf, pkg, parentDoc)
 	}
 }
 
 func processTypesForTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+	var ts *TypeSpec
+
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("(Panic at %s processing %+v: %s)", godb.WhereAt(ts.Pos()), ts, x))
+		}
+	}()
+
 	for _, spec := range tss {
-		ts := spec.(*TypeSpec)
+		ts = spec.(*TypeSpec)
 		RegisterAllSubtypes(ts.Type)
 	}
 }
@@ -461,7 +477,7 @@ func genCodeForConstant(constObj types.Object, origVal Expr) (cl, gl string) {
 	typ, val := types.Default(c.Type()), c.Val()
 
 	typeName := typ.String()
-	ti := TypeInfoForGoName(typeName)
+	ti := TypeInfoForType(typ)
 	var valPat string
 
 	if typ.Underlying() != nil && typ.Underlying() != typ {
@@ -994,7 +1010,9 @@ func WalkAllDirs() (error, paths.NativePath) {
 
 	for _, phase := range phases {
 		for _, wp := range godb.PackagesAsDiscovered {
-			processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+			if wp.Pkg.Name != "unsafe" {
+				processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+			}
 		}
 	}
 

@@ -7,6 +7,7 @@ import (
 	. "github.com/candid82/joker/tools/gostd/godb"
 	. "go/ast"
 	"go/types"
+	"os"
 )
 
 // Info on Clojure types, including map of Clojure type names to said type
@@ -16,7 +17,8 @@ import (
 type Info struct {
 	Expr                 Expr   // [key] The canonical referencing expression (if any)
 	FullName             string // [key] Full name of type as a Clojure expression
-	GoTypeName           string // types.Type.String()
+	GoType               types.Type
+	GoTypeName           string // GoType.String() or something else
 	FullNameDoc          string // Full name of type as a Clojure expression (for documentation); just e.g. "Int" for builtin global types
 	Who                  string // who made me
 	Pattern              string // E.g. "%s", "refTo%s" (for reference types), "arrayOf%s" (for array types)
@@ -61,6 +63,7 @@ var typesByGoTypeName = map[string]*Info{
 	"float64":    Float64,
 	"complex128": Complex128,
 }
+var typesByGoType = map[types.Type]*Info{}
 
 func patternForExpr(e Expr) (pattern string, ue Expr) {
 	switch v := e.(type) {
@@ -94,7 +97,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goTypeName string, info *Info) {
+func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 
@@ -149,12 +152,106 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, g
 
 	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
 
-	tav, found := astutils.TypeCheckerInfo.Types[e]
-	if found {
-		goTypeName = tav.Type.String()
-	} else {
-		panic(fmt.Sprintf("cannot find type info for %s", name))
+	// tav, found := astutils.TypeCheckerInfo.Types[e]
+	// if found {
+	// 	goTypeName = tav.Type.String()
+	// } else {
+	// 	fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr():cannot find type info for %s\n", name)
+	// }
+
+	return
+}
+
+func patternForType(ty types.Type) (pattern string, uty types.Type) {
+	switch v := ty.(type) {
+	case *types.Array:
+		pattern, uty = patternForType(v.Elem())
+		return fmt.Sprintf("array%dOf%s", v.Len(), pattern), uty
+	case *types.Slice:
+		pattern, uty = patternForType(v.Elem())
+		return fmt.Sprintf("sliceOf%s", pattern), uty
+	case *types.Pointer:
+		pattern, uty = patternForType(v.Elem())
+		return "refTo" + pattern, uty
+	case *types.Map:
+		patternKey, _ := patternForType(v.Key())
+		patternValue, eValue := patternForType(v.Elem())
+		res := "map_" + patternKey + "_Of_" + fmt.Sprintf(patternValue, "<whatever>")
+		return fmt.Sprintf("ABEND777(jtypes.go: multiple underlying expressions not supported: %s)", res), eValue
+	case *types.Chan:
+		pattern, uty = patternForType(v.Elem())
+		baseName := "chan"
+		switch v.Dir() {
+		case types.SendOnly:
+			baseName = "chanSend"
+		case types.RecvOnly:
+			baseName = "chanRecv"
+		case types.SendRecv:
+		default:
+			baseName = fmt.Sprintf("ABEND737(jtypes.go: %s Dir=0x%x not supported)", v.String(), v.Dir())
+		}
+		return baseName + "Of" + pattern, uty
+	default:
+		return "%s", ty
 	}
+}
+
+func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nameDoc string, info *Info) {
+	var uty types.Type
+	pattern, uty = patternForType(ty)
+
+	switch v := uty.(type) {
+	case *types.Basic:
+		if !astutils.IsBuiltin(v.Name()) {
+			ns = ClojureNamespaceForType(uty)
+			baseName = v.Name()
+			baseNameDoc = baseName
+		} else {
+			uInfo, found := typesByGoTypeName[v.Name()]
+			if !found {
+				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name()))
+			}
+			baseName = uInfo.FullName
+			baseNameDoc = uInfo.FullNameDoc
+			if ty == uty {
+				info = uInfo
+			}
+		}
+	case *types.Named:
+		baseName = v.String()
+		baseNameDoc = baseName
+	case *types.Interface:
+		if v.NumMethods() == 0 {
+			baseName = "GoObject"
+		} else {
+			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", v.String())
+		}
+		baseNameDoc = baseName
+	case *types.Struct:
+		if v.NumFields() == 0 {
+			baseName = "struct{}"
+		} else {
+			baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", v.String())
+		}
+		baseNameDoc = baseName
+	case *types.Signature:
+		baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", v.String())
+		baseNameDoc = baseName
+	default:
+		panic(fmt.Sprintf("unrecognized underlying %T Type %s for %T %s", uty, uty.String(), v, v.String()))
+	}
+
+	name = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseName))
+	nameDoc = genutils.CombineClojureName(ns, fmt.Sprintf(pattern, baseNameDoc))
+
+	//	fmt.Printf("jtypes.go/typeNameForExpr: %s (`%s' %s %s) %+v => `%s' %T at:%s\n", name, pattern, ns, baseName, e, pattern, ue, WhereAt(e.Pos()))
+
+	// tav, found := astutils.TypeCheckerInfo.Types[e]
+	// if found {
+	// 	goTypeName = tav.Type.String()
+	// } else {
+	// 	fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr():cannot find type info for %s\n", name)
+	// }
 
 	return
 }
@@ -190,12 +287,51 @@ func InfoForGoTypeName(typeName string) *Info {
 	return typesByGoTypeName[typeName]
 }
 
-func InfoForExpr(e Expr) *Info {
+func InfoForGoType(ty types.Type) *Info {
+	if info, found := typesByGoType[ty]; found {
+		return info
+	}
+
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, info := namingForType(ty)
+
+	if info != nil {
+		// Already found info on builtin Go type, so just return that.
+		typesByGoType[ty] = info
+		return info
+	}
+
+	if inf, found := typesByFullName[fullName]; found {
+		typesByGoType[ty] = inf
+		return inf
+	}
+
+	info = &Info{
+		Expr:              nil,
+		FullName:          fullName,
+		GoType:            ty,
+		GoTypeName:        ty.String(),
+		FullNameDoc:       fullNameDoc,
+		Who:               fmt.Sprintf("InfoForGoType %s", ty.String()),
+		Pattern:           pattern,
+		Namespace:         ns,
+		BaseName:          baseName,
+		BaseNameDoc:       baseNameDoc,
+		ArgClojureArgType: fullName,
+	}
+
+	typesByFullName[fullName] = info
+	typesByGoTypeName[ty.String()] = info
+	typesByGoType[ty] = info
+
+	return info
+}
+
+func InfoForExpr(e Expr, goType types.Type) *Info {
 	if info, ok := typesByExpr[e]; ok {
 		return info
 	}
 
-	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goTypeName, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, info := namingForExpr(e)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
@@ -210,9 +346,17 @@ func InfoForExpr(e Expr) *Info {
 
 	convertFromClojure, convertFromMap := ConversionsFn(e)
 
+	if goType == nil {
+		fmt.Fprintf(os.Stderr, "jtypes.go/InfoForExpr(): Nil goType for %s\n", astutils.ExprToString(e))
+		return nil
+	}
+
+	goTypeName := goType.String()
+
 	info = &Info{
 		Expr:               e,
 		FullName:           fullName,
+		GoType:             goType,
 		GoTypeName:         goTypeName,
 		FullNameDoc:        fullNameDoc,
 		Who:                fmt.Sprintf("TypeForExpr %T", e),
@@ -228,6 +372,7 @@ func InfoForExpr(e Expr) *Info {
 	typesByExpr[e] = info
 	typesByFullName[fullName] = info
 	typesByGoTypeName[goTypeName] = info
+	typesByGoType[goType] = info
 
 	return info
 }
@@ -264,6 +409,9 @@ func (ti *Info) register() {
 	}
 	if _, found := typesByGoTypeName[ti.GoTypeName]; !found {
 		typesByGoTypeName[ti.GoTypeName] = ti
+	}
+	if _, found := typesByGoType[ti.GoType]; !found {
+		typesByGoType[ti.GoType] = ti
 	}
 }
 

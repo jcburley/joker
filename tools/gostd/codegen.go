@@ -115,6 +115,12 @@ func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *types.Signatur
 }
 
 func genReceiverCode(fn *FuncInfo, goFname string) string {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", goFname, godb.WhereAt(fn.Pos), x))
+		}
+	}()
+
 	preCode, params, min, max := genGoPreReceiver(fn)
 
 	receiverName := fn.BaseName
@@ -760,7 +766,7 @@ func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 			continue // Do not generate anything for private or special types
 		}
 
-		ty := ti.GoType()
+		ty := ti.GoTypeExpr()
 
 		if ty != nil {
 			switch ty := ty.(type) {

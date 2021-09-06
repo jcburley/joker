@@ -19,8 +19,9 @@ const Concrete = ^uint(0) /* MaxUint */
 var NumExprHits uint
 
 type Info struct {
-	Expr              Expr      // [key] The canonical referencing expression (if any)
-	FullName          string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	Expr              Expr   // [key] The canonical referencing expression (if any)
+	FullName          string // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	GoType            types.Type
 	TypeName          string    // The types.Type.String() corresponding to this type
 	who               string    // who made me
 	Type              Expr      // The actual type (if any)
@@ -59,6 +60,7 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	info := &Info{
 		who:           "getInfo",
 		FullName:      fullName,
+		GoType:        nil,
 		TypeName:      fullName,
 		Pattern:       "%s",
 		Package:       "",
@@ -395,6 +397,10 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	if isNamed {
+		if pkgName == "unsafe" {
+			return nil
+		}
+
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti
@@ -433,6 +439,9 @@ func InfoForExpr(e Expr) *Info {
 	switch v := e.(type) {
 	case *StarExpr:
 		innerInfo = InfoForExpr(v.X)
+		if innerInfo == nil {
+			return nil
+		}
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
@@ -558,9 +567,12 @@ func InfoForExpr(e Expr) *Info {
 	tav, found := astutils.TypeCheckerInfo.Types[e]
 	if found {
 		typeName = tav.Type.String()
+		if strings.Contains(typeName, "uint8") {
+			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): found type info for %s\n", typeName)
+		}
 	} else {
 		typeName = fullName
-		// panic(fmt.Sprintf("cannot find type info for %s", fullName))
+		fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): cannot find type info for %s\n", fullName)
 	}
 
 	isUnsupported := false
@@ -584,6 +596,7 @@ func InfoForExpr(e Expr) *Info {
 	ti := &Info{
 		Expr:              e,
 		FullName:          fullName,
+		GoType:            tav.Type,
 		TypeName:          typeName,
 		who:               fmt.Sprintf("[InfoForExpr %T]", e),
 		UnderlyingType:    innerInfo,
