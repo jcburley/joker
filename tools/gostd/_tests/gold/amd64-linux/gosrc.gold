@@ -21,13 +21,13 @@ gtypes.go/InfoForExpr(): found type info for struct{CipherSuites []uint16; Serve
 gtypes.go/InfoForExpr(): found type info for struct{raw []byte; vers uint16; random []byte; sessionId []byte; cipherSuites []uint16; compressionMethods []uint8; serverName string; ocspStapling bool; supportedCurves []crypto/tls.CurveID; supportedPoints []uint8; ticketSupported bool; sessionTicket []uint8; supportedSignatureAlgorithms []crypto/tls.SignatureScheme; supportedSignatureAlgorithmsCert []crypto/tls.SignatureScheme; secureRenegotiationSupported bool; secureRenegotiation []byte; alpnProtocols []string; scts bool; supportedVersions []uint16; cookie []byte; keyShares []crypto/tls.keyShare; earlyData bool; pskModes []uint8; pskIdentities []crypto/tls.pskIdentity; pskBinders [][]byte}
 gtypes.go/InfoForExpr(): found type info for struct{raw []byte; vers uint16; random []byte; sessionId []byte; cipherSuite uint16; compressionMethod uint8; ocspStapling bool; ticketSupported bool; secureRenegotiationSupported bool; secureRenegotiation []byte; alpnProtocol string; scts [][]byte; supportedVersion uint16; serverShare crypto/tls.keyShare; selectedIdentityPresent bool; selectedIdentity uint16; supportedPoints []uint8; cookie []byte; selectedGroup crypto/tls.CurveID}
 gtypes.go/InfoForExpr(): found type info for struct{base debug/dwarf.Offset; off debug/dwarf.Offset; data []byte; atable debug/dwarf.abbrevTable; asize int; vers int; utype uint8; is64 bool}
-gtypes.go/InfoForExpr(): found type info for struct{Class debug/elf.Class; Data debug/elf.Data; Version debug/elf.Version; OSABI debug/elf.OSABI; ABIVersion uint8; ByteOrder encoding/binary.ByteOrder; Type debug/elf.Type; Machine debug/elf.Machine; Entry uint64}
 gtypes.go/InfoForExpr(): found type info for struct{Name uint32; Value uint32; Size uint32; Info uint8; Other uint8; Shndx uint16}
 gtypes.go/InfoForExpr(): found type info for struct{Name uint32; Info uint8; Other uint8; Shndx uint16; Value uint64; Size uint64}
-gtypes.go/InfoForExpr(): found type info for struct{Addr uint32; Value uint32; Type uint8; Len uint8; Pcrel bool; Extern bool; Scattered bool}
-gtypes.go/InfoForExpr(): found type info for struct{Name string; Type uint8; Sect uint8; Desc uint16; Value uint64}
+gtypes.go/InfoForExpr(): found type info for struct{Class debug/elf.Class; Data debug/elf.Data; Version debug/elf.Version; OSABI debug/elf.OSABI; ABIVersion uint8; ByteOrder encoding/binary.ByteOrder; Type debug/elf.Type; Machine debug/elf.Machine; Entry uint64}
 gtypes.go/InfoForExpr(): found type info for struct{Name uint32; Type uint8; Sect uint8; Desc uint16; Value uint32}
 gtypes.go/InfoForExpr(): found type info for struct{Name uint32; Type uint8; Sect uint8; Desc uint16; Value uint64}
+gtypes.go/InfoForExpr(): found type info for struct{Addr uint32; Value uint32; Type uint8; Len uint8; Pcrel bool; Extern bool; Scattered bool}
+gtypes.go/InfoForExpr(): found type info for struct{Name string; Type uint8; Sect uint8; Desc uint16; Value uint64}
 gtypes.go/InfoForExpr(): found type info for struct{Magic uint16; MajorLinkerVersion uint8; MinorLinkerVersion uint8; SizeOfCode uint32; SizeOfInitializedData uint32; SizeOfUninitializedData uint32; AddressOfEntryPoint uint32; BaseOfCode uint32; BaseOfData uint32; ImageBase uint32; SectionAlignment uint32; FileAlignment uint32; MajorOperatingSystemVersion uint16; MinorOperatingSystemVersion uint16; MajorImageVersion uint16; MinorImageVersion uint16; MajorSubsystemVersion uint16; MinorSubsystemVersion uint16; Win32VersionValue uint32; SizeOfImage uint32; SizeOfHeaders uint32; CheckSum uint32; Subsystem uint16; DllCharacteristics uint16; SizeOfStackReserve uint32; SizeOfStackCommit uint32; SizeOfHeapReserve uint32; SizeOfHeapCommit uint32; LoaderFlags uint32; NumberOfRvaAndSizes uint32; DataDirectory [16]debug/pe.DataDirectory}
 gtypes.go/InfoForExpr(): found type info for struct{Magic uint16; MajorLinkerVersion uint8; MinorLinkerVersion uint8; SizeOfCode uint32; SizeOfInitializedData uint32; SizeOfUninitializedData uint32; AddressOfEntryPoint uint32; BaseOfCode uint32; ImageBase uint64; SectionAlignment uint32; FileAlignment uint32; MajorOperatingSystemVersion uint16; MinorOperatingSystemVersion uint16; MajorImageVersion uint16; MinorImageVersion uint16; MajorSubsystemVersion uint16; MinorSubsystemVersion uint16; Win32VersionValue uint32; SizeOfImage uint32; SizeOfHeaders uint32; CheckSum uint32; Subsystem uint16; DllCharacteristics uint16; SizeOfStackReserve uint64; SizeOfStackCommit uint64; SizeOfHeapReserve uint64; SizeOfHeapCommit uint64; LoaderFlags uint32; NumberOfRvaAndSizes uint32; DataDirectory [16]debug/pe.DataDirectory}
 gtypes.go/InfoForExpr(): found type info for struct{Name [8]uint8; VirtualSize uint32; VirtualAddress uint32; SizeOfRawData uint32; PointerToRawData uint32; PointerToRelocations uint32; PointerToLineNumbers uint32; NumberOfRelocations uint16; NumberOfLineNumbers uint16; Characteristics uint32}
@@ -60,20 +60,20 @@ gtypes.go/InfoForExpr(): found type info for struct{Version uint8; Type net/http
 gtypes.go/InfoForExpr(): found type info for struct{role uint16; flags uint8; reserved [5]uint8}
 gtypes.go/InfoForExpr(): found type info for struct{size uintptr; ptrdata uintptr; hash uint32; tflag reflect.tflag; align uint8; fieldAlign uint8; kind uint8; equal func(unsafe.Pointer, unsafe.Pointer) bool; gcdata *byte; str reflect.nameOff; ptrToThis reflect.typeOff}
 gtypes.go/InfoForExpr(): found type info for struct{reflect.rtype; key *reflect.rtype; elem *reflect.rtype; bucket *reflect.rtype; hasher func(unsafe.Pointer, uintptr) uintptr; keysize uint8; valuesize uint8; bucketsize uint16; flags uint32}
-gtypes.go/InfoForExpr(): found type info for struct{count int; flags uint8; B uint8; noverflow uint16; hash0 uint32; buckets unsafe.Pointer; oldbuckets unsafe.Pointer; nevacuate uintptr; extra *runtime.mapextra}
-gtypes.go/InfoForExpr(): found type info for struct{tophash [8]uint8}
-gtypes.go/InfoForExpr(): found type info for struct{key unsafe.Pointer; elem unsafe.Pointer; t *runtime.maptype; h *runtime.hmap; buckets unsafe.Pointer; bptr *runtime.bmap; overflow *[]*runtime.bmap; oldoverflow *[]*runtime.bmap; startBucket uintptr; offset uint8; wrapped bool; B uint8; i uint8; bucket uintptr; checkBucket uintptr}
-gtypes.go/InfoForExpr(): found type info for struct{n int32; bytedata *uint8}
-gtypes.go/InfoForExpr(): found type info for struct{bitp *uint8; shift uint32; arena uint32; last *uint8}
-gtypes.go/InfoForExpr(): found type info for struct{bytep *uint8; mask uint8; index uintptr}
-gtypes.go/InfoForExpr(): found type info for [1048576]uint8
 gtypes.go/InfoForExpr(): found type info for struct{size uintptr; ptrdata uintptr; hash uint32; tflag runtime.tflag; align uint8; fieldAlign uint8; kind uint8; equal func(unsafe.Pointer, unsafe.Pointer) bool; gcdata *byte; str runtime.nameOff; ptrToThis runtime.typeOff}
 gtypes.go/InfoForExpr(): found type info for struct{typ runtime._type; key *runtime._type; elem *runtime._type; bucket *runtime._type; hasher func(unsafe.Pointer, uintptr) uintptr; keysize uint8; elemsize uint8; bucketsize uint16; flags uint32}
-gtypes.go/InfoForExpr(): found type info for struct{argoff uintptr; arglen uintptr; args runtime.bitvector; sp *uint8; depth uintptr}
+gtypes.go/InfoForExpr(): found type info for struct{n int32; bytedata *uint8}
 gtypes.go/InfoForExpr(): found type info for struct{bitmap [2097152]byte; spans [8192]*runtime.mspan; pageInUse [1024]uint8; pageMarks [1024]uint8; pageSpecials [1024]uint8; checkmarks *runtime.checkmarksMap; zeroedBase uintptr}
 gtypes.go/InfoForExpr(): found type info for struct{next *runtime.mspan; prev *runtime.mspan; list *runtime.mSpanList; startAddr uintptr; npages uintptr; manualFreeList runtime.gclinkptr; freeindex uintptr; nelems uintptr; allocCache uint64; allocBits *runtime.gcBits; gcmarkBits *runtime.gcBits; sweepgen uint32; divMul uint32; allocCount uint16; spanclass runtime.spanClass; state runtime.mSpanStateBox; needzero uint8; elemsize uintptr; limit uintptr; speciallock runtime.mutex; specials *runtime.special}
 gtypes.go/InfoForExpr(): found type info for struct{magic uint32; pad1 uint8; pad2 uint8; minLC uint8; ptrSize uint8; nfunc int; nfiles uint; funcnameOffset uintptr; cuOffset uintptr; filetabOffset uintptr; pctabOffset uintptr; pclnOffset uintptr}
 gtypes.go/InfoForExpr(): found type info for struct{pcHeader *runtime.pcHeader; funcnametab []byte; cutab []uint32; filetab []byte; pctab []byte; pclntable []byte; ftab []runtime.functab; findfunctab uintptr; minpc uintptr; maxpc uintptr; text uintptr; etext uintptr; noptrdata uintptr; enoptrdata uintptr; data uintptr; edata uintptr; bss uintptr; ebss uintptr; noptrbss uintptr; enoptrbss uintptr; end uintptr; gcdata uintptr; gcbss uintptr; types uintptr; etypes uintptr; textsectmap []runtime.textsect; typelinks []int32; itablinks []*runtime.itab; ptab []runtime.ptabEntry; pluginpath string; pkghashes []runtime.modulehash; modulename string; modulehashes []runtime.modulehash; hasmain uint8; gcdatamask runtime.bitvector; gcbssmask runtime.bitvector; typemap map[runtime.typeOff]*runtime._type; bad bool; next *runtime.moduledata}
+gtypes.go/InfoForExpr(): found type info for struct{count int; flags uint8; B uint8; noverflow uint16; hash0 uint32; buckets unsafe.Pointer; oldbuckets unsafe.Pointer; nevacuate uintptr; extra *runtime.mapextra}
+gtypes.go/InfoForExpr(): found type info for struct{tophash [8]uint8}
+gtypes.go/InfoForExpr(): found type info for struct{key unsafe.Pointer; elem unsafe.Pointer; t *runtime.maptype; h *runtime.hmap; buckets unsafe.Pointer; bptr *runtime.bmap; overflow *[]*runtime.bmap; oldoverflow *[]*runtime.bmap; startBucket uintptr; offset uint8; wrapped bool; B uint8; i uint8; bucket uintptr; checkBucket uintptr}
+gtypes.go/InfoForExpr(): found type info for struct{bitp *uint8; shift uint32; arena uint32; last *uint8}
+gtypes.go/InfoForExpr(): found type info for struct{bytep *uint8; mask uint8; index uintptr}
+gtypes.go/InfoForExpr(): found type info for [1048576]uint8
+gtypes.go/InfoForExpr(): found type info for struct{argoff uintptr; arglen uintptr; args runtime.bitvector; sp *uint8; depth uintptr}
 gtypes.go/InfoForExpr(): found type info for struct{stack runtime.stack; stackguard0 uintptr; stackguard1 uintptr; _panic *runtime._panic; _defer *runtime._defer; m *runtime.m; sched runtime.gobuf; syscallsp uintptr; syscallpc uintptr; stktopsp uintptr; param unsafe.Pointer; atomicstatus uint32; stackLock uint32; goid int64; schedlink runtime.guintptr; waitsince int64; waitreason runtime.waitReason; preempt bool; preemptStop bool; preemptShrink bool; asyncSafePoint bool; paniconfault bool; gcscandone bool; throwsplit bool; activeStackChans bool; parkingOnChan uint8; raceignore int8; sysblocktraced bool; tracking bool; trackingSeq uint8; runnableStamp int64; runnableTime int64; sysexitticks int64; traceseq uint64; tracelastp runtime.puintptr; lockedm runtime.muintptr; sig uint32; writebuf []byte; sigcode0 uintptr; sigcode1 uintptr; sigpc uintptr; gopc uintptr; ancestors *[]runtime.ancestorInfo; startpc uintptr; racectx uintptr; waiting *runtime.sudog; cgoCtxt []uintptr; labels unsafe.Pointer; timer *runtime.timer; selectDone uint32; gcAssistBytes int64}
 gtypes.go/InfoForExpr(): found type info for struct{g0 *runtime.g; morebuf runtime.gobuf; divmod uint32; procid uint64; gsignal *runtime.g; goSigStack runtime.gsignalStack; sigmask runtime.sigset; tls [6]uintptr; mstartfn func(); curg *runtime.g; caughtsig runtime.guintptr; p runtime.puintptr; nextp runtime.puintptr; oldp runtime.puintptr; id int64; mallocing int32; throwing int32; preemptoff string; locks int32; dying int32; profilehz int32; spinning bool; blocked bool; newSigstack bool; printlock int8; incgo bool; freeWait uint32; fastrand [2]uint32; needextram bool; traceback uint8; ncgocall uint64; ncgo int32; cgoCallersUse uint32; cgoCallers *runtime.cgoCallers; doesPark bool; park runtime.note; alllink *runtime.m; schedlink runtime.muintptr; lockedg runtime.guintptr; createstack [32]uintptr; lockedExt uint32; lockedInt uint32; nextwaitm runtime.muintptr; waitunlockf func(*runtime.g, unsafe.Pointer) bool; waitlock unsafe.Pointer; waittraceev byte; waittraceskip int; startingtrace bool; syscalltick uint32; freelink *runtime.m; mFixup struct{lock runtime.mutex; used uint32; fn func(bool) bool}; libcall runtime.libcall; libcallpc uintptr; libcallsp uintptr; libcallg runtime.guintptr; syscall runtime.libcall; vdsoSP uintptr; vdsoPC uintptr; preemptGen uint32; signalPending uint32; runtime.dlogPerM; runtime.mOS; locksHeldLen int; locksHeld [10]runtime.heldLockInfo}
 gtypes.go/InfoForExpr(): found type info for struct{entry uintptr; nameoff int32; args int32; deferreturn uint32; pcsp uint32; pcfile uint32; pcln uint32; npcdata uint32; cuOffset uint32; funcID runtime.funcID; flag runtime.funcFlag; _ [1]byte; nfuncdata uint8}
@@ -2631,28 +2631,28 @@ codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.No
 codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing image/color.NYCbCrA_RGBA (embed=YCbCr)
 codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.DotNode_Type (embed=NodeType)
 codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.NilNode_Type (embed=NodeType)
-panic: cannot find `unsafe.Pointer' in gtypes [recovered]
-	panic: panic generating code for _f_value_SetPointer at /usr/local/go/src/reflect/value.go:2078:1: cannot find `unsafe.Pointer' in gtypes
+panic: cannot find `func(fd uintptr)' in gtypes [recovered]
+	panic: panic generating code for _f_rawConn_Control at /usr/local/go/src/syscall/net.go:13:2: cannot find `func(fd uintptr)' in gtypes
 
 
 goroutine 1 [running]:
 main.genReceiverCode.func1()
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:120 +0x134
-panic({0x694ce0, 0xc012a8dc90})
+panic({0x694ce0, 0xc005022cf0})
 	/usr/local/go/src/runtime/panic.go:1038 +0x215
-main.TypeInfoForType({0x748758, 0x8e7d80})
+main.TypeInfoForType({0x748848, 0xc006528780})
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/types.go:258 +0x3a5
-main.genTypePreReceiver(0x0, {0x748758, 0x8e7d80}, {0xc012a923a4, 0x0}, 0x0, 0x0)
+main.genTypePreReceiver(0x1, {0x748848, 0xc006528780}, {0xc00501e440, 0xc011c7f1c8}, 0x403a94, 0x0)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/pre.go:129 +0x6b
-main.genGoPreReceiver(0xc00a4b80b0)
+main.genGoPreReceiver(0xc00f0dc0b0)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/pre.go:171 +0x179
-main.genReceiverCode(0xc00a4b80b0, {0xc0129e9f08, 0x6e6aa0})
+main.genReceiverCode(0xc00f0dc0b0, {0xc00503a180, 0x6e6aa0})
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:124 +0xb8
-main.GenReceiver(0xc00a4b80b0)
+main.GenReceiver(0xc00f0dc0b0)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:179 +0x248
-main.main.func4({0x6a5260, 0xc0000a1800}, 0xc00a4aa3f0)
+main.main.func4({0x6a5260, 0xc0000a1800}, 0xc00f0d8660)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:392 +0x3e
-main.SortedFuncInfoMap(0xc00c080000, 0x6fc6b8)
+main.SortedFuncInfoMap(0xc00ae00000, 0x6fc6b8)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:197 +0x1cb
 main.main()
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:383 +0x2e58

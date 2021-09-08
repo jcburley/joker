@@ -956,9 +956,9 @@ func AddWalkDir(srcDir, fsRoot paths.NativePath, nsRoot, importMe string) {
 }
 
 func myImporter(cfg *types.Config, info *types.Info, path string) (*types.Package, error) {
-	if path == "unsafe" {
-		return types.Unsafe, nil
-	}
+	// if path == "unsafe" {
+	// 	return types.Unsafe, nil
+	// }
 	pkg := godb.GetPackagePackage(path)
 	if pkg == nil {
 		return nil, nil // TODO: Something better when package not found?
@@ -1010,7 +1010,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 
 	for _, phase := range phases {
 		for _, wp := range godb.PackagesAsDiscovered {
-			if wp.Pkg.Name != "unsafe" {
+			if true || wp.Pkg.Name != "unsafe" {
 				processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
 			}
 		}

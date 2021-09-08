@@ -397,9 +397,9 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	if isNamed {
-		if pkgName == "unsafe" {
-			return nil
-		}
+		// if pkgName == "unsafe" {
+		// 	return nil
+		// }
 
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
