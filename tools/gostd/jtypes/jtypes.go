@@ -202,7 +202,7 @@ func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nam
 
 	switch v := uty.(type) {
 	case *types.Basic:
-		if !astutils.IsBuiltin(v.Name()) {
+		if !astutils.IsBuiltin(v.Name()) { // E.g. unsafe.Pointer
 			ns = ClojureNamespaceForType(uty)
 			baseName = v.Name()
 			baseNameDoc = baseName
@@ -218,6 +218,7 @@ func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nam
 			}
 		}
 	case *types.Named:
+		ns = ClojureNamespaceForType(uty)
 		baseName = v.Obj().Name()
 		baseNameDoc = baseName
 	case *types.Interface:
