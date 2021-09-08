@@ -131,7 +131,7 @@ type FuncInfo struct {
 	EmbedName      string    // "" for function definitions, else basename of embedded type
 	Fd             *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
 	ToM            TypeInfo  // Method operates on this type (nil for standalones and receivers)
-	Ft             *types.Signature
+	Signature      *types.Signature
 	Doc            *CommentGroup
 	SourceFile     *godb.GoFile
 	ImportsNative  *imports.Imports // Add these to package imports if function is generated (no ABENDs)
@@ -383,7 +383,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, 
 		EmbedName:      "",
 		Fd:             fd,
 		ToM:            nil,
-		Ft:             sig,
+		Signature:      sig,
 		Doc:            fd.Doc,
 		SourceFile:     gf,
 		ImportsNative:  &imports.Imports{},

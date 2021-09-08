@@ -126,7 +126,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Ft)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Signature)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -213,7 +213,7 @@ func GenReceiver(fn *FuncInfo) {
 			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
 				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params(), FnDoc: fn.Doc}
+			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Signature.Params(), FnDoc: fn.Doc}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
@@ -224,7 +224,7 @@ func GenReceiver(fn *FuncInfo) {
 				if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
 					GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Ft.Params(), FnDoc: fn.Doc}
+				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Signature.Params(), FnDoc: fn.Doc}
 			}
 		}
 	}
@@ -232,7 +232,7 @@ func GenReceiver(fn *FuncInfo) {
 	if goFn != "" {
 		var params *types.Tuple
 		if fn.Fd != nil {
-			params = fn.Ft.Params()
+			params = fn.Signature.Params()
 		}
 		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
 		//		fmt.Printf("codegen.go/GenReceiver: Added %s to %s\n", goFname, pkgDirUnix)
@@ -246,7 +246,7 @@ func GenStandalone(fn *FuncInfo) {
 	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
-	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Ft, goFname)
+	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Signature, goFname)
 	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	var cl2gol string
@@ -599,7 +599,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		EmbedName:      embedName,
 		Fd:             nil,
 		ToM:            ti,
-		Ft:             sig,
+		Signature:      sig,
 		Doc:            doc,
 		SourceFile:     ti.GoFile(),
 		ImportsNative:  &imports.Imports{},

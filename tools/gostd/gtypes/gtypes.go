@@ -354,6 +354,16 @@ func InfoForTypeName(typeName string) *Info {
 	if ti, ok := typesByTypeName[typeName]; ok {
 		return ti
 	}
+	switch typeName {
+	case "func(fd uintptr)":
+		typeName = "func(uintptr)"
+
+	case "func(fd uintptr) (done bool)":
+		typeName = "func(uintptr) bool"
+	}
+	if ti, ok := typesByTypeName[typeName]; ok {
+		return ti
+	}
 	return nil
 }
 

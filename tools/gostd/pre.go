@@ -50,7 +50,7 @@ func genTypePreFunc(fn *FuncInfo, ty types.Type, paramName string, isVariadic bo
 
 func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
-	tuple := fn.Ft.Params()
+	tuple := fn.Signature.Params()
 	args := tuple.Len()
 	for argNum := 0; argNum < args; argNum++ {
 		field := tuple.At(argNum)
@@ -64,7 +64,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			resVar = "_v_" + name
 			resVarDoc = name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field.Type(), resVar, argNum == args-1 && fn.Ft.Variadic())
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field.Type(), resVar, argNum == args-1 && fn.Signature.Variadic())
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -157,7 +157,7 @@ func genTypePreReceiver(fn *FuncInfo, ty types.Type, paramName string, argNum in
 }
 
 func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
-	tuple := fn.Ft.Params()
+	tuple := fn.Signature.Params()
 	args := tuple.Len()
 	for argNum := 0; argNum < args; argNum++ {
 		field := tuple.At(argNum)
@@ -168,7 +168,7 @@ func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
 		} else {
 			resVar = "_v_" + name
 		}
-		preCode, resExpr := genTypePreReceiver(fn, field.Type(), resVar, argNum, argNum == args-1 && fn.Ft.Variadic())
+		preCode, resExpr := genTypePreReceiver(fn, field.Type(), resVar, argNum, argNum == args-1 && fn.Signature.Variadic())
 
 		goPreCode += preCode
 
