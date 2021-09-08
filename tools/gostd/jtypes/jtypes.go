@@ -167,9 +167,9 @@ func patternForType(ty types.Type) (pattern string, uty types.Type) {
 	case *types.Array:
 		pattern, uty = patternForType(v.Elem())
 		return fmt.Sprintf("array%dOf%s", v.Len(), pattern), uty
-	case *types.Slice:
+	case *types.Slice: // I guess this is what "[]foo" becomes when declared as a parameter, versus as a result?
 		pattern, uty = patternForType(v.Elem())
-		return fmt.Sprintf("sliceOf%s", pattern), uty
+		return fmt.Sprintf("arrayOf%s", pattern), uty
 	case *types.Pointer:
 		pattern, uty = patternForType(v.Elem())
 		return "refTo" + pattern, uty
