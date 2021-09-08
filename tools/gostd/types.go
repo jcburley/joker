@@ -251,12 +251,12 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 	if ti, found := typesByGoType[ty]; found {
 		return ti
 	}
-	typeName := ty.String()
 
-	gti := gtypes.InfoForTypeName(typeName)
+	gti := gtypes.InfoForType(ty)
 	if gti == nil {
-		panic(fmt.Sprintf("cannot find `%s' in gtypes", typeName))
+		panic(fmt.Sprintf("cannot find `%s' in gtypes", ty.String()))
 	}
+	typeName := gti.TypeName
 
 	jti := jtypes.InfoForGoType(ty)
 	if jti == nil {
@@ -275,7 +275,7 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 
 	typesByGoName[gti.FullName] = ti
 	typesByClojureName[jti.FullName] = ti
-	typesByGoTypeName[gti.TypeName] = ti
+	typesByGoTypeName[typeName] = ti
 	typesByGoType[gti.GoType] = ti
 
 	return ti

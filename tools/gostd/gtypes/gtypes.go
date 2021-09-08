@@ -52,6 +52,8 @@ var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
 var typesByTypeName = map[string]*Info{}
 
+var typesByType = map[types.Type]*Info{}
+
 func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
@@ -154,6 +156,16 @@ func insert(ti *Info) {
 	if fullName != typeName && !strings.Contains(fullName, "ABEND") {
 		//		fmt.Fprintf(os.Stderr, "gtypes.go/insert: %s vs %s\n", fullName, typeName)
 		return // Don't insert an alias type.
+	}
+
+	if gt := ti.GoType; gt != nil {
+		if cti, found := typesByType[gt]; found {
+			if cti.FullName != ti.FullName || cti.TypeName != ti.TypeName {
+				panic(fmt.Sprintf("already have %+v yet now have %+v", cti, ti))
+			}
+		} else {
+			typesByType[gt] = ti
+		}
 	}
 
 	if existingTi, ok := typesByFullName[fullName]; ok {
@@ -350,20 +362,82 @@ func InfoForName(fullName string) *Info {
 	return nil
 }
 
-func InfoForTypeName(typeName string) *Info {
-	if ti, ok := typesByTypeName[typeName]; ok {
+func InfoForType(ty types.Type) *Info {
+	if ti, ok := typesByType[ty]; ok {
 		return ti
 	}
-	switch typeName {
-	case "func(fd uintptr)":
-		typeName = "func(uintptr)"
+	return InfoForTypeByName(ty) // TODO: something smarter here, e.g. if there's an ast.Expr available?
+}
 
-	case "func(fd uintptr) (done bool)":
-		typeName = "func(uintptr) bool"
+func tuple(t *types.Tuple, variadic bool) (res string) {
+	res = "("
+	if t != nil {
+		len := t.Len()
+		for i := 0; i < len; i++ {
+			v := t.At(i)
+			if i > 0 {
+				res += ", "
+			}
+			typ := v.Type()
+			if variadic && i == len-1 {
+				if s, ok := typ.(*types.Slice); ok {
+					res += "..."
+					typ = s.Elem()
+				} else {
+					res += typ.String() + "..."
+					continue
+				}
+			}
+			res += typ.String()
+		}
 	}
+	res += ")"
+	return
+}
+
+// A definition like "func foo(arg func(x T) (b U))" gets, for arg, a
+// Signature of "func(x T) (b U)", instead of "func(T) U", which it
+// should match. So, compute the latter string to look it up.
+// TODO: Theoretically (and maybe in practice, though not in current
+// Go stdlib), recursively discovered types could be Signatures; so,
+// might have to reproduce the (Type)String() method here for this and
+// tuple() to call.
+func justTheTypesMaam(ty types.Type) (res string) {
+	s, yes := ty.(*types.Signature)
+	if !yes {
+		return ""
+	}
+	res = "func" + tuple(s.Params(), s.Variadic())
+	switch s.Results().Len() {
+	case 0:
+	case 1:
+		res += " " + s.Results().At(0).Type().String()
+	default:
+		res += " " + tuple(s.Results(), false)
+	}
+	return
+}
+
+func InfoForTypeByName(ty types.Type) *Info {
+	typeName := ty.String()
 	if ti, ok := typesByTypeName[typeName]; ok {
 		return ti
 	}
+	// switch typeName {
+	// case "func(fd uintptr)":
+	// 	typeName = "func(uintptr)"
+
+	// case "func(fd uintptr) (done bool)":
+	// 	typeName = "func(uintptr) bool"
+	// }
+	tryThis := justTheTypesMaam(ty)
+	if tryThis == "" || tryThis == typeName {
+		return nil
+	}
+	if ti, ok := typesByTypeName[tryThis]; ok {
+		return ti
+	}
+	fmt.Fprintf(os.Stderr, "gtypes.go/InfoForTypeName: tried %s, then %s, but both failed!\n", typeName, tryThis)
 	return nil
 }
 
@@ -577,9 +651,9 @@ func InfoForExpr(e Expr) *Info {
 	tav, found := astutils.TypeCheckerInfo.Types[e]
 	if found {
 		typeName = tav.Type.String()
-		if strings.Contains(typeName, "uint8") {
-			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): found type info for %s\n", typeName)
-		}
+		// if strings.Contains(typeName, "uint8") {
+		// 	fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): found type info for %s\n", typeName)
+		// }
 	} else {
 		typeName = fullName
 		fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): cannot find type info for %s\n", fullName)
