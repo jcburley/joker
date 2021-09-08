@@ -55,6 +55,7 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
+	Namespace() string   // E.g. "go.std.os"
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
@@ -531,6 +532,10 @@ func (ti typeInfo) TypeMappingsName() string {
 		}
 	}
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
+}
+
+func (ti typeInfo) Namespace() string {
+	return ti.jti.Namespace
 }
 
 func (ti typeInfo) IsCustom() bool {

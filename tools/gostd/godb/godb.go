@@ -120,11 +120,15 @@ func GoPackageForExpr(e Expr) string {
 }
 
 func GoPackageForType(ty types.Type) string {
-	return "Huh!!"
-	// if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
-	// 	return "" // A builtin, so not package-qualified.
-	// }
-	// return GoPackageForPos(e.Pos())
+	n, ok := ty.(*types.Named)
+	if !ok {
+		return fmt.Sprintf("ABEND928(unsupported type %T)", ty)
+	}
+	p := n.Obj().Pkg()
+	if p == nil {
+		return "<GoPackageForType(): Named w/o object>"
+	}
+	return p.Path()
 }
 
 func GoPackageForTypeSpec(ts *TypeSpec) string {

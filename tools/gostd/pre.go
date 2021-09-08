@@ -19,7 +19,7 @@ func genTypePreFunc(fn *FuncInfo, ty types.Type, paramName string, isVariadic bo
 		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
 	}
 
-	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(nil), ti.GoNameDocForType(ty)
+	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(ty), ti.GoNameDocForType(ty)
 
 	if clType != "" {
 		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
