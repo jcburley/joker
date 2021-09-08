@@ -218,7 +218,7 @@ func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nam
 			}
 		}
 	case *types.Named:
-		baseName = v.String()
+		baseName = v.Obj().Name()
 		baseNameDoc = baseName
 	case *types.Interface:
 		if v.NumMethods() == 0 {
