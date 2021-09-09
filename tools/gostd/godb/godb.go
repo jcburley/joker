@@ -135,6 +135,17 @@ func GoPackageForTypeSpec(ts *TypeSpec) string {
 	return GoPackageForPos(ts.Pos())
 }
 
+func ClojureNamespaceForPackage(pkg *types.Package) string {
+	root := mappings[0].cljRoot
+	if pkg == nil {
+		return root + "builtin" // TODO: generalize, perhaps?
+	}
+	p := pkg.Path()
+	ns := root + ReplaceAll(p, "/", ".")
+	fmt.Fprintf(os.Stderr, "godb.go/ClojureNamespaceForPackage: %s -> %s\n", p, ns)
+	return ns
+}
+
 func ClojureNamespaceForPos(p token.Position) string {
 	dirName := path.Dir(filepath.ToSlash(p.Filename))
 	pkg, root, _ := goPackageForDirname(dirName)

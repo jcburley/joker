@@ -391,11 +391,11 @@ func (ti *Info) NameDoc(e Expr) string {
 	return res
 }
 
-func (ti *Info) NameDocForType(ty types.Type) string {
+func (ti *Info) NameDocForType(pkg *types.Package) string {
 	if ti.Pattern == "" || ti.Namespace == "" {
 		return ti.FullNameDoc
 	}
-	if ty != nil && ClojureNamespaceForType(ty) != ti.Namespace {
+	if pkg != nil && ClojureNamespaceForPackage(pkg) != ti.Namespace {
 		//		fmt.Printf("jtypes.NameDoc(%+v at %s) => %s (in ns=%s) per %s\n", e, WhereAt(e.Pos()), ti.FullName, ti.Namespace, ClojureNamespaceForExpr(e))
 		return ti.FullNameDoc
 	}

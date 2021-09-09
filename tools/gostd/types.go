@@ -26,7 +26,7 @@ type TypeInfo interface {
 	ClojureName() string
 	ClojureEffectiveName() string
 	ClojureNameDoc(e Expr) string
-	ClojureNameDocForType(types.Type) string
+	ClojureNameDocForType(*types.Package) string
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
@@ -35,7 +35,7 @@ type TypeInfo interface {
 	GoName() string
 	GoEffectiveName() string // Substitutes what actually works in generated Go code (interface{} instead of unsafe.Arbitrary)
 	GoNameDoc(e Expr) string
-	GoNameDocForType(types.Type) string
+	GoNameDocForType(pkg *types.Package) string // Relative to pkg
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
@@ -382,11 +382,11 @@ func (ti typeInfo) ClojureNameDoc(e Expr) string {
 	return ti.jti.NameDoc(e)
 }
 
-func (ti typeInfo) ClojureNameDocForType(ty types.Type) string {
+func (ti typeInfo) ClojureNameDocForType(pkg *types.Package) string {
 	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
-	return ti.jti.NameDocForType(ty)
+	return ti.jti.NameDocForType(pkg)
 }
 
 func (ti typeInfo) ClojurePattern() string {
@@ -433,8 +433,8 @@ func (ti typeInfo) GoNameDoc(e Expr) string {
 	return ti.gti.NameDoc(e)
 }
 
-func (ti typeInfo) GoNameDocForType(ty types.Type) string {
-	return ti.gti.NameDocForType(ty)
+func (ti typeInfo) GoNameDocForType(pkg *types.Package) string {
+	return ti.gti.NameDocForType(pkg)
 }
 
 func (ti typeInfo) GoPackage() string {

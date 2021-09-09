@@ -746,9 +746,15 @@ func (ti *Info) NameDoc(e Expr) string {
 	return fmt.Sprintf(ti.DocPattern, ti.LocalName)
 }
 
-func (ti *Info) NameDocForType(ty types.Type) string {
-	if ty != nil && godb.GoPackageForType(ty) != ti.Package {
-		return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
+func (ti *Info) NameDocForType(pkg *types.Package) string {
+	res := func() string {
+		if pkg != nil && pkg.Path() != ti.Package {
+			return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
+		}
+		return fmt.Sprintf(ti.DocPattern, ti.LocalName)
+	}()
+	if ti.LocalName == "FileHeaderXXX" {
+		fmt.Fprintf(os.Stderr, "gtypes.go/NameDocForType: relative to pkg=%+v, %s.%s => %s\n", pkg, ti.Package, ti.LocalName, res)
 	}
-	return fmt.Sprintf(ti.DocPattern, ti.LocalName)
+	return res
 }

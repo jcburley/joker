@@ -11,7 +11,8 @@ func maybeNil(expr, captureName string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
 }
 
-func genGoPostExpr(fn *FuncInfo, indent, captureName string, ty types.Type, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostExpr(fn *FuncInfo, indent, captureName string, v *types.Var, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
+	ty := v.Type()
 	ti := TypeInfoForType(ty)
 	if ti.AsClojureObject() == "" {
 		out = fmt.Sprintf("MakeGoObjectIfNeeded(%s)", captureName)
@@ -25,8 +26,8 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, ty types.Type, only
 		out = maybeNil(captureName, out)
 	}
 	cl = ti.ClojureName()
-	clDoc = ti.ClojureNameDocForType(ty)
-	gol = ti.GoNameDocForType(ty)
+	clDoc = ti.ClojureNameDocForType(v.Pkg())
+	gol = ti.GoNameDocForType(v.Pkg())
 	conversion = ti.PromoteType()
 
 	return
@@ -39,7 +40,7 @@ func genGoPostItem(fn *FuncInfo, indent, captureName string, v *types.Var, onlyI
 	if captureName == "" || captureName == "_" {
 		captureVar = genutils.GenSym(resultName)
 	}
-	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, v.Type(), onlyIf)
+	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, v, onlyIf)
 	if captureName != "" && captureName != resultName {
 		gol = genutils.ParamNameAsGo(captureName) + " " + gol
 	}

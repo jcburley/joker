@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-func genTypePreFunc(fn *FuncInfo, ty types.Type, paramName string, isVariadic bool) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
+func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic bool) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
+	ty := v.Type()
 	ti := TypeInfoForType(ty)
 
 	pkgBaseName := fn.AddToImports(ti)
@@ -19,7 +20,7 @@ func genTypePreFunc(fn *FuncInfo, ty types.Type, paramName string, isVariadic bo
 		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
 	}
 
-	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(ty), ti.GoNameDocForType(ty)
+	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
 
 	if clType != "" {
 		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
@@ -64,7 +65,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			resVar = "_v_" + name
 			resVarDoc = name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field.Type(), resVar, argNum == args-1 && fn.Signature.Variadic())
+		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && fn.Signature.Variadic())
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
