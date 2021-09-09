@@ -168,10 +168,7 @@ func ClojureNamespaceForType(ty types.Type) string {
 		return fmt.Sprintf("ABEND929(unsupported type %T)", ty)
 	}
 	p := n.Obj().Pkg()
-	if p == nil {
-		return "<ClojureNamespaceForType(): Named w/o object>"
-	}
-	return "go.std." + ReplaceAll(p.Path(), "/", ".") // TODO: Generalize to support 3p pkgs
+	return ClojureNamespaceForPackage(p)
 }
 
 func ClojureNamespaceForDirname(d string) string {
