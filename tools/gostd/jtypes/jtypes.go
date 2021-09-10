@@ -238,18 +238,18 @@ func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nam
 		if v.NumMethods() == 0 {
 			baseName = "GoObject"
 		} else {
-			baseName = fmt.Sprintf("ABEND320(jtypes.go: %s not supported)", v.String())
+			baseName = fmt.Sprintf("ABEND320(jtypes.go: %q not supported)", v.String())
 		}
 		baseNameDoc = baseName
 	case *types.Struct:
 		if v.NumFields() == 0 {
 			baseName = "struct{}"
 		} else {
-			baseName = fmt.Sprintf("ABEND787(jtypes.go: %s not supported)", v.String())
+			baseName = fmt.Sprintf("ABEND787(jtypes.go: %q not supported)", v.String())
 		}
 		baseNameDoc = baseName
 	case *types.Signature:
-		baseName = fmt.Sprintf("ABEND727(jtypes.go: %s not supported)", v.String())
+		baseName = fmt.Sprintf("ABEND727(jtypes.go: %q not supported)", v.String())
 		baseNameDoc = baseName
 	default:
 		panic(fmt.Sprintf("unrecognized underlying %T Type %s for %T %s", uty, uty.String(), v, v.String()))
