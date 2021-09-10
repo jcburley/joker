@@ -130,7 +130,8 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 	return
 }
 
-func genTypePreReceiver(fn *FuncInfo, ty types.Type, paramName string, argNum int, isVariadic bool) (goPreCode, resExpr string) {
+func genTypePreReceiver(fn *FuncInfo, v *types.Var, paramName string, argNum int, isVariadic bool) (goPreCode, resExpr string) {
+	ty := v.Type()
 	if isVariadic {
 		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
 	}
@@ -177,7 +178,7 @@ func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
 		} else {
 			resVar = "_v_" + name
 		}
-		preCode, resExpr := genTypePreReceiver(fn, field.Type(), resVar, argNum, argNum == args-1 && isVariadic)
+		preCode, resExpr := genTypePreReceiver(fn, field, resVar, argNum, argNum == args-1 && isVariadic)
 
 		goPreCode += preCode
 
