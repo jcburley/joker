@@ -142,7 +142,7 @@ func ClojureNamespaceForPackage(pkg *types.Package) string {
 	}
 	p := pkg.Path()
 	ns := root + ReplaceAll(p, "/", ".")
-	fmt.Fprintf(os.Stderr, "godb.go/ClojureNamespaceForPackage: %s -> %s\n", p, ns)
+	//	fmt.Fprintf(os.Stderr, "godb.go/ClojureNamespaceForPackage: %s -> %s\n", p, ns)
 	return ns
 }
 
