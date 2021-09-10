@@ -218,9 +218,22 @@ func namingForType(ty types.Type) (pattern, ns, baseName, baseNameDoc, name, nam
 			}
 		}
 	case *types.Named:
-		ns = ClojureNamespaceForType(uty)
-		baseName = v.Obj().Name()
-		baseNameDoc = baseName
+		if v.Obj().Pkg() == nil {
+			builtinName := v.Obj().Name()
+			uInfo, found := typesByGoTypeName[builtinName]
+			if !found {
+				panic(fmt.Sprintf("no type info for `%s'", builtinName))
+			}
+			baseName = uInfo.FullName
+			baseNameDoc = uInfo.FullNameDoc
+			if ty == uty {
+				info = uInfo
+			}
+		} else {
+			ns = ClojureNamespaceForType(uty)
+			baseName = v.Obj().Name()
+			baseNameDoc = baseName
+		}
 	case *types.Interface:
 		if v.NumMethods() == 0 {
 			baseName = "GoObject"
