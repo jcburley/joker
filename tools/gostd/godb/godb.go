@@ -135,15 +135,20 @@ func GoPackageForTypeSpec(ts *TypeSpec) string {
 	return GoPackageForPos(ts.Pos())
 }
 
-func ClojureNamespaceForPackage(pkg *types.Package) string {
-	root := mappings[0].cljRoot
-	if pkg == nil {
-		return root + "builtin" // TODO: generalize, perhaps?
+func ClojureNamespaceForPath(s string) string {
+	if s == "" {
+		s = "builtin"
 	}
-	p := pkg.Path()
-	ns := root + ReplaceAll(p, "/", ".")
-	//	fmt.Fprintf(os.Stderr, "godb.go/ClojureNamespaceForPackage: %s -> %s\n", p, ns)
+	ns := mappings[0].cljRoot + ReplaceAll(s, "/", ".") // TODO: generalize
 	return ns
+}
+
+func ClojureNamespaceForPackage(pkg *types.Package) string {
+	s := ""
+	if pkg != nil {
+		s = pkg.Path()
+	}
+	return ClojureNamespaceForPath(s)
 }
 
 func ClojureNamespaceForPos(p token.Position) string {
@@ -163,12 +168,19 @@ func ClojureNamespaceForExpr(e Expr) string {
 }
 
 func ClojureNamespaceForType(ty types.Type) string {
-	n, ok := ty.(*types.Named)
-	if !ok {
+	switch n := ty.(type) {
+	case *types.Named:
+		p := n.Obj().Pkg()
+		return ClojureNamespaceForPackage(p)
+	case *types.Basic:
+		s := n.String()
+		if ix := Index(s, "."); ix != -1 {
+			s = s[0:ix]
+		}
+		return ClojureNamespaceForPath(s)
+	default:
 		return fmt.Sprintf("ABEND929(unsupported type %T)", ty)
 	}
-	p := n.Obj().Pkg()
-	return ClojureNamespaceForPackage(p)
 }
 
 func ClojureNamespaceForDirname(d string) string {
