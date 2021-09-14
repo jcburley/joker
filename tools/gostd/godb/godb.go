@@ -74,12 +74,16 @@ func AddMapping(dirNative paths.NativePath, root, importMe string) {
 }
 
 func goPackageForDirname(dirName string) (pkg, prefix, importMe string) {
+	prefix = mappings[0].cljRoot
 	for _, m := range mappings {
 		if HasPrefix(dirName, m.prefix.String()) {
-			return dirName[len(m.prefix.String())+1:], m.cljRoot, m.importMe
+			pkg = dirName[len(m.prefix.String())+1:]
+			prefix = m.cljRoot
+			importMe = m.importMe
+			break
 		}
 	}
-	return "", mappings[0].cljRoot, ""
+	return
 }
 
 func GoPackageForPos(p token.Pos) string {
@@ -191,7 +195,6 @@ type DeclInfo struct {
 	doc            *CommentGroup
 	ix             int // Valid for only node.(*ValueSpec)
 	pos            token.Pos
-	value          *interface{} // Computed value (if any) for constant
 }
 
 type GoFile struct {
@@ -242,10 +245,6 @@ func GoFileForExpr(e Expr) *GoFile {
 	return GoFileForPos(e.Pos())
 }
 
-func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
-	return GoFileForPos(ts.Pos())
-}
-
 var allDecls = map[string]*DeclInfo{}
 
 // ix is valid for only node.(*ValueSpec); its the index of this name
@@ -293,13 +292,6 @@ func newValueDecl(decls *map[string]*DeclInfo, pkg paths.UnixPath, specs *ValueS
 // and receivers).
 func LookupDeclInfo(fullName string) *DeclInfo {
 	return allDecls[fullName]
-}
-
-func (info *DeclInfo) FullName() string {
-	if info == nil {
-		return ""
-	}
-	return info.fullName
 }
 
 func (info *DeclInfo) Node() Node {
