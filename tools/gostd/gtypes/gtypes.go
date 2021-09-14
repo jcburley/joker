@@ -54,13 +54,13 @@ var typesByTypeName = map[string]*Info{}
 
 var typesByType = map[types.Type]*Info{}
 
-func getInfo(fullName, nilPattern string, nullable bool) *Info {
+func setBuiltinType(fullName, nilPattern string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
 
 	info := &Info{
-		who:           "getInfo",
+		who:           "setBuiltinType",
 		FullName:      fullName,
 		GoType:        nil,
 		TypeName:      fullName,
@@ -81,46 +81,6 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 
 	return info
 }
-
-var Nil = Info{}
-
-var Error = getInfo("error", "nil%.s", true)
-
-var Bool = getInfo("bool", "false%.s", false)
-
-var Byte = getInfo("byte", "0%.s", false)
-
-var Rune = getInfo("rune", "0%.s", false)
-
-var String = getInfo("string", "\"\"%.s", false)
-
-var Int = getInfo("int", "0%.s", false)
-
-var Int8 = getInfo("int8", "0%.s", false)
-
-var Int16 = getInfo("int16", "0%.s", false)
-
-var Int32 = getInfo("int32", "0%.s", false)
-
-var Int64 = getInfo("int64", "0%.s", false)
-
-var UInt = getInfo("uint", "0%.s", false)
-
-var UInt8 = getInfo("uint8", "0%.s", false)
-
-var UInt16 = getInfo("uint16", "0%.s", false)
-
-var UInt32 = getInfo("uint32", "0%.s", false)
-
-var UInt64 = getInfo("uint64", "0%.s", false)
-
-var UIntPtr = getInfo("uintptr", "0%.s", false)
-
-var Float32 = getInfo("float32", "0%.s", false)
-
-var Float64 = getInfo("float64", "0%.s", false)
-
-var Complex128 = getInfo("complex128", "0%.s", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -757,4 +717,26 @@ func (ti *Info) NameDocForType(pkg *types.Package) string {
 		fmt.Fprintf(os.Stderr, "gtypes.go/NameDocForType: relative to pkg=%+v, %s.%s => %s\n", pkg, ti.Package, ti.LocalName, res)
 	}
 	return res
+}
+
+func init() {
+	setBuiltinType("error", "nil%.s", true)
+	setBuiltinType("bool", "false%.s", false)
+	setBuiltinType("byte", "0%.s", false)
+	setBuiltinType("rune", "0%.s", false)
+	setBuiltinType("string", "\"\"%.s", false)
+	setBuiltinType("int", "0%.s", false)
+	setBuiltinType("int8", "0%.s", false)
+	setBuiltinType("int16", "0%.s", false)
+	setBuiltinType("int32", "0%.s", false)
+	setBuiltinType("int64", "0%.s", false)
+	setBuiltinType("uint", "0%.s", false)
+	setBuiltinType("uint8", "0%.s", false)
+	setBuiltinType("uint16", "0%.s", false)
+	setBuiltinType("uint32", "0%.s", false)
+	setBuiltinType("uint64", "0%.s", false)
+	setBuiltinType("uintptr", "0%.s", false)
+	setBuiltinType("float32", "0%.s", false)
+	setBuiltinType("float64", "0%.s", false)
+	setBuiltinType("complex128", "0%.s", false)
 }
