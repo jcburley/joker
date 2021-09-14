@@ -49,7 +49,7 @@ func GenSymReset() {
 // or empty string if not supported (which will trigger attempting to
 // generate appropriate code for *_native.go). gol either passes
 // through or "Object" is returned for it if cl is returned as empty.
-func ClojureReturnTypeForGenerateCustom(in_cl, in_gol string) (cl, gol string) {
+func ClojureReturnTypeForGenerateCustom(in_cl string) (cl, gol string) {
 	switch in_cl {
 	case "String", "Int", "Byte", "Double", "Boolean", "Time", "Error":
 		cl = `^"` + in_cl + `"`

@@ -247,7 +247,7 @@ func GenStandalone(fn *FuncInfo) {
 
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, fn.Signature)
-	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
+	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType)
 
 	var cl2gol string
 	if clojureReturnType == "" {
@@ -812,9 +812,9 @@ func nonGoObjectCase(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObje
 	`
 	}
 
-	return nonGoObjectCase,
-		fmt.Sprintf("GoObject[%s] or: %s", goTypeName, strings.Join(nonGoObjectTypeDocs, " or ")),
-		strings.Join(helperFuncs, "")
+	nonGoObjectCaseDoc = fmt.Sprintf("GoObject[%s] or: %s", goTypeName, strings.Join(nonGoObjectTypeDocs, " or "))
+	helperFunc = strings.Join(helperFuncs, "")
+	return
 }
 
 func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string) {
@@ -843,11 +843,14 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 			[]string{mapToType(ti, mapHelperFName, goTypeName, t)}
 	case *ArrayType:
 	}
-	return []string{"default"},
-		[]string{"whatever"},
-		[]string{fmt.Sprintf("%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-			goTypeName, ts.Type, clojureTypeName)},
-		[]string{""}
+
+	nonGoObjectTypes = []string{"default"}
+	nonGoObjectTypeDocs = []string{"whatever"}
+	extractClojureObjects = []string{fmt.Sprintf("%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
+		goTypeName, ts.Type, clojureTypeName)}
+	helperFuncs = []string{""}
+
+	return
 }
 
 func simpleTypeFor(pkgDirUnix, name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
