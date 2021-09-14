@@ -19,7 +19,6 @@ type Import struct {
 	ClojurePrefix string // E.g. "go.std."
 	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/joker/std/gostd/go/std" (for other namespaces)
 	Suffix        string // E.g. "_gostd" (for APIs generated in *_native.go files)
-	substituted   bool   // Had to substitute a different local name
 	Pos           token.Pos
 }
 
@@ -56,7 +55,6 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 	// }
 
 	components := Split(full, "/")
-	substituted := false
 	origLocal := local
 	prevComponentIndex := len(components) - 1
 	for {
@@ -65,7 +63,6 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 		if !found {
 			break
 		}
-		substituted = true
 		prevComponentIndex--
 		if prevComponentIndex >= 0 {
 			local = components[prevComponentIndex] + "_" + local
@@ -85,7 +82,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, substituted, pos}
+	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, pos}
 	// fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s\n", full, nsPrefix, pathPrefix, suffix)
 
 	return local
@@ -118,7 +115,7 @@ func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPre
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", false, pos}
+	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", pos}
 	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
 }
 
