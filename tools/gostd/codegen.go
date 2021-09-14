@@ -93,15 +93,15 @@ type funcCode struct {
 	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
 
-func genGoCall(pkgBaseName, goFname, goParams string) string {
+func genGoCall(goFname, goParams string) string {
 	return "{{myGoImport}}." + goFname + "(" + goParams + ")\n"
 }
 
-func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *types.Signature, goFname string) (fc funcCode) {
+func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
 	var goPreCode, goParams, goResultAssign, goPostCode string
 
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams = genGoPreFunc(fn)
-	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
+	goCall := genGoCall(fn.BaseName, goParams)
 	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
@@ -246,7 +246,7 @@ func GenStandalone(fn *FuncInfo) {
 	pkgBaseName := fn.SourceFile.Package.BaseName
 
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
-	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Signature, goFname)
+	fc := genFuncCode(fn, fn.Signature)
 	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
 
 	var cl2gol string
@@ -347,7 +347,7 @@ func GenVariable(vi *VariableInfo) {
 	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
 }
 
-func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string {
+func maybeImplicitConvert(typeName string, ti TypeInfo) string {
 	ts := ti.TypeSpec()
 	if ts == nil {
 		return ""
@@ -438,7 +438,7 @@ func GenType(t string, ti TypeInfo) {
 	info["TypeName"] = typeName
 	info["TypeAsString"] = t
 
-	info["Others"] = maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
+	info["Others"] = maybeImplicitConvert(typeName, ti)
 
 	coerce := ""
 	coerceRefTo := ""
@@ -827,7 +827,7 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 	}
 	switch t := ts.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name, ts.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name)
 		extractClojureObject = goTypeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -850,7 +850,7 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 		[]string{""}
 }
 
-func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func simpleTypeFor(pkgDirUnix, name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	v := TypeInfoForGoName(genutils.CombineGoName(pkgDirUnix, name))
 	nonGoObjectType = "case " + v.ArgClojureType()
 	nonGoObjectTypeDoc = v.ArgClojureType()
