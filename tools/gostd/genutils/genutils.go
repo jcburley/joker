@@ -28,13 +28,6 @@ func FuncNameAsGoPrivate(f string) string {
 	return "_f_" + strings.ToLower(f[0:1]) + f[1:]
 }
 
-func FullTypeNameAsClojure(nsRoot, t string) string {
-	if t[0] == '_' {
-		t = t[1:]
-	}
-	return nsRoot + strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(t, ".", ":"), "/", "."), ":", "/")
-}
-
 var genSymIndex = map[string]int{}
 
 func GenSym(pre string) string {
@@ -50,35 +43,6 @@ func GenSym(pre string) string {
 
 func GenSymReset() {
 	genSymIndex = map[string]int{}
-}
-
-// Generates code that, at run time, tests each of the onlyIf's and, if all true, returns the expr; else returns NIL.
-func wrapOnlyIfs(onlyIf string, e string) string {
-	if len(onlyIf) == 0 {
-		return e
-	}
-	return "func() Object { if " + onlyIf + " { return " + e + " } else { return NIL } }()"
-}
-
-// Add one level of indent to each line
-func indentedCode(c string) string {
-	return strings.ReplaceAll("\t"+strings.ReplaceAll(c, "\n", "\n\t"), "\t\n", "\n")
-}
-
-func wrapStmtOnlyIfs(indent, v, t, e string, onlyIf string, c string, out *string) string {
-	if len(onlyIf) == 0 {
-		*out = v
-		return indent + v + " := " + e + "\n" + c
-	}
-	*out = "_obj" + v
-	return indent + "var " + *out + " Object\n" +
-		indent + "if " + onlyIf + " {\n" +
-		indent + "\t" + v + " := " + e + "\n" +
-		strings.TrimRight(indentedCode(c), "\t") +
-		indent + "\t" + *out + " = Object(" + v + ")\n" +
-		indent + "} else {\n" +
-		indent + "\t" + *out + " = NIL\n" +
-		indent + "}\n"
 }
 
 // Return a form of the return type as supported by generate-std.joke,

@@ -82,27 +82,6 @@ func goPackageForDirname(dirName string) (pkg, prefix, importMe string) {
 	return "", mappings[0].cljRoot, ""
 }
 
-func GoFilenameForPos(p token.Pos) string {
-	fn := Fset.Position(p).Filename
-	dirName := filepath.ToSlash(filepath.Dir(fn))
-	pkg, _, _ := goPackageForDirname(dirName)
-	if pkg == "" {
-		panic(fmt.Sprintf("no mapping for %s", dirName))
-	}
-	return filepath.ToSlash(filepath.Join(pkg, filepath.Base(fn)))
-}
-
-func GoFilenameForExpr(e Expr) string {
-	if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
-		return "" // A builtin, so not package-qualified.
-	}
-	return GoFilenameForPos(e.Pos())
-}
-
-func GoFilenameForTypeSpec(ts *TypeSpec) string {
-	return GoFilenameForPos(ts.Pos())
-}
-
 func GoPackageForPos(p token.Pos) string {
 	dirName := path.Dir(filepath.ToSlash(Fset.Position(p).Filename))
 	pkg, _, _ := goPackageForDirname(dirName)
@@ -117,18 +96,6 @@ func GoPackageForExpr(e Expr) string {
 		return "" // A builtin, so not package-qualified.
 	}
 	return GoPackageForPos(e.Pos())
-}
-
-func GoPackageForType(ty types.Type) string {
-	n, ok := ty.(*types.Named)
-	if !ok {
-		return fmt.Sprintf("ABEND928(unsupported type %T)", ty)
-	}
-	p := n.Obj().Pkg()
-	if p == nil {
-		return "<GoPackageForType(): Named w/o object>"
-	}
-	return p.Path()
 }
 
 func GoPackageForTypeSpec(ts *TypeSpec) string {
@@ -202,10 +169,6 @@ func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
 	}
 	panic(fmt.Sprintf("could not find %s in %s",
 		pkg, g.Name))
-}
-
-func GoPackageBaseName(e Expr) string {
-	return path.Base(path.Dir(filepath.ToSlash(Fset.Position(e.Pos()).Filename)))
 }
 
 type PackageDb struct {
