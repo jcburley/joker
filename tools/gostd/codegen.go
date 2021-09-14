@@ -952,14 +952,6 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	return native
 }
 
-// Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
-	to := ti.RequiredImports()
-	for _, imp := range importeds {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, "", false, imp.Pos)
-	}
-}
-
 func init() {
 	nonEmptyLineRegexp = regexp.MustCompile(`(?m)^(.)`)
 }
