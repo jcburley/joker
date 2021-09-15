@@ -98,18 +98,17 @@ func genGoCall(goFname, goParams string) string {
 }
 
 func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
-	var goPreCode, goParams, goResultAssign, goPostCode string
+	var goParams, goResultAssign, goPostCode string
 
-	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams = genGoPreFunc(fn)
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goParams = genGoPreFunc(fn)
 	goCall := genGoCall(fn.BaseName, goParams)
-	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost("\t", t)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\treturn NIL\n"
 	}
 
-	fc.goCode = goPreCode + // Optional block of pre-code
-		"\t" + goResultAssign + goCall + // [results := ]fn-to-call([args...])
+	fc.goCode = "\t" + goResultAssign + goCall + // [results := ]fn-to-call([args...])
 		goPostCode // Optional block of post-code
 	return
 }
@@ -126,7 +125,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Signature)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost("\t", fn.Signature)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -885,7 +884,7 @@ func mapToType(ti TypeInfo, helperFName, goTypeName string, ty *StructType) stri
 	return fmt.Sprintf(hFunc, helperFName, goTypeName, goTypeCtorName, valToType)
 }
 
-func elementsToType(ti TypeInfo, ty *StructType, toType func(ti TypeInfo, i int, name string, f *Field) string) string {
+func elementsToType(ti TypeInfo, ty *StructType, toType func(TypeInfo, int, string, *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -902,7 +901,7 @@ func elementsToType(ti TypeInfo, ty *StructType, toType func(ti TypeInfo, i int,
 		`)
 }
 
-func mapElementToType(ti TypeInfo, i int, name string, f *Field) string {
+func mapElementToType(ti TypeInfo, _ int, name string, f *Field) string {
 	return valueToType(ti, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 

@@ -65,22 +65,22 @@ var typesByGoTypeName = map[string]*Info{
 }
 var typesByGoType = map[types.Type]*Info{}
 
-func patternForExpr(e Expr) (pattern string, ue Expr) {
+func patternForExpr(e Expr) (string, Expr) {
 	switch v := e.(type) {
 	case *ArrayType:
 		len, _ := astutils.IntExprToString(v.Len)
-		pattern, e = patternForExpr(v.Elt)
-		return "array" + len + "Of" + pattern, e
+		pattern, ue := patternForExpr(v.Elt)
+		return "array" + len + "Of" + pattern, ue
 	case *StarExpr:
-		pattern, e = patternForExpr(v.X)
-		return "refTo" + pattern, e
+		pattern, ue := patternForExpr(v.X)
+		return "refTo" + pattern, ue
 	case *MapType:
 		patternKey, _ := patternForExpr(v.Key)
 		patternValue, eValue := patternForExpr(v.Value)
 		res := "map_" + patternKey + "_Of_" + fmt.Sprintf(patternValue, "<whatever>")
 		return fmt.Sprintf("ABEND777(jtypes.go: multiple underlying expressions not supported: %s)", res), eValue
 	case *ChanType:
-		pattern, e = patternForExpr(v.Value)
+		pattern, ue := patternForExpr(v.Value)
 		baseName := "chan"
 		switch v.Dir {
 		case SEND:
@@ -91,7 +91,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 		default:
 			baseName = fmt.Sprintf("ABEND737(jtypes.go: %s Dir=0x%x not supported)", astutils.ExprToString(v), v.Dir)
 		}
-		return baseName + "Of" + pattern, e
+		return baseName + "Of" + pattern, ue
 	default:
 		return "%s", e
 	}
@@ -715,4 +715,4 @@ var Complex128 = &Info{
 	AsClojureObject:      "Complex(%s%s)",
 }
 
-var ConversionsFn func(e Expr) (fromClojure, fromMap string)
+var ConversionsFn func(Expr) (string, string)

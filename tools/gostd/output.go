@@ -182,17 +182,17 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 	}
 
 	SortedConstantInfoMap(v.Constants,
-		func(c string, ci *ConstantInfo) {
+		func(_ string, ci *ConstantInfo) {
 			out.WriteString(ci.Def)
 		})
 
 	SortedVariableInfoMap(v.Variables,
-		func(c string, ci *VariableInfo) {
+		func(_ string, ci *VariableInfo) {
 			out.WriteString(ci.Def)
 		})
 
 	SortedTypeInfoMap(v.Types,
-		func(t string, ti TypeInfo) {
+		func(_ string, ti TypeInfo) {
 			if !ti.IsCustom() {
 				return
 			}
@@ -200,7 +200,7 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 		})
 
 	SortedCodeMap(v,
-		func(f string, w *FnCodeInfo) {
+		func(_ string, w *FnCodeInfo) {
 			out.WriteString(w.FnCode)
 		})
 
@@ -310,7 +310,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 		})
 
 	SortedCodeMap(v,
-		func(f string, w *FnCodeInfo) {
+		func(_ string, w *FnCodeInfo) {
 			out.WriteString(w.FnCode)
 		})
 

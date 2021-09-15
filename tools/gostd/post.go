@@ -11,7 +11,7 @@ func maybeNil(expr, captureName string) string {
 	return "func () Object { if (" + expr + ") == nil { return NIL } else { return " + captureName + " } }()"
 }
 
-func genGoPostExpr(fn *FuncInfo, indent, captureName string, v *types.Var, onlyIf string) (cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostExpr(captureName string, v *types.Var) (cl, clDoc, gol, out, conversion string) {
 	ty := v.Type()
 	ti := TypeInfoForType(ty)
 	if ti.AsClojureObject() == "" {
@@ -35,12 +35,12 @@ func genGoPostExpr(fn *FuncInfo, indent, captureName string, v *types.Var, onlyI
 
 const resultName = "_res"
 
-func genGoPostItem(fn *FuncInfo, indent, captureName string, v *types.Var, onlyIf string) (captureVar, cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostItem(captureName string, v *types.Var) (captureVar, cl, clDoc, gol, out, conversion string) {
 	captureVar = captureName
 	if captureName == "" || captureName == "_" {
 		captureVar = genutils.GenSym(resultName)
 	}
-	cl, clDoc, gol, goc, out, conversion = genGoPostExpr(fn, indent, captureVar, v, onlyIf)
+	cl, clDoc, gol, out, conversion = genGoPostExpr(captureVar, v)
 	if captureName != "" && captureName != resultName {
 		gol = genutils.ParamNameAsGo(captureName) + " " + gol
 	}
@@ -48,7 +48,7 @@ func genGoPostItem(fn *FuncInfo, indent, captureName string, v *types.Var, onlyI
 }
 
 // Caller generates "outGOCALL;goc" while saving cl and gol for type info (they go into .joke as metadata and docstrings)
-func genGoPostList(fn *FuncInfo, indent string, tuple *types.Tuple) (cl, clDoc, gol, goc, out, conversion string) {
+func genGoPostList(indent string, tuple *types.Tuple) (cl, clDoc, gol, goc, out, conversion string) {
 	captureVars := []string{}
 	clType := []string{}
 	clTypeDoc := []string{}
@@ -66,7 +66,8 @@ func genGoPostList(fn *FuncInfo, indent string, tuple *types.Tuple) (cl, clDoc, 
 		if multipleCaptures {
 			captureName = n
 		}
-		captureVar, clNew, clDocNew, golNew, gocNew, outNew, conversionNew := genGoPostItem(fn, indent, captureName, field, "")
+		captureVar, clNew, clDocNew, golNew, outNew, conversionNew := genGoPostItem(captureName, field)
+		gocNew := ""
 		if multipleCaptures {
 			gocNew += indent + result + " = " + result + ".Conjoin(" + outNew + ")\n"
 		} else {
@@ -125,11 +126,11 @@ func genGoPostList(fn *FuncInfo, indent string, tuple *types.Tuple) (cl, clDoc, 
 	return
 }
 
-func genGoPost(fn *FuncInfo, indent string, t *types.Signature) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, conversion string) {
+func genGoPost(indent string, t *types.Signature) (goResultAssign, clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, conversion string) {
 	res := t.Results()
 	if res == nil || res.Len() == 0 {
 		return
 	}
-	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign, conversion = genGoPostList(fn, indent, res)
+	clojureReturnType, clojureReturnTypeForDoc, goReturnTypeForDoc, goReturnCode, goResultAssign, conversion = genGoPostList(indent, res)
 	return
 }

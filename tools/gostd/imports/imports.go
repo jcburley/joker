@@ -119,7 +119,7 @@ func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPre
 	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
 }
 
-func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
+func SortedOriginalPackageImports(p *Package, filter func(string) bool, f func(string, token.Pos)) {
 	imports := map[string]token.Pos{}
 	for _, f := range p.Files {
 		for _, impSpec := range f.Imports {
@@ -152,7 +152,7 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	}
 }
 
-func (pi *Imports) sort(f func(k string, v *Import)) {
+func (pi *Imports) sort(f func(string, *Import)) {
 	var keys []string
 	for k, _ := range pi.FullNames {
 		keys = append(keys, k)

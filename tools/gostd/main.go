@@ -76,7 +76,7 @@ Options:
 	os.Exit(0)
 }
 
-func listOfOthers(other paths.NativePath) (others []paths.NativePath) {
+func listOfOthers(other paths.NativePath) []paths.NativePath {
 	o := goPath.JoinPaths(other).String()
 	s, e := os.Stat(o)
 	if e != nil {
@@ -89,7 +89,7 @@ func listOfOthers(other paths.NativePath) (others []paths.NativePath) {
 	}
 	fmt.Fprintf(os.Stderr, "files not yet supported: %s\n", other)
 	os.Exit(3)
-	return
+	return []paths.NativePath{}
 }
 
 var coreApiFilename = "core-apis.dat"
@@ -133,7 +133,7 @@ func readCoreApiFile(src paths.NativePath) {
 	//	fmt.Printf("Core APIs: %+v\n", definedApis)
 }
 
-func NewDefinedApi(api, src string) {
+func NewDefinedApi(api, _ string) {
 	definedApis[api] = struct{}{}
 	//	fmt.Printf("%s: Defined API '%s'\n", src, api)
 }
@@ -360,12 +360,12 @@ func main() {
 	SetSwitchableTypes(allTypesSorted)
 
 	SortedConstantInfoMap(GoConstants,
-		func(c string, ci *ConstantInfo) {
+		func(_ string, ci *ConstantInfo) {
 			GenConstant(ci)
 		})
 
 	SortedVariableInfoMap(GoVariables,
-		func(c string, ci *VariableInfo) {
+		func(_ string, ci *VariableInfo) {
 			GenVariable(ci)
 		})
 
@@ -381,7 +381,7 @@ func main() {
 
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
-		func(f string, v *FuncInfo) {
+		func(_ string, v *FuncInfo) {
 			//			fmt.Printf("main.go: Qualifiedfunctions[%s]\n", f)
 			if v == nil {
 				return // Nil'ed out due to more than one entry (ambiguous reference would result)

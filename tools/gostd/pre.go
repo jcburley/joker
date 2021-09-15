@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic bool) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
+func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic bool) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam, newResVar string) {
 	ty := v.Type()
 	if isVariadic {
 		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
@@ -53,7 +53,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic boo
 }
 
 func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
-	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
+	clojureGoParams, goParamList, goParamListDoc, goParams string) {
 	tuple := fn.Signature.Params()
 	args := tuple.Len()
 	isVariadic := fn.Signature.Variadic()
@@ -69,7 +69,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			resVar = "_v_" + name
 			resVarDoc = name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && isVariadic)
+		clType, clTypeDoc, goType, goTypeDoc, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && isVariadic)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -86,13 +86,6 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			clojureParamListDoc += clTypeDoc + " "
 		}
 		clojureParamListDoc += genutils.ParamNameAsClojure(resVarDoc)
-
-		if preCode != "" {
-			if goPreCode != "" {
-				goPreCode += "\n\t"
-			}
-			goPreCode += preCode
-		}
 
 		if clojureGoParams != "" {
 			clojureGoParams += ", "
