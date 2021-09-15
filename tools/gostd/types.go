@@ -25,25 +25,19 @@ type TypeInfo interface {
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
 	ClojureEffectiveName() string
-	ClojureNameDoc(e Expr) string
 	ClojureNameDocForType(*types.Package) string
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
-	ClojureWho() string
 	RequiredImports() *imports.Imports
 	GoName() string
-	GoEffectiveName() string // Substitutes what actually works in generated Go code (interface{} instead of unsafe.Arbitrary)
-	GoNameDoc(e Expr) string
-	GoNameDocForType(pkg *types.Package) string // Relative to pkg
+	GoNameDocForType(*types.Package) string // Relative to pkg
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
-	GoType() types.Type
-	GoTypeExpr() Expr // The actual (Go) type (if any)
+	GoTypeExpr() Expr            // The actual (Go) type (if any)
 	GoTypeInfo() *gtypes.Info
-	GoTypeName() string
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
 	UnderlyingType() Expr // nil if not a declared type
@@ -55,18 +49,15 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
-	Namespace() string   // E.g. "go.std.os"
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
-	IsBuiltin() bool
 	IsSwitchable() bool      // Can (Go) name be used in a 'case' statement or type assertion?
 	IsAddressable() bool     // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress() bool // Excludes builtins, some complex, and interface{} types
 	IsArbitraryType() bool   // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsCtorable() bool        // Whether a ctor for this type can (and will) be created
-	IsReferenced() bool      // Either exported or referenced via an embed in an exported type
 }
 
 type TypesMap map[string]TypeInfo
@@ -318,7 +309,7 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 	return
 }
 
-func SortedTypeInfoMap(m TypesMap, f func(k string, v TypeInfo)) {
+func SortedTypeInfoMap(m TypesMap, f func(string, TypeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		if k[0] == '*' {
@@ -419,14 +410,6 @@ func (ti typeInfo) RequiredImports() *imports.Imports {
 
 func (ti typeInfo) GoName() string {
 	return ti.gti.FullName
-}
-
-func (ti typeInfo) GoEffectiveName() string {
-	if ti.gti.IsArbitraryType {
-		return "interface{}"
-	}
-	return ti.gti.FullName
-
 }
 
 func (ti typeInfo) GoNameDoc(e Expr) string {
