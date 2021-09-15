@@ -125,6 +125,8 @@ func insert(ti *Info) {
 		} else {
 			typesByType[gt] = ti
 		}
+	} else {
+		//		panic(fmt.Sprintf("nil GoType for %s (%s)", fullName, typeName))
 	}
 
 	if existingTi, ok := typesByFullName[fullName]; ok {
@@ -188,7 +190,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	if found {
 		typeName = tav.Type().String()
 	} else {
-		// panic(fmt.Sprintf("cannot find type info for %s", fullName))
+		fmt.Fprintf(os.Stderr, "cannot find type info for %s", fullName)
 		typeName = fullName
 	}
 
@@ -204,7 +206,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
 
-	types := []*Info{}
+	typs := []*Info{}
 
 	var specificity uint
 	isArbitraryType := false
@@ -223,6 +225,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		ti = &Info{
 			Expr:              ts.Name,
 			FullName:          fullName,
+			GoType:            tav.(*types.TypeName).Type(),
 			TypeName:          typeName,
 			who:               "TypeDefine",
 			Type:              ts.Type,
@@ -245,7 +248,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		}
 		insert(ti)
 	}
-	types = append(types, ti)
+	typs = append(typs, ti)
 
 	if ti.Specificity == Concrete {
 		// Concrete types get a reference-to variant, allowing Clojure code to access them.
@@ -278,7 +281,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			}
 			insert(tiPtrTo)
 		}
-		types = append(types, tiPtrTo)
+		typs = append(typs, tiPtrTo)
 	}
 
 	newPattern := fmt.Sprintf(ti.Pattern, "[]%s")
@@ -309,9 +312,9 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		}
 		insert(tiArrayOf)
 	}
-	types = append(types, tiArrayOf)
+	typs = append(typs, tiArrayOf)
 
-	return types
+	return typs
 }
 
 func InfoForName(fullName string) *Info {
@@ -382,20 +385,16 @@ func InfoForTypeByName(ty types.Type) *Info {
 	if ti, ok := typesByTypeName[typeName]; ok {
 		return ti
 	}
-	// switch typeName {
-	// case "func(fd uintptr)":
-	// 	typeName = "func(uintptr)"
 
-	// case "func(fd uintptr) (done bool)":
-	// 	typeName = "func(uintptr) bool"
-	// }
 	tryThis := justTheTypesMaam(ty)
 	if tryThis == "" || tryThis == typeName {
 		return nil
 	}
+
 	if ti, ok := typesByTypeName[tryThis]; ok {
 		return ti
 	}
+
 	fmt.Fprintf(os.Stderr, "gtypes.go/InfoForTypeName: tried %s, then %s, but both failed!\n", typeName, tryThis)
 	return nil
 }
