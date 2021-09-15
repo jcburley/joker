@@ -86,7 +86,7 @@ func writeCustomLibsClojure(pkgs []string, dir, f paths.NativePath) {
 	}
 }
 
-var Ordinal = map[TypeInfo]uint{}
+var Ordinal = map[TypeInfo]int{}
 var SwitchableTypes []TypeInfo // Set by GenTypeInfo() to subset of AllTypesSorted() that will go into the Go Type Switch
 
 func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
@@ -117,7 +117,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 					return 0 // These won't occur here (if they did, no comment would be emitted).
 				}
 			}(),
-			"ordinal": Ordinal[t],
+			"ordinal": Ordinal[t] - 1,
 		})
 	}
 
@@ -370,7 +370,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() || !ti.IsSwitchable() {
 				return
 			}
-			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti], tmn)
+			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti]-1, tmn)
 			out.WriteString(o)
 		})
 

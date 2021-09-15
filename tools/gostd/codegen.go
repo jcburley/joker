@@ -538,7 +538,7 @@ func genCtor(tyi TypeInfo) {
 
 func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	var types []TypeInfo
-	ord := (uint)(0)
+	ord := 0
 
 	for _, ti := range allTypesSorted {
 		more := false
@@ -561,7 +561,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 			continue
 		}
 		types = append(types, ti)
-		Ordinal[ti] = ord
+		Ordinal[ti] = ord + 1
 		if more {
 			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.GoName(), ti.Specificity())
 		}
