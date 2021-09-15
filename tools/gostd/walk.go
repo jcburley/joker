@@ -39,8 +39,6 @@ var NumGeneratedVariables int
 var NumGeneratedCtors int
 
 type PackageInfo struct {
-	DirUnix          string
-	BaseName         string
 	ImportsNative    *imports.Imports
 	ImportsAutoGen   *imports.Imports
 	Pkg              *Package
@@ -54,7 +52,7 @@ var PackagesInfo = map[string]*PackageInfo{}
 
 /* Sort the packages -- currently appears to not actually be
 /* necessary, probably because of how walkDirs() works. */
-func SortedPackagesInfo(m map[string]*PackageInfo, f func(k string, i *PackageInfo)) {
+func SortedPackagesInfo(m map[string]*PackageInfo, f func(string, *PackageInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -90,7 +88,7 @@ var ClojureCodeForType = map[TypeInfo]string{}
 var GoCode = map[string]CodeInfo{}
 var GoCodeForType = map[TypeInfo]string{}
 
-func SortedPackageMap(m map[string]CodeInfo, f func(k string, v CodeInfo)) {
+func SortedPackageMap(m map[string]CodeInfo, f func(string, CodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -101,7 +99,7 @@ func SortedPackageMap(m map[string]CodeInfo, f func(k string, v CodeInfo)) {
 	}
 }
 
-func SortedCodeMap(m CodeInfo, f func(k string, v *FnCodeInfo)) {
+func SortedCodeMap(m CodeInfo, f func(string, *FnCodeInfo)) {
 	var keys []string
 	for k, _ := range m.Functions {
 		keys = append(keys, k)
@@ -112,7 +110,7 @@ func SortedCodeMap(m CodeInfo, f func(k string, v *FnCodeInfo)) {
 	}
 }
 
-func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(k string, v *FnCodeInfo)) {
+func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(string, *FnCodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -140,13 +138,13 @@ type FuncInfo struct {
 	Comment        string
 }
 
-func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func initPackage(pkgDirUnix string, p *Package) {
 	if godb.Verbose {
 		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{pkgDirUnix, filepath.Base(pkgDirUnix), &imports.Imports{}, &imports.Imports{},
+		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
@@ -187,7 +185,7 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 /* sprinkled through this code. Still get some reuse out of some of
 /* them, and it's still easier to maintain these copies than if the
 /* body of these were to be included at each call point.... */
-func SortedFuncInfoMap(m map[string]*FuncInfo, f func(k string, v *FuncInfo)) {
+func SortedFuncInfoMap(m map[string]*FuncInfo, f func(string, *FuncInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -258,7 +256,7 @@ func processFieldsForTypes(items []astutils.FieldItem) {
 	}
 }
 
-func declFuncForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl) {
+func declFuncForTypes(_ *godb.GoFile, _ string, _ *File, fd *FuncDecl) {
 	if !IsExported(fd.Name.Name) {
 		return // Skipping non-exported functions
 	}
@@ -268,7 +266,7 @@ func declFuncForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl)
 	processFieldsForTypes(astutils.FlattenFieldList(fd.Type.Results))
 }
 
-func processValueSpecsForTypes(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+func processValueSpecsForTypes(_ *godb.GoFile, _ string, tss []Spec, _ *CommentGroup) {
 	for _, spec := range tss {
 		ts := spec.(*ValueSpec)
 		if astutils.AnyNamesExported(ts.Names) {
@@ -326,7 +324,7 @@ func receiverId(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
 	return res
 }
 
-func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, f *File, fd *FuncDecl, isExportable bool) {
+func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, isExportable bool) {
 	if WalkDump {
 		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p exportable=%v fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, isExportable, fd.Doc)
 		Print(godb.Fset, fd)
@@ -408,7 +406,7 @@ func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Commen
 	}
 }
 
-func processTypesForTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup) {
+func processTypesForTypeDecls(_ *godb.GoFile, _ string, tss []Spec, _ *CommentGroup) {
 	var ts *TypeSpec
 
 	defer func() {
@@ -433,7 +431,7 @@ type GoVariablesMap map[string]*VariableInfo
 
 var GoVariables = GoVariablesMap{}
 
-func SortedVariableInfoMap(m map[string]*VariableInfo, f func(k string, v *VariableInfo)) {
+func SortedVariableInfoMap(m map[string]*VariableInfo, f func(string, *VariableInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -454,7 +452,7 @@ type GoConstantsMap map[string]*ConstantInfo
 
 var GoConstants = GoConstantsMap{}
 
-func SortedConstantInfoMap(m map[string]*ConstantInfo, f func(k string, v *ConstantInfo)) {
+func SortedConstantInfoMap(m map[string]*ConstantInfo, f func(string, *ConstantInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -727,11 +725,11 @@ func declFunc(gf *godb.GoFile, pkgDirUnix string, f *File, v *FuncDecl) {
 	processFuncDecl(gf, pkgDirUnix, f, v, isExportable)
 }
 
-func declType(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
+func declType(gf *godb.GoFile, pkgDirUnix string, _ *File, v *GenDecl) {
 	processTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 }
 
-func declTypesForTypes(gf *godb.GoFile, pkgDirUnix string, f *File, v *GenDecl) {
+func declTypesForTypes(gf *godb.GoFile, pkgDirUnix string, _ *File, v *GenDecl) {
 	processTypesForTypeDecls(gf, pkgDirUnix, v.Specs, v.Doc)
 }
 
@@ -812,7 +810,7 @@ func phaseOtherDecls(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	})
 }
 
-func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFunc) {
+func processPackage(rootUnix, pkgDirUnix, _ string, p *Package, fn phaseFunc) {
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := godb.GoFilesRelative[goFilePathUnix]
@@ -1005,7 +1003,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 		if _, err := myImporter(cfg, info, pkg); err != nil {
 			fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", pkg, err)
 		}
-		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
+		initPackage(wp.Dir.String(), wp.Pkg)
 	}
 
 	for _, phase := range phases {

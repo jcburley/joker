@@ -598,7 +598,7 @@ func typeKeyForSort(ti TypeInfo) string {
 	return genutils.CombineGoName(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
 }
 
-func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
+func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(TypeInfo)) {
 	var keys []string
 	vals := TypesMap{}
 	for k, _ := range m {
