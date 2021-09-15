@@ -10,7 +10,6 @@ import (
 	"go/token"
 	"go/types"
 	"os"
-	"path"
 	"strings"
 )
 
@@ -669,31 +668,11 @@ func InfoForExpr(e Expr) *Info {
 	return ti
 }
 
-func (ti *Info) Reflected() (packageImport, pattern string) {
-	t := ""
-	suffix := ".Elem()"
-	if tiu := ti.UnderlyingType; tiu != nil {
-		t = "_" + path.Base(tiu.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
-		suffix = ""
-	} else {
-		t = "_" + path.Base(ti.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
-	}
-	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
-}
-
 func (ti *Info) RelativeName(pos token.Pos) string {
 	pkgPrefix := ti.Package
 	if pkgPrefix == godb.GoPackageForPos(pos) {
 		pkgPrefix = ""
 	} else if pkgPrefix != "" {
-		pkgPrefix += "."
-	}
-	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
-}
-
-func (ti *Info) AbsoluteName() string {
-	pkgPrefix := ti.Package
-	if pkgPrefix != "" {
 		pkgPrefix += "."
 	}
 	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
