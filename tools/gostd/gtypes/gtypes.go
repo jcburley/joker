@@ -179,15 +179,23 @@ func isTypeNewable(ti *Info) bool {
 	return ti.Pattern == "%s" && isTypeAddressable(ti.FullName)
 }
 
-func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
+func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Info) {
 	localName := ts.Name.Name
 	pkg := godb.GoPackageForTypeSpec(ts)
 	fullName := computeFullName("%s", pkg, localName)
 	ti := typesByFullName[fullName]
 
 	var typeName string
+	var ty types.Type
 	tav, found := astutils.TypeCheckerInfo.Defs[ts.Name]
 	if found {
+		tn := tav.(*types.TypeName)
+		if tn.IsAlias() {
+			// ty = ty.Underlying()
+			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
+			return
+		}
+		ty = tn.Type()
 		typeName = tav.Type().String()
 	} else {
 		fmt.Fprintf(os.Stderr, "cannot find type info for %s", fullName)
@@ -206,8 +214,6 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
 
-	typs := []*Info{}
-
 	var specificity uint
 	isArbitraryType := false
 	if fullName == "unsafe.ArbitraryType" || fullName == "unsafe.IntegerType" {
@@ -225,7 +231,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		ti = &Info{
 			Expr:              ts.Name,
 			FullName:          fullName,
-			GoType:            tav.(*types.TypeName).Type(),
+			GoType:            ty,
 			TypeName:          typeName,
 			who:               "TypeDefine",
 			Type:              ts.Type,
@@ -314,7 +320,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	}
 	typs = append(typs, tiArrayOf)
 
-	return typs
+	return
 }
 
 func InfoForName(fullName string) *Info {
@@ -462,7 +468,11 @@ func InfoForExpr(e Expr) *Info {
 			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
 		}
 
-		return Define(ts, nil, di.Doc())[0] // Return the base type, not the * or [] variants.
+		typs := Define(ts, nil, di.Doc())
+		if len(typs) > 0 {
+			return typs[0] // Return the base type, not the * or [] variants.
+		}
+		return nil
 	}
 
 	var innerInfo *Info
@@ -495,6 +505,9 @@ func InfoForExpr(e Expr) *Info {
 		isCtorable = isTypeNewable(innerInfo)
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
+		if innerInfo == nil {
+			return nil
+		}
 		len, docLen := astutils.IntExprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		docPattern = "[" + docLen + "]%s"
