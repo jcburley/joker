@@ -108,6 +108,9 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 		if t.GoPackage() != "" {
 			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", "", true, token.NoPos) + "."
 		}
+		if Ordinal[t] == 0 {
+			fmt.Fprintf(os.Stderr, "output.go/writeGoTypeSwitch: ERROR: No ordinal assigned to %s @%p\n", t, t)
+		}
 		cases = append(cases, map[string]interface{}{
 			"match": fmt.Sprintf(t.GoPattern(), pkgPlusSeparator+t.GoBaseName()),
 			"specificity": func() uint {
@@ -369,6 +372,9 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			tmn := ti.TypeMappingsName()
 			if tmn == "" || !ti.IsExported() || ti.IsArbitraryType() || !ti.IsSwitchable() {
 				return
+			}
+			if Ordinal[ti] == 0 {
+				fmt.Fprintf(os.Stderr, "output.go/outputGoCode: ERROR: No ordinal assigned to %s @%p\n", ti, ti)
 			}
 			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti]-1, tmn)
 			out.WriteString(o)

@@ -142,7 +142,7 @@ func insert(ti *Info) {
 		//		fmt.Fprintf(os.Stderr, "gtypes.insert(typeName): %s already seen/defined type %s (aka %s) at %s (%p) and again (aka %s) at %s (%p)\n", ti.who, typeName, existingTi.FullName, godb.WhereAt(existingTi.DefPos), existingTi, fullName, godb.WhereAt(ti.DefPos), ti)
 	}
 
-	if fullName == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+	if false && fullName == "[][]*crypto/x509.Certificate" {
 		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
 	}
 
@@ -192,7 +192,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Inf
 		tn := tav.(*types.TypeName)
 		if tn.IsAlias() {
 			// ty = ty.Underlying()
-			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
+			//			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
 			return
 		}
 		ty = tn.Type()
@@ -622,9 +622,6 @@ func InfoForExpr(e Expr) *Info {
 	tav, found := astutils.TypeCheckerInfo.Types[e]
 	if found {
 		typeName = tav.Type.String()
-		// if strings.Contains(typeName, "uint8") {
-		// 	fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): found type info for %s\n", typeName)
-		// }
 	} else {
 		typeName = fullName
 		fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): cannot find type info for %s\n", fullName)
@@ -704,7 +701,7 @@ func (ti *Info) NameDocForType(pkg *types.Package) string {
 		}
 		return fmt.Sprintf(ti.DocPattern, ti.LocalName)
 	}()
-	if ti.LocalName == "FileHeaderXXX" {
+	if false && ti.LocalName == "FileHeader" {
 		fmt.Fprintf(os.Stderr, "gtypes.go/NameDocForType: relative to pkg=%+v, %s.%s => %s\n", pkg, ti.Package, ti.LocalName, res)
 	}
 	return res
