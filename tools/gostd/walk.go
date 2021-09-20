@@ -22,6 +22,9 @@ import (
 	. "strings"
 )
 
+// See libroot def in std/generate-std.joke.
+const LibRoot = "joker.std."
+
 var WalkDump bool
 
 var NumFunctions int
@@ -205,7 +208,7 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	if exprPkgName == "" {
 		return ""
 	}
-	clojureStdNs := "joker.std." + fn.SourceFile.Package.NsRoot
+	clojureStdNs := LibRoot + fn.SourceFile.Package.NsRoot
 	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String(), goStdPrefix.String()).ToUnix().String()
 
 	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)

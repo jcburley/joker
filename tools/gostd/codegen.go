@@ -926,7 +926,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
 	clType := v.ClojureEffectiveName()
-	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
+	apiImportName := addApiToImports(ti, clType)
 	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
 
 	deref := ""
