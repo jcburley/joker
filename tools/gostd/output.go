@@ -375,9 +375,10 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 			}
 			if Ordinal[ti] == 0 {
 				fmt.Fprintf(os.Stderr, "output.go/outputGoCode: ERROR: No ordinal assigned to %s @%p\n", ti, ti)
+			} else {
+				o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti]-1, tmn)
+				out.WriteString(o)
 			}
-			o := fmt.Sprintf("\tGoTypesVec[%d] = &%s\n", Ordinal[ti]-1, tmn)
-			out.WriteString(o)
 		})
 
 	if ensure != "" {
