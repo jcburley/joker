@@ -702,7 +702,9 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					// support, due to embedding T
 					// as a GoObject[interface{}]
 					// of T, not *T.
-					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
+					if false {
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
+					}
 					continue
 				}
 
