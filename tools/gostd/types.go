@@ -137,7 +137,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			ti = &typeInfo{
 				jti:             jti,
 				gti:             gti,
-				requiredImports: &imports.Imports{},
+				requiredImports: &imports.Imports{For: "Type " + gti.FullName},
 				who:             "RegisterTypeDecl",
 			}
 
@@ -238,7 +238,7 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{},
+			requiredImports: &imports.Imports{For: "TypeInfoForExpr " + gti.FullName},
 			who:             "TypeInfoForExpr",
 		}
 	}
@@ -270,7 +270,7 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{},
+			requiredImports: &imports.Imports{For: "TypeInfoForGoName " + gti.FullName},
 			who:             "TypeInfoForGoName",
 		}
 	}
@@ -303,7 +303,7 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{},
+			requiredImports: &imports.Imports{For: "TypeInfoForType " + gti.FullName},
 			who:             "TypeInfoForType",
 		}
 	}

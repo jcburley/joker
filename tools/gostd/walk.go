@@ -147,7 +147,9 @@ func initPackage(pkgDirUnix string, p *Package) {
 	}
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
-		PackagesInfo[pkgDirUnix] = &PackageInfo{&imports.Imports{}, &imports.Imports{},
+		PackagesInfo[pkgDirUnix] = &PackageInfo{
+			&imports.Imports{For: "Native " + pkgDirUnix},
+			&imports.Imports{For: "AutoGen " + pkgDirUnix},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
@@ -212,12 +214,15 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String(), goStdPrefix.String()).ToUnix().String()
 
 	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
-	if curPkgName.String() == ti.GoPackage() {
+	if curPkgName.String() == exprPkgName {
 		return native
 	}
 	autoGen := fn.ImportsAutoGen.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
 	if native != autoGen {
 		panic(fmt.Sprintf("disagreement over '%s': native='%s' autoGen='%s'", exprPkgName, native, autoGen))
+	}
+	if Contains(fn.Name, "Chmod") {
+		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToImports(%s): %s adding [%q %q] yielding %s:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), exprPkgName, clojureStdNs, clojureStdPath, native, fn.ImportsAutoGen)
 	}
 	return native
 }
@@ -387,8 +392,8 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		Signature:      sig,
 		Doc:            fd.Doc,
 		SourceFile:     gf,
-		ImportsNative:  &imports.Imports{},
-		ImportsAutoGen: &imports.Imports{},
+		ImportsNative:  &imports.Imports{For: "Native " + fullName},
+		ImportsAutoGen: &imports.Imports{For: "AutoGen " + fullName},
 		Pos:            fd.Pos(),
 		Comment:        "defined function",
 	}
@@ -428,6 +433,7 @@ type VariableInfo struct {
 	Name       *Ident
 	SourceFile *godb.GoFile
 	Def        string
+	Pos        token.Pos
 }
 
 type GoVariablesMap map[string]*VariableInfo
@@ -449,6 +455,7 @@ type ConstantInfo struct {
 	Name       *Ident
 	SourceFile *godb.GoFile
 	Def        string
+	Pos        token.Pos
 }
 
 type GoConstantsMap map[string]*ConstantInfo
@@ -580,7 +587,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, doc
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "clojure-constant-def.tmpl", constantDefInfo)
 
-	gt := &ConstantInfo{name, gf, buf.String()}
+	gt := &ConstantInfo{name, gf, buf.String(), val.Pos()}
 	GoConstants[fullName] = gt
 	NumGeneratedConstants++
 
@@ -611,7 +618,7 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, docString str
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "clojure-variable-def.tmpl", variableDefInfo)
 
-	gt := &VariableInfo{name, gf, buf.String()}
+	gt := &VariableInfo{name, gf, buf.String(), name.NamePos}
 	GoVariables[fullName] = gt
 	NumGeneratedVariables++
 

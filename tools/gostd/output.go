@@ -97,7 +97,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	}
 
 	var cases []map[string]interface{}
-	var importeds = &imports.Imports{}
+	var importeds = &imports.Imports{For: "writeGoTypeSwitch"}
 	for _, t := range types {
 		specificity := t.Specificity()
 		if specificity == 0 {

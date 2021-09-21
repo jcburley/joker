@@ -98,6 +98,12 @@ func genGoCall(goFname, goParams string) string {
 }
 
 func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", fn.Name, godb.WhereAt(fn.Pos), x))
+		}
+	}()
+
 	var goParams, goResultAssign, goPostCode string
 
 	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goParams = genGoPreFunc(fn)
@@ -326,6 +332,12 @@ func GenStandalone(fn *FuncInfo) {
 }
 
 func GenConstant(ci *ConstantInfo) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", ci.Name, godb.WhereAt(ci.Pos), x))
+		}
+	}()
+
 	genutils.GenSymReset()
 	pkgDirUnix := ci.SourceFile.Package.Dir.String()
 
@@ -335,6 +347,12 @@ func GenConstant(ci *ConstantInfo) {
 }
 
 func GenVariable(vi *VariableInfo) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", vi.Name, godb.WhereAt(vi.Pos), x))
+		}
+	}()
+
 	genutils.GenSymReset()
 	pkgDirUnix := vi.SourceFile.Package.Dir.String()
 
@@ -482,6 +500,12 @@ func genCtor(tyi TypeInfo) {
 		return
 	}
 
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", tyi.GoName(), godb.WhereAt(tyi.DefPos()), x))
+		}
+	}()
+
 	refTo := ""
 	uti := tyi
 	ts := tyi.TypeSpec()
@@ -590,19 +614,20 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
 		return
 	}
+	docName := "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()"
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       name,
 		ReceiverId:     receiverId,
 		Name:           baseName,
-		DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()",
+		DocName:        docName,
 		EmbedName:      embedName,
 		Fd:             nil,
 		ToM:            ti,
 		Signature:      sig,
 		Doc:            doc,
 		SourceFile:     ti.GoFile(),
-		ImportsNative:  &imports.Imports{},
-		ImportsAutoGen: &imports.Imports{},
+		ImportsNative:  &imports.Imports{For: "Native " + docName},
+		ImportsAutoGen: &imports.Imports{For: "AutoGen " + docName},
 		Pos:            pos,
 		Comment:        comment,
 	}
