@@ -234,14 +234,13 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 	}
 
 	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), ReplaceAll(clType[0:ix], ".", "/")).String()
-	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
 	//	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
 
 	clojureStdNs := fn.SourceFile.Package.NsRoot
-	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, fn.Pos)
+	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, generatedPkgPrefix, "_gostd", true, fn.Pos)
 
 	return native
 }

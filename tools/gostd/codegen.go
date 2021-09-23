@@ -969,14 +969,13 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	}
 
 	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), strings.ReplaceAll(clType[0:ix], ".", "/")).String()
-	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
 	//	fmt.Fprintf(os.Stderr, "codegen.go/addApiToImports: Compared %s to %s\n", apiPkgPath, fn.GoFile().Package.ImportMe)
 	if apiPkgPath == ti.GoFile().Package.ImportMe {
 		return "" // api is local to function
 	}
 
 	clojureStdNs := ti.GoFile().Package.NsRoot
-	native := ti.RequiredImports().AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, ti.DefPos())
+	native := ti.RequiredImports().AddPackage(apiPkgPath, clojureStdNs, generatedPkgPrefix, "_gostd", true, ti.DefPos())
 
 	return native
 }
