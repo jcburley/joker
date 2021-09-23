@@ -3,7 +3,6 @@ package imports
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
 	"os"
@@ -18,16 +17,15 @@ type Import struct {
 	Local         string // "foo", "_", or "."
 	Full          string // "bar/bletch/foo"
 	ClojurePrefix string // E.g. "go.std."
-	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/joker/std/gostd/go/std" (for other namespaces)
-	Suffix        string // E.g. "_gostd" (for APIs generated in *_native.go files)
 	Pos           token.Pos
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
 type Imports struct {
-	For        string             // For diagnostics/reporting.
-	LocalNames map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
-	FullNames  map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
+	MySourcePkg string             // E.g. "foo/bar", meaning don't emit the corresponding namespace (use empty string instead)
+	For         string             // For diagnostics/reporting.
+	LocalNames  map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
+	FullNames   map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
 }
 
 // Given the full (though relative) name of the package to be
@@ -35,19 +33,17 @@ type Imports struct {
 // component of the full name) that agrees with any existing entry and
 // isn't already used, trying alternate local names as necessary, add
 // the mapping if necessary, and return the local name.
-func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, okToSubstitute bool, pos token.Pos) string {
-	// full = path.Join(pathPrefix, full)
-	// pathPrefix = ""
+func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, pos token.Pos) string {
 	if imports == nil {
 		panic(fmt.Sprintf("%q: is nil for %s at %s", imports.For, full, godb.WhereAt(pos)))
 	}
 	more := false
 	if Contains(full, "io/fs") || Contains(full, "zip") {
 		more = true
-		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(%q, %q, %q, %q, %v) at %s\n", imports.For, full, nsPrefix, pathPrefix, suffix, okToSubstitute, godb.WhereAt(pos))
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(%q, %q, %v) at %s\n", imports.For, full, nsPrefix, okToSubstitute, godb.WhereAt(pos))
 	}
 
-	local := path.Base(full) + suffix
+	local := path.Base(full)
 
 	if e, found := imports.FullNames[full]; found {
 		if e.Local == local {
@@ -56,7 +52,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 		if okToSubstitute {
 			return e.Local
 		}
-		panic(fmt.Sprintf("imports.go/(%q)AddPackage(%q) at %s cannot supercede [%q %q] at %s", imports.For, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
+		panic(fmt.Sprintf("imports.go/(%q)AddPackage([%q %q]) at %s cannot supercede [%q %q] at %s", imports.For, local, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
 	}
 
 	if more {
@@ -91,9 +87,9 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, pos}
+	imports.FullNames[full] = &Import{local, full, nsPrefix, pos}
 	if more {
-		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s local=%s\n", imports.For, full, nsPrefix, pathPrefix, suffix, local)
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(): full=%s nsPrefix=%s local=%s\n", imports.For, full, nsPrefix, local)
 	}
 
 	return local
@@ -102,10 +98,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 // Given the full (though relative) name of the package, establish it
 // as the (only) interned package (using the "."  name in Go's
 // 'import' statement).
-func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPrefix string, pos token.Pos) {
-	full := fullPath.String()
-	// full = path.Join(pathPrefix, full)
-	// pathPrefix = ""
+func (imports *Imports) InternPackage(full string, nsPrefix string, pos token.Pos) {
 	if imports == nil {
 		panic(fmt.Sprintf("nil imports for %s at %s", full, godb.WhereAt(pos)))
 	}
@@ -128,8 +121,8 @@ func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPre
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", pos}
-	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
+	imports.FullNames[full] = &Import{".", full, nsPrefix, pos}
+	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s\n", full, nsPrefix)
 }
 
 func SortedOriginalPackageImports(p *Package, filter func(string) bool, f func(string, token.Pos)) {
@@ -192,13 +185,13 @@ func (pi *Imports) QuotedList(prefix string) string {
 func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
 	pi.sort(func(k string, v *Import) {
-		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, path.Join(v.PathPrefix, k)))
+		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, k))
 	})
 	return Join(imports, ", ")
 }
 
 func (to *Imports) Promote(from *Imports, pos token.Pos) {
 	for _, imp := range from.FullNames {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, imp.Suffix, false, pos)
+		to.AddPackage(imp.Full, imp.ClojurePrefix, false, pos)
 	}
 }

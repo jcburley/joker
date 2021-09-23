@@ -106,7 +106,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", "", "", true, token.NoPos) + "."
+			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", true, token.NoPos) + "."
 		}
 		if Ordinal[t] == 0 {
 			fmt.Fprintf(os.Stderr, "output.go/writeGoTypeSwitch: ERROR: No ordinal assigned to %s @%p\n", t, t)
@@ -277,7 +277,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 				return // it me
 			}
 
-			pi.ImportsNative.InternPackage(ClojureCoreDir, "", "", pos)
+			pi.ImportsNative.InternPackage(ClojureCorePath, "", pos)
 
 			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
 		})

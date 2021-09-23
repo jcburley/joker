@@ -20,6 +20,7 @@ var ClojureSourceDir paths.UnixPath
 
 // Clojure source tree's core directory for generated import lines (so, using Unix path syntax).
 var ClojureCoreDir paths.UnixPath
+var ClojureCorePath string
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
 // import lines to the given host-syntax path, with the local path
@@ -37,6 +38,7 @@ func SetClojureSourceDir(pPath, rPath paths.NativePath) {
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
 	ClojureSourceDir = paths.NewUnixPath(filepath.ToSlash(imp))
 	ClojureCoreDir = ClojureSourceDir.Join("core").ToUnix()
+	ClojureCorePath = ClojureCoreDir.String()
 }
 
 var Fset *token.FileSet

@@ -178,7 +178,7 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 		} else {
 			imp = pi.ImportsNative
 		}
-		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), "", "", true, pos)
+		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), true, pos)
 		return myImportId + "." + ident[ix+1:]
 	}
 	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
@@ -211,13 +211,13 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 		return ""
 	}
 	clojureStdNs := LibRoot + fn.SourceFile.Package.NsRoot
-	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String(), goStdPrefix.String()).ToUnix().String()
+	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
-	native := fn.ImportsNative.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
+	native := fn.ImportsNative.AddPackage(clojureStdPath, clojureStdNs, true, fn.Pos)
 	if curPkgName.String() == exprPkgName {
 		return native
 	}
-	autoGen := fn.ImportsAutoGen.AddPackage(exprPkgName, clojureStdNs, clojureStdPath, "", true, fn.Pos)
+	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, clojureStdNs, true, fn.Pos)
 	if native != autoGen {
 		panic(fmt.Sprintf("disagreement over '%s': native='%s' autoGen='%s'", exprPkgName, native, autoGen))
 	}
@@ -233,14 +233,14 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // builtin type (api is in core)
 	}
 
-	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), ReplaceAll(clType[0:ix], ".", "/")).String()
-	//	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Compared %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
+	apiPkgPath := generatedPkgPrefix + ReplaceAll(clType[0:ix], ".", "/")
+	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Comparing %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
 
 	clojureStdNs := fn.SourceFile.Package.NsRoot
-	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, generatedPkgPrefix, "_gostd", true, fn.Pos)
+	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, true, fn.Pos)
 
 	return native
 }
