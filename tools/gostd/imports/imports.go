@@ -22,6 +22,7 @@ type Import struct {
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
 type Imports struct {
+	Me          string             // The package in which this belongs (e.g. "github.com/candid82/joker/std/gostd/go/std/foo/bar")
 	MySourcePkg string             // E.g. "foo/bar", meaning don't emit the corresponding namespace (use empty string instead)
 	For         string             // For diagnostics/reporting.
 	LocalNames  map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
@@ -37,6 +38,10 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 	if imports == nil {
 		panic(fmt.Sprintf("%q: is nil for %s at %s", imports.For, full, godb.WhereAt(pos)))
 	}
+	if full == imports.Me {
+		return ""
+	}
+
 	more := false
 	if Contains(full, "io/fs") || Contains(full, "zip") {
 		more = true
@@ -97,10 +102,13 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 
 // Given the full (though relative) name of the package, establish it
 // as the (only) interned package (using the "."  name in Go's
-// 'import' statement).
+// 'import' statement). This is presumably Joker's 'core' package.
 func (imports *Imports) InternPackage(full string, nsPrefix string, pos token.Pos) {
 	if imports == nil {
 		panic(fmt.Sprintf("nil imports for %s at %s", full, godb.WhereAt(pos)))
+	}
+	if full == imports.Me {
+		return
 	}
 
 	if e, found := imports.FullNames[full]; found {
