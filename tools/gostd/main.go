@@ -43,10 +43,10 @@ var goPath paths.NativePath
 var importStdRoot = paths.NewUnixPath(path.Join("std", "gostd")) // Relative to --output dir.
 
 var goStdPrefix = paths.NewUnixPath("go/std/")
-
 var goNsPrefix = strings.ReplaceAll(goStdPrefix.String(), "/", ".")
 
-var generatedPkgPrefix string
+var generatedPkgPrefix string   // E.g. "candid82/joker/std/gostd/".
+var generatedGoStdPrefix string // E.g. "candid82/joker/std/gostd/go/std/".
 
 func notOption(arg string) bool {
 	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
@@ -285,7 +285,7 @@ func main() {
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
 	generatedPkgPrefix = godb.ClojureSourceDir.JoinPaths(importStdRoot).String() + "/"
-	importMe := path.Join(generatedPkgPrefix, goStdPrefix.String())
+	generatedGoStdPrefix = generatedPkgPrefix + goStdPrefix.String()
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
@@ -297,7 +297,7 @@ func main() {
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
 		fmt.Printf("importStdRoot: %s\n", importStdRoot)
 		fmt.Printf("generatedPkgPrefix: %s\n", generatedPkgPrefix)
-		fmt.Printf("importMe: %s\n", importMe)
+		fmt.Printf("generatedGoStdPrefix: %s\n", generatedGoStdPrefix)
 		for _, o := range otherSourceDirs {
 			fmt.Printf("other: %s\n", o)
 		}
@@ -341,9 +341,9 @@ func main() {
 		}
 	}
 
-	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
+	godb.AddMapping(goRootSrc, goNsPrefix, generatedGoStdPrefix)
 	root := goRootSrc.Join(".")
-	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
+	AddWalkDir(goRootSrc, root, goNsPrefix, generatedGoStdPrefix)
 
 	for _, o := range otherSourceDirs {
 		AddWalkDir(o, o.Join("."), "x.y.z.", path.Join(generatedPkgPrefix, "x/y/z/"))

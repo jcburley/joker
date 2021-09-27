@@ -146,10 +146,12 @@ func initPackage(pkgDirUnix string, p *Package) {
 		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
 
+	me := generatedGoStdPrefix + pkgDirUnix
+
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{
-			&imports.Imports{For: "Native " + pkgDirUnix},
-			&imports.Imports{For: "AutoGen " + pkgDirUnix},
+			&imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
+			&imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
 			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}

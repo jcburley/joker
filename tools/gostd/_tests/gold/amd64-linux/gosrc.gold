@@ -7,7 +7,7 @@ clojureImportDir: ../..
 jokerSourceDir: ../..
 importStdRoot: std/gostd
 generatedPkgPrefix: github.com/candid82/joker/std/gostd/
-importMe: github.com/candid82/joker/std/gostd/go/std
+generatedGoStdPrefix: github.com/candid82/joker/std/gostd/go/std/
 The list of core APIs is missing; file 'core-apis.dat' does not exist.
 Writing Core APIs found at ../../core to core-apis.dat.
 ; defined templates are: "clojure-code.tmpl", "clojure-constant-def.tmpl", "clojure-custom-libs.tmpl", "clojure-defn.tmpl", "clojure-typedef.tmpl", "clojure-variable-def.tmpl", "go-code.tmpl", "go-coerce.tmpl", "go-ctor.tmpl", "go-custom-libs.tmpl", "go-func-info.tmpl", "go-func-init.tmpl", "go-implicit-convert.tmpl", "go-possible-case.tmpl", "go-receiver-arity.tmpl", "go-receiver-func.tmpl", "go-type-switch.tmpl"
@@ -3362,29 +3362,663 @@ imports.go/("Native archive/zip._RegisterCompressor")AddPackage("github.com/cand
 imports.go/("Native archive/zip._RegisterCompressor")AddPackage() local="zip"
 imports.go/("Native archive/zip._RegisterCompressor")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/archive/zip nsPrefix=joker.std.go.std. local=zip
 imports.go/("Native archive/zip")AddPackage("archive/zip", "", true) at /usr/local/go/src/archive/zip/register.go:127:1
-imports.go/("Native archive/zip")AddPackage("github.com/candid82/joker/std/gostd/go/std/archive/zip", "joker.std.go.std.", false) at /usr/local/go/src/archive/zip/register.go:127:1
-imports.go/("Native archive/zip")AddPackage() local="zip"
-imports.go/("Native archive/zip")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/archive/zip nsPrefix=joker.std.go.std. local=archive_zip
 imports.go/("Native archive/zip._RegisterDecompressor")AddPackage("github.com/candid82/joker/std/gostd/go/std/archive/zip", "joker.std.go.std.", true) at /usr/local/go/src/archive/zip/register.go:119:1
 imports.go/("Native archive/zip._RegisterDecompressor")AddPackage() local="zip"
 imports.go/("Native archive/zip._RegisterDecompressor")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/archive/zip nsPrefix=joker.std.go.std. local=zip
 imports.go/("Native archive/zip")AddPackage("archive/zip", "", true) at /usr/local/go/src/archive/zip/register.go:119:1
-imports.go/("Native archive/zip")AddPackage("github.com/candid82/joker/std/gostd/go/std/archive/zip", "joker.std.go.std.", false) at /usr/local/go/src/archive/zip/register.go:119:1
-panic: imports.go/("Native archive/zip")AddPackage(["zip" "github.com/candid82/joker/std/gostd/go/std/archive/zip"]) at /usr/local/go/src/archive/zip/register.go:119:1 cannot supercede ["archive_zip" "github.com/candid82/joker/std/gostd/go/std/archive/zip"] at /usr/local/go/src/archive/zip/register.go:127:1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bufio
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bufio
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/bufio to github.com/candid82/joker/std/gostd/go/std/bufio
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bufio
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bufio
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bytes
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bytes
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/bytes
+imports.go/("Native compress/bzip2")AddPackage("compress/bzip2", "", true) at /usr/local/go/src/compress/bzip2/bzip2.go:19:1
+imports.go/("Native compress/bzip2")AddPackage("compress/bzip2", "", true) at /usr/local/go/src/compress/bzip2/bzip2.go:46:1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/flate
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/flate
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gunzip.go:292:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gunzip.go:133:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gunzip.go:246:1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/gzip
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gunzip.go:103:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:228:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:208:1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/gzip
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:88:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:139:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gunzip.go:92:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:49:1
+imports.go/("Native compress/gzip")AddPackage("compress/gzip", "", true) at /usr/local/go/src/compress/gzip/gzip.go:60:1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/lzw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/compress/lzw to github.com/candid82/joker/std/gostd/go/std/compress/lzw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/lzw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/compress/lzw to github.com/candid82/joker/std/gostd/go/std/compress/lzw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/zlib
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/compress/zlib
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/list to github.com/candid82/joker/std/gostd/go/std/container/list
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/container/ring to github.com/candid82/joker/std/gostd/go/std/container/ring
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ecdsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto/ecdsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ecdsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ecdsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ed25519
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto/ed25519
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ed25519
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/ed25519
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/crypto/elliptic
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto to github.com/candid82/joker/std/gostd/go/std/crypto/rsa
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/tls to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/tls to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/tls to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/crypto/tls
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509 to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509/pkix to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509 to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509 to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509/pkix to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509 to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509 to github.com/candid82/joker/std/gostd/go/std/crypto/x509
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/crypto/x509/pkix
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/x509/pkix to github.com/candid82/joker/std/gostd/go/std/crypto/x509/pkix
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql to github.com/candid82/joker/std/gostd/go/std/database/sql
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/database/sql/driver to github.com/candid82/joker/std/gostd/go/std/database/sql/driver
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/dwarf to github.com/candid82/joker/std/gostd/go/std/debug/dwarf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/elf to github.com/candid82/joker/std/gostd/go/std/debug/elf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/elf to github.com/candid82/joker/std/gostd/go/std/debug/elf
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/debug/pe to github.com/candid82/joker/std/gostd/go/std/debug/pe
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/asn1 to github.com/candid82/joker/std/gostd/go/std/encoding/asn1
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/reflect to github.com/candid82/joker/std/gostd/go/std/encoding/gob
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/reflect to github.com/candid82/joker/std/gostd/go/std/encoding/gob
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/encoding/xml to github.com/candid82/joker/std/gostd/go/std/encoding/xml
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/expvar to github.com/candid82/joker/std/gostd/go/std/expvar
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/flag to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/flag to github.com/candid82/joker/std/gostd/go/std/flag
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/fmt
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/fmt
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/ast
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/ast
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/ast
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/ast
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/ast
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/build to github.com/candid82/joker/std/gostd/go/std/go/build
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/build to github.com/candid82/joker/std/gostd/go/std/go/build
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/doc to github.com/candid82/joker/std/gostd/go/std/go/doc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/go/printer
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/printer
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/scanner
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/scanner
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/scanner to github.com/candid82/joker/std/gostd/go/std/go/scanner
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/scanner to github.com/candid82/joker/std/gostd/go/std/go/scanner
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/ABEND727(jtypes/go: "func(*go to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/token
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/ast to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/token to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/go/types to github.com/candid82/joker/std/gostd/go/std/go/types
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/hash/maphash to github.com/candid82/joker/std/gostd/go/std/hash/maphash
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/text/template/parse to github.com/candid82/joker/std/gostd/go/std/html/template
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/html/template
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/html/template
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/html/template to github.com/candid82/joker/std/gostd/go/std/html/template
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io/fs to github.com/candid82/joker/std/gostd/go/std/html/template
+imports.go/("Native html/template.PtrTo_Template_ParseFS")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "go.std.", true) at /usr/local/go/src/html/template/template.go:505:1
+imports.go/("Native html/template.PtrTo_Template_ParseFS")AddPackage() local="fs"
+imports.go/("Native html/template.PtrTo_Template_ParseFS")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=go.std. local=fs
+imports.go/("Native html/template")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "go.std.", false) at /usr/local/go/src/html/template/template.go:505:1
+imports.go/("Native html/template")AddPackage() local="fs"
+imports.go/("Native html/template")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=go.std. local=fs
+imports.go/("Native html/template._ParseFS")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/html/template/template.go:497:1
+imports.go/("Native html/template._ParseFS")AddPackage() local="fs"
+imports.go/("Native html/template._ParseFS")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen html/template._ParseFS")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/html/template/template.go:497:1
+imports.go/("AutoGen html/template._ParseFS")AddPackage() local="fs"
+imports.go/("AutoGen html/template._ParseFS")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native html/template")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/html/template/template.go:497:1
+imports.go/("AutoGen html/template")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/html/template/template.go:497:1
+imports.go/("AutoGen html/template")AddPackage() local="fs"
+imports.go/("AutoGen html/template")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/color
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/color
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/color
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/draw to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/draw to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/color to github.com/candid82/joker/std/gostd/go/std/image/draw
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image/png to github.com/candid82/joker/std/gostd/go/std/image/png
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/image/png
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/image to github.com/candid82/joker/std/gostd/go/std/image/png
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/regexp to github.com/candid82/joker/std/gostd/go/std/index/suffixarray
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/index/suffixarray
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/index/suffixarray
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/io
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/io
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:105:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:93:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:90:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:97:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:155:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:154:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:153:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:151:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:152:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:156:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:222:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:228:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:233:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:194:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:238:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:81:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:80:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:79:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/glob.go:18:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:249:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:254:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:251:1
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/readdir.go:19:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:81:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:80:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:129:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:79:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/readfile.go:21:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/stat.go:13:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/fs.go:31:2
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/sub.go:17:2
+imports.go/("Native io/fs._FileInfoToDirEntry")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/readdir.go:72:1
+imports.go/("Native io/fs._FileInfoToDirEntry")AddPackage() local="fs"
+imports.go/("Native io/fs._FileInfoToDirEntry")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/readdir.go:72:1
+imports.go/("Native io/fs._Glob")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/glob.go:33:1
+imports.go/("Native io/fs._Glob")AddPackage() local="fs"
+imports.go/("Native io/fs._Glob")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/glob.go:33:1
+imports.go/("Native io/fs._ReadDir")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/readdir.go:28:1
+imports.go/("Native io/fs._ReadDir")AddPackage() local="fs"
+imports.go/("Native io/fs._ReadDir")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/readdir.go:28:1
+imports.go/("Native io/fs._ReadFile")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/readfile.go:32:1
+imports.go/("Native io/fs._ReadFile")AddPackage() local="fs"
+imports.go/("Native io/fs._ReadFile")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/readfile.go:32:1
+imports.go/("Native io/fs._Stat")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/stat.go:20:1
+imports.go/("Native io/fs._Stat")AddPackage() local="fs"
+imports.go/("Native io/fs._Stat")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/stat.go:20:1
+imports.go/("Native io/fs._Sub")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/sub.go:34:1
+imports.go/("Native io/fs._Sub")AddPackage() local="fs"
+imports.go/("Native io/fs._Sub")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs")AddPackage("io/fs", "", true) at /usr/local/go/src/io/fs/sub.go:34:1
+imports.go/("AutoGen io/fs")AddPackage("io/fs", "go.std.", false) at /usr/local/go/src/io/fs/fs.go:47:1
+imports.go/("Native io/fs._WalkDir")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/walk.go:107:1
+imports.go/("Native io/fs._WalkDir")AddPackage() local="fs"
+imports.go/("Native io/fs._WalkDir")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native io/fs._WalkDir")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/fs/walk.go:107:1
+imports.go/("AutoGen io/fs")AddPackage("io/fs", "go.std.", false) at /usr/local/go/src/io/fs/walk.go:107:1
+imports.go/("Native io/ioutil._WriteFile")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/ioutil/ioutil.go:45:1
+imports.go/("Native io/ioutil._WriteFile")AddPackage() local="fs"
+imports.go/("Native io/ioutil._WriteFile")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen io/ioutil._WriteFile")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/io/ioutil/ioutil.go:45:1
+imports.go/("AutoGen io/ioutil._WriteFile")AddPackage() local="fs"
+imports.go/("AutoGen io/ioutil._WriteFile")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen io/ioutil")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/io/ioutil/ioutil.go:45:1
+imports.go/("AutoGen io/ioutil")AddPackage() local="fs"
+imports.go/("AutoGen io/ioutil")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/log
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/rand to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/fmt to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/math/big to github.com/candid82/joker/std/gostd/go/std/math/big
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/textproto to github.com/candid82/joker/std/gostd/go/std/mime/multipart
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/net
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/ABEND727(jtypes/go: "func(net to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/context to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http
+imports.go/("Native net/http._FS")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/net/http/fs.go:818:1
+imports.go/("Native net/http._FS")AddPackage() local="fs"
+imports.go/("Native net/http._FS")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen net/http._FS")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/net/http/fs.go:818:1
+imports.go/("AutoGen net/http._FS")AddPackage() local="fs"
+imports.go/("AutoGen net/http._FS")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("Native net/http")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/net/http/fs.go:818:1
+imports.go/("Native net/http")AddPackage() local="fs"
+imports.go/("Native net/http")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen net/http")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/net/http/fs.go:818:1
+imports.go/("AutoGen net/http")AddPackage() local="fs"
+imports.go/("AutoGen net/http")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/cgi
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/cgi
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/http/cookiejar
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/http/cookiejar
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/cookiejar
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/http/httputil
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/http to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/rpc to github.com/candid82/joker/std/gostd/go/std/net/rpc
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/smtp to github.com/candid82/joker/std/gostd/go/std/net/smtp
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/smtp to github.com/candid82/joker/std/gostd/go/std/net/smtp
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/crypto/tls to github.com/candid82/joker/std/gostd/go/std/net/smtp
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/net/url to github.com/candid82/joker/std/gostd/go/std/net/url
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io/fs to github.com/candid82/joker/std/gostd/go/std/os
+imports.go/("Native os.PtrTo_File_Chmod")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "go.std.", true) at /usr/local/go/src/os/file.go:543:1
+imports.go/("Native os.PtrTo_File_Chmod")AddPackage() local="fs"
+imports.go/("Native os.PtrTo_File_Chmod")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=go.std. local=fs
+imports.go/("Native os")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "go.std.", false) at /usr/local/go/src/os/file.go:543:1
+imports.go/("Native os")AddPackage() local="fs"
+imports.go/("Native os")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=go.std. local=fs
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/io to github.com/candid82/joker/std/gostd/go/std/os
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/os
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/os
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/time to github.com/candid82/joker/std/gostd/go/std/os
+walk.go/AddApiToImports: Comparing github.com/candid82/joker/std/gostd/go/std/os to github.com/candid82/joker/std/gostd/go/std/os
+imports.go/("Native os._Chmod")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/os/file.go:539:1
+imports.go/("Native os._Chmod")AddPackage() local="fs"
+imports.go/("Native os._Chmod")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen os._Chmod")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/os/file.go:539:1
+imports.go/("AutoGen os._Chmod")AddPackage() local="fs"
+imports.go/("AutoGen os._Chmod")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+walk.go/("os._Chmod")AddToImports(io/fs.FileMode): io/fs adding ["joker.std.go.std." "github.com/candid82/joker/std/gostd/go/std/io/fs"] yielding fs:
+  &{Me: MySourcePkg: For:AutoGen os._Chmod LocalNames:map[fs:github.com/candid82/joker/std/gostd/go/std/io/fs] FullNames:map[github.com/candid82/joker/std/gostd/go/std/io/fs:0xc01006cd00]}
+imports.go/("AutoGen os")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/os/file.go:539:1
+imports.go/("AutoGen os")AddPackage() local="fs"
+imports.go/("AutoGen os")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=io_fs
+imports.go/("Native os._Mkdir")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/os/file.go:262:1
+imports.go/("Native os._Mkdir")AddPackage() local="fs"
+imports.go/("Native os._Mkdir")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen os._Mkdir")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", true) at /usr/local/go/src/os/file.go:262:1
+imports.go/("AutoGen os._Mkdir")AddPackage() local="fs"
+imports.go/("AutoGen os._Mkdir")AddPackage(): full=github.com/candid82/joker/std/gostd/go/std/io/fs nsPrefix=joker.std.go.std. local=fs
+imports.go/("AutoGen os")AddPackage("github.com/candid82/joker/std/gostd/go/std/io/fs", "joker.std.go.std.", false) at /usr/local/go/src/os/file.go:262:1
+panic: imports.go/("AutoGen os")AddPackage(["fs" "github.com/candid82/joker/std/gostd/go/std/io/fs"]) at /usr/local/go/src/os/file.go:262:1 cannot supercede ["io_fs" "github.com/candid82/joker/std/gostd/go/std/io/fs"] at /usr/local/go/src/os/file.go:539:1
 
 goroutine 1 [running]:
-github.com/candid82/joker/tools/gostd/imports.(*Imports).AddPackage(0xc0020e10c0, {0xc00e02a280, 0x36}, {0xc00e0169f0, 0x0}, 0x0, 0x1ddc5)
+github.com/candid82/joker/tools/gostd/imports.(*Imports).AddPackage(0xc0029e06c0, {0xc0101bca80, 0x30}, {0xc01019cf60, 0x4e26a5}, 0x0, 0x61d58e)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/imports/imports.go:60 +0x606
-github.com/candid82/joker/tools/gostd/imports.(*Imports).Promote(0xc00e020640, 0xc004c948b2, 0x6e9de0)
+github.com/candid82/joker/tools/gostd/imports.(*Imports).Promote(0xc0029e06c0, 0xc001dafed2, 0x2)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/imports/imports.go:203 +0x91
-main.GenStandalone(0xc0000d7130)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:319 +0xb89
-main.main.func4({0x6a5320, 0xc00009f860}, 0xc0024b1590)
+main.GenStandalone(0xc00837d4a0)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/codegen.go:324 +0xc25
+main.main.func4({0x6a5320, 0xc0000a1860}, 0xc00833d4a0)
 	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:390 +0x34
-main.SortedFuncInfoMap(0xc0091c0000, 0x6fc9b8)
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:200 +0x1cb
+main.SortedFuncInfoMap(0xc009994000, 0x6fc9c8)
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/walk.go:202 +0x1cb
 main.main()
-	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:383 +0x2e58
+	/home/craig/go/src/github.com/candid82/joker/tools/gostd/main.go:383 +0x2e18
 -------- BEGIN _tests/gold/amd64-linux/joker/core/data/g_customlibs.joke:
 ;; Placeholder for custom libraries. Overwritten by gostd.
 
