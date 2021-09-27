@@ -150,9 +150,12 @@ func initPackage(pkgDirUnix string, p *Package) {
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{
-			&imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
-			&imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
-			p, false, false, godb.ClojureNamespaceForDirname(pkgDirUnix)}
+			ImportsNative:    &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
+			ImportsAutoGen:   &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
+			Pkg:              p,
+			NonEmpty:         false,
+			HasGoFiles:       false,
+			ClojureNameSpace: godb.ClojureNamespaceForDirname(pkgDirUnix)}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
@@ -382,6 +385,10 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 			fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: no signature for %s.%s\n", pkgDirUnix, fd.Name)
 		}
 	}
+
+	me := generatedGoStdPrefix + pkgDirUnix
+	file := PackagesInfo[pkgDirUnix]
+
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       fd.Name.Name,
 		ReceiverId:     rcvrId,
@@ -393,8 +400,8 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		Signature:      sig,
 		Doc:            fd.Doc,
 		SourceFile:     gf,
-		ImportsNative:  &imports.Imports{For: "Native " + fullName},
-		ImportsAutoGen: &imports.Imports{For: "AutoGen " + fullName},
+		ImportsNative:  &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + fullName},
+		ImportsAutoGen: &imports.Imports{FileImports: file.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + fullName},
 		Pos:            fd.Pos(),
 		Comment:        "defined function",
 	}

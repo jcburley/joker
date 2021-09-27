@@ -22,6 +22,7 @@ type Import struct {
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
 type Imports struct {
+	FileImports *Imports           // nil if this is file level, else finalize mappings here.
 	Me          string             // The package in which this belongs (e.g. "github.com/candid82/joker/std/gostd/go/std/foo/bar")
 	MySourcePkg string             // E.g. "foo/bar", meaning don't emit the corresponding namespace (use empty string instead)
 	For         string             // For diagnostics/reporting.
@@ -40,6 +41,9 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 	}
 	if full == imports.Me {
 		return ""
+	}
+	if imports.FileImports != nil {
+		imports = imports.FileImports // For now, use the file level directly. This will likely break builds where ABENDs omit all code needing an import.
 	}
 
 	more := false

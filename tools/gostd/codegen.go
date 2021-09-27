@@ -615,6 +615,11 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		return
 	}
 	docName := "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()"
+
+	pkgDirUnix := ti.GoPackage()
+	me := generatedGoStdPrefix + pkgDirUnix
+	file := PackagesInfo[pkgDirUnix]
+
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       name,
 		ReceiverId:     receiverId,
@@ -626,8 +631,8 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		Signature:      sig,
 		Doc:            doc,
 		SourceFile:     ti.GoFile(),
-		ImportsNative:  &imports.Imports{For: "Native " + docName},
-		ImportsAutoGen: &imports.Imports{For: "AutoGen " + docName},
+		ImportsNative:  &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + docName},
+		ImportsAutoGen: &imports.Imports{FileImports: file.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + docName},
 		Pos:            pos,
 		Comment:        comment,
 	}

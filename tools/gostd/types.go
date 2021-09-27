@@ -118,6 +118,8 @@ func prepareCode(pkg string, ti TypeInfo) {
 	}
 }
 
+var gens = map[string]struct{}{}
+
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
@@ -135,10 +137,17 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		if !found {
 			jti := jtypes.Define(ts, gti.Expr)
 
+			me := generatedGoStdPrefix + pkg
+			if _, found := gens[me]; !found {
+				fmt.Fprintf(os.Stderr, "types.go/RegisterTypeDecl(): Generating %s in %s\n", name, me)
+				gens[me] = struct{}{}
+			}
+			file := PackagesInfo[pkg]
+
 			ti = &typeInfo{
 				jti:             jti,
 				gti:             gti,
-				requiredImports: &imports.Imports{For: "Type " + gti.FullName},
+				requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
 				who:             "RegisterTypeDecl",
 			}
 
@@ -236,10 +245,24 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 			}
 		}
 
+		var importsNative *imports.Imports
+		me := ""
+		pkg := gti.Package
+		if pkg != "" {
+			me = generatedGoStdPrefix + pkg
+			if _, found := gens[me]; !found {
+				fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr(): Generating %s in %s due to %s\n", gti.TypeName, me, godb.WhereAt(e.Pos()))
+				gens[me] = struct{}{}
+			}
+			if pi, found := PackagesInfo[pkg]; found {
+				importsNative = pi.ImportsNative
+			}
+		}
+
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{For: "TypeInfoForExpr " + gti.FullName},
+			requiredImports: &imports.Imports{FileImports: importsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForExpr " + gti.FullName},
 			who:             "TypeInfoForExpr",
 		}
 	}
@@ -268,10 +291,18 @@ func TypeInfoForGoName(goName string) TypeInfo {
 			panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
 		}
 
+		pkg := gti.Package
+		me := generatedGoStdPrefix + pkg
+		if _, found := gens[me]; !found {
+			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForGoName(): Generating %s in %s\n", gti.TypeName, me)
+			gens[me] = struct{}{}
+		}
+		file := PackagesInfo[pkg]
+
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{For: "TypeInfoForGoName " + gti.FullName},
+			requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
 			who:             "TypeInfoForGoName",
 		}
 	}
@@ -301,10 +332,18 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 			panic(fmt.Sprintf("cannot find `%s' in jtypes", gti.TypeName))
 		}
 
+		pkg := gti.Package
+		me := generatedGoStdPrefix + pkg
+		if _, found := gens[me]; !found {
+			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForType(): Generating %s in %s\n", gti.TypeName, me)
+			gens[me] = struct{}{}
+		}
+		file := PackagesInfo[pkg]
+
 		ti = &typeInfo{
 			gti:             gti,
 			jti:             jti,
-			requiredImports: &imports.Imports{For: "TypeInfoForType " + gti.FullName},
+			requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
 			who:             "TypeInfoForType",
 		}
 	}
