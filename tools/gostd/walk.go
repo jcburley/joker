@@ -209,7 +209,7 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(string, *FuncInfo)) {
 // Add whatever ti needs to be code-generated for fn to fn's list of
 // imports; return what is picked as the Go short package name for the
 // generated file.
-func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
+func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
 	exprPkgName := ti.GoPackage()
 	curPkgName := fn.SourceFile.Package.Dir
 	if exprPkgName == "" {
@@ -218,18 +218,11 @@ func (fn *FuncInfo) AddToImports(ti TypeInfo) string {
 	clojureStdNs := LibRoot + fn.SourceFile.Package.NsRoot
 	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
-	native := fn.ImportsNative.AddPackage(clojureStdPath, clojureStdNs, true, fn.Pos)
-	if curPkgName.String() == exprPkgName {
-		return native
-	}
 	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, clojureStdNs, true, fn.Pos)
-	if native != autoGen {
-		panic(fmt.Sprintf("disagreement over '%s': native='%s' autoGen='%s'", exprPkgName, native, autoGen))
-	}
 	if Contains(fn.Name, "Chmod") {
-		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToImports(%s): %s adding [%q %q] yielding %s:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), exprPkgName, clojureStdNs, clojureStdPath, native, fn.ImportsAutoGen)
+		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToAutoGen(%s): %s adding [%q %q] yielding %s:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), exprPkgName, clojureStdNs, clojureStdPath, autoGen, fn.ImportsAutoGen)
 	}
-	return native
+	return autoGen
 }
 
 func (fn *FuncInfo) AddApiToImports(clType string) string {

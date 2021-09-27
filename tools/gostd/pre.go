@@ -14,7 +14,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic boo
 	}
 	ti := TypeInfoForType(ty)
 
-	pkgBaseName := fn.AddToImports(ti)
+	pkgBaseName := fn.AddToAutoGen(ti)
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
 	if ti.IsArbitraryType() {
 		// unsafe.ArbitraryType becomes interface{}, so omit the package name.
