@@ -981,7 +981,7 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	}
 
 	ns := ti.GoFile().Package.Namespace
-	native := ti.RequiredImports().AddPackage(apiPkgPath, ns, true, ti.DefPos(), "codegen.go/addApiToImports")
+	native := ti.RequiredImports().AddPackage(apiPkgPath, "("+ns+")", true, ti.DefPos(), "codegen.go/addApiToImports")
 
 	return native
 }
