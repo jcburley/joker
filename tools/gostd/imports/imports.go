@@ -14,10 +14,10 @@ import (
 
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
-	Local         string // "foo", "_", or "."
-	Full          string // "bar/bletch/foo"
-	ClojurePrefix string // E.g. "go.std."
-	Pos           token.Pos
+	Local     string // "foo", "_", or "."
+	Full      string // "bar/bletch/foo"
+	Namespace string // E.g. "go.std.io", or "" if no namespace
+	Pos       token.Pos
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
@@ -35,7 +35,7 @@ type Imports struct {
 // component of the full name) that agrees with any existing entry and
 // isn't already used, trying alternate local names as necessary, add
 // the mapping if necessary, and return the local name.
-func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, pos token.Pos) string {
+func (imports *Imports) AddPackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) string {
 	if imports == nil {
 		panic(fmt.Sprintf("%q: is nil for %s at %s", imports.For, full, godb.WhereAt(pos)))
 	}
@@ -49,7 +49,7 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 	more := false
 	if Contains(full, "io/fs") || Contains(full, "zip") {
 		more = true
-		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(%q, %q, %v) at %s\n", imports.For, full, nsPrefix, okToSubstitute, godb.WhereAt(pos))
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
 	}
 
 	local := path.Base(full)
@@ -96,9 +96,13 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, full, nsPrefix, pos}
+	imports.FullNames[full] = &Import{
+		Local:     local,
+		Full:      full,
+		Namespace: ns,
+		Pos:       pos}
 	if more {
-		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(): full=%s nsPrefix=%s local=%s\n", imports.For, full, nsPrefix, local)
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(): full=%s ns=%s local=%s\n", imports.For, full, ns, local)
 	}
 
 	return local
@@ -107,7 +111,7 @@ func (imports *Imports) AddPackage(full, nsPrefix string, okToSubstitute bool, p
 // Given the full (though relative) name of the package, establish it
 // as the (only) interned package (using the "."  name in Go's
 // 'import' statement). This is presumably Joker's 'core' package.
-func (imports *Imports) InternPackage(full string, nsPrefix string, pos token.Pos) {
+func (imports *Imports) InternPackage(full, ns string, pos token.Pos) {
 	if imports == nil {
 		panic(fmt.Sprintf("nil imports for %s at %s", full, godb.WhereAt(pos)))
 	}
@@ -133,8 +137,12 @@ func (imports *Imports) InternPackage(full string, nsPrefix string, pos token.Po
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", full, nsPrefix, pos}
-	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s\n", full, nsPrefix)
+	imports.FullNames[full] = &Import{
+		Local:     ".",
+		Full:      full,
+		Namespace: ns,
+		Pos:       pos}
+	fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s ns=%s\n", full, ns)
 }
 
 func SortedOriginalPackageImports(p *Package, filter func(string) bool, f func(string, token.Pos)) {
@@ -197,13 +205,13 @@ func (pi *Imports) QuotedList(prefix string) string {
 func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
 	pi.sort(func(k string, v *Import) {
-		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, k))
+		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.Namespace, v.Local, k))
 	})
 	return Join(imports, ", ")
 }
 
 func (to *Imports) Promote(from *Imports, pos token.Pos) {
 	for _, imp := range from.FullNames {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, false, pos)
+		to.AddPackage(imp.Full, imp.Namespace, false, pos, "imports.go/Promote")
 	}
 }

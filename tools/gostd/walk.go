@@ -155,7 +155,8 @@ func initPackage(pkgDirUnix string, p *Package) {
 			Pkg:              p,
 			NonEmpty:         false,
 			HasGoFiles:       false,
-			ClojureNameSpace: godb.ClojureNamespaceForDirname(pkgDirUnix)}
+			ClojureNameSpace: godb.ClojureNamespaceForDirname(pkgDirUnix),
+		}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
@@ -183,7 +184,7 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 		} else {
 			imp = pi.ImportsNative
 		}
-		myImportId := imp.AddPackage(pkgName, godb.GetPackageNsRoot(pkgName), true, pos)
+		myImportId := imp.AddPackage(pkgName, godb.GetPackageNamespace(pkgName), true, pos, "walk.go/refToIdent")
 		return myImportId + "." + ident[ix+1:]
 	}
 	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
@@ -215,12 +216,11 @@ func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
 	if exprPkgName == "" {
 		return ""
 	}
-	clojureStdNs := LibRoot + fn.SourceFile.Package.NsRoot
 	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
-	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, clojureStdNs, true, fn.Pos)
+	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, "", true, fn.Pos, "walk.go/AddToAutoGen")
 	if Contains(fn.Name, "Chmod") {
-		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToAutoGen(%s): %s adding [%q %q] yielding %s:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), exprPkgName, clojureStdNs, clojureStdPath, autoGen, fn.ImportsAutoGen)
+		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToAutoGen(%s): adding [%s %q]:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), autoGen, clojureStdPath, fn.ImportsAutoGen)
 	}
 	return autoGen
 }
@@ -237,8 +237,8 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // api is local to function
 	}
 
-	clojureStdNs := fn.SourceFile.Package.NsRoot
-	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, true, fn.Pos)
+	clojureStdNs := fn.SourceFile.Package.Namespace
+	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, true, fn.Pos, "walk.go/AddApiToImports")
 
 	return native
 }
@@ -1020,7 +1020,7 @@ func WalkAllDirs() (error, paths.NativePath) {
 	for _, phase := range phases {
 		for _, wp := range godb.PackagesAsDiscovered {
 			if true || wp.Pkg.Name != "unsafe" {
-				processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+				processPackage(wp.Root.String(), wp.Dir.String(), wp.Namespace, wp.Pkg, phase)
 			}
 		}
 	}

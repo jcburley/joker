@@ -178,13 +178,13 @@ func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
 }
 
 type PackageDb struct {
-	Pkg      *Package // nil means Universal scope
-	Root     paths.UnixPath
-	Dir      paths.UnixPath // "math", "math/big", etc.
-	BaseName string
-	NsRoot   string // "go.std." or whatever is desired as the root namespace
-	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
-	decls    map[string]*DeclInfo
+	Pkg       *Package // nil means Universal scope
+	Root      paths.UnixPath
+	Dir       paths.UnixPath // "math", "math/big", etc.
+	BaseName  string
+	Namespace string // E.g. "go.std.io"
+	ImportMe  string // "github.com/candid82/joker/std/gostd/go/std/whatever"
+	decls     map[string]*DeclInfo
 }
 
 var packagesByUnixPath = map[string]*PackageDb{}
@@ -223,9 +223,9 @@ func GetPackagePackage(pkg string) *Package {
 	return nil
 }
 
-func GetPackageNsRoot(pkg string) string {
+func GetPackageNamespace(pkg string) string {
 	if p, found := packagesByUnixPath[pkg]; found {
-		return p.NsRoot
+		return p.Namespace
 	}
 	return ""
 }
@@ -316,7 +316,7 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe strin
 	}
 
 	decls := map[string]*DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, importMe, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot + ReplaceAll(pkgDirUnix.String(), "/", "."), importMe, decls}
 
 	for p, f := range pkg.Files {
 		absFilePathUnix := paths.NewNativePath(p).ToUnix()

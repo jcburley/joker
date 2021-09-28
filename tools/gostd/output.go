@@ -106,7 +106,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", true, token.NoPos) + "."
+			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", true, token.NoPos, "output.go/writeGoTypeSwitch") + "."
 		}
 		if Ordinal[t] == 0 {
 			fmt.Fprintf(os.Stderr, "output.go/writeGoTypeSwitch: ERROR: No ordinal assigned to %s @%p\n", t, t)
