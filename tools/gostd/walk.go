@@ -42,12 +42,12 @@ var NumGeneratedVariables int
 var NumGeneratedCtors int
 
 type PackageInfo struct {
-	ImportsNative    *imports.Imports
-	ImportsAutoGen   *imports.Imports
-	Pkg              *Package
-	NonEmpty         bool   // Whether any non-comment code has been generated
-	HasGoFiles       bool   // Whether any .go files (would) have been generated
-	ClojureNameSpace string // E.g.: "go.std.net", "x.y.z.whatever"
+	ImportsNative  *imports.Imports
+	ImportsAutoGen *imports.Imports
+	Pkg            *Package
+	NonEmpty       bool   // Whether any non-comment code has been generated
+	HasGoFiles     bool   // Whether any .go files (would) have been generated
+	Namespace      string // E.g.: "go.std.net", "x.y.z.whatever"
 }
 
 /* Map (Unix-style) relative path to package info */
@@ -150,12 +150,12 @@ func initPackage(pkgDirUnix string, p *Package) {
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{
-			ImportsNative:    &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
-			ImportsAutoGen:   &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
-			Pkg:              p,
-			NonEmpty:         false,
-			HasGoFiles:       false,
-			ClojureNameSpace: godb.ClojureNamespaceForDirname(pkgDirUnix),
+			ImportsNative:  &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
+			ImportsAutoGen: &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
+			Pkg:            p,
+			NonEmpty:       false,
+			HasGoFiles:     false,
+			Namespace:      godb.ClojureNamespaceForDirname(pkgDirUnix),
 		}
 		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
@@ -884,7 +884,7 @@ func processDir(rootNative, pathNative paths.NativePath, nsRoot, importMeRoot st
 			}
 			// Cannot currently do this, as public constants generated via "_ Something = iota" are omitted:
 			// FilterPackage(v, IsExported)
-			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot, importMe, pkg)
+			godb.RegisterPackage(rootNative.ToUnix(), pkgDirUnix, nsRoot+ReplaceAll(pkgDirUnix.String(), "/", "."), importMe, pkg)
 			found = true
 		}
 	}

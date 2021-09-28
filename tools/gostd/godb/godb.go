@@ -310,13 +310,13 @@ func (info *DeclInfo) Doc() *CommentGroup {
 	return info.doc
 }
 
-func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
+func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, ns, importMe string, pkg *Package) {
 	if _, found := packagesByUnixPath[pkgDirUnix.String()]; found {
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
 	decls := map[string]*DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot + ReplaceAll(pkgDirUnix.String(), "/", "."), importMe, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), ns, importMe, decls}
 
 	for p, f := range pkg.Files {
 		absFilePathUnix := paths.NewNativePath(p).ToUnix()

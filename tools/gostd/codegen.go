@@ -202,10 +202,11 @@ func GenReceiver(fn *FuncInfo) {
 	} else {
 		NumGeneratedFunctions++
 		PackagesInfo[pkgDirUnix].NonEmpty = true
-		im := PackagesInfo[pkgDirUnix].ImportsNative
+		pi := PackagesInfo[pkgDirUnix]
+		im := pi.ImportsNative
 		im.Promote(fn.ImportsNative, fn.Pos)
 		im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
-		myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenReceiver")
+		myGoImport := im.AddPackage(pkgDirUnix, pi.Namespace, true, fn.Pos, "codegen.go/GenReceiver")
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
 			NumFunctions++
@@ -314,7 +315,7 @@ func GenStandalone(fn *FuncInfo) {
 		if clojureReturnType == "" {
 			im := pi.ImportsNative
 			im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
-			myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenStandalone")
+			myGoImport := im.AddPackage(pkgDirUnix, pi.Namespace, true, fn.Pos, "codegen.go/GenStandalone")
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			im.Promote(fn.ImportsNative, fn.Pos)
 		} else {
@@ -424,7 +425,7 @@ func GenType(t string, ti TypeInfo) {
 	where := ts.Pos()
 
 	pi.ImportsNative.InternPackage(godb.ClojureCorePath, "", where)
-	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", true, where, "codegen.go/GenType")
+	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, pi.Namespace, true, where, "codegen.go/GenType")
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -485,10 +486,10 @@ func GenType(t string, ti TypeInfo) {
 	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.Namespace+"/"+MaybeIsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.Namespace+"/"+ExtractApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.Namespace+"/"+FieldAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(pi.Namespace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
 var Ctors = map[TypeInfo]string{}
@@ -546,7 +547,7 @@ func genCtor(tyi TypeInfo) {
 	} else {
 		pi := PackagesInfo[pkgDirUnix]
 		pi.ImportsNative.Promote(tyi.RequiredImports(), tyi.DefPos())
-		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", true, tyi.DefPos(), "codegen.go/GenCtor")
+		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, pi.Namespace, true, tyi.DefPos(), "codegen.go/GenCtor")
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
 		if tyi != uti {

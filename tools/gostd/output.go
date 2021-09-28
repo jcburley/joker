@@ -273,7 +273,7 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 		LegitimateImport,
 		func(imp string, pos token.Pos) {
 			ns := ClojureNamespaceForDirname(imp)
-			if ns == pi.ClojureNameSpace {
+			if ns == pi.Namespace {
 				return // it me
 			}
 
