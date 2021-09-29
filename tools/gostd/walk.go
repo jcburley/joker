@@ -218,7 +218,7 @@ func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
 	}
 	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
-	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, "("+ti.Namespace()+")", true, fn.Pos, "walk.go/AddToAutoGen")
+	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, "", true, fn.Pos, "walk.go/AddToAutoGen")
 	if Contains(fn.Name, "Chmod") {
 		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToAutoGen(%s): adding [%s %q]:\n  %+v\n", curPkgName.String()+"."+fn.Name, ti.GoName(), autoGen, clojureStdPath, fn.ImportsAutoGen)
 	}
