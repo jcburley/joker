@@ -230,6 +230,10 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // builtin type (api is in core)
 	}
 
+	if Contains(clType, "ABEND") {
+		return "" // An error in the making, but try to just not generate anything here
+	}
+
 	apiPkgPath := generatedPkgPrefix + ReplaceAll(clType[0:ix], ".", "/")
 	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Comparing %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
