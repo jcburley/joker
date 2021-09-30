@@ -22,9 +22,6 @@ import (
 	. "strings"
 )
 
-// See libroot def in std/generate-std.joke.
-const LibRoot = "joker.std."
-
 var WalkDump bool
 
 var NumFunctions int
