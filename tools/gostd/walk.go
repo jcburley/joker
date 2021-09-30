@@ -177,14 +177,16 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 	pkgName := ident[0:ix]
 
 	goPkgForPos := godb.GoPackageForPos(pos)
+	ns := ""
 	if pi, found := PackagesInfo[goPkgForPos]; found {
 		var imp *imports.Imports
 		if autoGen {
 			imp = pi.ImportsAutoGen
+			ns = "(" + godb.GetPackageNamespace(pkgName) + ")" // Avoid key collisions compiling a_*.go files
 		} else {
 			imp = pi.ImportsNative
 		}
-		myImportId := imp.AddPackage(pkgName, godb.GetPackageNamespace(pkgName), true, pos, "walk.go/refToIdent")
+		myImportId := imp.AddPackage(pkgName, ns, true, pos, "walk.go/refToIdent")
 		return myImportId + "." + ident[ix+1:]
 	}
 	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
@@ -237,8 +239,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // api is local to function
 	}
 
-	clojureStdNs := fn.SourceFile.Package.Namespace
-	native := fn.ImportsNative.AddPackage(apiPkgPath, clojureStdNs, true, fn.Pos, "walk.go/AddApiToImports")
+	native := fn.ImportsNative.AddPackage(apiPkgPath, "", true, fn.Pos, "walk.go/AddApiToImports")
 
 	return native
 }

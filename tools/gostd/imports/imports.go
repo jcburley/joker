@@ -12,6 +12,17 @@ import (
 	. "strings"
 )
 
+/* TODO: Remove all namespace support from here. Namespaces matter
+   only for AutoGen'ed files anyway (they should be empty strings for
+   Native files), and coupling them to planning the generation of Go
+   'import' makes little sense. Note that namespaces also shouldn't be
+   emitted (in :go-imports) for source packages; they are intended
+   solely to map a Clojure namespace to the generated package,
+   e.g. joker/std/gostd/go/std/os/; but, for now, since they must be
+   emitted in those cases, they're parenthesized as commentary to
+   avoid potential collisions when multiple such namespaces go into a
+   single :go-imports. */
+
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
 	Local     string // "foo", "_", or "."

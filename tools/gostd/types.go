@@ -30,7 +30,7 @@ type TypeInfo interface {
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
-	RequiredImports() *imports.Imports
+	ImportsNative() *imports.Imports
 	GoName() string
 	GoNameDocForType(*types.Package) string // Relative to pkg
 	GoPackage() string
@@ -77,10 +77,10 @@ var typesByGtype = map[*gtypes.Info]*typeInfo{}
 const ConcreteType = gtypes.Concrete
 
 type typeInfo struct {
-	jti             *jtypes.Info
-	gti             *gtypes.Info
-	requiredImports *imports.Imports
-	who             string // who made me
+	jti           *jtypes.Info
+	gti           *gtypes.Info
+	importsNative *imports.Imports
+	who           string // who made me
 }
 
 func registerGtype(ti *typeInfo, who string) {
@@ -145,10 +145,10 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			file := PackagesInfo[pkg]
 
 			ti = &typeInfo{
-				jti:             jti,
-				gti:             gti,
-				requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
-				who:             "RegisterTypeDecl",
+				jti:           jti,
+				gti:           gti,
+				importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
+				who:           "RegisterTypeDecl",
 			}
 
 			if IsExported(name) {
@@ -260,10 +260,10 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		}
 
 		ti = &typeInfo{
-			gti:             gti,
-			jti:             jti,
-			requiredImports: &imports.Imports{FileImports: importsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForExpr " + gti.FullName},
-			who:             "TypeInfoForExpr",
+			gti:           gti,
+			jti:           jti,
+			importsNative: &imports.Imports{FileImports: importsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForExpr " + gti.FullName},
+			who:           "TypeInfoForExpr",
 		}
 	}
 
@@ -300,10 +300,10 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		file := PackagesInfo[pkg]
 
 		ti = &typeInfo{
-			gti:             gti,
-			jti:             jti,
-			requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
-			who:             "TypeInfoForGoName",
+			gti:           gti,
+			jti:           jti,
+			importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
+			who:           "TypeInfoForGoName",
 		}
 	}
 
@@ -341,10 +341,10 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 		file := PackagesInfo[pkg]
 
 		ti = &typeInfo{
-			gti:             gti,
-			jti:             jti,
-			requiredImports: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
-			who:             "TypeInfoForType",
+			gti:           gti,
+			jti:           jti,
+			importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
+			who:           "TypeInfoForType",
 		}
 	}
 
@@ -484,8 +484,8 @@ func (ti typeInfo) PromoteType() string {
 	return ti.jti.PromoteType
 }
 
-func (ti typeInfo) RequiredImports() *imports.Imports {
-	return ti.requiredImports
+func (ti typeInfo) ImportsNative() *imports.Imports {
+	return ti.importsNative
 }
 
 func (ti typeInfo) GoName() string {

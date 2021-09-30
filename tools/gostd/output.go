@@ -97,7 +97,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	}
 
 	var cases []map[string]interface{}
-	var importeds = &imports.Imports{For: "writeGoTypeSwitch"}
+	var importsNative = &imports.Imports{For: "writeGoTypeSwitch"}
 	for _, t := range types {
 		specificity := t.Specificity()
 		if specificity == 0 {
@@ -106,7 +106,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 		}
 		pkgPlusSeparator := ""
 		if t.GoPackage() != "" {
-			pkgPlusSeparator = importeds.AddPackage(t.GoPackage(), "", true, token.NoPos, "output.go/writeGoTypeSwitch") + "."
+			pkgPlusSeparator = importsNative.AddPackage(t.GoPackage(), "", true, token.NoPos, "output.go/writeGoTypeSwitch") + "."
 		}
 		if Ordinal[t] == 0 {
 			fmt.Fprintf(os.Stderr, "output.go/writeGoTypeSwitch: ERROR: No ordinal assigned to %s @%p\n", t, t)
@@ -125,7 +125,7 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	}
 
 	info := map[string]interface{}{}
-	info["Imports"] = importeds.QuotedList("\n\t")
+	info["Imports"] = importsNative.QuotedList("\n\t")
 	info["NumberOfTypes"] = len(types)
 	info["Cases"] = cases
 

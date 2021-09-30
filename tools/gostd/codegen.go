@@ -206,7 +206,7 @@ func GenReceiver(fn *FuncInfo) {
 		im := pi.ImportsNative
 		im.Promote(fn.ImportsNative, fn.Pos)
 		im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
-		myGoImport := im.AddPackage(pkgDirUnix, pi.Namespace, true, fn.Pos, "codegen.go/GenReceiver")
+		myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenReceiver")
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
 			NumFunctions++
@@ -315,7 +315,7 @@ func GenStandalone(fn *FuncInfo) {
 		if clojureReturnType == "" {
 			im := pi.ImportsNative
 			im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
-			myGoImport := im.AddPackage(pkgDirUnix, pi.Namespace, true, fn.Pos, "codegen.go/GenStandalone")
+			myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenStandalone")
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 			im.Promote(fn.ImportsNative, fn.Pos)
 		} else {
@@ -425,7 +425,7 @@ func GenType(t string, ti TypeInfo) {
 	where := ts.Pos()
 
 	pi.ImportsNative.InternPackage(godb.ClojureCorePath, "", where)
-	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, pi.Namespace, true, where, "codegen.go/GenType")
+	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", true, where, "codegen.go/GenType")
 
 	ClojureCode[pkgDirUnix].Types[t] = ti
 	GoCode[pkgDirUnix].Types[t] = ti
@@ -546,8 +546,8 @@ func genCtor(tyi TypeInfo) {
 		abends.TrackAbends(goConstructor)
 	} else {
 		pi := PackagesInfo[pkgDirUnix]
-		pi.ImportsNative.Promote(tyi.RequiredImports(), tyi.DefPos())
-		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, pi.Namespace, true, tyi.DefPos(), "codegen.go/GenCtor")
+		pi.ImportsNative.Promote(tyi.ImportsNative(), tyi.DefPos())
+		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", true, tyi.DefPos(), "codegen.go/GenCtor")
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
 		if tyi != uti {
@@ -980,8 +980,7 @@ func addApiToImports(ti TypeInfo, clType string) string {
 		return "" // api is local to function
 	}
 
-	ns := ti.GoFile().Package.Namespace
-	native := ti.RequiredImports().AddPackage(apiPkgPath, ns, true, ti.DefPos(), "codegen.go/addApiToImports")
+	native := ti.ImportsNative().AddPackage(apiPkgPath, "", true, ti.DefPos(), "codegen.go/addApiToImports")
 
 	return native
 }
