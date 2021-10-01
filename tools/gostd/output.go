@@ -97,7 +97,11 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	}
 
 	var cases []map[string]interface{}
-	var importsNative = &imports.Imports{For: "writeGoTypeSwitch"}
+	var importsNative = &imports.Imports{
+		Me:          ClojureCorePath,
+		MySourcePkg: "",
+		For:         "writeGoTypeSwitch",
+	}
 	for _, t := range types {
 		specificity := t.Specificity()
 		if specificity == 0 {

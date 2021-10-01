@@ -263,7 +263,6 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 	}
 
 	apiPkgPath := generatedPkgPrefix + ReplaceAll(clType[0:ix], ".", "/")
-	fmt.Fprintf(os.Stderr, "walk.go/AddApiToImports: Comparing %s to %s\n", apiPkgPath, fn.SourceFile.Package.ImportMe)
 	if apiPkgPath == fn.SourceFile.Package.ImportMe {
 		return "" // api is local to function
 	}
