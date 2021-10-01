@@ -4,23 +4,30 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"go/types"
+	"os"
 	"strings"
 )
 
-func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic bool) (clType, clTypeDoc, goType, goTypeDoc, cl2golParam, newResVar string) {
+func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, isNativeCodeNeeded bool) (clType, clTypeDoc, goAutoGenType, goNativeType, goTypeDoc, cl2golParam, newResVar string) {
 	ty := v.Type()
 	if isVariadic {
 		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
 	}
 	ti := TypeInfoForType(ty)
 
-	pkgBaseName := fn.AddToAutoGen(ti)
+	pkgAutoGenName := fn.AddToAutoGen(ti)
+	pkgNativeName := ""
+	if isNativeCodeNeeded {
+		pkgNativeName = fn.AddToNative(ti)
+	}
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
 	if ti.IsArbitraryType() {
 		// unsafe.ArbitraryType becomes interface{}, so omit the package name.
-		goType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+		goAutoGenType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+		goNativeType = goAutoGenType
 	} else {
-		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
+		goAutoGenType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgAutoGenName, goEffectiveBaseName))
+		goNativeType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgNativeName, goEffectiveBaseName))
 	}
 
 	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
@@ -40,20 +47,25 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic boo
 	if isVariadic {
 		clType = "& " + clType
 		clTypeDoc = "& " + clTypeDoc
-		goType = "..." + goType
+		goAutoGenType = "..." + goAutoGenType
+		goNativeType = "..." + goNativeType
 		goTypeDoc = "..." + goTypeDoc
 		cl2golParam += "..."
 		newResVar += "..."
 		if ti.IsPassedByAddress() {
-			goType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goType)
+			goAutoGenType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goAutoGenType)
 		}
+	}
+
+	if strings.Contains(goNativeType, "Interface") {
+		fmt.Fprintf(os.Stderr, "pre.go/genTypePreFunc(%s): %s (%s) and %s (%s)\n", fn.Name, goAutoGenType, pkgAutoGenName, goNativeType, pkgNativeName)
 	}
 
 	return
 }
 
-func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
-	clojureGoParams, goParamList, goParamListDoc, goParams string) {
+func genGoPreFunc(fn *FuncInfo, isNativeCodeNeeded bool) (clojureParamList, clojureParamListDoc,
+	clojureGoParams, goAutoGenParamList, goNativeParamList, goParamListDoc, goParams string) {
 	tuple := fn.Signature.Params()
 	args := tuple.Len()
 	isVariadic := fn.Signature.Variadic()
@@ -69,7 +81,7 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 			resVar = "_v_" + name
 			resVarDoc = name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && isVariadic)
+		clType, clTypeDoc, goAutoGenType, goNativeType, goTypeDoc, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && isVariadic, isNativeCodeNeeded)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -92,12 +104,19 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 		}
 		clojureGoParams += cl2golParam
 
-		if goParamList != "" {
-			goParamList += ", "
+		if goAutoGenParamList != "" {
+			goAutoGenParamList += ", "
 		}
-		goParamList += genutils.ParamNameAsGo(resVar)
-		if goType != "" {
-			goParamList += " " + goType
+		goAutoGenParamList += genutils.ParamNameAsGo(resVar)
+		if goNativeParamList != "" {
+			goNativeParamList += ", "
+		}
+		goNativeParamList += genutils.ParamNameAsGo(resVar)
+		if goAutoGenType != "" {
+			goAutoGenParamList += " " + goAutoGenType
+		}
+		if goNativeType != "" {
+			goNativeParamList += " " + goNativeType
 		}
 
 		if goParamListDoc != "" {

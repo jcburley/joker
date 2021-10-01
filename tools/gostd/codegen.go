@@ -83,12 +83,14 @@ var nonEmptyLineRegexp *regexp.Regexp
 type funcCode struct {
 	clojureParamList        string
 	clojureParamListDoc     string
-	goParamList             string
+	goAutoGenParamList      string
+	goNativeParamList       string
 	goParamListDoc          string
 	clojureGoParams         string
 	goCode                  string
 	clojureReturnType       string
 	clojureReturnTypeForDoc string
+	goReturnType            string
 	goReturnTypeForDoc      string
 	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
@@ -106,9 +108,18 @@ func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
 
 	var goParams, goResultAssign, goPostCode string
 
-	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goParams = genGoPreFunc(fn)
-	goCall := genGoCall(fn.BaseName, goParams)
+	// Generate the results-handling first, because that
+	// determines whether a function will be generated for
+	// *_native.go, which in turn affects how the parameter list
+	// for that function is built (with respect to imports).
 	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost("\t", t)
+
+	fc.clojureReturnType, fc.goReturnType = genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType)
+	isNativeCodeNeeded := fc.clojureReturnType == "" // No Go code needs to be generated when a return type is explicitly specified.
+
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goAutoGenParamList, fc.goNativeParamList, fc.goParamListDoc, goParams = genGoPreFunc(fn, isNativeCodeNeeded)
+
+	goCall := genGoCall(fn.BaseName, goParams)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\treturn NIL\n"
@@ -253,15 +264,14 @@ func GenStandalone(fn *FuncInfo) {
 
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
 	fc := genFuncCode(fn, fn.Signature)
-	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType)
+	isNativeCodeNeeded := fc.clojureReturnType == "" // No Go code needs to be generated when a return type is explicitly specified.
 
 	var cl2gol string
-	if clojureReturnType == "" {
+	if isNativeCodeNeeded {
 		cl2gol = goFname
 		fc.conversion = ""
 	} else {
-		// No Go code needs to be generated when a return type is explicitly specified.
-		clojureReturnType += " "
+		fc.clojureReturnType += " "
 		cl2gol = pkgBaseName + "." + fn.BaseName
 		if _, found := PackagesInfo[pkgDirUnix]; !found {
 			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
@@ -273,7 +283,7 @@ func GenStandalone(fn *FuncInfo) {
 	}
 
 	clojureDefnInfo := map[string]string{
-		"ReturnType": clojureReturnType,
+		"ReturnType": fc.clojureReturnType,
 		"Name":       d.Name.Name,
 		"DocString": genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc) + "\n",
@@ -287,8 +297,8 @@ func GenStandalone(fn *FuncInfo) {
 
 	goFuncInfo := map[string]string{
 		"Name":       goFname,
-		"ParamList":  fc.goParamList,
-		"ReturnType": goReturnType,
+		"ParamList":  fc.goNativeParamList,
+		"ReturnType": fc.goReturnType,
 		"Code":       fc.goCode,
 	}
 
@@ -296,7 +306,7 @@ func GenStandalone(fn *FuncInfo) {
 	Templates.ExecuteTemplate(buf, "go-func-info.tmpl", goFuncInfo)
 	goFn := buf.String()
 
-	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
+	if !isNativeCodeNeeded && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
 		goFn = ""
 	}
 
@@ -312,7 +322,7 @@ func GenStandalone(fn *FuncInfo) {
 		NumGeneratedStandalones++
 		pi := PackagesInfo[pkgDirUnix]
 		pi.NonEmpty = true
-		if clojureReturnType == "" {
+		if isNativeCodeNeeded {
 			im := pi.ImportsNative
 			im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
 			myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenStandalone")

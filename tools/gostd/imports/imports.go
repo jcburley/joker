@@ -58,18 +58,18 @@ func (imports *Imports) AddPackage(full, ns string, okToSubstitute bool, pos tok
 	}
 
 	more := false
-	if Contains(full, "io/fs") || Contains(full, "zip") {
+	if Contains(full, "io/fs") || Contains(full, "zip") || Contains(full, "heap") {
 		more = true
-		fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
+		fmt.Fprintf(os.Stderr, "imports.go/(%q %q)AddPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.Me, imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
 	}
 
 	local := path.Base(full)
 
 	if e, found := imports.FullNames[full]; found {
-		if e.Local == local {
-			return e.Local
-		}
-		if okToSubstitute {
+		if e.Local == local || okToSubstitute {
+			if more {
+				fmt.Fprintf(os.Stderr, "imports.go/(%q)AddPackage() e.Local=%q\n", imports.For, e.Local)
+			}
 			return e.Local
 		}
 		panic(fmt.Sprintf("imports.go/(%q)AddPackage([%q %q]) at %s cannot supercede [%q %q] at %s", imports.For, local, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
