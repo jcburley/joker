@@ -118,8 +118,6 @@ func prepareCode(pkg string, ti TypeInfo) {
 	}
 }
 
-var gens = map[string]struct{}{}
-
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
@@ -138,10 +136,6 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 			jti := jtypes.Define(ts, gti.Expr)
 
 			me := generatedGoStdPrefix + pkg
-			if _, found := gens[me]; !found {
-				fmt.Fprintf(os.Stderr, "types.go/RegisterTypeDecl(): Generating %s in %s\n", name, me)
-				gens[me] = struct{}{}
-			}
 			file := PackagesInfo[pkg]
 
 			ti = &typeInfo{
@@ -250,10 +244,6 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		pkg := gti.Package
 		if pkg != "" {
 			me = generatedGoStdPrefix + pkg
-			if _, found := gens[me]; !found {
-				fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr(): Generating %s in %s due to %s\n", gti.TypeName, me, godb.WhereAt(e.Pos()))
-				gens[me] = struct{}{}
-			}
 			if pi, found := PackagesInfo[pkg]; found {
 				importsNative = pi.ImportsNative
 			}
@@ -293,10 +283,6 @@ func TypeInfoForGoName(goName string) TypeInfo {
 
 		pkg := gti.Package
 		me := generatedGoStdPrefix + pkg
-		if _, found := gens[me]; !found {
-			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForGoName(): Generating %s in %s\n", gti.TypeName, me)
-			gens[me] = struct{}{}
-		}
 		file := PackagesInfo[pkg]
 
 		ti = &typeInfo{
@@ -334,10 +320,6 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 
 		pkg := gti.Package
 		me := generatedGoStdPrefix + pkg
-		if _, found := gens[me]; !found {
-			fmt.Fprintf(os.Stderr, "types.go/TypeInfoForType(): Generating %s in %s\n", gti.TypeName, me)
-			gens[me] = struct{}{}
-		}
 		file := PackagesInfo[pkg]
 
 		ti = &typeInfo{
