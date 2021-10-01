@@ -210,6 +210,10 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(string, *FuncInfo)) {
 // imports for the a_*.go file (generated from *.joke); return what is
 // picked as the Go short package name for the generated file.
 func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
+	if ti.Namespace() == "" {
+		return ""
+	}
+
 	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
 	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, ti.Namespace(), true, fn.Pos, "walk.go/AddToAutoGen")
@@ -229,6 +233,10 @@ func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
 // imports for the *_native.go file; return what is picked as the Go
 // short package name for the generated file.
 func (fn *FuncInfo) AddToNative(ti TypeInfo) string {
+	if ti.Namespace() == "" {
+		return ""
+	}
+
 	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
 
 	native := fn.ImportsNative.AddPackage(clojureStdPath, "", true, fn.Pos, "walk.go/AddToNative")
