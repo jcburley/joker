@@ -18,7 +18,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 	pkgAutoGenName := fn.AddToAutoGen(ti)
 	pkgNativeName := ""
 	if isNativeCodeNeeded {
-		pkgNativeName = fn.AddToNative(ti)
+		pkgNativeName = fn.ImportsNative.AddPackage(ti.GoPackage(), "", true, v.Pos(), "pre.go/genTypePreFunc")
 	}
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
 	if ti.IsArbitraryType() {

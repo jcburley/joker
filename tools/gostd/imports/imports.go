@@ -50,7 +50,7 @@ func (imports *Imports) AddPackage(full, ns string, okToSubstitute bool, pos tok
 	if imports == nil {
 		panic(fmt.Sprintf("%q: is nil for %s at %s", imports.For, full, godb.WhereAt(pos)))
 	}
-	if full == imports.Me {
+	if full == "" || full == imports.Me {
 		return ""
 	}
 	if imports.FileImports != nil {
@@ -139,7 +139,7 @@ func (imports *Imports) InternPackage(full, ns string, pos token.Pos) {
 
 	curFull, found := imports.LocalNames["."]
 	if found {
-		panic(fmt.Sprintf("imports.go/(%q)InternPackage(%q) at %s cannot replace %q: %+v", imports.For, full, godb.WhereAt(pos), curFull, imports.FullNames[curFull]))
+		panic(fmt.Sprintf("imports.go/(%q)InternPackage(%q) at %s cannot replace %q: %+v at %s", imports.For, full, godb.WhereAt(pos), curFull, imports.FullNames[curFull], godb.WhereAt(imports.FullNames[curFull].Pos)))
 	}
 	if imports.LocalNames == nil {
 		imports.LocalNames = map[string]string{}
