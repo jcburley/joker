@@ -206,29 +206,6 @@ func SortedFuncInfoMap(m map[string]*FuncInfo, f func(string, *FuncInfo)) {
 	}
 }
 
-// Add whatever ti needs to be code-generated for fn to fn's list of
-// imports for the a_*.go file (generated from *.joke); return what is
-// picked as the Go short package name for the generated file.
-func (fn *FuncInfo) AddToAutoGen(ti TypeInfo) string {
-	if ti.Namespace() == "" {
-		return ""
-	}
-
-	clojureStdPath := generatedPkgPrefix + ReplaceAll(ti.Namespace(), ".", "/")
-
-	autoGen := fn.ImportsAutoGen.AddPackage(clojureStdPath, ti.Namespace(), true, fn.Pos, "walk.go/AddToAutoGen")
-
-	if Contains(fn.Name, "Fix") {
-		abbrev := autoGen
-		if abbrev == "" {
-			abbrev = "<NIL>"
-		}
-		fmt.Fprintf(os.Stderr, "walk.go/(%q)AddToAutoGen(%s): adding [%s %q]:\n  %+v\n", clojureStdPath+"."+fn.Name, ti.GoName(), abbrev, clojureStdPath, fn.ImportsAutoGen)
-	}
-
-	return autoGen
-}
-
 func (fn *FuncInfo) AddApiToImports(clType string) string {
 	ix := Index(clType, "/")
 	if ix < 0 {
