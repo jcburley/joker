@@ -192,7 +192,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Inf
 		tn := tav.(*types.TypeName)
 		if tn.IsAlias() {
 			// ty = ty.Underlying()
-			//			fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
+			// fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
 			return
 		}
 		ty = tn.Type()
