@@ -61,6 +61,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 		newResVar += "..."
 		if ti.IsPassedByAddress() {
 			goAutoGenType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goAutoGenType)
+			goNativeType = goAutoGenType
 		}
 	}
 
