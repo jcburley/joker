@@ -131,21 +131,21 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(string, *FnCodeInfo)) {
 }
 
 type FuncInfo struct {
-	Namespace      string    // Clojure namespace (e.g. "go.std.math") for this function
-	BaseName       string    // Just the function name without receiver-type info
-	ReceiverId     string    // Receiver info (only one type supported here and by Golang itself for now)
-	Name           string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
-	DocName        string    // Everything, for documentation and diagnostics
-	EmbedName      string    // "" for function definitions, else basename of embedded type
-	Fd             *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
-	ToM            TypeInfo  // Method operates on this type (nil for standalones and receivers)
-	Signature      *types.Signature
-	Doc            *CommentGroup
-	SourceFile     *godb.GoFile
-	ImportsNative  *imports.Imports // Add these to package imports if function is generated (no ABENDs)
-	ImportsAutoGen *imports.Imports // Add these to package imports if function is generated (no ABENDs)
-	Pos            token.Pos
-	Comment        string
+	Namespace           string    // Clojure namespace (e.g. "go.std.math") for this function
+	BaseName            string    // Just the function name without receiver-type info
+	ReceiverId          string    // Receiver info (only one type supported here and by Golang itself for now)
+	Name                string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	DocName             string    // Everything, for documentation and diagnostics
+	EmbedName           string    // "" for function definitions, else basename of embedded type
+	Fd                  *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
+	ToM                 TypeInfo  // Method operates on this type (nil for standalones and receivers)
+	Signature           *types.Signature
+	Doc                 *CommentGroup
+	SourceFile          *godb.GoFile
+	ReservationsNative  *imports.Reservations // Add these to package imports if function is generated (no ABENDs)
+	ReservationsAutoGen *imports.Reservations // Add these to package imports if function is generated (no ABENDs)
+	Pos                 token.Pos
+	Comment             string
 }
 
 func initPackage(pkgDirUnix string, p *Package) {
@@ -239,7 +239,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 		return "" // api is local to function
 	}
 
-	native := fn.ImportsNative.AddPackage(apiPkgPath, "", true, fn.Pos, "walk.go/AddApiToImports")
+	native := fn.ReservationsNative.ReservePackage(apiPkgPath, "", true, fn.Pos, "walk.go/AddApiToImports")
 
 	return native
 }
@@ -380,26 +380,25 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		}
 	}
 
-	me := generatedGoStdPrefix + pkgDirUnix
 	file := PackagesInfo[pkgDirUnix]
 	ns := NamespacesInfo[file.Namespace]
 
 	QualifiedFunctions[fullName] = &FuncInfo{
-		BaseName:       fd.Name.Name,
-		ReceiverId:     rcvrId,
-		Name:           fnName,
-		DocName:        docName,
-		EmbedName:      "",
-		Namespace:      ns.Name,
-		Fd:             fd,
-		ToM:            nil,
-		Signature:      sig,
-		Doc:            fd.Doc,
-		SourceFile:     gf,
-		ImportsNative:  &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + fullName},
-		ImportsAutoGen: &imports.Imports{FileImports: ns.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + fullName},
-		Pos:            fd.Pos(),
-		Comment:        "defined function",
+		BaseName:            fd.Name.Name,
+		ReceiverId:          rcvrId,
+		Name:                fnName,
+		DocName:             docName,
+		EmbedName:           "",
+		Namespace:           ns.Name,
+		Fd:                  fd,
+		ToM:                 nil,
+		Signature:           sig,
+		Doc:                 fd.Doc,
+		SourceFile:          gf,
+		ReservationsNative:  ns.ImportsNative.NewReservations("Native " + fullName),
+		ReservationsAutoGen: ns.ImportsAutoGen.NewReservations("AutoGen " + fullName),
+		Pos:                 fd.Pos(),
+		Comment:             "defined function",
 	}
 }
 

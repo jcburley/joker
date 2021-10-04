@@ -7,7 +7,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
 	"go/token"
 	"go/types"
@@ -217,8 +216,8 @@ func GenReceiver(fn *FuncInfo) {
 			panic(fmt.Sprintf("no ns=%s", ns))
 		}
 		NamespacesInfo[ns].NonEmpty = true
+		fn.ReservationsNative.Confirm()
 		im := NamespacesInfo[ns].ImportsNative
-		im.Promote(fn.ImportsNative, fn.Pos)
 		im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
 		myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenReceiver")
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
@@ -331,12 +330,12 @@ func GenStandalone(fn *FuncInfo) {
 			im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
 			myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenStandalone")
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
-			im.Promote(fn.ImportsNative, fn.Pos)
+			fn.ReservationsNative.Confirm()
 		} else {
 			// No Go code needs to be generated when a return type is explicitly specified.
 			nsi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.Namespace, false, fn.Pos, "codegen.go/GenStandalone^")
 		}
-		nsi.ImportsAutoGen.Promote(fn.ImportsAutoGen, fn.Pos)
+		fn.ReservationsAutoGen.Confirm()
 	}
 
 	ClojureCode[ns].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
@@ -540,6 +539,8 @@ func genCtor(tyi TypeInfo) {
 		}
 	}
 
+	tyi.ReservationsNative().Reset(tyi.ClojureName())
+
 	goTypeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
 	clojureTypeName := fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
 	ctorApiName := "_Ctor_" + clojureTypeName
@@ -568,8 +569,8 @@ func genCtor(tyi TypeInfo) {
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
 		abends.TrackAbends(goConstructor)
 	} else {
+		tyi.ReservationsNative().Confirm()
 		nsi := NamespacesInfo[ns]
-		nsi.ImportsNative.Promote(tyi.ImportsNative(), tyi.DefPos())
 		myGoImport := nsi.ImportsNative.AddPackage(pkgDirUnix, "", true, tyi.DefPos(), "codegen.go/GenCtor")
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
@@ -641,26 +642,25 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 	docName := "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()"
 
 	pkgDirUnix := ti.GoPackage()
-	me := generatedGoStdPrefix + pkgDirUnix
 	file := PackagesInfo[pkgDirUnix]
 	ns := NamespacesInfo[file.Namespace]
 
 	QualifiedFunctions[fullName] = &FuncInfo{
-		BaseName:       name,
-		ReceiverId:     receiverId,
-		Name:           baseName,
-		DocName:        docName,
-		EmbedName:      embedName,
-		Namespace:      ns.Name,
-		Fd:             nil,
-		ToM:            ti,
-		Signature:      sig,
-		Doc:            doc,
-		SourceFile:     ti.GoFile(),
-		ImportsNative:  &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + docName},
-		ImportsAutoGen: &imports.Imports{FileImports: ns.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + docName},
-		Pos:            pos,
-		Comment:        comment,
+		BaseName:            name,
+		ReceiverId:          receiverId,
+		Name:                baseName,
+		DocName:             docName,
+		EmbedName:           embedName,
+		Namespace:           ns.Name,
+		Fd:                  nil,
+		ToM:                 ti,
+		Signature:           sig,
+		Doc:                 doc,
+		SourceFile:          ti.GoFile(),
+		ReservationsNative:  ns.ImportsNative.NewReservations("Native " + docName),
+		ReservationsAutoGen: ns.ImportsAutoGen.NewReservations("AutoGen " + docName),
+		Pos:                 pos,
+		Comment:             comment,
 	}
 }
 
@@ -1000,12 +1000,11 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	}
 
 	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), strings.ReplaceAll(clType[0:ix], ".", "/")).String()
-	fmt.Fprintf(os.Stderr, "codegen.go/addApiToImports: Comparing %s to %s\n", apiPkgPath, ti.GoFile().Package.ImportMe)
 	if apiPkgPath == ti.GoFile().Package.ImportMe {
 		return "" // api is local to function
 	}
 
-	native := ti.ImportsNative().AddPackage(apiPkgPath, "", true, ti.DefPos(), "codegen.go/addApiToImports")
+	native := ti.ReservationsNative().ReservePackage(apiPkgPath, "", true, ti.DefPos(), "codegen.go/addApiToImports")
 
 	return native
 }

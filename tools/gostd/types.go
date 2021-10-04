@@ -31,7 +31,7 @@ type TypeInfo interface {
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
-	ImportsNative() *imports.Imports
+	ReservationsNative() *imports.Reservations
 	GoName() string
 	GoNameDocForType(*types.Package) string // Relative to pkg
 	GoPackage() string
@@ -79,10 +79,10 @@ var typesByGtype = map[*gtypes.Info]*typeInfo{}
 const ConcreteType = gtypes.Concrete
 
 type typeInfo struct {
-	jti           *jtypes.Info
-	gti           *gtypes.Info
-	importsNative *imports.Imports
-	who           string // who made me
+	jti                *jtypes.Info
+	gti                *gtypes.Info
+	reservationsNative *imports.Reservations
+	who                string // who made me
 }
 
 func registerGtype(ti *typeInfo, who string) {
@@ -140,13 +140,11 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 		if !found {
 			jti := jtypes.Define(ts, gti.Expr)
 
-			me := generatedGoStdPrefix + pkg
-
 			ti = &typeInfo{
-				jti:           jti,
-				gti:           gti,
-				importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
-				who:           "RegisterTypeDecl",
+				jti:                jti,
+				gti:                gti,
+				reservationsNative: ns.ImportsNative.NewReservations("Native Type " + gti.FullName),
+				who:                "RegisterTypeDecl",
 			}
 
 			if IsExported(name) {
@@ -250,10 +248,8 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		}
 
 		var importsNative *imports.Imports
-		me := ""
 		pkg := gti.Package
 		if pkg != "" {
-			me = generatedGoStdPrefix + pkg
 			if pi, found := PackagesInfo[pkg]; found {
 				if ns, found := NamespacesInfo[pi.Namespace]; found {
 					importsNative = ns.ImportsNative
@@ -262,10 +258,10 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		}
 
 		ti = &typeInfo{
-			gti:           gti,
-			jti:           jti,
-			importsNative: &imports.Imports{FileImports: importsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForExpr " + gti.FullName},
-			who:           "TypeInfoForExpr",
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: importsNative.NewReservations("TypeInfoForExpr " + gti.FullName),
+			who:                "TypeInfoForExpr",
 		}
 	}
 
@@ -294,15 +290,14 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		}
 
 		pkg := gti.Package
-		me := generatedGoStdPrefix + pkg
 		file := PackagesInfo[pkg]
 		ns := NamespacesInfo[file.Namespace]
 
 		ti = &typeInfo{
-			gti:           gti,
-			jti:           jti,
-			importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
-			who:           "TypeInfoForGoName",
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: ns.ImportsNative.NewReservations("TypeInfoForGoName " + gti.FullName),
+			who:                "TypeInfoForGoName",
 		}
 	}
 
@@ -332,15 +327,14 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 		}
 
 		pkg := gti.Package
-		me := generatedGoStdPrefix + pkg
 		file := PackagesInfo[pkg]
 		ns := NamespacesInfo[file.Namespace]
 
 		ti = &typeInfo{
-			gti:           gti,
-			jti:           jti,
-			importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
-			who:           "TypeInfoForType",
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: ns.ImportsNative.NewReservations("TypeInfoForType " + gti.FullName),
+			who:                "TypeInfoForType",
 		}
 	}
 
@@ -502,8 +496,8 @@ func (ti typeInfo) PromoteType() string {
 	return ti.jti.PromoteType
 }
 
-func (ti typeInfo) ImportsNative() *imports.Imports {
-	return ti.importsNative
+func (ti typeInfo) ReservationsNative() *imports.Reservations {
+	return ti.reservationsNative
 }
 
 func (ti typeInfo) GoName() string {

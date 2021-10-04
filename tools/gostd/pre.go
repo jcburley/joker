@@ -19,12 +19,12 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 	pkgAutoGenName := ""
 	if ns != "" {
 		clojureStdPath := generatedPkgPrefix + strings.ReplaceAll(ns, ".", "/")
-		pkgAutoGenName = fn.ImportsAutoGen.AddPackage(clojureStdPath, ns, true, fn.Pos, "pre.go/genTypePreFunc")
+		pkgAutoGenName = fn.ReservationsAutoGen.ReservePackage(clojureStdPath, ns, true, fn.Pos, "pre.go/genTypePreFunc")
 	}
 
 	pkgNativeName := ""
 	if isNativeCodeNeeded {
-		pkgNativeName = fn.ImportsNative.AddPackage(ti.GoPackage(), "", true, v.Pos(), "pre.go/genTypePreFunc")
+		pkgNativeName = fn.ReservationsNative.ReservePackage(ti.GoPackage(), "", true, v.Pos(), "pre.go/genTypePreFunc")
 	}
 
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
