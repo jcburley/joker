@@ -56,7 +56,7 @@ type Reservations struct {
 // the mapping if necessary, and return the local name.
 func (imports *Imports) AddPackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) string {
 	if imp := imports.addPackage(full, ns, okToSubstitute, pos, who); imp != nil {
-		if Contains(full, "/time") {
+		if false && Contains(full, "/time") {
 			fmt.Fprintf(os.Stderr, "imports.go/(%q %q)AddPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.Me, imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
 		}
 		imp.Confirmed = true
@@ -75,7 +75,7 @@ func (imports *Imports) NewReservations(f string) *Reservations {
 
 func (r *Reservations) ReservePackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) string {
 	if imp := r.fileImports.addPackage(full, ns, okToSubstitute, pos, "ReservePackage for "+who); imp != nil {
-		if Contains(full, "/time") {
+		if false && Contains(full, "/time") {
 			fmt.Fprintf(os.Stderr, "imports.go/ReservePackage(%q): [%s %q] %v\n", r._for, imp.Local, imp.Full, imp.Confirmed)
 		}
 		r.imports[imp] = struct{}{}
@@ -103,7 +103,7 @@ func (imports *Imports) addPackage(full, ns string, okToSubstitute bool, pos tok
 	}
 
 	more := false
-	if Contains(full, "/time") {
+	if false && Contains(full, "/time") {
 		more = true
 		fmt.Fprintf(os.Stderr, "imports.go/(%q %q)addPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.Me, imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
 	}
@@ -275,7 +275,6 @@ func (pi *Imports) AsClojureMap() string {
 	pi.sort(func(k string, v *Import) {
 		if v.Confirmed {
 			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.Namespace, v.Local, k))
-		} else {
 		}
 	})
 	return Join(imports, ", ")
@@ -283,7 +282,7 @@ func (pi *Imports) AsClojureMap() string {
 
 func (r *Reservations) Confirm() {
 	for imp, _ := range r.imports {
-		if Contains(imp.Full, "/time") {
+		if false && Contains(imp.Full, "/time") {
 			fmt.Fprintf(os.Stderr, "imports.go/Confirm(%q): %s [%s %q]\n", imp.file.For, imp.who, imp.Local, imp.Full)
 		}
 		imp.Confirmed = true

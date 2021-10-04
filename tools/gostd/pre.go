@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"go/types"
-	"os"
 	"strings"
 )
 
@@ -63,10 +62,6 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 			goAutoGenType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goAutoGenType)
 			goNativeType = goAutoGenType
 		}
-	}
-
-	if strings.Contains(goNativeType, "Interface") {
-		fmt.Fprintf(os.Stderr, "pre.go/genTypePreFunc(%s): %s (%s) and %s (%s)\n", fn.Name, goAutoGenType, pkgAutoGenName, goNativeType, pkgNativeName)
 	}
 
 	return
