@@ -9,9 +9,10 @@ import (
 
 type (
 	TypeInfo struct {
-		Name     string
-		TypeName string
-		ShowName string
+		GoName   string // Form usable within a Go variable/function name
+		ShowName string // What is shown to the user
+		RealName string // The real name (e.g. "*Foo", when GoName and ShowName are "Foo")
+		Nilable  bool   // Whether "nil" is valid for the type (else use "{{.RealName}}{}")
 	}
 )
 
@@ -26,27 +27,38 @@ import (
 )
 `
 
-var ensureObjectIsTemplate string = `
-func EnsureObjectIs{{.Name}}(obj Object, pattern string) {{.TypeName}} {
-	if c, yes := obj.({{.TypeName}}); yes {
-		return c
+var maybeIsTemplate string = `
+func MaybeIs{{.GoName}}(obj Object) ({{.RealName}}, string) {
+	if res, yes := obj.({{.RealName}}); yes {
+		return res, ""
 	}
-	panic(FailObject(obj, "{{.ShowName}}", pattern))
+	return {{if .Nilable}}nil{{else}}{{.RealName}}{}{{end}}, "{{.ShowName}}"
+}
+`
+
+var ensureObjectIsTemplate string = `
+func EnsureObjectIs{{.GoName}}(obj Object, pattern string) {{.RealName}} {
+	res, sb := MaybeIs{{.GoName}}(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
 }
 `
 
 var ensureArgIsTemplate string = `
-func EnsureArgIs{{.Name}}(args []Object, index int) {{.TypeName}} {
+func EnsureArgIs{{.GoName}}(args []Object, index int) {{.RealName}} {
 	obj := args[index]
-	if c, yes := obj.({{.TypeName}}); yes {
-		return c
+	res, sb := MaybeIs{{.GoName}}(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "{{.ShowName}}", index))
+	panic(FailArg(obj, sb, index))
 }
 `
 
 var infoTemplate string = `
-func (x {{.TypeName}}) WithInfo(info *ObjectInfo) Object {
+func (x {{.RealName}}) WithInfo(info *ObjectInfo) Object {
 	x.info = info
 	return x
 }
@@ -58,28 +70,38 @@ func checkError(err error) {
 	}
 }
 
+// For a given type, the prefix "*" indicates a reference type; the
+// prefix "." an abstract (interface{}) type.
 func generateAssertions(types []string) {
 	filename := "types_assert_gen.go"
 	f, err := os.Create(filename)
 	checkError(err)
 	defer f.Close()
 
+	var maybeIs = template.Must(template.New("maybe").Parse(maybeIsTemplate))
 	var ensureObjectIs = template.Must(template.New("assert").Parse(ensureObjectIsTemplate))
 	var ensureArgIs = template.Must(template.New("ensure").Parse(ensureArgIsTemplate))
 	f.WriteString(header)
 	f.WriteString(importFmt)
 	for _, t := range types {
+		realName := t
+		nilable := false
+		switch t[0] {
+		case '*':
+			t = t[1:]
+			nilable = true
+		case '.': // denotes abstract type (interface{}), which is Nilable
+			t = t[1:]
+			realName = t
+			nilable = true
+		}
 		typeInfo := TypeInfo{
-			Name:     t,
-			TypeName: t,
+			GoName:   strings.ReplaceAll(t, ".", "_"),
 			ShowName: t,
+			RealName: realName,
+			Nilable:  nilable,
 		}
-		if t[0] == '*' {
-			typeInfo.Name = t[1:]
-			typeInfo.ShowName = typeInfo.Name
-		} else if strings.ContainsRune(t, '.') {
-			typeInfo.Name = strings.ReplaceAll(t, ".", "_")
-		}
+		maybeIs.Execute(f, typeInfo)
 		ensureObjectIs.Execute(f, typeInfo)
 		ensureArgIs.Execute(f, typeInfo)
 	}
@@ -96,11 +118,11 @@ func generateInfo(types []string) {
 	f.WriteString(header)
 	for _, t := range types {
 		typeInfo := TypeInfo{
-			Name:     t,
-			TypeName: t,
+			GoName:   t,
+			RealName: t,
 		}
 		if t[0] == '*' {
-			typeInfo.Name = t[1:]
+			typeInfo.GoName = t[1:]
 		}
 		info.Execute(f, typeInfo)
 	}

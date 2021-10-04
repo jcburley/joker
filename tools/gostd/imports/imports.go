@@ -3,69 +3,136 @@ package imports
 import (
 	"fmt"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
+	"os"
 	"path"
 	"sort"
 	"strconv"
 	. "strings"
 )
 
+/* TODO: Remove all namespace support from here. Namespaces matter
+   only for AutoGen'ed files anyway (they should be empty strings for
+   Native files), and coupling them to planning the generation of Go
+   'import' makes little sense. Note that namespaces also shouldn't be
+   emitted (in :go-imports) for source packages; they are intended
+   solely to map a Clojure namespace to the generated package,
+   e.g. joker/std/gostd/go/std/os/; but, for now, since they must be
+   emitted in those cases, they're parenthesized as commentary to
+   avoid potential collisions when multiple such namespaces go into a
+   single :go-imports. */
+
 /* Represents an 'import ( foo "bar/bletch/foo" )' line to be produced. */
 type Import struct {
-	Local         string // "foo", "_", or "."
-	Full          string // "bar/bletch/foo"
-	ClojurePrefix string // E.g. "go.std."
-	PathPrefix    string // E.g. "" (for Go std) or "github.com/candid82/joker/std/gostd/go/std" (for other namespaces)
-	Suffix        string // E.g. "_gostd" (for APIs generated in *_native.go files)
-	substituted   bool   // Had to substitute a different local name
-	Pos           token.Pos
+	Local     string   // "foo", "_", or "."
+	Full      string   // "bar/bletch/foo"
+	Namespace string   // E.g. "go.std.io", or "" if no namespace
+	who       string   // For trace
+	file      *Imports // For trace
+	Pos       token.Pos
+	Confirmed bool
 }
 
 /* Maps relative package (unix-style) names to their imports, non-emptiness, etc. */
 type Imports struct {
-	LocalNames map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
-	FullNames  map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
+	Me          string             // The package in which this belongs (e.g. "github.com/candid82/joker/std/gostd/go/std/foo/bar")
+	MySourcePkg string             // E.g. "foo/bar", meaning don't emit the corresponding namespace (use empty string instead)
+	For         string             // For diagnostics/reporting.
+	LocalNames  map[string]string  // "foo" -> "bar/bletch/foo"; no "_" nor "." entries here
+	FullNames   map[string]*Import // "bar/bletch/foo" -> ["foo", "bar/bletch/foo"]
 }
 
-// Given the full (though relative) name of the package, pick a local
-// name (starting with the base component of the full name) that
-// agrees with any existing entry and isn't already used, trying
-// alternate local names as necessary, add the mapping if necessary,
-// and return the local name.
-func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, okToSubstitute bool, pos token.Pos) string {
+type Reservations struct {
+	fileImports *Imports
+	_for        string
+	imports     map[*Import]struct{}
+}
+
+// Given the full (though relative) name of the package to be
+// referenced (imported), pick a local name (starting with the base
+// component of the full name) that agrees with any existing entry and
+// isn't already used, trying alternate local names as necessary, add
+// the mapping if necessary, and return the local name.
+func (imports *Imports) AddPackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) string {
+	if imp := imports.addPackage(full, ns, okToSubstitute, pos, who); imp != nil {
+		if false && Contains(full, "/time") {
+			fmt.Fprintf(os.Stderr, "imports.go/(%q %q)AddPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.Me, imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
+		}
+		imp.Confirmed = true
+		return imp.Local
+	}
+	return ""
+}
+
+func (imports *Imports) NewReservations(f string) *Reservations {
+	return &Reservations{
+		fileImports: imports,
+		_for:        f,
+		imports:     map[*Import]struct{}{},
+	}
+}
+
+func (r *Reservations) ReservePackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) string {
+	if imp := r.fileImports.addPackage(full, ns, okToSubstitute, pos, "ReservePackage for "+who); imp != nil {
+		if false && Contains(full, "/time") {
+			fmt.Fprintf(os.Stderr, "imports.go/ReservePackage(%q): [%s %q] %v\n", r._for, imp.Local, imp.Full, imp.Confirmed)
+		}
+		r.imports[imp] = struct{}{}
+		return imp.Local
+	}
+	return ""
+}
+
+func (r *Reservations) Reset(f string) {
+	r._for = f
+	r.imports = map[*Import]struct{}{}
+}
+
+// Given the full (though relative) name of the package to be
+// referenced (imported), pick a local name (starting with the base
+// component of the full name) that agrees with any existing entry and
+// isn't already used, trying alternate local names as necessary, add
+// the mapping if necessary, and return the local name.
+func (imports *Imports) addPackage(full, ns string, okToSubstitute bool, pos token.Pos, who string) *Import {
 	if imports == nil {
-		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
+		panic(fmt.Sprintf("%q: is nil for %s at %s", imports.For, full, godb.WhereAt(pos)))
+	}
+	if full == "" || full == imports.Me {
+		return nil
 	}
 
-	local := path.Base(full) + suffix
+	more := false
+	if false && Contains(full, "/time") {
+		more = true
+		fmt.Fprintf(os.Stderr, "imports.go/(%q %q)addPackage(full=%q ns=%q okToSubstitute=%v who=%s) at %s\n", imports.Me, imports.For, full, ns, okToSubstitute, who, godb.WhereAt(pos))
+	}
+
+	local := path.Base(full)
 
 	if e, found := imports.FullNames[full]; found {
-		if e.Local == local {
-			return e.Local
+		if e.Local == local || okToSubstitute {
+			if more {
+				fmt.Fprintf(os.Stderr, "imports.go/(%q)addPackage() e.Local=%q\n", imports.For, e.Local)
+			}
+			return e
 		}
-		if okToSubstitute {
-			return e.Local
-		}
-		panic(fmt.Sprintf("AddPackage('%s') at %s cannot supercede '%s' aka \"%s\" at %s", full, godb.WhereAt(pos), e.Full, e.Local, godb.WhereAt(e.Pos)))
+		panic(fmt.Sprintf("imports.go/(%q)addPackage([%q %q]) at %s cannot supercede [%q %q] at %s", imports.For, local, full, godb.WhereAt(pos), e.Local, e.Full, godb.WhereAt(e.Pos)))
 	}
 
-	// if suffix != "" {
-	// 	fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s local=%s\n", full, nsPrefix, pathPrefix, suffix, local)
-	// }
+	if more {
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)addPackage() local=%q\n", imports.For, local)
+	}
 
 	components := Split(full, "/")
-	substituted := false
 	origLocal := local
 	prevComponentIndex := len(components) - 1
 	for {
 		curFull, found := imports.LocalNames[local]
-		//		fmt.Printf("imports.go/AddPackage(%p): full=%s local=%s local=%s origLocal=%s curFull='%s' found=%v\n", imports, full, local, local, origLocal, curFull, found)
+		//		fmt.Printf("imports.go/addPackage(%p): full=%s local=%s local=%s origLocal=%s curFull='%s' found=%v\n", imports, full, local, local, origLocal, curFull, found)
 		if !found {
 			break
 		}
-		substituted = true
 		prevComponentIndex--
 		if prevComponentIndex >= 0 {
 			local = components[prevComponentIndex] + "_" + local
@@ -74,7 +141,7 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 			local = fmt.Sprintf("%s_%d", origLocal, -prevComponentIndex)
 			continue
 		}
-		panic(fmt.Sprintf("AddPackage('%s') aka \"%s\" cannot coexist with '%s' aka \"%s\"", full, local, curFull, imports.FullNames[curFull].Local))
+		panic(fmt.Sprintf("imports.go/(%q)addPackage([%q %q]) cannot coexist with [%q %q]", imports.For, local, full, imports.FullNames[curFull].Local, curFull))
 	}
 
 	if imports.LocalNames == nil {
@@ -85,31 +152,45 @@ func (imports *Imports) AddPackage(full, nsPrefix, pathPrefix, suffix string, ok
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{local, full, nsPrefix, pathPrefix, suffix, substituted, pos}
-	// fmt.Fprintf(os.Stderr, "imports.go/AddPackage(): full=%s nsPrefix=%s pathPrefix=%s suffix=%s\n", full, nsPrefix, pathPrefix, suffix)
+	imp := &Import{
+		Local:     local,
+		Full:      full,
+		Namespace: ns,
+		who:       who,
+		file:      imports,
+		Pos:       pos,
+		Confirmed: false,
+	}
 
-	return local
+	imports.FullNames[full] = imp
+	if more {
+		fmt.Fprintf(os.Stderr, "imports.go/(%q)addPackage(): full=%s ns=%s local=%s\n", imports.For, full, ns, local)
+	}
+
+	return imp
 }
 
 // Given the full (though relative) name of the package, establish it
 // as the (only) interned package (using the "."  name in Go's
-// 'import' statement).
-func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPrefix string, pos token.Pos) {
-	full := fullPath.String()
+// 'import' statement). This is presumably Joker's 'core' package.
+func (imports *Imports) InternPackage(full, ns string, pos token.Pos) {
 	if imports == nil {
-		panic(fmt.Sprintf("imports is nil for %s at %s", full, godb.WhereAt(pos)))
+		panic(fmt.Sprintf("nil imports for %s at %s", full, godb.WhereAt(pos)))
+	}
+	if full == imports.Me {
+		return
 	}
 
 	if e, found := imports.FullNames[full]; found {
 		if e.Local != "." {
-			panic(fmt.Sprintf("InternPackage('%s') at %s cannot coexist with '%s' at %s", full, godb.WhereAt(pos), e.Full, godb.WhereAt(e.Pos)))
+			panic(fmt.Sprintf("imports.go/(%q)InternPackage(%q) at %s cannot coexist with %q at %s", imports.For, full, godb.WhereAt(pos), e.Full, godb.WhereAt(e.Pos)))
 		}
 		return
 	}
 
 	curFull, found := imports.LocalNames["."]
 	if found {
-		panic(fmt.Sprintf("InternPackage('%s') at %s cannot replace '%s': %+v", full, godb.WhereAt(pos), curFull, imports.FullNames[curFull]))
+		panic(fmt.Sprintf("imports.go/(%q)InternPackage(%q) at %s cannot replace %q: %+v at %s", imports.For, full, godb.WhereAt(pos), curFull, imports.FullNames[curFull], godb.WhereAt(imports.FullNames[curFull].Pos)))
 	}
 	if imports.LocalNames == nil {
 		imports.LocalNames = map[string]string{}
@@ -118,11 +199,18 @@ func (imports *Imports) InternPackage(fullPath paths.UnixPath, nsPrefix, pathPre
 	if imports.FullNames == nil {
 		imports.FullNames = map[string]*Import{}
 	}
-	imports.FullNames[full] = &Import{".", full, nsPrefix, pathPrefix, "", false, pos}
-	// fmt.Fprintf(os.Stderr, "imports.go/InternPackage(): full=%s nsPrefix=%s pathPrefix=%s\n", full, nsPrefix, pathPrefix)
+	imports.FullNames[full] = &Import{
+		Local:     ".",
+		Full:      full,
+		who:       "InternPackage",
+		file:      imports,
+		Namespace: ns,
+		Pos:       pos,
+		Confirmed: true,
+	}
 }
 
-func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func(k string, p token.Pos)) {
+func SortedOriginalPackageImports(p *Package, filter func(string) bool, f func(string, token.Pos)) {
 	imports := map[string]token.Pos{}
 	for _, f := range p.Files {
 		for _, impSpec := range f.Imports {
@@ -155,7 +243,7 @@ func SortedOriginalPackageImports(p *Package, filter func(p string) bool, f func
 	}
 }
 
-func (pi *Imports) sort(f func(k string, v *Import)) {
+func (pi *Imports) sort(f func(string, *Import)) {
 	var keys []string
 	for k, _ := range pi.FullNames {
 		keys = append(keys, k)
@@ -170,6 +258,9 @@ func (pi *Imports) sort(f func(k string, v *Import)) {
 func (pi *Imports) QuotedList(prefix string) string {
 	imports := ""
 	pi.sort(func(k string, v *Import) {
+		if !v.Confirmed {
+			return
+		}
 		if v.Local == path.Base(k) {
 			imports += prefix + `"` + k + `"`
 		} else {
@@ -182,13 +273,18 @@ func (pi *Imports) QuotedList(prefix string) string {
 func (pi *Imports) AsClojureMap() string {
 	imports := []string{}
 	pi.sort(func(k string, v *Import) {
-		imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.ClojurePrefix+ReplaceAll(k, "/", "."), v.Local, path.Join(v.PathPrefix, k)))
+		if v.Confirmed {
+			imports = append(imports, fmt.Sprintf(`"%s" ["%s" "%s"]`, v.Namespace, v.Local, k))
+		}
 	})
 	return Join(imports, ", ")
 }
 
-func (to *Imports) Promote(from *Imports, pos token.Pos) {
-	for _, imp := range from.FullNames {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, imp.Suffix, false, pos)
+func (r *Reservations) Confirm() {
+	for imp, _ := range r.imports {
+		if false && Contains(imp.Full, "/time") {
+			fmt.Fprintf(os.Stderr, "imports.go/Confirm(%q): %s [%s %q]\n", imp.file.For, imp.who, imp.Local, imp.Full)
+		}
+		imp.Confirmed = true
 	}
 }

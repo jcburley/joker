@@ -7,7 +7,6 @@ import (
 	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
 	"github.com/candid82/joker/tools/gostd/godb"
-	"github.com/candid82/joker/tools/gostd/imports"
 	. "go/ast"
 	"go/token"
 	"go/types"
@@ -83,44 +82,66 @@ var nonEmptyLineRegexp *regexp.Regexp
 type funcCode struct {
 	clojureParamList        string
 	clojureParamListDoc     string
-	goParamList             string
+	goAutoGenParamList      string
+	goNativeParamList       string
 	goParamListDoc          string
 	clojureGoParams         string
 	goCode                  string
 	clojureReturnType       string
 	clojureReturnTypeForDoc string
+	goReturnType            string
 	goReturnTypeForDoc      string
 	conversion              string // empty if no conversion, else conversion expression with %s as expr to be converted
 }
 
-func genGoCall(pkgBaseName, goFname, goParams string) string {
+func genGoCall(goFname, goParams string) string {
 	return "{{myGoImport}}." + goFname + "(" + goParams + ")\n"
 }
 
-func genFuncCode(fn *FuncInfo, pkgBaseName, pkgDirUnix string, t *FuncType, goFname string) (fc funcCode) {
-	var goPreCode, goParams, goResultAssign, goPostCode string
+func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", fn.Name, godb.WhereAt(fn.Pos), x))
+		}
+	}()
 
-	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goParamList, fc.goParamListDoc, goPreCode, goParams = genGoPreFunc(fn)
-	goCall := genGoCall(pkgBaseName, fn.BaseName, goParams)
-	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost(fn, "\t", t)
+	var goParams, goResultAssign, goPostCode string
+
+	// Generate the results-handling first, because that
+	// determines whether a function will be generated for
+	// *_native.go, which in turn affects how the parameter list
+	// for that function is built (with respect to imports).
+	goResultAssign, fc.clojureReturnType, fc.clojureReturnTypeForDoc, fc.goReturnTypeForDoc, goPostCode, fc.conversion = genGoPost("\t", t)
+
+	fc.clojureReturnType, fc.goReturnType = genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType)
+	isNativeCodeNeeded := fc.clojureReturnType == "" // No Go code needs to be generated when a return type is explicitly specified.
+
+	fc.clojureParamList, fc.clojureParamListDoc, fc.clojureGoParams, fc.goAutoGenParamList, fc.goNativeParamList, fc.goParamListDoc, goParams = genGoPreFunc(fn, isNativeCodeNeeded)
+
+	goCall := genGoCall(fn.BaseName, goParams)
 
 	if goPostCode == "" && goResultAssign == "" {
 		goPostCode = "\treturn NIL\n"
 	}
 
-	fc.goCode = goPreCode + // Optional block of pre-code
-		"\t" + goResultAssign + goCall + // [results := ]fn-to-call([args...])
+	fc.goCode = "\t" + goResultAssign + goCall + // [results := ]fn-to-call([args...])
 		goPostCode // Optional block of post-code
 	return
 }
 
 func genReceiverCode(fn *FuncInfo, goFname string) string {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", goFname, godb.WhereAt(fn.Pos), x))
+		}
+	}()
+
 	preCode, params, min, max := genGoPreReceiver(fn)
 
 	receiverName := fn.BaseName
 	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
 
-	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost(fn, "\t", fn.Ft)
+	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost("\t", fn.Signature)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
 		return returnTypeForDoc
 	}
@@ -154,6 +175,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 func GenReceiver(fn *FuncInfo) {
 	genutils.GenSymReset()
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
+	ns := fn.Namespace
 
 	goFname := genutils.FuncNameAsGoPrivate(fn.Name)
 
@@ -190,11 +212,14 @@ func GenReceiver(fn *FuncInfo) {
 		}
 	} else {
 		NumGeneratedFunctions++
-		PackagesInfo[pkgDirUnix].NonEmpty = true
-		im := PackagesInfo[pkgDirUnix].ImportsNative
-		im.Promote(fn.ImportsNative, fn.Pos)
-		im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
-		myGoImport := im.AddPackage(pkgDirUnix, "", "", "", true, fn.Pos)
+		if _, found := NamespacesInfo[ns]; !found {
+			panic(fmt.Sprintf("no ns=%s", ns))
+		}
+		NamespacesInfo[ns].NonEmpty = true
+		fn.ReservationsNative.Confirm()
+		im := NamespacesInfo[ns].ImportsNative
+		im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
+		myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenReceiver")
 		goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
 		if fn.Fd == nil {
 			NumFunctions++
@@ -204,10 +229,10 @@ func GenReceiver(fn *FuncInfo) {
 			if ti == nil {
 				panic(fmt.Sprintf("Cannot find type for %s", fn.Name))
 			}
-			if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
-				GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
+			if _, ok := GoCode[ns].InitVars[ti]; !ok {
+				GoCode[ns].InitVars[ti] = map[string]*FnCodeInfo{}
 			}
-			GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Ft.Params, FnDoc: fn.Doc}
+			GoCode[ns].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, Params: fn.Signature.Params(), FnDoc: fn.Doc}
 		} else {
 			NumGeneratedReceivers++
 			for _, r := range fn.Fd.Recv.List {
@@ -215,21 +240,21 @@ func GenReceiver(fn *FuncInfo) {
 				if ti == nil {
 					panic(fmt.Sprintf("nil ti for %v!!", r.Type))
 				}
-				if _, ok := GoCode[pkgDirUnix].InitVars[ti]; !ok {
-					GoCode[pkgDirUnix].InitVars[ti] = map[string]*FnCodeInfo{}
+				if _, ok := GoCode[ns].InitVars[ti]; !ok {
+					GoCode[ns].InitVars[ti] = map[string]*FnCodeInfo{}
 				}
-				GoCode[pkgDirUnix].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Fd.Type.Params, FnDoc: fn.Doc}
+				GoCode[ns].InitVars[ti][fn.BaseName] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFname, FnDecl: fn.Fd, Params: fn.Signature.Params(), FnDoc: fn.Doc}
 			}
 		}
 	}
 
 	if goFn != "" {
-		var params *FieldList
+		var params *types.Tuple
 		if fn.Fd != nil {
-			params = fn.Fd.Type.Params
+			params = fn.Signature.Params()
 		}
-		GoCode[pkgDirUnix].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
-		//		fmt.Printf("codegen.go/GenReceiver: Added %s to %s\n", goFname, pkgDirUnix)
+		GoCode[ns].Functions[goFname] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: fn.Fd, Params: params, FnDoc: nil}
+		//		fmt.Printf("codegen.go/GenReceiver: Added %s to %s\n", goFname, ns)
 	}
 }
 
@@ -238,21 +263,21 @@ func GenStandalone(fn *FuncInfo) {
 	d := fn.Fd
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 	pkgBaseName := fn.SourceFile.Package.BaseName
+	ns := fn.Namespace
 
 	goFname := genutils.FuncNameAsGoPrivate(d.Name.Name)
-	fc := genFuncCode(fn, pkgBaseName, pkgDirUnix, fn.Ft, goFname)
-	clojureReturnType, goReturnType := genutils.ClojureReturnTypeForGenerateCustom(fc.clojureReturnType, fc.goReturnTypeForDoc)
+	fc := genFuncCode(fn, fn.Signature)
+	isNativeCodeNeeded := fc.clojureReturnType == "" // No Go code needs to be generated when a return type is explicitly specified.
 
 	var cl2gol string
-	if clojureReturnType == "" {
+	if isNativeCodeNeeded {
 		cl2gol = goFname
 		fc.conversion = ""
 	} else {
-		// No Go code needs to be generated when a return type is explicitly specified.
-		clojureReturnType += " "
+		fc.clojureReturnType += " "
 		cl2gol = pkgBaseName + "." + fn.BaseName
-		if _, found := PackagesInfo[pkgDirUnix]; !found {
-			panic(fmt.Sprintf("Cannot find package %s", pkgDirUnix))
+		if _, found := NamespacesInfo[ns]; !found {
+			panic(fmt.Sprintf("Cannot find namespace %s", ns))
 		}
 	}
 	cl2golCall := cl2gol + fc.clojureGoParams
@@ -261,7 +286,7 @@ func GenStandalone(fn *FuncInfo) {
 	}
 
 	clojureDefnInfo := map[string]string{
-		"ReturnType": clojureReturnType,
+		"ReturnType": fc.clojureReturnType,
 		"Name":       d.Name.Name,
 		"DocString": genutils.CommentGroupInQuotes(d.Doc, fc.clojureParamListDoc, fc.clojureReturnTypeForDoc,
 			fc.goParamListDoc, fc.goReturnTypeForDoc) + "\n",
@@ -275,8 +300,8 @@ func GenStandalone(fn *FuncInfo) {
 
 	goFuncInfo := map[string]string{
 		"Name":       goFname,
-		"ParamList":  fc.goParamList,
-		"ReturnType": goReturnType,
+		"ParamList":  fc.goNativeParamList,
+		"ReturnType": fc.goReturnType,
 		"Code":       fc.goCode,
 	}
 
@@ -284,7 +309,7 @@ func GenStandalone(fn *FuncInfo) {
 	Templates.ExecuteTemplate(buf, "go-func-info.tmpl", goFuncInfo)
 	goFn := buf.String()
 
-	if clojureReturnType != "" && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
+	if !isNativeCodeNeeded && !strings.Contains(clojureFn, "ABEND") && !strings.Contains(goFn, "ABEND") {
 		goFn = ""
 	}
 
@@ -298,50 +323,68 @@ func GenStandalone(fn *FuncInfo) {
 	} else {
 		NumGeneratedFunctions++
 		NumGeneratedStandalones++
-		pi := PackagesInfo[pkgDirUnix]
-		pi.NonEmpty = true
-		if clojureReturnType == "" {
-			im := pi.ImportsNative
-			im.InternPackage(godb.ClojureCoreDir, "", "", fn.Pos)
-			myGoImport := im.AddPackage(pkgDirUnix, "", "", "", true, fn.Pos)
+		nsi := NamespacesInfo[ns]
+		nsi.NonEmpty = true
+		if isNativeCodeNeeded {
+			im := nsi.ImportsNative
+			im.InternPackage(godb.ClojureCorePath, "", fn.Pos)
+			myGoImport := im.AddPackage(pkgDirUnix, "", true, fn.Pos, "codegen.go/GenStandalone")
 			goFn = strings.ReplaceAll(goFn, "{{myGoImport}}", myGoImport)
-			im.Promote(fn.ImportsNative, fn.Pos)
+			fn.ReservationsNative.Confirm()
 		} else {
 			// No Go code needs to be generated when a return type is explicitly specified.
-			pi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.NsRoot, "", "", false, fn.Pos)
+			nsi.ImportsAutoGen.AddPackage(pkgDirUnix, fn.SourceFile.Package.Namespace, false, fn.Pos, "codegen.go/GenStandalone^")
 		}
-		pi.ImportsAutoGen.Promote(fn.ImportsAutoGen, fn.Pos)
+		fn.ReservationsAutoGen.Confirm()
 	}
 
-	ClojureCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
+	ClojureCode[ns].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: clojureFn, FnDecl: nil, FnDoc: nil}
 
 	if goFn != "" {
-		GoCode[pkgDirUnix].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: nil, FnDoc: nil}
+		GoCode[ns].Functions[d.Name.Name] = &FnCodeInfo{SourceFile: fn.SourceFile, FnCode: goFn, FnDecl: nil, FnDoc: nil}
 	}
 }
 
 func GenConstant(ci *ConstantInfo) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", ci.Name, godb.WhereAt(ci.Pos), x))
+		}
+	}()
+
 	genutils.GenSymReset()
-	pkgDirUnix := ci.SourceFile.Package.Dir.String()
+	ns := ci.Namespace
 
-	PackagesInfo[pkgDirUnix].NonEmpty = true
+	NamespacesInfo[ns].NonEmpty = true
 
-	ClojureCode[pkgDirUnix].Constants[ci.Name.Name] = ci
+	defer func() {
+		if x := recover(); x != nil {
+			fmt.Fprintf(os.Stderr, "Panic \"%s\" for ns=%s name=%s\n", x, ns, ci.Name.Name)
+		}
+	}()
+	ClojureCode[ns].Constants[ci.Name.Name] = ci
 }
 
 func GenVariable(vi *VariableInfo) {
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", vi.Name, godb.WhereAt(vi.Pos), x))
+		}
+	}()
+
 	genutils.GenSymReset()
 	pkgDirUnix := vi.SourceFile.Package.Dir.String()
+	ns := vi.Namespace
 
-	PackagesInfo[pkgDirUnix].NonEmpty = true
+	NamespacesInfo[ns].NonEmpty = true
 
-	myGoImport := PackagesInfo[pkgDirUnix].ImportsAutoGen.AddPackage(pkgDirUnix, vi.SourceFile.Package.NsRoot, "", "", true, vi.Name.NamePos)
+	myGoImport := NamespacesInfo[ns].ImportsAutoGen.AddPackage(pkgDirUnix, vi.SourceFile.Package.Namespace, true, vi.Name.NamePos, "codegen.go/GenVariable")
 	vi.Def = strings.ReplaceAll(vi.Def, "{{myGoImport}}", myGoImport)
 
-	ClojureCode[pkgDirUnix].Variables[vi.Name.Name] = vi
+	ClojureCode[ns].Variables[vi.Name.Name] = vi
 }
 
-func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string {
+func maybeImplicitConvert(typeName string, ti TypeInfo) string {
 	ts := ti.TypeSpec()
 	if ts == nil {
 		return ""
@@ -353,12 +396,12 @@ func maybeImplicitConvert(src *godb.GoFile, typeName string, ti TypeInfo) string
 	}
 
 	argType := t.ArgClojureType()
-	declType := t.ArgExtractFunc()
+	declType := t.GoApiString(false)
 	if argType == "" || declType == "" {
 		return ""
 	}
 
-	coerceApi := "ObjectAs" + declType
+	coerceApi := "ObjectAs_" + declType
 	if _, ok := definedApis[coerceApi]; !ok {
 		return "" // Not implemented
 	}
@@ -395,16 +438,18 @@ func GenType(t string, ti TypeInfo) {
 	//	fmt.Printf("codegen.go/GenType(): %s BETTER\n", ti.GoName())
 
 	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
-	pi := PackagesInfo[pkgDirUnix]
+	pkgInfo := PackagesInfo[pkgDirUnix]
+	ns := pkgInfo.Namespace
+	nsi := NamespacesInfo[ns]
 
-	pi.NonEmpty = true
+	nsi.NonEmpty = true
 	where := ts.Pos()
 
-	pi.ImportsNative.InternPackage(godb.ClojureCoreDir, "", "", where)
-	myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", "", true, where)
+	nsi.ImportsNative.InternPackage(godb.ClojureCorePath, "", where)
+	myGoImport := nsi.ImportsNative.AddPackage(pkgDirUnix, "", true, where, "codegen.go/GenType")
 
-	ClojureCode[pkgDirUnix].Types[t] = ti
-	GoCode[pkgDirUnix].Types[t] = ti
+	ClojureCode[ns].Types[t] = ti
+	GoCode[ns].Types[t] = ti
 
 	const goExtractTemplate = `
 		case %s%s:
@@ -432,7 +477,7 @@ func GenType(t string, ti TypeInfo) {
 	info["TypeName"] = typeName
 	info["TypeAsString"] = t
 
-	info["Others"] = maybeImplicitConvert(godb.GoFileForTypeSpec(ts), typeName, ti)
+	info["Others"] = maybeImplicitConvert(typeName, ti)
 
 	coerce := ""
 	coerceRefTo := ""
@@ -462,10 +507,10 @@ func GenType(t string, ti TypeInfo) {
 	GoCodeForType[ti] = strings.ReplaceAll(buf.String(), "{{myGoImport}}", myGoImport)
 	ClojureCodeForType[ti] = ""
 
-	NewDefinedApi(pi.ClojureNameSpace+"/"+MaybeIsApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ExtractApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+FieldAsApiName, "codegen.go/GenType()")
-	NewDefinedApi(pi.ClojureNameSpace+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(ns+"/"+MaybeIsApiName, "codegen.go/GenType()")
+	NewDefinedApi(ns+"/"+ExtractApiName, "codegen.go/GenType()")
+	NewDefinedApi(ns+"/"+FieldAsApiName, "codegen.go/GenType()")
+	NewDefinedApi(ns+"/"+ReceiverArgAsApiName, "codegen.go/GenType()")
 }
 
 var Ctors = map[TypeInfo]string{}
@@ -477,6 +522,12 @@ func genCtor(tyi TypeInfo) {
 		return
 	}
 
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", tyi.GoName(), godb.WhereAt(tyi.DefPos()), x))
+		}
+	}()
+
 	refTo := ""
 	uti := tyi
 	ts := tyi.TypeSpec()
@@ -487,6 +538,8 @@ func genCtor(tyi TypeInfo) {
 			return
 		}
 	}
+
+	tyi.ReservationsNative().Reset(tyi.ClojureName())
 
 	goTypeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
 	clojureTypeName := fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
@@ -510,14 +563,15 @@ func genCtor(tyi TypeInfo) {
 	goConstructor := buf.String()
 
 	pkgDirUnix := godb.GoPackageForTypeSpec(ts)
+	ns := tyi.ClojureNamespace()
 	if strings.Contains(goConstructor, "ABEND") {
 		goConstructor = nonEmptyLineRegexp.ReplaceAllString(goConstructor, `// $1`)
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", path.Base(pkgDirUnix))
 		abends.TrackAbends(goConstructor)
 	} else {
-		pi := PackagesInfo[pkgDirUnix]
-		pi.ImportsNative.Promote(tyi.RequiredImports(), tyi.DefPos())
-		myGoImport := pi.ImportsNative.AddPackage(pkgDirUnix, "", "", "", true, tyi.DefPos())
+		tyi.ReservationsNative().Confirm()
+		nsi := NamespacesInfo[ns]
+		myGoImport := nsi.ImportsNative.AddPackage(pkgDirUnix, "", true, tyi.DefPos(), "codegen.go/GenCtor")
 		goConstructor = strings.ReplaceAll(goConstructor, "{{myGoImport}}", myGoImport)
 		CtorNames[tyi] = wrappedCtorApiName
 		if tyi != uti {
@@ -533,11 +587,11 @@ func genCtor(tyi TypeInfo) {
 
 func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	var types []TypeInfo
-	ord := (uint)(0)
+	ord := 0
 
 	for _, ti := range allTypesSorted {
 		more := false
-		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+		if false && strings.Contains(ti.GoName(), "FileMode") {
 			fmt.Printf("codegen.go/GenTypeInfo(): %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 			more = true
 		}
@@ -556,9 +610,9 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 			continue
 		}
 		types = append(types, ti)
-		Ordinal[ti] = ord
+		Ordinal[ti] = ord + 1
 		if more {
-			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s (specificity=%d)\n", ord, ti.GoName(), ti.Specificity())
+			fmt.Printf("codegen.go/GenTypeInfo(): assigned ordinal %3d to %s @%p (specificity=%d)\n", ord, ti, ti, ti.Specificity())
 		}
 		ord++
 	}
@@ -566,7 +620,14 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, ft *FuncType, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+	sig := (*types.Signature)(nil)
+	switch x := xft.(type) {
+	case *types.Signature:
+		sig = x
+	default:
+		panic(fmt.Sprintf("unexpected type %T", xft))
+	}
 	if f, found := QualifiedFunctions[fullName]; found {
 		if f.EmbedName != "" && f.EmbedName != name {
 			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction: not replacing %s with %s\n", f.EmbedName, name)
@@ -578,65 +639,69 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
 		return
 	}
+	docName := "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()"
+
+	pkgDirUnix := ti.GoPackage()
+	file := PackagesInfo[pkgDirUnix]
+	ns := NamespacesInfo[file.Namespace]
+
 	QualifiedFunctions[fullName] = &FuncInfo{
-		BaseName:       name,
-		ReceiverId:     receiverId,
-		Name:           baseName,
-		DocName:        "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()",
-		EmbedName:      embedName,
-		Fd:             nil,
-		ToM:            ti,
-		Ft:             ft,
-		Doc:            doc,
-		SourceFile:     ti.GoFile(),
-		ImportsNative:  &imports.Imports{},
-		ImportsAutoGen: &imports.Imports{},
-		Pos:            pos,
-		Comment:        comment,
+		BaseName:            name,
+		ReceiverId:          receiverId,
+		Name:                baseName,
+		DocName:             docName,
+		EmbedName:           embedName,
+		Namespace:           ns.Name,
+		Fd:                  nil,
+		ToM:                 ti,
+		Signature:           sig,
+		Doc:                 doc,
+		SourceFile:          ti.GoFile(),
+		ReservationsNative:  ns.ImportsNative.NewReservations("Native " + docName),
+		ReservationsAutoGen: ns.ImportsAutoGen.NewReservations("AutoGen " + docName),
+		Pos:                 pos,
+		Comment:             comment,
 	}
 }
 
-func appendMethods(ti TypeInfo, iface *InterfaceType, comment string) {
+func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
+	d, ok := astutils.TypeCheckerInfo.Types[ity]
+	if !ok {
+		fmt.Fprintf(os.Stderr, "codegen.go/appendMethods(): Cannot find def for %T %+v\n", ity, ity)
+		return
+	}
+	iface, yes := d.Type.(*types.Interface)
+	if !yes {
+		return
+	}
+
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
 	receiverId := "{{myGoImport}}." + typeBaseName
-	for _, m := range iface.Methods.List {
-		if m.Names != nil {
-			if len(m.Names) != 1 {
-				Print(godb.Fset, iface)
-				panic("Names has more than one!")
-			}
-			if m.Type == nil {
-				Print(godb.Fset, iface)
-				panic("Why no Type field??")
-			}
-			for _, n := range m.Names {
-				name := n.Name
-				doc := m.Doc
-				if doc == nil {
-					doc = m.Comment
-				}
-				addQualifiedFunction(
-					ti,
-					typeBaseName,
-					receiverId,
-					name,
-					"", /* embedName*/
-					typeFullName+"_"+name,
-					typeBaseName+"_"+name,
-					comment,
-					doc,
-					m.Type.(*FuncType),
-					n.NamePos)
-			}
-			continue
-		}
-		ts := godb.Resolve(m.Type)
-		if ts == nil {
-			return
-		}
-		appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+
+	num := iface.NumMethods()
+	for i := 0; i < num; i++ {
+		m := iface.Method(i)
+		name := m.Name()
+		doc := &CommentGroup{}
+		addQualifiedFunction(
+			ti,
+			typeBaseName,
+			receiverId,
+			name,
+			"", /* embedName*/
+			typeFullName+"_"+name,
+			typeBaseName+"_"+name,
+			comment,
+			doc,
+			m.Type(),
+			m.Pos())
 	}
+	// num := iface.NumEmbeddeds()
+	// for i := 0; i < num; i++ {
+	// 	m := iface.EmbeddedType(i)
+	// 	appendMethods(ti, ts.(*TypeSpec).Type.(*InterfaceType), "embedded interface")
+	// }
 }
 
 // ptr is true when processing type *T (thus adding to *T's list of functions), false otherwise.
@@ -693,10 +758,21 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					// support, due to embedding T
 					// as a GoObject[interface{}]
 					// of T, not *T.
-					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
+					if false {
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
+					}
 					continue
 				}
 
+				var sig *types.Signature
+				if ty, ok := astutils.TypeCheckerInfo.Defs[fd.Name]; !ok {
+					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no info on %s.%s\n", typeFullName, fd.Name)
+				} else {
+					sig = ty.Type().(*types.Signature)
+					if sig == nil {
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no signature for %s.%s\n", typeFullName, fd.Name)
+					}
+				}
 				doc := fd.Doc
 				addQualifiedFunction(
 					ti,
@@ -708,7 +784,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 					typeBaseName+"_"+name,
 					comment,
 					doc,
-					fd.Type,
+					sig,
 					fd.Name.NamePos)
 			}
 		}
@@ -747,7 +823,7 @@ func GenQualifiedFunctionsFromEmbeds(allTypesSorted []TypeInfo) {
 			continue // Do not generate anything for private or special types
 		}
 
-		ty := ti.GoType()
+		ty := ti.GoTypeExpr()
 
 		if ty != nil {
 			switch ty := ty.(type) {
@@ -793,9 +869,9 @@ func nonGoObjectCase(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObje
 	`
 	}
 
-	return nonGoObjectCase,
-		fmt.Sprintf("GoObject[%s] or: %s", goTypeName, strings.Join(nonGoObjectTypeDocs, " or ")),
-		strings.Join(helperFuncs, "")
+	nonGoObjectCaseDoc = fmt.Sprintf("GoObject[%s] or: %s", goTypeName, strings.Join(nonGoObjectTypeDocs, " or "))
+	helperFunc = strings.Join(helperFuncs, "")
+	return
 }
 
 func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string) {
@@ -808,7 +884,7 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 	}
 	switch t := ts.Type.(type) {
 	case *Ident:
-		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name, ts.Type)
+		nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject := simpleTypeFor(ti.GoFile().Package.Dir.String(), t.Name)
 		extractClojureObject = goTypeName + "(_o" + extractClojureObject + ")"
 		nonGoObjectTypes = []string{nonGoObjectType}
 		nonGoObjectTypeDocs = []string{nonGoObjectTypeDoc}
@@ -824,14 +900,17 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 			[]string{mapToType(ti, mapHelperFName, goTypeName, t)}
 	case *ArrayType:
 	}
-	return []string{"default"},
-		[]string{"whatever"},
-		[]string{fmt.Sprintf("%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-			goTypeName, ts.Type, clojureTypeName)},
-		[]string{""}
+
+	nonGoObjectTypes = []string{"default"}
+	nonGoObjectTypeDocs = []string{"whatever"}
+	extractClojureObjects = []string{fmt.Sprintf("%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
+		goTypeName, ts.Type, clojureTypeName)}
+	helperFuncs = []string{""}
+
+	return
 }
 
-func simpleTypeFor(pkgDirUnix, name string, e Expr) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
+func simpleTypeFor(pkgDirUnix, name string) (nonGoObjectType, nonGoObjectTypeDoc, extractClojureObject string) {
 	v := TypeInfoForGoName(genutils.CombineGoName(pkgDirUnix, name))
 	nonGoObjectType = "case " + v.ArgClojureType()
 	nonGoObjectTypeDoc = v.ArgClojureType()
@@ -863,7 +942,7 @@ func mapToType(ti TypeInfo, helperFName, goTypeName string, ty *StructType) stri
 	return fmt.Sprintf(hFunc, helperFName, goTypeName, goTypeCtorName, valToType)
 }
 
-func elementsToType(ti TypeInfo, ty *StructType, toType func(ti TypeInfo, i int, name string, f *Field) string) string {
+func elementsToType(ti TypeInfo, ty *StructType, toType func(TypeInfo, int, string, *Field) string) string {
 	els := []string{}
 	i := 0
 	for _, f := range ty.Fields.List {
@@ -880,7 +959,7 @@ func elementsToType(ti TypeInfo, ty *StructType, toType func(ti TypeInfo, i int,
 		`)
 }
 
-func mapElementToType(ti TypeInfo, i int, name string, f *Field) string {
+func mapElementToType(ti TypeInfo, _ int, name string, f *Field) string {
 	return valueToType(ti, fmt.Sprintf(`"%s"`, name), f.Type)
 }
 
@@ -902,9 +981,9 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	clType := v.ClojureEffectiveName()
-	apiImportName := addApiToImports(ti, clType) // apiImportName := AddApiToImports(clType)
-	api := determineRuntime("FieldAs", "FieldAs_ns_", apiImportName, clType)
+	clType := v.ClojureExtractString()
+	apiImportName := addApiToImports(ti, clType)
+	api := determineRuntime("FieldAs_", "FieldAs_ns_", apiImportName, clType)
 
 	deref := ""
 	if v.IsPassedByAddress() {
@@ -921,24 +1000,13 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	}
 
 	apiPkgPath := godb.ClojureSourceDir.Join(importStdRoot.String(), strings.ReplaceAll(clType[0:ix], ".", "/")).String()
-	clojureStdPath := godb.ClojureSourceDir.Join(importStdRoot.String()).String()
-	//	fmt.Fprintf(os.Stderr, "codegen.go/addApiToImports: Compared %s to %s\n", apiPkgPath, fn.GoFile().Package.ImportMe)
 	if apiPkgPath == ti.GoFile().Package.ImportMe {
 		return "" // api is local to function
 	}
 
-	clojureStdNs := ti.GoFile().Package.NsRoot
-	native := ti.RequiredImports().AddPackage(apiPkgPath, clojureStdNs, clojureStdPath, "_gostd", true, ti.DefPos())
+	native := ti.ReservationsNative().ReservePackage(apiPkgPath, "", true, ti.DefPos(), "codegen.go/addApiToImports")
 
 	return native
-}
-
-// Add the list of imports to those required if this type's constructor can be emitted (no ABENDs).
-func addRequiredImports(ti TypeInfo, importeds []imports.Import) {
-	to := ti.RequiredImports()
-	for _, imp := range importeds {
-		to.AddPackage(imp.Full, imp.ClojurePrefix, imp.PathPrefix, "", false, imp.Pos)
-	}
 }
 
 func init() {

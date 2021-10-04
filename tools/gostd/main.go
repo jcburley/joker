@@ -43,10 +43,10 @@ var goPath paths.NativePath
 var importStdRoot = paths.NewUnixPath(path.Join("std", "gostd")) // Relative to --output dir.
 
 var goStdPrefix = paths.NewUnixPath("go/std/")
-
 var goNsPrefix = strings.ReplaceAll(goStdPrefix.String(), "/", ".")
 
-var generatedPkgPrefix string
+var generatedPkgPrefix string   // E.g. "candid82/joker/std/gostd/".
+var generatedGoStdPrefix string // E.g. "candid82/joker/std/gostd/go/std/".
 
 func notOption(arg string) bool {
 	return arg == "--" || arg == "-" || !strings.HasPrefix(arg, "-")
@@ -76,7 +76,7 @@ Options:
 	os.Exit(0)
 }
 
-func listOfOthers(other paths.NativePath) (others []paths.NativePath) {
+func listOfOthers(other paths.NativePath) []paths.NativePath {
 	o := goPath.JoinPaths(other).String()
 	s, e := os.Stat(o)
 	if e != nil {
@@ -89,7 +89,7 @@ func listOfOthers(other paths.NativePath) (others []paths.NativePath) {
 	}
 	fmt.Fprintf(os.Stderr, "files not yet supported: %s\n", other)
 	os.Exit(3)
-	return
+	return []paths.NativePath{}
 }
 
 var coreApiFilename = "core-apis.dat"
@@ -133,7 +133,7 @@ func readCoreApiFile(src paths.NativePath) {
 	//	fmt.Printf("Core APIs: %+v\n", definedApis)
 }
 
-func NewDefinedApi(api, src string) {
+func NewDefinedApi(api, _ string) {
 	definedApis[api] = struct{}{}
 	//	fmt.Printf("%s: Defined API '%s'\n", src, api)
 }
@@ -285,7 +285,7 @@ func main() {
 
 	godb.SetClojureSourceDir(clojureImportDir, goPath)
 	generatedPkgPrefix = godb.ClojureSourceDir.JoinPaths(importStdRoot).String() + "/"
-	importMe := path.Join(generatedPkgPrefix, goStdPrefix.String())
+	generatedGoStdPrefix = generatedPkgPrefix + goStdPrefix.String()
 
 	if godb.Verbose {
 		fmt.Printf("goRootSrc: %s\n", goRootSrc)
@@ -297,7 +297,7 @@ func main() {
 		fmt.Printf("jokerSourceDir: %s\n", jokerSourceDir)
 		fmt.Printf("importStdRoot: %s\n", importStdRoot)
 		fmt.Printf("generatedPkgPrefix: %s\n", generatedPkgPrefix)
-		fmt.Printf("importMe: %s\n", importMe)
+		fmt.Printf("generatedGoStdPrefix: %s\n", generatedGoStdPrefix)
 		for _, o := range otherSourceDirs {
 			fmt.Printf("other: %s\n", o)
 		}
@@ -341,9 +341,9 @@ func main() {
 		}
 	}
 
-	godb.AddMapping(goRootSrc, goNsPrefix, importMe)
+	godb.AddMapping(goRootSrc, goNsPrefix, generatedGoStdPrefix)
 	root := goRootSrc.Join(".")
-	AddWalkDir(goRootSrc, root, goNsPrefix, importMe)
+	AddWalkDir(goRootSrc, root, goNsPrefix, generatedGoStdPrefix)
 
 	for _, o := range otherSourceDirs {
 		AddWalkDir(o, o.Join("."), "x.y.z.", path.Join(generatedPkgPrefix, "x/y/z/"))
@@ -360,12 +360,12 @@ func main() {
 	SetSwitchableTypes(allTypesSorted)
 
 	SortedConstantInfoMap(GoConstants,
-		func(c string, ci *ConstantInfo) {
+		func(_ string, ci *ConstantInfo) {
 			GenConstant(ci)
 		})
 
 	SortedVariableInfoMap(GoVariables,
-		func(c string, ci *VariableInfo) {
+		func(_ string, ci *VariableInfo) {
 			GenVariable(ci)
 		})
 
@@ -381,7 +381,7 @@ func main() {
 
 	/* Generate function-code snippets in alphabetical order. */
 	SortedFuncInfoMap(QualifiedFunctions,
-		func(f string, v *FuncInfo) {
+		func(_ string, v *FuncInfo) {
 			//			fmt.Printf("main.go: Qualifiedfunctions[%s]\n", f)
 			if v == nil {
 				return // Nil'ed out due to more than one entry (ambiguous reference would result)
@@ -393,22 +393,22 @@ func main() {
 			}
 		})
 
-	OutputPackageCode(path.Join(outputGoStdDir, goStdPrefix.String()), generateEmpty)
+	OutputNamespaces(path.Join(outputGoStdDir, goStdPrefix.String()), generateEmpty)
 
-	var packagesArray = []string{} // Relative package pathnames in alphabetical order
-	var dotJokeArray = []string{}  // Relative package pathnames in alphabetical order
+	var namespacesArray = []string{} // Namespaces in alphabetical order
+	var dotJokeArray = []string{}    // Joker files in namespace-alphabetical order
 
-	SortedPackagesInfo(PackagesInfo,
-		func(p string, i *PackageInfo) {
+	SortedNamespacesInfo(NamespacesInfo,
+		func(p string, i *NamespaceInfo) {
 			if !generateEmpty && !i.NonEmpty {
 				return
 			}
 			if i.HasGoFiles {
-				packagesArray = append(packagesArray, p)
+				namespacesArray = append(namespacesArray, p)
 			}
 			dotJokeArray = append(dotJokeArray, p)
 		})
-	RegisterPackages(packagesArray, outputDir)
+	RegisterNamespaces(namespacesArray, outputDir)
 	RegisterClojureFiles(dotJokeArray, outputDir)
 
 	RegisterGoTypeSwitch(allTypesSorted, outputDir)

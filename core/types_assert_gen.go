@@ -6,632 +6,986 @@ import (
 	"io"
 )
 
-func EnsureObjectIsComparable(obj Object, pattern string) Comparable {
-	if c, yes := obj.(Comparable); yes {
-		return c
+func MaybeIsComparable(obj Object) (Comparable, string) {
+	if res, yes := obj.(Comparable); yes {
+		return res, ""
 	}
-	panic(FailObject(obj, "Comparable", pattern))
+	return nil, "Comparable"
+}
+
+func EnsureObjectIsComparable(obj Object, pattern string) Comparable {
+	res, sb := MaybeIsComparable(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsComparable(args []Object, index int) Comparable {
 	obj := args[index]
-	if c, yes := obj.(Comparable); yes {
-		return c
+	res, sb := MaybeIsComparable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Comparable", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsVector(obj Object) (*Vector, string) {
+	if res, yes := obj.(*Vector); yes {
+		return res, ""
+	}
+	return nil, "Vector"
 }
 
 func EnsureObjectIsVector(obj Object, pattern string) *Vector {
-	if c, yes := obj.(*Vector); yes {
-		return c
+	res, sb := MaybeIsVector(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Vector", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsVector(args []Object, index int) *Vector {
 	obj := args[index]
-	if c, yes := obj.(*Vector); yes {
-		return c
+	res, sb := MaybeIsVector(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Vector", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsChar(obj Object) (Char, string) {
+	if res, yes := obj.(Char); yes {
+		return res, ""
+	}
+	return Char{}, "Char"
 }
 
 func EnsureObjectIsChar(obj Object, pattern string) Char {
-	if c, yes := obj.(Char); yes {
-		return c
+	res, sb := MaybeIsChar(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Char", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsChar(args []Object, index int) Char {
 	obj := args[index]
-	if c, yes := obj.(Char); yes {
-		return c
+	res, sb := MaybeIsChar(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Char", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsString(obj Object) (String, string) {
+	if res, yes := obj.(String); yes {
+		return res, ""
+	}
+	return String{}, "String"
 }
 
 func EnsureObjectIsString(obj Object, pattern string) String {
-	if c, yes := obj.(String); yes {
-		return c
+	res, sb := MaybeIsString(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "String", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsString(args []Object, index int) String {
 	obj := args[index]
-	if c, yes := obj.(String); yes {
-		return c
+	res, sb := MaybeIsString(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "String", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsSymbol(obj Object) (Symbol, string) {
+	if res, yes := obj.(Symbol); yes {
+		return res, ""
+	}
+	return Symbol{}, "Symbol"
 }
 
 func EnsureObjectIsSymbol(obj Object, pattern string) Symbol {
-	if c, yes := obj.(Symbol); yes {
-		return c
+	res, sb := MaybeIsSymbol(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Symbol", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsSymbol(args []Object, index int) Symbol {
 	obj := args[index]
-	if c, yes := obj.(Symbol); yes {
-		return c
+	res, sb := MaybeIsSymbol(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Symbol", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsKeyword(obj Object) (Keyword, string) {
+	if res, yes := obj.(Keyword); yes {
+		return res, ""
+	}
+	return Keyword{}, "Keyword"
 }
 
 func EnsureObjectIsKeyword(obj Object, pattern string) Keyword {
-	if c, yes := obj.(Keyword); yes {
-		return c
+	res, sb := MaybeIsKeyword(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Keyword", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsKeyword(args []Object, index int) Keyword {
 	obj := args[index]
-	if c, yes := obj.(Keyword); yes {
-		return c
+	res, sb := MaybeIsKeyword(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Keyword", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsRegex(obj Object) (*Regex, string) {
+	if res, yes := obj.(*Regex); yes {
+		return res, ""
+	}
+	return nil, "Regex"
 }
 
 func EnsureObjectIsRegex(obj Object, pattern string) *Regex {
-	if c, yes := obj.(*Regex); yes {
-		return c
+	res, sb := MaybeIsRegex(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Regex", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsRegex(args []Object, index int) *Regex {
 	obj := args[index]
-	if c, yes := obj.(*Regex); yes {
-		return c
+	res, sb := MaybeIsRegex(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Regex", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsBoolean(obj Object) (Boolean, string) {
+	if res, yes := obj.(Boolean); yes {
+		return res, ""
+	}
+	return Boolean{}, "Boolean"
 }
 
 func EnsureObjectIsBoolean(obj Object, pattern string) Boolean {
-	if c, yes := obj.(Boolean); yes {
-		return c
+	res, sb := MaybeIsBoolean(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Boolean", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsBoolean(args []Object, index int) Boolean {
 	obj := args[index]
-	if c, yes := obj.(Boolean); yes {
-		return c
+	res, sb := MaybeIsBoolean(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Boolean", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsTime(obj Object) (Time, string) {
+	if res, yes := obj.(Time); yes {
+		return res, ""
+	}
+	return Time{}, "Time"
 }
 
 func EnsureObjectIsTime(obj Object, pattern string) Time {
-	if c, yes := obj.(Time); yes {
-		return c
+	res, sb := MaybeIsTime(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Time", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsTime(args []Object, index int) Time {
 	obj := args[index]
-	if c, yes := obj.(Time); yes {
-		return c
+	res, sb := MaybeIsTime(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Time", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsNumber(obj Object) (Number, string) {
+	if res, yes := obj.(Number); yes {
+		return res, ""
+	}
+	return nil, "Number"
 }
 
 func EnsureObjectIsNumber(obj Object, pattern string) Number {
-	if c, yes := obj.(Number); yes {
-		return c
+	res, sb := MaybeIsNumber(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Number", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsNumber(args []Object, index int) Number {
 	obj := args[index]
-	if c, yes := obj.(Number); yes {
-		return c
+	res, sb := MaybeIsNumber(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Number", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsSeqable(obj Object) (Seqable, string) {
+	if res, yes := obj.(Seqable); yes {
+		return res, ""
+	}
+	return nil, "Seqable"
 }
 
 func EnsureObjectIsSeqable(obj Object, pattern string) Seqable {
-	if c, yes := obj.(Seqable); yes {
-		return c
+	res, sb := MaybeIsSeqable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Seqable", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsSeqable(args []Object, index int) Seqable {
 	obj := args[index]
-	if c, yes := obj.(Seqable); yes {
-		return c
+	res, sb := MaybeIsSeqable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Seqable", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsCallable(obj Object) (Callable, string) {
+	if res, yes := obj.(Callable); yes {
+		return res, ""
+	}
+	return nil, "Callable"
 }
 
 func EnsureObjectIsCallable(obj Object, pattern string) Callable {
-	if c, yes := obj.(Callable); yes {
-		return c
+	res, sb := MaybeIsCallable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Callable", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsCallable(args []Object, index int) Callable {
 	obj := args[index]
-	if c, yes := obj.(Callable); yes {
-		return c
+	res, sb := MaybeIsCallable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Callable", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsType(obj Object) (*Type, string) {
+	if res, yes := obj.(*Type); yes {
+		return res, ""
+	}
+	return nil, "Type"
 }
 
 func EnsureObjectIsType(obj Object, pattern string) *Type {
-	if c, yes := obj.(*Type); yes {
-		return c
+	res, sb := MaybeIsType(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Type", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsType(args []Object, index int) *Type {
 	obj := args[index]
-	if c, yes := obj.(*Type); yes {
-		return c
+	res, sb := MaybeIsType(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Type", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsMeta(obj Object) (Meta, string) {
+	if res, yes := obj.(Meta); yes {
+		return res, ""
+	}
+	return nil, "Meta"
 }
 
 func EnsureObjectIsMeta(obj Object, pattern string) Meta {
-	if c, yes := obj.(Meta); yes {
-		return c
+	res, sb := MaybeIsMeta(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Meta", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsMeta(args []Object, index int) Meta {
 	obj := args[index]
-	if c, yes := obj.(Meta); yes {
-		return c
+	res, sb := MaybeIsMeta(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Meta", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsInt(obj Object) (Int, string) {
+	if res, yes := obj.(Int); yes {
+		return res, ""
+	}
+	return Int{}, "Int"
 }
 
 func EnsureObjectIsInt(obj Object, pattern string) Int {
-	if c, yes := obj.(Int); yes {
-		return c
+	res, sb := MaybeIsInt(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Int", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsInt(args []Object, index int) Int {
 	obj := args[index]
-	if c, yes := obj.(Int); yes {
-		return c
+	res, sb := MaybeIsInt(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Int", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsDouble(obj Object) (Double, string) {
+	if res, yes := obj.(Double); yes {
+		return res, ""
+	}
+	return Double{}, "Double"
 }
 
 func EnsureObjectIsDouble(obj Object, pattern string) Double {
-	if c, yes := obj.(Double); yes {
-		return c
+	res, sb := MaybeIsDouble(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Double", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsDouble(args []Object, index int) Double {
 	obj := args[index]
-	if c, yes := obj.(Double); yes {
-		return c
+	res, sb := MaybeIsDouble(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Double", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsStack(obj Object) (Stack, string) {
+	if res, yes := obj.(Stack); yes {
+		return res, ""
+	}
+	return nil, "Stack"
 }
 
 func EnsureObjectIsStack(obj Object, pattern string) Stack {
-	if c, yes := obj.(Stack); yes {
-		return c
+	res, sb := MaybeIsStack(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Stack", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsStack(args []Object, index int) Stack {
 	obj := args[index]
-	if c, yes := obj.(Stack); yes {
-		return c
+	res, sb := MaybeIsStack(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Stack", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsMap(obj Object) (Map, string) {
+	if res, yes := obj.(Map); yes {
+		return res, ""
+	}
+	return nil, "Map"
 }
 
 func EnsureObjectIsMap(obj Object, pattern string) Map {
-	if c, yes := obj.(Map); yes {
-		return c
+	res, sb := MaybeIsMap(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Map", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsMap(args []Object, index int) Map {
 	obj := args[index]
-	if c, yes := obj.(Map); yes {
-		return c
+	res, sb := MaybeIsMap(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Map", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsSet(obj Object) (Set, string) {
+	if res, yes := obj.(Set); yes {
+		return res, ""
+	}
+	return nil, "Set"
 }
 
 func EnsureObjectIsSet(obj Object, pattern string) Set {
-	if c, yes := obj.(Set); yes {
-		return c
+	res, sb := MaybeIsSet(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Set", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsSet(args []Object, index int) Set {
 	obj := args[index]
-	if c, yes := obj.(Set); yes {
-		return c
+	res, sb := MaybeIsSet(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Set", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsAssociative(obj Object) (Associative, string) {
+	if res, yes := obj.(Associative); yes {
+		return res, ""
+	}
+	return nil, "Associative"
 }
 
 func EnsureObjectIsAssociative(obj Object, pattern string) Associative {
-	if c, yes := obj.(Associative); yes {
-		return c
+	res, sb := MaybeIsAssociative(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Associative", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsAssociative(args []Object, index int) Associative {
 	obj := args[index]
-	if c, yes := obj.(Associative); yes {
-		return c
+	res, sb := MaybeIsAssociative(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Associative", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsReversible(obj Object) (Reversible, string) {
+	if res, yes := obj.(Reversible); yes {
+		return res, ""
+	}
+	return nil, "Reversible"
 }
 
 func EnsureObjectIsReversible(obj Object, pattern string) Reversible {
-	if c, yes := obj.(Reversible); yes {
-		return c
+	res, sb := MaybeIsReversible(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Reversible", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsReversible(args []Object, index int) Reversible {
 	obj := args[index]
-	if c, yes := obj.(Reversible); yes {
-		return c
+	res, sb := MaybeIsReversible(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Reversible", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsNamed(obj Object) (Named, string) {
+	if res, yes := obj.(Named); yes {
+		return res, ""
+	}
+	return nil, "Named"
 }
 
 func EnsureObjectIsNamed(obj Object, pattern string) Named {
-	if c, yes := obj.(Named); yes {
-		return c
+	res, sb := MaybeIsNamed(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Named", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsNamed(args []Object, index int) Named {
 	obj := args[index]
-	if c, yes := obj.(Named); yes {
-		return c
+	res, sb := MaybeIsNamed(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Named", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsComparator(obj Object) (Comparator, string) {
+	if res, yes := obj.(Comparator); yes {
+		return res, ""
+	}
+	return nil, "Comparator"
 }
 
 func EnsureObjectIsComparator(obj Object, pattern string) Comparator {
-	if c, yes := obj.(Comparator); yes {
-		return c
+	res, sb := MaybeIsComparator(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Comparator", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsComparator(args []Object, index int) Comparator {
 	obj := args[index]
-	if c, yes := obj.(Comparator); yes {
-		return c
+	res, sb := MaybeIsComparator(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Comparator", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsRatio(obj Object) (*Ratio, string) {
+	if res, yes := obj.(*Ratio); yes {
+		return res, ""
+	}
+	return nil, "Ratio"
 }
 
 func EnsureObjectIsRatio(obj Object, pattern string) *Ratio {
-	if c, yes := obj.(*Ratio); yes {
-		return c
+	res, sb := MaybeIsRatio(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Ratio", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsRatio(args []Object, index int) *Ratio {
 	obj := args[index]
-	if c, yes := obj.(*Ratio); yes {
-		return c
+	res, sb := MaybeIsRatio(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Ratio", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsBigFloat(obj Object) (*BigFloat, string) {
+	if res, yes := obj.(*BigFloat); yes {
+		return res, ""
+	}
+	return nil, "BigFloat"
 }
 
 func EnsureObjectIsBigFloat(obj Object, pattern string) *BigFloat {
-	if c, yes := obj.(*BigFloat); yes {
-		return c
+	res, sb := MaybeIsBigFloat(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "BigFloat", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsBigFloat(args []Object, index int) *BigFloat {
 	obj := args[index]
-	if c, yes := obj.(*BigFloat); yes {
-		return c
+	res, sb := MaybeIsBigFloat(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "BigFloat", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsBigInt(obj Object) (*BigInt, string) {
+	if res, yes := obj.(*BigInt); yes {
+		return res, ""
+	}
+	return nil, "BigInt"
 }
 
 func EnsureObjectIsBigInt(obj Object, pattern string) *BigInt {
-	if c, yes := obj.(*BigInt); yes {
-		return c
+	res, sb := MaybeIsBigInt(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "BigInt", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsBigInt(args []Object, index int) *BigInt {
 	obj := args[index]
-	if c, yes := obj.(*BigInt); yes {
-		return c
+	res, sb := MaybeIsBigInt(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "BigInt", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsNamespace(obj Object) (*Namespace, string) {
+	if res, yes := obj.(*Namespace); yes {
+		return res, ""
+	}
+	return nil, "Namespace"
 }
 
 func EnsureObjectIsNamespace(obj Object, pattern string) *Namespace {
-	if c, yes := obj.(*Namespace); yes {
-		return c
+	res, sb := MaybeIsNamespace(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Namespace", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsNamespace(args []Object, index int) *Namespace {
 	obj := args[index]
-	if c, yes := obj.(*Namespace); yes {
-		return c
+	res, sb := MaybeIsNamespace(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Namespace", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsVar(obj Object) (*Var, string) {
+	if res, yes := obj.(*Var); yes {
+		return res, ""
+	}
+	return nil, "Var"
 }
 
 func EnsureObjectIsVar(obj Object, pattern string) *Var {
-	if c, yes := obj.(*Var); yes {
-		return c
+	res, sb := MaybeIsVar(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Var", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsVar(args []Object, index int) *Var {
 	obj := args[index]
-	if c, yes := obj.(*Var); yes {
-		return c
+	res, sb := MaybeIsVar(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Var", index))
+	panic(FailArg(obj, sb, index))
 }
 
-func EnsureObjectIsFn(obj Object, pattern string) *Fn {
-	if c, yes := obj.(*Fn); yes {
-		return c
+func MaybeIsDeref(obj Object) (Deref, string) {
+	if res, yes := obj.(Deref); yes {
+		return res, ""
 	}
-	panic(FailObject(obj, "Fn", pattern))
-}
-
-func EnsureArgIsFn(args []Object, index int) *Fn {
-	obj := args[index]
-	if c, yes := obj.(*Fn); yes {
-		return c
-	}
-	panic(FailArg(obj, "Fn", index))
+	return nil, "Deref"
 }
 
 func EnsureObjectIsDeref(obj Object, pattern string) Deref {
-	if c, yes := obj.(Deref); yes {
-		return c
+	res, sb := MaybeIsDeref(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Deref", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsDeref(args []Object, index int) Deref {
 	obj := args[index]
-	if c, yes := obj.(Deref); yes {
-		return c
+	res, sb := MaybeIsDeref(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Deref", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsAtom(obj Object) (*Atom, string) {
+	if res, yes := obj.(*Atom); yes {
+		return res, ""
+	}
+	return nil, "Atom"
 }
 
 func EnsureObjectIsAtom(obj Object, pattern string) *Atom {
-	if c, yes := obj.(*Atom); yes {
-		return c
+	res, sb := MaybeIsAtom(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Atom", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsAtom(args []Object, index int) *Atom {
 	obj := args[index]
-	if c, yes := obj.(*Atom); yes {
-		return c
+	res, sb := MaybeIsAtom(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Atom", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsRef(obj Object) (Ref, string) {
+	if res, yes := obj.(Ref); yes {
+		return res, ""
+	}
+	return nil, "Ref"
 }
 
 func EnsureObjectIsRef(obj Object, pattern string) Ref {
-	if c, yes := obj.(Ref); yes {
-		return c
+	res, sb := MaybeIsRef(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Ref", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsRef(args []Object, index int) Ref {
 	obj := args[index]
-	if c, yes := obj.(Ref); yes {
-		return c
+	res, sb := MaybeIsRef(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Ref", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsKVReduce(obj Object) (KVReduce, string) {
+	if res, yes := obj.(KVReduce); yes {
+		return res, ""
+	}
+	return nil, "KVReduce"
 }
 
 func EnsureObjectIsKVReduce(obj Object, pattern string) KVReduce {
-	if c, yes := obj.(KVReduce); yes {
-		return c
+	res, sb := MaybeIsKVReduce(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "KVReduce", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsKVReduce(args []Object, index int) KVReduce {
 	obj := args[index]
-	if c, yes := obj.(KVReduce); yes {
-		return c
+	res, sb := MaybeIsKVReduce(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "KVReduce", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsPending(obj Object) (Pending, string) {
+	if res, yes := obj.(Pending); yes {
+		return res, ""
+	}
+	return nil, "Pending"
 }
 
 func EnsureObjectIsPending(obj Object, pattern string) Pending {
-	if c, yes := obj.(Pending); yes {
-		return c
+	res, sb := MaybeIsPending(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Pending", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsPending(args []Object, index int) Pending {
 	obj := args[index]
-	if c, yes := obj.(Pending); yes {
-		return c
+	res, sb := MaybeIsPending(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Pending", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsFile(obj Object) (*File, string) {
+	if res, yes := obj.(*File); yes {
+		return res, ""
+	}
+	return nil, "File"
 }
 
 func EnsureObjectIsFile(obj Object, pattern string) *File {
-	if c, yes := obj.(*File); yes {
-		return c
+	res, sb := MaybeIsFile(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "File", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsFile(args []Object, index int) *File {
 	obj := args[index]
-	if c, yes := obj.(*File); yes {
-		return c
+	res, sb := MaybeIsFile(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "File", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsio_Reader(obj Object) (io.Reader, string) {
+	if res, yes := obj.(io.Reader); yes {
+		return res, ""
+	}
+	return nil, "io.Reader"
 }
 
 func EnsureObjectIsio_Reader(obj Object, pattern string) io.Reader {
-	if c, yes := obj.(io.Reader); yes {
-		return c
+	res, sb := MaybeIsio_Reader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "io.Reader", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsio_Reader(args []Object, index int) io.Reader {
 	obj := args[index]
-	if c, yes := obj.(io.Reader); yes {
-		return c
+	res, sb := MaybeIsio_Reader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "io.Reader", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsio_Writer(obj Object) (io.Writer, string) {
+	if res, yes := obj.(io.Writer); yes {
+		return res, ""
+	}
+	return nil, "io.Writer"
 }
 
 func EnsureObjectIsio_Writer(obj Object, pattern string) io.Writer {
-	if c, yes := obj.(io.Writer); yes {
-		return c
+	res, sb := MaybeIsio_Writer(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "io.Writer", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsio_Writer(args []Object, index int) io.Writer {
 	obj := args[index]
-	if c, yes := obj.(io.Writer); yes {
-		return c
+	res, sb := MaybeIsio_Writer(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "io.Writer", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsStringReader(obj Object) (StringReader, string) {
+	if res, yes := obj.(StringReader); yes {
+		return res, ""
+	}
+	return nil, "StringReader"
 }
 
 func EnsureObjectIsStringReader(obj Object, pattern string) StringReader {
-	if c, yes := obj.(StringReader); yes {
-		return c
+	res, sb := MaybeIsStringReader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "StringReader", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsStringReader(args []Object, index int) StringReader {
 	obj := args[index]
-	if c, yes := obj.(StringReader); yes {
-		return c
+	res, sb := MaybeIsStringReader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "StringReader", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsio_RuneReader(obj Object) (io.RuneReader, string) {
+	if res, yes := obj.(io.RuneReader); yes {
+		return res, ""
+	}
+	return nil, "io.RuneReader"
 }
 
 func EnsureObjectIsio_RuneReader(obj Object, pattern string) io.RuneReader {
-	if c, yes := obj.(io.RuneReader); yes {
-		return c
+	res, sb := MaybeIsio_RuneReader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "io.RuneReader", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsio_RuneReader(args []Object, index int) io.RuneReader {
 	obj := args[index]
-	if c, yes := obj.(io.RuneReader); yes {
-		return c
+	res, sb := MaybeIsio_RuneReader(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "io.RuneReader", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsChannel(obj Object) (*Channel, string) {
+	if res, yes := obj.(*Channel); yes {
+		return res, ""
+	}
+	return nil, "Channel"
 }
 
 func EnsureObjectIsChannel(obj Object, pattern string) *Channel {
-	if c, yes := obj.(*Channel); yes {
-		return c
+	res, sb := MaybeIsChannel(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Channel", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsChannel(args []Object, index int) *Channel {
 	obj := args[index]
-	if c, yes := obj.(*Channel); yes {
-		return c
+	res, sb := MaybeIsChannel(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Channel", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsGoObject(obj Object) (GoObject, string) {
+	if res, yes := obj.(GoObject); yes {
+		return res, ""
+	}
+	return GoObject{}, "GoObject"
 }
 
 func EnsureObjectIsGoObject(obj Object, pattern string) GoObject {
-	if c, yes := obj.(GoObject); yes {
-		return c
+	res, sb := MaybeIsGoObject(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "GoObject", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsGoObject(args []Object, index int) GoObject {
 	obj := args[index]
-	if c, yes := obj.(GoObject); yes {
-		return c
+	res, sb := MaybeIsGoObject(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "GoObject", index))
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsValuable(obj Object) (Valuable, string) {
+	if res, yes := obj.(Valuable); yes {
+		return res, ""
+	}
+	return nil, "Valuable"
 }
 
 func EnsureObjectIsValuable(obj Object, pattern string) Valuable {
-	if c, yes := obj.(Valuable); yes {
-		return c
+	res, sb := MaybeIsValuable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailObject(obj, "Valuable", pattern))
+	panic(FailObject(obj, sb, pattern))
 }
 
 func EnsureArgIsValuable(args []Object, index int) Valuable {
 	obj := args[index]
-	if c, yes := obj.(Valuable); yes {
-		return c
+	res, sb := MaybeIsValuable(obj)
+	if sb == "" {
+		return res
 	}
-	panic(FailArg(obj, "Valuable", index))
+	panic(FailArg(obj, sb, index))
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path"
 	"path/filepath"
@@ -19,6 +20,7 @@ var ClojureSourceDir paths.UnixPath
 
 // Clojure source tree's core directory for generated import lines (so, using Unix path syntax).
 var ClojureCoreDir paths.UnixPath
+var ClojureCorePath string
 
 // Set the (Unix-syntax, i.e. slash-delimited) root for generated
 // import lines to the given host-syntax path, with the local path
@@ -36,6 +38,7 @@ func SetClojureSourceDir(pPath, rPath paths.NativePath) {
 	imp := TrimPrefix(abs, r+string(filepath.Separator))
 	ClojureSourceDir = paths.NewUnixPath(filepath.ToSlash(imp))
 	ClojureCoreDir = ClojureSourceDir.Join("core").ToUnix()
+	ClojureCorePath = ClojureCoreDir.String()
 }
 
 var Fset *token.FileSet
@@ -73,33 +76,16 @@ func AddMapping(dirNative paths.NativePath, root, importMe string) {
 }
 
 func goPackageForDirname(dirName string) (pkg, prefix, importMe string) {
+	prefix = mappings[0].cljRoot
 	for _, m := range mappings {
 		if HasPrefix(dirName, m.prefix.String()) {
-			return dirName[len(m.prefix.String())+1:], m.cljRoot, m.importMe
+			pkg = dirName[len(m.prefix.String())+1:]
+			prefix = m.cljRoot
+			importMe = m.importMe
+			break
 		}
 	}
-	return "", mappings[0].cljRoot, ""
-}
-
-func GoFilenameForPos(p token.Pos) string {
-	fn := Fset.Position(p).Filename
-	dirName := filepath.ToSlash(filepath.Dir(fn))
-	pkg, _, _ := goPackageForDirname(dirName)
-	if pkg == "" {
-		panic(fmt.Sprintf("no mapping for %s", dirName))
-	}
-	return filepath.ToSlash(filepath.Join(pkg, filepath.Base(fn)))
-}
-
-func GoFilenameForExpr(e Expr) string {
-	if id, yes := e.(*Ident); yes && astutils.IsBuiltin(id.Name) {
-		return "" // A builtin, so not package-qualified.
-	}
-	return GoFilenameForPos(e.Pos())
-}
-
-func GoFilenameForTypeSpec(ts *TypeSpec) string {
-	return GoFilenameForPos(ts.Pos())
+	return
 }
 
 func GoPackageForPos(p token.Pos) string {
@@ -122,6 +108,22 @@ func GoPackageForTypeSpec(ts *TypeSpec) string {
 	return GoPackageForPos(ts.Pos())
 }
 
+func ClojureNamespaceForPath(s string) string {
+	if s == "" {
+		s = "builtin"
+	}
+	ns := mappings[0].cljRoot + ReplaceAll(s, "/", ".") // TODO: generalize
+	return ns
+}
+
+func ClojureNamespaceForPackage(pkg *types.Package) string {
+	s := ""
+	if pkg != nil {
+		s = pkg.Path()
+	}
+	return ClojureNamespaceForPath(s)
+}
+
 func ClojureNamespaceForPos(p token.Position) string {
 	dirName := path.Dir(filepath.ToSlash(p.Filename))
 	pkg, root, _ := goPackageForDirname(dirName)
@@ -136,6 +138,22 @@ func ClojureNamespaceForExpr(e Expr) string {
 		panic(fmt.Sprintf("no Clojure namespace for builtin `%s'", id.Name))
 	}
 	return ClojureNamespaceForPos(Fset.Position(e.Pos()))
+}
+
+func ClojureNamespaceForType(ty types.Type) string {
+	switch n := ty.(type) {
+	case *types.Named:
+		p := n.Obj().Pkg()
+		return ClojureNamespaceForPackage(p)
+	case *types.Basic:
+		s := n.String()
+		if ix := Index(s, "."); ix != -1 {
+			s = s[0:ix]
+		}
+		return ClojureNamespaceForPath(s)
+	default:
+		return fmt.Sprintf("ABEND929(unsupported type %T)", ty)
+	}
 }
 
 func ClojureNamespaceForDirname(d string) string {
@@ -159,18 +177,14 @@ func ClojureNamespaceForGoFile(pkg string, g *GoFile) string {
 		pkg, g.Name))
 }
 
-func GoPackageBaseName(e Expr) string {
-	return path.Base(path.Dir(filepath.ToSlash(Fset.Position(e.Pos()).Filename)))
-}
-
 type PackageDb struct {
-	Pkg      *Package // nil means Universal scope
-	Root     paths.UnixPath
-	Dir      paths.UnixPath // "math", "math/big", etc.
-	BaseName string
-	NsRoot   string // "go.std." or whatever is desired as the root namespace
-	ImportMe string // "github.com/candid82/joker/std/gostd/go/std/whatever"
-	decls    map[string]*DeclInfo
+	Pkg       *Package // nil means Universal scope
+	Root      paths.UnixPath
+	Dir       paths.UnixPath // "math", "math/big", etc.
+	BaseName  string
+	Namespace string // E.g. "go.std.io"
+	ImportMe  string // "github.com/candid82/joker/std/gostd/go/std/whatever"
+	decls     map[string]*DeclInfo
 }
 
 var packagesByUnixPath = map[string]*PackageDb{}
@@ -183,7 +197,6 @@ type DeclInfo struct {
 	doc            *CommentGroup
 	ix             int // Valid for only node.(*ValueSpec)
 	pos            token.Pos
-	value          *interface{} // Computed value (if any) for constant
 }
 
 type GoFile struct {
@@ -210,9 +223,9 @@ func GetPackagePackage(pkg string) *Package {
 	return nil
 }
 
-func GetPackageNsRoot(pkg string) string {
+func GetPackageNamespace(pkg string) string {
 	if p, found := packagesByUnixPath[pkg]; found {
-		return p.NsRoot
+		return p.Namespace
 	}
 	return ""
 }
@@ -232,10 +245,6 @@ func GoFileForPos(p token.Pos) *GoFile {
 
 func GoFileForExpr(e Expr) *GoFile {
 	return GoFileForPos(e.Pos())
-}
-
-func GoFileForTypeSpec(ts *TypeSpec) *GoFile {
-	return GoFileForPos(ts.Pos())
 }
 
 var allDecls = map[string]*DeclInfo{}
@@ -287,13 +296,6 @@ func LookupDeclInfo(fullName string) *DeclInfo {
 	return allDecls[fullName]
 }
 
-func (info *DeclInfo) FullName() string {
-	if info == nil {
-		return ""
-	}
-	return info.fullName
-}
-
 func (info *DeclInfo) Node() Node {
 	if info == nil {
 		return nil
@@ -308,13 +310,13 @@ func (info *DeclInfo) Doc() *CommentGroup {
 	return info.doc
 }
 
-func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, nsRoot, importMe string, pkg *Package) {
+func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, ns, importMe string, pkg *Package) {
 	if _, found := packagesByUnixPath[pkgDirUnix.String()]; found {
 		panic(fmt.Sprintf("already seen package %s", pkgDirUnix))
 	}
 
 	decls := map[string]*DeclInfo{}
-	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), nsRoot, importMe, decls}
+	pkgDb := &PackageDb{pkg, rootUnix, pkgDirUnix, pkgDirUnix.Base(), ns, importMe, decls}
 
 	for p, f := range pkg.Files {
 		absFilePathUnix := paths.NewNativePath(p).ToUnix()

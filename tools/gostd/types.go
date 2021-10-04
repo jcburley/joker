@@ -10,7 +10,10 @@ import (
 	"github.com/candid82/joker/tools/gostd/jtypes"
 	. "go/ast"
 	"go/token"
+	"go/types"
+	"os"
 	"sort"
+	"strings"
 )
 
 type TypeInfo interface {
@@ -22,21 +25,21 @@ type TypeInfo interface {
 	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
-	ClojureEffectiveName() string
-	ClojureNameDoc(e Expr) string
+	ClojureNamespace() string
+	ClojureExtractString() string // What should follow "^" in *.joke arg def (not quite GoApiString)
+	ClojureNameDocForType(*types.Package) string
 	ClojurePattern() string
 	ClojureBaseName() string
 	ClojureTypeInfo() *jtypes.Info
-	ClojureWho() string
-	RequiredImports() *imports.Imports
+	ReservationsNative() *imports.Reservations
 	GoName() string
-	GoEffectiveName() string // Substitutes what actually works in generated Go code (interface{} instead of unsafe.Arbitrary)
-	GoNameDoc(e Expr) string
+	GoNameDocForType(*types.Package) string // Relative to pkg
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
-	GoType() Expr                // The actual (Go) type (if any)
+	GoTypeExpr() Expr            // The actual (Go) type (if any)
+	GoApiString(bool) string     // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -49,17 +52,16 @@ type TypeInfo interface {
 	TypeMappingsName() string
 	Doc() string
 	NilPattern() string
+	Namespace() string
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
 	IsExported() bool
-	IsBuiltin() bool
 	IsSwitchable() bool      // Can (Go) name be used in a 'case' statement or type assertion?
 	IsAddressable() bool     // Is "&instance" going to pass muster, even with 'go vet'?
 	IsPassedByAddress() bool // Excludes builtins, some complex, and interface{} types
 	IsArbitraryType() bool   // Is unsafe.ArbitraryType, which gets treated as interface{}
 	IsCtorable() bool        // Whether a ctor for this type can (and will) be created
-	IsReferenced() bool      // Either exported or referenced via an embed in an exported type
 }
 
 type TypesMap map[string]TypeInfo
@@ -68,14 +70,54 @@ type TypesMap map[string]TypeInfo
 var typesByExpr = map[Expr]TypeInfo{}
 var typesByGoName = TypesMap{}
 var typesByClojureName = TypesMap{}
+var typesByGoTypeName = TypesMap{}
+
+var typesByGoType = map[types.Type]TypeInfo{}
+
+var typesByGtype = map[*gtypes.Info]*typeInfo{}
 
 const ConcreteType = gtypes.Concrete
 
 type typeInfo struct {
-	jti             *jtypes.Info
-	gti             *gtypes.Info
-	requiredImports *imports.Imports
-	who             string // who made me
+	jti                *jtypes.Info
+	gti                *gtypes.Info
+	reservationsNative *imports.Reservations
+	who                string // who made me
+}
+
+func registerGtype(ti *typeInfo, who string) {
+	if ti.gti.Expr != nil {
+		typesByExpr[ti.gti.Expr] = ti
+	}
+	typesByGoName[ti.gti.FullName] = ti
+	typesByClojureName[ti.jti.FullName] = ti
+	typesByGoTypeName[ti.gti.TypeName] = ti
+	if ti.gti.GoType != nil {
+		typesByGoType[ti.gti.GoType] = ti
+	}
+	typesByGtype[ti.gti] = ti
+
+	if WalkDump || (false && strings.Contains(ti.gti.TypeName, "FileMode")) {
+		fmt.Printf("types.go/%s: %s @%p.\n", who, ti.gti.FullName, ti)
+	}
+}
+
+func haveGtype(gt *gtypes.Info) (*typeInfo, bool) {
+	if ti, found := typesByGtype[gt]; found {
+		return ti, true
+	}
+	return nil, false
+}
+
+func prepareCode(ns string, ti TypeInfo) {
+	if _, found := ClojureCode[ns]; found {
+		if _, found := ClojureCode[ns].InitTypes[ti]; !found {
+			ClojureCode[ns].InitTypes[ti] = struct{}{}
+		}
+		if _, found := GoCode[ns].InitTypes[ti]; !found {
+			GoCode[ns].InitTypes[ti] = struct{}{}
+		}
+	}
 }
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
@@ -83,35 +125,39 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 	goTypeName := pkg + "." + name
 
 	if WalkDump {
-		fmt.Printf("Type %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
+		fmt.Printf("types.go/RegisterTypeDecl %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
 		Print(godb.Fset, ts)
 	}
 
 	gtiVec := gtypes.Define(ts, gf, parentDoc)
 
-	for _, gti := range gtiVec {
+	for ix, gti := range gtiVec {
 
-		jti := jtypes.Define(ts, gti.Expr)
+		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
 
-		ti := &typeInfo{
-			jti:             jti,
-			gti:             gti,
-			requiredImports: &imports.Imports{},
-			who:             "RegisterTypeDecl",
-		}
+		ti, found := haveGtype(gti)
+		if !found {
+			jti := jtypes.Define(ts, gti.Expr)
 
-		typesByGoName[ti.GoName()] = ti
-		typesByClojureName[ti.ClojureName()] = ti
+			ti = &typeInfo{
+				jti:                jti,
+				gti:                gti,
+				reservationsNative: ns.ImportsNative.NewReservations("Native Type " + gti.FullName),
+				who:                "RegisterTypeDecl",
+			}
 
-		if IsExported(name) {
-			NumTypes++
-			if ti.IsCtorable() {
-				NumCtableTypes++
+			if IsExported(name) {
+				NumTypes++
+				if ti.IsCtorable() {
+					NumCtableTypes++
+				}
 			}
 		}
 
-		ClojureCode[pkg].InitTypes[ti] = struct{}{}
-		GoCode[pkg].InitTypes[ti] = struct{}{}
+		registerGtype(ti, fmt.Sprintf("RegisterTypeDecl[%d]", ix))
+
+		prepareCode(ns.Name, ti)
 	}
 }
 
@@ -120,34 +166,32 @@ func RegisterAllSubtypes(e Expr) {
 		return
 	}
 
+	if astutils.TypeCheckerInfo.Types[e].Value != nil {
+		return // Don't process a constant
+	}
+
 	switch v := e.(type) {
 	case *Ident:
 		return
 	case *StarExpr:
 		RegisterAllSubtypes(v.X)
 	case *ArrayType:
-		//		RegisterAllSubtypes(v.Len)
+		RegisterAllSubtypes(v.Len)
 		RegisterAllSubtypes(v.Elt)
 	case *InterfaceType:
-		for _, f := range astutils.FlattenFieldList(v.Methods) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Methods)
 	case *MapType:
-		// RegisterAllSubtypes(v.Key)
-		// RegisterAllSubtypes(v.Value)
+		RegisterAllSubtypes(v.Key)
+		RegisterAllSubtypes(v.Value)
 		return
 	case *SelectorExpr:
 	case *ChanType:
 		RegisterAllSubtypes(v.Value)
 	case *StructType:
-		for _, f := range astutils.FlattenFieldList(v.Fields) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Fields)
 	case *FuncType:
+		RegisterAllSubtypesInFieldList(v.Params)
+		RegisterAllSubtypesInFieldList(v.Results)
 		return
 	case *Ellipsis:
 		return
@@ -158,39 +202,72 @@ func RegisterAllSubtypes(e Expr) {
 	TypeInfoForExpr(e)
 }
 
+func RegisterAllSubtypesInFieldList(fl *FieldList) {
+	for _, f := range astutils.FlattenFieldList(fl) {
+		if f.Name == nil || IsExported(f.Name.Name) {
+			RegisterAllSubtypes(f.Field.Type)
+		}
+	}
+}
+
 func TypeInfoForExpr(e Expr) TypeInfo {
 	if ti, found := typesByExpr[e]; found {
 		return ti
 	}
 
 	gti := gtypes.InfoForExpr(e)
-	jti := jtypes.InfoForExpr(e)
-
-	if ti, found := typesByGoName[gti.FullName]; found {
-		if _, ok := typesByClojureName[jti.FullName]; !ok {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
-			//			typesByClojureName[jti.FullName] = ti
-		}
-		return ti
-	}
-	if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
-		if inf := jtypes.InfoForGoName(jti.FullName); inf == nil {
-			panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
-		}
+	if gti == nil {
+		return nil
 	}
 
-	ti := &typeInfo{
-		gti:             gti,
-		jti:             jti,
-		requiredImports: &imports.Imports{},
-		who:             "TypeInfoForExpr",
+	ti, found := haveGtype(gti)
+	if !found {
+		jti := jtypes.InfoForExpr(e, gti.GoType)
+
+		if ti, found := typesByGoName[gti.FullName]; found {
+			if _, ok := typesByClojureName[jti.FullName]; !ok {
+				panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+				//			typesByClojureName[jti.FullName] = ti
+			}
+			if gti.GoType != nil {
+				if _, ok := typesByGoType[gti.GoType]; !ok {
+					fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByGoType[%v] for %s at %s (alias type?)\n", gti.FullName, gti.GoType, astutils.ExprToString(e), godb.WhereAt(e.Pos()))
+				}
+			}
+			return ti
+		}
+		if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
+			// if inf := jtypes.InfoForName(jti.FullName); inf == nil {
+			// 	panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+			// }
+			if gti.GoType != nil {
+				if _, ok := typesByGoType[gti.GoType]; ok {
+					panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoType[%v] but not typesByGoName[%s] for %s at %s\n", gti.GoType, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+				}
+			}
+		}
+
+		var importsNative *imports.Imports
+		pkg := gti.Package
+		if pkg != "" {
+			if pi, found := PackagesInfo[pkg]; found {
+				if ns, found := NamespacesInfo[pi.Namespace]; found {
+					importsNative = ns.ImportsNative
+				}
+			}
+		}
+
+		ti = &typeInfo{
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: importsNative.NewReservations("TypeInfoForExpr " + gti.FullName),
+			who:                "TypeInfoForExpr",
+		}
 	}
 
 	//	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
 
-	typesByExpr[e] = ti
-	typesByGoName[gti.FullName] = ti
-	typesByClojureName[jti.FullName] = ti
+	registerGtype(ti, "TypeInfoForExpr")
 
 	return ti
 }
@@ -205,20 +282,63 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		panic(fmt.Sprintf("cannot find `%s' in gtypes", goName))
 	}
 
-	jti := jtypes.InfoForGoName(goName)
-	if jti == nil {
-		panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
+	ti, found := haveGtype(gti)
+	if !found {
+		jti := jtypes.InfoForGoTypeName(goName)
+		if jti == nil {
+			panic(fmt.Sprintf("cannot find `%s' in jtypes", goName))
+		}
+
+		pkg := gti.Package
+		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
+
+		ti = &typeInfo{
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: ns.ImportsNative.NewReservations("TypeInfoForGoName " + gti.FullName),
+			who:                "TypeInfoForGoName",
+		}
 	}
 
-	ti := &typeInfo{
-		gti:             gti,
-		jti:             jti,
-		requiredImports: &imports.Imports{},
-		who:             "TypeInfoForGoName",
+	registerGtype(ti, "TypeInfoForGoName")
+
+	return ti
+}
+
+func TypeInfoForType(ty types.Type) TypeInfo {
+	if ti, found := typesByGoType[ty]; found {
+		return ti
 	}
 
-	typesByGoName[gti.FullName] = ti
-	typesByClojureName[jti.FullName] = ti
+	gti := gtypes.InfoForType(ty)
+	if gti == nil {
+		panic(fmt.Sprintf("cannot find `%s' in gtypes", ty.String()))
+	}
+
+	ti, found := haveGtype(gti)
+	if !found {
+		jti := jtypes.InfoForGoType(ty)
+		if jti == nil {
+			jti = jtypes.InfoForGoTypeName(gti.TypeName)
+		}
+		if jti == nil {
+			panic(fmt.Sprintf("cannot find `%s' in jtypes", gti.TypeName))
+		}
+
+		pkg := gti.Package
+		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
+
+		ti = &typeInfo{
+			gti:                gti,
+			jti:                jti,
+			reservationsNative: ns.ImportsNative.NewReservations("TypeInfoForType " + gti.FullName),
+			who:                "TypeInfoForType",
+		}
+	}
+
+	registerGtype(ti, "TypeInfoForType")
 
 	return ti
 }
@@ -251,15 +371,15 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 		}
 	case *InterfaceType:
 		if !v.Incomplete && len(v.Methods.List) == 0 {
-			fromMap = "FieldAsGoObject(%s, %s)"
-			fromClojure = "ObjectAsGoObject(%s, %s)"
+			fromMap = "FieldAs_GoObject(%s, %s)"
+			fromClojure = "ObjectAs_GoObject(%s, %s)"
 		}
 	default:
 	}
 	return
 }
 
-func SortedTypeInfoMap(m TypesMap, f func(k string, v TypeInfo)) {
+func SortedTypeInfoMap(m TypesMap, f func(string, TypeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		if k[0] == '*' {
@@ -309,11 +429,33 @@ func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
 }
 
-func (ti typeInfo) ClojureEffectiveName() string {
+func (ti typeInfo) ClojureNamespace() string {
+	return ti.jti.Namespace
+}
+
+// This constructs the string that follows "^" in an arglist in a
+// generated foo.joke file. The complexity results from the original
+// use of, say, "String", which becomes (via generate-std.joke) a call
+// to "ExtractString()", which yields not a String, but the underlying
+// 'string' object.
+//
+// As that can get rather confusing, the new naming convention uses the
+// actual type name being extracted. This would be 'string' if it wasn't
+// necessary to preserve existing assumptions (which make sense in the
+// context of a Clojure work-alike).
+//
+// So, for an API that takes e.g. []string, "arrayOfstring" (not
+// "arrayOfString") is returned. Similarly, if a uint16 is needed,
+// "uint16" is returned.
+func (ti typeInfo) ClojureExtractString() string {
 	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
-	return ti.jti.FullName
+	jti := ti.jti
+	if jti.Namespace == "" && jti.FullName != jti.ArgExtractFunc {
+		return ti.GoApiString(false)
+	}
+	return jti.FullName
 }
 
 func (ti typeInfo) ClojureNameDoc(e Expr) string {
@@ -321,6 +463,13 @@ func (ti typeInfo) ClojureNameDoc(e Expr) string {
 		return "GoObject"
 	}
 	return ti.jti.NameDoc(e)
+}
+
+func (ti typeInfo) ClojureNameDocForType(pkg *types.Package) string {
+	if ti.gti.IsArbitraryType {
+		return "GoObject"
+	}
+	return ti.jti.NameDocForType(pkg)
 }
 
 func (ti typeInfo) ClojurePattern() string {
@@ -347,24 +496,20 @@ func (ti typeInfo) PromoteType() string {
 	return ti.jti.PromoteType
 }
 
-func (ti typeInfo) RequiredImports() *imports.Imports {
-	return ti.requiredImports
+func (ti typeInfo) ReservationsNative() *imports.Reservations {
+	return ti.reservationsNative
 }
 
 func (ti typeInfo) GoName() string {
 	return ti.gti.FullName
 }
 
-func (ti typeInfo) GoEffectiveName() string {
-	if ti.gti.IsArbitraryType {
-		return "interface{}"
-	}
-	return ti.gti.FullName
-
-}
-
 func (ti typeInfo) GoNameDoc(e Expr) string {
 	return ti.gti.NameDoc(e)
+}
+
+func (ti typeInfo) GoNameDocForType(pkg *types.Package) string {
+	return ti.gti.NameDocForType(pkg)
 }
 
 func (ti typeInfo) GoPackage() string {
@@ -386,12 +531,32 @@ func (ti typeInfo) GoEffectiveBaseName() string {
 	return ti.gti.LocalName
 }
 
-func (ti typeInfo) GoType() Expr {
+func (ti typeInfo) GoType() types.Type {
+	return ti.gti.GoType
+}
+
+func (ti typeInfo) GoTypeExpr() Expr {
 	return ti.gti.Type
+}
+
+func (ti typeInfo) GoApiString(isEllipsis bool) string {
+	clType := ti.jti.GoApiString
+	if isEllipsis {
+		if strings.Contains(clType, "/") {
+			clType += "_s"
+		} else {
+			clType += "s"
+		}
+	}
+	return clType
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {
 	return ti.gti
+}
+
+func (ti typeInfo) GoTypeName() string {
+	return ti.gti.TypeName
 }
 
 func (ti typeInfo) TypeSpec() *TypeSpec {
@@ -456,6 +621,10 @@ func (ti typeInfo) TypeMappingsName() string {
 	return "info_" + fmt.Sprintf(ti.GoPattern(), ti.GoBaseName())
 }
 
+func (ti typeInfo) Namespace() string {
+	return ti.jti.Namespace
+}
+
 func (ti typeInfo) IsCustom() bool {
 	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
 }
@@ -509,7 +678,7 @@ func SortAllTypes() []TypeInfo {
 		panic("Attempt to sort all types type after having already sorted all types!!")
 	}
 	for _, ti := range typesByClojureName {
-		if ti.GoName() == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+		if false && ti.GoName() == "[][]*crypto/x509.Certificate" {
 			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
@@ -533,7 +702,7 @@ func typeKeyForSort(ti TypeInfo) string {
 	return genutils.CombineGoName(ti.GoPackage(), ti.GoBaseName()+ti.GoPattern())
 }
 
-func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(ti TypeInfo)) {
+func SortedTypeDefinitions(m map[TypeInfo]struct{}, f func(TypeInfo)) {
 	var keys []string
 	vals := TypesMap{}
 	for k, _ := range m {

@@ -2,31 +2,41 @@ package main
 
 import (
 	"fmt"
-	"github.com/candid82/joker/tools/gostd/astutils"
 	"github.com/candid82/joker/tools/gostd/genutils"
-	. "go/ast"
-	"strconv"
+	"go/types"
 	"strings"
 )
 
-func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType, clTypeDoc, goType, goTypeDoc, goPreCode, cl2golParam, newResVar string) {
-	actualType, isEllipsis := e.(*Ellipsis)
-	if isEllipsis {
-		e = actualType.Elt
+func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, isNativeCodeNeeded bool) (clType, clTypeDoc, goAutoGenType, goNativeType, goTypeDoc, cl2golParam, newResVar string) {
+	ty := v.Type()
+	if isVariadic {
+		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
+	}
+	ti := TypeInfoForType(ty)
+
+	ns := ti.Namespace()
+	pkgAutoGenName := ""
+	if ns != "" {
+		clojureStdPath := generatedPkgPrefix + strings.ReplaceAll(ns, ".", "/")
+		pkgAutoGenName = fn.ReservationsAutoGen.ReservePackage(clojureStdPath, ns, true, fn.Pos, "pre.go/genTypePreFunc")
 	}
 
-	ti := TypeInfoForExpr(e)
+	pkgNativeName := ""
+	if isNativeCodeNeeded {
+		pkgNativeName = fn.ReservationsNative.ReservePackage(ti.GoPackage(), "", true, v.Pos(), "pre.go/genTypePreFunc")
+	}
 
-	pkgBaseName := fn.AddToImports(ti)
 	goEffectiveBaseName := ti.GoEffectiveBaseName()
 	if ti.IsArbitraryType() {
 		// unsafe.ArbitraryType becomes interface{}, so omit the package name.
-		goType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+		goAutoGenType = fmt.Sprintf(ti.GoPattern(), goEffectiveBaseName)
+		goNativeType = goAutoGenType
 	} else {
-		goType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgBaseName, goEffectiveBaseName))
+		goAutoGenType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgAutoGenName, goEffectiveBaseName))
+		goNativeType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgNativeName, goEffectiveBaseName))
 	}
 
-	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDoc(e), ti.GoNameDoc(e)
+	clType, clTypeDoc, goTypeDoc = ti.ClojureExtractString(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
 
 	if clType != "" {
 		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
@@ -40,39 +50,41 @@ func genTypePreFunc(fn *FuncInfo, e Expr, paramName string, argNum int) (clType,
 	}
 
 	newResVar = paramName
-	if isEllipsis {
+	if isVariadic {
 		clType = "& " + clType
 		clTypeDoc = "& " + clTypeDoc
-		goType = "..." + goType
+		goAutoGenType = "..." + goAutoGenType
+		goNativeType = "..." + goNativeType
 		goTypeDoc = "..." + goTypeDoc
 		cl2golParam += "..."
 		newResVar += "..."
 		if ti.IsPassedByAddress() {
-			goType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goType)
+			goAutoGenType = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", goAutoGenType)
+			goNativeType = goAutoGenType
 		}
 	}
 
 	return
 }
 
-func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
-	clojureGoParams, goParamList, goParamListDoc, goPreCode, goParams string) {
-	if fn.Ft.Params == nil {
-		return
-	}
-	fields := astutils.FlattenFieldList(fn.Ft.Params)
-	for argNum, field := range fields {
-		p := field.Name
+func genGoPreFunc(fn *FuncInfo, isNativeCodeNeeded bool) (clojureParamList, clojureParamListDoc,
+	clojureGoParams, goAutoGenParamList, goNativeParamList, goParamListDoc, goParams string) {
+	tuple := fn.Signature.Params()
+	args := tuple.Len()
+	isVariadic := fn.Signature.Variadic()
+	for argNum := 0; argNum < args; argNum++ {
+		field := tuple.At(argNum)
+		name := field.Name()
 		resVar := ""
 		resVarDoc := ""
-		if p == nil {
+		if name == "" {
 			resVar = genutils.GenSym("__arg")
 			resVarDoc = resVar
 		} else {
-			resVar = "_v_" + p.Name
-			resVarDoc = p.Name
+			resVar = "_v_" + name
+			resVarDoc = name
 		}
-		clType, clTypeDoc, goType, goTypeDoc, preCode, cl2golParam, newResVar := genTypePreFunc(fn, field.Field.Type, resVar, argNum)
+		clType, clTypeDoc, goAutoGenType, goNativeType, goTypeDoc, cl2golParam, newResVar := genTypePreFunc(fn, field, resVar, argNum == args-1 && isVariadic, isNativeCodeNeeded)
 
 		if clojureParamList != "" {
 			clojureParamList += ", "
@@ -90,24 +102,24 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 		}
 		clojureParamListDoc += genutils.ParamNameAsClojure(resVarDoc)
 
-		if preCode != "" {
-			if goPreCode != "" {
-				goPreCode += "\n\t"
-			}
-			goPreCode += preCode
-		}
-
 		if clojureGoParams != "" {
 			clojureGoParams += ", "
 		}
 		clojureGoParams += cl2golParam
 
-		if goParamList != "" {
-			goParamList += ", "
+		if goAutoGenParamList != "" {
+			goAutoGenParamList += ", "
 		}
-		goParamList += genutils.ParamNameAsGo(resVar)
-		if goType != "" {
-			goParamList += " " + goType
+		goAutoGenParamList += genutils.ParamNameAsGo(resVar)
+		if goNativeParamList != "" {
+			goNativeParamList += ", "
+		}
+		goNativeParamList += genutils.ParamNameAsGo(resVar)
+		if goAutoGenType != "" {
+			goAutoGenParamList += " " + goAutoGenType
+		}
+		if goNativeType != "" {
+			goNativeParamList += " " + goNativeType
 		}
 
 		if goParamListDoc != "" {
@@ -133,33 +145,25 @@ func genGoPreFunc(fn *FuncInfo) (clojureParamList, clojureParamListDoc,
 	return
 }
 
-func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goPreCode, resExpr string) {
-	actualType, isEllipsis := e.(*Ellipsis)
-	if isEllipsis {
-		e = actualType.Elt
+func genTypePreReceiver(fn *FuncInfo, v *types.Var, paramName string, argNum int, isVariadic bool) (goPreCode, resExpr string) {
+	ty := v.Type()
+	if isVariadic {
+		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
 	}
-
-	ti := TypeInfoForExpr(e)
+	ti := TypeInfoForType(ty)
 	resExpr = paramName
 
-	clType := ti.ClojureEffectiveName()
-	if isEllipsis {
-		if strings.Contains(clType, "/") {
-			clType += "_s"
-		} else {
-			clType += "s"
-		}
-	}
+	clType := ti.GoApiString(isVariadic)
 
 	apiImportName := fn.AddApiToImports(clType)
-	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+	api := determineRuntime("ReceiverArgAs_", "ReceiverArgAs_ns_", apiImportName, clType)
 	goPreCode = fmt.Sprintf("\t%s := %s(%q, myName, _argList, %d)\n", paramName, api, paramName, argNum)
 
 	if ti.IsPassedByAddress() {
 		resExpr = "*" + resExpr
 	}
 
-	if isEllipsis {
+	if isVariadic {
 		resExpr += "..."
 		if ti.IsPassedByAddress() {
 			resExpr = fmt.Sprintf("ABEND748(cannot combine \"...\" with passed-by-reference types as in %q)", resExpr)
@@ -170,19 +174,19 @@ func genTypePreReceiver(fn *FuncInfo, e Expr, paramName string, argNum int) (goP
 }
 
 func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
-	if fn.Ft.Params == nil {
-		return
-	}
-	fields := astutils.FlattenFieldList(fn.Ft.Params)
-	for argNum, field := range fields {
-		p := field.Name
+	tuple := fn.Signature.Params()
+	args := tuple.Len()
+	isVariadic := fn.Signature.Variadic()
+	for argNum := 0; argNum < args; argNum++ {
+		field := tuple.At(argNum)
+		name := field.Name()
 		resVar := ""
-		if p == nil {
+		if name == "" {
 			resVar = genutils.GenSym("__arg")
 		} else {
-			resVar = "_v_" + p.Name
+			resVar = "_v_" + name
 		}
-		preCode, resExpr := genTypePreReceiver(fn, field.Field.Type, resVar, argNum)
+		preCode, resExpr := genTypePreReceiver(fn, field, resVar, argNum, argNum == args-1 && isVariadic)
 
 		goPreCode += preCode
 
@@ -191,23 +195,7 @@ func genGoPreReceiver(fn *FuncInfo) (goPreCode, goParams string, min, max int) {
 		}
 		goParams += genutils.ParamNameAsGo(resExpr)
 	}
-	min = len(fields)
-	max = len(fields)
+	min = args
+	max = args
 	return
-}
-
-func paramsAsSymbolVec(fl *FieldList) string {
-	genutils.GenSymReset()
-	fields := astutils.FlattenFieldList(fl)
-	var syms []string
-	for _, field := range fields {
-		var p string
-		if field.Name == nil {
-			p = genutils.GenSym("arg")
-		} else {
-			p = field.Name.Name
-		}
-		syms = append(syms, "MakeSymbol("+strconv.Quote(p)+")")
-	}
-	return strings.Join(syms, ", ")
 }

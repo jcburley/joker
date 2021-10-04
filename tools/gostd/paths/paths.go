@@ -48,8 +48,8 @@ type NativePath struct {
 	path string
 }
 
-type UnixWalkFunc func(path UnixPath, info os.FileInfo, err error) error
-type NativeWalkFunc func(path NativePath, info os.FileInfo, err error) error
+type UnixWalkFunc func(UnixPath, os.FileInfo, error) error
+type NativeWalkFunc func(NativePath, os.FileInfo, error) error
 
 func NewUnixPath(p string) UnixPath {
 	return UnixPath{path: p}

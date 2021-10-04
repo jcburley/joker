@@ -8,8 +8,8 @@ import (
 	"github.com/candid82/joker/tools/gostd/paths"
 	. "go/ast"
 	"go/token"
+	"go/types"
 	"os"
-	"path"
 	"strings"
 )
 
@@ -18,8 +18,10 @@ const Concrete = ^uint(0) /* MaxUint */
 var NumExprHits uint
 
 type Info struct {
-	Expr              Expr      // [key] The canonical referencing expression (if any)
-	FullName          string    // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	Expr              Expr   // [key] The canonical referencing expression (if any)
+	FullName          string // [key] E.g. "bool", "*net.Listener", "[]net/url.Userinfo"
+	GoType            types.Type
+	TypeName          string    // The types.Type.String() corresponding to this type
 	who               string    // who made me
 	Type              Expr      // The actual type (if any)
 	TypeSpec          *TypeSpec // The definition of the named type (if any)
@@ -47,15 +49,20 @@ type Info struct {
 // Maps type-defining Expr or string to exactly one struct describing that type
 var typesByExpr = map[Expr]*Info{}
 var typesByFullName = map[string]*Info{}
+var typesByTypeName = map[string]*Info{}
 
-func getInfo(fullName, nilPattern string, nullable bool) *Info {
+var typesByType = map[types.Type]*Info{}
+
+func setBuiltinType(fullName, nilPattern string, nullable bool) *Info {
 	if info, found := typesByFullName[fullName]; found {
 		return info
 	}
 
 	info := &Info{
-		who:           "getInfo",
+		who:           "setBuiltinType",
 		FullName:      fullName,
+		GoType:        nil,
+		TypeName:      fullName,
 		Pattern:       "%s",
 		Package:       "",
 		LocalName:     fullName,
@@ -69,49 +76,10 @@ func getInfo(fullName, nilPattern string, nullable bool) *Info {
 	}
 
 	typesByFullName[fullName] = info
+	typesByTypeName[fullName] = info
 
 	return info
 }
-
-var Nil = Info{}
-
-var Error = getInfo("error", "nil%.s", true)
-
-var Bool = getInfo("bool", "false%.s", false)
-
-var Byte = getInfo("byte", "0%.s", false)
-
-var Rune = getInfo("rune", "0%.s", false)
-
-var String = getInfo("string", "\"\"%.s", false)
-
-var Int = getInfo("int", "0%.s", false)
-
-var Int8 = getInfo("int8", "0%.s", false)
-
-var Int16 = getInfo("int16", "0%.s", false)
-
-var Int32 = getInfo("int32", "0%.s", false)
-
-var Int64 = getInfo("int64", "0%.s", false)
-
-var UInt = getInfo("uint", "0%.s", false)
-
-var UInt8 = getInfo("uint8", "0%.s", false)
-
-var UInt16 = getInfo("uint16", "0%.s", false)
-
-var UInt32 = getInfo("uint32", "0%.s", false)
-
-var UInt64 = getInfo("uint64", "0%.s", false)
-
-var UIntPtr = getInfo("uintptr", "0%.s", false)
-
-var Float32 = getInfo("float32", "0%.s", false)
-
-var Float64 = getInfo("float64", "0%.s", false)
-
-var Complex128 = getInfo("complex128", "0%.s", false)
 
 func specificityOfInterface(ts *InterfaceType) uint {
 	var sp uint
@@ -142,15 +110,39 @@ func computeFullName(pattern, pkg, localName string) string {
 
 func insert(ti *Info) {
 	fullName := ti.FullName
+	typeName := ti.TypeName
 
-	if existingTi, ok := typesByFullName[fullName]; ok {
-		fmt.Fprintf(os.Stderr, "gtypes.insert(): %s already seen/defined type %s at %s (%p) and again at %s (%p)\n", ti.who, fullName, godb.WhereAt(existingTi.DefPos), existingTi, godb.WhereAt(ti.DefPos), ti)
-		return
+	if fullName != typeName && !strings.Contains(fullName, "ABEND") {
+		//		fmt.Fprintf(os.Stderr, "gtypes.go/insert: %s vs %s\n", fullName, typeName)
+		return // Don't insert an alias type.
 	}
 
+	if gt := ti.GoType; gt != nil {
+		if cti, found := typesByType[gt]; found {
+			if cti.FullName != ti.FullName || cti.TypeName != ti.TypeName {
+				panic(fmt.Sprintf("already have %+v yet now have %+v", cti, ti))
+			}
+		} else {
+			typesByType[gt] = ti
+		}
+	} else {
+		//		panic(fmt.Sprintf("nil GoType for %s (%s)", fullName, typeName))
+	}
+
+	if existingTi, ok := typesByFullName[fullName]; ok {
+		fmt.Fprintf(os.Stderr, "gtypes.insert(fullName): %s already seen/defined type %s (aka %s) at %s (%p) and again (aka %s) at %s (%p)\n", ti.who, fullName, existingTi.TypeName, godb.WhereAt(existingTi.DefPos), existingTi, typeName, godb.WhereAt(ti.DefPos), ti)
+		return
+	}
 	typesByFullName[fullName] = ti
 
-	if fullName == "[][]*crypto/x509.Certificate XXX DISABLED XXX" {
+	if _, ok := typesByTypeName[typeName]; !ok {
+		typesByTypeName[typeName] = ti
+	} else {
+		// Alias type; no need to re-enter this.
+		//		fmt.Fprintf(os.Stderr, "gtypes.insert(typeName): %s already seen/defined type %s (aka %s) at %s (%p) and again (aka %s) at %s (%p)\n", ti.who, typeName, existingTi.FullName, godb.WhereAt(existingTi.DefPos), existingTi, fullName, godb.WhereAt(ti.DefPos), ti)
+	}
+
+	if false && fullName == "[][]*crypto/x509.Certificate" {
 		fmt.Printf("gtypes.go/insert(): %s %+v\n", fullName, ti)
 	}
 
@@ -187,11 +179,28 @@ func isTypeNewable(ti *Info) bool {
 	return ti.Pattern == "%s" && isTypeAddressable(ti.FullName)
 }
 
-func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
+func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Info) {
 	localName := ts.Name.Name
 	pkg := godb.GoPackageForTypeSpec(ts)
 	fullName := computeFullName("%s", pkg, localName)
 	ti := typesByFullName[fullName]
+
+	var typeName string
+	var ty types.Type
+	tav, found := astutils.TypeCheckerInfo.Defs[ts.Name]
+	if found {
+		tn := tav.(*types.TypeName)
+		if tn.IsAlias() {
+			// ty = ty.Underlying()
+			// fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): ignoring Decl for %s\n", tn)
+			return
+		}
+		ty = tn.Type()
+		typeName = tav.Type().String()
+	} else {
+		fmt.Fprintf(os.Stderr, "cannot find type info for %s", fullName)
+		typeName = fullName
+	}
 
 	if gf == nil {
 		gf = godb.GoFileForPos(ts.Pos())
@@ -204,8 +213,6 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 	if doc == nil {
 		doc = parentDoc // Use 'var'/'const' statement block comments as last resort
 	}
-
-	types := []*Info{}
 
 	var specificity uint
 	isArbitraryType := false
@@ -224,6 +231,8 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		ti = &Info{
 			Expr:              ts.Name,
 			FullName:          fullName,
+			GoType:            ty,
+			TypeName:          typeName,
 			who:               "TypeDefine",
 			Type:              ts.Type,
 			TypeSpec:          ts,
@@ -245,7 +254,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		}
 		insert(ti)
 	}
-	types = append(types, ti)
+	typs = append(typs, ti)
 
 	if ti.Specificity == Concrete {
 		// Concrete types get a reference-to variant, allowing Clojure code to access them.
@@ -256,6 +265,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			tiPtrTo = &Info{
 				Expr:              &StarExpr{X: ti.Expr},
 				FullName:          fullName,
+				TypeName:          "*" + typeName,
 				who:               "*TypeDefine*",
 				Type:              &StarExpr{X: ti.Type},
 				IsExported:        ti.IsExported,
@@ -277,7 +287,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 			}
 			insert(tiPtrTo)
 		}
-		types = append(types, tiPtrTo)
+		typs = append(typs, tiPtrTo)
 	}
 
 	newPattern := fmt.Sprintf(ti.Pattern, "[]%s")
@@ -287,6 +297,7 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		tiArrayOf = &Info{
 			Expr:              &ArrayType{Elt: ti.Expr},
 			FullName:          fullName,
+			TypeName:          "[]" + typeName,
 			who:               "*TypeDefine*",
 			Type:              &ArrayType{Elt: ti.Type},
 			IsExported:        ti.IsExported,
@@ -307,15 +318,90 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) []*Info {
 		}
 		insert(tiArrayOf)
 	}
-	types = append(types, tiArrayOf)
+	typs = append(typs, tiArrayOf)
 
-	return types
+	return
 }
 
 func InfoForName(fullName string) *Info {
 	if ti, ok := typesByFullName[fullName]; ok {
 		return ti
 	}
+	return nil
+}
+
+func InfoForType(ty types.Type) *Info {
+	if ti, ok := typesByType[ty]; ok {
+		return ti
+	}
+	return InfoForTypeByName(ty) // TODO: something smarter here, e.g. if there's an ast.Expr available?
+}
+
+func tuple(t *types.Tuple, variadic bool) (res string) {
+	res = "("
+	if t != nil {
+		len := t.Len()
+		for i := 0; i < len; i++ {
+			v := t.At(i)
+			if i > 0 {
+				res += ", "
+			}
+			typ := v.Type()
+			if variadic && i == len-1 {
+				if s, ok := typ.(*types.Slice); ok {
+					res += "..."
+					typ = s.Elem()
+				} else {
+					res += typ.String() + "..."
+					continue
+				}
+			}
+			res += typ.String()
+		}
+	}
+	res += ")"
+	return
+}
+
+// A definition like "func foo(arg func(x T) (b U))" gets, for arg, a
+// Signature of "func(x T) (b U)", instead of "func(T) U", which it
+// should match. So, compute the latter string to look it up.
+// TODO: Theoretically (and maybe in practice, though not in current
+// Go stdlib), recursively discovered types could be Signatures; so,
+// might have to reproduce the (Type)String() method here for this and
+// tuple() to call.
+func justTheTypesMaam(ty types.Type) (res string) {
+	s, yes := ty.(*types.Signature)
+	if !yes {
+		return ""
+	}
+	res = "func" + tuple(s.Params(), s.Variadic())
+	switch s.Results().Len() {
+	case 0:
+	case 1:
+		res += " " + s.Results().At(0).Type().String()
+	default:
+		res += " " + tuple(s.Results(), false)
+	}
+	return
+}
+
+func InfoForTypeByName(ty types.Type) *Info {
+	typeName := ty.String()
+	if ti, ok := typesByTypeName[typeName]; ok {
+		return ti
+	}
+
+	tryThis := justTheTypesMaam(ty)
+	if tryThis == "" || tryThis == typeName {
+		return nil
+	}
+
+	if ti, ok := typesByTypeName[tryThis]; ok {
+		return ti
+	}
+
+	fmt.Fprintf(os.Stderr, "gtypes.go/InfoForTypeName: tried %s, then %s, but both failed!\n", typeName, tryThis)
 	return nil
 }
 
@@ -359,6 +445,10 @@ func InfoForExpr(e Expr) *Info {
 	}
 
 	if isNamed {
+		// if pkgName == "unsafe" {
+		// 	return nil
+		// }
+
 		if ti, ok := typesByFullName[fullName]; ok {
 			typesByExpr[e] = ti
 			return ti
@@ -375,10 +465,14 @@ func InfoForExpr(e Expr) *Info {
 		}
 		ts, ok := tsNode.(*TypeSpec)
 		if !ok {
-			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
+			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v) from %T", tsNode, fullName, tsNode, e))
 		}
 
-		return Define(ts, nil, di.Doc())[0] // Return the base type, not the * or [] variants.
+		typs := Define(ts, nil, di.Doc())
+		if len(typs) > 0 {
+			return typs[0] // Return the base type, not the * or [] variants.
+		}
+		return nil
 	}
 
 	var innerInfo *Info
@@ -397,6 +491,9 @@ func InfoForExpr(e Expr) *Info {
 	switch v := e.(type) {
 	case *StarExpr:
 		innerInfo = InfoForExpr(v.X)
+		if innerInfo == nil {
+			return nil
+		}
 		pattern = fmt.Sprintf("*%s", innerInfo.Pattern)
 		docPattern = fmt.Sprintf("*%s", innerInfo.DocPattern)
 		localName = innerInfo.LocalName
@@ -408,6 +505,9 @@ func InfoForExpr(e Expr) *Info {
 		isCtorable = isTypeNewable(innerInfo)
 	case *ArrayType:
 		innerInfo = InfoForExpr(v.Elt)
+		if innerInfo == nil {
+			return nil
+		}
 		len, docLen := astutils.IntExprToString(v.Len)
 		pattern = "[" + len + "]%s"
 		docPattern = "[" + docLen + "]%s"
@@ -424,7 +524,7 @@ func InfoForExpr(e Expr) *Info {
 		isArbitraryType = true
 	case *InterfaceType:
 		pkgName = ""
-		if !v.Incomplete && len(v.Methods.List) == 0 {
+		if !v.Incomplete && astutils.IsEmptyFieldList(v.Methods) {
 			localName = "interface{}"
 			isExported = true
 			isBuiltin = true
@@ -437,6 +537,20 @@ func InfoForExpr(e Expr) *Info {
 		key := InfoForExpr(v.Key)
 		value := InfoForExpr(v.Value)
 		localName = "map[" + key.RelativeName(e.Pos()) + "]" + value.RelativeName(e.Pos())
+		if key.Package == "" {
+			if value.Package == "" {
+			} else {
+				pkgName = value.Package
+				fullName = "map[" + key.RelativeName(e.Pos()) + "]" + fmt.Sprintf(value.Pattern, value.Package+"."+value.LocalName)
+			}
+		} else {
+			if value.Package == "" {
+				pkgName = key.Package
+				fullName = "map[" + fmt.Sprintf(key.Pattern, key.Package+"."+key.LocalName) + "]" + value.RelativeName(e.Pos())
+			} else {
+				fullName = fmt.Sprintf("ABEND444(both packages %s and %s unsupported for %s)", key.Package, value.Package, localName)
+			}
+		}
 		isExported = key.IsExported && value.IsExported
 		isBuiltin = key.IsBuiltin && value.IsBuiltin
 	case *ChanType:
@@ -461,7 +575,7 @@ func InfoForExpr(e Expr) *Info {
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
 		pkgName = ""
-		if v.Fields == nil || len(v.Fields.List) == 0 {
+		if astutils.IsEmptyFieldList(v.Fields) {
 			localName = "struct{}"
 			fullName = localName
 			isExported = true
@@ -472,7 +586,14 @@ func InfoForExpr(e Expr) *Info {
 		}
 	case *FuncType:
 		pkgName = ""
-		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		if astutils.IsEmptyFieldList(v.Params) && astutils.IsEmptyFieldList(v.Results) {
+			localName = "func()"
+			fullName = localName
+			isExported = true
+			isBuiltin = true
+		} else {
+			localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		}
 		isNullable = true
 	case *Ellipsis:
 		pkgName = ""
@@ -504,6 +625,15 @@ func InfoForExpr(e Expr) *Info {
 		return ti
 	}
 
+	var typeName string
+	tav, found := astutils.TypeCheckerInfo.Types[e]
+	if found {
+		typeName = tav.Type.String()
+	} else {
+		typeName = fullName
+		fmt.Fprintf(os.Stderr, "gtypes.go/InfoForExpr(): cannot find type info for %s\n", fullName)
+	}
+
 	isUnsupported := false
 
 	if strings.Contains(fullName, "ABEND") {
@@ -525,6 +655,8 @@ func InfoForExpr(e Expr) *Info {
 	ti := &Info{
 		Expr:              e,
 		FullName:          fullName,
+		GoType:            tav.Type,
+		TypeName:          typeName,
 		who:               fmt.Sprintf("[InfoForExpr %T]", e),
 		UnderlyingType:    innerInfo,
 		Pattern:           pattern,
@@ -552,18 +684,6 @@ func InfoForExpr(e Expr) *Info {
 	return ti
 }
 
-func (ti *Info) Reflected() (packageImport, pattern string) {
-	t := ""
-	suffix := ".Elem()"
-	if tiu := ti.UnderlyingType; tiu != nil {
-		t = "_" + path.Base(tiu.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
-		suffix = ""
-	} else {
-		t = "_" + path.Base(ti.Package) + "." + fmt.Sprintf(ti.Pattern, ti.LocalName)
-	}
-	return "reflect", fmt.Sprintf("%%s.TypeOf((*%s)(nil))%s", t, suffix)
-}
-
 func (ti *Info) RelativeName(pos token.Pos) string {
 	pkgPrefix := ti.Package
 	if pkgPrefix == godb.GoPackageForPos(pos) {
@@ -574,17 +694,44 @@ func (ti *Info) RelativeName(pos token.Pos) string {
 	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
 }
 
-func (ti *Info) AbsoluteName() string {
-	pkgPrefix := ti.Package
-	if pkgPrefix != "" {
-		pkgPrefix += "."
-	}
-	return fmt.Sprintf(ti.Pattern, pkgPrefix+ti.LocalName)
-}
-
 func (ti *Info) NameDoc(e Expr) string {
 	if e != nil && godb.GoPackageForExpr(e) != ti.Package {
 		return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
 	}
 	return fmt.Sprintf(ti.DocPattern, ti.LocalName)
+}
+
+func (ti *Info) NameDocForType(pkg *types.Package) string {
+	res := func() string {
+		if pkg != nil && pkg.Path() != ti.Package {
+			return fmt.Sprintf(ti.DocPattern, genutils.CombineGoName(ti.Package, ti.LocalName))
+		}
+		return fmt.Sprintf(ti.DocPattern, ti.LocalName)
+	}()
+	if false && ti.LocalName == "FileHeader" {
+		fmt.Fprintf(os.Stderr, "gtypes.go/NameDocForType: relative to pkg=%+v, %s.%s => %s\n", pkg, ti.Package, ti.LocalName, res)
+	}
+	return res
+}
+
+func init() {
+	setBuiltinType("error", "nil%.s", true)
+	setBuiltinType("bool", "false%.s", false)
+	setBuiltinType("byte", "0%.s", false)
+	setBuiltinType("rune", "0%.s", false)
+	setBuiltinType("string", "\"\"%.s", false)
+	setBuiltinType("int", "0%.s", false)
+	setBuiltinType("int8", "0%.s", false)
+	setBuiltinType("int16", "0%.s", false)
+	setBuiltinType("int32", "0%.s", false)
+	setBuiltinType("int64", "0%.s", false)
+	setBuiltinType("uint", "0%.s", false)
+	setBuiltinType("uint8", "0%.s", false)
+	setBuiltinType("uint16", "0%.s", false)
+	setBuiltinType("uint32", "0%.s", false)
+	setBuiltinType("uint64", "0%.s", false)
+	setBuiltinType("uintptr", "0%.s", false)
+	setBuiltinType("float32", "0%.s", false)
+	setBuiltinType("float64", "0%.s", false)
+	setBuiltinType("complex128", "0%.s", false)
 }
