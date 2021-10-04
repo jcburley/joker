@@ -490,8 +490,17 @@ func (expr *DotExpr) Eval(env *LocalEnv) (obj Object) {
 	return arg
 }
 
+func (expr *DotExpr) Name() string {
+	return "(." + *expr.member.name + ")"
+}
+
 func (expr *SetNowExpr) Eval(env *LocalEnv) (obj Object) {
-	targetExpr := EnsureObjectIsValuable(expr.target.(*Var).Value, "")
+	targetVar := expr.target.(*Var)
+	val := targetVar.Value
+	if val == nil {
+		panic(RT.NewError(fmt.Sprintf("Unbound var %s cannot be set!", targetVar.Name())))
+	}
+	targetExpr := EnsureObjectIsValuable(val, "")
 	target := targetExpr.ValueOf()
 	valueExpr := Eval(expr.value, env)
 	value := EnsureObjectIsValuable(valueExpr, "").ValueOf()
@@ -500,12 +509,12 @@ func (expr *SetNowExpr) Eval(env *LocalEnv) (obj Object) {
 		target = reflect.Indirect(target)
 	}
 	if !target.CanSet() {
-		panic(RT.NewError(fmt.Sprintf("Not a settable value, but rather a %s: %s", target.Kind(), target.Type())))
+		panic(RT.NewError(fmt.Sprintf("Not a set!-able value: %s (%s)", targetVar.Name(), target.Kind())))
 	}
 
 	if !value.Type().AssignableTo(target.Type()) {
 		if !reflect.Indirect(value).Type().AssignableTo(target.Type()) {
-			panic(RT.NewError(fmt.Sprintf("Cannot assign a %s to a %s", value.Type(), target.Type())))
+			panic(RT.NewError(fmt.Sprintf("Cannot set! %s (%s) to value of type %s", targetVar.Name(), target.Type(), value.Type())))
 		}
 		value = reflect.Indirect(value)
 	}

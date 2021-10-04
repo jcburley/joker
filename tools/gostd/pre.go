@@ -37,7 +37,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 		goNativeType = fmt.Sprintf(ti.GoPattern(), genutils.CombineGoName(pkgNativeName, goEffectiveBaseName))
 	}
 
-	clType, clTypeDoc, goTypeDoc = ti.ClojureEffectiveName(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
+	clType, clTypeDoc, goTypeDoc = ti.ClojureExtractString(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
 
 	if clType != "" {
 		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
@@ -158,17 +158,10 @@ func genTypePreReceiver(fn *FuncInfo, v *types.Var, paramName string, argNum int
 	ti := TypeInfoForType(ty)
 	resExpr = paramName
 
-	clType := ti.ClojureEffectiveName()
-	if isVariadic {
-		if strings.Contains(clType, "/") {
-			clType += "_s"
-		} else {
-			clType += "s"
-		}
-	}
+	clType := ti.GoApiString(isVariadic)
 
 	apiImportName := fn.AddApiToImports(clType)
-	api := determineRuntime("ReceiverArgAs", "ReceiverArgAs_ns_", apiImportName, clType)
+	api := determineRuntime("ReceiverArgAs_", "ReceiverArgAs_ns_", apiImportName, clType)
 	goPreCode = fmt.Sprintf("\t%s := %s(%q, myName, _argList, %d)\n", paramName, api, paramName, argNum)
 
 	if ti.IsPassedByAddress() {

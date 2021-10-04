@@ -465,7 +465,7 @@ func InfoForExpr(e Expr) *Info {
 		}
 		ts, ok := tsNode.(*TypeSpec)
 		if !ok {
-			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v)", tsNode, fullName, tsNode))
+			panic(fmt.Sprintf("ABEND008(gtypes.go/Define: non-Typespec %T for %q (%+v) from %T", tsNode, fullName, tsNode, e))
 		}
 
 		typs := Define(ts, nil, di.Doc())
@@ -524,7 +524,7 @@ func InfoForExpr(e Expr) *Info {
 		isArbitraryType = true
 	case *InterfaceType:
 		pkgName = ""
-		if !v.Incomplete && len(v.Methods.List) == 0 {
+		if !v.Incomplete && astutils.IsEmptyFieldList(v.Methods) {
 			localName = "interface{}"
 			isExported = true
 			isBuiltin = true
@@ -575,7 +575,7 @@ func InfoForExpr(e Expr) *Info {
 		//		fmt.Printf("gtypes.go/InfoForExpr(%s) => %s\n", astutils.ExprToString(v), fmt.Sprintf(pattern, localName))
 	case *StructType:
 		pkgName = ""
-		if v.Fields == nil || len(v.Fields.List) == 0 {
+		if astutils.IsEmptyFieldList(v.Fields) {
 			localName = "struct{}"
 			fullName = localName
 			isExported = true
@@ -586,7 +586,14 @@ func InfoForExpr(e Expr) *Info {
 		}
 	case *FuncType:
 		pkgName = ""
-		localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		if astutils.IsEmptyFieldList(v.Params) && astutils.IsEmptyFieldList(v.Results) {
+			localName = "func()"
+			fullName = localName
+			isExported = true
+			isBuiltin = true
+		} else {
+			localName = fmt.Sprintf("ABEND727(gtypes.go: %s not supported)", astutils.ExprToString(v))
+		}
 		isNullable = true
 	case *Ellipsis:
 		pkgName = ""

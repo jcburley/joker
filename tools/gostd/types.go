@@ -25,7 +25,8 @@ type TypeInfo interface {
 	ConvertFromMap() string  // Pattern to convert a map %s key %s to this type
 	AsClojureObject() string // Pattern to convert this type to a normal Clojure type, or empty string to simply wrap in a GoObject
 	ClojureName() string
-	ClojureEffectiveName() string
+	ClojureNamespace() string
+	ClojureExtractString() string // What should follow "^" in *.joke arg def (not quite GoApiString)
 	ClojureNameDocForType(*types.Package) string
 	ClojurePattern() string
 	ClojureBaseName() string
@@ -38,6 +39,7 @@ type TypeInfo interface {
 	GoBaseName() string
 	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
 	GoTypeExpr() Expr            // The actual (Go) type (if any)
+	GoApiString(bool) string     // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -107,13 +109,13 @@ func haveGtype(gt *gtypes.Info) (*typeInfo, bool) {
 	return nil, false
 }
 
-func prepareCode(pkg string, ti TypeInfo) {
-	if _, found := ClojureCode[pkg]; found {
-		if _, found := ClojureCode[pkg].InitTypes[ti]; !found {
-			ClojureCode[pkg].InitTypes[ti] = struct{}{}
+func prepareCode(ns string, ti TypeInfo) {
+	if _, found := ClojureCode[ns]; found {
+		if _, found := ClojureCode[ns].InitTypes[ti]; !found {
+			ClojureCode[ns].InitTypes[ti] = struct{}{}
 		}
-		if _, found := GoCode[pkg].InitTypes[ti]; !found {
-			GoCode[pkg].InitTypes[ti] = struct{}{}
+		if _, found := GoCode[ns].InitTypes[ti]; !found {
+			GoCode[ns].InitTypes[ti] = struct{}{}
 		}
 	}
 }
@@ -131,17 +133,19 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 	for ix, gti := range gtiVec {
 
+		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
+
 		ti, found := haveGtype(gti)
 		if !found {
 			jti := jtypes.Define(ts, gti.Expr)
 
 			me := generatedGoStdPrefix + pkg
-			file := PackagesInfo[pkg]
 
 			ti = &typeInfo{
 				jti:           jti,
 				gti:           gti,
-				importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
+				importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "Native Type " + gti.FullName},
 				who:           "RegisterTypeDecl",
 			}
 
@@ -155,7 +159,7 @@ func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *Comm
 
 		registerGtype(ti, fmt.Sprintf("RegisterTypeDecl[%d]", ix))
 
-		prepareCode(pkg, ti)
+		prepareCode(ns.Name, ti)
 	}
 }
 
@@ -164,34 +168,32 @@ func RegisterAllSubtypes(e Expr) {
 		return
 	}
 
+	if astutils.TypeCheckerInfo.Types[e].Value != nil {
+		return // Don't process a constant
+	}
+
 	switch v := e.(type) {
 	case *Ident:
 		return
 	case *StarExpr:
 		RegisterAllSubtypes(v.X)
 	case *ArrayType:
-		//		RegisterAllSubtypes(v.Len)
+		RegisterAllSubtypes(v.Len)
 		RegisterAllSubtypes(v.Elt)
 	case *InterfaceType:
-		for _, f := range astutils.FlattenFieldList(v.Methods) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Methods)
 	case *MapType:
-		// RegisterAllSubtypes(v.Key)
-		// RegisterAllSubtypes(v.Value)
+		RegisterAllSubtypes(v.Key)
+		RegisterAllSubtypes(v.Value)
 		return
 	case *SelectorExpr:
 	case *ChanType:
 		RegisterAllSubtypes(v.Value)
 	case *StructType:
-		for _, f := range astutils.FlattenFieldList(v.Fields) {
-			if f.Name == nil || IsExported(f.Name.Name) {
-				RegisterAllSubtypes(f.Field.Type)
-			}
-		}
+		RegisterAllSubtypesInFieldList(v.Fields)
 	case *FuncType:
+		RegisterAllSubtypesInFieldList(v.Params)
+		RegisterAllSubtypesInFieldList(v.Results)
 		return
 	case *Ellipsis:
 		return
@@ -200,6 +202,14 @@ func RegisterAllSubtypes(e Expr) {
 	}
 
 	TypeInfoForExpr(e)
+}
+
+func RegisterAllSubtypesInFieldList(fl *FieldList) {
+	for _, f := range astutils.FlattenFieldList(fl) {
+		if f.Name == nil || IsExported(f.Name.Name) {
+			RegisterAllSubtypes(f.Field.Type)
+		}
+	}
 }
 
 func TypeInfoForExpr(e Expr) TypeInfo {
@@ -245,7 +255,9 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		if pkg != "" {
 			me = generatedGoStdPrefix + pkg
 			if pi, found := PackagesInfo[pkg]; found {
-				importsNative = pi.ImportsNative
+				if ns, found := NamespacesInfo[pi.Namespace]; found {
+					importsNative = ns.ImportsNative
+				}
 			}
 		}
 
@@ -284,11 +296,12 @@ func TypeInfoForGoName(goName string) TypeInfo {
 		pkg := gti.Package
 		me := generatedGoStdPrefix + pkg
 		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
 
 		ti = &typeInfo{
 			gti:           gti,
 			jti:           jti,
-			importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
+			importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForGoName " + gti.FullName},
 			who:           "TypeInfoForGoName",
 		}
 	}
@@ -321,11 +334,12 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 		pkg := gti.Package
 		me := generatedGoStdPrefix + pkg
 		file := PackagesInfo[pkg]
+		ns := NamespacesInfo[file.Namespace]
 
 		ti = &typeInfo{
 			gti:           gti,
 			jti:           jti,
-			importsNative: &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
+			importsNative: &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkg, For: "TypeInfoForType " + gti.FullName},
 			who:           "TypeInfoForType",
 		}
 	}
@@ -363,8 +377,8 @@ func conversions(e Expr) (fromClojure, fromMap string) {
 		}
 	case *InterfaceType:
 		if !v.Incomplete && len(v.Methods.List) == 0 {
-			fromMap = "FieldAsGoObject(%s, %s)"
-			fromClojure = "ObjectAsGoObject(%s, %s)"
+			fromMap = "FieldAs_GoObject(%s, %s)"
+			fromClojure = "ObjectAs_GoObject(%s, %s)"
 		}
 	default:
 	}
@@ -421,11 +435,33 @@ func (ti typeInfo) ClojureName() string {
 	return ti.jti.FullName
 }
 
-func (ti typeInfo) ClojureEffectiveName() string {
+func (ti typeInfo) ClojureNamespace() string {
+	return ti.jti.Namespace
+}
+
+// This constructs the string that follows "^" in an arglist in a
+// generated foo.joke file. The complexity results from the original
+// use of, say, "String", which becomes (via generate-std.joke) a call
+// to "ExtractString()", which yields not a String, but the underlying
+// 'string' object.
+//
+// As that can get rather confusing, the new naming convention uses the
+// actual type name being extracted. This would be 'string' if it wasn't
+// necessary to preserve existing assumptions (which make sense in the
+// context of a Clojure work-alike).
+//
+// So, for an API that takes e.g. []string, "arrayOfstring" (not
+// "arrayOfString") is returned. Similarly, if a uint16 is needed,
+// "uint16" is returned.
+func (ti typeInfo) ClojureExtractString() string {
 	if ti.gti.IsArbitraryType {
 		return "GoObject"
 	}
-	return ti.jti.FullName
+	jti := ti.jti
+	if jti.Namespace == "" && jti.FullName != jti.ArgExtractFunc {
+		return ti.GoApiString(false)
+	}
+	return jti.FullName
 }
 
 func (ti typeInfo) ClojureNameDoc(e Expr) string {
@@ -507,6 +543,18 @@ func (ti typeInfo) GoType() types.Type {
 
 func (ti typeInfo) GoTypeExpr() Expr {
 	return ti.gti.Type
+}
+
+func (ti typeInfo) GoApiString(isEllipsis bool) string {
+	clType := ti.jti.GoApiString
+	if isEllipsis {
+		if strings.Contains(clType, "/") {
+			clType += "_s"
+		} else {
+			clType += "s"
+		}
+	}
+	return clType
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {

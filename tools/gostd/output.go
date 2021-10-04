@@ -34,8 +34,8 @@ func curTimeAndVersion() string {
 	return currentTimeAndVersion
 }
 
-func RegisterPackages(pkgs []string, clojureSourceDir paths.NativePath) {
-	writeCustomLibsGo(pkgs, clojureSourceDir, paths.NewNativePath("g_custom.go"))
+func RegisterNamespaces(namespaces []string, clojureSourceDir paths.NativePath) {
+	writeCustomLibsGo(namespaces, clojureSourceDir, paths.NewNativePath("g_custom.go"))
 }
 
 func RegisterClojureFiles(clojureFiles []string, clojureSourceDir paths.NativePath) {
@@ -46,15 +46,16 @@ func RegisterGoTypeSwitch(types []TypeInfo, clojureSourceDir paths.NativePath) {
 	writeGoTypeSwitch(types, clojureSourceDir, paths.NewNativePath(filepath.Join("core", "g_goswitch.go")))
 }
 
-func writeCustomLibsGo(pkgs []string, dir, f paths.NativePath) {
+func writeCustomLibsGo(namespaces []string, dir, f paths.NativePath) {
 	if Verbose {
-		fmt.Printf("Adding %d custom imports to %s\n", len(pkgs), f)
+		fmt.Printf("Adding %d custom imports to %s\n", len(namespaces), f)
 	}
 
 	newImports := ""
 	importPrefix := "\t_ "
-	for _, p := range pkgs {
-		newImports += importPrefix + fmt.Sprintf("%q\n", generatedPkgPrefix+goStdPrefix.String()+p)
+	gostd := generatedPkgPrefix + goStdPrefix.String()
+	for _, ns := range namespaces {
+		newImports += importPrefix + fmt.Sprintf("%q\n", gostd+NamespacesInfo[ns].Package) // TODO: Precompute this %q arg in NamespacesInfo
 	}
 
 	buf := new(bytes.Buffer)
@@ -66,15 +67,14 @@ func writeCustomLibsGo(pkgs []string, dir, f paths.NativePath) {
 	}
 }
 
-func writeCustomLibsClojure(pkgs []string, dir, f paths.NativePath) {
+func writeCustomLibsClojure(namespaces []string, dir, f paths.NativePath) {
 	if Verbose {
-		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(pkgs), f)
+		fmt.Printf("Adding %d custom loaded libraries to %s\n", len(namespaces), f)
 	}
 
 	m := ""
-	var importPrefix = " '" + goNsPrefix
-	for _, p := range pkgs {
-		m += "    " + importPrefix + strings.ReplaceAll(p, "/", ".") + "\n"
+	for _, ns := range namespaces {
+		m += "     '" + ns + "\n"
 	}
 
 	buf := new(bytes.Buffer)
@@ -142,17 +142,17 @@ func writeGoTypeSwitch(allTypes []TypeInfo, dir, f paths.NativePath) {
 	}
 }
 
-func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
-	pi := PackagesInfo[pkgDirUnix]
+func outputClojureCode(ns string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
+	nsi := NamespacesInfo[ns]
 
-	if !generateEmpty && !pi.NonEmpty {
+	if !generateEmpty && !nsi.NonEmpty {
 		return
 	}
 
 	var out *bufio.Writer
 	var unbuf_out *os.File
 
-	jf := filepath.Join(clojureLibDir, filepath.FromSlash(pkgDirUnix)+".joke")
+	jf := filepath.Join(clojureLibDir, filepath.FromSlash(nsi.Package)+".joke")
 	var e error
 	e = os.MkdirAll(filepath.Dir(jf), 0777)
 	Check(e)
@@ -167,17 +167,17 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 
 	if out != nil {
 		importPath, _ := filepath.Abs("/")
-		myDoc := doc.New(pi.Pkg, importPath, doc.AllDecls)
-		pkgDoc := fmt.Sprintf("Provides a low-level interface to the %s package.", pkgDirUnix)
+		myDoc := doc.New(PackagesInfo[nsi.Package].Pkg, importPath, doc.AllDecls)
+		pkgDoc := fmt.Sprintf("Provides a low-level interface to the %s package.", nsi.Package)
 		if myDoc.Doc != "" {
 			pkgDoc += "\n\n" + myDoc.Doc
 		}
 
 		info := map[string]interface{}{
-			"Imports":   pi.ImportsAutoGen.AsClojureMap(),
+			"Imports":   nsi.ImportsAutoGen.AsClojureMap(),
 			"Doc":       strconv.Quote(pkgDoc),
-			"Empty":     !pi.NonEmpty,
-			"Namespace": goNsPrefix + strings.ReplaceAll(pkgDirUnix, "/", "."),
+			"Empty":     !nsi.NonEmpty,
+			"Namespace": goNsPrefix + strings.ReplaceAll(nsi.Package, "/", "."),
 		}
 
 		buf := new(bytes.Buffer)
@@ -242,16 +242,16 @@ func outputClojureCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, gene
 		})
 }
 
-func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
-	pi := PackagesInfo[pkgDirUnix]
+func outputGoCode(ns string, v CodeInfo, clojureLibDir string, generateEmpty bool) {
+	nsi := NamespacesInfo[ns]
 
-	if !generateEmpty && !pi.NonEmpty {
+	if !generateEmpty && !nsi.NonEmpty {
 		return
 	}
 
-	pi.HasGoFiles = true
-	pkgBaseName := path.Base(pkgDirUnix)
-	pkgDirNative := filepath.FromSlash(pkgDirUnix)
+	nsi.HasGoFiles = true
+	pkgBaseName := path.Base(nsi.Package)
+	pkgDirNative := filepath.FromSlash(nsi.Package)
 
 	var out *bufio.Writer
 	var unbuf_out *os.File
@@ -273,23 +273,23 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	// First, figure out what other packages need to be imported,
 	// before the import statement is generated.
 	ensure := ""
-	imports.SortedOriginalPackageImports(pi.Pkg,
+	imports.SortedOriginalPackageImports(PackagesInfo[nsi.Package].Pkg,
 		LegitimateImport,
 		func(imp string, pos token.Pos) {
-			ns := ClojureNamespaceForDirname(imp)
-			if ns == pi.Namespace {
+			thisNs := ClojureNamespaceForDirname(imp)
+			if ns == thisNs {
 				return // it me
 			}
 
-			pi.ImportsNative.InternPackage(ClojureCorePath, "", pos)
+			nsi.ImportsNative.InternPackage(ClojureCorePath, "", pos)
 
-			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", ns, WhereAt(pos))
+			ensure += fmt.Sprintf("\tEnsureLoaded(\"%s\")  // E.g. from: %s\n", thisNs, WhereAt(pos))
 		})
 
 	if out != nil {
 		info := map[string]string{
 			"PackageName": pkgBaseName,
-			"Imports":     pi.ImportsNative.QuotedList("\n\t"),
+			"Imports":     nsi.ImportsNative.QuotedList("\n\t"),
 		}
 
 		buf := new(bytes.Buffer)
@@ -392,15 +392,15 @@ func outputGoCode(pkgDirUnix string, v CodeInfo, clojureLibDir string, generateE
 	out.WriteString("}\n")
 }
 
-func OutputPackageCode(clojureLibDir string, generateEmpty bool) {
-	SortedPackageMap(ClojureCode,
-		func(pkgDirUnix string, v CodeInfo) {
-			outputClojureCode(pkgDirUnix, v, clojureLibDir, generateEmpty)
+func OutputNamespaces(clojureLibDir string, generateEmpty bool) {
+	SortedNamespaceMap(ClojureCode,
+		func(ns string, v CodeInfo) {
+			outputClojureCode(ns, v, clojureLibDir, generateEmpty)
 		})
 
-	SortedPackageMap(GoCode,
-		func(pkgDirUnix string, v CodeInfo) {
-			outputGoCode(pkgDirUnix, v, clojureLibDir, generateEmpty)
+	SortedNamespaceMap(GoCode,
+		func(ns string, v CodeInfo) {
+			outputGoCode(ns, v, clojureLibDir, generateEmpty)
 		})
 }
 

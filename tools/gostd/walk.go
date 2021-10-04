@@ -39,20 +39,29 @@ var NumGeneratedVariables int
 var NumGeneratedCtors int
 
 type PackageInfo struct {
-	ImportsNative  *imports.Imports
-	ImportsAutoGen *imports.Imports
-	Pkg            *Package
-	NonEmpty       bool   // Whether any non-comment code has been generated
-	HasGoFiles     bool   // Whether any .go files (would) have been generated
-	Namespace      string // E.g.: "go.std.net", "x.y.z.whatever"
+	DirUnix   string
+	BaseName  string
+	Pkg       *Package
+	Namespace string // E.g.: "go.std.net", "x.y.z.whatever"
 }
 
 /* Map (Unix-style) relative path to package info */
 var PackagesInfo = map[string]*PackageInfo{}
 
-/* Sort the packages -- currently appears to not actually be
-/* necessary, probably because of how walkDirs() works. */
-func SortedPackagesInfo(m map[string]*PackageInfo, f func(string, *PackageInfo)) {
+type NamespaceInfo struct {
+	Name           string
+	ImportsNative  *imports.Imports
+	ImportsAutoGen *imports.Imports
+	NonEmpty       bool   // Whether any non-comment code has been generated
+	HasGoFiles     bool   // Whether any .go files (would) have been generated
+	Package        string // Source package (if any; e.g. "go.std.builtin" has none)
+}
+
+/* Map Clojure namespace to its info. */
+var NamespacesInfo = map[string]*NamespaceInfo{}
+
+/* Sort the namespaces. */
+func SortedNamespacesInfo(m map[string]*NamespaceInfo, f func(string, *NamespaceInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -88,7 +97,7 @@ var ClojureCodeForType = map[TypeInfo]string{}
 var GoCode = map[string]CodeInfo{}
 var GoCodeForType = map[TypeInfo]string{}
 
-func SortedPackageMap(m map[string]CodeInfo, f func(string, CodeInfo)) {
+func SortedNamespaceMap(m map[string]CodeInfo, f func(string, CodeInfo)) {
 	var keys []string
 	for k, _ := range m {
 		keys = append(keys, k)
@@ -122,7 +131,8 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(string, *FnCodeInfo)) {
 }
 
 type FuncInfo struct {
-	BaseName       string    // Just the name without receiver-type info
+	Namespace      string    // Clojure namespace (e.g. "go.std.math") for this function
+	BaseName       string    // Just the function name without receiver-type info
 	ReceiverId     string    // Receiver info (only one type supported here and by Golang itself for now)
 	Name           string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
 	DocName        string    // Everything, for documentation and diagnostics
@@ -144,19 +154,27 @@ func initPackage(pkgDirUnix string, p *Package) {
 	}
 
 	me := generatedGoStdPrefix + pkgDirUnix
+	nsName := godb.ClojureNamespaceForDirname(pkgDirUnix)
 
 	if _, ok := PackagesInfo[pkgDirUnix]; !ok {
 		PackagesInfo[pkgDirUnix] = &PackageInfo{
+			Pkg:       p,
+			Namespace: nsName,
+		}
+	}
+
+	if _, ok := NamespacesInfo[nsName]; !ok {
+		NamespacesInfo[nsName] = &NamespaceInfo{
+			Name:           nsName,
 			ImportsNative:  &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "Native " + pkgDirUnix},
 			ImportsAutoGen: &imports.Imports{Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + pkgDirUnix},
-			Pkg:            p,
 			NonEmpty:       false,
 			HasGoFiles:     false,
-			Namespace:      godb.ClojureNamespaceForDirname(pkgDirUnix),
+			Package:        pkgDirUnix,
 		}
-		GoCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
+		GoCode[nsName] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
-		ClojureCode[pkgDirUnix] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
+		ClojureCode[nsName] = CodeInfo{GoConstantsMap{}, GoVariablesMap{}, fnCodeMap{}, TypesMap{},
 			map[TypeInfo]struct{}{}, map[TypeInfo]map[string]*FnCodeInfo{}}
 	}
 }
@@ -174,14 +192,14 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 	pkgName := ident[0:ix]
 
 	goPkgForPos := godb.GoPackageForPos(pos)
-	ns := ""
-	if pi, found := PackagesInfo[goPkgForPos]; found {
+	if nsi, found := NamespacesInfo[PackagesInfo[goPkgForPos].Namespace]; found {
+		ns := ""
 		var imp *imports.Imports
 		if autoGen {
-			imp = pi.ImportsAutoGen
+			imp = nsi.ImportsAutoGen
 			ns = "(" + godb.GetPackageNamespace(pkgName) + ")" // Avoid key collisions compiling a_*.go files
 		} else {
-			imp = pi.ImportsNative
+			imp = nsi.ImportsNative
 		}
 		myImportId := imp.AddPackage(pkgName, ns, true, pos, "walk.go/refToIdent")
 		return myImportId + "." + ident[ix+1:]
@@ -364,6 +382,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 
 	me := generatedGoStdPrefix + pkgDirUnix
 	file := PackagesInfo[pkgDirUnix]
+	ns := NamespacesInfo[file.Namespace]
 
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:       fd.Name.Name,
@@ -371,13 +390,14 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		Name:           fnName,
 		DocName:        docName,
 		EmbedName:      "",
+		Namespace:      ns.Name,
 		Fd:             fd,
 		ToM:            nil,
 		Signature:      sig,
 		Doc:            fd.Doc,
 		SourceFile:     gf,
-		ImportsNative:  &imports.Imports{FileImports: file.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + fullName},
-		ImportsAutoGen: &imports.Imports{FileImports: file.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + fullName},
+		ImportsNative:  &imports.Imports{FileImports: ns.ImportsNative, Me: me, MySourcePkg: pkgDirUnix, For: "Native " + fullName},
+		ImportsAutoGen: &imports.Imports{FileImports: ns.ImportsAutoGen, Me: me, MySourcePkg: pkgDirUnix, For: "AutoGen " + fullName},
 		Pos:            fd.Pos(),
 		Comment:        "defined function",
 	}
@@ -414,6 +434,7 @@ func processTypesForTypeDecls(_ *godb.GoFile, _ string, tss []Spec, _ *CommentGr
 }
 
 type VariableInfo struct {
+	Namespace  string
 	Name       *Ident
 	SourceFile *godb.GoFile
 	Def        string
@@ -436,6 +457,7 @@ func SortedVariableInfoMap(m map[string]*VariableInfo, f func(string, *VariableI
 }
 
 type ConstantInfo struct {
+	Namespace  string
 	Name       *Ident
 	SourceFile *godb.GoFile
 	Def        string
@@ -539,7 +561,7 @@ func isBasicLiteral(e Expr) *BasicLit {
 	}
 }
 
-func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, docString string) bool {
+func processConstantSpec(gf *godb.GoFile, pkgDirUnix string, name *Ident, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
 			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
@@ -547,7 +569,7 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, doc
 	}()
 
 	clName := name.Name
-	fullName := pkg + "." + name.Name
+	fullName := pkgDirUnix + "." + name.Name
 
 	if c, ok := GoConstants[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: constant %s found at %s and now again at %s\n",
@@ -571,17 +593,18 @@ func processConstantSpec(gf *godb.GoFile, pkg string, name *Ident, val Expr, doc
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "clojure-constant-def.tmpl", constantDefInfo)
 
-	gt := &ConstantInfo{name, gf, buf.String(), val.Pos()}
+	ns := godb.ClojureNamespaceForDirname(pkgDirUnix)
+	gt := &ConstantInfo{ns, name, gf, buf.String(), val.Pos()}
 	GoConstants[fullName] = gt
 	NumGeneratedConstants++
 
 	return true
 }
 
-func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, docString string) bool {
+func processVariableSpec(gf *godb.GoFile, pkgDirUnix string, name *Ident, docString string) bool {
 	clName := name.Name
 	localName := gf.Package.BaseName + "." + name.Name
-	fullName := pkg + "." + name.Name
+	fullName := pkgDirUnix + "." + name.Name
 
 	if c, ok := GoVariables[fullName]; ok {
 		fmt.Fprintf(os.Stderr, "WARNING: variable %s found at %s and now again at %s\n",
@@ -602,7 +625,8 @@ func processVariableSpec(gf *godb.GoFile, pkg string, name *Ident, docString str
 	buf := new(bytes.Buffer)
 	Templates.ExecuteTemplate(buf, "clojure-variable-def.tmpl", variableDefInfo)
 
-	gt := &VariableInfo{name, gf, buf.String(), name.NamePos}
+	ns := godb.ClojureNamespaceForDirname(pkgDirUnix)
+	gt := &VariableInfo{ns, name, gf, buf.String(), name.NamePos}
 	GoVariables[fullName] = gt
 	NumGeneratedVariables++
 
@@ -616,7 +640,7 @@ func what(constant bool) string {
 	return "Variable"
 }
 
-func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *CommentGroup, constant bool) {
+func processValueSpecs(gf *godb.GoFile, pkgDirUnix string, tss []Spec, parentDoc *CommentGroup, constant bool) {
 	var previousVal, previousValType Expr
 	for ix, spec := range tss {
 		ts := spec.(*ValueSpec)
@@ -676,9 +700,9 @@ func processValueSpecs(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Comme
 			}
 			docString := genutils.CommentGroupInQuotes(doc, "", "", "", "")
 			if constant {
-				processConstantSpec(gf, pkg, valName, val, docString)
+				processConstantSpec(gf, pkgDirUnix, valName, val, docString)
 			} else {
-				processVariableSpec(gf, pkg, valName, docString)
+				processVariableSpec(gf, pkgDirUnix, valName, docString)
 			}
 		}
 	}

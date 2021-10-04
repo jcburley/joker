@@ -356,6 +356,9 @@
   <a class="var-kind Macro" href="#defonce">defonce</a>
 </li>
 <li>
+  <a class="var-kind Macro" href="#deftype">deftype</a>
+</li>
+<li>
   <a class="var-kind Macro" href="#delay">delay</a>
 </li>
 <li>
@@ -2492,6 +2495,22 @@
   <p class="var-docstr">defs name to have the value of the expr if the named var is not bound,<br>
   else expr is unevaluated</p>
   <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L3219">source</a>
+</li>
+<li>
+  <h3 class="Macro" id="deftype">deftype</h3>
+  <span class="var-kind Macro">Macro</span>
+  <span class="var-added">v1.0</span>
+  <pre class="var-usage"><div><code>(deftype name [&amp; fields] &amp; opts+specs)</code></div>
+</pre>
+  <p class="var-docstr">(deftype name [fields*]  options* specs*)<br>
+<br>
+  No fields, options, nor specs are currently supported; though this<br>
+  defines a type at runtime, the resulting type is currently<br>
+  useless. This macro is implemented for code-generation purposes in<br>
+  the &#39;gostd&#39; fork, which expects metadata defining the `:go` keyword<br>
+  appropriately; so, defining a type without `:go` set in the metadata<br>
+  is rejected at runtime.</p>
+  <a href="https://github.com/candid82/joker/blob/master/core/data/core.joke#L4745">source</a>
 </li>
 <li>
   <h3 class="Macro" id="delay">delay</h3>

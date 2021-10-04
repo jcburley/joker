@@ -6,7 +6,12 @@
   (:require [go.std.flag :as flag])
   (:require [go.std.io.ioutil :as ioutil])
   (:require [go.std.go.build :as build])
+<<<<<<< HEAD
   (:require [go.std.text.scanner :as scanner]))
+=======
+  (:require [go.std.time :as time])
+  (:require [go.std.sync :as sync]))
+>>>>>>> gostd
 
 ;; Temporary workaround for lack of support for type aliases in gostd:
 (def fs-namespace (get (set (map str (all-ns))) "go.std.io.fs" "go.std.os"))
@@ -157,3 +162,27 @@
     (is "hey" (.String p))
     ;; (is (not (.IsValid s))) UNSUPPORTED due to reflect.CanAddr() failing
     (is "hey" (.String s))))
+
+(deftest set!-does-not-crash
+  (def xyz)
+  (is (not (try (set! xyz true) (catch Error e false))))
+  (is (not (try (set! flag/ErrHelp true) (catch Error e false)))))
+
+;; (deftest number-ops-work
+;;   (is (= 500000000 (* 500 time/Millisecond))))
+
+(deftest functions-work
+  (def v 1)
+  (let [o (sync/Once. {})
+        d (* 10 (int time/Millisecond))] ; when number-ops-work passes, remove (int ...) wrapper
+    (is v 1)
+    (.Do o #(var-set #'v 2))
+    (.Do o #(var-set #'v 3))
+    (is v 2)
+    (time/AfterFunc d #(var-set #'v 4))
+    (is v 2)  ; if this fails occasionally, increase (say, double) time for d, above (this is a race condition)
+    (time/Sleep (* 2 d))
+    (if (not= v 4)
+      (time/Sleep (* 4 d)))  ; sleep a little longer this time?
+    (is v 4)
+    (ns-unmap *ns* 'v)))
