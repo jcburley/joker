@@ -745,19 +745,6 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
 
 				if overriddenByMethod(typePkgName, typeBaseName, name) {
-					// For type T embedding type
-					// U, which implements (U)F(),
-					// do not emit that
-					// (embedded/lifted) function
-					// if (*T)F() is
-					// defined. Otherwise, the
-					// generated (T)F() wrapper
-					// will actually call (*T)F()
-					// via &T, which (currently)
-					// Joker-gostd doesn't
-					// support, due to embedding T
-					// as a GoObject[interface{}]
-					// of T, not *T.
 					if false {
 						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
 					}
@@ -801,6 +788,11 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	}
 }
 
+// For type T embedding type U, which implements (U)F(), do not emit
+// that (embedded/lifted) function if (*T)F() is defined. Otherwise,
+// the generated (T)F() wrapper will actually call (*T)F() via &T,
+// which (currently) Joker-gostd doesn't support, due to embedding T
+// as a GoObject[interface{}] of T, not *T.
 func overriddenByMethod(typeName, baseName, name string) bool {
 	n := typeName + ".PtrTo_" + baseName + "_" + name
 	f, found := QualifiedFunctions[n]
