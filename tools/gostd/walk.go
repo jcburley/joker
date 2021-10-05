@@ -145,7 +145,7 @@ type FuncInfo struct {
 	Pos            token.Pos
 }
 
-func initPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package) {
+func initPackage(rootUnix, pkgDirUnix string, p *Package) {
 	if godb.Verbose {
 		genutils.AddSortedStdout(fmt.Sprintf("Processing package=%s:\n", pkgDirUnix))
 	}
@@ -253,7 +253,7 @@ func (fn *FuncInfo) AddApiToImports(clType string) string {
 func processTypeRef(t Expr) {
 	defer func() {
 		if x := recover(); x != nil {
-			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(t.Pos()), t)
+			fmt.Fprintf(os.Stderr, "(Panic due to: %s handling %+v: %+v)\n", godb.WhereAt(t.Pos()), t, x)
 		}
 	}()
 
@@ -743,7 +743,7 @@ func phaseOtherDecls(gf *godb.GoFile, pkgDirUnix string, f *File) {
 	})
 }
 
-func processPackage(rootUnix, pkgDirUnix, nsRoot string, p *Package, fn phaseFunc) {
+func processPackage(rootUnix, pkgDirUnix string, p *Package, fn phaseFunc) {
 	for path, f := range p.Files {
 		goFilePathUnix := TrimPrefix(filepath.ToSlash(path), rootUnix+"/")
 		gf := godb.GoFilesRelative[goFilePathUnix]
@@ -945,12 +945,12 @@ func WalkAllDirs() (error, paths.NativePath) {
 		if _, err := myImporter(pkg); err != nil {
 			fmt.Fprintf(os.Stderr, "walk.go/WalkAllDirs(): Failed to check %q: %s\n", pkg, err)
 		}
-		initPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg)
+		initPackage(wp.Root.String(), wp.Dir.String(), wp.Pkg)
 	}
 
 	for _, phase := range phases {
 		for _, wp := range godb.PackagesAsDiscovered {
-			processPackage(wp.Root.String(), wp.Dir.String(), wp.NsRoot, wp.Pkg, phase)
+			processPackage(wp.Root.String(), wp.Dir.String(), wp.Pkg, phase)
 		}
 	}
 

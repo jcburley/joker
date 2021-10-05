@@ -30,6 +30,7 @@ type Info struct {
 	AsClojureObject      string // Pattern to convert this type to a normal Clojure type; empty string means wrap in a GoObject
 	PromoteType          string // Pattern to promote to a canonical type (used by constant evaluation)
 	GoApiString          string // E.g. "error", "uint16", "go.std.net/IPv4Addr"
+	aliasFor             *Info  // What this aliases to (nil if nothing)
 	IsUnsupported        bool   // Is this unsupported?
 }
 
@@ -71,7 +72,7 @@ func patternForExpr(e Expr) (pattern string, ue Expr) {
 	}
 }
 
-func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
+func namingForExpr(e Expr, resolveAlias bool) (pattern, ns, baseName, baseNameDoc, name, nameDoc, goApiString string, info *Info) {
 	var ue Expr
 	pattern, ue = patternForExpr(e)
 
@@ -86,6 +87,10 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, g
 			uInfo, found := goTypeMap[v.Name]
 			if !found {
 				panic(fmt.Sprintf("no type info for builtin `%s'", v.Name))
+			}
+			if resolveAlias && uInfo.aliasFor != nil {
+				//				fmt.Fprintf(os.Stderr, "jtypes.go/namingForExpr: Substituting %s for %s\n", uInfo.aliasFor.FullName, uInfo.FullName)
+				uInfo = uInfo.aliasFor
 			}
 			baseName = uInfo.FullName
 			baseNameDoc = uInfo.FullNameDoc
@@ -173,21 +178,41 @@ func InfoForGoName(fullName string) *Info {
 	return goTypeMap[fullName]
 }
 
-func InfoForExpr(e Expr) *Info {
+func lookupInfoForExpr(e Expr, resolveAlias bool) (*Info, bool) {
 	if info, ok := typesByExpr[e]; ok {
+		if resolveAlias {
+			if info.aliasFor != nil {
+				return info.aliasFor, true
+			}
+		}
+	}
+	return nil, false
+}
+
+func setInfoForExpr(e Expr, ti *Info, resolveAlias bool) {
+	if ti.Expr == nil {
+		ti.Expr = e // Populate each builtin as a first reference is found.
+	}
+	if !resolveAlias {
+		typesByExpr[e] = ti
+	}
+}
+
+func InfoForExpr(e Expr, resolveAlias bool) *Info {
+	if info, ok := lookupInfoForExpr(e, resolveAlias); ok {
 		return info
 	}
 
-	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goApiString, info := namingForExpr(e)
+	pattern, ns, baseName, baseNameDoc, fullName, fullNameDoc, goApiString, info := namingForExpr(e, resolveAlias)
 
 	if info != nil {
 		// Already found info on builtin Go type, so just return that.
-		typesByExpr[e] = info
+		setInfoForExpr(e, info, resolveAlias)
 		return info
 	}
 
 	if inf, found := typesByFullname[fullName]; found {
-		typesByExpr[e] = inf
+		setInfoForExpr(e, inf, resolveAlias)
 		return inf
 	}
 
@@ -208,7 +233,7 @@ func InfoForExpr(e Expr) *Info {
 		GoApiString:        goApiString,
 	}
 
-	typesByExpr[e] = info
+	setInfoForExpr(e, info, resolveAlias)
 	typesByFullname[fullName] = info
 
 	return info
@@ -281,6 +306,7 @@ var Byte = &Info{
 	ConvertFromClojure:   "ObjectAs_uint8(%s, %s)",
 	PromoteType:          "int(%s)",
 	GoApiString:          "uint8",
+	aliasFor:             UInt8,
 }
 
 var Rune = &Info{
@@ -297,6 +323,7 @@ var Rune = &Info{
 	ConvertFromClojure:   "ObjectAs_rune(%s, %s)",
 	PromoteType:          "%s",
 	GoApiString:          "rune",
+	aliasFor:             Int32,
 }
 
 var String = &Info{

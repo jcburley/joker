@@ -139,6 +139,9 @@ func ClojureNamespaceForExpr(e Expr) string {
 }
 
 func ClojureNamespaceForDirname(d string) string {
+	if d == "" {
+		return "go.std.builtin"
+	}
 	pkg, root, _ := goPackageForDirname(d)
 	if pkg == "" {
 		pkg = root + d
