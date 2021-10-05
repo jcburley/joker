@@ -53,6 +53,7 @@ type TypeInfo interface {
 	Doc() string
 	NilPattern() string
 	Namespace() string
+	AliasFor() TypeInfo
 	IsCustom() bool      // Whether this is defined by the codebase vs either builtin or so derived
 	IsUnsupported() bool // Is this unsupported?
 	IsNullable() bool    // Can an instance of the type == nil (e.g. 'error' type)?
@@ -82,6 +83,7 @@ type typeInfo struct {
 	jti                *jtypes.Info
 	gti                *gtypes.Info
 	reservationsNative *imports.Reservations
+	aliasFor           TypeInfo
 	who                string // who made me
 }
 
@@ -215,34 +217,49 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		return ti
 	}
 
-	gti := gtypes.InfoForExpr(e)
-	if gti == nil {
-		return nil
+	ti, found := typeInfoForExprMaybeResolve(e, false)
+	resolvedTi, _ := typeInfoForExprMaybeResolve(e, true)
+
+	if resolvedTi != ti {
+		ti.(*typeInfo).aliasFor = resolvedTi
 	}
 
-	ti, found := haveGtype(gti)
 	if !found {
-		jti := jtypes.InfoForExpr(e, gti.GoType)
+		typesByExpr[e] = ti
+	}
+
+	return ti
+}
+
+func typeInfoForExprMaybeResolve(e Expr, resolveAlias bool) (ti TypeInfo, found bool) {
+	gti := gtypes.InfoForExpr(e, resolveAlias)
+	if gti == nil {
+		return nil, false
+	}
+
+	ti, found = haveGtype(gti)
+	if !found {
+		jti := jtypes.InfoForExpr(e, gti.GoType, resolveAlias)
 
 		if ti, found := typesByGoName[gti.FullName]; found {
 			if _, ok := typesByClojureName[jti.FullName]; !ok {
-				panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+				panic(fmt.Sprintf("types.go/typeInfoForExprMaybeResolve: have typesByGoName[%s] but not typesByClojureName[%s] for %s at %s\n", gti.FullName, jti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 				//			typesByClojureName[jti.FullName] = ti
 			}
 			if gti.GoType != nil {
 				if _, ok := typesByGoType[gti.GoType]; !ok {
-					fmt.Fprintf(os.Stderr, "types.go/TypeInfoForExpr: have typesByGoName[%s] but not typesByGoType[%v] for %s at %s (alias type?)\n", gti.FullName, gti.GoType, astutils.ExprToString(e), godb.WhereAt(e.Pos()))
+					fmt.Fprintf(os.Stderr, "types.go/typeInfoForExprMaybeResolve: have typesByGoName[%s] but not typesByGoType[%v] for %s at %s (alias type?)\n", gti.FullName, gti.GoType, astutils.ExprToString(e), godb.WhereAt(e.Pos()))
 				}
 			}
-			return ti
+			return ti, true
 		}
 		if _, ok := typesByClojureName[jti.FullName]; ok && jti.FullName != "GoObject" {
 			// if inf := jtypes.InfoForName(jti.FullName); inf == nil {
-			// 	panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+			// 	panic(fmt.Sprintf("types.go/typeInfoForExprMaybeResolve: have typesByClojureName[%s] but not typesByGoName[%s] for %s at %s\n", jti.FullName, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 			// }
 			if gti.GoType != nil {
 				if _, ok := typesByGoType[gti.GoType]; ok {
-					panic(fmt.Sprintf("types.go/TypeInfoForExpr: have typesByGoType[%v] but not typesByGoName[%s] for %s at %s\n", gti.GoType, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
+					panic(fmt.Sprintf("types.go/typeInfoForExprMaybeResolve: have typesByGoType[%v] but not typesByGoName[%s] for %s at %s\n", gti.GoType, gti.FullName, astutils.ExprToString(e), godb.WhereAt(e.Pos())))
 				}
 			}
 		}
@@ -265,11 +282,13 @@ func TypeInfoForExpr(e Expr) TypeInfo {
 		}
 	}
 
-	//	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v; jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	// if gti.FullName == "[]uint8" || gti.FullName == "[]byte" {
+	// 	fmt.Printf("types.go/TypeInfoForExpr: @%p; gti: %s == @%p %+v (.AliasFor: @%p %+v); jti: %s == @%p %+v; at %s\n", ti, ti.GoName(), gti, gti, gti.AliasFor, gti.AliasFor, ti.ClojureName(), ti, ti, godb.WhereAt(e.Pos()))
+	// }
 
-	registerGtype(ti, "TypeInfoForExpr")
+	registerGtype(ti.(*typeInfo), "TypeInfoForExpr")
 
-	return ti
+	return ti, false
 }
 
 func TypeInfoForGoName(goName string) TypeInfo {
@@ -625,6 +644,10 @@ func (ti typeInfo) Namespace() string {
 	return ti.jti.Namespace
 }
 
+func (ti typeInfo) AliasFor() TypeInfo {
+	return ti.aliasFor
+}
+
 func (ti typeInfo) IsCustom() bool {
 	return ti.TypeSpec() != nil || ti.UnderlyingTypeInfo() != nil
 }
@@ -682,7 +705,7 @@ func SortAllTypes() []TypeInfo {
 			fmt.Printf("types.go/SortAllTypes: %s == %+v %+v\n", ti.ClojureName(), ti.GoTypeInfo(), ti.ClojureTypeInfo())
 		}
 		t := ti.GoTypeInfo()
-		if t.IsExported && !t.IsArbitraryType && !t.IsBuiltin {
+		if t.IsExported && !t.IsArbitraryType && ti.AliasFor() == nil {
 			myAllTypesSorted = append(myAllTypesSorted, ti.(*typeInfo))
 		}
 	}

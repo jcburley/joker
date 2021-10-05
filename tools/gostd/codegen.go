@@ -598,7 +598,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 		if !ti.IsCustom() {
 			if uti := ti.UnderlyingTypeInfo(); uti == nil || !uti.IsCustom() {
 				if more {
-					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p or a builtin type: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
+					fmt.Printf("codegen.go/GenTypeInfo(): no underlying type @%p: %s == @%p %+v @%p %+v @%p %+v\n", uti, ti.ClojureName(), ti, ti, ti.GoTypeInfo(), ti.GoTypeInfo(), ti.ClojureTypeInfo(), ti.ClojureTypeInfo())
 				}
 				continue
 			}
@@ -1000,6 +1000,11 @@ func addApiToImports(ti TypeInfo, clType string) string {
 	native := ti.ReservationsNative().ReservePackage(apiPkgPath, "", true, ti.DefPos(), "codegen.go/addApiToImports")
 
 	return native
+}
+
+func GenBuiltins() {
+	ns := NamespacesInfo["go.std.builtin"]
+	fmt.Printf("go.std.builtin: %+v\n", ns)
 }
 
 func init() {
