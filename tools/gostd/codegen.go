@@ -713,6 +713,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	}
 	s, yes := d.Type.(*types.Struct)
 	if !yes {
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): Not a Struct: %T %+v\n", ty, ty)
 		return
 	}
 
