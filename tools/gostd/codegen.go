@@ -101,7 +101,7 @@ func genGoCall(goFname, goParams string) string {
 func genFuncCode(fn *FuncInfo, t *types.Signature) (fc funcCode) {
 	defer func() {
 		if x := recover(); x != nil {
-			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", fn.Name, godb.WhereAt(fn.Pos), x))
+			panic(fmt.Sprintf("panic generating code for %s at %s: %s\n", fn.APIName, godb.WhereAt(fn.Pos), x))
 		}
 	}()
 
@@ -177,7 +177,7 @@ func GenReceiver(fn *FuncInfo) {
 	pkgDirUnix := fn.SourceFile.Package.Dir.String()
 	ns := fn.Namespace
 
-	goFname := genutils.FuncNameAsGoPrivate(fn.Name)
+	goFname := genutils.FuncNameAsGoPrivate(fn.APIName)
 
 	if !IsExported(fn.BaseName) {
 		return
@@ -227,7 +227,7 @@ func GenReceiver(fn *FuncInfo) {
 			godb.NumGeneratedMethods++
 			ti := fn.ToM
 			if ti == nil {
-				panic(fmt.Sprintf("Cannot find type for %s", fn.Name))
+				panic(fmt.Sprintf("Cannot find type for %s", fn.APIName))
 			}
 			if _, ok := GoCode[ns].InitVars[ti]; !ok {
 				GoCode[ns].InitVars[ti] = map[string]*FnCodeInfo{}
@@ -620,7 +620,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, receiverId, APIName, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
 	sig := (*types.Signature)(nil)
 	switch x := xft.(type) {
 	case *types.Signature:
@@ -629,8 +629,8 @@ func addQualifiedFunction(ti TypeInfo, receiverId, name, embedName, fullName, ba
 		panic(fmt.Sprintf("unexpected type %T", xft))
 	}
 	if f, found := QualifiedFunctions[fullName]; found {
-		if f.EmbedName != "" && f.EmbedName != name {
-			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction: not replacing %s with %s\n", f.EmbedName, name)
+		if f.EmbedName != "" && f.EmbedName != embedName {
+			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(%q): not replacing %s with %s\n", ti.GoName(), f.EmbedName, embedName)
 			QualifiedFunctions[fullName] = nil
 		}
 		return
@@ -639,16 +639,16 @@ func addQualifiedFunction(ti TypeInfo, receiverId, name, embedName, fullName, ba
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
 		return
 	}
-	docName := "(" + ti.GoName() + ")" + name + "()"
+	docName := "(" + ti.GoName() + ")" + baseName + "()"
 
 	pkgDirUnix := ti.GoPackage()
 	file := PackagesInfo[pkgDirUnix]
 	ns := NamespacesInfo[file.Namespace]
 
 	QualifiedFunctions[fullName] = &FuncInfo{
-		BaseName:            name,
+		BaseName:            baseName,
 		ReceiverId:          receiverId,
-		Name:                baseName,
+		APIName:             APIName,
 		DocName:             docName,
 		EmbedName:           embedName,
 		Namespace:           ns.Name,
@@ -682,15 +682,15 @@ func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
 	num := iface.NumMethods()
 	for i := 0; i < num; i++ {
 		m := iface.Method(i)
-		name := m.Name()
+		baseName := m.Name()
 		doc := &CommentGroup{}
 		addQualifiedFunction(
 			ti,
 			receiverId,
-			name,
+			typeBaseName+"_"+baseName,
 			"", /* embedName*/
-			typeFullName+"_"+name,
-			typeBaseName+"_"+name,
+			typeFullName+"_"+baseName,
+			baseName,
 			comment,
 			doc,
 			m.Type(),
@@ -744,12 +744,12 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 			}
 
 			for _, fd := range m {
-				name := fd.Name.Name
+				baseName := fd.Name.Name
 				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
 
-				if overriddenByMethod(typePkgName, typeBaseName, name) {
+				if overriddenByMethod(typePkgName, typeBaseName, baseName) {
 					if false {
-						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, name, typeFullName+"_"+name, embedName)
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, baseName, typeFullName+"_"+baseName, embedName)
 					}
 					continue
 				}
@@ -767,10 +767,10 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				addQualifiedFunction(
 					ti,
 					receiverId,
-					name,
+					typeBaseName+"_"+baseName,
 					embedName,
-					typeFullName+"_"+name,
-					typeBaseName+"_"+name,
+					typeFullName+"_"+baseName,
+					baseName,
 					comment,
 					doc,
 					sig,

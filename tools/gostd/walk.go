@@ -134,7 +134,7 @@ type FuncInfo struct {
 	Namespace           string    // Clojure namespace (e.g. "go.std.math") for this function
 	BaseName            string    // Just the function name without receiver-type info
 	ReceiverId          string    // Receiver info (only one type supported here and by Golang itself for now)
-	Name                string    // Unique name for implementation (has Receiver info as a prefix, then baseName)
+	APIName             string    // Unique Go API name for implementation (has Receiver info as a prefix, then baseName)
 	DocName             string    // Everything, for documentation and diagnostics
 	EmbedName           string    // "" for function definitions, else basename of embedded type
 	Fd                  *FuncDecl // nil for methods (these are declared within interface{} bodies, which are not fn declarations)
@@ -386,7 +386,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:            fd.Name.Name,
 		ReceiverId:          rcvrId,
-		Name:                fnName,
+		APIName:             fnName,
 		DocName:             docName,
 		EmbedName:           "",
 		Namespace:           ns.Name,
