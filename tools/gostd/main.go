@@ -355,8 +355,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	GenBuiltins()
-
 	allTypesSorted := SortAllTypes()
 
 	SetSwitchableTypes(allTypesSorted)
