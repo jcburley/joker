@@ -620,7 +620,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, receiverId, name, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
 	sig := (*types.Signature)(nil)
 	switch x := xft.(type) {
 	case *types.Signature:
@@ -639,7 +639,7 @@ func addQualifiedFunction(ti TypeInfo, typeBaseName, receiverId, name, embedName
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
 		return
 	}
-	docName := "(" + ti.GoFile().Package.Dir.String() + "." + typeBaseName + ")" + name + "()"
+	docName := "(" + ti.GoName() + ")" + name + "()"
 
 	pkgDirUnix := ti.GoPackage()
 	file := PackagesInfo[pkgDirUnix]
@@ -686,7 +686,6 @@ func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
 		doc := &CommentGroup{}
 		addQualifiedFunction(
 			ti,
-			typeBaseName,
 			receiverId,
 			name,
 			"", /* embedName*/
@@ -721,6 +720,9 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
 	receiverId := "{{myGoImport}}." + typeBaseName
+	if ptr {
+		receiverId = "*" + receiverId
+	}
 
 	n := s.NumFields()
 	for i := 0; i < n; i++ {
@@ -764,7 +766,6 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				doc := fd.Doc
 				addQualifiedFunction(
 					ti,
-					typeBaseName,
 					receiverId,
 					name,
 					embedName,
