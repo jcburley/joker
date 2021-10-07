@@ -21,11 +21,7 @@ func ParamNameAsGo(p string) string {
 }
 
 func FuncNameAsGoPrivate(f string) string {
-	// s := strings.ToLower(f[0:1]) + f[1:]
-	// if token.Lookup(s).IsKeyword() || gotypes.Universe.Lookup(s) != nil {
-	// 	s = "_" + s
-	// }
-	return "_f_" + strings.ToLower(f[0:1]) + f[1:]
+	return "_f_" + f
 }
 
 var genSymIndex = map[string]int{}
