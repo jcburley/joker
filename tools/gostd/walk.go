@@ -336,8 +336,8 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		Print(godb.Fset, fd)
 	}
 	fl := astutils.FlattenFieldList(fd.Recv)
-	fnName := receiverPrefix(gf, fl) + fd.Name.Name
-	fullName := pkgDirUnix + "." + fnName
+	APIName := receiverPrefix(gf, fl) + fd.Name.Name
+	fullName := pkgDirUnix + "." + APIName
 	switch fullName {
 	case "unsafe._Offsetof", "unsafe._Add", "unsafe._Slice", "unsafe._Sizeof", "unsafe._Alignof":
 		return // unsafe.Offsetof et al are syntactic operations in Go.
@@ -386,7 +386,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:            fd.Name.Name,
 		ReceiverId:          rcvrId,
-		APIName:             fnName,
+		APIName:             APIName,
 		DocName:             docName,
 		EmbedName:           "",
 		Namespace:           ns.Name,
