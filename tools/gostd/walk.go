@@ -252,6 +252,9 @@ func processTypeRef(t Expr) {
 	}()
 
 	if t != nil {
+		if e, yes := t.(*Ellipsis); yes {
+			t = e.Elt
+		}
 		TypeInfoForExpr(t)
 	}
 }

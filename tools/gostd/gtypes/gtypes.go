@@ -600,6 +600,7 @@ func InfoForExpr(e Expr) *Info {
 		localName = fmt.Sprintf("ABEND747(jtypes.go: %s not supported)", astutils.ExprToString(v))
 		isSwitchable = false
 		isAddressable = false
+		panic(localName)
 	}
 
 	if innerInfo == nil {
