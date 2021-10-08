@@ -716,7 +716,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 		return
 	}
 
-	typePkgName := ti.GoFile().Package.Dir.String()
+	typePkgName := ti.GoPackage()
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
 	receiverId := "{{myGoImport}}." + typeBaseName
@@ -744,12 +744,12 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 			}
 
 			for _, fd := range m {
-				baseName := fd.Name.Name
+				methodName := fd.Name.Name
 				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
 
-				if overriddenByMethod(typePkgName, typeBaseName, baseName) {
+				if overriddenByMethod(typePkgName, typeBaseName, methodName) {
 					if false {
-						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, baseName, typeFullName+"_"+baseName, embedName)
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, methodName, typeFullName+"_"+methodName, embedName)
 					}
 					continue
 				}
@@ -767,10 +767,10 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				addQualifiedFunction(
 					ti,
 					receiverId,
-					typeBaseName+"_"+baseName,
+					typeBaseName+"_"+methodName,
 					embedName,
-					typeFullName+"_"+baseName,
-					baseName,
+					typeFullName+"_"+methodName,
+					methodName,
 					comment,
 					doc,
 					sig,
@@ -795,13 +795,13 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 // the generated (T)F() wrapper will actually call (*T)F() via &T,
 // which (currently) Joker-gostd doesn't support, due to embedding T
 // as a GoObject[interface{}] of T, not *T.
-func overriddenByMethod(typeName, baseName, name string) bool {
-	n := typeName + ".PtrTo_" + baseName + "_" + name
+func overriddenByMethod(typeName, methodName, name string) bool {
+	n := typeName + ".PtrTo_" + methodName + "_" + name
 	f, found := QualifiedFunctions[n]
 	if found && f.Fd != nil {
 		return true
 	}
-	n = typeName + "." + baseName + "_" + name
+	n = typeName + "." + methodName + "_" + name
 	f, found = QualifiedFunctions[n]
 	return found && f.Fd != nil
 }
