@@ -716,18 +716,18 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 		return
 	}
 
-	typePkgName := ti.GoPackage()
-	typeFullName := ti.GoName()
-	typeBaseName := ti.GoBaseName()
-	receiverType := "{{myGoImport}}." + typeBaseName
+	rcvrTypePkgName := ti.GoPackage()
+	rcvrTypeFullName := ti.GoName()
+	rcvrTypeBaseName := ti.GoBaseName()
+	rcvrType := "{{myGoImport}}." + rcvrTypeBaseName
 	if ptr {
-		receiverType = "*" + receiverType
+		rcvrType = "*" + rcvrType
 	}
 
 	more := false
-	if false && strings.Contains(typeFullName, "TCPConn") {
+	if false && strings.Contains(rcvrTypeFullName, "TCPConn") {
 		more = true
-		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(%s): typeBaseName=%s\n", ti.GoName(), typeBaseName)
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(%s): rcvrTypeBaseName=%s\n", ti.GoName(), rcvrTypeBaseName)
 	}
 
 	n := s.NumFields()
@@ -742,7 +742,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 
 		embedName := v.Name()
 
-		f := func(p types.Type, receiverType string) {
+		f := func(p types.Type, rcvrType string) {
 			receivingTypeName := astutils.TypePathname(p)
 			m, found := ReceivingTypes[receivingTypeName]
 
@@ -757,29 +757,29 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				methodName := fd.Name.Name
 				//				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s\n", name)
 
-				if overriddenByMethod(typePkgName, typeBaseName, methodName) {
+				if overriddenByMethod(rcvrTypePkgName, rcvrTypeBaseName, methodName) {
 					if false {
-						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, methodName, typeFullName+"_"+methodName, embedName)
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: inhibiting overridden method (%s)%s() while processing %s (embed=%s)\n", receivingTypeName, methodName, rcvrTypeFullName+"_"+methodName, embedName)
 					}
 					continue
 				}
 
 				var sig *types.Signature
 				if ty, ok := astutils.TypeCheckerInfo.Defs[fd.Name]; !ok {
-					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no info on %s.%s\n", typeFullName, fd.Name)
+					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no info on %s.%s\n", rcvrTypeFullName, fd.Name)
 				} else {
 					sig = ty.Type().(*types.Signature)
 					if sig == nil {
-						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no signature for %s.%s\n", typeFullName, fd.Name)
+						fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers: no signature for %s.%s\n", rcvrTypeFullName, fd.Name)
 					}
 				}
 				doc := fd.Doc
 				addQualifiedFunction(
 					ti,
-					receiverType,
-					typeBaseName+"_"+methodName,
+					rcvrType,
+					rcvrTypeBaseName+"_"+methodName,
 					embedName,
-					typeFullName+"_"+methodName,
+					rcvrTypeFullName+"_"+methodName,
 					methodName,
 					comment,
 					doc,
@@ -790,14 +790,12 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 
 		p := v.Type()
 		if ptr { // Adding to *T's list of methods
-			f(p, receiverType)
+			f(p, rcvrType)
 			if _, yes := p.(*types.Pointer); !yes {
-				f(types.NewPointer(p), receiverType)
+				f(types.NewPointer(p), rcvrType)
 			}
 		} else {
-			if _, yes := p.(*types.Pointer); !yes {
-				f(p, receiverType)
-			}
+			f(p, rcvrType)
 		}
 	}
 }
@@ -838,13 +836,13 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 // codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing image/color.NYCbCrA_RGBA (embed=YCbCr)
 // codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.DotNode_Type (embed=NodeType)
 // codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.NilNode_Type (embed=NodeType)
-func overriddenByMethod(typeName, methodName, name string) bool {
-	n := typeName + ".PtrTo_" + methodName + "_" + name
+func overriddenByMethod(rcvrTypePkgName, rcvrTypeBaseName, methodName string) bool {
+	n := rcvrTypePkgName + ".PtrTo_" + rcvrTypeBaseName + "_" + methodName
 	f, found := QualifiedFunctions[n]
 	if found && f.Fd != nil {
 		return true
 	}
-	n = typeName + "." + methodName + "_" + name
+	n = rcvrTypePkgName + "." + rcvrTypeBaseName + "_" + methodName
 	f, found = QualifiedFunctions[n]
 	return found && f.Fd != nil
 }
