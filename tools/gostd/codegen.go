@@ -719,8 +719,10 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	rcvrTypeFullName := ti.GoName()
 	rcvrTypeBaseName := ti.GoBaseName()
 	rcvrType := "{{myGoImport}}." + rcvrTypeBaseName
+	APIPrefix := ""
 	if ptr {
 		rcvrType = "*" + rcvrType
+		APIPrefix = "PtrTo_"
 	}
 
 	more := false
@@ -776,7 +778,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				addQualifiedFunction(
 					ti,
 					rcvrType,
-					"", /* APIPrefix */
+					APIPrefix,
 					embedName,
 					methodName,
 					comment,
