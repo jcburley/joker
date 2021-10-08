@@ -620,7 +620,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, receiverType, APIName, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, receiverType, APIPrefix, embedName, methodName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
 	sig := (*types.Signature)(nil)
 	switch x := xft.(type) {
 	case *types.Signature:
@@ -628,10 +628,14 @@ func addQualifiedFunction(ti TypeInfo, receiverType, APIName, embedName, fullNam
 	default:
 		panic(fmt.Sprintf("unexpected type %T", xft))
 	}
-	if f, found := QualifiedFunctions[fullName]; found {
+
+	APIName := APIPrefix + ti.GoBaseName() + "_" + methodName
+	fullAPIName := ti.GoName() + "_" + methodName
+
+	if f, found := QualifiedFunctions[fullAPIName]; found {
 		if f.EmbedName != "" && f.EmbedName != embedName {
 			//			fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(%q): not replacing %s with %s\n", ti.GoName(), f.EmbedName, embedName)
-			QualifiedFunctions[fullName] = nil
+			QualifiedFunctions[fullAPIName] = nil
 		}
 		return
 	}
@@ -639,14 +643,14 @@ func addQualifiedFunction(ti TypeInfo, receiverType, APIName, embedName, fullNam
 		fmt.Fprintf(os.Stderr, "codegen.go/addQualifiedFunction(): No GoFile() for %s\n", ti.GoName())
 		return
 	}
-	docName := "(" + ti.GoName() + ")" + baseName + "()"
+	docName := "(" + ti.GoName() + ")" + methodName + "()"
 
 	pkgDirUnix := ti.GoPackage()
 	file := PackagesInfo[pkgDirUnix]
 	ns := NamespacesInfo[file.Namespace]
 
-	QualifiedFunctions[fullName] = &FuncInfo{
-		BaseName:            baseName,
+	QualifiedFunctions[fullAPIName] = &FuncInfo{
+		BaseName:            methodName,
 		ReceiverType:        receiverType,
 		APIName:             APIName,
 		DocName:             docName,
@@ -675,22 +679,17 @@ func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
 		return
 	}
 
-	typeFullName := ti.GoName()
-	typeBaseName := ti.GoBaseName()
-	receiverType := "{{myGoImport}}." + typeBaseName
-
 	num := iface.NumMethods()
 	for i := 0; i < num; i++ {
 		m := iface.Method(i)
-		baseName := m.Name()
+		methodName := m.Name()
 		doc := &CommentGroup{}
 		addQualifiedFunction(
 			ti,
-			receiverType,
-			typeBaseName+"_"+baseName,
-			"", /* embedName*/
-			typeFullName+"_"+baseName,
-			baseName,
+			"{{myGoImport}}."+ti.GoBaseName(), /* rcvrType */
+			"",                                /* APIPrefix */
+			"",                                /* embedName*/
+			methodName,
 			comment,
 			doc,
 			m.Type(),
@@ -777,9 +776,8 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				addQualifiedFunction(
 					ti,
 					rcvrType,
-					rcvrTypeBaseName+"_"+methodName,
+					"", /* APIPrefix */
 					embedName,
-					rcvrTypeFullName+"_"+methodName,
 					methodName,
 					comment,
 					doc,
