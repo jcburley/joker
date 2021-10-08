@@ -133,7 +133,7 @@ func SortedFnCodeInfo(m map[string]*FnCodeInfo, f func(string, *FnCodeInfo)) {
 type FuncInfo struct {
 	Namespace           string    // Clojure namespace (e.g. "go.std.math") for this function
 	BaseName            string    // Just the function name without receiver-type info
-	ReceiverId          string    // Receiver info (only one type supported here and by Golang itself for now)
+	ReceiverType        string    // Receiver info (only one type supported here and by Golang itself for now)
 	APIName             string    // Unique Go API name for implementation (has Receiver info as a prefix, then baseName)
 	DocName             string    // Everything, for documentation and diagnostics
 	EmbedName           string    // "" for function definitions, else basename of embedded type
@@ -308,7 +308,7 @@ func receiverPrefix(src *godb.GoFile, rl []astutils.FieldItem) string {
 	return res + "_"
 }
 
-func receiverId(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
+func receiverType(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
 	if pkg == "" {
 		pkg = "{{myGoImport}}."
 	} else {
@@ -327,7 +327,7 @@ func receiverId(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
 		case *StarExpr:
 			res += "*" + pkg + x.X.(*Ident).Name
 		default:
-			panic(fmt.Sprintf("receiverId: unrecognized expr %T in %s", x, src.Name))
+			panic(fmt.Sprintf("receiverType: unrecognized expr %T in %s", x, src.Name))
 		}
 	}
 	return res
@@ -356,7 +356,9 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 			ReceivingTypes[typeName] = []*FuncDecl{}
 		}
 		ReceivingTypes[typeName] = append(ReceivingTypes[typeName], fd)
-		//		fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl(): %s => %+v\n", typeName, fd)
+		if false && pkgDirUnix == "net" {
+			fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl(%s): %s => %+v\n", gf.Name, typeName, fd)
+		}
 	}
 
 	if !isExportable {
@@ -368,8 +370,8 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 		genutils.AddSortedStdout(fmt.Sprintf("NOTE: Already seen function %s in %s, yet again in %s",
 			fullName, v.SourceFile.Name, godb.FileAt(fd.Pos())))
 	}
-	rcvrId := receiverId(gf, "", fl)
-	docName := "(" + receiverId(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
+	rcvrType := receiverType(gf, "", fl)
+	docName := "(" + receiverType(gf, pkgDirUnix, fl) + ")" + fd.Name.Name + "()"
 	// if Contains(fullName, "DotNode") {
 	// 	fmt.Fprintf(os.Stderr, "walk.go/processFuncDecl: %s\n", fullName)
 	// }
@@ -388,7 +390,7 @@ func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, 
 
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:            fd.Name.Name,
-		ReceiverId:          rcvrId,
+		ReceiverType:        rcvrType,
 		APIName:             APIName,
 		DocName:             docName,
 		EmbedName:           "",

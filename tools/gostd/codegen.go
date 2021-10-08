@@ -139,7 +139,7 @@ func genReceiverCode(fn *FuncInfo, goFname string) string {
 	preCode, params, min, max := genGoPreReceiver(fn)
 
 	receiverName := fn.BaseName
-	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverId, receiverName, params)
+	call := fmt.Sprintf("o.O.(%s).%s(%s)", fn.ReceiverType, receiverName, params)
 
 	resultAssign, cljReturnType, cljReturnTypeForDoc, returnTypeForDoc, postCode, _ := genGoPost("\t", fn.Signature)
 	if strings.Contains(returnTypeForDoc, "ABEND") {
@@ -620,7 +620,7 @@ func SetSwitchableTypes(allTypesSorted []TypeInfo) {
 	SwitchableTypes = types
 }
 
-func addQualifiedFunction(ti TypeInfo, receiverId, APIName, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
+func addQualifiedFunction(ti TypeInfo, receiverType, APIName, embedName, fullName, baseName, comment string, doc *CommentGroup, xft interface{}, pos token.Pos) {
 	sig := (*types.Signature)(nil)
 	switch x := xft.(type) {
 	case *types.Signature:
@@ -647,7 +647,7 @@ func addQualifiedFunction(ti TypeInfo, receiverId, APIName, embedName, fullName,
 
 	QualifiedFunctions[fullName] = &FuncInfo{
 		BaseName:            baseName,
-		ReceiverId:          receiverId,
+		ReceiverType:        receiverType,
 		APIName:             APIName,
 		DocName:             docName,
 		EmbedName:           embedName,
@@ -677,7 +677,7 @@ func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
 
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
-	receiverId := "{{myGoImport}}." + typeBaseName
+	receiverType := "{{myGoImport}}." + typeBaseName
 
 	num := iface.NumMethods()
 	for i := 0; i < num; i++ {
@@ -686,7 +686,7 @@ func appendMethods(ti TypeInfo, ity *InterfaceType, comment string) {
 		doc := &CommentGroup{}
 		addQualifiedFunction(
 			ti,
-			receiverId,
+			receiverType,
 			typeBaseName+"_"+baseName,
 			"", /* embedName*/
 			typeFullName+"_"+baseName,
@@ -719,27 +719,37 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 	typePkgName := ti.GoPackage()
 	typeFullName := ti.GoName()
 	typeBaseName := ti.GoBaseName()
-	receiverId := "{{myGoImport}}." + typeBaseName
+	receiverType := "{{myGoImport}}." + typeBaseName
 	if ptr {
-		receiverId = "*" + receiverId
+		receiverType = "*" + receiverType
+	}
+
+	more := false
+	if false && strings.Contains(typeFullName, "TCPConn") {
+		more = true
+		fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(%s): typeBaseName=%s\n", ti.GoName(), typeBaseName)
 	}
 
 	n := s.NumFields()
 	for i := 0; i < n; i++ {
 		v := s.Field(i)
 		if !v.Embedded() {
+			if more {
+				fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(%s): %s not embedded\n", ti.GoName(), v.Id())
+			}
 			continue
 		}
 
 		embedName := v.Name()
 
-		f := func(p types.Type) {
+		f := func(p types.Type, receiverType string) {
 			receivingTypeName := astutils.TypePathname(p)
 			m, found := ReceivingTypes[receivingTypeName]
 
-			//			fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(): %s (found=%v):\n", receivingTypeName, found)
-
 			if !found {
+				if more {
+					fmt.Fprintf(os.Stderr, "codegen.go/appendReceivers(%s): type %q not found\n", ti.GoName(), receivingTypeName)
+				}
 				return
 			}
 
@@ -766,7 +776,7 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 				doc := fd.Doc
 				addQualifiedFunction(
 					ti,
-					receiverId,
+					receiverType,
 					typeBaseName+"_"+methodName,
 					embedName,
 					typeFullName+"_"+methodName,
@@ -780,11 +790,13 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 
 		p := v.Type()
 		if ptr { // Adding to *T's list of methods
-			f(p)
+			f(p, receiverType)
+			if _, yes := p.(*types.Pointer); !yes {
+				f(types.NewPointer(p), receiverType)
+			}
 		} else {
 			if _, yes := p.(*types.Pointer); !yes {
-				f(p)
-				//			f(types.NewPointer(p))
+				f(p, receiverType)
 			}
 		}
 	}
@@ -794,7 +806,38 @@ func appendReceivers(ti TypeInfo, ty *StructType, ptr bool, comment string) {
 // that (embedded/lifted) function if (*T)F() is defined. Otherwise,
 // the generated (T)F() wrapper will actually call (*T)F() via &T,
 // which (currently) Joker-gostd doesn't support, due to embedding T
-// as a GoObject[interface{}] of T, not *T.
+// as a GoObject[interface{}] of T, not *T. Examples:
+//
+// codegen.go/appendReceivers: inhibiting overridden method (*crypto/ecdsa.PublicKey)Equal() while processing *crypto/ecdsa.PrivateKey_Equal (embed=PublicKey)
+// codegen.go/appendReceivers: inhibiting overridden method (*crypto/rsa.PublicKey)Equal() while processing *crypto/rsa.PrivateKey_Equal (embed=PublicKey)
+// codegen.go/appendReceivers: inhibiting overridden method (*debug/dwarf.CommonType)Size() while processing *debug/dwarf.ArrayType_Size (embed=CommonType)
+// codegen.go/appendReceivers: inhibiting overridden method (*debug/dwarf.CommonType)Size() while processing *debug/dwarf.QualType_Size (embed=CommonType)
+// codegen.go/appendReceivers: inhibiting overridden method (*debug/dwarf.CommonType)Size() while processing *debug/dwarf.TypedefType_Size (embed=CommonType)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Builtin_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Const_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Func_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Label_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Nil_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.PkgName_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.TypeName_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*go/types.object)String() while processing *go/types.Var_String (embed=object)
+// codegen.go/appendReceivers: inhibiting overridden method (*image.YCbCr)ColorModel() while processing *image.NYCbCrA_ColorModel (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (*image.YCbCr)At() while processing *image.NYCbCrA_At (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (*image.YCbCr)RGBA64At() while processing *image.NYCbCrA_RGBA64At (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (*image.YCbCr)SubImage() while processing *image.NYCbCrA_SubImage (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (*image.YCbCr)Opaque() while processing *image.NYCbCrA_Opaque (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing *image/color.NYCbCrA_RGBA (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (*testing.common)Setenv() while processing *testing.T_Setenv (embed=common)
+// codegen.go/appendReceivers: inhibiting overridden method (*testing/quick.CheckError)Error() while processing *testing/quick.CheckEqualError_Error (embed=CheckError)
+// codegen.go/appendReceivers: inhibiting overridden method (*text/template/parse.Tree)Parse() while processing *text/template.Template_Parse (embed=Tree)
+// codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing *text/template/parse.DotNode_Type (embed=NodeType)
+// codegen.go/appendReceivers: inhibiting overridden method (*text/template/parse.BranchNode)Copy() while processing *text/template/parse.IfNode_Copy (embed=BranchNode)
+// codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing *text/template/parse.NilNode_Type (embed=NodeType)
+// codegen.go/appendReceivers: inhibiting overridden method (*text/template/parse.BranchNode)Copy() while processing *text/template/parse.RangeNode_Copy (embed=BranchNode)
+// codegen.go/appendReceivers: inhibiting overridden method (*text/template/parse.BranchNode)Copy() while processing *text/template/parse.WithNode_Copy (embed=BranchNode)
+// codegen.go/appendReceivers: inhibiting overridden method (image/color.YCbCr)RGBA() while processing image/color.NYCbCrA_RGBA (embed=YCbCr)
+// codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.DotNode_Type (embed=NodeType)
+// codegen.go/appendReceivers: inhibiting overridden method (text/template/parse.NodeType)Type() while processing text/template/parse.NilNode_Type (embed=NodeType)
 func overriddenByMethod(typeName, methodName, name string) bool {
 	n := typeName + ".PtrTo_" + methodName + "_" + name
 	f, found := QualifiedFunctions[n]
