@@ -39,7 +39,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 	clType, clTypeDoc, goTypeDoc = ti.ClojureExtractString(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
 
 	if clType != "" {
-		clType = "^" + assertRuntime("Extract", "Extract_ns_", ti.GoApiString(isVariadic, true))
+		clType = "^" + assertRuntime("Extract", "Extract_ns_", ti.LegacyGoApiString(isVariadic))
 		clTypeDoc = "^" + clTypeDoc
 	}
 
@@ -153,7 +153,7 @@ func genTypePreReceiver(fn *FuncInfo, v *types.Var, paramName string, argNum int
 	ti := TypeInfoForType(ty)
 	resExpr = paramName
 
-	clType := ti.GoApiString(isVariadic, false)
+	clType := ti.GoApiString(isVariadic)
 
 	apiImportName := fn.AddApiToImports(clType)
 	api := determineRuntime("ReceiverArgAs_", "ReceiverArgAs_ns_", apiImportName, clType)

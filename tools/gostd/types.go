@@ -39,7 +39,8 @@ type TypeInfo interface {
 	GoBaseName() string
 	GoEffectiveBaseName() string   // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
 	GoTypeExpr() Expr              // The actual (Go) type (if any)
-	GoApiString(bool, bool) string // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
+	GoApiString(bool) string       // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
+	LegacyGoApiString(bool) string // Like GoApiString, but for the "Extract" functions (when referencing the orginal ones built-in to Joker)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -453,7 +454,7 @@ func (ti typeInfo) ClojureExtractString() string {
 	}
 	jti := ti.jti
 	if jti.Namespace == "" && jti.FullName != jti.ArgExtractFunc {
-		return ti.GoApiString(false, false)
+		return ti.LegacyGoApiString(false)
 	}
 	return jti.FullName
 }
@@ -539,8 +540,22 @@ func (ti typeInfo) GoTypeExpr() Expr {
 	return ti.gti.Type
 }
 
-func (ti typeInfo) GoApiString(isEllipsis, isLegacy bool) string {
+func (ti typeInfo) GoApiString(isEllipsis bool) string {
 	res := ti.jti.GoApiString
+	if isEllipsis {
+		if strings.Contains(res, "/") {
+			res += "_s"
+		} else {
+			res += "s"
+		}
+	}
+	return res
+}
+
+// Returns e.g. "String" instead of "string", as required for
+// "Extract..." functions.
+func (ti typeInfo) LegacyGoApiString(isEllipsis bool) string {
+	res := ti.jti.LegacyGoApiString
 	if isEllipsis {
 		if strings.Contains(res, "/") {
 			res += "_s"

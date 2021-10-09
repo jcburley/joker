@@ -396,7 +396,7 @@ func maybeImplicitConvert(typeName string, ti TypeInfo) string {
 	}
 
 	argType := t.ArgClojureType()
-	declType := path.Base(t.GoApiString(false, false))
+	declType := path.Base(t.GoApiString(false))
 	if argType == "" || declType == "" {
 		return ""
 	}
@@ -462,7 +462,7 @@ func GenType(t string, ti TypeInfo) {
 `
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
-	apiSuffix := "_ns_" + path.Base(ti.GoApiString(false, false))
+	apiSuffix := "_ns_" + path.Base(ti.GoApiString(false))
 	MaybeIsApiName := "MaybeIs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
 	FieldAsApiName := "FieldAs" + apiSuffix
@@ -542,7 +542,7 @@ func genCtor(tyi TypeInfo) {
 	tyi.ReservationsNative().Reset(tyi.ClojureName())
 
 	goTypeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
-	goApiString := path.Base(tyi.GoApiString(false, false))
+	goApiString := path.Base(tyi.GoApiString(false))
 	ctorApiName := "_Ctor_" + goApiString
 	wrappedCtorApiName := "_Wrapped" + ctorApiName
 
@@ -1016,7 +1016,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	clType := v.GoApiString(false, false)
+	clType := v.GoApiString(false)
 	apiImportName := addApiToImports(ti, clType)
 	api := determineRuntime("FieldAs_", "FieldAs_ns_", apiImportName, clType)
 
