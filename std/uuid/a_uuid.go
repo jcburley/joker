@@ -6,6 +6,7 @@ import (
 	. "github.com/candid82/joker/core"
 )
 
+
 var __new__P ProcFn = __new_
 var new_ Proc = Proc{Fn: __new__P, Name: "new_", Package: "std/uuid"}
 

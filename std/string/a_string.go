@@ -9,6 +9,7 @@ import (
 	"unicode"
 )
 
+
 var __isblank__P ProcFn = __isblank_
 var isblank_ Proc = Proc{Fn: __isblank__P, Name: "isblank_", Package: "std/string"}
 

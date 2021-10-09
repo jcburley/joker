@@ -6,8 +6,8 @@
 package html
 
 import (
-	"fmt"
 	. "github.com/candid82/joker/core"
+	"fmt"
 	"os"
 )
 

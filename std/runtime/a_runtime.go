@@ -7,6 +7,7 @@ import (
 	"runtime"
 )
 
+
 var __go_root__P ProcFn = __go_root_
 var go_root_ Proc = Proc{Fn: __go_root__P, Name: "go_root_", Package: "std/runtime"}
 

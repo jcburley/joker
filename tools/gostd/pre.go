@@ -39,7 +39,7 @@ func genTypePreFunc(fn *FuncInfo, v *types.Var, paramName string, isVariadic, is
 	clType, clTypeDoc, goTypeDoc = ti.ClojureExtractString(), ti.ClojureNameDocForType(v.Pkg()), ti.GoNameDocForType(v.Pkg())
 
 	if clType != "" {
-		clType = "^" + assertRuntime("Extract", "Extract_ns_", ti.LegacyGoApiString(false))
+		clType = "^" + assertRuntime("Extract", "Extract_ns_", clType)
 		clTypeDoc = "^" + clTypeDoc
 	}
 

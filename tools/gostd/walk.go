@@ -1083,13 +1083,13 @@ func findApis(src paths.NativePath) (apis map[string]struct{}) {
 }
 
 // Determine the runtime API name for a function call, given a choice
-// of prefixes (core and namespace-based) and the type name.  Ensure
-// the resulting API has been code-generated or already exists in
-// package core, wrapping it in an ABEND if not, and return the
+// of prefixes (core and namespace-based) and the (Clojure) type name.
+// Ensure the resulting API has been code-generated or already exists
+// in package core, wrapping it in an ABEND if not, and return the
 // resulting wrap or, if no errors, the original string (which
 // generate-std.joke will use to reconstitute the same API name).
 func assertRuntime(prefix, nsPrefix, s string) string {
-	runtime := s
+	runtime := ReplaceAll(s, "*", "refTo")
 	if ix := Index(s, "("); ix >= 0 {
 		runtime = runtime[0:ix]
 	}
@@ -1113,21 +1113,22 @@ func assertRuntime(prefix, nsPrefix, s string) string {
 // "arrayOfByte"), the import base name, and choice of prefixes.
 func determineRuntime(prefix, nsPrefix, imp, clType string) string {
 	var runtime, call string
-	if ix := Index(clType, "/"); ix >= 0 {
-		runtime = clType[0:ix+1] + nsPrefix + clType[ix+1:]
+	apiName := ReplaceAll(clType, "*", "refTo")
+	if ix := Index(apiName, "/"); ix >= 0 {
+		runtime = apiName[0:ix+1] + nsPrefix + apiName[ix+1:]
 		if imp != "" {
 			imp += "."
 		}
-		call = imp + nsPrefix + clType[ix+1:]
+		call = imp + nsPrefix + apiName[ix+1:]
 	} else {
-		runtime = prefix + clType
+		runtime = prefix + apiName
 		call = runtime
 	}
 	if Contains(runtime, "ABEND") {
 		return runtime
 	}
 	if _, found := definedApis[runtime]; !found {
-		return fmt.Sprintf("ABEND708(API '%s' is unimplemented: %s)", runtime, clType)
+		return fmt.Sprintf("ABEND708(API '%s' is unimplemented: %s)", runtime, apiName)
 	}
 	return call
 }

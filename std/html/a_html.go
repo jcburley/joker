@@ -7,6 +7,7 @@ import (
 	"html"
 )
 
+
 var __escape__P ProcFn = __escape_
 var escape_ Proc = Proc{Fn: __escape__P, Name: "escape_", Package: "std/html"}
 
