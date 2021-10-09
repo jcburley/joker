@@ -37,9 +37,9 @@ type TypeInfo interface {
 	GoPackage() string
 	GoPattern() string
 	GoBaseName() string
-	GoEffectiveBaseName() string // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
-	GoTypeExpr() Expr            // The actual (Go) type (if any)
-	GoApiString(bool) string     // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
+	GoEffectiveBaseName() string   // Substitutes what actually works in generated Go code (interface{} instead of Arbitrary if in unsafe pkg)
+	GoTypeExpr() Expr              // The actual (Go) type (if any)
+	GoApiString(bool, bool) string // Include this in a Go API name (possible ellipsis arg) after removing possible "na.me.space/" prefix)
 	GoTypeInfo() *gtypes.Info
 	TypeSpec() *TypeSpec // Definition, if any, of named type
 	UnderlyingTypeInfo() TypeInfo
@@ -453,7 +453,7 @@ func (ti typeInfo) ClojureExtractString() string {
 	}
 	jti := ti.jti
 	if jti.Namespace == "" && jti.FullName != jti.ArgExtractFunc {
-		return ti.GoApiString(false)
+		return ti.GoApiString(false, false)
 	}
 	return jti.FullName
 }
@@ -539,16 +539,16 @@ func (ti typeInfo) GoTypeExpr() Expr {
 	return ti.gti.Type
 }
 
-func (ti typeInfo) GoApiString(isEllipsis bool) string {
-	clType := ti.jti.GoApiString
+func (ti typeInfo) GoApiString(isEllipsis, isLegacy bool) string {
+	res := ti.jti.GoApiString
 	if isEllipsis {
-		if strings.Contains(clType, "/") {
-			clType += "_s"
+		if strings.Contains(res, "/") {
+			res += "_s"
 		} else {
-			clType += "s"
+			res += "s"
 		}
 	}
-	return clType
+	return res
 }
 
 func (ti typeInfo) GoTypeInfo() *gtypes.Info {

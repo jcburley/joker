@@ -396,7 +396,7 @@ func maybeImplicitConvert(typeName string, ti TypeInfo) string {
 	}
 
 	argType := t.ArgClojureType()
-	declType := t.GoApiString(false)
+	declType := path.Base(t.GoApiString(false, false))
 	if argType == "" || declType == "" {
 		return ""
 	}
@@ -462,7 +462,7 @@ func GenType(t string, ti TypeInfo) {
 `
 
 	typeName := fmt.Sprintf(ti.GoPattern(), myGoImport+"."+ti.GoBaseName())
-	apiSuffix := "_ns_" + fmt.Sprintf(ti.ClojurePattern(), ti.ClojureBaseName())
+	apiSuffix := "_ns_" + path.Base(ti.GoApiString(false, false))
 	MaybeIsApiName := "MaybeIs" + apiSuffix
 	ExtractApiName := "Extract" + apiSuffix
 	FieldAsApiName := "FieldAs" + apiSuffix
@@ -542,11 +542,11 @@ func genCtor(tyi TypeInfo) {
 	tyi.ReservationsNative().Reset(tyi.ClojureName())
 
 	goTypeName := fmt.Sprintf(tyi.GoPattern(), "{{myGoImport}}."+tyi.GoBaseName())
-	clojureTypeName := fmt.Sprintf(tyi.ClojurePattern(), tyi.ClojureBaseName())
-	ctorApiName := "_Ctor_" + clojureTypeName
+	goApiString := path.Base(tyi.GoApiString(false, false))
+	ctorApiName := "_Ctor_" + goApiString
 	wrappedCtorApiName := "_Wrapped" + ctorApiName
 
-	possibleObject, expectedObjectDoc, helperFunc := nonGoObjectCase(tyi, goTypeName, clojureTypeName)
+	possibleObject, expectedObjectDoc, helperFunc := nonGoObjectCase(tyi, goTypeName, goApiString)
 
 	goCtorInfo := map[string]string{
 		"HelperFunc":      helperFunc,
@@ -885,8 +885,8 @@ func GenTypeCtors(allTypesSorted []TypeInfo) {
 
 }
 
-func nonGoObjectCase(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc string) {
-	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs := nonGoObjectTypeFor(ti, goTypeName, clojureTypeName)
+func nonGoObjectCase(ti TypeInfo, goTypeName, goApiString string) (nonGoObjectCase, nonGoObjectCaseDoc, helperFunc string) {
+	nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs := nonGoObjectTypeFor(ti, goTypeName, goApiString)
 
 	nonGoObjectCasePrefix := ""
 	nonGoObjectCase = ""
@@ -909,7 +909,7 @@ func nonGoObjectCase(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObje
 	return
 }
 
-func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string) {
+func nonGoObjectTypeFor(ti TypeInfo, goTypeName, goApiString string) (nonGoObjectTypes, nonGoObjectTypeDocs, extractClojureObjects, helperFuncs []string) {
 	ts := ti.UnderlyingTypeSpec()
 	if ts == nil {
 		panic(fmt.Sprintf("nil ts for ti=%+v gti=%+v jti=%+v", ti, ti.GoTypeInfo(), ti.ClojureTypeInfo()))
@@ -928,7 +928,7 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 			return
 		}
 	case *StructType:
-		mapHelperFName := "_mapTo_" + clojureTypeName
+		mapHelperFName := "_mapTo_" + goApiString
 		return []string{"case *ArrayMap, *HashMap"},
 			[]string{"Map"},
 			[]string{mapHelperFName + "(_o.(Map))"},
@@ -939,7 +939,7 @@ func nonGoObjectTypeFor(ti TypeInfo, goTypeName, clojureTypeName string) (nonGoO
 	nonGoObjectTypes = []string{"default"}
 	nonGoObjectTypeDocs = []string{"whatever"}
 	extractClojureObjects = []string{fmt.Sprintf("%s(_o.ABEND674(codegen.go: unknown underlying type %T for %s))",
-		goTypeName, ts.Type, clojureTypeName)}
+		goTypeName, ts.Type, goApiString)}
 	helperFuncs = []string{""}
 
 	return
@@ -1016,7 +1016,7 @@ func valueToType(ti TypeInfo, value string, e Expr) string {
 	if v.ConvertFromMap() != "" {
 		return fmt.Sprintf(v.ConvertFromMap(), "o", value)
 	}
-	clType := v.ClojureExtractString()
+	clType := v.GoApiString(false, false)
 	apiImportName := addApiToImports(ti, clType)
 	api := determineRuntime("FieldAs_", "FieldAs_ns_", apiImportName, clType)
 

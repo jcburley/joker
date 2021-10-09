@@ -1127,7 +1127,7 @@ func determineRuntime(prefix, nsPrefix, imp, clType string) string {
 		return runtime
 	}
 	if _, found := definedApis[runtime]; !found {
-		return fmt.Sprintf("ABEND707(API '%s' is unimplemented: %s)", runtime, clType)
+		return fmt.Sprintf("ABEND708(API '%s' is unimplemented: %s)", runtime, clType)
 	}
 	return call
 }
