@@ -765,7 +765,7 @@ var Float64 = &Info{
 	AsClojureObject:      "Double(%s%s)",
 	ConvertFromClojure:   "ObjectAs_float64(%s, %s)",
 	PromoteType:          "%s",
-	GoApiString:          "double",
+	GoApiString:          "float64",
 	LegacyGoApiString:    "Double",
 }
 
