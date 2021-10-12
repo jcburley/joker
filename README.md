@@ -357,13 +357,13 @@ Since Linux (on **amd64**) supports building _and running_ 32-bit (**386**) exec
 - Dashes (`-`) in namespaces are not converted to underscores (`_`) by Joker, so (unlike with Clojure) there's no need to name `.joke` files accordingly.
 - Avoid `:refer :all` and the `use` function, as that reduces the effectiveness of linting.
 
-# <a name="gostd"></a>The go.std.* Namespaces
+## <a name="gostd"></a>The go.std.* Namespaces
 
 On this experimental branch, Joker is built along with the results of an automated analysis of the Golang source directory in order to pull in and "wrap" functions, types, constants, and variables provided by Go `std` packages.
 
 NOTE: Only Joker versions >= 0.16 are now supported by this branch.
 
-## Quick Start
+### Quick Start
 
 To make this "magic" happen:
 
@@ -381,24 +381,24 @@ To make this "magic" happen:
 8. `./joker` invokes the just-built Joker executable.
 9. `go install` installs Joker (and deletes the local copy).
 
-## Sample Usage
+### Sample Usage
 
 Assuming Joker has been built as described above:
 
 ```
-$ joker
-Welcome to joker v0.12.6. Use EOF (Ctrl-D) or SIGINT (Ctrl-C) to exit.
+$ ./joker
+Welcome to joker v0.17.2-gostd. Use '(exit)', EOF (Ctrl-D), or SIGINT (Ctrl-C) to exit.
 user=> (require '[go.std.net :as n])
 nil
 user=> (sort (map #(key %) (ns-map 'go.std.net)))
-(AddrError. CIDRMask DNSConfigError. DNSError. Dial DialIP DialTCP DialUDP DialUnix FlagBroadcast FlagLoopback FlagMulticast FlagPointToPoint FlagUp Flags. IPConn. IPv4 IPv4Mask IPv4len IPv6len InterfaceAddrs InterfaceByIndex InterfaceByName Interfaces InvalidAddrError. JoinHostPort Listen ListenIP ListenMulticastUDP ListenPacket ListenTCP ListenUDP ListenUnix ListenUnixgram LookupAddr LookupCNAME LookupHost LookupIP LookupMX LookupNS LookupPort LookupSRV LookupTXT MX. NS. ParseCIDR ParseError. ParseIP ParseMAC Pipe ResolveIPAddr ResolveTCPAddr ResolveUDPAddr ResolveUnixAddr SRV. SplitHostPort TCPConn. TCPListener. UDPConn. UnixAddr. UnixConn. UnixListener. UnknownNetworkError.)
+(*AddrError *Buffers *DNSConfigError *DNSError *Dialer *Flags *HardwareAddr *IP *IPAddr *IPConn *IPMask *IPNet *Interface *InvalidAddrError *ListenConfig *MX *NS *OpError *ParseError *Resolver *SRV *TCPAddr *TCPConn *TCPListener *UDPAddr *UDPConn *UnixAddr *UnixConn *UnixListener *UnknownNetworkError Addr AddrError Buffers CIDRMask Conn DNSConfigError DNSError DefaultResolver Dial DialIP DialTCP DialTimeout DialUDP DialUnix Dialer ErrClosed ErrWriteToConnected Error FileConn FileListener FilePacketConn FlagBroadcast FlagLoopback FlagMulticast FlagPointToPoint FlagUp Flags HardwareAddr IP IPAddr IPConn IPMask IPNet IPv4 IPv4Mask IPv4allrouter IPv4allsys IPv4bcast IPv4len IPv4zero IPv6interfacelocalallnodes IPv6len IPv6linklocalallnodes IPv6linklocalallrouters IPv6loopback IPv6unspecified IPv6zero Interface InterfaceAddrs InterfaceByIndex InterfaceByName Interfaces InvalidAddrError JoinHostPort Listen ListenConfig ListenIP ListenMulticastUDP ListenPacket ListenTCP ListenUDP ListenUnix ListenUnixgram Listener LookupAddr LookupCNAME LookupHost LookupIP LookupMX LookupNS LookupPort LookupSRV LookupTXT MX NS OpError PacketConn ParseCIDR ParseError ParseIP ParseMAC Pipe ResolveIPAddr ResolveTCPAddr ResolveUDPAddr ResolveUnixAddr Resolver SRV SplitHostPort TCPAddr TCPConn TCPListener UDPAddr UDPConn UnixAddr UnixConn UnixListener UnknownNetworkError arrayOfAddr arrayOfAddrError arrayOfBuffers arrayOfConn arrayOfDNSConfigError arrayOfDNSError arrayOfDialer arrayOfError arrayOfFlags arrayOfHardwareAddr arrayOfIP arrayOfIPAddr arrayOfIPConn arrayOfIPMask arrayOfIPNet arrayOfInterface arrayOfInvalidAddrError arrayOfListenConfig arrayOfListener arrayOfMX arrayOfNS arrayOfOpError arrayOfPacketConn arrayOfParseError arrayOfResolver arrayOfSRV arrayOfTCPAddr arrayOfTCPConn arrayOfTCPListener arrayOfUDPAddr arrayOfUDPConn arrayOfUnixAddr arrayOfUnixConn arrayOfUnixListener arrayOfUnknownNetworkError)
 user=> (n/Interfaces)
-[[{:Index 1, :MTU 65536, :Name "lo", :HardwareAddr [], :Flags 5} {:Index 2, :MTU 1500, :Name "eth0", :HardwareAddr [20 218 233 31 200 87], :Flags 19} {:Index 3, :MTU 1500, :Name "docker0", :HardwareAddr [2 66 188 97 92 58], :Flags 19}] nil]
+[[{1 65536 lo  up|loopback} {2 1500 enp7s0 e0:d5:5e:2a:49:1b up|broadcast|multicast} {3 1500 enp6s0 e0:d5:5e:2a:49:19 up|broadcast|multicast} {4 1500 wlp5s0 3c:f0:11:3c:51:95 up|broadcast|multicast}] nil]
 user=>
 $
 ```
 
-## Further Reading
+### Further Reading
 
 See [GOSTD Usage](GOSTD.md) for more information.
 
