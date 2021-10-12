@@ -125,7 +125,7 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, g
 				legacyGoApiString = uInfo.LegacyGoApiString
 			} else {
 				goApiString = uInfo.GoApiString
-				legacyGoApiString = uInfo.ArgExtractFunc // Maps from alias to underlying type (just byte->uint8 for now)
+				legacyGoApiString = uInfo.GoApiString // Maps from alias to underlying type (just byte->uint8 for now)
 			}
 		}
 	case *SelectorExpr:
