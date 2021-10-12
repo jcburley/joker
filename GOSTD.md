@@ -6,28 +6,36 @@ After building, HTML documentation is available in the `docs` directory. For exa
 
 Or, use [the GOSTD-specific namespace documentation](https://burleyarch.com/joker/docs) to get an idea of what is available, as those pages are generally updated when new features (supporting more, or better, conversions/wrappers of Go packages to Joker) are pushed to the repository. (The Windows pages are updated less frequently.)
 
-Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go, though is now at or greater than 90% coverage in most cases. Omissions are generally due to language features (of Go), used by packages (their types, constants, variables, standalone functions, and receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker. Further, some key "standalone" functions (such as the `builtin` package's functions) are not yet available.
+Note that **gostd** is still very much a "work in progress". It does not convert the entire `std` library provided by Go, though is now at or greater than 90% coverage in most cases. Omissions are generally due to language features (of Go), used by packages (their types, standalone functions, and methods/receivers), that the **gostd** tool does not yet convert, and so omits from the generated code that gets built into Joker. Further, some key "standalone" functions (such as those in the `builtin` package) are not yet available.
 
 Current conversion-rate stats on `amd64-darwin`:
 
 ```
-Totals: functions=4020 generated=3858 (95.97%)
-          non-receivers=1555 (38.68%) generated=1437 (92.41%)
-          receivers=2066 (51.39%) generated=2029 (98.21%)
-          methods=399 (9.93%) generated=392 (98.25%)
-        types=2834
-          constructable=790 ctors=652 (82.53%)
-        constants=4162 generated=4162 (100.00%)
+Totals: functions=4461 generated=4304 (96.48%)
+          non-receivers=1564 (35.06%) generated=1445 (92.39%)
+          receivers=2121 (47.55%) generated=2089 (98.49%)
+          methods=776 (17.40%) generated=770 (99.23%)
+        types=2843
+          constructable=797 ctors=672 (84.32%)
+        constants=4169 generated=4169 (100.00%)
         variables=439 generated=439 (100.00%)
 ```
 
 ## Recent Design Changes
 
-### 2021-09-01
+### 2021-10-12 (v0.14)
+
+Many methods, available to Go code via types embedded in interfaces and structs, are now also made available to Joker code. E.g. `(.Close c)` on a `net.TCPConn` connection `c` now works, even though `TCPConn` itself does not implement `Close`, because its struct embeds the (non-exported) `net.conn` type, which does implement `Close`. Note that `gostd` tries to avoid wrapping a method, available via an embed, that is explicitly implemented by the containing type. For example, `text/template/parse.DotNode` is a struct that embed `NodeType`, for which the `Type()` method is defined; but, since `DotNode` implements its own `Type()`, that method, not `NodeType`'s, is left as the wrapped type for e.g. `(.Type d)`, where `d` is type`DotNode`.
 
 A value receiver for a reference (wrapped by a `GoObject`) can now be called without having to explicitly dereference the object. Some support for calling a pointer receiver for a value is now provided, but doesn't work in the straightforward case of a `GoObject` wrapping that value, as the Go runtime (specifically, the `reflect` package) does not always see such a value as capable of being addressable (`reflect.CanAddr()` fails).
 
-### 2021-04-28
+Pointer types are named using `*`, instead of `refTo`, as `*` is a reasonably common character in Clojure symbols. However, as `[` and `]` are not valid (without escaping in some fashion), arrays/slices are still named using `arrayOf`, leading to some bodges such as `arrayOf*Foo`. It's unclear whether any elegant solution to this problem exists.
+
+Preliminary support for `func()` types (taking no arguments and returning no value) is provided. However, it's purely experimental, and no attempt is made to ensure single-threading behavior with respect to other running Joker code. As the only test case currently defined invokes the function on a separate thread from the main thread passing the function, it's either happenstance, or the very limited use case of the Joker code that implements the function, that allows that test case to pass.
+
+Substantial refactoring of `gostd` continues with this preliminary release, but much more is planned, some of which will likely be visible to Joker code calling the wrapped namespaces.
+
+### 2021-04-28 (v0.13)
 
 The `(set! ...)` special form is implemented, and supersedes use of `(var ...)` on field references. E.g. instead of `(var-set (var (.member instance)) value)`, use `(set! (.member instance) value)`, which is much more Clojure-like.
 
@@ -37,7 +45,7 @@ The `ref` function (in `joker.core`) has been removed, as it was not similar eno
 
 Values of type `error` are now wrapped in `GoObject`s instead of being converted into `String`s. This allows receivers for those values to be invoked, and is consistent with preserving the native type when not precisely implemented by a Joker type (in this case, `Error`, an abstract type). When an `error` type is needed, the supplied expression may be `String` or `GoObject[error]`.
 
-### 2021-04-19
+### 2021-04-19 (v0.12.1)
 
 The `GoType` object no longer exists and is thus no longer generated by `gostd`. All types become `Type` objects, just like the builtin Joker types, also supporting constructors and lists of methods and receivers.
 
