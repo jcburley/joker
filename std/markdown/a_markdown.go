@@ -6,7 +6,6 @@ import (
 	. "github.com/candid82/joker/core"
 )
 
-
 var __convert_string__P ProcFn = __convert_string_
 var convert_string_ Proc = Proc{Fn: __convert_string__P, Name: "convert_string_", Package: "std/markdown"}
 

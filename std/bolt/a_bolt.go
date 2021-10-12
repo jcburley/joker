@@ -6,7 +6,6 @@ import (
 	. "github.com/candid82/joker/core"
 )
 
-
 var __by_prefix__P ProcFn = __by_prefix_
 var by_prefix_ Proc = Proc{Fn: __by_prefix__P, Name: "by_prefix_", Package: "std/bolt"}
 

@@ -8,7 +8,6 @@ import (
 	"os"
 )
 
-
 var __args__P ProcFn = __args_
 var args_ Proc = Proc{Fn: __args__P, Name: "args_", Package: "std/os"}
 
@@ -33,7 +32,7 @@ func __chdir_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		dirname := ExtractString(_args, 0)
-		 err := os.Chdir(dirname)
+		err := os.Chdir(dirname)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -53,7 +52,7 @@ func __chmod_(_args []Object) Object {
 	case _c == 2:
 		name := ExtractString(_args, 0)
 		mode := ExtractInt(_args, 1)
-		 err := os.Chmod(name, os.FileMode(mode))
+		err := os.Chmod(name, os.FileMode(mode))
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -74,7 +73,7 @@ func __chown_(_args []Object) Object {
 		name := ExtractString(_args, 0)
 		uid := ExtractInt(_args, 1)
 		gid := ExtractInt(_args, 2)
-		 err := os.Chown(name, uid, gid)
+		err := os.Chown(name, uid, gid)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -95,7 +94,7 @@ func __chtimes_(_args []Object) Object {
 		name := ExtractString(_args, 0)
 		atime := ExtractTime(_args, 1)
 		mtime := ExtractTime(_args, 2)
-		 err := os.Chtimes(name, atime, mtime)
+		err := os.Chtimes(name, atime, mtime)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -113,7 +112,7 @@ func __clearenv_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 os.Clearenv()
+		os.Clearenv()
 		_res := NIL
 		return _res
 
@@ -131,7 +130,7 @@ func __close_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		f := ExtractFile(_args, 0)
-		 err := f.Close()
+		err := f.Close()
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -150,7 +149,7 @@ func __create_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		name := ExtractString(_args, 0)
-		 _res, err := os.Create(name)
+		_res, err := os.Create(name)
 		PanicOnErr(err)
 		return MakeFile(_res)
 
@@ -169,8 +168,8 @@ func __create_temp_(_args []Object) Object {
 	case _c == 2:
 		dir := ExtractString(_args, 0)
 		pattern := ExtractString(_args, 1)
-		 _res, err := ioutil.TempFile(dir, pattern)
-		PanicOnErr(err);
+		_res, err := ioutil.TempFile(dir, pattern)
+		PanicOnErr(err)
 		return MakeFile(_res)
 
 	default:
@@ -186,7 +185,7 @@ func __cwd_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.Getwd()
+		_res, err := os.Getwd()
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -269,7 +268,7 @@ func __executable_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.Executable()
+		_res, err := os.Executable()
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -376,7 +375,7 @@ func __groups_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.Getgroups()
+		_res, err := os.Getgroups()
 		PanicOnErr(err)
 		return MakeIntVector(_res)
 
@@ -393,7 +392,7 @@ func __hostname_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.Hostname()
+		_res, err := os.Hostname()
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -413,7 +412,7 @@ func __lchown_(_args []Object) Object {
 		name := ExtractString(_args, 0)
 		uid := ExtractInt(_args, 1)
 		gid := ExtractInt(_args, 2)
-		 err := os.Lchown(name, uid, gid)
+		err := os.Lchown(name, uid, gid)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -433,7 +432,7 @@ func __link_(_args []Object) Object {
 	case _c == 2:
 		oldname := ExtractString(_args, 0)
 		newname := ExtractString(_args, 1)
-		 err := os.Link(oldname, newname)
+		err := os.Link(oldname, newname)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -469,7 +468,7 @@ func __lstat_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		filename := ExtractString(_args, 0)
-		 _info, err := os.Lstat(filename)
+		_info, err := os.Lstat(filename)
 		PanicOnErr(err)
 		_res := FileInfoMap(_info.Name(), _info)
 		return _res
@@ -489,7 +488,7 @@ func __mkdir_(_args []Object) Object {
 	case _c == 2:
 		name := ExtractString(_args, 0)
 		perm := ExtractInt(_args, 1)
-		 err := os.Mkdir(name, os.FileMode(perm))
+		err := os.Mkdir(name, os.FileMode(perm))
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -509,7 +508,7 @@ func __mkdir_all_(_args []Object) Object {
 	case _c == 2:
 		name := ExtractString(_args, 0)
 		perm := ExtractInt(_args, 1)
-		 err := os.MkdirAll(name, os.FileMode(perm))
+		err := os.MkdirAll(name, os.FileMode(perm))
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -529,8 +528,8 @@ func __mkdir_temp_(_args []Object) Object {
 	case _c == 2:
 		dir := ExtractString(_args, 0)
 		pattern := ExtractString(_args, 1)
-		 _res, err := ioutil.TempDir(dir, pattern)
-		PanicOnErr(err);
+		_res, err := ioutil.TempDir(dir, pattern)
+		PanicOnErr(err)
 		return MakeString(_res)
 
 	default:
@@ -547,7 +546,7 @@ func __open_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		name := ExtractString(_args, 0)
-		 _res, err := os.Open(name)
+		_res, err := os.Open(name)
 		PanicOnErr(err)
 		return MakeFile(_res)
 
@@ -630,7 +629,7 @@ func __read_link_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		name := ExtractString(_args, 0)
-		 _res, err := os.Readlink(name)
+		_res, err := os.Readlink(name)
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -648,7 +647,7 @@ func __remove_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		name := ExtractString(_args, 0)
-		 err := os.Remove(name)
+		err := os.Remove(name)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -667,7 +666,7 @@ func __remove_all_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		path := ExtractString(_args, 0)
-		 err := os.RemoveAll(path)
+		err := os.RemoveAll(path)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -687,7 +686,7 @@ func __rename_(_args []Object) Object {
 	case _c == 2:
 		oldpath := ExtractString(_args, 0)
 		newpath := ExtractString(_args, 1)
-		 err := os.Rename(oldpath, newpath)
+		err := os.Rename(oldpath, newpath)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -707,7 +706,7 @@ func __set_env_(_args []Object) Object {
 	case _c == 2:
 		key := ExtractString(_args, 0)
 		value := ExtractString(_args, 1)
-		 err := os.Setenv(key, value)
+		err := os.Setenv(key, value)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -765,7 +764,7 @@ func __stat_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		filename := ExtractString(_args, 0)
-		 _info, err := os.Stat(filename)
+		_info, err := os.Stat(filename)
 		PanicOnErr(err)
 		_res := FileInfoMap(_info.Name(), _info)
 		return _res
@@ -785,7 +784,7 @@ func __symlink_(_args []Object) Object {
 	case _c == 2:
 		oldname := ExtractString(_args, 0)
 		newname := ExtractString(_args, 1)
-		 err := os.Symlink(oldname, newname)
+		err := os.Symlink(oldname, newname)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -821,7 +820,7 @@ func __truncate_(_args []Object) Object {
 	case _c == 2:
 		name := ExtractString(_args, 0)
 		size := ExtractInt(_args, 1)
-		 err := os.Truncate(name, int64(size))
+		err := os.Truncate(name, int64(size))
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -856,7 +855,7 @@ func __unset_env_(_args []Object) Object {
 	switch {
 	case _c == 1:
 		key := ExtractString(_args, 0)
-		 err := os.Unsetenv(key)
+		err := os.Unsetenv(key)
 		PanicOnErr(err)
 		_res := NIL
 		return _res
@@ -874,7 +873,7 @@ func __user_cache_dir_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.UserCacheDir()
+		_res, err := os.UserCacheDir()
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -891,7 +890,7 @@ func __user_config_dir_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.UserConfigDir()
+		_res, err := os.UserConfigDir()
 		PanicOnErr(err)
 		return MakeString(_res)
 
@@ -908,7 +907,7 @@ func __user_home_dir_(_args []Object) Object {
 	_c := len(_args)
 	switch {
 	case _c == 0:
-		 _res, err := os.UserHomeDir()
+		_res, err := os.UserHomeDir()
 		PanicOnErr(err)
 		return MakeString(_res)
 
