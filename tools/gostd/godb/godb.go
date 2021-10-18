@@ -42,7 +42,6 @@ func SetClojureSourceDir(pPath, rPath paths.NativePath) {
 }
 
 var Fset *token.FileSet
-var Dump bool
 var Verbose bool
 
 var NumMethods int
@@ -327,10 +326,6 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, ns, importMe string, p
 		importsMap := map[string]paths.UnixPath{}
 
 		for _, imp := range f.Imports {
-			if Dump {
-				fmt.Printf("Import for file %s:\n", goFilePathUnix)
-				Print(Fset, imp)
-			}
 			importPath, err := strconv.Unquote(imp.Path.Value)
 			if err != nil {
 				panic(fmt.Sprintf("error %s unquoting %s", err, imp.Path.Value))

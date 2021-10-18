@@ -98,7 +98,7 @@ func registerGtype(ti *typeInfo, who string) {
 	}
 	typesByGtype[ti.gti] = ti
 
-	if WalkDump || (false && strings.Contains(ti.gti.TypeName, "FileMode")) {
+	if false && strings.Contains(ti.gti.TypeName, "FileMode") {
 		fmt.Printf("types.go/%s: %s @%p.\n", who, ti.gti.FullName, ti)
 	}
 }
@@ -123,12 +123,6 @@ func prepareCode(ns string, ti TypeInfo) {
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
 	name := ts.Name.Name
-	goTypeName := pkg + "." + name
-
-	if WalkDump {
-		fmt.Printf("types.go/RegisterTypeDecl %s at %s:\n", goTypeName, godb.WhereAt(ts.Pos()))
-		Print(godb.Fset, ts)
-	}
 
 	gtiVec := gtypes.Define(ts, gf, parentDoc)
 

@@ -69,7 +69,6 @@ Options:
   --verbose, -v               # Print info on what's going on
   --summary                   # Print summary of #s of types, functions, etc.
   --empty                     # Generate empty packages (those with no Clojure code)
-  --dump                      # Use go's AST dump API on pertinent elements (functions, types, etc.)
   --no-timestamp              # Don't put the time (and version) info in generated/modified files
   --help, -h                  # Print this information
 `)
@@ -166,9 +165,6 @@ func main() {
 				fmt.Printf("%s version %s\n", os.Args[0], VERSION)
 			case "--no-timestamp":
 				noTimeAndVersion = true
-			case "--dump":
-				godb.Dump = true
-				WalkDump = true
 			case "--overwrite":
 				overwrite = true
 				replace = false

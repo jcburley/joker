@@ -22,8 +22,6 @@ import (
 	. "strings"
 )
 
-var WalkDump bool
-
 var NumFunctions int
 var NumStandalones int
 var NumReceivers int
@@ -334,10 +332,6 @@ func receiverType(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string 
 }
 
 func processFuncDecl(gf *godb.GoFile, pkgDirUnix string, _ *File, fd *FuncDecl, isExportable bool) {
-	if WalkDump {
-		fmt.Printf("Func in pkgDirUnix=%s filename=%s fd=%p exportable=%v fd.Doc=%p:\n", pkgDirUnix, godb.FileAt(fd.Pos()), fd, isExportable, fd.Doc)
-		Print(godb.Fset, fd)
-	}
 	fl := astutils.FlattenFieldList(fd.Recv)
 	APIName := receiverPrefix(gf, fl) + fd.Name.Name
 	fullName := pkgDirUnix + "." + APIName
@@ -615,10 +609,6 @@ func processVariableSpec(gf *godb.GoFile, pkgDirUnix string, name *Ident, docStr
 			localName, godb.WhereAt(c.Name.NamePos), godb.WhereAt(name.NamePos))
 	}
 
-	if WalkDump {
-		fmt.Printf("Variable %s at %s.\n", name, godb.WhereAt(name.Pos()))
-	}
-
 	// Note: :tag value is a string to avoid conflict with like-named member of namespace
 	variableDefInfo := map[string]string{
 		"DocString":   docString,
@@ -646,7 +636,7 @@ func what(constant bool) string {
 
 func processValueSpecs(gf *godb.GoFile, pkgDirUnix string, tss []Spec, parentDoc *CommentGroup, constant bool) {
 	var previousVal, previousValType Expr
-	for ix, spec := range tss {
+	for _, spec := range tss {
 		ts := spec.(*ValueSpec)
 		for jx, valName := range ts.Names {
 			valType := ts.Type
@@ -684,17 +674,6 @@ func processValueSpecs(gf *godb.GoFile, pkgDirUnix string, tss []Spec, parentDoc
 				NumVariables++
 			}
 
-			if WalkDump {
-				fmt.Printf("%s #%d of spec #%d %s at %s:\n", what(constant), jx, ix, valName, godb.WhereAt(valName.NamePos))
-				if valType != nil {
-					fmt.Printf("  valType:\n")
-					Print(godb.Fset, valType)
-				}
-				if val != nil {
-					fmt.Printf("  val:\n")
-					Print(godb.Fset, val)
-				}
-			}
 			doc := ts.Doc // Try block comments for this specific decl
 			if doc == nil {
 				doc = ts.Comment // Use line comments if no preceding block comments are available
