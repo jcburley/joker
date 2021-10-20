@@ -142,7 +142,8 @@ func main() {
 		return lines[i].k.Name < lines[j].k.Name
 	})
 	for _, k := range lines {
-		s := fmt.Sprintf("%s: %s => %s", Fset.Position(k.p), k.k, typeCheckerInfo.Defs[k.k])
+		d := typeCheckerInfo.Defs[k.k]
+		s := fmt.Sprintf("%s: %s => %T: %s", Fset.Position(k.p), k.k, d, d)
 		fmt.Fprintln(os.Stderr, s)
 	}
 }

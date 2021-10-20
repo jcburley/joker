@@ -10,12 +10,17 @@ const two int8 = 2
 
 const three = uint(one + 2)
 
+var i = 9
+var j = 10
+
 // Currently Go does not support use this to define a constant.
 func max(i, j int) int {
+	const zero = 0
+	one := zero + 1
 	if i > j {
-		return i
+		return i * one
 	}
-	return j
+	return j + zero
 }
 
 // This nor using max() above works (not a constant expression).
