@@ -268,6 +268,8 @@ type (
 		defprotocol        Symbol
 		extendProtocol     Symbol
 		extendType         Symbol
+		deftype            Symbol
+		proxy              Symbol
 		reify              Symbol
 		dot                Symbol
 	}
