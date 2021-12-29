@@ -32,14 +32,10 @@
     <h2 id="_index">Index</h2>
     <ul class="index">
       <li>
-<<<<<<< HEAD
-  <a class="var-kind Function" href="#read-string">read-string</a>
-=======
-  <a href="#json-seq">json-seq</a>
+  <a class="var-kind Function" href="#json-seq">json-seq</a>
 </li>
 <li>
-  <a href="#read-string">read-string</a>
->>>>>>> upstream/master
+  <a class="var-kind Function" href="#read-string">read-string</a>
 </li>
 <li>
   <a class="var-kind Function" href="#write-string">write-string</a>
@@ -73,11 +69,12 @@
   <span class="var-kind Function">Function</span>
   <span class="var-added">v1.0</span>
   <pre class="var-usage"><div><code>(json-seq rdr)</code></div>
+<div><code>(json-seq rdr opts)</code></div>
 </pre>
   <p class="var-docstr">Returns the json records from rdr as a lazy sequence.<br>
-  rdr must be a string or implement io.Reader.</p>
-  
-  
+  rdr must be a string or implement io.Reader.<br>
+  Optional opts map may have the following keys:<br>
+  :keywords? - if true, JSON keys will be converted from strings to keywords.</p>
 </li>
 <li>
   <h3 class="Function" id="read-string">read-string</h3>
