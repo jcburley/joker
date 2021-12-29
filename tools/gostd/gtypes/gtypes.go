@@ -735,4 +735,5 @@ func init() {
 	setBuiltinType("float32", "0%.s", false)
 	setBuiltinType("float64", "0%.s", false)
 	setBuiltinType("complex128", "0%.s", false)
+	setBuiltinType("any", "nil%.s", false)
 }

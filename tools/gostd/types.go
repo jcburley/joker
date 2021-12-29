@@ -122,6 +122,20 @@ func prepareCode(ns string, ti TypeInfo) {
 }
 
 func RegisterTypeDecl(ts *TypeSpec, gf *godb.GoFile, pkg string, parentDoc *CommentGroup) {
+	if iface, ok := ts.Type.(*InterfaceType); ok {
+		// TODO/GENTYPE: Support constraint types?
+		for _, m := range iface.Methods.List {
+			if m.Names != nil {
+				continue
+			}
+			switch m.Type.(type) {
+			case *Ident, *SelectorExpr: // These are okay.
+			default:
+				return
+			}
+		}
+	}
+
 	name := ts.Name.Name
 	goTypeName := pkg + "." + name
 
