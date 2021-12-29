@@ -787,19 +787,19 @@ var Complex128 = &Info{
 }
 
 var Any = &Info{
-	FullName:             "Any",
-	FullNameDoc:          "Any",
-	BaseName:             "Any",
-	BaseNameDoc:          "Any",
-	ArgClojureType:       "Any",
+	FullName:             "GoObject",
+	FullNameDoc:          "GoObject",
+	BaseName:             "GoObject",
+	BaseNameDoc:          "GoObject",
+	ArgClojureType:       "GoObject",
 	ArgFromClojureObject: "",
-	ArgExtractFunc:       "Any",
-	ArgClojureArgType:    "Any",
-	ConvertFromMap:       "FieldAs_any(%s, %s)",
-	AsClojureObject:      "Any(%s%s)",
-	ConvertFromClojure:   "ObjectAs_any(%s, %s)",
-	GoApiString:          "any",
-	LegacyGoApiString:    "any",
+	ArgExtractFunc:       "GoObject",
+	ArgClojureArgType:    "GoObject",
+	ConvertFromMap:       "FieldAs_GoObject(%s, %s)",
+	AsClojureObject:      "GoObject(%s%s)",
+	ConvertFromClojure:   "ObjectAs_GoObject(%s, %s)",
+	GoApiString:          "GoObject",
+	LegacyGoApiString:    "GoObject",
 }
 
 var ConversionsFn func(Expr) (string, string)
