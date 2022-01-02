@@ -98,8 +98,13 @@ func specificityOfInterface(ts *InterfaceType) uint {
 }
 
 func calculateSpecificity(ts *TypeSpec) uint {
-	if iface, ok := ts.Type.(*InterfaceType); ok {
-		return specificityOfInterface(iface)
+	switch it := ts.Type.(type) {
+	case *InterfaceType:
+		return specificityOfInterface(it)
+	case *Ident:
+		if it.Name == "any" && astutils.IsBuiltin(it.Name) {
+			return 0
+		}
 	}
 	return Concrete
 }
