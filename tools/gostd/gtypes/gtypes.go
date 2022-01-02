@@ -740,7 +740,10 @@ func init() {
 	setBuiltinType("float32", "0%.s", false)
 	setBuiltinType("float64", "0%.s", false)
 	setBuiltinType("complex128", "0%.s", false)
+
 	a := setBuiltinType("any", "nil%.s", false)
 	a.IsArbitraryType = true
 	a.IsNullable = true
+	a.IsExported = true
+	a.IsBuiltin = true
 }
