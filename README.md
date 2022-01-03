@@ -368,18 +368,18 @@ NOTE: Only Joker versions >= 0.16 are now supported by this branch.
 To make this "magic" happen:
 
 1. Ensure you can build the "canonical" version of Joker
-2. `go get -u -d github.com/candid82/joker` (This will download and update dependent packages as well, but not build Joker itself.)
-3. `cd $GOPATH/src/github.com/candid82/joker`
-4. `git remote add gostd git@github.com:jcburley/joker.git`
-5. `git fetch gostd`
-6. `git checkout gostd`
-7. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
+1. `go get -u -d github.com/candid82/joker` (This will download and update dependent packages as well, but not build Joker itself.)
+1. `cd $GOPATH/src/github.com/candid82/joker`
+1. `git remote add gostd git@github.com:jcburley/joker.git`
+1. `git fetch gostd`
+1. `git checkout gostd`
+1. `./run.sh`, specifying optional args such as `--version`, `-e '(println "i am here")'`, or even:
 
 ```
 -e "(require '[go.std.net :as n]) (print \"\\nNetwork interfaces:\\n  \") (n/Interfaces) (println)"
 ```
 8. `./joker` invokes the just-built Joker executable.
-9. `go install` installs Joker (and deletes the local copy).
+1. `go install` installs Joker (and deletes the local copy).
 
 ### Sample Usage
 

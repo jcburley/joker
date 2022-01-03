@@ -98,8 +98,13 @@ func specificityOfInterface(ts *InterfaceType) uint {
 }
 
 func calculateSpecificity(ts *TypeSpec) uint {
-	if iface, ok := ts.Type.(*InterfaceType); ok {
-		return specificityOfInterface(iface)
+	switch it := ts.Type.(type) {
+	case *InterfaceType:
+		return specificityOfInterface(it)
+	case *Ident:
+		if it.Name == "any" && astutils.IsBuiltin(it.Name) {
+			return 0
+		}
 	}
 	return Concrete
 }
@@ -735,4 +740,10 @@ func init() {
 	setBuiltinType("float32", "0%.s", false)
 	setBuiltinType("float64", "0%.s", false)
 	setBuiltinType("complex128", "0%.s", false)
+
+	a := setBuiltinType("any", "nil%.s", false)
+	a.IsArbitraryType = true
+	a.IsNullable = true
+	a.IsExported = true
+	a.IsBuiltin = true
 }
