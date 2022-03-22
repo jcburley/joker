@@ -65,6 +65,7 @@ var typesByGoTypeName = map[string]*Info{
 	"float32":    Float32,
 	"float64":    Float64,
 	"complex128": Complex128,
+	"any":        Any,
 }
 var typesByGoType = map[types.Type]*Info{}
 
@@ -783,6 +784,22 @@ var Complex128 = &Info{
 	ConvertFromClojure:   "ObjectAs_complex128(%s, %s)",
 	GoApiString:          "complex128",
 	LegacyGoApiString:    "complex128",
+}
+
+var Any = &Info{
+	FullName:             "GoObject",
+	FullNameDoc:          "GoObject",
+	BaseName:             "GoObject",
+	BaseNameDoc:          "GoObject",
+	ArgClojureType:       "GoObject",
+	ArgFromClojureObject: "",
+	ArgExtractFunc:       "GoObject",
+	ArgClojureArgType:    "GoObject",
+	ConvertFromMap:       "FieldAs_GoObject(%s, %s)",
+	AsClojureObject:      "GoObject(%s%s)",
+	ConvertFromClojure:   "ObjectAs_GoObject(%s, %s)",
+	GoApiString:          "GoObject",
+	LegacyGoApiString:    "GoObject",
 }
 
 var ConversionsFn func(Expr) (string, string)

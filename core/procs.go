@@ -39,7 +39,7 @@ const (
 	PRINT_IF_NOT_NIL
 )
 
-const VERSION = "v0.17.3-gostd"
+const VERSION = "v0.18.0-gostd"
 
 const (
 	CLJ Dialect = iota
@@ -219,6 +219,14 @@ func Extractuint64(args []Object, index int) uint64 {
 
 func Extractuintptr(args []Object, index int) uintptr {
 	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
+}
+
+func Extractuintptrs(args []Object, index int) []uintptr {
+	vec := make([]uintptr, 0)
+	for i := index; i < len(args); i++ {
+		vec = append(vec, uintptr(ExtractNumber(args, i).BigInt().Uint64()))
+	}
+	return vec
 }
 
 func ExtractBoolean(args []Object, index int) bool {

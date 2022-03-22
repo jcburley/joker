@@ -17,7 +17,7 @@ git show gostd:../../core/go_templates/g_customlibs.joketemplate > "$OUTDIR/core
 
 RC=0
 
-{ ./gostd --no-timestamp --verbose --joker ../.. --replace --output "$OUTDIR" 2>&1 | grep -v '^Default context:'; dircat "$OUTDIR"; } > "$GOENV/gosrc.gold"
+{ ./gostd --no-timestamp --verbose --joker ../.. --replace --output "$OUTDIR" 2>&1 | grep -v '^Default context:'; dircat "$OUTDIR"; } | sed 's:/usr/local/go1.18beta1:/usr/local/go:g' > "$GOENV/gosrc.gold"
 git diff --quiet -u "$GOENV/gosrc.gold" || { echo >&2 "FAILED: gosrc test"; RC=1; $EXIT; }
 
 exit $RC
