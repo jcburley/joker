@@ -221,6 +221,14 @@ func Extractuintptr(args []Object, index int) uintptr {
 	return uintptr(ExtractNumber(args, index).BigInt().Uint64())
 }
 
+func Extractuintptrs(args []Object, index int) []uintptr {
+	vec := make([]uintptr, 0)
+	for i := index; i < len(args); i++ {
+		vec = append(vec, uintptr(ExtractNumber(args, i).BigInt().Uint64()))
+	}
+	return vec
+}
+
 func ExtractBoolean(args []Object, index int) bool {
 	return EnsureArgIsBoolean(args, index).B
 }
