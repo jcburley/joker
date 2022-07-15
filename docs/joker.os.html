@@ -324,8 +324,11 @@
   <pre class="var-usage"><div><code>(exec name opts)</code></div>
 </pre>
   <p class="var-docstr">Executes the named program with the given arguments. opts is a map with the following keys (all optional):<br>
-  :args - vector of arguments (all arguments must be strings),<br>
-  :dir - if specified, working directory will be set to this value before executing the program,<br>
+  :args - vector of arguments (all arguments must be strings).<br>
+  :dir - if specified, working directory will be set to this value before executing the program.<br>
+  :env - if specified and true, the environment will be set to the current environment before executing the program. Otherwise,<br>
+    the environment will be determined by the Go runtime which, if :dir is specified, might or might not map $PWD to the expected<br>
+    value -- it might be the current $PWD but, as of Go 1.19, is expected to be set to the value of :dir.<br>
   :stdin - if specified, provides stdin for the program. Can be either a string or an IOReader.<br>
   If it&#39;s a string, the string&#39;s content will serve as stdin for the program. IOReader can be, for example,<br>
   *in* (in which case Joker&#39;s stdin will be redirected to the program&#39;s stdin) or the value returned by (joker.os/open).<br>
@@ -333,10 +336,10 @@
   to Joker&#39;s stdout) or the value returned by (joker.os/create).<br>
   :stderr - the same as :stdout, but for stderr.<br>
   Returns a map with the following keys:<br>
-  :success - whether or not the execution was successful,<br>
+  :success - whether or not the execution was successful.<br>
   :err-msg (present iff :success if false) - string capturing error object returned by Go runtime<br>
-  :exit - exit code of program (or attempt to execute it),<br>
-  :out - string capturing stdout of the program (unless :stdout option was passed)<br>
+  :exit - exit code of program (or attempt to execute it).<br>
+  :out - string capturing stdout of the program (unless :stdout option was passed).<br>
   :err - string capturing stderr of the program (unless :stderr option was passed).</p>
 </li>
 <li>
