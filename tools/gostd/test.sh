@@ -6,7 +6,14 @@ dircat() {
 
 [ ! -x gostd ] && echo >&2 "No executable to test." && exit 99
 
-export GOENV="_tests/gold/$(go env GOARCH)-$(go env GOOS)"
+# GO_MINOR_VER=
+if ! [[ "$(go env GOVERSION)" =~ go([0-9]+\.[0-9]+) ]]; then
+    echo >&2 "Bad version: $(go env GOVERSION)"
+    exit 99
+fi
+GO_MINOR_VERSION="${BASH_REMATCH[1]}"
+
+export GOENV="_tests/gold/go${GO_MINOR_VERSION}/$(go env GOARCH)-$(go env GOOS)"
 OUTDIR="$GOENV/joker"
 
 rm -fr "$OUTDIR" core-apis.dat
@@ -17,7 +24,7 @@ git show gostd:../../core/go_templates/g_customlibs.joketemplate > "$OUTDIR/core
 
 RC=0
 
-{ ./gostd --no-timestamp --verbose --joker ../.. --replace --output "$OUTDIR" 2>&1 | grep -v '^Default context:'; dircat "$OUTDIR"; } | sed 's:/usr/local/go1.18beta1:/usr/local/go:g' > "$GOENV/gosrc.gold"
+{ ./gostd --no-timestamp --verbose --joker ../.. --replace --output "$OUTDIR" 2>&1 | grep -v '^Default context:'; dircat "$OUTDIR"; } > "$GOENV/gosrc.gold"
 git diff --quiet -u "$GOENV/gosrc.gold" || { echo >&2 "FAILED: gosrc test"; RC=1; $EXIT; }
 
 exit $RC
