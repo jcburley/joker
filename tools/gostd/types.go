@@ -328,7 +328,8 @@ func TypeInfoForType(ty types.Type) TypeInfo {
 
 	gti := gtypes.InfoForType(ty)
 	if gti == nil {
-		panic(fmt.Sprintf("cannot find `%s' in gtypes", ty.String()))
+		// panic(fmt.Sprintf("cannot find `%s' in gtypes", ty.String()))
+		return nil
 	}
 
 	ti, found := haveGtype(gti)

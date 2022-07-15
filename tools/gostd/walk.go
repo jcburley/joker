@@ -207,12 +207,12 @@ func refToIdent(ident string, pos token.Pos, autoGen bool) string {
 	panic(fmt.Sprintf("cannot find package %q for reference at %s", goPkgForPos, godb.WhereAt(pos)))
 }
 
-/* Go apparently doesn't support/allow 'interface{}' as the value (or
-/* key) of a map such that any arbitrary type can be substituted at
-/* run time, so there are several of these nearly-identical functions
-/* sprinkled through this code. Still get some reuse out of some of
-/* them, and it's still easier to maintain these copies than if the
-/* body of these were to be included at each call point.... */
+// Go apparently doesn't support/allow 'interface{}' as the value (or
+// key) of a map such that any arbitrary type can be substituted at
+// run time, so there are several of these nearly-identical functions
+// sprinkled through this code. Still get some reuse out of some of
+// them, and it's still easier to maintain these copies than if the
+// body of these were to be included at each call point....
 func SortedFuncInfoMap(m map[string]*FuncInfo, f func(string, *FuncInfo)) {
 	var keys []string
 	for k, _ := range m {
@@ -288,24 +288,51 @@ func processValueSpecsForTypes(_ *godb.GoFile, _ string, tss []Spec, _ *CommentG
 var QualifiedFunctions = map[string]*FuncInfo{}
 var ReceivingTypes = map[string][]*FuncDecl{}
 
+func receiverPrefixExpr(e Expr) string {
+	switch x := e.(type) {
+	case *Ident:
+		return x.Name
+	case *IndexExpr:
+		return fmt.Sprintf("ABEND121(generics not yet supported: " + receiverPrefixExpr(x.X) + ")")
+	default:
+		panic(fmt.Sprintf("receiverPrefixExpr: unrecognized expr %T", x))
+	}
+}
+
+func receiverPrefixFunc(r astutils.FieldItem) (res string) {
+	switch x := r.Field.Type.(type) {
+	case *Ident:
+		res = x.Name
+	case *ArrayType:
+		res = "ArrayOf_" + receiverPrefixExpr(x.Elt)
+	case *StarExpr:
+		res = "PtrTo_" + receiverPrefixExpr(x.X)
+	default:
+		panic(fmt.Sprintf("receiverPrefixFunc: unrecognized expr %T", x))
+	}
+	return
+}
+
 func receiverPrefix(src *godb.GoFile, rl []astutils.FieldItem) string {
 	res := ""
 	for i, r := range rl {
 		if i != 0 {
 			res += "_"
 		}
-		switch x := r.Field.Type.(type) {
-		case *Ident:
-			res += x.Name
-		case *ArrayType:
-			res += "ArrayOf_" + x.Elt.(*Ident).Name
-		case *StarExpr:
-			res += "PtrTo_" + x.X.(*Ident).Name
-		default:
-			panic(fmt.Sprintf("receiverList: unrecognized expr %T in %s", x, src.Name))
-		}
+		res += receiverPrefixFunc(r)
 	}
 	return res + "_"
+}
+
+func receiverTypeExpr(e Expr) string {
+	switch x := e.(type) {
+	case *Ident:
+		return x.Name
+	case *IndexExpr:
+		return fmt.Sprintf("ABEND122(generics not yet supported: " + receiverTypeExpr(x.X) + ")")
+	default:
+		panic(fmt.Sprintf("receiverTypeExpr: unrecognized expr %T", x))
+	}
 }
 
 func receiverType(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string {
@@ -323,9 +350,9 @@ func receiverType(src *godb.GoFile, pkg string, rl []astutils.FieldItem) string 
 		case *Ident:
 			res += pkg + x.Name
 		case *ArrayType:
-			res += "[]" + pkg + x.Elt.(*Ident).Name
+			res += "[]" + pkg + receiverTypeExpr(x.Elt)
 		case *StarExpr:
-			res += "*" + pkg + x.X.(*Ident).Name
+			res += "*" + pkg + receiverTypeExpr(x.X)
 		default:
 			panic(fmt.Sprintf("receiverType: unrecognized expr %T in %s", x, src.Name))
 		}
@@ -568,7 +595,7 @@ func isBasicLiteral(e Expr) *BasicLit {
 func processConstantSpec(gf *godb.GoFile, pkgDirUnix string, name *Ident, val Expr, docString string) bool {
 	defer func() {
 		if x := recover(); x != nil {
-			fmt.Fprintf(os.Stderr, "(Panic due to: %s: %+v)\n", godb.WhereAt(name.Pos()), x)
+			panic(fmt.Sprintf("(Panic at %s processing %+v: %+v)\n", godb.WhereAt(name.Pos()), name, x))
 		}
 	}()
 
@@ -718,6 +745,12 @@ func declFunc(gf *godb.GoFile, pkgDirUnix string, f *File, v *FuncDecl) {
 	}
 
 	isExportable := true
+
+	defer func() {
+		if x := recover(); x != nil {
+			panic(fmt.Sprintf("Panic at %s processing %+v: %+v)\n", godb.WhereAt(v.Name.Pos()), v.Name, x))
+		}
+	}()
 
 	if v.Recv != nil {
 		// Count the func as eligible if the types of all its

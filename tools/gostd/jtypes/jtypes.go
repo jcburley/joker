@@ -169,6 +169,11 @@ func namingForExpr(e Expr) (pattern, ns, baseName, baseNameDoc, name, nameDoc, g
 		goApiString = baseName
 		legacyGoApiString = baseName
 		panic(baseName)
+	case *IndexExpr:
+		baseName = fmt.Sprintf("ABEND518(jtypes.go: %s not supported)", astutils.ExprToString(v))
+		baseNameDoc = baseName
+		goApiString = baseName
+		legacyGoApiString = baseName
 	default:
 		panic(fmt.Sprintf("unrecognized underlying expr %T for %T", ue, e))
 	}

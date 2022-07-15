@@ -462,7 +462,8 @@ func InfoForExpr(e Expr) *Info {
 		// Define the type here and now, return the resulting Info.
 		di := godb.LookupDeclInfo(fullName)
 		if di == nil {
-			panic(fmt.Sprintf("gtypes.go/Define: unregistered type %q\n", fullName))
+			// panic(fmt.Sprintf("gtypes.go/Define: unregistered type %q\n", fullName))
+			return nil // TODO: Handle type parameters someday
 		}
 		tsNode := di.Node()
 		if tsNode == nil {

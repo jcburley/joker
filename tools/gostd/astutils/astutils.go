@@ -48,8 +48,10 @@ func IsExportedType(f *Expr) bool {
 		return IsExportedType(&td.Elt)
 	case *StarExpr:
 		return IsExportedType(&td.X)
+	case *IndexExpr:
+		return true // TODO: are these all type parameters and, if so, do their names matter here?
 	default:
-		panic(fmt.Sprintf("unsupported expr type %T", f))
+		panic(fmt.Sprintf("unsupported expr type %T", *f))
 	}
 }
 
