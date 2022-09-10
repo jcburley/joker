@@ -56,4 +56,6 @@ if [ "$1" == "-v" ]; then
   ./joker -e '(print "\nLibraries available in this build:\n  ") (loaded-libs) (println)'
 fi
 
-./joker "$@"
+if [ "$1" != "--build-only" ]; then
+  ./joker "$@"
+fi

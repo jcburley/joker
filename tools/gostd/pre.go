@@ -151,6 +151,9 @@ func genTypePreReceiver(fn *FuncInfo, v *types.Var, paramName string, argNum int
 		ty = ty.(*types.Slice).Elem() // "...the last parameter [of a variadic signature] must be of unnamed slice type".
 	}
 	ti := TypeInfoForType(ty)
+	if ti == nil {
+		return "", fmt.Sprintf("ABEND749(unsupported type for %q)", paramName)
+	}
 	resExpr = paramName
 
 	clType := ti.GoApiString(isVariadic)

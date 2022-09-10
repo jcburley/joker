@@ -14,6 +14,9 @@ func maybeNil(expr, captureName string) string {
 func genGoPostExpr(captureName string, v *types.Var) (cl, clDoc, gol, out, conversion string) {
 	ty := v.Type()
 	ti := TypeInfoForType(ty)
+	if ti == nil {
+		return "", "", "", fmt.Sprintf("ABEND750(unsupported type for %q)", captureName), ""
+	}
 	if ti.AsClojureObject() == "" {
 		out = fmt.Sprintf("MakeGoObjectIfNeeded(%s)", captureName)
 	} else {
