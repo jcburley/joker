@@ -2,11 +2,11 @@
 
 [![CircleCI](https://circleci.com/gh/candid82/joker.svg?style=svg)](https://circleci.com/gh/candid82/joker)
 
-# Joker
-
-Joker is a small Clojure interpreter, linter, and formatter written in Go.
+# Gostd
 
 [This **gostd** experimental fork](https://github.com/jcburley/joker/) extends official Joker by reading Golang source code (the Go standard library) and "wrapping" some of their functions, types, constants, and variables so that code written in Joker can access them. See [below](#gostd) for information on the [`go.std.*` namespaces](https://burleyarch.com/joker/docs/) thereby provided.
+
+Joker is a small Clojure interpreter, linter, and formatter written in Go.
 
 ## Installation
 
@@ -402,7 +402,7 @@ $
 
 ### Further Reading
 
-See [GOSTD Usage](GOSTD.md) for more information.
+See [GOSTD Usage](usage.md) for more information.
 
 ## Developer Notes
 
