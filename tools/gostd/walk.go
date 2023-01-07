@@ -439,7 +439,9 @@ func processTypeDecls(gf *godb.GoFile, pkg string, tss []Spec, parentDoc *Commen
 
 	for _, spec := range tss {
 		ts = spec.(*TypeSpec)
-		RegisterTypeDecl(ts, gf, pkg, parentDoc)
+		if ts.TypeParams == nil {
+			RegisterTypeDecl(ts, gf, pkg, parentDoc)
+		}
 	}
 }
 
