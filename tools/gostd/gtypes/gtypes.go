@@ -229,8 +229,12 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Inf
 	}
 
 	underlyingInfo := InfoForExpr(ts.Type)
-	isAddressable := isTypeAddressable(fullName) && underlyingInfo.IsAddressable
-	isCtorable := underlyingInfo.IsBuiltin && underlyingInfo.UnderlyingType == nil
+	isAddressable := isTypeAddressable(fullName) && underlyingInfo != nil && underlyingInfo.IsAddressable
+	isCtorable := underlyingInfo != nil && underlyingInfo.IsBuiltin && underlyingInfo.UnderlyingType == nil
+	nilPattern := "0"
+	if underlyingInfo != nil {
+		nilPattern = underlyingInfo.NilPattern
+	}
 
 	if ti == nil {
 		ti = &Info{
@@ -253,8 +257,8 @@ func Define(ts *TypeSpec, gf *godb.GoFile, parentDoc *CommentGroup) (typs []*Inf
 			IsSwitchable:      ts.Assign == token.NoPos, // Aliases exactly match their targets, so both can't be in the big switch statement
 			IsArbitraryType:   isArbitraryType,
 			IsAddressable:     isAddressable,
-			NilPattern:        underlyingInfo.NilPattern,
-			IsPassedByAddress: underlyingInfo.IsPassedByAddress,
+			NilPattern:        nilPattern,
+			IsPassedByAddress: underlyingInfo != nil && underlyingInfo.IsPassedByAddress,
 			IsCtorable:        isCtorable,
 		}
 		insert(ti)

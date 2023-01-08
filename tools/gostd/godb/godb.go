@@ -8,7 +8,6 @@ import (
 	. "go/ast"
 	"go/token"
 	"go/types"
-	"os"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -336,7 +335,8 @@ func RegisterPackage(rootUnix, pkgDirUnix paths.UnixPath, ns, importMe string, p
 				case "_":
 					continue // Ignore these
 				case ".":
-					fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", WhereAt(n.NamePos))
+					// TODO: Support 'import . "..."'
+					// fmt.Fprintf(os.Stderr, "ERROR: `.' not supported in import directive at %v\n", WhereAt(n.NamePos))
 					continue
 				default:
 					as = n.Name
@@ -417,6 +417,7 @@ func Resolve(n Node) Node {
 }
 
 func init() {
+	// builtins
 	eid := &Ident{Name: "error"}
 	enames := &Ident{Name: "Error"}
 	emethodft := &FuncType{Params: &FieldList{List: []*Field{}}, Results: &FieldList{List: []*Field{}}}
@@ -430,4 +431,9 @@ func init() {
 
 	pkgDb := &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
 	packagesByUnixPath[""] = pkgDb
+
+	// import "C"
+	decls = map[string]*DeclInfo{}
+	pkgDb = &PackageDb{nil, paths.NewUnixPath(""), paths.NewUnixPath(""), "", "", "", decls}
+	packagesByUnixPath["C"] = pkgDb
 }
