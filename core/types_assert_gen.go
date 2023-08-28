@@ -30,24 +30,24 @@ func EnsureArgIsComparable(args []Object, index int) Comparable {
 	panic(FailArg(obj, sb, index))
 }
 
-func MaybeIsVector(obj Object) (*Vector, string) {
-	if res, yes := obj.(*Vector); yes {
+func MaybeIsVec(obj Object) (Vec, string) {
+	if res, yes := obj.(Vec); yes {
 		return res, ""
 	}
-	return nil, "Vector"
+	return nil, "Vec"
 }
 
-func EnsureObjectIsVector(obj Object, pattern string) *Vector {
-	res, sb := MaybeIsVector(obj)
+func EnsureObjectIsVec(obj Object, pattern string) Vec {
+	res, sb := MaybeIsVec(obj)
 	if sb == "" {
 		return res
 	}
 	panic(FailObject(obj, sb, pattern))
 }
 
-func EnsureArgIsVector(args []Object, index int) *Vector {
+func EnsureArgIsVec(args []Object, index int) Vec {
 	obj := args[index]
-	res, sb := MaybeIsVector(obj)
+	res, sb := MaybeIsVec(obj)
 	if sb == "" {
 		return res
 	}
@@ -678,6 +678,54 @@ func EnsureArgIsVar(args []Object, index int) *Var {
 	panic(FailArg(obj, sb, index))
 }
 
+func MaybeIsError(obj Object) (Error, string) {
+	if res, yes := obj.(Error); yes {
+		return res, ""
+	}
+	return nil, "Error"
+}
+
+func EnsureObjectIsError(obj Object, pattern string) Error {
+	res, sb := MaybeIsError(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
+}
+
+func EnsureArgIsError(args []Object, index int) Error {
+	obj := args[index]
+	res, sb := MaybeIsError(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsFn(obj Object) (*Fn, string) {
+	if res, yes := obj.(*Fn); yes {
+		return res, ""
+	}
+	return nil, "Fn"
+}
+
+func EnsureObjectIsFn(obj Object, pattern string) *Fn {
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
+}
+
+func EnsureArgIsFn(args []Object, index int) *Fn {
+	obj := args[index]
+	res, sb := MaybeIsFn(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
 func MaybeIsDeref(obj Object) (Deref, string) {
 	if res, yes := obj.(Deref); yes {
 		return res, ""
@@ -768,6 +816,30 @@ func EnsureObjectIsKVReduce(obj Object, pattern string) KVReduce {
 func EnsureArgIsKVReduce(args []Object, index int) KVReduce {
 	obj := args[index]
 	res, sb := MaybeIsKVReduce(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsReduce(obj Object) (Reduce, string) {
+	if res, yes := obj.(Reduce); yes {
+		return res, ""
+	}
+	return nil, "Reduce"
+}
+
+func EnsureObjectIsReduce(obj Object, pattern string) Reduce {
+	res, sb := MaybeIsReduce(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
+}
+
+func EnsureArgIsReduce(args []Object, index int) Reduce {
+	obj := args[index]
+	res, sb := MaybeIsReduce(obj)
 	if sb == "" {
 		return res
 	}
@@ -936,6 +1008,30 @@ func EnsureObjectIsChannel(obj Object, pattern string) *Channel {
 func EnsureArgIsChannel(args []Object, index int) *Channel {
 	obj := args[index]
 	res, sb := MaybeIsChannel(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailArg(obj, sb, index))
+}
+
+func MaybeIsCountedIndexed(obj Object) (CountedIndexed, string) {
+	if res, yes := obj.(CountedIndexed); yes {
+		return res, ""
+	}
+	return nil, "CountedIndexed"
+}
+
+func EnsureObjectIsCountedIndexed(obj Object, pattern string) CountedIndexed {
+	res, sb := MaybeIsCountedIndexed(obj)
+	if sb == "" {
+		return res
+	}
+	panic(FailObject(obj, sb, pattern))
+}
+
+func EnsureArgIsCountedIndexed(args []Object, index int) CountedIndexed {
+	obj := args[index]
+	res, sb := MaybeIsCountedIndexed(obj)
 	if sb == "" {
 		return res
 	}

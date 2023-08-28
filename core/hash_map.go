@@ -1,6 +1,8 @@
 package core
 
-import "io"
+import (
+	"io"
+)
 
 type (
 	Box struct {
@@ -770,11 +772,11 @@ func (m *HashMap) Assoc(key, val Object) Associative {
 	return res
 }
 
-func (m *HashMap) EntryAt(key Object) *Vector {
+func (m *HashMap) EntryAt(key Object) *ArrayVector {
 	if m.root != nil {
 		p := m.root.find(0, key.Hash(), key)
 		if p != nil {
-			return NewVectorFrom(p.Key, p.Value)
+			return NewArrayVectorFrom(p.Key, p.Value)
 		}
 	}
 	return nil
@@ -804,7 +806,7 @@ func (m *HashMap) Keys() Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
 		fn: func(obj Object) Object {
-			return obj.(*Vector).Nth(0)
+			return obj.(Vec).Nth(0)
 		},
 	}
 }
@@ -813,7 +815,7 @@ func (m *HashMap) Vals() Seq {
 	return &MappingSeq{
 		seq: m.Seq(),
 		fn: func(obj Object) Object {
-			return obj.(*Vector).Nth(1)
+			return obj.(Vec).Nth(1)
 		},
 	}
 }
@@ -867,4 +869,14 @@ func (m *HashMap) Empty() Collection {
 
 func (m *HashMap) Pprint(w io.Writer, indent int) int {
 	return pprintMap(m, w, indent)
+}
+
+func (m *HashMap) kvreduce(c Callable, init Object) Object {
+	res := init
+	iter := m.Iter()
+	for iter.HasNext() {
+		kv := iter.Next()
+		res = c.Call([]Object{res, kv.Key, kv.Value})
+	}
+	return res
 }

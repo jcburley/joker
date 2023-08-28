@@ -544,30 +544,6 @@ func FieldAs_GoObject(o Map, k string) interface{} {
 	return res.O
 }
 
-func MaybeIsFn(o Object) (*Fn, string) {
-	if res, yes := o.(*Fn); yes {
-		return res, ""
-	}
-	return nil, "Fn"
-}
-
-func EnsureObjectIsFn(obj Object, pattern string) *Fn {
-	res, sb := MaybeIsFn(obj)
-	if sb == "" {
-		return res
-	}
-	panic(FailObject(obj, sb, pattern))
-}
-
-func EnsureArgIsFn(args []Object, index int) *Fn {
-	obj := args[index]
-	res, sb := MaybeIsFn(obj)
-	if sb == "" {
-		return res
-	}
-	panic(FailArg(obj, sb, index))
-}
-
 func ReceiverArgAs_func(name, rcvr string, args *ArraySeq, n int) func() {
 	a := SeqNth(args, n)
 	res, sb := MaybeIs_func(a)
