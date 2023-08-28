@@ -91,11 +91,11 @@ func ExtractString(args []Object, index int) string {
 	switch obj := arg.(type) {
 	case String:
 		return obj.S
-	case *Vector:
+	case Vec:
 		s = obj.Seq()
 	case Seq:
 	default:
-		panic(FailArg(obj, "String", index))
+		panic(FailArg(obj, "String, Vec, or Seq", index))
 	}
 	res := ""
 	for ; !s.IsEmpty(); s = s.Rest() {

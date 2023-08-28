@@ -855,7 +855,7 @@ func ConvertTo_arrayOfuint8(o Object) []uint8 {
 	switch obj := o.(type) {
 	case String:
 		return []uint8(obj.S)
-	case *Vector:
+	case Vec:
 		vec := make([]uint8, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
@@ -910,7 +910,7 @@ func ReceiverArgAs_arrayOfint(name, rcvr string, args *ArraySeq, n int) []int {
 
 func ConvertTo_arrayOfint(o Object) []int {
 	switch obj := o.(type) {
-	case *Vector:
+	case Vec:
 		vec := make([]int, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
@@ -993,7 +993,7 @@ func MaybeIs_arrayOfstring(o Object) ([]string, string) {
 		case []string:
 			return g, ""
 		}
-	case *Vector:
+	case Vec:
 		vec := make([]string, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
@@ -1054,7 +1054,7 @@ func ReceiverArgAs_arrayOfarrayOfstring(name, rcvr string, args *ArraySeq, n int
 
 func ConvertTo_arrayOfstring(o Object) []string {
 	switch obj := o.(type) {
-	case *Vector:
+	case Vec:
 		vec := make([]string, obj.Count())
 		for i := 0; i < obj.Count(); i++ {
 			el := obj.Nth(i)
