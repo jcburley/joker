@@ -1,6 +1,9 @@
 module github.com/candid82/joker
 
-go 1.23
+go 1.23.0
+
+toolchain go1.24.2
+
 require (
 	github.com/candid82/liner v1.4.0
 	github.com/go-git/go-git/v5 v5.13.0
