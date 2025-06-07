@@ -188,4 +188,9 @@ func init() {
 	intern("go-spew__", procGoSpew, "procGoSpew")
 	intern("verbosity-level__", procVerbosityLevel, "procVerbosityLevel")
 	intern("exit__", procExit, "procExit")
+	intern("nan?__", procIsNaN, "procIsNaN")
+	intern("abs__", procAbs, "procAbs")
+	intern("infinite?__", procIsInfinite, "procIsInfinite")
+	intern("parseDouble__", procParseDouble, "procParseDouble")
+	intern("parseLong__", procParseLong, "procParseLong")
 }

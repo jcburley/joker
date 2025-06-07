@@ -299,14 +299,18 @@
   ([opts stream]))
 (defn PrintWriter-on [flush-fn close-fn])
 
-(defn NaN? ^Boolean [^Number num])
-(defn infinite? ^Boolean [^Number num])
-
-(defn parse-double ^Double [^String s])
-(defn parse-long ^Number [^String s])
-(defn parse-boolean ^Boolean [^String s])
-
 (defn iteration ^Seqable [^Callable step & opts])
+
+(defn stream-into!
+  ([to stream])
+  ([to xform stream]))
+(defn stream-reduce!
+  ([f s])
+  ([f init s]))
+(defn stream-seq! ^Seq [stream])
+(defn stream-transduce!
+  ([xform f stream])
+  ([xform f init stream]))
 
 ;; Clojure core macros not supported by Joker
 
