@@ -1,14 +1,14 @@
 module github.com/candid82/joker
 
-go 1.24.4
+go 1.25.4
 
 require (
 	github.com/candid82/liner v1.4.0
-	github.com/go-git/go-git/v5 v5.16.1
+	github.com/go-git/go-git/v5 v5.16.4
 	github.com/jcburley/go-spew v1.3.0
 	github.com/pkg/profile v1.7.0
-	github.com/yuin/goldmark v1.7.12
-	go.etcd.io/bbolt v1.4.0
+	github.com/yuin/goldmark v1.7.13
+	go.etcd.io/bbolt v1.4.3
 	gopkg.in/yaml.v2 v2.4.0
 )
 
