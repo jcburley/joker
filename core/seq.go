@@ -1,7 +1,6 @@
 package core
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 )
@@ -247,6 +246,14 @@ func (seq *ArraySeq) IsEmpty() bool {
 	return seq.index >= len(seq.arr)
 }
 
+func (seq *ArraySeq) Count() int {
+	n := len(seq.arr) - seq.index
+	if n < 0 {
+		return 0
+	}
+	return n
+}
+
 func (seq *ArraySeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
@@ -254,7 +261,8 @@ func (seq *ArraySeq) Cons(obj Object) Seq {
 func (seq *ArraySeq) sequential() {}
 
 func SeqToString(seq Seq, escape bool) string {
-	var b bytes.Buffer
+	b := getBuffer()
+	defer putBuffer(b)
 	b.WriteRune('(')
 	for iter := iter(seq); iter.HasNext(); {
 		b.WriteString(iter.Next().ToString(escape))
@@ -361,16 +369,18 @@ func ToSlice(seq Seq) []Object {
 }
 
 func SeqCount(seq Seq) int {
-	c := 0
+	if c, ok := seq.(Counted); ok {
+		return c.Count()
+	}
+	n := 0
 	for !seq.IsEmpty() {
-		switch obj := seq.(type) {
-		case Counted:
-			return c + obj.Count()
+		if c, ok := seq.(Counted); ok {
+			return n + c.Count()
 		}
-		c++
+		n++
 		seq = seq.Rest()
 	}
-	return c
+	return n
 }
 
 func SeqNth(seq Seq, n int) Object {

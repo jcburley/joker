@@ -213,6 +213,14 @@ func (seq *VectorSeq) IsEmpty() bool {
 	return seq.index >= seq.vector.Count()
 }
 
+func (seq *VectorSeq) Count() int {
+	n := seq.vector.Count() - seq.index
+	if n < 0 {
+		return 0
+	}
+	return n
+}
+
 func (seq *VectorSeq) Cons(obj Object) Seq {
 	return &ConsSeq{first: obj, rest: seq}
 }
@@ -269,6 +277,13 @@ func (seq *VectorRSeq) Rest() Seq {
 
 func (seq *VectorRSeq) IsEmpty() bool {
 	return seq.index < 0
+}
+
+func (seq *VectorRSeq) Count() int {
+	if seq.index < 0 {
+		return 0
+	}
+	return seq.index + 1
 }
 
 func (seq *VectorRSeq) Cons(obj Object) Seq {
@@ -442,14 +457,42 @@ func EmptyVector() *Vector {
 }
 
 func NewVectorFrom(objs ...Object) *Vector {
-	res := EmptyVector()
-	for i := 0; i < len(objs); i++ {
+	n := len(objs)
+	if n == 0 {
+		return EmptyVector()
+	}
+	if n <= 32 {
+		tail := make([]interface{}, n)
+		for i, o := range objs {
+			tail[i] = o
+		}
+		return &Vector{count: n, shift: 5, root: empty_node, tail: tail}
+	}
+	// First 32 in one tail, then Conjoin the rest.
+	tail := make([]interface{}, 32)
+	for i := 0; i < 32; i++ {
+		tail[i] = objs[i]
+	}
+	res := &Vector{count: 32, shift: 5, root: empty_node, tail: tail}
+	for i := 32; i < n; i++ {
 		res = res.Conjoin(objs[i])
 	}
 	return res
 }
 
 func NewVectorFromSeq(seq Seq) *Vector {
+	if c, ok := seq.(Counted); ok {
+		n := c.Count()
+		if n == 0 {
+			return EmptyVector()
+		}
+		objs := make([]Object, n)
+		for i := 0; i < n; i++ {
+			objs[i] = seq.First()
+			seq = seq.Rest()
+		}
+		return NewVectorFrom(objs...)
+	}
 	res := EmptyVector()
 	for !seq.IsEmpty() {
 		res = res.Conjoin(seq.First())
