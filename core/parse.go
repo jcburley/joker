@@ -12,7 +12,7 @@ import (
 type (
 	Expr interface {
 		Eval(env *LocalEnv) Object
-		InferType() *Type
+		InferValue(env *InferEnv) InferredValue
 		Pos() Position
 		Dump(includePosition bool) Map
 		Pack(p []byte, env *PackEnv) []byte
@@ -85,6 +85,7 @@ type (
 	FnArityExpr struct {
 		Position
 		args       []Symbol
+		bindings   []*Binding
 		body       []Expr
 		taggedType *Type
 	}
@@ -93,12 +94,14 @@ type (
 		arities  []FnArityExpr
 		variadic *FnArityExpr
 		self     Symbol
+		summary  *FnSummary
 	}
 	LetExpr struct {
 		Position
-		names  []Symbol
-		values []Expr
-		body   []Expr
+		names    []Symbol
+		bindings []*Binding
+		values   []Expr
+		body     []Expr
 	}
 	LoopExpr  LetExpr
 	ThrowExpr struct {
@@ -129,11 +132,13 @@ type (
 		Call(args []Object) Object
 	}
 	Binding struct {
-		name         Symbol
-		index        int
-		frame        int
-		isUsed       bool
-		inferredType *Type
+		name          Symbol
+		index         int
+		frame         int
+		isUsed        bool
+		inferredValue *InferredValue
+		requiredTypes []*Type
+		valueExpr     Expr
 	}
 	Bindings struct {
 		bindings map[*string]*Binding
@@ -369,30 +374,33 @@ func (b *Bindings) PopFrame() *Bindings {
 	return b.parent
 }
 
-func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool, inferredType *Type) {
+func (b *Bindings) AddBinding(sym Symbol, index int, skipUnused bool) *Binding {
 	if LINTER_MODE && !skipUnused {
 		old := b.bindings[sym.name]
 		if old != nil && needsUnusedWarning(old) {
 			printParseWarning(GetPosition(old.name), "Unused binding: "+old.name.ToString(false))
 		}
 	}
-	b.bindings[sym.name] = &Binding{
-		name:         sym,
-		frame:        b.frame,
-		index:        index,
-		inferredType: inferredType,
+	binding := &Binding{
+		name:  sym,
+		frame: b.frame,
+		index: index,
 	}
+	b.bindings[sym.name] = binding
+	return binding
 }
 
 func (ctx *ParseContext) PushEmptyLocalFrame() {
 	ctx.localBindings = ctx.localBindings.PushFrame()
 }
 
-func (ctx *ParseContext) PushLocalFrame(names []Symbol) {
+func (ctx *ParseContext) PushLocalFrame(names []Symbol) []*Binding {
 	ctx.PushEmptyLocalFrame()
+	res := make([]*Binding, len(names))
 	for i, sym := range names {
-		ctx.localBindings.AddBinding(sym, i, true, nil)
+		res[i] = ctx.localBindings.AddBinding(sym, i, true)
 	}
+	return res
 }
 
 func (ctx *ParseContext) PopLocalFrame() {
@@ -714,6 +722,35 @@ func updateVar(vr *Var, info *ObjectInfo, valueExpr Expr, sym Symbol) {
 	}
 }
 
+func checkReturnType(vr *Var, valueExpr Expr) {
+	if !LINTER_MODE || vr.taggedType == nil || valueExpr == nil {
+		return
+	}
+	if metaExpr, ok := valueExpr.(*MetaExpr); ok {
+		valueExpr = metaExpr.expr
+	}
+	fnExpr, ok := valueExpr.(*FnExpr)
+	if !ok {
+		return
+	}
+	checkArity := func(arity *FnArityExpr) {
+		if len(arity.body) == 0 {
+			return
+		}
+		returnExpr := arity.body[len(arity.body)-1]
+		returnedValue := returnExpr.InferValue(newInferEnv())
+		if !returnedValue.unknown && len(returnedValue.types) != 0 && !inferredTypesCompatible([]*Type{vr.taggedType}, returnedValue.types) {
+			printParseWarning(returnExpr.Pos(), fmt.Sprintf("return value of %s must have type %s, got %s", vr.name.ToString(false), vr.taggedType.ToString(false), inferredTypesString(returnedValue.types)))
+		}
+	}
+	for i := range fnExpr.arities {
+		checkArity(&fnExpr.arities[i])
+	}
+	if fnExpr.variadic != nil {
+		checkArity(fnExpr.variadic)
+	}
+}
+
 func isCreatedByMacro(formSeq Seq) bool {
 	return formSeq.First().GetInfo().Pos().filename == STR.coreFilename
 }
@@ -762,6 +799,7 @@ func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 			}
 		}
 		updateVar(vr, obj.GetInfo(), res.value, sym)
+		checkReturnType(vr, res.value)
 		if meta != nil {
 			res.meta = Parse(DeriveReadObject(obj, meta), ctx)
 		}
@@ -856,7 +894,7 @@ func addArity(fn *FnExpr, sig Seq, ctx *ParseContext) {
 	params := sig.First()
 	body := sig.Rest()
 	args, isVariadic := parseParams(params)
-	ctx.PushLocalFrame(args)
+	bindings := ctx.PushLocalFrame(args)
 	defer ctx.PopLocalFrame()
 	ctx.PushLoopBindings(args)
 	defer ctx.PopLoopBindings()
@@ -868,6 +906,7 @@ func addArity(fn *FnExpr, sig Seq, ctx *ParseContext) {
 	arity := FnArityExpr{
 		Position:   GetPosition(sig),
 		args:       args,
+		bindings:   bindings,
 		body:       parseBody(body, ctx),
 		taggedType: getTaggedType(params.(Meta)),
 	}
@@ -1101,6 +1140,7 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 		}
 		skipUnused := isSkipUnused(b)
 		res.names = make([]Symbol, cnt/2)
+		res.bindings = make([]*Binding, cnt/2)
 		res.values = make([]Expr, cnt/2)
 		ctx.PushEmptyLocalFrame()
 		defer ctx.PopLocalFrame()
@@ -1125,19 +1165,17 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 					panic(&ParseError{obj: s, msg: "Unsupported binding form: " + sym.ToString(false)})
 				}
 			}
-			var inferredType *Type
 			if formName != "letfn" {
 				res.values[i] = Parse(b.At(i*2+1), ctx)
-				if LINTER_MODE {
-					inferredType = res.values[i].InferType()
-				}
 			}
-			ctx.localBindings.AddBinding(res.names[i], i, skipUnused, inferredType)
+			res.bindings[i] = ctx.localBindings.AddBinding(res.names[i], i, skipUnused)
+			res.bindings[i].valueExpr = res.values[i]
 		}
 
 		if formName == "letfn" {
 			for i := 0; i < cnt/2; i++ {
 				res.values[i] = Parse(b.At(i*2+1), ctx)
+				res.bindings[i].valueExpr = res.values[i]
 			}
 		}
 
@@ -1300,7 +1338,16 @@ func reportNotAFunction(pos Position, name string) {
 func getTaggedType(obj Meta) *Type {
 	if m := obj.GetMeta(); m != nil {
 		if ok, typeName := m.Get(KEYWORDS.tag); ok {
-			if typeSym, ok := typeName.(Symbol); ok {
+			switch typeName := typeName.(type) {
+			case Symbol:
+				if t := TYPES[typeName.name]; t != nil {
+					return t
+				}
+			case String:
+				if strings.Contains(typeName.S, "|") {
+					return nil
+				}
+				typeSym := MakeSymbol(typeName.S)
 				if t := TYPES[typeSym.name]; t != nil {
 					return t
 				}
@@ -1352,22 +1399,6 @@ func typesString(types []*Type) string {
 	return b.String()
 }
 
-func checkTypes(declaredArgs []Symbol, call *CallExpr) bool {
-	res := false
-	for i, da := range declaredArgs {
-		if declaredTypes := getTaggedTypes(da); len(declaredTypes) > 0 {
-			passedType := call.args[i].InferType()
-			if passedType != nil {
-				if !isTypeOneOf(declaredTypes, passedType) {
-					printParseWarning(call.args[i].Pos(), fmt.Sprintf("arg[%d] of %s must have type %s, got %s", i, call.Name(), typesString(declaredTypes), passedType.ToString(false)))
-					res = true
-				}
-			}
-		}
-	}
-	return res
-}
-
 func selectArity(expr *FnExpr, passedArgsCount int) *FnArityExpr {
 	for _, arity := range expr.arities {
 		if len(arity.args) == passedArgsCount {
@@ -1386,7 +1417,7 @@ func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos Position) 
 		passedArgsCount += 2
 	}
 	if v := selectArity(expr, passedArgsCount); v != nil {
-		return checkTypes(v.args, call)
+		return false
 	}
 	printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(call.args), call.Name()))
 	return true
@@ -1554,6 +1585,68 @@ func checkCall(expr Expr, isMacro bool, call *CallExpr, pos Position) {
 	}
 }
 
+func shouldEvalLiteralLinterCall(vr *Var, call *CallExpr, ctx *ParseContext) bool {
+	require := getRequireVar(ctx)
+	refer := getReferVar(ctx)
+	alias := getAliasVar(ctx)
+	createNs := getCreateNsVar(ctx)
+	inNs := getInNsVar(ctx)
+	return (vr.Value.Equals(require.Value) ||
+		vr.Value.Equals(alias.Value) ||
+		vr.Value.Equals(refer.Value) ||
+		vr.Value.Equals(inNs.Value) ||
+		vr.Value.Equals(createNs.Value)) &&
+		areAllLiteralExprs(call.args)
+}
+
+func checkCallableArglist(vr *Var, call *CallExpr, pos Position) {
+	meta := vr.GetMeta()
+	if meta == nil {
+		return
+	}
+	ok, arglist := meta.Get(KEYWORDS.arglist)
+	if !ok {
+		return
+	}
+	arglistSeq, ok := arglist.(Seq)
+	if !ok {
+		return
+	}
+	if !checkArglist(arglistSeq, len(call.args)) {
+		printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(call.args), call.Name()))
+	}
+}
+
+func checkLinterCall(call *CallExpr, ctx *ParseContext, pos Position) {
+	vrExpr, ok := call.callable.(*VarRefExpr)
+	if !ok {
+		checkCall(call.callable, false, call, pos)
+		checkInferredCall(call)
+		return
+	}
+	vr := vrExpr.vr
+	if vr.Value == nil {
+		checkCall(vr.expr, vr.isMacro, call, pos)
+		checkInferredCall(call)
+		return
+	}
+	switch f := vr.Value.(type) {
+	case *Fn:
+		if reportWrongArity(f.fnExpr, vr.isMacro, call, pos) {
+			return
+		}
+		typeMismatch := checkInferredCall(call)
+		if !typeMismatch && shouldEvalLiteralLinterCall(vr, call, ctx) {
+			Eval(call, nil)
+		}
+	case Callable:
+		checkCallableArglist(vr, call, pos)
+		checkInferredCall(call)
+	default:
+		reportNotAFunction(pos, call.Name())
+	}
+}
+
 func parseList(obj Object, ctx *ParseContext) Expr {
 	expanded := macroexpand1(obj.(Seq), ctx)
 	if expanded != obj {
@@ -1672,7 +1765,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 			}()
 			for !syms.IsEmpty() {
 				if sym, ok := syms.First().(Symbol); ok {
-					ctx.linterBindings.AddBinding(sym, 0, true, nil)
+					ctx.linterBindings.AddBinding(sym, 0, true)
 				}
 				syms = syms.Rest()
 			}
@@ -1686,46 +1779,7 @@ func parseList(obj Object, ctx *ParseContext) Expr {
 		Position: pos,
 	}
 	if LINTER_MODE {
-		switch c := res.callable.(type) {
-		case *VarRefExpr:
-			if c.vr.Value != nil {
-				switch f := c.vr.Value.(type) {
-				case *Fn:
-					if !reportWrongArity(f.fnExpr, c.vr.isMacro, res, pos) {
-						require := getRequireVar(ctx)
-						refer := getReferVar(ctx)
-						alias := getAliasVar(ctx)
-						createNs := getCreateNsVar(ctx)
-						inNs := getInNsVar(ctx)
-						if (c.vr.Value.Equals(require.Value) ||
-							c.vr.Value.Equals(alias.Value) ||
-							c.vr.Value.Equals(refer.Value) ||
-							c.vr.Value.Equals(inNs.Value) ||
-							c.vr.Value.Equals(createNs.Value)) &&
-							areAllLiteralExprs(res.args) {
-							Eval(res, nil)
-						}
-					}
-				case Callable:
-					if m := c.vr.GetMeta(); m != nil {
-						if ok, arglist := m.Get(KEYWORDS.arglist); ok {
-							if arglist, ok := arglist.(Seq); ok {
-								if !checkArglist(arglist, len(res.args)) {
-									printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(res.args), res.Name()))
-								}
-							}
-						}
-					}
-					return res
-				default:
-					reportNotAFunction(pos, res.Name())
-				}
-			} else {
-				checkCall(c.vr.expr, c.vr.isMacro, res, pos)
-			}
-		default:
-			checkCall(res.callable, false, res, pos)
-		}
+		checkLinterCall(res, ctx, pos)
 	}
 	return res
 }
