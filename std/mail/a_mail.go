@@ -57,6 +57,52 @@ func __parse_date_(_args []Object) Object {
 	return NIL
 }
 
+var __read_attachments__P ProcFn = __read_attachments_
+var read_attachments_ Proc = Proc{Fn: __read_attachments__P, Name: "read_attachments_", Package: "std/mail"}
+
+func __read_attachments_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		source := ExtractObject(_args, 0)
+		_res := readAttachments(source, EmptyArrayMap())
+		return _res
+
+	case _c == 2:
+		source := ExtractObject(_args, 0)
+		opts := ExtractMap(_args, 1)
+		_res := readAttachments(source, opts)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var __read_email__P ProcFn = __read_email_
+var read_email_ Proc = Proc{Fn: __read_email__P, Name: "read_email_", Package: "std/mail"}
+
+func __read_email_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		source := ExtractObject(_args, 0)
+		_res := readEmail(source, EmptyArrayMap())
+		return _res
+
+	case _c == 2:
+		source := ExtractObject(_args, 0)
+		opts := ExtractMap(_args, 1)
+		_res := readEmail(source, opts)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
 var __read_message__P ProcFn = __read_message_
 var read_message_ Proc = Proc{Fn: __read_message__P, Name: "read_message_", Package: "std/mail"}
 
@@ -66,6 +112,29 @@ func __read_message_(_args []Object) Object {
 	case _c == 1:
 		source := ExtractObject(_args, 0)
 		_res := readMessage(source)
+		return _res
+
+	default:
+		PanicArity(_c)
+	}
+	return NIL
+}
+
+var __read_mime_message__P ProcFn = __read_mime_message_
+var read_mime_message_ Proc = Proc{Fn: __read_mime_message__P, Name: "read_mime_message_", Package: "std/mail"}
+
+func __read_mime_message_(_args []Object) Object {
+	_c := len(_args)
+	switch {
+	case _c == 1:
+		source := ExtractObject(_args, 0)
+		_res := readMimeMessage(source, EmptyArrayMap())
+		return _res
+
+	case _c == 2:
+		source := ExtractObject(_args, 0)
+		opts := ExtractMap(_args, 1)
+		_res := readMimeMessage(source, opts)
 		return _res
 
 	default:
