@@ -7,6 +7,7 @@ import (
 	"time"
 
 	. "github.com/candid82/joker/core"
+	jokermime "github.com/candid82/joker/std/mime"
 )
 
 func mailReader(source Object) io.Reader {
@@ -38,6 +39,29 @@ func readMessage(source Object) Map {
 	res.Add(MakeKeyword("headers"), messageHeaders(message.Header))
 	res.Add(MakeKeyword("body"), MakeString(string(body)))
 	return res
+}
+
+func readMimeMessage(source Object, opts Map) Map {
+	message, err := netmail.ReadMessage(mailReader(source))
+	PanicOnErr(err)
+	body, err := io.ReadAll(message.Body)
+	PanicOnErr(err)
+	return jokermime.ReadEntity(messageHeaders(message.Header), string(body), opts)
+}
+
+func readEmail(source Object, opts Map) Map {
+	entity := readMimeMessage(source, opts)
+	_, headers := entity.Get(MakeKeyword("headers"))
+
+	res := EmptyArrayMap()
+	res.Add(MakeKeyword("headers"), headers)
+	res.Add(MakeKeyword("body"), jokermime.Body(entity, opts))
+	res.Add(MakeKeyword("attachments"), jokermime.Attachments(entity, opts))
+	return res
+}
+
+func readAttachments(source Object, opts Map) Object {
+	return jokermime.Attachments(readMimeMessage(source, opts), opts)
 }
 
 func addressMap(address *netmail.Address) Map {

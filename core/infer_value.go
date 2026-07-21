@@ -28,11 +28,13 @@ type FnAritySummary struct {
 
 type InferEnv struct {
 	analyzingBindings map[*Binding]bool
+	requiredTypes     map[*Binding][]*Type
 }
 
 func newInferEnv() *InferEnv {
 	return &InferEnv{
 		analyzingBindings: map[*Binding]bool{},
+		requiredTypes:     map[*Binding][]*Type{},
 	}
 }
 
@@ -45,6 +47,13 @@ func typeInferredValue(t *Type) InferredValue {
 		return unknownInferredValue()
 	}
 	return InferredValue{types: []*Type{t}}
+}
+
+func typesInferredValue(types []*Type) InferredValue {
+	if len(types) == 0 {
+		return unknownInferredValue()
+	}
+	return InferredValue{types: copyTypes(types)}
 }
 
 func fnInferredValue(fn *FnExpr) InferredValue {
@@ -94,9 +103,70 @@ func inferredTypesCompatible(expected []*Type, actual []*Type) bool {
 	return false
 }
 
-func bindingAddRequiredTypes(binding *Binding, expected []*Type) {
+func typeInList(types []*Type, t *Type) bool {
+	for _, existing := range types {
+		if existing == t {
+			return true
+		}
+	}
+	return false
+}
+
+func diffTypes(types, base []*Type) []*Type {
+	var res []*Type
+	for _, t := range types {
+		if !typeInList(base, t) {
+			res = addType(res, t)
+		}
+	}
+	return res
+}
+
+func copyTypes(types []*Type) []*Type {
+	if len(types) == 0 {
+		return nil
+	}
+	res := make([]*Type, len(types))
+	copy(res, types)
+	return res
+}
+
+func (env *InferEnv) clone() *InferEnv {
+	if env == nil {
+		return newInferEnv()
+	}
+	res := newInferEnv()
+	for binding, analyzing := range env.analyzingBindings {
+		res.analyzingBindings[binding] = analyzing
+	}
+	for binding, types := range env.requiredTypes {
+		res.requiredTypes[binding] = copyTypes(types)
+	}
+	return res
+}
+
+func (env *InferEnv) addRequiredTypes(binding *Binding, expected []*Type) {
+	if env == nil || binding == nil {
+		return
+	}
 	for _, t := range expected {
-		binding.requiredTypes = addType(binding.requiredTypes, t)
+		env.requiredTypes[binding] = addType(env.requiredTypes[binding], t)
+	}
+}
+
+func (env *InferEnv) mergeBranches(positive, negative *InferEnv) {
+	if env == nil || positive == nil || negative == nil {
+		return
+	}
+	for binding, positiveTypes := range positive.requiredTypes {
+		baseTypes := env.requiredTypes[binding]
+		negativeTypes := negative.requiredTypes[binding]
+		positiveAdded := diffTypes(positiveTypes, baseTypes)
+		negativeAdded := diffTypes(negativeTypes, baseTypes)
+		if len(positiveAdded) == 0 || len(negativeAdded) == 0 {
+			continue
+		}
+		env.requiredTypes[binding] = joinTypes(env.requiredTypes[binding], joinTypes(positiveAdded, negativeAdded))
 	}
 }
 
@@ -106,8 +176,8 @@ func requireExpr(expr Expr, expected []*Type, env *InferEnv) {
 	}
 	switch expr := expr.(type) {
 	case *BindingExpr:
-		bindingAddRequiredTypes(expr.binding, expected)
-		if expr.binding.valueExpr != nil {
+		env.addRequiredTypes(expr.binding, expected)
+		if expr.binding != nil && expr.binding.valueExpr != nil {
 			requireExpr(expr.binding.valueExpr, expected, env)
 		}
 	case *MetaExpr:
@@ -205,7 +275,12 @@ func (expr *SetExpr) InferValue(env *InferEnv) InferredValue {
 
 func (expr *IfExpr) InferValue(env *InferEnv) InferredValue {
 	expr.cond.InferValue(env)
-	return joinInferredValues(expr.positive.InferValue(env), expr.negative.InferValue(env))
+	positiveEnv := env.clone()
+	negativeEnv := env.clone()
+	positive := expr.positive.InferValue(positiveEnv)
+	negative := expr.negative.InferValue(negativeEnv)
+	env.mergeBranches(positiveEnv, negativeEnv)
+	return joinInferredValues(positive, negative)
 }
 
 func (expr *DefExpr) InferValue(env *InferEnv) InferredValue {
@@ -228,15 +303,18 @@ func (expr *VarRefExpr) InferValue(env *InferEnv) InferredValue {
 		if fn, ok := expr.vr.Value.(*Fn); ok {
 			return fnInferredValue(fn.fnExpr)
 		}
-		if expr.vr.taggedType != nil {
-			return typeInferredValue(expr.vr.taggedType)
+		if _, ok := expr.vr.Value.(Callable); ok {
+			return typeInferredValue(expr.vr.Value.GetType())
+		}
+		if len(expr.vr.taggedTypes) != 0 {
+			return typesInferredValue(expr.vr.taggedTypes)
 		}
 	}
 	if expr.vr.expr != nil {
 		return expr.vr.expr.InferValue(env)
 	}
-	if expr.vr.taggedType != nil {
-		return typeInferredValue(expr.vr.taggedType)
+	if len(expr.vr.taggedTypes) != 0 {
+		return typesInferredValue(expr.vr.taggedTypes)
 	}
 	return unknownInferredValue()
 }
@@ -405,32 +483,32 @@ func declaredArgTypesForCallable(callable Expr, passedArgsCount int) [][]*Type {
 	return nil
 }
 
-func declaredReturnType(callable Expr, passedArgsCount int) *Type {
+func declaredReturnTypes(callable Expr, passedArgsCount int) []*Type {
 	switch callable := callable.(type) {
 	case *MetaExpr:
-		return declaredReturnType(callable.expr, passedArgsCount)
+		return declaredReturnTypes(callable.expr, passedArgsCount)
 	case *VarRefExpr:
 		if callable.vr == nil {
 			return nil
 		}
 		if fn, ok := callable.vr.Value.(*Fn); ok {
-			if arity := selectActualArity(fn.fnExpr, passedArgsCount); arity != nil && arity.taggedType != nil {
-				return arity.taggedType
+			if arity := selectActualArity(fn.fnExpr, passedArgsCount); arity != nil && len(arity.taggedTypes) != 0 {
+				return arity.taggedTypes
 			}
 		}
-		if callable.vr.taggedType != nil {
-			return callable.vr.taggedType
+		if len(callable.vr.taggedTypes) != 0 {
+			return callable.vr.taggedTypes
 		}
 		if callable.vr.expr != nil {
-			return declaredReturnType(callable.vr.expr, passedArgsCount)
+			return declaredReturnTypes(callable.vr.expr, passedArgsCount)
 		}
 	case *FnExpr:
-		if arity := selectActualArity(callable, passedArgsCount); arity != nil && arity.taggedType != nil {
-			return arity.taggedType
+		if arity := selectActualArity(callable, passedArgsCount); arity != nil && len(arity.taggedTypes) != 0 {
+			return arity.taggedTypes
 		}
 	case *BindingExpr:
 		if callable.binding != nil && callable.binding.valueExpr != nil {
-			return declaredReturnType(callable.binding.valueExpr, passedArgsCount)
+			return declaredReturnTypes(callable.binding.valueExpr, passedArgsCount)
 		}
 	}
 	return nil
@@ -459,13 +537,13 @@ func (expr *CallExpr) InferValue(env *InferEnv) InferredValue {
 				requireExpr(expr.args[i], expected, env)
 			}
 		}
-		if declared := declaredReturnType(expr.callable, len(expr.args)); declared != nil {
-			return typeInferredValue(declared)
+		if declared := declaredReturnTypes(expr.callable, len(expr.args)); len(declared) != 0 {
+			return typesInferredValue(declared)
 		}
 		return InferredValue{unknown: aritySummary.returnUnknown, types: aritySummary.returnTypes}
 	}
-	if declared := declaredReturnType(expr.callable, len(expr.args)); declared != nil {
-		return typeInferredValue(declared)
+	if declared := declaredReturnTypes(expr.callable, len(expr.args)); len(declared) != 0 {
+		return typesInferredValue(declared)
 	}
 	return unknownInferredValue()
 }
@@ -523,12 +601,14 @@ func (summary *FnSummary) infer() {
 func inferFnArity(arity *FnArityExpr, variadic bool) *FnAritySummary {
 	for _, binding := range arity.bindings {
 		if binding != nil {
-			binding.requiredTypes = nil
 			binding.inferredValue = nil
 		}
 	}
 	env := newInferEnv()
 	value := inferBodyValue(arity.body, env)
+	if arity.stubReturnUnknown {
+		value = unknownInferredValue()
+	}
 	res := &FnAritySummary{
 		arity:            arity,
 		variadic:         variadic,
@@ -538,13 +618,13 @@ func inferFnArity(arity *FnArityExpr, variadic bool) *FnAritySummary {
 		inferredArgTypes: make([][]*Type, len(arity.args)),
 		declaredArgTypes: make([][]*Type, len(arity.args)),
 	}
-	if arity.taggedType != nil {
-		res.returnTypes = addType(res.returnTypes, arity.taggedType)
+	for _, taggedType := range arity.taggedTypes {
+		res.returnTypes = addType(res.returnTypes, taggedType)
 	}
 	for i, arg := range arity.args {
 		res.declaredArgTypes[i] = getTaggedTypes(arg)
 		if i < len(arity.bindings) && arity.bindings[i] != nil {
-			res.inferredArgTypes[i] = arity.bindings[i].requiredTypes
+			res.inferredArgTypes[i] = env.requiredTypes[arity.bindings[i]]
 		}
 	}
 	if variadic && len(arity.args) > 0 {

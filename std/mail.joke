@@ -1,5 +1,5 @@
 (ns ^{:go-imports []
-      :doc "Parses raw RFC 5322 email messages, address fields, and mail dates."}
+      :doc "Parses raw RFC 5322 email messages, address fields, mail dates, and MIME email content."}
   mail)
 
 (defn ^Map read-message
@@ -17,6 +17,60 @@
   {:added "1.8.1"
    :go "readMessage(source)"}
   [^Object source])
+
+(defn ^Map read-mime-message
+  "Parses an RFC 5322 email message and its MIME structure.
+
+  source must be a string or implement io.Reader, such as a string returned by
+  joker.pop3/retrieve. The result is a joker.mime entity tree. Non-multipart
+  messages are returned as a single leaf entity, so joker.mime/body and
+  joker.mime/attachments work uniformly for both multipart and non-multipart
+  email.
+
+  opts are passed to joker.mime/read-entity and may contain:
+  - include-content?
+  - max-depth
+  - max-part-bytes"
+  {:added "1.9.0"
+   :go {1 "readMimeMessage(source, EmptyArrayMap())"
+        2 "readMimeMessage(source, opts)"}}
+  ([^Object source])
+  ([^Object source ^Map opts]))
+
+(defn ^Map read-email
+  "Parses an RFC 5322 email message and extracts headers, body, and attachments.
+
+  Returns {:headers headers :body {:text text-or-nil :html html-or-nil}
+           :attachments [attachment ...]}.
+
+  The body and attachments are extracted from the MIME entity tree produced by
+  read-mime-message. Non-multipart text/plain and text/html messages are handled
+  as body content. Attachment content is decoded according to
+  Content-Transfer-Encoding and represented as raw bytes in a Joker string.
+
+  opts are passed to joker.mime/read-entity and joker.mime/attachments and may
+  contain:
+  - include-inline? - false to exclude inline/file-name parts from attachments
+  - include-content?
+  - max-depth
+  - max-part-bytes"
+  {:added "1.9.0"
+   :go {1 "readEmail(source, EmptyArrayMap())"
+        2 "readEmail(source, opts)"}}
+  ([^Object source])
+  ([^Object source ^Map opts]))
+
+(defn ^Vec read-attachments
+  "Parses an RFC 5322 email message and returns its MIME attachments.
+
+  Equivalent to calling joker.mime/attachments on read-mime-message. By default
+  inline parts with a filename are included, which covers common inline images.
+  Pass {:include-inline? false} to include only explicit attachments."
+  {:added "1.9.0"
+   :go {1 "readAttachments(source, EmptyArrayMap())"
+        2 "readAttachments(source, opts)"}}
+  ([^Object source])
+  ([^Object source ^Map opts]))
 
 (defn ^Map parse-address
   "Parses one RFC 5322 email address and returns

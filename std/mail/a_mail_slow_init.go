@@ -12,7 +12,7 @@ func InternsOrThunks() {
 	if VerbosityLevel > 0 {
 		fmt.Fprintln(os.Stderr, "Lazily running slow version of mail.InternsOrThunks().")
 	}
-	mailNamespace.ResetMeta(MakeMeta(nil, `Parses raw RFC 5322 email messages, address fields, and mail dates.`, "1.0"))
+	mailNamespace.ResetMeta(MakeMeta(nil, `Parses raw RFC 5322 email messages, address fields, mail dates, and MIME email content.`, "1.0"))
 
 	mailNamespace.InternVar("parse-address", parse_address_,
 		MakeMeta(
@@ -38,6 +38,35 @@ func InternsOrThunks() {
 
   Throws Error when s is not a date accepted by Go's net/mail parser.`, "1.8.1").Plus(MakeKeyword("tag"), String{S: "Time"}))
 
+	mailNamespace.InternVar("read-attachments", read_attachments_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol)), NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol), MakeSymbol("opts").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
+			`Parses an RFC 5322 email message and returns its MIME attachments.
+
+  Equivalent to calling joker.mime/attachments on read-mime-message. By default
+  inline parts with a filename are included, which covers common inline images.
+  Pass {:include-inline? false} to include only explicit attachments.`, "1.9.0").Plus(MakeKeyword("tag"), String{S: "Vec"}))
+
+	mailNamespace.InternVar("read-email", read_email_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol)), NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol), MakeSymbol("opts").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
+			`Parses an RFC 5322 email message and extracts headers, body, and attachments.
+
+  Returns {:headers headers :body {:text text-or-nil :html html-or-nil}
+           :attachments [attachment ...]}.
+
+  The body and attachments are extracted from the MIME entity tree produced by
+  read-mime-message. Non-multipart text/plain and text/html messages are handled
+  as body content. Attachment content is decoded according to
+  Content-Transfer-Encoding and represented as raw bytes in a Joker string.
+
+  opts are passed to joker.mime/read-entity and joker.mime/attachments and may
+  contain:
+  - include-inline? - false to exclude inline/file-name parts from attachments
+  - include-content?
+  - max-depth
+  - max-part-bytes`, "1.9.0").Plus(MakeKeyword("tag"), String{S: "Map"}))
+
 	mailNamespace.InternVar("read-message", read_message_,
 		MakeMeta(
 			NewListFrom(NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol))),
@@ -52,5 +81,21 @@ func InternsOrThunks() {
   buffered in memory. This function does not parse MIME parts or decode body
   transfer encodings. Throws Error when source is invalid or the headers
   cannot be parsed.`, "1.8.1").Plus(MakeKeyword("tag"), String{S: "Map"}))
+
+	mailNamespace.InternVar("read-mime-message", read_mime_message_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol)), NewVectorFrom(MakeSymbol("source").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Object"}).(Map)).(Symbol), MakeSymbol("opts").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
+			`Parses an RFC 5322 email message and its MIME structure.
+
+  source must be a string or implement io.Reader, such as a string returned by
+  joker.pop3/retrieve. The result is a joker.mime entity tree. Non-multipart
+  messages are returned as a single leaf entity, so joker.mime/body and
+  joker.mime/attachments work uniformly for both multipart and non-multipart
+  email.
+
+  opts are passed to joker.mime/read-entity and may contain:
+  - include-content?
+  - max-depth
+  - max-part-bytes`, "1.9.0").Plus(MakeKeyword("tag"), String{S: "Map"}))
 
 }
