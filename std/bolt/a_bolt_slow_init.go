@@ -31,12 +31,17 @@ func InternsOrThunks() {
 
 	boltNamespace.InternVar("by-prefix", by_prefix_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("db").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "BoltDB"}).(Map)).(Symbol), MakeSymbol("bucket").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol), MakeSymbol("prefix").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol))),
+			NewListFrom(NewVectorFrom(MakeSymbol("db").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "BoltDB"}).(Map)).(Symbol), MakeSymbol("bucket").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol), MakeSymbol("prefix").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol)), NewVectorFrom(MakeSymbol("db").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "BoltDB"}).(Map)).(Symbol), MakeSymbol("bucket").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol), MakeSymbol("prefix").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol), MakeSymbol("opts").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
 			`Returns key/value pairs from bucket whose keys start with prefix.
 
   Results are returned as a vector of [key value] vectors in Bolt key order.
-  Passing the empty string returns all key/value pairs in the bucket. Throws
-  Error when bucket does not exist or the transaction fails.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Vec"}))
+  Passing the empty string returns all key/value pairs in the bucket.
+
+  opts may contain:
+  - limit - maximum number of key/value pairs to return; must be non-negative
+
+  Throws Error when bucket does not exist, limit is invalid, or the transaction
+  fails.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Vec"}))
 
 	boltNamespace.InternVar("close", close_,
 		MakeMeta(
@@ -45,6 +50,14 @@ func InternsOrThunks() {
 
   Blocks until open transactions finish, then releases the file lock. Throws
   Error if closing fails.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Nil"}))
+
+	boltNamespace.InternVar("count-by-prefix", count_by_prefix_,
+		MakeMeta(
+			NewListFrom(NewVectorFrom(MakeSymbol("db").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "BoltDB"}).(Map)).(Symbol), MakeSymbol("bucket").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol), MakeSymbol("prefix").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "String"}).(Map)).(Symbol))),
+			`Returns the number of keys in bucket that start with prefix.
+
+  Passing the empty string counts all keys in the bucket. Throws Error when
+  bucket does not exist or the transaction fails.`, "1.0").Plus(MakeKeyword("tag"), String{S: "Int"}))
 
 	boltNamespace.InternVar("create-bucket", create_bucket_,
 		MakeMeta(

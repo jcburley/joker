@@ -16,7 +16,7 @@ func InternsOrThunks() {
 
 	httpNamespace.InternVar("send", send_,
 		MakeMeta(
-			NewListFrom(NewVectorFrom(MakeSymbol("request").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
+			NewListFrom(NewVectorFrom(MakeSymbol("request").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol)), NewVectorFrom(MakeSymbol("request").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol), MakeSymbol("opts").WithMeta(EmptyArrayMap().Assoc(MakeKeyword("tag"), String{S: "Map"}).(Map)).(Symbol))),
 			`Sends an HTTP request and returns an HTTP response map.
 
   request is a map with the following keys:
@@ -25,6 +25,27 @@ func InternsOrThunks() {
   - body (string)
   - host (string, overrides the Host header if provided)
   - headers (map from string header names to string values)
+
+  opts may contain:
+  - timeout-ms (int): positive timeout in milliseconds for the complete
+    operation, including connecting, TLS negotiation, redirects, waiting for
+    response headers, and reading the response body. The timeout is cumulative
+    across redirects. If omitted, no overall timeout is configured.
+  - connect-timeout-ms (int): positive timeout in milliseconds for each DNS/TCP
+    connection attempt. It does not include TLS negotiation.
+  - response-header-timeout-ms (int): positive timeout in milliseconds for
+    receiving response headers after writing the request. It applies separately
+    to each redirect response.
+  - follow-redirects? (boolean): whether to follow redirects; defaults to true.
+    When false, the first redirect response is returned normally.
+  - max-redirects (int): positive maximum number of redirects to follow.
+    Exceeding it throws Error. It cannot be used when follow-redirects? is false.
+  - max-response-bytes (int): positive maximum number of bytes to read from the
+    final response body, after any transparent decompression. Exceeding it
+    throws Error.
+
+  timeout-ms is an overall limit and caps operations that also have a
+  phase-specific timeout.
 
   The response map contains:
   - status (int)
@@ -37,18 +58,19 @@ func InternsOrThunks() {
   malformed URL, DNS/connect/TLS failure, redirect failure, or response-body
   read failure.
 
-  Redirects are followed automatically using the default HTTP client policy,
-  which stops after 10 consecutive requests. No timeout is configured and
-  there is currently no timeout request option, so send may block indefinitely
-  while waiting for the network or response body. The whole response body is
-  read before send returns; streaming responses therefore return only after
-  the stream ends.
+  By default, redirects are followed using the default HTTP client policy,
+  which stops after 10 consecutive requests. Without any applicable timeout,
+  send may block indefinitely while waiting for the network or response body.
+  The whole response body is read before send returns; streaming responses
+  therefore return only after the stream ends.
 
   Example:
     (let [res (joker.http/send {:url "https://example.com/api"
                                 :method :post
                                 :headers {"Content-Type" "text/plain"}
-                                :body "hello"})]
+                                :body "hello"}
+                               {:timeout-ms 5000
+                                :max-response-bytes 1048576})]
       [(:status res) (:body res)])`, "1.0").Plus(MakeKeyword("tag"), String{S: "Map"}))
 
 	httpNamespace.InternVar("start-file-server", start_file_server_,
