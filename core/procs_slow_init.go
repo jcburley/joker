@@ -7,7 +7,14 @@ var privateMeta Map = EmptyArrayMap().Assoc(KEYWORDS.private, Boolean{B: true}).
 
 func intern(name string, proc ProcFn, procName string) {
 	vr := GLOBAL_ENV.CoreNamespace.Intern(MakeSymbol(name))
-	vr.Value = Proc{Fn: proc, Name: procName}
+	p := Proc{Fn: proc, Name: procName}
+	switch procName {
+	case "procApply":
+		p.InExecution = procApplyInExecution
+	case "procEval":
+		p.InExecution = procEvalInExecution
+	}
+	vr.Value = p
 	vr.isPrivate = true
 	vr.meta = privateMeta
 }
@@ -25,6 +32,13 @@ func init() {
 	intern("seq__", procSeq, "procSeq")
 	intern("instance?__", procIsInstance, "procIsInstance")
 	intern("assoc__", procAssoc, "procAssoc")
+	intern("transient__", procTransient, "procTransient")
+	intern("persistent!__", procPersistentBang, "procPersistentBang")
+	intern("conj!__", procConjBang, "procConjBang")
+	intern("assoc!__", procAssocBang, "procAssocBang")
+	intern("dissoc!__", procDissocBang, "procDissocBang")
+	intern("disj!__", procDisjBang, "procDisjBang")
+	intern("pop!__", procPopBang, "procPopBang")
 	intern("meta__", procMeta, "procMeta")
 	intern("with-meta__", procWithMeta, "procWithMeta")
 	intern("=__", procEquals, "procEquals")
@@ -40,6 +54,35 @@ func init() {
 	intern("keyword__", procKeyword, "procKeyword")
 	intern("apply__", procApply, "procApply")
 	intern("lazy-seq__", procLazySeq, "procLazySeq")
+	intern("take-seq__", procTakeSeq, "procTakeSeq")
+	intern("map-seq__", procMapSeq, "procMapSeq")
+	intern("filter-seq__", procFilterSeq, "procFilterSeq")
+	intern("mapcat-seq__", procMapcatSeq, "procMapcatSeq")
+	intern("concat-seq__", procConcatSeq, "procConcatSeq")
+	intern("every-seq__", procEverySeq, "procEverySeq")
+	intern("some-seq__", procSomeSeq, "procSomeSeq")
+	intern("group-by__", procGroupBy, "procGroupBy")
+	intern("mapv__", procMapv, "procMapv")
+	intern("filterv__", procFilterv, "procFilterv")
+	intern("frequencies__", procFrequencies, "procFrequencies")
+	intern("zipmap__", procZipmap, "procZipmap")
+	intern("select-keys__", procSelectKeys, "procSelectKeys")
+	intern("get-in__", procGetIn, "procGetIn")
+	intern("assoc-in__", procAssocIn, "procAssocIn")
+	intern("update-in__", procUpdateIn, "procUpdateIn")
+	intern("map-multi__", procMapMulti, "procMapMulti")
+	intern("range__", procRange, "procRange")
+	intern("repeat__", procRepeat, "procRepeat")
+	intern("keep__", procKeep, "procKeep")
+	intern("map-indexed__", procMapIndexed, "procMapIndexed")
+	intern("keep-indexed__", procKeepIndexed, "procKeepIndexed")
+	intern("drop__", procDrop, "procDrop")
+	intern("take-while__", procTakeWhile, "procTakeWhile")
+	intern("drop-while__", procDropWhile, "procDropWhile")
+	intern("distinct__", procDistinct, "procDistinct")
+	intern("walk__", procWalk, "procWalk")
+	intern("prewalk__", procPrewalk, "procPrewalk")
+	intern("postwalk__", procPostwalk, "procPostwalk")
 	intern("delay__", procDelay, "procDelay")
 	intern("force__", procForce, "procForce")
 	intern("identical__", procIdentical, "procIdentical")
@@ -70,6 +113,7 @@ func init() {
 	intern("quot__", procQuot, "procQuot")
 	intern("rem__", procRem, "procRem")
 	intern("bit-not__", procBitNot, "procBitNot")
+	intern("bit-count__", procBitCount, "procBitCount")
 	intern("bit-and__", procBitAnd, "procBitAnd")
 	intern("bit-or__", procBitOr, "procBitOr")
 	intern("bit-xor_", procBitXor, "procBitXor")
@@ -182,6 +226,8 @@ func init() {
 	intern("go__", procGo, "procGo")
 	intern("<!__", procReceive, "procReceive")
 	intern(">!__", procSend, "procSend")
+	intern("offer!__", procOffer, "procOffer")
+	intern("poll!__", procPoll, "procPoll")
 	intern("chan__", procCreateChan, "procCreateChan")
 	intern("close!__", procCloseChan, "procCloseChan")
 

@@ -515,23 +515,11 @@
 (defn concat
   "Returns a lazy seq representing the concatenation of the elements in the supplied colls."
   {:added "1.0"}
-  (^Seq [] (lazy-seq nil))
-  (^Seq [^Seqable x] (lazy-seq x))
-  (^Seq [^Seqable x ^Seqable y]
-   (lazy-seq
-    (let [s (seq x)]
-      (if s
-        (cons (first s) (concat (rest s) y))
-        y))))
+  (^Seq [] (concat-seq__))
+  (^Seq [^Seqable x] (concat-seq__ x))
+  (^Seq [^Seqable x ^Seqable y] (concat-seq__ x y))
   (^Seq [^Seqable x ^Seqable y & zs]
-   (let [cat (fn cat [xys zs]
-               (lazy-seq
-                (let [xys (seq xys)]
-                  (if xys
-                    (cons (first xys) (cat (rest xys) zs))
-                    (when zs
-                      (cat (first zs) (next zs)))))))]
-     (cat (concat x y) zs))))
+   (apply concat-seq__ x y zs)))
 
 (defmacro delay
   "Takes a body of expressions and yields a Delay object that will
@@ -880,6 +868,11 @@
   {:added "1.0"}
   ^Int [^Int x] (bit-not__ x))
 
+(defn bit-count
+  "Returns the number of one bits in the 64-bit two's-complement representation of x."
+  {:added "1.0"}
+  ^Int [^Int x] (bit-count__ x))
+
 (defn bit-and
   "Bitwise and"
   {:added "1.0"}
@@ -1076,6 +1069,51 @@
          (recur ret (first ks) (next ks))
          ret)))))
 
+(defn transient
+  "Returns an editable version of a vector, map, or set. Use the returned
+  value of every editing operation; transients are not safe for concurrent use."
+  [^Editable coll] (transient__ coll))
+
+(defn persistent!
+  "Returns a persistent collection and invalidates the transient."
+  [^TransientCollection coll] (persistent!__ coll))
+
+(defn conj!
+  "Adds an item to a transient collection and returns a transient."
+  ([] (transient []))
+  ([^TransientCollection coll] coll)
+  ([^TransientCollection coll x] (conj!__ coll x)))
+
+(defn assoc!
+  "Associates key/value pairs in a transient map or vector. Returns a transient."
+  ([^TransientAssociative coll key val] (assoc!__ coll key val))
+  ([^TransientAssociative coll key val & kvs]
+   (let [ret (assoc!__ coll key val)]
+     (if kvs
+       (if (next kvs)
+         (recur ret (first kvs) (second kvs) (nnext kvs))
+         (throw (ex-info "assoc! expects even number of arguments after map/vector, found odd number" {})))
+       ret))))
+
+(defn dissoc!
+  "Removes keys from a transient map and returns a transient."
+  ([^TransientMapCollection coll key] (dissoc!__ coll key))
+  ([^TransientMapCollection coll key & keys]
+   (let [ret (dissoc!__ coll key)]
+     (if keys (recur ret (first keys) (next keys)) ret))))
+
+(defn disj!
+  "Removes keys from a transient set and returns a transient."
+  ([^TransientSetCollection coll] coll)
+  ([^TransientSetCollection coll key] (disj!__ coll key))
+  ([^TransientSetCollection coll key & keys]
+   (let [ret (disj!__ coll key)]
+     (if keys (recur ret (first keys) (next keys)) ret))))
+
+(defn pop!
+  "Removes the last item from a transient vector and returns the transient."
+  [^TransientVector coll] (pop!__ coll))
+
 (defn find
   "Returns the map entry for key, or nil if key not present."
   {:added "1.0"}
@@ -1085,15 +1123,7 @@
   "Returns a map containing only those entries in map whose key is in keys"
   {:added "1.0"}
   ^Map [^Associative map ^Seqable keyseq]
-  (loop [ret {} keys (seq keyseq)]
-    (if keys
-      (let [entry (find__ map (first keys))]
-        (recur
-         (if entry
-           (conj ret entry)
-           ret)
-         (next keys)))
-      (with-meta ret (meta map)))))
+  (select-keys__ map keyseq))
 
 (defn keys
   "Returns a sequence of the map's keys, in the same order as (seq map)."
@@ -1345,12 +1375,13 @@
 
 (defn ^:private replace-bindings
   [binding-map]
-  (reduce-kv (fn [res k v]
-               (let [c (var-get k)]
-                 (var-set k v)
-                 (assoc res k c)))
-             {}
-             binding-map))
+  (persistent!__
+    (reduce-kv (fn [res k v]
+                 (let [c (var-get k)]
+                   (var-set k v)
+                   (assoc!__ res k c)))
+               (transient__ {})
+               binding-map)))
 
 (defn with-bindings*
   "Takes a map of Var/value pairs. Sets the vars to the corresponding values.
@@ -1537,11 +1568,11 @@
   (^Fn [^Callable f ^Callable g ^Callable h & fs]
    (let [fs (list* f g h fs)]
      (fn
-       ([] (reduce #(conj %1 (%2)) [] fs))
-       ([x] (reduce #(conj %1 (%2 x)) [] fs))
-       ([x y] (reduce #(conj %1 (%2 x y)) [] fs))
-       ([x y z] (reduce #(conj %1 (%2 x y z)) [] fs))
-       ([x y z & args] (reduce #(conj %1 (apply %2 x y z args)) [] fs))))))
+       ([] (persistent!__ (reduce #(conj!__ %1 (%2)) (transient__ []) fs)))
+       ([x] (persistent!__ (reduce #(conj!__ %1 (%2 x)) (transient__ []) fs)))
+       ([x y] (persistent!__ (reduce #(conj!__ %1 (%2 x y)) (transient__ []) fs)))
+       ([x y z] (persistent!__ (reduce #(conj!__ %1 (%2 x y z)) (transient__ []) fs)))
+       ([x y z & args] (persistent!__ (reduce #(conj!__ %1 (apply %2 x y z args)) (transient__ []) fs)))))))
 
 (defn partial
   "Takes a function f and fewer than the normal arguments to f, and
@@ -1572,10 +1603,7 @@
   false."
   {:added "1.0"}
   ^Boolean [^Callable pred ^Seqable coll]
-  (cond
-    (nil? (seq coll)) true
-    (pred (first coll)) (recur pred (next coll))
-    :else false))
+  (every-seq__ pred coll))
 
 (def ^{:tag Boolean
        :doc "Returns false if (pred x) is logical true for every x in
@@ -1591,8 +1619,7 @@
   (some #{:fred} coll)"
   {:added "1.0"}
   [^Callable pred ^Seqable coll]
-  (when (seq coll)
-    (or (pred (first coll)) (recur pred (next coll)))))
+  (some-seq__ pred coll))
 
 (def ^{:tag Boolean
        :doc "Returns false if (pred x) is logical true for any x in coll,
@@ -1609,54 +1636,36 @@
   f should accept number-of-colls arguments."
   {:added "1.0"}
   (^Seq [^Callable f ^Seqable coll]
-   (lazy-seq
-    (when-let [s (seq coll)]
-      (cons (f (first s)) (map f (rest s))))))
+   (map-seq__ f coll))
   (^Seq [^Callable f ^Seqable c1 ^Seqable c2]
-   (lazy-seq
-    (let [s1 (seq c1) s2 (seq c2)]
-      (when (and s1 s2)
-        (cons (f (first s1) (first s2))
-              (map f (rest s1) (rest s2)))))))
+   (map-multi__ f c1 c2))
   (^Seq [^Callable f ^Seqable c1 ^Seqable c2 ^Seqable c3]
-   (lazy-seq
-    (let [s1 (seq c1) s2 (seq c2) s3 (seq c3)]
-      (when (and s1 s2 s3)
-        (cons (f (first s1) (first s2) (first s3))
-              (map f (rest s1) (rest s2) (rest s3)))))))
+   (map-multi__ f c1 c2 c3))
   (^Seq [^Callable f ^Seqable c1 ^Seqable c2 ^Seqable c3 & colls]
-   (let [step (fn step [cs]
-                (lazy-seq
-                 (let [ss (map seq cs)]
-                   (when (every? identity ss)
-                     (cons (map first ss) (step (map rest ss)))))))]
-     (map #(apply f %) (step (conj colls c3 c2 c1))))))
+   (apply map-multi__ f c1 c2 c3 colls)))
 
 (defn mapcat
   "Returns the result of applying concat to the result of applying map
   to f and colls.  Thus function f should return a collection."
   {:added "1.0"}
   ^Seq [^Callable f & colls]
-  (apply concat (apply map f colls)))
+  (if (= 1 (count colls))
+    (mapcat-seq__ f (first colls))
+    (apply concat (apply map f colls))))
 
 (defn filter
   "Returns a lazy sequence of the items in coll for which
   (pred item) returns true. pred must be free of side-effects."
   {:added "1.0"}
   (^Seq [^Callable pred ^Seqable coll]
-   (lazy-seq
-    (when-let [s (seq coll)]
-      (let [f (first s) r (rest s)]
-        (if (pred f)
-          (cons f (filter pred r))
-          (filter pred r)))))))
+   (filter-seq__ pred coll true)))
 
 (defn remove
   "Returns a lazy sequence of the items in coll for which
   (pred item) returns false. pred must be free of side-effects."
   {:added "1.0"}
   ^Seq [^Callable pred ^Seqable coll]
-  (filter (complement pred) coll))
+  (filter-seq__ pred coll false))
 
 (defn take
   "Returns a lazy sequence of the first n items in coll, or all items if
@@ -1665,29 +1674,20 @@
   ^Seq [^Number n ^Seqable coll]
   (lazy-seq
    (when (pos? n)
-     (when-let [s (seq coll)]
-       (cons (first s) (take (dec n) (rest s)))))))
+     (take-seq__ n coll))))
 
 (defn take-while
   "Returns a lazy sequence of successive items from coll while
   (pred item) returns true. pred must be free of side-effects."
   {:added "1.0"}
   ^Seq [^Callable pred ^Seqable coll]
-  (lazy-seq
-   (when-let [s (seq coll)]
-     (when (pred (first s))
-       (cons (first s) (take-while pred (rest s)))))))
+  (take-while__ pred coll))
 
 (defn drop
   "Returns a lazy sequence of all but the first n items in coll."
   {:added "1.0"}
   ^Seq [^Number n ^Seqable coll]
-  (let [step (fn [n coll]
-               (let [s (seq coll)]
-                 (if (and (pos? n) s)
-                   (recur (dec n) (rest s))
-                   s)))]
-    (lazy-seq (step n coll))))
+  (drop__ n coll))
 
 (defn drop-last
   "Return a lazy sequence of all but the last n (default 1) items in coll"
@@ -1710,12 +1710,7 @@
   item for which (pred item) returns logical false."
   {:added "1.0"}
   ^Seq [^Callable pred ^Seqable coll]
-  (let [step (fn [pred coll]
-               (let [s (seq coll)]
-                 (if (and s (pred (first s)))
-                   (recur pred (rest s))
-                   s)))]
-    (lazy-seq (step pred coll))))
+  (drop-while__ pred coll))
 
 (defn cycle
   "Returns a lazy (infinite!) sequence of repetitions of the items in coll."
@@ -1740,8 +1735,8 @@
 (defn repeat
   "Returns a lazy (infinite!, or length n if supplied) sequence of xs."
   {:added "1.0"}
-  (^Seq [x] (lazy-seq (cons x (repeat x))))
-  (^Seq [^Number n x] (take n (repeat x))))
+  (^Seq [x] (repeat__ x))
+  (^Seq [^Number n x] (take n (repeat__ x))))
 
 (defn iterate
   "Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects"
@@ -1754,18 +1749,11 @@
   infinity. When step is equal to 0, returns an infinite sequence of
   start. When start is equal to end, returns empty list."
   {:added "1.0"}
-  (^Seq [] (iterate inc 0))
-  (^Seq [^Number end] (range 0 end 1))
-  (^Seq [^Number start ^Number end] (range start end 1))
+  (^Seq [] (range__))
+  (^Seq [^Number end] (range__ end))
+  (^Seq [^Number start ^Number end] (range__ start end))
   (^Seq [^Number start ^Number end ^Number step]
-   (lazy-seq
-    (let [comp (cond
-                 (or (zero? step) (= start end)) not=
-                 (pos? step) <
-                 (neg? step) >)]
-      (if (comp start end)
-        (cons start (range (+ start step) end step))
-        ())))))
+   (range__ start end step)))
 
 (defn merge
   "Returns a map that consists of the rest of the maps conj-ed onto
@@ -1797,14 +1785,7 @@
   "Returns a map with the keys mapped to the corresponding vals."
   {:added "1.0"}
   ^Map [^Seqable keys ^Seqable vals]
-  (loop [map {}
-         ks (seq keys)
-         vs (seq vals)]
-    (if (and ks vs)
-      (recur (assoc map (first ks) (first vs))
-             (next ks)
-             (next vs))
-      map)))
+  (zipmap__ keys vals))
 
 (defn ^:private line-seq*
   ^"Seq|Nil" [^BufferedReader rdr]
@@ -2211,16 +2192,16 @@
   ^MapSet [^Seqable coll]
   (if (set? coll)
     (with-meta coll nil)
-    (reduce conj #{} coll)))
+    (persistent!__ (reduce conj!__ (transient__ #{}) coll))))
 
 (defn ^:private filter-key
   [keyfn pred amap]
-  (loop [ret {} es (seq amap)]
+  (loop [ret (transient__ {}) es (seq amap)]
     (if es
       (if (pred (keyfn (first es)))
-        (recur (assoc ret (key (first es)) (val (first es))) (next es))
+        (recur (assoc!__ ret (key (first es)) (val (first es))) (next es))
         (recur ret (next es)))
-      ret)))
+      (persistent!__ ret))))
 
 (defn find-ns
   "Returns the namespace named by the symbol or nil if it doesn't exist."
@@ -3012,15 +2993,7 @@
   "Returns a lazy sequence of the elements of coll with duplicates removed."
   {:added "1.0"}
   ^Seq [^Seqable coll]
-  (let [step (fn step [xs seen]
-               (lazy-seq
-                ((fn [[f :as xs] seen]
-                   (when-let [s (seq xs)]
-                     (if (contains? seen f)
-                       (recur (rest s) seen)
-                       (cons f (step (rest s) (conj seen f))))))
-                 xs seen)))]
-    (step coll #{})))
+  (distinct__ coll))
 
 (defn replace
   "Given a map of replacement pairs and a vector/collection, returns a
@@ -3500,17 +3473,9 @@
   is not present, or the not-found value if supplied."
   {:added "1.0"}
   ([m ^Seqable ks]
-   (reduce get m ks))
+   (get-in__ m ks))
   ([m ^Seqable ks not-found]
-   (loop [sentinel {}
-          m m
-          ks (seq ks)]
-     (if ks
-       (let [m (get m (first ks) sentinel)]
-         (if (identical? sentinel m)
-           not-found
-           (recur sentinel m (next ks))))
-       m))))
+   (get-in__ m ks not-found)))
 
 (defn assoc-in
   "Associates a value in a nested associative structure, where ks is a
@@ -3518,10 +3483,7 @@
   If any levels do not exist, hash-maps will be created."
   {:added "1.0"}
   ^Map [^Associative m ^Seqable ks v]
-  (let [[k & ks] ks]
-    (if ks
-      (assoc m k (assoc-in (get m k) ks v))
-      (assoc m k v))))
+  (assoc-in__ m ks v))
 
 (defn update-in
   "'Updates' a value in a nested associative structure, where ks is a
@@ -3531,10 +3493,7 @@
   created."
   {:added "1.0"}
   (^Map [^Associative m ^Seqable ks ^Callable f & args]
-   (let [[k & ks] ks]
-     (if ks
-       (assoc m k (apply update-in (get m k) ks f args))
-       (assoc m k (apply f (get m k) args))))))
+   (apply update-in__ m ks f args)))
 
 (defn update
   "'Updates' a value in an associative structure, where k is a
@@ -3847,7 +3806,11 @@
   from-coll conjoined."
   {:added "1.0"}
   [to from]
-  (reduce conj to from))
+  ;; Use native transient operations: Clojure/CLJS linting replaces the public
+  ;; transient functions with stubs, but macros still execute these builders.
+  (if (instance? Editable to)
+    (with-meta (persistent!__ (reduce conj!__ (transient__ to) from)) (meta to))
+    (reduce conj to from)))
 
 (defmacro case
   "Takes an expression, and a set of clauses.
@@ -3893,22 +3856,20 @@
   f should accept number-of-colls arguments."
   {:added "1.0"}
   (^Vec [^Callable f coll]
-   (reduce (fn [v o] (conj v (f o))) [] coll))
+   (mapv__ f coll))
   (^Vec [^Callable f c1 c2]
-   (into [] (map f c1 c2)))
+   (mapv__ f c1 c2))
   (^Vec [^Callable f c1 c2 c3]
-   (into [] (map f c1 c2 c3)))
+   (mapv__ f c1 c2 c3))
   (^Vec [^Callable f c1 c2 c3 & colls]
-   (into [] (apply map f c1 c2 c3 colls))))
+   (apply mapv__ f c1 c2 c3 colls)))
 
 (defn filterv
   "Returns a vector of the items in coll for which
   (pred item) returns true. pred must be free of side-effects."
   {:added "1.0"}
   ^Vec [^Callable pred coll]
-  (reduce (fn [v o] (if (pred o) (conj v o) v))
-          []
-          coll))
+  (filterv__ pred coll))
 
 (defn slurp
   "Opens file f and reads all its contents, returning a string.
@@ -3942,11 +3903,7 @@
   corresponding elements, in the order they appeared in coll."
   {:added "1.0"}
   ^Map [^Callable f coll]
-  (reduce
-   (fn [ret x]
-     (let [k (f x)]
-       (assoc ret k (conj (get ret k []) x))))
-   {} coll))
+  (group-by__ f coll))
 
 (defn partition-by
   "Applies f to each value in coll, splitting it each time f returns a
@@ -3965,9 +3922,7 @@
   they appear."
   {:added "1.0"}
   ^Map [coll]
-  (reduce (fn [counts x]
-            (assoc counts x (inc (get counts x 0))))
-          {} coll))
+  (frequencies__ coll))
 
 (defn reductions
   "Returns a lazy seq of the intermediate values of the reduction (as
@@ -4005,11 +3960,7 @@
   accept 2 arguments, index and item."
   {:added "1.0"}
   ^Seq [^Callable f ^Seqable coll]
-  (let [mapi (fn mapi [idx coll]
-               (lazy-seq
-                (when-let [s (seq coll)]
-                  (cons (f idx (first s)) (mapi (inc idx) (rest s))))))]
-    (mapi 0 coll)))
+  (map-indexed__ f coll))
 
 (defn keep
   "Returns a lazy sequence of the non-nil results of (f item). Note,
@@ -4017,12 +3968,7 @@
   side-effects."
   {:added "1.0"}
   ^Seq [^Callable f ^Seqable coll]
-  (lazy-seq
-   (when-let [s (seq coll)]
-     (let [x (f (first s))]
-       (if (nil? x)
-         (keep f (rest s))
-         (cons x (keep f (rest s))))))))
+  (keep__ f coll))
 
 (defn keep-indexed
   "Returns a lazy sequence of the non-nil results of (f index item). Note,
@@ -4030,14 +3976,7 @@
   side-effects."
   {:added "1.0"}
   ^Seq [^Callable f ^Seqable coll]
-  (let [keepi (fn keepi [idx coll]
-                (lazy-seq
-                 (when-let [s (seq coll)]
-                   (let [x (f idx (first s))]
-                     (if (nil? x)
-                       (keepi (inc idx) (rest s))
-                       (cons x (keepi (inc idx) (rest s))))))))]
-    (keepi 0 coll)))
+  (keep-indexed__ f coll))
 
 (defn bounded-count
   "If coll is counted? returns its count, else will count at most the first n
@@ -4279,7 +4218,8 @@
   {:added "1.1"}
   ^Map [m ^Callable f]
   (with-meta
-    (reduce-kv (fn [acc k v] (assoc acc (f k) v)) {} m)
+    (persistent!__
+      (reduce-kv (fn [acc k v] (assoc!__ acc (f k) v)) (transient__ {}) m))
     (meta m)))
 
 (defn update-vals
@@ -4289,7 +4229,8 @@
   {:added "1.1"}
   ^Map [m ^Callable f]
   (with-meta
-    (reduce-kv (fn [acc k v] (assoc acc k (f v))) {} m)
+    (persistent!__
+      (reduce-kv (fn [acc k v] (assoc!__ acc k (f v))) (transient__ {}) m))
     (meta m)))
 
 (defn joker-version
@@ -4465,13 +4406,17 @@
   joker.os/sh*, joker.os/exec, and joker.time/sleep) release the GIL and allow other goroutines to run.
   So using goroutines only makes sense if you do I/O (specifically, calling the above functions)
   inside them. Also, note that a goroutine may never have a chance to run if the root goroutine
-  (or another goroutine) doesn't do any I/O or channel operations (<! or >!)."
+  (or another goroutine) doesn't do any I/O or blocking channel operations (<! or >!).
+  Nonblocking offer! and poll! do not release the GIL; busy polling can prevent
+  other Joker goroutines from running."
   {:added "1.0"}
   [& body]
   `(go__ (fn [] ~@body)))
 
 (defn chan
-  "Returns a new channel with an optional buffer of size n."
+  "Returns a new channel with an optional fixed-size FIFO buffer of size n.
+  n must be a non-negative integer. With no argument or n = 0, the channel
+  is unbuffered."
   {:added "1.0"}
   (^Channel [] (chan__ 0))
   (^Channel [^Int n] (chan__ n)))
@@ -4492,6 +4437,26 @@
   {:added "1.0"}
   ^Boolean [^Channel ch val]
   (>!__ ch val))
+
+(defn offer!
+  "Puts val into ch without blocking.
+  Returns true if the value is accepted, or false if ch is closed or the put
+  cannot complete immediately. On an unbuffered channel, a taker must be ready.
+  Throws an exception if val is nil, even if ch is closed.
+  Does not release the GIL or allow other Joker goroutines to run."
+  {:added "1.10"}
+  ^Boolean [^Channel ch val]
+  (offer!__ ch val))
+
+(defn poll!
+  "Takes an immediately available value from ch without blocking.
+  Returns nil if nothing is available, including when ch is closed and drained.
+  On an unbuffered channel, a put must be ready.
+  Rethrows exceptions delivered by a go result channel, like <!.
+  Does not release the GIL or allow other Joker goroutines to run."
+  {:added "1.10"}
+  [^Channel ch]
+  (poll!__ ch))
 
 (defn close!
   "Closes a channel. The channel will no longer accept any puts (they

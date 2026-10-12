@@ -11,11 +11,9 @@ import (
 
 type (
 	Expr interface {
-		Eval(env *LocalEnv) Object
 		InferValue(env *InferEnv) InferredValue
 		Pos() Position
 		Dump(includePosition bool) Map
-		Pack(p []byte, env *PackEnv) []byte
 	}
 	LiteralExpr struct {
 		Position
@@ -94,17 +92,22 @@ type (
 	}
 	FnExpr struct {
 		Position
-		arities  []FnArityExpr
-		variadic *FnArityExpr
-		self     Symbol
-		summary  *FnSummary
+		arities     []FnArityExpr
+		variadic    *FnArityExpr
+		self        Symbol
+		selfBinding *Binding
+		summary     *FnSummary
+		// diagnosticName is inferred from a definition or local initializer.
+		// Unlike self, it never introduces a lexical binding.
+		diagnosticName string
 	}
 	LetExpr struct {
 		Position
-		names    []Symbol
-		bindings []*Binding
-		values   []Expr
-		body     []Expr
+		recursive bool // letfn: allocate all bindings before evaluating initializers
+		names     []Symbol
+		bindings  []*Binding
+		values    []Expr
+		body      []Expr
 	}
 	LoopExpr  LetExpr
 	ThrowExpr struct {
@@ -115,6 +118,7 @@ type (
 		Position
 		excType   *Type
 		excSymbol Symbol
+		binding   *Binding
 		body      []Expr
 	}
 	TryExpr struct {
@@ -308,41 +312,6 @@ func (b *Bindings) ToMap() Map {
 		b = b.parent
 	}
 	return res
-}
-
-func (localEnv *LocalEnv) addEmptyFrame(capacity int) *LocalEnv {
-	res := LocalEnv{
-		bindings: make([]Object, 0, capacity),
-		parent:   localEnv,
-	}
-	if localEnv != nil {
-		res.frame = localEnv.frame + 1
-	}
-	return &res
-}
-
-func (localEnv *LocalEnv) addBinding(obj Object) {
-	localEnv.bindings = append(localEnv.bindings, obj)
-}
-
-func (localEnv *LocalEnv) addFrame(values []Object) *LocalEnv {
-	res := LocalEnv{
-		bindings: values,
-		parent:   localEnv,
-	}
-	if localEnv != nil {
-		res.frame = localEnv.frame + 1
-	}
-	return &res
-}
-
-func (localEnv *LocalEnv) replaceFrame(values []Object) *LocalEnv {
-	res := LocalEnv{
-		bindings: values,
-		parent:   localEnv.parent,
-		frame:    localEnv.frame,
-	}
-	return &res
 }
 
 func (ctx *ParseContext) PushLoopBindings(bindings []Symbol) {
@@ -713,6 +682,11 @@ func GetPosition(obj Object) Position {
 func updateVar(vr *Var, info *ObjectInfo, valueExpr Expr, sym Symbol) {
 	vr.WithInfo(info)
 	vr.expr = valueExpr
+	vr.hasDefinition = valueExpr != nil
+	vr.fnSummary = nil
+	vr.inferredTypes = nil
+	vr.inferredUnknown = false
+	vr.hasInferredValue = false
 	meta := sym.GetMeta()
 	if meta != nil {
 		if ok, p := meta.Get(KEYWORDS.private); ok {
@@ -743,7 +717,7 @@ func checkReturnType(vr *Var, valueExpr Expr) {
 		returnExpr := arity.body[len(arity.body)-1]
 		returnedValue := returnExpr.InferValue(newInferEnv())
 		if !returnedValue.unknown && len(returnedValue.types) != 0 && !inferredTypesCompatible(vr.taggedTypes, returnedValue.types) {
-			printParseWarning(returnExpr.Pos(), fmt.Sprintf("return value of %s must have type %s, got %s", vr.name.ToString(false), inferredTypesString(vr.taggedTypes), inferredTypesString(returnedValue.types)))
+			printParseWarning(returnExpr.Pos(), fmt.Sprintf("return value of %s must have type %s, got %s", fnExpr.functionName(), inferredTypesString(vr.taggedTypes), inferredTypesString(returnedValue.types)))
 		}
 	}
 	for i := range fnExpr.arities {
@@ -801,6 +775,7 @@ func parseDef(obj Object, ctx *ParseContext, isForLinter bool) *DefExpr {
 				panic(&ParseError{obj: docstring, msg: "Docstring must be a string"})
 			}
 		}
+		inferFnDiagnosticName(res.value, vr.Name())
 		updateVar(vr, obj.GetInfo(), res.value, sym)
 		checkReturnType(vr, res.value)
 		if meta != nil {
@@ -960,6 +935,32 @@ func addArity(fn *FnExpr, sig Seq, ctx *ParseContext) {
 	}
 }
 
+// functionName is shared by runtime prototypes and linter diagnostics.
+func (expr *FnExpr) functionName() string {
+	if expr.self.name != nil {
+		return expr.self.Name()
+	}
+	if expr.diagnosticName != "" {
+		return expr.diagnosticName
+	}
+	return "<anonymous>"
+}
+
+// Name only newly parsed function expressions, not aliases or functions returned
+// by calls. Metadata wrappers do not change the identity of the initializer.
+func inferFnDiagnosticName(expr Expr, name string) {
+	for {
+		meta, ok := expr.(*MetaExpr)
+		if !ok {
+			break
+		}
+		expr = meta.expr
+	}
+	if fn, ok := expr.(*FnExpr); ok && fn.diagnosticName == "" {
+		fn.diagnosticName = name
+	}
+}
+
 func wrapWithMeta(fnExpr *FnExpr, obj Object, ctx *ParseContext) Expr {
 	meta := obj.(Meta).GetMeta()
 	if meta != nil {
@@ -986,7 +987,7 @@ func parseFn(obj Object, ctx *ParseContext) Expr {
 		res.self = p.(Symbol)
 		bodies = bodies.Rest()
 		p = bodies.First()
-		ctx.PushLocalFrame([]Symbol{res.self})
+		res.selfBinding = ctx.PushLocalFrame([]Symbol{res.self})[0]
 		defer ctx.PopLocalFrame()
 	}
 	if IsVector(p) { // single arity
@@ -1047,12 +1048,13 @@ func parseCatch(obj Object, ctx *ParseContext) *CatchExpr {
 	if !IsSymbol(excSymbol) {
 		panic(&ParseError{obj: excSymbol, msg: "Bad binding form, expected symbol, got: " + excSymbol.ToString(false)})
 	}
-	ctx.PushLocalFrame([]Symbol{excSymbol.(Symbol)})
+	bindings := ctx.PushLocalFrame([]Symbol{excSymbol.(Symbol)})
 	defer ctx.PopLocalFrame()
 	return &CatchExpr{
 		Position:  GetPosition(obj),
 		excType:   excType,
 		excSymbol: excSymbol.(Symbol),
+		binding:   bindings[0],
 		body:      parseBody(seq.Rest().Rest(), ctx),
 	}
 }
@@ -1116,8 +1118,8 @@ func parseLoop(obj Object, ctx *ParseContext) *LoopExpr {
 	return (*LoopExpr)(parseLetLoop(obj, "loop", ctx))
 }
 
-func parseLetfn(obj Object, ctx *ParseContext) *LoopExpr {
-	return (*LoopExpr)(parseLetLoop(obj, "letfn", ctx))
+func parseLetfn(obj Object, ctx *ParseContext) *LetExpr {
+	return parseLetLoop(obj, "letfn", ctx)
 }
 
 func isSkipUnused(obj Meta) bool {
@@ -1131,7 +1133,8 @@ func isSkipUnused(obj Meta) bool {
 
 func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 	res := &LetExpr{
-		Position: GetPosition(obj),
+		Position:  GetPosition(obj),
+		recursive: formName == "letfn",
 	}
 	bindings := Second(obj.(Seq))
 	switch b := bindings.(type) {
@@ -1173,6 +1176,7 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 			}
 			if formName != "letfn" {
 				res.values[i] = Parse(b.At(i*2+1), ctx)
+				inferFnDiagnosticName(res.values[i], res.names[i].ToString(false))
 			}
 			res.bindings[i] = ctx.localBindings.AddBinding(res.names[i], i, skipUnused)
 			res.bindings[i].valueExpr = res.values[i]
@@ -1181,6 +1185,7 @@ func parseLetLoop(obj Object, formName string, ctx *ParseContext) *LetExpr {
 		if formName == "letfn" {
 			for i := 0; i < cnt/2; i++ {
 				res.values[i] = Parse(b.At(i*2+1), ctx)
+				inferFnDiagnosticName(res.values[i], res.names[i].ToString(false))
 				res.bindings[i].valueExpr = res.values[i]
 			}
 		}
@@ -1331,7 +1336,7 @@ func macroexpand1(seq Seq, ctx *ParseContext) Object {
 			args:     ToSlice(seq.Rest().Cons(ctx.localBindings.ToMap()).Cons(seq)),
 			name:     varCallableString(vr),
 		}
-		return fixInfo(Eval(expr, nil), seq.GetInfo())
+		return fixInfo(Evaluate(expr), seq.GetInfo())
 	} else {
 		return seq
 	}
@@ -1395,6 +1400,20 @@ func selectArity(expr *FnExpr, passedArgsCount int) *FnArityExpr {
 	return nil
 }
 
+func printArityWarning(pos Position, arity *ArityError, isMacro bool) {
+	if isMacro {
+		// Macro implementations accept implicit &form and &env arguments.
+		arity.Actual -= 2
+		for i := range arity.Fixed {
+			arity.Fixed[i] -= 2
+		}
+		if arity.VariadicMin >= 0 {
+			arity.VariadicMin -= 2
+		}
+	}
+	printParseWarning(pos, arity.Error())
+}
+
 func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos Position) bool {
 	passedArgsCount := len(call.args)
 	if isMacro {
@@ -1403,7 +1422,19 @@ func reportWrongArity(expr *FnExpr, isMacro bool, call *CallExpr, pos Position) 
 	if v := selectArity(expr, passedArgsCount); v != nil {
 		return false
 	}
-	printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(call.args), call.Name()))
+	printArityWarning(pos, newFnExprArityError(expr, passedArgsCount), isMacro)
+	return true
+}
+
+func reportWrongSummaryArity(summary *FnSummary, isMacro bool, call *CallExpr, pos Position) bool {
+	passedArgsCount := len(call.args)
+	if isMacro {
+		passedArgsCount += 2
+	}
+	if summary.selectArity(passedArgsCount) != nil {
+		return false
+	}
+	printArityWarning(pos, newFnSummaryArityError(summary, passedArgsCount), isMacro)
 	return true
 }
 
@@ -1437,7 +1468,13 @@ func parseSetMacro(obj Object, ctx *ParseContext) Expr {
 			res := &SetMacroExpr{
 				vr: vr,
 			}
-			res.Eval(nil)
+			// This is parser bookkeeping, not execution of a user expression.
+			res.vr.isMacro = true
+			res.vr.isUsed = false
+			if fn, ok := res.vr.Value.(*Fn); ok {
+				fn.isMacro = true
+			}
+			setMacroMeta(res.vr)
 			return res
 		}
 	}
@@ -1484,7 +1521,7 @@ func isUnknownCallable(expr Expr) (bool, Seq) {
 		if b {
 			return b, s
 		}
-		if c.vr.expr != nil {
+		if c.vr.expr != nil || c.vr.hasDefinition {
 			return false, nil
 		}
 		if sym.ns == nil && c.vr.isFake && c.vr.ns != GLOBAL_ENV.CoreNamespace {
@@ -1540,16 +1577,18 @@ func getInNsVar(ctx *ParseContext) *Var {
 
 func checkCall(expr Expr, isMacro bool, call *CallExpr, pos Position) {
 	argsCount := len(call.args)
+	if summary, _ := callableFnSummary(expr, argsCount); summary != nil {
+		reportWrongSummaryArity(summary, isMacro, call, pos)
+		return
+	}
 	switch expr := expr.(type) {
-	case *FnExpr:
-		reportWrongArity(expr, isMacro, call, pos)
 	case *MapExpr:
 		if argsCount == 0 || argsCount > 2 {
-			printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to a map", argsCount))
+			printArityWarning(pos, &ArityError{Actual: argsCount, Fixed: []int{1, 2}, VariadicMin: -1, name: "a map"}, false)
 		}
 	case *SetExpr:
 		if argsCount == 0 || argsCount > 1 {
-			printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to a set", argsCount))
+			printArityWarning(pos, &ArityError{Actual: argsCount, Fixed: []int{1}, VariadicMin: -1, name: "a set"}, false)
 		}
 	case *LiteralExpr:
 		if _, ok := expr.obj.(Callable); !ok && !expr.isSurrogate {
@@ -1559,7 +1598,7 @@ func checkCall(expr Expr, isMacro bool, call *CallExpr, pos Position) {
 		switch expr.obj.(type) {
 		case Keyword:
 			if argsCount == 0 || argsCount > 2 {
-				printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", argsCount, call.Name()))
+				printArityWarning(pos, &ArityError{Actual: argsCount, Fixed: []int{1, 2}, VariadicMin: -1, name: call.Name()}, false)
 			}
 		}
 	case *RecurExpr:
@@ -1597,7 +1636,7 @@ func checkCallableArglist(vr *Var, call *CallExpr, pos Position) {
 		return
 	}
 	if !checkArglist(arglistSeq, len(call.args)) {
-		printParseWarning(pos, fmt.Sprintf("Wrong number of args (%d) passed to %s", len(call.args), call.Name()))
+		printArityWarning(pos, newArglistArityError(arglistSeq, len(call.args), call.diagnosticFunctionName()), false)
 	}
 }
 
@@ -1610,18 +1649,33 @@ func checkLinterCall(call *CallExpr, ctx *ParseContext, pos Position) {
 	}
 	vr := vrExpr.vr
 	if vr.Value == nil {
-		checkCall(vr.expr, vr.isMacro, call, pos)
+		if vr.fnSummary != nil {
+			reportWrongSummaryArity(vr.fnSummary, vr.isMacro, call, pos)
+		} else {
+			checkCall(vr.expr, vr.isMacro, call, pos)
+		}
 		checkInferredCall(call)
 		return
 	}
 	switch f := vr.Value.(type) {
 	case *Fn:
-		if reportWrongArity(f.fnExpr, vr.isMacro, call, pos) {
-			return
+		if f.fnExpr != nil {
+			if reportWrongArity(f.fnExpr, vr.isMacro, call, pos) {
+				return
+			}
+		} else if f.proto != nil {
+			passedArgsCount := len(call.args)
+			if vr.isMacro {
+				passedArgsCount += 2
+			}
+			if selectArityProto(f.proto, passedArgsCount) == nil {
+				printArityWarning(pos, newArityError(f.proto, passedArgsCount), vr.isMacro)
+				return
+			}
 		}
 		typeMismatch := checkInferredCall(call)
 		if !typeMismatch && shouldEvalLiteralLinterCall(vr, call, ctx) {
-			Eval(call, nil)
+			Evaluate(call)
 		}
 	case Callable:
 		checkCallableArglist(vr, call, pos)

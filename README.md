@@ -48,6 +48,46 @@ in which case drops into the REPL after the expression is (successfully) execute
 
 `joker --format -` - read Clojure source code from standard input, format it and print the result to standard output.
 
+`joker --task [<name>] [<args>...]` - run task from tasks file (default `tasks.joke`). See [Task runner](#task-runner) for more details.
+
+`joker --list-tasks` (or `--tasks`) - list available tasks with descriptions from tasks file.
+
+### Task runner
+
+Joker can run project tasks defined as public functions in a `tasks.joke` file in the current directory. Put them in the `tasks` namespace; no special macro or registration is needed. Private functions (defined with `defn-`) can be used as helpers without appearing in the task list. For example:
+
+```clojure
+(ns tasks)
+
+(defn greet
+  "Greet one or more people"
+  [& names]
+  (println (str "Hello, " (joker.string/join ", " names) "!")))
+
+(defn default
+  "Run the default task"
+  []
+  (greet "world"))
+```
+
+Run `joker --task greet Alice Bob` to call `greet` with two string arguments, or `joker --task` to call the function named `default` with no arguments. Arguments after the task name are passed directly to the function as strings, not interpreted as Joker options. Use `joker --list-tasks` (or `joker --tasks`) to list public tasks with the first line of each function's docstring. The tasks file is evaluated before either running or listing tasks, so avoid putting task actions at the top level.
+
+To use another file, put `--task-file <filename>` (or `--tasks-file <filename>`) before `--task`, for example `joker --task-file build.joke --task greet Alice`. An integer return value from a task becomes Joker's exit code; other return values indicate success (exit code 0). An error causes a nonzero exit code.
+
+Task names can clash with functions automatically referred from `joker.core`. In particular, `test` is already a core function. To define a `test` task without a warning about replacing `joker.core/test`, exclude it in the namespace declaration:
+
+```clojure
+(ns tasks
+  (:refer-clojure :exclude [test]))
+
+(defn test
+  "Run tests"
+  []
+  (println "Running tests"))
+```
+
+This works both when running tasks and when linting `tasks.joke`. A top-level `(ns-unmap 'tasks 'test)` works at runtime, but does not suppress the linter warning because the linter does not execute ordinary top-level function calls.
+
 ## Documentation
 
 [Standard library reference](https://candid82.github.io/joker/)
@@ -60,7 +100,7 @@ Dash docset: `dash-feed://https%3A%2F%2Fraw.githubusercontent.com%2Fcandid82%2Fj
 
 [Organizing libraries (namespaces)](LIBRARIES.md)
 
-[Developer notes](DEVELOPER.md)
+[Developer notes](DEVELOPER.md) · [VM implementation status](VM.md)
 
 ## Project goals
 
@@ -81,7 +121,7 @@ There is [Sublime Text plugin](https://github.com/candid82/sublime-pretty-edn) t
 
 ## Project Non-goals
 
-- Performance. If you need it, use Clojure. Joker is a naive implementation of an interpreter that evaluates unoptimized AST directly. I may be interested in doing some basic optimizations but this is definitely not a priority.
+- Performance. If you need it, use Clojure. Joker executes bytecode by default, but high-performance execution is not a primary goal. See [VM implementation status](VM.md).
 - Have all Clojure features. Some features are impossible to implement due to a different host language (Go vs Java), others I don't find that important for the use cases I have in mind for Joker. But generally Clojure is a pretty large language at this point and it is simply unfeasible to reach feature parity with it, even with naive implementation.
 
 ## Differences with Clojure
@@ -120,7 +160,14 @@ Note that `Nil` is a type that has one value: `nil`.
 
 3. Joker doesn't have the same level of interoperability with the host language (Go) as Clojure does with Java or ClojureScript does with JavaScript. It doesn't have access to arbitrary Go types and functions. There is only a small fixed set of built-in types and interfaces. Dot notation for calling methods is not supported (as there are no methods). All Java/JVM specific functionality of Clojure is not implemented for obvious reasons.
 4. Joker is single-threaded with no support for parallelism. Therefore no refs, agents, futures, promises, locks, volatiles, transactions, `p*` functions that use multiple threads. Vars always have just one "root" binding. Joker does have core.async style support for concurrency. See `go` macro [documentation](https://candid82.github.io/joker/joker.core.html#go) for details.
-5. The following features are not implemented: protocols, records, structmaps, chunked seqs, transients, tagged literals, unchecked arithmetics, primitive arrays, custom data readers, transducers, validators and watch functions for vars and atoms, hierarchies, sorted maps and sets.
+5. The following features are not implemented: protocols, records, structmaps, chunked seqs, tagged literals, unchecked arithmetics, primitive arrays, custom data readers, transducers, validators and watch functions for vars and atoms, hierarchies, sorted maps and sets.
+
+   Transients are supported for vectors, maps, and sets via `transient`, `persistent!`, `conj!`, `assoc!`, `dissoc!`, `disj!`, and `pop!`. Use the value returned by each editing operation (a small map can become a hash map), and do not use a transient after calling `persistent!`. Transients are intended for use within a single goroutine; Joker does not enforce goroutine ownership.
+
+   ```clojure
+   (persistent! (reduce conj! (transient []) (range 100)))
+   ```
+
 6. Unrelated to the features listed above, the following function from clojure.core namespace are not currently implemented but will probably be implemented in some form in the future: `subseq`, `iterator-seq`, `reduced?`, `reduced`, `mix-collection-hash`, `definline`, `re-groups`, `hash-ordered-coll`, `enumeration-seq`, `compare-and-set!`, `rationalize`, `load-reader`, `find-keyword`, `comparator`, `resultset-seq`, `file-seq`, `sorted?`, `ensure-reduced`, `rsubseq`, `pr-on`, `seque`, `alter-var-root`, `hash-unordered-coll`, `re-matcher`, `unreduced`.
 7. Built-in namespaces have `joker` prefix. The core namespace is called `joker.core`. Other built-in namespaces include `joker.string`, `joker.json`, `joker.os`, `joker.base64` etc. See [standard library reference](https://candid82.github.io/joker/) for details.
 8. Joker doesn't support AOT compilation and `(-main)` entry point as Clojure does. It simply reads s-expressions from the file and executes them sequentially. If you want some code to be executed only if the file it's in is passed as `joker` argument but not if it's loaded from other files, use `(when (= *main-file* *file*) ...)` idiom. See https://github.com/candid82/joker/issues/277 for details.
@@ -318,7 +365,7 @@ You might also want to try [cljf](https://github.com/candid82/cljf). Its formatt
 
 ## Building
 
-Joker requires Go v1.25.0 or later.
+Joker requires Go v1.27.0 or later.
 Below commands should get you up and running.
 
 ```

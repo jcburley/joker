@@ -9,21 +9,25 @@ type InferredValue struct {
 }
 
 type FnSummary struct {
-	fn        *FnExpr
-	analyzing bool
-	analyzed  bool
-	arities   []*FnAritySummary
-	variadic  *FnAritySummary
+	// Retained when compact summaries discard the function's AST.
+	diagnosticName string
+	fn             *FnExpr
+	analyzing      bool
+	analyzed       bool
+	arities        []*FnAritySummary
+	variadic       *FnAritySummary
 }
 
 type FnAritySummary struct {
-	arity            *FnArityExpr
-	variadic         bool
-	returnUnknown    bool
-	returnTypes      []*Type
-	returnArgDeps    []bool
-	inferredArgTypes [][]*Type
-	declaredArgTypes [][]*Type
+	arity               *FnArityExpr
+	argCount            int
+	variadic            bool
+	returnUnknown       bool
+	returnTypes         []*Type
+	returnArgDeps       []bool
+	inferredArgTypes    [][]*Type
+	declaredArgTypes    [][]*Type
+	declaredReturnTypes []*Type
 }
 
 type InferEnv struct {
@@ -301,7 +305,10 @@ func (expr *VarRefExpr) InferValue(env *InferEnv) InferredValue {
 	}
 	if expr.vr.Value != nil {
 		if fn, ok := expr.vr.Value.(*Fn); ok {
-			return fnInferredValue(fn.fnExpr)
+			if fn.fnExpr != nil {
+				return fnInferredValue(fn.fnExpr)
+			}
+			return typeInferredValue(TYPE.Fn)
 		}
 		if _, ok := expr.vr.Value.(Callable); ok {
 			return typeInferredValue(expr.vr.Value.GetType())
@@ -312,6 +319,9 @@ func (expr *VarRefExpr) InferValue(env *InferEnv) InferredValue {
 	}
 	if expr.vr.expr != nil {
 		return expr.vr.expr.InferValue(env)
+	}
+	if expr.vr.hasInferredValue {
+		return InferredValue{unknown: expr.vr.inferredUnknown, types: expr.vr.inferredTypes}
 	}
 	if len(expr.vr.taggedTypes) != 0 {
 		return typesInferredValue(expr.vr.taggedTypes)
@@ -394,9 +404,12 @@ func callableFnSummary(callable Expr, passedArgsCount int) (*FnSummary, *FnArity
 		if callable.vr == nil {
 			return nil, nil
 		}
-		if fn, ok := callable.vr.Value.(*Fn); ok {
+		if fn, ok := callable.vr.Value.(*Fn); ok && fn.fnExpr != nil {
 			summary := getFnSummary(fn.fnExpr)
 			return summary, summary.selectArity(passedArgsCount)
+		}
+		if callable.vr.fnSummary != nil {
+			return callable.vr.fnSummary, callable.vr.fnSummary.selectArity(passedArgsCount)
 		}
 		if callable.vr.expr != nil {
 			return callableFnSummary(callable.vr.expr, passedArgsCount)
@@ -467,7 +480,12 @@ func declaredArgTypesForCallable(callable Expr, passedArgsCount int) [][]*Type {
 		return declaredArgTypesForCallable(callable.expr, passedArgsCount)
 	case *VarRefExpr:
 		if callable.vr != nil {
-			if _, ok := callable.vr.Value.(*Fn); ok {
+			if fn, ok := callable.vr.Value.(*Fn); ok {
+				if fn.fnExpr == nil && fn.proto != nil {
+					if arity := selectArityProto(fn.proto, passedArgsCount); arity != nil {
+						return arity.ArgTypes
+					}
+				}
 				return nil
 			}
 			if _, ok := callable.vr.expr.(*FnExpr); ok {
@@ -492,15 +510,29 @@ func declaredReturnTypes(callable Expr, passedArgsCount int) []*Type {
 			return nil
 		}
 		if fn, ok := callable.vr.Value.(*Fn); ok {
-			if arity := selectActualArity(fn.fnExpr, passedArgsCount); arity != nil && len(arity.taggedTypes) != 0 {
-				return arity.taggedTypes
+			if fn.fnExpr != nil {
+				if arity := selectActualArity(fn.fnExpr, passedArgsCount); arity != nil && len(arity.taggedTypes) != 0 {
+					return arity.taggedTypes
+				}
 			}
 		}
 		if len(callable.vr.taggedTypes) != 0 {
 			return callable.vr.taggedTypes
 		}
+		if callable.vr.fnSummary != nil {
+			if arity := callable.vr.fnSummary.selectArity(passedArgsCount); arity != nil && len(arity.declaredReturnTypes) != 0 {
+				return arity.declaredReturnTypes
+			}
+		}
 		if callable.vr.expr != nil {
-			return declaredReturnTypes(callable.vr.expr, passedArgsCount)
+			if types := declaredReturnTypes(callable.vr.expr, passedArgsCount); len(types) != 0 {
+				return types
+			}
+		}
+		if fn, ok := callable.vr.Value.(*Fn); ok && fn.proto != nil {
+			if arity := selectArityProto(fn.proto, passedArgsCount); arity != nil && len(arity.TaggedTypes) != 0 {
+				return arity.TaggedTypes
+			}
 		}
 	case *FnExpr:
 		if arity := selectActualArity(callable, passedArgsCount); arity != nil && len(arity.taggedTypes) != 0 {
@@ -568,13 +600,23 @@ func getFnSummary(fn *FnExpr) *FnSummary {
 	return fn.summary
 }
 
+func (summary *FnSummary) functionName() string {
+	if summary.fn != nil {
+		return summary.fn.functionName()
+	}
+	if summary.diagnosticName != "" {
+		return summary.diagnosticName
+	}
+	return "<anonymous>"
+}
+
 func (summary *FnSummary) selectArity(passedArgsCount int) *FnAritySummary {
 	for _, arity := range summary.arities {
-		if len(arity.arity.args) == passedArgsCount {
+		if arity.argCount == passedArgsCount {
 			return arity
 		}
 	}
-	if summary.variadic != nil && passedArgsCount >= len(summary.variadic.arity.args)-1 {
+	if summary.variadic != nil && passedArgsCount >= summary.variadic.argCount-1 {
 		return summary.variadic
 	}
 	return nil
@@ -610,13 +652,15 @@ func inferFnArity(arity *FnArityExpr, variadic bool) *FnAritySummary {
 		value = unknownInferredValue()
 	}
 	res := &FnAritySummary{
-		arity:            arity,
-		variadic:         variadic,
-		returnUnknown:    value.unknown,
-		returnTypes:      value.types,
-		returnArgDeps:    returnArgDeps(arity.body, arity.bindings),
-		inferredArgTypes: make([][]*Type, len(arity.args)),
-		declaredArgTypes: make([][]*Type, len(arity.args)),
+		arity:               arity,
+		argCount:            len(arity.args),
+		variadic:            variadic,
+		returnUnknown:       value.unknown,
+		returnTypes:         value.types,
+		returnArgDeps:       returnArgDeps(arity.body, arity.bindings),
+		inferredArgTypes:    make([][]*Type, len(arity.args)),
+		declaredArgTypes:    make([][]*Type, len(arity.args)),
+		declaredReturnTypes: arity.taggedTypes,
 	}
 	for _, taggedType := range arity.taggedTypes {
 		res.returnTypes = addType(res.returnTypes, taggedType)
@@ -631,6 +675,31 @@ func inferFnArity(arity *FnArityExpr, variadic bool) *FnAritySummary {
 		res.inferredArgTypes[len(arity.args)-1] = nil
 		res.declaredArgTypes[len(arity.args)-1] = nil
 	}
+	return res
+}
+
+func compactFnSummary(fn *FnExpr) *FnSummary {
+	summary := getFnSummary(fn)
+	compactArity := func(src *FnAritySummary) *FnAritySummary {
+		if src == nil {
+			return nil
+		}
+		return &FnAritySummary{
+			argCount:            src.argCount,
+			variadic:            src.variadic,
+			returnUnknown:       src.returnUnknown,
+			returnTypes:         src.returnTypes,
+			returnArgDeps:       src.returnArgDeps,
+			inferredArgTypes:    src.inferredArgTypes,
+			declaredArgTypes:    src.declaredArgTypes,
+			declaredReturnTypes: src.declaredReturnTypes,
+		}
+	}
+	res := &FnSummary{diagnosticName: summary.functionName(), analyzed: true, arities: make([]*FnAritySummary, len(summary.arities))}
+	for i, arity := range summary.arities {
+		res.arities[i] = compactArity(arity)
+	}
+	res.variadic = compactArity(summary.variadic)
 	return res
 }
 
@@ -711,9 +780,58 @@ func shouldCheckInferredSummary(expr Expr) bool {
 	return false
 }
 
+// Resolve function identity without changing CallExpr.Name, which describes the
+// call site used by native errors and stack traces. Unknown/native callables
+// retain that call-site name.
+func (call *CallExpr) diagnosticFunctionName() string {
+	if name := callableFunctionName(call.callable); name != "" {
+		return name
+	}
+	return call.Name()
+}
+
+func callableFunctionName(expr Expr) string {
+	seen := make(map[Expr]bool)
+	for expr != nil && !seen[expr] {
+		seen[expr] = true
+		switch e := expr.(type) {
+		case *FnExpr:
+			return e.functionName()
+		case *MetaExpr:
+			expr = e.expr
+			continue
+		case *BindingExpr:
+			if e.binding != nil {
+				expr = e.binding.valueExpr
+				continue
+			}
+		case *VarRefExpr:
+			if e.vr != nil {
+				if fn, ok := e.vr.Value.(*Fn); ok {
+					if fn.proto != nil {
+						return fn.proto.Name
+					}
+					if fn.fnExpr != nil {
+						return fn.fnExpr.functionName()
+					}
+				}
+				if e.vr.fnSummary != nil {
+					return e.vr.fnSummary.functionName()
+				}
+				expr = e.vr.expr
+				continue
+			}
+		}
+		return ""
+	}
+	return ""
+}
+
 func checkInferredCall(call *CallExpr) bool {
 	_, arity := callableFnSummary(call.callable, len(call.args))
+	name := call.diagnosticFunctionName()
 	res := false
+	warned := make(map[string]bool)
 	checkExpected := func(expected [][]*Type) {
 		for i, expectedTypes := range expected {
 			if len(expectedTypes) == 0 || i >= len(call.args) {
@@ -721,8 +839,13 @@ func checkInferredCall(call *CallExpr) bool {
 			}
 			passedValue := call.args[i].InferValue(newInferEnv())
 			if !passedValue.unknown && len(passedValue.types) != 0 && !inferredTypesCompatible(expectedTypes, passedValue.types) {
-				printParseWarning(call.args[i].Pos(), fmt.Sprintf("arg[%d] of %s must have type %s, got %s", i, call.Name(), inferredTypesString(expectedTypes), inferredTypesString(passedValue.types)))
-				res = true
+				expectedString := inferredTypesString(expectedTypes)
+				key := fmt.Sprintf("%d:%s", i, expectedString)
+				if !warned[key] {
+					printParseWarning(call.args[i].Pos(), fmt.Sprintf("arg[%d] of %s must have type %s, got %s", i, name, expectedString, inferredTypesString(passedValue.types)))
+					warned[key] = true
+					res = true
+				}
 			}
 		}
 	}

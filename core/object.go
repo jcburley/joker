@@ -1,5 +1,5 @@
-//go:generate go run gen/gen_types.go assert Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
-//go:generate go run gen/gen_types.go info *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
+//go:generate go run gen/gen_types.go assert *TransientVector Editable TransientCollection TransientAssociative TransientMapCollection TransientSetCollection Comparable Vec Char String Symbol Keyword *Regex Boolean Time Number Seqable Callable *Type Meta Int Double Stack Map Set Associative Reversible Named Comparator *Ratio *BigFloat *BigInt *Namespace *Var Error *Fn Deref *Atom Ref KVReduce Reduce Pending *File io.Reader io.Writer StringReader io.RuneReader *Channel CountedIndexed
+//go:generate go run gen/gen_types.go info *TransientVector *TransientArrayMap *TransientHashMap *TransientSet *List *ArrayMapSeq *ArrayMap *HashMap *ExInfo *Fn *Var Nil *Ratio *BigInt *BigFloat Char Double Int Boolean Time Keyword *Regex Symbol String Comment *LazySeq *MappingSeq *ArraySeq *ConsSeq *NodeSeq *ArrayNodeSeq *MapSet *Vector *ArrayVector *VectorSeq *VectorRSeq
 //go:generate go run -tags gen_code gen_code/gen_code.go
 
 package core
@@ -19,6 +19,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 	"unsafe"
@@ -51,6 +52,29 @@ type (
 	Conjable interface {
 		Object
 		Conj(obj Object) Conjable
+	}
+	Editable interface {
+		Object
+		AsTransient() TransientCollection
+	}
+	TransientCollection interface {
+		Object
+		ConjBang(Object) TransientCollection
+		Persistent() Object
+	}
+	TransientAssociative interface {
+		TransientCollection
+		AssocBang(Object, Object) TransientAssociative
+	}
+	TransientMapCollection interface {
+		TransientAssociative
+		WithoutBang(Object) TransientMapCollection
+		Gettable
+		Counted
+	}
+	TransientSetCollection interface {
+		TransientCollection
+		DisjoinBang(Object) TransientSetCollection
 	}
 	Counted interface {
 		Count() int
@@ -151,23 +175,29 @@ type (
 	Var struct {
 		InfoHolder
 		MetaHolder
-		ns             *Namespace
-		name           Symbol
-		Value          Object
-		expr           Expr
-		isMacro        bool
-		isPrivate      bool
-		isDynamic      bool
-		isUsed         bool
-		isGloballyUsed bool
-		isFake         bool
-		taggedTypes    []*Type
+		ns               *Namespace
+		name             Symbol
+		Value            Object
+		expr             Expr
+		fnSummary        *FnSummary
+		inferredTypes    []*Type
+		inferredUnknown  bool
+		hasInferredValue bool
+		hasDefinition    bool
+		isMacro          bool
+		isPrivate        bool
+		isDynamic        bool
+		isUsed           bool
+		isGloballyUsed   bool
+		isFake           bool
+		taggedTypes      []*Type
 	}
 	ProcFn func([]Object) Object
 	Proc   struct {
-		Fn      ProcFn
-		Name    string
-		Package string // "" for core (this package), else e.g. "std/string"
+		Fn          ProcFn
+		InExecution func(*Execution, []Object) Object // Optional VM-aware native entry
+		Name        string
+		Package     string // "" for core (this package), else e.g. "std/string"
 	}
 	Fn struct {
 		InfoHolder
@@ -175,13 +205,16 @@ type (
 		isMacro bool
 		fnExpr  *FnExpr
 		env     *LocalEnv
+		// Bytecode VM fields
+		proto      *FunctionProto
+		upvalues   []Object
+		isCompiled bool
 	}
 	ExInfo struct {
 		ArrayMap
 		rt *Runtime
 	}
-	RecurBindings []Object
-	Delay         struct {
+	Delay struct {
 		fn    Callable
 		value Object
 	}
@@ -258,79 +291,87 @@ type (
 		IsRealized() bool
 	}
 	Types struct {
-		Associative    *Type
-		Callable       *Type
-		Collection     *Type
-		Comparable     *Type
-		Comparator     *Type
-		Counted        *Type
-		CountedIndexed *Type
-		Deref          *Type
-		Channel        *Type
-		Error          *Type
-		Gettable       *Type
-		Indexed        *Type
-		IOReader       *Type
-		IOWriter       *Type
-		KVReduce       *Type
-		Reduce         *Type
-		Map            *Type
-		Meta           *Type
-		Named          *Type
-		Number         *Type
-		Pending        *Type
-		Ref            *Type
-		Reversible     *Type
-		Seq            *Type
-		Seqable        *Type
-		Sequential     *Type
-		Set            *Type
-		Stack          *Type
-		ArrayMap       *Type
-		ArrayMapSeq    *Type
-		ArrayNodeSeq   *Type
-		ArraySeq       *Type
-		MapSet         *Type
-		Atom           *Type
-		BigFloat       *Type
-		BigInt         *Type
-		Boolean        *Type
-		Time           *Type
-		Buffer         *Type
-		Char           *Type
-		ConsSeq        *Type
-		Delay          *Type
-		Double         *Type
-		EvalError      *Type
-		ExInfo         *Type
-		Fn             *Type
-		File           *Type
-		BufferedReader *Type
-		HashMap        *Type
-		Int            *Type
-		Keyword        *Type
-		LazySeq        *Type
-		List           *Type
-		MappingSeq     *Type
-		Namespace      *Type
-		Nil            *Type
-		NodeSeq        *Type
-		ParseError     *Type
-		Proc           *Type
-		ProcFn         *Type
-		Ratio          *Type
-		RecurBindings  *Type
-		Regex          *Type
-		String         *Type
-		Symbol         *Type
-		Type           *Type
-		Var            *Type
-		Vector         *Type
-		Vec            *Type
-		ArrayVector    *Type
-		VectorRSeq     *Type
-		VectorSeq      *Type
-		StringSeq      *Type
+		Associative            *Type
+		Editable               *Type
+		TransientCollection    *Type
+		TransientAssociative   *Type
+		TransientMapCollection *Type
+		TransientSetCollection *Type
+		Callable               *Type
+		Collection             *Type
+		Comparable             *Type
+		Comparator             *Type
+		Counted                *Type
+		CountedIndexed         *Type
+		Deref                  *Type
+		Channel                *Type
+		Error                  *Type
+		Gettable               *Type
+		Indexed                *Type
+		IOReader               *Type
+		IOWriter               *Type
+		KVReduce               *Type
+		Reduce                 *Type
+		Map                    *Type
+		Meta                   *Type
+		Named                  *Type
+		Number                 *Type
+		Pending                *Type
+		Ref                    *Type
+		Reversible             *Type
+		Seq                    *Type
+		Seqable                *Type
+		Sequential             *Type
+		Set                    *Type
+		Stack                  *Type
+		TransientVector        *Type
+		TransientArrayMap      *Type
+		TransientHashMap       *Type
+		TransientSet           *Type
+		ArrayMap               *Type
+		ArrayMapSeq            *Type
+		ArrayNodeSeq           *Type
+		ArraySeq               *Type
+		MapSet                 *Type
+		Atom                   *Type
+		BigFloat               *Type
+		BigInt                 *Type
+		Boolean                *Type
+		Time                   *Type
+		Buffer                 *Type
+		Char                   *Type
+		ConsSeq                *Type
+		Delay                  *Type
+		Double                 *Type
+		EvalError              *Type
+		ExInfo                 *Type
+		Fn                     *Type
+		File                   *Type
+		BufferedReader         *Type
+		HashMap                *Type
+		Int                    *Type
+		Keyword                *Type
+		LazySeq                *Type
+		List                   *Type
+		MappingSeq             *Type
+		Namespace              *Type
+		Nil                    *Type
+		NodeSeq                *Type
+		ParseError             *Type
+		Proc                   *Type
+		ProcFn                 *Type
+		Ratio                  *Type
+		Regex                  *Type
+		String                 *Type
+		Symbol                 *Type
+		Type                   *Type
+		Var                    *Type
+		Vector                 *Type
+		Vec                    *Type
+		ArrayVector            *Type
+		VectorRSeq             *Type
+		VectorSeq              *Type
+		StringSeq              *Type
 	}
 )
 
@@ -359,6 +400,15 @@ func uint32ToBytes(i uint32) []byte {
 
 func getHash() hash.Hash32 {
 	return fnv.New32a()
+}
+
+// hashUint32 is FNV-1a over the same little-endian bytes as uint32ToBytes.
+// Collection hashes can use it without allocating traversal objects.
+func hashUint32(h, value uint32) uint32 {
+	for shift := uint(0); shift < 32; shift += 8 {
+		h = (h ^ uint32(byte(value>>shift))) * 16777619
+	}
+	return h
 }
 
 func hashSymbol(ns, name *string) uint32 {
@@ -418,7 +468,7 @@ func MakeKeyword(nsname string) Keyword {
 }
 
 func PanicArity(n int) {
-	name := RT.currentExpr.(Traceable).Name()
+	name := RT.callableName()
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s", n, name)))
 }
 
@@ -439,7 +489,7 @@ func rangeString(min, max int) string {
 }
 
 func PanicArityMinMax(n, min, max int) {
-	name := RT.currentExpr.(Traceable).Name()
+	name := RT.callableName()
 	panic(RT.NewError(fmt.Sprintf("Wrong number of args (%d) passed to %s; expects %s", n, name, rangeString(min, max))))
 }
 
@@ -613,26 +663,6 @@ func (t *Type) Hash() uint32 {
 	return HashPtr(uintptr(unsafe.Pointer(t)))
 }
 
-func (rb RecurBindings) ToString(escape bool) string {
-	return "#object[RecurBindings]"
-}
-
-func (rb RecurBindings) Equals(other interface{}) bool {
-	return false
-}
-
-func (rb RecurBindings) GetInfo() *ObjectInfo {
-	return nil
-}
-
-func (rb RecurBindings) GetType() *Type {
-	return TYPE.RecurBindings
-}
-
-func (rb RecurBindings) Hash() uint32 {
-	return 0
-}
-
 func (exInfo *ExInfo) ToString(escape bool) string {
 	return exInfo.Error()
 }
@@ -705,50 +735,59 @@ func (fn *Fn) Hash() uint32 {
 }
 
 func (fn *Fn) Call(args []Object) Object {
+	fn.ensureCompiled()
+	return fn.callVM(args)
+}
+
+// Functions backed by parsed source compile on first invocation, regardless of
+// how they are reached (macro, callback, multimethod, lazy sequence). Failure
+// is an error, never a request to switch evaluators.
+func (fn *Fn) ensureCompiled() {
+	if fn.proto != nil {
+		return
+	}
+	if fn.fnExpr == nil {
+		panic(RT.NewError("Function has no implementation"))
+	}
+	proto, err := CompileFnExpr(fn.fnExpr, fn.env)
+	PanicOnErr(err)
+	fn.proto = proto
+	fn.isCompiled = true
+}
+
+func (fn *Fn) panicMacroArity(argCount int) {
+	// Compute min/max from proto arities, adjusted for &form/&env
 	min := math.MaxInt32
 	max := -1
-	for _, arity := range fn.fnExpr.arities {
-		a := len(arity.args)
-		if a == len(args) {
-			RT.pushFrame()
-			defer RT.popFrame()
-			return evalLoop(arity.body, fn.env.addFrame(args))
+	for _, a := range fn.proto.Arities {
+		if a.Arity < min {
+			min = a.Arity
 		}
-		if min > a {
+		if a.Arity > max {
+			max = a.Arity
+		}
+	}
+	if fn.proto.VariadicArity != nil {
+		// +1 because ArityProto.Arity excludes rest param, but error message
+		// should count it (including the rest parameter)
+		a := fn.proto.VariadicArity.Arity + 1
+		if a < min {
 			min = a
 		}
-		if max < a {
-			max = a
-		}
+		max = math.MaxInt32
 	}
-	v := fn.fnExpr.variadic
-	if v == nil || len(args) < len(v.args)-1 {
-		if v != nil {
-			min = len(v.args)
-			max = math.MaxInt32
-		}
-		c := len(args)
-		if fn.isMacro {
-			c -= 2
-			min -= 2
-			if max != math.MaxInt32 {
-				max -= 2
-			}
-		}
-		PanicArityMinMax(c, min, max)
+	c := argCount - 2
+	min -= 2
+	if max != math.MaxInt32 {
+		max -= 2
 	}
-	var restArgs Object = NIL
-	if len(v.args)-1 < len(args) {
-		restArgs = &ArraySeq{arr: args, index: len(v.args) - 1}
-	}
-	vargs := make([]Object, len(v.args))
-	for i := 0; i < len(vargs)-1; i++ {
-		vargs[i] = args[i]
-	}
-	vargs[len(vargs)-1] = restArgs
-	RT.pushFrame()
-	defer RT.popFrame()
-	return evalLoop(v.body, fn.env.addFrame(vargs))
+	PanicArityMinMax(c, min, max)
+}
+
+// Fn.Call uses the active VM when it has a native caller; otherwise it
+// starts an independent execution. Captures are independent of VM storage.
+func (fn *Fn) callVM(args []Object) Object {
+	return VMExecute(fn, args)
 }
 
 func compare(c Callable, a, b Object) int {
@@ -886,6 +925,22 @@ func (v *Var) Call(args []Object) Object {
 
 func (v *Var) Deref() Object {
 	return v.Resolve()
+}
+
+func (v *Var) IsPrivate() bool {
+	return v.isPrivate
+}
+
+func (v *Var) IsMacro() bool {
+	return v.isMacro
+}
+
+func (v *Var) Symbol() Symbol {
+	return v.name
+}
+
+func (v *Var) GetNamespace() *Namespace {
+	return v.ns
 }
 
 func (n Nil) ToString(escape bool) string {
@@ -1262,6 +1317,9 @@ func MakeIntWithOriginal(orig string, i int) Int {
 }
 
 func (i Int) Equals(other interface{}) bool {
+	if other, ok := other.(Int); ok {
+		return i.I == other.I
+	}
 	return equalsNumbers(i, other)
 }
 
@@ -1564,15 +1622,15 @@ func (s String) Seq() Seq {
 	return &stringSeq{s: s.S, off: 0}
 }
 
-func (seq *stringSeq) Seq() Seq       { return seq }
-func (seq *stringSeq) sequential()    {}
+func (seq *stringSeq) Seq() Seq    { return seq }
+func (seq *stringSeq) sequential() {}
 
 func (seq *stringSeq) First() Object {
 	if seq.off >= len(seq.s) {
 		return NIL
 	}
 	r, _ := utf8.DecodeRuneInString(seq.s[seq.off:])
-	return Char{Ch: r}
+	return boxChar(r)
 }
 
 func (seq *stringSeq) Rest() Seq {
@@ -1599,10 +1657,10 @@ func (seq *stringSeq) ToString(escape bool) string {
 	return SeqToString(seq, escape)
 }
 
-func (seq *stringSeq) GetInfo() *ObjectInfo { return nil }
+func (seq *stringSeq) GetInfo() *ObjectInfo             { return nil }
 func (seq *stringSeq) WithInfo(info *ObjectInfo) Object { return seq }
-func (seq *stringSeq) GetType() *Type       { return TYPE.StringSeq }
-func (seq *stringSeq) Hash() uint32         { return hashOrdered(seq) }
+func (seq *stringSeq) GetType() *Type                   { return TYPE.StringSeq }
+func (seq *stringSeq) Hash() uint32                     { return hashOrdered(seq) }
 func (seq *stringSeq) WithMeta(meta Map) Object {
 	// stringSeq has no meta; return as-is like other minimal seqs
 	return seq
@@ -1617,7 +1675,7 @@ func (s String) Nth(i int) Object {
 	j, r := 0, 't'
 	for j, r = range s.S {
 		if i == j {
-			return Char{Ch: r}
+			return boxChar(r)
 		}
 	}
 	panic(RT.NewError(fmt.Sprintf("Index %d exceeds string's length %d", i, j+1)))
@@ -1629,7 +1687,7 @@ func (s String) TryNth(i int, d Object) Object {
 	}
 	for j, r := range s.S {
 		if i == j {
-			return Char{Ch: r}
+			return boxChar(r)
 		}
 	}
 	return d
@@ -1676,20 +1734,35 @@ func (x *Type) WithInfo(info *ObjectInfo) Object {
 	return x
 }
 
-func (x RecurBindings) WithInfo(info *ObjectInfo) Object {
-	return x
+type typeCompatibilityKey struct {
+	abstract reflect.Type
+	concrete reflect.Type
 }
 
+// Go reflection types are immutable. Key by reflection type, not Joker type
+// identity or metadata, and cache negative results as well as positive ones.
+// This helper is also called outside VM execution, so the GIL is not a lock
+// for this cache.
+var typeCompatibilityCache sync.Map
+
 func IsEqualOrImplements(abstractType *Type, concreteType *Type) bool {
-	if abstractType.reflectType.Kind() == reflect.Interface {
-		return concreteType.reflectType.Implements(abstractType.reflectType)
-	} else {
-		return concreteType.reflectType == abstractType.reflectType
+	abstract, concrete := abstractType.reflectType, concreteType.reflectType
+	if abstract.Kind() != reflect.Interface {
+		return concrete == abstract
 	}
+	key := typeCompatibilityKey{abstract: abstract, concrete: concrete}
+	if result, ok := typeCompatibilityCache.Load(key); ok {
+		return result.(bool)
+	}
+	result := concrete.Implements(abstract)
+	typeCompatibilityCache.LoadOrStore(key, result)
+	return result
 }
 
 func IsInstance(t *Type, obj Object) bool {
-	if obj.Equals(NIL) {
+	// A general equality check can allocate (notably Int.Equals(NIL)) and
+	// needlessly traverse sequential values. Only Nil has nil's type.
+	if _, isNil := obj.(Nil); isNil {
 		return false
 	}
 	return IsEqualOrImplements(t, obj.GetType())

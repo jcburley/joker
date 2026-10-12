@@ -22,6 +22,7 @@ import (
 	_ "github.com/candid82/joker/std/filepath"
 	_ "github.com/candid82/joker/std/git"
 	_ "github.com/candid82/joker/std/hex"
+	_ "github.com/candid82/joker/std/hiccup"
 	_ "github.com/candid82/joker/std/html"
 	_ "github.com/candid82/joker/std/http"
 	_ "github.com/candid82/joker/std/io"
@@ -190,7 +191,7 @@ func processReplCommand(reader *Reader, phase Phase, parseContext *ParseContext,
 		return false
 	}
 
-	res := Eval(expr, nil)
+	res := Evaluate(expr)
 	replContext.PushValue(res)
 	PrintObject(res, Stdout)
 	fmt.Fprintln(Stdout, "")
@@ -390,6 +391,8 @@ func usage(out io.Writer) {
 	fmt.Fprintln(out, "   or: joker [args] [--file] <filename> [<script-args>]")
 	fmt.Fprintln(out, "                                                    input from file")
 	fmt.Fprintln(out, "   or: joker [args] --lint <filename>               lint the code in file")
+	fmt.Fprintln(out, "   or: joker [args] --task [<name>] [<task-args>]   run task from tasks file")
+	fmt.Fprintln(out, "   or: joker [args] --list-tasks                    list tasks from tasks file")
 	fmt.Fprintln(out, "\nNotes:")
 	fmt.Fprintln(out, "  -e is a synonym for --eval.")
 	fmt.Fprintln(out, "  '-' for <filename> means read from standard input (stdin).")
@@ -403,6 +406,12 @@ func usage(out io.Writer) {
 	fmt.Fprintln(out, "    Print this help message and exit.")
 	fmt.Fprintln(out, "  --version, -v")
 	fmt.Fprintln(out, "    Print version number and exit.")
+	fmt.Fprintln(out, "  --task [<name>]")
+	fmt.Fprintln(out, "    Run specified task (default 'default') from tasks file.")
+	fmt.Fprintln(out, "  --tasks, --list-tasks")
+	fmt.Fprintln(out, "    List available tasks from tasks file.")
+	fmt.Fprintln(out, "  --task-file, --tasks-file <filename>")
+	fmt.Fprintln(out, "    Specify tasks file (default 'tasks.joke').")
 	fmt.Fprintln(out, "  --read")
 	fmt.Fprintln(out, "    Read, but do not parse nor evaluate, the input.")
 	fmt.Fprintln(out, "  --format")
@@ -469,6 +478,10 @@ var (
 	exitToRepl               bool
 	errorToRepl              bool
 	writeFlag                bool
+	taskFlag                 bool
+	taskName                 string
+	listTasksFlag            bool
+	tasksFile                string = "tasks.joke"
 )
 
 func isNumber(s string) bool {
@@ -549,6 +562,27 @@ func parseArgs(args []string) {
 			phase = PARSE
 		case "--evaluate":
 			phase = EVAL
+		case "--list-tasks", "--tasks":
+			listTasksFlag = true
+			noFileFlag = true
+		case "--task-file", "--tasks-file":
+			if i < length-1 && notOption(args[i+1]) {
+				i += 1 // shift
+				tasksFile = args[i]
+			} else {
+				missing = true
+			}
+		case "--task":
+			taskFlag = true
+			if i < length-1 && notOption(args[i+1]) {
+				i += 1 // shift
+				taskName = args[i]
+			} else {
+				taskName = "default"
+			}
+			stop = true
+			noFileFlag = true
+			i += 1
 		case "--working-dir":
 			if i < length-1 && notOption(args[i+1]) {
 				i += 1 // shift
@@ -723,6 +757,7 @@ var runningProfile interface {
 
 func main() {
 	OnExit(finish)
+	defer finish()
 
 	GLOBAL_ENV.InitEnv(Stdin, Stdout, Stderr, os.Args[1:])
 
@@ -770,6 +805,30 @@ func main() {
 		return
 	}
 
+	// Validate task modes before evaluation or linting can execute and return.
+	if taskFlag || listTasksFlag {
+		option := "--task"
+		if listTasksFlag {
+			option = "--list-tasks"
+		}
+		if lintFlag {
+			fmt.Fprintf(Stderr, "Error: Cannot combine %s and --lint.\n", option)
+			ExitJoker(18)
+		}
+		if eval != "" {
+			fmt.Fprintf(Stderr, "Error: Cannot combine %s and --eval/-e.\n", option)
+			ExitJoker(19)
+		}
+		if replFlag {
+			fmt.Fprintf(Stderr, "Error: Cannot combine %s and --repl.\n", option)
+			ExitJoker(20)
+		}
+		if filename != "" {
+			fmt.Fprintf(Stderr, "Error: Cannot combine %s and a <filename> argument.\n", option)
+			ExitJoker(21)
+		}
+	}
+
 	if len(remainingArgs) > 0 {
 		if lintFlag {
 			fmt.Fprintf(Stderr, "Error: Cannot provide arguments to code while linting it.\n")
@@ -787,7 +846,6 @@ func main() {
 		switch profilerType {
 		case "pkg/profile":
 			runningProfile = profile.Start(profile.ProfilePath(cpuProfileName))
-			defer finish()
 		case "runtime/pprof":
 			f, err := os.Create(cpuProfileName)
 			if err != nil {
@@ -802,15 +860,12 @@ func main() {
 			pprof.StartCPUProfile(f)
 			fmt.Fprintf(Stderr, "Profiling started at rate=%d. See file `%s'.\n",
 				cpuProfileRate, cpuProfileName)
-			defer finish()
 		default:
 			fmt.Fprintf(Stderr,
 				"Unrecognized profiler: %s\n  Use 'pkg/profile' or 'runtime/pprof'.\n",
 				profilerType)
 			ExitJoker(96)
 		}
-	} else if memProfileName != "" {
-		defer finish()
 	}
 
 	if eval != "" {
@@ -877,6 +932,23 @@ func main() {
 			ExitJoker(1)
 		}
 		return
+	}
+
+	if listTasksFlag {
+		listTasks(tasksFile)
+		return
+	}
+
+	if taskFlag {
+		if err := runTask(tasksFile, taskName, remainingArgs); err != nil {
+			if !errorToRepl {
+				ExitJoker(1)
+			}
+		} else {
+			if !exitToRepl {
+				return
+			}
+		}
 	}
 
 	if workingDir != "" {
